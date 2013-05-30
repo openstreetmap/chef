@@ -1,0 +1,25 @@
+# Launch the geo backend
+launch=geo
+
+# Make sure we don't cache anything as we give everybody a unique answer
+query-cache-ttl=0
+cache-ttl=0
+
+# Turn off wildcards for performance
+#Disable wildcard parameter as no longer compatible with recent pdns
+#wildcards=no
+
+# The zone we are managing
+geo-zone=geo.openstreetmap.org
+
+# The SOA record for the zone
+geo-soa-values=a.ns.openstreetmap.org,hostmaster.openstreetmap.org
+
+# The NS records for the zone
+geo-ns-records=a.ns.openstreetmap.org
+
+# Map IP addresses to geographic zones
+geo-ip-map-zonefile=/etc/powerdns/countries.conf
+
+# Map geographic zones to responses
+geo-maps=/etc/powerdns/zones.d

@@ -1,0 +1,66 @@
+#!/bin/zsh
+
+# DO NOT EDIT - This file is being maintained by Chef
+
+umask 0002
+unset GIT_DIR
+
+while read oldrev newrev refname
+do
+  if [[ "$refname" = "refs/heads/master" ]]
+  then
+    cd /var/lib/chef
+
+    rm -f cookbooks/*/metadata.json(N)
+
+    git pull --rebase --quiet
+
+    oldrev=$(git merge-base $oldrev $newrev)
+
+    for change in "${(f)$(git diff --name-status $oldrev..$newrev)}"
+    do
+      action=${change[1]}
+      file=${change[3,-1]}
+
+      if [[ $file == roles/*.rb ]]
+      then
+        case "$action" in
+          A|M) knife role from file "${file}";;
+          D) knife role delete -y "${file:t:r}";;
+        esac
+      elif [[ $file == data_bags/*/*.json ]]
+      then
+        case "$action" in
+          A|M) 
+            knife data bag create "${file:h:t}"
+            knife data bag from file "${file:h:t}" "${file:t}";;
+          D)
+            knife data bag delete -y "${file:h:t}" "${file:t:r}";;
+        esac
+      elif [[ $file == cookbooks/* ]]
+      then
+        cookbook="${${file#[^/]*/}%%/*}"
+    
+        if [[ -d "cookbooks/${cookbook}" ]]
+        then
+          updated_cookbooks+=("$cookbook")
+        else
+          deleted_cookbooks+=("$cookbook")
+        fi
+      fi
+    done
+
+    if [[ -n "$updated_cookbooks" ]]
+    then
+      knife cookbook upload "${(ou)updated_cookbooks[@]}"
+    fi
+
+    if [[ -n "$deleted_cookbooks" ]]
+    then
+      for cookbook in "${(ou)deleted_cookbooks[@]}"
+      do
+        knife cookbook delete -y "$cookbook"
+      done
+    fi
+  fi
+done

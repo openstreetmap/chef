@@ -1,0 +1,23 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+
+use Munin::Plugin::Pgsql;
+
+my $pg = Munin::Plugin::Pgsql->new(
+    title     => 'PostgreSQL replication delay',
+    info      => 'Replication delay',
+    vlabel    => 'Seconds',
+    basequery =>
+        "SELECT
+           CASE
+             WHEN pg_last_xlog_receive_location() = pg_last_xlog_replay_location() THEN 0::int
+             ELSE (extract(epoch FROM now()) - extract(epoch FROM pg_last_xact_replay_timestamp()))::int
+           END AS delay",
+    pivotquery => 1,
+    configquery =>
+        "VALUES ('delay','Replication delay')"
+);
+
+$pg->Process();

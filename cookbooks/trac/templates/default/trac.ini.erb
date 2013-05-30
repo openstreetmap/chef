@@ -1,0 +1,207 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+[attachment]
+max_size = 262144
+render_unsafe_content = false
+
+[browser]
+color_scale = True
+downloadable_paths = /trunk, /branches/*, /tags/*
+hide_properties = svk:merge
+intermediate_color = 
+intermediate_point = 
+newest_color = (255, 136, 136)
+oldest_color = (136, 136, 255)
+oneliner_properties = trac:summary
+render_unsafe_content = false
+wiki_properties = trac:description
+
+[changeset]
+max_diff_files = 100
+wiki_format_messages = true
+
+[components]
+tracext.git.* = enabled
+
+[header_logo]
+alt = OpenStreetMap
+height = 80
+link = http://trac.openstreetmap.org/
+src = site/osm.png
+width = 228
+
+[inherit]
+plugins_dir = 
+templates_dir = 
+
+[intertrac]
+josm.compat = false
+josm.title = JOSM Trac
+josm.url = http://josm.openstreetmap.de
+
+[logging]
+log_file = trac.log
+log_level = INFO
+log_type = file
+
+[milestone]
+stats_provider = DefaultTicketGroupStatsProvider
+
+[mimeviewer]
+enscript_modes = text/x-dylan:dylan:4
+enscript_path = enscript
+max_preview_size = 102400
+mime_map = text/x-dylan:dylan,text/x-idl:ice,text/x-ada:ads:adb
+php_path = php
+pygments_default_style = trac
+pygments_modes = 
+tab_width = 8
+treat_as_binary = application/octet-stream,application/pdf,application/postscript,application/rtf
+
+[notification]
+admit_domains = 
+always_notify_owner = true
+always_notify_reporter = true
+always_notify_updater = true
+ignore_domains = 
+mime_encoding = qp
+smtp_always_bcc = 
+smtp_always_cc = 
+smtp_default_domain = 
+smtp_enabled = true
+smtp_from = trac@noreply.openstreetmap.org
+smtp_from_name = 
+smtp_password = 
+smtp_port = 25
+smtp_replyto = trac@noreply.openstreetmap.org
+smtp_server = localhost
+smtp_subject_prefix = __default__
+smtp_user = 
+ticket_subject_template = $prefix #$ticket.id: $summary
+use_public_cc = true
+use_short_addr = false
+use_tls = false
+
+[project]
+admin = 
+admin_trac_url = .
+descr = OpenStreetMap is a free editable map of the whole world
+footer = Visit the map at<br /><a href="http://www.openstreetmap.org/">http://www.openstreetmap.org/</a>
+icon = site/osm.ico
+name = OpenStreetMap
+url = http://www.openstreetmap.org/
+
+[query]
+default_anonymous_query = status!=closed&cc~=$USER
+default_query = status!=closed&owner=$USER
+items_per_page = 100
+
+[report]
+items_per_page = 100
+items_per_page_rss = 0
+
+[revisionlog]
+default_log_limit = 100
+
+[roadmap]
+stats_provider = DefaultTicketGroupStatsProvider
+
+[search]
+min_query_length = 3
+
+[svn]
+branches = trunk,branches/*
+tags = tags/*
+
+[ticket]
+default_cc = 
+default_component = 
+default_description = 
+default_keywords = 
+default_milestone = 
+default_owner = 
+default_priority = minor
+default_resolution = fixed
+default_severity = 
+default_summary = 
+default_type = defect
+default_version = 
+max_comment_size = 262144
+max_description_size = 262144
+preserve_newlines = default
+restrict_owner = false
+workflow = ConfigurableTicketWorkflow
+
+[ticket-workflow]
+accept = new,assigned,accepted,reopened -> accepted
+accept.operations = set_owner_to_self
+accept.permissions = TICKET_MODIFY
+leave = * -> *
+leave.default = 1
+leave.operations = leave_status
+reassign = new,assigned,accepted,reopened -> assigned
+reassign.operations = set_owner
+reassign.permissions = TICKET_MODIFY
+reopen = closed -> reopened
+reopen.operations = del_resolution
+reopen.permissions = TICKET_CREATE
+resolve = new,assigned,accepted,reopened -> closed
+resolve.operations = set_resolution
+resolve.permissions = TICKET_MODIFY
+
+[timeline]
+abbreviated_messages = True
+changeset_collapse_events = false
+changeset_long_messages = false
+changeset_show_files = 0
+default_daysback = 30
+max_daysback = 90
+newticket_formatter = oneliner
+ticket_show_details = false
+
+[trac]
+authz_file = 
+authz_module_name = 
+auto_reload = False
+backup_dir = db
+base_url = https://<%= @name %>/
+check_auth_ip = false
+database = sqlite:db/trac.db
+debug_sql = False
+default_charset = utf-8
+htdocs_location = 
+ignore_auth_case = false
+mainnav = wiki,timeline,roadmap,browser,tickets,newticket,search
+metanav = login,logout,prefs,help,about
+mysqldump_path = mysqldump
+never_obfuscate_mailto = false
+permission_policies = DefaultPermissionPolicy, LegacyAttachmentPolicy
+permission_store = DefaultPermissionStore
+pg_dump_path = pg_dump
+repository_sync_per_request = 
+secure_cookies = False
+show_email_addresses = false
+show_ip_addresses = false
+timeout = 20
+use_base_url_for_redirect = False
+
+[repositories]
+subversion.dir = /var/lib/subversion/repos/openstreetmap
+subversion.description = Legacy subversion repository
+subversion.type = svn
+subversion.url = http://svn.openstreetmap.org/
+subversion.hidden = true
+<% Dir.glob("/var/lib/git/*.git").each do |repository| -%>
+<%= File.basename(repository, ".git") %>.dir = <%= repository %>
+<%= File.basename(repository, ".git") %>.description = <%= IO.read("#{repository}/description").strip %>
+<%= File.basename(repository, ".git") %>.type = git
+<%= File.basename(repository, ".git") %>.url = git://git.openstreetmap.org/<%= File.basename(repository) %>
+<% end -%>
+.alias = subversion
+
+[wiki]
+ignore_missing_pages = false
+max_size = 262144
+render_unsafe_content = false
+split_page_names = false
+

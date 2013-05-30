@@ -1,0 +1,13 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+Host *
+    SendEnv LANG LC_*
+    HashKnownHosts yes
+    GSSAPIAuthentication yes
+    GSSAPIDelegateCredentials no
+
+Host *.oob
+    HostKeyAlgorithms ssh-rsa,ssh-dss
+
+Host *.oob.openstreetmap.org
+    HostKeyAlgorithms ssh-rsa,ssh-dss

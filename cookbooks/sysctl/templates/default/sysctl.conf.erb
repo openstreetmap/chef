@@ -1,0 +1,30 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+# Stop low-level messages on console
+kernel.printk = 4 4 1 7
+
+# Enable /proc/$pid/maps privacy so that memory relocations are not
+# visible to other users.  (Added in kernel 2.6.22.)
+kernel.maps_protect = 1
+
+# Protect the zero page of memory from userspace mmap to prevent kernel
+# NULL-dereference attacks against potential future kernel security
+# vulnerabilities.  (Added in kernel 2.6.23.)
+#
+# While this default is built into the Ubuntu kernel, there is no way to
+# restore the kernel default if the value is changed during runtime; for
+# example via package removal (e.g. wine, dosemu).  Therefore, this value
+# is reset to the secure default each time the sysctl values are loaded.
+vm.mmap_min_addr = 65536
+
+# Turn on Source Address Verification in all interfaces to
+# prevent some spoofing attacks.
+net.ipv4.conf.default.rp_filter = 1
+net.ipv4.conf.all.rp_filter = 1
+<% node[:sysctl].each do |name,group| -%>
+
+# <%= group[:comment] %>
+<% group[:parameters].each do |key,value| -%>
+<%= key %> = <%= value %>
+<% end -%>
+<% end -%>

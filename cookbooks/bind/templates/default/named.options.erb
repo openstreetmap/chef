@@ -1,0 +1,37 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+acl "osm" {
+	127.0.0.1/32;
+<% node.interfaces(:family => :inet).each do |interface| -%>
+	<%= interface[:network] %>/<%= interface[:prefix] %>;
+<% end -%>
+
+	::1/128;
+<% node.interfaces(:family => :inet6).each do |interface| -%>
+	<%= interface[:network] %>/<%= interface[:prefix] %>;
+<% end -%>
+};
+
+options {
+        # Directory to use for any working files
+	directory "/var/cache/bind";
+
+<% if node[:bind][:forwarders] -%>
+	# Forward any queries we can't answer
+	forwarders {
+<% node[:bind][:forwarders].each do |forwarder| -%>
+		<%= forwarder %>;
+<% end -%>
+	};
+<% end -%>
+
+	# Only allow queries from our machines
+	allow-query { osm; };
+
+	# Don't allow transfers
+	allow-transfer { none; };
+
+	# Listen on any IPv6 interfaces
+	listen-on-v6 { any; };
+};
+

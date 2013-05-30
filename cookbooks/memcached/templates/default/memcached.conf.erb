@@ -1,0 +1,31 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+# Run memcached as a daemon
+-d
+
+# Run as user nobody
+-u nobody
+
+# Log memcached's output to /var/log/memcached
+logfile /var/log/memcached.log
+
+# Limit the size of the cache to <%= node[:memcached][:memory_limit] %>Mb
+-m <%= node[:memcached][:memory_limit] %>
+
+# Configure where we listen for requests
+-l <%= node[:memcached][:ip_address] %>
+<% if node[:memcached][:tcp_port] -%>
+-p <%= node[:memcached][:tcp_port] %>
+<% end -%>
+<% if node[:memcached][:udp_port] -%>
+-U <%= node[:memcached][:udp_port] %>
+<% end -%>
+
+# Limit the number of simultaneous connections
+-c <%= node[:memcached][:connection_limit] %>
+
+# Set chunk growth factor
+-f <%= node[:memcached][:chunk_growth_factor] %>
+
+# Set minimum item size
+-n <%= node[:memcached][:min_item_size] %>

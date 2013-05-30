@@ -1,0 +1,25 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+# HP Smart Array configuration
+ACTION=="add", SUBSYSTEM=="block", ENV{ID_VENDOR}=="HP", ENV{ID_MODEL}=="LOGICAL_VOLUME", ATTR{queue/scheduler}="noop"
+ACTION=="add", SUBSYSTEM=="block", ENV{ID_VENDOR}=="HP", ENV{ID_MODEL}=="LOGICAL_VOLUME", ATTR{queue/nr_requests}="512"
+<% node[:devices].each do |name,device| -%>
+
+# <%= device[:comment] %>
+<% if device[:type] == "block" -%>
+<% if device[:owner] -%>
+SUBSYSTEM=="block", ENV{ID_BUS}=="<%= device[:bus] %>", ENV{ID_SERIAL}=="<%= device[:serial] %>", OWNER="<%= device[:owner] %>"
+<% end -%>
+<% if device[:group] -%>
+SUBSYSTEM=="block", ENV{ID_BUS}=="<%= device[:bus] %>", ENV{ID_SERIAL}=="<%= device[:serial] %>", GROUP="<%= device[:group] %>"
+<% end -%>
+<% if device[:mode] -%>
+SUBSYSTEM=="block", ENV{ID_BUS}=="<%= device[:bus] %>", ENV{ID_SERIAL}=="<%= device[:serial] %>", MODE="<%= device[:mode] %>"
+<% end -%>
+<% if device[:attrs] -%>
+<% device[:attrs].each do |name,value| -%>
+ACTION=="add", SUBSYSTEM=="block", ENV{ID_BUS}=="<%= device[:bus] %>", ENV{ID_SERIAL}=="<%= device[:serial] %>", ATTR{<%= name %>}="<%= value %>"
+<% end -%>
+<% end -%>
+<% end -%>
+<% end -%>

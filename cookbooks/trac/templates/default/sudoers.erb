@@ -1,0 +1,7 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+# Allow subversion to notify trac of commits
+www-data ALL=(trac) NOPASSWD: /usr/bin/trac-admin /var/lib/trac changeset *
+
+# Allow git to notify trac of commits
+%git ALL=(trac) NOPASSWD: /usr/bin/trac-admin /var/lib/trac changeset *

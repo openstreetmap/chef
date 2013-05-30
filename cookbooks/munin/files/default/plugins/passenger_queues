@@ -1,0 +1,28 @@
+#!/usr/bin/env ruby
+
+def output_config
+  puts <<-END
+graph_category passenger
+graph_title Passenger queues
+graph_vlabel count
+
+global.label global
+END
+  exit 0
+end
+
+def output_values
+  status = `/usr/sbin/passenger-status`
+  unless $?.success?
+    $stderr.puts "failed executing passenger-status"
+    exit 1
+  end
+  status =~ /Waiting on global queue:\s+(\d+)/
+  puts "global.value #{$1}"
+end
+
+if ARGV[0] == "config"
+  output_config
+else
+  output_values
+end

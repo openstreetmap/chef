@@ -1,0 +1,16 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+# Exchange time with everybody, but don't allow configuration
+restrict default kod notrap nomodify nopeer noquery
+
+# Local users may interrogate the ntp server more closely
+restrict 127.0.0.1
+restrict ::1
+
+# Servers
+<% node[:ntp][:servers].each do |server| -%>
+server <%= server %> iburst
+<% end -%>
+
+# Drift file
+driftfile /var/lib/ntp/ntp.drift

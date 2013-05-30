@@ -1,0 +1,6 @@
+default[:memcached][:memory_limit] = "256"
+default[:memcached][:connection_limit] = "1024"
+default[:memcached][:ip_address] = "127.0.0.1"
+default[:memcached][:tcp_port] = "11211"
+default[:memcached][:chunk_growth_factor] = "1.25"
+default[:memcached][:min_item_size] = "48"

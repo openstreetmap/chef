@@ -1,0 +1,11 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+nginx['enable_non_ssl'] = true
+nginx['non_ssl_port'] = 4000
+nginx['ssl_port'] = 4443
+nginx['server_name'] = "chef.openstreetmap.org"
+nginx['url'] = "http://chef.openstreetmap.org:4000"
+bookshelf['url'] = "http://chef.openstreetmap.org:4000"
+bookshelf['vip'] = "chef.openstreetmap.org"
+lb['api_fqdn'] = "chef.openstreetmap.org"
+lb['web_ui_fqdn'] = "chef.openstreetmap.org"

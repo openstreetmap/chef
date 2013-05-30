@@ -1,0 +1,43 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+# Configuration File For Chef (chef-client)
+#
+# The chef-client program will connect the local system to the specified
+# server URLs through a RESTful API to retrieve its configuration.
+
+# Force the default external encoding to UTF-8
+
+Encoding.default_external = Encoding::UTF_8
+
+# Load supporting code for report handlers
+
+require "/etc/chef/report"
+
+# Log at level info
+
+log_level :info
+
+# Set the location of the log file
+
+log_location "/var/log/chef/client.log"
+
+# Don't verify SSL certificates
+
+ssl_verify_mode :verify_none
+
+# Set the URL for the chef server
+
+chef_server_url "https://chef.openstreetmap.org"
+
+# Create report handler
+
+email_handler = Chef::Handler::Email.new(:to => "tom@compton.nu")
+
+# Configure report handlers
+
+exception_handlers << email_handler
+report_handlers << email_handler
+
+# Make our plugins visible to ohai
+
+Ohai::Config[:plugin_path] << "/etc/chef/ohai"

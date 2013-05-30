@@ -1,0 +1,54 @@
+#! /usr/bin/perl -w
+#
+# Graph fans on Proliant Servers 
+# 
+
+use strict;
+
+my $hpasmcli = "/sbin/hpasmcli";
+my $cmd = "$hpasmcli -s \"show fans\"";
+# C/F : graph temp in celsius or fahrenheit
+
+my @result = `$cmd`;
+my %val;
+
+#(-f $hpasmcli) || exit(1);
+
+foreach my $line (@result) {
+
+    if ($line =~ /^#/) {
+        $line =~ s/\s+/ /g;
+        $line =~ s/^\s//g;
+        my ($sensor, $loc, $present, $speed_state, $speed, $redundant) = split(/\s/, $line);
+        next if ($speed eq "-");
+        $loc =~ s/\/|#//g;
+        $speed =~ s/\%//g;
+        
+        $sensor =~s/#//g;
+        $val{$sensor} = {location => lc($loc),
+                         speed     => $speed
+                         };
+     }
+    
+}
+
+
+if ($ARGV[0] && $ARGV[0] eq "config") {
+
+    print "graph_title Fans\n";
+    print "graph_vlabel fans speed as % of max\n";
+    print "graph_category sensors\n";
+    while (my ($k, $hashref) = each (%val)) {
+        print "$hashref->{location}.label $hashref->{location}\n";
+        print "$hashref->{location}.warning 85\n";
+        print "$hashref->{location}.critical 100\n";
+    }
+
+}
+else {
+    while (my ($k, $hashref) = each (%val)) {
+        print "$hashref->{location}.value $hashref->{speed}\n";    
+    }
+}
+exit(0);
+

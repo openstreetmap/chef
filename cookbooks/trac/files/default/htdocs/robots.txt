@@ -1,0 +1,5 @@
+#Trac really does not handle well being scraped.
+User-agent: *
+Disallow: /changeset
+Disallow: /changeset/
+Disallow: /wiki/

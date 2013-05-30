@@ -1,0 +1,39 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+WSGIDaemonProcess <%= @name %> user=<%= @user %> group=<%= @group %> maximum-requests=5000 threads=25 inactivity-timeout=180
+
+<VirtualHost *:80>
+        ServerName <%= @name %>
+        ServerAdmin webmaster@openstreetmap.org
+
+        CustomLog /var/log/apache2/<%= @name %>-access.log combined
+        ErrorLog /var/log/apache2/<%= @name %>-error.log
+
+        RedirectPermanent / https://<%= @name %>/
+</VirtualHost>
+
+<VirtualHost *:443>
+        ServerName <%= @name %>
+        ServerAdmin webmaster@openstreetmap.org
+
+        CustomLog /var/log/apache2/<%= @name %>-access.log combined
+        ErrorLog /var/log/apache2/<%= @name %>-error.log
+
+        DocumentRoot <%= @directory %>/htdocs
+	Alias /robots.txt <%= @directory %>/htdocs/site/robots.txt
+        WSGIScriptAlias / <%= @directory %>/cgi-bin/trac.wsgi
+
+        WSGIProcessGroup <%= @name %>
+
+	DefineExternalAuth osm pipe /usr/local/bin/trac-authenticate
+
+	<Location /login>
+		AuthType Basic
+		AuthName "OpenStreetMap Trac"
+		AuthBasicProvider external
+		AuthExternal osm
+		Require valid-user
+	</Location>
+
+        SSLEngine on
+</VirtualHost>

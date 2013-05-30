@@ -1,0 +1,36 @@
+#!/usr/bin/env ruby
+
+def output_config
+  puts <<-END
+graph_category passenger
+graph_title Passenger processes
+graph_order active inactive
+graph_vlabel processes
+graph_total total
+
+active.label busy servers
+active.draw AREA
+inactive.label idle servers
+inactive.draw STACK
+END
+  exit 0
+end
+
+def output_values
+  status = `/usr/sbin/passenger-status`
+  unless $?.success?
+    $stderr.puts "failed executing passenger-status"
+    exit 1
+  end
+  status =~ /active\s+=\s+(\d+)/
+  puts "active.value #{$1}"
+
+  status =~ /inactive\s+=\s+(\d+)/
+  puts "inactive.value #{$1}"
+end
+
+if ARGV[0] == "config"
+  output_config
+else
+  output_values
+end

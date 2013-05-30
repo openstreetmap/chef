@@ -1,0 +1,39 @@
+; DO NOT EDIT - This file is being maintained by Chef
+
+$TTL	604800
+@	IN	SOA	<%= node[:fdqn] %>. root.openstreetmap.org. (
+		     2012100902		; Serial
+			 604800		; Refresh
+			  86400		; Retry
+			2419200		; Expire
+			 604800 )	; Negative Cache TTL
+
+@	IN	NS	<%= node[:fdqn] %>.
+
+3.0.0	IN	PTR	ridley.ucl.openstreetmap.org.
+5.0.0	IN	PTR	norbert.ucl.openstreetmap.org.
+6.0.0	IN	PTR	urmel.ucl.openstreetmap.org.
+7.0.0	IN	PTR	faffy.ucl.openstreetmap.org.
+8.0.0	IN	PTR	zark.ucl.openstreetmap.org.
+9.0.0	IN	PTR	eustace.ucl.openstreetmap.org.
+11.0.0	IN	PTR	draco.ucl.openstreetmap.org.
+12.0.0	IN	PTR	sarel.ucl.openstreetmap.org.
+14.0.0	IN	PTR	errol.ucl.openstreetmap.org.
+15.0.0	IN	PTR	yevaud.ucl.openstreetmap.org.
+
+49.0.0	IN	PTR	apc1.ucl.openstreetmap.org.
+50.0.0  IN      PTR     apc2.ucl.openstreetmap.org.
+51.0.0	IN	PTR	apc3.ucl.openstreetmap.org.
+
+5.1.0	IN	PTR	norbert.oob.openstreetmap.org.
+6.1.0	IN	PTR	urmel.oob.openstreetmap.org.
+7.1.0	IN	PTR	faffy.oob.openstreetmap.org.
+8.1.0	IN	PTR	soup.oob.openstreetmap.org.
+9.1.0	IN	PTR	eustace.oob.openstreetmap.org.
+11.1.0	IN	PTR	draco.oob.openstreetmap.org.
+12.1.0	IN	PTR	sarel.oob.openstreetmap.org.
+14.1.0	IN	PTR	errol.oob.openstreetmap.org.
+15.1.0	IN	PTR	yevaud.oob.openstreetmap.org.
+
+251.0.0	IN	PTR	shenron.internal.openstreetmap.org.
+252.0.0	IN	PTR	konqi.internal.openstreetmap.org.

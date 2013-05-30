@@ -1,0 +1,33 @@
+#!/usr/bin/env ruby
+
+def output_config
+  puts <<-END
+graph_args --base 1000
+graph_category passenger
+graph_title Passenger requests
+graph_vlabel requests / ${graph_period}
+
+requests.label requests
+requests.type DERIVE
+requests.max 1000000
+requests.min 0
+END
+  exit 0
+end
+
+def output_values
+  status = `/usr/sbin/passenger-status`
+  unless $?.success?
+    $stderr.puts "failed executing passenger-status"
+    exit 1
+  end
+  total_requests = 0
+  status.scan(/Processed: (\d+)/).flatten.each { |count| total_requests += count.to_i }
+  puts "requests.value #{total_requests}"
+end
+
+if ARGV[0] == "config"
+  output_config
+else
+  output_values
+end

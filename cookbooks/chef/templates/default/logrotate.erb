@@ -1,0 +1,10 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+/var/log/chef/client.log {
+  rotate 12
+  weekly
+  compress
+  postrotate
+	restart chef-client > /dev/null
+  endscript
+}
