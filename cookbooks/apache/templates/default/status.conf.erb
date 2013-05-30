@@ -1,0 +1,26 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+<IfModule mod_status.c>
+
+ExtendedStatus On
+
+<Location /server-status>
+    SetHandler server-status
+    Order deny,allow
+    Deny from all
+<% node.ipaddresses do |address| -%>
+    Allow from <%= address %>
+<% end -%>
+    Allow from 127.0.1.1
+    Allow from 127.0.0.1
+    Allow from ::1
+<% @hosts.each do |host| -%>
+    Allow from <%= host %>
+<% end -%>
+</Location>
+
+<IfModule mod_proxy.c>
+    ProxyStatus On
+</IfModule>
+
+</IfModule>

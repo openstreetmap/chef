@@ -1,0 +1,20 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+<IfModule mod_info.c>
+
+<Location /server-info>
+    SetHandler server-info
+    Order deny,allow
+    Deny from all
+<% node.ipaddresses do |address| -%>
+    Allow from <%= address %>
+<% end -%>
+    Allow from 127.0.1.1
+    Allow from 127.0.0.1
+    Allow from ::1
+<% @hosts.each do |host| -%>
+    Allow from <%= host %>
+<% end -%>
+</Location>
+
+</IfModule>

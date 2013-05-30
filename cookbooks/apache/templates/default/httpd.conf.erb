@@ -1,0 +1,50 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+# Set the number of seconds before receives and sends time out
+Timeout <%= node[:apache][:timeout] %>
+
+# Decide whether or not to allow persistent connections
+Keepalive <%= node[:apache][:keepalive] ? "On" : "Off" %>
+<% if node[:apache][:mpm] == "prefork" -%>
+
+# Configure prefork MPM
+StartServers <%= node[:apache][:prefork][:start_servers] %>
+<% if node[:apache][:prefork][:server_limit] -%>
+ServerLimit <%= node[:apache][:prefork][:server_limit] %>
+<% end -%>
+MinSpareServers <%= node[:apache][:prefork][:min_spare_servers] %>
+MaxSpareServers <%= node[:apache][:prefork][:max_spare_servers] %>
+MaxClients <%= node[:apache][:prefork][:max_clients] %>
+MaxRequestsPerChild <%= node[:apache][:prefork][:max_requests_per_child] %>
+<% end -%>
+<% if node[:apache][:mpm] == "worker" -%>
+
+# Configure worker MPM
+StartServers <%= node[:apache][:worker][:start_servers] %>
+<% if node[:apache][:worker][:server_limit] -%>
+ServerLimit <%= node[:apache][:worker][:server_limit] %>
+<% end -%>
+MinSpareThreads <%= node[:apache][:worker][:min_spare_threads] %>
+MaxSpareThreads <%= node[:apache][:worker][:max_spare_threads] %>
+ThreadLimit <%= node[:apache][:worker][:thread_limit] %>
+ThreadsPerChild <%= node[:apache][:worker][:threads_per_child] %>
+MaxClients <%= node[:apache][:worker][:max_clients] %>
+MaxRequestsPerChild <%= node[:apache][:worker][:max_requests_per_child] %>
+<% end -%>
+<% if node[:apache][:mpm] == "event" -%>
+
+# Configure event MPM
+StartServers <%= node[:apache][:event][:start_servers] %>
+<% if node[:apache][:event][:server_limit] -%>
+ServerLimit <%= node[:apache][:event][:server_limit] %>
+<% end -%>
+MinSpareThreads <%= node[:apache][:event][:min_spare_threads] %>
+MaxSpareThreads <%= node[:apache][:event][:max_spare_threads] %>
+ThreadLimit <%= node[:apache][:event][:thread_limit] %>
+ThreadsPerChild <%= node[:apache][:event][:threads_per_child] %>
+MaxClients <%= node[:apache][:event][:max_clients] %>
+MaxRequestsPerChild <%= node[:apache][:event][:max_requests_per_child] %>
+<% end -%>
+
+# Default to UTF-8
+AddDefaultCharset utf-8
