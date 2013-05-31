@@ -231,7 +231,41 @@ munin_plugin "processes"
 munin_plugin "proc_pri"
 # renderd_
 # replication_delay
-# sensors_
+
+Dir.glob("/sys/class/hwmon/hwmon*").each do |hwmon|
+  hwmon = "#{hwmon}/device" unless File.exists?("#{hwmon}/name")
+
+  if Dir.glob("#{hwmon}/fan*_input").empty?
+    munin_plugin "sensors_fan" do
+      action :delete
+    end
+  else
+    munin_plugin "sensors_fan" do
+      target "sensors_"
+    end
+  end
+
+  if Dir.glob("#{hwmon}/temp*_input").empty?
+    munin_plugin "sensors_temp" do
+      action :delete
+    end
+  else
+    munin_plugin "sensors_temp" do
+      target "sensors_"
+    end
+  end
+
+  if Dir.glob("#{hwmon}/in*_input").empty?
+    munin_plugin "sensors_volt" do
+      action :delete
+    end
+  else
+    munin_plugin "sensors_volt" do
+      target "sensors_"
+    end
+  end
+end
+
 # smart_
 # squid_
 munin_plugin "swap"
