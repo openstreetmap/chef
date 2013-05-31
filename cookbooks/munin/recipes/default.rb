@@ -85,7 +85,6 @@ else
 end
 
 # apcpdu_
-# api_
 munin_plugin "cpu"
 
 if File.exists?("/sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state")
@@ -188,8 +187,6 @@ end
 
 munin_plugin "load"
 munin_plugin "memory"
-# mod_tile_
-# mysql_
 munin_plugin "netstat"
 
 if File.exists?("/proc/net/rpc/nfs")
@@ -213,10 +210,8 @@ else
   end
 end
 
-# nominatim_
 munin_plugin "open_files"
 munin_plugin "open_inodes"
-# passenger_
 
 munin_plugin "postfix_mailqueue" do
   action :delete
@@ -226,11 +221,8 @@ munin_plugin "postfix_mailvolume" do
   action :delete
 end
 
-# postgres_
 munin_plugin "processes"
 munin_plugin "proc_pri"
-# renderd_
-# replication_delay
 
 Dir.glob("/sys/class/hwmon/hwmon*").each do |hwmon|
   hwmon = "#{hwmon}/device" unless File.exists?("#{hwmon}/name")
@@ -267,7 +259,6 @@ Dir.glob("/sys/class/hwmon/hwmon*").each do |hwmon|
 end
 
 # smart_
-# squid_
 munin_plugin "swap"
 munin_plugin "threads"
 munin_plugin "uptime"
