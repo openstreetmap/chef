@@ -243,6 +243,8 @@ munin_plugin "processes"
 munin_plugin "proc_pri"
 
 Dir.glob("/sys/class/hwmon/hwmon*").each do |hwmon|
+  package "lm-sensors"
+
   hwmon = "#{hwmon}/device" unless File.exists?("#{hwmon}/name")
 
   if Dir.glob("#{hwmon}/fan*_input").empty?
