@@ -57,6 +57,12 @@ template "/etc/init/chef-client.conf" do
   mode 0644
 end
 
+directory "/etc/chef" do
+  owner "root"
+  group "root"
+  mode 0755
+end
+
 template "/etc/chef/client.rb" do
   source "client.rb.erb"
   owner "root"
