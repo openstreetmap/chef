@@ -1,0 +1,165 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+default-lease-time 600;
+max-lease-time 7200;
+<% node.interfaces(:role => :internal).each do |interface| -%>
+
+subnet <%= interface[:network] %> netmask <%= interface[:netmask] %> {
+  range dynamic-bootp <%= node[:dhcpd][:first_address] %> <%= node[:dhcpd][:last_address] %>;
+#  option broadcast-address <%= interface[:broadcast] %>;
+  option routers <%= interface[:gateway] %>;
+  option domain-name "<%= @domain %>";
+  option domain-name-servers <%= interface[:gateway] %>;
+  option ntp-servers <%= node[:ntp][:servers].join(", ") %>;
+}
+<% end -%>
+
+host apc1.<%= @domain %> {
+  hardware ethernet 00:c0:b7:77:f3:d8;
+  server-name "apc1.<%= @domain %>";
+  fixed-address apc1.<%= @domain %>;
+}
+
+host apc2.<%= @domain %> {
+  hardware ethernet 00:c0:b7:52:b7:d2;
+  server-name "apc2.<%= @domain %>";
+  fixed-address apc2.<%= @domain %>;
+}
+
+host apc3.<%= @domain %> {
+  hardware ethernet 00:c0:b7:52:b9:1e;
+  server-name "apc3.<%= @domain %>";
+  fixed-address apc3.<%= @domain %>;
+}
+
+host bowser.oob.openstreetmap.org {
+  hardware ethernet 00:16:35:c5:dd:9e;
+  server-name "bowser.oob.openstreetmap.org";
+  fixed-address bowser.oob.openstreetmap.org;
+}
+
+host draco.oob.openstreetmap.org {
+  hardware ethernet 00:1c:c4:7a:da:dc;
+  server-name "draco.oob.openstreetmap.org";
+  fixed-address draco.oob.openstreetmap.org;
+}
+
+host errol.oob.openstreetmap.org {
+  hardware ethernet 00:e0:81:c0:8d:01;
+  server-name "errol.oob.openstreetmap.org";
+  fixed-address errol.oob.openstreetmap.org;
+}
+
+host eustace.oob.openstreetmap.org {
+  hardware ethernet 00:17:a4:3c:fb:9c;
+  server-name "eustace.oob.openstreetmap.org";
+  fixed-address eustace.oob.openstreetmap.org;
+}
+
+host faffy.oob.openstreetmap.org {
+  hardware ethernet 00:17:a4:37:cc:d0;
+  server-name "faffy.oob.openstreetmap.org";
+  fixed-address faffy.oob.openstreetmap.org;
+}
+
+host fiddlestick.oob.openstreetmap.org {
+  hardware ethernet 00:17:a4:0f:22:c6;
+  server-name "fiddlestick.oob.openstreetmap.org";
+  fixed-address fiddlestick.oob.openstreetmap.org;
+}
+
+host horntail.oob.openstreetmap.org {
+  hardware ethernet 00:e0:81:46:95:6e;
+  server-name "horntail.oob.openstreetmap.org";
+  fixed-address horntail.oob.openstreetmap.org;
+}
+
+host idris.oob.openstreetmap.org {
+  hardware ethernet 00:1f:29:68:bd:b6;
+  server-name "idris.oob.openstreetmap.org";
+  fixed-address idris.oob.openstreetmap.org;
+}
+
+host norbert.oob.openstreetmap.org {
+  hardware ethernet 00:1c:c4:7c:14:f6;
+  server-name "norbert.oob.openstreetmap.org";
+  fixed-address norbert.oob.openstreetmap.org;
+}
+
+host poldi.oob.openstreetmap.org {
+  hardware ethernet 00:e0:81:c5:2b:b7;
+  server-name "poldi.oob.openstreetmap.org";
+  fixed-address poldi.oob.openstreetmap.org;
+}
+
+host ridley.oob.openstreetmap.org {
+  hardware ethernet 00:17:a4:39:99:54;
+  server-name "ridley.oob.openstreetmap.org";
+  fixed-address ridley.oob.openstreetmap.org;
+}
+
+host sarel.oob.openstreetmap.org {
+  hardware ethernet 00:1c:c4:7c:d2:be;
+  server-name "sarel.oob.openstreetmap.org";
+  fixed-address sarel.oob.openstreetmap.org;
+}
+
+host smaug.oob.openstreetmap.org {
+  hardware ethernet 00:30:48:9d:57:ff;
+  server-name "smaug.oob.openstreetmap.org";
+  fixed-address smaug.oob.openstreetmap.org;
+}
+
+host soup.oob.openstreetmap.org {
+  hardware ethernet 00:17:a4:37:ec:88;
+  server-name "soup.oob.openstreetmap.org";
+  fixed-address soup.oob.openstreetmap.org;
+}
+
+host spike-01.oob.openstreetmap.org {
+  hardware ethernet 00:1a:4b:a5:bd:2a;
+  server-name "spike-01.oob.openstreetmap.org";
+  fixed-address spike-01.oob.openstreetmap.org;
+}
+
+host spike-02.oob.openstreetmap.org {
+  hardware ethernet 00:1b:78:04:37:de;
+  server-name "spike-02.oob.openstreetmap.org";
+  fixed-address spike-02.oob.openstreetmap.org;
+}
+
+host spike-03.oob.openstreetmap.org {
+  hardware ethernet 00:19:bb:39:3c:64;
+  server-name "spike-03.oob.openstreetmap.org";
+  fixed-address spike-03.oob.openstreetmap.org;
+}
+
+host thorn-01.oob.openstreetmap.org {
+  hardware ethernet 00:19:bb:35:87:94;
+  server-name "thorn-01.oob.openstreetmap.org";
+  fixed-address thorn-01.oob.openstreetmap.org;
+}
+
+host thorn-02.oob.openstreetmap.org {
+  hardware ethernet 00:19:bb:39:9b:a6;
+  server-name "thorn-02.oob.openstreetmap.org";
+  fixed-address thorn-02.oob.openstreetmap.org;
+}
+
+host thorn-03.oob.openstreetmap.org {
+  hardware ethernet 00:19:bb:37:f3:ce;
+  server-name "thorn-03.oob.openstreetmap.org";
+  fixed-address thorn-03.oob.openstreetmap.org;
+}
+
+host urmel.oob.openstreetmap.org {
+  hardware ethernet 00:19:bb:39:1b:e6;
+  server-name "urmel.oob.openstreetmap.org";
+  fixed-address urmel.oob.openstreetmap.org;
+}
+
+host yevaud.oob.openstreetmap.org {
+  hardware ethernet 00:e0:81:c0:8d:02;
+  server-name "yevaud.oob.openstreetmap.org";
+  fixed-address yevaud.oob.openstreetmap.org;
+}

@@ -1,0 +1,28 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+<VirtualHost *:80>
+	ServerName piwik.openstreetmap.org
+	ServerAlias piwik.osm.org
+	ServerAdmin webmaster@openstreetmap.org
+
+	CustomLog /var/log/apache2/piwik.openstreetmap.org-access.log combined
+	ErrorLog /var/log/apache2/piwik.openstreetmap.org-error.log
+
+	DocumentRoot /srv/piwik.openstreetmap.org
+</VirtualHost>
+
+<VirtualHost *:443>
+	ServerName piwik.openstreetmap.org
+	ServerAdmin webmaster@openstreetmap.org
+
+	SSLEngine on
+	SSLProtocol all -SSLv2
+	SSLCipherSuite ALL:!ADH:!EXPORT:!SSLv2:RC4+RSA:+HIGH:+MEDIUM:+LOW
+	SSLCertificateFile /etc/ssl/certs/openstreetmap.pem
+	SSLCertificateKeyFile /etc/ssl/private/openstreetmap.key
+
+	CustomLog /var/log/apache2/piwik.openstreetmap.org-access.log combined
+	ErrorLog /var/log/apache2/piwik.openstreetmap.org-error.log
+
+	DocumentRoot /srv/piwik.openstreetmap.org
+</VirtualHost>

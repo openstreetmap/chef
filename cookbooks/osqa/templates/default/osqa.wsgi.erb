@@ -1,0 +1,11 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+import os
+import sys
+import django.core.handlers.wsgi
+
+sys.path.append('<%= @directory %>')
+sys.path.append('<%= @directory %>/osqa')
+os.environ['DJANGO_SETTINGS_MODULE'] = 'osqa.settings'
+
+application = django.core.handlers.wsgi.WSGIHandler()

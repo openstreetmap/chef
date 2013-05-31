@@ -1,0 +1,18 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+<VirtualHost *:80>
+	ServerName <%= @name %>
+
+	CustomLog /var/log/apache2/<%= @name %>-access.log combined
+	ErrorLog /var/log/apache2/<%= @name %>-error.log
+
+	DocumentRoot <%= @directory %>
+	HeaderName HEADER
+	Alias /gitweb /usr/share/gitweb
+	Alias /git /var/cache/git
+	ScriptAlias /gitweb.cgi /usr/lib/cgi-bin/gitweb.cgi
+
+	RewriteEngine On
+	RewriteRule ^/$ /gitweb.cgi%{REQUEST_URI} [L,PT]
+	RewriteRule ^/(.*\.git/(?!/?(HEAD|info|objects|refs)).*)?$ /gitweb.cgi%{REQUEST_URI} [L,PT]
+</VirtualHost>

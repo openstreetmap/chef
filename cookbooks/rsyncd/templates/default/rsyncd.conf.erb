@@ -1,0 +1,43 @@
+# DO NOT EDIT - This file is being maintained by Chef
+<% node[:rsyncd][:modules].each do |name,details| -%>
+
+[<%= name %>]
+     comment = <%= details[:comment] %>
+     path = <%= details[:path] %>
+     use chroot = yes
+     read only = <%= details[:read_only] %>
+     write only = <%= details[:write_only] %>
+     list = <%= details[:list] %>
+     uid = <%= details[:uid] %>
+     gid = <%= details[:gid] %>
+     transfer logging = <%= details[:transfer_logging] %>
+<% if details[:include] -%>
+     include = <%= details[:include].join(" ") %>
+<% end -%>
+<% if details[:exclude] -%>
+     exclude = <%= details[:exclude].join(" ") %>
+<% end -%>
+<% if details[:max_connections] -%>
+     max connections = <%= details[:max_connections] %>
+     lock file = /var/run/rsyncd.<%= name %>.lock
+<% end -%>
+<% if details[:ignore_errors] -%>
+     ignore errors = true
+<% end -%>
+<% if details[:ignore_nonreadable] -%>
+     ignore nonreadable = true
+<% end -%>
+<% if details[:timeout] -%>
+     timeout = <%= details[:timeout] %>
+<% end -%>
+<% if details[:refuse_options] -%>
+     refuse options = <%= details[:refuse_options].join(" ") %>
+<% end -%>
+<% if details[:hosts_allow] -%>
+     hosts allow = <%= details[:hosts_allow].join(",") %>
+<% end -%>
+<% if details[:hosts_deny] -%>
+     hosts deny = <%= details[:hosts_deny].join(",") %>
+<% end -%>
+     dont compress = *.gz *.tgz *.zip *.z *.rpm *.deb *.iso *.bz2 *.tbz *.7z
+<% end -%>

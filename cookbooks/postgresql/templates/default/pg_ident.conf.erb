@@ -1,0 +1,8 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+# MAPNAME	SYSTEM-USERNAME         PG-USERNAME
+<% @maps.keys.each do |name| -%>
+<% @maps[name].each do |user| -%>
+<%= name %>	<%= user[:system] %>	<%= user[:postgres] %>
+<% end -%>
+<% end -%>

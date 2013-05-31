@@ -1,0 +1,72 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+<VirtualHost *:80>
+        ServerName <%= @name %>
+        ServerAdmin webmaster@openstreetmap.org
+
+        CustomLog /var/log/apache2/<%= @name %>-access.log combined
+        ErrorLog /var/log/apache2/<%= @name %>-error.log
+
+        RedirectPermanent / https://otrs.openstreetmap.org/
+</VirtualHost>
+
+<VirtualHost *:443>
+        ServerName <%= @name %>
+        ServerAdmin webmaster@openstreetmap.org
+
+        CustomLog /var/log/apache2/<%= @name %>-access.log combined
+        ErrorLog /var/log/apache2/<%= @name %>-error.log
+
+        SSLEngine on
+
+        ScriptAlias /otrs/ /opt/otrs/bin/cgi-bin/
+        Alias /otrs-web/ /opt/otrs/var/httpd/htdocs/
+        RedirectMatch ^/$ /otrs/index.pl
+
+        PerlRequire /opt/otrs/scripts/apache2-perl-startup.pl
+
+        PerlModule Apache2::Reload
+        PerlInitHandler Apache2::Reload
+        PerlModule Apache2::RequestRec
+
+        <Location /otrs>
+                ErrorDocument 403 /otrs/index.pl
+                ErrorDocument 404 /otrs/index.pl
+                SetHandler  perl-script
+                PerlResponseHandler ModPerl::Registry
+                Options +ExecCGI
+                PerlOptions +ParseHeaders
+                PerlOptions +SetupEnv
+                Order allow,deny
+                Allow from all
+        </Location>
+
+        <Location /otrs/nph-genericinterface.pl>
+                PerlOptions -ParseHeaders
+        </Location>
+</VirtualHost>
+
+<Directory /opt/otrs/bin/cgi-bin>
+        AllowOverride None
+        Options +ExecCGI -Includes
+        Order allow,deny
+        Allow from all
+</Directory>
+
+<Directory /opt/otrs/var/httpd/htdocs>
+        AllowOverride None
+        Order allow,deny
+        Allow from all
+</Directory>
+
+<Directory /opt/otrs/var/httpd/htdocs/skins/*/*/css-cache>
+        <FilesMatch "\.(css|CSS)$">
+                Header set Cache-Control "max-age=2592000 must-revalidate"
+        </FilesMatch>
+</Directory>
+
+<Directory /opt/otrs/var/httpd/htdocs/js/js-cache>
+        <FilesMatch "\.(js|JS)$">
+                Header set Cache-Control "max-age=2592000 must-revalidate"
+        </FilesMatch>
+</Directory>

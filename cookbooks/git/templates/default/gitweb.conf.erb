@@ -1,0 +1,34 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+# path to git projects (<project>.git)
+$projectroot = "<%= node[:git][:directory] %>";
+
+# directory to use for temp files
+$git_temp = "/tmp";
+
+# target of the home link on top of all pages
+#$home_link = $my_uri || "/";
+
+# html text to include at home page
+$home_text = "indextext.html";
+
+# file with project list; by default, simply scan the projectroot dir.
+$projects_list = $projectroot;
+
+# stylesheet to use
+$stylesheet = "/gitweb/static/gitweb.css";
+
+# logo to use
+$logo = "/gitweb/static/git-logo.png";
+
+# the 'favicon'
+$favicon = "/gitweb/static/git-favicon.png";
+
+# URI of gitweb.js (JavaScript code for gitweb)
+our $javascript = "/gitweb/static/gitweb.js";
+
+# use pretty urls
+$feature{'pathinfo'}{'default'} = [1];
+
+# define roots for cloning
+@git_base_url_list = qw(git://<%= node[:git][:host] %>);

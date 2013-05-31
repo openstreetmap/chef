@@ -1,0 +1,49 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+<VirtualHost *:80>
+	ServerName <%= @name %>
+	ServerAdmin postmaster@openstreetmap.org
+	ServerSignature On
+
+	CustomLog /var/log/apache2/<%= @name %>-access.log combined
+	ErrorLog /var/log/apache2/<%= @name %>-error.log
+	LogLevel warn
+
+        AddDefaultCharset off
+
+	DocumentRoot <%= @directory %>
+
+	RewriteEngine on
+
+	RewriteCond %{HTTP_REFERER} www\.mailbait\.info
+	RewriteRule . - [F,L]
+
+	RedirectMatch ^/$ /listinfo
+	RedirectMatch ^/cgi-bin/mailman/(.*)$ /$1
+
+	<Directory /var/lib/mailman/archives/>
+		Options Indexes FollowSymLinks
+		AllowOverride None
+	</Directory>
+
+	Alias /pipermail/ /var/lib/mailman/archives/public/
+	Alias /images/ /usr/share/images/mailman/
+
+	ScriptAlias /admin /usr/lib/cgi-bin/mailman/admin
+	ScriptAlias /admindb /usr/lib/cgi-bin/mailman/admindb
+	ScriptAlias /confirm /usr/lib/cgi-bin/mailman/confirm
+	ScriptAlias /create /usr/lib/cgi-bin/mailman/create
+	ScriptAlias /edithtml /usr/lib/cgi-bin/mailman/edithtml
+	ScriptAlias /listinfo /usr/lib/cgi-bin/mailman/listinfo
+	ScriptAlias /options /usr/lib/cgi-bin/mailman/options
+	ScriptAlias /private /usr/lib/cgi-bin/mailman/private
+	ScriptAlias /rmlist /usr/lib/cgi-bin/mailman/rmlist
+	ScriptAlias /roster /usr/lib/cgi-bin/mailman/roster
+	ScriptAlias /subscribe /usr/lib/cgi-bin/mailman/subscribe
+	ScriptAlias /mailman/ /usr/lib/cgi-bin/mailman/
+
+	<Location ~ "/pipermail/([^/]+)/(2004|2005|2006|2007|2008|2009)">
+		ExpiresActive On
+		ExpiresDefault "access plus 180 days"
+	</Location>
+</VirtualHost>

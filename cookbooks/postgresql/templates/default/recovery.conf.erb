@@ -1,0 +1,9 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+standby_mode = <%= @settings[:standby_mode] || @defaults[:standby_mode] %>
+<% if @settings[:primary_conninfo] || @defaults[:primary_conninfo] -%>
+primary_conninfo = '<%= @settings[:primary_conninfo] || @defaults[:primary_conninfo] %>'
+<% end -%>
+<% if @settings[:restore_command] || @defaults[:restore_command] -%>
+restore_command = '<%= @settings[:restore_command] || @defaults[:restore_command] %>'
+<% end -%>

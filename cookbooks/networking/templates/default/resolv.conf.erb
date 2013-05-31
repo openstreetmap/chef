@@ -1,0 +1,7 @@
+# DO NOT EDIT - This file is being maintained by Chef
+<% unless node[:networking][:search].empty? -%>
+search <%= node[:networking][:search].join(" ") %>
+<% end -%>
+<% node[:networking][:nameservers].each do |nameserver| -%>
+nameserver <%= nameserver %>
+<% end -%>

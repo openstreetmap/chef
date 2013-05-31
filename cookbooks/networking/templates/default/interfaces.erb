@@ -1,0 +1,35 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+iface lo inet loopback
+<% node[:networking][:interfaces].each do |name,interface| -%>
+
+iface <%= interface[:interface] %> <%= interface[:family] %> static
+      address   <%= interface[:address] %>
+<% if interface[:family] == "inet" -%>
+      netmask   <%= interface[:netmask] %>
+<% elsif interface[:family] == "inet6" -%>
+      netmask   <%= interface[:prefix] %>
+<% end -%>
+<% if interface[:hwaddress] -%>
+      hwaddress <%= interface[:hwaddress] %>
+<% end -%>
+<% if interface[:gateway] -%>
+<% if interface[:network].include?(interface[:gateway]) or IPAddr.new("fe80::/64").include?(interface[:gateway]) -%>
+      gateway   <%= interface[:gateway] %>
+      metric    <%= interface[:metric] %>
+<% else -%>
+      post-up   /sbin/ip -f <%= interface[:family] %> route add <%= interface[:gateway] %> dev <%= interface[:interface] %>
+      post-up   /sbin/ip -f <%= interface[:family] %> route add default metric <%= interface[:metric] %> via <%= interface[:gateway] %>
+      pre-down  /sbin/ip -f <%= interface[:family] %> route del default metric <%= interface[:metric] %> via <%= interface[:gateway] %>
+      pre-down  /sbin/ip -f <%= interface[:family] %> route del <%= interface[:gateway] %> dev <%= interface[:interface] %>
+<% end -%>
+<% end -%>
+<% if interface[:mtu] -%>
+      mtu       <%= interface[:mtu] %>
+<% end -%>
+<% if interface[:family] == "inet6" -%>
+      autoconf  0
+<% end -%>
+<% end -%>
+
+auto lo <%= node[:networking][:interfaces].collect { |n,i| i[:interface] }.sort.uniq.join(" ") %>

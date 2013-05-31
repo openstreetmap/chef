@@ -1,0 +1,119 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+#------------------------------------------------------------------------------
+# FILE LOCATIONS
+#------------------------------------------------------------------------------
+
+data_directory = '/var/lib/postgresql/<%= @version %>/main'
+hba_file = '/etc/postgresql/<%= @version %>/main/pg_hba.conf'
+ident_file = '/etc/postgresql/<%= @version %>/main/pg_ident.conf'
+external_pid_file = '/var/run/postgresql/<%= @version %>-main.pid'
+
+#------------------------------------------------------------------------------
+# CONNECTIONS AND AUTHENTICATION
+#------------------------------------------------------------------------------
+
+# - Connection Settings -
+
+<% if @settings[:listen_addresses] || @defaults[:listen_addresses] -%>
+listen_addresses = '<%= @settings[:listen_addresses] || @defaults[:listen_addresses] %>'
+<% end -%>
+port = <%= @settings[:port] || @defaults[:port] %>
+max_connections = <%= @settings[:max_connections] || @defaults[:max_connections] %>
+unix_socket_directory = '/var/run/postgresql'
+
+# - Security and Authentication -
+
+ssl = true
+ssl_renegotiation_limit = 0
+
+#------------------------------------------------------------------------------
+# RESOURCE USAGE (except WAL)
+#------------------------------------------------------------------------------
+
+# - Memory -
+
+shared_buffers = <%= @settings[:shared_buffers] || @defaults[:shared_buffers] %>
+temp_buffers = <%= @settings[:temp_buffers] || @defaults[:temp_buffers] %>
+work_mem = <%= @settings[:work_mem] || @defaults[:work_mem] %>
+maintenance_work_mem = <%= @settings[:maintenance_work_mem] || @defaults[:maintenance_work_mem] %>
+max_stack_depth = <%= @settings[:max_stack_depth] || @defaults[:max_stack_depth] %>
+
+#------------------------------------------------------------------------------
+# WRITE AHEAD LOG
+#------------------------------------------------------------------------------
+
+# - Settings -
+
+wal_level = <%= @settings[:wal_level] || @defaults[:wal_level] %>
+fsync = <%= @settings[:fsync] || @defaults[:fsync] %>
+synchronous_commit = <%= @settings[:synchronous_commit] || @defaults[:synchronous_commit] %>
+wal_buffers = <%= @settings[:wal_buffers] || @defaults[:wal_buffers] %>
+wal_writer_delay = <%= @settings[:wal_writer_delay] || @defaults[:wal_writer_delay] %>
+commit_delay = <%= @settings[:commit_delay] || @defaults[:commit_delay] %>
+
+# - Checkpoints -
+
+checkpoint_segments = <%= @settings[:checkpoint_segments] || @defaults[:checkpoint_segments] %>
+checkpoint_timeout = <%= @settings[:checkpoint_timeout] || @defaults[:checkpoint_timeout] %>
+checkpoint_completion_target = <%= @settings[:checkpoint_completion_target] || @defaults[:checkpoint_completion_target] %>
+
+# - Archiving -
+
+archive_mode = <%= @settings[:archive_mode] || @defaults[:archive_mode] %>
+<% if @settings[:archive_command] || @defaults[:archive_command] -%>
+archive_command = '<%= @settings[:archive_command] || @defaults[:archive_command] %>'
+<% end -%>
+
+#------------------------------------------------------------------------------
+# REPLICATION
+#------------------------------------------------------------------------------
+
+# - Sending Server(s) -
+
+max_wal_senders = <%= @settings[:max_wal_senders] || @defaults[:max_wal_senders] %>
+
+# - Standby Servers -
+
+hot_standby = <%= @settings[:hot_standby] || @defaults[:hot_standby] %>
+hot_standby_feedback = <%= @settings[:hot_standby_feedback] || @defaults[:hot_standby_feedback] %>
+
+#------------------------------------------------------------------------------
+# QUERY TUNING
+#------------------------------------------------------------------------------
+
+# - Planner Cost Constants -
+
+random_page_cost = <%= @settings[:random_page_cost] || @defaults[:random_page_cost] %>
+effective_cache_size = <%= @settings[:effective_cache_size] || @defaults[:effective_cache_size] %>
+
+#------------------------------------------------------------------------------
+# ERROR REPORTING AND LOGGING
+#------------------------------------------------------------------------------
+
+# - When to Log -
+
+log_min_duration_statement = <%= @settings[:log_min_duration_statement] || @defaults[:log_min_duration_statement] %>
+
+# - What to Log -
+
+log_line_prefix = '%t '
+
+#------------------------------------------------------------------------------
+# AUTOVACUUM PARAMETERS
+#------------------------------------------------------------------------------
+
+autovacuum_max_workers = <%= @settings[:autovacuum_max_workers] || @defaults[:autovacuum_max_workers] %>
+
+#------------------------------------------------------------------------------
+# CLIENT CONNECTION DEFAULTS
+#------------------------------------------------------------------------------
+
+# - Locale and Formatting -
+
+datestyle = 'iso, dmy'
+lc_messages = 'en_GB.UTF-8'
+lc_monetary = 'en_GB.UTF-8'
+lc_numeric = 'en_GB.UTF-8'
+lc_time = 'en_GB.UTF-8'
+default_text_search_config = 'pg_catalog.english'

@@ -1,0 +1,31 @@
+{% load i18n %}
+
+<fieldset id='openstreetmap_login_fs'>
+  <p><span class='big strong'>{% trans 'Enter your OpenStreetMap username and password' %}</span><br/><span class='grey'>({% trans 'or select your external provider below' %})</span></p>
+  <table>
+    <tr>
+        <td>
+             <label for="id_osm_username">{% trans 'Username' %}</label>
+        </td>
+        <td>
+             <input id="id_osm_username" type="text" class="required login" name="username" maxlength="255" />
+        </td>
+    </tr>
+    <tr>
+        <td>
+              <label for="id_osm_password">{% trans 'Password' %}</label>
+        </td>
+        <td>
+             <input id="id_osm_password" type="password" class="required login" name="password" maxlength="255" />
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <input id="blogin" name="blogin" type="submit" value="{% trans 'Login' %}" />
+        </td>
+        <td>
+              <a href="https://www.openstreetmap.org/user/new">{% trans 'Create account' %}</a><span>&nbsp;|&nbsp;</span><a href="http://www.openstreetmap.org/user/forgot-password">{% trans 'Forgot your password?' %}</a>
+        </td>
+    </tr>
+  </table>
+</fieldset>
