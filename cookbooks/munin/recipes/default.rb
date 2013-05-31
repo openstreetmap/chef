@@ -166,7 +166,25 @@ end
 munin_plugin "interrupts"
 munin_plugin "iostat"
 munin_plugin "iostat_ios"
-# ipmi_
+
+if Dir.glob("/dev/ipmi*").empty?
+  munin_plugin "ipmi_fans" do
+    action :delete
+  end
+
+  munin_plugin "ipmi_temp" do
+    action :delete
+  end
+else
+  munin_plugin "ipmi_fans" do
+    target "ipmi_"
+  end
+
+  munin_plugin "ipmi_temp" do
+    target "ipmi_"
+  end
+end
+
 munin_plugin "irqstats"
 
 Dir.new("/sys/block").each do |device|
