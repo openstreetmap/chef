@@ -242,39 +242,47 @@ end
 munin_plugin "processes"
 munin_plugin "proc_pri"
 
+sensors_fan = false
+sensors_temp = false
+sensors_volt = false
+
 Dir.glob("/sys/class/hwmon/hwmon*").each do |hwmon|
   package "lm-sensors"
 
   hwmon = "#{hwmon}/device" unless File.exists?("#{hwmon}/name")
 
-  if Dir.glob("#{hwmon}/fan*_input").empty?
-    munin_plugin "sensors_fan" do
-      action :delete
-    end
-  else
-    munin_plugin "sensors_fan" do
-      target "sensors_"
-    end
-  end
+  sensors_fan = true unless Dir.glob("#{hwmon}/fan*_input").empty?
+  sensors_temp = true unless Dir.glob("#{hwmon}/temp*_input").empty?
+  sensors_volt = true unless Dir.glob("#{hwmon}/in*_input").empty?
+end
 
-  if Dir.glob("#{hwmon}/temp*_input").empty?
-    munin_plugin "sensors_temp" do
-      action :delete
-    end
-  else
-    munin_plugin "sensors_temp" do
-      target "sensors_"
-    end
+if sensors_fan
+  munin_plugin "sensors_fan" do
+    target "sensors_"
   end
+else
+  munin_plugin "sensors_fan" do
+    action :delete
+  end
+end
 
-  if Dir.glob("#{hwmon}/in*_input").empty?
-    munin_plugin "sensors_volt" do
-      action :delete
-    end
-  else
-    munin_plugin "sensors_volt" do
-      target "sensors_"
-    end
+if sensors_temp
+  munin_plugin "sensors_temp" do
+    target "sensors_"
+  end
+else
+  munin_plugin "sensors_temp" do
+    action :delete
+  end
+end
+
+if sensors_volt
+  munin_plugin "sensors_volt" do
+    target "sensors_"
+  end
+else
+  munin_plugin "sensors_volt" do
+    action :delete
   end
 end
 
