@@ -17,11 +17,11 @@
 # limitations under the License.
 #
 
-if File.exists?("/etc/init.d/postgresql")
-  service "postgresql" do
-    action [ :enable, :start ]
-    supports :status => true, :restart => true, :reload => true
-  end
+package "postgresql-common"
+
+service "postgresql" do
+  action [ :enable, :start ]
+  supports :status => true, :restart => true, :reload => true
 end
 
 node[:postgresql][:versions].each do |version|
@@ -29,13 +29,6 @@ node[:postgresql][:versions].each do |version|
   package "postgresql-client-#{version}"
   package "postgresql-contrib-#{version}"
   package "postgresql-server-dev-#{version}"
-
-  if File.exists?("/etc/init.d/postgresql-#{version}")
-    service "postgresql-#{version}" do
-      action [ :enable, :start ]
-      supports :status => true, :restart => true, :reload => true
-    end
-  end
 
   defaults = node[:postgresql][:settings][:defaults] || {}
   settings = node[:postgresql][:settings][version] || {}
@@ -46,11 +39,7 @@ node[:postgresql][:versions].each do |version|
     group "postgres"
     mode 0644
     variables :version => version, :defaults => defaults, :settings => settings
-    if File.exists?("/etc/init.d/postgresql-#{version}")
-      notifies :reload, resources(:service => "postgresql-#{version}")
-    else
-      notifies :reload, resources(:service => "postgresql")
-    end
+    notifies :reload, resources(:service => "postgresql")
   end
 
   template "/etc/postgresql/#{version}/main/pg_hba.conf" do
@@ -60,11 +49,7 @@ node[:postgresql][:versions].each do |version|
     mode 0640
     variables :early_rules => settings[:early_authentication_rules] || defaults[:early_authentication_rules],
               :late_rules => settings[:late_authentication_rules] || defaults[:late_authentication_rules]
-    if File.exists?("/etc/init.d/postgresql-#{version}")
-      notifies :reload, resources(:service => "postgresql-#{version}")
-    else
-      notifies :reload, resources(:service => "postgresql")
-    end
+    notifies :reload, resources(:service => "postgresql")
   end
 
   template "/etc/postgresql/#{version}/main/pg_ident.conf" do
@@ -73,11 +58,7 @@ node[:postgresql][:versions].each do |version|
     group "postgres"
     mode 0640
     variables :maps => settings[:user_name_maps] || defaults[:user_name_maps]
-    if File.exists?("/etc/init.d/postgresql-#{version}")
-      notifies :reload, resources(:service => "postgresql-#{version}")
-    else
-      notifies :reload, resources(:service => "postgresql")
-    end
+    notifies :reload, resources(:service => "postgresql")
   end
 
   link "/var/lib/postgresql/#{version}/main/server.crt" do
@@ -98,20 +79,12 @@ node[:postgresql][:versions].each do |version|
       group "postgres"
       mode 0640
       variables :defaults => defaults, :settings => settings
-      if File.exists?("/etc/init.d/postgresql-#{version}")
-        notifies :reload, resources(:service => "postgresql-#{version}")
-      else
-        notifies :reload, resources(:service => "postgresql")
-      end
+      notifies :reload, resources(:service => "postgresql")
     end
   else
     template "/var/lib/postgresql/#{version}/main/recovery.conf" do
       action :delete
-      if File.exists?("/etc/init.d/postgresql-#{version}")
-        notifies :reload, resources(:service => "postgresql-#{version}")
-      else
-        notifies :reload, resources(:service => "postgresql")
-      end
+      notifies :reload, resources(:service => "postgresql")
     end
   end
 end
