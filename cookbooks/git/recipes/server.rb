@@ -44,6 +44,13 @@ apache_site node[:git][:host] do
   directory git_directory
 end
 
+template "#{git_directory}/robots.txt" do
+  source "robots.txt.erb"
+  owner "root"
+  group "root"
+  mode 0644
+end
+
 firewall_rule "accept-git" do
   action :accept
   source "net"
