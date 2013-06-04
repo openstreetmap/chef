@@ -75,10 +75,12 @@ class Chef
     end
 
     def databases
-      @databases ||= query("SELECT d.datname, u.usename, d.encoding FROM pg_database AS d INNER JOIN pg_user AS u ON d.datdba = u.usesysid").inject({}) do |databases,database|
+      @databases ||= query("SELECT d.datname, u.usename, d.encoding, d.datcollate, d.datctype FROM pg_database AS d INNER JOIN pg_user AS u ON d.datdba = u.usesysid").inject({}) do |databases,database|
         databases[database[:datname]] = {
           :owner => database[:usename],
-          :encoding => database[:encoding]
+          :encoding => database[:encoding],
+          :collate => database[:datcollate],
+          :ctype => database[:datctype]
         }
         databases
       end

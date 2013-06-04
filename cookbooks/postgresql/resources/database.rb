@@ -23,6 +23,8 @@ attribute :database, :kind_of => String, :name_attribute => true
 attribute :cluster, :kind_of => String, :required => true
 attribute :owner, :kind_of => String, :required => true
 attribute :encoding, :kind_of => String, :default => "UTF8"
+attribute :collation, :kind_of => String, :default => "en_GB.UTF8"
+attribute :ctype, :kind_of => String, :default => "en_GB.UTF8"
 
 def initialize(*args)
   super

@@ -26,13 +26,15 @@ def load_current_resource
   if pg_database = @pg.databases[@current_resource.database]
     @current_resource.owner(pg_database[:owner])
     @current_resource.encoding(pg_database[:encoding])
+    @current_resource.encoding(pg_database[:collate])
+    @current_resource.encoding(pg_database[:ctype])
   end
   @current_resource
 end
 
 action :create do
   unless @pg.databases.include?(new_resource.database)
-    @pg.execute(:command => "CREATE DATABASE #{new_resource.database} OWNER #{new_resource.owner} ENCODING '#{new_resource.encoding}'")
+    @pg.execute(:command => "CREATE DATABASE #{new_resource.database} OWNER #{new_resource.owner} TEMPLATE template0 ENCODING '#{new_resource.encoding}' LC_COLLATE '#{new_resource.collation}' LC_CTYPE '#{new_resource.ctype}'")
     new_resource.updated_by_last_action(true)
   else
     if new_resource.owner != @current_resource.owner
