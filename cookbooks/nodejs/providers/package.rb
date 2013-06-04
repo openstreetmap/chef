@@ -23,7 +23,7 @@ require "json"
 include Chef::Mixin::ShellOut
 
 def load_current_resource
-  @packages = JSON.parse(shell_out("npm list --global --json").stdout)["dependencies"]
+  @packages = JSON.parse(shell_out("npm list --global --json").stdout)["dependencies"] || {}
 
   @current_resource = Chef::Resource::NodejsPackage.new(new_resource.name)
   @current_resource.package_name(new_resource.package_name)
