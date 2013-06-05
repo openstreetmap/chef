@@ -19,8 +19,9 @@ if [ "$1" = "config" ]; then
 	echo 'age.cdef age,60,/'
         exit 0 
 fi 
- 
-tstamp=`sed -e '/^timestamp=/!d' -e 's/.*=//' -e 's/Z//' -e 's/T/Z/' -e 's/\\\\//' -e 's/\\\\//' -e q /home/jburgess/replicate/state.txt` 
+
+state=${state:-/home/jburgess/replicate/state.txt}
+tstamp=`sed -e '/^timestamp=/!d' -e 's/.*=//' -e 's/Z//' -e 's/T/Z/' -e 's/\\\\//' -e 's/\\\\//' -e q ${state}` 
 tstampsec=`date --date=$tstamp +%s` 
 nowsec=`date +%s` 
  
