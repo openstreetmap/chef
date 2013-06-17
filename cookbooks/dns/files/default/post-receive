@@ -1,0 +1,13 @@
+#!/bin/zsh
+
+# DO NOT EDIT - This file is being maintained by Chef
+
+unset GIT_DIR
+
+while read oldrev newrev refname
+do
+  if [[ "$refname" = "refs/heads/master" ]]
+  then
+    /usr/local/bin/dns-update
+  fi
+done

@@ -1,0 +1,20 @@
+#!/bin/sh
+
+# DO NOT EDIT - This file is being maintained by Chef
+
+umask 0002
+
+export RSYNC_PASSWORD=<%= @passwords["rsync"] %>
+export PINGDOM_USERNAME=pingdom@openstreetmap.org
+export PINGDOM_PASSWORD=<%= @passwords["pingdom"] %>
+
+cd /var/lib/dns
+
+if [ ! -d .git ]
+then
+  git clone /var/lib/git/dns.git /var/lib/dns
+fi
+
+git pull -q
+
+make update

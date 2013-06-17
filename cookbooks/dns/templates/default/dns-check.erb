@@ -1,0 +1,7 @@
+#!/bin/sh
+
+export RSYNC_PASSWORD=<%= @passwords["rsync"] %>
+export PINGDOM_USERNAME=pingdom@openstreetmap.org
+export PINGDOM_PASSWORD=<%= @passwords["pingdom"] %>
+
+make --quiet --directory=/var/lib/dns --assume-new=lib/countries.xml update > /dev/null
