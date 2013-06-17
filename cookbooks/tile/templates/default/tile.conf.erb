@@ -1,0 +1,33 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+# Set location of renderd socket
+ModTileRenderdSocketName /var/run/renderd/renderd.sock
+
+# Set location of tile directory
+ModTileTileDir /srv/tile.openstreetmap.org/tiles
+
+# Time to wait for a re-render before serving a dirty tile
+ModTileRequestTimeout 3
+
+# Don't try and re-render dirty tiles if the load is higher than this
+ModTileMaxLoadOld 36
+
+# Don't try and render missing tiles if the load is higher than this
+ModTileMaxLoadOld 72
+
+# Maximum expiry to set on a tile
+ModTileCacheDurationMax 604800
+
+# Expiry time for dirty tiles that have been queued for re-rendering
+ModTileCacheDurationDirty 900
+
+# Minimum expiry time for fresh tiles
+ModTileCacheDurationMinimum 10800
+ModTileCacheDurationMediumZoom 13 86400
+ModTileCacheDurationLowZoom 9 518400
+
+# Factor controlling effect of last modification time on expiry
+ModTileCacheLastModifiedFactor 0.20
+
+# Load tile configuration
+LoadTileConfigFile /etc/renderd.conf

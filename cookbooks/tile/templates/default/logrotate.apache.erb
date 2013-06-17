@@ -1,0 +1,16 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+/var/log/apache2/*.log {
+  daily
+  size 1G
+  missingok
+  rotate 52
+  compress
+  delaycompress
+  notifempty
+  create 640 root adm
+  sharedscripts
+  postrotate
+    /usr/bin/service apache2 reload > /dev/null
+  endscript
+}

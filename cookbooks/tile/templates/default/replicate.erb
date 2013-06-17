@@ -1,0 +1,77 @@
+#!/bin/bash
+
+# DO NOT EDIT - This file is being maintained by Chef
+
+# Initialize timestamp with day of latest planet dump
+# Setting to midnight ensures we get conistent data after first run
+# osmosis --read-replication-interval-init
+
+# Send output to the log
+exec > /var/log/replicate/replicate.log 2>&1
+
+# Change to the replication state directory
+cd /var/lib/replicate
+
+# Read in initial state
+. state.txt
+
+# Loop indefinitely
+while true
+do
+    # Work out the name of the next file
+    file="changes-${sequenceNumber}.osm.gz"
+
+    # Fetch the next set of changes
+    osmosis --read-replication-interval --simc --write-xml-change file="${file}" compressionMethod="gzip"
+
+    # Check for errors
+    if [ $? -eq 0 ]
+    then
+        # Enable exit on error
+	set -e
+
+        # Remember the previous sequence number
+	prevSequenceNumber=$sequenceNumber
+
+        # Read in new state
+	. state.txt
+
+        # Did we get any new data?
+	if [ "${sequenceNumber}" == "${prevSequenceNumber}" ]
+        then
+            # Log the lack of data
+	    echo "No new data available. Sleeping..."
+
+	    # Remove file, it will just be an empty changeset
+	    rm ${file}
+
+            # Sleep for a short while
+	    sleep 30
+	else
+            # Log the new data
+	    echo "Fetched new data from ${prevSequenceNumber} to ${sequenceNumber} into ${file}"
+
+            # Apply the changes to the database
+<% if node[:tile][:node_file] -%>
+            osm2pgsql --slim --append --flat-nodes=<%= node[:tile][:node_file] %> ${file}
+<% else -%>
+            osm2pgsql --slim --append ${file}
+<% end -%>
+
+            # Expire tiles which are touched by the changes
+            /usr/local/bin/expire-tiles ${file} > /dev/null 2>&1 &
+	fi
+
+        # Delete old downloads
+	find . -name 'changes-*.gz' -mmin +300 -exec rm -f {} \;
+
+        # Disable exit on error
+        set +e
+    else
+        # Log our failure to fetch changes
+	echo "Failed to fetch changes - waiting a few minutes before retry"
+
+        # Wait five minutes and have another go
+	sleep 300
+    fi
+done

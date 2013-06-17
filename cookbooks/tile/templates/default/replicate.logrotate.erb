@@ -1,0 +1,10 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+/var/log/replicate/*.log {
+  compress
+  delaycompress
+  notifempty
+  postrotate
+    /usr/bin/service replicate restart
+  endscript
+}

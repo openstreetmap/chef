@@ -1,0 +1,46 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+<VirtualHost *:80>
+  # Basic server configuration
+  ServerName <%= node[:fqdn] %>
+  ServerAlias tile.openstreetmap.org
+  ServerAlias parent.tile.openstreetmap.org
+  ServerAdmin webmaster@openstreetmap.org
+
+  # Configure location of static files and CGI scripts
+  DocumentRoot /srv/tile.openstreetmap.org/html
+  ScriptAlias /cgi-bin/ /srv/tile.openstreetmap.org/cgi-bin/
+
+  # Get the real remote IP for requests via a trusted proxy
+  RemoteIPHeader X-Forwarded-For
+<% @caches.each do |cache| -%>
+<% cache.ipaddresses(:role => :external) do |address| -%>
+  RemoteIPTrustedProxy <%= address %>
+<% end -%>
+<% end -%>
+
+  # Setup logging
+  CustomLog /var/log/apache2/access.log combined
+  ErrorLog /var/log/apache2/error.log
+  BufferedLogs on
+
+  # Enable the rewrite engine
+  RewriteEngine on
+
+  # Rewrite tile requests to the default style
+  RewriteRule ^/(-?\d+)/(-?\d+)/(-?\d+)\.png$ /default/$1/$2/$3.png [PT,T=image/png,L]
+</VirtualHost>
+
+<Directory /srv/tile.openstreetmap.org/html>
+  Options None
+  AllowOverride None
+  Order allow,deny
+  Allow from all
+</Directory>
+
+<Directory /srv/tile.openstreetmap.org/cgi-bin>
+  Options ExecCGI
+  AllowOverride None
+  Order allow,deny
+  Allow from all
+</Directory>
