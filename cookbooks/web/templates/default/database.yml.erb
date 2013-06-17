@@ -1,0 +1,31 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+production:
+  adapter: postgresql
+<% if @host -%>
+  host: <%= @host %>
+<% end -%>
+<% if @port -%>
+  port: <%= @port %>
+<% end -%>
+  database: <%= @name %>
+  username: <%= @username %>
+<% if @password -%>
+  password: <%= @password %>
+<% end -%>
+  encoding: utf8
+
+development:
+  adapter: postgresql
+<% if @host -%>
+  host: <%= @host %>
+<% end -%>
+<% if @port -%>
+  port: <%= @port %>
+<% end -%>
+  database: <%= @name %>
+  username: <%= @username %>
+<% if @password -%>
+  password: <%= @password %>
+<% end -%>
+  encoding: utf8

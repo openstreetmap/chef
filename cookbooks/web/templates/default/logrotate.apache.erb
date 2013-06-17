@@ -1,0 +1,16 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+/var/log/apache2/*.log {
+  daily
+  missingok
+  rotate 28
+  compress
+  delaycompress
+  notifempty
+  create 640 root adm
+  sharedscripts
+  postrotate
+    /usr/bin/service apache2 reload > /dev/null
+    /usr/bin/rsync /var/log/apache2/access.log.2.gz horntail::logs/www.openstreetmap.org/<%= node[:hostname] %>-`date -d "-2 days" +%Y-%m-%d`.gz
+  endscript
+}

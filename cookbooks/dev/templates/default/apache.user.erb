@@ -1,0 +1,52 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+WSGIDaemonProcess <%= @user %>.dev.openstreetmap.org user=<%= @user %> inactivity-timeout=600
+
+<VirtualHost *:80>
+	ServerName <%= @user %>.dev.openstreetmap.org
+	ServerAdmin webmaster@openstreetmap.org
+	ServerAlias <%= @user %>.dev.osm.org
+
+	UseCanonicalName Off
+	DocumentRoot <%= @directory %>
+	ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/
+
+	WSGIProcessGroup <%= @user %>.dev.openstreetmap.org
+
+	RewriteEngine on
+	#RewriteLog /var/log/apache2/rewrite.log
+	#RewriteLogLevel 4
+
+	CustomLog /var/log/apache2/<%= @user %>.dev.openstreetmap.org-access.log combined
+	ErrorLog /var/log/apache2/<%= @user %>.dev.openstreetmap.org-error.log
+
+	RewriteCond <%= @directory %>%{REQUEST_FILENAME} -f
+	RewriteRule ^/cgi-bin/(.*)$ /cgi-bin/cgiwrap/~<%= @user %>/cgi-bin/$1 [PT,L]
+
+	RewriteCond <%= @directory %>%{REQUEST_FILENAME} -f
+	RewriteRule ^/cgi-bin-d/(.*)$ /cgi-bin/cgiwrapd/~<%= @user %>/cgi-bin/$1 [PT,L]
+
+	<IfModule mod_fastcgi_handler.c>
+		<FilesMatch "\.ph(p3?|tml)$">
+			SetHandler fcgi:/var/run/php5-fpm-<%= @user %>.sock
+		</FilesMatch>
+		<FilesMatch "\.phps$">
+			SetHandler fcgi:/var/run/php5-fpm-<%= @user %>.sock
+		</FilesMatch>
+	</IfModule>
+
+	<IfModule !mod_fastcgi_handler.c>
+		RewriteCond <%= @directory %>%{REQUEST_FILENAME} -f
+		RewriteRule ^(.*\.php)$ /cgi-bin/php-cgiwrap/~<%= @user %>/$1 [PT,L]
+	</IfModule>
+</VirtualHost>
+
+<Directory <%= @directory %>>
+	AllowOverride AuthConfig FileInfo Indexes Options=RailsBaseURI
+	Options SymLinksIfOwnerMatch Indexes Includes
+</Directory>
+
+<Directory <%= @directory %>/wsgi-bin>
+	SetHandler wsgi-script
+	Options ExecCGI SymLinksIfOwnerMatch
+</Directory>

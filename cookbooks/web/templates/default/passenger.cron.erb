@@ -1,0 +1,16 @@
+#!/bin/sh
+
+# Get a list of rack processes that are running
+pgrep -u rails -f Rack | sort > /tmp/rails.actual.$$
+
+# Get a list of rack processes we expect to be running
+passenger-status | awk '/PID:/ { print $3 }' | sort > /tmp/rails.expected.$$
+
+# Get a list of unexpected rack processes
+pids=$(comm -23 /tmp/rails.actual.$$ /tmp/rails.expected.$$)
+
+# Kill any expected rack processes
+[ -n "$pids" ] && kill -9 $pids
+
+# Remove our temporary files
+rm -f /tmp/rails.actual.$$ /tmp/rails.expected.$$

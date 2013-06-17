@@ -1,0 +1,278 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+<% [80, 443].each do |port| -%>
+<VirtualHost *:<%= port %>>
+  #
+  # Basic server configuration
+  #
+  ServerName <%= node[:fqdn] %>
+  ServerAlias api.openstreetmap.org www.openstreetmap.org
+  ServerAdmin webmaster@openstreetmap.org
+<% if port == 443 -%>
+
+  #
+  # Enable SSL
+  #
+  SSLEngine on
+<% end -%>
+
+  #
+  # Setup logging
+  #
+  LogFormat "%h %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\" %Ts" combined_with_time
+  CustomLog /var/log/apache2/access.log combined_with_time
+  ErrorLog /var/log/apache2/error.log
+
+  #
+  # Turn on various features
+  #
+  ExpiresActive On
+  RewriteEngine on
+
+  #
+  # Block troublesome GPX data scrapping
+  #
+  RewriteCond %{REQUEST_METHOD} HEAD
+  RewriteRule ^/trace/\d+/data - [F,L]
+
+  #
+  # Block tilesAtHome
+  #
+  RewriteCond %{HTTP_USER_AGENT} tilesAtHome
+  RewriteRule . - [F,L]
+
+  #
+  # Block requests for the old 404 map tile
+  #
+  RewriteRule ^/openlayers/img/404.png$ - [G,L]
+
+  #
+  # Block attempts to access old API versions
+  #
+  RewriteRule ^/api/0.[12345]/ - [G,L]
+
+  #
+  # Block JOSM revisions  1722-1727 as they have a serious bug that causes
+  # lat/lon to be swapped (http://josm.openstreetmap.de/ticket/2804)
+  #
+  RewriteCond %{HTTP_USER_AGENT} "^JOSM/[0-9]+\.[0-9]+ \(172[234567]\)"
+  RewriteRule . - [F,L]
+
+  #
+  # Block a changeset that seems to lock things up
+  #
+  RewriteRule ^/api/0.6/changeset/6823497/download$ - [F,L]
+
+  #
+  # Force special MIME type for crossdomain.xml files
+  #
+  <Files crossdomain.xml>
+    ForceType text/x-cross-domain-policy
+  </Files>
+
+  #
+  # Set expiry for assets
+  #
+  <Location /assets/>
+    Header unset Last-Modified
+    Header unset ETag
+    FileETag None
+
+    ExpiresDefault "access plus 1 year"
+  </Location>
+
+  #
+  # Set expiry for attachments
+  #
+  <Location /attachments/>
+    Header unset Last-Modified
+    Header unset ETag
+    FileETag None
+
+    ExpiresDefault "access plus 1 year"
+  </Location>
+
+  #
+  # Set expiry for other static content
+  #
+  <Location /export/embed.html>
+    ExpiresDefault "access plus 7 days"
+  </Location>
+  <Location /images/>
+    ExpiresDefault "access plus 10 years"
+  </Location>
+  <Location /javascripts/>
+    ExpiresDefault "access plus 10 years"
+  </Location>
+  <Location /openlayers/>
+    ExpiresDefault "access plus 7 days"
+  </Location>
+  <Location /stylesheets/>
+    ExpiresDefault "access plus 10 years"
+  </Location>
+
+  #
+  # Set expiry for Potlatch 1
+  #
+  <Location /potlatch/>
+    ExpiresDefault "access plus 7 days"
+  </Location>
+
+  #
+  # Set expiry for Potlatch 2
+  #
+  <Location /potlatch2/>
+    ExpiresByType application/x-shockwave-flash "access plus 1 day"
+    ExpiresByType application/xml "access plus 1 day"
+    ExpiresByType text/css "access plus 1 day"
+    ExpiresByType image/png "access plus 7 days"
+  </Location>
+
+  #
+  # Configure rails
+  #
+  DocumentRoot <%= node[:web][:base_directory] %>/rails/public
+  RailsEnv production
+  PassengerMinInstances 10
+  PassengerMaxRequests 5000
+  PassengerPreStart http://www.openstreetmap.org/
+  Alias /favicon.ico <%= node[:web][:base_directory] %>/rails/app/assets/images/favicon.ico
+  Alias /openlayers <%= node[:web][:base_directory] %>/rails/vendor/assets/openlayers
+  Alias /stats /store/rails/stats
+  Alias /user/image /store/rails/user/image
+  Alias /attachments /store/rails/attachments
+
+  #
+  # Preserve the host name when forwarding to the proxy
+  #
+  ProxyPreserveHost on
+
+  #
+  # Set a long timeout - changeset uploads can take a long time
+  #
+  ProxyTimeout 3600
+
+  #
+  # Allow all proxy requests
+  #
+  <Proxy *>
+    Allow from all
+  </Proxy>
+
+  #
+  # Pass other heavy duty API calls to the bulkapi backends via a load balancer
+  #
+  ProxyPass /api/0.6/map balancer://bulkapi/api/0.6/map
+  ProxyPass /api/0.6/tracepoints balancer://bulkapi/api/0.6/tracepoints
+  ProxyPass /api/0.6/amf/read balancer://bulkapi/api/0.6/amf/read
+  ProxyPass /api/0.6/swf/trackpoints balancer://bulkapi/api/0.6/swf/trackpoints
+  ProxyPassMatch ^(/api/0.6/changeset/[0-9]+/(upload|download))$ balancer://bulkapi$1
+  ProxyPassMatch ^(/api/0.6/.*/(full|history|search|ways))$ balancer://bulkapi$1
+  ProxyPass /api/0.6/nodes balancer://bulkapi/api/0.6/nodes
+  ProxyPass /api/0.6/ways balancer://bulkapi/api/0.6/ways
+  ProxyPassMatch ^(/trace/[0-9]+/data(|/|.xml))$ balancer://bulkapi$1
+
+  #
+  # Redirect trac and wiki requests to the right places
+  #
+  RedirectPermanent /trac/ http://trac.openstreetmap.org/
+  RedirectPermanent /wiki/ http://wiki.openstreetmap.org/
+
+  #
+  # Redirect requests for various images to the right place
+  #
+  RedirectPermanent /images/osm_logo.png http://www.openstreetmap.org/assets/osm_logo.png
+  RedirectPermanent /images/cc_button.png http://www.openstreetmap.org/assets/cc_button.png
+
+  #
+  # Define a load balancer for the bulkapi backends
+  #
+  <Proxy balancer://bulkapi>
+    ProxySet lbmethod=bybusyness
+    BalancerMember http://rails1
+    BalancerMember http://rails2
+    BalancerMember http://rails3
+  </Proxy>
+<% if port == 80 -%>
+
+  #
+  # Redirect requests which should be secure to the SSL site
+  #
+  RewriteCond %{REQUEST_URI} ^/login(\.html)?$ [OR]
+  RewriteCond %{REQUEST_URI} ^/user/(new|create-account\.html)$ [OR]
+  RewriteCond %{REQUEST_URI} ^/user/terms$ [OR]
+  RewriteCond %{REQUEST_URI} ^/user/save$ [OR]
+  RewriteCond %{REQUEST_URI} ^/user/([^/]+)/account$ [OR]
+  RewriteCond %{REQUEST_URI} ^/user/reset-password$
+  RewriteRule ^(.*)$ https://www.openstreetmap.org$1 [L,NE,R=permanent]
+
+  #
+  # Redirect api requests made to www.osm.org to api.osm.org
+  #
+#  RewriteCond %{HTTP_HOST} =www.openstreetmap.org
+#  RewriteRule ^/api/(.*)$ http://api.openstreetmap.org/api/$1 [L,NE,R=permanent]
+
+  #
+  # Redirect non-api requests made to api.osm.org to www.osm.org
+  #
+  RewriteCond %{HTTP_HOST} =api.openstreetmap.org
+  RewriteCond %{REQUEST_URI} !^/api/
+  RewriteRule ^(.*)$ http://www.openstreetmap.org$1 [L,NE,R=permanent]
+<% elsif port == 443 -%>
+
+  #
+  # Redirect api requests to api.osm.org over http
+  #
+  RewriteRule ^/api/(.*)$ http://api.openstreetmap.org/api/$1 [L,NE,R=permanent]
+
+  #
+  # Redirect requests which do not need to be secure over http
+  #
+  RewriteCond %{REQUEST_URI} !^/login(.html)?$
+  RewriteCond %{REQUEST_URI} !^/user/(new|create-account.html)$
+  RewriteCond %{REQUEST_URI} !^/user/terms$
+  RewriteCond %{REQUEST_URI} !^/user/save$
+  RewriteCond %{REQUEST_URI} !^/user/go_public$
+  RewriteCond %{REQUEST_URI} !^/user/([^/]+)/account$
+  RewriteCond %{REQUEST_URI} !^/user/reset-password$
+  RewriteCond %{REQUEST_URI} !^/preview/
+  RewriteCond %{REQUEST_URI} !^/assets/
+  RewriteCond %{REQUEST_URI} !^/javascripts/
+  RewriteCond %{REQUEST_URI} !^/images/
+  RewriteCond %{REQUEST_URI} !^/stylesheets/
+  RewriteCond %{REQUEST_URI} !^/openlayers/
+  RewriteRule ^(.*)$ http://www.openstreetmap.org$1 [L,NE,R=permanent]
+<% end -%>
+</VirtualHost>
+
+<% end -%>
+<VirtualHost *:80>
+  ServerName openstreetmap.org
+  ServerAlias maps.openstreetmap.org mapz.openstreetmap.org
+  ServerAlias openstreetmap.com www.openstreetmap.com
+  ServerAlias maps.openstreetmap.com mapz.openstreetmap.com
+  ServerAlias openstreetmap.net www.openstreetmap.net
+  ServerAlias maps.openstreetmap.net mapz.openstreetmap.net
+  ServerAlias openstreetmaps.org www.openstreetmaps.org
+  ServerAlias maps.openstreetmaps.org mapz.openstreetmaps.org
+  ServerAlias osm.org www.osm.org
+  ServerAlias maps.osm.org mapz.osm.org
+  ServerAlias openmaps.org www.openmaps.org
+  ServerAlias maps.openmaps.org mapz.openmaps.org
+  ServerAlias openworldmap.org www.openworldmap.org
+  ServerAlias maps.openworldmap.org mapz.openworldmap.org
+  ServerAlias freeosm.org www.freeosm.org
+  ServerAlias maps.freeosm.org mapz.freeosm.org
+
+  RedirectPermanent / http://www.openstreetmap.org/
+</VirtualHost>
+
+<VirtualHost *:80>
+  ServerName openstreetmap.org.uk
+  ServerAlias www.openstreetmap.org.uk
+  ServerAlias openstreetmap.co.uk
+  ServerAlias www.openstreetmap.co.uk
+
+  RedirectPermanent /events.ics http://openstreetmap.org.uk/events.ics
+  RedirectPermanent / http://www.openstreetmap.org/
+</VirtualHost>

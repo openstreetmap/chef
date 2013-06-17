@@ -1,0 +1,104 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+#FIXME - configurable
+cache_mem  <%= node[:squid][:cache_mem] %>
+
+max_filedescriptors 65536
+
+#used by squidclient / munin
+http_port 127.0.0.1:3128
+
+#FIXME - configurable
+http_port 80 accel defaultsite=tile.openstreetmap.org tcpkeepalive=60,10,6 http11
+
+cache_effective_user proxy
+cache_effective_group proxy
+
+#FIXME - configurable
+cache_dir <%= node[:squid][:cache_dir] %>
+cache_swap_log /var/spool/squid/%s
+
+quick_abort_min 0 KB
+quick_abort_max 0 KB
+
+read_ahead_gap 64 KB
+
+maximum_object_size 1048576 bytes
+maximum_object_size_in_memory 64 KB
+
+cache_replacement_policy heap LFUDA
+memory_replacement_policy heap GDSF
+
+server_persistent_connections on
+persistent_request_timeout 1 minutes
+
+negative_ttl 15 seconds
+half_closed_clients off
+pipeline_prefetch on
+
+read_timeout 90 seconds
+request_timeout 90 seconds
+connect_timeout 20 seconds
+client_lifetime 1 hours
+
+collapsed_forwarding on
+refresh_stale_hit 300 seconds
+
+#Recommended minimum configuration:
+#----------------------------------
+acl all src all
+acl manager proto cache_object
+acl localhost src 127.0.0.1/32
+acl to_localhost dst 127.0.0.0/8
+acl SSL_ports port 443
+acl Safe_ports port 80          # http
+acl Safe_ports port 21          # ftp
+acl Safe_ports port 443         # https
+acl Safe_ports port 70          # gopher
+acl Safe_ports port 210         # wais
+acl Safe_ports port 1025-65535  # unregistered ports
+acl Safe_ports port 280         # http-mgmt
+acl Safe_ports port 488         # gss-http
+acl Safe_ports port 591         # filemaker
+acl Safe_ports port 777         # multiling http
+acl CONNECT method CONNECT
+http_access allow manager localhost
+
+http_access allow manager
+
+http_access deny manager
+http_access deny !Safe_ports
+http_access deny CONNECT !SSL_ports
+#----------------------------------
+
+acl purge_hosts src 127.0.0.0/8
+acl PURGE method purge
+http_access allow purge purge_hosts
+http_access deny purge
+
+forwarded_for on
+
+access_log <%= node[:squid][:access_log] %>
+cache_log /var/log/squid/cache.log
+cache_store_log none
+buffered_logs on
+client_db off
+strip_query_terms off
+
+digest_generation off
+
+refresh_pattern .		0	20%	4320
+
+#ZERO required for logrotate to work properly
+logfile_rotate 0
+
+<% Dir.glob("/etc/squid/squid.conf.d/*.conf") do |file| -%>
+<%= File.read(file) %>
+<% end -%>
+
+#MUST BE LAST ACL
+#--------------
+http_access deny all
+icp_access deny all
+#--------------
+

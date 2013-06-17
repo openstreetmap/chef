@@ -1,0 +1,39 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+<VirtualHost *:80>
+  #
+  # Basic server configuration
+  #
+  ServerName <%= node[:fqdn] %>
+  ServerAlias api.openstreetmap.org www.openstreetmap.org
+  ServerAdmin webmaster@openstreetmap.org
+
+  #
+  # Setup logging
+  #
+  LogFormat "%h %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\" %Ts" combined_with_time
+  CustomLog /var/log/apache2/access.log combined_with_time
+  ErrorLog /var/log/apache2/error.log
+
+  #
+  # Configure rails
+  #
+  DocumentRoot <%= node[:web][:base_directory] %>/rails/public
+  RailsEnv production
+  PassengerMinInstances 3
+  PassengerMaxRequests 500
+  PassengerPreStart http://www.openstreetmap.org/
+
+  #
+  # Get the real remote IP for requests via a trusted proxy
+  #
+  RemoteIPHeader X-Forwarded-For
+  RemoteIPTrustedProxy 146.179.159.160/27
+
+  #
+  # Pass map calls to cgimap
+  #
+  <Location /api/0.6/map>
+    SetHandler fcgi:127.0.0.1:8000
+  </Location>
+</VirtualHost>

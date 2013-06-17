@@ -1,0 +1,20 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+<VirtualHost *:80>
+	ServerName phppgadmin.dev.openstreetmap.org
+	ServerAdmin webmaster@openstreetmap.org
+
+	CustomLog /var/log/apache2/phppgadmin.dev.openstreetmap.org-access.log combined
+	ErrorLog /var/log/apache2/phppgadmin.dev.openstreetmap.org-error.log
+
+	DocumentRoot /usr/share/phppgadmin
+
+	<IfModule mod_fastcgi_handler.c>
+		<FilesMatch "\.ph(p3?|tml)$">
+			SetHandler fcgi:/var/run/php5-fpm-default.sock
+		</FilesMatch>
+		<FilesMatch "\.phps$">
+			SetHandler fcgi:/var/run/php5-fpm-default.sock
+		</FilesMatch>
+	</IfModule>
+</VirtualHost>

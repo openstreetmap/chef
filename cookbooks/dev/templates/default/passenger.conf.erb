@@ -1,0 +1,7 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+<IfModule mod_passenger.c>
+  PassengerRoot /usr
+  PassengerRuby /usr/bin/ruby<%= node[:dev][:ruby] %>
+  PassengerUseGlobalQueue on
+</IfModule>

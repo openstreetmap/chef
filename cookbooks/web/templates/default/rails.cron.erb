@@ -1,0 +1,4 @@
+#!/bin/sh
+
+# Cleanup temporary directory
+find <%= @directory %>/tmp -mtime +28 -print0 | xargs -0r rm

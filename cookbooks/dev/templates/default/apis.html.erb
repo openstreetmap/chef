@@ -1,0 +1,26 @@
+<html>
+<head>
+<title>OpenStreetMap Testing APIs</title>
+</head>
+<body>
+<h1>OpenStreetMap Testing APIs</h1>
+<p>This server hosts several versions of the OSM APIs for use by anyone
+for testing clients against or as a data sandbox.</p>
+<table>
+<tr>
+<th align="left">Name</th>
+<th align="left">Repository</th>
+<th align="left">Revision</th>
+</tr>
+<% node[:dev][:rails].each do |name,details| -%>
+<tr>
+<td><a href="http://<%= name %>.apis.dev.openstreetmap.org/"><%= name %></a></td>
+<td><%= details[:repository] %></td>
+<td><%= details[:revision] %></td>
+</tr>
+<% end -%>
+</table>
+<p>These APIs are updated every half hour. The last update was at
+<%= Time.now.strftime("%Y-%m-%d %H:%M:%S") %></p>
+</body>
+</html>

@@ -1,0 +1,49 @@
+#!/bin/bash
+
+export GPX_PROGRAM="<%= @gpx_directory %>/src/gpx-import"
+
+export GPX_SLEEP_TIME="40"
+
+export GPX_PATH_TRACES="/store/rails/gpx/traces"
+export GPX_PATH_IMAGES="/store/rails/gpx/images"
+export GPX_PATH_TEMPLATES="<%= @gpx_directory %>/templates/"
+
+export GPX_PGSQL_HOST="<%= @database_host %>"
+export GPX_PGSQL_USER="<%= @database_username %>"
+export GPX_PGSQL_PASS="<%= @database_password %>"
+export GPX_PGSQL_DB="<%= @database_name %>"
+
+export GPX_MEMCACHE_SERVERS="rails1,rails2,rails3"
+
+export GPX_LOG_FILE="<%= @log_directory %>/gpx-import.log"
+export GPX_PID_FILE="<%= @pid_directory %>/gpx-import.pid"
+
+export GPX_MAIL_SENDER="bounces@openstreetmap.org"
+
+start() {
+  start-stop-daemon --start --chuid rails --exec $GPX_PROGRAM
+}
+
+stop() {
+  start-stop-daemon --stop --retry 300 --pidfile $GPX_PID_FILE --exec $GPX_PROGRAM
+}
+
+reload() {
+  start-stop-daemon --stop --signal HUP --pidfile $GPX_PID_FILE --exec $GPX_PROGRAM
+}
+
+case "$1" in
+  start)
+    start
+    ;;
+  stop)
+    stop
+    ;;
+  reload)
+    reload
+    ;;
+  restart)
+    stop || exit $?
+    start
+    ;;
+esac

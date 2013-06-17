@@ -1,0 +1,4 @@
+#!/bin/sh
+
+# Cleanup archive directory
+find /store/postgresql/system/archive -mtime +10 -print0 | xargs -0r rm
