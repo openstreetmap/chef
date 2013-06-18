@@ -105,7 +105,7 @@ end
 
 search(:accounts, "*:*").each do |account|
   name = account["id"]
-  details = node[:accounts][:users][name]
+  details = node[:accounts][:users][name] || {}
 
   if ["user","administrator"].include?(details[:status])
     user_home = details[:home] || account["home"] || "#{node[:accounts][:home]}/#{name.to_s}"
