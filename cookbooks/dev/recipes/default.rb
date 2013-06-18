@@ -103,9 +103,12 @@ apache_site "phppgadmin.dev.openstreetmap.org" do
   template "apache.phppgadmin.erb"
 end
 
-node[:accounts][:users].each do |name,details|
+search(:accounts, "*:*").each do |account|
+  name = account["id"]
+  details = node[:accounts][:users][name]
+
   if ["user","administrator"].include?(details[:status])
-    user_home = details[:home] || "#{node[:accounts][:home]}/#{name.to_s}"
+    user_home = details[:home] || account["home"] || "#{node[:accounts][:home]}/#{name.to_s}"
 
     if File.directory?("#{user_home}/public_html")
       template "/etc/php5/fpm/pool.d/#{name}.conf" do
