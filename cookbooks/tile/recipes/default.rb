@@ -192,9 +192,17 @@ directory "/srv/tile.openstreetmap.org/styles" do
 end
 
 node[:tile][:styles].each do |name,details|
-  directory = "/srv/tile.openstreetmap.org/styles/#{name}"
+  style_directory = "/srv/tile.openstreetmap.org/styles/#{name}"
+  tile_directory = "/srv/tile.openstreetmap.org/tiles/#{name}"
 
-  git directory do
+  file "#{tile_directory}/planet-import-complete" do
+    action :create_if_missing
+    owner "tile"
+    group "tile"
+    mode 0444
+  end
+
+  git style_directory do
     action :sync
     repository details[:repository]
     revision details[:revision]
@@ -202,22 +210,23 @@ node[:tile][:styles].each do |name,details|
     group "tile"
   end
 
-  link "#{directory}/data" do
+  link "#{style_directory}/data" do
     to "/srv/tile.openstreetmap.org/data"
     owner "tile"
     group "tile"
   end
 
-  execute "#{directory}/project.mml" do
+  execute "#{style_directory}/project.mml" do
     command "carto project.mml > project.xml"
-    cwd directory
+    cwd style_directory
     user "tile"
     group "tile"
     not_if do
-      File.exist?("#{directory}/project.xml") and
-      File.mtime("#{directory}/project.xml") >= File.mtime("#{directory}/project.mml")
+      File.exist?("#{style_directory}/project.xml") and
+      File.mtime("#{style_directory}/project.xml") >= File.mtime("#{style_directory}/project.mml")
     end
-    notifies :restart, resources(:service => "renderd")
+    notifies :touch, "file[#{tile_directory}/planet-import-complete]"
+    notifies :restart, "service[renderd]"
   end
 end
 
