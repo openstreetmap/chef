@@ -54,7 +54,7 @@ then
 	fi
 	JAVACMD_OPTIONS=-Xmx2048M
 	export JAVACMD_OPTIONS
-	pbzip2 -dc /store/planet/planet/${YEARFULL}/${planet}.bz2 | /home/grant/code/osmosis-0.43/bin/osmosis --read-xml - --buffer bufferCapacity=18000 --write-pbf /store/planet/pbf/${planet}.pbf
+	pbzip2 -dc /store/planet/planet/${YEARFULL}/${planet}.bz2 | osmosis --read-xml - --buffer bufferCapacity=18000 --write-pbf /store/planet/pbf/${planet}.pbf
 	cd /store/planet/pbf/
 	md5sum ${planet}.pbf >${planet}.pbf.md5
 	ln -fs ${planet}.pbf planet-latest.osm.pbf
