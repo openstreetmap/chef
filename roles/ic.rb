@@ -1,0 +1,45 @@
+name "ic"
+description "Role applied to all servers at Imperial College"
+
+default_attributes(
+  :accounts => {
+    :users => {
+      :icladmin => { :status => :user }
+    }
+  },
+  :networking => {
+    :nameservers => [ "146.179.159.164" ],
+    :roles => {
+      :internal => {
+        :inet => {
+          :prefix => "27",
+          :gateway => "146.179.159.164"
+        }
+      },
+      :external => {
+        :zone => "ic",
+        :inet => {
+          :prefix => "27",
+          :gateway => "193.63.75.97"
+        },
+        :inet6 => {
+          :prefix => "64",
+          :gateway => "fe80::5:73ff:fea0:1"
+        }
+      }
+    }
+  }
+)
+
+override_attributes(
+  :networking => {
+    :search => [ "ic.openstreetmap.org", "openstreetmap.org" ]
+  },
+  :ntp => {
+    :servers => [ "0.uk.pool.ntp.org", "1.uk.pool.ntp.org", "europe.pool.ntp.org" ]
+  }
+)
+
+run_list(
+  "role[gb]"
+)
