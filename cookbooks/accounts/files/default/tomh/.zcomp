@@ -1,0 +1,14 @@
+# The following lines were added by compinstall
+
+zstyle ':completion:*' completer _complete
+zstyle ':completion:*' format 'Completing %d'
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*' insert-unambiguous true
+zstyle ':completion:*' keep-prefix true
+zstyle ':completion:*' menu select=long
+zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
+zstyle :compinstall filename '/home/tom/.zcomp'
+
+autoload -U compinit
+compinit
+# End of lines added by compinstall
