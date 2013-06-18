@@ -1,0 +1,10 @@
+#!/usr/bin/perl
+
+# DO NOT EDIT - This file is being maintained by Chef
+
+$| = 1;
+while (<STDIN>) {
+	my $where = readlink("/store/planet/planet/planet-latest.osm.bz2");
+	s/planet\/planet\-latest\.osm\.bz2/planet\/$where/g;
+	print $_;
+}

@@ -1,0 +1,56 @@
+#!/usr/bin/php
+<?
+/*
+	DO NOT EDIT - This file is being maintained by Chef
+
+	planet-mirror-redirect
+	Check if planet file exists on mirror and link if not yet linked
+	Modifies .htaccess
+*/
+$_YEAR = date('Y');
+$_PLANET_FOLDER = '/store/planet/planet/'.$_YEAR.'/';
+$_PLANET_REGEX = "/^(planet|changesets)\-\d{6}(\-nolt)?\.osm\.(bz2|gz)$/";
+$_MIRROR = 'http://ftp.heanet.ie/mirrors/openstreetmap.org/planet/'.$_YEAR.'/';
+$_PLANET_HTACCESS = $_PLANET_FOLDER.'../../.htaccess';
+
+function _MIRROR_FILE_SIZE($url) {
+	$ch = @curl_init();
+	curl_setopt($ch, CURLOPT_URL, $url);
+	curl_setopt($ch, CURLOPT_NOBODY, TRUE);
+	curl_setopt($ch, CURLOPT_VERBOSE, FALSE);
+	$curl_response = @curl_exec($ch);
+	$curl_result = curl_getinfo($ch);
+	if ($curl_result['http_code']!='200') return FALSE;
+	return ($curl_result['download_content_length']);
+}			
+
+if (posix_getuid() !== fileowner($_PLANET_HTACCESS)) die('User ID of process does not match .htaccess owner'."\n");
+
+if (is_dir($_PLANET_FOLDER)) {
+	$htaccess_contents = file_get_contents($_PLANET_HTACCESS);
+	$htaccess_handle = fopen($_PLANET_HTACCESS, 'a');
+	if ($dh = opendir($_PLANET_FOLDER)) {
+		while (($file = readdir($dh)) !== false ) {
+			if (preg_match($_PLANET_REGEX,$file)) {
+				$file_slashed = 'planet/'.$_YEAR.'/'.str_replace(array('.','-'), array('\.','\-'), $file);
+				if (strpos($htaccess_contents,$file_slashed) === false) {
+					//PHP IS BRAINDEAD filesize borked >4GB
+					//$file_size = $file_stats['size'];
+					$file_size = trim(`stat -c%s $_PLANET_FOLDER$file`);
+					sleep(rand(2,5));
+					$file_mirror_size = _MIRROR_FILE_SIZE($_MIRROR.$file);
+					if ($file_size==$file_mirror_size) {
+							echo 'Adding: '.$file."\n";
+							fwrite($htaccess_handle,	'RewriteRule'."\t".
+											'^('.$file_slashed.')$'."\t".
+											'http://ftp.heanet.ie/mirrors/openstreetmap.org/$1'."\t".
+											'[R,L]'."\n");
+					}
+				}
+			}
+		}
+		closedir($dh);
+		fclose($htaccess_handle);
+	}
+}
+?>

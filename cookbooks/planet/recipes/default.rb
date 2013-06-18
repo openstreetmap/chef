@@ -19,6 +19,26 @@
 
 include_recipe "apache::ssl"
 
+package "perl"
+package "php5-cli"
+
+remote_directory "/usr/local/bin" do
+  source "bin"
+  owner "root"
+  group "root"
+  mode 0755
+  files_owner "root"
+  files_group "root"
+  files_mode 0755
+end
+
+template "/etc/cron.d/planet" do
+  source "cron.erb"
+  owner "root"
+  group "root"
+  mode 0644
+end
+
 apache_module "rewrite" do
   conf "rewrite.conf.erb"
 end
