@@ -27,6 +27,10 @@
   # Enable the rewrite engine
   RewriteEngine on
 
+  # Rewrite tile status or tile dirty requests to default style
+  RewriteRule ^/(-?\d+)/(-?\d+)/(-?\d+)\.png/status/?$  /default/$1/$2/$3.png/status [PT,T=text/plain,L]
+  RewriteRule ^/(-?\d+)/(-?\d+)/(-?\d+)\.png/dirty/?$   /default/$1/$2/$3.png/dirty  [PT,T=text/plain,L]
+
   # Rewrite tile requests to the default style
   RewriteRule ^/(-?\d+)/(-?\d+)/(-?\d+)\.png$ /default/$1/$2/$3.png [PT,T=image/png,L]
 </VirtualHost>
