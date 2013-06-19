@@ -196,11 +196,7 @@ firewall_rule "limit-icmp-echo" do
   dest "fw"
   proto "icmp"
   dest_ports "echo-request"
-  if node[:lsb][:release].to_f >= 10.04
-    rate_limit "s:1/sec:5"
-  else
-    rate_limit "1/sec:5"
-  end
+  rate_limit "s:1/sec:5"
 end
 
 [ "ucl", "ic", "bm" ].each do |zone|
@@ -305,11 +301,7 @@ if not node.interfaces(:family => :inet6).empty?
     dest "fw"
     proto "ipv6-icmp"
     dest_ports "echo-request"
-    if node[:lsb][:release].to_f >= 10.04
-      rate_limit "s:1/sec:5"
-    else
-      rate_limit "1/sec:5"
-    end
+    rate_limit "s:1/sec:5"
   end
 end
 

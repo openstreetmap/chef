@@ -32,10 +32,7 @@ package "usbutils"
 package "numactl"
 package "xfsprogs"
 package "sysv-rc-conf"
-
-if node[:lsb][:release].to_f >= 10.04
-  package "iotop"
-end
+package "iotop"
 
 if node[:lsb][:release].to_f <= 11.04
   package "lslk"

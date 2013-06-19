@@ -25,11 +25,7 @@ package "openssh-server"
 
 service "ssh" do
   action [ :enable, :start ]
-  if node[:lsb][:release].to_f >= 10.04
-    supports :status => true, :restart => true, :reload => true
-  else 
-    supports :restart => true, :reload => true
-  end
+  supports :status => true, :restart => true, :reload => true
 end
 
 hosts = search(:node, "networking:interfaces").sort_by do |node|

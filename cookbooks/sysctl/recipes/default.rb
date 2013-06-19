@@ -21,27 +21,19 @@ package "procps" do
   action :install
 end
 
-if node[:lsb][:release].to_f <= 8.04
-  sysctl_template = "sysctl.conf.erb"
-  sysctl_conf = "/etc/sysctl.conf"
-else
-  directory "/etc/sysctl.d" do
-    owner "root"
-    group "root"
-    mode 0755
-  end
-
-  sysctl_template = "chef.conf.erb"
-  sysctl_conf = "/etc/sysctl.d/60-chef.conf"
+directory "/etc/sysctl.d" do
+  owner "root"
+  group "root"
+  mode 0755
 end
 
 execute "sysctl" do
   action :nothing
-  command "/sbin/sysctl -p #{sysctl_conf}"
+  command "/sbin/sysctl -p /etc/sysctl.d/60-chef.conf"
 end
 
-template sysctl_conf do
-  source sysctl_template
+template "/etc/sysctl.d/60-chef.conf" do
+  source "chef.conf.erb"
   owner "root"
   group "root"
   mode 0644

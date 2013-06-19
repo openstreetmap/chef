@@ -19,19 +19,11 @@
 
 include_recipe "networking"
 
-if node[:lsb][:release].to_f < 12.04
-  package_name = "dhcp3-server"
-  config_file = "/etc/dhcp3/dhcpd.conf"
-else
-  package_name = "isc-dhcp-server"
-  config_file = "/etc/dhcp/dhcpd.conf"
-end
-
-package package_name
+package "isc-dhcp-server"
 
 domain = "#{node[:networking][:roles][:external][:zone]}.openstreetmap.org"
 
-template config_file do
+template "/etc/dhcp/dhcpd.conf" do
   source "dhcpd.conf.erb"
   owner "root"
   group "root"
@@ -39,8 +31,8 @@ template config_file do
   variables :domain => domain
 end
 
-service package_name do
+service "isc-dhcp-server" do
   action [ :enable, :start ]
   supports :status => true, :restart => true
-  subscribes :restart, resources(:template => config_file)
+  subscribes :restart, "template[/etc/dhcp/dhcpd.conf]"
 end

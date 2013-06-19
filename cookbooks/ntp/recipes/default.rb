@@ -51,30 +51,12 @@ template "/etc/ntp.conf" do
   notifies :restart, resources(:service => "ntp")
 end
 
-munin_plugins = []
+munin_plugins = [ "ntp_kernel_err", "ntp_kernel_pll_freq", "ntp_kernel_pll_off", "ntp_offset" ]
 
-if node[:lsb][:release].to_f <= 8.04
-  munin_plugins = [ "ntp_states" ]
-
-  node[:ntp][:servers].each do |name|
-    name = Socket.gethostbyname(name)[0].gsub!(/[.-]/, "_")
-
-    munin_plugin "ntp_#{name}" do
-      target "ntp_"
-    end
-
-    munin_plugins.push("ntp_#{name}")
-  end
-
-  munin_plugin "ntp_states"
-else
-  munin_plugins = [ "ntp_kernel_err", "ntp_kernel_pll_freq", "ntp_kernel_pll_off", "ntp_offset" ]
-
-  munin_plugin "ntp_kernel_err"
-  munin_plugin "ntp_kernel_pll_freq"
-  munin_plugin "ntp_kernel_pll_off"
-  munin_plugin "ntp_offset"
-end
+munin_plugin "ntp_kernel_err"
+munin_plugin "ntp_kernel_pll_freq"
+munin_plugin "ntp_kernel_pll_off"
+munin_plugin "ntp_offset"
 
 if File.directory?("/etc/munin/plugins")
   Dir.new("/etc/munin/plugins").each do |plugin|

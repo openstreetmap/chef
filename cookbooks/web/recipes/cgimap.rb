@@ -32,13 +32,8 @@ package "libmemcached-dev"
 package "libboost-regex-dev"
 package "libboost-program-options-dev"
 package "libboost-date-time-dev"
+package "libpqxx3-dev"
 package "zlib1g-dev"
-
-if node[:lsb][:release].to_f < 12.04
-  package "libpqxx-dev"
-else
-  package "libpqxx3-dev"
-end
 
 cgimap_directory = "#{node[:web][:base_directory]}/cgimap"
 pid_directory = node[:web][:pid_directory]
