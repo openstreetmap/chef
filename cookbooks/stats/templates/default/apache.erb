@@ -1,0 +1,28 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+<VirtualHost *:80>
+	ServerName stats.openstreetmap.org
+	ServerAlias stats.osm.org
+	ServerAdmin webmaster@openstreetmap.org
+
+	CustomLog /var/log/apache2/stats.openstreetmap.org-access.log combined
+	ErrorLog /var/log/apache2/stats.openstreetmap.org-error.log
+
+	DocumentRoot <%= @directory %>
+	Alias /awstats-icon/ /usr/share/awstats/icon/
+	ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/
+</VirtualHost>
+
+<Directory /var/lib/awstats>
+	Options None
+	AllowOverride None
+	Order allow,deny
+	Allow from all
+</Directory>
+
+<Directory /usr/share/awstats/icon>
+	Options None
+	AllowOverride None
+	Order allow,deny
+	Allow from all
+</Directory>

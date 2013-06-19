@@ -140,6 +140,7 @@ run_list(
   "role[chef-server]",
   "role[chef-repository]",
   "role[planet]",
+  "role[stats]",
   "role[web-storage]",
   "recipe[rsyncd]",
   "recipe[openvpn]"

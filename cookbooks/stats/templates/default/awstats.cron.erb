@@ -1,0 +1,5 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+<% @sites.each_with_index do |site,index| -%>
+0 <%= "%02d" % [ 8 + index * 2 ] %> * * * www-data /usr/lib/cgi-bin/awstats.pl -config=<%= site[:name] %> -update > /dev/null
+<% end -%>
