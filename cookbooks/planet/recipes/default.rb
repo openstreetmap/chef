@@ -21,6 +21,7 @@ include_recipe "apache::ssl"
 
 package "perl"
 package "php5-cli"
+package "pbzip2"
 package "osmosis"
 
 remote_directory "/usr/local/bin" do
