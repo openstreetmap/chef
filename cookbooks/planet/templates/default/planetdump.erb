@@ -1,0 +1,71 @@
+#!/bin/bash
+ulimit -m 4194304 -v 4194304
+set -e
+
+if [ -f /tmp/planetdump.lock ]; then
+	if [ "$(ps -p `cat /tmp/planetdump.lock` | wc -l)" -gt 1 ]; then
+		# process is still running
+		echo Error: Another planetdump is running
+		exit 1
+	else
+		# process not running, but lock file not deleted?
+		rm /tmp/planetdump.lock
+	fi
+fi
+
+#Create Lock
+echo $$ > /tmp/planetdump.lock
+
+
+cur_date=`date +%y%m%d`
+cur_year=`date +%Y`
+cur_planet=planet-${cur_date}.osm
+cur_changeset=changesets-${cur_date}.osm
+planet_dir=/store/planet/
+
+export CONNECTION_PARAMS='dbname=openstreetmap host=localhost user=planetdump password=<%= @password %>'
+export PATH='/usr/local/bin:/usr/bin:/bin:/usr/bin/X11'
+
+
+if [ \! -d ${planet_dir}/planet/ ]
+	then
+		echo ${planet_dir}planet/ does not exist
+		exit 1
+	fi
+if [ \! -d ${planet_dir}/planet/${cur_year}/ ]; then mkdir ${planet_dir}/planet/${cur_year}/; fi
+cd ${planet_dir}/planet/${cur_year}/
+
+/opt/planetdump/planet06_pg | pbzip2 -p6 -7c > .${cur_planet}.bz2.new
+/opt/planetdump/planet06_pg --changesets | pbzip2 -p6 -9c > .${cur_changeset}.bz2.new
+
+planet_size=$(du -sb .${cur_planet}.bz2.new | awk '{ print $1 }')
+changeset_size=$(du -sb .${cur_changeset}.bz2.new | awk '{ print $1 }')
+if ((planet_size<28000000000)); then 
+	echo Planet .${cur_planet}.bz2.new too small
+	exit 1
+fi
+if ((changeset_size<600000000)); then
+	echo Changeset .${cur_changeset}.bz2.new too small
+	exit 1
+fi
+
+mv .${cur_planet}.bz2.new ${cur_planet}.bz2
+mv .${cur_changeset}.bz2.new ${cur_changeset}.bz2
+md5sum ${cur_planet}.bz2 > ${cur_planet}.bz2.md5
+md5sum ${cur_changeset}.bz2 > ${cur_changeset}.bz2.md5
+
+#link planet latest to the new file
+cd ${planet_dir}/planet/
+
+ln -fs ${cur_year}/${cur_planet}.bz2 planet-latest.osm.bz2
+ln -fs ${cur_year}/${cur_changeset}.bz2 changesets-latest.osm.bz2
+
+# mangle md5 files for 'latest' ones
+rm -f planet-latest.osm.bz2.md5
+rm -f changesets-latest.osm.bz2.md5
+
+sed -e "s/${cur_planet}.bz2/planet-latest.osm.bz2/" ${cur_year}/${cur_planet}.bz2.md5 > planet-latest.osm.bz2.md5
+sed -e "s/${cur_changeset}.bz2/changesets-latest.osm.bz2/" ${cur_year}/${cur_changeset}.bz2.md5 > changesets-latest.osm.bz2.md5
+
+rm /tmp/planetdump.lock
+
