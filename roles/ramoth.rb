@@ -2,6 +2,11 @@ name "ramoth"
 description "Master role applied to ramoth"
 
 default_attributes(
+  :accounts => {
+    :users => {
+      :osmbackup => { :status => :role }
+    }
+  },
   :db => {
     :cluster => "9.1/main"
   },
@@ -61,5 +66,6 @@ default_attributes(
 
 run_list(
   "role[ic]",
-  "role[db-master]"
+  "role[db-master]",
+  "role[db-backup]"
 )

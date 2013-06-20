@@ -4,6 +4,7 @@ description "Master role applied to horntail"
 default_attributes(
   :accounts => {
     :users => {
+      :osmbackup => { :status => :role },
       :gravitystorm => { :status => :user }
     }
   },
