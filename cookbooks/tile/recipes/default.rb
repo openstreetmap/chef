@@ -318,6 +318,12 @@ end
 #  end
 #end
 
+directory "/var/log/tile" do
+  owner "tile"
+  group "tile"
+  mode 0755
+end
+
 package "osm2pgsql"
 package "osmosis"
 
@@ -350,12 +356,6 @@ template "/usr/local/bin/expire-tiles" do
 end
 
 directory "/var/lib/replicate" do
-  owner "tile"
-  group "tile"
-  mode 0755
-end
-
-directory "/var/log/replicate" do
   owner "tile"
   group "tile"
   mode 0755

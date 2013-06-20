@@ -2,11 +2,14 @@
 
 # DO NOT EDIT - This file is being maintained by Chef
 
-echo $$ > /var/run/render-lowzoom.pid
+# Send output to the log
+exec > /var/log/tile/renderd-lowzoom.log 2>&1
 <% node[:tile][:styles].each do |name,details| -%>
 
+# Find project file for style "<%= name %>"
 project="/srv/tile.openstreetmap.org/styles/<%= name %>/project.mml"
 
+# Update low zoom tiles for style "<%= name %>"
 render_old \
   --config=/etc/renderd.conf \
   --tile-dir=/srv/tile.openstreetmap.org/tiles \
@@ -16,9 +19,8 @@ render_old \
   --timestamp=$(stat --printf=%Y ${project}) \
   --min-zoom=0 --max-zoom=10
 
+# Update timestamp for style "<%= name %>"
 touch --reference="$project" "/srv/tile.openstreetmap.org/tiles/<%= name %>/planet-import-complete"
 <% end -%>
-
-rm -f /var/run/render-lowzoom.pid
 
 exit 0
