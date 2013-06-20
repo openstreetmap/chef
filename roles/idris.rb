@@ -17,29 +17,9 @@ default_attributes(
         :address => "128.40.168.98"
       }
     }
-  },
-  :postgresql => {
-    :versions => [ "9.1" ],
-    :settings => {
-      :defaults => {
-        :shared_buffers => "1GB",
-        :maintenance_work_mem => "256MB",
-        :effective_cache_size => "2GB"
-      }
-    }
-  },
-  :sysctl => {
-    :postgres => {
-      :comment => "Increase shared memory for postgres",
-      :parameters => { 
-        "kernel.shmmax" => 4 * 1024 * 1024 * 1024,
-        "kernel.shmall" => 4 * 1024 * 1024 * 1024 / 4096
-      }
-    }
   }
 )
 
 run_list(
-  "role[ucl-internal]",
-  "role[tile]"
+  "role[ucl-internal]"
 )
