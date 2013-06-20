@@ -19,7 +19,11 @@
 
 include_recipe "squid"
 
-tilecaches = search(:node, "roles:tilecache")
+expiry_time = 14 * 86400
+
+tilecaches = search(:node, "roles:tilecache").reject { |n| Time.now - Time.at(n[:ohai_time]) > expiry_time }.sort_by { |n| n[:hostname] }.map do |n|
+  { :name => n[:hostname], :interface => n.interfaces(:role => :external).first[:interface] }
+end
 
 squid_fragment "tilecache" do
   template "squid.conf.erb"
