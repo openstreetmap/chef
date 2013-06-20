@@ -19,7 +19,7 @@ cache_peer_access osmtileFileAccel deny all
 #Create an unlimited pool for cache IP addresses
 acl pool_unlimited src 127.0.0.1
 <% @caches.each do |cache| -%>
-<% cache.ipaddresses(:family => :inet, :role => :external) do |address| -%>
+<% cache.ipaddresses(:family => :inet, :role => :external).sort.each do |address| -%>
 acl pool_unlimited src <%= address %>
 <% end -%>
 <% end -%>
