@@ -182,6 +182,25 @@ node[:tile][:data].each do |name,data|
   end
 end
 
+template "/usr/local/bin/render-lowzoom" do
+  source "render-lowzoom.erb"
+  owner "root"
+  group "root"
+  mode 0755
+end
+
+template "/etc/init.d/render-lowzoom" do
+  source "render-lowzoom.init.erb"
+  owner "root"
+  group "root"
+  mode 0755
+end
+
+service "render-lowzoom" do
+  action :disable
+  supports :restart => true
+end
+
 nodejs_package "carto"
 nodejs_package "millstone"
 
@@ -217,16 +236,14 @@ node[:tile][:styles].each do |name,details|
   end
 
   execute "#{style_directory}/project.mml" do
+    action :nothing
     command "carto project.mml > project.xml"
     cwd style_directory
     user "tile"
     group "tile"
-    not_if do
-      File.exist?("#{style_directory}/project.xml") and
-      File.mtime("#{style_directory}/project.xml") >= File.mtime("#{style_directory}/project.mml")
-    end
-    notifies :touch, "file[#{tile_directory}/planet-import-complete]"
+    subscribes :run, "git[#{style_directory}]"
     notifies :restart, "service[renderd]"
+    notifies :restart, "service[render-lowzoom]"
   end
 end
 

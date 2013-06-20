@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# DO NOT EDIT - This file is being maintained by Chef
+
+echo $$ > /var/run/render-lowzoom.pid
+<% node[:tile][:styles].each do |name,details| -%>
+
+project="/srv/tile.openstreetmap.org/styles/<%= name %>/project.mml"
+
+render_old \
+  --config=/etc/renderd.conf \
+  --tile-dir=/srv/tile.openstreetmap.org/tiles \
+  --socket=/var/run/renderd/renderd.sock \
+  --num-threads=<%= ( node[:cpu][:total] - 2 ) / 4 %> \
+  --map="<%= name %>" \
+  --timestamp=$(stat --printf=%Y ${project}) \
+  --min-zoom=0 --max-zoom=10
+
+touch --reference="$project" "/srv/tile.openstreetmap.org/tiles/<%= name %>/planet-import-complete"
+<% end -%>
+
+rm -f /var/run/render-lowzoom.pid
+
+exit 0
