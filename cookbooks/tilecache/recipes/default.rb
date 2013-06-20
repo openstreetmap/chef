@@ -19,7 +19,7 @@
 
 include_recipe "squid"
 
-tilecaches = search(:node, "roles:tilecache")
+tilecaches = search(:node, "roles:tilecache").sort_by { |n| n[:hostname] }
 
 squid_fragment "tilecache" do
   template "squid.conf.erb"

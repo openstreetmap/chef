@@ -20,7 +20,7 @@ cache_peer_access osmtileFileAccel deny all
 acl pool_unlimited src 127.0.0.1
 <% @caches.each do |cache| -%>
 <% cache.ipaddresses(:family => :inet, :role => :external) do |address| -%>
-  acl pool_unlimited src <%= address %>
+acl pool_unlimited src <%= address %>
 <% end -%>
 <% end -%>
 
