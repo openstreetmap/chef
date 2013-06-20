@@ -14,7 +14,7 @@
   # Get the real remote IP for requests via a trusted proxy
   RemoteIPHeader X-Forwarded-For
 <% @caches.each do |cache| -%>
-<% cache.ipaddresses(:role => :external) do |address| -%>
+<% cache.ipaddresses(:role => :external).sort.each do |address| -%>
   RemoteIPTrustedProxy <%= address %>
 <% end -%>
 <% end -%>

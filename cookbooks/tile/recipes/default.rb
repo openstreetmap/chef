@@ -34,7 +34,7 @@ apache_module "tile" do
   conf "tile.conf.erb"
 end
 
-tilecaches = search(:node, "roles:tilecache")
+tilecaches = search(:node, "roles:tilecache").sort_by { |n| n[:hostname] }
 
 apache_site "default" do
   action [ :disable ]
