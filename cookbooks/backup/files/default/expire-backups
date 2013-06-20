@@ -1,0 +1,86 @@
+#!/usr/bin/perl
+
+# DO NOT EDIT - This file is being maintained by Chef
+
+use strict;
+use warnings;
+
+use Date::Calc qw(Today Add_Delta_Days Add_Delta_YMD Day_of_Week);
+use Getopt::Long;
+
+my $days = 0;
+my $weeks = 0;
+my $months = 0;
+
+GetOptions("days=i" => \$days, "weeks=i" => \$weeks, "months=i" => \$months);
+
+my $dir = shift;
+my $prefix = shift;
+my @dates;
+
+for my $day (0 .. $days - 1)
+{
+    push(@dates, sprintf("%04d-%02d-%02d", Subtract_Delta_Days(Today(), $day)));
+}
+
+for my $week (0 .. $weeks - 1)
+{
+    push(@dates, sprintf("%04d-%02d-%02d", Subtract_Delta_Days(Monday(), $week * 7)));
+}
+
+for my $month (0 .. $months - 1)
+{
+    push(@dates, sprintf("%04d-%02d-%02d", Subtract_Delta_YMD(First_of_Month(), 0, $month, 0)));
+}
+
+my $dates = join("|", @dates);
+my $match = qr/^${prefix}-\d{4}-\d{2}-\d{2}\./;
+my $keep = qr/^${prefix}-(?:${dates})\./;
+
+opendir(DIR, "$dir") || die "Can't open ${dir}: $!";
+
+while (my $file = readdir(DIR))
+{
+#    print "Expiring $file\n" if $file =~ $match && $file !~ $keep;
+    unlink("${dir}/${file}") if $file =~ $match && $file !~ $keep;
+}
+
+closedir(DIR);
+
+exit 0;
+
+sub Monday
+{
+    my @today = Today();
+
+    return Subtract_Delta_Days(@today, Day_of_Week(@today) - 1);
+}
+
+sub First_of_Month
+{
+    my($year,$month,$day) = Today();
+
+    return($year,$month,1);
+}
+
+sub Subtract_Delta_Days
+{
+    my $year = shift;
+    my $month = shift;
+    my $day = shift;
+    my $days = shift;
+
+    return Add_Delta_Days($year, $month, $day, -$days);
+}
+
+sub Subtract_Delta_YMD
+{
+    my $year = shift;
+    my $month = shift;
+    my $day = shift;
+    my $years = shift;
+    my $months = shift;
+    my $days = shift;
+
+    return Add_Delta_YMD($year, $month, $day, -$years, -$months, -$days);
+}
