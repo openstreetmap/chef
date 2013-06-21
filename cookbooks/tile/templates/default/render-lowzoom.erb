@@ -6,21 +6,20 @@
 exec > /var/log/tile/renderd-lowzoom.log 2>&1
 <% node[:tile][:styles].each do |name,details| -%>
 
-# Find project file for style "<%= name %>"
-project="/srv/tile.openstreetmap.org/styles/<%= name %>/project.mml"
-
 # Update low zoom tiles for style "<%= name %>"
-render_old \
-  --config=/etc/renderd.conf \
+render_list \
+  --all --force \
   --tile-dir=/srv/tile.openstreetmap.org/tiles \
   --socket=/var/run/renderd/renderd.sock \
   --num-threads=<%= ( node[:cpu][:total] - 2 ) / 4 %> \
   --map="<%= name %>" \
-  --timestamp=$(stat --printf=%Y ${project}) \
+  --max-load=70 \
   --min-zoom=0 --max-zoom=12
 
 # Update timestamp for style "<%= name %>"
-touch --reference="$project" "/srv/tile.openstreetmap.org/tiles/<%= name %>/planet-import-complete"
+touch \
+  --reference="/srv/tile.openstreetmap.org/styles/<%= name %>/project.mml" \
+  "/srv/tile.openstreetmap.org/tiles/<%= name %>/planet-import-complete"
 <% end -%>
 
 exit 0
