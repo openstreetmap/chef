@@ -17,7 +17,7 @@ render_old \
   --num-threads=<%= ( node[:cpu][:total] - 2 ) / 4 %> \
   --map="<%= name %>" \
   --timestamp=$(stat --printf=%Y ${project}) \
-  --min-zoom=0 --max-zoom=10
+  --min-zoom=0 --max-zoom=12
 
 # Update timestamp for style "<%= name %>"
 touch --reference="$project" "/srv/tile.openstreetmap.org/tiles/<%= name %>/planet-import-complete"
