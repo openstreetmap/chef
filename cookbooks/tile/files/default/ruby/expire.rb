@@ -52,7 +52,7 @@ module Expire
   end
   
   # this must match the definition of xyz_to_meta in mod_tile
-  def Expire.xyz_to_meta(root, x, y, z)
+  def Expire.xyz_to_meta(x, y, z)
     # mask off the final few bits
     x &= ~(METATILE - 1)
     y &= ~(METATILE - 1)
@@ -60,7 +60,7 @@ module Expire
     hash_path = (0..4).collect { |i| 
       (((x >> 4*i) & 0xf) << 4) | ((y >> 4*i) & 0xf) 
     }.reverse.join('/')
-    root + '/' + z.to_s + '/' + hash_path + ".meta"
+    z.to_s + '/' + hash_path + ".meta"
   end
   
   # time to reset to, some very stupidly early time, before OSM started
@@ -72,7 +72,7 @@ module Expire
     File.utime(EXPIRY_TIME, EXPIRY_TIME, meta)
   end
   
-  def Expire.expire(change_file)
+  def Expire.expire(change_file, tile_dirs)
     do_expire(change_file) do |set|
       new_set = Set.new
       meta_set = Set.new
@@ -82,8 +82,11 @@ module Expire
       set.each do |xy|
         # this has to match the routine in mod_tile
         meta = xyz_to_meta(HASH_ROOT, xy[0], xy[1], xy[2])
-        
-        meta_set.add(meta) if File.exist? meta
+
+        # check each style working out what needs expiring
+        tile_dirs.each do |tile_dir|
+          meta_set.add(tile_dir + "/" + meta) if File.exist?(tile_dir + "/" + meta)
+        end
         
         # add the parent into the set for the next round
         new_set.add([xy[0] / 2, xy[1] / 2, xy[2] - 1])

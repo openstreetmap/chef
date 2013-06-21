@@ -4,6 +4,12 @@
 
 require 'expire'
 
+tile_dirs = [
+<% node[:tile][:styles].each do |name,details| -%>
+  "/srv/tile.openstreetmap.org/tiles/<%= name %>",
+<% end -%>
+];
+
 ARGV.each do |f|
-   Expire::expire(f)
+   Expire::expire(f, tile_dirs)
 end
