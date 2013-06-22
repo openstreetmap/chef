@@ -63,6 +63,15 @@ template "/etc/exim4/exim4.conf" do
   notifies :restart, resources(:service => "exim4")
 end
 
+search(:accounts, "*:*").each do |account|
+  name = account["id"]
+  details = node[:accounts][:users][name] || {}
+
+  if details[:status] and account["email"]
+    node.default[:exim][:aliases][name] = account["email"]
+  end
+end
+
 template "/etc/aliases" do
   source "aliases.erb"
   owner "root"

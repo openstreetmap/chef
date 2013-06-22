@@ -3,9 +3,3 @@
 <% node[:exim][:aliases].keys.sort.each do |a| -%>
 <%= a -%>: <%= node[:exim][:aliases][a] %>
 <% end -%>
-
-<% node[:accounts][:users].keys.sort.each do |u| -%>
-<% if node[:accounts][:users][u][:status] and node[:accounts][:users][u][:email] -%>
-<%= u -%>: <%= node[:accounts][:users][u][:email] %>
-<% end -%>
-<% end -%>
