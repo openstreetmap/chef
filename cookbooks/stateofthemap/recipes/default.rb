@@ -228,3 +228,11 @@ end
 wordpress_plugin "wp-sticky" do
   site "2012.stateofthemap.org"
 end
+
+template "/etc/cron.daily/sotm-backup" do
+  source "backup.cron.erb"
+  owner "root"
+  group "root"
+  mode 0750
+  variable :passwords => passwords
+end

@@ -1,0 +1,27 @@
+#!/bin/sh
+
+# DO NOT EDIT - This file is being maintained by Chef
+
+T=$(mktemp -d -t -p /var/tmp sotm.XXXXXXXXXX)
+D=$(date +%Y-%m-%d)
+B=sotm-$D.tar.gz
+
+mkdir $T/sotm-$D
+
+<% 2007.upto(2012) do |year| -%>
+mysqldump --user=sotm<%= year %> --password=<%= @passwords["sotm#{year}"] %> --opt sotm<%= year %> > $T/sotm-$D/sotm<%= year %>.sql
+<% end -%>
+
+ln -s /srv/2007.stateofthemap.org $T/sotm-$D/www2007
+ln -s /srv/2008.stateofthemap.org $T/sotm-$D/www2008
+ln -s /srv/2009.stateofthemap.org $T/sotm-$D/www2009
+ln -s /srv/2010.stateofthemap.org $T/sotm-$D/www2010
+ln -s /srv/2011.stateofthemap.org $T/sotm-$D/www2011
+ln -s /srv/2012.stateofthemap.org $T/sotm-$D/www2012
+
+export GZIP="--rsyncable -9"
+
+nice tar --create --gzip --dereference --directory=$T --file=$T/$B sotm-$D
+nice nice $T/$B backup::backup
+
+rm -rf $T
