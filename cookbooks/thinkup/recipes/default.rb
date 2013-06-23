@@ -114,3 +114,11 @@ template "/etc/cron.d/thinkup" do
   group "root"
   mode "0644"
 end
+
+template "/etc/cron.daily/thinkup-backup" do
+  source "backup.cron.erb"
+  owner "root"
+  group "root"
+  mode 0750
+  variable :passwords => passwords
+end
