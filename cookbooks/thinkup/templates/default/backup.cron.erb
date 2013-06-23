@@ -7,7 +7,7 @@ D=$(date +%Y-%m-%d)
 B=thinkup-$D.tar.gz
 
 mkdir $T/thinkup-$D
-mysqldump --user=thinkup --password=<% @passwords["database"] %> --opt thinkup > $T/thinkup-$D/thinkup.sql
+mysqldump --user=thinkup --password=<%= @passwords["database"] %> --opt thinkup > $T/thinkup-$D/thinkup.sql
 ln -s /srv/thinkup.openstreetmap.org $T/thinkup-$D/www
 
 export GZIP="--rsyncable -9"

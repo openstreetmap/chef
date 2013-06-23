@@ -120,5 +120,5 @@ template "/etc/cron.daily/thinkup-backup" do
   owner "root"
   group "root"
   mode 0750
-  variable :passwords => passwords
+  variables :passwords => passwords
 end

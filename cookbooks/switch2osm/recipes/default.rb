@@ -40,5 +40,5 @@ template "/etc/cron.daily/switch2osm-backup" do
   owner "root"
   group "root"
   mode 0750
-  variable :passwords => passwords
+  variables :passwords => passwords
 end
