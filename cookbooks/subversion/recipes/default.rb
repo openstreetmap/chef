@@ -48,3 +48,10 @@ apache_site site_name do
   directory repository_directory
   variables :realm => "Subversion Repository", :password_file => "/etc/apache2/svn.passwd"
 end
+
+template "/etc/cron.daily/svn-backup" do
+  source "backup.cron.erb"
+  owner "root"
+  group "root"
+  mode 0755
+end
