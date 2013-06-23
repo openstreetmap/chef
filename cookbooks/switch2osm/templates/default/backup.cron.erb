@@ -1,0 +1,18 @@
+#!/bin/sh
+
+# DO NOT EDIT - This file is being maintained by Chef
+
+T=$(mktemp -d -t -p /var/tmp switch2osm.XXXXXXXXXX)
+D=$(date +%Y-%m-%d)
+B=switch2osm-$D.tar.gz
+
+mkdir $T/switch2osm-$D
+mysqldump --user=switch2osm-user --password=<%= @passwords["switch2osm-user"] %> --opt switch2osm-blog > $T/switch2osm-$D/switch2osm-blog.sql
+ln -s /srv/switch2osm.org $T/switch2osm-$D/www
+
+export GZIP="--rsyncable -9"
+
+nice tar --create --gzip --dereference --directory=$T --file=$T/$B switch2osm-$D
+nice rsync $T/$B backup::backup
+
+rm -rf $T

@@ -34,3 +34,11 @@ wordpress_theme "picolight" do
   repository "git://github.com/Firefishy/picolight-s2o.git"
   revision "master"
 end
+
+template "/etc/cron.daily/switch2osm-backup" do
+  source "backup.cron.erb"
+  owner "root"
+  group "root"
+  mode 0750
+  variable :passwords => passwords
+end
