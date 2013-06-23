@@ -1,0 +1,17 @@
+#!/bin/sh
+
+# DO NOT EDIT - This file is being maintained by Chef
+
+T=$(mktemp -d -t -p /var/tmp lists.XXXXXXXXXX)
+D=$(date +%Y-%m-%d)
+B=lists-$D.tar.gz
+
+mkdir $T/lists-$D
+ln -s /var/lib/mailman $T/lists-$D/mailman
+
+export GZIP="--rsyncable -9"
+
+nice tar --create --gzip --dereference --directory=$T --file=$T/$B lists-$D
+nice rsync $T/$B backup::backup
+
+rm -rf $T

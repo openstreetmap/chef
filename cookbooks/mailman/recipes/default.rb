@@ -32,3 +32,10 @@ apache_module "rewrite"
 apache_site "lists.openstreetmap.org" do
   template "apache.erb"
 end
+
+template "/etc/cron.daily/lists-backup" do
+  source "backup.cron.erb"
+  owner "root"
+  group "root"
+  mode 0755
+end
