@@ -78,3 +78,10 @@ Dir.new(git_directory).select { |name| name =~ /\.git$/ }.each do |repository|
     end
   end
 end
+
+template "/etc/cron.daily/git-backup" do
+  source "backup.cron.erb"
+  owner "root"
+  group "root"
+  mode 0755
+end
