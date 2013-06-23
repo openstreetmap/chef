@@ -1,0 +1,18 @@
+#!/bin/sh
+
+# DO NOT EDIT - This file is being maintained by Chef
+
+T=$(mktemp -d -t -p /var/tmp osmf-crm.XXXXXXXXXX)
+D=$(date +%Y-%m-%d)
+B=osmf-crm-$D.tar.gz
+
+mkdir $T/osmf-crm-$D
+mysqldump --user=civicrm --password=<%= @passwords["database"] %> --opt --skip-lock-tables civicrm > $T/osmf-crm-$D/civicrm.sql
+ln -s /data/crm.osmfoundation.org $T/osmf-crm-$D/www
+
+export GZIP="--rsyncable -9"
+
+nice tar --create --gzip --dereference --directory=$T --file=$T/$B osmf-crm-$D
+nice rsync $T/$B backup::backup
+
+rm -rf $T

@@ -156,3 +156,11 @@ directory "/data/crm.osmfoundation.org/civicrm/en_US/ConfigAndLog" do
   group "www-data"
   mode "0775"
 end
+
+template "/etc/cron.daily/osmf-crm-backup" do
+  source "backup.cron.erb"
+  owner "root"
+  group "root"
+  mode 0750
+  variable :passwords => passwords
+end
