@@ -48,3 +48,11 @@ wordpress_plugin "sitepress-multilingual-cms" do
   site "blog.osmfoundation.org"
   source "plugins/sitepress-multilingual-cms"
 end
+
+template "/etc/cron.daily/blog-backup" do
+  source "backup.cron.erb"
+  owner "root"
+  group "root"
+  mode 0750
+  variable :passwords => passwords
+end

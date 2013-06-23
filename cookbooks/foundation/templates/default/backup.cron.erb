@@ -1,0 +1,18 @@
+#!/bin/sh
+
+# DO NOT EDIT - This file is being maintained by Chef
+
+T=$(mktemp -d -t -p /var/tmp osm-blog.XXXXXXXXXX)
+D=$(date +%Y-%m-%d)
+B=osm-blog-$D.tar.gz
+
+mkdir $T/osm-blog-$D
+mysqldump --user=osm-blog-user --password=<%= @passwords["osmf-blog-user"] %> --opt osm-blog > $T/osm-blog-$D/osm-blog.sql
+ln -s /srv/blog.openstreetmap.org $T/osm-blog-$D/www
+
+export GZIP="--rsyncable -9"
+
+nice tar --create --gzip --dereference --directory=$T --file=$T/$B osm-blog-$D
+nice rsync $T/$B backup::backup
+
+rm -rf $T
