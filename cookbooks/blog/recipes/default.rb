@@ -86,3 +86,11 @@ apache_site "opengeodata.org" do
   template "opengeodata.erb"
   directory "/srv/opengeodata.org"
 end
+
+template "/etc/cron.daily/blog-backup" do
+  source "backup.cron.erb"
+  owner "root"
+  group "root"
+  mode 0750
+  variables :passwords => passwords
+end
