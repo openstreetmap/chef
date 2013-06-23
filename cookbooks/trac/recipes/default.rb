@@ -83,3 +83,10 @@ template "/etc/sudoers.d/trac" do
   group "root"
   mode 0440
 end
+
+template "/etc/cron.daily/trac-backup" do
+  source "backup.cron.erb"
+  owner "root"
+  group "root"
+  mode 0755
+end

@@ -1,0 +1,16 @@
+#!/bin/sh
+
+# DO NOT EDIT - This file is being maintained by Chef
+
+T=$(mktemp -d -t -p /var/tmp trac.XXXXXXXXXX)
+D=$(date +%Y-%m-%d)
+B=trac-$D.tar.gz
+
+trac-admin /var/lib/trac hotcopy $T/trac-$D > /dev/null
+
+export GZIP="--rsyncable -9"
+
+nice tar --create --gzip --directory=$T --file=$T/$B trac-$D
+nice rsync $T/$B backup::backup
+
+rm -rf $T
