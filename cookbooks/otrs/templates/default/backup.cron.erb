@@ -1,0 +1,21 @@
+#!/bin/sh
+
+# DO NOT EDIT - This file is being maintained by Chef
+
+T=$(mktemp -d -t -p /var/tmp otrs.XXXXXXXXXX)
+D=$(date +%Y-%m-%d)
+B=otrs-$D.tar.gz
+
+mkdir $T/otrs-$D
+chown otrs $T
+chown otrs $T/otrs-$D
+sudo -u otrs pg_dump --file=$T/otrs-$D/otrs.dmp otrs
+ln -s /opt/otrs $T/otrs-$D/otrs
+ln -s /etc/apache2/sites-available/otrs.openstreetmap.org $T/otrs-$D/apache2-otrs.openstreetmap.org
+
+export GZIP="--rsyncable -9"
+
+nice tar --create --gzip --dereference --directory=$T --file=$T/$B otrs-$D
+nice rsync $T/$B backup::backup
+
+rm -rf $T

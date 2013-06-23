@@ -142,3 +142,10 @@ template "/etc/sudoers.d/otrs" do
   group "root"
   mode 0440
 end
+
+template "/etc/cron.daily/otrs-backup" do
+  source "backup.cron.erb"
+  owner "root"
+  group "root"
+  mode 0755
+end
