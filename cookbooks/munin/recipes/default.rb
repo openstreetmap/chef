@@ -101,7 +101,7 @@ munin_plugin "diskstats"
 munin_plugin "entropy"
 munin_plugin "forks"
 
-if File.exists?("/proc/net/ip_conntrack") or File.exists?("/proc/net/nf_conntrack")
+if node[:kernel][:modules].include?("nf_conntrack")
   munin_plugin "fw_conntrack"
   munin_plugin "fw_forwarded_local"
 else
