@@ -3,11 +3,11 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
 start() {
-  start-stop-daemon --start --chuid tile --background --make-pidfile -pidfile /var/run/update-lowzoom-<%= @style %>.pid --exec /usr/local/bin/update-lowzoom-<%= @style %>
+  start-stop-daemon --start --chuid tile --background --make-pidfile --pidfile /var/run/update-lowzoom-<%= @style %>.pid --exec /usr/local/bin/update-lowzoom-<%= @style %>
 }
 
 stop() {
-  start-stop-daemon --stop --retry 300 --pidfile /var/run/update-lowzoom-<%= @style %>.pid --exec /usr/local/bin/update-lowzoom-<%= @style %>
+  start-stop-daemon --stop --retry 300 --pidfile /var/run/update-lowzoom-<%= @style %>.pid
 }
 
 case "$1" in

@@ -3,11 +3,11 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
 start() {
-  start-stop-daemon --start --chuid tile --background --make-pidfile -pidfile /var/run/replicate.pid --exec /usr/local/bin/replicate
+  start-stop-daemon --start --chuid tile --background --make-pidfile --pidfile /var/run/replicate.pid --exec /usr/local/bin/replicate
 }
 
 stop() {
-  start-stop-daemon --stop --retry 300 --pidfile /var/run/replicate.pid --exec /usr/local/bin/replicate
+  start-stop-daemon --stop --retry 300 --pidfile /var/run/replicate.pid
 }
 
 case "$1" in
