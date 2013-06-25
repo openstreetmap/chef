@@ -100,6 +100,10 @@ apt_source "management-component-pack" do
   key "2689B887"
 end
 
+apt_source "hwraid" do
+  url "http://hwraid.le-vert.net/ubuntu"
+end
+
 apt_source "mapnik-v210" do
   url "http://ppa.launchpad.net/mapnik/v2.1.0/ubuntu"
   key "5D50B6BA"

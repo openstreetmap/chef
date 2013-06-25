@@ -21,9 +21,11 @@ define :apt_source do
   if node.apt.sources.include?(params[:name])
     source_action = :create
 
-    execute "apt-key-#{params[:key]}" do
-      command "/usr/bin/apt-key adv --keyserver hkp://keys.gnupg.net --recv-keys #{params[:key]}"
-      not_if "/usr/bin/apt-key list | /bin/fgrep -q #{params[:key]}"
+    if params[:key]
+      execute "apt-key-#{params[:key]}" do
+        command "/usr/bin/apt-key adv --keyserver hkp://keys.gnupg.net --recv-keys #{params[:key]}"
+        not_if "/usr/bin/apt-key list | /bin/fgrep -q #{params[:key]}"
+      end
     end
   else
     source_action = :delete
