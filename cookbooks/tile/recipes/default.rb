@@ -96,6 +96,9 @@ remote_directory "/srv/tile.openstreetmap.org/html" do
   files_mode 0644
 end
 
+package "python-cairo"
+package "python-mapnik"
+
 directory "/srv/tile.openstreetmap.org/cgi-bin" do
   owner "tile"
   group "tile"
