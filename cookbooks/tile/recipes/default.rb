@@ -182,25 +182,6 @@ node[:tile][:data].each do |name,data|
   end
 end
 
-template "/usr/local/bin/render-lowzoom" do
-  source "render-lowzoom.erb"
-  owner "root"
-  group "root"
-  mode 0755
-end
-
-template "/etc/init.d/render-lowzoom" do
-  source "render-lowzoom.init.erb"
-  owner "root"
-  group "root"
-  mode 0755
-end
-
-service "render-lowzoom" do
-  action :disable
-  supports :restart => true
-end
-
 nodejs_package "carto"
 nodejs_package "millstone"
 
@@ -213,6 +194,27 @@ end
 node[:tile][:styles].each do |name,details|
   style_directory = "/srv/tile.openstreetmap.org/styles/#{name}"
   tile_directory = "/srv/tile.openstreetmap.org/tiles/#{name}"
+
+  template "/usr/local/bin/update-lowzoom-#{name}" do
+    source "update-lowzoom.erb"
+    owner "root"
+    group "root"
+    mode 0755
+    variables :style => name
+  end
+
+  template "/etc/init.d/update-lowzoom-#{name}" do
+    source "update-lowzoom.init.erb"
+    owner "root"
+    group "root"
+    mode 0755
+    variables :style => name
+  end
+
+  service "update-lowzoom-#{name}" do
+    action :disable
+    supports :restart => true
+  end
 
   file "#{tile_directory}/planet-import-complete" do
     action :create_if_missing
@@ -243,7 +245,7 @@ node[:tile][:styles].each do |name,details|
     group "tile"
     subscribes :run, "git[#{style_directory}]"
     notifies :restart, "service[renderd]"
-    notifies :restart, "service[render-lowzoom]"
+    notifies :restart, "service[update-lowzoom-#{name}]"
   end
 end
 
