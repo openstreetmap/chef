@@ -398,6 +398,20 @@ template "/etc/logrotate.d/replicate" do
   mode 0644
 end
 
+template "/usr/local/bin/render-lowzoom" do
+  source "render-lowzoom.erb"
+  owner "root"
+  group "root"
+  mode 0755
+end
+
+template "/etc/cron.d/render-lowzoom" do
+  source "render-lowzoom.cron.erb"
+  owner "root"
+  group "root"
+  mode 0755
+end
+
 munin_plugin "mod_tile_fresh"
 munin_plugin "mod_tile_response"
 munin_plugin "mod_tile_zoom"
@@ -410,4 +424,3 @@ munin_plugin "renderd_zoom_time"
 munin_plugin "replication_delay" do
   conf "munin.erb"
 end
-

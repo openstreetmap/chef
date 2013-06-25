@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# DO NOT EDIT - This file is being maintained by Chef
+
+# Send output to the log
+exec > /var/log/tile/render-lowzoom.log 2>&1
+<% node[:tile][:styles].each_key do |style| -%>
+
+# Update tiles from z0 to z12 for style "<%= @style %>"
+render_list \
+  --all --force \
+  --tile-dir=/srv/tile.openstreetmap.org/tiles \
+  --socket=/var/run/renderd/renderd.sock \
+  --num-threads=<%= ( node[:cpu][:total] - 2 ) / 4 %> \
+  --map="<%= style %>" \
+  --max-load=70 \
+  --min-zoom=0 --max-zoom=12
+<% end -%>
+
+exit 0
