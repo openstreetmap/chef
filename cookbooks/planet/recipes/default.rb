@@ -41,6 +41,26 @@ template "/etc/cron.d/planet" do
   mode 0644
 end
 
+remote_directory "/store/planet" do
+  source "html"
+  owner "root"
+  group "root"
+  mode "0755"
+  files_owner "root"
+  files_group "root"
+  files_mode 0644
+end
+
+remote_directory "/store/planet" do
+  source "cgi"
+  owner "root"
+  group "root"
+  mode 0755
+  files_owner "root"
+  files_group "root"
+  files_mode 0755
+end
+
 apache_module "rewrite" do
   conf "rewrite.conf.erb"
 end

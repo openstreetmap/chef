@@ -1,0 +1,8 @@
+#No bz2 chomping bots please
+
+User-agent: wget
+Allow: /
+
+User-agent: *
+Disallow: /
+
