@@ -49,9 +49,9 @@ default_attributes(
       }
     },
     :tcp_syncookies => {
-      :comment => "Turn off syncookies as they interact badly with the firewall",
+      :comment => "Turn on syncookies to protect against SYN floods",
       :parameters => {
-        "net.ipv4.tcp_syncookies" => "0"
+        "net.ipv4.tcp_syncookies" => "1"
       }
     }
   },
