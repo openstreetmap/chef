@@ -35,5 +35,5 @@ override_attributes(
 
 run_list(
   "role[ic]",
-  "role[wiki]"
+  "role[wiki-old]"
 )

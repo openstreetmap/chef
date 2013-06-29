@@ -27,6 +27,5 @@ default_attributes(
 )
 
 run_list(
-  "role[ic]",
-  "role[wiki-new]"
+  "role[ic]"
 )

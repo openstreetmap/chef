@@ -18,6 +18,5 @@ default_attributes(
 )
 
 run_list(
-  "recipe[mediawiki]",
   "recipe[civicrm]"
 )
