@@ -1,0 +1,59 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+<VirtualHost *:80>
+    ServerName nominatim.openstreetmap.org
+    ServerAdmin webmaster@openstreetmap.org
+    ServerAlias nominatim.osm.org
+    ServerAlias nominatim.openstreetmap.org
+    ServerAlias nominatim.openstreetmap.net
+    ServerAlias nominatim.openstreetmaps.org
+    ServerAlias nominatim.openmaps.org
+
+    CustomLog /var/log/apache2/nominatim.openstreetmap.org-access.log combined
+    ErrorLog /var/log/apache2/nominatim.openstreetmap.org-error.log
+
+    DocumentRoot <%= @directory %>/website
+    <Directory "<%= @directory %>/website/">
+        DirectoryIndex search.php
+        Options MultiViews FollowSymLinks
+        AddType text/html   .php
+        AddType application/xml   .phpx
+        AddType application/json   .phpj
+        AddHandler fcgi:/var/run/php5-fpm-www.sock .php
+        AddHandler fcgi:/var/run/php5-fpm-www.sock .phpx
+        AddHandler fcgi:/var/run/php5-fpm-www.sock .phpj
+    </Directory>
+
+    Alias /pool-www/ "<%= @directory %>/website/"
+    <Location /pool-www>
+        AddHandler fcgi:/var/run/php5-fpm-www.sock .php
+        AddHandler fcgi:/var/run/php5-fpm-www.sock .phpx
+        AddHandler fcgi:/var/run/php5-fpm-www.sock .phpj
+    </Location>
+    Alias /pool-bulk/ "<%= @directory %>/website/"
+    <Location /pool-bulk>
+        AddHandler fcgi:/var/run/php5-fpm-bulk.sock .php
+        AddHandler fcgi:/var/run/php5-fpm-bulk.sock .phpx
+        AddHandler fcgi:/var/run/php5-fpm-bulk.sock .phpj
+    </Location>
+    Redirect 509 /pool-block/
+    ErrorDocument 509 /509.html
+    <Location /pool-block>
+        ErrorDocument 509 /509.html
+    </Location>
+    Redirect 403 /pool-ban/
+    <Location /pool-ban>
+        ErrorDocument 403 /403.html
+    </Location>
+    ErrorDocument 403 /403.html
+
+    RewriteEngine On
+
+    # manual blocks
+    Include <%= @directory %>/settings/apache_blocks.conf
+
+    # regular requests and autoblocks
+    RewriteMap bulklist txt:<%= @directory %>/settings/ip_blocks.map
+    RewriteRule ^/([sdr].*) /pool-${bulklist:%{REMOTE_ADDR}|www}/$1 [PT]
+
+</VirtualHost>

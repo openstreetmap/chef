@@ -34,6 +34,11 @@ service "php5-fpm" do
   supports :status => true, :restart => true, :reload => true
 end
 
+apache_site "nominatim.openstreetmap.org" do
+  template "apache.erb"
+  directory "/home/lonvia/nominatim"
+end
+
 postgresql_user "tomh" do
   cluster "9.1/main"
   superuser true
