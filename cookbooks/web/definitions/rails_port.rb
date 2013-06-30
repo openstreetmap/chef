@@ -51,6 +51,7 @@ define :rails_port, :action => [ :create, :enable ] do
 
   gem_package "bundler#{ruby_version}" do
     package_name "bundler"
+    version "1.3.5"
     gem_binary "gem#{ruby_version}"
     options "--format-executable"
   end
