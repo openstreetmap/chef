@@ -39,6 +39,24 @@ apache_site "nominatim.openstreetmap.org" do
   directory "/home/lonvia/nominatim"
 end
 
+template "/etc/php5/fpm/pool.d/www.conf" do
+  source "fpm.conf.erb"
+  owner "root"
+  group "root"
+  mode 0644
+  variables :name => "www", :pm => "dynamic", :max_children => "50"
+  notifies :reload, resources(:service => "php5-fpm")
+end
+
+template "/etc/php5/fpm/pool.d/bulk.conf" do
+  source "fpm.conf.erb"
+  owner "root"
+  group "root"
+  mode 0644
+  variables :name => "bulk", :pm => "static", :max_children => "7"
+  notifies :reload, resources(:service => "php5-fpm")
+end
+
 postgresql_user "tomh" do
   cluster "9.1/main"
   superuser true
