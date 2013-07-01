@@ -20,11 +20,6 @@ module Expire
   METATILE = 8
   # the directory root for meta tiles
   HASH_ROOT = "/tiles/default/"
-  # lowest zoom that we want to expire
-  # MIN_ZOOM=12
-  MIN_ZOOM=13
-  # highest zoom that we want to expire
-  MAX_ZOOM=18
   # database parameters
   DBNAME="gis"
   DBHOST=""
@@ -72,8 +67,8 @@ module Expire
     File.utime(EXPIRY_TIME, EXPIRY_TIME, meta)
   end
   
-  def Expire.expire(change_file, tile_dirs)
-    do_expire(change_file) do |set|
+  def Expire.expire(change_file, min_zoom, max_zoom, tile_dirs)
+    do_expire(change_file, min_zoom, max_zoom) do |set|
       new_set = Set.new
       meta_set = Set.new
 
@@ -102,7 +97,7 @@ module Expire
     end
   end
 
-  def Expire.do_expire(change_file, &block)
+  def Expire.do_expire(change_file, min_zoom, max_zoom, &block)
     # read in the osm change file
     doc = XML::Document.file(change_file)
     
@@ -121,7 +116,7 @@ module Expire
       end
       point = Proj4::Point.new(Math::PI * node['lon'].to_f / 180, 
                                Math::PI * lat / 180)
-      nodes[node['id'].to_i] = tile_from_latlon(point, MAX_ZOOM)
+      nodes[node['id'].to_i] = tile_from_latlon(point, max_zoom)
     end
     
     # now we look for all the ways that have changed and put all of their nodes into
@@ -143,7 +138,7 @@ module Expire
         # loop over results, adding tiles to the change set
         res.each do |row|
           point = Proj4::Point.new(row[0].to_f / 100.0, row[1].to_f / 100.0)
-          nodes[node_id] = tile_from_merc(point, MAX_ZOOM)
+          nodes[node_id] = tile_from_merc(point, max_zoom)
         end
 
         # Discard results
@@ -157,7 +152,7 @@ module Expire
     set = Set.new nodes.values
     
     # expire tiles and shrink to the set of parents
-    (MAX_ZOOM).downto(MIN_ZOOM) do |z|
+    (max_zoom).downto(min_zoom) do |z|
       # allow the block to work on the set, returning the set at the next
       # zoom level
       set = yield set

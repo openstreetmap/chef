@@ -16,4 +16,6 @@ font_dir_recurse=true
 URI=/<%= name %>/
 XML=/srv/tile.openstreetmap.org/styles/<%= name %>/project.xml
 HOST=tile.openstreetmap.org
+MINZOOM=0
+MAXZOOM=<%= details[:max_zoom] %>
 <% end -%>

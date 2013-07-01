@@ -8,8 +8,10 @@ tile_dirs = [
 <% node[:tile][:styles].each do |name,details| -%>
   "/srv/tile.openstreetmap.org/tiles/<%= name %>",
 <% end -%>
-];
+]
+
+max_zoom = <%= node[:tile][:styles].collect { |n,d| d[:max_zoom] }.max %>
 
 ARGV.each do |f|
-   Expire::expire(f, tile_dirs)
+   Expire::expire(f, 13, max_zoom, tile_dirs)
 end
