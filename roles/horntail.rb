@@ -125,6 +125,7 @@ run_list(
   "role[stats]",
   "role[web-storage]",
   "role[backup]",
+  "role[supybot]",
   "recipe[rsyncd]",
   "recipe[openvpn]"
 )
