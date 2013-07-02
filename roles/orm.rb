@@ -2,6 +2,58 @@ name "orm"
 description "Master role applied to orm"
 
 default_attributes(
+  :devices => {
+    :ssdvol1tune => {
+      :comment => "Tune scheduler for SSD",
+      :type => "block",
+      :bus => "scsi",
+      :sas_address => "0x4433221107000000",
+      :attrs => {
+        "queue/scheduler" => "noop",
+        "queue/nr_requests" => "256"
+      }
+    },
+    :ssdvol2tune => {
+      :comment => "Tune scheduler for SSD",
+      :type => "block",
+      :bus => "scsi",
+      :sas_address => "0x4433221104000000",
+      :attrs => {
+        "queue/scheduler" => "noop",
+        "queue/nr_requests" => "256"
+      }
+    },
+    :arecavol1tune => {
+      :comment => "Tune scheduler for Areca",
+      :type => "block",
+      :bus => "scsi",
+      :model => "ARC-1680-VOL#000",
+      :attrs => {
+        "queue/scheduler" => "deadline",
+        "queue/nr_requests" => "512"
+      }
+    },
+    :arecavol2tune => {
+      :comment => "Tune scheduler for Areca",
+      :type => "block",
+      :bus => "scsi",
+      :model => "ARC-1680-VOL#001",
+      :attrs => {
+        "queue/scheduler" => "deadline",
+        "queue/nr_requests" => "512"
+      }
+    },
+    :arecavol3tune => {
+      :comment => "Tune scheduler for Areca",
+      :type => "block",
+      :bus => "scsi",
+      :model => "ARC-1680-VOL#002",
+      :attrs => {
+        "queue/scheduler" => "deadline",
+        "queue/nr_requests" => "512"
+      }
+    }
+  },
   :munin => {
     :plugins => {
       :ipmi_fans => {
