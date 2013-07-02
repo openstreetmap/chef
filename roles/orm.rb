@@ -7,7 +7,7 @@ default_attributes(
       :comment => "Tune scheduler for SSD",
       :type => "block",
       :bus => "scsi",
-      :sas_address => "0x4433221107000000",
+      :serial => "SATA_Samsung_SSD_840S12SNEAD411116P",
       :attrs => {
         "queue/scheduler" => "noop",
         "queue/nr_requests" => "256"
@@ -17,7 +17,7 @@ default_attributes(
       :comment => "Tune scheduler for SSD",
       :type => "block",
       :bus => "scsi",
-      :sas_address => "0x4433221104000000",
+      :serial => "SATA_Samsung_SSD_840S12SNEAD411110E",
       :attrs => {
         "queue/scheduler" => "noop",
         "queue/nr_requests" => "256"
@@ -27,7 +27,7 @@ default_attributes(
       :comment => "Tune scheduler for Areca",
       :type => "block",
       :bus => "scsi",
-      :model => "ARC-1680-VOL#000",
+      :serial => "2001b4d2049002450",
       :attrs => {
         "queue/scheduler" => "deadline",
         "queue/nr_requests" => "512"
@@ -37,7 +37,7 @@ default_attributes(
       :comment => "Tune scheduler for Areca",
       :type => "block",
       :bus => "scsi",
-      :model => "ARC-1680-VOL#001",
+      :serial => "2001b4d2037331399",
       :attrs => {
         "queue/scheduler" => "deadline",
         "queue/nr_requests" => "512"
@@ -47,7 +47,7 @@ default_attributes(
       :comment => "Tune scheduler for Areca",
       :type => "block",
       :bus => "scsi",
-      :model => "ARC-1680-VOL#002",
+      :serial => "2001b4d2031365276",
       :attrs => {
         "queue/scheduler" => "deadline",
         "queue/nr_requests" => "512"
