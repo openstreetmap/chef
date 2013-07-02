@@ -6,7 +6,7 @@ default_attributes(
     :ssdvol1tune => {
       :comment => "Tune scheduler for SSD",
       :type => "block",
-      :bus => "scsi",
+      :bus => "ata",
       :serial => "SATA_Samsung_SSD_840S12SNEAD411116P",
       :attrs => {
         "queue/scheduler" => "noop",
@@ -16,7 +16,7 @@ default_attributes(
     :ssdvol2tune => {
       :comment => "Tune scheduler for SSD",
       :type => "block",
-      :bus => "scsi",
+      :bus => "ata",
       :serial => "SATA_Samsung_SSD_840S12SNEAD411110E",
       :attrs => {
         "queue/scheduler" => "noop",
