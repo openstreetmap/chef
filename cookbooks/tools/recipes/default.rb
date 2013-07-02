@@ -37,3 +37,10 @@ package "iotop"
 if node[:lsb][:release].to_f <= 11.04
   package "lslk"
 end
+
+package "rsyslog"
+
+service "rsyslog" do
+  action [ :enable, :start ]
+  supports :status => true, :restart => true, :reload => true
+end

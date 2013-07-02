@@ -21,6 +21,7 @@ include_recipe "apache"
 include_recipe "git"
 include_recipe "nodejs"
 include_recipe "postgresql"
+include_recipe "tools"
 
 blocks = data_bag_item("tile", "blocks")
 
@@ -413,6 +414,14 @@ template "/etc/cron.d/render-lowzoom" do
   owner "root"
   group "root"
   mode 0755
+end
+
+template "/etc/rsyslog.d/20-renderd.conf" do
+  source "renderd.rsyslog.erb"
+  owner "root"
+  group "root"
+  mode 0644
+  notifies :restart, "service[rsyslog]"
 end
 
 munin_plugin "mod_tile_fresh"
