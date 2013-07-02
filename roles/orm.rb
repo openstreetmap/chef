@@ -7,7 +7,7 @@ default_attributes(
       :comment => "Tune scheduler for SSD",
       :type => "block",
       :bus => "ata",
-      :serial => "SATA_Samsung_SSD_840S12SNEAD411116P",
+      :serial => "Samsung_SSD_840_PRO_Series_S12SNEAD411116P",
       :attrs => {
         "queue/scheduler" => "noop",
         "queue/nr_requests" => "256"
@@ -17,7 +17,7 @@ default_attributes(
       :comment => "Tune scheduler for SSD",
       :type => "block",
       :bus => "ata",
-      :serial => "SATA_Samsung_SSD_840S12SNEAD411110E",
+      :serial => "Samsung_SSD_840_PRO_Series_S12SNEAD411110E",
       :attrs => {
         "queue/scheduler" => "noop",
         "queue/nr_requests" => "256"
