@@ -44,6 +44,7 @@ default_attributes(
 
 run_list(
   "recipe[planet]",
+  "recipe[planet::replication]",
   "recipe[nfs::server]",
   "recipe[rsyncd]"
 )

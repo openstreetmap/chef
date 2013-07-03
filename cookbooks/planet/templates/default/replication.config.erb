@@ -1,0 +1,11 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+# The URL of the directory containing change files.
+baseUrl=http://planet.openstreetmap.org/replication/<%= @base %>
+
+# The length of an extraction interval in seconds (3600 = 1 hour).
+intervalLength=<%= @interval %>
+
+# Defines the maximum time interval in seconds to download in a single invocation.
+# Setting to 0 disables this feature.
+maxInterval=<%= @interval * 10 %>
