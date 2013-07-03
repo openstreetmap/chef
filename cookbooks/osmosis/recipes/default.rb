@@ -19,6 +19,9 @@
 
 include_recipe "chef"
 
+package "unzip"
+package "openjdk-6-jre"
+
 osmosis_package = "osmosis-#{node[:osmosis][:version]}.zip"
 osmosis_directory = "/opt/osmosis-#{node[:osmosis][:version]}"
 

@@ -26,10 +26,47 @@ package "ruby-libxml"
 
 gem_package "pg"
 
-template "/usr/local/bin/replicate-changesets" do
-  source "changesets.bin.erb"
+remote_directory "/usr/local/bin" do
+  source "replication-bin"
   owner "root"
   group "root"
+  mode 0755
+  files_owner "root"
+  files_group "root"
+  files_mode 0755
+end
+
+remote_directory "/store/planet/replication" do
+  source "replication-cgi"
+  owner "root"
+  group "root"
+  mode 0755
+  files_owner "root"
+  files_group "root"
+  files_mode 0755
+end
+
+directory "/store/planet/replication/changesets" do
+  owner "planet"
+  group "planet"
+  mode 0755
+end
+
+directory "/store/planet/replication/day" do
+  owner "planet"
+  group "planet"
+  mode 0755
+end
+
+directory "/store/planet/replication/hour" do
+  owner "planet"
+  group "planet"
+  mode 0755
+end
+
+directory "/store/planet/replication/minute" do
+  owner "planet"
+  group "planet"
   mode 0755
 end
 
