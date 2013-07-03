@@ -85,7 +85,7 @@ directory "/var/lib/replication/day" do
   mode 0755
 end
 
-template "/var/lib/replication/hour/configuration.txt" do
+template "/var/lib/replication/day/configuration.txt" do
   source "replication.config.erb"
   owner "planet"
   group "planet"
