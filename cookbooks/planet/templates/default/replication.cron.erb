@@ -1,8 +1,13 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
-MAILTO=brett@bretth.com
 TZ=UTC
+
+MAILTO=brett@bretth.com
 
 * * * * * planet /usr/local/bin/osmosis -q --replicate-apidb authFile=/etc/replication/auth.conf validateSchemaVersion=false --write-replication workingDirectory=/store/planet/replication/minute
 2 * * * * planet /usr/local/bin/osmosis -q --merge-replication-files workingDirectory=/var/lib/replication/hour
 5 * * * * planet /usr/local/bin/osmosis -q --merge-replication-files workingDirectory=/var/lib/replication/day
+
+MAILTO=zerebubuth@gmail.com
+
+* * * * * planet /usr/local/bin/replicate-changesets /etc/replication/changesets.conf

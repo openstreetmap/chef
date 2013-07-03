@@ -21,6 +21,18 @@ include_recipe "osmosis"
 
 db_passwords = data_bag_item("db", "passwords")
 
+package "ruby"
+package "ruby-libxml"
+
+gem_package "pg"
+
+template "/usr/local/bin/replicate-changesets" do
+  source "changesets.bin.erb"
+  owner "root"
+  group "root"
+  mode 0755
+end
+
 directory "/etc/replication" do
   owner "root"
   group "root"
@@ -29,6 +41,14 @@ end
 
 template "/etc/replication/auth.conf" do
   source "replication.auth.erb"
+  user "root"
+  group "planet"
+  mode 0640
+  variables :password => db_passwords["planetdiff"]
+end
+
+template "/etc/replication/changesets.conf" do
+  source "changesets.conf.erb"
   user "root"
   group "planet"
   mode 0640
