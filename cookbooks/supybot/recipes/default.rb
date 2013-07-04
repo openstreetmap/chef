@@ -96,12 +96,6 @@ directory "/var/lib/supybot/git" do
   mode 0755
 end
 
-directory "/var/tmp/supybot" do
-  owner "supybot"
-  group "supybot"
-  mode 0755
-end
-
 directory "/var/log/supybot" do
   owner "supybot"
   group "supybot"
