@@ -42,7 +42,7 @@ end
 
 apache_site "nominatim.openstreetmap.org" do
   template "apache.erb"
-  directory "/home/lonvia/nominatim"
+  directory source_directory
   variables :pools => node[:nominatim][:fpm_pools]
 end
 
