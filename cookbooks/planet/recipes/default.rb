@@ -70,3 +70,10 @@ apache_module "proxy_http"
 apache_site "planet.openstreetmap.org" do
   template "apache.erb"
 end
+
+template "/etc/logrotate.d/apache2" do
+  source "logrotate.apache.erb"
+  owner "root"
+  group "root"
+  mode 0644
+end
