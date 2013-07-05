@@ -76,7 +76,7 @@ module Expire
       # so that we don't expire things multiple times
       set.each do |xy|
         # this has to match the routine in mod_tile
-        meta = xyz_to_meta(HASH_ROOT, xy[0], xy[1], xy[2])
+        meta = xyz_to_meta(xy[0], xy[1], xy[2])
 
         # check each style working out what needs expiring
         tile_dirs.each do |tile_dir|
