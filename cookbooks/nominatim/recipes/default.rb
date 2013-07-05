@@ -185,7 +185,7 @@ cron "nominatim_logrotate" do
 end
 
 cron "nominatim_banip" do
-  command "#{source_directory}/utils/cron_banip.sh"
+  command "#{source_directory}/utils/cron_banip.py"
   user "nominatim"
   mailto email_errors
 end

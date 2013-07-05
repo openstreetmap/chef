@@ -8,7 +8,7 @@ cd <%= @source_directory %>
 ./configure &&
 make
 
-psql -U postgres <%= node[:nominatim][:database][:dbname] %> -c "SELECT version();" >/dev/null 2>&1
-if [ ! $? ]; then
+psql -d <%= node[:nominatim][:database][:dbname] %> -c "SELECT version();" >/dev/null 2>&1
+if [[ "$?" == "0" ]]; then
   ./utils/setup.php --create-functions --create-partition-functions --enable-diff-updates
 fi
