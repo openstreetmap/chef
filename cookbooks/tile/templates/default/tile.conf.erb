@@ -9,11 +9,14 @@ ModTileTileDir /srv/tile.openstreetmap.org/tiles
 # Time to wait for a re-render before serving a dirty tile
 ModTileRequestTimeout 3
 
+# Timeout before giving up for a tile to be rendered that is otherwise missing
+ModTileMissingRequestTimeout 10
+
 # Don't try and re-render dirty tiles if the load is higher than this
 ModTileMaxLoadOld 36
 
 # Don't try and render missing tiles if the load is higher than this
-ModTileMaxLoadOld 72
+ModTileMaxLoadMissing 72
 
 # Maximum expiry to set on a tile
 ModTileCacheDurationMax 604800
