@@ -47,7 +47,7 @@ default_attributes(
       :comment => "Tune scheduler for Areca",
       :type => "block",
       :bus => "scsi",
-      :serial => "2001b4d2031365276",
+      :serial => "2001b4d2060246956",
       :attrs => {
         "queue/scheduler" => "deadline",
         "queue/nr_requests" => "512"
