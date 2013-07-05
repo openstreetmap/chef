@@ -5,7 +5,11 @@ default_attributes(
   :accounts => {
     :users => {
       :lonvia => { :status => :administrator },
-      :twain => { :status => :administrator }
+      :twain => { :status => :administrator },
+      :nominatim => {
+        :status => :role,
+        :members => [ :lonvia, :tomh, :twain ]
+      },
     }
   },
   :apache => {
@@ -40,6 +44,23 @@ default_attributes(
         "kernel.shmmax" => 16 * 1024 * 1024 * 1024,
         "kernel.shmall" => 16 * 1024 * 1024 * 1024 / 4096
       }
+    }
+  },
+  :nominatim => {
+    :repository => "git://git.openstreetmap.org/nominatim.git",
+    :database => {
+        :cluster => "9.1/main",
+        :dbname => "nominatim"
+    },
+    :fpm_pools => {
+        :www => {
+            :pm => "dynamic",
+            :max_children => "50"
+        },
+        :bulk => {
+            :pm => "static",
+            :max_children => "7"
+        }
     }
   }
 )

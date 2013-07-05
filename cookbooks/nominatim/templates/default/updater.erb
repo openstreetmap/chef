@@ -1,0 +1,30 @@
+#!/bin/bash -e
+
+# DO NOT EDIT - This file is being maintained by Chef
+
+# Send output to the log
+exec > /var/log/nominatim/update.log 2>&1
+
+# Change to Nominatim directory
+DIR="$( cd "$( dirname "$0" )" && pwd )"
+cd $DIR/..
+
+while true
+do
+    starttime=`date +%s`
+
+    ./utils/update.php --no-npi --import-osmosis
+
+    # will trigger recompilation if necessary
+    git pull
+
+    # sleep a bit if updates take less than a minute
+    endtime=`date +%s`
+    elapsed=$((endtime - starttime))
+    if [[ $elapsed < 60 ]]
+    then
+        sleepy=$((60 - $elapsed))
+        echo "Sleeping for ${sleepy}s..."
+        sleep $sleepy
+    fi
+done

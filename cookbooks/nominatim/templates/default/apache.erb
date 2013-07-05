@@ -24,18 +24,15 @@
         AddHandler fcgi:/var/run/php5-fpm-www.sock .phpj
     </Directory>
 
-    Alias /pool-www/ "<%= @directory %>/website/"
-    <Location /pool-www>
+    <% @pools.each do |name,details| -%>
+    Alias /pool-<%= name %>/ "<%= @directory %>/website/"
+    <Location /pool-<%= name %>>
         AddHandler fcgi:/var/run/php5-fpm-www.sock .php
         AddHandler fcgi:/var/run/php5-fpm-www.sock .phpx
         AddHandler fcgi:/var/run/php5-fpm-www.sock .phpj
     </Location>
-    Alias /pool-bulk/ "<%= @directory %>/website/"
-    <Location /pool-bulk>
-        AddHandler fcgi:/var/run/php5-fpm-bulk.sock .php
-        AddHandler fcgi:/var/run/php5-fpm-bulk.sock .phpx
-        AddHandler fcgi:/var/run/php5-fpm-bulk.sock .phpj
-    </Location>
+    <% end -%>
+
     Redirect 509 /pool-block/
     ErrorDocument 509 /509.html
     <Location /pool-block>
