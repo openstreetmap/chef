@@ -220,6 +220,12 @@ node[:tile][:styles].each do |name,details|
     supports :restart => true
   end
 
+  directory tile_directory do
+    owner "tile"
+    group "www-data"
+    mode 0775
+  end
+
   file "#{tile_directory}/planet-import-complete" do
     action :create_if_missing
     owner "tile"
