@@ -21,7 +21,7 @@ do
     # sleep a bit if updates take less than a minute
     endtime=`date +%s`
     elapsed=$((endtime - starttime))
-    if [[ $elapsed < 60 ]]
+    if [[ $elapsed -lt 60 ]]
     then
         sleepy=$((60 - $elapsed))
         echo "Sleeping for ${sleepy}s..."

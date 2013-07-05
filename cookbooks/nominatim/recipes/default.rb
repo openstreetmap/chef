@@ -110,6 +110,7 @@ package "automake"
 package "libproj-dev"
 package "libprotobuf-c0-dev"
 package "protobuf-c-compiler"
+package "python-psycopg2"
 
 execute "php-pear-db" do
   command "pear install DB"
