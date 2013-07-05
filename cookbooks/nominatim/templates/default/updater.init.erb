@@ -3,7 +3,7 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
 start() {
-  start-stop-daemon --start --chuid suzuki --background --make-pidfile --pidfile /var/run/nominatim-update.pid --exec <%= @source_directory %>/utils/nominatim-update
+  start-stop-daemon --start --chuid nominatim --background --make-pidfile --pidfile /var/run/nominatim-update.pid --exec <%= @source_directory %>/utils/nominatim-update
 }
 
 stop() {
