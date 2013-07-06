@@ -367,6 +367,13 @@ template "/usr/local/bin/expire-tiles" do
   mode 0755
 end
 
+template "/etc/sudoers.d/tile" do
+  source "sudoers.erb"
+  owner "root"
+  group "root"
+  mode 0440
+end
+
 directory "/var/lib/replicate" do
   owner "tile"
   group "tile"

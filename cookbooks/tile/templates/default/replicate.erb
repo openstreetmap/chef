@@ -59,7 +59,7 @@ do
 <% end -%>
 
             # Expire tiles which are touched by the changes
-            /usr/local/bin/expire-tiles ${file} > /dev/null 2>&1 &
+            sudo -u www-data /usr/local/bin/expire-tiles ${file} > /dev/null 2>&1 &
 	fi
 
         # Delete old downloads
