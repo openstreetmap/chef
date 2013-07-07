@@ -224,3 +224,22 @@ template "/etc/init.d/nominatim-update" do
   variables :source_directory => source_directory
 end
 
+munin_plugin_conf "nominatim" do
+  template "munin.erb"
+end
+
+munin_plugin "nominatim_importlag" do
+  target "#{source_directory}/munin/nominatim_importlag"
+end
+
+munin_plugin "nominatim_query_speed" do
+  target "#{source_directory}/munin/nominatim_query_speed"
+end
+
+munin_plugin "nominatim_requests" do
+  target "#{source_directory}/munin/nominatim_requests"
+end
+
+munin_plugin "nominatim_throttled_ips" do
+  target "#{source_directory}/munin/nominatim_throttled_ips"
+end
