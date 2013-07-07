@@ -20,7 +20,9 @@
 define :munin_plugin, :action => :create do
   target = params[:target] || params[:name]
 
-  if File.exists?("/usr/local/share/munin/plugins/#{target}")
+  if File.exists?(target)
+    target_path = target
+  elsif File.exists?("/usr/local/share/munin/plugins/#{target}")
     target_path = "/usr/local/share/munin/plugins/#{target}"
   elsif File.exists?("/usr/share/munin/plugins/#{target}")
     target_path = "/usr/share/munin/plugins/#{target}"
