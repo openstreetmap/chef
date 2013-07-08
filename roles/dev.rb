@@ -107,10 +107,6 @@ default_attributes(
         :revision => "master",
         :aliases => [ "api06.dev.openstreetmap.org" ]
       },
-      :forms => {
-        :repository => "git://github.com/tomhughes/openstreetmap-website.git",
-        :revision => "forms"
-      },
       :routing => {
         :repository => "git://github.com/apmon/openstreetmap-website.git",
         :revision => "routing2"
