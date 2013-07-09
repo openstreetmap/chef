@@ -122,6 +122,10 @@ default_attributes(
       :overpass => {
         :repository => "git://github.com/drolbr/openstreetmap-website.git",
         :revision => "master"
+      },
+      :mapui => {
+        :repository => "git://github.com/osmlab/openstreetmap-website.git",
+        :revision => "map-ui"
       }
     }
   },
