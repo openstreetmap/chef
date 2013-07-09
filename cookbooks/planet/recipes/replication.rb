@@ -140,3 +140,31 @@ template "/etc/cron.d/replication" do
   group "root"
   mode 0644
 end
+
+directory "/var/lib/replication/streaming" do
+  owner "planet"
+  group "planet"
+  mode 0755
+end
+
+directory "/var/log/replication" do
+  owner "planet"
+  group "planet"
+  mode 0755
+end
+
+[ "streaming-replicator", "streaming-server" ].each do |name|
+  template "/etc/init.d/#{name}" do
+    source "streaming.init.erb"
+    owner "root"
+    group "root"
+    mode 0755
+    variables :service => name
+  end
+
+  service name do
+    action [ :enable, :start ]
+    supports :restart => true, :status => true
+    subscribes :restart, "template[/etc/init.d/#{name}]"
+  end
+end
