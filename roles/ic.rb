@@ -8,12 +8,12 @@ default_attributes(
     }
   },
   :networking => {
-    :nameservers => [ "146.179.159.164" ],
+    :nameservers => [ "146.179.159.177" ],
     :roles => {
       :internal => {
         :inet => {
           :prefix => "27",
-          :gateway => "146.179.159.164"
+          :gateway => "146.179.159.177"
         }
       },
       :external => {
