@@ -35,11 +35,49 @@ default_attributes(
         }
       }
     }
+  },
+  :rsyncd => {
+    :modules => {
+      :hosts => {
+        :comment => "Host data",
+        :path => "/home/hosts",
+        :read_only => true,
+        :write_only => false,
+        :list => false,
+        :uid => "tomh",
+        :gid => "tomh",
+        :transfer_logging => false,
+        :hosts_allow => [ 
+          "89.16.179.150",                       # shenron
+          "2001:41c8:10:996:21d:7dff:fec3:df70", # shenron
+          "212.159.112.221"                      # grant
+        ]
+      },
+      :logs => {
+        :comment => "Log files",
+        :path => "/store/logs",
+        :read_only => false,
+        :write_only => true,
+        :list => false,
+        :uid => "www-data",
+        :gid => "www-data",
+        :transfer_logging => false,
+        :hosts_allow => [
+          "128.40.168.0/24",      # ucl external
+          "146.179.159.160/27",   # ic internal
+          "193.63.75.96/27",      # ic external
+          "2001:630:12:500::/64", # ic external
+          "127.0.0.0/8",          # localhost
+          "::1"                   # localhost
+        ]
+      }
+    }
   }
 );
 
 run_list(
   "role[ic]",
   "role[gateway]",
+  "recipe[rsyncd]",
   "recipe[openvpn]"
 )
