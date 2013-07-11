@@ -14,7 +14,7 @@ default_attributes(
     :sources => [ "brightbox-ruby-ng" ]
   },
   :nfs => {
-    "/store/rails" => { :host => "horntail", :path => "/store/rails" }
+    "/store/rails" => { :host => "ironbelly", :path => "/store/rails" }
   },
   :web => {
     :status => "online",

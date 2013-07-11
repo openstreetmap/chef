@@ -108,7 +108,6 @@ run_list(
   "role[ic]",
   "role[planet]",
   "role[stats]",
-  "role[web-storage]",
   "role[backup]",
   "recipe[rsyncd]"
 )

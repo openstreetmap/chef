@@ -31,7 +31,7 @@ default_attributes(
     }
   },
   :nfs => {
-    "/store/rails" => { :host => "horntail", :path => "/store/rails" }
+    "/store/rails" => { :host => "ironbelly", :path => "/store/rails" }
   },
   :postgresql => {
     :versions => [ "9.1" ],
