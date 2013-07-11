@@ -106,8 +106,6 @@ default_attributes(
 
 run_list(
   "role[ic]",
-  "role[chef-server]",
-  "role[chef-repository]",
   "role[planet]",
   "role[stats]",
   "role[web-storage]",
