@@ -78,6 +78,8 @@ default_attributes(
 run_list(
   "role[ic]",
   "role[gateway]",
+  "role[chef-server]",
+  "role[chef-repository]",
   "recipe[rsyncd]",
   "recipe[openvpn]"
 )
