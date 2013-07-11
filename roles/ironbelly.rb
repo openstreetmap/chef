@@ -23,9 +23,23 @@ default_attributes(
         :address => "2001:630:12:500:225:90ff:fec4:f6ef"
       }
     }
+  },
+  :openvpn => {
+    :address => "10.0.16.2",
+    :tunnels => {
+      :ic2ucl => {
+        :port => "1194",
+        :mode => "server",
+        :peer => {
+          :host => "ridley.openstreetmap.org"
+        }
+      }
+    }
   }
 );
 
 run_list(
-  "role[ic]"
+  "role[ic]",
+  "role[gateway]",
+  "recipe[openvpn]"
 )

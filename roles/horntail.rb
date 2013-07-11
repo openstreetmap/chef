@@ -65,18 +65,6 @@ default_attributes(
       }
     }
   },
-  :openvpn => {
-    :address => "10.0.16.2",
-    :tunnels => {
-      :ic2ucl => {
-        :port => "1194",
-        :mode => "server",
-        :peer => {
-          :host => "ridley.openstreetmap.org"
-        }
-      }
-    }
-  },
   :rsyncd => {
     :modules => {
       :hosts => {
@@ -118,7 +106,6 @@ default_attributes(
 
 run_list(
   "role[ic]",
-  "role[gateway]",
   "role[chef-server]",
   "role[chef-repository]",
   "role[planet]",
@@ -126,6 +113,5 @@ run_list(
   "role[web-storage]",
   "role[backup]",
   "role[supybot]",
-  "recipe[rsyncd]",
-  "recipe[openvpn]"
+  "recipe[rsyncd]"
 )

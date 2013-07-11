@@ -49,7 +49,7 @@ default_attributes(
         :port => "1194",
         :mode => "client",
         :peer => {
-          :host => "horntail.openstreetmap.org",
+          :host => "ironbelly.openstreetmap.org",
           :port => "1194"
         }
       },
