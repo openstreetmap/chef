@@ -21,6 +21,7 @@ users = data_bag_item("supybot", "users")
 passwords = data_bag_item("supybot", "passwords")
 
 package "supybot"
+package "python-git"
 
 directory "/etc/supybot" do
   owner "supybot"
