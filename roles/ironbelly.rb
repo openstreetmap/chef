@@ -82,6 +82,7 @@ run_list(
   "role[chef-repository]",
   "role[web-storage]",
   "role[supybot]",
+  "role[backup]",
   "recipe[rsyncd]",
   "recipe[openvpn]"
 )
