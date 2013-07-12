@@ -83,6 +83,7 @@ run_list(
   "role[web-storage]",
   "role[supybot]",
   "role[backup]",
+  "role[stats]",
   "recipe[rsyncd]",
   "recipe[openvpn]"
 )
