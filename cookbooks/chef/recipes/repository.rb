@@ -61,3 +61,10 @@ template "#{node[:chef][:repository]}/hooks/post-receive" do
   group "chefrepo"
   mode 0750
 end
+
+template "/etc/cron.daily/chef-repository-backup" do
+  source "repository-backup.cron.erb"
+  owner "root"
+  group "root"
+  mode 0755
+end

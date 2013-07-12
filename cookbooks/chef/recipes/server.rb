@@ -46,3 +46,10 @@ end
 apache_site "chef.openstreetmap.org" do
   template "apache.erb"
 end
+
+template "/etc/cron.daily/chef-server-backup" do
+  source "server-backup.cron.erb"
+  owner "root"
+  group "root"
+  mode 0755
+end

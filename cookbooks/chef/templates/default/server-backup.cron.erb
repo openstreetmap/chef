@@ -1,0 +1,18 @@
+#!/bin/sh
+
+T=$(mktemp -d -t -p /var/tmp chef-server.XXXXXXXXXX)
+D=$(date +%Y-%m-%d)
+B=chef-server-$D.tar.gz
+
+mkdir $T/chef-server-$D
+chgrp opscode-pgsql $T $T/chef-server-$D
+chmod g+rwx $T $T/chef-server-$D
+sudo -u opscode-pgsql /opt/chef-server/embedded/bin/pg_dump --file=$T/chef-server-$D/chef.dmp --clean opscode_chef
+ln -s /var/opt/chef-server/bookshelf/data $T/chef-server-$D/bookshelf
+
+export GZIP="--rsyncable -9"
+
+nice tar --create --gzip --dereference --directory=$T --file=$T/$B chef-server-$D
+nice rsync $T/$B backup::backup
+
+rm -rf $T
