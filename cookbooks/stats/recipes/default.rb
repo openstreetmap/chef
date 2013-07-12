@@ -20,6 +20,7 @@
 include_recipe "apache"
 
 package "awstats"
+package "libgeo-ipfree-perl"
 
 node[:stats][:sites].each do |site|
   template "/etc/awstats/awstats.#{site[:name]}.conf" do
