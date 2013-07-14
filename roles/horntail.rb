@@ -107,6 +107,5 @@ default_attributes(
 run_list(
   "role[ic]",
   "role[planet]",
-  "role[backup]",
   "recipe[rsyncd]"
 )
