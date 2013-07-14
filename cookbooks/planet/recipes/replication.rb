@@ -25,6 +25,7 @@ package "ruby"
 package "rubygems"
 package "ruby-libxml"
 
+package "libpq-dev"
 gem_package "pg"
 
 remote_directory "/usr/local/bin" do
