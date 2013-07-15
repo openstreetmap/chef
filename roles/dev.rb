@@ -126,6 +126,10 @@ default_attributes(
       :mapui => {
         :repository => "git://github.com/osmlab/openstreetmap-website.git",
         :revision => "map-ui"
+      },
+      :groups => {
+        :repository => "git://github.com/osmlab/openstreetmap-website.git",
+        :revision => "groups-sketch"
       }
     }
   },
