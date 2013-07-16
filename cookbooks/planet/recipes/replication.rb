@@ -21,6 +21,8 @@ include_recipe "osmosis"
 
 db_passwords = data_bag_item("db", "passwords")
 
+package "postgresql-client"
+
 package "ruby"
 package "rubygems"
 package "ruby-libxml"
