@@ -94,6 +94,14 @@ template "/etc/replication/changesets.conf" do
   variables :password => db_passwords["planetdiff"]
 end
 
+template "/etc/replication/users-agreed.conf" do
+  source "users-agreed.conf.erb"
+  user "root"
+  group "planet"
+  mode 0640
+  variables :password => db_passwords["planetdiff"]
+end
+
 directory "/var/lib/replication" do
   owner "planet"
   group "planet"
