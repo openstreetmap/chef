@@ -98,9 +98,9 @@ end
 
 template "/etc/replication/users-agreed.conf" do
   source "users-agreed.conf.erb"
-  user "root"
+  user "planet"
   group "planet"
-  mode 0640
+  mode 0600
   variables :password => db_passwords["planetdiff"]
 end
 
