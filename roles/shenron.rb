@@ -2,6 +2,14 @@ name "shenron"
 description "Master role applied to shenron"
 
 default_attributes(
+  :accounts => {
+    :users => {
+      :bretth => {
+        :status => :user,
+        :shell => "/usr/bin/git-shell"
+      },
+    }
+  },
   :apache => {
     :mpm => "event",
     :event => {

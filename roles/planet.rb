@@ -6,7 +6,7 @@ default_attributes(
     :users => {
       :bretth => { :status => :user },
       :planet => {
-        :status => :role,
+        :status => :administrator,
         :members => [ :bretth ]
       }
     }
