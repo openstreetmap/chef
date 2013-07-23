@@ -10,6 +10,18 @@ default_attributes(
       },
     },
   },
+  :apache => {
+    :mpm => "worker",
+    :timeout => 60,
+    :worker => {
+      :server_limit => 48,
+      :max_clients => 1200,
+      :threads_per_child => 25,
+      :min_spare_threads => 30,
+      :max_spare_threads => 180,
+      :max_requests_per_child => 100000
+    }
+  },
   :apt => {
     :sources => [ "ubuntugis-stable" ]
   },
