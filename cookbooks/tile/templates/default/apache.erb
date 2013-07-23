@@ -24,6 +24,9 @@
   ErrorLog /var/log/apache2/error.log
   BufferedLogs on
 
+  #Set Access-Control-Allow-Origin header to allow Cross-origin resource sharing (CORS)
+  Header set Access-Control-Allow-Origin "*"
+
   # Enable the rewrite engine
   RewriteEngine on
 
