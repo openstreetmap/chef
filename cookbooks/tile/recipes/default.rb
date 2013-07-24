@@ -310,7 +310,8 @@ end
   "planet_osm_line", 
   "planet_osm_point", 
   "planet_osm_polygon", 
-  "planet_osm_roads" ].each do |table|
+  "planet_osm_roads",
+  "planet_osm_nodes" ].each do |table|
   postgresql_table table do
     cluster node[:tile][:database][:cluster]
     database "gis"
