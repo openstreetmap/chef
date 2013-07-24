@@ -11,12 +11,12 @@ default_attributes(
     },
   },
   :apache => {
-    :mpm => "worker",
+    :mpm => "event",
     :timeout => 60,
-    :worker => {
-      :server_limit => 48,
+    :event => {
+      :server_limit => 60,
       :max_clients => 1200,
-      :threads_per_child => 25,
+      :threads_per_child => 20,
       :min_spare_threads => 30,
       :max_spare_threads => 180,
       :max_requests_per_child => 100000
