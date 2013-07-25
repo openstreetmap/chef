@@ -102,6 +102,7 @@ end
 
 apt_source "hwraid" do
   url "http://hwraid.le-vert.net/ubuntu"
+  key "23B3D3B4"
 end
 
 apt_source "mapnik-v210" do
