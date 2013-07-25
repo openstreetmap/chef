@@ -54,9 +54,8 @@ default_attributes(
       :world_boundaries => {
         :url => "http://planet.openstreetmap.org/historical-shapefiles/world_boundaries-spherical.tgz"
       },
-      :shoreline => {
-        :url => "http://planet.openstreetmap.org/historical-shapefiles/shoreline_300.tar.bz2",
-        :directory => "shoreline_300"
+      :simplified_land_polygons => {
+        :url => "http://data.openstreetmapdata.com/simplified-land-polygons-complete-3857.zip"
       },
       :admin_boundaries => {
         :url => "http://www.naturalearthdata.com/http//www.naturalearthdata.com/download/110m/cultural/ne_110m_admin_0_boundary_lines_land.zip",
@@ -68,15 +67,14 @@ default_attributes(
         :original => "ne_10m_populated_places.shp",
         :processed => "ne_10m_populated_places_fixed.shp"
       },
-      :processed => {
-        :url => "http://planet.openstreetmap.org/historical-shapefiles/processed_p.tar.bz2",
-        :directory => "processed_p"
+      :land_polygons => {
+        :url => "http://data.openstreetmapdata.com/land-polygons-split-3857.zip"
       }
     },
     :styles => {
       :default => {
         :repository => "git://github.com/gravitystorm/openstreetmap-carto.git",
-        :revision => "v2.2.0",
+        :revision => "v2.3.1",
         :max_zoom => 19
       }
     }
