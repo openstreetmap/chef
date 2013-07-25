@@ -256,7 +256,7 @@ node[:tile][:styles].each do |name,details|
     user "tile"
     group "tile"
     subscribes :run, "git[#{style_directory}]"
-    notifies :restart, "service[renderd]"
+    notifies :restart, "service[renderd]", :immediately
     notifies :restart, "service[update-lowzoom-#{name}]"
   end
 end
