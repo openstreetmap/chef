@@ -177,6 +177,14 @@ node[:tile][:data].each do |name,data|
     end
   end
 
+  execute "#{file}_shapeindex" do
+    action :nothing
+    command "find #{directory} -type f -iname '*.shp' -print0 | xargs -0 --no-run-if-empty shapeindex --shape_files"
+    user "tile"
+    user "tile"
+    subscribes :run, resources(:execute => file), :immediately
+  end
+
   remote_file file do
     action :create_if_missing 
     source url
