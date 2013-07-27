@@ -35,6 +35,9 @@ default_attributes(
 	"block/cciss\!c0d1/queue/scheduler" => "noop"
       }
     }
+  },
+  :tilecache => {
+    :tile_parent => "orm.openstreetmap.org"
   }
 )
 
