@@ -4,8 +4,8 @@ require 'rubygems'
 require 'proj4'
 require 'xml/libxml'
 require 'set'
-require 'pg'
 require 'time'
+require 'mmap'
 
 module Expire
   # projection object to go from latlon -> spherical mercator
@@ -20,12 +20,8 @@ module Expire
   METATILE = 8
   # the directory root for meta tiles
   HASH_ROOT = "/tiles/default/"
-  # database parameters
-  DBNAME="gis"
-  DBHOST=""
-  #DBPORT=5432
-  DBPORT=5432
-  DBTABLE="planet_osm_nodes"
+  # node cache file
+  NODE_CACHE_FILE="/store/database/nodes"
   
   # turns a spherical mercator coord into a tile coord
   def Expire.tile_from_merc(point, zoom)
@@ -127,22 +123,16 @@ module Expire
     # also, we miss cases where nodes are deleted from ways where that node is not 
     # itself deleted and the coverage of the point set isn't enough to encompass the
     # change.
-    conn = PG::Connection.new(:host => DBHOST, :port => DBPORT, :dbname => DBNAME)
+    node_cache = NodeCache.new(NODE_CACHE_FILE)
     doc.find('//way/nd').each do |node|
       node_id = node['ref'].to_i
       unless nodes.include? node_id
         # this is a node referenced but not added, modified or deleted, so it should
-        # still be in the postgis DB.
-        res = conn.query("select lon, lat from #{DBTABLE} where id=#{node_id};")
-        
-        # loop over results, adding tiles to the change set
-        res.each do |row|
-          point = Proj4::Point.new(row[0].to_f / 100.0, row[1].to_f / 100.0)
+        # still be in the node cache.
+        if entry = node_cache[node_id]
+          point = Proj4::Point.new(entry.lon, entry.lat)
           nodes[node_id] = tile_from_merc(point, max_zoom)
         end
-
-        # Discard results
-        res.clear
       end
     end
     
@@ -156,6 +146,44 @@ module Expire
       # allow the block to work on the set, returning the set at the next
       # zoom level
       set = yield set
+    end
+  end
+
+  # wrapper to access the osm2pgsql node cache
+  class NodeCache
+    # node cache entry
+    class Node
+      attr_reader :lon, :lat
+
+      def initialize(lon, lat)
+        @lat = lat.to_f / 100.0
+        @lon = lon.to_f / 100.0
+      end
+    end
+
+    # open the cache
+    def initialize(filename)
+      @cache = Mmap.new(filename)
+
+      throw "Unexpected format" unless @cache[0..3].unpack("l").first == 1
+      throw "Unexpected ID size" unless @cache[4..7].unpack("l").first == 8
+
+      @max_id = @cache[8..15].unpack("q").first
+    end
+
+    # lookup a node
+    def [](id)
+      if id <= @max_id
+        offset = 16 + id * 8
+
+        lon, lat = @cache[offset .. offset+7].unpack("ll")
+
+        if lon != -2147483648 && lat != -2147483648
+          node = Node.new(lon, lat)
+        end
+      end
+
+      node
     end
   end
 end

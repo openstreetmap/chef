@@ -316,8 +316,7 @@ end
   "planet_osm_line", 
   "planet_osm_point", 
   "planet_osm_polygon", 
-  "planet_osm_roads",
-  "planet_osm_nodes" ].each do |table|
+  "planet_osm_roads" ].each do |table|
   postgresql_table table do
     cluster node[:tile][:database][:cluster]
     database "gis"
@@ -331,12 +330,10 @@ postgresql_munin "gis" do
   database "gis"
 end
 
-#if node[:tile][:node_file]
-#  file node[:tile][:node_file] do
-#    owner "tile"
-#    group "tile"
-#    mode 0664
-#  end
+#file node[:tile][:node_file] do
+#  owner "tile"
+#  group "www-data"
+#  mode 0640
 #end
 
 directory "/var/log/tile" do
@@ -353,11 +350,10 @@ package "rubygems"
 
 package "libproj-dev"
 package "libxml2-dev"
-package "libpq-dev"
 
 gem_package "proj4rb"
 gem_package "libxml-ruby"
-gem_package "pg"
+gem_package "mmap"
 
 remote_directory "/usr/local/lib/site_ruby" do
   source "ruby"
