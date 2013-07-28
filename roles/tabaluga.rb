@@ -28,8 +28,7 @@ default_attributes(
   },
   :tilecache => {
     :ip_bucket_refill => "6144",
-    :net_bucket_refill => "24576",
-    :tile_parent => "orm.openstreetmap.org"
+    :net_bucket_refill => "24576"
   }
 )
 
