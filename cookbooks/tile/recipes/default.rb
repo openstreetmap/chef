@@ -451,6 +451,7 @@ end
 munin_plugin "mod_tile_fresh"
 munin_plugin "mod_tile_response"
 munin_plugin "mod_tile_zoom"
+munin_plugin "mod_tile_latency"
 
 munin_plugin "renderd_processed"
 munin_plugin "renderd_queue"
