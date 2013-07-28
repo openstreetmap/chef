@@ -31,8 +31,6 @@ apache_module "headers"
 apache_module "remoteip"
 apache_module "rewrite"
 
-package "libapache2-mod-tile"
-
 apache_module "tile" do
   conf "tile.conf.erb"
 end
