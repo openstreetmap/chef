@@ -54,7 +54,7 @@ default_attributes(
         :work_mem => "160MB",
         :maintenance_work_mem => "9GB",
         :random_page_cost => "1.5",
-        :effective_cache_size => "24GB"
+        :effective_cache_size => "48GB"
       }
     }
   }
