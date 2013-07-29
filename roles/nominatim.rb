@@ -55,7 +55,7 @@ default_attributes(
     :fpm_pools => {
         :www => {
             :pm => "dynamic",
-            :max_children => "50"
+            :max_children => "30"
         },
         :bulk => {
             :pm => "static",
