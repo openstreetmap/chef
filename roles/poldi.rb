@@ -50,9 +50,9 @@ default_attributes(
   :postgresql => {
     :settings => {
       :defaults => {
-        :shared_buffers => "9GB",
+        :shared_buffers => "12GB",
         :work_mem => "160MB",
-        :maintenance_work_mem => "9GB",
+        :maintenance_work_mem => "10GB",
         :random_page_cost => "1.5",
         :effective_cache_size => "48GB"
       }
