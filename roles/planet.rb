@@ -33,7 +33,7 @@ default_attributes(
   },
   :apache => {
     :mpm => "event",
-    :keepalive => false,
+    :keepalive => true,
     :event => {
       :server_limit => 20,
       :max_clients => 1000,
