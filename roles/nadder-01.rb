@@ -15,7 +15,7 @@ default_attributes(
     }
   },
   :squid => {
-    :cache_mem => "5500 MB",
+    :cache_mem => "1500 MB",
     :cache_dir => "coss /store/squid/coss-01 128000 block-size=8192 max-size=262144 membufs=80"
   }
 )
