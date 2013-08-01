@@ -42,11 +42,19 @@ end.collect do |node|
     names |= [ "#{node[:hostname]}.#{node[:networking][:roles][:external][:zone]}.openstreetmap.org" ]
   end
 
+  keys = {
+    "rsa" => node[:keys][:ssh][:host_rsa_public],
+    "dsa" => node[:keys][:ssh][:host_dsa_public]
+  }
+
+  if node[:keys][:ssh][:host_ecdsa_public]
+    keys[node[:keys][:ssh][:host_ecdsa_type]] = node[:keys][:ssh][:host_ecdsa_public]
+  end
+
   Hash[
     :names => names.sort,
     :addresses => node.ipaddresses.sort,
-    :rsa => node[:keys][:ssh][:host_rsa_public],
-    :dsa => node[:keys][:ssh][:host_dsa_public]
+    :keys => keys
   ]
 end
 
