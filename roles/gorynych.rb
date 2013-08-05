@@ -14,6 +14,15 @@ default_attributes(
       }
     }
   },
+  :sysfs => {
+    :md_tune => {
+      :comment => "Tune the md sync performance so as not to kill system performance",
+      :parameters => {
+        "block/md0/md/sync_speed_min" => "10",
+        "block/md0/md/sync_speed_max" => "10000"
+      }
+    }
+  },
   :squid => {
     :cache_mem => "5800 MB",
     :cache_dir => "coss /store/squid/coss-01 128000 block-size=8192 max-size=262144 membufs=80"
