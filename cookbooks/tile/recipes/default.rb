@@ -97,6 +97,13 @@ remote_directory "/srv/tile.openstreetmap.org/html" do
   files_mode 0644
 end
 
+template "/srv/tile.openstreetmap.org/html/index.html" do
+  source "index.html.erb"
+  owner "tile"
+  group "tile"
+  mode 0644
+end
+
 package "python-cairo"
 package "python-mapnik"
 
