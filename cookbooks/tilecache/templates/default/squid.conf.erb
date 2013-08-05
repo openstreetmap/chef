@@ -7,13 +7,9 @@ acl osmtile_nocache_url urlpath_regex \.png/(status|dirty)$
 cache deny osmtile_sites osmtile_nocache_url
 
 cache_peer <%= node[:tilecache][:tile_parent] %> parent 80 0 no-query originserver name=osmtileAccel login=PASS connect-timeout=90 no-digest
-cache_peer yevaud.openstreetmap.org parent 80 0 no-query originserver name=osmtileFileAccel login=PASS connect-timeout=90 no-delay no-digest max-conn=30
 
-cache_peer_access osmtileAccel allow osmtile_sites osmtiles_png
+cache_peer_access osmtileAccel allow osmtile_sites
 cache_peer_access osmtileAccel deny all
-
-cache_peer_access osmtileFileAccel allow osmtile_sites !osmtiles_png
-cache_peer_access osmtileFileAccel deny all
 
 #----------------------------------
 #Create an unlimited pool for cache IP addresses
