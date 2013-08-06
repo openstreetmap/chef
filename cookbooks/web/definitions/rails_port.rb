@@ -76,6 +76,7 @@ define :rails_port, :action => [ :create, :enable ] do
   execute "#{rails_directory}/public/assets" do
     action :nothing
     command "rake#{ruby_version} assets:precompile"
+    environment "RAILS_ENV" => "production"
     cwd rails_directory
     user rails_user
     group rails_group
