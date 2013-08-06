@@ -130,6 +130,10 @@ default_attributes(
       :welcome => {
         :repository => "git://github.com/osmlab/openstreetmap-website.git",
         :revision => "welcome-2"
+      },
+      :rails4 => {
+        :repository => "git://github.com/tomhughes/openstreetmap-website.git",
+        :revision => "rails4"
       }
     }
   },
