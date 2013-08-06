@@ -1,39 +1,39 @@
 unless Object.const_defined?(:Rake) or Object.const_defined?(:POTLATCH2_KEY)
   OpenStreetMap::Application.config.after_initialize do
     unless webmaster = User.find_by_email("webmaster@openstreetmap.org")
-      webmaster = User.create({
-        :display_name => "OpenStreetMap Webmaster",
-        :email => "webmaster@openstreetmap.org",
-        :pass_crypt => SecureRandom.hex,
-        :status => "active"
-      }, :without_protection => true)
+      webmaster = User.new
+      webmaster.display_name = "OpenStreetMap Webmaster"
+      webmaster.email = "webmaster@openstreetmap.org"
+      webmaster.pass_crypt = SecureRandom.hex
+      webmaster.status = "active"
+      webmaster.save!
     end
 
     permissions = Hash[ClientApplication.all_permissions.map { |p| [ p, true ] }]
 
     unless id = webmaster.client_applications.find_by_name("iD")
-      id = ClientApplication.create(permissions.merge({
-        :name => "iD",
-        :url => "http://<%= @site %>/",
-      }), :without_protection => true)
+      id = ClientApplication.new
+      id.name = "iD"
+      id.url = "http://<%= @site %>/"
+      id.save!
     end
 
     ID_KEY = id.key
 
     unless potlatch = webmaster.client_applications.find_by_name("Potlatch 2")
-      potlatch = ClientApplication.create(permissions.merge({
-        :name => "Potlatch 2",
-        :url => "http://<%= @site %>/",
-      }), :without_protection => true)
+      potlatch = ClientApplication.new
+      potlatch.name = "Potlatch 2"
+      potlatch.url = "http://<%= @site %>/"
+      potlatch.save!
     end
 
     POTLATCH2_KEY = potlatch.key
 
     unless website = webmaster.client_applications.find_by_name("Web Site")
-      website = ClientApplication.create(permissions.merge({
-        :name => "Web Site",
-        :url => "http://<%= @site %>/",
-      }), :without_protection => true)
+      website = ClientApplication.new
+      website.name = "Web Site"
+      website.url = "http://<%= @site %>/"
+      website.save!
     end
 
     OAUTH_KEY = website.key
