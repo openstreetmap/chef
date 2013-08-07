@@ -27,9 +27,9 @@
     <% @pools.each do |name,details| -%>
     Alias /pool-<%= name %>/ "<%= @directory %>/website/"
     <Location /pool-<%= name %>>
-        AddHandler fcgi:/var/run/php5-fpm-www.sock .php
-        AddHandler fcgi:/var/run/php5-fpm-www.sock .phpx
-        AddHandler fcgi:/var/run/php5-fpm-www.sock .phpj
+        AddHandler fcgi:/var/run/php5-fpm-<%= name %>.sock .php
+        AddHandler fcgi:/var/run/php5-fpm-<%= name %>.sock .phpx
+        AddHandler fcgi:/var/run/php5-fpm-<%= name %>.sock .phpj
     </Location>
     <% end -%>
 
