@@ -17,7 +17,7 @@ render_list \
 
 # Update timestamp for style "<%= @style %>"
 touch \
-  --reference="/srv/tile.openstreetmap.org/styles/<%= @style %>/project.mml" \
+  --reference="/srv/tile.openstreetmap.org/styles/<%= @style %>/project.xml" \
   "/srv/tile.openstreetmap.org/tiles/<%= @style %>/planet-import-complete"
 
 # Update tiles from z11 to z12 for style "<%= @style %>"
