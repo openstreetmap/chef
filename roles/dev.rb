@@ -64,6 +64,7 @@ default_attributes(
       :lonvia => { :status => :user },
       :nicolas17 => { :status => :user },
       :zverik => { :status => :user },
+      :dodobas => { :status => :user },
       :ooc => { 
         :status => :role, 
         :members => [ :tomh, :blackadder, :timsc, :ollie ] 
