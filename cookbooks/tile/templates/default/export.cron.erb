@@ -1,0 +1,4 @@
+#!/bin/sh
+
+# Removes stale tmp files from the export tab
+exec find /tmp -name 'export??????' -mmin +60 -delete
