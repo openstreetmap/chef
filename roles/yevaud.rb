@@ -49,17 +49,32 @@ default_attributes(
       }
     }
   },
+  :postgresql => {
+    :versions => [ "9.1" ],
+    :settings => {
+      :defaults => {
+        :shared_buffers => "3GB",
+        :maintenance_work_mem => "7144MB",
+        :effective_cache_size => "8GB"
+      }
+    }
+  },
   :sysctl => {
     :postgres => {
       :comment => "Increase shared memory for postgres",
       :parameters => { 
-        "kernel.shmmax" => 4 * 1024 * 1024 * 1024
+        "kernel.shmmax" => 4 * 1024 * 1024 * 1024,
+        "kernel.shmall" => 4 * 1024 * 1024 * 1024 / 4096
       }
     }
+  },
+  :tile => {
+    :tile_directory => "/store/tiles",
+    :node_file => "/store/database/nodes"
   }
-);
+)
 
 run_list(
   "role[ucl-internal]",
-  "role[tile-old]"
+  "role[tile]"
 )
