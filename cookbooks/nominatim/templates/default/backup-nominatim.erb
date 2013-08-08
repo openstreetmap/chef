@@ -1,0 +1,19 @@
+#!/bin/sh
+
+# DO NOT EDIT - This file is being maintained by Chef
+
+# Partial read-only backup only, to restore:
+#
+#   ./utils/setup.php --create-db --setup-db --create-functions --create-partition-functions
+#   pg_restore --no-tablespaces -O -d nominatim $F
+#   ./utils/setup.php --create-functions --create-partition-functions
+
+
+D=`date +%Y-%m-%d`
+F=/tmp/nominatim-${D}.dmp
+
+pg_dump --file=$F -F c -Z 9 -t 'country' -t file -t '*columns' -t 'import_polygon_*' -t import_status -t place_addressline -t placex -t search_name -t 'seq_*' -t word -t gb_postcode <%= node[:nominatim][:database][:dbname] %>
+
+rsync $F backup.openstreetmap.org::backup
+
+rm -f $F

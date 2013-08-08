@@ -243,3 +243,19 @@ end
 munin_plugin "nominatim_throttled_ips" do
   target "#{source_directory}/munin/nominatim_throttled_ips"
 end
+
+template "/usr/local/bin/backup-nominatim" do
+  source "backup-nominatim.erb"
+  owner "root"
+  group "root"
+  mode 0755
+end
+
+cron "nominatim_backup" do
+  hour "3"
+  minute "00"
+  day "1"
+  command "/usr/local/bin/backup-nominatim"
+  user "nominatim"
+  mailto email_errors
+end
