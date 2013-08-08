@@ -69,8 +69,15 @@ default_attributes(
     }
   },
   :tile => {
-    :tile_directory => "/store/tiles",
-    :node_file => "/store/database/nodes"
+    :node_file => "/store/database/nodes",
+    :styles => {
+      :default => {
+        :tile_directories => [
+          { :name => "/store/tiles/default-low", :min_zoom => 0, :max_zoom => 16 },
+          { :name => "/store/tiles/default-high", :min_zoom => 17, :max_zoom => 19 }
+        ]
+      }
+    }
   }
 )
 

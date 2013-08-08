@@ -66,16 +66,10 @@ service "renderd" do
   supports :status => false, :restart => true, :reload => false
 end
 
-directory node[:tile][:tile_directory] do
+directory "/srv/tile.openstreetmap.org/tiles" do
   owner "tile"
-  group "www-data"
-  mode 0775
-end
-
-if node[:tile][:tile_directory] != "/srv/tile.openstreetmap.org/tiles"
-  link "/srv/tile.openstreetmap.org/tiles" do
-    to node[:tile][:tile_directory]
-  end
+  group "tile"
+  mode 0755
 end
 
 template "/etc/renderd.conf" do
@@ -244,8 +238,24 @@ node[:tile][:styles].each do |name,details|
 
   directory tile_directory do
     owner "tile"
-    group "www-data"
-    mode 0775
+    group "tile"
+    mode 0755
+  end
+
+  details[:tile_directories].each do |directory|
+    directory[:min_zoom].upto(directory[:max_zoom]) do |zoom|
+      directory  "#{directory[:name]}/#{zoom}" do
+        owner "www-data"
+        group "www-data"
+        mode 0755
+      end
+
+      link "#{tile_directory}/#{zoom}" do
+        to "#{directory[:name]}/#{zoom}"
+        owner "tile"
+        group "tile"
+      end
+    end
   end
 
   file "#{tile_directory}/planet-import-complete" do
