@@ -19,3 +19,5 @@
 
 package "nodejs"
 package "npm"
+package "g++"
+package "make"
