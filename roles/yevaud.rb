@@ -2,6 +2,48 @@ name "yevaud"
 description "Master role applied to yevaud"
 
 default_attributes(
+  :devices => {
+    :osdisktune1 => {
+      :comment => "Tune os disk",
+      :type => "block",
+      :bus => "scsi",
+      :serial => "20004d927fffff800",
+      :attrs => {
+        "queue/scheduler" => "deadline",
+        "queue/nr_requests" => "512"
+      }
+    },
+    :disktune2 => {
+      :comment => "Tune database array",
+      :type => "block",
+      :bus => "scsi",
+      :serial => "20004d927fffff802",
+      :attrs => {
+        "queue/scheduler" => "deadline",
+        "queue/nr_requests" => "512"
+      }
+    },
+    :disktune3 => {
+      :comment => "Tune os disk",
+      :type => "block",
+      :bus => "scsi",
+      :serial => "20004d927fffff803",
+      :attrs => {
+        "queue/scheduler" => "deadline",
+        "queue/nr_requests" => "512"
+      }
+    },
+    :ssdtune1 => {
+      :comment => "Tune ssd disk",
+      :type => "block",
+      :bus => "ata",
+      :serial => "INTEL_SSDSA2CW600G3_CVPR111401HP600FGN",
+      :attrs => {
+        "queue/scheduler" => "noop",
+        "queue/nr_requests" => "512"
+      }
+    }
+  },
   :munin => {
     :plugins => {
       :cpu => {
