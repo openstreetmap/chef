@@ -6,7 +6,9 @@ cache_mem  <%= node[:squid][:cache_mem] %>
 max_filedescriptors 65536
 
 #used by squidclient / munin
-http_port 127.0.0.1:3128
+http_port 3128
+#ICP
+icp_port 3130
 
 #FIXME - configurable
 http_port 80 accel defaultsite=tile.openstreetmap.org tcpkeepalive=60,10,6 http11
