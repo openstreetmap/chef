@@ -25,6 +25,7 @@ tilecaches.each do |cache|
   cache.ipaddresses(:family => :inet, :role => :external).sort.each do |address|
     firewall_rule "accept-squid" do
       action :accept
+      family "inet"
       source "net:#{address}"
       dest "fw"
       proto "tcp:syn"
@@ -33,6 +34,7 @@ tilecaches.each do |cache|
     end
     firewall_rule "accept-squid-icp" do
       action :accept
+      family "inet"
       source "net:#{address}"
       dest "fw"
       proto "udp"
