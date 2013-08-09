@@ -30,5 +30,6 @@ run_list(
   "role[ic]",
   "role[web-frontend]",
   "role[web-gpximport]",
-  "role[web-statistics]"
+  "role[web-statistics]",
+  "role[web-cleanup]"
 )
