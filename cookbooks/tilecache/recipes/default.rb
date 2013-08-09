@@ -21,6 +21,27 @@ include_recipe "squid"
 
 tilecaches = search(:node, "roles:tilecache").sort_by { |n| n[:hostname] }
 
+@tilecaches.each do |cache|
+  cache.ipaddresses(:family => :inet, :role => :external).sort.each do |address|
+    firewall_rule "accept-squid" do
+      action :accept
+      source "net:#{address}"
+      dest "fw"
+      proto "tcp:syn"
+      dest_ports "3128"
+      source_ports "1024:"
+    end
+    firewall_rule "accept-squid-icp" do
+      action :accept
+      source "net:#{address}"
+      dest "fw"
+      proto "udp"
+      dest_ports "3130"
+      source_ports "1024:"
+    end
+  end
+end
+
 squid_fragment "tilecache" do
   template "squid.conf.erb"
   variables :caches => tilecaches
