@@ -39,7 +39,7 @@ default_attributes(
       :bus => "ata",
       :serial => "INTEL_SSDSA2CW600G3_CVPR111401HP600FGN",
       :attrs => {
-        "queue/scheduler" => "noop",
+        "queue/scheduler" => "deadline",
         "queue/nr_requests" => "512"
       }
     }
