@@ -44,3 +44,9 @@ service "rsyslog" do
   action [ :enable, :start ]
   supports :status => true, :restart => true, :reload => true
 end
+
+#Remove unused base package
+package "mlocate" do
+  action :purge
+end
+
