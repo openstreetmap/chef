@@ -28,7 +28,8 @@ default_attributes(
   },
   :tilecache => {
     :ip_bucket_refill => "6144",
-    :net_bucket_refill => "24576"
+    :net_bucket_refill => "24576",
+    :tile_parent => "falkenstein.render.openstreetmap.org"
   }
 )
 
