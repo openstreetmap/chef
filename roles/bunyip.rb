@@ -80,6 +80,9 @@ default_attributes(
   :squid => {
     :cache_mem => "5000 MB",
     :cache_dir => "coss /dev/cciss/c0d1 128000 block-size=8192 max-size=262144 membufs=80"
+  },
+  :tilecache => {
+    :tile_parent => "brisbane.render.openstreetmap.org"
   }
 )
 

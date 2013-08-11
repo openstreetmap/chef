@@ -17,6 +17,9 @@ default_attributes(
   :squid => {
     :cache_mem => "650 MB",
     :cache_dir => "coss /store/squid/coss-01 15000 block-size=8192 max-size=262144 membufs=30"
+  },
+  :tilecache => {
+    :tile_parent => "sanfrancisco.render.openstreetmap.org"
   }
 )
 
