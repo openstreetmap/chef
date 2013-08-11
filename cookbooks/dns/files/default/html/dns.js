@@ -17,7 +17,7 @@ function createMap(divName, jsonFile) {
           return { color: feature.properties.colour, weight: 2, opacity: 1 }
         },
         onEachFeature: function (feature, layer) {
-          layer.bindPopup(feature.properties.country + " via " + feature.properties.server);
+          layer.bindPopup(feature.properties.origin + " via " + feature.properties.server);
           layer.on("mouseover", function () {
             this.setStyle({ weight: 5 });
           });

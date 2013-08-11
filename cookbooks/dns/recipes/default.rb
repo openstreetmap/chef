@@ -49,8 +49,8 @@ end
 
 zones = Array.new
 
-Dir.glob("/var/lib/dns/kml/*.kml").each do |kmlfile|
-  zone = File.basename(kmlfile, ".kml")
+Dir.glob("/var/lib/dns/json/*.json").each do |kmlfile|
+  zone = File.basename(kmlfile, ".json")
 
   template "/srv/dns.openstreetmap.org/html/#{zone}.html" do
     source "zone.html.erb"
