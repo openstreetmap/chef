@@ -34,6 +34,9 @@ default_attributes(
 	"block/vda/queue/scheduler" => "noop"
       }
     }
+  },
+  :tilecache => {
+    :tile_parent => "lyon.render.openstreetmap.org"
   }
 )
 
