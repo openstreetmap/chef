@@ -4,6 +4,8 @@
   # Basic server configuration
   ServerName <%= node[:fqdn] %>
   ServerAlias tile.openstreetmap.org
+  ServerAlias render.openstreetmap.org
+  ServerAlias *.render.openstreetmap.org
   ServerAlias parent.tile.openstreetmap.org
   ServerAdmin webmaster@openstreetmap.org
 
@@ -24,7 +26,7 @@
   ErrorLog /var/log/apache2/error.log
   BufferedLogs on
 
-  #Set Access-Control-Allow-Origin header to allow Cross-origin resource sharing (CORS)
+  # Set Access-Control-Allow-Origin header to allow Cross-origin resource sharing (CORS)
   Header set Access-Control-Allow-Origin "*"
 
   # Enable the rewrite engine
@@ -39,7 +41,6 @@
   Redirect /processed_p.tar.bz2 http://planet.openstreetmap.org/historical-shapefiles/processed_p.tar.bz2
   Redirect /shoreline_300.tar.bz2 http://planet.openstreetmap.org/historical-shapefiles/shoreline_300.tar.bz2
   Redirect /world_boundaries-spherical.tgz http://planet.openstreetmap.org/historical-shapefiles/world_boundaries-spherical.tgz
-
 </VirtualHost>
 
 <Directory /srv/tile.openstreetmap.org/html>
