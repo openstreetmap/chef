@@ -58,7 +58,9 @@ print "</head>"
 print "<body>"
 print "<h1>tile.openstreetmap.org debug</h1>"
 print "<h2>Server Stats</h2>"
-print "<p><b>Load Average:</b>%s</p>" % loadavg
+print "<p>"
+print "<b>Render Server:</b><%= node['fqdn'] %><br />"
+print "<b>Load Average:</b>%s</p>" % loadavg
 print "<h2>Browser Request Headers</h2>"
 print "<p>"
 for param in os.environ.keys():
