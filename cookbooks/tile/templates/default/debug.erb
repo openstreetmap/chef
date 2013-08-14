@@ -1,0 +1,68 @@
+#!/usr/bin/python -u
+# -*- coding: utf-8 -*-
+
+import cgi
+import cgitb
+import os
+import sys
+import resource
+
+# HTML Debug of errors
+cgitb.enable()
+
+# Limit maximum CPU time
+# The Postscript output format can sometimes take hours
+resource.setrlimit(resource.RLIMIT_CPU,(180,180))
+
+# Limit memory usage
+# Some odd requests can cause extreme memory usage
+resource.setrlimit(resource.RLIMIT_AS,(4000000000, 4000000000))
+
+# Routine to output HTTP headers
+def output_headers(content_type, filename = "", length = 0):
+  print "Cache-Control: no-cache, no-store, must-revalidate')"
+  print "Pragma: no-cache"
+  print "Expires: 0"
+  print "Content-Type: %s" % content_type
+  if filename:
+    print "Content-Disposition: attachment; filename=\"%s\"" % filename
+  if length:
+    print "Content-Length: %d" % length
+  print ""
+
+# Routine to report an error
+def output_error(message):
+  output_headers("text/html")
+  print "<html>"
+  print "<head>"
+  print "<title>Error</title>"
+  print "</head>"
+  print "<body>"
+  print "<h1>Error</h1>"
+  print "<p>%s</p>" % message
+  print "</body>"
+  print "</html>"
+
+# Make sure we have a user agent
+if not os.environ.has_key('HTTP_USER_AGENT'):
+  os.environ['HTTP_USER_AGENT'] = 'NONE'
+
+# Get the load average
+loadavg = float(open("/proc/loadavg").readline().split(" ")[0])
+
+output_headers("text/html")
+print "<html>"
+print "<head>"
+print "<title>tile.openstreetmap.org debug</title>"
+print "</head>"
+print "<body>"
+print "<h1>tile.openstreetmap.org debug</h1>"
+print "<h2>Server Stats</h2>"
+print "<p><b>Load Average:</b>%s</p>" % loadavg
+print "<h2>Browser Request Headers</h2>"
+print "<p>"
+for param in os.environ.keys():
+  print "<b>%20s</b>: %s<br />" % (param, os.environ[param])
+print "</p>"
+print "</body>"
+print "</html>"

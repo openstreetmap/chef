@@ -115,6 +115,13 @@ template "/srv/tile.openstreetmap.org/cgi-bin/export" do
   variables :blocks => blocks
 end
 
+template "/srv/tile.openstreetmap.org/cgi-bin/debug" do
+  source "debug.erb"
+  owner "tile"
+  group "tile"
+  mode 0755
+end
+
 template "/etc/cron.hourly/export" do
   source "export.cron.erb"
   owner "root"
