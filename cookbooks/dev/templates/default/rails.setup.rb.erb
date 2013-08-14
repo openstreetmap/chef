@@ -9,30 +9,31 @@ unless Object.const_defined?(:Rake) or Object.const_defined?(:POTLATCH2_KEY)
       webmaster.save!
     end
 
-    permissions = Hash[ClientApplication.all_permissions.map { |p| [ p, true ] }]
-
     unless id = webmaster.client_applications.find_by_name("iD")
-      id = ClientApplication.new
+      id = webmaster.client_applications.new
       id.name = "iD"
       id.url = "http://<%= @site %>/"
+      ClientApplication.all_permissions.each { |p| id[p] = true }
       id.save!
     end
 
     ID_KEY = id.key
 
     unless potlatch = webmaster.client_applications.find_by_name("Potlatch 2")
-      potlatch = ClientApplication.new
+      potlatch = webmaster.client_applications.new
       potlatch.name = "Potlatch 2"
       potlatch.url = "http://<%= @site %>/"
+      ClientApplication.all_permissions.each { |p| potlatch[p] = true }
       potlatch.save!
     end
 
     POTLATCH2_KEY = potlatch.key
 
     unless website = webmaster.client_applications.find_by_name("Web Site")
-      website = ClientApplication.new
+      website = webmaster.client_applications.new
       website.name = "Web Site"
       website.url = "http://<%= @site %>/"
+      ClientApplication.all_permissions.each { |p| website[p] = true }
       website.save!
     end
 
