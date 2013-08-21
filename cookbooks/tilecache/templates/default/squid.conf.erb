@@ -6,7 +6,15 @@ http_access allow osmtile_sites
 acl osmtile_nocache_url urlpath_regex \.png/(status|dirty)$
 cache deny osmtile_sites osmtile_nocache_url
 
-cache_peer <%= node[:tilecache][:tile_parent] %> parent 80 0 no-query originserver name=osmtileAccel login=PASS connect-timeout=90 no-digest
+<% if node[:fqdn] == "nadder-01.openstreetmap.org" || node[:fqdn] == "nadder-02.openstreetmap.org" -%> 
+<% @caches.each do |cache| -%>
+<% cache.ipaddresses(:family => :inet, :role => :external).sort.each do |address| -%>
+#cache_peer <%= address %> sibling 3128 3130 background-ping weighted-round-robin
+<% end -%>
+<% end -%>
+<% end -%>
+cache_peer <%= node[:tilecache][:tile_parent] %> parent 80 0 no-query originserver name=osmtileAccel login=PASS connect-timeout=60 no-digest weight=1000
+#cache_peer render.openstreetmap.org parent 80 0 no-query originserver name=osmtileAccel login=PASS connect-timeout=60 no-digest weight=10
 
 cache_peer_access osmtileAccel allow osmtile_sites
 cache_peer_access osmtileAccel deny all
@@ -17,8 +25,12 @@ acl pool_unlimited src 127.0.0.1
 <% @caches.each do |cache| -%>
 <% cache.ipaddresses(:family => :inet, :role => :external).sort.each do |address| -%>
 acl pool_unlimited src <%= address %>
+acl tile_caches src <%= address %>
 <% end -%>
 <% end -%>
+
+#Allow tile_caches ICP access
+icp_access allow tile_caches
 
 acl pool_000 src 0.0.0.0/7
 acl pool_002 src 2.0.0.0/7
