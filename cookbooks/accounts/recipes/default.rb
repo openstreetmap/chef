@@ -38,7 +38,7 @@ search(:accounts, "*:*").each do |account|
 
     case details[:status]
     when "role"
-      user_shell = "/sbin/nologin"
+      user_shell = "/usr/sbin/nologin"
     when "user", "administrator"
       user_shell = details[:shell] || account["shell"] || node[:accounts][:shell]
     end
