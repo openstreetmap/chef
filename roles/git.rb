@@ -12,9 +12,13 @@ default_attributes(
         :status => :user,
         :shell => "/usr/bin/git-shell"
       },
+      :yellowbkpk => {
+        :status => :user,
+        :shell => "/usr/bin/git-shell"
+      },
       :git => {
         :status => :role,
-        :members => [ :tomh, :grant, :matt, :lonvia, :translatewiki ]
+        :members => [ :tomh, :grant, :matt, :lonvia, :yellowbkpk, :translatewiki ]
       }
     }
   },
