@@ -131,10 +131,6 @@ default_attributes(
       :rails4 => {
         :repository => "git://github.com/tomhughes/openstreetmap-website.git",
         :revision => "rails4"
-      },
-      :user => {
-        :repository => "git://github.com/osmlab/openstreetmap-website.git",
-        :revision => "user-display"
       }
     }
   },
