@@ -473,6 +473,27 @@ template "/etc/rsyslog.d/20-renderd.conf" do
   notifies :restart, "service[rsyslog]"
 end
 
+package "libfilesys-df-perl"
+
+template "/usr/local/bin/cleanup-tiles" do
+  source "cleanup-tiles.erb"
+  owner "root"
+  group "root"
+  mode 0644
+end
+
+tile_directories = node[:tile][:styles].collect do |name,style|
+  style[:tile_directories].collect { |directory| directory[:name] }
+end.flatten.sort.uniq
+
+template "/etc/cron.d/cleanup-tiles" do
+  source "cleanup-tiles.cron.erb"
+  owner "root"
+  group "root"
+  mode 0644
+  variables :directories => tile_directories
+end
+
 munin_plugin "mod_tile_fresh"
 munin_plugin "mod_tile_response"
 munin_plugin "mod_tile_zoom"

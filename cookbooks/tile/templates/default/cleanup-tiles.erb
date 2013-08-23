@@ -1,0 +1,40 @@
+#!/usr/bin/perl
+
+# DO NOT EDIT - This file is being maintained by Chef
+
+use strict;
+use warnings;
+
+use File::Temp qw(tmpnam);
+use Filesys::Df;
+
+my $tiledir = shift @ARGV;
+my $tempfile = tmpnam();
+
+if (df($tiledir)->{per} > 90)
+{
+    system("find", $tiledir, "-xdev", "-type", "f", "-name", "*.meta", "-atime", "+60", "-fprintf", $tempfile, "%A@ %p\n");
+
+    open(TILES, "-|", "sort", "-n", $tempfile) || die "Can't open $tempfile: $!";
+
+    while (df($tiledir)->{per} > 80)
+    {
+        for my $n (1..1000)
+        {
+            if (defined(my $line = readline(TILES)))
+            {
+                chomp $line;
+
+                my($time,$tile) = split(/ /, $line);
+
+                unlink($tile) || warn "Can't remove $tile: $!";
+            }
+        }
+    }
+
+    close(TILES);
+}
+
+unlink($tempfile);
+
+exit 0;
