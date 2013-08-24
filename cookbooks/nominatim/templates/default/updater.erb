@@ -3,7 +3,7 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
 # Send output to the log
-exec > /var/log/nominatim/update.log 2>&1
+exec >> /var/log/nominatim/update.log 2>&1
 
 # Change to Nominatim directory
 DIR="$( cd "$( dirname "$0" )" && pwd )"
