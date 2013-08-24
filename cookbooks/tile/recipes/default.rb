@@ -462,7 +462,7 @@ template "/etc/cron.d/render-lowzoom" do
   source "render-lowzoom.cron.erb"
   owner "root"
   group "root"
-  mode 0755
+  mode 0644
 end
 
 template "/etc/rsyslog.d/20-renderd.conf" do
@@ -479,7 +479,7 @@ template "/usr/local/bin/cleanup-tiles" do
   source "cleanup-tiles.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0755
 end
 
 tile_directories = node[:tile][:styles].collect do |name,style|
