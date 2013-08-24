@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+require "yaml"
+
 define :rails_port, :action => [ :create, :enable ] do
   name = params[:name]
   ruby_version = params[:ruby] || "1.9.1"
@@ -215,6 +217,21 @@ define :rails_port, :action => [ :create, :enable ] do
       line
     end
     notifies :touch, resources(:file => "#{rails_directory}/tmp/restart.txt")
+  end
+
+  if params[:piwik_configuration]
+    file "#{rails_directory}/config/piwik.yml" do
+      owner rails_user
+      group rails_group
+      mode 0664
+      content YAML.dump(params[:piwik_configuration])
+      notifies :run, resources(:execute => "#{rails_directory}/public/assets")
+    end
+  else
+    file "#{rails_directory}/config/piwik.yml" do
+      action :delete
+      notifies :run, resources(:execute => "#{rails_directory}/public/assets")
+    end
   end
 
   execute "#{rails_directory}/lib/quad_tile/extconf.rb" do

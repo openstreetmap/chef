@@ -61,6 +61,10 @@ end
 
 rails_directory = "#{node[:web][:base_directory]}/rails"
 
+piwik_configuration = data_bag_item("web", "piwik").to_hash.reject do |k,v|
+  ["chef_type", "data_bag", "id"].include?(k)
+end
+
 rails_port "www.openstreetmap.org" do
   ruby node[:web][:ruby_version]
   directory rails_directory
@@ -89,4 +93,5 @@ rails_port "www.openstreetmap.org" do
   piwik_location "piwik.openstreetmap.org"
   piwik_site 1
   piwik_signup_goal 1
+  piwik_configuration piwik_configuration
 end
