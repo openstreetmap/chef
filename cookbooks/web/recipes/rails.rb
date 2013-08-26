@@ -90,8 +90,5 @@ rails_port "www.openstreetmap.org" do
   potlatch2_key web_passwords["potlatch2_key"]
   id_key web_passwords["id_key"]
   oauth_key web_passwords["oauth_key"]
-  piwik_location "piwik.openstreetmap.org"
-  piwik_site 1
-  piwik_signup_goal 1
   piwik_configuration piwik_configuration
 end

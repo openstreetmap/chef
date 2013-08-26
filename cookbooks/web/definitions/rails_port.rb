@@ -208,12 +208,6 @@ define :rails_port, :action => [ :create, :enable ] do
       line.gsub!(/^( *)require_terms_seen:.*$/, "\\1require_terms_seen: true")
       line.gsub!(/^( *)require_terms_agreed:.*$/, "\\1require_terms_agreed: true")
 
-      if params[:piwik_location]
-        line.gsub!(/^( *)#piwik_location:.*$/, "\\1piwik_location: \"#{params[:piwik_location]}\"")
-        line.gsub!(/^( *)#piwik_site:.*$/, "\\1piwik_site: #{params[:piwik_site]}")
-        line.gsub!(/^( *)#piwik_signup_goal:.*$/, "\\1piwik_signup_goal: #{params[:piwik_signup_goal]}")
-      end
-
       line
     end
     notifies :touch, resources(:file => "#{rails_directory}/tmp/restart.txt")
