@@ -16,7 +16,9 @@ do
     ./utils/update.php --no-npi --import-osmosis
 
     # will trigger recompilation if necessary
-    git pull
+    if ! git pull; then
+      echo "WARNING: git update failed."
+    fi
 
     # sleep a bit if updates take less than a minute
     endtime=`date +%s`
