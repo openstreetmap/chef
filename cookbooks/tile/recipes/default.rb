@@ -199,7 +199,13 @@ node[:tile][:data].each do |name,data|
   end
 
   remote_file file do
-    action :create_if_missing 
+    if data[:refresh]
+      action :create
+      use_conditional_get true
+    else
+      action :create_if_missing 
+    end
+
     source url
     owner "tile"
     group "tile"

@@ -55,7 +55,8 @@ default_attributes(
         :url => "http://planet.openstreetmap.org/historical-shapefiles/world_boundaries-spherical.tgz"
       },
       :simplified_land_polygons => {
-        :url => "http://data.openstreetmapdata.com/simplified-land-polygons-complete-3857.zip"
+        :url => "http://data.openstreetmapdata.com/simplified-land-polygons-complete-3857.zip",
+        :refresh => true
       },
       :admin_boundaries => {
         :url => "http://www.naturalearthdata.com/http//www.naturalearthdata.com/download/110m/cultural/ne_110m_admin_0_boundary_lines_land.zip",
@@ -68,7 +69,8 @@ default_attributes(
         :processed => "ne_10m_populated_places_fixed.shp"
       },
       :land_polygons => {
-        :url => "http://data.openstreetmapdata.com/land-polygons-split-3857.zip"
+        :url => "http://data.openstreetmapdata.com/land-polygons-split-3857.zip",
+        :refresh => true
       }
     },
     :styles => {
