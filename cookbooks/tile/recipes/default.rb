@@ -169,7 +169,7 @@ node[:tile][:data].each do |name,data|
 
     execute file do
       action :nothing
-      command "unzip -qq #{file} -d #{directory}"
+      command "unzip -qq -o #{file} -d #{directory}"
       user "tile"
       group "tile"
     end
