@@ -4,6 +4,7 @@
 
 cd <%= @source_directory %>
 
+git submodule update &&
 ./autogen.sh &&
 ./configure &&
 make
