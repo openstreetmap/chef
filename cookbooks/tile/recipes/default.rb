@@ -194,7 +194,7 @@ node[:tile][:data].each do |name,data|
     action :nothing
     command "find #{directory} -type f -iname '*.shp' -print0 | xargs -0 --no-run-if-empty shapeindex --shape_files"
     user "tile"
-    user "tile"
+    group "tile"
     subscribes :run, resources(:execute => file), :immediately
   end
 
