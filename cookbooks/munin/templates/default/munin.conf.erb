@@ -378,3 +378,66 @@ unknown_limit 144
     network_out.<%= rs[:name] %>.cdef <%= rs[:name] %>,8,*
     network_out.<%= rs[:name] %>.draw AREASTACK
 <% end -%>
+    mod_tile_fresh.graph_title freshness of served tiles
+    mod_tile_fresh.graph_args --base 1000 -l 0
+    mod_tile_fresh.graph_vlabel tiles per ${graph_period}
+    mod_tile_fresh.graph_order fresh freshrender old oldrender outdated outdatedrender
+    mod_tile_fresh.graph_category mod_tile
+    mod_tile_fresh.fresh.sum <%= Chef::Munin.expand "%%name%%.openstreetmap:mod_tile_fresh.fresh", @renderers %>
+    mod_tile_fresh.fresh.label Fresh from disk
+    mod_tile_fresh.fresh.draw AREA
+    mod_tile_fresh.freshrender.sum <%= Chef::Munin.expand "%%name%%.openstreetmap:mod_tile_fresh.freshrender", @renderers %>
+    mod_tile_fresh.freshrender.label Freshly rendered
+    mod_tile_fresh.freshrender.draw STACK
+    mod_tile_fresh.old.sum <%= Chef::Munin.expand "%%name%%.openstreetmap:mod_tile_fresh.old", @renderers %>
+    mod_tile_fresh.old.label Old from disk
+    mod_tile_fresh.old.draw STACK
+    mod_tile_fresh.oldrender.sum <%= Chef::Munin.expand "%%name%%.openstreetmap:mod_tile_fresh.oldrender", @renderers %>
+    mod_tile_fresh.oldrender.label Old tile, attempted render
+    mod_tile_fresh.oldrender.draw STACK
+    mod_tile_fresh.outdated.sum <%= Chef::Munin.expand "%%name%%.openstreetmap:mod_tile_fresh.outdated", @renderers %>
+    mod_tile_fresh.outdated.label Outdated from disk
+    mod_tile_fresh.outdated.draw STACK
+    mod_tile_fresh.outdatedrender.sum <%= Chef::Munin.expand "%%name%%.openstreetmap:mod_tile_fresh.outdatedrender", @renderers %>
+    mod_tile_fresh.outdatedrender.label Outdated tile, attempted render
+    mod_tile_fresh.outdatedrender.draw STACK
+    mod_tile_response.graph_title mod_tile HTTP response codes
+    mod_tile_response.graph_args --base 1000 -l 0
+    mod_tile_response.graph_vlabel responses per ${graph_period}
+    mod_tile_response.graph_order response200 response304 response404 response500
+    mod_tile_response.graph_category mod_tile
+    mod_tile_response.response200.sum <%= Chef::Munin.expand "%%name%%.openstreetmap:mod_tile_response.response200", @renderers %>
+    mod_tile_response.response200.label 200 OK
+    mod_tile_response.response200.draw AREA
+    mod_tile_response.response304.sum <%= Chef::Munin.expand "%%name%%.openstreetmap:mod_tile_response.response304", @renderers %>
+    mod_tile_response.response304.label 304 Not Modified
+    mod_tile_response.response304.draw STACK
+    mod_tile_response.response404.sum <%= Chef::Munin.expand "%%name%%.openstreetmap:mod_tile_response.response404", @renderers %>
+    mod_tile_response.response404.label 404 Not Found
+    mod_tile_response.response404.draw STACK
+    mod_tile_response.response500.sum <%= Chef::Munin.expand "%%name%%.openstreetmap:mod_tile_response.response500", @renderers %>
+    mod_tile_response.response500.label 500 Internal Error
+    mod_tile_response.response500.draw STACK
+    mod_tile_zoom.graph_title mod_tile responses by zoom layer
+    mod_tile_zoom.graph_args --base 1000 -l 0
+    mod_tile_zoom.graph_vlabel responses per ${graph_period}
+    mod_tile_zoom.graph_order z1 z2 z3 z4 z5 z6
+    mod_tile_zoom.graph_category mod_tile
+    mod_tile_zoom.z1.sum <%= Chef::Munin.expand "%%name%%.openstreetmap:mod_tile_zoom.z1", @renderers %>
+    mod_tile_zoom.z1.label z1-8
+    mod_tile_zoom.z1.draw AREA
+    mod_tile_zoom.z2.sum <%= Chef::Munin.expand "%%name%%.openstreetmap:mod_tile_zoom.z2", @renderers %>
+    mod_tile_zoom.z2.label z9-12
+    mod_tile_zoom.z2.draw STACK
+    mod_tile_zoom.z3.sum <%= Chef::Munin.expand "%%name%%.openstreetmap:mod_tile_zoom.z3", @renderers %>
+    mod_tile_zoom.z3.label z13-14
+    mod_tile_zoom.z3.draw STACK
+    mod_tile_zoom.z4.sum <%= Chef::Munin.expand "%%name%%.openstreetmap:mod_tile_zoom.z4", @renderers %>
+    mod_tile_zoom.z4.label z15-16
+    mod_tile_zoom.z4.draw STACK
+    mod_tile_zoom.z5.sum <%= Chef::Munin.expand "%%name%%.openstreetmap:mod_tile_zoom.z5", @renderers %>
+    mod_tile_zoom.z5.label z17-18
+    mod_tile_zoom.z5.draw STACK
+    mod_tile_zoom.z6.sum <%= Chef::Munin.expand "%%name%%.openstreetmap:mod_tile_zoom.z6", @renderers %>
+    mod_tile_zoom.z6.label z19-20
+    mod_tile_zoom.z6.draw STACK
