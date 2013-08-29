@@ -210,6 +210,7 @@ node[:tile][:data].each do |name,data|
     owner "tile"
     group "tile"
     mode 0644
+    backup false
     notifies :run, resources(:execute => file), :immediately
     notifies :restart, resources(:service => "renderd")
   end
