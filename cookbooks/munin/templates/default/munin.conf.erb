@@ -441,3 +441,150 @@ unknown_limit 144
     mod_tile_zoom.z6.sum <%= Chef::Munin.expand "%%name%%.openstreetmap:mod_tile_zoom.z6", @renderers %>
     mod_tile_zoom.z6.label z19-20
     mod_tile_zoom.z6.draw STACK
+    renderd_queue.graph_title Renderd queue length
+    renderd_queue.graph_args --base 1000 -l 0
+    renderd_queue.graph_vlabel metatiles
+    renderd_queue.graph_order reqPrio req reqLow dirty reqBulk
+    renderd_queue.graph_category renderd
+    renderd_queue.reqPrio.sum <%= Chef::Munin.expand "%%name%%.openstreetmap:renderd_queue.reqPrio", @renderers %>
+    renderd_queue.reqPrio.label Priority request Queue
+    renderd_queue.reqPrio.type GAUGE
+    renderd_queue.req.sum <%= Chef::Munin.expand "%%name%%.openstreetmap:renderd_queue.req", @renderers %>
+    renderd_queue.req.label Request Queue
+    renderd_queue.req.type GAUGE
+    renderd_queue.reqLow.sum <%= Chef::Munin.expand "%%name%%.openstreetmap:renderd_queue.reqLow", @renderers %>
+    renderd_queue.reqLow.label Low priority request Queue
+    renderd_queue.reqLow.type GAUGE
+    renderd_queue.dirty.sum <%= Chef::Munin.expand "%%name%%.openstreetmap:renderd_queue.dirty", @renderers %>
+    renderd_queue.dirty.label Dirty Queue
+    renderd_queue.dirty.type GAUGE
+    renderd_queue.reqBulk.sum <%= Chef::Munin.expand "%%name%%.openstreetmap:renderd_queue.reqBulk", @renderers %>
+    renderd_queue.reqBulk.label Bulk request Queue
+    renderd_queue.reqBulk.type GAUGE
+    renderd_processed.graph_title Renderd throughput
+    renderd_processed.graph_args --base 1000 -l 0
+    renderd_processed.graph_vlabel Metatiles per ${graph_period}
+    renderd_processed.graph_order req reqLow reqPrio dirty reqBulk dropped
+    renderd_processed.graph_category renderd
+    renderd_processed.graph_info Displays the number of metatiles being rendered by renderd per ${graph_period}
+    renderd_processed.req.sum <%= Chef::Munin.expand "%%name%%.openstreetmap:renderd_processed.req", @renderers %>
+    renderd_processed.req.label Request Queue
+    renderd_processed.req.draw AREA
+    renderd_processed.req.info Throughput of Metatiles submitted for on the fly rendering
+    renderd_processed.reqLow.sum <%= Chef::Munin.expand "%%name%%.openstreetmap:renderd_processed.reqLow", @renderers %>
+    renderd_processed.reqLow.label Low priority request Queue
+    renderd_processed.reqLow.draw STACK
+    renderd_processed.reqLow.info Throughput of Metatiles submitted low priority for on the fly rendering
+    renderd_processed.reqPrio.sum <%= Chef::Munin.expand "%%name%%.openstreetmap:renderd_processed.reqPrio", @renderers %>
+    renderd_processed.reqPrio.label Priority request Queue
+    renderd_processed.reqPrio.draw STACK
+    renderd_processed.reqPrio.info Throughput of Metatiles submitted high priority for on the fly rendering
+    renderd_processed.dirty.sum <%= Chef::Munin.expand "%%name%%.openstreetmap:renderd_processed.dirty", @renderers %>
+    renderd_processed.dirty.label Dirty Queue
+    renderd_processed.dirty.draw STACK
+    renderd_processed.dirty.info Throughput of dirty Metatiles submitted for re-render
+    renderd_processed.reqBulk.sum <%= Chef::Munin.expand "%%name%%.openstreetmap:renderd_processed.reqBulk", @renderers %>
+    renderd_processed.reqBulk.label Bulk request Queue
+    renderd_processed.reqBulk.draw STACK
+    renderd_processed.reqBulk.info Throughput of Metatiles submitted with background priority
+    renderd_processed.dropped.sum <%= Chef::Munin.expand "%%name%%.openstreetmap:renderd_processed.dropped", @renderers %>
+    renderd_processed.dropped.label Dropped (x20)
+    renderd_processed.dropped.draw LINE2
+    renderd_processed.dropped.info Number of Tiles dropped due to queue overload (x20)
+    renderd_processed.dropped.cdef dropped,20,/
+    renderd_zoom.graph_title Renderd throughput by zoom
+    renderd_zoom.graph_args --base 1000 -l 0
+    renderd_zoom.graph_vlabel Metatiles per ${graph_period}
+    renderd_zoom.graph_order z1 z2 z3 z4 z5 z6
+    renderd_zoom.graph_category renderd
+    renderd_zoom.graph_info Displays the number of metatiles being rendered by renderd per ${graph_period}
+    renderd_zoom.z1.sum <%= Chef::Munin.expand "%%name%%.openstreetmap:renderd_zoom.z1", @renderers %>
+    renderd_zoom.z1.label zoom z0 - z8
+    renderd_zoom.z1.draw AREA
+    renderd_zoom.z1.info Throughput of Metatiles for z0 - z8
+    renderd_zoom.z2.sum <%= Chef::Munin.expand "%%name%%.openstreetmap:renderd_zoom.z2", @renderers %>
+    renderd_zoom.z2.label zoom z9 - z12
+    renderd_zoom.z2.draw STACK
+    renderd_zoom.z2.info Throughput of Metatiles for z9 - z12
+    renderd_zoom.z3.sum <%= Chef::Munin.expand "%%name%%.openstreetmap:renderd_zoom.z3", @renderers %>
+    renderd_zoom.z3.label zoom z13 - z14
+    renderd_zoom.z3.draw STACK
+    renderd_zoom.z3.info Throughput of Metatiles for z13 - z14
+    renderd_zoom.z4.sum <%= Chef::Munin.expand "%%name%%.openstreetmap:renderd_zoom.z4", @renderers %>
+    renderd_zoom.z4.label zoom z15 - z16
+    renderd_zoom.z4.draw STACK
+    renderd_zoom.z4.info Throughput of Metatiles for z15 - z16
+    renderd_zoom.z5.sum <%= Chef::Munin.expand "%%name%%.openstreetmap:renderd_zoom.z5", @renderers %>
+    renderd_zoom.z5.label zoom z17 - z18
+    renderd_zoom.z5.draw STACK
+    renderd_zoom.z5.info Throughput of Metatiles for z17 - z18
+    renderd_zoom.z6.sum <%= Chef::Munin.expand "%%name%%.openstreetmap:renderd_zoom.z6", @renderers %>
+    renderd_zoom.z6.label zoom z19 - z20
+    renderd_zoom.z6.draw STACK
+    renderd_zoom.z6.info Throughput of Metatiles for z19 - z20
+    renderd_queue_time.graph_title Renderd time spent by queue
+    renderd_queue_time.graph_args --base 1000 -l 0
+    renderd_queue_time.graph_vlabel metatiles
+    renderd_queue_time.graph_order reqPrio req reqLow dirty reqBulk
+    renderd_queue_time.graph_category renderd
+    renderd_queue_time.reqPrio.sum <%= Chef::Munin.expand "%%name%%.openstreetmap:renderd_queue_time.reqPrio", @renderers %>
+    renderd_queue_time.reqPrio.label Priority request queue
+    renderd_queue_time.reqPrio.cdef reqPrio,1000,/
+    renderd_queue_time.reqPrio.draw AREA
+    renderd_queue_time.reqPrio.info Time for priority request queue
+    renderd_queue_time.req.sum <%= Chef::Munin.expand "%%name%%.openstreetmap:renderd_queue_time.req", @renderers %>
+    renderd_queue_time.req.label Request queue
+    renderd_queue_time.req.cdef req,1000,/
+    renderd_queue_time.req.draw STACK
+    renderd_queue_time.req.info Time for Request queue
+    renderd_queue_time.reqLow.sum <%= Chef::Munin.expand "%%name%%.openstreetmap:renderd_queue_time.reqLow", @renderers %>
+    renderd_queue_time.reqLow.label Low priority request queue
+    renderd_queue_time.reqLow.cdef reqLow,1000,/
+    renderd_queue_time.reqLow.draw STACK
+    renderd_queue_time.reqLow.info Time for low priority request queue
+    renderd_queue_time.dirty.sum <%= Chef::Munin.expand "%%name%%.openstreetmap:renderd_queue_time.dirty", @renderers %>
+    renderd_queue_time.dirty.label Dirty queue
+    renderd_queue_time.dirty.cdef dirty,1000,/
+    renderd_queue_time.dirty.draw STACK
+    renderd_queue_time.dirty.info Time for dirty queue
+    renderd_queue_time.reqBulk.sum <%= Chef::Munin.expand "%%name%%.openstreetmap:renderd_queue_time.reqBulk", @renderers %>
+    renderd_queue_time.reqBulk.label Bulk queue
+    renderd_queue_time.reqBulk.cdef reqBulk,1000,/
+    renderd_queue_time.reqBulk.draw STACK
+    renderd_queue_time.reqBulk.info Time for bulk queue
+    renderd_zoom_time.graph_title Renderd time spent by zoom
+    renderd_zoom_time.graph_args --base 1000 -l 0
+    renderd_zoom_time.graph_vlabel time spent per ${graph_period}
+    renderd_zoom_time.graph_order zoomtime1 zoomtime2 zoomtime3 zoomtime4 zoomtime5 zoomtime6
+    renderd_zoom_time.graph_category renderd
+    renderd_zoom_time.graph_info Displays the amount of time renderd has spent rendering tiles of a given zoom per ${graph_period}
+    renderd_zoom_time.zoomtime1.sum <%= Chef::Munin.expand "%%name%%.openstreetmap:renderd_zoom_time.zoomtime1", @renderers %>
+    renderd_zoom_time.zoomtime1.label zoom z0 - z8
+    renderd_zoom_time.zoomtime1.cdef zoomtime1,1000,/
+    renderd_zoom_time.zoomtime1.draw AREA
+    renderd_zoom_time.zoomtime1.info Time for Metatiles z0 - z8
+    renderd_zoom_time.zoomtime2.sum <%= Chef::Munin.expand "%%name%%.openstreetmap:renderd_zoom_time.zoomtime2", @renderers %>
+    renderd_zoom_time.zoomtime2.label zoom z9 - z12
+    renderd_zoom_time.zoomtime2.cdef zoomtime2,1000,/
+    renderd_zoom_time.zoomtime2.draw STACK
+    renderd_zoom_time.zoomtime2.info Time for Metatiles for z9 - z12
+    renderd_zoom_time.zoomtime3.sum <%= Chef::Munin.expand "%%name%%.openstreetmap:renderd_zoom_time.zoomtime3", @renderers %>
+    renderd_zoom_time.zoomtime3.label zoom z13 - z14
+    renderd_zoom_time.zoomtime3.cdef zoomtime3,1000,/
+    renderd_zoom_time.zoomtime3.draw STACK
+    renderd_zoom_time.zoomtime3.info Time for Metatiles for z13 - z14
+    renderd_zoom_time.zoomtime4.sum <%= Chef::Munin.expand "%%name%%.openstreetmap:renderd_zoom_time.zoomtime4", @renderers %>
+    renderd_zoom_time.zoomtime4.label zoom z15 - z16
+    renderd_zoom_time.zoomtime4.cdef zoomtime4,1000,/
+    renderd_zoom_time.zoomtime4.draw STACK
+    renderd_zoom_time.zoomtime4.info Time for Metatiles for z15 - z16
+    renderd_zoom_time.zoomtime5.sum <%= Chef::Munin.expand "%%name%%.openstreetmap:renderd_zoom_time.zoomtime5", @renderers %>
+    renderd_zoom_time.zoomtime5.label zoom z17 - z18
+    renderd_zoom_time.zoomtime5.cdef zoomtime5,1000,/
+    renderd_zoom_time.zoomtime5.draw STACK
+    renderd_zoom_time.zoomtime5.info Time for Metatiles for z17 - z18
+    renderd_zoom_time.zoomtime6.sum <%= Chef::Munin.expand "%%name%%.openstreetmap:renderd_zoom_time.zoomtime6", @renderers %>
+    renderd_zoom_time.zoomtime6.label zoom z19 - z20
+    renderd_zoom_time.zoomtime6.cdef zoomtime6,1000,/
+    renderd_zoom_time.zoomtime6.draw STACK
+    renderd_zoom_time.zoomtime6.info Time for Metatiles for z19 - z20
