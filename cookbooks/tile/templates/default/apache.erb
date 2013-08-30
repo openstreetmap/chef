@@ -26,6 +26,10 @@
   ErrorLog /var/log/apache2/error.log
   BufferedLogs on
 
+  # Always set Access-Control-Allow-Origin so that simple CORS requests
+  # will always work and can be cached
+  Header set Access-Control-Allow-Origin "*"
+
   # Enable the rewrite engine
   RewriteEngine on
 
