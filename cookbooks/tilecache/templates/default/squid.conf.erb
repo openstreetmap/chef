@@ -6,12 +6,11 @@ http_access allow osmtile_sites
 acl osmtile_nocache_url urlpath_regex \.png/(status|dirty)$
 cache deny osmtile_sites osmtile_nocache_url
 
-<% if node[:fqdn] == "nadder-01.openstreetmap.org" || node[:fqdn] == "nadder-02.openstreetmap.org" -%> 
-<% @caches.each do |cache| -%>
-<% cache.ipaddresses(:family => :inet, :role => :external).sort.each do |address| -%>
-#cache_peer <%= address %> sibling 3128 3130
+<% if node[:fqdn] == "nadder-01.openstreetmap.org" -%>
+cache_peer nadder-02.openstreetmap.org sibling 3128 3130 proxy-only
 <% end -%>
-<% end -%>
+<% if node[:fqdn] == "nadder-02.openstreetmap.org" -%> 
+cache_peer nadder-01.openstreetmap.org sibling 3128 3130 proxy-only
 <% end -%>
 cache_peer <%= node[:tilecache][:tile_parent] %> parent 80 0 no-query originserver name=osmtileAccel login=PASS connect-timeout=60 no-digest weight=1000
 cache_peer render.openstreetmap.org parent 80 0 no-query originserver name=osmtileAccelBackup login=PASS connect-timeout=60 no-digest weight=10
