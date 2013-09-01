@@ -4,7 +4,8 @@ description "Master role applied to norbert"
 default_attributes(
   :accounts => {
     :users => {
-      :yellowbkpk => { :status => :administrator }
+      :yellowbkpk => { :status => :administrator },
+      :pnorman => { :status => :user }
     }
   },
   :exim => {
