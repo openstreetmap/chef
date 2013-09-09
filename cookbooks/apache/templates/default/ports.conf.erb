@@ -6,10 +6,12 @@ Listen <%= node[:apache][:listen_address] %>:80
 
 # Listen on port 443 if mod_ssl is enabled
 <IfModule mod_ssl.c>
+    NameVirtualHost *:443
     Listen <%= node[:apache][:listen_address] %>:443
 </IfModule>
 
 # Listen on port 443 if mod_gnutls is enabled
 <IfModule mod_gnutls.c>
+    NameVirtualHost *:443
     Listen <%= node[:apache][:listen_address] %>:443
 </IfModule>
