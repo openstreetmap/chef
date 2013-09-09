@@ -15,6 +15,8 @@
 	ServerAdmin postmaster@openstreetmap.org
 	ServerSignature On
 
+        SSLEngine on
+
 	CustomLog /var/log/apache2/<%= @name %>-access.log combined
 	ErrorLog /var/log/apache2/<%= @name %>-error.log
 	LogLevel warn

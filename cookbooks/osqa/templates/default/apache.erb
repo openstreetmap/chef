@@ -16,6 +16,8 @@ WSGIDaemonProcess <%= @name %> user=<%= @user %> group=<%= @group %> processes=4
         ServerName <%= @name %>
         ServerAdmin webmaster@openstreetmap.org
 
+        SSLEngine on
+
         CustomLog /var/log/apache2/<%= @name %>-access.log combined
         ErrorLog /var/log/apache2/<%= @name %>-error.log
 
@@ -26,6 +28,4 @@ WSGIDaemonProcess <%= @name %> user=<%= @user %> group=<%= @group %> processes=4
         WSGIScriptAlias / <%= @directory %>/osqa.wsgi
 
         WSGIProcessGroup <%= @name %>
-
-        SSLEngine on
 </VirtualHost>
