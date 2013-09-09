@@ -25,3 +25,5 @@ default[:apache][:event][:max_spare_threads] = 75
 default[:apache][:event][:thread_limit] = 64
 default[:apache][:event][:threads_per_child] = 25
 default[:apache][:event][:max_requests_per_child] = 0
+
+default[:apache][:listen_address] = "*"

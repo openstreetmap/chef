@@ -1,0 +1,15 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+# Listen on port 80
+NameVirtualHost *:80
+Listen <%= node[:apache][:listen_address] %>:80
+
+# Listen on port 443 if mod_ssl is enabled
+<IfModule mod_ssl.c>
+    Listen <%= node[:apache][:listen_address] %>:443
+</IfModule>
+
+# Listen on port 443 if mod_gnutls is enabled
+<IfModule mod_gnutls.c>
+    Listen <%= node[:apache][:listen_address] %>:443
+</IfModule>

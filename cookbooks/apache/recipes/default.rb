@@ -29,6 +29,13 @@ template "/etc/apache2/httpd.conf" do
   mode 0644
 end
 
+template "/etc/apache2/ports.conf" do
+  source "ports.conf.erb"
+  owner "root"
+  group "root"
+  mode 0644
+end
+
 service "apache2" do
   action [ :enable, :start ]
   supports :status => true, :restart => true, :reload => true
