@@ -70,7 +70,7 @@ node[:tile][:data].each do |name,data|
   file = "/srv/tile.openstreetmap.org/data/#{File.basename(url)}"
   file_basename = File.basename(url)
 -%>
-print "<b>%s</b> last modified: %s" % ("<%= file_basename %>", time.ctime(os.path.getmtime("<%= file %>")))
+print "<b>%s</b> last modified: %s<br />" % ("<%= file_basename %>", time.ctime(os.path.getmtime("<%= file %>")))
 <%
 end
 -%>
