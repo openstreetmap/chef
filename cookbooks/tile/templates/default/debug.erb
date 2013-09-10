@@ -6,6 +6,7 @@ import cgitb
 import os
 import sys
 import resource
+import time
 
 # HTML Debug of errors
 cgitb.enable()
@@ -61,6 +62,19 @@ print "<h2>Server Stats</h2>"
 print "<p>"
 print "<b>Render Server</b>: <%= node['fqdn'] %><br />"
 print "<b>Load Average</b>: %s</p>" % loadavg
+print "<h2>File Status</h2>"
+print "<p>"
+<%
+node[:tile][:data].each do |name,data|
+  url = data[:url]
+  file = "/srv/tile.openstreetmap.org/data/#{File.basename(url)}"
+  file_basename = File.basename(url)
+-%>
+print "<b>%s</b> last modified: %s" % (<%= file_basename %>, time.ctime(os.path.getmtime(<%= file %>)))
+<%
+end
+-%>
+print "</p>"
 print "<h2>Browser Request Headers</h2>"
 print "<p>"
 for param in os.environ.keys():
