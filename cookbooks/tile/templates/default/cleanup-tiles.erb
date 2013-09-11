@@ -17,7 +17,7 @@ if (df($tiledir)->{per} > 90)
 
     open(TILES, "-|", "sort", "-n", $tempfile) || die "Can't open $tempfile: $!";
 
-    while (df($tiledir)->{per} > 80)
+    while (df($tiledir)->{per} > 80  && ! eof(TILES))
     {
         for my $n (1..1000)
         {
