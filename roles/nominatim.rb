@@ -41,8 +41,8 @@ default_attributes(
     :postgres => {
       :comment => "Increase shared memory for postgres",
       :parameters => { 
-        "kernel.shmmax" => 16 * 1024 * 1024 * 1024,
-        "kernel.shmall" => 16 * 1024 * 1024 * 1024 / 4096
+        "kernel.shmmax" => 26 * 1024 * 1024 * 1024,
+        "kernel.shmall" => 26 * 1024 * 1024 * 1024 / 4096
       }
     }
   },
