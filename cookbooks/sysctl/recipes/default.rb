@@ -46,6 +46,7 @@ node[:sysctl].each_value do |group|
 
     file sysctl_file do
       content "#{value}\n"
+      atomic_update false
       only_if { File.exists?(sysctl_file) }
     end
   end
