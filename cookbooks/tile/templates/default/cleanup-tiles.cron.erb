@@ -1,5 +1,7 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
+MAILTO=admins@openstreetmap.org
+
 <% @directories.each do |directory| -%>
 0 1 * * * www-data ionice -c 3 /usr/local/bin/cleanup-tiles <%= directory %>
 <% end -%>
