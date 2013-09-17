@@ -39,10 +39,10 @@ if (df($tiledir)->{per} > 90)
   done:
 
     close(TILES);
+
+    warn "Tile expiry finished before threshold reached" if df($tiledir)->{per} > 80;
 }
 
 unlink($tempfile);
-
-warn "Tile expiry finished before threshold reached" if df($tiledir)->{per} > 80;
 
 exit 0;
