@@ -67,6 +67,12 @@ template "/srv/stats.openstreetmap.org/index.html" do
   variables :sites => node[:stats][:sites]
 end
 
+cookbook_file "/srv/stats.openstreetmap.org/robots.txt" do
+  owner "root"
+  group "root"
+  mode 0644
+end
+
 apache_site "stats.openstreetmap.org" do
   template "apache.erb"
   directory "/srv/stats.openstreetmap.org"
