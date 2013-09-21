@@ -17,8 +17,9 @@ default_attributes(
     :timeout => 60,
     :keepalive => false,
     :event => {
-      :max_clients => 560,
-      :threads_per_child => 35
+      :server_limit => 32,
+      :max_clients => 800,
+      :threads_per_child => 50
     }
   },
   :apt => {
