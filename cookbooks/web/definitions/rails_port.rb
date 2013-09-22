@@ -43,6 +43,7 @@ define :rails_port, :action => [ :create, :enable ] do
   package "rubygems#{ruby_version}"
   package "irb#{ruby_version}"
   package "imagemagick"
+  package "nodejs"
 
   package "g++"
   package "libpq-dev"
