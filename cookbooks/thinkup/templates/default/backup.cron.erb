@@ -13,6 +13,6 @@ ln -s /srv/thinkup.openstreetmap.org $T/thinkup-$D/www
 export GZIP="--rsyncable -9"
 
 nice tar --create --gzip --dereference --directory=$T --file=$T/$B thinkup-$D
-nice rsync $T/$B backup::backup
+nice rsync --bwlimit=500 $T/$B backup::backup
 
 rm -rf $T

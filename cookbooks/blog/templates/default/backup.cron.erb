@@ -13,6 +13,6 @@ ln -s /srv/blog.openstreetmap.org $T/osm-blog-$D/www
 export GZIP="--rsyncable -9"
 
 nice tar --create --gzip --dereference --directory=$T --file=$T/$B osm-blog-$D
-nice rsync $T/$B backup::backup
+nice rsync --bwlimit=500 $T/$B backup::backup
 
 rm -rf $T

@@ -22,6 +22,6 @@ ln -s /srv/2012.stateofthemap.org $T/sotm-$D/www2012
 export GZIP="--rsyncable -9"
 
 nice tar --create --gzip --dereference --directory=$T --file=$T/$B sotm-$D
-nice rsync $T/$B backup::backup
+nice rsync --bwlimit=500 $T/$B backup::backup
 
 rm -rf $T
