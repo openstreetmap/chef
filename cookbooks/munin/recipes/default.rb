@@ -102,6 +102,8 @@ munin_plugin "entropy"
 munin_plugin "forks"
 
 if node[:kernel][:modules].include?("nf_conntrack")
+  package "conntrack"
+
   munin_plugin "fw_conntrack"
   munin_plugin "fw_forwarded_local"
 else
