@@ -80,6 +80,10 @@ http_access deny purge
 
 forwarded_for on
 
+#Loggin used for analysis
+logformat zerelog %ts.%03tu %rp "%{Etag}<h" %>a "%{User-Agent}>h"
+access_log /var/log/squid/zere.log zerelog
+
 access_log <%= node[:squid][:access_log] %>
 cache_log /var/log/squid/cache.log
 cache_store_log none
