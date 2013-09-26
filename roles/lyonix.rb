@@ -14,6 +14,12 @@ default_attributes(
         :zone => "ly"
       }
     }
+  },
+  :snmpd => {
+    :clients => [ "77.95.64.0/24", "77.95.70.0/24" ],
+    :community => "lyonix",
+    :location => "LYON",
+    :contact => "noc@lyonix.net"
   }
 )
 
@@ -24,5 +30,6 @@ override_attributes(
 )
 
 run_list(
-  "role[fr]"
+  "role[fr]",
+  "recipe[snmpd]"
 )
