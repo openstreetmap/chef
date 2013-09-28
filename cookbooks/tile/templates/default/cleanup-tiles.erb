@@ -13,7 +13,7 @@ my $tempfile = tmpnam();
 
 if (df($tiledir)->{per} > 90)
 {
-    system("find", $tiledir, "-xdev", "-type", "f", "-name", "*.meta", "-atime", "+28", "-fprintf", $tempfile, "%A@ %p\n");
+    system("find", $tiledir, "-xdev", "-type", "f", "-name", "*.meta", "-atime", "+35", "-fprintf", $tempfile, "%A@ %p\n");
 
     open(TILES, "-|", "sort", "-n", $tempfile) || die "Can't open $tempfile: $!";
 
