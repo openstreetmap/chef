@@ -20,7 +20,7 @@ unknown_limit 144
     address <%= client.internal_ipaddress %>
 <% elsif client[:networking][:roles][:external][:zone] == "ic" -%>
     address <%= client.internal_ipaddress || client.external_ipaddress %>
-<% else -%>
+<% elsif client.external_ipaddress -%>
     address <%= client.external_ipaddress %>
 <% end -%>
     use_node_name yes
