@@ -48,3 +48,11 @@ squid_fragment "tilecache" do
   template "squid.conf.erb"
   variables :caches => tilecaches
 end
+
+template "/etc/logrotate.d/squid" do
+  source "logrotate.squid.erb"
+  owner "root"
+  group "root"
+  mode 0644
+end
+
