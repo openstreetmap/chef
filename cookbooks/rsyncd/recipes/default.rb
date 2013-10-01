@@ -19,6 +19,27 @@
 
 include_recipe "networking"
 
+hosts_allow = Hash.new
+hosts_deny = Hash.new
+
+node[:rsyncd][:modules].each do |name,details|
+  hosts_allow[name] = details[:hosts_allow] || []
+
+  if details[:nodes_allow]
+    hosts_allow[name] |= search(:node, details[:nodes_allow]).collect do |n|
+      n.ipaddresses(:role => :external)
+    end.flatten
+  end
+
+  hosts_deny[name] = details[:hosts_deny] || []
+
+  if details[:nodes_deny]
+    hosts_deny[name] |= search(:node, details[:nodes_deny]).collect do |n|
+      n.ipaddresses(:role => :external)
+    end.flatten
+  end
+end
+
 package "rsync"
 
 service "rsync" do
@@ -39,6 +60,7 @@ template "/etc/rsyncd.conf" do
   owner "root"
   group "root"
   mode 0644
+  variables :hosts_allow => hosts_allow, :hosts_deny => hosts_deny
 end
 
 firewall_rule "accept-rsync" do

@@ -72,7 +72,8 @@ default_attributes(
           "2001:630:12:500::/64", # ic external
           "127.0.0.0/8",          # localhost
           "::1"                   # localhost
-        ]
+        ],
+        :nodes_allow => "roles:tilecache"
       }
     }
   }
