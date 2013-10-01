@@ -2,6 +2,9 @@ name "ironbelly"
 description "Master role applied to ironbelly"
 
 default_attributes(
+  :apt => {
+    :sources => [ "ubuntugis-unstable" ]
+  },
   :networking => {
     :interfaces => {
       :internal_ipv4 => {
