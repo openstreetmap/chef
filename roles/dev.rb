@@ -128,9 +128,9 @@ default_attributes(
         :repository => "git://github.com/osmlab/openstreetmap-website.git",
         :revision => "groups-sketch"
       },
-      :rails4 => {
-        :repository => "git://github.com/tomhughes/openstreetmap-website.git",
-        :revision => "rails4"
+      :redesign => {
+        :repository => "git://github.com/osmlab/openstreetmap-website.git",
+        :revision => "redesign"
       },
       :help => {
         :repository => "git://github.com/osmlab/openstreetmap-website.git",
