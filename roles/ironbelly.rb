@@ -5,6 +5,10 @@ default_attributes(
   :apt => {
     :sources => [ "ubuntugis-unstable" ]
   },
+  :git => {
+    :allowed_nodes => "*:*",
+    :backup => "chef-git"
+  },
   :networking => {
     :interfaces => {
       :internal_ipv4 => {
@@ -90,5 +94,6 @@ run_list(
   "role[stats]",
   "role[planet]",
   "recipe[rsyncd]",
-  "recipe[openvpn]"
+  "recipe[openvpn]",
+  "recipe[git::server]"
 )
