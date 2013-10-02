@@ -27,13 +27,29 @@ directory git_directory do
   mode 02775
 end
 
-firewall_rule "accept-git" do
-  action :accept
-  source "net"
-  dest "fw"
-  proto "tcp:syn"
-  dest_ports "git"
-  source_ports "1024:"
+if node[:git][:allowed_nodes]
+  search(:node, node[:git][:allowed_nodes]).each do |n|
+    n.interfaces(:role => :external).each do |interface|
+      firewall_rule "accept-git" do
+        action :accept
+        family interface[:family]
+        source "#{interface[:zone]}:#{interface[:address]}"
+        dest "fw"
+        proto "tcp:syn"
+        dest_ports "git"
+        source_ports "1024:"
+      end
+    end
+  end
+else
+  firewall_rule "accept-git" do
+    action :accept
+    source "net"
+    dest "fw"
+    proto "tcp:syn"
+    dest_ports "git"
+    source_ports "1024:"
+  end
 end
 
 Dir.new(git_directory).select { |name| name =~ /\.git$/ }.each do |repository|
