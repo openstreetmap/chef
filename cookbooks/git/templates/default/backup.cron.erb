@@ -4,7 +4,7 @@
 
 T=$(mktemp -d -t -p /var/tmp git.XXXXXXXXXX)
 D=$(date +%Y-%m-%d)
-B=git-$D.tar.gz
+B=<%= node[:git][:backup] %>-$D.tar.gz
 
 ln -s /var/lib/git $T/git-$D
 

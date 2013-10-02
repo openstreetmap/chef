@@ -23,7 +23,8 @@ default_attributes(
     }
   },
   :git => {
-    :host => "git.openstreetmap.org"
+    :host => "git.openstreetmap.org",
+    :backup => "git"
   }
 )
 
