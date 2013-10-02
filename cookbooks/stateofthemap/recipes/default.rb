@@ -142,7 +142,7 @@ end
 
 wordpress_plugin "sitepress-multilingual-cms" do
   site "2010.stateofthemap.org"
-  source "plugins/sitepress-multilingual-cms"
+  repository "git://chef.openstreetmap.org/sitepress-multilingual-cms.git"
 end
 
 wordpress_plugin "wp-sticky" do
@@ -180,7 +180,7 @@ end
 
 wordpress_plugin "sitepress-multilingual-cms" do
   site "2011.stateofthemap.org"
-  source "plugins/sitepress-multilingual-cms"
+  repository "git://chef.openstreetmap.org/sitepress-multilingual-cms.git"
 end
 
 wordpress_plugin "wp-sticky" do
@@ -222,7 +222,7 @@ end
 
 wordpress_plugin "sitepress-multilingual-cms" do
   site "2012.stateofthemap.org"
-  source "plugins/sitepress-multilingual-cms"
+  repository "git://chef.openstreetmap.org/sitepress-multilingual-cms.git"
 end
 
 wordpress_plugin "wp-sticky" do

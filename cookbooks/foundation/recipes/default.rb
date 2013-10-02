@@ -46,5 +46,5 @@ end
 
 wordpress_plugin "sitepress-multilingual-cms" do
   site "blog.osmfoundation.org"
-  source "plugins/sitepress-multilingual-cms"
+  repository "git://chef.openstreetmap.org/sitepress-multilingual-cms.git"
 end
