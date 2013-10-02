@@ -22,8 +22,8 @@ include_recipe "networking"
 git_directory = node[:git][:directory]
 
 directory git_directory do
-  owner "git"
-  group "git"
+  owner node[:git][:user]
+  group node[:git][:group]
   mode 02775
 end
 
@@ -56,7 +56,7 @@ Dir.new(git_directory).select { |name| name =~ /\.git$/ }.each do |repository|
   template "#{git_directory}/#{repository}/hooks/post-update" do
     source "post-update.erb"
     owner "root"
-    group "git"
+    group node[:git][:group]
     mode 0755
   end
 
@@ -64,7 +64,7 @@ Dir.new(git_directory).select { |name| name =~ /\.git$/ }.each do |repository|
     template "#{git_directory}/#{repository}/hooks/post-receive" do
       source "post-receive.erb"
       owner "root"
-      group "git"
+      group node[:git][:group]
       mode 0755
       variables :repository => "#{git_directory}/#{repository}"
     end

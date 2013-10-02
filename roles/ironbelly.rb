@@ -7,6 +7,8 @@ default_attributes(
   },
   :git => {
     :allowed_nodes => "*:*",
+    :user => "chefrepo",
+    :group => "chefrepo",
     :backup => "chef-git"
   },
   :networking => {
