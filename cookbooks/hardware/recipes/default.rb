@@ -64,6 +64,8 @@ when "IBM"
 end
 
 if manufacturer == "HP" and node[:lsb][:release].to_f > 11.10
+  include_recipe "git"
+
   git "/opt/hp/hp-legacy" do
     action :sync
     repository "git://chef.openstreetmap.org/hp-legacy.git"
