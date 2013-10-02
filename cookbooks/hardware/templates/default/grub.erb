@@ -1,0 +1,40 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+# Boot the first entry by default
+GRUB_DEFAULT="0"
+
+# Wait two seconds before booting the default entry
+GRUB_TIMEOUT="2"
+
+# Display the menu straight away
+GRUB_HIDDEN_TIMEOUT="0"
+GRUB_HIDDEN_TIMEOUT_QUIET="true"
+
+# Set the distribution name
+GRUB_DISTRIBUTOR=`lsb_release -i -s 2> /dev/null || echo Debian`
+
+# Arguments to add to the kernel command line (all entries)
+<% if @unit.nil? -%>
+GRUB_CMDLINE_LINUX="nomodeset"
+<% else -%>
+GRUB_CMDLINE_LINUX="console=tty0 console=ttyS<%= @unit %>,115200n8 nomodeset"
+<% end -%>
+
+# Arguments to add to the kernel command line (except recovery entries)
+GRUB_CMDLINE_LINUX_DEFAULT=""
+
+<% if @unit.nil? -%>
+# Send console output to the screen
+GRUB_TERMINAL="console"
+<% else -%>
+<% if node[:lsb][:release].to_f >= 12.04 -%>
+# Send console output to the screen and serial port
+GRUB_TERMINAL="console serial"
+<% else -%>
+# Send console output to the serial port
+GRUB_TERMINAL="serial"
+<% end -%>
+
+# Configure the serial console
+GRUB_SERIAL_COMMAND="serial --speed=<%= @speed %> --unit=<%= @unit %> --word=8 --parity=no --stop=1"
+<% end -%>

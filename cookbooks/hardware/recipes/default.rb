@@ -1,0 +1,146 @@
+#
+# Cookbook Name:: hardware
+# Recipe:: default
+#
+# Copyright 2012, OpenStreetMap Foundation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+case node[:cpu][:"0"][:vendor_id]
+when "GenuineIntel"
+  package "intel-microcode"
+end
+
+if node[:dmi] and node[:dmi][:system]
+  case node[:dmi][:system][:manufacturer]
+  when "empty"
+    manufacturer = node[:dmi][:base_board][:manufacturer]
+    product = node[:dmi][:base_board][:product_name]
+  else
+    manufacturer = node[:dmi][:system][:manufacturer]
+    product = node[:dmi][:system][:product_name]
+  end
+else
+  manufacturer = "Unknown"
+  product = "Unknown"
+end
+
+case manufacturer
+when "HP"
+  package "hponcfg"
+  package "hp-health"
+  package "hpacucli"
+  unit = "1"
+  speed = "115200"
+when "TYAN"
+  unit = "0"
+  speed = "115200"
+when "TYAN Computer Corporation"
+  unit = "0"
+  speed = "115200"
+when "Supermicro"
+  case product
+  when "H8DGU", "X9SCD", "X7DBU", "X7DW3", "X9DR7/E-(J)LN4F", "X9DR3-F"
+    unit = "1"
+    speed = "115200"
+  else
+    unit = "0"
+    speed = "115200"
+  end
+when "IBM"
+  unit = "0"
+  speed = "115200"
+end
+
+if manufacturer == "HP" and node[:lsb][:release].to_f > 11.10
+  git "/opt/hp/hp-legacy" do
+    action :sync
+    repository "git://chef.openstreetmap.org/hp-legacy.git"
+    user "root"
+    group "root"
+  end
+
+  link "/opt/hp/hp-health/bin/hpasmd" do
+    to "/opt/hp/hp-legacy/hpasmd"
+  end
+
+  link "/usr/lib/libhpasmintrfc.so.3.0" do
+    to "/opt/hp/hp-legacy/libhpasmintrfc.so.3.0"
+  end
+
+  link "/usr/lib/libhpasmintrfc.so.3" do
+    to "libhpasmintrfc.so.3.0"
+  end
+
+  link "/usr/lib/libhpasmintrfc.so" do
+    to "libhpasmintrfc.so.3.0"
+  end
+end
+
+unless unit.nil?
+  file "/etc/init/ttySttyS#{unit}.conf" do
+    action :delete
+  end
+
+  template "/etc/init/ttyS#{unit}.conf" do
+    source "tty.conf.erb"
+    owner "root"
+    group "root"
+    mode 0644
+    variables :unit => unit, :speed => speed
+  end
+
+  service "ttyS#{unit}" do
+    provider Chef::Provider::Service::Upstart
+    action [ :enable, :start ]
+    supports :status => true, :restart => true, :reload => false
+    subscribes :restart, resources(:template => "/etc/init/ttyS#{unit}.conf")
+  end
+end
+
+if File.exist?("/etc/default/grub")
+  execute "update-grub" do
+    action :nothing
+    command "/usr/sbin/update-grub"
+  end
+
+  template "/etc/default/grub" do
+    source "grub.erb"
+    owner "root"
+    group "root"
+    mode 0644
+    variables :unit => unit, :speed => speed
+    notifies :run, resources(:execute => "update-grub")
+  end
+end
+
+execute "update-initramfs" do
+  action :nothing
+  command "update-initramfs -u -k all"
+  user "root"
+  group "root"
+end
+
+template "/etc/initramfs-tools/conf.d/mdadm" do
+  source "initramfs-mdadm.erb"
+  owner "root"
+  group "root"
+  mode 0644
+  notifies :run, "execute[update-initramfs]"
+end
+
+if node[:kernel][:modules].include?("mpt2sas")
+  package "sas2ircu"
+  package "sas2ircu-status"
+end
