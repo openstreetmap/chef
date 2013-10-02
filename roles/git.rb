@@ -23,11 +23,11 @@ default_attributes(
     }
   },
   :git => {
-    :host => "git.openstreetmap.org",
-    :directory => "/var/lib/git"
+    :host => "git.openstreetmap.org"
   }
 )
 
 run_list(
-  "recipe[git::server]"
+  "recipe[git::server]",
+  "recipe[git::web]"
 )

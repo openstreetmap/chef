@@ -17,12 +17,7 @@
 # limitations under the License.
 #
 
-include_recipe "apache"
 include_recipe "networking"
-
-package "gitweb"
-
-apache_module "rewrite"
 
 git_directory = node[:git][:directory]
 
@@ -30,25 +25,6 @@ directory git_directory do
   owner "git"
   group "git"
   mode 02775
-end
-
-template "/etc/gitweb.conf" do
-  source "gitweb.conf.erb"
-  owner "root"
-  group "root"
-  mode 0644
-end
-
-apache_site node[:git][:host] do
-  template "apache.erb"
-  directory git_directory
-end
-
-template "#{git_directory}/robots.txt" do
-  source "robots.txt.erb"
-  owner "root"
-  group "root"
-  mode 0644
 end
 
 firewall_rule "accept-git" do
