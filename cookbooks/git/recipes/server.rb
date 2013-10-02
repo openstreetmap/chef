@@ -18,6 +18,7 @@
 #
 
 include_recipe "networking"
+include_recipe "xinetd"
 
 git_directory = node[:git][:directory]
 
@@ -76,4 +77,12 @@ template "/etc/cron.daily/git-backup" do
   owner "root"
   group "root"
   mode 0755
+end
+
+template "/etc/xinetd.d/git" do
+  source "xinetd.erb"
+  owner "root"
+  group "root"
+  mode 0644
+  notifies :reload, resources(:service => "xinetd")
 end
