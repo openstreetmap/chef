@@ -488,6 +488,7 @@ template "/etc/rsyslog.d/20-renderd.conf" do
   notifies :restart, "service[rsyslog]"
 end
 
+package "liblockfile-simple-perl"
 package "libfilesys-df-perl"
 
 template "/usr/local/bin/cleanup-tiles" do
