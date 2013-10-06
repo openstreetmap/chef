@@ -72,6 +72,14 @@ search(:accounts, "*:*").each do |account|
   end
 end
 
+if node[:exim][:private_aliases]
+  aliases = data_bag_item("exim", "aliases")
+
+  aliases[node[:exim][:private_aliases]].each do |name,address|
+    node.default[:exim][:aliases][name] = address
+  end
+end
+
 template "/etc/aliases" do
   source "aliases.erb"
   owner "root"
