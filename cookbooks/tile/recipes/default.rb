@@ -257,8 +257,14 @@ node[:tile][:styles].each do |name,details|
   end
 
   details[:tile_directories].each do |directory|
+    directory "#{directory[:name]}" do
+      owner "www-data"
+      group "www-data"
+      mode 0755
+    end
+
     directory[:min_zoom].upto(directory[:max_zoom]) do |zoom|
-      directory  "#{directory[:name]}/#{zoom}" do
+      directory "#{directory[:name]}/#{zoom}" do
         owner "www-data"
         group "www-data"
         mode 0755
