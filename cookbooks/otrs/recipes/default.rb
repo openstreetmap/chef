@@ -20,6 +20,8 @@
 include_recipe "tools"
 include_recipe "apache::ssl"
 
+passwords = data_bag_item("otrs", "passwords")
+
 package "libapache2-mod-perl2"
 package "libapache2-reload-perl"
 
@@ -40,7 +42,7 @@ group = node[:otrs][:group]
 database_cluster = node[:otrs][:database_cluster]
 database_name = node[:otrs][:database_name]
 database_user = node[:otrs][:database_user]
-database_password = node[:otrs][:database_password]
+database_password = passwords[node[:otrs][:database_password]]
 site = node[:otrs][:site]
 
 remote_file "/tmp/otrs-#{version}.tar.bz2" do
