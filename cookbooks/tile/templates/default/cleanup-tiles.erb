@@ -7,11 +7,13 @@ use warnings;
 
 use File::Temp qw(tmpnam);
 use Filesys::Df;
-use LockFile::Simple qw(lock unlock);
+use LockFile::Simple;
 
 my $tiledir = shift @ARGV;
 
-lock($tiledir) || exit 0;
+my $lockmgr = LockFile::Simple->make(-autoclean => 1, -max => 0, -warn => 0);
+
+$lockmgr->lock($tiledir) || exit 0;
 
 my $tempfile = tmpnam();
 
@@ -49,6 +51,6 @@ if (df($tiledir)->{per} > 90)
 
 unlink($tempfile);
 
-unlock($tiledir);
+$lockmgr->unlock($tiledir);
 
 exit 0;
