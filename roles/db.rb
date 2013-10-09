@@ -42,6 +42,7 @@ default_attributes(
         :max_stack_depth => "7MB",
         :checkpoint_segments => "32",
         :checkpoint_completion_target => "0.8",
+        :cpu_tuple_cost => "0.1",
         :late_authentication_rules => [
           { :address => "146.179.159.160/27" }
         ]
