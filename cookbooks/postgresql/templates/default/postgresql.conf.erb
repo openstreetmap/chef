@@ -85,6 +85,7 @@ hot_standby_feedback = <%= @settings[:hot_standby_feedback] || @defaults[:hot_st
 # - Planner Cost Constants -
 
 random_page_cost = <%= @settings[:random_page_cost] || @defaults[:random_page_cost] %>
+cpu_tuple_cost = <%= @settings[:cpu_tuple_cost] || @defaults[:cpu_tuple_cost] %>
 effective_cache_size = <%= @settings[:effective_cache_size] || @defaults[:effective_cache_size] %>
 
 #------------------------------------------------------------------------------
