@@ -23,6 +23,7 @@ include_recipe "web::cgimap"
 
 apache_module "fastcgi-handler"
 apache_module "remoteip"
+apache_module "rewrite"
 
 apache_site "default" do
   action [ :disable ]

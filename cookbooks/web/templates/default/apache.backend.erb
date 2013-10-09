@@ -16,6 +16,11 @@
   ErrorLog /var/log/apache2/error.log
 
   #
+  # Turn on the rewrite engine
+  #
+  RewriteEngine on
+
+  #
   # Configure rails
   #
   DocumentRoot <%= node[:web][:base_directory] %>/rails/public
@@ -31,9 +36,8 @@
   RemoteIPTrustedProxy 146.179.159.160/27
 
   #
-  # Pass map calls to cgimap
+  # Pass supported calls to cgimap
   #
-  <Location /api/0.6/map>
-    SetHandler fcgi:127.0.0.1:8000
-  </Location>
+  RewriteRule ^/api/0\.6/map$ - [H=fcgi:127.0.0.1:8000]
+  RewriteRule ^/api/0\.6/(nodes|ways|relations)$ - [H=fcgi:127.0.0.1:8000]
 </VirtualHost>
