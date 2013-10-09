@@ -39,6 +39,6 @@
   # Pass supported calls to cgimap
   #
   RewriteRule ^/api/0\.6/map$ - [H=fcgi:127.0.0.1:8000]
-  RewriteRule ^/api/0\.6/(way|relation)/[0-9]+/full$ - [H=fcgi:127.0.0.1:8000]
+  RewriteRule ^/api/0\.6/(way)/[0-9]+/full$ - [H=fcgi:127.0.0.1:8000]
   RewriteRule ^/api/0\.6/(nodes|ways|relations)$ - [H=fcgi:127.0.0.1:8000]
 </VirtualHost>
