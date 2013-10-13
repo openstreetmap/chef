@@ -96,7 +96,7 @@ default_attributes(
   :apt => {
     :sources => [
       "brightbox-ruby-ng",
-      "ubuntugis-stable", "ubuntugis-unstable",
+      "ubuntugis-stable",
       "mapnik-v210"
     ]
   },
