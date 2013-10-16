@@ -1,0 +1,34 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+<VirtualHost *:80>
+  # Basic server configuration
+  ServerName <%= node[:fqdn] %>
+  ServerAlias gps-tile.openstreetmap.org
+  ServerAlias *.gps-tile.openstreetmap.org
+  ServerAdmin webmaster@openstreetmap.org
+
+  # Configure location of static files
+  DocumentRoot /srv/gps-tile.openstreetmap.org/html
+
+  # Configure the CGI script that serves the tiles
+  ScriptAlias /lines /srv/gps-tile.openstreetmap.org/updater/tile
+
+  # Temporary redirect for old CGI location
+  RedirectPermanent /gps-lines/tile /lines
+
+  # Setup logging
+  CustomLog /var/log/apache2/access.log combined
+  ErrorLog /var/log/apache2/error.log
+  BufferedLogs on
+
+  # Always set Access-Control-Allow-Origin so that simple CORS requests
+  # will always work and can be cached
+  Header set Access-Control-Allow-Origin "*"
+</VirtualHost>
+
+<Directory /srv/gps-tile.openstreetmap.org/html>
+  Options None
+  AllowOverride None
+  Order allow,deny
+  Allow from all
+</Directory>

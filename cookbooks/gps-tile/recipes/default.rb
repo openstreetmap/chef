@@ -44,7 +44,7 @@ git "/srv/gps-tile.openstreetmap.org/import" do
   group "gpstile"
 end
 
-execute "import-make" do
+execute "/srv/gps-tile.openstreetmap.org/import/src/Makefile" do
   action :nothing
   command "make"
   cwd "/srv/gps-tile.openstreetmap.org/import/src"
@@ -61,7 +61,7 @@ git "/srv/gps-tile.openstreetmap.org/datamaps" do
   group "gpstile"
 end
 
-execute "datamaps-make" do
+execute "/srv/gps-tile.openstreetmap.org/datamaps/Makefile" do
   action :nothing
   command "make"
   cwd "/srv/gps-tile.openstreetmap.org/datamaps"
@@ -78,8 +78,29 @@ git "/srv/gps-tile.openstreetmap.org/updater" do
   group "gpstile"
 end
 
-directory "/srv/gps-tile.openstreetmap.org/html" do
+template "/etc/init.d/gps-update" do
+  source "update.init.erb"
+  owner "root"
+  group "root"
+  mode 0755
+end
+
+#service "gps-update" do
+#  action [ :enable, :start ]
+#  supports :restart => true
+#  subscribes :restart, "git[/srv/gps-tile.openstreetmap.org/updater]"
+#end
+
+remote_directory "/srv/gps-tile.openstreetmap.org/html" do
+  source "html"
   owner "gpstile"
   group "gpstile"
   mode 0755
+  files_owner "gpstile"
+  files_group "gpstile"
+  mode 0644
+end
+
+apache_site "gps-tile.openstreetmap.org" do
+  template "apache.erb"
 end
