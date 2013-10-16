@@ -47,7 +47,7 @@ end
 execute "import-make" do
   action :nothing
   command "make"
-  cwd "/srv/gps-tile.openstreetmap.org/import"
+  cwd "/srv/gps-tile.openstreetmap.org/import/src"
   user "gpstile"
   group "gpstile"
   subscribes :run, "git[/srv/gps-tile.openstreetmap.org/import]"
