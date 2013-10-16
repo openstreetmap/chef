@@ -101,6 +101,8 @@ remote_directory "/srv/gps-tile.openstreetmap.org/html" do
   mode 0644
 end
 
+apache_module "headers"
+
 apache_site "gps-tile.openstreetmap.org" do
   template "apache.erb"
 end
