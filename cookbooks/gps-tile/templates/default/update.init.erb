@@ -3,7 +3,7 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
 start() {
-  start-stop-daemon --start --chuid gpstile --chdir /srv/gps-tile.openstreetmap.org --background --make-pidfile --pidfile /var/run/gps-update.pid --exec /src/gps-tile.openstreetmap.org/updater/update
+  start-stop-daemon --start --chuid gpstile --chdir /srv/gps-tile.openstreetmap.org --background --make-pidfile --pidfile /var/run/gps-update.pid --exec /srv/gps-tile.openstreetmap.org/updater/update
 }
 
 stop() {

@@ -85,11 +85,11 @@ template "/etc/init.d/gps-update" do
   mode 0755
 end
 
-#service "gps-update" do
-#  action [ :enable, :start ]
-#  supports :restart => true
-#  subscribes :restart, "git[/srv/gps-tile.openstreetmap.org/updater]"
-#end
+service "gps-update" do
+  action [ :enable, :start ]
+  supports :restart => true
+  subscribes :restart, "git[/srv/gps-tile.openstreetmap.org/updater]"
+end
 
 remote_directory "/srv/gps-tile.openstreetmap.org/html" do
   source "html"
