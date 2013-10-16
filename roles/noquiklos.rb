@@ -22,5 +22,5 @@ default_attributes(
 
 run_list(
   "role[ucl-internal]",
-  "role[gpx-tile]"
+  "role[gps-tile]"
 )
