@@ -4,8 +4,11 @@ description "Role applied to all GPS tile servers"
 default_attributes(
   :accounts => {
     :users => {
-      :gpstile => :role,
-      :enf => { :status => :administrator }
+      :enf => { :status => :administrator },
+      :gpstile => {
+        :status => :role,
+        :members => [ :enf, :tomh ]
+      }
     }
   }
 )
