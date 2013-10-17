@@ -18,9 +18,9 @@
 #
 
 include_recipe "networking"
-include_recipe "ssl"
 
 package "exim4"
+package "openssl"
 
 if File.exist?("/var/run/clamav/clamd.ctl")
   package "exim4-daemon-heavy"
@@ -32,11 +32,19 @@ group "ssl-cert" do
   append true
 end
 
+execute "/etc/ssl/certs/exim.pem" do
+  command "openssl req -x509 -newkey rsa:2048 -keyout /etc/ssl/private/exim.key -out /etc/ssl/certs/exim.pem -days 3650 -nodes -subj='/O=OpenStreetMap/CN=#{node[:name]}'"
+  user "root"
+  group "ssl-cert"
+  not_if do
+    File.exists?("/etc/ssl/certs/exim.pem") && File.exists?("/etc/ssl/private/exim.key")
+  end
+end
+
 service "exim4" do
   action [ :enable, :start ]
   supports :status => true, :restart => true, :reload => true
-  subscribes :restart, resources(:cookbook_file => "/etc/ssl/certs/openstreetmap.pem")
-  subscribes :restart, resources(:file => "/etc/ssl/private/openstreetmap.key")
+  subscribes :restart, "execute[/etc/ssl/certs/exim.pem]"
 end
 
 relay_to_domains = node[:exim][:relay_to_domains]
