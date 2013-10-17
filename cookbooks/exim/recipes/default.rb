@@ -32,12 +32,22 @@ group "ssl-cert" do
   append true
 end
 
+template "/tmp/exim.ssl.cnf" do
+  source "ssl.cnf.erb"
+  owner "root"
+  group "root"
+  mode 0644
+   not_if do
+    File.exists?("/etc/ssl/certs/exim.pem") and File.exists?("/etc/ssl/private/exim.key")
+  end 
+end
+
 execute "/etc/ssl/certs/exim.pem" do
-  command "openssl req -x509 -newkey rsa:2048 -keyout /etc/ssl/private/exim.key -out /etc/ssl/certs/exim.pem -days 3650 -nodes -subj='/O=OpenStreetMap/CN=#{node[:name]}'"
+  command "openssl req -x509 -newkey rsa:2048 -keyout /etc/ssl/private/exim.key -out /etc/ssl/certs/exim.pem -days 3650 -nodes -config /tmp/exim.ssl.cnf"
   user "root"
   group "ssl-cert"
   not_if do
-    File.exists?("/etc/ssl/certs/exim.pem") && File.exists?("/etc/ssl/private/exim.key")
+    File.exists?("/etc/ssl/certs/exim.pem") and File.exists?("/etc/ssl/private/exim.key")
   end
 end
 
