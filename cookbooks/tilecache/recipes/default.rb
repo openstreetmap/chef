@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-node.default[:ssl][:certificate] = node[:ssl][:certificate] | [ "tile.openstreetmap" ]
+node.default[:ssl][:certificates] = node[:ssl][:certificates] | [ "tile.openstreetmap" ]
 
 include_recipe "ssl"
 include_recipe "squid"
