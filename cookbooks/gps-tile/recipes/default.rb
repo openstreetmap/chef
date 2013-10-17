@@ -87,7 +87,7 @@ end
 
 service "gps-update" do
   action [ :enable, :start ]
-  supports :restart => true
+  supports :restart => true, :status => true
   subscribes :restart, "git[/srv/gps-tile.openstreetmap.org/updater]"
 end
 
