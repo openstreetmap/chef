@@ -17,6 +17,9 @@
 # limitations under the License.
 #
 
+node.default[:ssl][:certificate] = node[:ssl][:certificate] | [ "tile.openstreetmap" ]
+
+include_recipe "ssl"
 include_recipe "squid"
 
 tilecaches = search(:node, "roles:tilecache").sort_by { |n| n[:hostname] }

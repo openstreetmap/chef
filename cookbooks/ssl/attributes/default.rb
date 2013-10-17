@@ -1,1 +1,1 @@
-default[:ssl][:certificate] = "openstreetmap"
+default[:ssl][:certificates] = []

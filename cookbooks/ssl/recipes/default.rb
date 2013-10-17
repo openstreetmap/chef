@@ -29,17 +29,29 @@ cookbook_file "/etc/ssl/certs/rapidssl.pem" do
   backup false
 end
 
-cookbook_file "/etc/ssl/certs/#{node[:ssl][:certificate]}.pem" do
-  owner "root"
-  group "root"
-  mode 0444
-  backup false
-end
+[ "openstreetmap", "tile.openstreetmap" ].each do |certificate|
+  if node[:ssl][:certificates].include?(certificate)
+    cookbook_file "/etc/ssl/certs/#{certificate}.pem" do
+      owner "root"
+      group "root"
+      mode 0444
+      backup false
+    end
 
-file "/etc/ssl/private/#{node[:ssl][:certificate]}.key" do
-  owner "root"
-  group "ssl-cert"
-  mode 0440
-  content keys[node[:ssl][:certificate]].join("\n")
-  backup false
+    file "/etc/ssl/private/#{certificate}.key" do
+      owner "root"
+      group "ssl-cert"
+      mode 0440
+      content keys[certificate].join("\n")
+      backup false
+    end
+  else
+    file "/etc/ssl/certs/#{certificate}.pem" do
+      action :delete
+    end
+
+    file "/etc/ssl/private/#{certificate}.key" do
+      action :delete
+    end
+  end
 end

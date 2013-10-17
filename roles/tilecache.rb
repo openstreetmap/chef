@@ -2,9 +2,6 @@ name "tilecache"
 description "Role applied to all tile cache servers"
 
 default_attributes(
-  :ssl => {
-    :certificate => "tile.openstreetmap"
-  },
   :sysctl => {
     :network_conntrack_time_wait => {
       :comment => "Only track completed connections for 30 seconds",
@@ -23,6 +20,5 @@ default_attributes(
 
 run_list(
   "role[geodns]",
-  "recipe[ssl]",
   "recipe[tilecache]"
 )
