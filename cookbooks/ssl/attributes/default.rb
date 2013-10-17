@@ -1,0 +1,1 @@
+default[:ssl][:certificate] = "openstreetmap"

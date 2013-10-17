@@ -29,17 +29,17 @@ cookbook_file "/etc/ssl/certs/rapidssl.pem" do
   backup false
 end
 
-cookbook_file "/etc/ssl/certs/openstreetmap.pem" do
+cookbook_file "/etc/ssl/certs/#{node[:ssl][:certificate]}.pem" do
   owner "root"
   group "root"
   mode 0444
   backup false
 end
 
-file "/etc/ssl/private/openstreetmap.key" do
+file "/etc/ssl/private/#{node[:ssl][:certificate]}.key" do
   owner "root"
   group "ssl-cert"
   mode 0440
-  content keys["openstreetmap"].join("\n")
+  content keys[node[:ssl][:certificate]].join("\n")
   backup false
 end
