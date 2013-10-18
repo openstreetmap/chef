@@ -2,6 +2,9 @@ name "tilecache"
 description "Role applied to all tile cache servers"
 
 default_attributes(
+  :apt => {
+    :sources => [ "nginx" ]
+  },
   :sysctl => {
     :network_conntrack_time_wait => {
       :comment => "Only track completed connections for 30 seconds",

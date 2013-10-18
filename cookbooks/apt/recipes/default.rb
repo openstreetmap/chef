@@ -109,3 +109,9 @@ apt_source "mapnik-v210" do
   url "http://ppa.launchpad.net/mapnik/v2.1.0/ubuntu"
   key "5D50B6BA"
 end
+
+apt_source "nginx" do
+  url "http://nginx.org/packages/ubuntu"
+  key "7BD9BF62"
+end
+
