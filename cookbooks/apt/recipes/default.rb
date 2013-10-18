@@ -111,7 +111,7 @@ apt_source "mapnik-v210" do
 end
 
 apt_source "nginx" do
+  template "nginx.list.erb"
   url "http://nginx.org/packages/ubuntu"
   key "7BD9BF62"
 end
-
