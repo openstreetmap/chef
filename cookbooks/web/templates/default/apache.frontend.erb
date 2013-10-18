@@ -160,18 +160,19 @@
   </Proxy>
 
   #
-  # Pass other heavy duty API calls to the bulkapi backends via a load balancer
+  # Pass some other API calls to the backends via a load balancer
   #
-  ProxyPass /api/0.6/map balancer://bulkapi/api/0.6/map
-  ProxyPass /api/0.6/tracepoints balancer://bulkapi/api/0.6/tracepoints
-  ProxyPass /api/0.6/amf/read balancer://bulkapi/api/0.6/amf/read
-  ProxyPass /api/0.6/swf/trackpoints balancer://bulkapi/api/0.6/swf/trackpoints
-  ProxyPassMatch ^(/api/0.6/changeset/[0-9]+/(upload|download))$ balancer://bulkapi$1
-  ProxyPassMatch ^(/api/0.6/.*/(full|history|search|ways))$ balancer://bulkapi$1
-  ProxyPass /api/0.6/nodes balancer://bulkapi/api/0.6/nodes
-  ProxyPass /api/0.6/ways balancer://bulkapi/api/0.6/ways
-  ProxyPass /api/0.6/relations balancer://bulkapi/api/0.6/relations
-  ProxyPassMatch ^(/trace/[0-9]+/data(|/|.xml))$ balancer://bulkapi$1
+  ProxyPass /api/0\.6/map balancer://backend/api/0.6/map
+  ProxyPass /api/0\.6/tracepoints balancer://backend/api/0.6/tracepoints
+  ProxyPass /api/0\.6/amf/read balancer://backend/api/0.6/amf/read
+  ProxyPass /api/0\.6/swf/trackpoints balancer://backend/api/0.6/swf/trackpoints
+  ProxyPassMatch ^(/api/0\.6/changeset/[0-9]+/(upload|download))$ balancer://backend$1
+  ProxyPassMatch ^(/api/0\.6/(node|way|relation)/[0-9]+)$ balancer://backend$1
+  ProxyPassMatch ^(/api/0\.6/(node|way|relation)/[0-9]+/(full|history|search|ways))$ balancer://backend$1
+  ProxyPass /api/0\.6/nodes balancer://backend/api/0.6/nodes
+  ProxyPass /api/0\.6/ways balancer://backend/api/0.6/ways
+  ProxyPass /api/0\.6/relations balancer://backend/api/0.6/relations
+  ProxyPassMatch ^(/trace/[0-9]+/data(|/|.xml))$ balancer://backend$1
 
   #
   # Redirect trac and wiki requests to the right places
@@ -186,9 +187,9 @@
   RedirectPermanent /images/cc_button.png http://www.openstreetmap.org/assets/cc_button.png
 
   #
-  # Define a load balancer for the bulkapi backends
+  # Define a load balancer for the backends
   #
-  <Proxy balancer://bulkapi>
+  <Proxy balancer://backend>
     ProxySet lbmethod=bybusyness
     BalancerMember http://rails1
     BalancerMember http://rails2
