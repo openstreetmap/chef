@@ -1,0 +1,2 @@
+#default[:nginx][:mpm] = "worker"
+
