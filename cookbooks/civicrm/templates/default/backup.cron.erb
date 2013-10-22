@@ -11,6 +11,7 @@ mysqldump --user=civicrm --password=<%= @passwords["database"] %> --opt --skip-l
 ln -s /data/crm.osmfoundation.org $T/osmf-crm-$D/www
 
 export GZIP="--rsyncable -9"
+export RSYNC_RSH="ssh -ax -c arcfour"
 
 nice tar --create --gzip --dereference --directory=$T --file=$T/$B osmf-crm-$D
 nice rsync $T/$B backup::backup

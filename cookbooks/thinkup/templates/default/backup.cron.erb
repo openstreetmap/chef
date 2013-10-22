@@ -11,6 +11,7 @@ mysqldump --user=thinkup --password=<%= @passwords["database"] %> --opt thinkup 
 ln -s /srv/thinkup.openstreetmap.org $T/thinkup-$D/www
 
 export GZIP="--rsyncable -9"
+export RSYNC_RSH="ssh -ax -c arcfour"
 
 nice tar --create --gzip --dereference --directory=$T --file=$T/$B thinkup-$D
 nice rsync $T/$B backup::backup

@@ -10,6 +10,7 @@ mkdir $T/lists-$D
 ln -s /var/lib/mailman $T/lists-$D/mailman
 
 export GZIP="--rsyncable -9"
+export RSYNC_RSH="ssh -ax -c arcfour"
 
 nice tar --create --gzip --dereference --directory=$T --file=$T/$B lists-$D
 nice rsync $T/$B backup::backup

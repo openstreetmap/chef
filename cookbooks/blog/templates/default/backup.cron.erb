@@ -11,6 +11,7 @@ mysqldump --user=osm-blog-user --password=<%= @passwords["osm-blog-user"] %> --o
 ln -s /srv/blog.openstreetmap.org $T/osm-blog-$D/www
 
 export GZIP="--rsyncable -9"
+export RSYNC_RSH="ssh -ax -c arcfour"
 
 nice tar --create --gzip --dereference --directory=$T --file=$T/$B osm-blog-$D
 nice rsync $T/$B backup::backup

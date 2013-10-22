@@ -14,6 +14,7 @@ F=/tmp/nominatim-${D}.dmp
 
 pg_dump --file=$F -F c -Z 9 -t 'country' -t file -t '*columns' -t 'import_polygon_*' -t import_status -t place_addressline -t placex -t search_name -t 'seq_*' -t word <%= node[:nominatim][:database][:dbname] %>
 
+export RSYNC_RSH="ssh -ax -c arcfour"
 rsync $F backup.openstreetmap.org::backup
 
 rm -f $F
