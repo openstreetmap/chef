@@ -4,6 +4,8 @@
 <VirtualHost *:<%= port %>>
   # Basic server configuration
   ServerName <%= node[:fqdn] %>
+  ServerAlias gps.tile.openstreetmap.org
+  ServerAlias gps-*.tile.openstreetmap.org
   ServerAlias gps-tile.openstreetmap.org
   ServerAlias *.gps-tile.openstreetmap.org
   ServerAdmin webmaster@openstreetmap.org
