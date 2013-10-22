@@ -17,7 +17,9 @@
 # limitations under the License.
 #
 
-node.default[:ssl][:certificates] = node[:ssl][:certificates] | [ "openstreetmap" ]
+certificate = node[:apache][:ssl][:certificate]
+
+node.default[:ssl][:certificates] = node[:ssl][:certificates] | [ certificate ]
 
 include_recipe "apache"
 include_recipe "ssl"
@@ -29,12 +31,13 @@ template "/etc/apache2/conf.d/ssl" do
   owner "root"
   group "root"
   mode 0644
+  variables :certificate => certificate
   notifies :reload, resources(:service => "apache2")
 end
 
 service "apache2" do
   action :nothing
   subscribes :restart, resources(:cookbook_file => "/etc/ssl/certs/rapidssl.pem")
-  subscribes :restart, resources(:cookbook_file => "/etc/ssl/certs/openstreetmap.pem")
-  subscribes :restart, resources(:file => "/etc/ssl/private/openstreetmap.key")
+  subscribes :restart, resources(:cookbook_file => "/etc/ssl/certs/#{certificate}.pem")
+  subscribes :restart, resources(:file => "/etc/ssl/private/#{certificate}.key")
 end

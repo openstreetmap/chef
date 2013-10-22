@@ -27,3 +27,5 @@ default[:apache][:event][:threads_per_child] = 25
 default[:apache][:event][:max_requests_per_child] = 0
 
 default[:apache][:listen_address] = "*"
+
+default[:apache][:ssl][:certificate] = "openstreetmap"

@@ -3,6 +3,6 @@
 SSLHonorCipherOrder On
 SSLCipherSuite ECDHE-RSA-AES256-SHA384:AES256-SHA256:RC4:HIGH:!MD5:!aNULL:!EDH:!AESGCM
 
-SSLCertificateFile /etc/ssl/certs/openstreetmap.pem
-SSLCertificateKeyFile /etc/ssl/private/openstreetmap.key
+SSLCertificateFile /etc/ssl/certs/<%= @certiifcate %>.pem
+SSLCertificateKeyFile /etc/ssl/private/<%= @certiifcate %>.key
 SSLCertificateChainFile /etc/ssl/certs/rapidssl.pem

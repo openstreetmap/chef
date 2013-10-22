@@ -10,6 +10,11 @@ default_attributes(
         :members => [ :enf, :tomh ]
       }
     }
+  },
+  :apache => {
+    :ssl => {
+      :certificate => "tile.openstreetmap"
+    }
   }
 )
 
