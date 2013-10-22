@@ -1,11 +1,17 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
-<VirtualHost *:80>
+<% [80, 443].each do |port| -%>
+<VirtualHost *:<%= port %>>
   # Basic server configuration
   ServerName <%= node[:fqdn] %>
   ServerAlias gps-tile.openstreetmap.org
   ServerAlias *.gps-tile.openstreetmap.org
   ServerAdmin webmaster@openstreetmap.org
+<% if port == 443 -%>
+
+  # Enable SSL
+  SSLEngine on
+<% end -%>
 
   # Configure location of static files
   DocumentRoot /srv/gps-tile.openstreetmap.org/html
@@ -26,6 +32,7 @@
   Header set Access-Control-Allow-Origin "*"
 </VirtualHost>
 
+<% end -%>
 <Directory /srv/gps-tile.openstreetmap.org/html>
   Options None
   AllowOverride None
