@@ -84,7 +84,7 @@ class Replicator
       xml['created_at'] = cs.created_at.getutc.xmlschema
       xml['closed_at'] = cs.closed_at.getutc.xmlschema if cs.closed?(@now)
       xml['open'] = cs.open?(@now).to_s
-      xml['num_changes'] = cs.num_changes
+      xml['num_changes'] = cs.num_changes.to_s
 
       res = @conn.exec("select u.id, u.display_name, c.min_lat, c.max_lat, c.min_lon, c.max_lon from users u join changesets c on u.id=c.user_id where c.id=#{cs.id}")
       xml['user'] = res[0]['display_name']
