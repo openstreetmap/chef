@@ -16,9 +16,9 @@ default_attributes(
         :interface => "eth0",
         :role => :external,
         :family => :inet6,
-        :address => "2001:7f8:47:21::a6",
+        :address => "2a03:9180:1:21::a6",
         :prefix => "64",
-        :gateway => "2001:7f8:47:21::a1"
+        :gateway => "2a03:9180:1:21::a1"
       }
     }
   },
