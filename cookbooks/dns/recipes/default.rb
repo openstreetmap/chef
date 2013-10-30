@@ -30,7 +30,6 @@ package "libxml-writer-perl"
 package "libyaml-perl"
 package "libwww-perl"
 package "libjson-xs-perl"
-package "liblwp-useragent-determined-perl"
 
 directory "/srv/dns.openstreetmap.org" do
   owner "root"
