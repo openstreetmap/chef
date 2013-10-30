@@ -35,16 +35,16 @@ if [ \! -d ${planet_dir}/planet/ ]
 if [ \! -d ${planet_dir}/planet/${cur_year}/ ]; then mkdir ${planet_dir}/planet/${cur_year}/; fi
 cd ${planet_dir}/planet/${cur_year}/
 
-/opt/planetdump/planet06_pg | pbzip2 -p6 -7c > .${cur_planet}.bz2.new
+/opt/planetdump/planet06_pg | pbzip2 -p6 -6c > .${cur_planet}.bz2.new
 /opt/planetdump/planet06_pg --changesets | pbzip2 -p6 -9c > .${cur_changeset}.bz2.new
 
 planet_size=$(du -sb .${cur_planet}.bz2.new | awk '{ print $1 }')
 changeset_size=$(du -sb .${cur_changeset}.bz2.new | awk '{ print $1 }')
-if ((planet_size<28000000000)); then 
+if ((planet_size<32000000000)); then
 	echo Planet .${cur_planet}.bz2.new too small
 	exit 1
 fi
-if ((changeset_size<600000000)); then
+if ((changeset_size<720000000)); then
 	echo Changeset .${cur_changeset}.bz2.new too small
 	exit 1
 fi
