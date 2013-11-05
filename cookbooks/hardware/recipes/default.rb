@@ -146,3 +146,13 @@ if node[:kernel][:modules].include?("mpt2sas")
   package "sas2ircu"
   package "sas2ircu-status"
 end
+
+if node[:kernel][:modules].include?("megaraid_sas")
+  package "megacli"
+  package "megaclisas-status"
+end
+
+if node[:kernel][:modules].include?("aacraid")
+  package "arcconf"
+  package "aacraid-status"
+end

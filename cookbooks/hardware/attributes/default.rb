@@ -13,4 +13,12 @@ if node[:kernel] and node[:kernel][:modules]
   if node[:kernel][:modules].include?("mpt2sas")
     default[:apt][:sources] |= [ "hwraid" ]
   end
+
+  if node[:kernel][:modules].include?("megaraid_sas")
+    default[:apt][:sources] |= [ "hwraid" ]
+  end
+
+  if node[:kernel][:modules].include?("aacraid")
+    default[:apt][:sources] |= [ "hwraid" ]
+  end
 end
