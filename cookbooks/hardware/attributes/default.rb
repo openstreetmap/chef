@@ -10,7 +10,7 @@ if node[:dmi] and node[:dmi][:system]
 end
 
 if node[:kernel] and node[:kernel][:modules]
-  raidmods = node[:kernel][:modules].keys & ["cciss", "mptsas", "mpt2sas", "megaraid_mm", "megaraid_sas", "aacraid"]
+  raidmods = node[:kernel][:modules].keys & ["cciss", "hpsa", "mptsas", "mpt2sas", "megaraid_mm", "megaraid_sas", "aacraid"]
 
   unless raidmods.empty?
     default[:apt][:sources] |= [ "hwraid" ]

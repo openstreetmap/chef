@@ -142,30 +142,43 @@ template "/etc/initramfs-tools/conf.d/mdadm" do
 end
 
 tools_packages = []
-status_packages = []
+status_packages = {}
 
 node[:kernel][:modules].each_key do |modname|
   case modname
   when "cciss"
     tools_packages << "hpacucli"
-    status_packages << "cciss-vol-status"
+    status_packages["cciss-vol-status"] ||= []
   when "hpsa"
     tools_packages << "hpacucli"
+    status_packages["cciss-vol-status"] ||= []
   when "mptsas"
     tools_packages << "lsiutil"
-    status_packages << "mpt-status"
+    status_packages["mpt-status"] ||= []
   when "mpt2sas"
     tools_packages << "sas2ircu"
-    status_packages << "sas2ircu-status"
+    status_packages["sas2ircu-status"] ||= []
   when "megaraid_mm"
     tools_packages << "megactl"
-    status_packages << "megaraid-status"
+    status_packages["megaraid-status"] ||= []
   when "megaraid_sas"
     tools_packages << "megacli"
-    status_packages << "megaclisas-status"
+    status_packages["megaclisas-status"] ||= []
   when "aacraid"
     tools_packages << "arcconf"
-    status_packages << "aacraid-status"
+    status_packages["aacraid-status"] ||= []
+  end
+end
+
+node[:block_device].each do |name,attributes|
+  if attributes[:vendor] == "HP" and attributes[:model] == "LOGICAL VOLUME"
+    if name =~ /^cciss!(.*)$/
+      status_packages["cciss-vol-status"] |= [ "cciss/#{$1}" ]
+    else
+      Dir.glob("/sys/block/#{name}/device/scsi_generic/*").each do |sg|
+        status_packages["cciss-vol-status"] |= [ File.basename(sg) ]
+      end
+    end
   end
 end
 
@@ -188,6 +201,7 @@ end
       owner "root"
       group "root"
       mode 0644
+      variables :devices => status_packages[status_package]
     end
 
     service "#{status_package}d" do
