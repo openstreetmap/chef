@@ -141,62 +141,67 @@ template "/etc/initramfs-tools/conf.d/mdadm" do
   notifies :run, "execute[update-initramfs]"
 end
 
-["cciss", "hpsa", "mptsas", "mpt2sas", "megaraid_mm", "megaraid_sas", "aacraid"].each do |raidmod|
-  case raidmod
+tools_packages = []
+status_packages = []
+
+node[:kernel][:modules].each_key do |modname|
+  case modname
   when "cciss"
-    tools_package = "hpacucli"
-    status_package = "cciss-vol-status"
+    tools_packages << "hpacucli"
+    status_packages << "cciss-vol-status"
   when "hpsa"
-    tools_package = "hpacucli"
+    tools_packages << "hpacucli"
   when "mptsas"
-    tools_package = "lsiutil"
-    status_package = "mpt-status"
+    tools_packages << "lsiutil"
+    status_packages << "mpt-status"
   when "mpt2sas"
-    tools_package = "sas2ircu"
-    status_package = "sas2ircu-status"
+    tools_packages << "sas2ircu"
+    status_packages << "sas2ircu-status"
   when "megaraid_mm"
-    tools_package = "megactl"
-    status_package = "megaraid-status"
+    tools_packages << "megactl"
+    status_packages << "megaraid-status"
   when "megaraid_sas"
-    tools_package = "megacli"
-    status_package = "megaclisas-status"
+    tools_packages << "megacli"
+    status_packages << "megaclisas-status"
   when "aacraid"
-    tools_package = "arcconf"
-    status_package = "aacraid-status"
+    tools_packages << "arcconf"
+    status_packages << "aacraid-status"
   end
+end
 
-  if node[:kernel][:modules].include?(raidmod)
+["hpacucli", "lsiutil", "sas2ircu", "megactl", "megacli", "arcconf"].each do |tools_package|
+  if tools_packages.include?(tools_package)
     package tools_package
-
-    if status_package
-      package status_package
-
-      template "/etc/default/#{status_package}d" do
-        source "raid.default.erb"
-        owner "root"
-        group "root"
-        mode 0644
-      end
-
-      service "#{status_package}d" do
-        action [ :start, :enable ]
-        supports :status => false, :restart => true, :reload => false
-        subscribes :restart, "template[/etc/default/#{status_package}d]"
-      end
-    end
   else
-    if status_package
-      package status_package do
-        action :purge
-      end
-
-      file "/etc/default/#{status_package}d" do
-        action :delete
-      end
-    end
-
     package tools_package do
       action :purge
+    end
+  end
+end
+
+["cciss-vol-status", "mpt-status", "sas2ircu-status", "megaraid-status", "megaclisas-status", "aacraid-status"].each do |status_package|
+  if status_packages.include?(status_package)
+    package status_package
+
+    template "/etc/default/#{status_package}d" do
+      source "raid.default.erb"
+      owner "root"
+      group "root"
+      mode 0644
+    end
+
+    service "#{status_package}d" do
+      action [ :start, :enable ]
+      supports :status => false, :restart => true, :reload => false
+      subscribes :restart, "template[/etc/default/#{status_package}d]"
+    end
+  else
+    package status_package do
+      action :purge
+    end
+
+    file "/etc/default/#{status_package}d" do
+      action :delete
     end
   end
 end
