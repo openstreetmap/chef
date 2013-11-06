@@ -172,8 +172,8 @@ end
 
 node[:block_device].each do |name,attributes|
   if attributes[:vendor] == "HP" and attributes[:model] == "LOGICAL VOLUME"
-    if name =~ /^cciss!(.*)$/
-      status_packages["cciss-vol-status"] |= [ "cciss/#{$1}" ]
+    if name =~ /^cciss!(c[0-9]+)d[0-9]+$/
+      status_packages["cciss-vol-status"] |= [ "cciss/#{$1}d0" ]
     else
       Dir.glob("/sys/block/#{name}/device/scsi_generic/*").each do |sg|
         status_packages["cciss-vol-status"] |= [ File.basename(sg) ]
