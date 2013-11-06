@@ -141,11 +141,13 @@ template "/etc/initramfs-tools/conf.d/mdadm" do
   notifies :run, "execute[update-initramfs]"
 end
 
-["cciss", "mptsas", "mpt2sas", "megaraid_mm", "megaraid_sas", "aacraid"].each do |raidmod|
+["cciss", "hpsa", "mptsas", "mpt2sas", "megaraid_mm", "megaraid_sas", "aacraid"].each do |raidmod|
   case raidmod
   when "cciss"
     tools_package = "hpacucli"
     status_package = "cciss-vol-status"
+  when "hpsa"
+    tools_package = "hpacucli"
   when "mptsas"
     tools_package = "lsiutil"
     status_package = "mpt-status"
@@ -165,31 +167,36 @@ end
 
   if node[:kernel][:modules].include?(raidmod)
     package tools_package
-    package status_package
 
-    template "/etc/default/#{status_package}d" do
-      source "raid.default.erb"
-      owner "root"
-      group "root"
-      mode 0644
-    end
+    if status_package
+      package status_package
 
-    service "#{status_package}d" do
-      action [ :start, :enable ]
-      supports :status => false, :restart => true, :reload => false
-      subscribes :restart, "template[/etc/default/#{status_package}d]"
+      template "/etc/default/#{status_package}d" do
+        source "raid.default.erb"
+        owner "root"
+        group "root"
+        mode 0644
+      end
+
+      service "#{status_package}d" do
+        action [ :start, :enable ]
+        supports :status => false, :restart => true, :reload => false
+        subscribes :restart, "template[/etc/default/#{status_package}d]"
+      end
     end
   else
-    package status_package do
-      action :purge
+    if status_package
+      package status_package do
+        action :purge
+      end
+
+      file "/etc/default/#{status_package}d" do
+        action :delete
+      end
     end
 
     package tools_package do
       action :purge
-    end
-
-    file "/etc/default/#{status_package}d" do
-      action :delete
     end
   end
 end
