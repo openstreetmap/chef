@@ -1,4 +1,5 @@
 MAILTO="admins@openstreetmap.org"
+REMIND="86400"
 <% unless @devices.empty? -%>
 ID="<%= @devices.sort.uniq.map { |d| "/dev/#{d}" }.join(" ") %>"
 <% end -%>
