@@ -40,7 +40,6 @@ case manufacturer
 when "HP"
   package "hponcfg"
   package "hp-health"
-  package "hpacucli"
   unit = "1"
   speed = "115200"
 when "TYAN"
@@ -142,17 +141,55 @@ template "/etc/initramfs-tools/conf.d/mdadm" do
   notifies :run, "execute[update-initramfs]"
 end
 
-if node[:kernel][:modules].include?("mpt2sas")
-  package "sas2ircu"
-  package "sas2ircu-status"
-end
+["cciss", "mptsas", "mpt2sas", "megaraid_mm", "megaraid_sas", "aacraid"].each do |raidmod|
+  case raidmod
+  when "cciss"
+    tools_package = "hpacucli"
+    status_package = "cciss-vol-status"
+  when "mptsas"
+    tools_package = "lsiutil"
+    status_package = "mpt-status"
+  when "mpt2sas"
+    tools_package = "sas2ircu"
+    status_package = "sas2ircu-status"
+  when "megaraid_mm"
+    tools_package = "megactl"
+    status_package = "megaraid-status"
+  when "megaraid_sas"
+    tools_package = "megacli"
+    status_package = "megaclisas-status"
+  when "aacraid"
+    tools_package = "arcconf"
+    status_package = "aacraid-status"
+  end
 
-if node[:kernel][:modules].include?("megaraid_sas")
-  package "megacli"
-  package "megaclisas-status"
-end
+  if node[:kernel][:modules].include?(raidmod)
+    package tools_package
+    package status_package
 
-if node[:kernel][:modules].include?("aacraid")
-  package "arcconf"
-  package "aacraid-status"
+    template "/etc/default/#{status_package}d" do
+      source "raid.default.erb"
+      owner "root"
+      group "root"
+      mode 0644
+    end
+
+    service "#{status_package}d" do
+      action [ :start, :enable ]
+      supports :status => false, :restart => true, :reload => false
+      subscribes :restart, "template[/etc/default/#{status_package}d]"
+    end
+  else
+    package status_package do
+      action :purge
+    end
+
+    package tools_package do
+      action :purge
+    end
+
+    file "/etc/default/#{status_package}d" do
+      action :delete
+    end
+  end
 end
