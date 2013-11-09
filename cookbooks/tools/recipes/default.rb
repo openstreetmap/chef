@@ -50,3 +50,8 @@ package "mlocate" do
   action :purge
 end
 
+#Remove ubuntu "desktop" vestigal package
+package "whoopsie" do
+  action :purge
+end
+
