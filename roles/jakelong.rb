@@ -11,6 +11,14 @@ default_attributes(
         :address => "64.62.205.202",
         :prefix => "26",
         :gateway => "64.62.205.193"
+      },
+      :external_ipv6 => {
+        :interface => "eth0",
+        :role => :external,
+        :family => :inet6,
+        :address => "2001:470:1:41:a800:ff:fe3e:cdca",
+        :prefix => "64",
+        :gateway => "fe80::21b:21ff:fead:e886"
       }
     }
   },
