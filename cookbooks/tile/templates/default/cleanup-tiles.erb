@@ -11,7 +11,7 @@ use LockFile::Simple;
 
 my $tiledir = shift @ARGV;
 
-my $lockmgr = LockFile::Simple->make(-autoclean => 1, -max => 1, -warn => 0);
+my $lockmgr = LockFile::Simple->make(-autoclean => 1, -max => 1, -hold => 0, -warn => 0);
 
 $lockmgr->lock("${tiledir}/cleanup") || exit 0;
 
