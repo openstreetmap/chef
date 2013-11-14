@@ -9,7 +9,7 @@ default_attributes(
     }
   },
   :memcached  => {
-    :memory_limit => 512
+    :memory_limit => 4096
   },
   :web => {
     :rails_daemon_limit => 12,
