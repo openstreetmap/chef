@@ -79,5 +79,6 @@ run_list(
   "recipe[openssh]",
   "recipe[sysctl]",
   "recipe[sysfs]",
-  "recipe[tools]"
+  "recipe[tools]",
+  "recipe[fail2ban]"
 )
