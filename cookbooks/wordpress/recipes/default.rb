@@ -30,3 +30,17 @@ package "php-apc"
 
 apache_module "php5"
 apache_module "rewrite"
+
+remote_file "/etc/fail2ban/filter.d/wordpress.conf" do
+  action :create_if_missing
+  source "http://plugins.svn.wordpress.org/wp-fail2ban/trunk/wordpress.conf"
+  owner "root"
+  group "root"
+  mode 0644
+end
+
+fail2ban_jail "wordpress" do
+  filter "wordpress"
+  logpath "/var/log/auth.log"
+  ports 80, 443
+end

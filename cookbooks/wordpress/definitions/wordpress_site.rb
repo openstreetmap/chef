@@ -135,4 +135,8 @@ define :wordpress_site, :action => [ :create, :enable ] do
     url "http://#{name}/wp-admin/upgrade.php?step=1"
     subscribes :get, "subversion[#{directory}]"
   end
+
+  wordpress_plugin "wp-fail2ban" do
+    site name
+  end
 end

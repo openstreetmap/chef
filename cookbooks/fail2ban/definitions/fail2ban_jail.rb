@@ -1,6 +1,6 @@
 #
-# Cookbook Name:: fail2ban
-# Recipe:: default
+# Cookbook Name:: networking
+# Definition:: fail2ban_jail
 #
 # Copyright 2013, OpenStreetMap Foundation
 #
@@ -17,18 +17,15 @@
 # limitations under the License.
 #
 
-package "fail2ban"
+define :fail2ban_jail, :action => :create do
+  config = resources(:template => "/etc/fail2ban/jail.local")
 
-template "/etc/fail2ban/jail.local" do
-  source "jail.erb"
-  owner "root"
-  group "root"
-  mode 0644
-  variables :jails => []
-end
-
-service "fail2ban" do
-  action [ :enable, :start ]
-  supports :status => true, :reload => true, :restart => true
-  subscribes :reload, "template[/etc/fail2ban/jail.local]"
+  config.variables[:jails] << Hash[
+    :name => params[:name],
+    :filter => params[:filter],
+    :logpath => params[:logpath],
+    :protocol => params[:protocol],
+    :port => Array(params[:ports]).join(","),
+    :maxretry => params[:maxretry]
+  ]
 end
