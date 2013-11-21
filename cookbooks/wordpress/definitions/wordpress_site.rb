@@ -139,4 +139,20 @@ define :wordpress_site, :action => [ :create, :enable ] do
   wordpress_plugin "wp-fail2ban" do
     site name
   end
+
+  script "#{directory}/wp-content/plugins/wp-fail2ban" do
+    action :nothing
+    interpreter "php"
+    cwd directory
+    user "wordpress"
+    code <<-EOS
+    <?php
+    @include "wp-config.php";
+    @include_once "wp-includes/functions.php";
+    @include_once "wp-admin/includes/plugin.php";
+    activate_plugin("wp-fail2ban/wp-fail2ban.php", '', false, false);
+    ?>
+    EOS
+    subscribes :run, "subversion[#{directory}/wp-content/plugins/wp-fail2ban]"
+  end
 end
