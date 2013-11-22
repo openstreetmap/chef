@@ -48,7 +48,9 @@ end.collect do |node|
   }
 
   if node[:keys][:ssh][:host_ecdsa_public]
-    keys[node[:keys][:ssh][:host_ecdsa_type]] = node[:keys][:ssh][:host_ecdsa_public]
+    ecdsa_type = node[:keys][:ssh][:host_ecdsa_type]
+
+    keys[ecdsa_type] = node[:keys][:ssh][:host_ecdsa_public]
   end
 
   Hash[

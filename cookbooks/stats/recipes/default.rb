@@ -63,7 +63,7 @@ template "/srv/stats.openstreetmap.org/index.html" do
   source "index.html.erb"
   owner "root"
   group "root"
-  mode 644
+  mode 0644
   variables :sites => node[:stats][:sites]
 end
 

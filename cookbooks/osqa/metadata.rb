@@ -6,6 +6,7 @@ long_description  IO.read(File.join(File.dirname(__FILE__), 'README.rdoc'))
 version           "1.0.0"
 depends           "apache"
 depends           "memcached"
+depends           "tools"
 
 attribute "osqa",
   :display_name => "OSQA",

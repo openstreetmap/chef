@@ -18,6 +18,7 @@
 #
 
 include_recipe "tools"
+include_recipe "postgresql"
 include_recipe "apache::ssl"
 
 passwords = data_bag_item("otrs", "passwords")
