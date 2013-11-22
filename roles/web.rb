@@ -17,8 +17,8 @@ default_attributes(
     "/store/rails" => { :host => "ironbelly", :path => "/store/rails" }
   },
   :web => {
-    :status => "online",
-    :database_host => "db"
+    :status => "database_readonly",
+    :database_host => "smaug"
   }
 )
 
