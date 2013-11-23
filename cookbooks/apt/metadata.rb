@@ -1,3 +1,4 @@
+name              "apt"
 maintainer       "Tom Hughes"
 maintainer_email "tom@compton.nu"
 license          "Apache 2.0"
