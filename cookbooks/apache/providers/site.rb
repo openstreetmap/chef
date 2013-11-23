@@ -38,8 +38,8 @@ action :create do
 end
 
 action :enable do
-  l = link enabled_file do
-    to available_file
+  l = link enabled_name do
+    to available_name
     owner "root"
     group "root"
     notifies :reload, "service[apache2]"
@@ -49,7 +49,7 @@ action :enable do
 end
 
 action :disable do
-  l = link enabled_file do
+  l = link enabled_name do
     action :delete
     notifies :reload, "service[apache2]"
   end
