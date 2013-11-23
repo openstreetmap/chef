@@ -59,7 +59,8 @@ search(:accounts, "*:*").each do |account|
       supports :manage_home => manage_home
     end
 
-    remote_directory user_home do
+    remote_directory "/home/#{name}" do
+      path user_home
       source name.to_s
       owner name.to_s
       group name.to_s

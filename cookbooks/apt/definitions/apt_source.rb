@@ -18,7 +18,7 @@
 #
 
 define :apt_source do
-  if node.apt.sources.include?(params[:name])
+  if node[:apt][:sources].include?(params[:name])
     source_action = :create
 
     if params[:key]

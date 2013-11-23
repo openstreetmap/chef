@@ -374,8 +374,8 @@ postgresql_munin "gis" do
   database "gis"
 end
 
-tile_uid = node[:etc][:passwd]["tile"][:uid]
-www_data_gid = node[:etc][:group]["www-data"][:gid]
+tile_uid = node[:etc][:passwd][:"tile"][:uid]
+www_data_gid = node[:etc][:group][:"www-data"][:gid]
 
 ruby_block node[:tile][:node_file] do
   block do

@@ -125,7 +125,7 @@ template "/srv/owl.openstreetmap.org/openstreetmap-watch-list/rails/config/datab
   group "owl"
   mode 0664
   notifies :run, "execute[/srv/owl.openstreetmap.org/openstreetmap-watch-list/rails/Gemfile]"
-  only_if { node[:postgresql][:clusters]["9.1/main"] }
+  only_if { node[:postgresql][:clusters][:"9.1/main"] }
 end
 
 apache_site "owl.openstreetmap.org" do

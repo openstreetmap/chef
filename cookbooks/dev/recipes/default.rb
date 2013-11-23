@@ -129,7 +129,7 @@ search(:accounts, "*:*").each do |account|
   end
 end
 
-if node[:postgresql][:clusters]["9.1/main"]
+if node[:postgresql][:clusters][:"9.1/main"]
   postgresql_user "apis" do
     cluster "9.1/main"
   end
@@ -158,7 +158,7 @@ if node[:postgresql][:clusters]["9.1/main"]
       group "apis"
       repository details[:repository]
       revision details[:revision]
-      database_port node[:postgresql][:clusters]["9.1/main"][:port]
+      database_port node[:postgresql][:clusters][:"9.1/main"][:port]
       database_name database_name
       database_username "apis"
       run_migrations true
