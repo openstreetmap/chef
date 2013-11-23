@@ -257,7 +257,7 @@ node[:tile][:styles].each do |name,details|
   end
 
   details[:tile_directories].each do |directory|
-    directory "#{directory[:name]}" do
+    directory directory[:name] do
       owner "www-data"
       group "www-data"
       mode 0755
