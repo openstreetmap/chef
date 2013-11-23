@@ -92,22 +92,24 @@ node[:osqa][:sites].each do |site|
     notifies :reload, resources(:service => "apache2")
   end
 
+  settings = edit_file "#{directory}/osqa/settings_local.py.dist" do |line|
+    line.gsub!(/^( *)'ENGINE': '.*',/, "\\1'ENGINE': 'django.db.backends.postgresql_psycopg2',")
+    line.gsub!(/^( *)'NAME': '.*',/, "\\1'NAME': '#{database_name}',")
+    line.gsub!(/^( *)'USER': '.*',/, "\\1'USER': '#{database_user}',")
+    line.gsub!(/^( *)'PASSWORD': '.*',/, "\\1'PASSWORD': '#{database_password}',")
+    line.gsub!(/^CACHE_BACKEND = .*/, "CACHE_BACKEND = 'memcached://127.0.0.1:11211/'")
+    line.gsub!(/^APP_URL = 'http:\/\/'/, "APP_URL = 'http://#{name}'")
+    line.gsub!(/^TIME_ZONE = 'America\/New_York'/, "TIME_ZONE = 'Europe/London'")
+    line.gsub!(/^DISABLED_MODULES = \[([^\]]+)\]/, "DISABLED_MODULES = [\\1, 'localauth', 'facebookauth', 'oauthauth']")
+
+    line
+  end
+
   file "#{directory}/osqa/settings_local.py" do
     owner site_user
     group site_group
     mode 0644
-    content_from_file "#{directory}/osqa/settings_local.py.dist" do |line|
-      line.gsub!(/^( *)'ENGINE': '.*',/, "\\1'ENGINE': 'django.db.backends.postgresql_psycopg2',")
-      line.gsub!(/^( *)'NAME': '.*',/, "\\1'NAME': '#{database_name}',")
-      line.gsub!(/^( *)'USER': '.*',/, "\\1'USER': '#{database_user}',")
-      line.gsub!(/^( *)'PASSWORD': '.*',/, "\\1'PASSWORD': '#{database_password}',")
-      line.gsub!(/^CACHE_BACKEND = .*/, "CACHE_BACKEND = 'memcached://127.0.0.1:11211/'")
-      line.gsub!(/^APP_URL = 'http:\/\/'/, "APP_URL = 'http://#{name}'")
-      line.gsub!(/^TIME_ZONE = 'America\/New_York'/, "TIME_ZONE = 'Europe/London'")
-      line.gsub!(/^DISABLED_MODULES = \[([^\]]+)\]/, "DISABLED_MODULES = [\\1, 'localauth', 'facebookauth', 'oauthauth']")
-
-      line
-    end
+    content settings
     notifies :reload, resources(:service => "apache2")
   end
 end

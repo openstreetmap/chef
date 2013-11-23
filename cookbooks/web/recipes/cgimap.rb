@@ -82,27 +82,29 @@ else
   database_readonly = node[:web][:status] == "database_readonly"
 end
 
+cgimap_init = edit_file "#{cgimap_directory}/scripts/cgimap.init" do |line|
+  line.gsub!(/^CGIMAP_HOST=.*;/, "CGIMAP_HOST=#{database_host};")
+  line.gsub!(/^CGIMAP_DBNAME=.*;/, "CGIMAP_DBNAME=openstreetmap;")
+  line.gsub!(/^CGIMAP_USERNAME=.*;/, "CGIMAP_USERNAME=rails;")
+  line.gsub!(/^CGIMAP_PASSWORD=.*;/, "CGIMAP_PASSWORD=#{db_passwords['rails']};")
+  line.gsub!(/^CGIMAP_PIDFILE=.*;/, "CGIMAP_PIDFILE=#{pid_directory}/cgimap.pid;")
+  line.gsub!(/^CGIMAP_LOGFILE=.*;/, "CGIMAP_LOGFILE=#{log_directory}/cgimap.log;")
+  line.gsub!(/^CGIMAP_MEMCACHE=.*;/, "CGIMAP_MEMCACHE=rails1,rails2,rails3;")
+
+  line.gsub!(/\/home\/rails\/bin\/map/, "#{cgimap_directory}/map")
+
+  if database_readonly
+    line.gsub!(/--daemon/, "--daemon --readonly")
+  end
+
+  line
+end
+
 file "/etc/init.d/cgimap" do
   owner "root"
   group "root"
   mode 0755
-  content_from_file "#{cgimap_directory}/scripts/cgimap.init" do |line|
-    line.gsub!(/^CGIMAP_HOST=.*;/, "CGIMAP_HOST=#{database_host};")
-    line.gsub!(/^CGIMAP_DBNAME=.*;/, "CGIMAP_DBNAME=openstreetmap;")
-    line.gsub!(/^CGIMAP_USERNAME=.*;/, "CGIMAP_USERNAME=rails;")
-    line.gsub!(/^CGIMAP_PASSWORD=.*;/, "CGIMAP_PASSWORD=#{db_passwords['rails']};")
-    line.gsub!(/^CGIMAP_PIDFILE=.*;/, "CGIMAP_PIDFILE=#{pid_directory}/cgimap.pid;")
-    line.gsub!(/^CGIMAP_LOGFILE=.*;/, "CGIMAP_LOGFILE=#{log_directory}/cgimap.log;")
-    line.gsub!(/^CGIMAP_MEMCACHE=.*;/, "CGIMAP_MEMCACHE=rails1,rails2,rails3;")
-
-    line.gsub!(/\/home\/rails\/bin\/map/, "#{cgimap_directory}/map")
-
-    if database_readonly
-      line.gsub!(/--daemon/, "--daemon --readonly")
-    end
-
-    line
-  end
+  content cgimap_init
 end
 
 if ["database_offline", "api_offline"].include?(node[:web][:status])

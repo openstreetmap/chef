@@ -64,35 +64,37 @@ define :wordpress_site, :action => [ :create, :enable ] do
     notifies :reload, "service[apache2]"
   end
 
+  wp_config = edit_file "#{directory}/wp-config-sample.php" do |line|
+    line.gsub!(/database_name_here/, database_name)
+    line.gsub!(/username_here/, database_user)
+    line.gsub!(/password_here/, database_password)
+    line.gsub!(/wp_/, database_prefix)
+
+    line.gsub!(/('AUTH_KEY', *)'put your unique phrase here'/, "\\1'#{node[:wordpress][:sites][name][:auth_key]}'")
+    line.gsub!(/('SECURE_AUTH_KEY', *)'put your unique phrase here'/, "\\1'#{node[:wordpress][:sites][name][:secure_auth_key]}'")
+    line.gsub!(/('LOGGED_IN_KEY', *)'put your unique phrase here'/, "\\1'#{node[:wordpress][:sites][name][:logged_in_key]}'")
+    line.gsub!(/('NONCE_KEY', *)'put your unique phrase here'/, "\\1'#{node[:wordpress][:sites][name][:nonce_key]}'")
+    line.gsub!(/('AUTH_SALT', *)'put your unique phrase here'/, "\\1'#{node[:wordpress][:sites][name][:auth_salt]}'")
+    line.gsub!(/('SECURE_AUTH_SALT', *)'put your unique phrase here'/, "\\1'#{node[:wordpress][:sites][name][:secure_auth_salt]}'")
+    line.gsub!(/('LOGGED_IN_SALT', *)'put your unique phrase here'/, "\\1'#{node[:wordpress][:sites][name][:logged_in_salt]}'")
+    line.gsub!(/('NONCE_SALT', *)'put your unique phrase here'/, "\\1'#{node[:wordpress][:sites][name][:nonce_salt]}'")
+
+    if line =~ /define\('WP_DEBUG'/
+      line += "\n"
+      line += "/**\n"
+      line += " * Don't allow file editing.\n"
+      line += " */\n"
+      line += "define('DISALLOW_FILE_EDIT', true);\n"
+    end
+
+    line
+  end
+
   file "#{directory}/wp-config.php" do
     owner node[:wordpress][:user]
     group node[:wordpress][:group]
     mode 0644
-    content_from_file "#{directory}/wp-config-sample.php" do |line|
-      line.gsub!(/database_name_here/, database_name)
-      line.gsub!(/username_here/, database_user)
-      line.gsub!(/password_here/, database_password)
-      line.gsub!(/wp_/, database_prefix)
-
-      line.gsub!(/('AUTH_KEY', *)'put your unique phrase here'/, "\\1'#{node[:wordpress][:sites][name][:auth_key]}'")
-      line.gsub!(/('SECURE_AUTH_KEY', *)'put your unique phrase here'/, "\\1'#{node[:wordpress][:sites][name][:secure_auth_key]}'")
-      line.gsub!(/('LOGGED_IN_KEY', *)'put your unique phrase here'/, "\\1'#{node[:wordpress][:sites][name][:logged_in_key]}'")
-      line.gsub!(/('NONCE_KEY', *)'put your unique phrase here'/, "\\1'#{node[:wordpress][:sites][name][:nonce_key]}'")
-      line.gsub!(/('AUTH_SALT', *)'put your unique phrase here'/, "\\1'#{node[:wordpress][:sites][name][:auth_salt]}'")
-      line.gsub!(/('SECURE_AUTH_SALT', *)'put your unique phrase here'/, "\\1'#{node[:wordpress][:sites][name][:secure_auth_salt]}'")
-      line.gsub!(/('LOGGED_IN_SALT', *)'put your unique phrase here'/, "\\1'#{node[:wordpress][:sites][name][:logged_in_salt]}'")
-      line.gsub!(/('NONCE_SALT', *)'put your unique phrase here'/, "\\1'#{node[:wordpress][:sites][name][:nonce_salt]}'")
-
-      if line =~ /define\('WP_DEBUG'/
-        line += "\n"
-        line += "/**\n"
-        line += " * Don't allow file editing.\n"
-        line += " */\n"
-        line += "define('DISALLOW_FILE_EDIT', true);\n"
-      end
-
-      line
-    end
+    content wp_config
     notifies :reload, "service[apache2]"
   end
 

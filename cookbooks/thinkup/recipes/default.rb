@@ -77,35 +77,39 @@ directory "/srv/thinkup.openstreetmap.org/webapp/_lib/view/compiled_view" do
   mode "0755"
 end
 
+thinkup_config = edit_file "/srv/thinkup.openstreetmap.org/webapp/config.sample.inc.php" do |line|
+  line.gsub!(/^(\$THINKUP_CFG\['site_root_path'\] *=) '[^']*';$/, "\\1 '/';")
+  line.gsub!(/^(\$THINKUP_CFG\['timezone'\] *=) '[^']*';$/, "\\1 'Europe/London';")
+  line.gsub!(/^(\$THINKUP_CFG\['db_user'\] *=) '[^']*';$/, "\\1 'thinkup';")
+  line.gsub!(/^(\$THINKUP_CFG\['db_password'\] *=) '[^']*';$/, "\\1 '#{passwords["database"]}';")
+  line.gsub!(/^(\$THINKUP_CFG\['db_name'\] *=) '[^']*';$/, "\\1 'thinkup';")
+
+  line
+end
+
 file "/srv/thinkup.openstreetmap.org/webapp/config.inc.php" do
   owner "root"
   group "root"
   mode 0644
-  content_from_file "/srv/thinkup.openstreetmap.org/webapp/config.sample.inc.php" do |line|
-    line.gsub!(/^(\$THINKUP_CFG\['site_root_path'\] *=) '[^']*';$/, "\\1 '/';")
-    line.gsub!(/^(\$THINKUP_CFG\['timezone'\] *=) '[^']*';$/, "\\1 'Europe/London';")
-    line.gsub!(/^(\$THINKUP_CFG\['db_user'\] *=) '[^']*';$/, "\\1 'thinkup';")
-    line.gsub!(/^(\$THINKUP_CFG\['db_password'\] *=) '[^']*';$/, "\\1 '#{passwords["database"]}';")
-    line.gsub!(/^(\$THINKUP_CFG\['db_name'\] *=) '[^']*';$/, "\\1 'thinkup';")
-
-    line
-  end
+  content thinkup_config
   notifies :reload, resources(:service => "apache2")
+end
+
+thinkup_cron = edit_file "/srv/thinkup.openstreetmap.org/extras/cron/config.sample" do |line|
+  line.gsub!(/^thinkup="[^"]*"$/, "thinkup=\"/srv/thinkup.openstreetmap.org\"")
+  line.gsub!(/^thinkup_username="[^"]*"$/, "thinkup_username=\"openstreetmap@jonno.cix.co.uk\"")
+  line.gsub!(/^thinkup_password="[^"]*"$/, "thinkup_password=\"#{passwords["admin"]}\"")
+  line.gsub!(/^php="[^"]*"$/, "php=\"/usr/bin/php\"")
+  line.gsub!(/^#crawl_interval=[0-9]+$/, "crawl_interval=30")
+
+  line
 end
 
 file "/srv/thinkup.openstreetmap.org/extras/cron/config" do
   owner "root"
   group "thinkup"
   mode 0640
-  content_from_file "/srv/thinkup.openstreetmap.org/extras/cron/config.sample" do |line|
-    line.gsub!(/^thinkup="[^"]*"$/, "thinkup=\"/srv/thinkup.openstreetmap.org\"")
-    line.gsub!(/^thinkup_username="[^"]*"$/, "thinkup_username=\"openstreetmap@jonno.cix.co.uk\"")
-    line.gsub!(/^thinkup_password="[^"]*"$/, "thinkup_password=\"#{passwords["admin"]}\"")
-    line.gsub!(/^php="[^"]*"$/, "php=\"/usr/bin/php\"")
-    line.gsub!(/^#crawl_interval=[0-9]+$/, "crawl_interval=30")
-
-    line
-  end
+  content thinkup_cron
 end
 
 template "/etc/cron.d/thinkup" do

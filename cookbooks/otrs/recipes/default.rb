@@ -59,29 +59,29 @@ execute "untar-otrs-#{version}" do
   not_if { File.exist?("/opt/otrs-#{version}") }
 end
 
+config = edit_file "/opt/otrs-#{version}/Kernel/Config.pm.dist" do |line|
+  line.gsub!(/^( *)\$Self->{Database} = 'otrs'/, "\\1$Self->{Database} = '#{database_name}'")
+  line.gsub!(/^( *)\$Self->{DatabaseUser} = 'otrs'/, "\\1$Self->{DatabaseUser} = '#{database_user}'")
+  line.gsub!(/^( *)\$Self->{DatabasePw} = 'some-pass'/, "\\1$Self->{DatabasePw} = '#{database_password}'")
+  line.gsub!(/^( *)\$Self->{Database} = 'otrs'/, "\\1$Self->{Database} = '#{database_name}'")
+  line.gsub!(/^( *\$Self->{DatabaseDSN} = "DBI:mysql:)/, "#\\1")
+  line.gsub!(/^#( *\$Self->{DatabaseDSN} = "DBI:Pg:.*;host=)/, "\\1")
+
+  line
+end
+
 file "/opt/otrs-#{version}/Kernel/Config.pm" do
   owner user
   group "www-data"
   mode 0664
-  content_from_file "/opt/otrs-#{version}/Kernel/Config.pm.dist" do |line|
-    line.gsub!(/^( *)\$Self->{Database} = 'otrs'/, "\\1$Self->{Database} = '#{database_name}'")
-    line.gsub!(/^( *)\$Self->{DatabaseUser} = 'otrs'/, "\\1$Self->{DatabaseUser} = '#{database_user}'")
-    line.gsub!(/^( *)\$Self->{DatabasePw} = 'some-pass'/, "\\1$Self->{DatabasePw} = '#{database_password}'")
-    line.gsub!(/^( *)\$Self->{Database} = 'otrs'/, "\\1$Self->{Database} = '#{database_name}'")
-    line.gsub!(/^( *\$Self->{DatabaseDSN} = "DBI:mysql:)/, "#\\1")
-    line.gsub!(/^#( *\$Self->{DatabaseDSN} = "DBI:Pg:.*;host=)/, "\\1")
-
-    line
-  end
+  content config
 end
 
 file "/opt/otrs-#{version}/Kernel/Config/GenericAgent.pm" do
   owner user
   group "www-data"
   mode 0664
-  content_from_file "/opt/otrs-#{version}/Kernel/Config/GenericAgent.pm.dist" do |line|
-    line
-  end
+  content IO.read("/opt/otrs-#{version}/Kernel/Config/GenericAgent.pm.dist")
 end
 
 link "/opt/otrs" do
