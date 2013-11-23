@@ -1,41 +1,34 @@
-DESCRIPTION
-===========
+Cookbook
+========
+TODO: Enter the cookbook description here.
 
-Installs and configures ntp, optionally set up a local NTP server.
+e.g.
+This cookbook makes your favorite breakfast sandwich.
 
-USAGE
-=====
+Requirements
+------------
+TODO: List your cookbook requirements. Be sure to include any requirements this cookbook has on platforms, libraries, other cookbooks, packages, operating systems, etc.
 
-Set up the ntp attributes in a role. For example in a base.rb role applied to all nodes:
+Attributes
+----------
+TODO: List you cookbook attributes here.
 
-    "ntp" => {
-      "servers" => "time.int.example.org"
-    }
+Usage
+-----
+TODO: Write usage instructions for each cookbook.
 
-Then in an ntpserver.rb role that is applied to NTP servers:
+Contributing
+------------
+TODO: (optional) If this is a public cookbook, detail the process for contributing. If this is a private cookbook, remove this section.
 
-    "ntp" => {
-      "is_server" => "true",
-      "servers" => "0.us.pool.ntp.org"
-    }
+e.g.
+1. Fork the repository on Github
+2. Create a named feature branch (like `add_component_x`)
+3. Write your change
+4. Write tests for your change (if applicable)
+5. Run the tests, ensuring they all pass
+6. Submit a Pull Request using Github
 
-The time.int.example.org used in the base role is a CNAME for the NTP server.
-
-LICENSE AND AUTHOR
-==================
-
-Author:: Joshua Timberman (<joshua@opscode.com>)
-
-Copyright 2009, Opscode, Inc.
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
+License and Authors
+-------------------
+Authors: TODO: List authors
