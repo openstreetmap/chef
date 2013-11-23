@@ -1,1 +1,1 @@
-default[:apt][:sources] ||= []
+default_unless[:apt][:sources] = []
