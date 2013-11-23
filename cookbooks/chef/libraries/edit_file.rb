@@ -1,6 +1,6 @@
 class Chef
   class Util
-    class EditedFile
+    class EditedFile < String
       def initialize(file, block)
         @file = file
         @block = block
