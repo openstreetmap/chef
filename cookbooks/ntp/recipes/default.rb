@@ -35,7 +35,7 @@ file "/etc/timezone" do
   group "root"
   mode 0644
   content "#{node[:tz]}\n"
-  notifies :run, resources(:execute => "dpkg-reconfigure-tzdata"), :immediately
+  notifies :run, "execute[dpkg-reconfigure-tzdata]", :immediately
 end
 
 service "ntp" do
@@ -48,7 +48,7 @@ template "/etc/ntp.conf" do
   owner "root"
   group "root"
   mode 0644
-  notifies :restart, resources(:service => "ntp")
+  notifies :restart, "service[ntp]"
 end
 
 munin_plugins = [ "ntp_kernel_err", "ntp_kernel_pll_freq", "ntp_kernel_pll_off", "ntp_offset" ]

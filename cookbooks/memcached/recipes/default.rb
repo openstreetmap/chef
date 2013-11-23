@@ -29,7 +29,7 @@ template "/etc/memcached.conf" do
   owner "root"
   group "root"
   mode 0644
-  notifies :restart, resources(:service => "memcached")
+  notifies :restart, "service[memcached]"
 end
 
 munin_plugin_conf "memcached_multi" do

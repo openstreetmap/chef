@@ -60,5 +60,5 @@ template "/etc/exports" do
   group "root"
   mode 0644
   variables :exports => exports
-  notifies :run, resources(:execute => "exportfs")
+  notifies :run, "execute[exportfs]"
 end

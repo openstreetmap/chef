@@ -97,7 +97,7 @@ execute "/srv/owl.openstreetmap.org/openstreetmap-watch-list/rails/Gemfile" do
   cwd "/srv/owl.openstreetmap.org/openstreetmap-watch-list/rails"
   user "root"
   group "root"
-  notifies :touch, resources(:file => "/srv/owl.openstreetmap.org/openstreetmap-watch-list/rails/tmp/restart.txt")
+  notifies :touch, "file[/srv/owl.openstreetmap.org/openstreetmap-watch-list/rails/tmp/restart.txt]"
 end
 
 git "/srv/owl.openstreetmap.org/openstreetmap-watch-list" do
@@ -106,7 +106,7 @@ git "/srv/owl.openstreetmap.org/openstreetmap-watch-list" do
   revision "owl.osm.org"
   user "owl"
   group "owl"
-  notifies :run, resources(:execute => "/srv/owl.openstreetmap.org/openstreetmap-watch-list/rails/Gemfile")
+  notifies :run, "execute[/srv/owl.openstreetmap.org/openstreetmap-watch-list/rails/Gemfile]"
 end
 
 directory "srv/owl.openstreetmap.org/openstreetmap-watch-list/rails/tmp" do
@@ -124,7 +124,7 @@ template "/srv/owl.openstreetmap.org/openstreetmap-watch-list/rails/config/datab
   owner "owl"
   group "owl"
   mode 0664
-  notifies :run, resources(:execute => "/srv/owl.openstreetmap.org/openstreetmap-watch-list/rails/Gemfile")
+  notifies :run, "execute[/srv/owl.openstreetmap.org/openstreetmap-watch-list/rails/Gemfile]"
   only_if { node[:postgresql][:clusters]["9.1/main"] }
 end
 

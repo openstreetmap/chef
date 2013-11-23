@@ -32,12 +32,12 @@ template "/etc/apache2/conf.d/ssl" do
   group "root"
   mode 0644
   variables :certificate => certificate
-  notifies :reload, resources(:service => "apache2")
+  notifies :reload, "service[apache2]"
 end
 
 service "apache2" do
   action :nothing
-  subscribes :restart, resources(:cookbook_file => "/etc/ssl/certs/rapidssl.pem")
-  subscribes :restart, resources(:cookbook_file => "/etc/ssl/certs/#{certificate}.pem")
-  subscribes :restart, resources(:file => "/etc/ssl/private/#{certificate}.key")
+  subscribes :restart, "cookbook_file[/etc/ssl/certs/rapidssl.pem]"
+  subscribes :restart, "cookbook_file[/etc/ssl/certs/#{certificate}.pem]"
+  subscribes :restart, "file[/etc/ssl/private/#{certificate}.key]"
 end

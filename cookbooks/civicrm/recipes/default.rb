@@ -124,7 +124,7 @@ execute "civicrm-load-data" do
   cwd "/usr/share/drupal7/sites/all/modules/civicrm"
   user "root"
   group "root"
-  notifies :run, resources(:execute => "civicrm-load-acl")
+  notifies :run, "execute[civicrm-load-acl]"
 end
 
 execute "civicrm-load" do
@@ -133,7 +133,7 @@ execute "civicrm-load" do
   cwd "/usr/share/drupal7/sites/all/modules/civicrm"
   user "root"
   group "root"
-  notifies :run, resources(:execute => "civicrm-load-data")
+  notifies :run, "execute[civicrm-load-data]"
 end
 
 execute "civicrm-gencode" do
@@ -142,7 +142,7 @@ execute "civicrm-gencode" do
   user "root"
   group "root"
   creates "#{civicrm_directory}/civicrm-version.php"
-  notifies :run, resources(:execute => "civicrm-load")
+  notifies :run, "execute[civicrm-load]"
 end
 
 directory "/data/crm.osmfoundation.org/civicrm/en_US" do

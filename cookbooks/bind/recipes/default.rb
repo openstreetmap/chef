@@ -31,7 +31,7 @@ template "/etc/bind/named.conf.local" do
   owner "root"
   group "root"
   mode 0644
-  notifies :restart, resources(:service => "bind9")
+  notifies :restart, "service[bind9]"
 end
 
 template "/etc/bind/named.conf.options" do
@@ -39,7 +39,7 @@ template "/etc/bind/named.conf.options" do
   owner "root"
   group "root"
   mode 0644
-  notifies :restart, resources(:service => "bind9")
+  notifies :restart, "service[bind9]"
 end
 
 template "/etc/bind/db.10" do
@@ -47,7 +47,7 @@ template "/etc/bind/db.10" do
   owner "root"
   group "root"
   mode 0644
-  notifies :reload, resources(:service => "bind9")
+  notifies :reload, "service[bind9]"
 end
 
 firewall_rule "accept-dns-udp" do

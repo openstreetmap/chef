@@ -30,14 +30,14 @@ define :nginx_site, :action => [ :create ], :variables => {} do
       group "root"
       mode 0644
       variables params[:variables].merge(:name => name, :directory => directory)
-      notifies :reload, resources(:service => "nginx")
+      notifies :reload, "service[nginx]"
     end
   end
 
   if site_action.include?(:delete)
     file "/etc/nginx/conf.d/#{name}.conf" do
       action :delete
-      notifies :restart, resources(:service => "nginx")
+      notifies :restart, "service[nginx]"
     end
   end
 end

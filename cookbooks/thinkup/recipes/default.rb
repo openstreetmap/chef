@@ -50,7 +50,7 @@ git "/srv/thinkup.openstreetmap.org" do
   revision "v1.2.1"
   user "root"
   group "root"
-  notifies :reload, resources(:service => "apache2")
+  notifies :reload, "service[apache2]"
 end
 
 directory "/srv/thinkup.openstreetmap.org/logs" do
@@ -92,7 +92,7 @@ file "/srv/thinkup.openstreetmap.org/webapp/config.inc.php" do
   group "root"
   mode 0644
   content thinkup_config
-  notifies :reload, resources(:service => "apache2")
+  notifies :reload, "service[apache2]"
 end
 
 thinkup_cron = edit_file "/srv/thinkup.openstreetmap.org/extras/cron/config.sample" do |line|

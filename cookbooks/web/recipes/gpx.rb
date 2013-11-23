@@ -50,7 +50,7 @@ git gpx_directory do
   revision "live"
   user "rails"
   group "rails"
-  notifies :run, resources(:execute => "gpx-import-build"), :immediate
+  notifies :run, "execute[gpx-import-build]", :immediate
 end
 
 template "/etc/init.d/gpx-import" do
@@ -75,7 +75,7 @@ else
   service "gpx-import" do
     action [ :enable, :start ]
     supports :restart => true, :reload => true
-    subscribes :restart, resources(:execute => "gpx-import-build")
-    subscribes :restart, resources(:template => "/etc/init.d/gpx-import")
+    subscribes :restart, "execute[gpx-import-build]"
+    subscribes :restart, "template[/etc/init.d/gpx-import]"
   end
 end

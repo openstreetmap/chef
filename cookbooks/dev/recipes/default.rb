@@ -78,12 +78,12 @@ template "/etc/php5/fpm/pool.d/default.conf" do
   owner "root"
   group "root"
   mode 0644
-  notifies :reload, resources(:service => "php5-fpm")
+  notifies :reload, "service[php5-fpm]"
 end
 
 file "/etc/php5/fpm/pool.d/www.conf" do
   action :delete
-  notifies :reload, resources(:service => "php5-fpm")
+  notifies :reload, "service[php5-fpm]"
 end
 
 package "phppgadmin"
@@ -117,7 +117,7 @@ search(:accounts, "*:*").each do |account|
         group "root"
         mode 0644
         variables :user => name
-        notifies :reload, resources(:service => "php5-fpm")
+        notifies :reload, "service[php5-fpm]"
       end
 
       apache_site "#{name}.dev.openstreetmap.org" do
@@ -170,7 +170,7 @@ if node[:postgresql][:clusters]["9.1/main"]
       group "apis"
       mode 0644
       variables :site => site_name
-      notifies :touch, resources(:file => "#{rails_directory}/tmp/restart.txt")
+      notifies :touch, "file[#{rails_directory}/tmp/restart.txt]"
     end
 
     apache_site site_name do

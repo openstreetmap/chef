@@ -106,7 +106,7 @@ unless unit.nil?
     provider Chef::Provider::Service::Upstart
     action [ :enable, :start ]
     supports :status => true, :restart => true, :reload => false
-    subscribes :restart, resources(:template => "/etc/init/ttyS#{unit}.conf")
+    subscribes :restart, "template[/etc/init/ttyS#{unit}.conf]"
   end
 end
 
@@ -122,7 +122,7 @@ if File.exist?("/etc/default/grub")
     group "root"
     mode 0644
     variables :unit => unit, :speed => speed
-    notifies :run, resources(:execute => "update-grub")
+    notifies :run, "execute[update-grub]"
   end
 end
 

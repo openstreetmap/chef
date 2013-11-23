@@ -28,7 +28,7 @@ define :munin_plugin_conf, :action => :create, :variables => {} do
       group "root"
       mode 0644
       variables params[:variables].merge(:name => params[:name])
-      notifies :restart, resources(:service => "munin-node")
+      notifies :restart, "service[munin-node]"
     end
   else
     file "/etc/munin/plugin-conf.d/#{params[:name]}" do

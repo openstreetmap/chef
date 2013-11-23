@@ -34,7 +34,7 @@ template "/etc/apt/sources.list" do
   owner "root"
   group "root"
   mode 0644
-  notifies :run, resources(:execute => "apt-update")
+  notifies :run, "execute[apt-update]"
 end
 
 apt_source "opscode" do

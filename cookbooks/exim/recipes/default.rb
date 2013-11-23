@@ -78,7 +78,7 @@ template "/etc/exim4/exim4.conf" do
   mode 0644
   variables :relay_to_domains => relay_to_domains.sort,
             :relay_from_hosts => relay_from_hosts.sort
-  notifies :restart, resources(:service => "exim4")
+  notifies :restart, "service[exim4]"
 end
 
 search(:accounts, "*:*").each do |account|

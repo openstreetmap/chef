@@ -54,7 +54,7 @@ node[:nominatim][:fpm_pools].each do |name,data|
     group "root"
     mode 0644
     variables data.merge(:name => name)
-    notifies :reload, resources(:service => "php5-fpm")
+    notifies :reload, "service[php5-fpm]"
   end
 end
 

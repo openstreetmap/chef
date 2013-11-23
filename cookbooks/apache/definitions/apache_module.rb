@@ -41,7 +41,7 @@ define :apache_module, :action => [ :install, :enable ], :variables => {} do
         mode 0644
         variables params[:variables]
         if File.exists?("/etc/apache2/mods-enabled/#{name}.load")
-          notifies :reload, resources(:service => "apache2")
+          notifies :reload, "service[apache2]"
         end
       end
     end
@@ -50,13 +50,13 @@ define :apache_module, :action => [ :install, :enable ], :variables => {} do
   if module_action.include?(:enable)
     execute "a2enmod-#{name}" do
       command "/usr/sbin/a2enmod #{name}"
-      notifies :restart, resources(:service => "apache2")
+      notifies :restart, "service[apache2]"
       not_if { File.exists?("/etc/apache2/mods-enabled/#{name}.load") }
     end
   elsif module_action.include?(:disable) or module_action.include?(:remove)
     execute "a2dismod-#{name}" do
       command "/usr/sbin/a2dismod #{name}"
-      notifies :restart, resources(:service => "apache2")
+      notifies :restart, "service[apache2]"
       only_if { File.exists?("/etc/apache2/mods-enabled/#{name}.load") }
     end
   end

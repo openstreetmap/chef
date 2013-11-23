@@ -83,8 +83,8 @@ define :rails_port, :action => [ :create, :enable ] do
     cwd rails_directory
     user rails_user
     group rails_group
-    notifies :delete, resources(:file => "#{rails_directory}/public/export/embed.html")
-    notifies :touch, resources(:file => "#{rails_directory}/tmp/restart.txt")
+    notifies :delete, "file[#{rails_directory}/public/export/embed.html]"
+    notifies :touch, "file[#{rails_directory}/tmp/restart.txt]"
   end
 
   execute "#{rails_directory}/db/migrate" do
@@ -93,7 +93,7 @@ define :rails_port, :action => [ :create, :enable ] do
     cwd rails_directory
     user rails_user
     group rails_group
-    notifies :run, resources(:execute => "#{rails_directory}/public/assets")
+    notifies :run, "execute[#{rails_directory}/public/assets]"
   end
 
   execute "#{rails_directory}/Gemfile" do
@@ -103,11 +103,11 @@ define :rails_port, :action => [ :create, :enable ] do
     user "root"
     group "root"
     if run_migrations
-      notifies :run, resources(:execute => "#{rails_directory}/db/migrate")
+      notifies :run, "execute[#{rails_directory}/db/migrate]"
     else
-      notifies :run, resources(:execute => "#{rails_directory}/public/assets")
+      notifies :run, "execute[#{rails_directory}/public/assets]"
     end
-    subscribes :run, resources(:gem_package => "bundler#{ruby_version}")
+    subscribes :run, "gem_package[bundler#{ruby_version}]"
   end
 
   directory rails_directory do
@@ -122,7 +122,7 @@ define :rails_port, :action => [ :create, :enable ] do
     revision rails_revision
     user rails_user
     group rails_group
-    notifies :run, resources(:execute => "#{rails_directory}/Gemfile")
+    notifies :run, "execute[#{rails_directory}/Gemfile]"
   end
 
   directory "#{rails_directory}/tmp" do
@@ -142,7 +142,7 @@ define :rails_port, :action => [ :create, :enable ] do
     group rails_group
     mode 0664
     variables database_params
-    notifies :touch, resources(:file => "#{rails_directory}/tmp/restart.txt")
+    notifies :touch, "file[#{rails_directory}/tmp/restart.txt]"
   end
 
   application_yml = edit_file "#{rails_directory}/config/example.application.yml" do |line|
@@ -213,7 +213,7 @@ define :rails_port, :action => [ :create, :enable ] do
     group rails_group
     mode 0664
     content application_yml
-    notifies :touch, resources(:file => "#{rails_directory}/tmp/restart.txt")
+    notifies :touch, "file[#{rails_directory}/tmp/restart.txt]"
   end
 
   if params[:piwik_configuration]
@@ -222,12 +222,12 @@ define :rails_port, :action => [ :create, :enable ] do
       group rails_group
       mode 0664
       content YAML.dump(params[:piwik_configuration])
-      notifies :run, resources(:execute => "#{rails_directory}/public/assets")
+      notifies :run, "execute[#{rails_directory}/public/assets]"
     end
   else
     file "#{rails_directory}/config/piwik.yml" do
       action :delete
-      notifies :run, resources(:execute => "#{rails_directory}/public/assets")
+      notifies :run, "execute[#{rails_directory}/public/assets]"
     end
   end
 
@@ -250,7 +250,7 @@ define :rails_port, :action => [ :create, :enable ] do
       File.mtime("#{rails_directory}/lib/quad_tile/quad_tile_so.so") >= File.mtime("#{rails_directory}/lib/quad_tile/quad_tile.c") and
       File.mtime("#{rails_directory}/lib/quad_tile/quad_tile_so.so") >= File.mtime("#{rails_directory}/lib/quad_tile/quad_tile.h")
     end
-    notifies :touch, resources(:file => "#{rails_directory}/tmp/restart.txt")
+    notifies :touch, "file[#{rails_directory}/tmp/restart.txt]"
   end
 
   template "/etc/cron.daily/rails-#{name}" do

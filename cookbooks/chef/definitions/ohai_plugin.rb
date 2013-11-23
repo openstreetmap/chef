@@ -31,7 +31,7 @@ define :ohai_plugin, :action => [ :create, :delete ] do
       owner "root"
       group "root"
       mode 0644
-      notifies :reload, resources(:ohai => plugin_name)
+      notifies :reload, "ohai[#{plugin_name}]"
     end
   elsif plugin_action.include?(:delete)
     template "/etc/chef/ohai/#{plugin_name}.rb" do

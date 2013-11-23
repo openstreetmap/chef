@@ -30,7 +30,7 @@ template "/etc/mysql/conf.d/chef.cnf" do
   owner "root"
   group "root"
   mode 0644
-  notifies :reload, resources(:service => "mysql")
+  notifies :reload, "service[mysql]"
 end
 
 package "libdbd-mysql-perl"

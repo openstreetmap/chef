@@ -53,7 +53,7 @@ execute "cgimap-configure" do
   cwd cgimap_directory
   user "rails"
   group "rails"
-  notifies :run, resources(:execute => "cgimap-build"), :immediate
+  notifies :run, "execute[cgimap-build]", :immediate
 end
 
 execute "cgimap-autogen" do
@@ -62,7 +62,7 @@ execute "cgimap-autogen" do
   cwd cgimap_directory
   user "rails"
   group "rails"
-  notifies :run, resources(:execute => "cgimap-configure"), :immediate
+  notifies :run, "execute[cgimap-configure]", :immediate
 end
 
 git cgimap_directory do
@@ -71,7 +71,7 @@ git cgimap_directory do
   revision "live"
   user "rails"
   group "rails"
-  notifies :run, resources(:execute => "cgimap-autogen"), :immediate
+  notifies :run, "execute[cgimap-autogen]", :immediate
 end
 
 if node[:web][:readonly_database_host]
@@ -115,7 +115,7 @@ else
   service "cgimap" do
     action [ :enable, :start ]
     supports :restart => true, :reload => true
-    subscribes :restart, resources(:execute => "cgimap-build")
-    subscribes :restart, resources(:file => "/etc/init.d/cgimap")
+    subscribes :restart, "execute[cgimap-build]"
+    subscribes :restart, "file[/etc/init.d/cgimap]"
   end
 end

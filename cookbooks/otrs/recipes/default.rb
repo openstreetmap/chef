@@ -131,7 +131,7 @@ Dir.glob("/opt/otrs/var/cron/*.dist") do |distname|
     group "www-data"
     mode 0664
     content IO.read(distname)
-    notifies :run, resources(:execute => "/opt/otrs/bin/Cron.sh")
+    notifies :run, "execute[/opt/otrs/bin/Cron.sh]"
   end
 end
 

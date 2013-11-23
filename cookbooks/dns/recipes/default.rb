@@ -95,7 +95,7 @@ directory "/var/lib/dns" do
   owner "git"
   group "git"
   mode 02775
-  notifies :run, resources(:execute => "dns-update")
+  notifies :run, "execute[dns-update]"
 end
 
 cookbook_file "#{node[:dns][:repository]}/hooks/post-receive" do

@@ -34,7 +34,7 @@ template "/etc/snmp/snmpd.conf" do
   group "root"
   mode 0600
   variables :communities => communities
-  notifies :restart, resources(:service => "snmpd")
+  notifies :restart, "service[snmpd]"
 end
 
 node[:snmpd][:clients].each do |address|

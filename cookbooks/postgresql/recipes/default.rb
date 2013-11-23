@@ -39,7 +39,7 @@ node[:postgresql][:versions].each do |version|
     group "postgres"
     mode 0644
     variables :version => version, :defaults => defaults, :settings => settings
-    notifies :reload, resources(:service => "postgresql")
+    notifies :reload, "service[postgresql]"
   end
 
   template "/etc/postgresql/#{version}/main/pg_hba.conf" do
@@ -49,7 +49,7 @@ node[:postgresql][:versions].each do |version|
     mode 0640
     variables :early_rules => settings[:early_authentication_rules] || defaults[:early_authentication_rules],
               :late_rules => settings[:late_authentication_rules] || defaults[:late_authentication_rules]
-    notifies :reload, resources(:service => "postgresql")
+    notifies :reload, "service[postgresql]"
   end
 
   template "/etc/postgresql/#{version}/main/pg_ident.conf" do
@@ -58,7 +58,7 @@ node[:postgresql][:versions].each do |version|
     group "postgres"
     mode 0640
     variables :maps => settings[:user_name_maps] || defaults[:user_name_maps]
-    notifies :reload, resources(:service => "postgresql")
+    notifies :reload, "service[postgresql]"
   end
 
   link "/var/lib/postgresql/#{version}/main/server.crt" do
@@ -79,12 +79,12 @@ node[:postgresql][:versions].each do |version|
       group "postgres"
       mode 0640
       variables :defaults => defaults, :settings => settings
-      notifies :reload, resources(:service => "postgresql")
+      notifies :reload, "service[postgresql]"
     end
   else
     template "/var/lib/postgresql/#{version}/main/recovery.conf" do
       action :delete
-      notifies :reload, resources(:service => "postgresql")
+      notifies :reload, "service[postgresql]"
     end
   end
 end

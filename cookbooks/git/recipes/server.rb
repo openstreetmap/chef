@@ -84,5 +84,5 @@ template "/etc/xinetd.d/git" do
   owner "root"
   group "root"
   mode 0644
-  notifies :reload, resources(:service => "xinetd")
+  notifies :reload, "service[xinetd]"
 end

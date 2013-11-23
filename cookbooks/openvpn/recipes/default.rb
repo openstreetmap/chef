@@ -69,7 +69,7 @@ node[:openvpn][:tunnels].each do |name,details|
       :port => node[:openvpn][:tunnels][name][:port],
       :mode => node[:openvpn][:tunnels][name][:mode],
       :peer => node[:openvpn][:tunnels][name][:peer]
-      notifies :restart, resources(:service => "openvpn")
+      notifies :restart, "service[openvpn]"
     end
   else
     file "/etc/openvpn/#{name}.conf" do

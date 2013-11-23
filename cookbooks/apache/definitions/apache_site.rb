@@ -32,7 +32,7 @@ define :apache_site, :action => [ :create, :enable ], :variables => {} do
       mode 0644
       variables params[:variables].merge(:name => name, :directory => directory)
       if File.exists?("/etc/apache2/sites-enabled/#{link_name}")
-        notifies :reload, resources(:service => "apache2")
+        notifies :reload, "service[apache2]"
       end
     end
   end
@@ -40,14 +40,14 @@ define :apache_site, :action => [ :create, :enable ], :variables => {} do
   if site_action.include?(:enable)
     execute "a2ensite-#{name}" do
       command "/usr/sbin/a2ensite #{name}"
-      notifies :restart, resources(:service => "apache2")
+      notifies :restart, "service[apache2]"
       not_if { File.exists?("/etc/apache2/sites-enabled/#{link_name}") }
     end
   elsif site_action.include?(:disable) or site_action.include?(:delete)
     execute "a2dissite-#{name}" do
       action :run
       command "/usr/sbin/a2dissite #{name}"
-      notifies :restart, resources(:service => "apache2")
+      notifies :restart, "service[apache2]"
       only_if { File.exists?("/etc/apache2/sites-enabled/#{link_name}") }
     end
   end

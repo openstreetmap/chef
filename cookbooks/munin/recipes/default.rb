@@ -50,7 +50,7 @@ template "/etc/munin/munin-node.conf" do
   group "root"
   mode 0644
   variables :servers => servers
-  notifies :restart, resources(:service => "munin-node")
+  notifies :restart, "service[munin-node]"
 end
 
 remote_directory "/usr/local/share/munin/plugins" do
@@ -73,7 +73,7 @@ remote_directory "/etc/munin/plugin-conf.d" do
   files_group "root"
   files_mode 0644
   purge false
-  notifies :restart, resources(:service => "munin-node")
+  notifies :restart, "service[munin-node]"
 end
 
 if Dir.glob("/proc/acpi/thermal_zone/*/temperature").empty?

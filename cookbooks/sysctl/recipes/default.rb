@@ -37,7 +37,7 @@ template "/etc/sysctl.d/60-chef.conf" do
   owner "root"
   group "root"
   mode 0644
-  notifies :run, resources(:execute => "sysctl")
+  notifies :run, "execute[sysctl]"
 end
 
 node[:sysctl].each_value do |group|

@@ -29,7 +29,7 @@ template "/etc/default/spamassassin" do
   owner "root"
   group "root"
   mode 0644
-  notifies :restart, resources(:service => "spamassassin")
+  notifies :restart, "service[spamassassin]"
 end
 
 trusted_networks = node[:exim][:relay_from_hosts]
@@ -48,5 +48,5 @@ template "/etc/spamassassin/local.cf" do
   group "root"
   mode 0644
   variables :trusted_networks => trusted_networks.sort
-  notifies :restart, resources(:service => "spamassassin")
+  notifies :restart, "service[spamassassin]"
 end

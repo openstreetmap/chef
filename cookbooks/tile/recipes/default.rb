@@ -77,8 +77,8 @@ template "/etc/renderd.conf" do
   owner "root"
   group "root"
   mode 0644
-  notifies :reload, resources(:service => "apache2")
-  notifies :restart, resources(:service => "renderd")
+  notifies :reload, "service[apache2]"
+  notifies :restart, "service[renderd]"
 end
 
 remote_directory "/srv/tile.openstreetmap.org/html" do
@@ -186,7 +186,7 @@ node[:tile][:data].each do |name,data|
       command "ogr2ogr #{processed} #{original}"
       user "tile"
       group "tile"
-      subscribes :run, resources(:execute => file), :immediately
+      subscribes :run, "execute[#{file}]", :immediately
     end
   end
 
@@ -195,7 +195,7 @@ node[:tile][:data].each do |name,data|
     command "find #{directory} -type f -iname '*.shp' -print0 | xargs -0 --no-run-if-empty shapeindex --shape_files"
     user "tile"
     group "tile"
-    subscribes :run, resources(:execute => file), :immediately
+    subscribes :run, "execute[#{file}]", :immediately
   end
 
   remote_file file do
@@ -211,8 +211,8 @@ node[:tile][:data].each do |name,data|
     group "tile"
     mode 0644
     backup false
-    notifies :run, resources(:execute => file), :immediately
-    notifies :restart, resources(:service => "renderd")
+    notifies :run, "execute[#{file}]", :immediately
+    notifies :restart, "service[renderd]"
   end
 end
 
@@ -461,8 +461,8 @@ end
 service "replicate" do
   action [ :enable, :start ]
   supports :restart => true
-  subscribes :restart, resources(:template => "/usr/local/bin/replicate")
-  subscribes :restart, resources(:template => "/etc/init.d/replicate")
+  subscribes :restart, "template[/usr/local/bin/replicate]"
+  subscribes :restart, "template[/etc/init.d/replicate]"
 end
 
 template "/etc/logrotate.d/replicate" do

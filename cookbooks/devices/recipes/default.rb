@@ -27,5 +27,5 @@ template "/etc/udev/rules.d/99-chef.rules" do
   owner "root"
   group "root"
   mode 0644
-  notifies :run, resources(:execute => "udevadm-trigger")
+  notifies :run, "execute[udevadm-trigger]"
 end

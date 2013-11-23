@@ -56,7 +56,7 @@ template "/etc/hostname" do
   owner "root"
   group "root"
   mode 0644
-  notifies :run, resources(:execute => "hostname")
+  notifies :run, "execute[hostname]"
 end
 
 template "/etc/hosts" do
@@ -135,7 +135,7 @@ template "/etc/default/shorewall" do
   owner "root"
   group "root"
   mode 0644
-  notifies :restart, resources(:service => "shorewall")
+  notifies :restart, "service[shorewall]"
 end
 
 template "/etc/shorewall/shorewall.conf" do
@@ -143,7 +143,7 @@ template "/etc/shorewall/shorewall.conf" do
   owner "root"
   group "root"
   mode 0644
-  notifies :restart, resources(:service => "shorewall")
+  notifies :restart, "service[shorewall]"
 end
 
 template "/etc/shorewall/zones" do
@@ -152,7 +152,7 @@ template "/etc/shorewall/zones" do
   group "root"
   mode 0644
   variables :type => "ipv4"
-  notifies :restart, resources(:service => "shorewall")
+  notifies :restart, "service[shorewall]"
 end
 
 template "/etc/shorewall/interfaces" do
@@ -160,7 +160,7 @@ template "/etc/shorewall/interfaces" do
   owner "root"
   group "root"
   mode 0644
-  notifies :restart, resources(:service => "shorewall")
+  notifies :restart, "service[shorewall]"
 end
 
 template "/etc/shorewall/hosts" do
@@ -169,7 +169,7 @@ template "/etc/shorewall/hosts" do
   group "root"
   mode 0644
   variables :zones => zones
-  notifies :restart, resources(:service => "shorewall")
+  notifies :restart, "service[shorewall]"
 end
 
 template "/etc/shorewall/policy" do
@@ -177,7 +177,7 @@ template "/etc/shorewall/policy" do
   owner "root"
   group "root"
   mode 0644
-  notifies :restart, resources(:service => "shorewall")
+  notifies :restart, "service[shorewall]"
 end
 
 template "/etc/shorewall/rules" do
@@ -186,7 +186,7 @@ template "/etc/shorewall/rules" do
   group "root"
   mode 0644
   variables :rules => []
-  notifies :restart, resources(:service => "shorewall")
+  notifies :restart, "service[shorewall]"
 end
 
 firewall_rule "limit-icmp-echo" do
@@ -217,12 +217,12 @@ if node[:roles].include?("gateway")
     owner "root"
     group "root"
     mode 0644
-    notifies :restart, resources(:service => "shorewall")
+    notifies :restart, "service[shorewall]"
   end
 else
   file "/etc/shorewall/masq" do
     action :delete
-    notifies :restart, resources(:service => "shorewall")
+    notifies :restart, "service[shorewall]"
   end
 end
 
@@ -240,7 +240,7 @@ if not node.interfaces(:family => :inet6).empty?
     owner "root"
     group "root"
     mode 0644
-    notifies :restart, resources(:service => "shorewall6")
+    notifies :restart, "service[shorewall6]"
   end
 
   template "/etc/shorewall6/shorewall6.conf" do
@@ -248,7 +248,7 @@ if not node.interfaces(:family => :inet6).empty?
     owner "root"
     group "root"
     mode 0644
-    notifies :restart, resources(:service => "shorewall6")
+    notifies :restart, "service[shorewall6]"
   end
 
   template "/etc/shorewall6/zones" do
@@ -257,7 +257,7 @@ if not node.interfaces(:family => :inet6).empty?
     group "root"
     mode 0644
     variables :type => "ipv6"
-    notifies :restart, resources(:service => "shorewall6")
+    notifies :restart, "service[shorewall6]"
   end
 
   template "/etc/shorewall6/interfaces" do
@@ -265,7 +265,7 @@ if not node.interfaces(:family => :inet6).empty?
     owner "root"
     group "root"
     mode 0644
-    notifies :restart, resources(:service => "shorewall6")
+    notifies :restart, "service[shorewall6]"
   end
 
   template "/etc/shorewall6/hosts" do
@@ -274,7 +274,7 @@ if not node.interfaces(:family => :inet6).empty?
     group "root"
     mode 0644
     variables :zones => zones
-    notifies :restart, resources(:service => "shorewall6")
+    notifies :restart, "service[shorewall6]"
   end
 
   template "/etc/shorewall6/policy" do
@@ -282,7 +282,7 @@ if not node.interfaces(:family => :inet6).empty?
     owner "root"
     group "root"
     mode 0644
-    notifies :restart, resources(:service => "shorewall6")
+    notifies :restart, "service[shorewall6]"
   end
 
   template "/etc/shorewall6/rules" do
@@ -291,7 +291,7 @@ if not node.interfaces(:family => :inet6).empty?
     group "root"
     mode 0644
     variables :rules => []
-    notifies :restart, resources(:service => "shorewall6")
+    notifies :restart, "service[shorewall6]"
   end
 
   firewall_rule "limit-icmp6-echo" do

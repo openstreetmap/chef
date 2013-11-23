@@ -61,7 +61,7 @@ node[:osqa][:sites].each do |site|
     cwd "#{directory}/osqa"
     user site_user
     group site_group
-    notifies :reload, resources(:service => "apache2")
+    notifies :reload, "service[apache2]"
   end
 
   subversion "#{directory}/osqa" do
@@ -70,7 +70,7 @@ node[:osqa][:sites].each do |site|
     revision osqa_revision
     user site_user
     group site_group
-    notifies :run, resources(:execute => "osqa-migrate")
+    notifies :run, "execute[osqa-migrate]"
   end
 
   remote_directory "#{directory}/osqa/forum_modules/osmauth" do
@@ -89,7 +89,7 @@ node[:osqa][:sites].each do |site|
     group site_group
     mode 0644
     variables :directory => directory
-    notifies :reload, resources(:service => "apache2")
+    notifies :reload, "service[apache2]"
   end
 
   settings = edit_file "#{directory}/osqa/settings_local.py.dist" do |line|
@@ -110,6 +110,6 @@ node[:osqa][:sites].each do |site|
     group site_group
     mode 0644
     content settings
-    notifies :reload, resources(:service => "apache2")
+    notifies :reload, "service[apache2]"
   end
 end

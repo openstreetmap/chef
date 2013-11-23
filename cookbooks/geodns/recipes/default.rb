@@ -27,7 +27,7 @@ end
 
 file "/etc/powerdns/pdns.d/pdns.simplebind" do
   action :delete
-  notifies :reload, resources(:service => "pdns")
+  notifies :reload, "service[pdns]"
 end
 
 template "/etc/powerdns/pdns.d/geo.conf" do
@@ -35,7 +35,7 @@ template "/etc/powerdns/pdns.d/geo.conf" do
   owner "root"
   group "root"
   mode "0600"
-  notifies :reload, resources(:service => "pdns")
+  notifies :reload, "service[pdns]"
 end
 
 directory "/etc/powerdns/zones.d" do
@@ -49,7 +49,7 @@ template "/etc/powerdns/zones.d/tile.conf" do
   owner "root"
   group "root"
   mode "0644"
-  notifies :reload, resources(:service => "pdns")
+  notifies :reload, "service[pdns]"
 end
 
 template "/etc/cron.weekly/geodns-update" do

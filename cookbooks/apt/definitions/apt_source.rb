@@ -37,7 +37,7 @@ define :apt_source do
     owner "root"
     group "root"
     mode 0644
-    notifies :run, resources(:execute => "apt-update")
+    notifies :run, "execute[apt-update]"
     variables :url => params[:url]
   end
 end

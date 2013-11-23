@@ -52,5 +52,5 @@ execute "/srv/www.openstreetmap.org/rails/db/functions/Makefile" do
   cwd "/srv/www.openstreetmap.org/rails/db/functions"
   user "rails"
   group "rails"
-  subscribes :run, resources(:git => "/srv/www.openstreetmap.org/rails")
+  subscribes :run, "git[/srv/www.openstreetmap.org/rails]"
 end

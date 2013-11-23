@@ -29,5 +29,5 @@ template "/etc/sysfs.conf" do
   owner "root"
   group "root"
   mode 0644
-  notifies :restart, resources(:service => "sysfsutils")
+  notifies :restart, "service[sysfsutils]"
 end

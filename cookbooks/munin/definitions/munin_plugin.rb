@@ -38,7 +38,7 @@ define :munin_plugin, :action => :create do
     link "/etc/munin/plugins/#{params[:name]}" do
       action params[:action]
       to target_path
-      notifies :restart, resources(:service => "munin-node")
+      notifies :restart, "service[munin-node]"
     end
   end
 

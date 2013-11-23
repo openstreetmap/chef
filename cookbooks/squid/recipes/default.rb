@@ -43,9 +43,9 @@ end
 service "squid" do
   action [ :enable, :start ]
   supports :status => true, :restart => true, :reload => true
-  subscribes :reload, resources(:template => "/etc/squid/squid.conf")
-  subscribes :restart, resources(:template => "/etc/default/squid")
-  subscribes :reload, resources(:template => "/etc/resolv.conf")
+  subscribes :reload, "template[/etc/squid/squid.conf]"
+  subscribes :restart, "template[/etc/default/squid]"
+  subscribes :reload, "template[/etc/resolv.conf]"
 end
 
 munin_plugin "squid_cache"

@@ -52,7 +52,7 @@ template "/etc/default/rsync" do
   owner "root"
   group "root"
   mode 0644
-  notifies :restart, resources(:service => "rsync")
+  notifies :restart, "service[rsync]"
 end
 
 template "/etc/rsyncd.conf" do
