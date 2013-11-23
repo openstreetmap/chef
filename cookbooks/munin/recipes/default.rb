@@ -116,7 +116,7 @@ else
   end
 end
 
-if %x{sysctl -n net.ipv4.ip_forward}.chomp == "1"
+if File.read("/proc/sys/net/ipv4/ip_forward").chomp == "1"
   munin_plugin "fw_packets"
 else
   munin_plugin "fw_packets" do
