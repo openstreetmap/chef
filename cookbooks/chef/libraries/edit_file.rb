@@ -16,7 +16,7 @@ class Chef
 
   class Recipe
     def edit_file(file, &block)
-      Chef::Util::EditedFile.new(file, block)
+      Chef::Util::EditedFile.new(file, block).to_s
     end
   end
 end
