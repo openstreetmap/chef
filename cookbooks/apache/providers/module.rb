@@ -22,12 +22,13 @@ def whyrun_supported?
 end
 
 action :install do
-  p = package package_name do
-    action :install
-    not_if { ::File.exists?(available_name("load")) }
-  end
+  if not installed?
+    package package_name
 
-  updated = p.updated_by_last_action?
+    updated = true
+  else
+    updated = false
+  end
 
   if new_resource.conf
     t = template available_name("conf") do
@@ -46,44 +47,50 @@ action :install do
 end
 
 action :enable do
-  l = link enabled_name("load") do
-    to available_name("load")
-    owner "root"
-    group "root"
-    notifies :restart, "service[apache2]"
-  end
+  if not enabled?
+    link enabled_name("load") do
+      to available_name("load")
+      owner "root"
+      group "root"
+      notifies :restart, "service[apache2]"
+    end
 
-  c = link enabled_name("conf") do
-    to available_name("conf")
-    owner "root"
-    group "root"
-    notifies :reload, "service[apache2]"
-    only_if { ::File.exists?(available_name("conf")) }
-  end
+    link enabled_name("conf") do
+      to available_name("conf")
+      owner "root"
+      group "root"
+      notifies :reload, "service[apache2]"
+      only_if { ::File.exists?(available_name("conf")) }
+    end
 
-  new_resource.updated_by_last_action(l.updated_by_last_action? || c.updated_by_last_action?)
+    new_resource.updated_by_last_action(true)
+  end
 end
 
 action :disable do
-  l = link enabled_name("load") do
-    action :delete
-    notifies :restart, "service[apache2]"
-  end
+  if enabled?
+    link enabled_name("load") do
+      action :delete
+      notifies :restart, "service[apache2]"
+    end
 
-  c = link enabled_name("conf") do
-    action :delete
-    notifies :reload, "service[apache2]"
-  end
+    link enabled_name("conf") do
+      action :delete
+      notifies :reload, "service[apache2]"
+    end
 
-  new_resource.updated_by_last_action(l.updated_by_last_action? || c.updated_by_last_action?)
+    new_resource.updated_by_last_action(true)
+  end
 end
 
 action :delete do
-  p = package package_name do
-    action :remove
-  end
+  if installed?
+    package package_name do
+      action :remove
+    end
 
-  new_resource.updated_by_last_action(p.updated_by_last_action?)
+    new_resource.updated_by_last_action(true)
+  end
 end
 
 def package_name
@@ -96,6 +103,10 @@ end
 
 def enabled_name(extension)
   "/etc/apache2/mods-enabled/#{new_resource.name}.#{extension}"
+end
+
+def installed?
+  ::File.exists?(available_name("load"))
 end
 
 def enabled?
