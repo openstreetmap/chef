@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: postgresql
-# Provider:: postgresql_database
+# Cookbook Name:: apache
+# Provider:: apache_site
 #
-# Copyright 2012, OpenStreetMap Foundation
+# Copyright 2013, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -29,9 +29,7 @@ action :create do
     group "root"
     mode 0644
     variables new_resource.variables.merge(:name => new_resource.name, :directory => site_directory)
-    if enabled?
-      notifies :reload, "service[apache2]"
-    end
+    notifies :reload, "service[apache2]" if enabled?
   end
 
   new_resource.updated_by_last_action(t.updated_by_last_action?)
