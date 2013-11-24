@@ -6,6 +6,10 @@ class Chef
         @block = block
       end
 
+      def kind_of?(klass)
+        klass == String || super
+      end
+
       def to_s
         ::File.new(@file).collect do |line|
           line = @block.call(line)
@@ -16,7 +20,7 @@ class Chef
 
   class Recipe
     def edit_file(file, &block)
-      Chef::Util::EditedFile.new(file, block).to_s
+      Chef::Util::EditedFile.new(file, block)
     end
   end
 end
