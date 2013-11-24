@@ -28,7 +28,7 @@ action :create do
     owner "root"
     group "root"
     mode 0644
-    variables new_resource.variables.merge(:name => new_resource.name, :directory => new_resource.directory)
+    variables new_resource.variables.merge(:name => new_resource.name, :directory => site_directory)
     if enabled?
       notifies :reload, "service[apache2]"
     end
@@ -63,6 +63,10 @@ action :delete do
   end
 
   new_resource.updated_by_last_action(f.updated_by_last_action?)
+end
+
+def site_directory
+  new_resource.directory || "/var/www/#{new_resource.name}"
 end
 
 def available_name
