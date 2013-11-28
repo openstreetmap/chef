@@ -13,7 +13,8 @@ default_attributes(
       :serial => "3600605b005a0609019290f178be8de77",
       :attrs => {
         "queue/scheduler" => "deadline",
-        "queue/nr_requests" => "975"
+        "queue/nr_requests" => "975",
+        "queue/rq_affinity" => "2"
       }
     },
     :store_fast => {
@@ -23,7 +24,26 @@ default_attributes(
       :serial => "3600605b005a0726019d062ae23b426fd",
       :attrs => {
         "queue/scheduler" => "deadline",
-        "queue/nr_requests" => "975"
+        "queue/nr_requests" => "975",
+        "queue/rq_affinity" => "2"
+      }
+    },
+    :store_ssd_1 => {
+      :comment => "First disk of RAID array mounted on /store/arrays/ssd",
+      :type => "block",
+      :bus => "ata",
+      :serial => "INTEL_SSDSC2BA400G3_BTTV3141041E400HGN",
+      :attrs => {
+        "queue/scheduler" => "noop"
+      }
+    },
+    :store_ssd_2 => {
+      :comment => "Second disk of RAID array mounted on /store/arrays/ssd",
+      :type => "block",
+      :bus => "ata",
+      :serial => "INTEL_SSDSC2BA400G3_BTTV3141044Q400HGN",
+      :attrs => {
+        "queue/scheduler" => "noop"
       }
     }
   },
