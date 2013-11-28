@@ -8,7 +8,7 @@ default_attributes(
       :defaults => {
         :wal_level => "hot_standby",
         :archive_mode => "on",
-        :archive_command => "/bin/cp %p /store/postgresql/system/archive/%f",
+        :archive_command => "/bin/cp %p /store/postgresql/archive/%f",
         :max_wal_senders => "2",
         :user_name_maps => {
           :backup => [
