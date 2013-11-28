@@ -1,4 +1,4 @@
-# $Cambridge: exim/exim-src/src/configure.default,v 1.14 2009/10/16 07:46:13 tom Exp $
+# DO NOT EDIT - This file is being maintained by Chef
 
 ######################################################################
 #                  Runtime configuration file for Exim               #
@@ -383,6 +383,10 @@ acl_check_rcpt:
   # Deny incoming mail unless the sender address can be verified.
 
   deny   !hosts         = +relay_from_hosts
+         !verify        = sender
+
+  deny   !hosts         = +relay_from_hosts
+         !senders       = lsearch*@;/etc/exim4/callout_exempt_senders
          !verify        = sender/callout/defer_ok
 
   # Accept if the message comes from one of the hosts for which we are an
