@@ -19,7 +19,8 @@ default_attributes(
           { :type => "local", :database => "all", :user => "backup", :method => "peer", :options => { :map => "backup" } }
         ],
         :late_authentication_rules => [
-          { :database => "replication", :user => "replication", :address => "146.179.159.168/32" }
+          { :database => "replication", :user => "replication", :address => "146.179.159.168/32" },
+          { :database => "replication", :user => "replication", :address => "146.179.159.173/32" }
         ]
       }
     }
