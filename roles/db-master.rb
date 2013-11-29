@@ -37,7 +37,7 @@ default_attributes(
         :gid => "postgres",
         :transfer_logging => false,
         :hosts_allow => [
-          "146.179.159.168"
+          "146.179.159.168", "146.179.159.173"
         ]
       }
     }
