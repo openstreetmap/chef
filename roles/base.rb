@@ -60,7 +60,7 @@ default_attributes(
       :comment => "Tune the ondemand CPU frequency governor",
       :parameters => {
         "devices/system/cpu/cpufreq/ondemand/up_threshold" => "25",
-        "devices/system/cpu/cpufreq/ondemand/sampling_down_factor" => "10"
+        "devices/system/cpu/cpufreq/ondemand/sampling_down_factor" => "20"
       }
     }
   }
