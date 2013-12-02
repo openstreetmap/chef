@@ -31,3 +31,15 @@ template "/etc/sysfs.conf" do
   mode 0644
   notifies :restart, "service[sysfsutils]"
 end
+
+node[:sysfs].each_value do |group|
+  group[:parameters].each do |key,value|
+    sysfs_file = "/sys/#{key}"
+
+    file sysfs_file do
+      content "#{value}\n"
+      atomic_update false
+      only_if { File.exists?(sysfs_file) }
+    end
+  end
+end
