@@ -6,6 +6,20 @@ default_attributes(
     :users => {
       :osmbackup => { :status => :role }
     }
+  },
+  :postgresql => {
+    :settings => {
+      :defaults => {
+        :user_name_maps => {
+          :backup => [
+            { :system => "osmbackup", :postgres => "backup" }
+          ]
+        },
+        :early_authentication_rules => [
+          { :type => "local", :database => "all", :user => "backup", :method => "peer", :options => { :map => "backup" } }
+        ]
+      }
+    }
   }
 )
 
