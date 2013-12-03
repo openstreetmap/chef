@@ -128,10 +128,6 @@ default_attributes(
         :repository => "git://github.com/osmlab/openstreetmap-website.git",
         :revision => "groups-sketch"
       },
-      :redesign => {
-        :repository => "git://github.com/osmlab/openstreetmap-website.git",
-        :revision => "redesign"
-      },
       :help => {
         :repository => "git://github.com/osmlab/openstreetmap-website.git",
         :revision => "help-page"
