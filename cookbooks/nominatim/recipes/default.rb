@@ -93,6 +93,14 @@ directory "/var/log/nominatim" do
   mode 0755
 end
 
+template "/etc/logrotate.d/nominatim" do
+  source "logrotate.nominatim.erb"
+  owner "root"
+  group "root"
+  mode 0644
+end
+
+
 package "osmosis"
 package "gcc"
 package "proj-bin"

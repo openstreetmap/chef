@@ -1,0 +1,11 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+/var/log/nominatim/update.log {
+  weekly
+  missingok
+  rotate 12
+  compress
+  delaycompress
+  notifempty
+  create 640 root adm
+}
