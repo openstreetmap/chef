@@ -18,8 +18,7 @@ default_attributes(
   },
   :web => {
     :status => "online",
-    :database_host => "db",
-    :readonly_database_host => "katla"
+    :database_host => "db"
   }
 )
 
