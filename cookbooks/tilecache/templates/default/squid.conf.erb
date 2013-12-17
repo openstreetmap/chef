@@ -4,6 +4,17 @@ acl osmtiles_png urlpath_regex .png$
 #acl osmtileScrapers browser ^offlinemap\-lite
 #http_access deny osmtile_sites osmtileScrapers
 
+acl whitelist_path urlpath_regex ^/cgi-bin/(export|debug)$
+acl blacklist_path urlpath_regex ^/cgi-bin/
+acl blacklist_path urlpath_regex ^/MyAdmin/
+acl blacklist_path urlpath_regex ^/myadmin/
+acl blacklist_path urlpath_regex ^/pma/
+acl blacklist_path urlpath_regex ^/phpmyadmin/
+acl blacklist_path urlpath_regex ^/phpMyAdmin/
+
+http_access allow osmtile_sites whitelist_path
+http_access deny blacklist_path
+
 http_access allow osmtile_sites
 
 acl osmtile_nocache_url urlpath_regex \.png/(status|dirty)$
