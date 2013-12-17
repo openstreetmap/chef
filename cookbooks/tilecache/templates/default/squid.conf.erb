@@ -11,6 +11,15 @@ acl blacklist_path urlpath_regex ^/myadmin/
 acl blacklist_path urlpath_regex ^/pma/
 acl blacklist_path urlpath_regex ^/phpmyadmin/
 acl blacklist_path urlpath_regex ^/phpMyAdmin/
+acl blacklist_path urlpath_regex ^/idssvc/
+acl blacklist_path urlpath_regex ^/iesvc/
+acl blacklist_path urlpath_regex ^/invoker/
+acl blacklist_path urlpath_regex ^/jmx-console/
+acl blacklist_path urlpath_regex ^/manager/
+acl blacklist_path urlpath_regex ^/service/
+acl blacklist_path urlpath_regex ^/web-console/
+acl blacklist_path urlpath_regex ^/wstats/
+acl blacklist_path urlpath_regex ^/zecmd/
 
 http_access allow osmtile_sites whitelist_path
 http_access deny blacklist_path
