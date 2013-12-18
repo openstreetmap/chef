@@ -45,16 +45,13 @@ cache_peer trogdor.openstreetmap.org sibling 3128 3130
 cache_peer nadder-01.openstreetmap.org sibling 3128 3130 proxy-only
 cache_peer nadder-02.openstreetmap.org sibling 3128 3130 proxy-only
 <% end -%>
-
-#Primary Parent
 cache_peer <%= node[:tilecache][:tile_parent] %> parent 80 0 no-query originserver name=osmtileAccel login=PASS connect-timeout=60 no-digest weight=1000
-cache_peer_access osmtileAccel allow osmtile_sites
+cache_peer render.openstreetmap.org parent 80 0 no-query originserver name=osmtileAccelBackup login=PASS connect-timeout=60 no-digest weight=10
 
-#Backup Parents
-<% @caches.each do |cache| -%>
-cache_peer <%= cache.hostname %>.render.openstreetmap.org parent 80 0 no-query originserver name=osmtileAccelBackup<%= cache.hostname %> login=PASS connect-timeout=60 no-digest weight=10
-cache_peer_access osmtileAccelBackup<%= cache.hostname %> allow osmtile_sites
-<% end -%>
+cache_peer_access osmtileAccel allow osmtile_sites
+cache_peer_access osmtileAccelBackup allow osmtile_sites
+cache_peer_access osmtileAccel deny all
+cache_peer_access osmtileAccelBackup deny all
 
 #----------------------------------
 #Create an unlimited pool for cache IP addresses
