@@ -23,6 +23,7 @@ include_recipe "ssl"
 include_recipe "squid"
 
 tilecaches = search(:node, "roles:tilecache").sort_by { |n| n[:hostname] }
+tilerenders = search(:node, "roles:tile").sort_by { |n| n[:hostname] }
 
 tilecaches.each do |cache|
   cache.ipaddresses(:family => :inet, :role => :external).sort.each do |address|
@@ -49,7 +50,7 @@ end
 
 squid_fragment "tilecache" do
   template "squid.conf.erb"
-  variables :caches => tilecaches
+  variables :caches => tilecaches, :renders => tilerenders
 end
 
 template "/etc/logrotate.d/squid" do
