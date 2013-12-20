@@ -102,6 +102,7 @@ define :rails_port, :action => [ :create, :enable ] do
     cwd rails_directory
     user "root"
     group "root"
+    environment "NOKOGIRI_USE_SYSTEM_LIBRARIES" => "yes"
     if run_migrations
       notifies :run, "execute[#{rails_directory}/db/migrate]"
     else
