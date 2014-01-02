@@ -1,5 +1,6 @@
 
 default[:tilecache][:tile_parent] = "parent.tile.openstreetmap.org"
+default[:tilecache][:tile_siblings] = []
 
 #Per IP bucket refill rate
 default[:tilecache][:ip_bucket_refill] = "8192"

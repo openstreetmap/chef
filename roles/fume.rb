@@ -37,7 +37,10 @@ default_attributes(
     }
   },
   :tilecache => {
-    :tile_parent => "sjobo.render.openstreetmap.org"
+    :tile_parent => "sjobo.render.openstreetmap.org",
+    :tile_siblings => [
+      "trogdor.openstreetmap.org"
+    ]
   }
 )
 

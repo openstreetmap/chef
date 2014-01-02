@@ -29,21 +29,8 @@ http_access allow osmtile_sites
 acl osmtile_nocache_url urlpath_regex \.png/(status|dirty)$
 cache deny osmtile_sites osmtile_nocache_url
 
-<% if node[:fqdn] == "nadder-01.openstreetmap.org" -%>
-cache_peer nadder-02.openstreetmap.org sibling 3128 3130 proxy-only
-<% end -%>
-<% if node[:fqdn] == "nadder-02.openstreetmap.org" -%> 
-cache_peer nadder-01.openstreetmap.org sibling 3128 3130 proxy-only
-<% end -%>
-<% if node[:fqdn] == "trogdor.openstreetmap.org" -%>
-cache_peer fume.openstreetmap.org sibling 3128 3130 proxy-only
-<% end -%>
-<% if node[:fqdn] == "fume.openstreetmap.org" -%>
-cache_peer trogdor.openstreetmap.org sibling 3128 3130 proxy-only
-<% end -%>
-<% if node[:fqdn] == "jakelong.openstreetmap.org" -%>
-cache_peer nadder-01.openstreetmap.org sibling 3128 3130 proxy-only
-cache_peer nadder-02.openstreetmap.org sibling 3128 3130 proxy-only
+<% node[:tilecache][:tile_siblings].each do |sibling| -%>
+cache_peer <%= sibling %> sibling 3128 3130 proxy-only
 <% end -%>
 #Primary Parent
 cache_peer <%= node[:tilecache][:tile_parent] %> parent 80 0 no-query originserver name=osmtileAccel login=PASS connect-timeout=60 no-digest weight=1000
