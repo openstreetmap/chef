@@ -62,10 +62,10 @@ template "/etc/logrotate.d/squid" do
 end
 
 nginx_site "default" do
-  action :delete
+  action [ :delete ]
 end
 
 nginx_site "tile-ssl" do
-  source "nginx_tile_ssl.conf.erb"
+  template "nginx_tile_ssl.conf.erb"
 end
 
