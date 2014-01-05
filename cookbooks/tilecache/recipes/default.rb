@@ -66,7 +66,6 @@ nginx_site "default" do
 end
 
 nginx_site "tile-ssl" do
-  action :create
   source "nginx_tile_ssl.conf.erb"
 end
 

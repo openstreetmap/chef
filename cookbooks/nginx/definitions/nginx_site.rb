@@ -32,9 +32,7 @@ define :nginx_site, :action => [ :create ], :variables => {} do
       variables params[:variables].merge(:name => name, :directory => directory)
       notifies :reload, "service[nginx]"
     end
-  end
-
-  if site_action.include?(:delete)
+  elsif site_action.include?(:delete)
     file "/etc/nginx/conf.d/#{name}.conf" do
       action :delete
       notifies :restart, "service[nginx]"
