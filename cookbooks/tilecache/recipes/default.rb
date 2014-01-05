@@ -21,6 +21,7 @@ node.default[:ssl][:certificates] = node[:ssl][:certificates] | [ "tile.openstre
 
 include_recipe "ssl"
 include_recipe "squid"
+include_recipe "nginx"
 
 tilecaches = search(:node, "roles:tilecache").sort_by { |n| n[:hostname] }
 tilerenders = search(:node, "roles:tile").sort_by { |n| n[:hostname] }
@@ -58,5 +59,14 @@ template "/etc/logrotate.d/squid" do
   owner "root"
   group "root"
   mode 0644
+end
+
+nginx_site "default" do
+  action :delete
+end
+
+nginx_site "tile-ssl" do
+  action :create
+  source "nginx_tile_ssl.conf.erb"
 end
 
