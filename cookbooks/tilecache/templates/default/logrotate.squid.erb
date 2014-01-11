@@ -3,12 +3,15 @@
 /var/log/squid/*.log {
   daily
   compress
+  compresscmd /usr/bin/xz
+  uncompresscmd /usr/bin/unxz
+  compressext .xz
   rotate 2
   missingok
   nocreate
   sharedscripts
   postrotate
     test ! -e /var/run/squid.pid || /usr/sbin/squid -k rotate
-    /usr/bin/rsync /var/log/squid/zere.log.2.gz ironbelly::logs/tile.openstreetmap.org/<%= node[:hostname] %>-`date -d "-2 days" +%Y-%m-%d`.gz
+    /usr/bin/rsync /var/log/squid/zere.log.2.xz ironbelly::logs/tile.openstreetmap.org/<%= node[:hostname] %>-`date -d "-2 days" +%Y-%m-%d`.xz
   endscript
 }

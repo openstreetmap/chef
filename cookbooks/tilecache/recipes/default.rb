@@ -23,6 +23,8 @@ include_recipe "ssl"
 include_recipe "squid"
 include_recipe "nginx"
 
+package "xz-utils"
+
 tilecaches = search(:node, "roles:tilecache").sort_by { |n| n[:hostname] }
 tilerenders = search(:node, "roles:tile").sort_by { |n| n[:hostname] }
 
