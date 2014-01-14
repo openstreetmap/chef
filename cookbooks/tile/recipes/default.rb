@@ -100,6 +100,8 @@ end
 
 package "python-cairo"
 package "python-mapnik"
+package "ttf-dejavu"
+package "ttf-unifont"
 
 directory "/srv/tile.openstreetmap.org/cgi-bin" do
   owner "tile"
