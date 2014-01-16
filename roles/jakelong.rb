@@ -30,7 +30,9 @@ default_attributes(
     :tile_parent => "sanfrancisco.render.openstreetmap.org",
     :tile_siblings => [
       "nadder-01.openstreetmap.org",
-      "nadder-02.openstreetmap.org"
+      "nadder-02.openstreetmap.org",
+      "nepomuk.openstreetmap.org",
+      "tabaluga.openstreetmap.org"
     ]
   }
 )

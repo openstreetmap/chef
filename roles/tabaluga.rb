@@ -29,7 +29,12 @@ default_attributes(
   :tilecache => {
     :ip_bucket_refill => "6144",
     :net_bucket_refill => "24576",
-    :tile_parent => "falkenstein.render.openstreetmap.org"
+    :tile_parent => "falkenstein.render.openstreetmap.org",
+    :tile_siblings => [
+      "trogdor.openstreetmap.org",
+      "lurien.openstreetmap.org",
+      "ridgeback.openstreetmap.org"
+    ]
   }
 )
 

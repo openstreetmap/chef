@@ -39,7 +39,10 @@ default_attributes(
   :tilecache => {
     :tile_parent => "sjobo.render.openstreetmap.org",
     :tile_siblings => [
-      "trogdor.openstreetmap.org"
+      "trogdor.openstreetmap.org",
+      "ridgeback.openstreetmap.org",
+      "trogdor.openstreetmap.org",
+      "gorynych.openstreetmap.org"
     ]
   }
 )

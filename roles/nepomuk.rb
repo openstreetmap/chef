@@ -36,7 +36,12 @@ default_attributes(
     }
   },
   :tilecache => {
-    :tile_parent => "lyon.render.openstreetmap.org"
+    :tile_parent => "lyon.render.openstreetmap.org",
+    :tile_siblings => [
+      "trogdor.openstreetmap.org",
+      "lurien.openstreetmap.org",
+      "tabaluga.openstreetmap.org"
+    ]
   }
 )
 

@@ -82,7 +82,12 @@ default_attributes(
     :cache_dir => "coss /dev/cciss/c0d1 128000 block-size=8192 max-size=262144 membufs=80"
   },
   :tilecache => {
-    :tile_parent => "brisbane.render.openstreetmap.org"
+    :tile_parent => "brisbane.render.openstreetmap.org",
+    :tile_siblings => [
+      "jakelong.openstreetmap.org",
+      "nadder-01.openstreetmap.org",
+      "nadder-02.openstreetmap.org"
+    ]
   }
 )
 

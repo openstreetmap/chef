@@ -32,7 +32,10 @@ default_attributes(
   :tilecache => {
     :tile_parent => "provo.render.openstreetmap.org",
     :tile_siblings => [
-      "nadder-02.openstreetmap.org"
+      "nadder-02.openstreetmap.org",
+      "jakelong.openstreetmap.org",
+      "nepomuk.openstreetmap.org",
+      "lurien.openstreetmap.org"
     ]
   }
 )
