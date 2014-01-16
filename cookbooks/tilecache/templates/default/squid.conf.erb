@@ -2,8 +2,8 @@ acl osmtile_sites dstdomain a.tile.openstreetmap.org b.tile.openstreetmap.org c.
 acl osmtiles_png urlpath_regex .png$
 
 acl osmtileScrapers browser ^offlinemap\-lite
-acl osmtileScrapers browser ^Wget/1
-acl osmtileScrapers browser ^Apache-HttpClient/UNAVAILABLE"
+acl osmtileScrapers browser ^Wget
+acl osmtileScrapers browser ^Apache\-HttpClient
 http_access deny osmtile_sites osmtileScrapers
 
 acl whitelist_path urlpath_regex ^/cgi-bin/(export|debug)$
