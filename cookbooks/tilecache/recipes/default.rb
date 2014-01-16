@@ -48,6 +48,15 @@ tilecaches.each do |cache|
       dest_ports "3130"
       source_ports "1024:"
     end
+    firewall_rule "accept-squid-icp-reply" do
+      action :accept
+      family "inet"
+      source "fw"
+      dest "net:#{address}"
+      proto "udp"
+      dest_ports "3130"
+      source_ports "1024:"
+    end
   end
 end
 
