@@ -32,7 +32,7 @@ acl osmtile_nocache_url urlpath_regex \.png/(status|dirty)$
 cache deny osmtile_sites osmtile_nocache_url
 
 <% node[:tilecache][:tile_siblings].each do |sibling| -%>
-cache_peer <%= sibling %> sibling 3128 3130 proxy-only
+cache_peer <%= sibling %> sibling 3128 3130 weight=1500
 <% end -%>
 #Primary Parent
 cache_peer <%= node[:tilecache][:tile_parent] %> parent 80 0 no-query originserver name=osmtileAccel login=PASS connect-timeout=60 no-digest weight=1000
