@@ -288,7 +288,18 @@ else
   end
 end
 
-# smart_
+node[:block_device].each do |name,attributes|
+  if attributes[:vendor] == "ATA"
+    munin_plugin "smart_#{name}" do
+      target "smart_"
+    end
+  else
+    munin_plugin "smart_#{name}" do
+      action :delete
+    end
+  end
+end
+
 munin_plugin "swap"
 munin_plugin "threads"
 munin_plugin "uptime"
