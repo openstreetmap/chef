@@ -8,4 +8,4 @@ version           "1.0.0"
 depends           "ssl"
 depends           "squid"
 depends           "nginx"
-
+depends           "munin"

@@ -80,3 +80,10 @@ nginx_site "tile-ssl" do
   template "nginx_tile_ssl.conf.erb"
 end
 
+tilerenders.each do |render|
+  munin_plugin "ping_#{render[:fqdn]}" do
+    target "ping_"
+    conf "munin.ping.erb"
+    conf_variables :host => render[:fqdn]
+  end
+end
