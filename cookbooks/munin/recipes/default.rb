@@ -188,23 +188,6 @@ else
 end
 
 munin_plugin "irqstats"
-
-Dir.new("/sys/block").each do |device|
-  if device.match(/^sd/)
-    munin_plugin "linux_diskstat_iops_#{device}" do
-      target "linux_diskstat_"
-    end
-
-    munin_plugin "linux_diskstat_latency_#{device}" do
-      target "linux_diskstat_"
-    end
-
-    munin_plugin "linux_diskstat_throughput_#{device}" do
-      target "linux_diskstat_"
-    end
-  end
-end
-
 munin_plugin "load"
 munin_plugin "memory"
 munin_plugin "netstat"
