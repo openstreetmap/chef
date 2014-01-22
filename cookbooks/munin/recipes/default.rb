@@ -124,7 +124,20 @@ else
   end
 end
 
-# hddtemp_smartctl
+disks = node[:block_device].select do |name,attributes|
+  [ "ATA", "FUJITSU", "SEAGATE", "DELL", "COMPAQ", "IBM-ESXS" ].include?(attributes[:vendor])
+end
+
+if disks.empty?
+  munin_plugin "hddtemp_smartctl" do
+    action :delete
+  end
+else
+  munin_plugin "hddtemp_smartctl" do
+    conf "hddtemp.erb"
+    conf_variables :disks => disks
+  end
+end
 
 if File.exists?("/sbin/hpasmcli")
   munin_plugin "hpasmcli_temp"
