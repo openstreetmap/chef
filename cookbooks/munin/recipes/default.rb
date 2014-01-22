@@ -205,7 +205,15 @@ munin_plugin "load"
 munin_plugin "memory"
 munin_plugin "netstat"
 
-if File.exists?("/proc/net/rpc/nfs")
+if node[:kernel][:modules].include?("nfsv3")
+  munin_plugin "nfs_client"
+else
+  munin_plugin "nfs_client" do
+    action :delete
+  end
+end
+
+if node[:kernel][:modules].include?("nfsv4")
   munin_plugin "nfs4_client"
 else
   munin_plugin "nfs4_client" do
@@ -213,7 +221,7 @@ else
   end
 end
 
-if File.exists?("/proc/net/rpc/nfsd")
+if node[:kernel][:modules].include?("nfsd")
   munin_plugin "nfsd"
   munin_plugin "nfsd4"
 else
@@ -297,6 +305,7 @@ node[:block_device].each do |name,attributes|
 end
 
 munin_plugin "swap"
+munin_plugin "tcp"
 munin_plugin "threads"
 munin_plugin "uptime"
 munin_plugin "users"
