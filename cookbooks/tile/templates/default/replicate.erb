@@ -6,11 +6,19 @@
 # Setting to midnight ensures we get conistent data after first run
 # osmosis --read-replication-interval-init
 
+# Define exit handler
+function onexit {
+    [ -f state-prev.txt ] && mv state-prev.txt state.txt
+}
+
 # Send output to the log
 exec > /var/log/tile/replicate.log 2>&1
 
 # Change to the replication state directory
 cd /var/lib/replicate
+
+# Install exit handler
+trap onexit EXIT
 
 # Read in initial state
 . state.txt
@@ -20,6 +28,9 @@ while true
 do
     # Work out the name of the next file
     file="changes-${sequenceNumber}.osm.gz"
+
+    # Save state file so we can rollback if an error occurs
+    cp state.txt state-prev.txt
 
     # Fetch the next set of changes
     osmosis --read-replication-interval --simc --write-xml-change file="${file}" compressionMethod="gzip"
@@ -45,6 +56,9 @@ do
 	    # Remove file, it will just be an empty changeset
 	    rm ${file}
 
+            # No need to rollback now
+            rm state-prev.txt
+
             # Sleep for a short while
 	    sleep 30
 	else
@@ -57,6 +71,9 @@ do
 <% else -%>
             osm2pgsql --slim --append ${file}
 <% end -%>
+
+            # No need to rollback now
+            rm state-prev.txt
 
             # Expire tiles which are touched by the changes
             sudo -u www-data /usr/local/bin/expire-tiles ${file} > /dev/null 2>&1 &
