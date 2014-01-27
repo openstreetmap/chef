@@ -4,6 +4,7 @@
 import cgi
 import cgitb
 import os
+import re
 import sys
 import resource
 import time
@@ -48,6 +49,12 @@ def output_error(message):
 if not os.environ.has_key('HTTP_USER_AGENT'):
   os.environ['HTTP_USER_AGENT'] = 'NONE'
 
+# Get the cache server name
+if os.environ.has_key('HTTP_VIA'):
+  cache_server = re.search('[a-z0-9-]+\.openstreetmap\.org', os.environ['HTTP_VIA']).group(0)
+else:
+  cache_server = None
+
 # Get the load average
 loadavg = float(open("/proc/loadavg").readline().split(" ")[0])
 
@@ -59,6 +66,8 @@ print "</head>"
 print "<body>"
 print "<h1>tile.openstreetmap.org debug</h1>"
 print "<h2>Server Stats</h2>"
+if cache_server:
+  print "<p><b>Cache Server</b>: %s</p>" % cache_server
 print "<p>"
 print "<b>Render Server</b>: <%= node['fqdn'] %><br />"
 print "<b>Load Average</b>: %s</p>" % loadavg
