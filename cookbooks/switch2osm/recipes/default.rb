@@ -40,6 +40,36 @@ wordpress_plugin "sitepress-multilingual-cms" do
   repository "git://chef.openstreetmap.org/sitepress-multilingual-cms.git"
 end
 
+wordpress_plugin "wpml-cms-nav" do
+  site "switch2osm.org"
+  repository "git://chef.openstreetmap.org/wpml-cms-nav.git"
+end
+
+wordpress_plugin "wpml-sticky-links" do
+  site "switch2osm.org"
+  repository "git://chef.openstreetmap.org/wpml-sticky-links.git"
+end
+
+wordpress_plugin "wpml-string-translation" do
+  site "switch2osm.org"
+  repository "git://chef.openstreetmap.org/wpml-string-translation.git"
+end
+
+wordpress_plugin "wpml-translation-analytics" do
+  site "switch2osm.org"
+  repository "git://chef.openstreetmap.org/wpml-translation-analytics.git"
+end
+
+wordpress_plugin "wpml-translation-management" do
+  site "switch2osm.org"
+  repository "git://chef.openstreetmap.org/wpml-translation-management.git"
+end
+
+wordpress_plugin "wpml-xliff" do
+  site "switch2osm.org"
+  repository "git://chef.openstreetmap.org/wpml-xliff.git"
+end
+
 template "/etc/cron.daily/switch2osm-backup" do
   source "backup.cron.erb"
   owner "root"
