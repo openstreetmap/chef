@@ -35,6 +35,11 @@ wordpress_theme "picolight" do
   revision "master"
 end
 
+wordpress_plugin "sitepress-multilingual-cms" do
+  site "switch2osm.org"
+  repository "git://chef.openstreetmap.org/sitepress-multilingual-cms.git"
+end
+
 template "/etc/cron.daily/switch2osm-backup" do
   source "backup.cron.erb"
   owner "root"
