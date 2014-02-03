@@ -32,10 +32,22 @@ host apc3.<%= @domain %> {
   fixed-address apc3.<%= @domain %>;
 }
 
+host ascalon.oob.openstreetmap.org {
+  hardware ethernet 00:19:bb:39:3c:64;
+  server-name "ascalon.oob.openstreetmap.org";
+  fixed-address ascalon.oob.openstreetmap.org;
+}
+
 host bowser.oob.openstreetmap.org {
   hardware ethernet 00:16:35:c5:dd:9e;
   server-name "bowser.oob.openstreetmap.org";
   fixed-address bowser.oob.openstreetmap.org;
+}
+
+host clifford.oob.openstreetmap.org {
+  hardware ethernet 00:1a:4b:a5:bd:2a;
+  server-name "clifford.oob.openstreetmap.org";
+  fixed-address clifford.oob.openstreetmap.org;
 }
 
 host draco.oob.openstreetmap.org {
