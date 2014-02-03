@@ -141,6 +141,10 @@ template "/etc/initramfs-tools/conf.d/mdadm" do
   notifies :run, "execute[update-initramfs]"
 end
 
+if node[:kernel][:modules].include?("ipmi_si")
+  package "ipmitool"
+end
+
 tools_packages = []
 status_packages = {}
 
