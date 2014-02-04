@@ -37,6 +37,15 @@ default_attributes(
       "tabaluga.openstreetmap.org",
       "nepomuk.openstreetmap.org"
     ]
+  },
+  :munin => {
+    :plugins => {
+      :smart_sdb => {
+        :smartctl_exit_status => {
+          :warning => 8
+        }
+      }
+    }
   }
 )
 
