@@ -17,6 +17,11 @@ default_attributes(
         :address => "128.40.168.105"
       }
     }
+  },
+  :accounts => {
+    :users => {
+      :emacsen => { :status => :administrator }
+    }
   }
 )
 
