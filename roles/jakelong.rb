@@ -26,6 +26,15 @@ default_attributes(
     :cache_mem => "650 MB",
     :cache_dir => "coss /store/squid/coss-01 15000 block-size=8192 max-size=262144 membufs=30"
   },
+  :sysfs => {
+    :hdd_tune => {
+      :comment => "Tune the queue for improved performance",
+      :parameters => {
+        "block/xvda/queue/nr_requests" => "64",
+        "block/xvda/queue/scheduler" => "deadline"
+      }
+    }
+  },
   :tilecache => {
     :tile_parent => "sanfrancisco.render.openstreetmap.org",
     :tile_siblings => [

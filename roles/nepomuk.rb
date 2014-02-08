@@ -30,8 +30,8 @@ default_attributes(
     :hdd_tune => {
       :comment => "Tune the queue for improved performance",
       :parameters => {
-        "block/vda/queue/nr_requests" => "512",
-	"block/vda/queue/scheduler" => "noop"
+        "block/vda/queue/nr_requests" => "64",
+        "block/vda/queue/scheduler" => "deadline"
       }
     }
   },
