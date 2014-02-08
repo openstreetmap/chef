@@ -16,7 +16,7 @@ acl osmtileScrapers browser ^Mozilla\/5\.0$
 acl osmtileScrapers browser ^User\-Agent
 http_access deny osmtile_sites osmtileScrapers
 
-acl whitelist_path urlpath_regex ^/cgi-bin/(export|debug)$
+acl whitelist_path urlpath_regex ^/cgi-bin/(export|debug)
 acl blacklist_path urlpath_regex ^/cgi-bin/
 acl blacklist_path urlpath_regex ^/MyAdmin/
 acl blacklist_path urlpath_regex ^/myadmin/
