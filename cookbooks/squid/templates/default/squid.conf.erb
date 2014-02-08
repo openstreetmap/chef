@@ -21,6 +21,8 @@ cache_effective_group proxy
 cache_dir <%= node[:squid][:cache_dir] %>
 cache_swap_log /var/spool/squid/%s
 
+cache_mgr webmaster@openstreetmap.org
+
 quick_abort_min 0 KB
 quick_abort_max 0 KB
 
