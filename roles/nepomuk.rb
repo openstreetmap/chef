@@ -22,6 +22,15 @@ default_attributes(
       }
     }
   },
+  :sysctl => {
+    :kvm => {
+      :comment => "Tuning for KVM guest",
+      :parameters => { 
+        "kernel.sched_min_granularity_ns" => 10000000,
+        "kernel.sched_wakeup_granularity_ns" => 15000000
+      }
+    }
+  },
   :squid => {
     :cache_mem => "7500 MB",
     :cache_dir => "coss /store/squid/coss-01 128000 block-size=8192 max-size=262144 membufs=80"

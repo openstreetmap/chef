@@ -14,6 +14,15 @@ default_attributes(
       }
     }
   },
+  :sysctl => {
+    :kvm => {
+      :comment => "Tuning for KVM guest",
+      :parameters => { 
+        "kernel.sched_min_granularity_ns" => 10000000,
+        "kernel.sched_wakeup_granularity_ns" => 15000000
+      }
+    }
+  },
   :sysfs => {
     :hdd_tune => {
       :comment => "Tune the queue for improved performance",
