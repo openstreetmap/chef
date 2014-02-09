@@ -51,6 +51,9 @@ munin_plugin "passenger_requests"
 node[:taginfo][:sites].each do |site|
   name = site[:name]
   directory = site[:directory] || "/srv/#{name}"
+  description = site[:description]
+  icon = site[:icon]
+  contact = site[:contact]
 
   directory directory do
     owner "taginfo"
@@ -75,6 +78,12 @@ node[:taginfo][:sites].each do |site|
   end
 
   settings = edit_file "#{directory}/taginfo/taginfo-config-example.json" do |line|
+    line.gsub!(/^( *)"url": ".*",/, "\\1\"url\": \"http://#{name}/\",")
+    line.gsub!(/^( *)"description": ".*Change this text.*,/, "\\1\"description\": \"#{description}\",")
+    line.gsub!(/^( *)"icon": ".*",/, "\\1\"icon\": \"/img/logo/#{icon}.png\",")
+    line.gsub!(/^( *)"contact": "Anonymous",/, "\\1\"contact\": \"#{contact}\",")
+    line.gsub!(/^( *)"shortname": ".*",/, "\\1\"shortname\": \"Taginfo\",")
+    line.gsub!(/^( *)"contact": "somebody@example.com",/, "\\1\"contact\": \"webmaster@openstreetmap.org\",")
     line.gsub!(/^( *)"cxxflags": ".*",/, "\\1\"cxxflags\": \"-I../../osmium/include\",")
 
     line

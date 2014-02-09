@@ -18,7 +18,12 @@ default_attributes(
   },
   :taginfo => {
     :sites => [
-      { :name => "taginfo.openstreetmap.org" }
+      {
+        :name => "taginfo.openstreetmap.org",
+        :description => "This is the main taginfo site. It contains OSM data for the whole planet and is updated daily.",
+        :icon => "world",
+        :contact => "Jochen Topf <jochen@remote.org>"
+      }
     ]
   }
 )
