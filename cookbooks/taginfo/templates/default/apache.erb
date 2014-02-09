@@ -1,0 +1,21 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+<% [80, 443].each do |port| -%>
+
+<VirtualHost *:<%= port %>>
+        ServerName <%= @name %>
+        ServerAdmin webmaster@openstreetmap.org
+<% if port == 443 -%>
+
+        SSLEngine on
+<% end -%>
+
+        CustomLog /var/log/apache2/<%= @name %>-access.log combined
+        ErrorLog /var/log/apache2/<%= @name %>-error.log
+
+        DocumentRoot <%= @directory %>
+        RackEnv production
+        PassengerMinInstances 10
+        PassengerPreStart http://<%= @name %>/
+</VirtualHost>
+<% end -%>

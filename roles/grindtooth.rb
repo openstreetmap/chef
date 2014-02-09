@@ -2,11 +2,6 @@ name "grindtooth"
 description "Master role applied to grindtooth"
 
 default_attributes(
-  :accounts => {
-    :users => {
-      :jochen => { :status => :administrator }
-    }
-  },
   :networking => {
     :interfaces => {
       :internal_ipv4 => {
@@ -20,5 +15,6 @@ default_attributes(
 )
 
 run_list(
-  "role[ucl-internal]"
+  "role[ucl-internal]",
+  "role[taginfo]"
 )
