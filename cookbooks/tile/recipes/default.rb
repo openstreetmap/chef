@@ -376,18 +376,10 @@ postgresql_munin "gis" do
   database "gis"
 end
 
-tile_uid = node[:etc][:passwd][:"tile"][:uid]
-www_data_gid = node[:etc][:group][:"www-data"][:gid]
-
-ruby_block node[:tile][:node_file] do
-  block do
-    File.chown(tile_uid, www_data_gid, node[:tile][:node_file])
-    File.chmod(0640, node[:tile][:node_file])
-  end
-  not_if do
-    stat = File.stat(node[:tile][:node_file])
-    stat.uid == tile_uid && stat.gid == www_data_gid && stat.mode == 0640
-  end
+file node[:tile][:node_file] do
+  owner "tile"
+  group "www-data"
+  mode 0640
 end
 
 directory "/var/log/tile" do
