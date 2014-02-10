@@ -20,6 +20,7 @@
 require "yaml"
 
 include_recipe "apache"
+include_recipe "passenger"
 include_recipe "git"
 include_recipe "mysql"
 include_recipe "postgresql"
@@ -52,15 +53,6 @@ apache_module "fastcgi-handler"
 apache_module "rewrite"
 apache_module "expires"
 apache_module "wsgi"
-
-apache_module "passenger" do
-  conf "passenger.conf.erb"
-end
-
-munin_plugin "passenger_memory"
-munin_plugin "passenger_processes"
-munin_plugin "passenger_queues"
-munin_plugin "passenger_requests"
 
 gem_package "sqlite3"
 
@@ -152,7 +144,7 @@ if node[:postgresql][:clusters][:"9.1/main"]
     end
 
     rails_port site_name do
-      ruby node[:dev][:ruby]
+      ruby node[:passenger][:ruby_version]
       directory rails_directory
       user "apis"
       group "apis"

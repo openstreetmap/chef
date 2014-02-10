@@ -18,6 +18,7 @@
 #
 
 include_recipe "apache::ssl"
+include_recipe "passenger"
 include_recipe "git"
 
 package "libsqlite3-dev"
@@ -40,13 +41,6 @@ gem_package "sqlite3"
 gem_package "sinatra"
 gem_package "sinatra-r18n"
 gem_package "rack-contrib"
-
-apache_module "passenger"
-
-munin_plugin "passenger_memory"
-munin_plugin "passenger_processes"
-munin_plugin "passenger_queues"
-munin_plugin "passenger_requests"
 
 node[:taginfo][:sites].each do |site|
   name = site[:name]

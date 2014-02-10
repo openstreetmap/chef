@@ -21,35 +21,11 @@ include_recipe "tools"
 include_recipe "web::base"
 
 include_recipe "apache"
+include_recipe "passenger"
 include_recipe "git"
 
 web_passwords = data_bag_item("web", "passwords")
 db_passwords = data_bag_item("db", "passwords")
-
-directory "#{node[:web][:base_directory]}/bin" do
-  owner "root"
-  group "root"
-  mode 0755
-end
-
-template "#{node[:web][:base_directory]}/bin/ruby" do
-  source "ruby.erb"
-  owner "root"
-  group "root"
-  mode 0755
-  notifies :reload, "service[apache2]"
-end
-
-apache_module "passenger" do
-  conf "passenger.conf.erb"
-end
-
-package "passenger-common#{node[:web][:ruby_version]}"
-
-munin_plugin "passenger_memory"
-munin_plugin "passenger_processes"
-munin_plugin "passenger_queues"
-munin_plugin "passenger_requests"
 
 template "/etc/cron.hourly/passenger" do
   cookbook "web"
@@ -66,7 +42,7 @@ piwik_configuration = data_bag_item("web", "piwik").to_hash.reject do |k,v|
 end
 
 rails_port "www.openstreetmap.org" do
-  ruby node[:web][:ruby_version]
+  ruby node[:passenger][:ruby_version]
   directory rails_directory
   user "rails"
   group "rails"

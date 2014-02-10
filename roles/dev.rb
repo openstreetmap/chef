@@ -95,13 +95,11 @@ default_attributes(
   },
   :apt => {
     :sources => [
-      "brightbox-ruby-ng",
       "ubuntugis-stable",
       "mapnik-v210"
     ]
   },
   :dev => {
-    :ruby => "1.9.1",
     :rails => {
       :master => {
         :repository => "git://git.openstreetmap.org/rails.git",

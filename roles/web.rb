@@ -10,11 +10,11 @@ default_attributes(
       }
     }
   },
-  :apt => {
-    :sources => [ "brightbox-ruby-ng" ]
-  },
   :nfs => {
     "/store/rails" => { :host => "ironbelly", :path => "/store/rails" }
+  },
+  :passenger => {
+    :pool_idle_time => 0
   },
   :web => {
     :status => "online",

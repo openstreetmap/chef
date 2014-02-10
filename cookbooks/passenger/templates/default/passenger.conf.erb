@@ -1,0 +1,9 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+<IfModule mod_passenger.c>
+  PassengerRoot /usr
+  PassengerRuby /usr/local/bin/passenger-ruby
+  PassengerUseGlobalQueue on
+  PassengerMaxPoolSize <%= node[:passenger][:max_pool_size] %>
+  PassengerPoolIdleTime <%= node[:passenger][:pool_idle_time] %>
+</IfModule>

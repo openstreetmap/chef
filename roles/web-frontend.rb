@@ -13,8 +13,10 @@ default_attributes(
       :max_requests_per_child => 10000
     }
   },
+  :passenger => {
+    :max_pool_size => 50
+  },
   :web => {
-    :rails_daemon_limit => 50,
     :rails_soft_memory_limit => 192,
     :rails_hard_memory_limit => 512
   },

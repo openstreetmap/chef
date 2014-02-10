@@ -11,8 +11,10 @@ default_attributes(
   :memcached  => {
     :memory_limit => 4096
   },
+  :passenger => {
+    :max_pool_size => 12
+  },
   :web => {
-    :rails_daemon_limit => 12,
     :rails_soft_memory_limit => 512,
     :rails_hard_memory_limit => 2048
   }
