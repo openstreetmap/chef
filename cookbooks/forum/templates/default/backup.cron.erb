@@ -1,0 +1,20 @@
+#!/bin/sh
+exit 0
+
+# DO NOT EDIT - This file is being maintained by Chef
+
+T=$(mktemp -d -t -p /var/tmp forum.XXXXXXXXXX)
+D=$(date +%Y-%m-%d)
+B=forum-$D.tar.gz
+
+mkdir $T/forum-$D
+mysqldump --user=forum --password=<%= @passwords["database"] %> --opt forum > $T/forum-$D/forum.sql
+ln -s /srv/forum.openstreetmap.org $T/forum-$D/www
+
+export GZIP="--rsyncable -9"
+export RSYNC_RSH="ssh -ax -c arcfour"
+
+nice tar --create --gzip --dereference --directory=$T --file=$T/$B forum-$D
+nice rsync $T/$B backup::backup
+
+rm -rf $T
