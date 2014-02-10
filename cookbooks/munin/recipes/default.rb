@@ -253,13 +253,15 @@ sensors_temp = false
 sensors_volt = false
 
 Dir.glob("/sys/class/hwmon/hwmon*").each do |hwmon|
-  package "lm-sensors"
-
   hwmon = "#{hwmon}/device" unless File.exists?("#{hwmon}/name")
 
   sensors_fan = true unless Dir.glob("#{hwmon}/fan*_input").empty?
   sensors_temp = true unless Dir.glob("#{hwmon}/temp*_input").empty?
   sensors_volt = true unless Dir.glob("#{hwmon}/in*_input").empty?
+end
+
+if sensors_fan || sensors_temp || sensors_volt
+  package "lm-sensors"
 end
 
 if sensors_fan
