@@ -282,6 +282,15 @@
   RedirectPermanent / http://www.openstreetmap.org/
 </VirtualHost>
 
+<VirtualHost *:443>
+  ServerName openstreetmap.org
+  ServerAlias maps.openstreetmap.org mapz.openstreetmap.org
+
+  SSLEngine on
+
+  RedirectPermanent / https://www.openstreetmap.org/
+</VirtualHost>
+
 <VirtualHost *:80>
   ServerName openstreetmap.org.uk
   ServerAlias www.openstreetmap.org.uk
