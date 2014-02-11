@@ -225,7 +225,7 @@
   #
   # Redirect requests which don't work over https to http
   #
-  RewriteCond %{REQUEST_URI} !^/edit$
+  RewriteCond %{REQUEST_URI} ^/edit$
   RewriteRule ^(.*)$ http://www.openstreetmap.org$1 [L,NE,R=permanent]
 
   #
