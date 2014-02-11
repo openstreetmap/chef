@@ -198,7 +198,7 @@
 <% if port == 80 -%>
 
   #
-  # Redirect requests which should be secure to the SSL site
+  # Redirect requests which should be secure to https
   #
   RewriteCond %{REQUEST_URI} ^/login(\.html)?$ [OR]
   RewriteCond %{REQUEST_URI} ^/user/(new|create-account\.html)$ [OR]
@@ -223,27 +223,23 @@
 <% elsif port == 443 -%>
 
   #
-  # Redirect api requests to api.osm.org over http
+  # Redirect requests which don't work over https to http
   #
-  RewriteRule ^/api/(.*)$ http://api.openstreetmap.org/api/$1 [L,NE,R=permanent]
+  RewriteCond %{REQUEST_URI} !^/edit$
+  RewriteRule ^(.*)$ http://www.openstreetmap.org$1 [L,NE,R=permanent]
 
   #
-  # Redirect requests which do not need to be secure over http
+  # Redirect api requests made to www.osm.org to api.osm.org
   #
-  RewriteCond %{REQUEST_URI} !^/login(.html)?$
-  RewriteCond %{REQUEST_URI} !^/user/(new|create-account.html)$
-  RewriteCond %{REQUEST_URI} !^/user/terms$
-  RewriteCond %{REQUEST_URI} !^/user/save$
-  RewriteCond %{REQUEST_URI} !^/user/go_public$
-  RewriteCond %{REQUEST_URI} !^/user/([^/]+)/account$
-  RewriteCond %{REQUEST_URI} !^/user/reset-password$
-  RewriteCond %{REQUEST_URI} !^/preview/
-  RewriteCond %{REQUEST_URI} !^/assets/
-  RewriteCond %{REQUEST_URI} !^/javascripts/
-  RewriteCond %{REQUEST_URI} !^/images/
-  RewriteCond %{REQUEST_URI} !^/stylesheets/
-  RewriteCond %{REQUEST_URI} !^/openlayers/
-  RewriteRule ^(.*)$ http://www.openstreetmap.org$1 [L,NE,R=permanent]
+#  RewriteCond %{HTTP_HOST} =www.openstreetmap.org
+#  RewriteRule ^/api/(.*)$ https://api.openstreetmap.org/api/$1 [L,NE,R=permanent]
+
+  #
+  # Redirect non-api requests made to api.osm.org to www.osm.org
+  #
+  RewriteCond %{HTTP_HOST} =api.openstreetmap.org
+  RewriteCond %{REQUEST_URI} !^/api/
+  RewriteRule ^(.*)$ https://www.openstreetmap.org$1 [L,NE,R=permanent]
 <% end -%>
 </VirtualHost>
 
