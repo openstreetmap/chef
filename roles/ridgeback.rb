@@ -40,6 +40,11 @@ default_attributes(
   },
   :munin => {
     :plugins => {
+      :smart_sda => {
+        :smartctl_exit_status => {
+          :warning => 8
+        }
+      },
       :smart_sdb => {
         :smartctl_exit_status => {
           :warning => 8
