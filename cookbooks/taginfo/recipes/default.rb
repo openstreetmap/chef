@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+require "json"
+
 include_recipe "apache::ssl"
 include_recipe "passenger"
 include_recipe "git"
@@ -71,23 +73,21 @@ node[:taginfo][:sites].each do |site|
     group "taginfo"
   end
 
-  settings = edit_file "#{directory}/taginfo/taginfo-config-example.json" do |line|
-    line.gsub!(/^( *)"url": ".*",/, "\\1\"url\": \"http://#{name}/\",")
-    line.gsub!(/^( *)"description": ".*Change this text.*,/, "\\1\"description\": \"#{description}\",")
-    line.gsub!(/^( *)"icon": ".*",/, "\\1\"icon\": \"/img/logo/#{icon}.png\",")
-    line.gsub!(/^( *)"contact": "Anonymous",/, "\\1\"contact\": \"#{contact}\",")
-    line.gsub!(/^( *)"shortname": ".*",/, "\\1\"shortname\": \"Taginfo\",")
-    line.gsub!(/^( *)"contact": "somebody@example.com",/, "\\1\"contact\": \"webmaster@openstreetmap.org\",")
-    line.gsub!(/^( *)"cxxflags": ".*",/, "\\1\"cxxflags\": \"-I../../osmium/include\",")
+  settings = JSON.parse(IO.read("#{directory}/taginfo/taginfo-config-example.json"))
 
-    line
-  end
+  settings["instance"]["url"] = "http://#{name}/"
+  settings["instance"]["description"] = description
+  settings["instance"]["icon"] = "/img/logo/#{icon}.png"
+  settings["instance"]["contact"] = contact
+  settings["opensearch"]["shortname"] = "Taginfo"
+  settings["opensearch"]["contact"] = "webmaster@openstreetmap.org"
+  settings["tagstats"]["cxxflags"] = "-I../../osmium/include"
 
   file "#{directory}/taginfo-config.json" do
     owner "taginfo"
     group "taginfo"
     mode 0644
-    content settings
+    content JSON.pretty_generate(settings)
   end
 
   execute "#{directory}/taginfo/tagstats/Makefile" do
