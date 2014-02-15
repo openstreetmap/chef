@@ -1,12 +1,20 @@
 # DO NOT EDIT - This file is being maintained by Chef
+<% [80, 443].each do |port| -%>
 
-<VirtualHost *:80>
+<VirtualHost *:<%= port %>>
   #
   # Basic server configuration
   #
   ServerName <%= node[:fqdn] %>
   ServerAlias api.openstreetmap.org www.openstreetmap.org
   ServerAdmin webmaster@openstreetmap.org
+<% if port == 443 -%>
+
+  #
+  # Enable SSL
+  #
+  SSLEngine on
+<% end -%>
 
   #
   # Setup logging
@@ -44,3 +52,4 @@
   RewriteRule ^/api/0\.6/(way|relation)/[0-9]+/full$ - [H=fcgi:127.0.0.1:8000]
   RewriteRule ^/api/0\.6/(nodes|ways|relations)$ - [H=fcgi:127.0.0.1:8000]
 </VirtualHost>
+<% end -%>

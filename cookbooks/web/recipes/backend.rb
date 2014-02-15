@@ -18,6 +18,7 @@
 #
 
 include_recipe "memcached"
+include_recipe "apache::ssl"
 include_recipe "web::rails"
 include_recipe "web::cgimap"
 
