@@ -36,6 +36,8 @@ package "g++"
 
 package "sqlite3"
 
+package "osmosis"
+
 package "ruby"
 package "rubygems"
 gem_package "json"
