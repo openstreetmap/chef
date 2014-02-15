@@ -1,0 +1,26 @@
+#!/bin/sh
+
+set -e
+
+cd "<%= @directory %>/planet"
+
+OSCFILE="$(date +%Y%m%d-%H%M).osc"
+
+# if there are old .osc files, they have to be taken into account
+
+OLDFILE=2*-*.osc
+if [ -z "$OLDFILE" ]
+then
+   osmosis --rri --simc --write-xml-change "$OSCFILE"
+else
+   osmosis --rxc "$OLDFILE" --rri --mc --simc --write-xml-change "$OSCFILE" && rm "$OLDFILE"
+fi
+
+# osc file is ready, create new planet file
+
+osmosis --read-xml-change "$OSCFILE" --read-bin planet.pbf --buffer bufferCapacity=12000 --apply-change --buffer bufferCapacity=12000 --write-pbf planet-new.pbf
+
+# cleanup
+
+mv planet-new.pbf planet.pbf
+rm "$OSCFILE"

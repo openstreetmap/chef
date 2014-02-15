@@ -101,6 +101,47 @@ node[:taginfo][:sites].each do |site|
     notifies :restart, "service[apache2]"
   end
 
+  directory "#{directory}/planet" do
+    owner "taginfo"
+    group "taginfo"
+    mode 0755
+  end
+
+  remote_file "#{directory}/planet/planet.pbf" do
+    action :create_if_missing
+    source "http://planet.openstreetmap.org/pbf/planet-latest.osm.pbf"
+    owner "taginfo"
+    group "taginfo"
+    mode 0644
+  end
+
+  template "#{directory}/planet/configuration.txt" do
+    source "configuration.txt.erb"
+    owner "taginfo"
+    group "taginfo"
+    mode 0644
+  end
+
+  file "#{directory}/planet/download.lock" do
+    owner "taginfo"
+    group "taginfo"
+    mode 0644
+  end
+
+  directory "#{directory}/bin" do
+    owner "taginfo"
+    group "taginfo"
+    mode 0755
+  end
+
+  template "#{directory}/bin/update-planet" do
+    source "update-planet.erb"
+    owner "taginfo"
+    group "taginfo"
+    mode 0755
+    variables :directory => directory
+  end
+
   directory "#{directory}/data" do
     owner "taginfo"
     group "taginfo"
