@@ -6,6 +6,8 @@ set -e
 
 ROOT="<%= @directory %>"
 
+cd $ROOT/taginfo/sources
+
 if [ -f "$ROOT/data/taginfo-history.db" ]
 then
     cp $ROOT/data/taginfo-history.db $ROOT/sources
