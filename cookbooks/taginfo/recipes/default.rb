@@ -104,6 +104,7 @@ node[:taginfo][:sites].each do |site|
   settings["opensearch"]["shortname"] = "Taginfo"
   settings["opensearch"]["contact"] = "webmaster@openstreetmap.org"
   settings["sources"]["db"]["planetfile"] = "#{directory}/planet/planet.pbf"
+  settings["sources"]["db"]["tagstats"] = "#{directory}/taginfo/tagstats/tagstats"
   settings["tagstats"]["cxxflags"] = "-I../../osmium/include"
 
   file "#{directory}/taginfo-config.json" do
