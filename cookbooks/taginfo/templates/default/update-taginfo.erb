@@ -6,8 +6,13 @@ set -e
 
 ROOT="<%= @directory %>"
 
-cp $ROOT/data/taginfo-history.db $ROOT/sources
+if [ -f "$ROOT/data/taginfo-history.db" ]
+then
+    cp $ROOT/data/taginfo-history.db $ROOT/sources
+fi
+
 $ROOT/taginfo/sources/update_all.sh $ROOT/sources
+
 mv $ROOT/data/taginfo-* $ROOT/data/old
 mv $ROOT/sources/taginfo-*.db $ROOT/sources/*/taginfo-*.db $ROOT/data
 mv $ROOT/sources/download/* $ROOT/download
