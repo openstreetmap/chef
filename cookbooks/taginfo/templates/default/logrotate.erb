@@ -1,0 +1,14 @@
+# DO NOT EDIT - This file is being maintained by Chef
+<% node[:taginfo][:sites].each do |site| -%>
+
+/var/log/taginfo/<%= site[:name] %>/*.log {
+  daily
+  missingok
+  rotate 0
+  dateext
+  dateformat %Y-%m-%d
+  maxage 28
+  compress
+  delaycompress
+}
+<% end -%>

@@ -1,0 +1,15 @@
+#!/bin/sh
+
+# DO NOT EDIT - This file is being maintained by Chef
+
+set -e
+
+ROOT="<%= @directory %>"
+
+cp $ROOT/data/taginfo-history.db $ROOT/sources
+$ROOT/taginfo/sources/update_all.sh $ROOT/sources
+mv $ROOT/data/taginfo-* $ROOT/data/old
+mv $ROOT/sources/taginfo-*.db $ROOT/sources/*/taginfo-*.db $ROOT/data
+mv $ROOT/sources/download/* $ROOT/download
+
+touch $ROOT/taginfo/web/tmp/restart.txt

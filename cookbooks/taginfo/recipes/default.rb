@@ -46,12 +46,31 @@ gem_package "sinatra"
 gem_package "sinatra-r18n"
 gem_package "rack-contrib"
 
+directory "/var/log/taginfo" do
+  owner "taginfo"
+  group "taginfo"
+  mode 0755
+end
+
+template "/etc/logrotate.d/taginfo" do
+  source "logrotate.erb"
+  owner "root"
+  group "root"
+  mode 0644
+end
+
 node[:taginfo][:sites].each do |site|
   name = site[:name]
   directory = site[:directory] || "/srv/#{name}"
   description = site[:description]
   icon = site[:icon]
   contact = site[:contact]
+
+  directory "/var/log/taginfo/#{site}" do
+    owner "taginfo"
+    group "taginfo"
+    mode 0755
+  end
 
   directory directory do
     owner "taginfo"
@@ -81,8 +100,10 @@ node[:taginfo][:sites].each do |site|
   settings["instance"]["description"] = description
   settings["instance"]["icon"] = "/img/logo/#{icon}.png"
   settings["instance"]["contact"] = contact
+  settings["logging"]["directory"] = "/var/log/taginfo/#{site}"
   settings["opensearch"]["shortname"] = "Taginfo"
   settings["opensearch"]["contact"] = "webmaster@openstreetmap.org"
+  settings["sources"]["db"]["planetfile"] = "#{directory}/planet/planet.pbf"
   settings["tagstats"]["cxxflags"] = "-I../../osmium/include"
 
   file "#{directory}/taginfo-config.json" do
@@ -103,6 +124,30 @@ node[:taginfo][:sites].each do |site|
     notifies :restart, "service[apache2]"
   end
 
+  directory "#{directory}/taginfo/web/tmp" do
+    owner "taginfo"
+    group "taginfo"
+    mode 0755
+  end
+
+  directory "#{directory}/data" do
+    owner "taginfo"
+    group "taginfo"
+    mode 0755
+  end
+
+  directory "#{directory}/download" do
+    owner "taginfo"
+    group "taginfo"
+    mode 0755
+  end
+
+  directory "#{directory}/sources" do
+    owner "taginfo"
+    group "taginfo"
+    mode 0755
+  end
+
   directory "#{directory}/planet" do
     owner "taginfo"
     group "taginfo"
@@ -117,14 +162,26 @@ node[:taginfo][:sites].each do |site|
     mode 0644
   end
 
-  template "#{directory}/planet/configuration.txt" do
+  directory "#{directory}/planet/log" do
+    owner "taginfo"
+    group "taginfo"
+    mode 0755
+  end
+
+  directory "#{directory}/planet/replication" do
+    owner "taginfo"
+    group "taginfo"
+    mode 0755
+  end
+
+  template "#{directory}/planet/replication/configuration.txt" do
     source "configuration.txt.erb"
     owner "taginfo"
     group "taginfo"
     mode 0644
   end
 
-  file "#{directory}/planet/download.lock" do
+  file "#{directory}/planet/replication/download.lock" do
     owner "taginfo"
     group "taginfo"
     mode 0644
@@ -144,10 +201,20 @@ node[:taginfo][:sites].each do |site|
     variables :directory => directory
   end
 
-  directory "#{directory}/data" do
+  template "#{directory}/bin/update-taginfo" do
+    source "update-taginfo.erb"
     owner "taginfo"
     group "taginfo"
     mode 0755
+    variables :directory => directory
+  end
+
+  template "#{directory}/bin/update" do
+    source "update.erb"
+    owner "taginfo"
+    group "taginfo"
+    mode 0755
+    variables :directory => directory
   end
 
   apache_site name do
