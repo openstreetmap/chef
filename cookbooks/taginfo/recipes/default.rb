@@ -137,6 +137,12 @@ node[:taginfo][:sites].each do |site|
     mode 0755
   end
 
+  directory "#{directory}/data/old" do
+    owner "taginfo"
+    group "taginfo"
+    mode 0755
+  end
+
   directory "#{directory}/download" do
     owner "taginfo"
     group "taginfo"
