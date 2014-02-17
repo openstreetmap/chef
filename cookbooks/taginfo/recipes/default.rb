@@ -46,6 +46,13 @@ gem_package "sinatra"
 gem_package "sinatra-r18n"
 gem_package "rack-contrib"
 
+template "/etc/cron.d/taginfo" do
+  source "cron.erb"
+  owner "root"
+  group "root"
+  mode 0644
+end
+
 directory "/var/log/taginfo" do
   owner "taginfo"
   group "taginfo"
@@ -66,7 +73,7 @@ node[:taginfo][:sites].each do |site|
   icon = site[:icon]
   contact = site[:contact]
 
-  directory "/var/log/taginfo/#{site}" do
+  directory "/var/log/taginfo/#{name}" do
     owner "taginfo"
     group "taginfo"
     mode 0755
@@ -100,9 +107,11 @@ node[:taginfo][:sites].each do |site|
   settings["instance"]["description"] = description
   settings["instance"]["icon"] = "/img/logo/#{icon}.png"
   settings["instance"]["contact"] = contact
-  settings["logging"]["directory"] = "/var/log/taginfo/#{site}"
+  settings["logging"]["directory"] = "/var/log/taginfo/#{name}"
   settings["opensearch"]["shortname"] = "Taginfo"
   settings["opensearch"]["contact"] = "webmaster@openstreetmap.org"
+  settings["sources"]["download"] = ""
+  settings["sources"]["create"] = "db languages josm potlatch wiki"
   settings["sources"]["db"]["planetfile"] = "#{directory}/planet/planet.pbf"
   settings["sources"]["db"]["tagstats"] = "#{directory}/taginfo/tagstats/tagstats"
   settings["tagstats"]["cxxflags"] = "-I../../osmium/include"
