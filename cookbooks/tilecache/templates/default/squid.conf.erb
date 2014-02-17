@@ -12,7 +12,8 @@ acl osmtileScrapers browser ^shipxy01
 acl osmtileScrapers browser Firefox\/2\.0\.0\.11$
 #acl osmtileScrapers browser Firefox\/3\.5\.7$ #CGI285 + Email. Whitelist for 1 week
 acl osmtileScrapers browser Firefox\/3\.6$
-#acl osmtileScrapers browser ^Mozilla\/5\.0$ #Irc. QLandkarte likely using this. Allow time for fix.
+acl osmtileScrapers browser ^Mozilla\/5\.0$ #QLandkarte unwilling to set a real user-agent.
+acl osmtileScrapers browser ^Mozilla$ #Intentionally faked user-agent
 acl osmtileScrapers browser ^User\-Agent
 http_access deny osmtile_sites osmtileScrapers
 
