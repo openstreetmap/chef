@@ -89,7 +89,7 @@ node[:taginfo][:sites].each do |site|
   git "#{directory}/osmium" do
     action :sync
     repository "git://github.com/joto/osmium.git"
-    revision "master"
+    revision "osmorg-taginfo-live"
     user "taginfo"
     group "taginfo"
   end
@@ -97,7 +97,7 @@ node[:taginfo][:sites].each do |site|
   git "#{directory}/taginfo" do
     action :sync
     repository "git://github.com/joto/taginfo.git"
-    revision "master"
+    revision "osmorg-taginfo-live"
     user "taginfo"
     group "taginfo"
   end
