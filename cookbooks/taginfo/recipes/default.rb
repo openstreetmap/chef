@@ -35,8 +35,9 @@ package "make"
 package "g++"
 
 package "sqlite3"
-
 package "osmosis"
+package "curl"
+package "subversion"
 
 package "ruby"
 package "rubygems"
