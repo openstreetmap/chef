@@ -47,6 +47,9 @@ gem_package "sinatra"
 gem_package "sinatra-r18n"
 gem_package "rack-contrib"
 
+apache_module "cache"
+apache_module "disk_cache"
+
 template "/etc/cron.d/taginfo" do
   source "cron.erb"
   owner "root"

@@ -17,5 +17,8 @@
         RackEnv production
         PassengerMinInstances 10
         PassengerPreStart http://<%= @name %>/
+
+        CacheEnable disk /api
+        CacheEnable disk /embed
 </VirtualHost>
 <% end -%>
