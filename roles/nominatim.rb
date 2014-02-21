@@ -45,6 +45,13 @@ default_attributes(
         "kernel.shmmax" => 26 * 1024 * 1024 * 1024,
         "kernel.shmall" => 26 * 1024 * 1024 * 1024 / 4096
       }
+    },
+    :kernel_scheduler_tune => {
+      :comment => "Tune kernel scheduler preempt",
+      :parameters => {
+        "kernel.sched_min_granularity_ns" => 10000000,
+        "kernel.sched_wakeup_granularity_ns" => 15000000
+      }
     }
   },
   :nominatim => {
