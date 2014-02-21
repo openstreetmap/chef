@@ -3,31 +3,25 @@ description "Master role applied to poldi"
 
 default_attributes(
   :devices => {
-    :ubuntu => {
-      :comment => "RAID array backing the ubuntu volume group",
+    :areca_ld_tune => {
+      :comment => "RAID arrays on areca",
       :type => "block",
       :bus => "scsi",
-      :serial => "20004d927fffff800",
+      :serial => "20004d927fffff*",
       :attrs => {
-        "queue/scheduler" => "deadline"
+        "queue/scheduler" => "deadline",
+        "queue/read_ahead_kb" => "2048"
       }
     },
-    :nominatim => {
-      :comment => "RAID array backing the nominatim volume group",
+    :ssd_samsung_tune => {
+      :comment => "Tune Samsung SSD",
       :type => "block",
-      :bus => "scsi",
-      :serial => "20004d927fffff801",
+      :bus => "ata",
+      :serial => "Samsung_SSD_840_PRO_Series_*",
       :attrs => {
-        "queue/scheduler" => "deadline"
-      }
-    },
-    :nominatim2 => {
-      :comment => "RAID array backing the nominatim2 volume group",
-      :type => "block",
-      :bus => "scsi",
-      :serial => "20004d927fffff802",
-      :attrs => {
-        "queue/scheduler" => "deadline"
+        "queue/scheduler" => "noop",
+        "queue/nr_requests" => "256",
+        "queue/read_ahead_kb" => "2048"
       }
     }
   },
