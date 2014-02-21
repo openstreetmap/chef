@@ -2,6 +2,12 @@ name "nchc"
 description "Role applied to all servers at NCHC"
 
 default_attributes(
+  :accounts => {
+    :users => {
+      :steven => { :status => :administrator },
+      :ceasar => { :status => :administrator }
+    }
+  },
   :networking => {
     :nameservers => [ "8.8.8.8", "8.8.4.4" ],
     :roles => {
