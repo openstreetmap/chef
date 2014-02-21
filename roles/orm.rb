@@ -3,54 +3,26 @@ description "Master role applied to orm"
 
 default_attributes(
   :devices => {
-    :ssdvol1tune => {
+    :ssd_samsung => {
       :comment => "Tune scheduler for SSD",
       :type => "block",
       :bus => "ata",
-      :serial => "Samsung_SSD_840_PRO_Series_S12SNEAD411116P",
+      :serial => "Samsung_SSD_840_PRO_Series_*",
       :attrs => {
         "queue/scheduler" => "noop",
-        "queue/nr_requests" => "256"
+        "queue/nr_requests" => "256",
+        "queue/read_ahead_kb" => "2048"
       }
     },
-    :ssdvol2tune => {
-      :comment => "Tune scheduler for SSD",
-      :type => "block",
-      :bus => "ata",
-      :serial => "Samsung_SSD_840_PRO_Series_S12SNEAD411110E",
-      :attrs => {
-        "queue/scheduler" => "noop",
-        "queue/nr_requests" => "256"
-      }
-    },
-    :arecavol1tune => {
+    :arecavoltune => {
       :comment => "Tune scheduler for Areca",
       :type => "block",
       :bus => "scsi",
-      :serial => "2001b4d2049002450",
+      :serial => "2001b4d20*",
       :attrs => {
         "queue/scheduler" => "deadline",
-        "queue/nr_requests" => "512"
-      }
-    },
-    :arecavol2tune => {
-      :comment => "Tune scheduler for Areca",
-      :type => "block",
-      :bus => "scsi",
-      :serial => "2001b4d2037331399",
-      :attrs => {
-        "queue/scheduler" => "deadline",
-        "queue/nr_requests" => "512"
-      }
-    },
-    :arecavol3tune => {
-      :comment => "Tune scheduler for Areca",
-      :type => "block",
-      :bus => "scsi",
-      :serial => "2001b4d2060246956",
-      :attrs => {
-        "queue/scheduler" => "deadline",
-        "queue/nr_requests" => "512"
+        "queue/nr_requests" => "512",
+        "queue/read_ahead_kb" => "2048"
       }
     }
   },
