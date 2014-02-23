@@ -37,3 +37,7 @@ osmosis --read-xml-change "$OSCFILE" --read-bin "$PLANETOLD" --buffer bufferCapa
 
 mv "$PLANETNEW" "$PLANETOLD"
 rm "$OSCFILE"
+
+# expire old logs
+
+find "${LOGDIR}" -mtime +28 -delte

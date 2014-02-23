@@ -4,3 +4,5 @@
 
 <%= @directory %>/bin/update-planet
 <%= @directory %>/bin/update-taginfo
+
+find "/var/log/taginfo/<%= @name %>" -mtime +28 -delete

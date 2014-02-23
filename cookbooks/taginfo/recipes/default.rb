@@ -63,11 +63,8 @@ directory "/var/log/taginfo" do
   mode 0755
 end
 
-template "/etc/logrotate.d/taginfo" do
-  source "logrotate.erb"
-  owner "root"
-  group "root"
-  mode 0644
+file "/etc/logrotate.d/taginfo" do
+  action :delete
 end
 
 node[:taginfo][:sites].each do |site|
@@ -234,7 +231,7 @@ node[:taginfo][:sites].each do |site|
     owner "taginfo"
     group "taginfo"
     mode 0755
-    variables :directory => directory
+    variables :name => name, :directory => directory
   end
 
   apache_site name do

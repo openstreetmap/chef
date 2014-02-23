@@ -20,3 +20,5 @@ mv $ROOT/sources/taginfo-*.db $ROOT/sources/*/taginfo-*.db $ROOT/data
 mv $ROOT/sources/download/* $ROOT/download
 
 touch $ROOT/taginfo/web/tmp/restart.txt
+
+find $ROOT/sources/log -mtime +28 -delete
