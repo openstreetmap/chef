@@ -48,6 +48,8 @@ package "python-dateutil"
 package "python-magic"
 package "python-psycopg2"
 
+easy_install_package "geojson"
+
 apache_module "expires"
 apache_module "fastcgi-handler"
 apache_module "rewrite"
