@@ -11,6 +11,27 @@
   CustomLog /var/log/apache2/<%= @name %>-access.log combined
   ErrorLog /var/log/apache2/<%= @name %>-error.log
 
+
+<% if @ssl_enabled -%>
+    RedirectPermanent / https://<%= @name %>/
+  </VirtualHost>
+  <VirtualHost *:443>
+    ServerName <%= @name %>
+  <% @aliases.each do |alias_name| -%>
+    ServerAlias <%= alias_name %>
+  <% end -%>
+
+    ServerAdmin webmaster@openstreetmap.org
+
+    #
+    # Enable SSL
+    #
+    SSLEngine on
+
+    CustomLog /var/log/apache2/<%= @name %>-access.log combined
+    ErrorLog /var/log/apache2/<%= @name %>-error.log
+<% end -%>
+
   DocumentRoot <%= @directory %>
 <% @urls.each do |url,directory| -%>
   Alias <%= url %> <%= directory %>

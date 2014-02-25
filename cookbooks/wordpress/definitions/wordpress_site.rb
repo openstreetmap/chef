@@ -19,6 +19,7 @@
 
 define :wordpress_site, :action => [ :create, :enable ] do
   name = params[:name]
+  ssl_enabled = params[:ssl_enabled] || false
   aliases = Array(params[:aliases])
   urls = Array(params[:urls])
   directory = params[:directory] || "/srv/#{name}"
@@ -85,6 +86,10 @@ define :wordpress_site, :action => [ :create, :enable ] do
       line += " * Don't allow file editing.\n"
       line += " */\n"
       line += "define('DISALLOW_FILE_EDIT', true);\n"
+      if ssl_enabled
+        line += "define('FORCE_SSL_LOGIN', true);\n"
+        line += "define('FORCE_SSL_ADMIN', true);\n"
+      end
     end
 
     line
@@ -128,7 +133,7 @@ define :wordpress_site, :action => [ :create, :enable ] do
     cookbook "wordpress"
     template "apache.erb"
     directory directory
-    variables :aliases => aliases, :urls => urls
+    variables :aliases => aliases, :urls => urls, :ssl_enabled => ssl_enabled
     notifies :reload, "service[apache2]"
   end
 
