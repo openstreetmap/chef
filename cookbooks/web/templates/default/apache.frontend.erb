@@ -230,12 +230,6 @@
 <% elsif port == 443 -%>
 
   #
-  # Redirect requests which don't work over https to http
-  #
-  RewriteCond %{REQUEST_URI} ^/edit$
-  RewriteRule ^(.*)$ http://www.openstreetmap.org$1 [L,NE,R=permanent]
-
-  #
   # Redirect api requests made to www.osm.org to api.osm.org
   #
 #  RewriteCond %{HTTP_HOST} =www.openstreetmap.org
