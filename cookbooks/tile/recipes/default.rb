@@ -102,6 +102,10 @@ package "python-cairo"
 package "python-mapnik"
 package "ttf-dejavu"
 package "ttf-unifont"
+package "fonts-droid"
+package "fonts-sipa-arundina"
+package "fonts-sil-padauk"
+package "fonts-khmeros"
 
 directory "/srv/tile.openstreetmap.org/cgi-bin" do
   owner "tile"
