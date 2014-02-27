@@ -15,6 +15,11 @@ acl osmtileScrapers browser Firefox\/3\.6$
 acl osmtileScrapers browser ^Mozilla\/5\.0$ #QLandkarte unwilling to set a real user-agent.
 acl osmtileScrapers browser ^Mozilla$ #Intentionally faked user-agent
 acl osmtileScrapers browser ^User\-Agent
+acl osmtileScrapers browser Firefox\/0\.8$
+acl osmtileScrapers browser Firefox\/1\.0$
+acl osmtileScrapers browser Firefox\/1\.0\.7$
+acl osmtileScrapers browser K\-Meleon\/1\.02$
+
 http_access deny osmtile_sites osmtileScrapers
 
 acl whitelist_path urlpath_regex ^/cgi-bin/(export|debug)
