@@ -59,16 +59,6 @@ default_attributes(
     :database => {
         :cluster => "9.1/main",
         :dbname => "nominatim"
-    },
-    :fpm_pools => {
-        :www => {
-            :pm => "dynamic",
-            :max_children => "50"
-        },
-        :bulk => {
-            :pm => "static",
-            :max_children => "7"
-        }
     }
   }
 )

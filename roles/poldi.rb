@@ -60,6 +60,18 @@ default_attributes(
         :effective_cache_size => "48GB"
       }
     }
+  },
+  :nominatim => {
+    :fpm_pools => {
+        :www => {
+            :pm => "dynamic",
+            :max_children => "80"
+        },
+        :bulk => {
+            :pm => "static",
+            :max_children => "10"
+        }
+    }
   }
 )
 
