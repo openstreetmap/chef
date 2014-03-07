@@ -115,3 +115,9 @@ apt_source "nginx" do
   url "http://nginx.org/packages/ubuntu"
   key "7BD9BF62"
 end
+
+apt_source "elasticsearch" do
+  template "elasticsearch.list.erb"
+  url "http://packages.elasticsearch.org/elasticsearch/1.0/debian"
+  key "D88E42B4"
+end
