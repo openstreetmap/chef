@@ -40,7 +40,8 @@ default_attributes(
       :serial => "INTEL_SSDSA2CW600G3_CVPR111401HP600FGN",
       :attrs => {
         "queue/scheduler" => "noop",
-        "queue/nr_requests" => "512"
+        "queue/nr_requests" => "512",
+        "queue/read_ahead_kb" => "2048"
       }
     }
   },
