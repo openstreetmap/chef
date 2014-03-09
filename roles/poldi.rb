@@ -72,6 +72,15 @@ default_attributes(
             :max_children => "10"
         }
     }
+  },
+  :munin => {
+    :plugins => {
+      :sensors_volt => {
+        :volt6 => {
+          :warning => "2.992:3.536"
+        }
+      }
+    }
   }
 )
 
