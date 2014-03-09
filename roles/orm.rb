@@ -46,6 +46,9 @@ default_attributes(
       },
       :sensors_volt => {
         :contacts => "null",
+        :volt6 => {
+          :warning => "2.992:3.536"
+        }
       }
     }
   },
