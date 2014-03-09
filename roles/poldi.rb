@@ -77,7 +77,8 @@ default_attributes(
     :plugins => {
       :sensors_volt => {
         :volt6 => {
-          :warning => "2.992:3.536"
+          :warning => "2.99:3.54",
+          :critical => "2.50:4.00"
         }
       }
     }
