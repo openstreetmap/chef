@@ -69,7 +69,7 @@ default_attributes(
         },
         :bulk => {
             :pm => "static",
-            :max_children => "9"
+            :max_children => "10"
         }
     }
   },
