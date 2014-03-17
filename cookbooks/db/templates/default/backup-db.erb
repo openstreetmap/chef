@@ -3,7 +3,7 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
 D=`date +%Y-%m-%d`
-F=/tmp/osm-${D}.dmp
+F=/store/backup/osm-${D}.dmp
 
 pg_dump --user=backup --format=custom --file=$F openstreetmap
 
