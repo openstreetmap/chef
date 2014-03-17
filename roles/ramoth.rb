@@ -61,6 +61,5 @@ default_attributes(
 
 run_list(
   "role[ic]",
-  "role[db-master]",
-  "role[db-backup]"
+  "role[db-master]"
 )
