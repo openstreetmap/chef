@@ -10,7 +10,7 @@ render_list \
   --all --force \
   --tile-dir=/srv/tile.openstreetmap.org/tiles \
   --socket=/var/run/renderd/renderd.sock \
-  --num-threads=<%= ( node[:cpu][:total] - 2 ) / 4 %> \
+  --num-threads=<%= ( node[:cpu][:total] - 2 ) / 2 %> \
   --map="<%= @style %>" \
   --max-load=70 \
   --min-zoom=0 --max-zoom=12
