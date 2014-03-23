@@ -8,7 +8,7 @@ default_attributes(
     :keepalive => false
   },
   :apt => {
-    :sources => [ "brightbox", "aw-drupal" ]
+    :sources => [ "brightbox" ]
   },
   :memcached => {
     :memory_limit => 400,

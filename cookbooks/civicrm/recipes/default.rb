@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-include_recipe "drupal"
+include_recipe "wordpress"
 include_recipe "mysql"
 
 passwords = data_bag_item("civicrm", "passwords")
@@ -34,127 +34,91 @@ mysql_database "civicrm" do
   permissions "civicrm@localhost" => :all
 end
 
-drupal_site "crm.osmfoundation.org" do
-  title "CiviCRM"
+wordpress_site "crm.osmfoundation.org" do
+  ssl_enabled true
   database_name "civicrm"
-  database_username "civicrm"
+  database_user "civicrm"
   database_password database_password
-  admin_password admin_password
-end
-
-directory "/usr/local/share/civicrm" do
-  owner "root"
-  group "root"
-  mode "0755"
 end
 
 civicrm_version = node[:civicrm][:version]
-civicrm_directory = "/usr/local/share/civicrm/#{civicrm_version}"
+civicrm_directory = "/srv/crm.osmfoundation.org/wp-content/plugins/civicrm"
 
-subversion civicrm_directory do
-  action :export
-  repository "http://svn.civicrm.org/civicrm/tags/tarballs/#{node[:civicrm][:version]}"
-  user "root"
-  group "root"
-end
-
-link "/usr/share/drupal7/sites/all/modules/civicrm" do
-  to "/usr/local/share/civicrm/#{node[:civicrm][:version]}"
-end
-
-directory "/data/crm.osmfoundation.org/civicrm" do
-  owner "www-data"
-  group "www-data"
-  mode "0775"
-end
-
-ruby_block "#{civicrm_directory}/civicrm.settings.php" do
-  block do
-    out = File.new("#{civicrm_directory}/civicrm.settings.php", "w")
-
-    File.foreach("#{civicrm_directory}/templates/CRM/common/civicrm.settings.php.tpl") do |line|
-      line.gsub!(/%%cms%%/, "Drupal")
-      line.gsub!(/%%CMSdbUser%%/, "civicrm")
-      line.gsub!(/%%CMSdbPass%%/, database_password)
-      line.gsub!(/%%CMSdbHost%%/, "localhost")
-      line.gsub!(/%%CMSdbName%%/, "civicrm")
-      line.gsub!(/%%dbUser%%/, "civicrm")
-      line.gsub!(/%%dbPass%%/, database_password)
-      line.gsub!(/%%dbHost%%/, "localhost")
-      line.gsub!(/%%dbName%%/, "civicrm")
-      line.gsub!(/%%crmRoot%%/, "/usr/share/drupal7/sites/all/modules/civicrm")
-      line.gsub!(/%%templateCompileDir%%/, "/data/crm.osmfoundation.org/civicrm")
-      line.gsub!(/%%baseURL%%/, "http://crm.osmfoundation.org/")
-      line.gsub!(/%%siteKey%%/, site_key)
-
-      out.print(line)
-    end
-
-    out.close
-  end
-
-  not_if do
-    File.exist?("#{civicrm_directory}/civicrm.settings.php") and
-    File.mtime("#{civicrm_directory}/civicrm.settings.php") >= File.mtime("#{civicrm_directory}/templates/CRM/common/civicrm.settings.php.tpl")
-  end
-end
-
-link "/etc/drupal/7/sites/crm.osmfoundation.org/civicrm.settings.php" do
-  to "#{civicrm_directory}/civicrm.settings.php"
-end
-
-template "#{civicrm_directory}/settings_location.php" do
-  source "settings_location.php.erb"
+directory "/opt/civicrm-#{civicrm_version}" do
   owner "root"
   group "root"
-  mode "0644"
+  mode 0755
 end
 
-execute "civicrm-load-acl" do
+remote_file "/var/cache/chef/civicrm-#{civicrm_version}-wordpress.zip" do
+  action :create_if_missing
+  source "http://downloads.sourceforge.net/project/civicrm/civicrm-stable/#{civicrm_version}/civicrm-#{civicrm_version}-wordpress.zip"
+  owner "root"
+  group "root"
+  mode 0644
+  backup false
+end
+
+remote_file "/var/cache/chef/civicrm-#{civicrm_version}-l10n.tar.gz" do
+  action :create_if_missing
+  source "http://downloads.sourceforge.net/project/civicrm/civicrm-stable/#{civicrm_version}/civicrm-#{civicrm_version}-l10n.tar.gz"
+  owner "root"
+  group "root"
+  mode 0644
+  backup false
+end
+
+execute "/var/cache/chef/civicrm-#{civicrm_version}-wordpress.zip" do
   action :nothing
-  command "mysql --user=civicrm --password=#{database_password} civicrm < sql/civicrm_acl.mysql"
-  cwd "/usr/share/drupal7/sites/all/modules/civicrm"
+  command "unzip -qq /var/cache/chef/civicrm-#{civicrm_version}-wordpress.zip"
+  cwd "/opt/civicrm-#{civicrm_version}"
   user "root"
   group "root"
+  subscribes :run, "remote_file[/var/cache/chef/civicrm-#{civicrm_version}-wordpress.zip]"
 end
 
-execute "civicrm-load-data" do
+execute "/var/cache/chef/civicrm-#{civicrm_version}-l10n.tar.gz" do
   action :nothing
-  command "mysql --user=civicrm --password=#{database_password} civicrm < sql/civicrm_data.mysql"
-  cwd "/usr/share/drupal7/sites/all/modules/civicrm"
+  command "tar -zxf /var/cache/chef/civicrm-#{civicrm_version}-l10n.tar.gz"
+  cwd "/opt/civicrm-#{civicrm_version}/civicrm"
   user "root"
   group "root"
-  notifies :run, "execute[civicrm-load-acl]"
+  subscribes :run, "remote_file[/var/cache/chef/civicrm-#{civicrm_version}-l10n.tar.gz]"
 end
 
-execute "civicrm-load" do
-  action :nothing
-  command "mysql --user=civicrm --password=#{database_password} civicrm < sql/civicrm.mysql"
-  cwd "/usr/share/drupal7/sites/all/modules/civicrm"
-  user "root"
-  group "root"
-  notifies :run, "execute[civicrm-load-data]"
+link civicrm_directory do
+  to "/opt/civicrm-#{civicrm_version}/civicrm"
 end
 
-execute "civicrm-gencode" do
-  command "php GenCode.php"
-  cwd "#{civicrm_directory}/xml"
-  user "root"
-  group "root"
-  creates "#{civicrm_directory}/civicrm-version.php"
-  notifies :run, "execute[civicrm-load]"
-end
-
-directory "/data/crm.osmfoundation.org/civicrm/en_US" do
+directory "/srv/crm.osmfoundation.org/wp-content/plugins/files" do
   owner "www-data"
   group "www-data"
-  mode "0775"
+  mode 0755
 end
 
-directory "/data/crm.osmfoundation.org/civicrm/en_US/ConfigAndLog" do
-  owner "www-data"
-  group "www-data"
-  mode "0775"
+settings = edit_file "#{civicrm_directory}/civicrm/templates/CRM/common/civicrm.settings.php.template" do |line|
+  line.gsub!(/%%cms%%/, "WordPress")
+  line.gsub!(/%%CMSdbUser%%/, "civicrm")
+  line.gsub!(/%%CMSdbPass%%/, database_password)
+  line.gsub!(/%%CMSdbHost%%/, "localhost")
+  line.gsub!(/%%CMSdbName%%/, "civicrm")
+  line.gsub!(/%%dbUser%%/, "civicrm")
+  line.gsub!(/%%dbPass%%/, database_password)
+  line.gsub!(/%%dbHost%%/, "localhost")
+  line.gsub!(/%%dbName%%/, "civicrm")
+  line.gsub!(/%%crmRoot%%/, "#{civicrm_directory}/civicrm")
+  line.gsub!(/%%templateCompileDir%%/, "/srv/crm.osmfoundation.org/wp-content/plugins/files/civicrm/templates_c")
+  line.gsub!(/%%baseURL%%/, "http://crm.osmfoundation.org/")
+  line.gsub!(/%%siteKey%%/, site_key)
+
+  line
+end
+
+file "#{civicrm_directory}/civicrm/civicrm.settings.php" do
+  owner "root"
+  group "root"
+  mode 0644
+  content settings
 end
 
 template "/etc/cron.daily/osmf-crm-backup" do
