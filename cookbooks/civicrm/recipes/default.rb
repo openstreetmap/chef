@@ -35,7 +35,7 @@ mysql_database "civicrm" do
 end
 
 wordpress_site "crm.osmfoundation.org" do
-  ssl_enabled true
+  ssl_enabled false
   database_name "civicrm"
   database_user "civicrm"
   database_password database_password
