@@ -111,15 +111,15 @@ settings = edit_file "#{civicrm_directory}/civicrm/templates/CRM/common/civicrm.
   line.gsub!(/%%dbPass%%/, database_password)
   line.gsub!(/%%dbHost%%/, "localhost")
   line.gsub!(/%%dbName%%/, "civicrm")
-  line.gsub!(/%%crmRoot%%/, "#{civicrm_directory}/civicrm")
-  line.gsub!(/%%templateCompileDir%%/, "/srv/crm.osmfoundation.org/wp-content/plugins/files/civicrm/templates_c")
+  line.gsub!(/%%crmRoot%%/, "#{civicrm_directory}/civicrm/")
+  line.gsub!(/%%templateCompileDir%%/, "/srv/crm.osmfoundation.org/wp-content/plugins/files/civicrm/templates_c/")
   line.gsub!(/%%baseURL%%/, "http://crm.osmfoundation.org/")
   line.gsub!(/%%siteKey%%/, site_key)
 
   line
 end
 
-file "#{civicrm_directory}/civicrm/civicrm.settings.php" do
+file "#{civicrm_directory}/civicrm.settings.php" do
   owner "wordpress"
   group "wordpress"
   mode 0644
