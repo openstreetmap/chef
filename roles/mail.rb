@@ -23,6 +23,11 @@ default_attributes(
         :comment => "tickets.openstreetmap.org",
         :domains => [ "tickets.openstreetmap.org" ],
         :host => "ridley.ucl.openstreetmap.org"
+      },
+      :crm => {
+        :comment => "crm.osmfoundation.org",
+        :domains => [ "crm.osmfoundation.org" ],
+        :host => "ridley.ucl.openstreetmap.org"
       }
     },
     :aliases => {

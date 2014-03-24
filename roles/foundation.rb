@@ -18,5 +18,5 @@ default_attributes(
 )
 
 run_list(
-  "recipe[civicrm]"
+  "role[crm]"
 )

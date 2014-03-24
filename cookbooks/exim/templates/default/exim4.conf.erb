@@ -697,19 +697,31 @@ noreply:
   group = Debian-exim
 
 <% node[:exim][:routes].each do |name,details| -%>
-<% if details[:command] -%>
+<% if details[:command] or details[:file] or details[:maildir] -%>
 # This transport handles mail for <%= details[:comment] -%>.
 
 <%= name -%>:
+<% if details[:command] -%>
   driver = pipe
   command = <%= details[:command] %>
+  home_directory = <%= details[:home_directory] %>
+  return_output
+<% else -%>
+  driver = appendfile
+<% if details[:file] -%>
+  file = <%= details[:file] %>
+<% elsif details[:maildir] -%>
+  directory = <%= details[:maildir] %>
+  maildir_format
+<% end -%>
+  envelope_to_add
+  return_path_add
+  mode = 0660
+<% end -%>
   user = <%= details[:user] %>
 <% if details[:group] -%>
   group = <%= details[:group] %>
 <% end -%>
-  home_directory = <%= details[:home_directory] %>
-  return_output
-
 
 <% end -%>
 <% end -%>
