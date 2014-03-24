@@ -575,6 +575,8 @@ noreply:
 <% end -%>
 <% if details[:local_parts] -%>
   local_parts = <%= details[:local_parts].join(" : ") %>
+  local_part_suffix = +*
+  local_part_suffix_optional
 <% end -%>
 <% if details[:host] -%>
 <% if details[:host].kind_of?(Array) -%>
