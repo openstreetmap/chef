@@ -45,16 +45,16 @@ civicrm_version = node[:civicrm][:version]
 civicrm_directory = "/srv/crm.osmfoundation.org/wp-content/plugins/civicrm"
 
 directory "/opt/civicrm-#{civicrm_version}" do
-  owner "root"
-  group "root"
+  owner "wordpress"
+  group "wordpress"
   mode 0755
 end
 
 remote_file "/var/cache/chef/civicrm-#{civicrm_version}-wordpress.zip" do
   action :create_if_missing
   source "http://downloads.sourceforge.net/project/civicrm/civicrm-stable/#{civicrm_version}/civicrm-#{civicrm_version}-wordpress.zip"
-  owner "root"
-  group "root"
+  owner "wordpress"
+  group "wordpress"
   mode 0644
   backup false
 end
@@ -62,8 +62,8 @@ end
 remote_file "/var/cache/chef/civicrm-#{civicrm_version}-l10n.tar.gz" do
   action :create_if_missing
   source "http://downloads.sourceforge.net/project/civicrm/civicrm-stable/#{civicrm_version}/civicrm-#{civicrm_version}-l10n.tar.gz"
-  owner "root"
-  group "root"
+  owner "wordpress"
+  group "wordpress"
   mode 0644
   backup false
 end
@@ -72,22 +72,27 @@ execute "/var/cache/chef/civicrm-#{civicrm_version}-wordpress.zip" do
   action :nothing
   command "unzip -qq /var/cache/chef/civicrm-#{civicrm_version}-wordpress.zip"
   cwd "/opt/civicrm-#{civicrm_version}"
-  user "root"
-  group "root"
-  subscribes :run, "remote_file[/var/cache/chef/civicrm-#{civicrm_version}-wordpress.zip]"
+  user "wordpress"
+  group "wordpress"
+  subscribes :run, "remote_file[/var/cache/chef/civicrm-#{civicrm_version}-wordpress.zip]", :immediately
 end
 
 execute "/var/cache/chef/civicrm-#{civicrm_version}-l10n.tar.gz" do
   action :nothing
   command "tar -zxf /var/cache/chef/civicrm-#{civicrm_version}-l10n.tar.gz"
   cwd "/opt/civicrm-#{civicrm_version}/civicrm"
-  user "root"
-  group "root"
-  subscribes :run, "remote_file[/var/cache/chef/civicrm-#{civicrm_version}-l10n.tar.gz]"
+  user "wordpress"
+  group "wordpress"
+  subscribes :run, "remote_file[/var/cache/chef/civicrm-#{civicrm_version}-l10n.tar.gz]", :immediately
 end
 
-link civicrm_directory do
-  to "/opt/civicrm-#{civicrm_version}/civicrm"
+execute "/opt/civicrm-#{civicrm_version}/civicrm" do
+  action :nothing
+  command "rsync --archive --delete /opt/civicrm-#{civicrm_version}/civicrm/ #{civicrm_directory}"
+  user "wordpress"
+  group "wordpress"
+  subscribes :run, "execute[/var/cache/chef/civicrm-#{civicrm_version}-wordpress.zip]", :immediately
+  subscribes :run, "execute[/var/cache/chef/civicrm-#{civicrm_version}-l10n.tar.gz]", :immediately
 end
 
 directory "/srv/crm.osmfoundation.org/wp-content/plugins/files" do
@@ -115,16 +120,16 @@ settings = edit_file "#{civicrm_directory}/civicrm/templates/CRM/common/civicrm.
 end
 
 file "#{civicrm_directory}/civicrm/civicrm.settings.php" do
-  owner "root"
-  group "root"
+  owner "wordpress"
+  group "wordpress"
   mode 0644
   content settings
 end
 
 template "/etc/cron.daily/osmf-crm-backup" do
   source "backup.cron.erb"
-  owner "root"
-  group "root"
+  owner "wordpress"
+  group "wordpress"
   mode 0750
   variables :passwords => passwords
 end
