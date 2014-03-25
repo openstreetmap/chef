@@ -20,6 +20,8 @@
 include_recipe "wordpress"
 include_recipe "mysql"
 
+package "wkhtmltopdf"
+
 passwords = data_bag_item("civicrm", "passwords")
 
 database_password = passwords["database"]
