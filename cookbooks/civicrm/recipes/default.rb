@@ -130,7 +130,7 @@ template "/etc/cron.d/osmf-crm" do
   source "cron.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0600
   variables :directory => civicrm_directory, :passwords => passwords
 end
 
