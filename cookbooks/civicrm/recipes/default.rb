@@ -126,10 +126,18 @@ file "#{civicrm_directory}/civicrm.settings.php" do
   content settings
 end
 
+template "/etc/cron.d/osmf-crm" do
+  source "cron.erb"
+  owner "root"
+  group "root"
+  mode 0644
+  variables :directory => civicrm_directory, :passwords => passwords
+end
+
 template "/etc/cron.daily/osmf-crm-backup" do
   source "backup.cron.erb"
-  owner "wordpress"
-  group "wordpress"
+  owner "root"
+  group "root"
   mode 0750
   variables :passwords => passwords
 end
