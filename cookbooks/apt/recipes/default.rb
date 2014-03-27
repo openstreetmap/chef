@@ -78,11 +78,6 @@ apt_source "brianmercer-php" do
   key "8D0DC64F"
 end
 
-apt_source "aw-drupal" do
-  url "http://ppa.launchpad.net/aw/drupal/ubuntu"
-  key "7D5AE8F6"
-end
-
 apt_source "openstreetmap" do
   url "http://ppa.launchpad.net/osmadmins/ppa/ubuntu"
   key "0AC4F2CB"
