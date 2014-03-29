@@ -9,3 +9,15 @@
   notifempty
   create 640 nominatim adm
 }
+
+
+/var/log/php5-fpm.log {
+  weekly
+  missingok
+  rotate 3
+  compress
+  delaycompress
+  postrotate
+    /usr/bin/service php5-fpm restart > /dev/null
+  endscript
+}
