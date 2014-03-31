@@ -81,6 +81,5 @@ default_attributes(
 
 run_list(
   "role[ic]",
-  "role[db-slave]",
-  "role[db-backup]"
+  "role[db-slave]"
 )
