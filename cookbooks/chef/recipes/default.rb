@@ -19,7 +19,7 @@
 
 chef_gem "pony"
 
-chef_package = "chef_#{node[:chef][:client][:version]}.ubuntu.11.04_amd64.deb"
+chef_package = "chef_#{node[:chef][:client][:version]}_amd64.deb"
 
 directory "/var/cache/chef" do
   owner "root"
@@ -27,7 +27,7 @@ directory "/var/cache/chef" do
   mode 0755
 end
 
-Dir.glob("/var/cache/chef/chef_*.ubuntu.11.04_amd64.deb").each do |deb|
+Dir.glob("/var/cache/chef/chef_*.deb").each do |deb|
   if deb != "/var/cache/chef/#{chef_package}"
     file deb do
       action :delete
@@ -38,7 +38,7 @@ end
 
 remote_file "/var/cache/chef/#{chef_package}" do
   action :create_if_missing
-  source "https://opscode-omnibus-packages.s3.amazonaws.com/ubuntu/11.04/x86_64/#{chef_package}"
+  source "https://opscode-omnibus-packages.s3.amazonaws.com/ubuntu/#{node[:platform_version]}/x86_64/#{chef_package}"
   owner "root"
   group "root"
   mode 0644
