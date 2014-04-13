@@ -21,9 +21,9 @@ log_level :info
 
 log_location "/var/log/chef/client.log"
 
-# Don't verify SSL certificates
+# Verify SSL certificates
 
-ssl_verify_mode :verify_none
+ssl_verify_mode :verify_peer
 
 # Set the URL for the chef server
 
