@@ -53,3 +53,15 @@ template "/etc/cron.daily/chef-server-backup" do
   group "root"
   mode 0755
 end
+
+ruby_block "/opt/chef-server/embedded/service/chef-server-webui/app/controllers/status_controller.rb" do
+  block do
+    rc = Chef::Util::FileEdit.new("/opt/chef-server/embedded/service/chef-server-webui/app/controllers/status_controller.rb")
+    rc.search_file_delete(/&rows=20/)
+    rc.write_file
+
+    if rc.file_edited?
+      resources(:execute => "chef-server-reconfigure").run_action(:run)
+    end
+  end
+end
