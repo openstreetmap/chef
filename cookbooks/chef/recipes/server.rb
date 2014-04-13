@@ -19,39 +19,40 @@
 
 include_recipe "apache::ssl"
 
-service "chef-server-runsvdir" do
-  provider Chef::Provider::Service::Upstart
-  action [ :enable, :start ]
-  supports :status => true, :restart => true, :reload => true
-end
+chef_platform = case node[:platform_version]
+                  when "12.10" then "12.04"
+                  else node[:platform_version]
+                end
 
-apache_module "alias"
-apache_module "proxy_http"
+chef_package = "chef-server_#{node[:chef][:server][:version]}.ubuntu.#{chef_platform}_amd64.deb"
 
-execute "chef-server-reconfigure" do
-  action :nothing
-  command "chef-server-ctl reconfigure"
-  user "root"
-  group "root"
-end
-
-template "/etc/chef-server/chef-server.rb" do
-  source "server.rb.erb"
-  owner "root"
-  group "root"
-  mode 0644
-  notifies :run, "execute[chef-server-reconfigure]"
-end
-
-apache_site "chef.openstreetmap.org" do
-  template "apache.erb"
-end
-
-template "/etc/cron.daily/chef-server-backup" do
-  source "server-backup.cron.erb"
+directory "/var/cache/chef" do
   owner "root"
   group "root"
   mode 0755
+end
+
+Dir.glob("/var/cache/chef/chef-server_*.deb").each do |deb|
+  if deb != "/var/cache/chef/#{chef_package}"
+    file deb do
+      action :delete
+      backup false
+    end
+  end
+end
+
+remote_file "/var/cache/chef/#{chef_package}" do
+  source "https://opscode-omnibus-packages.s3.amazonaws.com/ubuntu/#{chef_platform}/x86_64/#{chef_package}"
+  owner "root"
+  group "root"
+  mode 0644
+  backup false
+end
+
+dpkg_package "chef-erver" do
+  source "/var/cache/chef/#{chef_package}"
+  version node[:chef][:server][:version]
+  notifies :run, "execute[chef-server-reconfigure]"
 end
 
 ruby_block "/opt/chef-server/embedded/service/chef-server-webui/app/controllers/status_controller.rb" do
@@ -64,4 +65,39 @@ ruby_block "/opt/chef-server/embedded/service/chef-server-webui/app/controllers/
       resources(:execute => "chef-server-reconfigure").run_action(:run)
     end
   end
+end
+
+template "/etc/chef-server/chef-server.rb" do
+  source "server.rb.erb"
+  owner "root"
+  group "root"
+  mode 0644
+  notifies :run, "execute[chef-server-reconfigure]"
+end
+
+execute "chef-server-reconfigure" do
+  action :nothing
+  command "chef-server-ctl reconfigure"
+  user "root"
+  group "root"
+end
+
+service "chef-server-runsvdir" do
+  provider Chef::Provider::Service::Upstart
+  action [ :enable, :start ]
+  supports :status => true, :restart => true, :reload => true
+end
+
+apache_module "alias"
+apache_module "proxy_http"
+
+apache_site "chef.openstreetmap.org" do
+  template "apache.erb"
+end
+
+template "/etc/cron.daily/chef-server-backup" do
+  source "server-backup.cron.erb"
+  owner "root"
+  group "root"
+  mode 0755
 end
