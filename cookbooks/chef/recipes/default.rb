@@ -42,7 +42,6 @@ Dir.glob("/var/cache/chef/chef_*.deb").each do |deb|
 end
 
 remote_file "/var/cache/chef/#{chef_package}" do
-  action :create_if_missing
   source "https://opscode-omnibus-packages.s3.amazonaws.com/ubuntu/#{chef_platform}/x86_64/#{chef_package}"
   owner "root"
   group "root"
