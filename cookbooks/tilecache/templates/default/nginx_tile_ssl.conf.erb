@@ -2,8 +2,8 @@ server {
     listen       443 ssl;
     server_name  localhost;
 
-    ssl_certificate      /etc/ssl/certs/tile.openstreetmap.pem;
-    ssl_certificate_key  /etc/ssl/private/tile.openstreetmap.key;
+    ssl_certificate      /etc/ssl/certs/<%= @certificate %>.pem;
+    ssl_certificate_key  /etc/ssl/private/<%= @certificate %>.key;
 
     ssl_protocols TLSv1 TLSv1.1 TLSv1.2 SSLv3;
     ssl_ciphers aRSA+HIGH:+kEDH:+kRSA:!kSRP:!kPSK:+3DES:!MD5;

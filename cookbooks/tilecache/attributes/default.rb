@@ -11,3 +11,5 @@ default[:tilecache][:net_bucket_refill] = "32768"
 #Per Class C bucket size
 default[:tilecache][:net_bucket_size] = "33554432"
 
+default[:tilecache][:ssl][:certificate] = "tile.openstreetmap"
+

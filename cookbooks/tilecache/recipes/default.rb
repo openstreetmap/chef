@@ -17,7 +17,8 @@
 # limitations under the License.
 #
 
-node.default[:ssl][:certificates] = node[:ssl][:certificates] | [ "tile.openstreetmap" ]
+certificate = node[:tilecache][:ssl][:certificate]
+node.default[:ssl][:certificates] = node[:ssl][:certificates] | [ certificate ]
 
 include_recipe "ssl"
 include_recipe "squid"
@@ -78,6 +79,15 @@ end
 
 nginx_site "tile-ssl" do
   template "nginx_tile_ssl.conf.erb"
+  variables :certificate => certificate
+end
+
+service "nginx-certificate-restart" do
+  service_name "nginx"
+  action :nothing
+  subscribes :restart, "cookbook_file[/etc/ssl/certs/rapidssl.pem]"
+  subscribes :restart, "cookbook_file[/etc/ssl/certs/#{certificate}.pem]"
+  subscribes :restart, "file[/etc/ssl/private/#{certificate}.key]"
 end
 
 tilerenders.each do |render|
