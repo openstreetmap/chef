@@ -130,6 +130,10 @@ default_attributes(
         :repository => "git://github.com/systemed/openstreetmap-website.git",
         :revision => "routing"
       },
+      :jsrouting2 => {
+        :repository => "git://github.com/jfirebaugh/openstreetmap-website.git",
+        :revision => "routing"
+      },
       :overpass2 => {
         :repository => "git://github.com/tomhughes/openstreetmap-website.git",
         :revision => "overpass"
