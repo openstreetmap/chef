@@ -1,0 +1,10 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+/var/log/tile/renderd.log {
+  compress
+  delaycompress
+  notifempty
+  postrotate
+    reload rsyslog >/dev/null 2>&1 || true
+  endscript
+}

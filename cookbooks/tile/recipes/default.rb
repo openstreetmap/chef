@@ -496,6 +496,13 @@ template "/etc/rsyslog.d/20-renderd.conf" do
   notifies :restart, "service[rsyslog]"
 end
 
+template "/etc/logrotate.d/renderd" do
+  source "renderd.logrotate.erb"
+  owner "root"
+  group "root"
+  mode 0644
+end
+
 package "liblockfile-simple-perl"
 package "libfilesys-df-perl"
 
