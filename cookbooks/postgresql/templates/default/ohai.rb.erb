@@ -1,17 +1,21 @@
-provides "postgresql"
+Ohai.plugin(:Postgresql) do
+  provides "postgresql"
 
-postgresql Mash.new
+  collect_data(:default) do
+    postgresql Mash.new
 
-Dir.glob("/etc/postgresql/*/*/postgresql.conf").each do |conf|
-  cluster = conf.sub("/etc/postgresql/", "").sub("/postgresql.conf", "")
+    Dir.glob("/etc/postgresql/*/*/postgresql.conf").each do |conf|
+      cluster = conf.sub("/etc/postgresql/", "").sub("/postgresql.conf", "")
 
-  postgresql[:clusters] = Mash.new unless postgresql[:clusters]
-  postgresql[:clusters][cluster] = Mash.new unless postgresql[:clusters][cluster]
-  postgresql[:clusters][cluster][:version] = cluster.split("/").first.to_f
+      postgresql[:clusters] = Mash.new unless postgresql[:clusters]
+      postgresql[:clusters][cluster] = Mash.new unless postgresql[:clusters][cluster]
+      postgresql[:clusters][cluster][:version] = cluster.split("/").first.to_f
 
-  IO.foreach(conf) do |line|
-    if line =~ /^ *port *= *([0-9]+)\s+/
-      postgresql[:clusters][cluster][:port] = $1
+      IO.foreach(conf) do |line|
+        if line =~ /^ *port *= *([0-9]+)\s+/
+          postgresql[:clusters][cluster][:port] = $1
+        end
+      end
     end
   end
 end
