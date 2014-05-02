@@ -47,6 +47,7 @@ remote_file "/var/cache/chef/#{chef_package}" do
   group "root"
   mode 0644
   backup false
+  ignore_failure true
 end
 
 dpkg_package "chef" do
