@@ -116,6 +116,7 @@ node[:taginfo][:sites].each do |site|
   settings["sources"]["db"]["planetfile"] = "#{directory}/planet/planet.pbf"
   settings["sources"]["db"]["tagstats"] = "#{directory}/taginfo/tagstats/tagstats"
   settings["tagstats"]["cxxflags"] = "-I../../osmium/include"
+  settings["tagstats"]["geodistribution"] = "MmapAnon"
 
   file "#{directory}/taginfo-config.json" do
     owner "taginfo"
