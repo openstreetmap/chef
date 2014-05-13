@@ -37,6 +37,7 @@ package "g++"
 package "sqlite3"
 package "osmosis"
 package "curl"
+package "m4"
 package "subversion"
 
 package "ruby"
