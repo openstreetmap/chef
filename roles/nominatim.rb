@@ -18,7 +18,7 @@ default_attributes(
     :keepalive => false,
     :event => {
       :server_limit => 32,
-      :max_clients => 800,
+      :max_clients => 1600,
       :threads_per_child => 50
     }
   },
