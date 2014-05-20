@@ -11,7 +11,14 @@ default_attributes(
     :trusted_users => [ "www-data" ],
     :aliases => {
       :root => "grant"
-    }
+    },
+    :rewrites => [
+      {
+        :pattern => "www-data@openstreetmap.org",
+        :replacement => "wiki@noreply.openstreetmap.org",
+        :flags => "F"
+      }
+    ]
   },
   :memcached => {
     :memory_limit => 1024,
