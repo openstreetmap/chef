@@ -1,4 +1,6 @@
 #!/bin/sh
 
+# DO NOT EDIT - This file is being maintained by Chef
+
 # Removes stale tmp files from the export tab
-exec find /tmp -name 'export??????' -mmin +60 -delete
+exec find /tmp -name 'export??????' -mmin +60 -print0 | xargs -0r rm -f
