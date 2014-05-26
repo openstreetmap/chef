@@ -72,6 +72,7 @@ node[:taginfo][:sites].each do |site|
   name = site[:name]
   directory = site[:directory] || "/srv/#{name}"
   description = site[:description]
+  about = site[:about]
   icon = site[:icon]
   contact = site[:contact]
 
@@ -107,6 +108,7 @@ node[:taginfo][:sites].each do |site|
 
   settings["instance"]["url"] = "http://#{name}/"
   settings["instance"]["description"] = description
+  settings["instance"]["about"] = about
   settings["instance"]["icon"] = "/img/logo/#{icon}.png"
   settings["instance"]["contact"] = contact
   settings["logging"]["directory"] = "/var/log/taginfo/#{name}"
