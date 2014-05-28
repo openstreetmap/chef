@@ -1,5 +1,5 @@
 server {
-    listen       443 ssl;
+    listen       443 ssl spdy;
     server_name  localhost;
 
     ssl_certificate      /etc/ssl/certs/<%= @certificate %>.pem;
