@@ -2,6 +2,8 @@ server {
     listen       443 ssl spdy;
     server_name  localhost;
 
+    proxy_buffers 8 64k;
+
     ssl_certificate      /etc/ssl/certs/<%= @certificate %>.pem;
     ssl_certificate_key  /etc/ssl/private/<%= @certificate %>.key;
 
