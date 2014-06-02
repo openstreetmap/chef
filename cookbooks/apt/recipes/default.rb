@@ -37,12 +37,6 @@ template "/etc/apt/sources.list" do
   notifies :run, "execute[apt-update]"
 end
 
-apt_source "opscode" do
-  template "opscode.list.erb"
-  url "http://apt.opscode.com/"
-  key "83EF826A"
-end
-
 apt_source "brightbox" do
   url "http://apt.brightbox.net/"
   key "0090DAAD"
