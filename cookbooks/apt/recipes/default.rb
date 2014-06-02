@@ -96,6 +96,7 @@ apt_source "management-component-pack" do
 end
 
 apt_source "hwraid" do
+  template "hwraid.list.erb"
   url "http://hwraid.le-vert.net/ubuntu"
   key "23B3D3B4"
 end
