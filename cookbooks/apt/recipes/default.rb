@@ -72,9 +72,11 @@ apt_source "brianmercer-php" do
   key "8D0DC64F"
 end
 
-apt_source "openstreetmap" do
-  url "http://ppa.launchpad.net/osmadmins/ppa/ubuntu"
-  key "0AC4F2CB"
+if node[:lsb][:release].to_f < 14.04
+  apt_source "openstreetmap" do
+    url "http://ppa.launchpad.net/osmadmins/ppa/ubuntu"
+    key "0AC4F2CB"
+  end
 end
 
 apt_source "proliant-support-pack" do
