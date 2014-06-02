@@ -138,6 +138,10 @@ default_attributes(
       :overpass2 => {
         :repository => "git://github.com/tomhughes/openstreetmap-website.git",
         :revision => "overpass"
+      },
+      :comments => {
+        :repository => "git://github.com/ukasiu/openstreetmap-website.git",
+        :revision => "changeset_comments"
       }
     }
   },
