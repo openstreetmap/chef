@@ -30,11 +30,8 @@ end
 
 apache_module "ssl"
 
-template "/etc/apache2/conf.d/ssl" do
-  source "ssl.erb"
-  owner "root"
-  group "root"
-  mode 0644
+apache_conf "ssl" do
+  template "ssl.erb"
   variables :certificate => certificate
   notifies :reload, "service[apache2]"
 end
