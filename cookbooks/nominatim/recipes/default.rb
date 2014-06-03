@@ -39,6 +39,8 @@ database_cluster = node[:nominatim][:database][:cluster]
 database_version = database_cluster.sub(/\/.*/, "")
 database_name = node[:nominatim][:database][:dbname]
 
+postgis_version = node[:nominatim][:database][:postgis]
+
 service "php5-fpm" do
   action [ :enable, :start ]
   supports :status => true, :restart => true, :reload => true
@@ -108,7 +110,7 @@ package "osmosis"
 package "gcc"
 package "proj-bin"
 package "libgeos-c1"
-package "postgresql-#{database_version}-postgis"
+package "postgresql-#{database_version}-postgis-#{postgis_version}"
 package "postgresql-server-dev-#{database_version}"
 package "build-essential"
 package "libxml2-dev"

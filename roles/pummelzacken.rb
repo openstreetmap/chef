@@ -27,7 +27,8 @@ default_attributes(
   :nominatim => {
     :database => {
         :cluster => "9.3/main",
-        :dbname => "nominatim"
+        :dbname => "nominatim",
+        :postgis => "2.1"
     },
     :fpm_pools => {
         :www => {
