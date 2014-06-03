@@ -22,9 +22,6 @@ default_attributes(
       :threads_per_child => 50
     }
   },
-  :apt => {
-    :sources => [ "ubuntugis-stable", "ubuntugis-unstable" ]
-  },
   :postgresql => {
     :settings => {
       :defaults => {

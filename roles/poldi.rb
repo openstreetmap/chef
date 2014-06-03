@@ -2,6 +2,9 @@ name "poldi"
 description "Master role applied to poldi"
 
 default_attributes(
+  :apt => {
+    :sources => [ "ubuntugis-stable", "ubuntugis-unstable" ]
+  },
   :devices => {
     :areca_ld_tune => {
       :comment => "RAID arrays on areca",
