@@ -20,7 +20,11 @@ listen_addresses = '<%= @settings[:listen_addresses] || @defaults[:listen_addres
 <% end -%>
 port = <%= @settings[:port] || @defaults[:port] %>
 max_connections = <%= @settings[:max_connections] || @defaults[:max_connections] %>
+<% if @version.to_f >= 9.3 %>
+unix_socket_directories = '/var/run/postgresql'
+<% else -%>
 unix_socket_directory = '/var/run/postgresql'
+<% end -%>
 
 # - Security and Authentication -
 
