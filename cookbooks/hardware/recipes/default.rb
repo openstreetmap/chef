@@ -50,7 +50,7 @@ when "TYAN Computer Corporation"
   speed = "115200"
 when "Supermicro"
   case product
-  when "H8DGU", "X9SCD", "X7DBU", "X7DW3", "X9DR7/E-(J)LN4F", "X9DR3-F"
+  when "H8DGU", "X9SCD", "X7DBU", "X7DW3", "X9DR7/E-(J)LN4F", "X9DR3-F", "X9DRW"
     unit = "1"
     speed = "115200"
   else
