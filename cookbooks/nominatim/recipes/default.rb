@@ -35,6 +35,10 @@ home_directory = data_bag_item("accounts", "nominatim")["home"]
 source_directory = "#{home_directory}/nominatim"
 email_errors = data_bag_item("accounts", "lonvia")["email"]
 
+database_cluster = node[:nominatim][:database][:cluster]
+database_version = database_cluster.sub(/\/.*/, "")
+database_name = node[:nominatim][:database][:dbname]
+
 service "php5-fpm" do
   action [ :enable, :start ]
   supports :status => true, :restart => true, :reload => true
@@ -47,7 +51,6 @@ apache_site "nominatim.openstreetmap.org" do
 end
 
 node[:nominatim][:fpm_pools].each do |name,data|
-
   template "/etc/php5/fpm/pool.d/#{name}.conf" do
     source "fpm.conf.erb"
     owner "root"
@@ -59,32 +62,32 @@ node[:nominatim][:fpm_pools].each do |name,data|
 end
 
 postgresql_user "tomh" do
-  cluster "9.1/main"
+  cluster database_cluster
   superuser true
 end
 
 postgresql_user "lonvia" do
-  cluster "9.1/main"
+  cluster database_cluster
   superuser true
 end
 
 postgresql_user "twain" do
-  cluster "9.1/main"
+  cluster database_cluster
   superuser true
 end
 
 postgresql_user "nominatim" do
-  cluster "9.1/main"
+  cluster database_cluster
   superuser true
 end
 
 postgresql_user "www-data" do
-  cluster "9.1/main"
+  cluster database_cluster
 end
 
 postgresql_munin "nominatim" do
-  cluster "9.1/main"
-  database "nominatim"
+  cluster database_cluster
+  database database_name
 end
 
 directory "/var/log/nominatim" do
@@ -105,8 +108,8 @@ package "osmosis"
 package "gcc"
 package "proj-bin"
 package "libgeos-c1"
-package "postgresql-9.1-postgis"
-package "postgresql-server-dev-9.1"
+package "postgresql-#{database_version}-postgis"
+package "postgresql-server-dev-#{database_version}"
 package "build-essential"
 package "libxml2-dev"
 package "libgeos-dev"

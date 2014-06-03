@@ -13,6 +13,7 @@ default_attributes(
     }
   },
   :postgresql => {
+    :versions => [ "9.3" ],
     :settings => {
       :defaults => {
         :shared_buffers => "24GB",
@@ -24,6 +25,10 @@ default_attributes(
     }
   },
   :nominatim => {
+    :database => {
+        :cluster => "9.3/main",
+        :dbname => "nominatim"
+    },
     :fpm_pools => {
         :www => {
             :pm => "dynamic",

@@ -26,7 +26,6 @@ default_attributes(
     :sources => [ "ubuntugis-stable", "ubuntugis-unstable" ]
   },
   :postgresql => {
-    :versions => [ "9.1" ],
     :settings => {
       :defaults => {
         :max_connections => "450",
@@ -55,11 +54,7 @@ default_attributes(
     }
   },
   :nominatim => {
-    :repository => "git://git.openstreetmap.org/nominatim.git",
-    :database => {
-        :cluster => "9.1/main",
-        :dbname => "nominatim"
-    }
+    :repository => "git://git.openstreetmap.org/nominatim.git"
   }
 )
 
