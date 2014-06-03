@@ -48,6 +48,9 @@ database_name = node[:nominatim][:database][:dbname]
 postgis_version = node[:nominatim][:database][:postgis]
 
 service "php5-fpm" do
+  if node[:lsb][:release].to_f >= 14.04
+    provider Chef::Provider::Service::Upstart
+  end
   action [ :enable, :start ]
   supports :status => true, :restart => true, :reload => true
 end
