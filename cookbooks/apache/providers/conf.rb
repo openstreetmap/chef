@@ -93,7 +93,7 @@ end
 
 def available_name
   if node[:lsb][:release].to_f >= 14.04
-    "/etc/apache2/conf-available/#{new_resource.name}"
+    "/etc/apache2/conf-available/#{new_resource.name}.conf"
   else
     "/etc/apache2/conf.d/#{new_resource.name}"
   end
@@ -101,7 +101,7 @@ end
 
 def enabled_name
   if node[:lsb][:release].to_f >= 14.04
-    "/etc/apache2/conf-enabled/#{new_resource.name}"
+    "/etc/apache2/conf-enabled/#{new_resource.name}.conf"
   else
     "/etc/apache2/conf.d/#{new_resource.name}"
   end
