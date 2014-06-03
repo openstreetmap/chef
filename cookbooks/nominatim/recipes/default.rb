@@ -29,7 +29,13 @@ package "php-pear"
 package "php-apc"
 
 apache_module "rewrite"
-apache_module "fastcgi-handler"
+
+if node[:lsb][:release].to_f >= 14.04
+  apache_module "proxy"
+  apache_module "proxy_fcgi"
+else
+  apache_module "fastcgi-handler"
+end
 
 home_directory = data_bag_item("accounts", "nominatim")["home"]
 source_directory = "#{home_directory}/nominatim"
