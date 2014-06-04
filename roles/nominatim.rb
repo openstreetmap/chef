@@ -51,6 +51,7 @@ default_attributes(
     }
   },
   :nominatim => {
+    :enabled => true,
     :repository => "git://git.openstreetmap.org/nominatim.git"
   }
 )

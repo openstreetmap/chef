@@ -198,7 +198,14 @@ file "#{source_directory}/settings/ip_blocks.map" do
   mode 0664
 end
 
+if node[:nominatim][:enabled]
+  cron_action = :create
+else
+  cron_action = :delete
+end
+
 cron "nominatim_logrotate" do
+  action cron_action
   hour "5"
   minute "30"
   weekday "0"
@@ -208,12 +215,14 @@ cron "nominatim_logrotate" do
 end
 
 cron "nominatim_banip" do
+  action cron_action
   command "#{source_directory}/utils/cron_banip.py"
   user "nominatim"
   mailto email_errors
 end
 
 cron "nominatim_vacuum" do
+  action cron_action
   hour "2"
   minute "00"
   command "#{source_directory}/utils/cron_vacuum.sh"
@@ -274,6 +283,7 @@ template "/usr/local/bin/backup-nominatim" do
 end
 
 cron "nominatim_backup" do
+  action cron_action
   hour "3"
   minute "00"
   day "1"
