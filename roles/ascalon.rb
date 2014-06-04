@@ -9,12 +9,6 @@ default_attributes(
         :role => :internal,
         :family => :inet,
         :address => "10.0.0.18"
-      },
-      :external_ipv4 => {
-        :interface => "eth1",
-        :role => :external,
-        :family => :inet,
-        :address => "128.40.168.105"
       }
     }
   },
