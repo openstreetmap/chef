@@ -10,7 +10,7 @@ passenger-status | awk '/PID:/ { print $3 }' | sort > /tmp/rails.expected.$$
 pids=$(comm -23 /tmp/rails.actual.$$ /tmp/rails.expected.$$)
 
 # Kill any expected rack processes
-[ -n "$pids" ] && kill -9 $pids
+[ -n "$pids" ] && kill -9 $pids > /dev/null 2>&1
 
 # Remove our temporary files
 rm -f /tmp/rails.actual.$$ /tmp/rails.expected.$$
