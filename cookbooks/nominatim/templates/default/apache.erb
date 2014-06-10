@@ -52,10 +52,10 @@
     </LocationMatch>
     <% end -%>
 
-    Redirect 420 /pool-block/
-    ErrorDocument 420 /509.html
+    Redirect 429 /pool-block/
+    ErrorDocument 429 /509.html
     <Location /pool-block>
-        ErrorDocument 420 /509.html
+        ErrorDocument 429 /509.html
     </Location>
     Redirect 403 /pool-ban/
     <Location /pool-ban>
