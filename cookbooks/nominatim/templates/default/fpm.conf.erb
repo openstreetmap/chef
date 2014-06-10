@@ -1,7 +1,11 @@
 ; DO NOT EDIT - This file is being maintained by Chef
 
 [<%= @name %>]
+<% if @port -%>
+listen = 127.0.0.1:<%= @port %>
+<% else -%>
 listen = /var/run/php5-fpm-<%= @name %>.sock
+<% end -%>
 
 user = www-data
 group = www-data

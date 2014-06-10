@@ -28,9 +28,9 @@
         AddType application/xml   .phpx
         AddType application/json   .phpj
 <% if node[:lsb][:release].to_f >= 14.04 -%>
-        ProxyPassMatch ^/(.*\.php(/.*)?)$ unix:/var/run/php5-fpm-www.sock|fcgi://localhost<%= @directory %>/website/
-        ProxyPassMatch ^/(.*\.phpx(/.*)?)$ unix:/var/run/php5-fpm-www.sock|fcgi://localhost<%= @directory %>/website/
-        ProxyPassMatch ^/(.*\.phpj(/.*)?)$ unix:/var/run/php5-fpm-www.sock|fcgi://localhost<%= @directory %>/website/
+        ProxyPassMatch ^/(.*\.php(/.*)?)$ fcgi://127.0.0.1:<%= @pools[:www][:port ]%>/
+        ProxyPassMatch ^/(.*\.phpx(/.*)?)$ fcgi://127.0.0.1:<%= @pools[:www][:port ]%>/
+        ProxyPassMatch ^/(.*\.phpj(/.*)?)$ fcgi://127.0.0.1:<%= @pools[:www][:port ]%>/
 <% else -%>
         AddHandler fcgi:/var/run/php5-fpm-www.sock .php
         AddHandler fcgi:/var/run/php5-fpm-www.sock .phpx
@@ -42,9 +42,9 @@
     Alias /pool-<%= name %>/ "<%= @directory %>/website/"
     <Location /pool-<%= name %>>
 <% if node[:lsb][:release].to_f >= 14.04 -%>
-        ProxyPassMatch ^/(.*\.php(/.*)?)$ unix:/var/run/php5-fpm-<%= name %>.sock|fcgi://localhost<%= @directory %>/website/
-        ProxyPassMatch ^/(.*\.phpx(/.*)?)$ unix:/var/run/php5-fpm-<%= name %>.sock|fcgi://localhost<%= @directory %>/website/
-        ProxyPassMatch ^/(.*\.phpj(/.*)?)$ unix:/var/run/php5-fpm-<%= name %>.sock|fcgi://localhost<%= @directory %>/website/
+        ProxyPassMatch ^/(.*\.php(/.*)?)$ fcgi://127.0.0.1:<%= details[:port ]%>/
+        ProxyPassMatch ^/(.*\.phpx(/.*)?)$ fcgi://127.0.0.1:<%= details[:port ]%>/
+        ProxyPassMatch ^/(.*\.phpj(/.*)?)$ fcgi://127.0.0.1:<%= details[:port ]%>/
 <% else -%>
         AddHandler fcgi:/var/run/php5-fpm-<%= name %>.sock .php
         AddHandler fcgi:/var/run/php5-fpm-<%= name %>.sock .phpx
