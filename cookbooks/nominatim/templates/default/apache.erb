@@ -28,6 +28,9 @@
         AddType text/html   .php
         AddType application/xml   .phpx
         AddType application/json   .phpj
+    </Directory>
+
+    <Location />
 <% if node[:lsb][:release].to_f >= 14.04 -%>
         ProxyPassMatch ^/(.*\.php(/.*)?)$ fcgi://127.0.0.1:<%= @pools[:www][:port ]%>/
         ProxyPassMatch ^/(.*\.phpx(/.*)?)$ fcgi://127.0.0.1:<%= @pools[:www][:port ]%>/
@@ -37,7 +40,7 @@
         AddHandler fcgi:/var/run/php5-fpm-www.sock .phpx
         AddHandler fcgi:/var/run/php5-fpm-www.sock .phpj
 <% end -%>
-    </Directory>
+    </Location>
 
     <% @pools.each do |name,details| -%>
     Alias /pool-<%= name %>/ "<%= @directory %>/website/"
