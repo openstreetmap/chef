@@ -33,9 +33,9 @@
 <% end -%>
     </Directory>
 
-    <LocationMatch /.*\.php[xj]?(/.*)?$>
+    <LocationMatch /((?!pool-.*).*\.php[xj]?(/.*)?)$>
 <% if node[:lsb][:release].to_f >= 14.04 -%>
-        ProxyPassMatch fcgi://127.0.0.1:<%= @pools[:www][:port ]%>/
+        ProxyPassMatch fcgi://127.0.0.1:<%= @pools[:www][:port ]%><%= @directory %>/website/$1
 <% else -%>
         SetHandler fcgi:/var/run/php5-fpm-www.sock
 <% end -%>
@@ -43,9 +43,9 @@
 
     <% @pools.each do |name,details| -%>
     Alias /pool-<%= name %>/ "<%= @directory %>/website/"
-    <LocationMatch /pool-<%= name %>/.*\.php[xj]?(/.*)?$>
+    <LocationMatch /pool-<%= name %>/(.*\.php[xj]?(/.*)?)$>
 <% if node[:lsb][:release].to_f >= 14.04 -%>
-        ProxyPassMatch fcgi://127.0.0.1:<%= details[:port ]%>/
+        ProxyPassMatch fcgi://127.0.0.1:<%= details[:port ]%><%= @directory %>/website/$1
 <% else -%>
         SetHandler fcgi:/var/run/php5-fpm-<%= name %>.sock
 <% end -%>
