@@ -33,31 +33,23 @@
 <% end -%>
     </Directory>
 
-    <Location />
+    <LocationMatch /.*\.php[xj]?(/.*)?$>
 <% if node[:lsb][:release].to_f >= 14.04 -%>
-        ProxyPassMatch ^/(.*\.php(/.*)?)$ fcgi://127.0.0.1:<%= @pools[:www][:port ]%>/
-        ProxyPassMatch ^/(.*\.phpx(/.*)?)$ fcgi://127.0.0.1:<%= @pools[:www][:port ]%>/
-        ProxyPassMatch ^/(.*\.phpj(/.*)?)$ fcgi://127.0.0.1:<%= @pools[:www][:port ]%>/
+        ProxyPassMatch fcgi://127.0.0.1:<%= @pools[:www][:port ]%>/
 <% else -%>
-        AddHandler fcgi:/var/run/php5-fpm-www.sock .php
-        AddHandler fcgi:/var/run/php5-fpm-www.sock .phpx
-        AddHandler fcgi:/var/run/php5-fpm-www.sock .phpj
+        SetHandler fcgi:/var/run/php5-fpm-www.sock
 <% end -%>
-    </Location>
+    </LocationMatch>
 
     <% @pools.each do |name,details| -%>
     Alias /pool-<%= name %>/ "<%= @directory %>/website/"
-    <Location /pool-<%= name %>>
+    <LocationMatch /pool-<%= name %>/.*\.php[xj]?(/.*)?$>
 <% if node[:lsb][:release].to_f >= 14.04 -%>
-        ProxyPassMatch ^/(.*\.php(/.*)?)$ fcgi://127.0.0.1:<%= details[:port ]%>/
-        ProxyPassMatch ^/(.*\.phpx(/.*)?)$ fcgi://127.0.0.1:<%= details[:port ]%>/
-        ProxyPassMatch ^/(.*\.phpj(/.*)?)$ fcgi://127.0.0.1:<%= details[:port ]%>/
+        ProxyPassMatch fcgi://127.0.0.1:<%= details[:port ]%>/
 <% else -%>
-        AddHandler fcgi:/var/run/php5-fpm-<%= name %>.sock .php
-        AddHandler fcgi:/var/run/php5-fpm-<%= name %>.sock .phpx
-        AddHandler fcgi:/var/run/php5-fpm-<%= name %>.sock .phpj
+        SetHandler fcgi:/var/run/php5-fpm-<%= name %>.sock
 <% end -%>
-    </Location>
+    </LocationMatch>
     <% end -%>
 
     Redirect 420 /pool-block/
