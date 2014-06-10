@@ -28,6 +28,9 @@
         AddType text/html   .php
         AddType application/xml   .phpx
         AddType application/json   .phpj
+<% if node[:lsb][:release].to_f >= 14.04 -%>
+        Require all granted
+<% end -%>
     </Directory>
 
     <Location />
