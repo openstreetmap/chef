@@ -2,13 +2,14 @@
 
 <% [80, 443].each do |port| -%>
 <VirtualHost *:<%= port %>>
-    ServerName nominatim.openstreetmap.org
-    ServerAdmin webmaster@openstreetmap.org
+    ServerName <%= node[:fqdn] %>
+    ServerAlias nominatim.openstreetmap.org
     ServerAlias nominatim.osm.org
     ServerAlias nominatim.openstreetmap.org
     ServerAlias nominatim.openstreetmap.net
     ServerAlias nominatim.openstreetmaps.org
     ServerAlias nominatim.openmaps.org
+    ServerAdmin webmaster@openstreetmap.org
 
 <% if port == 443 -%>
     #
