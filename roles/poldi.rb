@@ -97,6 +97,6 @@ default_attributes(
 )
 
 run_list(
-  "role[ucl-internal]",
+  "role[ucl-wates]",
   "role[nominatim]"
 )

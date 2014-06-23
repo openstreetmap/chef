@@ -1,5 +1,5 @@
-name "ucl-internal"
-description "Role applied to all servers at UCL which are on the internal LAN"
+name "ucl-wates"
+description "Role applied to all servers at UCL which are in Wates House"
 
 override_attributes(
   :networking => {
