@@ -60,6 +60,6 @@ default_attributes(
 );
 
 run_list(
-  "role[ucl-external]",
+  "role[ucl-internal]",
   "role[dev]"
 )
