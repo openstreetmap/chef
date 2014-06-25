@@ -17,7 +17,7 @@ unknown_limit 144
     update no
 <% end -%>
 <% if client[:networking][:roles][:external][:zone] == "ucl" -%>
-    address <%= client.internal_ipaddress %>
+    address <%= client.internal_ipaddress || client.external_ipaddress %>
 <% elsif client[:networking][:roles][:external][:zone] == "ic" -%>
     address <%= client.internal_ipaddress || client.external_ipaddress %>
 <% elsif client.external_ipaddress -%>
