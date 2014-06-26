@@ -5,6 +5,8 @@
 listen = 127.0.0.1:<%= @port %>
 <% else -%>
 listen = /var/run/php5-fpm-<%= @name %>.sock
+listen.owner = www-data
+listen.group = www-data
 <% end -%>
 
 user = www-data
