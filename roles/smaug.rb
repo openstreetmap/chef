@@ -73,6 +73,5 @@ default_attributes(
 
 run_list(
   "role[ic]",
-  "role[db-slave]",
-  "role[planetdump]"
+  "role[db-slave]"
 )
