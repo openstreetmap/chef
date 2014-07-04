@@ -203,6 +203,10 @@ define :rails_port, :action => [ :create, :enable ] do
       line.gsub!(/^( *)#oauth_key:.*$/, "\\1oauth_key: \"#{params[:oauth_key]}\"")
     end
 
+    if params[:nominatim_url]
+      line.gsub!(/^( *)nominatim_url:.*$/, "\\1nominatim_url: \"#{params[:nominatim_url]}\"")
+    end
+
     line.gsub!(/^( *)require_terms_seen:.*$/, "\\1require_terms_seen: true")
     line.gsub!(/^( *)require_terms_agreed:.*$/, "\\1require_terms_agreed: true")
 
