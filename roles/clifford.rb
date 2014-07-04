@@ -14,13 +14,13 @@ default_attributes(
         :interface => "eth1",
         :role => :external,
         :family => :inet,
-        :address => "128.40.168.98"
+        :address => "128.40.45.194"
       }
     }
   }
 )
 
 run_list(
-  "role[ucl-wates]",
+  "role[ucl-wolfson]",
   "role[forum]"
 )

@@ -14,7 +14,7 @@ default_attributes(
         :interface => "p5p2",
         :role => :external,
         :family => :inet,
-        :address => "128.40.168.105"
+        :address => "128.40.45.204"
       }
     }
   },
@@ -54,6 +54,6 @@ default_attributes(
 )
 
 run_list(
-  "role[ucl-wates]",
+  "role[ucl-wolfson]",
   "role[nominatim]"
 )

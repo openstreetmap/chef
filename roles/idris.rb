@@ -9,11 +9,17 @@ default_attributes(
         :role => :internal,
         :family => :inet,
         :address => "10.0.0.4"
+      },
+      :external_ipv4 => {
+        :interface => "eth1",
+        :role => :external,
+        :family => :inet,
+        :address => "128.40.45.200"
       }
     }
   }
 )
 
 run_list(
-  "role[ucl-wates]"
+  "role[ucl-wolfson]"
 )

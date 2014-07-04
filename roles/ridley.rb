@@ -32,7 +32,7 @@ default_attributes(
         :interface => "eth0",
         :role => :external,
         :family => :inet,
-        :address => "128.40.168.102"
+        :address => "128.40.45.205"
       },
       :internal_ipv4 => {
         :interface => "eth1",
@@ -75,7 +75,7 @@ default_attributes(
 )
 
 run_list(
-  "role[ucl-wates]",
+  "role[ucl-wolfson]",
   "role[gateway]",
   "role[foundation]",
   "role[stateofthemap]",
