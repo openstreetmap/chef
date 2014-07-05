@@ -14,7 +14,7 @@ default_attributes(
         :interface => "eth1",
         :role => :external,
         :family => :inet,
-        :address => "128.40.45.2076"
+        :address => "128.40.45.207"
       }
     }
   }
