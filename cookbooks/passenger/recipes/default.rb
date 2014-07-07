@@ -37,7 +37,9 @@ apache_module "passenger" do
   conf "passenger.conf.erb"
 end
 
-package "passenger-common#{node[:passenger][:ruby_version]}"
+if node[:passenger][:version] < "4"
+  package "passenger-common#{node[:passenger][:ruby_version]}"
+end
 
 munin_plugin "passenger_memory"
 munin_plugin "passenger_processes"
