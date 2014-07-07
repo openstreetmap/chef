@@ -22,5 +22,6 @@ default_action [:install, :enable]
 
 attribute :name, :kind_of => String, :name_attribute => true
 attribute :package, :kind_of => String
+attribute :version, :kind_of => String
 attribute :conf, :kind_of => String
 attribute :variables, :kind_of => Hash, :default => {}

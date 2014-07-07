@@ -113,3 +113,8 @@ apt_source "elasticsearch" do
   url "http://packages.elasticsearch.org/elasticsearch/1.0/debian"
   key "D88E42B4"
 end
+
+apt_source "passenger" do
+  url "https://oss-binaries.phusionpassenger.com/apt/passenger"
+  key "AC40B2F7"
+end

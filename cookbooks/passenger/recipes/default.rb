@@ -33,6 +33,7 @@ template "/usr/local/bin/passenger-ruby" do
 end
 
 apache_module "passenger" do
+  version node[:passenger][:version]
   conf "passenger.conf.erb"
 end
 
