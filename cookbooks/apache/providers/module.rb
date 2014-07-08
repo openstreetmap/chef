@@ -23,9 +23,7 @@ end
 
 action :install do
   if not installed?
-    package package_name do
-      version new_resource.version
-    end
+    package package_name
 
     updated = true
   else

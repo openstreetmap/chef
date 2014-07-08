@@ -149,9 +149,6 @@ default_attributes(
       }
     }
   },
-  :passenger => {
-    :version => "4.0.45"
-  },
   :postgresql => {
     :versions => [ "9.1" ],
     :settings => {

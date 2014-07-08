@@ -1,16 +1,9 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
 <IfModule mod_passenger.c>
-<% if node[:passenger][:version] >= "4" -%>
   PassengerRoot /usr/lib/ruby/vendor_ruby/phusion_passenger/locations.ini
   PassengerDefaultRuby /usr/bin/ruby
-<% else -%>
-  PassengerRoot /usr
-<% end -%>
   PassengerRuby /usr/local/bin/passenger-ruby
-<% if node[:passenger][:version] < "4" -%>
-  PassengerUseGlobalQueue on
-<% end -%>
   PassengerMaxPoolSize <%= node[:passenger][:max_pool_size] %>
   PassengerPoolIdleTime <%= node[:passenger][:pool_idle_time] %>
 </IfModule>

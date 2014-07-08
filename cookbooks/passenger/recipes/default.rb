@@ -33,12 +33,7 @@ template "/usr/local/bin/passenger-ruby" do
 end
 
 apache_module "passenger" do
-  version node[:passenger][:version]
   conf "passenger.conf.erb"
-end
-
-if node[:passenger][:version] < "4"
-  package "passenger-common#{node[:passenger][:ruby_version]}"
 end
 
 munin_plugin "passenger_memory"
