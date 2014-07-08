@@ -13,4 +13,6 @@
 	ErrorLog /var/log/apache2/<%= @name %>-error.log
 
 	RailsEnv production
+
+	SetEnv SECRET_KEY_BASE <%= @secret_key_base %>
 </VirtualHost>

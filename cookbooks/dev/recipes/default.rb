@@ -18,6 +18,7 @@
 #
 
 require "yaml"
+require "securerandom"
 
 include_recipe "apache"
 include_recipe "passenger"
@@ -50,10 +51,10 @@ package "python-psycopg2"
 
 easy_install_package "geojson"
 
+apache_module "env"
 apache_module "expires"
 apache_module "fastcgi-handler"
 apache_module "rewrite"
-apache_module "expires"
 apache_module "wsgi"
 
 gem_package "sqlite3"
@@ -133,6 +134,9 @@ if node[:postgresql][:clusters][:"9.1/main"]
     site_name = "#{name}.apis.dev.openstreetmap.org"
     site_aliases = details[:aliases] || []
     rails_directory = "/srv/#{name}.apis.dev.openstreetmap.org"
+    secret_key_base = details[:secret_key_base] || SecureRandom.base64(96)
+
+    node.set[:dev][:rails][name][:secret_key_base] = secret_key_base
 
     postgresql_database database_name do
       cluster "9.1/main"
@@ -169,14 +173,14 @@ if node[:postgresql][:clusters][:"9.1/main"]
 
     apache_site site_name do
       template "apache.rails.erb"
-      variables :name => site_name, :aliases => site_aliases
+      variables :name => site_name, :aliases => site_aliases, :secret_key_base => secret_key_base
     end
   end
 
   Dir.glob("/srv/*.apis.dev.openstreetmap.org").each do |rails_directory|
     name = File.basename(rails_directory, ".apis.dev.openstreetmap.org")
 
-    unless node[:dev][:rails].include?(name)
+    unless node[:dev][:rails].include?(name) and node[:dev][:rails][name].include?(:repository)
       database_config = YAML.load_file("#{rails_directory}/config/database.yml")
       database_name = database_config["production"]["database"]
       site_name = "#{name}.apis.dev.openstreetmap.org"
