@@ -17,8 +17,8 @@ default_attributes(
     :max_pool_size => 50
   },
   :web => {
-    :rails_soft_memory_limit => 192,
-    :rails_hard_memory_limit => 512
+    :rails_soft_memory_limit => 256,
+    :rails_hard_memory_limit => 1024
   },
   :exim => {
     :local_domains => [ "messages.openstreetmap.org" ],
