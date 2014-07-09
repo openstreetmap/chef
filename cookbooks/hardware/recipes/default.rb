@@ -22,6 +22,13 @@ when "GenuineIntel"
   package "intel-microcode"
 end
 
+case node[:cpu][:"0"][:vendor_id]
+when "AuthenticAMD"
+  if node[:lsb][:release].to_f >= 14.04
+    package "amd64-microcode"
+  end
+end
+
 if node[:dmi] and node[:dmi][:system]
   case node[:dmi][:system][:manufacturer]
   when "empty"
