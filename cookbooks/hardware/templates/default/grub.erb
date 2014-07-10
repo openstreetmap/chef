@@ -21,7 +21,10 @@ GRUB_CMDLINE_LINUX="console=tty0 console=ttyS<%= @unit %>,115200n8 nomodeset"
 <% end -%>
 
 # Arguments to add to the kernel command line (except recovery entries)
-GRUB_CMDLINE_LINUX_DEFAULT=""
+GRUB_CMDLINE_LINUX_DEFAULT="panic=30"
+
+# Do not wait for infinite time on a failed boot
+GRUB_RECORDFAIL_TIMEOUT=2
 
 <% if @unit.nil? -%>
 # Send console output to the screen
