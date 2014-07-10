@@ -12,7 +12,7 @@ default_attributes(
         }
       },
       :external => {
-        :zone => "osuosl"
+        :zone => "ool"
       }
     }
   }
