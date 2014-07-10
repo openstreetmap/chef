@@ -20,6 +20,8 @@
 include_recipe "apache::ssl"
 include_recipe "web::rails"
 
+web_passwords = data_bag_item("web", "passwords")
+
 apache_module "alias"
 apache_module "deflate"
 apache_module "expires"
@@ -34,6 +36,7 @@ end
 
 apache_site "www.openstreetmap.org" do
   template "apache.frontend.erb"
+  variables :secret_key_base => web_passwords["secret_key_base"]
 end
 
 gem_package "hpricot"

@@ -22,6 +22,8 @@ include_recipe "apache::ssl"
 include_recipe "web::rails"
 include_recipe "web::cgimap"
 
+web_passwords = data_bag_item("web", "passwords")
+
 apache_module "fastcgi-handler"
 apache_module "remoteip"
 apache_module "rewrite"
@@ -32,6 +34,7 @@ end
 
 apache_site "www.openstreetmap.org" do
   template "apache.backend.erb"
+  variables :secret_key_base => web_passwords["secret_key_base"]
 end
 
 node.set[:memcached][:ip_address] = node.internal_ipaddress

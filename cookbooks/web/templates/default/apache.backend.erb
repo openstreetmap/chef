@@ -36,6 +36,7 @@
   PassengerMinInstances 3
   PassengerMaxRequests 500
   PassengerPreStart http://www.openstreetmap.org/
+  SetEnv SECRET_KEY_BASE <%= @secret_key_base %>
 
   #
   # Get the real remote IP for requests via a trusted proxy
