@@ -24,7 +24,7 @@ chef_platform = case node[:platform_version]
                   else node[:platform_version]
                 end
 
-chef_package = "chef-server_#{node[:chef][:server][:version]}.ubuntu.#{chef_platform}_amd64.deb"
+chef_package = "chef-server_#{node[:chef][:server][:version]}_amd64.deb"
 
 directory "/var/cache/chef" do
   owner "root"
