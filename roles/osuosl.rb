@@ -5,10 +5,10 @@ default_attributes(
   :networking => {
     :nameservers => [ "8.8.8.8", "8.8.4.4" ],
     :roles => {
-      :internal => {
+      :external => {
         :inet => {
-          :prefix => "22",
-          :gateway => "10.0.0.0"
+          :prefix => "28",
+          :gateway => "140.211.167.97"
         }
       },
       :external => {

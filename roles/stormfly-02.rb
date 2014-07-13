@@ -4,11 +4,11 @@ description "Master role applied to stormfly-02"
 default_attributes(
   :networking => {
     :interfaces => {
-      :internal_ipv4 => {
+      :external_ipv4 => {
         :interface => "eth0",
-        :role => :internal,
+        :role => :external,
         :family => :inet,
-        :address => "10.0.0.108"
+        :address => "140.211.167.105"
       }
     }
   }
