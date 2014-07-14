@@ -79,12 +79,6 @@ if node[:lsb][:release].to_f < 14.04
   end
 end
 
-apt_source "proliant-support-pack" do
-  template "hp.list.erb"
-  url "http://downloads.linux.hp.com/SDR/downloads/ProLiantSupportPack"
-  key "2689B887"
-end
-
 apt_source "management-component-pack" do
   template "hp.list.erb"
   url "http://downloads.linux.hp.com/SDR/downloads/ManagementComponentPack"
