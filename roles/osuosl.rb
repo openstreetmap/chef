@@ -2,6 +2,11 @@ name "osuosl"
 description "Role applied to all servers at OSUOSL"
 
 default_attributes(
+  :accounts => {
+    :users => {
+      :osuadmin => { :status => :administrator }
+    }
+  },
   :networking => {
     :nameservers => [ "8.8.8.8", "8.8.4.4" ],
     :roles => {
