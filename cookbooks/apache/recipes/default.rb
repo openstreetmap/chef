@@ -18,15 +18,23 @@
 #
 
 package "apache2"
-package "apache2-mpm-#{node[:apache][:mpm]}"
 
-#In Apache 2.4 mpm have become runtime loadable modules
-#Diable all mpm except the required mpm
-if node[:lsb][:release].to_f >= 14.04
-  mpms = ['event', 'itk', 'prefork', 'worker']
-  mpms.reject{|u| u == node[:apache][:mpm]}.each do |mpm|
-    apache_module mpm do
-      action [ :disable ]
+if node[:lsb][:release].to_f < 14.04
+  package "apache2-mpm-#{node[:apache][:mpm]}" do
+    notifies :restart, "service[apache2]"
+  end
+else
+  ["event", "itk", "prefork", "worker"].each do |mpm|
+    if mpm == node[:apache][:mpm]
+      apache_module mpm do
+        action [ :install, :enable ]
+        package "apache2-mpm-#{node[:apache][:mpm]}"
+      end
+    else
+      apache_module mpm do
+        action [ :disable ]
+        package "apache2-mpm-#{node[:apache][:mpm]}"
+      end
     end
   end
 end
@@ -50,7 +58,6 @@ end
 service "apache2" do
   action [ :enable, :start ]
   supports :status => true, :restart => true, :reload => true
-  subscribes :restart, "package[apache2-mpm-#{node[:apache][:mpm]}]"
   subscribes :reload, "template[/etc/apache2/httpd.conf]"
 end
 
