@@ -205,6 +205,11 @@ if Dir.glob("/dev/ipmi*").empty?
   munin_plugin "ipmi_temp" do
     action :delete
   end
+
+  munin_plugin "ipmi_power" do
+    action :delete
+    only_if { node[:lsb][:release].to_f >= 14.04 }
+  end
 else
   munin_plugin "ipmi_fans" do
     target "ipmi_"
@@ -212,6 +217,11 @@ else
 
   munin_plugin "ipmi_temp" do
     target "ipmi_"
+  end
+
+  munin_plugin "ipmi_power" do
+    target "ipmi_"
+    only_if { node[:lsb][:release].to_f >= 14.04 }
   end
 end
 
