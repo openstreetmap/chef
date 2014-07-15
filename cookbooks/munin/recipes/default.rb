@@ -155,16 +155,29 @@ else
 end
 
 if File.exists?("/sbin/hpasmcli")
-  munin_plugin "hpasmcli_temp"
-  munin_plugin "hpasmcli_fans"
+  munin_plugin "hpasmcli2_temp" do
+    target "hpasmcli2_"
+  end
+
+  munin_plugin "hpasmcli2_fans" do
+    target "hpasmcli2_"
+  end
 else
-  munin_plugin "hpasmcli_temp" do
+  munin_plugin "hpasmcli2_temp" do
     action :delete
   end
 
-  munin_plugin "hpasmcli_fans" do
+  munin_plugin "hpasmcli2_fans" do
     action :delete
   end
+end
+
+munin_plugin "hpasmcli_temp" do
+  action :delete
+end
+
+munin_plugin "hpasmcli_fans" do
+  action :delete
 end
 
 munin_plugin "http_loadtime" do
