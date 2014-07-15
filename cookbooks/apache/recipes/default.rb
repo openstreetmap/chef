@@ -20,6 +20,17 @@
 package "apache2"
 package "apache2-mpm-#{node[:apache][:mpm]}"
 
+#In Apache 2.4 mpm have become runtime loadable modules
+#Diable all mpm except the required mpm
+if node[:lsb][:release].to_f >= 14.04
+  mpms = ['event', 'itk', 'prefork', 'worker']
+  mpms.reject{|u| u == node[:apache][:mpm]}.each do |mpm|
+    apache_module mpm do
+      action [ :disable ]
+    end
+  end
+end
+
 admins = data_bag_item("apache", "admins")
 
 template "/etc/apache2/httpd.conf" do
