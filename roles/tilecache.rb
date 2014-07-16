@@ -12,6 +12,12 @@ default_attributes(
         "net.netfilter.nf_conntrack_tcp_timeout_time_wait" => "30"
       }
     },
+    :network_conntrack_max => {
+      :comment => "Increase max number of connections tracked",
+      :parameters => {
+         "net.netfilter.nf_conntrack_max" => "131072"
+      }
+    },
     :squid_swappiness => {
       :comment => "Prefer not to swapout to free memory",
       :parameters => { 
