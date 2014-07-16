@@ -116,7 +116,7 @@ if (defined($show_target) and $show_target eq 'temp') {
         print "graph_info This graph shows the temperatures as reported by hpasmcli.\n";
         foreach my $key (sort keys %output) {
             print "temp$key.label $output{$key}->{'location'}\n";
-            print "temp$key.warning " . ($output{$key}->{'threshold'} * 0.75) . "\n";
+            print "temp$key.warning " . ($output{$key}->{'threshold'} * 0.8) . "\n";
             print "temp$key.critical $output{$key}->{'threshold'}\n";
         }
     } else {
