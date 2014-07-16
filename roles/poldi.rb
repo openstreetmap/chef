@@ -32,7 +32,7 @@ default_attributes(
     :md_tune => {
       :comment => "Tune the md sync performance so as not to kill system performance",
       :parameters => {
-        "block/md0/md/sync_speed_min" => "100",
+        "block/md0/md/sync_speed_min" => "1",
         "block/md0/md/sync_speed_max" => "100000"
       }
     }
