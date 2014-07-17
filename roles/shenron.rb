@@ -22,9 +22,9 @@ default_attributes(
         :interface => "eth0",
         :role => :external,
         :family => :inet,
-        :address => "89.16.179.150",
+        :address => "212.110.172.32",
         :prefix => "26",
-        :gateway => "89.16.179.129"
+        :gateway => "212.110.172.1"
       },
       :external_ipv6 => {
         :interface => "eth0",
