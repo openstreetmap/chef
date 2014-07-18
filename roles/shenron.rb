@@ -30,7 +30,7 @@ default_attributes(
         :interface => "eth0",
         :role => :external,
         :family => :inet6,
-        :address => "2001:41c8:0010:0996:21d:7dff:fec3:df70",
+        :address => "2001:41c9:1:400::32",
         :prefix => "64",
         :gateway => "fe80::1"
       },
