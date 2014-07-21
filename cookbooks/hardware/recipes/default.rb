@@ -247,3 +247,25 @@ end
     end
   end
 end
+
+if File.exists?("/proc/xen")
+  watchdog = "xen_wdt"
+elsif node[:kernel][:modules].include?("i6300esb")
+  watchdog = "none"
+end
+
+if watchdog
+  package "watchdog"
+
+  template "/etc/default/watchdog" do
+    source "watchdog.erb"
+    owner "root"
+    group "root"
+    mode 0644
+    variables :module => watchdog
+  end
+
+  service "watchdog" do
+    action [ :enable, :start ]
+  end
+end
