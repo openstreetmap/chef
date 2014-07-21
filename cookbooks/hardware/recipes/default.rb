@@ -152,20 +152,21 @@ if node[:kernel][:modules].include?("ipmi_si")
   package "ipmitool"
 end
 
-package "irqbalance"
 if node[:lsb][:release].to_f >= 12.10
-    template "/etc/default/irqbalance" do
-      source "irqbalance.erb"
-      owner "root"
-      group "root"
-      mode 0644
-    end
+  package "irqbalance"
 
-    service "irqbalance" do
-      action [ :start, :enable ]
-      supports :status => false, :restart => true, :reload => false
-      subscribes :restart, "template[/etc/default/irqbalance]"
-    end
+  template "/etc/default/irqbalance" do
+    source "irqbalance.erb"
+    owner "root"
+    group "root"
+    mode 0644
+  end
+
+  service "irqbalance" do
+    action [ :start, :enable ]
+    supports :status => false, :restart => true, :reload => false
+    subscribes :restart, "template[/etc/default/irqbalance]"
+  end
 end
 
 tools_packages = []
