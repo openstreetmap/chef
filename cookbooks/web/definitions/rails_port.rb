@@ -46,6 +46,7 @@ define :rails_port, :action => [ :create, :enable ] do
   package "nodejs"
 
   package "g++"
+  package "pkg-config"
   package "libpq-dev"
   package "libsasl2-dev"
   package "libxml2-dev"
