@@ -3,7 +3,7 @@ description "Role applied to all servers at Bytemark"
 
 default_attributes(
   :networking => {
-    :nameservers => [ "[2001:41c8:2::1]", "[2001:41c8:2::2]", "80.68.80.24", "80.68.80.25" ],
+    :nameservers => [ "[2001:41c8:2::2]", "[2001:41c8:2::1]", "80.68.80.25", "80.68.80.24" ],
     :roles => {
       :external => {
         :zone => "bm"
