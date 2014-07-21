@@ -48,6 +48,12 @@ default_attributes(
         "kernel.sched_min_granularity_ns" => 10000000,
         "kernel.sched_wakeup_granularity_ns" => 15000000
       }
+    },
+    :swappiness => {
+      :comment => "Reduce swap usage",
+      :parameters => {
+        "vm.swappiness" => 10
+      }
     }
   },
   :nominatim => {
