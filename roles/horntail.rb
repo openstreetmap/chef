@@ -77,8 +77,8 @@ default_attributes(
         :gid => "tomh",
         :transfer_logging => false,
         :hosts_allow => [ 
-          "89.16.179.150",                       # shenron
-          "2001:41c8:10:996:21d:7dff:fec3:df70", # shenron
+          "212.110.172.32",                      # shenron
+          "2001:41c9:1:400::32",                 # shenron
           "212.159.112.221"                      # grant
         ]
       },
