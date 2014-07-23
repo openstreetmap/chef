@@ -1,7 +1,14 @@
+default[:hardware][:sensors] = {}
+
 if node[:dmi] and node[:dmi][:system]
   case dmi.system.manufacturer
   when "HP"
     default[:apt][:sources] |= [ "management-component-pack" ]
+
+    case dmi.system.product_name
+      when "ProLiant DL360 G6", "ProLiant DL360 G7"
+        default[:hardware][:sensors][:power][:power1] = { :ignore => true }
+    end
   end
 end
 

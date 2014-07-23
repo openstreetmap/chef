@@ -81,36 +81,11 @@ default_attributes(
             :max_children => "10"
         }
     }
-  },
-  :munin => {
-    :plugins => {
-      :ipmi_fans => {
-        :Sys3Front1 => { :graph => "no" },
-        :Sys4Front2 => { :graph => "no" },
-        :Sys5Rear1 => { :graph => "no" },
-        :Sys6 => { :graph => "no" },
-        :Sys7 => { :graph => "no" },
-        :Sys8 => { :graph => "no" },
-        :Sys9 => { :graph => "no" },
-        :Sys10 => { :graph => "no" }
-      },
-      :ipmi_temp => {
-        :CPU0belowTmax => { :critical => "10:" },
-        :CPU1belowTmax => { :critical => "10:" }
-      },
-      :sensors_volt => {
-        :volt6 => {
-          :warning => "2.992:3.536"
-        },
-        :volt10 => {
-          :warning => "2.71:3.29"
-        }
-      }
-    }
   }
 )
 
 run_list(
   "role[ucl-wolfson]",
+  "role[tyan-s7010]",
   "role[nominatim]"
 )

@@ -2,37 +2,6 @@ name "errol"
 description "Master role applied to errol"
 
 default_attributes(
-  :munin => {
-    :plugins => {
-      :ipmi_fans => {
-        :Sys3Front1 => { :graph => "no" },
-        :Sys4Front2 => { :graph => "no" },
-        :Sys5Rear1 => { :graph => "no" },
-        :Sys6 => { :graph => "no" },
-        :Sys7 => { :graph => "no" },
-        :Sys8 => { :graph => "no" },
-        :Sys9 => { :graph => "no" },
-        :Sys10 => { :graph => "no" }
-      },
-      :ipmi_temp => {
-        :CPU0belowTmax => { :critical => "10:" },
-        :CPU1belowTmax => { :critical => "10:" }
-      },
-      :sensors_fan => {
-        :contacts => "null"
-      },
-      :sensors_temp => {
-        :contacts => "null"
-      },
-      :sensors_volt => {
-        :contacts => "null",
-        :volt10 => { 
-          :warning => "3.11:3.50",
-          :critical => "2.98:3.63"
-        }
-      }
-    }
-  },
   :devices => {
     :osdsk => {
       :comment => "First os disk",
@@ -75,5 +44,6 @@ default_attributes(
 
 run_list(
   "role[ucl-wolfson]",
+  "role[tyan-s7010]",
   "role[dev]"
 )

@@ -1,0 +1,9 @@
+# DO NOT EDIT - This file is being maintained by Chef
+<% node[:hardware][:sensors].sort.each do |chip,sensors| -%>
+
+chip "<%= chip %>"
+<%= Chef::Sensors.attributes sensors[:volts], [:min, :max] -%>
+<%= Chef::Sensors.attributes sensors[:fans], [:min] -%>
+<%= Chef::Sensors.attributes sensors[:temps], [:max, :max_hyst, :crit, :crit_hyst] -%>
+<%= Chef::Sensors.attributes sensors[:power], [:interval] -%>
+<% end -%>

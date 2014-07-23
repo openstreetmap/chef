@@ -26,42 +26,6 @@ default_attributes(
       }
     }
   },
-  :munin => {
-    :plugins => {
-      :ipmi_fans => {
-        :Sys3Front1 => { :graph => "no" },
-        :Sys4Front2 => { :graph => "no" },
-        :Sys5Rear1 => { :graph => "no" },
-        :Sys6 => { :graph => "no" },
-        :Sys7 => { :graph => "no" },
-        :Sys8 => { :graph => "no" },
-        :Sys9 => { :graph => "no" },
-        :Sys10 => { :graph => "no" }
-      },
-      :ipmi_temp => {
-        :CPU0belowTmax => { :critical => "10:" },
-        :CPU1belowTmax => { :critical => "10:" }
-      },
-      :sensors_fan => {
-        :fan3 => { :graph => "no" },
-        :fan4 => { :graph => "no" },
-        :fan5 => { :graph => "no" },
-        :fan6 => { :graph => "no" },
-        :fan7 => { :graph => "no" },
-        :fan8 => { :graph => "no" },
-        :fan9 => { :graph => "no" },
-        :fan10 => { :graph => "no" },
-        :fan11 => { :graph => "no" },
-        :fan12 => { :graph => "no" }
-      },
-      :sensors_volt => {
-        :contacts => "null",
-        :volt6 => {
-          :warning => "2.992:3.536"
-        }
-      }
-    }
-  },
   :networking => {
     :interfaces => {
       :external_ipv4 => {
@@ -118,5 +82,6 @@ override_attributes(
 
 run_list(
   "role[ic]",
+  "role[tyan-s7010]",
   "role[tile]"
 )

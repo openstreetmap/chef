@@ -79,18 +79,6 @@ remote_directory "/etc/munin/plugin-conf.d" do
   notifies :restart, "service[munin-node]"
 end
 
-if node[:dmi] and node[:dmi][:system] and node[:dmi][:system][:manufacturer] == "HP"
-  case node[:dmi][:system][:product_name]
-  when "ProLiant DL360 G6", "ProLiant DL360 G7"
-    template "/etc/sensors.d/disable-bad-acpi-sensor.conf" do
-      source "disable-bad-acpi-sensor.conf.erb"
-      owner "root"
-      group "root"
-      mode 0644
-    end
-  end
-end
-
 if Dir.glob("/proc/acpi/thermal_zone/*/temperature").empty?
   munin_plugin "acpi" do
     action :delete

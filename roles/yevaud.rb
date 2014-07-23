@@ -58,29 +58,6 @@ default_attributes(
           :warning => 150,
           :critical => 200
         }
-      },
-      :ipmi_fans => {
-        :Sys3Front1 => { :graph => "no" },
-        :Sys4Front2 => { :graph => "no" },
-        :Sys5Rear1 => { :graph => "no" },
-        :Sys6 => { :graph => "no" },
-        :Sys7 => { :graph => "no" },
-        :Sys8 => { :graph => "no" },
-        :Sys9 => { :graph => "no" },
-        :Sys10 => { :graph => "no" }
-      },
-      :ipmi_temp => {
-        :CPU0belowTmax => { :critical => "10:" },
-        :CPU1belowTmax => { :critical => "10:" }
-      },
-      :sensors_fan => {
-        :contacts => "null"
-      },
-      :sensors_temp => {
-        :contacts => "null"
-      },
-      :sensors_volt => {
-        :contacts => "null"
       }
     }
   },
@@ -134,5 +111,6 @@ default_attributes(
 
 run_list(
   "role[ucl-wolfson]",
+  "role[tyan-s7010]",
   "role[tile]"
 )

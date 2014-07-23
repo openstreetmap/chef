@@ -269,3 +269,22 @@ if watchdog
     action [ :enable, :start ]
   end
 end
+
+unless Dir.glob("/sys/class/hwmon/hwmon*").empty?
+  package "lm-sensors"
+
+  execute "/etc/sensors.d/chef.conf" do
+    action :nothing
+    command "/usr/bin/sensors -s"
+    user "root"
+    group "root"
+  end
+
+  template "/etc/sensors.d/chef.conf" do
+    source "sensors.conf.erb"
+    owner "root"
+    group "root"
+    mode 0644
+    notifies :run, "execute[/etc/sensors.d/chef.conf]"
+  end
+end
