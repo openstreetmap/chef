@@ -85,9 +85,9 @@ default_attributes(
   :munin => {
     :plugins => {
       :ipmi_fans => {
-        :Sys3 => { :graph => "no" },
-        :Sys4 => { :graph => "no" },
-        :Sys5 => { :graph => "no" },
+        :Sys3Front1 => { :graph => "no" },
+        :Sys4Front2 => { :graph => "no" },
+        :Sys5Rear1 => { :graph => "no" },
         :Sys6 => { :graph => "no" },
         :Sys7 => { :graph => "no" },
         :Sys8 => { :graph => "no" },
