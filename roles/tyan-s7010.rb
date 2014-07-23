@@ -17,6 +17,8 @@ default_attributes(
           "in9" => { :min => 2.608, :max => 3.536 }
         },
         :fans => {
+          "fan1" => { :min => 1500 },
+          "fan2" => { :min => 1500 },
           "fan3" => { :ignore => true },
           "fan4" => { :ignore => true },
           "fan5" => { :ignore => true },
