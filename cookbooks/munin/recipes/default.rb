@@ -313,6 +313,7 @@ end
 if sensors_volt
   munin_plugin "sensors_volt" do
     target "sensors_"
+    conf "sensors_volt.erb"
   end
 else
   munin_plugin "sensors_volt" do
