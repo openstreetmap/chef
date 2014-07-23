@@ -38,6 +38,10 @@ default_attributes(
         :Sys9 => { :graph => "no" },
         :Sys10 => { :graph => "no" }
       },
+      :ipmi_temp => {
+        :CPU0belowTmax => { :critical => "10:" },
+        :CPU1belowTmax => { :critical => "10:" }
+      },
       :sensors_fan => {
         :fan3 => { :graph => "no" },
         :fan4 => { :graph => "no" },

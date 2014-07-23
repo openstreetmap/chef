@@ -4,6 +4,10 @@ description "Master role applied to errol"
 default_attributes(
   :munin => {
     :plugins => {
+      :ipmi_temp => {
+        :CPU0belowTmax => { :critical => "10:" },
+        :CPU1belowTmax => { :critical => "10:" }
+      },
       :sensors_fan => {
         :contacts => "null"
       },

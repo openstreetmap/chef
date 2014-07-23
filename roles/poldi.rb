@@ -94,6 +94,10 @@ default_attributes(
         :Sys9 => { :graph => "no" },
         :Sys10 => { :graph => "no" }
       },
+      :ipmi_temp => {
+        :CPU0belowTmax => { :critical => "10:" },
+        :CPU1belowTmax => { :critical => "10:" }
+      },
       :sensors_volt => {
         :volt6 => {
           :warning => "2.992:3.536"

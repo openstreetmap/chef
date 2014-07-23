@@ -63,7 +63,8 @@ default_attributes(
         :contacts => "null",
       },
       :ipmi_temp => {
-        :contacts => "null",
+        :CPU0belowTmax => { :critical => "10:" },
+        :CPU1belowTmax => { :critical => "10:" }
       },
       :sensors_fan => {
         :contacts => "null"
