@@ -7,7 +7,7 @@ if node[:dmi] and node[:dmi][:system]
 
     case dmi.system.product_name
       when "ProLiant DL360 G6", "ProLiant DL360 G7"
-        default[:hardware][:sensors][:power][:power1] = { :ignore => true }
+        default[:hardware][:sensors]["power_meter-*"][:power]["power1"] = { :ignore => true }
     end
   end
 end
