@@ -16,6 +16,11 @@ default_attributes(
       :max_requests_per_child => 2000
     }
   },
+  :hardware => {
+    :modules => [
+      "it87"
+    ],
+  },
   :networking => {
     :interfaces => {
       :external_ipv4 => {

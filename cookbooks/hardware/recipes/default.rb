@@ -248,6 +248,27 @@ end
   end
 end
 
+template "/etc/modules" do
+  source "modules.erb"
+  owner "root"
+  group "root"
+  mode 0644
+end
+
+if node[:lsb][:release].to_f <= 12.10
+  service "module-init-tools" do
+    provider Chef::Provider::Service::Upstart
+    action :nothing
+    subscribes :start, "template[/etc/modules]"
+  end
+else
+  service "kmod" do
+    provider Chef::Provider::Service::Upstart
+    action :nothing
+    subscribes :start, "template[/etc/modules]"
+  end
+end
+
 if node[:hardware][:watchdog]
   package "watchdog"
 

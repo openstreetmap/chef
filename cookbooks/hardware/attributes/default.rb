@@ -1,3 +1,4 @@
+default[:hardware][:modules] = [ "loop", "lp", "rtc" ]
 default[:hardware][:sensors] = {}
 
 if node[:dmi] and node[:dmi][:system]
@@ -12,12 +13,24 @@ if node[:dmi] and node[:dmi][:system]
   end
 end
 
+if Chef::Util.compare_versions(node[:kernel][:release], [3, 3]) < 0
+  default[:hardware][:modules] |= [ "microcode" ]
+
+  if node[:cpu]["0"][:vendor_id] == "GenuineIntel"
+    default[:hardware][:modules] |= [ "coretemp" ]
+  end
+end
+
 if node[:kernel] and node[:kernel][:modules]
   raidmods = node[:kernel][:modules].keys & ["cciss", "hpsa", "mptsas", "mpt2sas", "megaraid_mm", "megaraid_sas", "aacraid"]
 
   unless raidmods.empty?
     default[:apt][:sources] |= [ "hwraid" ]
   end
+end
+
+if node[:kernel][:modules].include?("ipmi_si")
+  default[:hardware][:modules] |= [ "ipmi_devintf" ]
 end
 
 if File.exists?("/proc/xen")
