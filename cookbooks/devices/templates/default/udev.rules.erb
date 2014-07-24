@@ -24,7 +24,7 @@ ACTION=="add", SUBSYSTEM=="block", ENV{ID_BUS}=="<%= device[:bus] %>", ENV{ID_SE
 <% end -%>
 <% end -%>
 <% end -%>
-<% if node[:lsb][:release] == "12.04" && node[:kernel][:release].to_f >= 3.11 -%>
+<% if node[:lsb][:release] == "12.04" && Chef::Util.compare_versions(node[:kernel][:release], [3, 11]) >= 0 -%>
 
 # Rule from 14.04 udev for 12.04 machines running newer kernels
 ACTION=="add", SUBSYSTEM=="cpu", ENV{MODALIAS}=="?*", RUN+="/sbin/modprobe -bv $env{MODALIAS}"
