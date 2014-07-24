@@ -27,6 +27,9 @@ default_attributes(
       }
     }
   },
+  :hardware => {
+    :watchdog => "w83627hf_wdt"
+  },
   :networking => {
     :interfaces => {
       :internal_ipv4 => {

@@ -19,3 +19,9 @@ if node[:kernel] and node[:kernel][:modules]
     default[:apt][:sources] |= [ "hwraid" ]
   end
 end
+
+if File.exists?("/proc/xen")
+  default[:hardware][:watchdog] = "xen_wdt"
+elsif node[:kernel][:modules].include?("i6300esb")
+  default[:hardware][:watchdog] = "none"
+end

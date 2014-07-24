@@ -248,13 +248,7 @@ end
   end
 end
 
-if File.exists?("/proc/xen")
-  watchdog = "xen_wdt"
-elsif node[:kernel][:modules].include?("i6300esb")
-  watchdog = "none"
-end
-
-if watchdog
+if node[:hardware][:watchdog]
   package "watchdog"
 
   template "/etc/default/watchdog" do
@@ -262,7 +256,7 @@ if watchdog
     owner "root"
     group "root"
     mode 0644
-    variables :module => watchdog
+    variables :module => node[:hardware][:watchdog]
   end
 
   service "watchdog" do
