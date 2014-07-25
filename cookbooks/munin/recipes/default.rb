@@ -325,6 +325,8 @@ node[:block_device].each do |name,attributes|
   if attributes[:vendor] == "ATA"
     munin_plugin "smart_#{name}" do
       target "smart_"
+      conf "smart.erb"
+      conf_variables :disk => name
     end
   else
     munin_plugin "smart_#{name}" do
