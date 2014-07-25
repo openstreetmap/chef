@@ -26,14 +26,12 @@ if node[:lsb][:release].to_f < 14.04
 else
   ["event", "itk", "prefork", "worker"].each do |mpm|
     if mpm == node[:apache][:mpm]
-      apache_module mpm do
-        action [ :install, :enable ]
-        package "apache2-mpm-#{node[:apache][:mpm]}"
+      apache_module "mpm_#{mpm}" do
+        action [ :enable ]
       end
     else
-      apache_module mpm do
+      apache_module "mpm_#{mpm}" do
         action [ :disable ]
-        package "apache2-mpm-#{node[:apache][:mpm]}"
       end
     end
   end
