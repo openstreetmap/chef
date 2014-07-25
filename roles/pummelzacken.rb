@@ -11,7 +11,7 @@ default_attributes(
         :address => "10.0.0.20"
       },
       :external_ipv4 => {
-        :interface => "p5p2",
+        :interface => "em2",
         :role => :external,
         :family => :inet,
         :address => "128.40.45.204"
