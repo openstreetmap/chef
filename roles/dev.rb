@@ -142,10 +142,6 @@ default_attributes(
       :comments => {
         :repository => "git://github.com/ukasiu/openstreetmap-website.git",
         :revision => "changeset_comments"
-      },
-      :rails41 => {
-        :repository => "git://github.com/tomhughes/openstreetmap-website.git",
-        :revision => "rails41"
       }
     }
   },
