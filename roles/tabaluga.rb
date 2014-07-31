@@ -27,8 +27,6 @@ default_attributes(
     :cache_dir => "coss /store/squid/coss-01 128000 block-size=8192 max-size=262144 membufs=80"
   },
   :tilecache => {
-    :ip_bucket_refill => "6144",
-    :net_bucket_refill => "24576",
     :tile_parent => "falkenstein.render.openstreetmap.org",
     :tile_siblings => [
       "trogdor.openstreetmap.org",
