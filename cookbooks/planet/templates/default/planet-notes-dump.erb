@@ -42,7 +42,7 @@ if ((planet_notes_size<12000000)); then
 	exit 1
 fi
 
-mv .${cur_planet_notes}.bz2.new ${cur_planet_notes}.bz2
+mv .${cur_planet_notes}.bz2 ${cur_planet_notes}.bz2
 md5sum ${cur_planet_notes}.bz2 > ${cur_planet_notes}.bz2.md5
 
 #link planet latest to the new file
