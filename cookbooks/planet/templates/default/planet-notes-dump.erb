@@ -1,0 +1,59 @@
+#!/bin/bash
+ulimit -m 4194304 -v 4194304
+set -e
+
+if [ -f /tmp/planet-notes-dump.lock ]; then
+	if [ "$(ps -p `cat /tmp/planet-notes-dump.lock` | wc -l)" -gt 1 ]; then
+		# process is still running
+		echo Error: Another planet-notes-dump is running
+		exit 1
+	else
+		# process not running, but lock file not deleted?
+		rm /tmp/planet-notes-dump.lock
+	fi
+fi
+
+#Create Lock
+echo $$ > /tmp/planet-notes-dump.lock
+
+
+cur_date=`date +%y%m%d`
+cur_year=`date +%Y`
+cur_planet_notes=planet-notes-${cur_date}.osn
+planet_dir=/store/planet/
+
+export PATH='/usr/local/bin:/usr/bin:/bin:/usr/bin/X11'
+
+
+if [ \! -d ${planet_dir}/notes/ ]
+	then
+		echo ${planet_dir}notes/ does not exist
+		exit 1
+	fi
+if [ \! -d ${planet_dir}/notes/${cur_year}/ ]; then mkdir ${planet_dir}/notes/${cur_year}/; fi
+cd ${planet_dir}/notes/${cur_year}/
+
+/usr/bin/python /opt/planet-notes-dump/dump.py --database openstreetmap --host db-slave --user planetdump --password '<%= @password %>' .${cur_planet_notes}
+pbzip2 -p6 -9 .${cur_planet_notes}
+
+planet_notes_size=$(du -sb .${cur_planet_notes}.bz2 | awk '{ print $1 }')
+if ((planet_notes_size<12000000)); then
+	echo Planet .${cur_planet_notes}.bz2 too small
+	exit 1
+fi
+
+mv .${cur_planet_notes}.bz2.new ${cur_planet_notes}.bz2
+md5sum ${cur_planet_notes}.bz2 > ${cur_planet_notes}.bz2.md5
+
+#link planet latest to the new file
+cd ${planet_dir}/notes/
+
+ln -fs ${cur_year}/${cur_planet_notes}.bz2 planet-notes-latest.osn.bz2
+
+# mangle md5 files for 'latest' ones
+rm -f planet-notes-latest.osn.bz2.md5
+
+sed -e "s/${cur_planet_notes}.bz2/planet-notes-latest.osn.bz2/" ${cur_year}/${cur_planet_notes}.bz2.md5 > planet-notes-latest.osn.bz2.md5
+
+rm /tmp/planet-notes-dump.lock
+
