@@ -141,7 +141,7 @@ default_attributes(
       },
       :comments => {
         :repository => "git://github.com/ukasiu/openstreetmap-website.git",
-        :revision => "changeset_comments"
+        :revision => "changeset_comments_pr"
       }
     }
   },
