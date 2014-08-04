@@ -248,6 +248,26 @@ end
   end
 end
 
+if File.exists?("/etc/mdadm/mdadm.conf")
+  mdadm_conf = edit_file "/etc/mdadm/mdadm.conf" do |line|
+    line.gsub!(/^MAILADDR .*$/, "MAILADDR admins@openstreetmap.org")
+
+    line
+  end
+
+  file "/etc/mdadm/mdadm.conf" do
+    owner "root"
+    group "root"
+    mode 0644
+    content mdadm_conf
+  end
+
+  service "mdadm" do
+    action :nothing
+    subscribes :restart, "file[/etc/mdadm/mdadm.conf]"
+  end
+end
+
 template "/etc/modules" do
   source "modules.erb"
   owner "root"
