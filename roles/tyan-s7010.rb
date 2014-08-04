@@ -43,14 +43,14 @@ default_attributes(
   :munin => {
     :plugins => {
       :ipmi_fans => {
-        :Sys3Front1 => { :graph => "no" },
-        :Sys4Front2 => { :graph => "no" },
-        :Sys5Rear1 => { :graph => "no" },
-        :Sys6 => { :graph => "no" },
-        :Sys7 => { :graph => "no" },
-        :Sys8 => { :graph => "no" },
-        :Sys9 => { :graph => "no" },
-        :Sys10 => { :graph => "no" }
+        :Sys3Front1 => { :graph => "no", :warning => "0:" },
+        :Sys4Front2 => { :graph => "no", :warning => "0:" },
+        :Sys5Rear1 => { :graph => "no", :warning => "0:" },
+        :Sys6 => { :graph => "no", :warning => "0:" },
+        :Sys7 => { :graph => "no", :warning => "0:" },
+        :Sys8 => { :graph => "no", :warning => "0:" },
+        :Sys9 => { :graph => "no", :warning => "0:" },
+        :Sys10 => { :graph => "no", :warning => "0:" }
       },
       :ipmi_temp => {
         :CPU0belowTmax => { :critical => "10:" },
