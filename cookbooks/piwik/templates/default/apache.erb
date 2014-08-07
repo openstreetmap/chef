@@ -8,6 +8,8 @@
 	CustomLog /var/log/apache2/piwik.openstreetmap.org-access.log combined
 	ErrorLog /var/log/apache2/piwik.openstreetmap.org-error.log
 
+	Options -Indexes
+
 	DocumentRoot /srv/piwik.openstreetmap.org
 	RedirectPermanent /index.php https://piwik.openstreetmap.org/index.php
 </VirtualHost>
@@ -25,6 +27,7 @@
 	CustomLog /var/log/apache2/piwik.openstreetmap.org-access.log combined
 	ErrorLog /var/log/apache2/piwik.openstreetmap.org-error.log
 
-	DocumentRoot /srv/piwik.openstreetmap.org
 	Options -Indexes
+
+	DocumentRoot /srv/piwik.openstreetmap.org
 </VirtualHost>
