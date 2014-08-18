@@ -2,9 +2,6 @@ name "draco"
 description "Master role applied to draco"
 
 default_attributes(
-  :apt => {
-    :sources => [ "ubuntugis-stable", "ubuntugis-unstable" ]
-  },
   :networking => {
     :interfaces => {
       :internal_ipv4 => {
