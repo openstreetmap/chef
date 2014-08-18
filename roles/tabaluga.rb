@@ -29,9 +29,12 @@ default_attributes(
   :tilecache => {
     :tile_parent => "falkenstein.render.openstreetmap.org",
     :tile_siblings => [
-      "trogdor.openstreetmap.org",
-      "lurien.openstreetmap.org",
-      "ridgeback.openstreetmap.org"
+       "trogdor.openstreetmap.org",
+       "nepomuk.openstreetmap.org",
+       "ridgeback.openstreetmap.org",
+       "fume.openstreetmap.org",
+       "gorynych.openstreetmap.org",
+       "simurgh.openstreetmap.org"
     ]
   }
 )

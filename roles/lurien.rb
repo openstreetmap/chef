@@ -29,9 +29,11 @@ default_attributes(
   :tilecache => {
     :tile_parent => "pau.render.openstreetmap.org",
     :tile_siblings => [
-      "tabaluga.openstreetmap.org",
       "nepomuk.openstreetmap.org",
-      "ridgeback.openstreetmap.org"
+      "tabaluga.openstreetmap.org",
+      "ridgeback.openstreetmap.org",
+      "fume.openstreetmap.org",
+      "gorynych.openstreetmap.org"
     ]
   }
 )

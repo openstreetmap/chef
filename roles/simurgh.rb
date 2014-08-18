@@ -21,10 +21,11 @@ default_attributes(
   :tilecache => {
     :tile_parent => "baku.render.openstreetmap.org",
     :tile_siblings => [
-      "nepomuk.openstreetmap.org",
       "tabaluga.openstreetmap.org",
-      "trogdor.openstreetmap.org",
-      "fume.openstreetmap.org"
+      "fume.openstreetmap.org",
+      "nepomuk.openstreetmap.org",
+      "ridgeback.openstreetmap.org",
+      "trogdor.openstreetmap.org"
     ]
   }
 )

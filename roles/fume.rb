@@ -41,8 +41,9 @@ default_attributes(
     :tile_siblings => [
       "trogdor.openstreetmap.org",
       "ridgeback.openstreetmap.org",
-      "trogdor.openstreetmap.org",
-      "gorynych.openstreetmap.org"
+      "tabaluga.openstreetmap.org",
+      "gorynych.openstreetmap.org",
+      "nepomuk.openstreetmap.org"
     ]
   }
 )

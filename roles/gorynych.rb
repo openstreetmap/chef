@@ -30,9 +30,11 @@ default_attributes(
   :tilecache => {
     :tile_parent => "moscow.render.openstreetmap.org",
     :tile_siblings => [
-      "nepomuk.openstreetmap.org",
+      "trogdor.openstreetmap.org",
+      "fume.openstreetmap.org",
       "tabaluga.openstreetmap.org",
-      "fume.openstreetmap.org"
+      "nepomuk.openstreetmap.org",
+      "ridgeback.openstreetmap.org"
     ]
   }
 )

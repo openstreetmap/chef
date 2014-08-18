@@ -35,7 +35,9 @@ default_attributes(
       "fume.openstreetmap.org",
       "trogdor.openstreetmap.org",
       "tabaluga.openstreetmap.org",
-      "nepomuk.openstreetmap.org"
+      "nepomuk.openstreetmap.org",
+      "gorynych.openstreetmap.org",
+      "simurgh.openstreetmap.org"
     ]
   },
   :munin => {
