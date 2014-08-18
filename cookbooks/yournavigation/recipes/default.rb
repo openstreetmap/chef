@@ -42,7 +42,7 @@ package "libqt4-core"
 package "libqt4-dev"
 package "qt4-dev-tools"
 package "qt4-linguist-tools"
-package "libicu48"
+package "libicu52"
 
 apache_module "php5"
 
