@@ -39,11 +39,19 @@ end
 
 admins = data_bag_item("apache", "admins")
 
-template "/etc/apache2/httpd.conf" do
-  source "httpd.conf.erb"
-  owner "root"
-  group "root"
-  mode 0644
+if node[:lsb][:release].to_f < 14.04
+  template "/etc/apache2/httpd.conf" do
+    source "httpd.conf.erb"
+    owner "root"
+    group "root"
+    mode 0644
+    notifies :reload, "service[apache2]"
+  end
+else
+  apache_conf "httpd" do
+    template "httpd.conf.erb"
+    notifies :reload, "service[apache2]"
+  end
 end
 
 template "/etc/apache2/ports.conf" do
@@ -56,7 +64,6 @@ end
 service "apache2" do
   action [ :enable, :start ]
   supports :status => true, :restart => true, :reload => true
-  subscribes :reload, "template[/etc/apache2/httpd.conf]"
 end
 
 apache_module "info" do
