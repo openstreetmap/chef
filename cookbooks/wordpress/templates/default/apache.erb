@@ -53,12 +53,14 @@
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteRule . /index.php [L]
+
     Options -Indexes
+
+    Require all granted
   </Directory>
 
   <Files <%= @directory %>/wp-config.php>
-    Order allow,deny
-    Deny from all
+    Require all denied
   </Files>
 
   <Directory <%= @directory %>/uploads>
@@ -68,17 +70,14 @@
   </Directory>
 
   <Directory ~ "\.svn">
-    Order allow,deny
-    Deny from all
+    Require all denied
   </Directory>
 
   <Directory ~ "\.git">
-    Order allow,deny
-    Deny from all
+    Require all denied
   </Directory>
 
   <Files ~ "~$">
-    Order allow,deny
-    Deny from all
+    Require all denied
   </Files>
 </VirtualHost>
