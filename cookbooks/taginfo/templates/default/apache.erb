@@ -22,3 +22,7 @@
         CacheEnable disk /embed
 </VirtualHost>
 <% end -%>
+
+<Directory <%= @directory %>>
+        Require all granted
+</Directory>
