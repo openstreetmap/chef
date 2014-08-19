@@ -49,7 +49,7 @@ gem_package "sinatra-r18n"
 gem_package "rack-contrib"
 
 apache_module "cache"
-apache_module "disk_cache"
+apache_module "cache_disk"
 
 template "/etc/cron.d/taginfo" do
   source "cron.erb"
