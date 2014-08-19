@@ -38,6 +38,11 @@
 <Directory /srv/gps-tile.openstreetmap.org/html>
   Options None
   AllowOverride None
-  Order allow,deny
-  Allow from all
+  Require all granted
+</Directory>
+
+<Directory /srv/gps-tile.openstreetmap.org/updater>
+  <Files tile>
+    Require all granted
+  </Files>
 </Directory>
