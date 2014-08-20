@@ -10,3 +10,7 @@
 	DocumentRoot <%= @directory %>/html
 	Alias /json/ /var/lib/dns/json/
 </VirtualHost>
+
+<Directory <%= @directory %>/html>
+	Require all granted
+</Directory>

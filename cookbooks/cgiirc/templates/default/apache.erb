@@ -13,6 +13,11 @@
 
 	<Directory "/usr/lib/cgi-bin/cgiirc">
 		AddHandler cgi-script .cgi
+		Require all granted
+	</Directory>
+
+	<Directory "/usr/share/images/cgiirc">
+		Require all granted
 	</Directory>
 
 	<IfModule mod_deflate.c>

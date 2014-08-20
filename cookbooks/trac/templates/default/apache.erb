@@ -37,3 +37,7 @@ WSGIDaemonProcess <%= @name %> user=<%= @user %> group=<%= @group %> maximum-req
 		Require valid-user
 	</Location>
 </VirtualHost>
+
+<Directory <%= @directory %>/htdocs>
+	Require all granted
+</Directory>
