@@ -93,7 +93,7 @@ execute "/opt/otrs/bin/otrs.SetPermissions.pl" do
   command "/opt/otrs/bin/otrs.SetPermissions.pl --otrs-user=#{user} --web-user=www-data --otrs-group=www-data --web-group=www-data /opt/otrs-#{version}"
   user "root"
   group "root"
-  not_if { File.stat("/opt/otrs/README").uid != Etc.getpwnam("otrs").uid }
+  not_if { File.stat("/opt/otrs/README.md").uid != Etc.getpwnam("otrs").uid }
 end
 
 execute "/opt/otrs/bin/otrs.RebuildConfig.pl" do
