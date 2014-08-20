@@ -19,6 +19,10 @@
 		LimitXMLRequestBody 0
 		LimitRequestBody 0
 
+		<Limit GET PROPFIND OPTIONS REPORT>
+			Require all granted
+		</Limit>
+
 		<LimitExcept GET PROPFIND OPTIONS REPORT>
 			Require valid-user
 		</LimitExcept>

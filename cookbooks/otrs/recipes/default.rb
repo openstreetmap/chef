@@ -34,6 +34,8 @@ package "libmail-imapclient-perl"
 package "libnet-ldap-perl"
 package "libpdf-api2-perl"
 package "libsoap-lite-perl"
+package "libyaml-libyaml-perl"
+package "libcrypt-eksblowfish-perl"
 
 apache_module "headers"
 

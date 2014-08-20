@@ -35,11 +35,19 @@ remote_directory "#{repository_directory}/hooks" do
   purge false
 end
 
-apache_module "authz_svn" do
-  package "libapache2-svn"
+apache_module "dav" do
+  package "apache2"
+end
+
+apache_module "dav_fs" do
+  package "apache2"
 end
 
 apache_module "dav_svn" do
+  package "libapache2-svn"
+end
+
+apache_module "authz_svn" do
   package "libapache2-svn"
 end
 
