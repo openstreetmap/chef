@@ -37,8 +37,7 @@
                 Options +ExecCGI
                 PerlOptions +ParseHeaders
                 PerlOptions +SetupEnv
-                Order allow,deny
-                Allow from all
+                Require all granted
         </Location>
 
         <Location /otrs/nph-genericinterface.pl>
@@ -49,14 +48,12 @@
 <Directory /opt/otrs/bin/cgi-bin>
         AllowOverride None
         Options +ExecCGI -Includes
-        Order allow,deny
-        Allow from all
+        Require all granted
 </Directory>
 
 <Directory /opt/otrs/var/httpd/htdocs>
         AllowOverride None
-        Order allow,deny
-        Allow from all
+        Require all granted
 </Directory>
 
 <Directory /opt/otrs/var/httpd/htdocs/skins/*/*/css-cache>
