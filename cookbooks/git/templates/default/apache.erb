@@ -16,3 +16,7 @@
 	RewriteRule ^/$ /gitweb.cgi%{REQUEST_URI} [L,PT]
 	RewriteRule ^/(.*\.git/(?!/?(HEAD|info|objects|refs)).*)?$ /gitweb.cgi%{REQUEST_URI} [L,PT]
 </VirtualHost>
+
+<Directory <%= @directory %>>
+	Require all granted
+</Directory>
