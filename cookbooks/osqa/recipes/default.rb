@@ -39,7 +39,7 @@ apache_module "wsgi"
 
 node[:osqa][:sites].each do |site|
   name = site[:name]
-  directory = site[:directory] || "/var/www/#{name}"
+  directory = site[:directory] || "/srv/#{name}"
   osqa_revision = site[:revision] || node[:osqa][:revision]
   site_user = site[:user] || node[:osqa][:user]
   site_user = Etc.getpwuid(site_user).name if site_user.is_a?(Integer)
@@ -55,6 +55,12 @@ node[:osqa][:sites].each do |site|
     variables :user => site_user, :group => site_group
   end
 
+  directory directory do
+    owner site_user
+    group site_group
+    mode 0755
+  end
+
   execute "osqa-migrate" do
     action :nothing
     command "python manage.py migrate forum"
@@ -64,23 +70,13 @@ node[:osqa][:sites].each do |site|
     notifies :reload, "service[apache2]"
   end
 
-  subversion "#{directory}/osqa" do
+  git "#{directory}/osqa" do
     action :sync
-    repository "http://svn.osqa.net/svnroot/osqa/trunk"
-    revision osqa_revision
+    repository "git://git.openstreetmap.org/osqa.git"
+    revision "live"
     user site_user
     group site_group
     notifies :run, "execute[osqa-migrate]"
-  end
-
-  remote_directory "#{directory}/osqa/forum_modules/osmauth" do
-    source "osmauth"
-    owner site_user
-    group site_group
-    mode 0755
-    files_owner site_user
-    files_group site_group
-    files_mode 0644
   end
 
   template "#{directory}/osqa/osqa.wsgi" do
@@ -97,6 +93,7 @@ node[:osqa][:sites].each do |site|
     line.gsub!(/^( *)'NAME': '.*',/, "\\1'NAME': '#{database_name}',")
     line.gsub!(/^( *)'USER': '.*',/, "\\1'USER': '#{database_user}',")
     line.gsub!(/^( *)'PASSWORD': '.*',/, "\\1'PASSWORD': '#{database_password}',")
+    line.gsub!(/^ALLOWED_HOSTS = .*/, "ALLOWED_HOSTS = ('help.openstreetmap.org',)")
     line.gsub!(/^CACHE_BACKEND = .*/, "CACHE_BACKEND = 'memcached://127.0.0.1:11211/'")
     line.gsub!(/^APP_URL = 'http:\/\/'/, "APP_URL = 'http://#{name}'")
     line.gsub!(/^TIME_ZONE = 'America\/New_York'/, "TIME_ZONE = 'Europe/London'")
