@@ -29,3 +29,7 @@ WSGIDaemonProcess <%= @name %> user=<%= @user %> group=<%= @group %> processes=4
 
         WSGIProcessGroup <%= @name %>
 </VirtualHost>
+
+<Directory <%= @directory %>>
+	Require all granted
+</Directory>
