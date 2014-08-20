@@ -41,3 +41,7 @@ WSGIDaemonProcess <%= @name %> user=<%= @user %> group=<%= @group %> maximum-req
 <Directory <%= @directory %>/htdocs>
 	Require all granted
 </Directory>
+
+<Directory <%= @directory %>/cgi-bin>
+	Require all granted
+</Directory>
