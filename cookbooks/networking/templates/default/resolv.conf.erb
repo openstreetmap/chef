@@ -5,3 +5,4 @@ search <%= node[:networking][:search].join(" ") %>
 <% node[:networking][:nameservers].each do |nameserver| -%>
 nameserver <%= nameserver %>
 <% end -%>
+options timeout:1
