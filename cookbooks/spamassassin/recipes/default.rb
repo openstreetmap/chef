@@ -24,6 +24,13 @@ service "spamassassin" do
   supports :status => true, :restart => true, :reload => true
 end
 
+directory "/var/spool/spamassassin" do
+  owner "mail"
+  group "mail"
+  mode 0755
+  action :create
+end
+
 template "/etc/default/spamassassin" do
   source "spamassassin.erb"
   owner "root"
