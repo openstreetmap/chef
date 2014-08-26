@@ -51,7 +51,7 @@ node[:osqa][:sites].each do |site|
 
   apache_site name do
     template "apache.erb"
-    directory "#{directory}/osqa"
+    directory directory
     variables :user => site_user, :group => site_group
   end
 
