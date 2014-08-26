@@ -79,6 +79,12 @@ node[:osqa][:sites].each do |site|
     notifies :run, "execute[osqa-migrate]"
   end
 
+  directory "#{directory}/upfiles" do
+    user site_user
+    group site_group
+    mode 0755
+  end
+
   template "#{directory}/osqa/osqa.wsgi" do
     source "osqa.wsgi.erb"
     owner site_user
