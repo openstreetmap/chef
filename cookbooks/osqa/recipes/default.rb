@@ -48,6 +48,7 @@ node[:osqa][:sites].each do |site|
   database_name = site[:database_name] || node[:osqa][:database_name]
   database_user = site[:database_user] || node[:osqa][:database_user]
   database_password = site[:database_user] || node[:osqa][:database_password]
+  backup_name = site[:backup]
 
   apache_site name do
     template "apache.erb"
@@ -114,5 +115,13 @@ node[:osqa][:sites].each do |site|
     mode 0644
     content settings
     notifies :reload, "service[apache2]"
+  end
+
+  template "/etc/cron.daily/#{backup_name}-backup" do
+    source "backup.cron.erb"
+    owner "root"
+    group "root"
+    mode 0755
+    variables :name => backup_name, :directory => directory, :user => site_user, :database => database_name
   end
 end

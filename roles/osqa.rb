@@ -9,7 +9,7 @@ default_attributes(
   },
   :osqa => {
     :sites => [
-      { :name => "help.openstreetmap.org" }
+      { :name => "help.openstreetmap.org", :backup => "osqa" }
     ]
   }
 )
