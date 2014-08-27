@@ -2,6 +2,7 @@
 
 [attachment]
 max_size = 262144
+max_zip_size = 2097152
 render_unsafe_content = false
 
 [browser]
@@ -17,7 +18,8 @@ render_unsafe_content = false
 wiki_properties = trac:description
 
 [changeset]
-max_diff_files = 100
+max_diff_bytes = 10000000
+max_diff_files = 0
 wiki_format_messages = true
 
 [components]
@@ -27,11 +29,12 @@ tracopt.versioncontrol.svn.* = enabled
 [header_logo]
 alt = OpenStreetMap
 height = 80
-link = http://trac.openstreetmap.org/
+link = https://<%= @name %>/
 src = site/osm.png
 width = 228
 
 [inherit]
+htdocs_dir = 
 plugins_dir = 
 templates_dir = 
 
@@ -42,6 +45,7 @@ josm.url = http://josm.openstreetmap.de
 
 [logging]
 log_file = trac.log
+# log_format = <inherited>
 log_level = INFO
 log_type = file
 
@@ -49,28 +53,31 @@ log_type = file
 stats_provider = DefaultTicketGroupStatsProvider
 
 [mimeviewer]
-enscript_modes = text/x-dylan:dylan:4
-enscript_path = enscript
-max_preview_size = 102400
+max_preview_size = 262144
 mime_map = text/x-dylan:dylan,text/x-idl:ice,text/x-ada:ads:adb
-php_path = php
+mime_map_patterns = text/plain:README|INSTALL|COPYING.*
 pygments_default_style = trac
 pygments_modes = 
 tab_width = 8
-treat_as_binary = application/octet-stream,application/pdf,application/postscript,application/rtf
+treat_as_binary = application/octet-stream, application/pdf, application/postscript, application/msword,application/rtf,
 
 [notification]
 admit_domains = 
 always_notify_owner = true
 always_notify_reporter = true
 always_notify_updater = true
+ambiguous_char_width = single
+batch_subject_template = $prefix Batch modify: $tickets_descr
+email_sender = SmtpEmailSender
 ignore_domains = 
-mime_encoding = qp
+mime_encoding = none
+sendmail_path = sendmail
 smtp_always_bcc = 
 smtp_always_cc = 
 smtp_default_domain = 
 smtp_enabled = true
 smtp_from = trac@noreply.openstreetmap.org
+smtp_from_author = false
 smtp_from_name = 
 smtp_password = 
 smtp_port = 25
@@ -79,7 +86,7 @@ smtp_server = localhost
 smtp_subject_prefix = __default__
 smtp_user = 
 ticket_subject_template = $prefix #$ticket.id: $summary
-use_public_cc = true
+use_public_cc = false
 use_short_addr = false
 use_tls = false
 
@@ -96,19 +103,39 @@ url = http://www.openstreetmap.org/
 default_anonymous_query = status!=closed&cc~=$USER
 default_query = status!=closed&owner=$USER
 items_per_page = 100
+ticketlink_query = ?status=!closed
 
 [report]
 items_per_page = 100
 items_per_page_rss = 0
 
+[repositories]
+subversion.dir = /var/lib/subversion/repos/openstreetmap
+subversion.description = Legacy subversion repository
+subversion.type = svn
+subversion.url = http://svn.openstreetmap.org/
+subversion.hidden = true
+<% Dir.glob("/var/lib/git/*.git").sort.each do |repository| -%>
+<%= File.basename(repository, ".git") %>.dir = <%= repository %>
+<%= File.basename(repository, ".git") %>.description = <%= IO.read("#{repository}/description").strip %>
+<%= File.basename(repository, ".git") %>.type = git
+<%= File.basename(repository, ".git") %>.url = git://git.openstreetmap.org/<%= File.basename(repository) %>
+<% end -%>
+.alias = subversion
+
 [revisionlog]
 default_log_limit = 100
+graph_colors = ['#cc0', '#0c0', '#0cc', '#00c', '#c0c', '#c00']
 
 [roadmap]
 stats_provider = DefaultTicketGroupStatsProvider
 
 [search]
+# default_disabled_filters = <inherited>
 min_query_length = 3
+
+[sqlite]
+# extensions = <inherited>
 
 [svn]
 branches = trunk,branches/*
@@ -120,7 +147,7 @@ default_component =
 default_description = 
 default_keywords = 
 default_milestone = 
-default_owner = 
+default_owner = < default >
 default_priority = minor
 default_resolution = fixed
 default_severity = 
@@ -161,8 +188,11 @@ newticket_formatter = oneliner
 ticket_show_details = false
 
 [trac]
+auth_cookie_lifetime = 0
+auth_cookie_path = 
 authz_file = 
 authz_module_name = 
+auto_preview_timeout = 2.0
 auto_reload = False
 backup_dir = db
 base_url = https://<%= @name %>/
@@ -170,8 +200,13 @@ check_auth_ip = false
 database = sqlite:db/trac.db
 debug_sql = False
 default_charset = utf-8
+default_dateinfo_format = relative
+genshi_cache_size = 128
 htdocs_location = 
 ignore_auth_case = false
+jquery_location = 
+jquery_ui_location = 
+jquery_ui_theme_location = 
 mainnav = wiki,timeline,roadmap,browser,tickets,newticket,search
 metanav = login,logout,prefs,help,about
 mysqldump_path = mysqldump
@@ -179,30 +214,23 @@ never_obfuscate_mailto = false
 permission_policies = DefaultPermissionPolicy, LegacyAttachmentPolicy
 permission_store = DefaultPermissionStore
 pg_dump_path = pg_dump
-repository_sync_per_request = 
+repository_dir = 
+repository_sync_per_request = (default)
+repository_type = svn
+resizable_textareas = true
 secure_cookies = False
 show_email_addresses = false
 show_ip_addresses = false
 timeout = 20
 use_base_url_for_redirect = False
 
-[repositories]
-subversion.dir = /var/lib/subversion/repos/openstreetmap
-subversion.description = Legacy subversion repository
-subversion.type = svn
-subversion.url = http://svn.openstreetmap.org/
-subversion.hidden = true
-<% Dir.glob("/var/lib/git/*.git").each do |repository| -%>
-<%= File.basename(repository, ".git") %>.dir = <%= repository %>
-<%= File.basename(repository, ".git") %>.description = <%= IO.read("#{repository}/description").strip %>
-<%= File.basename(repository, ".git") %>.type = git
-<%= File.basename(repository, ".git") %>.url = git://git.openstreetmap.org/<%= File.basename(repository) %>
-<% end -%>
-.alias = subversion
+[versioncontrol]
+allowed_repository_dir_prefixes = 
 
 [wiki]
 ignore_missing_pages = false
 max_size = 262144
 render_unsafe_content = false
+safe_schemes = cvs, file, ftp, git, irc, http, https, news, sftp, smb, ssh, svn, svn+ssh
 split_page_names = false
 
