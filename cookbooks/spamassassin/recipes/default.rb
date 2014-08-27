@@ -28,7 +28,6 @@ directory "/var/spool/spamassassin" do
   owner "mail"
   group "mail"
   mode 0755
-  action :create
 end
 
 template "/etc/default/spamassassin" do

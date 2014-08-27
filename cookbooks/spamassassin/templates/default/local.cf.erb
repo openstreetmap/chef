@@ -5,3 +5,6 @@ required_score 5.0
 
 # Set which networks or hosts are considered 'trusted'
 trusted_networks <%= @trusted_networks.join(" ") %>
+
+# Set the location for our state files
+bayes_path /var/spool/spamassassin/bayes
