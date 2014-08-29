@@ -298,7 +298,6 @@
   RedirectPermanent /events.ics http://calendar.openstreetmap.org.uk/events.ics
   RedirectPermanent / http://www.openstreetmap.org/
 </VirtualHost>
-<% if node[:lsb][:release].to_f >= 14.04 -%>
 
 <Directory <%= node[:web][:base_directory] %>/rails/public>
   Require all granted
@@ -323,4 +322,3 @@
 <Directory /store/rails/attachments>
   Require all granted
 </Directory>
-<% end -%>

@@ -28,10 +28,8 @@ apache_module "expires"
 apache_module "headers"
 apache_module "proxy_http"
 apache_module "proxy_balancer"
-if node[:lsb][:release].to_f >= 14.04
-  apache_module "lbmethod_byrequests"
-  apache_module "lbmethod_bybusyness"
-end
+apache_module "lbmethod_byrequests"
+apache_module "lbmethod_bybusyness"
 apache_module "rewrite"
 
 apache_site "default" do
