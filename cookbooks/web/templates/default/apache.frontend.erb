@@ -307,6 +307,26 @@
 <% if node[:lsb][:release].to_f >= 14.04 -%>
 
 <Directory <%= node[:web][:base_directory] %>/rails/public>
-        Require all granted
+  Require all granted
+</Directory>
+
+<Directory /srv/www.openstreetmap.org/rails/app/assets>
+  Require all granted
+</Directory>
+
+<Directory /srv/www.openstreetmap.org/rails/vendor/assets>
+  Require all granted
+</Directory>
+
+<Directory /store/rails/stats>
+  Require all granted
+</Directory>
+
+<Directory /store/rails/user/image>
+  Require all granted
+</Directory>
+
+<Directory /store/rails/attachments>
+  Require all granted
 </Directory>
 <% end -%>

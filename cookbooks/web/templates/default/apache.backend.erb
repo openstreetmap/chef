@@ -67,6 +67,6 @@
 <% if node[:lsb][:release].to_f >= 14.04 -%>
 
 <Directory <%= node[:web][:base_directory] %>/rails/public>
-        Require all granted
+  Require all granted
 </Directory>
 <% end -%>
