@@ -30,6 +30,7 @@ package "libfcgi-dev"
 package "libxml2-dev"
 package "libmemcached-dev"
 package "libboost-regex-dev"
+package "libboost-system-dev"
 package "libboost-program-options-dev"
 package "libboost-date-time-dev"
 package "libpqxx3-dev"
@@ -38,6 +39,12 @@ package "zlib1g-dev"
 cgimap_directory = "#{node[:web][:base_directory]}/cgimap"
 pid_directory = node[:web][:pid_directory]
 log_directory = node[:web][:log_directory]
+
+if node[:lsb][:release].to_f >= 14.04
+  libdir = "/usr/lib/x86_64-linux-gnu"
+else
+  libdir = "/usr/lib"
+end
 
 execute "cgimap-build" do
   action :nothing
@@ -49,7 +56,7 @@ end
 
 execute "cgimap-configure" do
   action :nothing
-  command "./configure --with-fcgi=/usr --with-boost-libdir=/usr/lib"
+  command "./configure --with-fcgi=/usr --with-boost-libdir=#{libdir}"
   cwd cgimap_directory
   user "rails"
   group "rails"
