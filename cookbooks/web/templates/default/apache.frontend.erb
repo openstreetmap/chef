@@ -194,9 +194,9 @@
   <Proxy balancer://backend>
     ProxySet lbmethod=bybusyness
 <% if port == 443 -%>
-    BalancerMember https://rails1
-    BalancerMember https://rails2
-    BalancerMember https://rails3
+    BalancerMember https://rails1 disablereuse=on
+    BalancerMember https://rails2 disablereuse=on
+    BalancerMember https://rails3 disablereuse=on
 <% else -%>
     BalancerMember http://rails1
     BalancerMember http://rails2
