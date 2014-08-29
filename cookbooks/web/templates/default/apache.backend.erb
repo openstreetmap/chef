@@ -47,7 +47,11 @@
   #
   # Pass supported calls to cgimap
   #
+<% if node[:lsb][:release].to_f >= 14.04 -%>
+  RewriteRule ^/api/0\.6/map$ fcgi://127.0.0.1:8000$0 [P]
+<% else -%>
   RewriteRule ^/api/0\.6/map$ - [H=fcgi:127.0.0.1:8000]
+<% end -%>
   RewriteCond %{REQUEST_METHOD} ^(HEAD|GET)$
 <% if node[:lsb][:release].to_f >= 14.04 -%>
   RewriteRule ^/api/0\.6/(node|way|relation)/[0-9]+$ fcgi://127.0.0.1:8000$0 [P]
