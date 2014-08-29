@@ -24,9 +24,15 @@ include_recipe "web::cgimap"
 
 web_passwords = data_bag_item("web", "passwords")
 
-apache_module "fastcgi-handler"
 apache_module "remoteip"
 apache_module "rewrite"
+
+if node[:lsb][:release].to_f >= 14.04
+  apache_module "proxy"
+  apache_module "proxy_fcgi"
+else
+  apache_module "fastcgi-handler"
+end
 
 apache_site "default" do
   action [ :disable ]
