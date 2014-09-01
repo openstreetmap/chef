@@ -529,7 +529,7 @@ begin routers
 
 system_aliases:
   driver = redirect
-  domains = +local_domains
+  domains = !noreply.openstreetmap.org : +local_domains
   allow_fail
   allow_defer
   data = ${lookup{$local_part}lsearch{/etc/aliases}}
