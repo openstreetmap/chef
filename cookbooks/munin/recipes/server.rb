@@ -20,6 +20,25 @@
 include_recipe "apache"
 
 package "munin"
+package "rrdcached"
+
+template "/etc/default/rrdcached" do
+  source "rrdcached.erb"
+  owner "root"
+  group "root"
+  mode 0644
+end
+
+directory "/var/lib/munin/rrdcached" do
+  owner "munin"
+  group "munin"
+  mode 0755
+end
+
+service "rrdcached" do
+  action [ :enable, :start ]
+  subscribes :restart, "template[/etc/default/rrdcached]"
+end
 
 expiry_time = 14 * 86400
 

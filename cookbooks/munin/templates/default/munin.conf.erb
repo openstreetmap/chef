@@ -1,5 +1,8 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
+# Use rrdcached
+rrdcached_socket /var/run/rrdcached.sock
+
 # Configure alert targets
 contact.admins.command mail -s "Munin Notification" admins@openstreetmap.org
 contact.null.command cat > /dev/null
