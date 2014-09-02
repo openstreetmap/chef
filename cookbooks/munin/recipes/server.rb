@@ -40,6 +40,8 @@ service "rrdcached" do
   subscribes :restart, "template[/etc/default/rrdcached]"
 end
 
+munin_plugin "rrdcached"
+
 expiry_time = 14 * 86400
 
 clients = search(:node, "recipes:munin").select { |n| n[:munin] }.sort_by { |n| n[:hostname] }
