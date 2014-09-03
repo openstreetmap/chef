@@ -37,6 +37,9 @@ unknown_limit 144
 <% if client[:munin][:plugins][plugin][value][:graph] -%>
     <%= plugin %>.<%= value %>.graph <%= client[:munin][:plugins][plugin][value][:graph] %>
 <% end -%>
+<% if client[:munin][:plugins][plugin][value][:label] -%>
+    <%= plugin %>.<%= value %>.label <%= client[:munin][:plugins][plugin][value][:label] %>
+<% end -%>
 <% if client[:munin][:plugins][plugin][value][:warning] -%>
     <%= plugin %>.<%= value %>.warning <%= client[:munin][:plugins][plugin][value][:warning] %>
 <% end -%>
