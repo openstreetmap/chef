@@ -25,8 +25,8 @@ service "spamassassin" do
 end
 
 directory "/var/spool/spamassassin" do
-  owner "mail"
-  group "mail"
+  owner "debian-spamd"
+  group "debian-spamd"
   mode 0755
 end
 
