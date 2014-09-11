@@ -25,5 +25,5 @@ override_attributes(
 )
 
 run_list(
-  "role[fr]"
+  "role[hr]"
 )
