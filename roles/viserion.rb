@@ -16,7 +16,7 @@ default_attributes(
         :interface => "eth0",
         :role => :external,
         :family => :inet6,
-        :address => "2001:b68:4cff:3::2",
+        :address => "2001:b68:4cff:3::3",
         :prefix => "128",
         :gateway => "fe80::217:fff:fead:14c0"
       }
