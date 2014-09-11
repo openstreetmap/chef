@@ -24,10 +24,10 @@ default_attributes(
       :defaults => {
         :shared_buffers => "10GB",
         :work_mem => "160MB",
-        :maintenance_work_mem => "20GB",
+        :maintenance_work_mem => "10GB",
         :random_page_cost => "1.5",
         :effective_cache_size => "60GB",
-        :fsync => "off"
+        :fsync => "on"
       }
     }
   },
