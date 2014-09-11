@@ -18,7 +18,7 @@ default_attributes(
         :family => :inet6,
         :address => "2001:b68:4cff:3::3",
         :prefix => "128",
-        :gateway => "fe80::217:fff:fead:14c0"
+        :gateway => "2001:b68:4cff:3::1"
       }
     }
   },
