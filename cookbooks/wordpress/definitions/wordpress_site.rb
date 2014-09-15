@@ -110,15 +110,11 @@ define :wordpress_site, :action => [ :create, :enable ] do
   end
 
   file "#{directory}/sitemap.xml" do
-    owner "www-data"
-    group "www-data"
-    mode 0644
+    action :delete
   end
 
   file "#{directory}/sitemap.xml.gz" do
-    owner "www-data"
-    group "www-data"
-    mode 0644
+    action :delete
   end
 
   cookbook_file "#{directory}/googlefac54c35e800caab.html" do
