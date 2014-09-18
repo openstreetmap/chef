@@ -115,7 +115,7 @@ node[:taginfo][:sites].each do |site|
   settings["opensearch"]["shortname"] = "Taginfo"
   settings["opensearch"]["contact"] = "webmaster@openstreetmap.org"
   settings["sources"]["download"] = "josm"
-  settings["sources"]["create"] = "db languages potlatch wiki"
+  settings["sources"]["create"] = "db languages potlatch projects wiki"
   settings["sources"]["db"]["planetfile"] = "#{directory}/planet/planet.pbf"
   settings["sources"]["db"]["tagstats"] = "#{directory}/taginfo/tagstats/tagstats"
   settings["tagstats"]["cxxflags"] = "-I../../osmium/include"
