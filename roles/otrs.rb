@@ -16,6 +16,7 @@ default_attributes(
         :local_parts => [ "otrs" ],
         :command => "/opt/otrs/bin/otrs.PostMaster.pl",
         :user => "otrs",
+        :group => "www-data",
         :home_directory => "/opt/otrs"
       },
       :otrs_data => {
@@ -24,6 +25,7 @@ default_attributes(
         :local_parts => [ "data" ],
         :command => "/opt/otrs/bin/otrs.PostMaster.pl -q 'Data Working Group'",
         :user => "otrs",
+        :group => "www-data",
         :home_directory => "/opt/otrs"
       },
       :otrs_support => {
@@ -32,6 +34,7 @@ default_attributes(
         :local_parts => [ "support" ],
         :command => "/opt/otrs/bin/otrs.PostMaster.pl -q 'Technical Support'",
         :user => "otrs",
+        :group => "www-data",
         :home_directory => "/opt/otrs"
       }
     }
