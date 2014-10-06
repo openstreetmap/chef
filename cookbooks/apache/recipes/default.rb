@@ -18,6 +18,7 @@
 #
 
 package "apache2"
+package "libwww-perl"
 
 if node[:lsb][:release].to_f < 14.04
   package "apache2-mpm-#{node[:apache][:mpm]}" do
