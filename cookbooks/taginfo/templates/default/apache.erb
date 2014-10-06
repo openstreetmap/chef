@@ -21,6 +21,10 @@
         CacheEnable disk /api
         CacheEnable disk /embed
         CacheStaleOnError off
+
+        <Location /api>
+                Header setifempty Access-Control-Allow-Origin *
+        </Location>
 </VirtualHost>
 <% end -%>
 

@@ -50,6 +50,7 @@ gem_package "rack-contrib"
 
 apache_module "cache"
 apache_module "cache_disk"
+apache_module "headers"
 
 template "/etc/cron.d/taginfo" do
   source "cron.erb"
