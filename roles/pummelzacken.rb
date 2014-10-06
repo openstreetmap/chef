@@ -32,7 +32,7 @@ default_attributes(
     }
   },
   :nominatim => {
-    :enabled => false,
+    :enabled => true,
     :database => {
         :cluster => "9.3/main",
         :dbname => "nominatim",
