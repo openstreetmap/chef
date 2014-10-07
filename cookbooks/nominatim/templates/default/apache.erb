@@ -24,32 +24,29 @@
     DocumentRoot <%= @directory %>/website
     <Directory "<%= @directory %>/website/">
         DirectoryIndex search.php
-        Options MultiViews FollowSymLinks
-        AddType text/html   .php
-        AddType application/xml   .phpx
-        AddType application/json   .phpj
+        Options FollowSymLinks
 <% if node[:lsb][:release].to_f >= 14.04 -%>
         Require all granted
 <% end -%>
     </Directory>
 
-    <LocationMatch /((?!pool-.*).*\.php[xj]?(/.*)?)$>
 <% if node[:lsb][:release].to_f >= 14.04 -%>
-        ProxyPassMatch fcgi://127.0.0.1:<%= @pools[:www][:port ]%><%= @directory %>/website/$1
+    ProxyPassMatch /((?!pool-.*).*\.php(/.*)?)$ fcgi://127.0.0.1:<%= @pools[:www][:port ]%><%= @directory %>/website/$1
 <% else -%>
+    <LocationMatch /((?!pool-.*).*\.php(/.*)?)$>
         SetHandler fcgi:/var/run/php5-fpm-www.sock
-<% end -%>
     </LocationMatch>
+<% end -%>
 
     <% @pools.each do |name,details| -%>
     Alias /pool-<%= name %>/ "<%= @directory %>/website/"
-    <LocationMatch /pool-<%= name %>/(.*\.php[xj]?(/.*)?)$>
 <% if node[:lsb][:release].to_f >= 14.04 -%>
-        ProxyPassMatch fcgi://127.0.0.1:<%= details[:port ]%><%= @directory %>/website/$1
+    ProxyPassMatch /pool-<%= name %>/(.*\.php(/.*)?) fcgi://127.0.0.1:<%= details[:port ]%><%= @directory %>/website/$1
 <% else -%>
+    <LocationMatch /pool-<%= name %>/(.*\.php(/.*)?)$>
         SetHandler fcgi:/var/run/php5-fpm-<%= name %>.sock
-<% end -%>
     </LocationMatch>
+<% end -%>
     <% end -%>
 
 <% if node[:lsb][:release].to_f >= 14.04 -%>
@@ -78,7 +75,7 @@
 
     # regular requests and autoblocks
     RewriteMap bulklist txt:<%= @directory %>/settings/ip_blocks.map
-    RewriteRule ^/([sdr].*) /pool-${bulklist:%{REMOTE_ADDR}|www}/$1 [PT]
+    RewriteRule ^/(search|reverse|details)(\.php)?(/.*)? /pool-${bulklist:%{REMOTE_ADDR}|www}/$1.php$3 [PT]
 
 </VirtualHost>
 

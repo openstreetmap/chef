@@ -61,6 +61,10 @@ apache_site "nominatim.openstreetmap.org" do
   variables :pools => node[:nominatim][:fpm_pools]
 end
 
+apache_site "default" do
+  action [ :disable ]
+end
+
 node[:nominatim][:fpm_pools].each do |name,data|
   template "/etc/php5/fpm/pool.d/#{name}.conf" do
     source "fpm.conf.erb"
@@ -228,16 +232,6 @@ cron "nominatim_vacuum" do
   command "#{source_directory}/utils/cron_vacuum.sh"
   user "nominatim"
   mailto email_errors
-end
-
-['search', 'reverse'].each do |filename|
-  ['phpj', 'phpx'].each do |ext|
-    link "#{source_directory}/website/#{filename}.#{ext}" do
-      to "#{source_directory}/website/#{filename}.php"
-      user "nominatim"
-      group "nominatim"
-    end
-  end
 end
 
 template "#{source_directory}/utils/nominatim-update" do
