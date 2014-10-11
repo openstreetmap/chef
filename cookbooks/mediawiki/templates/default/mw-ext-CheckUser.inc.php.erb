@@ -1,0 +1,7 @@
+<?php
+# DO NOT EDIT - This file is being maintained by Chef
+require_once($IP .'/extensions/CheckUser/CheckUser.php');
+
+#Only allow bureaucrat group to checkuser
+$wgGroupPermissions['bureaucrat']['checkuser'] = true;
+$wgGroupPermissions['bureaucrat']['checkuser-log'] = true;

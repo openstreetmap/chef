@@ -1,0 +1,7 @@
+<?php
+# DO NOT EDIT - This file is being maintained by Chef
+ini_set( 'pcre.backtrack_limit', '16M' );
+require_once( $IP.'/extensions/SpamBlacklist/SpamBlacklist.php' );
+$wgSpamBlacklistFiles = array(
+	'http://meta.wikimedia.org/w/index.php?title=Spam_blacklist&action=raw&sb_ver=1'
+);

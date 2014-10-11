@@ -1,0 +1,277 @@
+<?php
+# DO NOT EDIT - This file is being maintained by Chef
+
+# Protect against web entry
+if ( !defined( 'MEDIAWIKI' ) ) {
+	exit;
+}
+
+## Uncomment this to disable output compression
+# $wgDisableOutputCompression = true;
+
+$wgSitename      = '<%= @mediawiki[:sitename] %>';
+$wgMetaNamespace = '<%= @mediawiki[:metanamespace] %>';
+
+
+## The URL base path to the directory containing the wiki;
+## defaults for all runtime URL paths are based off of this.
+## For more information on customizing the URLs
+## (like /w/index.php/Page_title to /wiki/Page_title) please see:
+## http://www.mediawiki.org/wiki/Manual:Short_URL
+$wgScriptPath       = "/w";
+$wgArticlePath      = '/wiki/$1';
+$wgUsePathInfo      = true;
+$wgScriptExtension  = ".php";
+
+## The protocol and server name to use in fully-qualified URLs
+$wgServer           = "//<%= @mediawiki[:site] %>";
+$wgInternalServer   = 'http://<%= @mediawiki[:site] %>';
+
+<% if @mediawiki[:enable_ssl] -%>
+$wgSecureLogin = true;
+$wgDefaultUserOptions['prefershttps'] = 0;
+<% end -%>
+$wgCookieSecure = false;
+
+## The relative URL path to the skins directory
+$wgStylePath        = "$wgScriptPath/skins";
+
+## The relative URL path to the logo.  Make sure you change this from the default,
+## or else you'll overwrite your logo when you upgrade!
+$wgLogo             = "<%= @mediawiki[:logo] %>";
+
+## UPO means: this is also a user preference option
+
+$wgEnableEmail      = true;
+$wgEnableUserEmail  = true; # UPO
+
+$wgEmergencyContact = "<%= @mediawiki[:email_contact] %>";
+$wgPasswordSender   = "<%= @mediawiki[:email_sender] %>";
+$wgPasswordSenderName = "<%= @mediawiki[:email_sender_name] %>"; //Replaced by MediaWiki:Emailsender in v1.23.0
+
+$wgEnotifUserTalk      = true; # UPO
+$wgEnotifWatchlist     = true; # UPO
+$wgEmailAuthentication = true;
+
+$wgEnotifUseJobQ       = true;
+
+## Database settings
+$wgDBtype           = "mysql";
+$wgDBserver         = "<%= @database_params[:host] %>";
+$wgDBname           = "<%= @database_params[:name] %>";
+$wgDBuser           = "<%= @database_params[:username] %>";
+$wgDBpassword       = "<%= @database_params[:password] %>";
+
+# MySQL specific settings
+$wgDBprefix         = "";
+
+# MySQL table options to use during installation or update
+$wgDBTableOptions   = "ENGINE=InnoDB, DEFAULT CHARSET=binary";
+
+# Experimental charset support for MySQL 5.0.
+$wgDBmysql5 = false;
+
+## Shared memory settings
+$wgMainCacheType    = CACHE_MEMCACHED;
+$wgMemCachedServers = array('127.0.0.1:11211');
+$wgSessionsInObjectCache = TRUE;
+
+## To enable image uploads, make sure the 'images' directory
+## is writable, then set this to true:
+$wgEnableUploads  = true;
+$wgUseImageMagick = true;
+$wgImageMagickConvertCommand = "/usr/bin/convert";
+
+$wgGenerateThumbnailOnParse = false;
+$wgMaxImageArea = 125000000;
+$wgMaxShellMemory = 5524000;
+$wgMaxShellFileSize = 819200;
+$wgMaxShellTime = 360;
+$wgMaxShellWallClockTime = 360;
+
+# Allow some more upload extensions
+$wgFileExtensions[] = 'doc';
+$wgFileExtensions[] = 'pdf';
+$wgFileExtensions[] = 'odt';
+$wgFileExtensions[] = 'odp';
+$wgFileExtensions[] = 'svg';
+
+$wgSVGConverters = array( 'rsvg' => '/usr/bin/rsvg-convert -w $width -h $height -o $output $input');
+$wgSVGConverter = 'rsvg';
+$wgSVGMaxSize = 2000;
+
+# InstantCommons allows wiki to use images from http://commons.wikimedia.org
+<% if @mediawiki[:commons] -%>
+$wgUseInstantCommons  = true;
+<% else -%>
+$wgUseInstantCommons  = false;
+<% end -%>
+
+## If you use ImageMagick (or any other shell command) on a
+## Linux server, this will need to be set to the name of an
+## available UTF-8 locale
+$wgShellLocale = "en_US.utf8";
+
+## If you want to use image uploads under safe mode,
+## create the directories images/archive, images/thumb and
+## images/temp, and make them all writable. Then uncomment
+## this, if it's not already uncommented:
+#$wgHashedUploadDirectory = false;
+
+## Set $wgCacheDirectory to a writable directory on the web server
+## to make your wiki go slightly faster. The directory should not
+## be publically accessible from the web.
+#$wgCacheDirectory = "$IP/cache";
+
+# Site language code, should be one of the list in ./languages/Names.php
+$wgLanguageCode = "en";
+
+$wgSecretKey = "<%= @node[:mediawiki][:sites][@name][:wgSecretKey] %>";
+
+# Site upgrade key. Must be set to a string (default provided) to turn on the
+# web installer while LocalSettings.php is in place
+#$wgUpgradeKey = "6ad907e74fc65836";
+
+## Default skin: you can change the default skin. Use the internal symbolic
+## names, ie 'standard', 'nostalgia', 'cologneblue', 'monobook', 'vector':
+$wgDefaultSkin = "<%= @mediawiki[:skin] %>";
+
+## For attaching licensing metadata to pages, and displaying an
+## appropriate copyright notice / icon. GNU Free Documentation
+## License and Creative Commons licenses are supported so far.
+$wgRightsPage = "OpenStreetMap_License"; # Set to the title of a wiki page that describes your license/copyright
+$wgRightsUrl  = "http://creativecommons.org/licenses/by-sa/2.0/";
+$wgRightsText = "Creative Commons Attribution-ShareAlike 2.0 license";
+$wgRightsIcon = "/cc-wiki.png";
+
+# Path to the GNU diff3 utility. Used for conflict resolution.
+$wgDiff3 = "/usr/bin/diff3";
+
+$wgExternalDiffEngine = 'wikidiff2';
+
+# Query string length limit for ResourceLoader. You should only set this if
+# your web server has a query string length limit (then set it to that limit),
+# or if you have suhosin.get.max_value_length set in php.ini (then set it to
+# that value)
+$wgResourceLoaderMaxQueryLength = -1;
+
+# End of automatically generated settings.
+# Add more configuration options below.
+
+#Only Allow Signed-in users to edit
+$wgGroupPermissions['*']['edit'] = false;
+
+#Allow bureaucrat group access to oversight options
+$wgGroupPermissions['bureaucrat']['hideuser'] = true;
+$wgGroupPermissions['bureaucrat']['deletelogentry'] = true;
+$wgGroupPermissions['bureaucrat']['deleterevision'] = true;
+$wgGroupPermissions['bureaucrat']['suppressrevision'] = true;
+$wgGroupPermissions['bureaucrat']['suppressionlog'] = true;
+
+#Allow Subpages on Main Namespace
+$wgNamespacesWithSubpages[NS_MAIN] = true;
+
+#DNS Blacklists to use
+$wgEnableDnsBlacklist = true;
+$wgDnsBlacklistUrls = array( 'proxies.dnsbl.sorbs.net.', 'opm.tornevall.org.', 'xbl.spamhaus.org.' );
+
+#Disable Hit Counter for Performance
+$wgDisableCounters = TRUE;
+#Disable IP in Header to avoid cache issue
+$wgShowIPinHeader = FALSE;
+
+#Job Runs by cron
+$wgJobRunRate = 0;
+
+# Allow external images from a few sites
+$wgAllowExternalImagesFrom = array( 'http://tile.openstreetmap.org/', 'http://svenanders.openstreetmap.de/', 'http://josm.openstreetmap.de/', 'http://trac.openstreetmap.org/', 'http://rweait.dev.openstreetmap.org/' );
+
+$wgNoFollowDomainExceptions = array( 'www.openstreetmap.org', 'josm.openstreetmap.de', 'taginfo.openstreetmap.org', 'blog.openstreetmap.org', 'wiki.osmfoundation.org' );
+
+#FIXME - move to specific
+$wgForceUIMsgAsContentMsg = array( 'mainpage-url', 'portal-url', 'mapfeatures-url', 'helppage' );
+
+#FIXME - move to specific
+$wgAllowUserJs = TRUE;
+$wgAllowUserCss = TRUE;
+
+#FIXME - move to specific
+#DE
+define('NS_LANG_DE', 200);
+$wgExtraNamespaces[NS_LANG_DE] = 'DE';
+$wgNamespacesWithSubpages[NS_LANG_DE] = TRUE;
+$wgContentNamespaces[] = NS_LANG_DE;
+define('NS_LANG_DE_TALK', 201);
+$wgExtraNamespaces[NS_LANG_DE_TALK] = 'DE_talk';
+$wgNamespacesWithSubpages[NS_LANG_DE_TALK] = TRUE;
+
+#FR
+define('NS_LANG_FR', 202);
+$wgExtraNamespaces[NS_LANG_FR] = 'FR';
+$wgNamespacesWithSubpages[NS_LANG_FR] = TRUE;
+$wgContentNamespaces[] = NS_LANG_FR;
+define('NS_LANG_FR_TALK', 203);
+$wgExtraNamespaces[NS_LANG_FR_TALK] = 'FR_talk';
+$wgNamespacesWithSubpages[NS_LANG_FR_TALK] = TRUE;
+
+#ES
+define('NS_LANG_ES', 204);
+$wgExtraNamespaces[NS_LANG_ES] = 'ES';
+$wgNamespacesWithSubpages[NS_LANG_ES] = TRUE;
+$wgContentNamespaces[] = NS_LANG_ES;
+define('NS_LANG_ES_TALK', 205);
+$wgExtraNamespaces[NS_LANG_ES_TALK] = 'ES_talk';
+$wgNamespacesWithSubpages[NS_LANG_ES_TALK] = TRUE;
+
+#IT
+define('NS_LANG_IT', 206);
+$wgExtraNamespaces[NS_LANG_IT] = 'IT';
+$wgNamespacesWithSubpages[NS_LANG_IT] = TRUE;
+$wgContentNamespaces[] = NS_LANG_IT;
+define('NS_LANG_IT_TALK', 207);
+$wgExtraNamespaces[NS_LANG_IT_TALK] = 'IT_talk';
+$wgNamespacesWithSubpages[NS_LANG_IT_TALK] = TRUE;
+
+#NL
+define('NS_LANG_NL', 208);
+$wgExtraNamespaces[NS_LANG_NL] = 'NL';
+$wgNamespacesWithSubpages[NS_LANG_NL] = TRUE;
+$wgContentNamespaces[] = NS_LANG_NL;
+define('NS_LANG_NL_TALK', 209);
+$wgExtraNamespaces[NS_LANG_NL_TALK] = 'NL_talk';
+$wgNamespacesWithSubpages[NS_LANG_NL_TALK] = TRUE;
+
+#RU
+define('NS_LANG_RU', 210);
+$wgExtraNamespaces[NS_LANG_RU] = 'RU';
+$wgNamespacesWithSubpages[NS_LANG_RU] = TRUE;
+$wgContentNamespaces[] = NS_LANG_RU;
+define('NS_LANG_RU_TALK', 211);
+$wgExtraNamespaces[NS_LANG_RU_TALK] = 'RU_talk';
+$wgNamespacesWithSubpages[NS_LANG_RU_TALK] = TRUE;
+
+#JA
+define('NS_LANG_JA', 212);
+$wgExtraNamespaces[NS_LANG_JA] = 'JA';
+$wgNamespacesWithSubpages[NS_LANG_JA] = TRUE;
+$wgContentNamespaces[] = NS_LANG_JA;
+define('NS_LANG_JA_TALK', 213);
+$wgExtraNamespaces[NS_LANG_JA_TALK] = 'JA_talk';
+$wgNamespacesWithSubpages[NS_LANG_JA_TALK] = TRUE;
+
+$wgNamespacesToBeSearchedDefault[NS_LANG_DE] = TRUE;
+$wgNamespacesToBeSearchedDefault[NS_LANG_FR] = TRUE;
+$wgNamespacesToBeSearchedDefault[NS_LANG_ES] = TRUE;
+$wgNamespacesToBeSearchedDefault[NS_LANG_IT] = TRUE;
+$wgNamespacesToBeSearchedDefault[NS_LANG_NL] = TRUE;
+$wgNamespacesToBeSearchedDefault[NS_LANG_RU] = TRUE;
+$wgNamespacesToBeSearchedDefault[NS_LANG_JA] = TRUE;
+
+<% if @mediawiki[:site_readonly] -%>
+$wgReadOnly = "<%= @mediawiki[:site_readonly] %>";
+<% end -%>
+
+<% Dir.glob("#{@mediawiki[:directory]}/LocalSettings.d/*.php") do |file| -%>
+<%= "require_once('#{file}');" %>
+<% end -%>
+
