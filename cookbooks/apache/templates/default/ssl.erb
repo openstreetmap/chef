@@ -9,6 +9,7 @@ SSLCertificateChainFile /etc/ssl/certs/rapidssl.pem
 <% if node[:lsb][:release].to_f >= 14.04 -%>
 
 SSLUseStapling On
+SSLStaplingResponderTimeout 5
 SSLStaplingReturnResponderErrors off
 SSLStaplingCache shmcb:${APACHE_RUN_DIR}/ssl_ocspcache(512000)
 <% end -%>
