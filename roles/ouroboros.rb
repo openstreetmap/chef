@@ -8,13 +8,15 @@ default_attributes(
         :interface => "eth0",
         :role => :internal,
         :family => :inet,
-        :address => "146.179.159.172"
+        :address => "146.179.159.172",
+        :hwaddress => "00:23:7d:ea:81:38"
       },
       :external_ipv4 => {
         :interface => "eth1",
         :role => :external,
         :family => :inet,
-        :address => "193.63.75.106"
+        :address => "193.63.75.106",
+        :hwaddress => "00:23:7d:ea:81:3a"
       },
       :external_ipv6 => {
         :interface => "eth1",
