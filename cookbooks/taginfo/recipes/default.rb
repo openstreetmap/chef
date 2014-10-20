@@ -112,6 +112,7 @@ node[:taginfo][:sites].each do |site|
   settings["instance"]["about"] = about
   settings["instance"]["icon"] = "/img/logo/#{icon}.png"
   settings["instance"]["contact"] = contact
+  settings["instance"]["access_control_allow_origin"] = ""
   settings["logging"]["directory"] = "/var/log/taginfo/#{name}"
   settings["opensearch"]["shortname"] = "Taginfo"
   settings["opensearch"]["contact"] = "webmaster@openstreetmap.org"
