@@ -35,33 +35,50 @@ package "geoip-database-contrib"
 apache_module "php5"
 apache_module "geoip"
 
-apache_site "piwik.openstreetmap.org" do
-  template "apache.erb"
-end
+version = node[:piwik][:version]
 
-directory "/srv/piwik.openstreetmap.org" do
+directory "/opt/piwik-#{version}" do
   owner "root"
   group "root"
   mode "0755"
 end
 
-directory "/srv/piwik.openstreetmap.org/config" do
+remote_file "/tmp/piwik-#{version}.zip" do
+  source "http://builds.piwik.org/piwik-#{version}.zip"
+  not_if { File.exist?("/opt/piwik-#{version}/piwik") }
+end
+
+execute "unzip-piwik-#{version}" do
+  command "unzip -q /tmp/piwik-#{version}.zip"
+  cwd "/opt/piwik-#{version}"
+  user "root"
+  group "root"
+  not_if { File.exist?("/opt/piwik-#{version}/piwik") }
+end
+
+directory "/opt/piwik-#{version}/piwik/config" do
   owner "www-data"
   group "www-data"
   mode "0755"
 end
 
-directory "/srv/piwik.openstreetmap.org/tmp" do
-  owner "www-data"
-  group "www-data"
-  mode "0755"
-end
-
-template "/etc/cron.d/piwiki" do
-  source "cron.erb"
+template "/opt/piwik-#{version}/piwik/config/config.ini.php" do
+  source "config.erb"
   owner "root"
   group "root"
   mode "0644"
+  variables :passwords => passwords
+end
+
+directory "/opt/piwik-#{version}/piwik/tmp" do
+  owner "www-data"
+  group "www-data"
+  mode "0755"
+end
+
+link "/srv/piwik.openstreetmap.org" do
+  to "/opt/piwik-#{version}/piwik"
+  notifies :restart, "service[apache2]"
 end
 
 mysql_user "piwik@localhost" do
@@ -70,4 +87,15 @@ end
 
 mysql_database "piwik" do
   permissions "piwik@localhost" => :all
+end
+
+apache_site "piwik.openstreetmap.org" do
+  template "apache.erb"
+end
+
+template "/etc/cron.d/piwiki" do
+  source "cron.erb"
+  owner "root"
+  group "root"
+  mode "0644"
 end
