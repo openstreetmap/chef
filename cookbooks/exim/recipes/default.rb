@@ -126,11 +126,22 @@ end
 munin_plugin "exim_mailqueue"
 munin_plugin "exim_mailstats"
 
-if not relay_to_domains.empty? or not node[:exim][:local_domains].empty?
+if node[:exim][:smarthost_name]
   node[:exim][:daemon_smtp_ports].each do |port|
     firewall_rule "accept-inbound-smtp-#{port}" do
       action :accept
       source "net"
+      dest "fw"
+      proto "tcp:syn"
+      dest_ports port
+      source_ports "1024:"
+    end
+  end
+else
+  node[:exim][:daemon_smtp_ports].each do |port|
+    firewall_rule "accept-inbound-smtp-#{port}" do
+      action :accept
+      source "bm:mail.openstreetmap.org"
       dest "fw"
       proto "tcp:syn"
       dest_ports port
