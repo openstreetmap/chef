@@ -60,7 +60,7 @@ end
 relay_to_domains = node[:exim][:relay_to_domains]
 
 node[:exim][:routes].each_value do |route|
-  relay_to_domains = relay_to_domains | route[:domains]
+  relay_to_domains = relay_to_domains | route[:domains] if route[:host]
 end
 
 relay_from_hosts = node[:exim][:relay_from_hosts]
