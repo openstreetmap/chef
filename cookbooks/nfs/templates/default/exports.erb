@@ -1,6 +1,8 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
 <% @exports.sort.each do |directory,clients| -%>
-<%= directory -%> -sync,subtree_check<% clients.sort.each do |address,options| -%> <%= address -%>(<%= options -%>)<% end %>
+<% clients.sort.each do |address,options| -%>
+<%= directory -%> -sync,subtree_check,<%= options %> <%= address %>
 <% end -%>
-/store/planet -sync,subtree_check 146.179.159.168(rw) 146.179.159.170(rw)
+<% end -%>
+/store/planet -sync,subtree_check,rw 146.179.159.168 146.179.159.170
