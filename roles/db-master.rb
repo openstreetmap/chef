@@ -21,7 +21,7 @@ default_attributes(
     :modules => {
       :archive => {
         :comment => "WAL Archive",
-        :path => "/store/postgresql/system/archive",
+        :path => "/store/arrays/slow/postgresql-archive",
         :read_only => true,
         :write_only => false,
         :list => false,
