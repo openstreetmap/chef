@@ -19,6 +19,7 @@
                 IndexOrderDefault Descending Date
                 AddType text/html .cgi
                 AddHandler cgi-script .cgi
+                Require all granted
         </Directory>
 
         ProxyPass /replication/streaming http://127.0.0.1:8080
