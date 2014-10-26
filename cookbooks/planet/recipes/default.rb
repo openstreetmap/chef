@@ -79,10 +79,7 @@ directory "/store/planet/notes" do
   mode 0775
 end
 
-apache_module "rewrite" do
-  conf "rewrite.conf.erb"
-end
-
+apache_module "rewrite"
 apache_module "proxy_http"
 
 apache_site "planet.openstreetmap.org" do
