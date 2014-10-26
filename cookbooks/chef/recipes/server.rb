@@ -21,6 +21,7 @@ include_recipe "apache::ssl"
 
 chef_platform = case node[:platform_version]
                   when "12.10" then "12.04"
+                  when "14.04" then "12.04"
                   else node[:platform_version]
                 end
 
