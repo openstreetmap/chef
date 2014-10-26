@@ -17,7 +17,7 @@ default_attributes(
     :pool_idle_time => 0
   },
   :web => {
-    :status => "offline",
+    :status => "database_offline",
     :database_host => "db",
     :readonly_database_host => "katla"
   }
