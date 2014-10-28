@@ -129,7 +129,7 @@ end
 
 if node[:postgresql][:clusters][:"9.1/main"]
   postgresql_user "apis" do
-    cluster "9.1/main"
+    cluster "9.3/main"
   end
 
   node[:dev][:rails].each do |name,details|
@@ -142,12 +142,12 @@ if node[:postgresql][:clusters][:"9.1/main"]
     node.set[:dev][:rails][name][:secret_key_base] = secret_key_base
 
     postgresql_database database_name do
-      cluster "9.1/main"
+      cluster "9.3/main"
       owner "apis"
     end
 
     postgresql_extension "#{database_name}_btree_gist" do
-      cluster "9.1/main"
+      cluster "9.3/main"
       database database_name
       extension "btree_gist"
     end
@@ -159,7 +159,7 @@ if node[:postgresql][:clusters][:"9.1/main"]
       group "apis"
       repository details[:repository]
       revision details[:revision]
-      database_port node[:postgresql][:clusters][:"9.1/main"][:port]
+      database_port node[:postgresql][:clusters][:"9.3/main"][:port]
       database_name database_name
       database_username "apis"
       run_migrations true
@@ -203,7 +203,7 @@ if node[:postgresql][:clusters][:"9.1/main"]
 
       postgresql_database database_name do
         action :drop
-        cluster "9.1/main"
+        cluster "9.3/main"
       end
     end
   end
