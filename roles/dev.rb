@@ -146,7 +146,7 @@ default_attributes(
     }
   },
   :postgresql => {
-    :versions => [ "9.1" ],
+    :versions => [ "9.1", "9.3" ],
     :settings => {
       :defaults => {
         :shared_buffers => "1GB",
@@ -157,6 +157,9 @@ default_attributes(
       },
       "9.1" => {
         :port => "5433"
+      },
+      "9.3" => {
+        :port => "5432"
       }
     }
   },
