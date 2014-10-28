@@ -53,7 +53,8 @@ easy_install_package "geojson"
 
 apache_module "env"
 apache_module "expires"
-apache_module "fastcgi-handler"
+apache_module "proxy"
+apache_module "proxy_fcgi"
 apache_module "rewrite"
 apache_module "wsgi"
 
@@ -64,6 +65,7 @@ gem_package "rails" do
 end
 
 service "php5-fpm" do
+  provider Chef::Provider::Service::Upstart
   action [ :enable, :start ]
   supports :status => true, :restart => true, :reload => true
 end
@@ -90,7 +92,7 @@ template "/etc/phppgadmin/config.inc.php" do
   mode 0644
 end
 
-link "/etc/apache2/conf.d/phppgadmin" do
+file "/etc/apache2/conf.d/phppgadmin" do
   action :delete
 end
 
@@ -101,6 +103,7 @@ end
 search(:accounts, "*:*").each do |account|
   name = account["id"]
   details = node[:accounts][:users][name] || {}
+  port = 7000 + account["uid"].to_i
 
   if ["user","administrator"].include?(details[:status])
     user_home = details[:home] || account["home"] || "#{node[:accounts][:home]}/#{name.to_s}"
@@ -111,14 +114,14 @@ search(:accounts, "*:*").each do |account|
         owner "root"
         group "root"
         mode 0644
-        variables :user => name
+        variables :user => name, :port => port
         notifies :reload, "service[php5-fpm]"
       end
 
       apache_site "#{name}.dev.openstreetmap.org" do
         template "apache.user.erb"
         directory "#{user_home}/public_html"
-        variables :user => name
+        variables :user => name, :port => port
       end
     end
   end

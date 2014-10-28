@@ -1,13 +1,8 @@
 ; DO NOT EDIT - This file is being maintained by Chef
 
 [<%= @user %>]
-listen = /var/run/php5-fpm-<%= @user %>.sock
-
+listen = 127.0.0.1:<%= @port %>
 listen.backlog = 256
- 
-listen.owner = www-data
-listen.group = www-data
-listen.mode = 0660
 
 user = <%= @user %>
 group = <%= @user %>

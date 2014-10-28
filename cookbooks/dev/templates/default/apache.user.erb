@@ -26,27 +26,17 @@ WSGIDaemonProcess <%= @user %>.dev.openstreetmap.org user=<%= @user %> inactivit
 	RewriteCond <%= @directory %>%{REQUEST_FILENAME} -f
 	RewriteRule ^/cgi-bin-d/(.*)$ /cgi-bin/cgiwrapd/~<%= @user %>/cgi-bin/$1 [PT,L]
 
-	<IfModule mod_fastcgi_handler.c>
-		<FilesMatch "\.ph(p3?|tml)$">
-			SetHandler fcgi:/var/run/php5-fpm-<%= @user %>.sock
-		</FilesMatch>
-		<FilesMatch "\.phps$">
-			SetHandler fcgi:/var/run/php5-fpm-<%= @user %>.sock
-		</FilesMatch>
-	</IfModule>
-
-	<IfModule !mod_fastcgi_handler.c>
-		RewriteCond <%= @directory %>%{REQUEST_FILENAME} -f
-		RewriteRule ^(.*\.php)$ /cgi-bin/php-cgiwrap/~<%= @user %>/$1 [PT,L]
-	</IfModule>
+	ProxyPassMatch ^/(.*\.ph(p|ps|p3|tml)(/.*)?)$ fcgi://127.0.0.1:<%= @port %><%= @directory %>/$1
 </VirtualHost>
 
 <Directory <%= @directory %>>
 	AllowOverride AuthConfig FileInfo Indexes Options=RailsBaseURI
 	Options SymLinksIfOwnerMatch Indexes Includes
+	Require all granted
 </Directory>
 
 <Directory <%= @directory %>/wsgi-bin>
 	SetHandler wsgi-script
 	Options ExecCGI SymLinksIfOwnerMatch
+	Require all granted
 </Directory>
