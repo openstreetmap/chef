@@ -148,6 +148,11 @@ template "/etc/initramfs-tools/conf.d/mdadm" do
   notifies :run, "execute[update-initramfs]"
 end
 
+package "haveged"
+service "haveged" do
+  action [:enable, :start]
+end
+
 if node[:kernel][:modules].include?("ipmi_si")
   package "ipmitool"
 end
