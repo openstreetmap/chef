@@ -119,10 +119,6 @@ default_attributes(
         :repository => "git://github.com/ppawel/openstreetmap-website.git",
         :revision => "owl-history-tab"
       },
-      :overpass => {
-        :repository => "git://github.com/drolbr/openstreetmap-website.git",
-        :revision => "master"
-      },
       :groups => {
         :repository => "git://github.com/osmlab/openstreetmap-website.git",
         :revision => "groups-sketch"
@@ -134,14 +130,6 @@ default_attributes(
       :jsrouting2 => {
         :repository => "git://github.com/jfirebaugh/openstreetmap-website.git",
         :revision => "routing"
-      },
-      :overpass2 => {
-        :repository => "git://github.com/tomhughes/openstreetmap-website.git",
-        :revision => "overpass"
-      },
-      :comments => {
-        :repository => "git://github.com/ukasiu/openstreetmap-website.git",
-        :revision => "changeset_comments_pr"
       }
     }
   },
