@@ -385,10 +385,6 @@ acl_check_rcpt:
   deny   !hosts         = +relay_from_hosts
          !verify        = sender
 
-  deny   !hosts         = +relay_from_hosts
-         !senders       = lsearch*@;/etc/exim4/callout_exempt_senders
-         !verify        = sender/callout/defer_ok
-
   # Accept if the message comes from one of the hosts for which we are an
   # outgoing relay. It is assumed that such hosts are most likely to be MUAs,
   # so we set control=submission to make Exim treat the message as a

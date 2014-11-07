@@ -81,13 +81,6 @@ template "/etc/exim4/exim4.conf" do
   notifies :restart, "service[exim4]"
 end
 
-template "/etc/exim4/callout_exempt_senders" do
-  source "callout_exempt_senders.erb"
-  owner "root"
-  group "Debian-exim"
-  mode 0644
-end
-
 search(:accounts, "*:*").each do |account|
   name = account["id"]
   details = node[:accounts][:users][name] || {}
