@@ -19,7 +19,7 @@
   #
   # Setup logging
   #
-  LogFormat "%h %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\" %Ts" combined_with_time
+  LogFormat "%a %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\" %Ts" combined_with_time
   CustomLog /var/log/apache2/access.log combined_with_time
   ErrorLog /var/log/apache2/error.log
 
