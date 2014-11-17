@@ -42,24 +42,9 @@ template "/etc/apt/sources.list" do
   notifies :run, "execute[apt-update]"
 end
 
-apt_source "brightbox" do
-  url "http://apt.brightbox.net/"
-  key "0090DAAD"
-end
-
 apt_source "brightbox-ruby-ng" do
   url "http://ppa.launchpad.net/brightbox/ruby-ng/ubuntu"
   key "C3173AA6"
-end
-
-apt_source "brightbox-ruby-ng-experimental" do
-  url "http://ppa.launchpad.net/brightbox/ruby-ng/ubuntu-experimental"
-  key "C3173AA6"
-end
-
-apt_source "pitti-postgresql" do
-  url "http://ppa.launchpad.net/pitti/postgresql/ubuntu"
-  key "8683D8A2"
 end
 
 apt_source "ubuntugis-stable" do
@@ -70,11 +55,6 @@ end
 apt_source "ubuntugis-unstable" do
   url "http://ppa.launchpad.net/ubuntugis/ubuntugis-unstable/ubuntu"
   key "314DF160"
-end
-
-apt_source "brianmercer-php" do
-  url "http://ppa.launchpad.net/brianmercer/php/ubuntu"
-  key "8D0DC64F"
 end
 
 if node[:lsb][:release].to_f == 12.04
