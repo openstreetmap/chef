@@ -19,12 +19,13 @@ WSGIDaemonProcess <%= @user %>.dev.openstreetmap.org user=<%= @user %> inactivit
 	CustomLog /var/log/apache2/<%= @user %>.dev.openstreetmap.org-access.log combined
 	ErrorLog /var/log/apache2/<%= @user %>.dev.openstreetmap.org-error.log
 
-	RewriteCond <%= @directory %>%{REQUEST_FILENAME} -f
+	RewriteCond %{LA-U:REQUEST_FILENAME} -f
 	RewriteRule ^/cgi-bin/(.*)$ /cgi-bin/cgiwrap/~<%= @user %>/cgi-bin/$1 [PT,L]
 
-	RewriteCond <%= @directory %>%{REQUEST_FILENAME} -f
+	RewriteCond %{LA-U:REQUEST_FILENAME} -f
 	RewriteRule ^/cgi-bin-d/(.*)$ /cgi-bin/cgiwrapd/~<%= @user %>/cgi-bin/$1 [PT,L]
 
+	RewriteCond %{LA-U:REQUEST_FILENAME} -f
 	RewriteRule ^/(.*\.ph(p|ps|p3|tml)(/.*)?)$ fcgi://127.0.0.1:<%= @port %><%= @directory %>/$1 [P]
 </VirtualHost>
 
