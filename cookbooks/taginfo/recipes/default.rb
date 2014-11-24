@@ -105,29 +105,33 @@ node[:taginfo][:sites].each do |site|
     group "taginfo"
   end
 
-  settings = JSON.parse(IO.read("#{directory}/taginfo/taginfo-config-example.json"))
+  settings = Chef::DelayedEvaluator.new do
+    settings = JSON.parse(IO.read("#{directory}/taginfo/taginfo-config-example.json"))
 
-  settings["instance"]["url"] = "http://#{name}/"
-  settings["instance"]["description"] = description
-  settings["instance"]["about"] = about
-  settings["instance"]["icon"] = "/img/logo/#{icon}.png"
-  settings["instance"]["contact"] = contact
-  settings["instance"]["access_control_allow_origin"] = ""
-  settings["logging"]["directory"] = "/var/log/taginfo/#{name}"
-  settings["opensearch"]["shortname"] = "Taginfo"
-  settings["opensearch"]["contact"] = "webmaster@openstreetmap.org"
-  settings["sources"]["download"] = "josm"
-  settings["sources"]["create"] = "db languages potlatch projects wiki"
-  settings["sources"]["db"]["planetfile"] = "#{directory}/planet/planet.pbf"
-  settings["sources"]["db"]["tagstats"] = "#{directory}/taginfo/tagstats/tagstats"
-  settings["tagstats"]["cxxflags"] = "-I../../osmium/include"
-  settings["tagstats"]["geodistribution"] = "MmapAnon"
+    settings["instance"]["url"] = "http://#{name}/"
+    settings["instance"]["description"] = description
+    settings["instance"]["about"] = about
+    settings["instance"]["icon"] = "/img/logo/#{icon}.png"
+    settings["instance"]["contact"] = contact
+    settings["instance"]["access_control_allow_origin"] = ""
+    settings["logging"]["directory"] = "/var/log/taginfo/#{name}"
+    settings["opensearch"]["shortname"] = "Taginfo"
+    settings["opensearch"]["contact"] = "webmaster@openstreetmap.org"
+    settings["sources"]["download"] = "josm"
+    settings["sources"]["create"] = "db languages potlatch projects wiki"
+    settings["sources"]["db"]["planetfile"] = "#{directory}/planet/planet.pbf"
+    settings["sources"]["db"]["tagstats"] = "#{directory}/taginfo/tagstats/tagstats"
+    settings["tagstats"]["cxxflags"] = "-I../../osmium/include"
+    settings["tagstats"]["geodistribution"] = "MmapAnon"
+
+    JSON.pretty_generate(settings)
+  end
 
   file "#{directory}/taginfo-config.json" do
     owner "taginfo"
     group "taginfo"
     mode 0644
-    content JSON.pretty_generate(settings)
+    content settings
   end
 
   execute "#{directory}/taginfo/tagstats/Makefile" do
