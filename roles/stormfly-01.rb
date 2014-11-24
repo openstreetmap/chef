@@ -16,5 +16,6 @@ default_attributes(
 
 run_list(
   "role[osuosl]",
-  "role[hp-g6]"
+  "role[hp-g6]",
+  "role[taginfo]"
 )
