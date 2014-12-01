@@ -67,5 +67,4 @@ rails_port "www.openstreetmap.org" do
   id_key web_passwords["id_key"]
   oauth_key web_passwords["oauth_key"]
   piwik_configuration piwik_configuration
-  nominatim_url "http://open.mapquestapi.com/nominatim/v1/"
 end
