@@ -43,6 +43,11 @@ wordpress_site "crm.osmfoundation.org" do
   database_password database_password
 end
 
+wordpress_theme "osmblog-wp-theme" do
+  site "crm.osmfoundation.org"
+  repository "git://github.com/harry-wood/osmblog-wp-theme.git"
+end
+
 civicrm_version = node[:civicrm][:version]
 civicrm_directory = "/srv/crm.osmfoundation.org/wp-content/plugins/civicrm"
 
