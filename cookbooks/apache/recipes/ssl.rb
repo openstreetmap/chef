@@ -29,7 +29,6 @@ apache_module "socache_shmcb" do
 end
 
 apache_module "ssl"
-apache_module "headers"
 
 apache_conf "ssl" do
   template "ssl.erb"

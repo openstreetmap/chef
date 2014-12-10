@@ -8,14 +8,10 @@ SSLCipherSuite aRSA+HIGH:+kEDH:+kRSA:!kSRP:!kPSK:+3DES:!MD5
 SSLCertificateFile /etc/ssl/certs/<%= @certificate %>.pem
 SSLCertificateKeyFile /etc/ssl/private/<%= @certificate %>.key
 SSLCertificateChainFile /etc/ssl/certs/rapidssl.pem
-
 <% if node[:lsb][:release].to_f >= 14.04 -%>
+
 SSLUseStapling On
 SSLStaplingResponderTimeout 5
 SSLStaplingReturnResponderErrors off
 SSLStaplingCache shmcb:${APACHE_RUN_DIR}/ssl_ocspcache(512000)
-
-Header setifempty Strict-Transport-Security max-age=86400 env=HTTPS
-<% else -%>
-Header set Strict-Transport-Security max-age=86400 env=HTTPS
 <% end -%>
