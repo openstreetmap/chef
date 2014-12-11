@@ -51,7 +51,7 @@ define :mediawiki_extension, :action => [ :enable ] do
       action :sync
       repository repository
       reference reference
-      depth 1
+      #depth 1
       enable_submodules true
       user node[:mediawiki][:user]
       group node[:mediawiki][:group]

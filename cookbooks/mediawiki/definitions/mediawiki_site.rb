@@ -120,7 +120,7 @@ define :mediawiki_site, :action => [ :create, :enable ] do
     action :sync
     repository mediawiki_repository
     reference mediawiki_reference
-    depth 1
+    #depth 1
     user node[:mediawiki][:user]
     group node[:mediawiki][:group]
     notifies :run, resources(:execute => "#{mediawiki[:directory]}/maintenance/install.php"), :immediately
