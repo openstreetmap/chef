@@ -3,7 +3,13 @@ description "Role applied to all mail servers"
 
 default_attributes(
   :exim => {
-    :local_domains => [ "openstreetmap.org", "osm.org", "noreply.openstreetmap.org" ],
+    :local_domains => [
+      "openstreetmap.org",
+      "osm.org",
+      "noreply.openstreetmap.org",
+      "openstreetmap.co.uk",
+      "openstreetmap.org.uk"
+    ],
     :daemon_smtp_ports => [ 25, 26 ],
     :smarthost_name => "mail.openstreetmap.org",
     :smarthost_via => false,
