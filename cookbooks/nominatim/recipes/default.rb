@@ -208,31 +208,15 @@ else
   cron_action = :delete
 end
 
-cron "nominatim_logrotate" do
+template "/etc/cron.d/nominatim" do
   action cron_action
-  hour "5"
-  minute "30"
-  weekday "0"
-  command "#{source_directory}/utils/cron_logrotate.sh"
-  user "nominatim"
-  mailto email_errors
+  source "cron.erb"
+  owner "root"
+  group "root"
+  mode "0644"
+  variables :bin_directory => "#{source_directory}/utils", :mailto => email_errors
 end
 
-cron "nominatim_banip" do
-  action cron_action
-  command "#{source_directory}/utils/cron_banip.py"
-  user "nominatim"
-  mailto email_errors
-end
-
-cron "nominatim_vacuum" do
-  action cron_action
-  hour "2"
-  minute "00"
-  command "#{source_directory}/utils/cron_vacuum.sh"
-  user "nominatim"
-  mailto email_errors
-end
 
 template "#{source_directory}/utils/nominatim-update" do
   source "updater.erb"
@@ -276,12 +260,3 @@ template "/usr/local/bin/backup-nominatim" do
   mode 0755
 end
 
-cron "nominatim_backup" do
-  action cron_action
-  hour "3"
-  minute "00"
-  day "1"
-  command "/usr/local/bin/backup-nominatim"
-  user "nominatim"
-  mailto email_errors
-end
