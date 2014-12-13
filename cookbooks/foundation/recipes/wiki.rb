@@ -27,6 +27,7 @@ mediawiki_site  "wiki.osmfoundation.org" do
   database_name "osmf-wiki"
   database_username "osmf-wikiuser"
   database_password passwords["wiki"]["database"]
+  skin "osmf"
   logo "/Wiki.png"
   email_contact "webmaster@openstreetmap.org"
   email_sender "webmaster@openstreetmap.org"
@@ -37,4 +38,28 @@ cookbook_file "/srv/wiki.osmfoundation.org/Wiki.png" do
   owner node[:mediawiki][:user]
   group node[:mediawiki][:group]
   mode 0644
+end
+
+subversion "/srv/wiki.osmfoundation.org/w/skins/osmf-skin" do
+  repository "http://svn.openstreetmap.org/extensions/mediawiki/osmf"
+  user node[:mediawiki][:user]
+  group node[:mediawiki][:group]
+end
+
+link "/srv/wiki.osmfoundation.org/w/skins/osmf" do
+  to "osmf-skin/osmf"
+  owner node[:mediawiki][:user]
+  group node[:mediawiki][:group]
+end
+
+link "/srv/wiki.osmfoundation.org/w/skins/osmf.deps.php" do
+  to "osmf-skin/osmf.deps.php"
+  owner node[:mediawiki][:user]
+  group node[:mediawiki][:group]
+end
+
+link "/srv/wiki.osmfoundation.org/w/skins/osmf.php" do
+  to "osmf-skin/osmf.php"
+  owner node[:mediawiki][:user]
+  group node[:mediawiki][:group]
 end
