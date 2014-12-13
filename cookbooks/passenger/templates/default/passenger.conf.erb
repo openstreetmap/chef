@@ -6,4 +6,5 @@
   PassengerRuby /usr/local/bin/passenger-ruby
   PassengerMaxPoolSize <%= node[:passenger][:max_pool_size] %>
   PassengerPoolIdleTime <%= node[:passenger][:pool_idle_time] %>
+  PassengerFriendlyErrorPages off
 </IfModule>
