@@ -200,6 +200,14 @@
     php_admin_flag engine off
     Options -ExecCGI -Includes -Indexes
     AllowOverride None
+<% if @mediawiki[:private] -%>
+<% if node[:lsb][:release].to_f >= 14.04 -%>
+    Require all denied
+<% else -%>
+    Order allow,deny
+    Deny from all
+<% end -%>
+<% end -%>
   </Directory>
 
   <Directory <%= @mediawiki[:directory] %>/images/thumb/>

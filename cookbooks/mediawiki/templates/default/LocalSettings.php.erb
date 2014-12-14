@@ -167,6 +167,20 @@ $wgGroupPermissions['bureaucrat']['deletelogentry'] = true;
 $wgGroupPermissions['bureaucrat']['deleterevision'] = true;
 $wgGroupPermissions['bureaucrat']['suppressrevision'] = true;
 $wgGroupPermissions['bureaucrat']['suppressionlog'] = true;
+<% if @mediawiki[:private] -%>
+
+#Disable reading by anonymous users
+$wgGroupPermissions['*']['read'] = false;
+
+#Allow anonymous users to access the login page
+$wgWhitelistRead = array ("Special:Userlogin");
+
+#Prevent new user registrations except by sysops
+$wgGroupPermissions['*']['createaccount'] = false;
+
+#Restrict access to the upload directory
+$wgUploadPath = "$wgScriptPath/img_auth.php";
+<% end -%>
 
 #Allow Subpages on Main Namespace
 $wgNamespacesWithSubpages[NS_MAIN] = true;
