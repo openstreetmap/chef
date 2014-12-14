@@ -27,8 +27,15 @@ mediawiki_site  "board.osmfoundation.org" do
   database_username "board-wikiuser"
   database_password passwords["board"]["database"]
   admin_password passwords["board"]["admin"]
+  logo "/Wiki.png"
   email_contact "webmaster@openstreetmap.org"
   email_sender "webmaster@openstreetmap.org"
   email_sender_name "OSMF Board Wiki"
   private true
+end
+
+cookbook_file "/srv/board.osmfoundation.org/Wiki.png" do
+  owner node[:mediawiki][:user]
+  group node[:mediawiki][:group]
+  mode 0644
 end
