@@ -38,8 +38,6 @@ define :mediawiki_site, :action => [ :create, :enable ] do
   mediawiki_version        = params[:version] || "1.22"
   mediawiki_reference      = "refs/heads/REL#{mediawiki_version}".tr(".", "_")
 
-  passwords = data_bag_item("mediawiki", "passwords")
-
   mediawiki = {
     :directory        => "#{site_directory}/w",
     :site             => name,
@@ -54,7 +52,7 @@ define :mediawiki_site, :action => [ :create, :enable ] do
     :site_notice      => params[:site_notice] || "",
     :site_readonly    => params[:site_readonly] || FALSE,
     :site_admin_user  => "Admin",
-    :site_admin_pw    => passwords["mediawiki-admin-user"],
+    :site_admin_pw    => params[:admin_password],
     :enable_ssl       => params[:enable_ssl] || FALSE,
     :private          => params[:private] || FALSE
   }

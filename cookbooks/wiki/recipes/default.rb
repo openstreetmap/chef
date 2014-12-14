@@ -35,7 +35,9 @@ mediawiki_site  "wiki.openstreetmap.org" do
   
   database_name "wiki"
   database_username "wiki-user"
-  database_password passwords["wiki-user"]
+  database_password passwords["database"]
+
+  admin_password passwords["admin"]
 
   logo          "/osm_logo_wiki.png"
 
