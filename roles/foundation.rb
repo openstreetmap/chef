@@ -19,5 +19,6 @@ default_attributes(
 
 run_list(
   "role[crm]",
-  "recipe[foundation::wiki]"
+  "recipe[foundation::wiki]",
+  "recipe[foundation::board]"
 )
