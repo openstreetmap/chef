@@ -58,6 +58,15 @@
     php_admin_flag engine off
     Options -ExecCGI -Includes -Indexes
     AllowOverride None
+    AddType text/plain .html .htm .shtml
+<% if @mediawiki[:private] -%>
+<% if node[:lsb][:release].to_f >= 14.04 -%>
+    Require all denied
+<% else -%>
+    Order allow,deny
+    Deny from all
+<% end -%>
+<% end -%>
   </Directory>
 
   <Directory <%= @mediawiki[:directory] %>/images/thumb/>
@@ -97,13 +106,6 @@
     Deny from all
 <% end -%>
   </Files>
-
-  <Directory <%= @mediawiki[:directory] %>/images/>
-    Options -ExecCGI -Includes -Indexes
-    AllowOverride None
-    AddType text/plain .html .htm .shtml
-    php_admin_flag engine off
-  </Directory>
 
   <Directory <%= @mediawiki[:directory] %>/cache/>
     Options -ExecCGI -Includes -Indexes
