@@ -243,11 +243,11 @@ munin_plugin "nominatim_importlag" do
 end
 
 munin_plugin "nominatim_query_speed" do
-  target "#{source_directory}/munin/nominatim_query_speed"
+  target "#{source_directory}/munin/nominatim_query_speed_querylog"
 end
 
 munin_plugin "nominatim_requests" do
-  target "#{source_directory}/munin/nominatim_requests"
+  target "#{source_directory}/munin/nominatim_requests_querylog"
 end
 
 munin_plugin "nominatim_throttled_ips" do
