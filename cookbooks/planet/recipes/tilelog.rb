@@ -31,6 +31,13 @@ tilelog_source_directory = node[:planet][:tilelog_source_directory]
 tilelog_input_directory = node[:planet][:tilelog_input_directory]
 tilelog_output_directory = node[:planet][:tilelog_output_directory]
 
+directory tilelog_output_directory do
+  action :create
+  user "www-data"
+  group "www-data"
+  mode 0755
+end
+
 execute "tilelog-build" do
   action :nothing
   command "make"
