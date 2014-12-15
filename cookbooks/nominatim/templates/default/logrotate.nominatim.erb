@@ -9,6 +9,16 @@
   notifempty
   create 640 nominatim adm
 }
+
+/var/log/nominatim/query.log {
+  weekly
+  missingok
+  rotate 52
+  compress
+  delaycompress
+  notifempty
+  create 640 www-data adm
+}
 <% if node[:lsb][:release].to_f < 14.04 -%>
 
 /var/log/php5-fpm.log {
