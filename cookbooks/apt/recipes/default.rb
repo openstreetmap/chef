@@ -57,8 +57,9 @@ apt_source "ubuntugis-unstable" do
   key "314DF160"
 end
 
-if node[:lsb][:release].to_f == 12.04
+if node[:lsb][:release].to_f == 12.04 || node[:lsb][:release].to_f == 12.10
   apt_source "openstreetmap" do
+    template "openstreetmap.list.erb"
     url "http://ppa.launchpad.net/osmadmins/ppa/ubuntu"
     key "0AC4F2CB"
   end
