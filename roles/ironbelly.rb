@@ -99,5 +99,6 @@ run_list(
   "role[planetdump]",
   "recipe[rsyncd]",
   "recipe[openvpn]",
-  "recipe[git::server]"
+  "recipe[git::server]",
+  "recipe[planet::tilelog]"
 )
