@@ -178,6 +178,7 @@ template "#{source_directory}/settings/local.php" do
   owner "nominatim"
   group "nominatim"
   mode 0664
+  variables :postgres_version => database_version
 end
 
 template "#{source_directory}/settings/ip_blocks.conf" do
