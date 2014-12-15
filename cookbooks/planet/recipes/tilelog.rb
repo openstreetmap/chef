@@ -27,9 +27,9 @@ package "libboost-filesystem-dev"
 package "libboost-system-dev"
 package "libboost-program-options-dev"
 
-tilelog_source_directory = node[:planet][:tilelog_source_directory]
-tilelog_input_directory = node[:planet][:tilelog_input_directory]
-tilelog_output_directory = node[:planet][:tilelog_output_directory]
+tilelog_source_directory = node[:planet][:tilelog][:source_directory]
+tilelog_input_directory = node[:planet][:tilelog][:input_directory]
+tilelog_output_directory = node[:planet][:tilelog][:output_directory]
 
 # resources for building the tile analysis binary
 git tilelog_source_directory do
