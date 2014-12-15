@@ -31,28 +31,14 @@ tilelog_source_directory = node[:planet][:tilelog_source_directory]
 tilelog_input_directory = node[:planet][:tilelog_input_directory]
 tilelog_output_directory = node[:planet][:tilelog_output_directory]
 
-directory tilelog_output_directory do
-  action :create
+# resources for building the tile analysis binary
+git tilelog_source_directory do
+  action :sync
+  repository "https://github.com/zerebubuth/openstreetmap-tile-analyze.git"
+  revision "HEAD"
   user "www-data"
   group "www-data"
-  mode 0755
-end
-
-execute "tilelog-build" do
-  action :nothing
-  command "make"
-  cwd tilelog_source_directory
-  user "www-data"
-  group "www-data"
-end
-
-execute "tilelog-configure" do
-  action :nothing
-  command "./configure --with-boost-libdir=/usr/lib"
-  cwd tilelog_source_directory
-  user "www-data"
-  group "www-data"
-  notifies :run, "execute[tilelog-build]", :immediate
+  notifies :run, "execute[tilelog-autogen]", :immediate
 end
 
 execute "tilelog-autogen" do
@@ -64,15 +50,24 @@ execute "tilelog-autogen" do
   notifies :run, "execute[tilelog-configure]", :immediate
 end
 
-git tilelog_source_directory do
-  action :sync
-  repository "https://github.com/zerebubuth/openstreetmap-tile-analyze.git"
-  revision "HEAD"
+execute "tilelog-configure" do
+  action :nothing
+  command "./configure --with-boost-libdir=/usr/lib"
+  cwd tilelog_source_directory
   user "www-data"
   group "www-data"
-  notifies :run, "execute[tilelog-autogen]", :immediate
+  notifies :run, "execute[tilelog-build]", :immediate
 end
 
+execute "tilelog-build" do
+  action :nothing
+  command "make"
+  cwd tilelog_source_directory
+  user "www-data"
+  group "www-data"
+end
+
+# resources for running the tile analysis
 template "/usr/local/bin/tilelog" do
   source "tilelog.erb"
   owner "root"
@@ -90,4 +85,13 @@ template "/etc/cron.d/tilelog" do
   owner "root"
   group "root"
   mode 0644
+end
+
+# resources related to the output of the analysis and where it
+# can be publicly downloaded.
+directory tilelog_output_directory do
+  action :create
+  user "www-data"
+  group "www-data"
+  mode 0755
 end
