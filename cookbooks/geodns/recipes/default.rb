@@ -17,12 +17,13 @@
 # limitations under the License.
 #
 
-package "pdns-server"
-package "pdns-backend-geo"
-
 service "pdns" do
-  action [ :enable, :start ]
+  action [ :stop, :disable ]
   supports :status => true, :restart => true, :reload => true
+end
+
+file "/etc/powerdns/countries.conf" do
+  action :delete
 end
 
 file "/etc/powerdns/pdns.d/pdns.simplebind" do
@@ -30,40 +31,53 @@ file "/etc/powerdns/pdns.d/pdns.simplebind" do
   notifies :reload, "service[pdns]"
 end
 
-template "/etc/powerdns/pdns.d/geo.conf" do
-  source "geo.conf.erb"
-  owner "root"
-  group "root"
-  mode "0600"
-  notifies :reload, "service[pdns]"
+file "/etc/powerdns/pdns.d/geo.conf" do
+  action :delete
+end
+
+file "/etc/powerdns/zones.d/tile.conf" do
+  action :delete
 end
 
 directory "/etc/powerdns/zones.d" do
-  owner "root"
-  group "root"
-  mode "0755"
+  action :delete
 end
 
-template "/etc/powerdns/zones.d/tile.conf" do
-  source "tile.conf.erb"
-  owner "root"
-  group "root"
-  mode "0644"
-  notifies :reload, "service[pdns]"
+file "/etc/cron.weekly/geodns-update" do
+  action :delete
 end
 
-template "/etc/cron.weekly/geodns-update" do
-  source "cron.erb"
-  owner "root"
-  group "root"
-  mode "0755"
+package "pdns-backend-geo" do
+  action :purge
 end
 
-execute "geodns-sync-countries" do
-  command "rsync -z rsync://countries-ns.mdc.dk/zone/zz.countries.nerd.dk.rbldnsd /etc/powerdns/countries.conf"
-  user "root"
+package "pdns-server" do
+  action :purge
+end
+
+package "geoip-database-contrib"
+
+package "gdnsd"
+
+service "gdnsd" do
+  action [ :enable, :start ]
+  supports :status => true, :restart => true, :reload => true
+end
+
+template "/etc/gdnsd/config" do
+  source "config.erb"
+  owner "root"
   group "root"
-  not_if { File.exist?("/etc/powerdns/countries.conf") }
+  mode 0644
+  notifies :restart, "service[gdnsd]"
+end
+
+template "/etc/gdnsd/zones/geo.openstreetmap.org" do
+  source "geo.erb"
+  owner "root"
+  group "root"
+  mode 0644
+  notifies :restart, "service[gdnsd]"
 end
 
 firewall_rule "accept-dns-udp" do
