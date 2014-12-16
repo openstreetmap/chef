@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+require "ipaddr"
+
 certificate = node[:tilecache][:ssl][:certificate]
 node.default[:ssl][:certificates] = node[:ssl][:certificates] | [ certificate ]
 
@@ -77,9 +79,13 @@ nginx_site "default" do
   action [ :delete ]
 end
 
+resolvers = node[:networking][:nameservers].map do |resolver|
+  IPAddr.new(resolver).ipv6? ? "[#{resolver}]" : "#{resolver}"
+end
+
 nginx_site "tile-ssl" do
   template "nginx_tile_ssl.conf.erb"
-  variables :certificate => certificate
+  variables :certificate => certificate, :resolvers => resolvers
 end
 
 service "nginx-certificate-restart" do
