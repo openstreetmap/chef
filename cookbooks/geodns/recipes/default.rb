@@ -17,44 +17,6 @@
 # limitations under the License.
 #
 
-service "pdns" do
-  action [ :stop, :disable ]
-  supports :status => true, :restart => true, :reload => true
-end
-
-file "/etc/powerdns/countries.conf" do
-  action :delete
-end
-
-file "/etc/powerdns/pdns.d/pdns.simplebind" do
-  action :delete
-  notifies :reload, "service[pdns]"
-end
-
-file "/etc/powerdns/pdns.d/geo.conf" do
-  action :delete
-end
-
-file "/etc/powerdns/zones.d/tile.conf" do
-  action :delete
-end
-
-directory "/etc/powerdns/zones.d" do
-  action :delete
-end
-
-file "/etc/cron.weekly/geodns-update" do
-  action :delete
-end
-
-package "pdns-backend-geo" do
-  action :purge
-end
-
-package "pdns-server" do
-  action :purge
-end
-
 package "geoip-database-contrib"
 
 package "gdnsd"
