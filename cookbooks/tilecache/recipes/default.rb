@@ -26,6 +26,10 @@ include_recipe "ssl"
 include_recipe "squid"
 include_recipe "nginx"
 
+package "apache2" do
+  action :remove
+end
+
 package "xz-utils"
 
 tilecaches = search(:node, "roles:tilecache").sort_by { |n| n[:hostname] }
