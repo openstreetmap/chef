@@ -1,7 +1,11 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
-user  nginx;
-worker_processes  4;
+<% if node[:lsb][:release].to_f >= 14.04 -%>
+  user  www-data;
+<% else -%>
+  user  nginx;
+<% end -%>
+worker_processes <%= node['cpu']['total'] %>;
 
 error_log  /var/log/nginx/error.log warn;
 pid        /var/run/nginx.pid;
