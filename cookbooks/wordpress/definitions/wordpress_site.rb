@@ -20,6 +20,7 @@
 define :wordpress_site, :action => [ :create, :enable ] do
   name = params[:name]
   ssl_enabled = params[:ssl_enabled] || false
+  ssl_certificate = params[:ssl_certificate]
   aliases = Array(params[:aliases])
   urls = Array(params[:urls])
   directory = params[:directory] || "/srv/#{name}"
@@ -129,7 +130,8 @@ define :wordpress_site, :action => [ :create, :enable ] do
     cookbook "wordpress"
     template "apache.erb"
     directory directory
-    variables :aliases => aliases, :urls => urls, :ssl_enabled => ssl_enabled
+    variables :aliases => aliases, :urls => urls,
+              :ssl_enabled => ssl_enabled, :ssl_certificate => ssl_certificate
     notifies :reload, "service[apache2]"
   end
 
