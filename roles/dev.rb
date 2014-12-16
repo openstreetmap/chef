@@ -94,12 +94,6 @@ default_attributes(
       :max_requests_per_child => 10000
     }
   },
-  :apt => {
-    :sources => [
-      "ubuntugis-stable",
-      "mapnik-v210"
-    ]
-  },
   :dev => {
     :rails => {
       :master => {
