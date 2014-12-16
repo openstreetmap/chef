@@ -34,5 +34,6 @@ default_attributes(
 )
 
 run_list(
-  "role[carnet]"
+  "role[carnet]",
+  "role[tilecache]"
 )
