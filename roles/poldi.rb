@@ -2,9 +2,6 @@ name "poldi"
 description "Master role applied to poldi"
 
 default_attributes(
-  :apt => {
-    :sources => [ "ubuntugis-stable", "ubuntugis-unstable" ]
-  },
   :devices => {
     :areca_ld_tune => {
       :comment => "RAID arrays on areca",
@@ -54,7 +51,7 @@ default_attributes(
     }
   },
   :postgresql => {
-    :versions => [ "9.1" ],
+    :versions => [ "9.3" ],
     :settings => {
       :defaults => {
         :shared_buffers => "24GB",
@@ -68,9 +65,9 @@ default_attributes(
   :nominatim => {
     :enabled => false,
     :database => {
-        :cluster => "9.1/main",
+        :cluster => "9.3/main",
         :dbname => "nominatim",
-        :postgis => "2.0"
+        :postgis => "2.1"
     },
     :fpm_pools => {
         :www => {
