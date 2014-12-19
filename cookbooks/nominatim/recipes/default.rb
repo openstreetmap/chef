@@ -261,3 +261,10 @@ template "/usr/local/bin/backup-nominatim" do
   mode 0755
 end
 
+directory File.dirname(node[:nominatim][:flatnode_file]) do
+  owner "nominatim"
+  group "nominatim"
+  mode 0755
+  recursive true
+end
+
