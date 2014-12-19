@@ -3,7 +3,7 @@
 SSLProtocol All -SSLv2 -SSLv3
 
 SSLHonorCipherOrder On
-SSLCipherSuite aRSA+HIGH:+kEDH:+kRSA:!kSRP:!kPSK:+3DES:!MD5
+SSLCipherSuite <%= node[:ssl][:ciphers] -%>
 
 SSLCertificateFile /etc/ssl/certs/<%= @certificate %>.pem
 SSLCertificateKeyFile /etc/ssl/private/<%= @certificate %>.key
