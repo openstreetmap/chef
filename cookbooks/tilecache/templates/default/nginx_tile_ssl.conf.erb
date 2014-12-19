@@ -7,7 +7,7 @@ server {
     ssl_certificate      /etc/ssl/certs/<%= @certificate %>.pem;
     ssl_certificate_key  /etc/ssl/private/<%= @certificate %>.key;
 
-    ssl_protocols TLSv1 TLSv1.1 TLSv1.2 SSLv3;
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
     ssl_ciphers aRSA+HIGH:+kEDH:+kRSA:!kSRP:!kPSK:+3DES:!MD5;
     ssl_prefer_server_ciphers on;
     ssl_session_cache shared:SSL:30m;
