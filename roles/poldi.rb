@@ -54,9 +54,9 @@ default_attributes(
     :versions => [ "9.3" ],
     :settings => {
       :defaults => {
-        :shared_buffers => "24GB",
+        :shared_buffers => "10GB",
         :work_mem => "160MB",
-        :maintenance_work_mem => "10GB",
+        :maintenance_work_mem => "16GB",
         :random_page_cost => "1.5",
         :effective_cache_size => "48GB",
         :fsync => "off"
