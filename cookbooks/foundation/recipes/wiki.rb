@@ -32,6 +32,7 @@ mediawiki_site  "wiki.osmfoundation.org" do
   email_contact "webmaster@openstreetmap.org"
   email_sender "webmaster@openstreetmap.org"
   email_sender_name "OSMF Wiki"
+  private_accounts true
 end
 
 cookbook_file "/srv/wiki.osmfoundation.org/Wiki.png" do

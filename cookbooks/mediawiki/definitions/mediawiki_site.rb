@@ -54,6 +54,7 @@ define :mediawiki_site, :action => [ :create, :enable ] do
     :site_admin_user  => "Admin",
     :site_admin_pw    => params[:admin_password],
     :enable_ssl       => params[:enable_ssl] || FALSE,
+    :private_accounts => params[:private_accounts] || FALSE,
     :private          => params[:private] || FALSE
   }
 

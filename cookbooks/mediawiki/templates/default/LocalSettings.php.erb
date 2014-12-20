@@ -167,6 +167,12 @@ $wgGroupPermissions['bureaucrat']['deletelogentry'] = true;
 $wgGroupPermissions['bureaucrat']['deleterevision'] = true;
 $wgGroupPermissions['bureaucrat']['suppressrevision'] = true;
 $wgGroupPermissions['bureaucrat']['suppressionlog'] = true;
+
+<% if @mediawiki[:private_accounts] -%>
+#Prevent new user registrations except by existing users
+$wgGroupPermissions['*']['createaccount'] = false;
+$wgGroupPermissions['user']['createaccount'] = true;
+<% end -%>
 <% if @mediawiki[:private] -%>
 
 #Disable reading by anonymous users
