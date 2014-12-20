@@ -254,6 +254,30 @@ munin_plugin "nominatim_throttled_ips" do
   target "#{source_directory}/munin/nominatim_throttled_ips"
 end
 
+remote_file "#{source_directory}/data/wikipedia_article.sql.bin" do
+  action :create_if_missing
+  source "http://www.nominatim.org/data/wikipedia_article.sql.bin"
+  owner  "nominatim"
+  group  "nominatim"
+  mode   0644
+end
+
+remote_file "#{source_directory}/data/wikipedia_redirect.sql.bin" do
+  action :create_if_missing
+  source "http://www.nominatim.org/data/wikipedia_redirect.sql.bin"
+  owner  "nominatim"
+  group  "nominatim"
+  mode   0644
+end
+
+remote_file "#{source_directory}/data/gb_postcode_data.sql.gz" do
+  action :create_if_missing
+  source "http://www.nominatim.org/data/gb_postcode_data.sql.gz"
+  owner  "nominatim"
+  group  "nominatim"
+  mode   0644
+end
+
 template "/usr/local/bin/backup-nominatim" do
   source "backup-nominatim.erb"
   owner "root"
