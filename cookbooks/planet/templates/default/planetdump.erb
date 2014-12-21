@@ -26,6 +26,14 @@ fi
 # Create Lock
 echo $$ > /tmp/planetdump.lock
 
+function cleanup {
+	 # Release lock
+	 rm /tmp/planetdump.lock
+}
+
+# Remove lock on exit
+trap cleanup EXIT
+
 # Change to working directory
 cd /store/planetdump
 
@@ -56,6 +64,3 @@ do
     md5sum "#{file}" > "#{file}.md5"
     mv "${file}" "${file}.md5" "/store/planet/pbf"
 done
-
-# Release lock
-rm /tmp/planetdump.lock
