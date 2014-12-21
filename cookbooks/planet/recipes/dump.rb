@@ -39,8 +39,6 @@ package "libboost-filesystem-dev"
 package "libboost-thread-dev"
 package "libboost-iostreams-dev"
 package "libosmpbf-dev"
-package "libleveldb-dev"
-package "libsnappy-dev"
 package "libprotobuf-dev"
 package "osmpbf-bin"
 
@@ -69,7 +67,7 @@ end
 
 execute "/opt/planet-dump-ng/configure" do
   action :nothing
-  command "./configure --with-leveldb=/usr"
+  command "./configure"
   cwd "/opt/planet-dump-ng"
   user "root"
   group "root"
