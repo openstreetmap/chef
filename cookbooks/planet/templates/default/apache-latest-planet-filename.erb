@@ -4,7 +4,7 @@
 
 $| = 1;
 while (<STDIN>) {
-	my $where = readlink("/store/planet/planet/planet-latest.osm.bz2");
+	my $where = readlink("<%= node[:planet][:dump][:xml_directory] %>/planet-latest.osm.bz2");
 	s/planet\/planet\-latest\.osm\.bz2/planet\/$where/g;
 	print $_;
 }

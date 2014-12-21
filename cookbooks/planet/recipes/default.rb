@@ -61,16 +61,13 @@ remote_directory "/store/planet" do
   files_mode 0755
 end
 
-directory "/store/planet/planet" do
-  owner "www-data"
-  group "planet"
-  mode 0775
-end
-
-directory "/store/planet/pbf" do
-  owner "www-data"
-  group "planet"
-  mode 0775
+[:xml_directory, :xml_history_directory,
+ :pbf_directory, :pbf_history_directory].each do |dir|
+  directory dir do
+    owner "www-data"
+    group "planet"
+    mode 0775
+  end
 end
 
 directory "/store/planet/notes" do

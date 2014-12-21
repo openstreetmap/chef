@@ -1,4 +1,5 @@
 #!/bin/bash
+# DO NOT EDIT - This file is being maintained by Chef
 
 # Exit on error
 set -e
@@ -52,15 +53,14 @@ time nice -n 19 /store/planet-dump-ng/planet-dump-ng \
      -p "planet-${date}.osm.pbf" -P "history-${date}.osm.pbf"
 
 # Move XML dumps into place
-for file in "changesets-${date}.osm.bz2" "planet-${date}.osm.bz2" "history-${date}.osm.bz2"
-do
-    md5sum "#{file}" > "#{file}.md5"
-    mv "${file}" "${file}.md5" "/store/planet/planet"
-done
-
-# Move PBF dumps into place
-for file in "planet-${date}.osm.pbf" "history-${date}.osm.pbf"
-do
-    md5sum "#{file}" > "#{file}.md5"
-    mv "${file}" "${file}.md5" "/store/planet/pbf"
-done
+year = `echo ${date} | sed "s/.*-\([0-9]\)\{4\}-.*/\1/"`
+<% {
+	 "changesets-${date}.osm.bz2" => "#{node[:planet][:dump][:xml_directory]}/${year}",
+	 "planet-${date}.osm.bz2" => "#{node[:planet][:dump][:xml_directory]}/${year}",
+	 "history-${date}.osm.bz2" => "#{node[:planet][:dump][:xml_history_directory]}/${year}",
+	 "planet-${date}.osm.pbf" => node[:planet][:dump][:pbf_directory],
+	 "history-${date}.osm.pbf" => node[:planet][:dump][:pbf_history_directory]
+}.each do |file,dir| %>
+md5sum "<%= file %>" > "<%= file %>.md5"
+mv "<%= file %>" "<%= file %>.md5" "<%= dir %>"
+<% end %>

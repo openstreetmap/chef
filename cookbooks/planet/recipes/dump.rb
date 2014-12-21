@@ -89,9 +89,11 @@ directory "/store/planetdump" do
   mode 0755
 end
 
-template "/usr/local/bin/planetdump" do
-  source "planetdump.erb"
-  owner "root"
-  group "root"
-  mode 0755
+["planetdump", "planet-mirror-redirect-update", "apache-latest-planet-filename"].each do |program|
+  template "/usr/local/bin/#{program}" do
+    source "#{program}.erb"
+    owner "root"
+    group "root"
+    mode 0755
+  end
 end
