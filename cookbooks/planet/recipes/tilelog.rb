@@ -35,7 +35,7 @@ tilelog_output_directory = node[:planet][:tilelog][:output_directory]
 git tilelog_source_directory do
   action :sync
   repository "https://github.com/zerebubuth/openstreetmap-tile-analyze.git"
-  revision "HEAD"
+  revision "live"
   user "www-data"
   group "www-data"
   notifies :run, "execute[tilelog-autogen]", :immediate
