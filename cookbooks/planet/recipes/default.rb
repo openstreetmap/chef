@@ -51,8 +51,8 @@ remote_directory "/store/planet" do
   files_mode 0755
 end
 
-[:xml_directory, :xml_history_directory,
- :pbf_directory, :pbf_history_directory].each do |dir|
+["xml_directory", "xml_history_directory",
+ "pbf_directory", "pbf_history_directory"].each do |dir|
   directory dir do
     owner "www-data"
     group "planet"
