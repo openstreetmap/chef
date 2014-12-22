@@ -1,4 +1,5 @@
 #!/bin/bash
+
 # DO NOT EDIT - This file is being maintained by Chef
 
 # Exit on error
@@ -6,13 +7,14 @@ set -e
 
 # Get the name of the file and the expected pattern
 file="$1"
-pattern="^osm-([0-9]{4}-[0-9]{2}-[0-9]{2})\.dmp$"
+pattern="^osm-([0-9]{4})-([0-9]{2}-[0-9]{2})\.dmp$"
 
 # Give up now if the file isn't a database dump
 [[ $file =~ $pattern ]] || exit 0
 
-# Save the date from the file name
-date="${BASH_REMATCH[1]}"
+# Save the year and date from the file name
+year="${BASH_REMATCH[1]}"
+date="${year}-${BASH_REMATCH[2]}"
 
 # Check the lock
 if [ -f /tmp/planetdump.lock ]; then
@@ -27,9 +29,9 @@ fi
 # Create Lock
 echo $$ > /tmp/planetdump.lock
 
+# Define cleanup function
 function cleanup {
-	 # Release lock
-	 rm /tmp/planetdump.lock
+    rm /tmp/planetdump.lock
 }
 
 # Remove lock on exit
@@ -53,14 +55,13 @@ time nice -n 19 /store/planet-dump-ng/planet-dump-ng \
      -p "planet-${date}.osm.pbf" -P "history-${date}.osm.pbf"
 
 # Move XML dumps into place
-year = `echo ${date} | sed "s/.*-\([0-9]\)\{4\}-.*/\1/"`
 <% {
-	 "changesets-${date}.osm.bz2" => "#{node[:planet][:dump][:xml_directory]}/${year}",
-	 "planet-${date}.osm.bz2" => "#{node[:planet][:dump][:xml_directory]}/${year}",
-	 "history-${date}.osm.bz2" => "#{node[:planet][:dump][:xml_history_directory]}/${year}",
-	 "planet-${date}.osm.pbf" => node[:planet][:dump][:pbf_directory],
-	 "history-${date}.osm.pbf" => node[:planet][:dump][:pbf_history_directory]
-}.each do |file,dir| %>
+    "changesets-${date}.osm.bz2" => "#{node[:planet][:dump][:xml_directory]}/${year}",
+    "planet-${date}.osm.bz2" => "#{node[:planet][:dump][:xml_directory]}/${year}",
+    "history-${date}.osm.bz2" => "#{node[:planet][:dump][:xml_history_directory]}/${year}",
+    "planet-${date}.osm.pbf" => node[:planet][:dump][:pbf_directory],
+    "history-${date}.osm.pbf" => node[:planet][:dump][:pbf_history_directory]
+}.each do |file,dir| -%>
 md5sum "<%= file %>" > "<%= file %>.md5"
 mv "<%= file %>" "<%= file %>.md5" "<%= dir %>"
-<% end %>
+<% end -%>
