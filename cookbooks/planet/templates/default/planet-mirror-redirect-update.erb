@@ -8,7 +8,7 @@
 	Modifies .htaccess
 */
 $_YEAR = date('Y');
-$_PLANET_FOLDER = '/store/planet/planet/'.$_YEAR.'/';
+$_PLANET_FOLDER = '<%= node[:planet][:dump][:xml_directory] %>/'.$_YEAR.'/';
 $_PLANET_REGEX = "/^(planet|changesets)\-\d{6}(\-nolt)?\.osm\.(bz2|gz)$/";
 $_MIRROR = 'http://ftp.heanet.ie/mirrors/openstreetmap.org/planet/'.$_YEAR.'/';
 $_PLANET_HTACCESS = $_PLANET_FOLDER.'../../.htaccess';

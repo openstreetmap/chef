@@ -17,48 +17,83 @@
 # limitations under the License.
 #
 
-include_recipe "git"
+node.default[:incron][:planetdump] = {
+  :user => "www-data",
+  :path => "/store/backup",
+  :events => [ "IN_CREATE", "IN_MOVED_TO" ],
+  :command => "/usr/local/bin/planetdump $#"
+}
 
-db_passwords = data_bag_item("db", "passwords")
+include_recipe "git"
+include_recipe "incron"
 
 package "gcc"
 package "make"
-package "libpqxx3-dev"
+package "autoconf"
+package "automake"
+package "libxml2-dev"
+package "libboost-dev"
+package "libboost-program-options-dev"
+package "libboost-date-time-dev"
+package "libboost-filesystem-dev"
+package "libboost-thread-dev"
+package "libboost-iostreams-dev"
+package "libosmpbf-dev"
+package "libprotobuf-dev"
+package "osmpbf-bin"
 
-directory "/opt/planetdump" do
+directory "/opt/planet-dump-ng" do
   owner "root"
   group "root"
   mode 0755
 end
 
-git "/opt/planetdump" do
+git "/opt/planet-dump-ng" do
   action :sync
-  repository "git://git.openstreetmap.org/planetdump.git"
-  revision "live"
+  repository "git://github.com/zerebubuth/planet-dump-ng.git"
+  revision "master"
   user "root"
   group "root"
 end
 
-execute "/opt/planetdump/Makefile" do
+execute "/opt/planet-dump-ng/autogen.sh" do
   action :nothing
-  command "make planet06_pg"
-  cwd "/opt/planetdump"
+  command "./autogen.sh"
+  cwd "/opt/planet-dump-ng"
   user "root"
   group "root"
-  subscribes :run, "git[/opt/planetdump]"
+  subscribes :run, "git[/opt/planet-dump-ng]"
 end
 
-template "/usr/local/bin/planetdump" do
-  source "planetdump.erb"
-  owner "root"
+execute "/opt/planet-dump-ng/configure" do
+  action :nothing
+  command "./configure"
+  cwd "/opt/planet-dump-ng"
+  user "root"
   group "root"
+  subscribes :run, "execute[/opt/planet-dump-ng/autogen.sh]"
+end
+
+execute "/opt/planet-dump-ng/Makefile" do
+  action :nothing
+  command "make"
+  cwd "/opt/planet-dump-ng"
+  user "root"
+  group "root"
+  subscribes :run, "execute[/opt/planet-dump-ng/configure]"
+end
+
+directory "/store/planetdump" do
+  owner "www-data"
+  group "www-data"
   mode 0755
-  variables :password => db_passwords["planetdump"]
 end
 
-template "/etc/cron.d/planetdump" do
-  source "planetdump.cron.erb"
-  owner "root"
-  group "root"
-  mode 0644
+["planetdump", "planet-mirror-redirect-update", "apache-latest-planet-filename"].each do |program|
+  template "/usr/local/bin/#{program}" do
+    source "#{program}.erb"
+    owner "root"
+    group "root"
+    mode 0755
+  end
 end

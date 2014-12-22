@@ -1,71 +1,67 @@
 #!/bin/bash
-ulimit -m 4194304 -v 4194304
+
+# DO NOT EDIT - This file is being maintained by Chef
+
+# Exit on error
 set -e
 
+# Get the name of the file and the expected pattern
+file="$1"
+pattern="^osm-([0-9]{4})-([0-9]{2}-[0-9]{2})\.dmp$"
+
+# Give up now if the file isn't a database dump
+[[ $file =~ $pattern ]] || exit 0
+
+# Save the year and date from the file name
+year="${BASH_REMATCH[1]}"
+date="${year}-${BASH_REMATCH[2]}"
+
+# Check the lock
 if [ -f /tmp/planetdump.lock ]; then
-	if [ "$(ps -p `cat /tmp/planetdump.lock` | wc -l)" -gt 1 ]; then
-		# process is still running
-		echo Error: Another planetdump is running
-		exit 1
-	else
-		# process not running, but lock file not deleted?
-		rm /tmp/planetdump.lock
-	fi
+    if [ "$(ps -p `cat /tmp/planetdump.lock` | wc -l)" -gt 1 ]; then
+	echo "Error: Another planetdump is running"
+	exit 1
+    else
+	rm /tmp/planetdump.lock
+    fi
 fi
 
-#Create Lock
+# Create Lock
 echo $$ > /tmp/planetdump.lock
 
+# Define cleanup function
+function cleanup {
+    rm /tmp/planetdump.lock
+}
 
-cur_date=`date +%y%m%d`
-cur_year=`date +%Y`
-cur_planet=planet-${cur_date}.osm
-cur_changeset=changesets-${cur_date}.osm
-planet_dir=/store/planet/
+# Remove lock on exit
+trap cleanup EXIT
 
-export CONNECTION_PARAMS='dbname=openstreetmap host=db user=planetdump password=<%= @password %>'
-export PATH='/usr/local/bin:/usr/bin:/bin:/usr/bin/X11'
+# Change to working directory
+cd /store/planetdump
 
+# Cleanup
+rm -rf users
+rm -rf changesets changeset_tags
+rm -rf nodes node_tags
+rm -rf ways way_tags way_nodes
+rm -rf relations relation_tags relation_members
 
-if [ \! -d ${planet_dir}/planet/ ]
-	then
-		echo ${planet_dir}planet/ does not exist
-		exit 1
-	fi
-if [ \! -d ${planet_dir}/planet/${cur_year}/ ]; then mkdir ${planet_dir}/planet/${cur_year}/; fi
-cd ${planet_dir}/planet/${cur_year}/
+# Run the dump
+time nice -n 19 /store/planet-dump-ng/planet-dump-ng \
+     -c "pbzip2 -c" -f "${file}" --dense-nodes=1 \
+     -C "changesets-${date}.osm.bz2" \
+     -x "planet-${date}.osm.bz2" -X "history-${date}.osm.bz2" \
+     -p "planet-${date}.osm.pbf" -P "history-${date}.osm.pbf"
 
-/opt/planetdump/planet06_pg | pbzip2 -p6 -6c > .${cur_planet}.bz2.new
-/opt/planetdump/planet06_pg --changesets | pbzip2 -p6 -9c > .${cur_changeset}.bz2.new
-
-planet_size=$(du -sb .${cur_planet}.bz2.new | awk '{ print $1 }')
-changeset_size=$(du -sb .${cur_changeset}.bz2.new | awk '{ print $1 }')
-if ((planet_size<32000000000)); then
-	echo Planet .${cur_planet}.bz2.new too small
-	exit 1
-fi
-if ((changeset_size<720000000)); then
-	echo Changeset .${cur_changeset}.bz2.new too small
-	exit 1
-fi
-
-mv .${cur_planet}.bz2.new ${cur_planet}.bz2
-mv .${cur_changeset}.bz2.new ${cur_changeset}.bz2
-md5sum ${cur_planet}.bz2 > ${cur_planet}.bz2.md5
-md5sum ${cur_changeset}.bz2 > ${cur_changeset}.bz2.md5
-
-#link planet latest to the new file
-cd ${planet_dir}/planet/
-
-ln -fs ${cur_year}/${cur_planet}.bz2 planet-latest.osm.bz2
-ln -fs ${cur_year}/${cur_changeset}.bz2 changesets-latest.osm.bz2
-
-# mangle md5 files for 'latest' ones
-rm -f planet-latest.osm.bz2.md5
-rm -f changesets-latest.osm.bz2.md5
-
-sed -e "s/${cur_planet}.bz2/planet-latest.osm.bz2/" ${cur_year}/${cur_planet}.bz2.md5 > planet-latest.osm.bz2.md5
-sed -e "s/${cur_changeset}.bz2/changesets-latest.osm.bz2/" ${cur_year}/${cur_changeset}.bz2.md5 > changesets-latest.osm.bz2.md5
-
-rm /tmp/planetdump.lock
-
+# Move XML dumps into place
+<% {
+    "changesets-${date}.osm.bz2" => "#{node[:planet][:dump][:xml_directory]}/${year}",
+    "planet-${date}.osm.bz2" => "#{node[:planet][:dump][:xml_directory]}/${year}",
+    "history-${date}.osm.bz2" => "#{node[:planet][:dump][:xml_history_directory]}/${year}",
+    "planet-${date}.osm.pbf" => node[:planet][:dump][:pbf_directory],
+    "history-${date}.osm.pbf" => node[:planet][:dump][:pbf_history_directory]
+}.each do |file,dir| -%>
+md5sum "<%= file %>" > "<%= file %>.md5"
+mv "<%= file %>" "<%= file %>.md5" "<%= dir %>"
+<% end -%>
