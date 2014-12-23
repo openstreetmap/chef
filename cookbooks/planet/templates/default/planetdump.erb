@@ -49,7 +49,7 @@ rm -rf relations relation_tags relation_members
 
 # Run the dump
 time nice -n 19 /opt/planet-dump-ng/planet-dump-ng \
-     -c "pbzip2 -c" -f "${file}" --dense-nodes=1 \
+     -c "pbzip2 -c" -f "/store/backup/${file}" --dense-nodes=1 \
      -C "changesets-${date}.osm.bz2" \
      -x "planet-${date}.osm.bz2" -X "history-${date}.osm.bz2" \
      -p "planet-${date}.osm.pbf" -P "history-${date}.osm.pbf"
