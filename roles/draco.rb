@@ -30,5 +30,6 @@ default_attributes(
 )
 
 run_list(
-  "role[ucl-wolfson]"
+  "role[ucl-wolfson]",
+  "role[hp-g5]"
 )
