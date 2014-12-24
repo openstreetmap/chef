@@ -63,5 +63,6 @@ time nice -n 19 /opt/planet-dump-ng/planet-dump-ng \
     "history-${date}.osm.pbf" => node[:planet][:dump][:pbf_history_directory]
 }.each do |file,dir| -%>
 md5sum "<%= file %>" > "<%= file %>.md5"
+mkdir -p "<%= dir %>"
 mv "<%= file %>" "<%= file %>.md5" "<%= dir %>"
 <% end -%>
