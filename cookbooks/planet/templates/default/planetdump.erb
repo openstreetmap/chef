@@ -54,15 +54,26 @@ time nice -n 19 /opt/planet-dump-ng/planet-dump-ng \
      -x "planet-${date}.osm.bz2" -X "history-${date}.osm.bz2" \
      -p "planet-${date}.osm.pbf" -P "history-${date}.osm.pbf"
 
-# Move XML dumps into place
-<% {
-    "changesets-${date}.osm.bz2" => "#{node[:planet][:dump][:xml_directory]}/${year}",
-    "planet-${date}.osm.bz2" => "#{node[:planet][:dump][:xml_directory]}/${year}",
-    "history-${date}.osm.bz2" => "#{node[:planet][:dump][:xml_history_directory]}/${year}",
-    "planet-${date}.osm.pbf" => node[:planet][:dump][:pbf_directory],
-    "history-${date}.osm.pbf" => node[:planet][:dump][:pbf_history_directory]
-}.each do |file,dir| -%>
-md5sum "<%= file %>" > "<%= file %>.md5"
-mkdir -p "<%= dir %>"
-mv "<%= file %>" "<%= file %>.md5" "<%= dir %>"
-<% end -%>
+# Function to install a dump in place
+function install_dump {
+  type="$1"
+  format="$2"
+  dir="$3"
+  year="$4"
+  name="${type}-${date}.osm.${format}"
+  latest="${type}-latest.osm.${format}"
+
+  md5sum "${name}" > "${name}.md5"
+  mkdir -p "${dir}/${year}"
+  mv "${name}" "${name}.md5" "${dir}/${year}"
+  ln -sf "${year:-.}/${name}" "${dir}/${latest}"
+  rm -f "${dir}/${latest}.md5"
+  sed -e "s/${name}/${latest}/" > "${dir}/${year}/${name}.md5" > "${dir}/${latest}.md5"
+}
+
+# Move dumps into place
+install_dump "changesets" "bz2" "<%= node[:planet][:dump][:xml_directory] %>" "${year}"
+install_dump "planet" "bz2" "<%= node[:planet][:dump][:xml_directory] %>" "${year}"
+install_dump "history" "bz2" "<%= node[:planet][:dump][:xml_history_directory] %>" "${year}"
+install_dump "planet" "pbf" "<%= node[:planet][:dump][:pbf_directory] %>"
+install_dump "history" "pbf" "<%= node[:planet][:dump][:pbf_history_directory] %>"
