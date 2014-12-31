@@ -100,5 +100,5 @@ run_list(
   "recipe[rsyncd]",
   "recipe[openvpn]",
   "recipe[git::server]",
-  "recipe[planet::tilelog]"
+  "recipe[tilelog]"
 )
