@@ -68,7 +68,7 @@ function install_dump {
   mv "${name}" "${name}.md5" "${dir}/${year}"
   ln -sf "${year:-.}/${name}" "${dir}/${latest}"
   rm -f "${dir}/${latest}.md5"
-  sed -e "s/${name}/${latest}/" > "${dir}/${year}/${name}.md5" > "${dir}/${latest}.md5"
+  sed -e "s/${name}/${latest}/" "${dir}/${year}/${name}.md5" > "${dir}/${latest}.md5"
 }
 
 # Move dumps into place
