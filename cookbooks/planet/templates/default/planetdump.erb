@@ -19,10 +19,10 @@ date="${year:2:2}${BASH_REMATCH[2]}${BASH_REMATCH[3]}"
 # Check the lock
 if [ -f /tmp/planetdump.lock ]; then
     if [ "$(ps -p `cat /tmp/planetdump.lock` | wc -l)" -gt 1 ]; then
-	echo "Error: Another planetdump is running"
-	exit 1
+        echo "Error: Another planetdump is running"
+        exit 1
     else
-	rm /tmp/planetdump.lock
+        rm /tmp/planetdump.lock
     fi
 fi
 
@@ -31,18 +31,25 @@ fi
 # and incron doesn't yet support MAILTO like cron does. The
 # command below appears to work in bash as well as dash.
 logfile="/tmp/planetdump.log.$$"
-exec > $logfile 2>&1
+exec > "${logfile}" 2>&1
 
-# Create Lock
+# Create lock file
 echo $$ > /tmp/planetdump.lock
 
 # Define cleanup function
 function cleanup {
+    # Remove the lock file
     rm /tmp/planetdump.lock
+
     # Send an email with the output, since incron doesn't yet
-    # support doing this in the incrontab.
-    /usr/bin/mailx -s "Planet dump output: ${file}" zerebubuth@gmail.com < $logfile
-    rm $logfile
+    # support doing this in the incrontab
+    if [[ -s "$logfile" ]]
+    then
+        mailx -s "Planet dump output: ${file}" zerebubuth@gmail.com < "${logfile}"
+    fi
+
+    # Remove the log file
+    rm -f "${logfile}"
 }
 
 # Remove lock on exit
