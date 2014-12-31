@@ -26,12 +26,23 @@ if [ -f /tmp/planetdump.lock ]; then
     fi
 fi
 
+# Redirect this shell's output to a file. This is so that it
+# can be emailed later, since this script is run from incron
+# and incron doesn't yet support MAILTO like cron does. The
+# command below appears to work in bash as well as dash.
+logfile="/tmp/planetdump.log.$$"
+exec > $logfile 2>&1
+
 # Create Lock
 echo $$ > /tmp/planetdump.lock
 
 # Define cleanup function
 function cleanup {
     rm /tmp/planetdump.lock
+    # Send an email with the output, since incron doesn't yet
+    # support doing this in the incrontab.
+    /usr/bin/mailx -s "Planet dump output: ${file}" zerebubuth@gmail.com < $logfile
+    rm $logfile
 }
 
 # Remove lock on exit
