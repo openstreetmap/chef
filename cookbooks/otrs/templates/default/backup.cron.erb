@@ -11,7 +11,7 @@ chown otrs $T
 chown otrs $T/otrs-$D
 sudo -u otrs pg_dump --file=$T/otrs-$D/otrs.dmp otrs
 ln -s /opt/otrs $T/otrs-$D/otrs
-ln -s /etc/apache2/sites-available/otrs.openstreetmap.org $T/otrs-$D/apache2-otrs.openstreetmap.org
+ln -s /etc/apache2/sites-available/otrs.openstreetmap.org.conf $T/otrs-$D/apache2-otrs.openstreetmap.org.conf
 
 export GZIP="--rsyncable -9"
 export RSYNC_RSH="ssh -ax -c arcfour"
