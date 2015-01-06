@@ -1,1 +1,1 @@
-default[:piwik][:version] = "2.9.1"
+default[:piwik][:version] = "2.10.0"
