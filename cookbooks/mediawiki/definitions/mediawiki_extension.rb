@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-define :mediawiki_extension, :action => [ :enable ] do
+define :mediawiki_extension, :action => [ :enable ], :variables => {} do
   name = params[:name]
   site = params[:site]
   site_directory = node[:mediawiki][:sites][site][:site_directory]
@@ -25,6 +25,7 @@ define :mediawiki_extension, :action => [ :enable ] do
   extension_directory = "#{mediawiki_directory}/extensions/#{name}"
   source = params[:source]
   template = params[:template]
+  template_variables = params[:variables]
 
   if source
     remote_directory extension_directory do
@@ -67,6 +68,7 @@ define :mediawiki_extension, :action => [ :enable ] do
       user node[:mediawiki][:user]
       group node[:mediawiki][:group]
       mode 0664
+      variables template_variables
       notifies :create, resources(:template => "#{mediawiki_directory}/LocalSettings.php")
     end
   end

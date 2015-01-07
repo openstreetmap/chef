@@ -39,23 +39,25 @@ define :mediawiki_site, :action => [ :create, :enable ] do
   mediawiki_reference      = "refs/heads/REL#{mediawiki_version}".tr(".", "_")
 
   mediawiki = {
-    :directory        => "#{site_directory}/w",
-    :site             => name,
-    :sitename         => params[:sitename] || "OpenStreetMap Wiki",
-    :metanamespace    => params[:metanamespace] || "OpenStreetMap",
-    :logo             => params[:logo] || "$wgStylePath/common/images/wiki.png",
-    :email_contact    => params[:email_contact] || "",
-    :email_sender     => params[:email_sender] || "",
+    :directory         => "#{site_directory}/w",
+    :site              => name,
+    :sitename          => params[:sitename] || "OpenStreetMap Wiki",
+    :metanamespace     => params[:metanamespace] || "OpenStreetMap",
+    :logo              => params[:logo] || "$wgStylePath/common/images/wiki.png",
+    :email_contact     => params[:email_contact] || "",
+    :email_sender      => params[:email_sender] || "",
     :email_sender_name => params[:email_sender_name] || "MediaWiki Mail", 
-    :commons          => params[:commons] || TRUE,
-    :skin             => params[:skin] || "vector",
-    :site_notice      => params[:site_notice] || "",
-    :site_readonly    => params[:site_readonly] || FALSE,
-    :site_admin_user  => "Admin",
-    :site_admin_pw    => params[:admin_password],
-    :enable_ssl       => params[:enable_ssl] || FALSE,
-    :private_accounts => params[:private_accounts] || FALSE,
-    :private          => params[:private] || FALSE
+    :commons           => params[:commons] || TRUE,
+    :skin              => params[:skin] || "vector",
+    :site_notice       => params[:site_notice] || "",
+    :site_readonly     => params[:site_readonly] || FALSE,
+    :site_admin_user   => "Admin",
+    :site_admin_pw     => params[:admin_password],
+    :enable_ssl        => params[:enable_ssl] || FALSE,
+    :private_accounts  => params[:private_accounts] || FALSE,
+    :private           => params[:private] || FALSE,
+    :recaptcha_public  => params[:recaptcha_public_key],
+    :recaptcha_private => params[:recaptcha_private_key],
   }
 
 #----------------
@@ -207,6 +209,8 @@ define :mediawiki_site, :action => [ :create, :enable ] do
   mediawiki_extension "ConfirmEdit" do
     site name
     template "mw-ext-ConfirmEdit.inc.php.erb"
+    variables :public_key => mediawiki[:recaptcha_public],
+              :private_key => mediawiki[:recaptcha_private]
   end
 
   mediawiki_extension "Gadgets" do
