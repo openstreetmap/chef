@@ -33,6 +33,8 @@ mediawiki_site  "wiki.osmfoundation.org" do
   email_sender "webmaster@openstreetmap.org"
   email_sender_name "OSMF Wiki"
   private_accounts true
+  recaptcha_public_key "6LflIQATAAAAAMXyDWpba-FgipVzE-aGF4HIR59N"
+  recaptcha_private_key passwords["wiki"]["recaptcha"]
 end
 
 cookbook_file "/srv/wiki.osmfoundation.org/Wiki.png" do
