@@ -48,7 +48,7 @@ mediawiki_site  "wiki.openstreetmap.org" do
   metanamespace "OpenStreetMap"
 
   recaptcha_public_key "6Lc9OLsSAAAAAKazGuA9zItboXIHb6ObYOdiVm6o"
-  recaptcha_private_key "6Lc9OLsSAAAAAKVZr9jFBc0GL-9Fm2H-paqu-4TB"
+  recaptcha_private_key passwords["recaptcha"]
   
   #site_readonly "MAINTENANCE UPDATE: WIKI READ-ONLY. ETA: Tuesday 8:00am UTC/GMT."
 
