@@ -36,8 +36,8 @@ git tilelog_source_directory do
   action :sync
   repository "https://github.com/zerebubuth/openstreetmap-tile-analyze.git"
   revision "live"
-  user "www-data"
-  group "www-data"
+  user "root"
+  group "root"
   notifies :run, "execute[tilelog-autogen]", :immediate
 end
 
@@ -45,8 +45,8 @@ execute "tilelog-autogen" do
   action :nothing
   command "./autogen.sh"
   cwd tilelog_source_directory
-  user "www-data"
-  group "www-data"
+  user "root"
+  group "root"
   notifies :run, "execute[tilelog-configure]", :immediate
 end
 
@@ -54,8 +54,8 @@ execute "tilelog-configure" do
   action :nothing
   command "./configure --with-boost-libdir=/usr/lib"
   cwd tilelog_source_directory
-  user "www-data"
-  group "www-data"
+  user "root"
+  group "root"
   notifies :run, "execute[tilelog-build]", :immediate
 end
 
@@ -63,8 +63,8 @@ execute "tilelog-build" do
   action :nothing
   command "make"
   cwd tilelog_source_directory
-  user "www-data"
-  group "www-data"
+  user "root"
+  group "root"
 end
 
 # resources for running the tile analysis
