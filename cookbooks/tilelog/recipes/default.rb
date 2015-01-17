@@ -73,11 +73,9 @@ template "/usr/local/bin/tilelog" do
   owner "root"
   group "root"
   mode 0755
-  variables {
-    :analyze_bin => "#{tilelog_source_directory}/openstreetmap-tile-analyze",
-    :input_dir => tilelog_input_directory,
-    :output_dir => tilelog_output_directory
-  }
+  variables :analyze_bin => "#{tilelog_source_directory}/openstreetmap-tile-analyze",
+            :input_dir => tilelog_input_directory,
+            :output_dir => tilelog_output_directory
 end
 
 template "/etc/cron.d/tilelog" do
