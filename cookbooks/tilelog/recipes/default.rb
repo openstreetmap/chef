@@ -79,7 +79,7 @@ template "/usr/local/bin/tilelog" do
 end
 
 template "/etc/cron.d/tilelog" do
-  source "tileog.cron.erb"
+  source "tilelog.cron.erb"
   owner "root"
   group "root"
   mode 0644
