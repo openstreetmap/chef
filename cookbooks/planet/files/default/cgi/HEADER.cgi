@@ -87,8 +87,14 @@ database, and those published before the 12 September 2012 are distributed under
         <p>%(changesets_link)s</p>
         <p>
         Each week, a new and complete copy of all data in OpenStreetMap is made
-        available as a compressed XML file, along with a smaller file with
-        complete metadata for all changes.
+        available as both a compressed XML file and a custom PBF format file.
+        Also available is the <a href="planet/full-history">'history'</a> file
+        which contains not only up-to-date data but also older versions of data
+        and deleted data items.
+        <p>
+        </p>
+        A smaller file with complete metadata for all changes ('changesets') in
+        XML format is also available.
         </p>
     </td>
     <td>
