@@ -88,7 +88,7 @@ database, and those published before the 12 September 2012 are distributed under
         <p>
         Each week, a new and complete copy of all data in OpenStreetMap is made
         available as a compressed XML file, along with a smaller file with
-        complete metadata for all changes made since the previous week.
+        complete metadata for all changes.
         </p>
     </td>
     <td>
