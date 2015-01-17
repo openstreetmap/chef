@@ -52,7 +52,7 @@ end
 
 execute "tilelog-configure" do
   action :nothing
-  command "./configure --with-boost-libdir=/usr/lib"
+  command "./configure --with-boost-libdir=/usr/lib/x86_64-linux-gnu"
   cwd tilelog_source_directory
   user "root"
   group "root"
