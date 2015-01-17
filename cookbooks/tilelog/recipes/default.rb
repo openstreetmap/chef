@@ -43,7 +43,7 @@ end
 
 execute "tilelog-autogen" do
   action :nothing
-  command "./autogen.sh"
+  command "autoreconf -i"
   cwd tilelog_source_directory
   user "root"
   group "root"
