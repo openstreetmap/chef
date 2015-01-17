@@ -50,8 +50,9 @@ def file_info(file, name):
 
     return '<b><a href="%(file)s">%(name)s</a></b><br><b>%(size)s</b>, created %(date)s ago.<br><small>md5: %(hash)s</small>.' % locals()
 
-planet_link = file_info('planet/planet-latest.osm.bz2', 'Latest Weekly Planet File')
+planet_link = file_info('planet/planet-latest.osm.bz2', 'Latest Weekly Planet XML File')
 changesets_link = file_info('planet/changesets-latest.osm.bz2', 'Latest Weekly Changesets')
+planet_pbf_link = file_info('pbf/planet-latest.osm.pbf', 'Latest Weekly Planet PBF File')
 
 print """
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
@@ -85,6 +86,7 @@ database, and those published before the 12 September 2012 are distributed under
     <td>
         <p>%(planet_link)s</p>
         <p>%(changesets_link)s</p>
+        <p>%(planet_pbf_link)s</p>
         <p>
         Each week, a new and complete copy of all data in OpenStreetMap is made
         available as both a compressed XML file and a custom PBF format file.
