@@ -1,0 +1,28 @@
+#!/bin/sh
+
+ANALYZE=<%= @analyze_bin %>
+LOGDIR=<%= @input_dir %>
+OUTDIR=<%= @output_dir %>
+if [ -z "$DATE" ]; then
+		DATE=`date -d "2 days ago" "+%Y-%m-%d"`
+fi
+TMPDIR=`mktemp -d -t tmp.XXXXXXXXX`
+ORIGDIR=`pwd`
+
+clean_up() {
+		cd $ORIGDIR
+		rm -rf $TMPDIR
+}
+
+trap clean_up 0 HUP INT TERM
+cd $TMPDIR
+
+mkdir db
+nice -n 19 $ANALYZE $LOGDIR/*-${DATE}.xz > analyze.log
+if [ -f tiles.txt ]; then
+		nice -n 19 xz -z tiles.txt
+		mv tiles.txt.xz $OUTDIR/tiles-${DATE}.txt.xz
+
+else
+		cat analyze.log
+fi
