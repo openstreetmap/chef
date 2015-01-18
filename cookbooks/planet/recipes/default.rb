@@ -51,6 +51,16 @@ remote_directory "/store/planet" do
   files_mode 0755
 end
 
+remote_directory node[:planet][:dump][:xml_history_directory] do
+  source "history_cgi"
+  owner "root"
+  group "root"
+  mode 0755
+  files_owner "root"
+  files_group "root"
+  files_mode 0755
+end
+
 [:xml_directory, :xml_history_directory,
  :pbf_directory, :pbf_history_directory].each do |dir|
   directory node[:planet][:dump][dir] do
