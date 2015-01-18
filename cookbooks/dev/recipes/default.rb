@@ -206,7 +206,7 @@ if node[:postgresql][:clusters][:"9.1/main"]
         cluster "9.3/main"
       end
 
-      node[:dev][:rails][name].delete(:secret_key_base)
+      node.set[:dev][:rails][name].delete(:secret_key_base)
     end
   end
 
