@@ -29,13 +29,8 @@ execute "apt-update" do
   command "/usr/bin/apt-get update"
 end
 
-sources_template = case node[:lsb][:release].to_f
-  when 12.10 then "old-sources.list.erb"
-  else "sources.list.erb"
-end
-
 template "/etc/apt/sources.list" do
-  source sources_template
+  source "sources.list.erb"
   owner "root"
   group "root"
   mode 0644
