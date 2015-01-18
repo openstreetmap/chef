@@ -53,11 +53,11 @@ end
 
 remote_directory node[:planet][:dump][:xml_history_directory] do
   source "history_cgi"
-  owner "root"
-  group "root"
+  owner "www-data"
+  group "planet"
   mode 0755
-  files_owner "root"
-  files_group "root"
+  files_owner "www-data"
+  files_group "planet"
   files_mode 0755
 end
 
