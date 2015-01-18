@@ -29,13 +29,8 @@ package "php-pear"
 package "php-apc"
 
 apache_module "rewrite"
-
-if node[:lsb][:release].to_f >= 14.04
-  apache_module "proxy"
-  apache_module "proxy_fcgi"
-else
-  apache_module "fastcgi-handler"
-end
+apache_module "proxy"
+apache_module "proxy_fcgi"
 
 home_directory = data_bag_item("accounts", "nominatim")["home"]
 source_directory = "#{home_directory}/nominatim"
@@ -48,9 +43,7 @@ database_name = node[:nominatim][:database][:dbname]
 postgis_version = node[:nominatim][:database][:postgis]
 
 service "php5-fpm" do
-  if node[:lsb][:release].to_f >= 14.04
-    provider Chef::Provider::Service::Upstart
-  end
+  provider Chef::Provider::Service::Upstart
   action [ :enable, :start ]
   supports :status => true, :restart => true, :reload => true
 end

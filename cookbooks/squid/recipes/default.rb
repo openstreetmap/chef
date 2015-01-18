@@ -41,10 +41,8 @@ directory "/etc/squid/squid.conf.d" do
 end
 
 service "squid" do
-  if node[:lsb][:release].to_f >= 14.04
-    provider Chef::Provider::Service::Upstart
-  end
-   action [ :enable, :start ]
+  provider Chef::Provider::Service::Upstart
+  action [ :enable, :start ]
   supports :status => true, :restart => true, :reload => true
   subscribes :reload, "template[/etc/squid/squid.conf]"
   subscribes :restart, "template[/etc/default/squid]"

@@ -25,43 +25,21 @@
     <Directory "<%= @directory %>/website/">
         DirectoryIndex search.php
         Options FollowSymLinks
-<% if node[:lsb][:release].to_f >= 14.04 -%>
         Require all granted
-<% end -%>
     </Directory>
 
-<% if node[:lsb][:release].to_f >= 14.04 -%>
     ProxyPassMatch ^/([^/]*\.php(/.*)?)$ fcgi://127.0.0.1:<%= @pools[:www][:port ]%><%= @directory %>/website/$1
-<% else -%>
-    <LocationMatch ^/([^/]*\.php(/.*)?)$>
-        SetHandler fcgi:/var/run/php5-fpm-www.sock
-    </LocationMatch>
-<% end -%>
 
     <% @pools.each do |name,details| -%>
     Alias /pool-<%= name %>/ "<%= @directory %>/website/"
-<% if node[:lsb][:release].to_f >= 14.04 -%>
     ProxyPassMatch ^/pool-<%= name %>/(.*\.php(/.*)?) fcgi://127.0.0.1:<%= details[:port ]%><%= @directory %>/website/$1
-<% else -%>
-    <LocationMatch ^/pool-<%= name %>/(.*\.php(/.*)?)$>
-        SetHandler fcgi:/var/run/php5-fpm-<%= name %>.sock
-    </LocationMatch>
-<% end -%>
     <% end -%>
 
-<% if node[:lsb][:release].to_f >= 14.04 -%>
     Redirect 429 /pool-block/
     ErrorDocument 429 /509.html
     <Location /pool-block>
         ErrorDocument 429 /509.html
     </Location>
-<% else -%>
-    Redirect 420 /pool-block/
-    ErrorDocument 420 /509.html
-    <Location /pool-block>
-        ErrorDocument 420 /509.html
-    </Location>
-<% end -%>
     Redirect 403 /pool-ban/
     <Location /pool-ban>
         ErrorDocument 403 /403.html

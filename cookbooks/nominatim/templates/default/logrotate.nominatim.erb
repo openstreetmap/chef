@@ -19,16 +19,3 @@
   notifempty
   create 640 www-data adm
 }
-<% if node[:lsb][:release].to_f < 14.04 -%>
-
-/var/log/php5-fpm.log {
-  weekly
-  missingok
-  rotate 3
-  compress
-  delaycompress
-  postrotate
-    /usr/bin/service php5-fpm restart > /dev/null
-  endscript
-}
-<% end -%>

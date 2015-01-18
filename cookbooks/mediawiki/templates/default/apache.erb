@@ -48,9 +48,7 @@
 
   <Directory <%= @directory %>>
     Options -Indexes
-<% if node[:lsb][:release].to_f >= 14.04 -%>
     Require all granted
-<% end -%>
   </Directory>
 
   <Directory <%= @mediawiki[:directory] %>/images/>
@@ -60,12 +58,7 @@
     AllowOverride None
     AddType text/plain .html .htm .shtml
 <% if @mediawiki[:private] -%>
-<% if node[:lsb][:release].to_f >= 14.04 -%>
     Require all denied
-<% else -%>
-    Order allow,deny
-    Deny from all
-<% end -%>
 <% end -%>
   </Directory>
 
@@ -90,21 +83,11 @@
   </Directory>
 
   <Directory <%= @mediawiki[:directory] %>/maintenance/>
-<% if node[:lsb][:release].to_f >= 14.04 -%>
     Require all denied
-<% else -%>
-    Order allow,deny
-    Deny from all
-<% end -%>
   </Directory>
 
   <Files <%= @mediawiki[:directory] %>/LocalSettings.php>
-<% if node[:lsb][:release].to_f >= 14.04 -%>
     Require all denied
-<% else -%>
-    Order allow,deny
-    Deny from all
-<% end -%>
   </Files>
 
   <Directory <%= @mediawiki[:directory] %>/cache/>
@@ -115,30 +98,15 @@
   </Directory>
 
   <Directory ~ "\.svn">
-<% if node[:lsb][:release].to_f >= 14.04 -%>
     Require all denied
-<% else -%>
-    Order allow,deny
-    Deny from all
-<% end -%>
   </Directory>
 
   <Directory ~ "\.git">
-<% if node[:lsb][:release].to_f >= 14.04 -%>
     Require all denied
-<% else -%>
-    Order allow,deny
-    Deny from all
-<% end -%>
   </Directory>
 
   <Files ~ "~$">
-<% if node[:lsb][:release].to_f >= 14.04 -%>
     Require all denied
-<% else -%>
-    Order allow,deny
-    Deny from all
-<% end -%>
   </Files>
 </VirtualHost>
 <% if @mediawiki[:enable_ssl] -%>
@@ -192,9 +160,7 @@
 
   <Directory <%= @directory %>>
     Options -Indexes
-<% if node[:lsb][:release].to_f >= 14.04 -%>
     Require all granted
-<% end -%>
   </Directory>
 
   <Directory <%= @mediawiki[:directory] %>/images/>
@@ -203,12 +169,7 @@
     Options -ExecCGI -Includes -Indexes
     AllowOverride None
 <% if @mediawiki[:private] -%>
-<% if node[:lsb][:release].to_f >= 14.04 -%>
     Require all denied
-<% else -%>
-    Order allow,deny
-    Deny from all
-<% end -%>
 <% end -%>
   </Directory>
 
@@ -225,21 +186,11 @@
   </Directory>
 
   <Directory <%= @mediawiki[:directory] %>/maintenance/>
-<% if node[:lsb][:release].to_f >= 14.04 -%>
     Require all denied
-<% else -%>
-    Order allow,deny
-    Deny from all
-<% end -%>
   </Directory>
 
   <Files <%= @mediawiki[:directory] %>/LocalSettings.php>
-<% if node[:lsb][:release].to_f >= 14.04 -%>
     Require all denied
-<% else -%>
-    Order allow,deny
-    Deny from all
-<% end -%>
   </Files>
 
   <Directory <%= @mediawiki[:directory] %>/images/>
@@ -257,30 +208,15 @@
   </Directory>
 
   <Directory ~ "\.svn">
-<% if node[:lsb][:release].to_f >= 14.04 -%>
     Require all denied
-<% else -%>
-    Order allow,deny
-    Deny from all
-<% end -%>
   </Directory>
 
   <Directory ~ "\.git">
-<% if node[:lsb][:release].to_f >= 14.04 -%>
     Require all denied
-<% else -%>
-    Order allow,deny
-    Deny from all
-<% end -%>
   </Directory>
 
   <Files ~ "~$">
-<% if node[:lsb][:release].to_f >= 14.04 -%>
     Require all denied
-<% else -%>
-    Order allow,deny
-    Deny from all
-<% end -%>
   </Files>
 </VirtualHost>
 <% end -%>
