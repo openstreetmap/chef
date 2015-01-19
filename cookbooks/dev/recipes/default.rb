@@ -135,59 +135,52 @@ if node[:postgresql][:clusters][:"9.1/main"]
   node[:dev][:rails].each do |name,details|
     database_name = details[:database] || "apis_#{name}"
     site_name = "#{name}.apis.dev.openstreetmap.org"
-    site_aliases = details[:aliases] || []
     rails_directory = "/srv/#{name}.apis.dev.openstreetmap.org"
-    secret_key_base = details[:secret_key_base] || SecureRandom.base64(96)
 
-    node.set[:dev][:rails][name][:secret_key_base] = secret_key_base
+    if details[:repository]
+      site_aliases = details[:aliases] || []
+      secret_key_base = details[:secret_key_base] || SecureRandom.base64(96)
 
-    postgresql_database database_name do
-      cluster "9.3/main"
-      owner "apis"
-    end
+      node.normal[:dev][:rails][name][:secret_key_base] = secret_key_base
 
-    postgresql_extension "#{database_name}_btree_gist" do
-      cluster "9.3/main"
-      database database_name
-      extension "btree_gist"
-    end
+      postgresql_database database_name do
+        cluster "9.3/main"
+        owner "apis"
+      end
 
-    rails_port site_name do
-      ruby node[:passenger][:ruby_version]
-      directory rails_directory
-      user "apis"
-      group "apis"
-      repository details[:repository]
-      revision details[:revision]
-      database_port node[:postgresql][:clusters][:"9.3/main"][:port]
-      database_name database_name
-      database_username "apis"
-      run_migrations true
-    end
+      postgresql_extension "#{database_name}_btree_gist" do
+        cluster "9.3/main"
+        database database_name
+        extension "btree_gist"
+      end
 
-    template "#{rails_directory}/config/initializers/setup.rb" do
-      source "rails.setup.rb.erb"
-      owner "apis"
-      group "apis"
-      mode 0644
-      variables :site => site_name
-      notifies :touch, "file[#{rails_directory}/tmp/restart.txt]"
-    end
+      rails_port site_name do
+        ruby node[:passenger][:ruby_version]
+        directory rails_directory
+        user "apis"
+        group "apis"
+        repository details[:repository]
+        revision details[:revision]
+        database_port node[:postgresql][:clusters][:"9.3/main"][:port]
+        database_name database_name
+        database_username "apis"
+        run_migrations true
+      end
 
-    apache_site site_name do
-      template "apache.rails.erb"
-      variables :name => site_name, :aliases => site_aliases, :secret_key_base => secret_key_base
-    end
-  end
+      template "#{rails_directory}/config/initializers/setup.rb" do
+        source "rails.setup.rb.erb"
+        owner "apis"
+        group "apis"
+        mode 0644
+        variables :site => site_name
+        notifies :touch, "file[#{rails_directory}/tmp/restart.txt]"
+      end
 
-  Dir.glob("/srv/*.apis.dev.openstreetmap.org").each do |rails_directory|
-    name = File.basename(rails_directory, ".apis.dev.openstreetmap.org")
-
-    unless node[:dev][:rails].include?(name) and node[:dev][:rails][name].include?(:repository)
-      database_config = YAML.load_file("#{rails_directory}/config/database.yml")
-      database_name = database_config["production"]["database"]
-      site_name = "#{name}.apis.dev.openstreetmap.org"
-
+      apache_site site_name do
+        template "apache.rails.erb"
+        variables :name => site_name, :aliases => site_aliases, :secret_key_base => secret_key_base
+      end
+    else
       apache_site site_name do
         action [ :delete ]
       end
@@ -206,7 +199,7 @@ if node[:postgresql][:clusters][:"9.1/main"]
         cluster "9.3/main"
       end
 
-      node.set[:dev][:rails][name].delete(:secret_key_base)
+      node.normal[:dev][:rails].delete(name)
     end
   end
 
