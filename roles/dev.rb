@@ -111,7 +111,7 @@ default_attributes(
       },
       :owl => {
         :repository => "git://github.com/ppawel/openstreetmap-website.git",
-        :revision => "owl-history-tab"
+        :revision => "owl-activity-tab"
       },
       :groups => {
         :repository => "git://github.com/osmlab/openstreetmap-website.git",
