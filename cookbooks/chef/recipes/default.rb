@@ -96,6 +96,19 @@ template "/etc/logrotate.d/chef" do
   mode 0644
 end
 
+directory "/etc/chef/trusted_certs" do
+  owner "root"
+  group "root"
+  mode 0755
+end
+
+template "/etc/chef/trusted_certs/verisign.pem" do
+  source "verisign.pem.erb"
+  owner "root"
+  group "root"
+  mode 0644
+end
+
 directory "/etc/chef/ohai" do
   owner "root"
   group "root"
