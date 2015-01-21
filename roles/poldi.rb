@@ -73,10 +73,12 @@ default_attributes(
     },
     :fpm_pools => {
         :www => {
+            :port => "8000",
             :pm => "dynamic",
             :max_children => "60"
         },
         :bulk => {
+            :port => "8001",
             :pm => "static",
             :max_children => "10"
         }
