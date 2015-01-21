@@ -70,19 +70,7 @@ default_attributes(
   },
   :nominatim => {
     :enabled => true,
-    :repository => "git://git.openstreetmap.org/nominatim.git",
-    :tablespaces => {
-        "Osm2pgsql_Data" => "aux",
-        "Osm2pgsql_Index" => "data",
-        "Place_Data" => "ssd2",
-        "Place_Index" => "ssd1",
-        "Address_Data" => "ssd2",
-        "Address_Index" => "ssd1",
-        "Search_Data" => "ssd1",
-        "Search_Index" => "ssd1",
-        "Aux_Data" => "aux",
-        "Aux_Index" => "aux",
-    }
+    :repository => "git://git.openstreetmap.org/nominatim.git"
   }
 )
 
