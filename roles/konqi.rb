@@ -29,6 +29,8 @@ default_attributes(
   :tilecache => {
     :tile_parent => "falkenstein.render.openstreetmap.org",
     :tile_siblings => [
+       "tabaluga.openstreetmap.org",
+       "katie.openstreetmap.org",
        "trogdor.openstreetmap.org",
        "nepomuk.openstreetmap.org",
        "ridgeback.openstreetmap.org",
