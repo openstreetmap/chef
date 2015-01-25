@@ -82,6 +82,7 @@ http_access allow purge purge_hosts
 http_access deny purge
 
 forwarded_for on
+follow_x_forwarded_for allow localhost
 
 #Loggin used for analysis
 logformat zerelog %ts.%03tu %rp "%{Etag}<h" %>a "%{User-Agent}>h" %<st
