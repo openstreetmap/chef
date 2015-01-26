@@ -130,6 +130,10 @@ package "libproj-dev"
 package "libprotobuf-c0-dev"
 package "protobuf-c-compiler"
 package "python-psycopg2"
+package "libboost-dev"
+package "libboost-system-dev"
+package "libboost-filesystem-dev"
+package "libboost-thread-dev"
 
 execute "php-pear-db" do
   command "pear install DB"
