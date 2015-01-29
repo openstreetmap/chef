@@ -173,23 +173,21 @@ munin_plugin "http_loadtime" do
 end
 
 node[:network][:interfaces].each do |ifname,ifattr|
-  if ifname =~ /^eth\d+$/
-    if ifattr[:flags] and ifattr[:flags].include?("UP")
-      munin_plugin "if_err_#{ifname}" do
-        target "if_err_"
-      end
+  if ifattr[:encapsulation] == "Ethernet" and ifattr[:state] == "up"
+    munin_plugin "if_err_#{ifname}" do
+      target "if_err_"
+    end
 
-      munin_plugin "if_#{ifname}" do
-        target "if_"
-      end
-    else
-      munin_plugin "if_err_#{ifname}" do
-        action :delete
-      end
+    munin_plugin "if_#{ifname}" do
+      target "if_"
+    end
+  else
+    munin_plugin "if_err_#{ifname}" do
+      action :delete
+    end
 
-      munin_plugin "if_#{ifname}" do
-        action :delete
-      end
+    munin_plugin "if_#{ifname}" do
+      action :delete
     end
   end
 end
