@@ -1,3 +1,5 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
+MAILTO=jonobennett+civicrm@gmail.com
+
 */15 * * * * www-data php <%= @directory %>/civicrm/bin/cli.php -s crm.osmfoundation.org -u batch -p "<%= @passwords["batch"] %>" -e Job -a execute
