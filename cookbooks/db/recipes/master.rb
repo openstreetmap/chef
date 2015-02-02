@@ -80,7 +80,7 @@ end
 postgresql_extension "btree_gist" do
   cluster node[:db][:cluster]
   database "openstreetmap"
-  only_if { node[:postgresql][:clusters][node[:db][:cluster]] and node[:postgresql][:clusters][node[:db][:cluster]][:version] >= 9.0 }
+  only_if { node[:postgresql][:clusters][node[:db][:cluster]] && node[:postgresql][:clusters][node[:db][:cluster]][:version] >= 9.0 }
 end
 
 template "/etc/cron.daily/rails-db" do

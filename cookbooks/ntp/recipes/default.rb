@@ -51,7 +51,7 @@ template "/etc/ntp.conf" do
   notifies :restart, "service[ntp]"
 end
 
-munin_plugins = [ "ntp_kernel_err", "ntp_kernel_pll_freq", "ntp_kernel_pll_off", "ntp_offset" ]
+munin_plugins = %w(ntp_kernel_err ntp_kernel_pll_freq ntp_kernel_pll_off ntp_offset)
 
 munin_plugin "ntp_kernel_err"
 munin_plugin "ntp_kernel_pll_freq"
@@ -60,7 +60,7 @@ munin_plugin "ntp_offset"
 
 if File.directory?("/etc/munin/plugins")
   Dir.new("/etc/munin/plugins").each do |plugin|
-    if plugin.match(/^ntp_/) and not munin_plugins.include?(plugin)
+    if plugin.match(/^ntp_/) && !munin_plugins.include?(plugin)
       munin_plugin plugin do
         action :delete
       end

@@ -45,12 +45,12 @@ service "rsyslog" do
   supports :status => true, :restart => true, :reload => true
 end
 
-#Remove unused base package
+# Remove unused base package
 package "mlocate" do
   action :purge
 end
 
-#Remove ubuntu "desktop" vestigal package
+# Remove ubuntu "desktop" vestigal package
 package "whoopsie" do
   action :purge
 end

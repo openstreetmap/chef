@@ -38,7 +38,7 @@ end
 rails_directory = "#{node[:web][:base_directory]}/rails"
 
 piwik_configuration = data_bag_item("web", "piwik").to_hash.reject do |k, _|
-  ["chef_type", "data_bag", "id"].include?(k)
+  %w(chef_type data_bag id).include?(k)
 end
 
 rails_port "www.openstreetmap.org" do
@@ -62,7 +62,7 @@ rails_port "www.openstreetmap.org" do
   gpx_dir "/store/rails/gpx"
   attachments_dir "/store/rails/attachments"
   log_path "#{node[:web][:log_directory]}/rails.log"
-  memcache_servers [ "rails1", "rails2", "rails3" ]
+  memcache_servers %w(rails1 rails2 rails3)
   potlatch2_key web_passwords["potlatch2_key"]
   id_key web_passwords["id_key"]
   oauth_key web_passwords["oauth_key"]

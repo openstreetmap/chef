@@ -21,7 +21,7 @@ def output_values
     exit 1
   end
   status =~ /(\d+\.\d+)/
-  puts "memory.value #{($1.to_f * 1024 * 1024).round}"
+  puts "memory.value #{(Regexp.last_match[1].to_f * 1024 * 1024).round}"
 end
 
 if ARGV[0] == "config"

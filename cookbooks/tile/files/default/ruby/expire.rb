@@ -24,7 +24,7 @@ module Expire
   NODE_CACHE_FILE = "/store/database/nodes"
 
   # turns a spherical mercator coord into a tile coord
-  def Expire.tile_from_merc(point, zoom)
+  def self.tile_from_merc(point, zoom)
     # renormalise into unit space [0,1]
     point.x = 0.5 + point.x / SIZE
     point.y = 0.5 - point.y / SIZE
@@ -36,21 +36,21 @@ module Expire
   end
 
   # turns a latlon -> tile x,y given a zoom level
-  def Expire.tile_from_latlon(latlon, zoom)
+  def self.tile_from_latlon(latlon, zoom)
     # first convert to spherical mercator
     point = PROJ.forward(latlon)
     tile_from_merc(point, zoom)
   end
 
   # this must match the definition of xyz_to_meta in mod_tile
-  def Expire.xyz_to_meta(x, y, z)
+  def self.xyz_to_meta(x, y, z)
     # mask off the final few bits
     x &= ~(METATILE - 1)
     y &= ~(METATILE - 1)
     # generate the path
-    hash_path = (0..4).collect { |i|
+    hash_path = (0..4).collect do |i|
       (((x >> 4 * i) & 0xf) << 4) | ((y >> 4 * i) & 0xf)
-    }.reverse.join('/')
+    end.reverse.join('/')
     z.to_s + '/' + hash_path + ".meta"
   end
 
@@ -58,12 +58,12 @@ module Expire
   EXPIRY_TIME = Time.parse("2000-01-01 00:00:00")
 
   # expire the meta tile by setting the modified time back
-  def Expire.expire_meta(meta)
+  def self.expire_meta(meta)
     puts "Expiring #{meta}"
     File.utime(EXPIRY_TIME, EXPIRY_TIME, meta)
   end
 
-  def Expire.expire(change_file, min_zoom, max_zoom, tile_dirs)
+  def self.expire(change_file, min_zoom, max_zoom, tile_dirs)
     do_expire(change_file, min_zoom, max_zoom) do |set|
       new_set = Set.new
       meta_set = Set.new
@@ -93,12 +93,12 @@ module Expire
     end
   end
 
-  def Expire.do_expire(change_file, min_zoom, max_zoom, &_)
+  def self.do_expire(change_file, min_zoom, max_zoom, &_)
     # read in the osm change file
     doc = XML::Document.file(change_file)
 
     # hash map to contain all the nodes
-    nodes = Hash.new
+    nodes = {}
 
     # we put all the nodes into the hash, as it doesn't matter whether the node was
     # added, deleted or modified - the tile will need updating anyway.

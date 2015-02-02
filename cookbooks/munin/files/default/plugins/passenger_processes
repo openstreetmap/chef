@@ -23,10 +23,10 @@ def output_values
     exit 1
   end
   status =~ /active\s+=\s+(\d+)/
-  puts "active.value #{$1}"
+  puts "active.value #{Regexp.last_match[1]}"
 
   status =~ /inactive\s+=\s+(\d+)/
-  puts "inactive.value #{$1}"
+  puts "inactive.value #{Regexp.last_match[1]}"
 end
 
 if ARGV[0] == "config"

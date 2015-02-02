@@ -19,8 +19,8 @@
 
 include_recipe "networking"
 
-hosts_allow = Hash.new
-hosts_deny = Hash.new
+hosts_allow = {}
+hosts_deny = {}
 
 node[:rsyncd][:modules].each do |name, details|
   hosts_allow[name] = details[:hosts_allow] || []

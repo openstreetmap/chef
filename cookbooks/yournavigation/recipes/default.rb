@@ -24,10 +24,10 @@ package "php5-cli"
 
 package "php-apc"
 
-#Required for osmosis
+# Required for osmosis
 package "default-jre-headless"
 
-#Required for building gosmore
+# Required for building gosmore
 package "build-essential"
 package "libxml2-dev"
 package "libgtk2.0-dev"

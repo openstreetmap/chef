@@ -20,7 +20,7 @@
 define :mediawiki_site, :action => [ :create, :enable ] do
   name = params[:name]
 
-  #/etc/cron.d names cannot contain a dot
+  # /etc/cron.d names cannot contain a dot
   cron_name = name.tr(".", "_")
 
   aliases = Array(params[:aliases])
@@ -60,7 +60,7 @@ define :mediawiki_site, :action => [ :create, :enable ] do
     :recaptcha_private => params[:recaptcha_private_key]
   }
 
-#----------------
+  #----------------
 
   node.set_unless[:mediawiki][:sites][name] = {}
   node.set[:mediawiki][:sites][name][:site_directory] = site_directory
@@ -68,7 +68,7 @@ define :mediawiki_site, :action => [ :create, :enable ] do
   node.set[:mediawiki][:sites][name][:version] = mediawiki_version
   node.set_unless[:mediawiki][:sites][name][:wgSecretKey] = random_password(64)
 
-#----------------
+  #----------------
 
   mysql_user "#{database_params[:username]}@localhost" do
     password database_params[:password]
@@ -87,7 +87,7 @@ define :mediawiki_site, :action => [ :create, :enable ] do
 
   execute "#{mediawiki[:directory]}/maintenance/install.php" do
     action :nothing
-    #Use metanamespace as Site Name to ensure correct set namespace
+    # Use metanamespace as Site Name to ensure correct set namespace
     command "php maintenance/install.php --server '#{name}' --dbtype 'mysql' --dbname '#{database_params[:name]}' --dbuser '#{database_params[:username]}' --dbpass '#{database_params[:password]}' --dbserver '#{database_params[:host]}' --scriptpath /w --pass '#{mediawiki[:site_admin_pw]}' '#{mediawiki[:metanamespace]}' '#{mediawiki[:site_admin_user]}'"
     cwd mediawiki[:directory]
     user node[:mediawiki][:user]
@@ -122,14 +122,14 @@ define :mediawiki_site, :action => [ :create, :enable ] do
     action :sync
     repository mediawiki_repository
     reference mediawiki_reference
-    #depth 1
+    # depth 1
     user node[:mediawiki][:user]
     group node[:mediawiki][:group]
     notifies :run, resources(:execute => "#{mediawiki[:directory]}/maintenance/install.php"), :immediately
     notifies :run, resources(:execute => "#{mediawiki[:directory]}/maintenance/update.php")
   end
 
-  #Safety catch if git doesn't update but install.php hasn't run
+  # Safety catch if git doesn't update but install.php hasn't run
   ruby_block "catch-installer-localsettings-run" do
     block do
       #
@@ -165,11 +165,7 @@ define :mediawiki_site, :action => [ :create, :enable ] do
     owner node[:mediawiki][:user]
     group node[:mediawiki][:group]
     mode 0664
-    variables({
-      :name => name,
-      :database_params => database_params,
-      :mediawiki => mediawiki
-    })
+    variables :name => name, :database_params => database_params, :mediawiki => mediawiki
     notifies :run, resources(:execute => "#{mediawiki[:directory]}/maintenance/update.php")
   end
 
@@ -179,11 +175,7 @@ define :mediawiki_site, :action => [ :create, :enable ] do
     owner "root"
     group "root"
     mode 0644
-    variables({
-      :name => name,
-      :directory => site_directory,
-      :user => node[:mediawiki][:user]
-    })
+    variables :name => name, :directory => site_directory, :user => node[:mediawiki][:user]
   end
 
   template "/etc/cron.daily/mediawiki-#{cron_name}-backup" do
@@ -192,14 +184,10 @@ define :mediawiki_site, :action => [ :create, :enable ] do
     owner "root"
     group "root"
     mode 0700
-    variables({
-      :name => name,
-      :directory => site_directory,
-      :database_params => database_params
-    })
+    variables :name => name, :directory => site_directory, :database_params => database_params
   end
 
-  #MediaWiki Default Extension
+  # MediaWiki Default Extension
 
   mediawiki_extension "Cite" do
     site name
@@ -276,7 +264,7 @@ define :mediawiki_site, :action => [ :create, :enable ] do
   end
 
   # MediaWiki Language Extension Bundle
-  #fixme should automatically resolve tag
+  # FIXME: should automatically resolve tag
   mw_lang_ext_bundle_tag = "2014.09"
 
   mediawiki_extension "Babel" do
@@ -302,25 +290,21 @@ define :mediawiki_site, :action => [ :create, :enable ] do
     tag mw_lang_ext_bundle_tag
   end
 
-  #LocalisationUpdate Update Cron
-  #template "/etc/cron.d/mediawiki-#{name}-LocalisationUpdate" do
-  #  cookbook "mediawiki"
-  #  source "mediawiki-LocalisationUpdate.cron.erb"
-  #  owner "root"
-  #  group "root"
-  #  mode 0755
-  #  variables({
-  #    :name => name,
-  #    :directory => site_directory,
-  #    :user => node[:mediawiki][:user]
-  #  })
-  #end
+  # LocalisationUpdate Update Cron
+  # template "/etc/cron.d/mediawiki-#{name}-LocalisationUpdate" do
+  #   cookbook "mediawiki"
+  #   source "mediawiki-LocalisationUpdate.cron.erb"
+  #   owner "root"
+  #   group "root"
+  #   mode 0755
+  #   variables :name => name, :directory => site_directory, :user => node[:mediawiki][:user]
+  # end
 
-  #mediawiki_extension "Translate" do
-  #  site name
-  #  template "mw-ext-Translate.inc.php.erb"
-  #  tag mw_lang_ext_bundle_tag
-  #end
+  # mediawiki_extension "Translate" do
+  #   site name
+  #   template "mw-ext-Translate.inc.php.erb"
+  #   tag mw_lang_ext_bundle_tag
+  # end
 
   mediawiki_extension "UniversalLanguageSelector" do
     site name
@@ -356,7 +340,7 @@ define :mediawiki_site, :action => [ :create, :enable ] do
     template "mw-ext-CirrusSearch.inc.php.erb"
   end
 
-  #OSM specifc extensions
+  # OSM specifc extensions
 
   mediawiki_extension "osmtaginfo" do
     site name
@@ -403,14 +387,11 @@ define :mediawiki_site, :action => [ :create, :enable ] do
     cookbook "mediawiki"
     template "apache.erb"
     directory site_directory
-    variables({
-      :aliases => aliases,
-      :mediawiki => mediawiki
-    })
+    variables :aliases => aliases, :mediawiki => mediawiki
     notifies :reload, "service[apache2]"
   end
 
-  #Fixme - Needs to run once
+  # FIXME: needs to run once
   execute "#{mediawiki[:directory]}/extensions/CirrusSearch/maintenance/updateSearchIndexConfig.php" do
     action :nothing
     command "php extensions/CirrusSearch/maintenance/updateSearchIndexConfig.php"
@@ -418,5 +399,4 @@ define :mediawiki_site, :action => [ :create, :enable ] do
     user node[:mediawiki][:user]
     group node[:mediawiki][:group]
   end
-
 end

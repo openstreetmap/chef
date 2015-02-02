@@ -22,7 +22,7 @@ define :postgresql_munin, :action => :create do
   suffix = cluster.tr("/", ":")
   database = params[:database]
 
-  if node[:postgresql][:clusters] and node[:postgresql][:clusters][cluster]
+  if node[:postgresql][:clusters] && node[:postgresql][:clusters][cluster]
     munin_plugin "postgres_cache_#{database}:#{suffix}" do
       action params[:action]
       target "postgres_cache_"

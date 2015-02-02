@@ -63,58 +63,53 @@ class Chef
     end
 
     def users
-      @users ||= query("SELECT * FROM pg_user").inject({}) do |users, user|
+      @users ||= query("SELECT * FROM pg_user").each_with_oject({}) do |users, user|
         users[user[:usename]] = {
           :superuser => user[:usesuper] == "t",
           :createdb => user[:usercreatedb] == "t",
           :createrole => user[:usecatupd] == "t",
           :replication => user[:userepl] == "t"
         }
-        users
       end
     end
 
     def databases
-      @databases ||= query("SELECT d.datname, u.usename, d.encoding, d.datcollate, d.datctype FROM pg_database AS d INNER JOIN pg_user AS u ON d.datdba = u.usesysid").inject({}) do |databases, database|
+      @databases ||= query("SELECT d.datname, u.usename, d.encoding, d.datcollate, d.datctype FROM pg_database AS d INNER JOIN pg_user AS u ON d.datdba = u.usesysid").each_with_object({}) do |databases, database|
         databases[database[:datname]] = {
           :owner => database[:usename],
           :encoding => database[:encoding],
           :collate => database[:datcollate],
           :ctype => database[:datctype]
         }
-        databases
       end
     end
 
     def extensions(database)
       @extensions ||= {}
-      @extensions[database] ||= query("SELECT extname, extversion FROM pg_extension", :database => database).inject({}) do |extensions, extension|
+      @extensions[database] ||= query("SELECT extname, extversion FROM pg_extension", :database => database).each_with_object({}) do |extensions, extension|
         extensions[extension[:extname]] = {
           :version => extension[:extversion]
         }
-        databases
       end
     end
 
     def tables(database)
       @tables ||= {}
-      @tables[database] ||= query("SELECT n.nspname, c.relname, u.usename, c.relacl FROM pg_class AS c INNER JOIN pg_user AS u ON c.relowner = u.usesysid INNER JOIN pg_namespace AS n ON c.relnamespace = n.oid", :database => database).inject({}) do |tables, table|
+      @tables[database] ||= query("SELECT n.nspname, c.relname, u.usename, c.relacl FROM pg_class AS c INNER JOIN pg_user AS u ON c.relowner = u.usesysid INNER JOIN pg_namespace AS n ON c.relnamespace = n.oid", :database => database).each_with_object({}) do |tables, table|
         name = "#{table[:nspname]}.#{table[:relname]}"
 
         tables[name] = {
           :owner => table[:usename],
           :permissions => parse_acl(table[:relacl] || "{}")
         }
-
-        tables
       end
     end
 
   private
 
     def parse_acl(acl)
-      acl.sub(/^\{(.*)\}$/, "\\1").split(",").inject({}) do |permissions, entry|
-        entry = entry.sub(/^"(.*)"$/) { $1.gsub(/\\"/, '"') }.sub(/\/.*$/, "")
+      acl.sub(/^\{(.*)\}$/, "\\1").split(",").each_with_object({}) do |permissions, entry|
+        entry = entry.sub(/^"(.*)"$/) { Regexp.last_match[1].gsub(/\\"/, '"') }.sub(/\/.*$/, "")
         user, privileges = entry.split("=")
 
         user = user.sub(/^"(.*)"$/, "\\1")
@@ -124,8 +119,6 @@ class Chef
           "a" => :insert, "r" => :select, "w" => :update, "d" => :delete,
           "D" => :truncate, "x" => :references, "t" => :trigger
         }.values_at(*(privileges.chars)).compact
-
-        permissions
       end
     end
   end

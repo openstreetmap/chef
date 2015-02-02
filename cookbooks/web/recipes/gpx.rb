@@ -67,7 +67,7 @@ template "/etc/init.d/gpx-import" do
             :database_password => db_passwords["gpximport"]
 end
 
-if ["database_offline", "database_readonly", "gpx_offline"].include?(node[:web][:status])
+if %w(database_offline database_readonly gpx_offline).include?(node[:web][:status])
   service "gpx-import" do
     action :stop
   end

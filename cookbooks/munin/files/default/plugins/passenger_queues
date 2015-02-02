@@ -18,7 +18,7 @@ def output_values
     exit 1
   end
   status =~ /Waiting on global queue:\s+(\d+)/
-  puts "global.value #{$1}"
+  puts "global.value #{Regexp.last_match[1]}"
 end
 
 if ARGV[0] == "config"

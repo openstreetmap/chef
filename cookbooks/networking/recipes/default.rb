@@ -23,7 +23,7 @@
 require "ipaddr"
 
 node[:networking][:interfaces].each do |name, interface|
-  if interface[:role] and role = node[:networking][:roles][interface[:role]]
+  if interface[:role] && role = node[:networking][:roles][interface[:role]]
     if role[interface[:family]]
       node.default[:networking][:interfaces][name][:prefix] = role[interface[:family]][:prefix]
       node.default[:networking][:interfaces][name][:gateway] = role[interface[:family]][:gateway]
@@ -81,7 +81,7 @@ template "/etc/resolv.conf" do
 end
 
 node.interfaces(:role => :internal) do |interface|
-  if interface[:gateway] and interface[:gateway] != interface[:address]
+  if interface[:gateway] && interface[:gateway] != interface[:address]
     search(:node, "networking_interfaces*address:#{interface[:gateway]}") do |gateway|
       if gateway[:openvpn]
         gateway[:openvpn][:tunnels].each_value do |tunnel|
@@ -108,12 +108,12 @@ node.interfaces(:role => :internal) do |interface|
   end
 end
 
-zones = Hash.new
+zones = {}
 
 search(:node, "networking:interfaces").collect do |n|
   if n[:fqdn] != node[:fqdn]
     n.interfaces.each do |interface|
-      if interface[:role] == "external" and interface[:zone]
+      if interface[:role] == "external" && interface[:zone]
         zones[interface[:zone]] ||= Hash.new
         zones[interface[:zone]][interface[:family]] ||= Array.new
         zones[interface[:zone]][interface[:family]] << interface[:address]
@@ -199,7 +199,7 @@ firewall_rule "limit-icmp-echo" do
   rate_limit "s:1/sec:5"
 end
 
-[ "ucl", "ic", "bm" ].each do |zone|
+%w(ucl ic bm).each do |zone|
   firewall_rule "accept-openvpn-#{zone}" do
     action :accept
     family :inet
@@ -226,7 +226,7 @@ else
   end
 end
 
-if not node.interfaces(:family => :inet6).empty?
+unless node.interfaces(:family => :inet6).empty?
   package "shorewall6"
 
   service "shorewall6" do

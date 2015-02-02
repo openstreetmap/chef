@@ -1,7 +1,6 @@
 name "crm"
 description "Role applied to CRM server"
 
-
 default_attributes(
   :exim => {
     :local_domains => [ "crm.osmfoundation.org" ],

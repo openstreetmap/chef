@@ -51,7 +51,7 @@ define :mediawiki_extension, :action => [ :enable ], :variables => {} do
       action :sync
       repository repository
       reference reference
-      #depth 1
+      # depth 1
       enable_submodules true
       user node[:mediawiki][:user]
       group node[:mediawiki][:group]
@@ -78,7 +78,7 @@ define :mediawiki_extension, :action => [ :enable ], :variables => {} do
     group node[:mediawiki][:group]
     mode 0664
     content "<?php require_once('#{extension_directory}/#{name}.php');\n"
-    only_if do File.exist?("#{extension_directory}/#{name}.php") end
+    only_if { File.exist?("#{extension_directory}/#{name}.php") }
     notifies :create, resources(:template => "#{mediawiki_directory}/LocalSettings.php")
   end
 end

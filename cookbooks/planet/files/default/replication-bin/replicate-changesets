@@ -33,7 +33,7 @@ class Changeset
   end
 
   def open?(t)
-    not closed?(t)
+    !closed?(t)
   end
 
   def activity_between?(t1, t2)
@@ -60,10 +60,10 @@ class Replicator
     # time (see rails_port's changeset model). so it is probably enough
     # for us to look at anything that was closed recently, and filter from
     # there.
-    @conn.
-      exec("select id, created_at, closed_at, num_changes from changesets where closed_at > ((now() at time zone 'utc') - '1 hour'::interval)").
-      map { |row| Changeset.new(row) }.
-      select { |cs| cs.activity_between?(last_run, @now) }
+    @conn
+      .exec("select id, created_at, closed_at, num_changes from changesets where closed_at > ((now() at time zone 'utc') - '1 hour'::interval)")
+      .map { |row| Changeset.new(row) }
+      .select { |cs| cs.activity_between?(last_run, @now) }
   end
 
   # creates an XML file containing the changeset information from the
@@ -75,8 +75,8 @@ class Replicator
       'generator' => 'replicate_changesets.rb',
       'copyright' => "OpenStreetMap and contributors",
       'attribution' => "http://www.openstreetmap.org/copyright",
-      'license' => "http://opendatacommons.org/licenses/odbl/1-0/" }.
-      each { |k, v| doc.root[k] = v }
+      'license' => "http://opendatacommons.org/licenses/odbl/1-0/" }
+      .each { |k, v| doc.root[k] = v }
 
     changesets.each do |cs|
       xml = XML::Node.new("changeset")
@@ -90,10 +90,10 @@ class Replicator
       xml['user'] = res[0]['display_name']
       xml['uid'] = res[0]['id']
 
-      unless (res[0]['min_lat'].nil? ||
-              res[0]['max_lat'].nil? ||
-              res[0]['min_lon'].nil? ||
-              res[0]['max_lon'].nil?)
+      unless res[0]['min_lat'].nil? ||
+             res[0]['max_lat'].nil? ||
+             res[0]['min_lon'].nil? ||
+             res[0]['max_lon'].nil?
         xml['min_lat'] = (res[0]['min_lat'].to_f / GEO_SCALE).to_s
         xml['max_lat'] = (res[0]['max_lat'].to_f / GEO_SCALE).to_s
         xml['min_lon'] = (res[0]['min_lon'].to_f / GEO_SCALE).to_s
@@ -119,7 +119,7 @@ class Replicator
     File.open(@config['state_file'], "r") do |fl|
       fl.flock(File::LOCK_EX)
 
-      sequence = (@state.has_key?('sequence') ? @state['sequence'] + 1 : 0)
+      sequence = (@state.key?('sequence') ? @state['sequence'] + 1 : 0)
       data_file = @config['data_dir'] + sprintf("/%03d/%03d/%03d.osm.gz", sequence / 1000000, (sequence / 1000) % 1000, (sequence % 1000))
       tmp_state = @config['state_file'] + ".tmp"
       tmp_data = "/tmp/changeset_data.osm.tmp"

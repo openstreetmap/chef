@@ -71,7 +71,7 @@ search(:accounts, "*:*").each do |account|
         begin
           cookbook = run_context.cookbook_collection[cookbook_name]
           files = cookbook.relative_filenames_in_preferred_directory(node, :files, name.to_s)
-          not files.empty?
+          !files.empty?
         rescue Chef::Exceptions::FileNotFound
           false
         end

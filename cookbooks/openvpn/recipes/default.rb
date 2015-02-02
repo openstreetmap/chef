@@ -27,7 +27,7 @@ end
 
 node[:openvpn][:tunnels].each do |name, details|
   if peer = search(:node, "fqdn:#{details[:peer][:host]}").first
-    if peer[:openvpn] and not details[:peer][:address]
+    if peer[:openvpn] && !details[:peer][:address]
       node.default[:openvpn][:tunnels][name][:peer][:address] = peer[:openvpn][:address]
     end
 
@@ -49,7 +49,7 @@ node[:openvpn][:tunnels].each do |name, details|
     if File.exist?("/etc/openvpn/#{name}.key")
       node.set[:openvpn][:keys][name] = IO.read("/etc/openvpn/#{name}.key")
     end
-  elsif peer and peer[:openvpn]
+  elsif peer && peer[:openvpn]
     file "/etc/openvpn/#{name}.key" do
       owner "root"
       group "root"
@@ -65,10 +65,10 @@ node[:openvpn][:tunnels].each do |name, details|
       group "root"
       mode 0644
       variables :name => name,
-      :address => node[:openvpn][:address],
-      :port => node[:openvpn][:tunnels][name][:port],
-      :mode => node[:openvpn][:tunnels][name][:mode],
-      :peer => node[:openvpn][:tunnels][name][:peer]
+                :address => node[:openvpn][:address],
+                :port => node[:openvpn][:tunnels][name][:port],
+                :mode => node[:openvpn][:tunnels][name][:mode],
+                :peer => node[:openvpn][:tunnels][name][:peer]
       notifies :restart, "service[openvpn]"
     end
   else

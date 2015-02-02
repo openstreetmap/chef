@@ -64,8 +64,8 @@ default_attributes(
       :parameters => {
         "block/sda/queue/nr_requests" => "512",
         "block/sdb/queue/nr_requests" => "512",
-	"block/sda/queue/scheduler" => "noop",
-	"block/sdb/queue/scheduler" => "noop"
+        "block/sda/queue/scheduler" => "noop",
+        "block/sdb/queue/scheduler" => "noop"
       }
     }
   }

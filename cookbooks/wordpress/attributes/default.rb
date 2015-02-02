@@ -5,7 +5,7 @@ default[:accounts][:users][:wordpress][:status] = :role
 default[:apache][:mpm] = "prefork"
 
 # Make sure httpclient and php_serialize are installed
-default[:chef][:gems] |= [ "httpclient", "php_serialize" ]
+default[:chef][:gems] |= %w(httpclient php_serialize)
 
 # Set wordpress defaults
 default[:wordpress][:user] = "wordpress"

@@ -47,7 +47,7 @@ remote_directory "/srv/dns.openstreetmap.org/html" do
   files_mode 0644
 end
 
-zones = Array.new
+zones = []
 
 Dir.glob("/var/lib/dns/json/*.json").each do |kmlfile|
   zone = File.basename(kmlfile, ".json")

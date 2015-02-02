@@ -1,1 +1,1 @@
-#default[:nginx][:mpm] = "worker"
+# default[:nginx][:mpm] = "worker"

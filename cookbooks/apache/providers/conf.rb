@@ -57,7 +57,7 @@ def create_conf
     group "root"
     mode 0644
     variables new_resource.variables
-    notifies :reload, "service[apache2]" if enabled? or available_name == enabled_name
+    notifies :reload, "service[apache2]" if enabled? || available_name == enabled_name
   end
 
   new_resource.updated_by_last_action(t.updated_by_last_action?)

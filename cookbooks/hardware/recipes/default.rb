@@ -29,7 +29,7 @@ when "AuthenticAMD"
   end
 end
 
-if node[:dmi] and node[:dmi][:system]
+if node[:dmi] && node[:dmi][:system]
   case node[:dmi][:system][:manufacturer]
   when "empty"
     manufacturer = node[:dmi][:base_board][:manufacturer]
@@ -69,7 +69,7 @@ when "IBM"
   speed = "115200"
 end
 
-if manufacturer == "HP" and node[:lsb][:release].to_f > 11.10
+if manufacturer == "HP" && node[:lsb][:release].to_f > 11.10
   include_recipe "git"
 
   git "/opt/hp/hp-legacy" do
@@ -187,7 +187,7 @@ node[:kernel][:modules].each_key do |modname|
     status_packages["cciss-vol-status"] ||= []
   when "mptsas"
     tools_packages << "lsiutil"
-    #status_packages["mpt-status"] ||= []
+    # status_packages["mpt-status"] ||= []
   when "mpt2sas"
     tools_packages << "sas2ircu"
     status_packages["sas2ircu-status"] ||= []
@@ -204,9 +204,9 @@ node[:kernel][:modules].each_key do |modname|
 end
 
 node[:block_device].each do |name, attributes|
-  if attributes[:vendor] == "HP" and attributes[:model] == "LOGICAL VOLUME"
+  if attributes[:vendor] == "HP" && attributes[:model] == "LOGICAL VOLUME"
     if name =~ /^cciss!(c[0-9]+)d[0-9]+$/
-      status_packages["cciss-vol-status"] |= [ "cciss/#{$1}d0" ]
+      status_packages["cciss-vol-status"] |= [ "cciss/#{Regexp.last_match[1]}d0" ]
     else
       Dir.glob("/sys/block/#{name}/device/scsi_generic/*").each do |sg|
         status_packages["cciss-vol-status"] |= [ File.basename(sg) ]
@@ -215,7 +215,7 @@ node[:block_device].each do |name, attributes|
   end
 end
 
-["hpacucli", "lsiutil", "sas2ircu", "megactl", "megacli", "arcconf"].each do |tools_package|
+%w(hpacucli lsiutil sas2ircu megactl megacli arcconf).each do |tools_package|
   if tools_packages.include?(tools_package)
     package tools_package
   else

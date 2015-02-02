@@ -22,7 +22,7 @@ def whyrun_supported?
 end
 
 action :install do
-  if not installed?
+  if !installed?
     package package_name
 
     updated = true
@@ -47,7 +47,7 @@ action :install do
 end
 
 action :enable do
-  if not enabled?
+  unless enabled?
     link enabled_name("load") do
       to available_name("load")
       owner "root"

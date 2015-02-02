@@ -108,7 +108,7 @@ file "/etc/init.d/cgimap" do
   content cgimap_init
 end
 
-if ["database_offline", "api_offline"].include?(node[:web][:status])
+if %w(database_offline api_offline).include?(node[:web][:status])
   service "cgimap" do
     action :stop
   end

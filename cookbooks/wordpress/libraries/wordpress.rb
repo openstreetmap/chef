@@ -13,7 +13,7 @@ class Chef
 
     def self.current_plugin_version(name)
       if svn_cat("http://plugins.svn.wordpress.org/#{name}/trunk/readme.txt") =~ /Stable tag:\s*([^\s\r]*)[\s\r]*/
-        $1
+        Regexp.last_match[1]
       else
         "trunk"
       end

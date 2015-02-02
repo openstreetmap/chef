@@ -111,7 +111,6 @@ template "/etc/logrotate.d/nominatim" do
   mode 0644
 end
 
-
 package "osmosis"
 package "gcc"
 package "proj-bin"
@@ -160,7 +159,6 @@ directory "#{source_directory}/log" do
   group "nominatim"
   mode 0755
 end
-
 
 template "#{source_directory}/.git/hooks/post-merge" do
   source "update_source.erb"
@@ -214,7 +212,6 @@ template "/etc/cron.d/nominatim" do
   mode "0644"
   variables :bin_directory => "#{source_directory}/utils", :mailto => email_errors
 end
-
 
 template "#{source_directory}/utils/nominatim-update" do
   source "updater.erb"

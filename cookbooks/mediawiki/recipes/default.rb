@@ -22,7 +22,7 @@ include_recipe "apache::ssl"
 include_recipe "mysql"
 include_recipe "git"
 
-#Mediawiki Base Requirements
+# Mediawiki Base Requirements
 package "php5"
 package "php5-cli"
 package "php5-curl"
@@ -34,15 +34,15 @@ package "libapache2-mod-php5"
 
 package "php-wikidiff2"
 
-#Mediawiki Image + SVG support
+# Mediawiki Image + SVG support
 package "imagemagick"
 package "librsvg2-bin"
 
-#Mediawiki PDF support via Extension:PdfHandler
+# Mediawiki PDF support via Extension:PdfHandler
 package "ghostscript"
 package "poppler-utils"
 
-#Mediawiki backup
+# Mediawiki backup
 package "xz-utils"
 
 link "/etc/php5/apache2/conf.d/20-wikidiff2.ini" do

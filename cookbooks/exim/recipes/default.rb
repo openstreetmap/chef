@@ -39,7 +39,7 @@ template "/tmp/exim.ssl.cnf" do
   group "root"
   mode 0644
   not_if do
-    File.exist?("/etc/ssl/certs/exim.pem") and File.exist?("/etc/ssl/private/exim.key")
+    File.exist?("/etc/ssl/certs/exim.pem") && File.exist?("/etc/ssl/private/exim.key")
   end
 end
 
@@ -48,7 +48,7 @@ execute "/etc/ssl/certs/exim.pem" do
   user "root"
   group "ssl-cert"
   not_if do
-    File.exist?("/etc/ssl/certs/exim.pem") and File.exist?("/etc/ssl/private/exim.key")
+    File.exist?("/etc/ssl/certs/exim.pem") && File.exist?("/etc/ssl/private/exim.key")
   end
 end
 
@@ -86,7 +86,7 @@ search(:accounts, "*:*").each do |account|
   name = account["id"]
   details = node[:accounts][:users][name] || {}
 
-  if details[:status] and account["email"]
+  if details[:status] && account["email"]
     node.default[:exim][:aliases][name] = account["email"]
   end
 end

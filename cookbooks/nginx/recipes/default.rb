@@ -19,7 +19,7 @@
 
 package "nginx"
 
-#admins = data_bag_item("nginx", "admins")
+# admins = data_bag_item("nginx", "admins")
 
 template "/etc/nginx/nginx.conf" do
   source "nginx.conf.erb"

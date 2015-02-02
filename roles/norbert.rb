@@ -35,10 +35,10 @@ default_attributes(
       :parameters => {
         "block/cciss\!c0d0/queue/nr_requests" => "512",
         "block/cciss\!c0d1/queue/nr_requests" => "512",
-	"block/cciss\!c0d0/queue/scheduler" => "noop",
-	"block/cciss\!c0d1/queue/scheduler" => "noop",
-	"block/sda/queue/nr_requests" => "512",
-	"block/sda/queue/scheduler" => "deadline"
+        "block/cciss\!c0d0/queue/scheduler" => "noop",
+        "block/cciss\!c0d1/queue/scheduler" => "noop",
+        "block/sda/queue/nr_requests" => "512",
+        "block/sda/queue/scheduler" => "deadline"
       }
     }
   }

@@ -31,9 +31,7 @@ service "ssh" do
   supports :status => true, :restart => true, :reload => true
 end
 
-hosts = search(:node, "networking:interfaces").sort_by do |node|
-  node[:hostname]
-end.collect do |node|
+hosts = search(:node, "networking:interfaces").sort_by { |n| n[:hostname] }.collect do |node|
   names = [ node[:hostname] ]
 
   node.interfaces(:role => :external).each do |interface|

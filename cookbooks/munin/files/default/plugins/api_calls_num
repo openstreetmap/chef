@@ -8,7 +8,7 @@ require 'apache_log_regex'
 NUM_LINES = 10000
 
 def uris_from_logs
-  lines = Array.new
+  lines = []
   max_time = nil
   min_time = nil
   parser = ApacheLogRegex.new('%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\" %x')
@@ -20,7 +20,7 @@ def uris_from_logs
       min_time = [min_time, t].compact.min
       max_time = [max_time, t].compact.max
       lines << uri
-    rescue ApacheLogRegex::ParseError => e
+    rescue ApacheLogRegex::ParseError
       # nil
     end
   end
@@ -62,15 +62,14 @@ if ARGV[0] == 'config'
 else
   min_time, max_time, lines = uris_from_logs
   delta_t = (max_time - min_time).to_f * 24 * 60
-  counts = lines.
-      collect { |x| categorise_uri(x) }.
-      inject(Hash.new) do |h, e|
-    if h.has_key? e
+  counts = lines
+           .collect { |x| categorise_uri(x) }
+           .each_with_object(Hash.new) do |h, e|
+    if h.key? e
       h[e] += 1
     else
       h[e] = 1
     end
-    h
   end
 
   CALL_TYPES.keys.each do |type|

@@ -105,7 +105,7 @@ search(:accounts, "*:*").each do |account|
   details = node[:accounts][:users][name] || {}
   port = 7000 + account["uid"].to_i
 
-  if ["user", "administrator"].include?(details[:status])
+  if %w(user administrator).include?(details[:status])
     user_home = details[:home] || account["home"] || "#{node[:accounts][:home]}/#{name}"
 
     if File.directory?("#{user_home}/public_html")

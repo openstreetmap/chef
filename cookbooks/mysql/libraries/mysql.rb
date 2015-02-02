@@ -87,33 +87,28 @@ class Chef
     end
 
     def users
-      @users ||= query("SELECT * FROM user").inject({}) do |users, user|
+      @users ||= query("SELECT * FROM user").each_with_object({}) do |users, user|
         name = "'#{user[:user]}'@'#{user[:host]}'"
 
-        users[name] = USER_PRIVILEGES.inject({}) do |privileges, privilege|
+        users[name] = USER_PRIVILEGES.each_with_object({}) do |privileges, privilege|
           privileges[privilege] = user["#{privilege}_priv".to_sym] == "Y"
-          privileges
         end
-
-        users
       end
     end
 
     def databases
-      @databases ||= query("SHOW databases").inject({}) do |databases, database|
+      @databases ||= query("SHOW databases").each_with_object({}) do |databases, database|
         databases[database[:database]] = {
           :permissions => {}
         }
-        databases
       end
 
       query("SELECT * FROM db").each do |record|
         if database = @databases[record[:db]]
           user = "'#{record[:user]}'@'#{record[:host]}'"
 
-          database[:permissions][user] = DATABASE_PRIVILEGES.inject([]) do |privileges, privilege|
+          database[:permissions][user] = DATABASE_PRIVILEGES.each_with_object([]) do |privileges, privilege|
             privileges << privilege if record["#{privilege}_priv".to_sym] == "Y"
-            privileges
           end
         end
       end

@@ -67,33 +67,33 @@ default_attributes(
     :enabled => false,
     :flatnode_file => "/ssd-old/nominatim/nodes.store",
     :database => {
-        :cluster => "9.3/main",
-        :dbname => "nominatim",
-        :postgis => "2.1"
+      :cluster => "9.3/main",
+      :dbname => "nominatim",
+      :postgis => "2.1"
     },
     :fpm_pools => {
-        :www => {
-            :port => "8000",
-            :pm => "dynamic",
-            :max_children => "60"
-        },
-        :bulk => {
-            :port => "8001",
-            :pm => "static",
-            :max_children => "10"
-        }
+      :www => {
+        :port => "8000",
+        :pm => "dynamic",
+        :max_children => "60"
+      },
+      :bulk => {
+        :port => "8001",
+        :pm => "static",
+        :max_children => "10"
+      }
     },
     :tablespaces => {
-        "Osm2pgsql_Data" => "aux",
-        "Osm2pgsql_Index" => "data",
-        "Place_Data" => "ssd2",
-        "Place_Index" => "ssd1",
-        "Address_Data" => "ssd2",
-        "Address_Index" => "ssd1",
-        "Search_Data" => "ssd1",
-        "Search_Index" => "ssd1",
-        "Aux_Data" => "aux",
-        "Aux_Index" => "aux"
+      "Osm2pgsql_Data" => "aux",
+      "Osm2pgsql_Index" => "data",
+      "Place_Data" => "ssd2",
+      "Place_Index" => "ssd1",
+      "Address_Data" => "ssd2",
+      "Address_Index" => "ssd1",
+      "Search_Data" => "ssd1",
+      "Search_Index" => "ssd1",
+      "Aux_Data" => "aux",
+      "Aux_Index" => "aux"
     }
   }
 )

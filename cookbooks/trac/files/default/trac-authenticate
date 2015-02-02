@@ -11,5 +11,5 @@ request.basic_auth user, pass
 
 response = Net::HTTP.new("api.openstreetmap.org").request(request)
 
-exit!(0) if response.kind_of?(Net::HTTPSuccess)
+exit!(0) if response.is_a?(Net::HTTPSuccess)
 exit!(1)
