@@ -41,7 +41,6 @@ apache_module "headers"
 
 version = node[:otrs][:version]
 user = node[:otrs][:user]
-group = node[:otrs][:group]
 database_cluster = node[:otrs][:database_cluster]
 database_name = node[:otrs][:database_name]
 database_user = node[:otrs][:database_user]

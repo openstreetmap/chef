@@ -3,7 +3,7 @@ class Chef
     def edit_file(file, &block)
       Chef::DelayedEvaluator.new do
         ::File.new(file).collect do |line|
-          line = block.call(line)
+          block.call(line)
         end.join("")
       end
     end

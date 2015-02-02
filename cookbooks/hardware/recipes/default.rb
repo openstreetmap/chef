@@ -253,7 +253,7 @@ end
   end
 end
 
-if File.exists?("/etc/mdadm/mdadm.conf")
+if File.exist?("/etc/mdadm/mdadm.conf")
   mdadm_conf = edit_file "/etc/mdadm/mdadm.conf" do |line|
     line.gsub!(/^MAILADDR .*$/, "MAILADDR admins@openstreetmap.org")
 

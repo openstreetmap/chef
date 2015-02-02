@@ -137,7 +137,7 @@ package "libboost-thread-dev"
 
 execute "php-pear-db" do
   command "pear install DB"
-  not_if { File.exists?("/usr/share/php/DB") }
+  not_if { File.exist?("/usr/share/php/DB") }
 end
 
 execute "compile_nominatim" do

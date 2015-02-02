@@ -90,7 +90,7 @@ end
 # apcpdu_
 munin_plugin "cpu"
 
-if File.exists?("/sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state")
+if File.exist?("/sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state")
   munin_plugin "cpuspeed"
 else
   munin_plugin "cpuspeed" do
@@ -127,7 +127,7 @@ else
   end
 end
 
-disks = node[:block_device].select do |name,attributes|
+disks = node[:block_device].select do |_,attributes|
   [ "ATA", "FUJITSU", "SEAGATE", "DELL", "COMPAQ", "IBM-ESXS" ].include?(attributes[:vendor])
 end
 
@@ -142,7 +142,7 @@ else
   end
 end
 
-if File.exists?("/sbin/hpasmcli")
+if File.exist?("/sbin/hpasmcli")
   munin_plugin "hpasmcli2_temp" do
     target "hpasmcli2_"
   end
@@ -277,7 +277,7 @@ sensors_temp = false
 sensors_volt = false
 
 Dir.glob("/sys/class/hwmon/hwmon*").each do |hwmon|
-  hwmon = "#{hwmon}/device" unless File.exists?("#{hwmon}/name")
+  hwmon = "#{hwmon}/device" unless File.exist?("#{hwmon}/name")
 
   sensors_fan = true unless Dir.glob("#{hwmon}/fan*_input").empty?
   sensors_temp = true unless Dir.glob("#{hwmon}/temp*_input").empty?

@@ -38,8 +38,8 @@ template "/tmp/exim.ssl.cnf" do
   owner "root"
   group "root"
   mode 0644
-   not_if do
-    File.exists?("/etc/ssl/certs/exim.pem") and File.exists?("/etc/ssl/private/exim.key")
+  not_if do
+    File.exist?("/etc/ssl/certs/exim.pem") and File.exist?("/etc/ssl/private/exim.key")
   end 
 end
 
@@ -48,7 +48,7 @@ execute "/etc/ssl/certs/exim.pem" do
   user "root"
   group "ssl-cert"
   not_if do
-    File.exists?("/etc/ssl/certs/exim.pem") and File.exists?("/etc/ssl/private/exim.key")
+    File.exist?("/etc/ssl/certs/exim.pem") and File.exist?("/etc/ssl/private/exim.key")
   end
 end
 

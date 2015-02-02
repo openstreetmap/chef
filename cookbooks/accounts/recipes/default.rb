@@ -30,9 +30,8 @@ search(:accounts, "*:*").each do |account|
 
   if details[:status]
     group_members = details[:members] || account["members"] || []
-    user_home = details[:home] || account["home"] || "#{node[:accounts][:home]}/#{name.to_s}"
+    user_home = details[:home] || account["home"] || "#{node[:accounts][:home]}/#{name}"
     manage_home = details[:manage_home] || account["manage_home"] || node[:accounts][:manage_home]
-    groups = details[:groups] || account["groups"] || []
 
     group_members = group_members.collect { |m| m.to_s }.sort
 

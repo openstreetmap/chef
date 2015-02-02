@@ -20,7 +20,6 @@
 define :mediawiki_extension, :action => [ :enable ], :variables => {} do
   name = params[:name]
   site = params[:site]
-  site_directory = node[:mediawiki][:sites][site][:site_directory]
   mediawiki_directory = node[:mediawiki][:sites][site][:directory]
   extension_directory = "#{mediawiki_directory}/extensions/#{name}"
   source = params[:source]

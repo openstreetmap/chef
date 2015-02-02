@@ -40,7 +40,6 @@ apache_module "wsgi"
 node[:osqa][:sites].each do |site|
   name = site[:name]
   directory = site[:directory] || "/srv/#{name}"
-  osqa_revision = site[:revision] || node[:osqa][:revision]
   site_user = site[:user] || node[:osqa][:user]
   site_user = Etc.getpwuid(site_user).name if site_user.is_a?(Integer)
   site_group = site[:group] || node[:osqa][:group] || Etc.getpwnam(site_user).gid

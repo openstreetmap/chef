@@ -31,7 +31,7 @@ node[:nfs].each do |mountpoint,details|
     group "root"
     mode 0755
     recursive true
-    not_if { File.exists?(mountpoint) }
+    not_if { File.exist?(mountpoint) }
   end
 
   mount mountpoint do

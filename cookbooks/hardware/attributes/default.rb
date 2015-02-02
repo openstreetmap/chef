@@ -33,7 +33,7 @@ if node[:kernel][:modules].include?("ipmi_si")
   default[:hardware][:modules] |= [ "ipmi_devintf" ]
 end
 
-if File.exists?("/proc/xen")
+if File.exist?("/proc/xen")
   default[:hardware][:watchdog] = "xen_wdt"
 elsif node[:kernel][:modules].include?("i6300esb")
   default[:hardware][:watchdog] = "none"

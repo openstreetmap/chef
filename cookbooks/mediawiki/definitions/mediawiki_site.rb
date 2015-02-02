@@ -93,7 +93,7 @@ define :mediawiki_site, :action => [ :create, :enable ] do
     user node[:mediawiki][:user]
     group node[:mediawiki][:group]
     not_if do
-      File.exists?("#{mediawiki[:directory]}/LocalSettings-install.php")
+      File.exist?("#{mediawiki[:directory]}/LocalSettings-install.php")
     end
     notifies :create, 'ruby_block[rename-installer-localsettings]', :immediately
   end
@@ -135,7 +135,7 @@ define :mediawiki_site, :action => [ :create, :enable ] do
       #
     end
     not_if do
-      File.exists?("#{mediawiki[:directory]}/LocalSettings-install.php")
+      File.exist?("#{mediawiki[:directory]}/LocalSettings-install.php")
     end
     notifies :run, resources(:execute => "#{mediawiki[:directory]}/maintenance/install.php"), :immediately
     action :create

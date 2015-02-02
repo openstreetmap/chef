@@ -60,7 +60,7 @@ action :enable do
       owner "root"
       group "root"
       notifies :reload, "service[apache2]"
-      only_if { ::File.exists?(available_name("conf")) }
+      only_if { ::File.exist?(available_name("conf")) }
     end
 
     new_resource.updated_by_last_action(true)
@@ -106,9 +106,9 @@ def enabled_name(extension)
 end
 
 def installed?
-  ::File.exists?(available_name("load"))
+  ::File.exist?(available_name("load"))
 end
 
 def enabled?
-  ::File.exists?(enabled_name("load"))
+  ::File.exist?(enabled_name("load"))
 end

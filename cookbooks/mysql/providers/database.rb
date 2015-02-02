@@ -40,7 +40,7 @@ action :create do
     [@mysql.canonicalise_user(user), privileges]
   end]
 
-  @current_resource.permissions.each do |user,privileges|
+  @current_resource.permissions.each_key do |user|
     unless new_permissions[user]
       converge_by("revoke all for #{user} on #{new_resource}") do
         Chef::Log.info("Revoking all for #{user} on #{new_resource}")

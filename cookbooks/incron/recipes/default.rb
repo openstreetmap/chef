@@ -26,7 +26,7 @@ end
 
 incrontabs = {}
 
-node[:incron].each do |name,details|
+node[:incron].each_value do |details|
   user = details[:user]
   path = details[:path]
   mask = details[:events].join(",")

@@ -39,7 +39,7 @@ node[:sysfs].each_value do |group|
     file sysfs_file do
       content "#{value}\n"
       atomic_update false
-      only_if { File.exists?(sysfs_file) }
+      only_if { File.exist?(sysfs_file) }
     end
   end
 end

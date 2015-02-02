@@ -27,7 +27,6 @@ package "wkhtmltopdf"
 passwords = data_bag_item("civicrm", "passwords")
 
 database_password = passwords["database"]
-admin_password = passwords["admin"]
 site_key = passwords["key"]
 
 mysql_user "civicrm@localhost" do

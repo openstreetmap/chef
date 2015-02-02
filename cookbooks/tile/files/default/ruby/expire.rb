@@ -93,7 +93,7 @@ module Expire
     end
   end
 
-  def Expire.do_expire(change_file, min_zoom, max_zoom, &block)
+  def Expire.do_expire(change_file, min_zoom, max_zoom, &_)
     # read in the osm change file
     doc = XML::Document.file(change_file)
     
@@ -142,7 +142,7 @@ module Expire
     set = Set.new nodes.values
     
     # expire tiles and shrink to the set of parents
-    (max_zoom).downto(min_zoom) do |z|
+    (max_zoom).downto(min_zoom) do |_|
       # allow the block to work on the set, returning the set at the next
       # zoom level
       set = yield set

@@ -46,7 +46,7 @@ node[:openvpn][:tunnels].each do |name,details|
       creates "/etc/openvpn/#{name}.key"
     end
 
-    if File.exists?("/etc/openvpn/#{name}.key")
+    if File.exist?("/etc/openvpn/#{name}.key")
       node.set[:openvpn][:keys][name] = IO.read("/etc/openvpn/#{name}.key")
     end
   elsif peer and peer[:openvpn]

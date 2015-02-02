@@ -108,5 +108,5 @@ def enabled_name
 end
 
 def enabled?
-  ::File.exists?(enabled_name)
+  ::File.exist?(enabled_name)
 end
