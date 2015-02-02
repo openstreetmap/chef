@@ -5,7 +5,7 @@ require 'date'
 require 'hpricot'
 require 'open-uri'
 
-def uri_and_times_from_status(server) 
+def uri_and_times_from_status(server)
   file = open("http://#{server}/server-status").read
   doc = Hpricot.parse(file)
   tables = doc / 'table'
@@ -18,19 +18,19 @@ def uri_and_times_from_status(server)
 end
 
 CALL_TYPES = {
-  :map => "Map API calls", 
-  :upload => "Changeset diff uploads", 
-  :amf => "AMF API calls", 
-  :history => "Element history fetches", 
+  :map => "Map API calls",
+  :upload => "Changeset diff uploads",
+  :amf => "AMF API calls",
+  :history => "Element history fetches",
   :full => "Full element fetches",
   :trkpts => "GPX trackpoints calls",
-  :web => "Web site traffic", 
+  :web => "Web site traffic",
   :other => "Other API calls"
 }
 
 def categorise_uri(line)
   uri = line.split(" ")[1]
-  
+
   case uri
   when /api\/0\.6\/map/ then :map
   when /api\/0\.6\/changeset\/[0-9]*\/upload/ then :upload
@@ -63,7 +63,7 @@ else
     end
     h
   end
-  
+
   CALL_TYPES.keys.each do |type|
     count = counts[type] || [0]
     avg = count.inject(0){|x,y|x+y} / (1.0 * count.length)

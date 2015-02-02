@@ -213,7 +213,7 @@ node[:tile][:data].each_value do |data|
       action :create
       use_conditional_get true
     else
-      action :create_if_missing 
+      action :create_if_missing
     end
 
     source url
@@ -355,8 +355,8 @@ end
   "planet_osm_nodes",
   "planet_osm_rels",
   "planet_osm_ways",
-  "raster_columns", 
-  "raster_overviews", 
+  "raster_columns",
+  "raster_overviews",
   "spatial_ref_sys" ].each do |table|
   postgresql_table table do
     cluster node[:tile][:database][:cluster]
@@ -366,10 +366,10 @@ end
   end
 end
 
-[ "geometry_columns", 
-  "planet_osm_line", 
-  "planet_osm_point", 
-  "planet_osm_polygon", 
+[ "geometry_columns",
+  "planet_osm_line",
+  "planet_osm_point",
+  "planet_osm_polygon",
   "planet_osm_roads" ].each do |table|
   postgresql_table table do
     cluster node[:tile][:database][:cluster]

@@ -32,4 +32,3 @@ attribute "ntp/servers",
   :description => "Array of servers we should talk to",
   :type => "array",
   :default => ["0.us.pool.ntp.org", "1.us.pool.ntp.org"]
-

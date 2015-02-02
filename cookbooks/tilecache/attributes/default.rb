@@ -12,4 +12,3 @@ default[:tilecache][:net_bucket_refill] = "8192"
 default[:tilecache][:net_bucket_size] = "134217728"
 
 default[:tilecache][:ssl][:certificate] = "tile.openstreetmap"
-

@@ -5,7 +5,7 @@ default_attributes(
   :accounts => {
     :users => {
       :lambertus => {
-        :status => :administrator 
+        :status => :administrator
       },
       :forum => {
         :status => :role,

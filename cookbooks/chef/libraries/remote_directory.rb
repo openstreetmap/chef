@@ -4,7 +4,7 @@ class Chef
       def action_create
         super
         Chef::Log.debug("Doing a remote recursive directory transfer for #{@new_resource}")
-          
+
         files_transferred = Set.new
         files_to_transfer.each do |cookbook_file_relative_path|
           create_cookbook_file(cookbook_file_relative_path)

@@ -79,6 +79,6 @@ define :mediawiki_extension, :action => [ :enable ], :variables => {} do
     mode 0664
     content "<?php require_once('#{extension_directory}/#{name}.php');\n"
     only_if do File.exist?("#{extension_directory}/#{name}.php") end
-    notifies :create, resources(:template => "#{mediawiki_directory}/LocalSettings.php")  
+    notifies :create, resources(:template => "#{mediawiki_directory}/LocalSettings.php")
   end
 end

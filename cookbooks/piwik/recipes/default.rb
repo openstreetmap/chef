@@ -68,7 +68,7 @@ template "/opt/piwik-#{version}/piwik/config/config.ini.php" do
   group "root"
   mode "0644"
   variables :passwords => passwords,
-            :directory => "/opt/piwik-#{version}/piwik", 
+            :directory => "/opt/piwik-#{version}/piwik",
             :plugins => node[:piwik][:plugins]
 end
 

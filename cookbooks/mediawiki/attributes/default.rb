@@ -8,4 +8,3 @@ default[:apache][:mpm] = "prefork"
 default[:mediawiki][:user] = "wiki"
 default[:mediawiki][:group] = "wiki"
 default[:mediawiki][:sites] = {}
-

@@ -54,4 +54,3 @@ end
 package "whoopsie" do
   action :purge
 end
-

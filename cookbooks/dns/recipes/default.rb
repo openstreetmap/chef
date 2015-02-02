@@ -71,7 +71,7 @@ template "/srv/dns.openstreetmap.org/html/index.html" do
   variables :zones => zones
 end
 
-apache_site "dns.openstreetmap.org" do 
+apache_site "dns.openstreetmap.org" do
   template "apache.erb"
   directory "/srv/dns.openstreetmap.org"
 end

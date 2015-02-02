@@ -46,7 +46,7 @@ define :mediawiki_site, :action => [ :create, :enable ] do
     :logo              => params[:logo] || "$wgStylePath/common/images/wiki.png",
     :email_contact     => params[:email_contact] || "",
     :email_sender      => params[:email_sender] || "",
-    :email_sender_name => params[:email_sender_name] || "MediaWiki Mail", 
+    :email_sender_name => params[:email_sender_name] || "MediaWiki Mail",
     :commons           => params[:commons] || TRUE,
     :skin              => params[:skin] || "vector",
     :site_notice       => params[:site_notice] || "",
@@ -203,7 +203,7 @@ define :mediawiki_site, :action => [ :create, :enable ] do
 
   mediawiki_extension "Cite" do
     site name
-    template "mw-ext-Cite.inc.php.erb"    
+    template "mw-ext-Cite.inc.php.erb"
   end
 
   mediawiki_extension "ConfirmEdit" do

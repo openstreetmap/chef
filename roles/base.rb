@@ -31,7 +31,7 @@ default_attributes(
     },
     :network_buffers => {
       :comment => "Tune network buffers",
-      :parameters => { 
+      :parameters => {
         "net.core.rmem_max" => "16777216",
         "net.core.wmem_max" => "16777216",
         "net.ipv4.tcp_rmem" => "4096\t87380\t16777216",
@@ -44,7 +44,7 @@ default_attributes(
     },
     :network_conntrack_established => {
       :comment => "Only track established connections for four hours",
-      :parameters => { 
+      :parameters => {
         "net.netfilter.nf_conntrack_tcp_timeout_established" => "14400"
       }
     },

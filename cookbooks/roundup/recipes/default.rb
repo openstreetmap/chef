@@ -17,4 +17,3 @@
 # limitations under the License.
 #
 include_recipe "apache"
-

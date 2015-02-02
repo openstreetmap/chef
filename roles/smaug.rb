@@ -22,7 +22,7 @@ default_attributes(
       },
       :sensors_volt => {
         :contacts => "null",
-        :volt10 => { 
+        :volt10 => {
           :warning => "3.11:3.50",
           :critical => "2.98:3.63"
         }
@@ -52,7 +52,7 @@ default_attributes(
   :sysctl => {
     :postgres => {
       :comment => "Increase shared memory for postgres",
-      :parameters => { 
+      :parameters => {
         "kernel.shmmax" => 17 * 1024 * 1024 * 1024,
         "kernel.shmall" => 17 * 1024 * 1024 * 1024 / 4096
       }

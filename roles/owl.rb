@@ -41,7 +41,7 @@ default_attributes(
   :sysctl => {
     :postgres => {
       :comment => "Increase shared memory for postgres",
-      :parameters => { 
+      :parameters => {
         "kernel.shmmax" => 16 * 1024 * 1024 * 1024,
         "kernel.shmall" => 16 * 1024 * 1024 * 1024 / 4096
       }

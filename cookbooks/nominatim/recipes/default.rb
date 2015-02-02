@@ -288,4 +288,3 @@ directory File.dirname(node[:nominatim][:flatnode_file]) do
   mode 0755
   recursive true
 end
-

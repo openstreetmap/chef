@@ -57,7 +57,7 @@ class Replicator
     last_run = (@now - 60) if last_run.nil?
     @state['last_run'] = @now
     # pretty much all operations on a changeset will modify its closed_at
-    # time (see rails_port's changeset model). so it is probably enough 
+    # time (see rails_port's changeset model). so it is probably enough
     # for us to look at anything that was closed recently, and filter from
     # there.
     @conn.
@@ -66,7 +66,7 @@ class Replicator
       select {|cs| cs.activity_between?(last_run, @now) }
   end
 
-  # creates an XML file containing the changeset information from the 
+  # creates an XML file containing the changeset information from the
   # list of changesets output by open_changesets.
   def changeset_dump(changesets)
     doc = XML::Document.new
@@ -110,7 +110,7 @@ class Replicator
 
       doc.root << xml
     end
-    
+
     doc.to_s
   end
 
@@ -150,4 +150,3 @@ end
 
 rep = Replicator.new(ARGV[0])
 rep.save!
-

@@ -21,7 +21,7 @@ default_attributes(
   :sysctl => {
     :tune_cpu_scheduler => {
       :comment => "Tune CPU scheduler for server scheduling",
-      :parameters => { 
+      :parameters => {
         "kernel.sched_migration_cost" => 50000000,
         "kernel.sched_autogroup_enabled" => 0
       }

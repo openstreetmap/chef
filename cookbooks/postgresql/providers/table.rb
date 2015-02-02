@@ -54,7 +54,7 @@ action :create do
     new_resource.permissions.each do |user,new_privileges|
       current_privileges = @current_resource.permissions[user] || {}
       new_privileges = Array(new_privileges)
-      
+
       if new_privileges.include?(:all)
         new_privileges |= Chef::PostgreSQL::TABLE_PRIVILEGES
       end

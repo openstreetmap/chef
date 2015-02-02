@@ -40,7 +40,7 @@ template "/tmp/exim.ssl.cnf" do
   mode 0644
   not_if do
     File.exist?("/etc/ssl/certs/exim.pem") and File.exist?("/etc/ssl/private/exim.key")
-  end 
+  end
 end
 
 execute "/etc/ssl/certs/exim.pem" do

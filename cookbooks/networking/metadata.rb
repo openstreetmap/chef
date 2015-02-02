@@ -23,4 +23,3 @@ attribute "networking/nameservers",
   :description => "List of nameservers to use",
   :type => "array",
   :default => [""]
-

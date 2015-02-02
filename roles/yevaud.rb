@@ -48,13 +48,13 @@ default_attributes(
   :munin => {
     :plugins => {
       :cpu => {
-        :system => { 
+        :system => {
           :warning => 500,
           :critical => 600
         }
       },
       :load => {
-        :load => { 
+        :load => {
           :warning => 150,
           :critical => 200
         }
@@ -84,7 +84,7 @@ default_attributes(
   :sysctl => {
     :postgres => {
       :comment => "Increase shared memory for postgres",
-      :parameters => { 
+      :parameters => {
         "kernel.shmmax" => 4 * 1024 * 1024 * 1024,
         "kernel.shmall" => 4 * 1024 * 1024 * 1024 / 4096
       }

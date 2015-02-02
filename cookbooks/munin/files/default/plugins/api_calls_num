@@ -28,19 +28,19 @@ def uris_from_logs
 end
 
 CALL_TYPES = {
-  :map => "Map API calls", 
-  :upload => "Changeset diff uploads", 
-  :amf => "AMF API calls", 
-  :history => "Element history fetches", 
+  :map => "Map API calls",
+  :upload => "Changeset diff uploads",
+  :amf => "AMF API calls",
+  :history => "Element history fetches",
   :full => "Full element fetches",
   :trkpts => "GPX trackpoints calls",
-  :web => "Web site traffic", 
+  :web => "Web site traffic",
   :other => "Other API calls"
 }
 
 def categorise_uri(line)
   uri = line.split(" ")[1]
-  
+
   case uri
   when /api\/0\.6\/map/ then :map
   when /api\/0\.6\/changeset\/[0-9]*\/upload/ then :upload
@@ -72,7 +72,7 @@ else
     end
     h
   end
-  
+
   CALL_TYPES.keys.each do |type|
     count = counts[type] || 0
     puts "#{type}.value #{count / delta_t}"

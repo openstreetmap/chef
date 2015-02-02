@@ -1,4 +1,4 @@
-case platform 
+case platform
 when "ubuntu","debian"
   default[:ntp][:service] = "ntp"
 when "redhat","centos","fedora"

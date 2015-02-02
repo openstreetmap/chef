@@ -37,7 +37,7 @@ default_attributes(
   :sysctl => {
     :postgres => {
       :comment => "Increase shared memory for postgres",
-      :parameters => { 
+      :parameters => {
         "kernel.shmmax" => 26 * 1024 * 1024 * 1024,
         "kernel.shmall" => 26 * 1024 * 1024 * 1024 / 4096
       }
@@ -57,7 +57,7 @@ default_attributes(
     },
     :network_conntrack_time_wait => {
       :comment => "Only track completed connections for 30 seconds",
-      :parameters => { 
+      :parameters => {
         "net.netfilter.nf_conntrack_tcp_timeout_time_wait" => "30"
       }
     },

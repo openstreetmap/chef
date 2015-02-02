@@ -8,7 +8,7 @@ default_attributes(
     ],
     :sensors => {
       "jc42-*" => {
-        :temps => { 
+        :temps => {
           "temp1" => { :max => 75 }
         }
       },

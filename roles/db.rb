@@ -13,17 +13,17 @@ default_attributes(
   :munin => {
     :plugins => {
       :postgres_connections_openstreetmap => {
-        :waiting => { 
+        :waiting => {
           :warning => 10,
           :critical => 20
         }
       },
       :postgres_locks_openstreetmap => {
-        :accesssharelock => { 
+        :accesssharelock => {
           :warning => 900,
           :critical => 1000
         },
-        :rowexclusivelock => { 
+        :rowexclusivelock => {
           :warning => 250,
           :critical => 300
         }

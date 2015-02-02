@@ -45,4 +45,3 @@ package "qt4-linguist-tools"
 package "libicu52"
 
 apache_module "php5"
-

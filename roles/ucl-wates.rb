@@ -22,7 +22,7 @@ default_attributes(
   :sysctl => {
     :sack => {
       :comment => "Disable SACK as the UCL firewall breaks it",
-      :parameters => { 
+      :parameters => {
         "net.ipv4.tcp_sack" => "0"
       }
     }

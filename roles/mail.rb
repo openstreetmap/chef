@@ -67,7 +67,7 @@ default_attributes(
   :munin => {
     :plugins => {
       :exim_mailqueue => {
-        :mails => { 
+        :mails => {
           :warning => 500,
           :critical => 1000
         }

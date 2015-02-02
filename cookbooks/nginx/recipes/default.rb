@@ -33,4 +33,3 @@ service "nginx" do
   supports :status => true, :restart => true, :reload => true
   subscribes :restart, "template[/etc/nginx/nginx.conf]"
 end
-

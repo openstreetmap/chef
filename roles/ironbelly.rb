@@ -56,7 +56,7 @@ default_attributes(
         :uid => "tomh",
         :gid => "tomh",
         :transfer_logging => false,
-        :hosts_allow => [ 
+        :hosts_allow => [
           "212.110.172.32",                      # shenron
           "2001:41c9:1:400::32",                 # shenron
           "212.159.112.221"                      # grant

@@ -14,7 +14,7 @@ default_attributes(
       },
       :chefrepo => {
         :status => :role,
-        :members => [ 
+        :members => [
           :tomh, :grant, :matt, :jburgess, :lonvia, :yellowbkpk, :bretth
         ]
       }

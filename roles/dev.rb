@@ -66,21 +66,21 @@ default_attributes(
       :zverik => { :status => :user },
       :dodobas => { :status => :user },
       :mhohmann => { :status => :user },
-      :ooc => { 
-        :status => :role, 
-        :members => [ :tomh, :blackadder, :timsc, :ollie ] 
+      :ooc => {
+        :status => :role,
+        :members => [ :tomh, :blackadder, :timsc, :ollie ]
       },
-      :apis => { 
-        :status => :role, 
-        :members => [ :tomh ] 
+      :apis => {
+        :status => :role,
+        :members => [ :tomh ]
       },
-      :os => { 
-        :status => :role, 
-        :members => [ :tomh, :grant, :ollie ] 
+      :os => {
+        :status => :role,
+        :members => [ :tomh, :grant, :ollie ]
       },
-      :gpsmid => { 
-        :status => :role, 
-        :members => [ :apmon, :maba ] 
+      :gpsmid => {
+        :status => :role,
+        :members => [ :apmon, :maba ]
       }
     }
   },
@@ -152,7 +152,7 @@ default_attributes(
   :sysctl => {
     :postgres => {
       :comment => "Increase shared memory for postgres",
-      :parameters => { 
+      :parameters => {
         "kernel.shmall" => "4194304",
         "kernel.shmmax" => "17179869184"
       }

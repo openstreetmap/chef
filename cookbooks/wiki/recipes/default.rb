@@ -32,7 +32,7 @@ mediawiki_site  "wiki.openstreetmap.org" do
   directory     "/srv/wiki.openstreetmap.org"
 
   enable_ssl    TRUE
-  
+
   database_name "wiki"
   database_username "wiki-user"
   database_password passwords["database"]
@@ -49,7 +49,7 @@ mediawiki_site  "wiki.openstreetmap.org" do
 
   recaptcha_public_key "6LdFIQATAAAAAMwtHeI8KDgPqvRbXeNYSq1gujKz"
   recaptcha_private_key passwords["recaptcha"]
-  
+
   #site_readonly "MAINTENANCE UPDATE: WIKI READ-ONLY. ETA: Tuesday 8:00am UTC/GMT."
 
 end
@@ -93,4 +93,3 @@ template "/etc/cron.d/wiki-osm-org-dump" do
   mode 0644
   source "cron_wiki_dump.erb"
 end
-
