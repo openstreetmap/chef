@@ -9,10 +9,10 @@ require 'xml/libxml'
 require 'zlib'
 
 # after this many changes, a changeset will be closed
-CHANGES_LIMIT=50000
+CHANGES_LIMIT = 50000
 
 # this is the scale factor for lat/lon values stored as integers in the database
-GEO_SCALE=10000000
+GEO_SCALE = 10000000
 
 ##
 # changeset class keeps some information about changesets downloaded from the
@@ -62,8 +62,8 @@ class Replicator
     # there.
     @conn.
       exec("select id, created_at, closed_at, num_changes from changesets where closed_at > ((now() at time zone 'utc') - '1 hour'::interval)").
-      map {|row| Changeset.new(row) }.
-      select {|cs| cs.activity_between?(last_run, @now) }
+      map { |row| Changeset.new(row) }.
+      select { |cs| cs.activity_between?(last_run, @now) }
   end
 
   # creates an XML file containing the changeset information from the
@@ -76,7 +76,7 @@ class Replicator
       'copyright' => "OpenStreetMap and contributors",
       'attribution' => "http://www.openstreetmap.org/copyright",
       'license' => "http://opendatacommons.org/licenses/odbl/1-0/" }.
-      each { |k,v| doc.root[k] = v }
+      each { |k, v| doc.root[k] = v }
 
     changesets.each do |cs|
       xml = XML::Node.new("changeset")
@@ -120,7 +120,7 @@ class Replicator
       fl.flock(File::LOCK_EX)
 
       sequence = (@state.has_key?('sequence') ? @state['sequence'] + 1 : 0)
-      data_file = @config['data_dir'] + sprintf("/%03d/%03d/%03d.osm.gz", sequence / 1000000, (sequence / 1000) % 1000, (sequence % 1000));
+      data_file = @config['data_dir'] + sprintf("/%03d/%03d/%03d.osm.gz", sequence / 1000000, (sequence / 1000) % 1000, (sequence % 1000))
       tmp_state = @config['state_file'] + ".tmp"
       tmp_data = "/tmp/changeset_data.osm.tmp"
       # try and write the files to tmp locations and then

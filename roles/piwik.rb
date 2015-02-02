@@ -3,7 +3,7 @@ description "Role applied to all Piwik servers"
 
 default_attributes(
   :apache => {
-    :mpm => "prefork",
+    :mpm => "prefork"
   }
 )
 

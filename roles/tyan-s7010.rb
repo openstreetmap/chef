@@ -38,7 +38,7 @@ default_attributes(
           "temp6" => { :max => 78, :max_hyst => 73 }
         }
       }
-    },
+    }
   },
   :munin => {
     :plugins => {

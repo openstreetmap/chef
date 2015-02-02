@@ -33,7 +33,7 @@ template "/etc/sysfs.conf" do
 end
 
 node[:sysfs].each_value do |group|
-  group[:parameters].each do |key,value|
+  group[:parameters].each do |key, value|
     sysfs_file = "/sys/#{key}"
 
     file sysfs_file do

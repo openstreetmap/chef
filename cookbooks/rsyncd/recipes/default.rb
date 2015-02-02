@@ -22,7 +22,7 @@ include_recipe "networking"
 hosts_allow = Hash.new
 hosts_deny = Hash.new
 
-node[:rsyncd][:modules].each do |name,details|
+node[:rsyncd][:modules].each do |name, details|
   hosts_allow[name] = details[:hosts_allow] || []
 
   if details[:nodes_allow]

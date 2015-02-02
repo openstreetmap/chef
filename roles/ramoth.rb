@@ -60,7 +60,7 @@ default_attributes(
       }
     }
   }
-);
+)
 
 run_list(
   "role[ic]",

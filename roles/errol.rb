@@ -40,7 +40,7 @@ default_attributes(
       }
     }
   }
-);
+)
 
 run_list(
   "role[ucl-wolfson]",

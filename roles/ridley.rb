@@ -2,7 +2,7 @@ name "ridley"
 description "Master role applied to ridley"
 
 default_attributes(
-  :dhcpd =>{
+  :dhcpd => {
     :first_address => "10.0.15.1",
     :last_address => "10.0.15.254"
   },
@@ -39,7 +39,7 @@ default_attributes(
         :role => :internal,
         :family => :inet,
         :address => "10.0.0.3"
-      },
+      }
     }
   },
   :openvpn => {

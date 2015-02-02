@@ -37,7 +37,7 @@ node[:incron].each_value do |details|
   incrontabs[user].push("#{path} #{mask} #{command}")
 end
 
-incrontabs.each do |user,lines|
+incrontabs.each do |user, lines|
   file "/var/spool/incron/#{user}" do
     owner user
     group "incron"

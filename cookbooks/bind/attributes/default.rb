@@ -1,1 +1,1 @@
-default[:bind] = { }
+default[:bind] = {}

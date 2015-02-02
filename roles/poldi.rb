@@ -93,7 +93,7 @@ default_attributes(
         "Search_Data" => "ssd1",
         "Search_Index" => "ssd1",
         "Aux_Data" => "aux",
-        "Aux_Index" => "aux",
+        "Aux_Index" => "aux"
     }
   }
 )

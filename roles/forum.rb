@@ -21,7 +21,7 @@ default_attributes(
       :start_servers => 20,
       :min_spare_servers => 20,
       :max_spare_servers => 50,
-      :max_clients => 256,
+      :max_clients => 256
     }
   }
 )

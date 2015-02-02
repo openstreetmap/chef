@@ -10,11 +10,11 @@ def uri_and_times_from_status(server)
   doc = Hpricot.parse(file)
   tables = doc / 'table'
   rows = (tables[0] / 'tr')[1..-1]
-  data = rows.collect {|r| (r  / 'td').collect {|x| x.inner_html} }
+  data = rows.collect { |r| (r  / 'td').collect(&:inner_html) }
   # filter where the PID is numeric, status is 'W' and host matches the server
-  matching_data = data.select {|r| (r[1].to_i > 0) && r[3].match(/W/) && r[11].match(server)}
+  matching_data = data.select { |r| (r[1].to_i > 0) && r[3].match(/W/) && r[11].match(server) }
   # return URI and number of seconds processing for each request
-  matching_data.collect {|r| [r[12], r[5].to_i]}
+  matching_data.collect { |r| [r[12], r[5].to_i] }
 end
 
 CALL_TYPES = {
@@ -53,7 +53,7 @@ if ARGV[0] == 'config'
 
 else
   counts = uri_and_times_from_status(server).
-      collect {|x,y| [categorise_uri(x), y]}.
+      collect { |x, y| [categorise_uri(x), y] }.
       inject(Hash.new) do |h, e|
     category, time = e
     if h.has_key? category
@@ -66,7 +66,7 @@ else
 
   CALL_TYPES.keys.each do |type|
     count = counts[type] || [0]
-    avg = count.inject(0){|x,y|x+y} / (1.0 * count.length)
+    avg = count.inject(0) { |x, y|x + y } / (1.0 * count.length)
     puts "#{type}.value #{avg}"
   end
 end

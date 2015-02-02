@@ -56,7 +56,7 @@ default_attributes(
         "kernel.shmmax" => 17 * 1024 * 1024 * 1024,
         "kernel.shmall" => 17 * 1024 * 1024 * 1024 / 4096
       }
-    },
+    }
   },
   :sysfs => {
     :hdd_tune => {
@@ -69,7 +69,7 @@ default_attributes(
       }
     }
   }
-);
+)
 
 run_list(
   "role[ic]",

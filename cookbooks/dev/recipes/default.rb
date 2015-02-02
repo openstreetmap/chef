@@ -105,7 +105,7 @@ search(:accounts, "*:*").each do |account|
   details = node[:accounts][:users][name] || {}
   port = 7000 + account["uid"].to_i
 
-  if ["user","administrator"].include?(details[:status])
+  if ["user", "administrator"].include?(details[:status])
     user_home = details[:home] || account["home"] || "#{node[:accounts][:home]}/#{name}"
 
     if File.directory?("#{user_home}/public_html")
@@ -132,7 +132,7 @@ if node[:postgresql][:clusters][:"9.1/main"]
     cluster "9.3/main"
   end
 
-  node[:dev][:rails].each do |name,details|
+  node[:dev][:rails].each do |name, details|
     database_name = details[:database] || "apis_#{name}"
     site_name = "#{name}.apis.dev.openstreetmap.org"
     rails_directory = "/srv/#{name}.apis.dev.openstreetmap.org"

@@ -9,7 +9,7 @@ default_attributes(
       :owl => {
         :status => :role,
         :members => [ :yellowbkpk, :ppawel ]
-      },
+      }
     },
     :groups => {
       :adm => {

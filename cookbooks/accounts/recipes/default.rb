@@ -33,7 +33,7 @@ search(:accounts, "*:*").each do |account|
     user_home = details[:home] || account["home"] || "#{node[:accounts][:home]}/#{name}"
     manage_home = details[:manage_home] || account["manage_home"] || node[:accounts][:manage_home]
 
-    group_members = group_members.collect { |m| m.to_s }.sort
+    group_members = group_members.collect(&:to_s).sort
 
     case details[:status]
     when "role"
@@ -92,7 +92,7 @@ search(:accounts, "*:*").each do |account|
   end
 end
 
-node[:accounts][:groups].each do |name,details|
+node[:accounts][:groups].each do |name, details|
   group name do
     action :modify
     members details[:members]

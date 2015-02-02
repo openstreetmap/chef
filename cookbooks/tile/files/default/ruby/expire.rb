@@ -15,13 +15,13 @@ module Expire
                                 "+nadgrids=@null", "+no_defs +over"])
 
   # width/height of the spherical mercator projection
-  SIZE=40075016.6855784
+  SIZE = 40075016.6855784
   # the size of the meta tile blocks
   METATILE = 8
   # the directory root for meta tiles
   HASH_ROOT = "/tiles/default/"
   # node cache file
-  NODE_CACHE_FILE="/store/database/nodes"
+  NODE_CACHE_FILE = "/store/database/nodes"
 
   # turns a spherical mercator coord into a tile coord
   def Expire.tile_from_merc(point, zoom)
@@ -29,8 +29,8 @@ module Expire
     point.x = 0.5 + point.x / SIZE
     point.y = 0.5 - point.y / SIZE
     # transform into tile space
-    point.x = point.x * 2 ** zoom
-    point.y = point.y * 2 ** zoom
+    point.x = point.x * 2**zoom
+    point.y = point.y * 2**zoom
     # chop of the fractional parts
     [point.x.to_int, point.y.to_int, zoom]
   end
@@ -49,7 +49,7 @@ module Expire
     y &= ~(METATILE - 1)
     # generate the path
     hash_path = (0..4).collect { |i|
-      (((x >> 4*i) & 0xf) << 4) | ((y >> 4*i) & 0xf)
+      (((x >> 4 * i) & 0xf) << 4) | ((y >> 4 * i) & 0xf)
     }.reverse.join('/')
     z.to_s + '/' + hash_path + ".meta"
   end
@@ -176,7 +176,7 @@ module Expire
       if id <= @max_id
         offset = 16 + id * 8
 
-        lon, lat = @cache[offset .. offset+7].unpack("ll")
+        lon, lat = @cache[offset..offset + 7].unpack("ll")
 
         if lon != -2147483648 && lat != -2147483648
           node = Node.new(lon, lat)

@@ -235,7 +235,7 @@ directory "/srv/tile.openstreetmap.org/styles" do
   mode 0755
 end
 
-node[:tile][:styles].each do |name,details|
+node[:tile][:styles].each do |name, details|
   style_directory = "/srv/tile.openstreetmap.org/styles/#{name}"
   tile_directory = "/srv/tile.openstreetmap.org/tiles/#{name}"
 
@@ -513,7 +513,7 @@ template "/usr/local/bin/cleanup-tiles" do
   mode 0755
 end
 
-tile_directories = node[:tile][:styles].collect do |_,style|
+tile_directories = node[:tile][:styles].collect do |_, style|
   style[:tile_directories].collect { |directory| directory[:name] }
 end.flatten.sort.uniq
 

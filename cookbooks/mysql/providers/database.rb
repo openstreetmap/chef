@@ -36,7 +36,7 @@ action :create do
     end
   end
 
-  new_permissions = Hash[new_resource.permissions.collect do |user,privileges|
+  new_permissions = Hash[new_resource.permissions.collect do |user, privileges|
     [@mysql.canonicalise_user(user), privileges]
   end]
 
@@ -49,7 +49,7 @@ action :create do
     end
   end
 
-  new_permissions.each do |user,new_privileges|
+  new_permissions.each do |user, new_privileges|
     current_privileges = @current_resource.permissions[user] || {}
     new_privileges = Array(new_privileges)
 

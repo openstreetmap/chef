@@ -58,7 +58,7 @@ apache_site "default" do
   action [ :disable ]
 end
 
-node[:nominatim][:fpm_pools].each do |name,data|
+node[:nominatim][:fpm_pools].each do |name, data|
   template "/etc/php5/fpm/pool.d/#{name}.conf" do
     source "fpm.conf.erb"
     owner "root"

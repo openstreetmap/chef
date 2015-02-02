@@ -19,7 +19,7 @@
 
 package "nfs-common"
 
-node[:nfs].each do |mountpoint,details|
+node[:nfs].each do |mountpoint, details|
   if details[:readonly]
     mount_options = "ro,bg,soft,udp,rsize=8192,wsize=8192,nfsvers=3"
   else

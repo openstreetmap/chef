@@ -7,8 +7,8 @@ default_attributes(
       :tile => {
         :status => :role,
         :members => [ :jburgess, :tomh ]
-      },
-    },
+      }
+    }
   },
   :apache => {
     :mpm => "event",

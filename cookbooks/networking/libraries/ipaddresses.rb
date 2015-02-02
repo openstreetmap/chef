@@ -15,11 +15,11 @@ class Chef
     end
 
     def internal_ipaddress
-      return ipaddresses(:role => :internal).first
+      ipaddresses(:role => :internal).first
     end
 
     def external_ipaddress
-      return ipaddresses(:role => :external).first
+      ipaddresses(:role => :external).first
     end
   end
 end

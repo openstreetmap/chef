@@ -41,7 +41,7 @@ template "/etc/sysctl.d/60-chef.conf" do
 end
 
 node[:sysctl].each_value do |group|
-  group[:parameters].each do |key,value|
+  group[:parameters].each do |key, value|
     sysctl_file = "/proc/sys/#{key.gsub('.', '/')}"
 
     file sysctl_file do

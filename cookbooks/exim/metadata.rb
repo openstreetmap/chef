@@ -50,9 +50,9 @@ attribute "exim/smarthost_via",
 attribute "exim/routes",
   :display_name => "Custom Routes",
   :description => "Custom routes for handling local mail",
-  :default => { }
+  :default => {}
 
 attribute "exim/aliases",
   :display_name => "Mail Aliases",
   :description => "Mail aliases",
-  :default => { }
+  :default => {}

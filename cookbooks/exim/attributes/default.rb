@@ -5,6 +5,6 @@ default[:exim][:daemon_smtp_ports] = [ 25 ]
 default[:exim][:trusted_users] = [ ]
 default[:exim][:smarthost_name] = nil
 default[:exim][:smarthost_via] = "mail.openstreetmap.org:26"
-default[:exim][:routes] = { }
+default[:exim][:routes] = {}
 default[:exim][:aliases][:root] = "tomh"
 default[:exim][:rewrites] = [ ]

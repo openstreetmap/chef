@@ -9,7 +9,7 @@ default_attributes(
       :nominatim => {
         :status => :role,
         :members => [ :lonvia, :tomh, :twain ]
-      },
+      }
     }
   },
   :apache => {

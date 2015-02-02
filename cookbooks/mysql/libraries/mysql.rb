@@ -87,10 +87,10 @@ class Chef
     end
 
     def users
-      @users ||= query("SELECT * FROM user").inject({}) do |users,user|
+      @users ||= query("SELECT * FROM user").inject({}) do |users, user|
         name = "'#{user[:user]}'@'#{user[:host]}'"
 
-        users[name] = USER_PRIVILEGES.inject({}) do |privileges,privilege|
+        users[name] = USER_PRIVILEGES.inject({}) do |privileges, privilege|
           privileges[privilege] = user["#{privilege}_priv".to_sym] == "Y"
           privileges
         end
@@ -100,7 +100,7 @@ class Chef
     end
 
     def databases
-      @databases ||= query("SHOW databases").inject({}) do |databases,database|
+      @databases ||= query("SHOW databases").inject({}) do |databases, database|
         databases[database[:database]] = {
           :permissions => {}
         }
@@ -111,7 +111,7 @@ class Chef
         if database = @databases[record[:db]]
           user = "'#{record[:user]}'@'#{record[:host]}'"
 
-          database[:permissions][user] = DATABASE_PRIVILEGES.inject([]) do |privileges,privilege|
+          database[:permissions][user] = DATABASE_PRIVILEGES.inject([]) do |privileges, privilege|
             privileges << privilege if record["#{privilege}_priv".to_sym] == "Y"
             privileges
           end

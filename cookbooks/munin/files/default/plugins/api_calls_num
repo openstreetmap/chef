@@ -63,7 +63,7 @@ else
   min_time, max_time, lines = uris_from_logs
   delta_t = (max_time - min_time).to_f * 24 * 60
   counts = lines.
-      collect {|x| categorise_uri(x)}.
+      collect { |x| categorise_uri(x) }.
       inject(Hash.new) do |h, e|
     if h.has_key? e
       h[e] += 1

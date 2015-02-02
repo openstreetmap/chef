@@ -7,7 +7,7 @@ default_attributes(
       :bretth => {
         :status => :user,
         :shell => "/usr/bin/git-shell"
-      },
+      }
     }
   },
   :apache => {
@@ -19,7 +19,7 @@ default_attributes(
   :hardware => {
     :modules => [
       "it87"
-    ],
+    ]
   },
   :networking => {
     :interfaces => {
@@ -38,7 +38,7 @@ default_attributes(
         :address => "2001:41c9:1:400::32",
         :prefix => "64",
         :gateway => "fe80::1"
-      },
+      }
     }
   },
   :openvpn => {

@@ -4,7 +4,7 @@ class Chef
       sensors ||= {}
       results = []
 
-      sensors.sort.each do |sensor,attributes|
+      sensors.sort.each do |sensor, attributes|
         if attributes[:ignore]
           results << "ignore #{sensor}"
         else

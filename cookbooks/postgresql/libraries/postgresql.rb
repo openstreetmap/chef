@@ -57,13 +57,13 @@ class Chef
       # Extract the record data
       lines.collect do |line|
         record = {}
-        fields.zip(line.split("|")) { |name,value| record[name.to_sym] = value }
+        fields.zip(line.split("|")) { |name, value| record[name.to_sym] = value }
         record
       end
     end
 
     def users
-      @users ||= query("SELECT * FROM pg_user").inject({}) do |users,user|
+      @users ||= query("SELECT * FROM pg_user").inject({}) do |users, user|
         users[user[:usename]] = {
           :superuser => user[:usesuper] == "t",
           :createdb => user[:usercreatedb] == "t",
@@ -75,7 +75,7 @@ class Chef
     end
 
     def databases
-      @databases ||= query("SELECT d.datname, u.usename, d.encoding, d.datcollate, d.datctype FROM pg_database AS d INNER JOIN pg_user AS u ON d.datdba = u.usesysid").inject({}) do |databases,database|
+      @databases ||= query("SELECT d.datname, u.usename, d.encoding, d.datcollate, d.datctype FROM pg_database AS d INNER JOIN pg_user AS u ON d.datdba = u.usesysid").inject({}) do |databases, database|
         databases[database[:datname]] = {
           :owner => database[:usename],
           :encoding => database[:encoding],
@@ -88,7 +88,7 @@ class Chef
 
     def extensions(database)
       @extensions ||= {}
-      @extensions[database] ||= query("SELECT extname, extversion FROM pg_extension", :database => database).inject({}) do |extensions,extension|
+      @extensions[database] ||= query("SELECT extname, extversion FROM pg_extension", :database => database).inject({}) do |extensions, extension|
         extensions[extension[:extname]] = {
           :version => extension[:extversion]
         }
@@ -98,7 +98,7 @@ class Chef
 
     def tables(database)
       @tables ||= {}
-      @tables[database] ||= query("SELECT n.nspname, c.relname, u.usename, c.relacl FROM pg_class AS c INNER JOIN pg_user AS u ON c.relowner = u.usesysid INNER JOIN pg_namespace AS n ON c.relnamespace = n.oid", :database => database).inject({}) do |tables,table|
+      @tables[database] ||= query("SELECT n.nspname, c.relname, u.usename, c.relacl FROM pg_class AS c INNER JOIN pg_user AS u ON c.relowner = u.usesysid INNER JOIN pg_namespace AS n ON c.relnamespace = n.oid", :database => database).inject({}) do |tables, table|
         name = "#{table[:nspname]}.#{table[:relname]}"
 
         tables[name] = {

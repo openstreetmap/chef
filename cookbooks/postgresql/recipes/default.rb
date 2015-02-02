@@ -98,7 +98,7 @@ package "libdbd-pg-perl"
 
 clusters = node[:postgresql][:clusters] || []
 
-clusters.each do |name,details|
+clusters.each do |name, details|
   suffix = name.tr("/", ":")
 
   munin_plugin "postgres_bgwriter_#{suffix}" do

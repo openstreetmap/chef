@@ -127,7 +127,7 @@ else
   end
 end
 
-disks = node[:block_device].select do |_,attributes|
+disks = node[:block_device].select do |_, attributes|
   [ "ATA", "FUJITSU", "SEAGATE", "DELL", "COMPAQ", "IBM-ESXS" ].include?(attributes[:vendor])
 end
 
@@ -172,7 +172,7 @@ munin_plugin "http_loadtime" do
   action :delete
 end
 
-node[:network][:interfaces].each do |ifname,ifattr|
+node[:network][:interfaces].each do |ifname, ifattr|
   if ifattr[:encapsulation] == "Ethernet" and ifattr[:state] == "up"
     munin_plugin "if_err_#{ifname}" do
       target "if_err_"
@@ -319,7 +319,7 @@ else
   end
 end
 
-node[:block_device].each do |name,attributes|
+node[:block_device].each do |name, attributes|
   if attributes[:vendor] == "ATA"
     munin_plugin "smart_#{name}" do
       target "smart_"

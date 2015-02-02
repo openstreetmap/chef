@@ -51,7 +51,7 @@ action :create do
       end
     end
 
-    new_resource.permissions.each do |user,new_privileges|
+    new_resource.permissions.each do |user, new_privileges|
       current_privileges = @current_resource.permissions[user] || {}
       new_privileges = Array(new_privileges)
 

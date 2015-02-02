@@ -57,7 +57,7 @@ define :mediawiki_site, :action => [ :create, :enable ] do
     :private_accounts  => params[:private_accounts] || FALSE,
     :private           => params[:private] || FALSE,
     :recaptcha_public  => params[:recaptcha_public_key],
-    :recaptcha_private => params[:recaptcha_private_key],
+    :recaptcha_private => params[:recaptcha_private_key]
   }
 
 #----------------
@@ -81,7 +81,7 @@ define :mediawiki_site, :action => [ :create, :enable ] do
   ruby_block "rename-installer-localsettings" do
     action :nothing
     block do
-      ::File.rename("#{mediawiki[:directory]}/LocalSettings.php","#{mediawiki[:directory]}/LocalSettings-install.php")
+      ::File.rename("#{mediawiki[:directory]}/LocalSettings.php", "#{mediawiki[:directory]}/LocalSettings-install.php")
     end
   end
 

@@ -61,7 +61,7 @@ default_attributes(
         "Search_Data" => "ssd",
         "Search_Index" => "ssd",
         "Aux_Data" => "data",
-        "Aux_Index" => "ssd",
+        "Aux_Index" => "ssd"
     }
   }
 )

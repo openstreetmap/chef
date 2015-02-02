@@ -8,7 +8,7 @@ default_attributes(
     }
   },
   :apache => {
-    :mpm => "prefork",
+    :mpm => "prefork"
   }
 )
 
