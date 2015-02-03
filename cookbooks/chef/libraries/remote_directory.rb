@@ -11,15 +11,16 @@ class Chef
           files_transferred << ::File.dirname(::File.join(@new_resource.path, cookbook_file_relative_path))
           files_transferred << ::File.join(@new_resource.path, cookbook_file_relative_path)
         end
-        if @new_resource.purge
-          files_to_purge = Set.new(
-                                   Dir.glob(::File.join(@new_resource.path, '**', '*'), ::File::FNM_DOTMATCH).select do |name|
-                                     name !~ /(?:^|#{Regexp.escape(::File::SEPARATOR)})\.\.?$/
-                                   end
-                                   )
-          files_to_purge = files_to_purge - files_transferred
-          purge_unmanaged_files(files_to_purge)
-        end
+
+        return unless @new_resource.purge
+
+        files_to_purge = Set.new(
+          Dir.glob(::File.join(@new_resource.path, '**', '*'), ::File::FNM_DOTMATCH).select do |name|
+            name !~ /(?:^|#{Regexp.escape(::File::SEPARATOR)})\.\.?$/
+          end
+        )
+        files_to_purge = files_to_purge - files_transferred
+        purge_unmanaged_files(files_to_purge)
       end
     end
   end

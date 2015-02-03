@@ -46,18 +46,9 @@ Style/AccessModifierIndentation:
 Style/Documentation:
   Enabled: false
 
-# Offense count: 2
-Style/EmptyElse:
-  Enabled: false
-
 # Offense count: 32
 # Configuration parameters: Exclude.
 Style/FileName:
-  Enabled: false
-
-# Offense count: 1
-# Configuration parameters: MinBodyLength.
-Style/GuardClause:
   Enabled: false
 
 # Offense count: 3116

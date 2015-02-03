@@ -79,8 +79,6 @@ def target_path
     "/usr/local/share/munin/plugins/#{target}"
   when ::File.exist?("/usr/share/munin/plugins/#{target}")
     "/usr/share/munin/plugins/#{target}"
-  else
-    nil
   end
 end
 
