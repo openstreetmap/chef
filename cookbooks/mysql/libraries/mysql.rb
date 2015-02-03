@@ -87,17 +87,17 @@ class Chef
     end
 
     def users
-      @users ||= query("SELECT * FROM user").each_with_object({}) do |users, user|
+      @users ||= query("SELECT * FROM user").each_with_object({}) do |user, users|
         name = "'#{user[:user]}'@'#{user[:host]}'"
 
-        users[name] = USER_PRIVILEGES.each_with_object({}) do |privileges, privilege|
+        users[name] = USER_PRIVILEGES.each_with_object({}) do |privilege, privileges|
           privileges[privilege] = user["#{privilege}_priv".to_sym] == "Y"
         end
       end
     end
 
     def databases
-      @databases ||= query("SHOW databases").each_with_object({}) do |databases, database|
+      @databases ||= query("SHOW databases").each_with_object({}) do |database, databases|
         databases[database[:database]] = {
           :permissions => {}
         }
@@ -107,7 +107,7 @@ class Chef
         if database = @databases[record[:db]]
           user = "'#{record[:user]}'@'#{record[:host]}'"
 
-          database[:permissions][user] = DATABASE_PRIVILEGES.each_with_object([]) do |privileges, privilege|
+          database[:permissions][user] = DATABASE_PRIVILEGES.each_with_object([]) do |privilege, privileges|
             privileges << privilege if record["#{privilege}_priv".to_sym] == "Y"
           end
         end

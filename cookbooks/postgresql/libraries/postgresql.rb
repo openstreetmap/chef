@@ -63,7 +63,7 @@ class Chef
     end
 
     def users
-      @users ||= query("SELECT * FROM pg_user").each_with_oject({}) do |users, user|
+      @users ||= query("SELECT * FROM pg_user").each_with_object({}) do |user, users|
         users[user[:usename]] = {
           :superuser => user[:usesuper] == "t",
           :createdb => user[:usercreatedb] == "t",
@@ -74,7 +74,7 @@ class Chef
     end
 
     def databases
-      @databases ||= query("SELECT d.datname, u.usename, d.encoding, d.datcollate, d.datctype FROM pg_database AS d INNER JOIN pg_user AS u ON d.datdba = u.usesysid").each_with_object({}) do |databases, database|
+      @databases ||= query("SELECT d.datname, u.usename, d.encoding, d.datcollate, d.datctype FROM pg_database AS d INNER JOIN pg_user AS u ON d.datdba = u.usesysid").each_with_object({}) do |database, databases|
         databases[database[:datname]] = {
           :owner => database[:usename],
           :encoding => database[:encoding],
@@ -86,7 +86,7 @@ class Chef
 
     def extensions(database)
       @extensions ||= {}
-      @extensions[database] ||= query("SELECT extname, extversion FROM pg_extension", :database => database).each_with_object({}) do |extensions, extension|
+      @extensions[database] ||= query("SELECT extname, extversion FROM pg_extension", :database => database).each_with_object({}) do |extension, extensions|
         extensions[extension[:extname]] = {
           :version => extension[:extversion]
         }
@@ -95,7 +95,7 @@ class Chef
 
     def tables(database)
       @tables ||= {}
-      @tables[database] ||= query("SELECT n.nspname, c.relname, u.usename, c.relacl FROM pg_class AS c INNER JOIN pg_user AS u ON c.relowner = u.usesysid INNER JOIN pg_namespace AS n ON c.relnamespace = n.oid", :database => database).each_with_object({}) do |tables, table|
+      @tables[database] ||= query("SELECT n.nspname, c.relname, u.usename, c.relacl FROM pg_class AS c INNER JOIN pg_user AS u ON c.relowner = u.usesysid INNER JOIN pg_namespace AS n ON c.relnamespace = n.oid", :database => database).each_with_object({}) do |table, tables|
         name = "#{table[:nspname]}.#{table[:relname]}"
 
         tables[name] = {
@@ -108,7 +108,7 @@ class Chef
   private
 
     def parse_acl(acl)
-      acl.sub(/^\{(.*)\}$/, "\\1").split(",").each_with_object({}) do |permissions, entry|
+      acl.sub(/^\{(.*)\}$/, "\\1").split(",").each_with_object({}) do |entry, permissions|
         entry = entry.sub(/^"(.*)"$/) { Regexp.last_match[1].gsub(/\\"/, '"') }.sub(/\/.*$/, "")
         user, privileges = entry.split("=")
 
