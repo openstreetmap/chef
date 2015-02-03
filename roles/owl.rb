@@ -8,12 +8,12 @@ default_attributes(
       :ppawel => { :status => :user },
       :owl => {
         :status => :role,
-        :members => [ :yellowbkpk, :ppawel ]
+        :members => [:yellowbkpk, :ppawel]
       }
     },
     :groups => {
       :adm => {
-        :members => [ :yellowbkpk, :ppawel ]
+        :members => [:yellowbkpk, :ppawel]
       }
     }
   },
@@ -21,10 +21,10 @@ default_attributes(
     :mpm => "event"
   },
   :apt => {
-    :sources => [ "brightbox-ruby-ng", "ubuntugis-stable", "ubuntugis-unstable" ]
+    :sources => ["brightbox-ruby-ng", "ubuntugis-stable", "ubuntugis-unstable"]
   },
   :postgresql => {
-    :versions => [ "9.1" ],
+    :versions => ["9.1"],
     :settings => {
       :defaults => {
         :fsync => "off",

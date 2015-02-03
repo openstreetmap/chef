@@ -8,7 +8,7 @@ default_attributes(
     }
   },
   :networking => {
-    :nameservers => [ "8.8.8.8", "8.8.4.4" ],
+    :nameservers => ["8.8.8.8", "8.8.4.4"],
     :roles => {
       :external => {
         :zone => "bx"

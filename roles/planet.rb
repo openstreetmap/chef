@@ -7,7 +7,7 @@ default_attributes(
       :bretth => { :status => :user },
       :planet => {
         :status => :administrator,
-        :members => [ :bretth ]
+        :members => [:bretth]
       }
     }
   },
@@ -22,12 +22,12 @@ default_attributes(
         :uid => "nobody",
         :gid => "nogroup",
         :transfer_logging => false,
-        :exclude => [ ".*" ],
+        :exclude => [".*"],
         :max_connections => 10,
         :ignore_errors => true,
         :ignore_nonreadable => true,
         :timeout => 3600,
-        :refuse_options => [ "checksum" ]
+        :refuse_options => ["checksum"]
       }
     }
   },

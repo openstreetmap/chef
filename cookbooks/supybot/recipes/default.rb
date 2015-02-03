@@ -131,7 +131,7 @@ template "/etc/init.d/supybot" do
 end
 
 service "supybot" do
-  action [ :enable, :start ]
+  action [:enable, :start]
   supports :restart => true
   subscribes :restart, "template[/etc/supybot/supybot.conf]"
   subscribes :restart, "template[/etc/supybot/channels.conf]"

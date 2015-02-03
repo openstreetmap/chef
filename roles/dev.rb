@@ -68,19 +68,19 @@ default_attributes(
       :mhohmann => { :status => :user },
       :ooc => {
         :status => :role,
-        :members => [ :tomh, :blackadder, :timsc, :ollie ]
+        :members => [:tomh, :blackadder, :timsc, :ollie]
       },
       :apis => {
         :status => :role,
-        :members => [ :tomh ]
+        :members => [:tomh]
       },
       :os => {
         :status => :role,
-        :members => [ :tomh, :grant, :ollie ]
+        :members => [:tomh, :grant, :ollie]
       },
       :gpsmid => {
         :status => :role,
-        :members => [ :apmon, :maba ]
+        :members => [:apmon, :maba]
       }
     }
   },
@@ -99,7 +99,7 @@ default_attributes(
       :master => {
         :repository => "git://git.openstreetmap.org/rails.git",
         :revision => "master",
-        :aliases => [ "api06.dev.openstreetmap.org" ]
+        :aliases => ["api06.dev.openstreetmap.org"]
       },
       :routing => {
         :repository => "git://github.com/apmon/openstreetmap-website.git",
@@ -132,7 +132,7 @@ default_attributes(
     }
   },
   :postgresql => {
-    :versions => [ "9.1", "9.3" ],
+    :versions => ["9.1", "9.3"],
     :settings => {
       :defaults => {
         :shared_buffers => "1GB",

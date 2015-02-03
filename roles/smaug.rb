@@ -8,7 +8,7 @@ default_attributes(
     }
   },
   :apt => {
-    :sources => [ "brightbox-ruby-ng" ]
+    :sources => ["brightbox-ruby-ng"]
   },
   :db => {
     :cluster => "9.1/main"

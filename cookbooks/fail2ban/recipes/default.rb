@@ -28,7 +28,7 @@ template "/etc/fail2ban/jail.local" do
 end
 
 service "fail2ban" do
-  action [ :enable, :start ]
+  action [:enable, :start]
   supports :status => true, :reload => true, :restart => true
   subscribes :reload, "template[/etc/fail2ban/jail.local]"
 end

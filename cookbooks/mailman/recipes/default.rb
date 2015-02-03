@@ -22,7 +22,7 @@ include_recipe "apache::ssl"
 package "mailman"
 
 service "mailman" do
-  action [ :enable, :start ]
+  action [:enable, :start]
   supports :restart => true, :reload => true
 end
 

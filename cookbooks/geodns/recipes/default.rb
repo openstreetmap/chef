@@ -22,7 +22,7 @@ package "geoip-database-contrib"
 package "gdnsd"
 
 service "gdnsd" do
-  action [ :enable, :start ]
+  action [:enable, :start]
   supports :status => true, :restart => true, :reload => true
 end
 

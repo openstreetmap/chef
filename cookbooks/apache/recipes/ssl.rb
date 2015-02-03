@@ -19,7 +19,7 @@
 
 certificate = node[:apache][:ssl][:certificate]
 
-node.default[:ssl][:certificates] = node[:ssl][:certificates] | [ certificate ]
+node.default[:ssl][:certificates] = node[:ssl][:certificates] | [certificate]
 
 include_recipe "apache"
 include_recipe "ssl"

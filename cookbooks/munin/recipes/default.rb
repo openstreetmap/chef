@@ -25,7 +25,7 @@ service "munin-node" do
   if node[:lsb][:release].to_f >= 14.04
     provider Chef::Provider::Service::Upstart
   end
-  action [ :enable, :start ]
+  action [:enable, :start]
   supports :status => true, :restart => true, :reload => true
 end
 
@@ -128,7 +128,7 @@ else
 end
 
 disks = node[:block_device].select do |_, attributes|
-  [ "ATA", "FUJITSU", "SEAGATE", "DELL", "COMPAQ", "IBM-ESXS" ].include?(attributes[:vendor])
+  ["ATA", "FUJITSU", "SEAGATE", "DELL", "COMPAQ", "IBM-ESXS"].include?(attributes[:vendor])
 end
 
 if disks.empty?

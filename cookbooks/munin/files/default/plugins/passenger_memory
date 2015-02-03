@@ -16,7 +16,7 @@ end
 
 def output_values
   status = `/usr/sbin/passenger-memory-stats | tail -1`
-  unless $?.success?
+  unless $CHILD_STATUS.success?
     $stderr.puts "failed executing passenger-memory-stats"
     exit 1
   end

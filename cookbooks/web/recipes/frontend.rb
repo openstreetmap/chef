@@ -33,7 +33,7 @@ apache_module "lbmethod_bybusyness"
 apache_module "rewrite"
 
 apache_site "default" do
-  action [ :disable ]
+  action [:disable]
 end
 
 apache_site "www.openstreetmap.org" do

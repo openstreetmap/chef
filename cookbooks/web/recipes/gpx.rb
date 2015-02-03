@@ -73,7 +73,7 @@ if %w(database_offline database_readonly gpx_offline).include?(node[:web][:statu
   end
 else
   service "gpx-import" do
-    action [ :enable, :start ]
+    action [:enable, :start]
     supports :restart => true, :reload => true
     subscribes :restart, "execute[gpx-import-build]"
     subscribes :restart, "template[/etc/init.d/gpx-import]"

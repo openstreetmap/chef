@@ -85,7 +85,7 @@ end
 
 service "chef-server-runsvdir" do
   provider Chef::Provider::Service::Upstart
-  action [ :enable, :start ]
+  action [:enable, :start]
   supports :status => true, :restart => true, :reload => true
 end
 

@@ -21,11 +21,11 @@ package "clamav-daemon"
 package "clamav-freshclam"
 
 service "clamav-daemon" do
-  action [ :enable, :start ]
+  action [:enable, :start]
   supports :status => true, :restart => true
 end
 
 service "clamav-freshclam" do
-  action [ :enable, :start ]
+  action [:enable, :start]
   supports :status => true, :restart => true
 end

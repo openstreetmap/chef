@@ -6,7 +6,7 @@ default_attributes(
     :users => {
       :rails => {
         :status => :role,
-        :members => [ :tomh, :grant ]
+        :members => [:tomh, :grant]
       }
     }
   },
@@ -34,7 +34,7 @@ default_attributes(
     "/store/rails" => { :host => "ironbelly", :path => "/store/rails" }
   },
   :postgresql => {
-    :versions => [ "9.1" ],
+    :versions => ["9.1"],
     :settings => {
       :defaults => {
         :listen_addresses => "*",

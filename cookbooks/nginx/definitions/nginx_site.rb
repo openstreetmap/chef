@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-define :nginx_site, :action => [ :create ], :variables => {} do
+define :nginx_site, :action => [:create], :variables => {} do
   name = params[:name]
   directory = params[:directory] || "/var/www/#{name}"
   site_action = params[:action]

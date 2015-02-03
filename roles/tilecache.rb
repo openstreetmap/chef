@@ -3,7 +3,7 @@ description "Role applied to all tile cache servers"
 
 default_attributes(
   :apt => {
-    :sources => [ "nginx" ]
+    :sources => ["nginx"]
   },
   :sysctl => {
     :network_conntrack_time_wait => {

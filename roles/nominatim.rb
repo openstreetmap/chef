@@ -8,7 +8,7 @@ default_attributes(
       :twain => { :status => :administrator },
       :nominatim => {
         :status => :role,
-        :members => [ :lonvia, :tomh, :twain ]
+        :members => [:lonvia, :tomh, :twain]
       }
     }
   },

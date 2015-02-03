@@ -44,7 +44,7 @@ postgis_version = node[:nominatim][:database][:postgis]
 
 service "php5-fpm" do
   provider Chef::Provider::Service::Upstart
-  action [ :enable, :start ]
+  action [:enable, :start]
   supports :status => true, :restart => true, :reload => true
 end
 
@@ -55,7 +55,7 @@ apache_site "nominatim.openstreetmap.org" do
 end
 
 apache_site "default" do
-  action [ :disable ]
+  action [:disable]
 end
 
 node[:nominatim][:fpm_pools].each do |name, data|
@@ -162,9 +162,9 @@ end
 
 template "#{source_directory}/.git/hooks/post-merge" do
   source "update_source.erb"
-  owner  "nominatim"
-  group  "nominatim"
-  mode   0755
+  owner "nominatim"
+  group "nominatim"
+  mode 0755
   variables :source_directory => source_directory
 end
 
@@ -215,16 +215,16 @@ end
 
 template "#{source_directory}/utils/nominatim-update" do
   source "updater.erb"
-  user   "nominatim"
-  group  "nominatim"
-  mode   0755
+  user "nominatim"
+  group "nominatim"
+  mode 0755
 end
 
 template "/etc/init.d/nominatim-update" do
   source "updater.init.erb"
-  user   "nominatim"
-  group  "nominatim"
-  mode   0755
+  user "nominatim"
+  group "nominatim"
+  mode 0755
   variables :source_directory => source_directory
 end
 
@@ -251,25 +251,25 @@ end
 remote_file "#{source_directory}/data/wikipedia_article.sql.bin" do
   action :create_if_missing
   source "http://www.nominatim.org/data/wikipedia_article.sql.bin"
-  owner  "nominatim"
-  group  "nominatim"
-  mode   0644
+  owner "nominatim"
+  group "nominatim"
+  mode 0644
 end
 
 remote_file "#{source_directory}/data/wikipedia_redirect.sql.bin" do
   action :create_if_missing
   source "http://www.nominatim.org/data/wikipedia_redirect.sql.bin"
-  owner  "nominatim"
-  group  "nominatim"
-  mode   0644
+  owner "nominatim"
+  group "nominatim"
+  mode 0644
 end
 
 remote_file "#{source_directory}/data/gb_postcode_data.sql.gz" do
   action :create_if_missing
   source "http://www.nominatim.org/data/gb_postcode_data.sql.gz"
-  owner  "nominatim"
-  group  "nominatim"
-  mode   0644
+  owner "nominatim"
+  group "nominatim"
+  mode 0644
 end
 
 template "/usr/local/bin/backup-nominatim" do

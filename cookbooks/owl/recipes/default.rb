@@ -130,5 +130,5 @@ end
 
 apache_site "owl.openstreetmap.org" do
   template "apache.erb"
-  variables :aliases => [ "owl.osm.org" ]
+  variables :aliases => ["owl.osm.org"]
 end

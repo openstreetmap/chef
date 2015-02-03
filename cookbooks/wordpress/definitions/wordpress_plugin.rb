@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-define :wordpress_plugin, :action => [ :enable ] do
+define :wordpress_plugin, :action => [:enable] do
   name = params[:name]
   site = params[:site]
   site_directory = node[:wordpress][:sites][site][:directory]

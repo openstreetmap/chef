@@ -9,7 +9,7 @@ default_attributes(
     }
   },
   :exim => {
-    :relay_from_hosts => [ "10.0.0.0/8"]
+    :relay_from_hosts => ["10.0.0.0/8"]
   }
 )
 

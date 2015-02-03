@@ -32,7 +32,7 @@ template "/etc/dhcp/dhcpd.conf" do
 end
 
 service "isc-dhcp-server" do
-  action [ :enable, :start ]
+  action [:enable, :start]
   supports :status => true, :restart => true
   subscribes :restart, "template[/etc/dhcp/dhcpd.conf]"
 end

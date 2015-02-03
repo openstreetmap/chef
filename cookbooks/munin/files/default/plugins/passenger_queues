@@ -13,7 +13,7 @@ end
 
 def output_values
   status = `/usr/sbin/passenger-status`
-  unless $?.success?
+  unless $CHILD_STATUS.success?
     $stderr.puts "failed executing passenger-status"
     exit 1
   end

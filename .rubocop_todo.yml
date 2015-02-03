@@ -101,21 +101,6 @@ Style/RegexpLiteral:
 Style/SelfAssignment:
   Enabled: false
 
-# Offense count: 27
-# Cop supports --auto-correct.
-Style/SingleSpaceBeforeFirstArg:
-  Enabled: false
-
-# Offense count: 410
-# Cop supports --auto-correct.
-Style/SpaceInsideBrackets:
-  Enabled: false
-
-# Offense count: 6
-# Cop supports --auto-correct.
-Style/SpecialGlobalVars:
-  Enabled: false
-
 # Offense count: 6548
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles.

@@ -20,6 +20,6 @@
 package "xinetd"
 
 service "xinetd" do
-  action [ :enable, :start ]
+  action [:enable, :start]
   supports :status => true, :reload => true, :restart => true
 end

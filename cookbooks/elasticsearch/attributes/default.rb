@@ -1,1 +1,1 @@
-default[:apt][:sources] |= [ "elasticsearch" ]
+default[:apt][:sources] |= ["elasticsearch"]

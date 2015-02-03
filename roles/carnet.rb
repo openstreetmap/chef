@@ -9,7 +9,7 @@ default_attributes(
     }
   },
   :munin => {
-    :allow => [ "193.198.233.210" ]
+    :allow => ["193.198.233.210"]
   },
   :networking => {
     :nameservers => [
@@ -28,7 +28,7 @@ default_attributes(
 
 override_attributes(
   :ntp => {
-    :servers => [ "0.hr.pool.ntp.org", "1.hr.pool.ntp.org", "europe.pool.ntp.org" ]
+    :servers => ["0.hr.pool.ntp.org", "1.hr.pool.ntp.org", "europe.pool.ntp.org"]
   }
 )
 

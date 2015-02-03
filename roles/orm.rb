@@ -43,7 +43,7 @@ default_attributes(
     }
   },
   :postgresql => {
-    :versions => [ "9.1" ],
+    :versions => ["9.1"],
     :settings => {
       :defaults => {
         :shared_buffers => "8GB",
@@ -76,7 +76,7 @@ default_attributes(
 
 override_attributes(
   :networking => {
-    :nameservers => [ "8.8.8.8", "8.8.4.4" ]
+    :nameservers => ["8.8.8.8", "8.8.4.4"]
   }
 )
 

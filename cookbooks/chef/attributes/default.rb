@@ -1,5 +1,5 @@
 # Add the opscode APT source for chef
-default[:apt][:sources] = node[:apt][:sources] | [ "opscode" ]
+default[:apt][:sources] = node[:apt][:sources] | ["opscode"]
 
 # Set the default server version
 default[:chef][:server][:version] = "11.1.3-1"

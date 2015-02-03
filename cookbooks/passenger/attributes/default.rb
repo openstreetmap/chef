@@ -1,4 +1,4 @@
-default[:apt][:sources] = node[:apt][:sources] |  [ "brightbox-ruby-ng", "passenger" ]
+default[:apt][:sources] = node[:apt][:sources] |  ["brightbox-ruby-ng", "passenger"]
 
 default[:passenger][:ruby_version] = "1.9.1"
 default[:passenger][:max_pool_size] = 6

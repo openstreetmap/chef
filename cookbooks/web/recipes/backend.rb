@@ -30,7 +30,7 @@ apache_module "proxy"
 apache_module "proxy_fcgi"
 
 apache_site "default" do
-  action [ :disable ]
+  action [:disable]
 end
 
 apache_site "www.openstreetmap.org" do

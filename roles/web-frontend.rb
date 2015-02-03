@@ -21,12 +21,12 @@ default_attributes(
     :rails_hard_memory_limit => 1024
   },
   :exim => {
-    :local_domains => [ "messages.openstreetmap.org" ],
-    :trusted_users => [ "rails" ],
+    :local_domains => ["messages.openstreetmap.org"],
+    :trusted_users => ["rails"],
     :routes => {
       :messages => {
         :comment => "messages.openstreetmap.org",
-        :domains => [ "messages.openstreetmap.org" ],
+        :domains => ["messages.openstreetmap.org"],
         :command => "/srv/www.openstreetmap.org/rails/script/deliver-message $local_part",
         :user => "rails",
         :group => "rails",

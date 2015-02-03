@@ -125,7 +125,7 @@ end
 package "shorewall"
 
 service "shorewall" do
-  action [ :enable, :start ]
+  action [:enable, :start]
   supports :restart => true
   status_command "shorewall status"
 end
@@ -230,7 +230,7 @@ unless node.interfaces(:family => :inet6).empty?
   package "shorewall6"
 
   service "shorewall6" do
-    action [ :enable, :start ]
+    action [:enable, :start]
     supports :restart => true
     status_command "shorewall6 status"
   end

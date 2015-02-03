@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-define :mediawiki_site, :action => [ :create, :enable ] do
+define :mediawiki_site, :action => [:create, :enable] do
   name = params[:name]
 
   # /etc/cron.d names cannot contain a dot

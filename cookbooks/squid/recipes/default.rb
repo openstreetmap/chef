@@ -42,7 +42,7 @@ end
 
 service "squid" do
   provider Chef::Provider::Service::Upstart
-  action [ :enable, :start ]
+  action [:enable, :start]
   supports :status => true, :restart => true, :reload => true
   subscribes :reload, "template[/etc/squid/squid.conf]"
   subscribes :restart, "template[/etc/default/squid]"

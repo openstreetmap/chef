@@ -6,7 +6,7 @@ default_attributes(
     :users => {
       :rails => {
         :status => :role,
-        :members => [ :tomh, :grant ]
+        :members => [:tomh, :grant]
       }
     }
   },

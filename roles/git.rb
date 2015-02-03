@@ -18,7 +18,7 @@ default_attributes(
       },
       :git => {
         :status => :role,
-        :members => [ :tomh, :grant, :matt, :lonvia, :yellowbkpk, :translatewiki ]
+        :members => [:tomh, :grant, :matt, :lonvia, :yellowbkpk, :translatewiki]
       }
     }
   },

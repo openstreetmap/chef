@@ -36,7 +36,7 @@ directory "/var/lib/munin/rrdcached" do
 end
 
 service "rrdcached" do
-  action [ :enable, :start ]
+  action [:enable, :start]
   subscribes :restart, "template[/etc/default/rrdcached]"
 end
 

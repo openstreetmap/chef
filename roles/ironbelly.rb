@@ -3,7 +3,7 @@ description "Master role applied to ironbelly"
 
 default_attributes(
   :apt => {
-    :sources => [ "ubuntugis-unstable" ]
+    :sources => ["ubuntugis-unstable"]
   },
   :git => {
     :allowed_nodes => "*:*",

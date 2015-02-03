@@ -111,7 +111,7 @@ unless unit.nil?
 
   service "ttyS#{unit}" do
     provider Chef::Provider::Service::Upstart
-    action [ :enable, :start ]
+    action [:enable, :start]
     supports :status => true, :restart => true, :reload => false
     subscribes :restart, "template[/etc/init/ttyS#{unit}.conf]"
   end
@@ -168,7 +168,7 @@ if node[:lsb][:release].to_f >= 12.10
   end
 
   service "irqbalance" do
-    action [ :start, :enable ]
+    action [:start, :enable]
     supports :status => false, :restart => true, :reload => false
     subscribes :restart, "template[/etc/default/irqbalance]"
   end
@@ -206,10 +206,10 @@ end
 node[:block_device].each do |name, attributes|
   if attributes[:vendor] == "HP" && attributes[:model] == "LOGICAL VOLUME"
     if name =~ /^cciss!(c[0-9]+)d[0-9]+$/
-      status_packages["cciss-vol-status"] |= [ "cciss/#{Regexp.last_match[1]}d0" ]
+      status_packages["cciss-vol-status"] |= ["cciss/#{Regexp.last_match[1]}d0"]
     else
       Dir.glob("/sys/block/#{name}/device/scsi_generic/*").each do |sg|
-        status_packages["cciss-vol-status"] |= [ File.basename(sg) ]
+        status_packages["cciss-vol-status"] |= [File.basename(sg)]
       end
     end
   end
@@ -238,7 +238,7 @@ end
     end
 
     service "#{status_package}d" do
-      action [ :start, :enable ]
+      action [:start, :enable]
       supports :status => false, :restart => true, :reload => false
       subscribes :restart, "template[/etc/default/#{status_package}d]"
     end
@@ -306,7 +306,7 @@ if node[:hardware][:watchdog]
   end
 
   service "watchdog" do
-    action [ :enable, :start ]
+    action [:enable, :start]
   end
 end
 

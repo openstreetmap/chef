@@ -19,7 +19,7 @@ default_attributes(
         :category => "Ups",
         :values => {
           :load => {
-            :sum => [ "apcpdu_apc1.load", "apcpdu_apc2.load", "apcpdu_apc3.load" ],
+            :sum => ["apcpdu_apc1.load", "apcpdu_apc2.load", "apcpdu_apc3.load"],
             :label => "Load"
           }
         }

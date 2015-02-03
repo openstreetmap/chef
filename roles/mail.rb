@@ -10,29 +10,29 @@ default_attributes(
       "openstreetmap.co.uk",
       "openstreetmap.org.uk"
     ],
-    :daemon_smtp_ports => [ 25, 26 ],
+    :daemon_smtp_ports => [25, 26],
     :smarthost_name => "mail.openstreetmap.org",
     :smarthost_via => false,
-    :dns_blacklists => [ "sbl-xbl.spamhaus.org" ],
+    :dns_blacklists => ["sbl-xbl.spamhaus.org"],
     :routes => {
       :messages => {
         :comment => "messages.openstreetmap.org",
-        :domains => [ "messages.openstreetmap.org" ],
-        :host => [ "spike-01.openstreetmap.org", "spike-02.openstreetmap.org", "spike-03.openstreetmap.org" ]
+        :domains => ["messages.openstreetmap.org"],
+        :host => ["spike-01.openstreetmap.org", "spike-02.openstreetmap.org", "spike-03.openstreetmap.org"]
       },
       :otrs => {
         :comment => "otrs.openstreetmap.org",
-        :domains => [ "otrs.openstreetmap.org" ],
+        :domains => ["otrs.openstreetmap.org"],
         :host => "ridley.ucl.openstreetmap.org"
       },
       :tickets => {
         :comment => "tickets.openstreetmap.org",
-        :domains => [ "tickets.openstreetmap.org" ],
+        :domains => ["tickets.openstreetmap.org"],
         :host => "ridley.ucl.openstreetmap.org"
       },
       :crm => {
         :comment => "crm.osmfoundation.org",
-        :domains => [ "crm.osmfoundation.org" ],
+        :domains => ["crm.osmfoundation.org"],
         :host => "ridley.ucl.openstreetmap.org"
       }
     },

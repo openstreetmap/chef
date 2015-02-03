@@ -41,7 +41,7 @@ end
 package "rsyslog"
 
 service "rsyslog" do
-  action [ :enable, :start ]
+  action [:enable, :start]
   supports :status => true, :restart => true, :reload => true
 end
 

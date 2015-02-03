@@ -15,27 +15,27 @@ attribute "exim",
 attribute "exim/local_domains",
   :display_name => "Domains to Handle Locally",
   :description => "List of domains we are prepared to accept mail for",
-  :default => [ "@" ]
+  :default => ["@"]
 
 attribute "exim/relay_to_domains",
   :display_name => "Domains to Relay To",
   :description => "List of domains we are prepared to relay to",
-  :default => [ ]
+  :default => []
 
 attribute "exim/relay_from_hosts",
   :display_name => "Hosts to Relay From",
   :description => "List of hosts we are prepared to relay from",
-  :default => [ "127.0.0.1", "::1" ]
+  :default => ["127.0.0.1", "::1"]
 
 attribute "exim/daemon_smtp_ports",
   :display_name => "Ports to Listen On",
   :description => "List of ports we will listen on",
-  :default => [ 25 ]
+  :default => [25]
 
 attribute "exim/trusted_users",
   :display_name => "Trusted Users",
   :description => "List of users we will trust",
-  :default => [ ]
+  :default => []
 
 attribute "exim/smarthost_name",
   :display_name => "Smarthost Name",

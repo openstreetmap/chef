@@ -7,7 +7,7 @@ default_attributes(
       :enf => { :status => :administrator },
       :gpstile => {
         :status => :role,
-        :members => [ :enf, :tomh ]
+        :members => [:enf, :tomh]
       }
     }
   },

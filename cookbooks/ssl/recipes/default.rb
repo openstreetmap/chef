@@ -29,7 +29,7 @@ cookbook_file "/etc/ssl/certs/rapidssl.pem" do
   backup false
 end
 
-[ "openstreetmap", "tile.openstreetmap", "crm.osmfoundation" ].each do |certificate|
+["openstreetmap", "tile.openstreetmap", "crm.osmfoundation"].each do |certificate|
   if node[:ssl][:certificates].include?(certificate)
     cookbook_file "/etc/ssl/certs/#{certificate}.pem" do
       owner "root"

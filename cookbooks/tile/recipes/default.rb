@@ -38,7 +38,7 @@ end
 tilecaches = search(:node, "roles:tilecache").sort_by { |n| n[:hostname] }
 
 apache_site "default" do
-  action [ :disable ]
+  action [:disable]
 end
 
 apache_site "tile.openstreetmap.org" do
@@ -62,7 +62,7 @@ end
 package "renderd"
 
 service "renderd" do
-  action [ :enable, :start ]
+  action [:enable, :start]
   supports :status => false, :restart => true, :reload => false
 end
 
@@ -451,7 +451,7 @@ template "/etc/init.d/replicate" do
 end
 
 service "replicate" do
-  action [ :enable, :start ]
+  action [:enable, :start]
   supports :restart => true
   subscribes :restart, "template[/usr/local/bin/replicate]"
   subscribes :restart, "template[/etc/init.d/replicate]"

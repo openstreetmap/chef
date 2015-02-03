@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-define :mediawiki_extension, :action => [ :enable ], :variables => {} do
+define :mediawiki_extension, :action => [:enable], :variables => {} do
   name = params[:name]
   site = params[:site]
   mediawiki_directory = node[:mediawiki][:sites][site][:directory]

@@ -9,7 +9,7 @@ default_attributes(
     }
   },
   :networking => {
-    :nameservers => [ "8.8.8.8", "8.8.4.4" ],
+    :nameservers => ["8.8.8.8", "8.8.4.4"],
     :roles => {
       :external => {
         :zone => "nc"
@@ -20,7 +20,7 @@ default_attributes(
 
 override_attributes(
   :ntp => {
-    :servers => [ "0.tw.pool.ntp.org", "1.tw.pool.ntp.org", "europe.pool.ntp.org" ]
+    :servers => ["0.tw.pool.ntp.org", "1.tw.pool.ntp.org", "europe.pool.ntp.org"]
   }
 )
 

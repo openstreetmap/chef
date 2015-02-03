@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-define :wordpress_site, :action => [ :create, :enable ] do
+define :wordpress_site, :action => [:create, :enable] do
   name = params[:name]
   ssl_enabled = params[:ssl_enabled] || false
   ssl_certificate = params[:ssl_certificate]

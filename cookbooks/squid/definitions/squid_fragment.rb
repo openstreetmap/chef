@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-define :squid_fragment, :action => [ :create ], :variables => {} do
+define :squid_fragment, :action => [:create], :variables => {} do
   name = params[:name]
   site_action = params[:action]
 

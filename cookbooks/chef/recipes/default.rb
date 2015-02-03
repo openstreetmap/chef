@@ -123,7 +123,7 @@ end
 
 service "chef-client" do
   provider Chef::Provider::Service::Upstart
-  action [ :enable, :start ]
+  action [:enable, :start]
   supports :status => true, :restart => true, :reload => true
   subscribes :restart, "dpkg_package[chef]"
   subscribes :restart, "template[/etc/init/chef-client.conf]"

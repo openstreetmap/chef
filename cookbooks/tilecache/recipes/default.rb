@@ -20,7 +20,7 @@
 require "ipaddr"
 
 certificate = node[:tilecache][:ssl][:certificate]
-node.default[:ssl][:certificates] = node[:ssl][:certificates] | [ certificate ]
+node.default[:ssl][:certificates] = node[:ssl][:certificates] | [certificate]
 
 include_recipe "ssl"
 include_recipe "squid"
@@ -80,7 +80,7 @@ template "/etc/logrotate.d/squid" do
 end
 
 nginx_site "default" do
-  action [ :delete ]
+  action [:delete]
 end
 
 resolvers = node[:networking][:nameservers].map do |resolver|

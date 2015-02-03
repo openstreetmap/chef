@@ -21,7 +21,7 @@ package "mysql-server"
 package "mysql-client"
 
 service "mysql" do
-  action [ :enable, :start ]
+  action [:enable, :start]
   supports :status => true, :restart => true, :reload => true
 end
 

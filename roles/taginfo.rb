@@ -9,7 +9,7 @@ default_attributes(
       },
       :taginfo => {
         :status => :role,
-        :members => [ :jochen, :tomh ]
+        :members => [:jochen, :tomh]
       }
     }
   },

@@ -19,7 +19,7 @@
 
 require "yaml"
 
-define :rails_port, :action => [ :create, :enable ] do
+define :rails_port, :action => [:create, :enable] do
   name = params[:name]
   ruby_version = params[:ruby] || "1.9.1"
   rails_directory = params[:directory] || "/srv/#{name}"

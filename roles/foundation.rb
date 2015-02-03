@@ -8,7 +8,7 @@ default_attributes(
     :keepalive => false
   },
   :apt => {
-    :sources => [ "passenger" ]
+    :sources => ["passenger"]
   },
   :memcached => {
     :memory_limit => 400,

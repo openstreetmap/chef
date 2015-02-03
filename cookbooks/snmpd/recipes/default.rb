@@ -24,7 +24,7 @@ communities = data_bag_item("snmpd", "communities")
 package "snmpd"
 
 service "snmpd" do
-  action [ :enable, :start ]
+  action [:enable, :start]
   supports :status => true, :restart => true
 end
 

@@ -30,7 +30,7 @@ package "php-apc"
 apache_module "php5"
 
 apache_site "default" do
-  action [ :disable ]
+  action [:disable]
 end
 
 apache_site "forum.openstreetmap.org" do

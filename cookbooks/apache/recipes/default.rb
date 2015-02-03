@@ -28,11 +28,11 @@ else
   %w(event itk prefork worker).each do |mpm|
     if mpm == node[:apache][:mpm]
       apache_module "mpm_#{mpm}" do
-        action [ :enable ]
+        action [:enable]
       end
     else
       apache_module "mpm_#{mpm}" do
-        action [ :disable ]
+        action [:disable]
       end
     end
   end
@@ -63,7 +63,7 @@ template "/etc/apache2/ports.conf" do
 end
 
 service "apache2" do
-  action [ :enable, :start ]
+  action [:enable, :start]
   supports :status => true, :restart => true, :reload => true
 end
 
@@ -78,7 +78,7 @@ apache_module "status" do
 end
 
 apache_module "reqtimeout" do
-  action [ :disable ]
+  action [:disable]
 end
 
 munin_plugin "apache_accesses"

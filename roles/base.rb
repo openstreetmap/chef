@@ -11,14 +11,14 @@ default_attributes(
     }
   },
   :apt => {
-    :sources => [ "openstreetmap" ]
+    :sources => ["openstreetmap"]
   },
   :networking => {
     :roles => {
       :internal => { :metric => 200, :zone => "loc" },
       :external => { :metric => 100 }
     },
-    :search => [ "openstreetmap.org" ]
+    :search => ["openstreetmap.org"]
   },
   :sysctl => {
     :panic => {

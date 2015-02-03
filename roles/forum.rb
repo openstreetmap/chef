@@ -9,7 +9,7 @@ default_attributes(
       },
       :forum => {
         :status => :role,
-        :members => [ :lambertus, :grant ]
+        :members => [:lambertus, :grant]
       }
     }
   },

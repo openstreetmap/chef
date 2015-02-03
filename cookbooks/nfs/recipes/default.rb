@@ -35,7 +35,7 @@ node[:nfs].each do |mountpoint, details|
   end
 
   mount mountpoint do
-    action [ :mount, :enable ]
+    action [:mount, :enable]
     device "#{details[:host]}:#{details[:path]}"
     fstype "nfs"
     options mount_options

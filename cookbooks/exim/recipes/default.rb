@@ -53,7 +53,7 @@ execute "/etc/ssl/certs/exim.pem" do
 end
 
 service "exim4" do
-  action [ :enable, :start ]
+  action [:enable, :start]
   supports :status => true, :restart => true, :reload => true
   subscribes :restart, "execute[/etc/ssl/certs/exim.pem]"
 end

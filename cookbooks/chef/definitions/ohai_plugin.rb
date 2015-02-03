@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-define :ohai_plugin, :action => [ :create, :delete ] do
+define :ohai_plugin, :action => [:create, :delete] do
   plugin_name = params[:name]
   plugin_action = params[:action]
 

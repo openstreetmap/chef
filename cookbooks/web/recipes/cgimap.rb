@@ -114,7 +114,7 @@ if %w(database_offline api_offline).include?(node[:web][:status])
   end
 else
   service "cgimap" do
-    action [ :enable, :start ]
+    action [:enable, :start]
     supports :restart => true, :reload => true
     subscribes :restart, "execute[cgimap-build]"
     subscribes :restart, "file[/etc/init.d/cgimap]"

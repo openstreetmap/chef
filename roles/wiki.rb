@@ -8,7 +8,7 @@ default_attributes(
     }
   },
   :exim => {
-    :trusted_users => [ "www-data" ],
+    :trusted_users => ["www-data"],
     :aliases => {
       :root => "grant"
     },

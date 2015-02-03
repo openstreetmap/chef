@@ -20,7 +20,7 @@
 package "spamassassin"
 
 service "spamassassin" do
-  action [ :enable, :start ]
+  action [:enable, :start]
   supports :status => true, :restart => true, :reload => true
 end
 
@@ -46,7 +46,7 @@ if node[:exim][:smarthost_name]
   end
 end
 
-trusted_networks = trusted_networks - [ "127.0.0.1", "::1" ]
+trusted_networks = trusted_networks - ["127.0.0.1", "::1"]
 
 template "/etc/spamassassin/local.cf" do
   source "local.cf.erb"

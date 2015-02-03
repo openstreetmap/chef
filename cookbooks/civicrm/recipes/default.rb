@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-node.default[:ssl][:certificates] = node[:ssl][:certificates] | [ "crm.osmfoundation" ]
+node.default[:ssl][:certificates] = node[:ssl][:certificates] | ["crm.osmfoundation"]
 
 include_recipe "wordpress"
 include_recipe "mysql"

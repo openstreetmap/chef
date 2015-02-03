@@ -39,7 +39,7 @@ file "/etc/timezone" do
 end
 
 service "ntp" do
-  action [ :enable, :start ]
+  action [:enable, :start]
   supports :status => true, :restart => true
 end
 

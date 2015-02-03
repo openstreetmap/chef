@@ -22,7 +22,7 @@ include_recipe "networking"
 package "bind9"
 
 service "bind9" do
-  action [ :enable, :start ]
+  action [:enable, :start]
   supports :status => true, :restart => true, :reload => true
 end
 

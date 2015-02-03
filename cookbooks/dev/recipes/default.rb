@@ -66,7 +66,7 @@ end
 
 service "php5-fpm" do
   provider Chef::Provider::Service::Upstart
-  action [ :enable, :start ]
+  action [:enable, :start]
   supports :status => true, :restart => true, :reload => true
 end
 
@@ -182,7 +182,7 @@ if node[:postgresql][:clusters][:"9.1/main"]
       end
     else
       apache_site site_name do
-        action [ :delete ]
+        action [:delete]
       end
 
       directory rails_directory do

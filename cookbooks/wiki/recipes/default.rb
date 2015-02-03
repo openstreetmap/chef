@@ -24,14 +24,14 @@ include_recipe "mediawiki"
 passwords = data_bag_item("wiki", "passwords")
 
 apache_site "default" do
-  action [ :disable ]
+  action [:disable]
 end
 
-mediawiki_site  "wiki.openstreetmap.org" do
-  aliases       "wiki.osm.org", "wiki.openstreetmap.com", "wiki.openstreetmap.net", "wiki.openstreetmap.ca", "wiki.openstreetmap.eu", "wiki.openstreetmap.pro", "wiki.openstreetmaps.org"
-  directory     "/srv/wiki.openstreetmap.org"
+mediawiki_site "wiki.openstreetmap.org" do
+  aliases "wiki.osm.org", "wiki.openstreetmap.com", "wiki.openstreetmap.net", "wiki.openstreetmap.ca", "wiki.openstreetmap.eu", "wiki.openstreetmap.pro", "wiki.openstreetmaps.org"
+  directory "/srv/wiki.openstreetmap.org"
 
-  enable_ssl    TRUE
+  enable_ssl TRUE
 
   database_name "wiki"
   database_username "wiki-user"
@@ -39,10 +39,10 @@ mediawiki_site  "wiki.openstreetmap.org" do
 
   admin_password passwords["admin"]
 
-  logo          "/osm_logo_wiki.png"
+  logo "/osm_logo_wiki.png"
 
   email_contact "webmaster@openstreetmap.org"
-  email_sender  "wiki@openstreetmap.org"
+  email_sender "wiki@openstreetmap.org"
   email_sender_name "OpenStreetMap Wiki"
 
   metanamespace "OpenStreetMap"
@@ -79,7 +79,7 @@ directory "/srv/dump.wiki.openstreetmap.org" do
 end
 
 apache_site "dump.wiki.openstreetmap.org" do
-  template  "apache_wiki_dump.erb"
+  template "apache_wiki_dump.erb"
   directory "/srv/dump.wiki.openstreetmap.org"
   variables :aliases => "dump.wiki.osm.org"
 end

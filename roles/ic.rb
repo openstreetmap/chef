@@ -8,7 +8,7 @@ default_attributes(
     }
   },
   :networking => {
-    :nameservers => [ "146.179.159.177" ],
+    :nameservers => ["146.179.159.177"],
     :roles => {
       :internal => {
         :inet => {
@@ -33,10 +33,10 @@ default_attributes(
 
 override_attributes(
   :networking => {
-    :search => [ "ic.openstreetmap.org", "openstreetmap.org" ]
+    :search => ["ic.openstreetmap.org", "openstreetmap.org"]
   },
   :ntp => {
-    :servers => [ "0.uk.pool.ntp.org", "1.uk.pool.ntp.org", "europe.pool.ntp.org" ]
+    :servers => ["0.uk.pool.ntp.org", "1.uk.pool.ntp.org", "europe.pool.ntp.org"]
   }
 )
 

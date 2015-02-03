@@ -8,12 +8,12 @@ default_attributes(
     }
   },
   :exim => {
-    :local_domains => [ "otrs.openstreetmap.org" ],
+    :local_domains => ["otrs.openstreetmap.org"],
     :routes => {
       :otrs_otrs => {
         :comment => "otrs@otrs.openstreetmap.org",
-        :domains => [ "otrs.openstreetmap.org" ],
-        :local_parts => [ "otrs" ],
+        :domains => ["otrs.openstreetmap.org"],
+        :local_parts => ["otrs"],
         :command => "/opt/otrs/bin/otrs.PostMaster.pl",
         :user => "otrs",
         :group => "www-data",
@@ -21,8 +21,8 @@ default_attributes(
       },
       :otrs_data => {
         :comment => "data@otrs.openstreetmap.org",
-        :domains => [ "otrs.openstreetmap.org" ],
-        :local_parts => [ "data" ],
+        :domains => ["otrs.openstreetmap.org"],
+        :local_parts => ["data"],
         :command => "/opt/otrs/bin/otrs.PostMaster.pl -q 'Data Working Group'",
         :user => "otrs",
         :group => "www-data",
@@ -30,8 +30,8 @@ default_attributes(
       },
       :otrs_support => {
         :comment => "support@otrs.openstreetmap.org",
-        :domains => [ "otrs.openstreetmap.org" ],
-        :local_parts => [ "support" ],
+        :domains => ["otrs.openstreetmap.org"],
+        :local_parts => ["support"],
         :command => "/opt/otrs/bin/otrs.PostMaster.pl -q 'Technical Support'",
         :user => "otrs",
         :group => "www-data",

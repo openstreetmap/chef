@@ -4,7 +4,7 @@ default[:hardware][:sensors] = {}
 if node[:dmi] && node[:dmi][:system]
   case dmi.system.manufacturer
   when "HP"
-    default[:apt][:sources] |= [ "management-component-pack" ]
+    default[:apt][:sources] |= ["management-component-pack"]
 
     case dmi.system.product_name
     when "ProLiant DL360 G6", "ProLiant DL360 G7"
@@ -14,10 +14,10 @@ if node[:dmi] && node[:dmi][:system]
 end
 
 if Chef::Util.compare_versions(node[:kernel][:release], [3, 3]) < 0
-  default[:hardware][:modules] |= [ "microcode" ]
+  default[:hardware][:modules] |= ["microcode"]
 
   if node[:cpu]["0"][:vendor_id] == "GenuineIntel"
-    default[:hardware][:modules] |= [ "coretemp" ]
+    default[:hardware][:modules] |= ["coretemp"]
   end
 end
 
@@ -25,12 +25,12 @@ if node[:kernel] && node[:kernel][:modules]
   raidmods = node[:kernel][:modules].keys & %w(cciss hpsa mptsas mpt2sas megaraid_mm megaraid_sas aacraid)
 
   unless raidmods.empty?
-    default[:apt][:sources] |= [ "hwraid" ]
+    default[:apt][:sources] |= ["hwraid"]
   end
 end
 
 if node[:kernel][:modules].include?("ipmi_si")
-  default[:hardware][:modules] |= [ "ipmi_devintf" ]
+  default[:hardware][:modules] |= ["ipmi_devintf"]
 end
 
 if File.exist?("/proc/xen")

@@ -6,7 +6,7 @@ default_attributes(
     :users => {
       :tile => {
         :status => :role,
-        :members => [ :jburgess, :tomh ]
+        :members => [:jburgess, :tomh]
       }
     }
   },
@@ -23,10 +23,10 @@ default_attributes(
     }
   },
   :apt => {
-    :sources => [ "ubuntugis-stable" ]
+    :sources => ["ubuntugis-stable"]
   },
   :postgresql => {
-    :versions => [ "9.1" ],
+    :versions => ["9.1"],
     :settings => {
       :defaults => {
         :temp_buffers => "32MB",

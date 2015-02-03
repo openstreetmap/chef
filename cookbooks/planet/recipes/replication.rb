@@ -165,7 +165,7 @@ directory "/var/log/replication" do
   mode 0755
 end
 
-[ "streaming-replicator", "streaming-server" ].each do |name|
+["streaming-replicator", "streaming-server"].each do |name|
   template "/etc/init.d/#{name}" do
     source "streaming.init.erb"
     owner "root"
@@ -175,7 +175,7 @@ end
   end
 
   service name do
-    action [ :enable, :start ]
+    action [:enable, :start]
     supports :restart => true, :status => true
     subscribes :restart, "template[/etc/init.d/#{name}]"
   end

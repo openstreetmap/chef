@@ -43,7 +43,7 @@ def categorise_uri(line)
   end
 end
 
-server = $0.match("api_waits_(.*)")[1]
+server = $PROGRAM_NAME.match("api_waits_(.*)")[1]
 
 if ARGV[0] == 'config'
   puts "graph_title Wait times for active requests"

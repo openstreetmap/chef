@@ -27,20 +27,20 @@ service "ssh" do
   if node[:lsb][:release].to_f >= 14.04
     provider Chef::Provider::Service::Upstart
   end
-  action [ :enable, :start ]
+  action [:enable, :start]
   supports :status => true, :restart => true, :reload => true
 end
 
 hosts = search(:node, "networking:interfaces").sort_by { |n| n[:hostname] }.collect do |node|
-  names = [ node[:hostname] ]
+  names = [node[:hostname]]
 
   node.interfaces(:role => :external).each do |interface|
-    names |= [ "#{node[:hostname]}.openstreetmap.org" ]
-    names |= [ "#{node[:hostname]}.#{interface[:zone]}.openstreetmap.org" ]
+    names |= ["#{node[:hostname]}.openstreetmap.org"]
+    names |= ["#{node[:hostname]}.#{interface[:zone]}.openstreetmap.org"]
   end
 
   unless node.interfaces(:role => :internal).empty?
-    names |= [ "#{node[:hostname]}.#{node[:networking][:roles][:external][:zone]}.openstreetmap.org" ]
+    names |= ["#{node[:hostname]}.#{node[:networking][:roles][:external][:zone]}.openstreetmap.org"]
   end
 
   keys = {
