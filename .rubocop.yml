@@ -1,5 +1,9 @@
 inherit_from: .rubocop_todo.yml
 
+Style/AlignParameters:
+  Exclude:
+    - '**/metadata.rb'
+
 Style/SingleSpaceBeforeFirstArg:
   Exclude:
     - '**/metadata.rb'
