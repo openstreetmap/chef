@@ -1,0 +1,24 @@
+#!/usr/bin/ruby
+
+ok = true
+
+if IO.popen(["git", "ls-files", "--unmerged"]).read.empty?
+  need_stash = IO.popen(%w(git diff)).read.length > 0
+
+  system("git", "stash", "save", "--keep-index", "--quiet") if need_stash
+
+  files = IO.popen(["git", "diff", "--staged", "--name-only"]).readlines.map(&:chomp)
+
+  ruby_files = files.select do |file|
+    file =~ /\.rb$/ || `file --brief --mime-type #{file}` == "text/x-ruby\n"
+  end
+
+  ok &&= system("rubocop", *ruby_files) unless ruby_files.empty?
+
+  system("git", "stash", "pop", "--quiet") if need_stash
+else
+  puts "Unmerged files. Resolve before committing."
+  ok = false
+end
+
+exit ok
