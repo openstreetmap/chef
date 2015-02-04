@@ -29,7 +29,6 @@ default_attributes(
   :tilecache => {
     :tile_parent => "germany.render.openstreetmap.org",
     :tile_siblings => [
-      "tabaluga.openstreetmap.org",
       "konqi.openstreetmap.org",
       "trogdor.openstreetmap.org",
       "nepomuk.openstreetmap.org",

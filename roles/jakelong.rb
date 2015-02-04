@@ -49,8 +49,10 @@ default_attributes(
     :tile_siblings => [
       "nadder-01.openstreetmap.org",
       "nadder-02.openstreetmap.org",
+      "stormfly-02.openstreetmap.org",
       "nepomuk.openstreetmap.org",
-      "tabaluga.openstreetmap.org"
+      "katie.openstreetmap.org",
+      "konqi.openstreetmap.org"
     ]
   }
 )

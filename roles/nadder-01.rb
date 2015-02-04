@@ -42,6 +42,7 @@ default_attributes(
     :tile_parent => "provo.render.openstreetmap.org",
     :tile_siblings => [
       "nadder-02.openstreetmap.org",
+      "stormfly-02.openstreetmap.org",
       "jakelong.openstreetmap.org",
       "nepomuk.openstreetmap.org",
       "lurien.openstreetmap.org"

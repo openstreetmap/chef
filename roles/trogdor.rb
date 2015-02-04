@@ -32,7 +32,8 @@ default_attributes(
   :tilecache => {
     :tile_parent => "amsterdam.render.openstreetmap.org",
     :tile_siblings => [
-      "tabaluga.openstreetmap.org",
+      "katie.openstreetmap.org",
+      "konqi.openstreetmap.org",
       "fume.openstreetmap.org",
       "nepomuk.openstreetmap.org",
       "ridgeback.openstreetmap.org",

@@ -30,7 +30,8 @@ default_attributes(
     :tile_parent => "london.render.openstreetmap.org",
     :tile_siblings => [
       "trogdor.openstreetmap.org",
-      "tabaluga.openstreetmap.org",
+      "katie.openstreetmap.org",
+      "konqi.openstreetmap.org",
       "ridgeback.openstreetmap.org",
       "fume.openstreetmap.org",
       "gorynych.openstreetmap.org"
