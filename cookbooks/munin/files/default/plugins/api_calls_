@@ -32,13 +32,13 @@ def categorise_uri(line)
   uri = line.split(" ")[1]
 
   case uri
-  when /api\/0\.6\/map/ then :map
-  when /api\/0\.6\/changeset\/[0-9]*\/upload/ then :upload
-  when /api\/0\.6\/amf/ then :amf
-  when /api\/0\.6\/(node|way|relation)\/[0-9]*\/history/ then :history
-  when /api\/0\.6\/(node|way|relation)\/[0-9]*\/full/ then :full
-  when /api\/0\.6\/trackpoints/ then :trkpts
-  when /api\/0\.6\// then :other
+  when %r{api/0\.6/map} then :map
+  when %r{api/0\.6/changeset/[0-9]*/upload} then :upload
+  when %r{api/0\.6/amf} then :amf
+  when %r{api/0\.6/(node|way|relation)/[0-9]*/history} then :history
+  when %r{api/0\.6/(node|way|relation)/[0-9]*/full} then :full
+  when %r{api/0\.6/trackpoints} then :trkpts
+  when %r{api/0\.6/} then :other
   else :web
   end
 end

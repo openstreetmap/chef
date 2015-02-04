@@ -101,7 +101,7 @@ node[:osqa][:sites].each do |site|
     line.gsub!(/^( *)'PASSWORD': '.*',/, "\\1'PASSWORD': '#{database_password}',")
     line.gsub!(/^ALLOWED_HOSTS = .*/, "ALLOWED_HOSTS = ('help.openstreetmap.org',)")
     line.gsub!(/^CACHE_BACKEND = .*/, "CACHE_BACKEND = 'memcached://127.0.0.1:11211/'")
-    line.gsub!(/^APP_URL = 'http:\/\/'/, "APP_URL = 'http://#{name}'")
+    line.gsub!(%r{^APP_URL = 'http://'}, "APP_URL = 'http://#{name}'")
     line.gsub!(/^TIME_ZONE = 'America\/New_York'/, "TIME_ZONE = 'Europe/London'")
     line.gsub!(/^DISABLED_MODULES = \[([^\]]+)\]/, "DISABLED_MODULES = [\\1, 'localauth', 'facebookauth', 'oauthauth']")
 

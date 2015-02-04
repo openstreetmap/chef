@@ -33,7 +33,7 @@ def load_current_resource
 end
 
 action :create do
-  unless @pg.databases.include?(new_resource.database)
+  if !@pg.databases.include?(new_resource.database)
     @pg.execute(:command => "CREATE DATABASE \"#{new_resource.database}\" OWNER \"#{new_resource.owner}\" TEMPLATE template0 ENCODING '#{new_resource.encoding}' LC_COLLATE '#{new_resource.collation}' LC_CTYPE '#{new_resource.ctype}'")
     new_resource.updated_by_last_action(true)
   else

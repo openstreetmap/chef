@@ -42,7 +42,7 @@ action :create do
       variables new_resource.conf_variables
     end
 
-    updated = updated || c.updated_by_last_action?
+    updated ||= c.updated_by_last_action?
   end
 
   new_resource.updated_by_last_action(updated)
@@ -61,7 +61,7 @@ action :delete do
       action :delete
     end
 
-    updated = updated || c.updated_by_last_action?
+    updated ||= c.updated_by_last_action?
   end
 
   new_resource.updated_by_last_action(updated)

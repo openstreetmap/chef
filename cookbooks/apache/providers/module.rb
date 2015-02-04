@@ -40,7 +40,7 @@ action :install do
       notifies :reload, "service[apache2]" if enabled?
     end
 
-    updated = updated || t.updated_by_last_action?
+    updated ||= t.updated_by_last_action?
   end
 
   new_resource.updated_by_last_action(updated)

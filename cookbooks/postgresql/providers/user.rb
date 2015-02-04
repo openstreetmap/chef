@@ -39,7 +39,7 @@ action :create do
   createrole = new_resource.createrole ? "CREATEROLE" : "NOCREATEROLE"
   replication = new_resource.replication ? "REPLICATION" : "NOREPLICATION"
 
-  unless @pg.users.include?(new_resource.user)
+  if !@pg.users.include?(new_resource.user)
     @pg.execute(:command => "CREATE ROLE \"#{new_resource.user}\" LOGIN #{password} #{superuser} #{createdb} #{createrole}")
     new_resource.updated_by_last_action(true)
   else

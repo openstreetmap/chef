@@ -19,7 +19,7 @@ class Chef
             name !~ /(?:^|#{Regexp.escape(::File::SEPARATOR)})\.\.?$/
           end
         )
-        files_to_purge = files_to_purge - files_transferred
+        files_to_purge -= files_transferred
         purge_unmanaged_files(files_to_purge)
       end
     end

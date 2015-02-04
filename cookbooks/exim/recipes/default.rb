@@ -61,14 +61,14 @@ end
 relay_to_domains = node[:exim][:relay_to_domains]
 
 node[:exim][:routes].each_value do |route|
-  relay_to_domains = relay_to_domains | route[:domains] if route[:host]
+  relay_to_domains |= route[:domains] if route[:host]
 end
 
 relay_from_hosts = node[:exim][:relay_from_hosts]
 
 if node[:exim][:smarthost_name]
   search(:node, "exim_smarthost_via:#{node[:exim][:smarthost_name]}\\:*").each do |host|
-    relay_from_hosts = relay_from_hosts | host.ipaddresses(:role => :external)
+    relay_from_hosts |= host.ipaddresses(:role => :external)
   end
 end
 

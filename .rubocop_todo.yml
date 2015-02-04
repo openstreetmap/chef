@@ -78,20 +78,8 @@ Style/Next:
 Style/NumericLiterals:
   MinDigits: 11
 
-# Offense count: 23
-Style/RegexpLiteral:
-  MaxSlashes: 4
-
-# Offense count: 8
-Style/SelfAssignment:
-  Enabled: false
-
 # Offense count: 6548
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles.
 Style/StringLiterals:
-  Enabled: false
-
-# Offense count: 3
-Style/UnlessElse:
   Enabled: false

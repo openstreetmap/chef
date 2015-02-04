@@ -40,7 +40,7 @@ action :install do
     package_name = new_resource.package_name
   end
 
-  unless @packages.include?(new_resource.package_name)
+  if !@packages.include?(new_resource.package_name)
     shell_out!("npm install --global #{package_name}")
     new_resource.updated_by_last_action(true)
   else

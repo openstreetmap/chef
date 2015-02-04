@@ -42,11 +42,11 @@ trusted_networks = node[:exim][:relay_from_hosts]
 
 if node[:exim][:smarthost_name]
   search(:node, "exim_smarthost_via:#{node[:exim][:smarthost_name]}\\:*").each do |host|
-    trusted_networks = trusted_networks | host.ipaddresses(:role => :external)
+    trusted_networks |= host.ipaddresses(:role => :external)
   end
 end
 
-trusted_networks = trusted_networks - ["127.0.0.1", "::1"]
+trusted_networks -= ["127.0.0.1", "::1"]
 
 template "/etc/spamassassin/local.cf" do
   source "local.cf.erb"
