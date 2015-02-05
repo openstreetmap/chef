@@ -8,7 +8,12 @@ default_attributes(
       "osm.org",
       "noreply.openstreetmap.org",
       "openstreetmap.co.uk",
-      "openstreetmap.org.uk"
+      "openstreetmap.org.uk",
+      "openstreetmap.com",
+      "openstreetmap.io",
+      "openstreetmap.pro",
+      "openstreetmaps.org",
+      "osm.io"
     ],
     :daemon_smtp_ports => [25, 26],
     :smarthost_name => "mail.openstreetmap.org",
