@@ -104,12 +104,12 @@ class Chef
       end
 
       query("SELECT * FROM db").each do |record|
-        if database = @databases[record[:db]]
-          user = "'#{record[:user]}'@'#{record[:host]}'"
+        next unless database = @databases[record[:db]]
 
-          database[:permissions][user] = DATABASE_PRIVILEGES.each_with_object([]) do |privilege, privileges|
-            privileges << privilege if record["#{privilege}_priv".to_sym] == "Y"
-          end
+        user = "'#{record[:user]}'@'#{record[:host]}'"
+
+        database[:permissions][user] = DATABASE_PRIVILEGES.each_with_object([]) do |privilege, privileges|
+          privileges << privilege if record["#{privilege}_priv".to_sym] == "Y"
         end
       end
 

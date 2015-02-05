@@ -68,11 +68,6 @@ Style/IfUnlessModifier:
 Style/MultilineOperationIndentation:
   Enabled: false
 
-# Offense count: 19
-# Configuration parameters: EnforcedStyle, MinBodyLength, SupportedStyles.
-Style/Next:
-  Enabled: false
-
 # Offense count: 29
 # Cop supports --auto-correct.
 Style/NumericLiterals:

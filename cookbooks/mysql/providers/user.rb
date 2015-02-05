@@ -42,17 +42,17 @@ action :create do
   end
 
   Chef::MySQL::USER_PRIVILEGES.each do |privilege|
-    if new_resource.send(privilege) != @current_resource.send(privilege)
-      if new_resource.send(privilege)
-        converge_by("grant #{privilege} for #{new_resource}") do
-          Chef::Log.info("Granting #{privilege} for #{new_resource}")
-          @mysql.execute(:command => "GRANT #{@mysql.privilege_name(privilege)} ON *.* TO #{user}")
-        end
-      else
-        converge_by("revoke #{privilege} for #{new_resource}") do
-          Chef::Log.info("Revoking #{privilege} for #{new_resource}")
-          @mysql.execute(:command => "REVOKE #{@mysql.privilege_name(privilege)} ON *.* FROM #{user}")
-        end
+    next if new_resource.send(privilege) == @current_resource.send(privilege)
+
+    if new_resource.send(privilege)
+      converge_by("grant #{privilege} for #{new_resource}") do
+        Chef::Log.info("Granting #{privilege} for #{new_resource}")
+        @mysql.execute(:command => "GRANT #{@mysql.privilege_name(privilege)} ON *.* TO #{user}")
+      end
+    else
+      converge_by("revoke #{privilege} for #{new_resource}") do
+        Chef::Log.info("Revoking #{privilege} for #{new_resource}")
+        @mysql.execute(:command => "REVOKE #{@mysql.privilege_name(privilege)} ON *.* FROM #{user}")
       end
     end
   end

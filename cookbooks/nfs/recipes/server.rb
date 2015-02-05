@@ -33,18 +33,18 @@ end
 exports = {}
 
 search(:node, "*:*") do |client|
-  if client[:nfs]
-    client[:nfs].each_value do |mount|
-      if mount[:host] == node[:hostname]
-        client.ipaddresses do |address|
-          exports[mount[:path]] ||= {}
+  next unless client[:nfs]
 
-          if mount[:readonly]
-            exports[mount[:path]][address] = "ro"
-          else
-            exports[mount[:path]][address] = "rw"
-          end
-        end
+  client[:nfs].each_value do |mount|
+    next unless mount[:host] == node[:hostname]
+
+    client.ipaddresses do |address|
+      exports[mount[:path]] ||= {}
+
+      if mount[:readonly]
+        exports[mount[:path]][address] = "ro"
+      else
+        exports[mount[:path]][address] = "rw"
       end
     end
   end

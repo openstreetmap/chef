@@ -34,11 +34,11 @@ directory "/var/cache/chef" do
 end
 
 Dir.glob("/var/cache/chef/chef-server_*.deb").each do |deb|
-  if deb != "/var/cache/chef/#{chef_package}"
-    file deb do
-      action :delete
-      backup false
-    end
+  next if deb == "/var/cache/chef/#{chef_package}"
+
+  file deb do
+    action :delete
+    backup false
   end
 end
 

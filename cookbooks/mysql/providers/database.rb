@@ -41,11 +41,11 @@ action :create do
   end]
 
   @current_resource.permissions.each_key do |user|
-    unless new_permissions[user]
-      converge_by("revoke all for #{user} on #{new_resource}") do
-        Chef::Log.info("Revoking all for #{user} on #{new_resource}")
-        @mysql.execute(:command => "REVOKE ALL ON `#{new_resource.database}`.* FROM #{user}")
-      end
+    next if new_permissions[user]
+
+    converge_by("revoke all for #{user} on #{new_resource}") do
+      Chef::Log.info("Revoking all for #{user} on #{new_resource}")
+      @mysql.execute(:command => "REVOKE ALL ON `#{new_resource.database}`.* FROM #{user}")
     end
   end
 

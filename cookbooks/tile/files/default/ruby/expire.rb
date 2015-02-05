@@ -126,13 +126,14 @@ module Expire
     node_cache = NodeCache.new(NODE_CACHE_FILE)
     doc.find('//way/nd').each do |node|
       node_id = node['ref'].to_i
-      unless nodes.include? node_id
-        # this is a node referenced but not added, modified or deleted, so it should
-        # still be in the node cache.
-        if entry = node_cache[node_id]
-          point = Proj4::Point.new(entry.lon, entry.lat)
-          nodes[node_id] = tile_from_merc(point, max_zoom)
-        end
+
+      next if nodes.include? node_id
+
+      # this is a node referenced but not added, modified or deleted, so it should
+      # still be in the node cache.
+      if entry = node_cache[node_id]
+        point = Proj4::Point.new(entry.lon, entry.lat)
+        nodes[node_id] = tile_from_merc(point, max_zoom)
       end
     end
 

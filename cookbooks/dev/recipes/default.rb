@@ -103,27 +103,28 @@ end
 search(:accounts, "*:*").each do |account|
   name = account["id"]
   details = node[:accounts][:users][name] || {}
+
+  next unless %w(user administrator).include?(details[:status])
+
+  user_home = details[:home] || account["home"] || "#{node[:accounts][:home]}/#{name}"
+
+  next unless File.directory?("#{user_home}/public_html")
+
   port = 7000 + account["uid"].to_i
 
-  if %w(user administrator).include?(details[:status])
-    user_home = details[:home] || account["home"] || "#{node[:accounts][:home]}/#{name}"
+  template "/etc/php5/fpm/pool.d/#{name}.conf" do
+    source "fpm.conf.erb"
+    owner "root"
+    group "root"
+    mode 0644
+    variables :user => name, :port => port
+    notifies :reload, "service[php5-fpm]"
+  end
 
-    if File.directory?("#{user_home}/public_html")
-      template "/etc/php5/fpm/pool.d/#{name}.conf" do
-        source "fpm.conf.erb"
-        owner "root"
-        group "root"
-        mode 0644
-        variables :user => name, :port => port
-        notifies :reload, "service[php5-fpm]"
-      end
-
-      apache_site "#{name}.dev.openstreetmap.org" do
-        template "apache.user.erb"
-        directory "#{user_home}/public_html"
-        variables :user => name, :port => port
-      end
-    end
+  apache_site "#{name}.dev.openstreetmap.org" do
+    template "apache.user.erb"
+    directory "#{user_home}/public_html"
+    variables :user => name, :port => port
   end
 end
 

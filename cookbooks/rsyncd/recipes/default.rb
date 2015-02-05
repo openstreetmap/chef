@@ -25,19 +25,15 @@ hosts_deny = {}
 node[:rsyncd][:modules].each do |name, details|
   hosts_allow[name] = details[:hosts_allow] || []
 
-  if details[:nodes_allow]
-    hosts_allow[name] |= search(:node, details[:nodes_allow]).collect do |n|
-      n.ipaddresses(:role => :external)
-    end.flatten
-  end
+  hosts_allow[name] |= search(:node, details[:nodes_allow]).collect do |n|
+    n.ipaddresses(:role => :external)
+  end.flatten if details[:nodes_allow]
 
   hosts_deny[name] = details[:hosts_deny] || []
 
-  if details[:nodes_deny]
-    hosts_deny[name] |= search(:node, details[:nodes_deny]).collect do |n|
-      n.ipaddresses(:role => :external)
-    end.flatten
-  end
+  hosts_deny[name] |= search(:node, details[:nodes_deny]).collect do |n|
+    n.ipaddresses(:role => :external)
+  end.flatten if details[:nodes_deny]
 end
 
 package "rsync"

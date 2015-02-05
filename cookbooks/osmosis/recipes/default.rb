@@ -26,11 +26,11 @@ osmosis_package = "osmosis-#{node[:osmosis][:version]}.zip"
 osmosis_directory = "/opt/osmosis-#{node[:osmosis][:version]}"
 
 Dir.glob("/var/cache/chef/osmosis-*.zip").each do |zip|
-  if zip != "/var/cache/chef/#{osmosis_package}"
-    file zip do
-      action :delete
-      backup false
-    end
+  next if zip == "/var/cache/chef/#{osmosis_package}"
+
+  file zip do
+    action :delete
+    backup false
   end
 end
 

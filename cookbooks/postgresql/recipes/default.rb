@@ -131,11 +131,11 @@ clusters.each do |name, details|
     conf_variables :port => details[:port]
   end
 
-  if File.exist?("/var/lib/postgresql/#{details[:version]}/main/recovery.conf")
-    munin_plugin "postgres_replication_#{suffix}" do
-      target "postgres_replication"
-      conf "munin.erb"
-      conf_variables :port => details[:port]
-    end
+  next unless File.exist?("/var/lib/postgresql/#{details[:version]}/main/recovery.conf")
+
+  munin_plugin "postgres_replication_#{suffix}" do
+    target "postgres_replication"
+    conf "munin.erb"
+    conf_variables :port => details[:port]
   end
 end

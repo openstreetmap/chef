@@ -60,10 +60,10 @@ munin_plugin "ntp_offset"
 
 if File.directory?("/etc/munin/plugins")
   Dir.new("/etc/munin/plugins").each do |plugin|
-    if plugin.match(/^ntp_/) && !munin_plugins.include?(plugin)
-      munin_plugin plugin do
-        action :delete
-      end
+    next unless plugin.match(/^ntp_/) && !munin_plugins.include?(plugin)
+
+    munin_plugin plugin do
+      action :delete
     end
   end
 end

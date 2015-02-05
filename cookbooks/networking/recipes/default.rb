@@ -83,24 +83,24 @@ end
 node.interfaces(:role => :internal) do |interface|
   if interface[:gateway] && interface[:gateway] != interface[:address]
     search(:node, "networking_interfaces*address:#{interface[:gateway]}") do |gateway|
-      if gateway[:openvpn]
-        gateway[:openvpn][:tunnels].each_value do |tunnel|
-          if tunnel[:peer][:address]
-            route tunnel[:peer][:address] do
-              netmask "255.255.255.255"
-              gateway interface[:gateway]
-              device interface[:interface]
-            end
-          end
+      next unless gateway[:openvpn]
 
-          if tunnel[:peer][:networks]
-            tunnel[:peer][:networks].each do |network|
-              route network[:address] do
-                netmask network[:netmask]
-                gateway interface[:gateway]
-                device interface[:interface]
-              end
-            end
+      gateway[:openvpn][:tunnels].each_value do |tunnel|
+        if tunnel[:peer][:address]
+          route tunnel[:peer][:address] do
+            netmask "255.255.255.255"
+            gateway interface[:gateway]
+            device interface[:interface]
+          end
+        end
+
+        next unless tunnel[:peer][:networks]
+
+        tunnel[:peer][:networks].each do |network|
+          route network[:address] do
+            netmask network[:netmask]
+            gateway interface[:gateway]
+            device interface[:interface]
           end
         end
       end
@@ -111,14 +111,14 @@ end
 zones = {}
 
 search(:node, "networking:interfaces").collect do |n|
-  if n[:fqdn] != node[:fqdn]
-    n.interfaces.each do |interface|
-      if interface[:role] == "external" && interface[:zone]
-        zones[interface[:zone]] ||= Hash.new
-        zones[interface[:zone]][interface[:family]] ||= Array.new
-        zones[interface[:zone]][interface[:family]] << interface[:address]
-      end
-    end
+  next if n[:fqdn] == node[:fqdn]
+
+  n.interfaces.each do |interface|
+    next unless interface[:role] == "external" && interface[:zone]
+
+    zones[interface[:zone]] ||= Hash.new
+    zones[interface[:zone]][interface[:family]] ||= Array.new
+    zones[interface[:zone]][interface[:family]] << interface[:address]
   end
 end
 
