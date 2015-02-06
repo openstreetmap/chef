@@ -15,6 +15,10 @@ if IO.popen(["git", "ls-files", "--unmerged"]).read.empty?
 
   ok &&= system("rubocop", *ruby_files) unless ruby_files.empty?
 
+  cookbooks = files.grep(%r{(cookbooks/[^/]+)/}) { Regexp.last_match(1) }.uniq
+
+  ok &&= system("foodcritic", "-f", "any", *cookbooks) unless cookbooks.empty?
+
   system("git", "stash", "pop", "--quiet") if need_stash
 else
   puts "Unmerged files. Resolve before committing."
