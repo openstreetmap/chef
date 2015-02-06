@@ -36,94 +36,14 @@ end
 package "libdbd-mysql-perl"
 package "libcache-cache-perl"
 
-munin_plugin "mysql_bin_relay_log" do
-  target "mysql_"
-end
-
-munin_plugin "mysql_commands" do
-  target "mysql_"
-end
-
-munin_plugin "mysql_connections" do
-  target "mysql_"
-end
-
-munin_plugin "mysql_files_tables" do
-  target "mysql_"
-end
-
-munin_plugin "mysql_innodb_bpool" do
-  target "mysql_"
-end
-
-munin_plugin "mysql_innodb_bpool_act" do
-  target "mysql_"
-end
-
-munin_plugin "mysql_innodb_insert_buf" do
-  target "mysql_"
-end
-
-munin_plugin "mysql_innodb_io" do
-  target "mysql_"
-end
-
-munin_plugin "mysql_innodb_io_pend" do
-  target "mysql_"
-end
-
-munin_plugin "mysql_innodb_log" do
-  target "mysql_"
-end
-
-munin_plugin "mysql_innodb_rows" do
-  target "mysql_"
-end
-
-munin_plugin "mysql_innodb_semaphores" do
-  target "mysql_"
-end
-
-munin_plugin "mysql_innodb_tnx" do
-  target "mysql_"
-end
-
-munin_plugin "mysql_myisam_indexes" do
-  target "mysql_"
-end
-
-munin_plugin "mysql_network_traffic" do
-  target "mysql_"
-end
-
-munin_plugin "mysql_qcache" do
-  target "mysql_"
-end
-
-munin_plugin "mysql_qcache_mem" do
-  target "mysql_"
-end
-
-munin_plugin "mysql_replication" do
-  target "mysql_"
-end
-
-munin_plugin "mysql_select_types" do
-  target "mysql_"
-end
-
-munin_plugin "mysql_slow" do
-  target "mysql_"
-end
-
-munin_plugin "mysql_sorts" do
-  target "mysql_"
-end
-
-munin_plugin "mysql_table_locks" do
-  target "mysql_"
-end
-
-munin_plugin "mysql_tmp_tables" do
-  target "mysql_"
+%w(
+  bin_relay_log commands connections files_tables innodb_bpool
+  innodb_bpool_act innodb_insert_buf innodb_io innodb_io_pend
+  innodb_log innodb_rows innodb_semaphores innodb_tnx myisam_indexes
+  network_traffic qcache qcache_mem replication select_types slow
+  sorts table_locks tmp_tables
+).each do |stat|
+  munin_plugin "mysql_#{stat}" do
+    target "mysql_"
+  end
 end

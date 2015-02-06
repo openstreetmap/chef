@@ -8,7 +8,7 @@ if node[:dmi] && node[:dmi][:system]
 
     case dmi.system.product_name
     when "ProLiant DL360 G6", "ProLiant DL360 G7"
-      default[:hardware][:sensors]["power_meter-*"][:power]["power1"] = { :ignore => true }
+      default[:hardware][:sensors][:"power_meter-*"][:power][:"power1"] = { :ignore => true }
     end
   end
 end
@@ -16,7 +16,7 @@ end
 if Chef::Util.compare_versions(node[:kernel][:release], [3, 3]) < 0
   default[:hardware][:modules] |= ["microcode"]
 
-  if node[:cpu]["0"][:vendor_id] == "GenuineIntel"
+  if node[:cpu][:"0"][:vendor_id] == "GenuineIntel"
     default[:hardware][:modules] |= ["coretemp"]
   end
 end

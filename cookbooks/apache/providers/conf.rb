@@ -21,13 +21,13 @@ def whyrun_supported?
   true
 end
 
-action :create do
+action :create do # ~FC017
   if node[:lsb][:release].to_f >= 14.04
     create_conf
   end
 end
 
-action :enable do
+action :enable do # ~FC017
   if node[:lsb][:release].to_f >= 14.04
     enable_conf
   else
@@ -35,7 +35,7 @@ action :enable do
   end
 end
 
-action :disable do
+action :disable do # ~FC017
   if node[:lsb][:release].to_f >= 14.04
     disable_conf
   else
@@ -43,7 +43,7 @@ action :disable do
   end
 end
 
-action :delete do
+action :delete do # ~FC017
   if node[:lsb][:release].to_f >= 14.04
     delete_conf
   end

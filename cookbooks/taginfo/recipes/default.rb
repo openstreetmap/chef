@@ -145,40 +145,12 @@ node[:taginfo][:sites].each do |site|
     notifies :restart, "service[apache2]"
   end
 
-  directory "#{directory}/taginfo/web/tmp" do
-    owner "taginfo"
-    group "taginfo"
-    mode 0755
-  end
-
-  directory "#{directory}/data" do
-    owner "taginfo"
-    group "taginfo"
-    mode 0755
-  end
-
-  directory "#{directory}/data/old" do
-    owner "taginfo"
-    group "taginfo"
-    mode 0755
-  end
-
-  directory "#{directory}/download" do
-    owner "taginfo"
-    group "taginfo"
-    mode 0755
-  end
-
-  directory "#{directory}/sources" do
-    owner "taginfo"
-    group "taginfo"
-    mode 0755
-  end
-
-  directory "#{directory}/planet" do
-    owner "taginfo"
-    group "taginfo"
-    mode 0755
+  %w(taginfo/web/tmp bin data data/old download sources planet planet/log planet/replication).each do |dir|
+    directory "#{directory}/#{dir}" do
+      owner "taginfo"
+      group "taginfo"
+      mode 0755
+    end
   end
 
   remote_file "#{directory}/planet/planet.pbf" do
@@ -187,18 +159,6 @@ node[:taginfo][:sites].each do |site|
     owner "taginfo"
     group "taginfo"
     mode 0644
-  end
-
-  directory "#{directory}/planet/log" do
-    owner "taginfo"
-    group "taginfo"
-    mode 0755
-  end
-
-  directory "#{directory}/planet/replication" do
-    owner "taginfo"
-    group "taginfo"
-    mode 0755
   end
 
   template "#{directory}/planet/replication/configuration.txt" do
@@ -212,12 +172,6 @@ node[:taginfo][:sites].each do |site|
     owner "taginfo"
     group "taginfo"
     mode 0644
-  end
-
-  directory "#{directory}/bin" do
-    owner "taginfo"
-    group "taginfo"
-    mode 0755
   end
 
   template "#{directory}/bin/update-planet" do

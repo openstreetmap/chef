@@ -86,7 +86,7 @@ node.interfaces(:role => :internal) do |interface|
       next unless gateway[:openvpn]
 
       gateway[:openvpn][:tunnels].each_value do |tunnel|
-        if tunnel[:peer][:address]
+        if tunnel[:peer][:address] # ~FC023
           route tunnel[:peer][:address] do
             netmask "255.255.255.255"
             gateway interface[:gateway]

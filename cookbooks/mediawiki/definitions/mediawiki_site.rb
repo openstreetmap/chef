@@ -106,27 +106,27 @@ define :mediawiki_site, :action => [:create, :enable] do
     group node[:mediawiki][:group]
   end
 
-  directory "#{site_directory}" do
+  directory site_directory do
     owner node[:mediawiki][:user]
     group node[:mediawiki][:group]
     mode 0775
   end
 
-  directory "#{mediawiki[:directory]}" do
+  directory mediawiki[:directory] do
     owner node[:mediawiki][:user]
     group node[:mediawiki][:group]
     mode 0775
   end
 
-  git "#{mediawiki[:directory]}" do
+  git mediawiki[:directory] do
     action :sync
     repository mediawiki_repository
     reference mediawiki_reference
     # depth 1
     user node[:mediawiki][:user]
     group node[:mediawiki][:group]
-    notifies :run, resources(:execute => "#{mediawiki[:directory]}/maintenance/install.php"), :immediately
-    notifies :run, resources(:execute => "#{mediawiki[:directory]}/maintenance/update.php")
+    notifies :run, "execute[#{mediawiki[:directory]}/maintenance/install.php]", :immediately
+    notifies :run, "execute[#{mediawiki[:directory]}/maintenance/update.php]"
   end
 
   # Safety catch if git doesn't update but install.php hasn't run
@@ -137,7 +137,7 @@ define :mediawiki_site, :action => [:create, :enable] do
     not_if do
       File.exist?("#{mediawiki[:directory]}/LocalSettings-install.php")
     end
-    notifies :run, resources(:execute => "#{mediawiki[:directory]}/maintenance/install.php"), :immediately
+    notifies :run, "execute[#{mediawiki[:directory]}/maintenance/install.php]", :immediately
     action :create
   end
 
@@ -166,7 +166,7 @@ define :mediawiki_site, :action => [:create, :enable] do
     group node[:mediawiki][:group]
     mode 0664
     variables :name => name, :database_params => database_params, :mediawiki => mediawiki
-    notifies :run, resources(:execute => "#{mediawiki[:directory]}/maintenance/update.php")
+    notifies :run, "execute[#{mediawiki[:directory]}/maintenance/update.php]"
   end
 
   template "/etc/cron.d/mediawiki-#{cron_name}" do

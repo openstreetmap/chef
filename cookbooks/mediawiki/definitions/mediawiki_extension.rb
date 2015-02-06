@@ -56,11 +56,11 @@ define :mediawiki_extension, :action => [:enable], :variables => {} do
       user node[:mediawiki][:user]
       group node[:mediawiki][:group]
       ignore_failure repository.start_with?("git://github.com/wikimedia/mediawiki-extensions")
-      notifies :run, resources(:execute => "#{mediawiki_directory}/maintenance/update.php")
+      notifies :run, "execute[#{mediawiki_directory}/maintenance/update.php]"
     end
   end
 
-  if template
+  if template # ~FC023
     template "#{mediawiki_directory}/LocalSettings.d/Ext-#{name}.inc.php" do
       cookbook "mediawiki"
       source template
@@ -68,7 +68,7 @@ define :mediawiki_extension, :action => [:enable], :variables => {} do
       group node[:mediawiki][:group]
       mode 0664
       variables template_variables
-      notifies :create, resources(:template => "#{mediawiki_directory}/LocalSettings.php")
+      notifies :create, "template[#{mediawiki_directory}/LocalSettings.php]"
     end
   end
 
@@ -79,6 +79,6 @@ define :mediawiki_extension, :action => [:enable], :variables => {} do
     mode 0664
     content "<?php require_once('#{extension_directory}/#{name}.php');\n"
     only_if { File.exist?("#{extension_directory}/#{name}.php") }
-    notifies :create, resources(:template => "#{mediawiki_directory}/LocalSettings.php")
+    notifies :create, "template[#{mediawiki_directory}/LocalSettings.php]"
   end
 end

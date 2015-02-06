@@ -84,7 +84,7 @@ nginx_site "default" do
 end
 
 resolvers = node[:networking][:nameservers].map do |resolver|
-  IPAddr.new(resolver).ipv6? ? "[#{resolver}]" : "#{resolver}"
+  IPAddr.new(resolver).ipv6? ? "[#{resolver}]" : resolver
 end
 
 nginx_site "tile-ssl" do

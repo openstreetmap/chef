@@ -33,16 +33,14 @@ servers = search(:node, "recipes:munin\\:\\:server")
 
 servers.each do |server|
   server.interfaces(:role => :external) do |interface|
-    if interface[:zone]
-      firewall_rule "accept-munin-#{server}" do
-        action :accept
-        family interface[:family]
-        source "#{interface[:zone]}:#{interface[:address]}"
-        dest "fw"
-        proto "tcp:syn"
-        dest_ports "munin"
-        source_ports "1024:"
-      end
+    firewall_rule "accept-munin-#{server}" do
+      action :accept
+      family interface[:family]
+      source "#{interface[:zone]}:#{interface[:address]}"
+      dest "fw"
+      proto "tcp:syn"
+      dest_ports "munin"
+      source_ports "1024:"
     end
   end
 end
@@ -160,7 +158,7 @@ else
   end
 end
 
-munin_plugin "hpasmcli_temp" do
+munin_plugin "hpasmcli_temp" do # ~FC005
   action :delete
 end
 

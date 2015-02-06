@@ -47,13 +47,13 @@ database_user = node[:otrs][:database_user]
 database_password = passwords[node[:otrs][:database_password]]
 site = node[:otrs][:site]
 
-remote_file "/tmp/otrs-#{version}.tar.bz2" do
+remote_file "#{Chef::Config[:file_cache_path]}/otrs-#{version}.tar.bz2" do
   source "http://ftp.otrs.org/pub/otrs/otrs-#{version}.tar.bz2"
   not_if { File.exist?("/opt/otrs-#{version}") }
 end
 
 execute "untar-otrs-#{version}" do
-  command "tar jxf /tmp/otrs-#{version}.tar.bz2"
+  command "tar jxf #{Chef::Config[:file_cache_path]}/otrs-#{version}.tar.bz2"
   cwd "/opt"
   user "root"
   group "root"
