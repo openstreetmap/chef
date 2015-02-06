@@ -116,8 +116,8 @@ search(:node, "networking:interfaces").collect do |n|
   n.interfaces.each do |interface|
     next unless interface[:role] == "external" && interface[:zone]
 
-    zones[interface[:zone]] ||= Hash.new
-    zones[interface[:zone]][interface[:family]] ||= Array.new
+    zones[interface[:zone]] ||= {}
+    zones[interface[:zone]][interface[:family]] ||= []
     zones[interface[:zone]][interface[:family]] << interface[:address]
   end
 end

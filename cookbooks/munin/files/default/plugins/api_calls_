@@ -54,7 +54,7 @@ if ARGV[0] == 'config'
 else
   counts = uris_from_status(server)
            .collect { |x| categorise_uri(x) }
-           .each_with_object(Hash.new) do |h, e|
+           .each_with_object({}) do |h, e|
     if h.key? e
       h[e] += 1
     else

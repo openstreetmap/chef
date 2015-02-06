@@ -64,7 +64,7 @@ else
   delta_t = (max_time - min_time).to_f * 24 * 60
   counts = lines
            .collect { |x| categorise_uri(x) }
-           .each_with_object(Hash.new) do |h, e|
+           .each_with_object({}) do |h, e|
     if h.key? e
       h[e] += 1
     else

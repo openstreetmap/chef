@@ -54,7 +54,7 @@ if ARGV[0] == 'config'
 else
   counts = uri_and_times_from_status(server)
            .collect { |x, y| [categorise_uri(x), y] }
-           .each_with_object(Hash.new) do |h, e|
+           .each_with_object({}) do |h, e|
     category, time = e
     if h.key? category
       h[category] += [time]
