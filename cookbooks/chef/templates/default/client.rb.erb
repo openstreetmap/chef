@@ -40,4 +40,4 @@ report_handlers << email_handler
 
 # Make our plugins visible to ohai
 
-Ohai::Config[:plugin_path] << "/etc/chef/ohai"
+Ohai::Config[:plugin_path] << "<%= node[:ohai][:plugin_dir] %>"

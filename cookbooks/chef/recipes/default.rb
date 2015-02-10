@@ -109,7 +109,7 @@ template "/etc/chef/trusted_certs/verisign.pem" do
   mode 0644
 end
 
-directory "/etc/chef/ohai" do
+directory node[:ohai][:plugin_dir] do
   owner "root"
   group "root"
   mode 0755
