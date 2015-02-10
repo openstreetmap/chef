@@ -24,12 +24,8 @@ attribute :name, :kind_of => String, :name_attribute => true
 attribute :cookbook, :kind_of => String
 attribute :template, :kind_of => String, :required => true
 attribute :variables, :kind_of => Hash, :default => {}
+attribute :restart_munin, :kind_of => [TrueClass, FalseClass], :default => true
 
-def initialize(*args)
-  super
-  begin
-    resources(:service => "munin-node").subscrbes(:restart, self)
-  rescue Chef::Exceptions::ResourceNotFound
-    # Ignore
-  end
+def after_created
+  notifies :restart, "service[munin-node]" if restart_munin
 end

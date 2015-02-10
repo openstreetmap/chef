@@ -39,6 +39,7 @@ action :create do
       cookbook new_resource.conf_cookbook
       template new_resource.conf
       variables new_resource.conf_variables
+      restart_munin false
     end
   end
 end
@@ -51,6 +52,7 @@ action :delete do
   if new_resource.conf # ~FC023
     munin_plugin_conf new_resource.name do
       action :delete
+      restart_munin false
     end
   end
 end

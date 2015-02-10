@@ -25,8 +25,8 @@ attribute :target, :kind_of => String
 attribute :conf, :kind_of => String
 attribute :conf_cookbook, :kind_of => String
 attribute :conf_variables, :kind_of => Hash, :default => {}
+attribute :restart_munin, :kind_of => [TrueClass, FalseClass], :default => true
 
-def initialize(*args)
-  super
-  notifies :restart, "service[munin-node]"
+def after_created
+  notifies :restart, "service[munin-node]" if restart_munin
 end
