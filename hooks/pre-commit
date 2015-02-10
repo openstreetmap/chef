@@ -7,7 +7,9 @@ if IO.popen(["git", "ls-files", "--unmerged"]).read.empty?
 
   system("git", "stash", "save", "--keep-index", "--quiet") if need_stash
 
-  files = IO.popen(["git", "diff", "--staged", "--name-only"]).readlines.map(&:chomp)
+  files = IO.popen(["git", "diff", "--staged", "--name-status"]).map do |line|
+    Regexp.last_match(1) if line =~ /^[AM]\s+(.*)$/
+  end.compact
 
   ruby_files = files.select do |file|
     file =~ /\.rb$/ || `file --brief --mime-type #{file}` == "text/x-ruby\n"
