@@ -21,26 +21,23 @@ def whyrun_supported?
   true
 end
 
+use_inline_resources
+
 action :create do
-  t = template config_file do
+  template config_file do
     cookbook new_resource.cookbook
     source new_resource.template
     owner "root"
     group "root"
     mode 0644
     variables new_resource.variables.merge(:name => new_resource.name)
-    notifies :restart, "service[munin-node]"
   end
-
-  new_resource.updated_by_last_action(t.updated_by_last_action?)
 end
 
 action :delete do
-  f = file config_file do
+  file config_file do
     action :delete
   end
-
-  new_resource.updated_by_last_action(f.updated_by_last_action?)
 end
 
 def config_file

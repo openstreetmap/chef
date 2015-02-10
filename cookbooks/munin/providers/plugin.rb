@@ -21,50 +21,38 @@ def whyrun_supported?
   true
 end
 
+use_inline_resources
+
 action :create do
   link_action = case target_path
                 when nil then :delete
                 else :create
                 end
 
-  l = link plugin_path do
+  link plugin_path do
     action link_action
     to target_path
-    notifies :restart, "service[munin-node]"
   end
 
-  updated = l.updated_by_last_action?
-
-  if new_resource.conf
-    c = munin_plugin_conf new_resource.name do
+  if new_resource.conf # ~FC023
+    munin_plugin_conf new_resource.name do
       cookbook new_resource.conf_cookbook
       template new_resource.conf
       variables new_resource.conf_variables
     end
-
-    updated ||= c.updated_by_last_action?
   end
-
-  new_resource.updated_by_last_action(updated)
 end
 
 action :delete do
-  l = link plugin_path do
+  link plugin_path do
     action :delete
-    notifies :restart, "service[munin-node]"
   end
 
-  updated = l.updated_by_last_action?
-
-  if new_resource.conf
-    c = munin_plugin_conf new_resource.name do
+  if new_resource.conf # ~FC023
+    munin_plugin_conf new_resource.name do
       action :delete
     end
-
-    updated ||= c.updated_by_last_action?
   end
-
-  new_resource.updated_by_last_action(updated)
 end
 
 def plugin_path
