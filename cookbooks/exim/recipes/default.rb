@@ -144,11 +144,12 @@ else
   end
 end
 
-firewall_rule "deny-outbound-smtp" do
-  action :reject
-  source "fw"
-  dest "net"
-  proto "tcp:syn"
-  dest_ports "smtp"
-  only_if { node[:exim][:smarthost_via] }
+if node[:exim][:smarthost_via] # ~FC023
+  firewall_rule "deny-outbound-smtp" do
+    action :reject
+    source "fw"
+    dest "net"
+    proto "tcp:syn"
+    dest_ports "smtp"
+  end
 end
