@@ -25,3 +25,8 @@ attribute :directory, :kind_of => String
 attribute :cookbook, :kind_of => String
 attribute :template, :kind_of => String, :required => true
 attribute :variables, :kind_of => Hash, :default => {}
+attribute :reload_apache, :kind_of => [TrueClass, FalseClass], :default => true
+
+def after_created
+  notifies :reload, "service[apache2]" if reload_apache
+end

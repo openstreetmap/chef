@@ -21,46 +21,37 @@ def whyrun_supported?
   true
 end
 
+use_inline_resources
+
 action :create do
-  t = template available_name do
+  template available_name do
     cookbook new_resource.cookbook
     source new_resource.template
     owner "root"
     group "root"
     mode 0644
     variables new_resource.variables.merge(:name => new_resource.name, :directory => site_directory)
-    notifies :reload, "service[apache2]" if enabled?
   end
-
-  new_resource.updated_by_last_action(t.updated_by_last_action?)
 end
 
 action :enable do
-  l = link enabled_name do
+  link enabled_name do
     to available_name
     owner "root"
     group "root"
-    notifies :reload, "service[apache2]"
   end
-
-  new_resource.updated_by_last_action(l.updated_by_last_action?)
 end
 
 action :disable do
-  l = link enabled_name do
+  link enabled_name do
     action :delete
-    notifies :reload, "service[apache2]"
   end
-
-  new_resource.updated_by_last_action(l.updated_by_last_action?)
 end
 
 action :delete do
-  f = file available_name do
+  file available_name do
     action :delete
   end
-
-  new_resource.updated_by_last_action(f.updated_by_last_action?)
 end
 
 def site_directory
@@ -91,8 +82,4 @@ def enabled_name
       "/etc/apache2/sites-enabled/#{new_resource.name}"
     end
   end
-end
-
-def enabled?
-  ::File.exist?(enabled_name)
 end

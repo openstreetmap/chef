@@ -24,3 +24,8 @@ attribute :name, :kind_of => String, :name_attribute => true
 attribute :package, :kind_of => String
 attribute :conf, :kind_of => String
 attribute :variables, :kind_of => Hash, :default => {}
+attribute :restart_apache, :kind_of => [TrueClass, FalseClass], :default => true
+
+def after_created
+  notifies :restart, "service[apache2]" if restart_apache
+end

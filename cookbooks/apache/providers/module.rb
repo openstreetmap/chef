@@ -21,75 +21,52 @@ def whyrun_supported?
   true
 end
 
-action :install do
-  if !installed?
-    package package_name
+use_inline_resources
 
-    updated = true
-  else
-    updated = false
+action :install do
+  unless installed?
+    package package_name
   end
 
-  if new_resource.conf
-    t = template available_name("conf") do
+  if new_resource.conf # ~FC023
+    template available_name("conf") do
       source new_resource.conf
       owner "root"
       group "root"
       mode 0644
       variables new_resource.variables
-      notifies :reload, "service[apache2]" if enabled?
     end
-
-    updated ||= t.updated_by_last_action?
   end
-
-  new_resource.updated_by_last_action(updated)
 end
 
 action :enable do
-  unless enabled?
-    link enabled_name("load") do
-      to available_name("load")
-      owner "root"
-      group "root"
-      notifies :restart, "service[apache2]"
-    end
+  link enabled_name("load") do
+    to available_name("load")
+    owner "root"
+    group "root"
+  end
 
-    link enabled_name("conf") do
-      to available_name("conf")
-      owner "root"
-      group "root"
-      notifies :reload, "service[apache2]"
-      only_if { ::File.exist?(available_name("conf")) }
-    end
-
-    new_resource.updated_by_last_action(true)
+  link enabled_name("conf") do
+    to available_name("conf")
+    owner "root"
+    group "root"
+    only_if { ::File.exist?(available_name("conf")) }
   end
 end
 
 action :disable do
-  if enabled?
-    link enabled_name("load") do
-      action :delete
-      notifies :restart, "service[apache2]"
-    end
+  link enabled_name("load") do
+    action :delete
+  end
 
-    link enabled_name("conf") do
-      action :delete
-      notifies :reload, "service[apache2]"
-    end
-
-    new_resource.updated_by_last_action(true)
+  link enabled_name("conf") do
+    action :delete
   end
 end
 
 action :delete do
-  if installed?
-    package package_name do
-      action :remove
-    end
-
-    new_resource.updated_by_last_action(true)
+  package package_name do
+    action :remove
   end
 end
 
@@ -107,8 +84,4 @@ end
 
 def installed?
   ::File.exist?(available_name("load"))
-end
-
-def enabled?
-  ::File.exist?(enabled_name("load"))
 end

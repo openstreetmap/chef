@@ -21,6 +21,8 @@ def whyrun_supported?
   true
 end
 
+use_inline_resources
+
 action :create do # ~FC017
   if node[:lsb][:release].to_f >= 14.04
     create_conf
@@ -50,45 +52,34 @@ action :delete do # ~FC017
 end
 
 def create_conf
-  t = template available_name do
+  template available_name do
     cookbook new_resource.cookbook
     source new_resource.template
     owner "root"
     group "root"
     mode 0644
     variables new_resource.variables
-    notifies :reload, "service[apache2]" if enabled? || available_name == enabled_name
   end
-
-  new_resource.updated_by_last_action(t.updated_by_last_action?)
 end
 
 def enable_conf
-  l = link enabled_name do
+  link enabled_name do
     to available_name
     owner "root"
     group "root"
-    notifies :reload, "service[apache2]"
   end
-
-  new_resource.updated_by_last_action(l.updated_by_last_action?)
 end
 
 def disable_conf
-  l = link enabled_name do
+  link enabled_name do
     action :delete
-    notifies :reload, "service[apache2]"
   end
-
-  new_resource.updated_by_last_action(l.updated_by_last_action?)
 end
 
 def delete_conf
-  f = file available_name do
+  file available_name do
     action :delete
   end
-
-  new_resource.updated_by_last_action(f.updated_by_last_action?)
 end
 
 def available_name
@@ -105,8 +96,4 @@ def enabled_name
   else
     "/etc/apache2/conf.d/#{new_resource.name}"
   end
-end
-
-def enabled?
-  ::File.exist?(enabled_name)
 end
