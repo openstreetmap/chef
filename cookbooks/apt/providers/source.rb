@@ -1,8 +1,8 @@
 #
 # Cookbook Name:: apt
-# Definition:: apt_source
+# Provider:: apt_source
 #
-# Copyright 2010, Tom Hughes
+# Copyright 2015, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,27 +17,35 @@
 # limitations under the License.
 #
 
-define :apt_source do
-  if node[:apt][:sources].include?(params[:name])
-    source_action = :create
+def whyrun_supported?
+  true
+end
 
-    if params[:key]
-      execute "apt-key-#{params[:key]}" do
-        command "/usr/bin/apt-key adv --keyserver hkp://keys.gnupg.net --recv-keys #{params[:key]}"
-        not_if "/usr/bin/apt-key list | /bin/fgrep -q #{params[:key]}"
-      end
+use_inline_resources
+
+action :create do
+  if new_resource.key
+    execute "apt-key-#{new_resource.key}" do
+      command "/usr/bin/apt-key adv --keyserver hkp://keys.gnupg.net --recv-keys #{new_resource.key}"
+      not_if "/usr/bin/apt-key list | /bin/fgrep -q #{new_resource.key}"
     end
-  else
-    source_action = :delete
   end
 
-  template "/etc/apt/sources.list.d/#{params[:name]}.list" do
-    action source_action
-    source params[:template] || "default.list.erb"
+  template source_path  do
+    source new_resource.template
     owner "root"
     group "root"
     mode 0644
-    notifies :run, "execute[apt-update]"
-    variables :url => params[:url]
+    variables :url => new_resource.url
   end
+end
+
+action :delete do
+  file source_path do
+    action :delete
+  end
+end
+
+def source_path
+  "/etc/apt/sources.list.d/#{new_resource.name}.list"
 end

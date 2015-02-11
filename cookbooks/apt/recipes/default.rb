@@ -34,7 +34,7 @@ template "/etc/apt/sources.list" do
   owner "root"
   group "root"
   mode 0644
-  notifies :run, "execute[apt-update]"
+  notifies :run, "execute[apt-update]", :immediately
 end
 
 apt_source "brightbox-ruby-ng" do
