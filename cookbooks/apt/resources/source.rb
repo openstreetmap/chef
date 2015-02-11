@@ -32,5 +32,5 @@ def initialize(name, run_context = nil)
 end
 
 def after_created
-  notifies :run, "execute[apt-update]", :immediately
+  notifies :run, "execute[apt-update]", :immediately if @action == :create
 end
