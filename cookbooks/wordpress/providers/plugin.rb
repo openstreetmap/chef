@@ -1,8 +1,8 @@
 #
 # Cookbook Name:: wordpress
-# Definition:: wordpress_plugin
+# Provider:: wordpress_plugin
 #
-# Copyright 2013, OpenStreetMap Foundation
+# Copyright 2015, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,17 +17,17 @@
 # limitations under the License.
 #
 
-define :wordpress_plugin, :action => [:enable] do
-  name = params[:name]
-  site = params[:site]
-  site_directory = node[:wordpress][:sites][site][:directory]
-  plugin_directory = "#{site_directory}/wp-content/plugins/#{name}"
-  source = params[:source]
+def whyrun_supported?
+  true
+end
 
-  if source
+use_inline_resources
+
+action :create do
+  if new_resource.source
     remote_directory plugin_directory do
       cookbook "wordpress"
-      source source
+      source new_resource.source
       owner node[:wordpress][:user]
       group node[:wordpress][:group]
       mode 0755
@@ -36,36 +36,52 @@ define :wordpress_plugin, :action => [:enable] do
       files_mode 0755
     end
   else
-    repository = params[:repository]
+    plugin_repository = new_resource.repository || default_repository
 
-    unless params
-      version = params[:version] || Chef::Wordpress.current_plugin_version(name)
-
-      if version =~ /trunk/
-        repository = "http://plugins.svn.wordpress.org/#{name}/trunk"
-      else
-        repository = "http://plugins.svn.wordpress.org/#{name}/tags/#{version}"
-      end
-    end
-
-    if repository =~ /\.git$/
+    if plugin_repository.end_with?(".git")
       git plugin_directory do
         action :sync
-        repository repository
-        revision params[:revision]
+        repository plugin_repository
+        revision new_resource.revision
         user node[:wordpress][:user]
         group node[:wordpress][:group]
-        notifies :reload, "service[apache2]"
       end
     else
       subversion plugin_directory do
         action :sync
-        repository repository
+        repository plugin_repository
         user node[:wordpress][:user]
         group node[:wordpress][:group]
-        ignore_failure repository.start_with?("http://plugins.svn.wordpress.org/")
-        notifies :reload, "service[apache2]"
+        ignore_failure plugin_repository.start_with?("http://plugins.svn.wordpress.org/")
       end
     end
+  end
+end
+
+action :delete do
+  directory plugin_directory do
+    action :delete
+    recursive true
+  end
+end
+
+private
+
+def site_directory
+  node[:wordpress][:sites][new_resource.site][:directory]
+end
+
+def plugin_directory
+  "#{site_directory}/wp-content/plugins/#{new_resource.name}"
+end
+
+def default_repository
+  version = new_resource.version ||
+            Chef::Wordpress.current_plugin_version(new_resource.name)
+
+  if version =~ /trunk/
+    "http://plugins.svn.wordpress.org/#{new_resource.name}/trunk"
+  else
+    "http://plugins.svn.wordpress.org/#{new_resource.name}/tags/#{version}"
   end
 end
