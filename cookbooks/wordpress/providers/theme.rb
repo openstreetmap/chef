@@ -1,8 +1,8 @@
 #
 # Cookbook Name:: wordpress
-# Definition:: wordpress_theme
+# Provider:: wordpress_theme
 #
-# Copyright 2013, OpenStreetMap Foundation
+# Copyright 2015, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,17 +17,17 @@
 # limitations under the License.
 #
 
-define :wordpress_theme, :action => [:enable] do
-  name = params[:name]
-  site = params[:site]
-  site_directory = node[:wordpress][:sites][site][:directory]
-  theme_directory = "#{site_directory}/wp-content/themes/#{name}"
-  source = params[:source]
+def whyrun_supported?
+  true
+end
 
-  if source
+use_inline_resources
+
+action :create do
+  if new_resource.source
     remote_directory theme_directory do
       cookbook "wordpress"
-      source source
+      source new_resource.source
       owner node[:wordpress][:user]
       group node[:wordpress][:group]
       mode 0755
@@ -36,31 +36,45 @@ define :wordpress_theme, :action => [:enable] do
       files_mode 0644
     end
   else
-    repository = params[:repository]
+    theme_repository = new_resource.repository || default_repository
 
-    unless repository
-      version = params[:version] || node[:wordpress][:plugins][name][:version]
-      repository = "http://themes.svn.wordpress.org/#{name}/#{version}"
-    end
-
-    if repository =~ /\.git$/
+    if theme_repository.end_with?(".git")
       git theme_directory do
         action :sync
-        repository repository
-        revision params[:revision]
+        repository theme_repository
+        revision new_resource.revision
         user node[:wordpress][:user]
         group node[:wordpress][:group]
-        notifies :reload, "service[apache2]"
       end
     else
       subversion theme_directory do
         action :sync
-        repository repository
+        repository theme_repository
         user node[:wordpress][:user]
         group node[:wordpress][:group]
-        ignore_failure repository.start_with?("http://themes.svn.wordpress.org/")
-        notifies :reload, "service[apache2]"
+        ignore_failure theme_repository.start_with?("http://themes.svn.wordpress.org/")
       end
     end
   end
+end
+
+action :delete do
+  directory theme_directory do
+    action :delete
+    recursive true
+  end
+end
+
+private
+
+def site_directory
+  node[:wordpress][:sites][new_resource.site][:directory]
+end
+
+def theme_directory
+  "#{site_directory}/wp-content/themes/#{new_resource.name}"
+end
+
+def default_repository
+  "http://themes.svn.wordpress.org/#{new_resource.name}/#{new_resource.version}"
 end
