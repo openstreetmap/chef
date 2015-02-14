@@ -104,7 +104,9 @@ class Chef
       end
 
       query("SELECT * FROM db").each do |record|
-        next unless database = @databases[record[:db]]
+        database = @databases[record[:db]]
+
+        next unless database
 
         user = "'#{record[:user]}'@'#{record[:host]}'"
 

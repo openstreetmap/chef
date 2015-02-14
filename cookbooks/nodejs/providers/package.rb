@@ -27,7 +27,7 @@ def load_current_resource
 
   @current_resource = Chef::Resource::NodejsPackage.new(new_resource.name)
   @current_resource.package_name(new_resource.package_name)
-  if package = @packages[@current_resource.package_name]
+  if (package = @packages[@current_resource.package_name])
     @current_resource.version(package["version"])
   end
   @current_resource

@@ -26,7 +26,9 @@ service "openvpn" do
 end
 
 node[:openvpn][:tunnels].each do |name, details|
-  if peer = search(:node, "fqdn:#{details[:peer][:host]}").first
+  peer = search(:node, "fqdn:#{details[:peer][:host]}").first
+
+  if peer
     if peer[:openvpn] && !details[:peer][:address]
       node.default[:openvpn][:tunnels][name][:peer][:address] = peer[:openvpn][:address]
     end

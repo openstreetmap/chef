@@ -23,7 +23,7 @@ def load_current_resource
   @current_resource = Chef::Resource::PostgresqlUser.new(new_resource.name)
   @current_resource.user(new_resource.user)
   @current_resource.cluster(new_resource.cluster)
-  if pg_user = @pg.users[@current_resource.user]
+  if (pg_user = @pg.users[@current_resource.user])
     @current_resource.superuser(pg_user[:superuser])
     @current_resource.createdb(pg_user[:createdb])
     @current_resource.createrole(pg_user[:createrole])

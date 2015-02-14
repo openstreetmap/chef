@@ -23,7 +23,7 @@ def load_current_resource
   @current_resource = Chef::Resource::PostgresqlDatabase.new(new_resource.name)
   @current_resource.database(new_resource.database)
   @current_resource.cluster(new_resource.cluster)
-  if pg_database = @pg.databases[@current_resource.database]
+  if (pg_database = @pg.databases[@current_resource.database])
     @current_resource.owner(pg_database[:owner])
     @current_resource.encoding(pg_database[:encoding])
     @current_resource.encoding(pg_database[:collate])

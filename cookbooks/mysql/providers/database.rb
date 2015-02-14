@@ -22,7 +22,7 @@ def load_current_resource
 
   @current_resource = Chef::Resource::MysqlDatabase.new(new_resource.name)
   @current_resource.database(new_resource.database)
-  if mysql_database = @mysql.databases[@current_resource.database]
+  if (mysql_database = @mysql.databases[@current_resource.database])
     @current_resource.permissions(mysql_database[:permissions])
   end
   @current_resource

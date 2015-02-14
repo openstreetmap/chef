@@ -22,7 +22,7 @@ def load_current_resource
 
   @current_resource = Chef::Resource::MysqlUser.new(new_resource.name)
   @current_resource.user(new_resource.user)
-  if mysql_user = @mysql.users[@current_resource.user]
+  if (mysql_user = @mysql.users[@current_resource.user])
     Chef::MySQL::USER_PRIVILEGES.each do |privilege|
       @current_resource.send(privilege, mysql_user[privilege])
     end

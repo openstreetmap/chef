@@ -26,7 +26,7 @@ def load_current_resource
   @current_resource.cluster(new_resource.cluster)
   @current_resource.database(new_resource.database)
   @current_resource.schema(new_resource.schema)
-  if pg_table = @tables[@name]
+  if (pg_table = @tables[@name])
     @current_resource.owner(pg_table[:owner])
     @current_resource.permissions(pg_table[:permissions])
   end

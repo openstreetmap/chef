@@ -8,18 +8,11 @@ class Chef
         if attributes[:ignore]
           results << "ignore #{sensor}"
         else
-          if label = attributes[:label]
-            resuls << "label #{sensor} \"#{label}\""
-          end
-
-          if compute = attributes[:compute]
-            resuls << "compute #{sensor} #{compute}"
-          end
+          results << "label #{sensor} \"#{attributes[:label]}\"" if attributes[:label]
+          results << "compute #{sensor} #{attributes[:compute]}" if attributes[:compute]
 
           attribute_names.each do |name|
-            if value = attributes[name]
-              results << "set #{sensor}_#{name} #{value}"
-            end
+            results << "set #{sensor}_#{name} #{attributes[name]}" if attributes[name]
           end
         end
       end

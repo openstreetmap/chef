@@ -36,7 +36,9 @@ define :wordpress_plugin, :action => [:enable] do
       files_mode 0755
     end
   else
-    unless repository = params[:repository]
+    repository = params[:repository]
+
+    unless params
       version = params[:version] || Chef::Wordpress.current_plugin_version(name)
 
       if version =~ /trunk/

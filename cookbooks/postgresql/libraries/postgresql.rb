@@ -105,7 +105,7 @@ class Chef
       end
     end
 
-  private
+    private
 
     def parse_acl(acl)
       acl.sub(/^\{(.*)\}$/, "\\1").split(",").each_with_object({}) do |entry, permissions|

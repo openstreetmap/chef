@@ -36,7 +36,9 @@ define :wordpress_theme, :action => [:enable] do
       files_mode 0644
     end
   else
-    unless repository = params[:repository]
+    repository = params[:repository]
+
+    unless repository
       version = params[:version] || node[:wordpress][:plugins][name][:version]
       repository = "http://themes.svn.wordpress.org/#{name}/#{version}"
     end

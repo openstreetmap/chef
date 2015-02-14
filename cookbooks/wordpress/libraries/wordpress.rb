@@ -19,7 +19,7 @@ class Chef
       end
     end
 
-  private
+    private
 
     def self.core_version_check
       api_get("http://api.wordpress.org/core/version-check/1.6")
