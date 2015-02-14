@@ -28,9 +28,9 @@ directory "/srv/blog.openstreetmap.org" do
 end
 
 wordpress_site "blog.openstreetmap.org" do
-  aliases "blog.osm.org", "blog.openstreetmap.com",
-          "blog.openstreetmap.net", "blog.openstreetmaps.org",
-          "blog.osmfoundation.org"
+  aliases ["blog.osm.org", "blog.openstreetmap.com",
+           "blog.openstreetmap.net", "blog.openstreetmaps.org",
+           "blog.osmfoundation.org"]
   ssl_enabled true
   directory "/srv/blog.openstreetmap.org/wp"
   database_name "osm-blog"

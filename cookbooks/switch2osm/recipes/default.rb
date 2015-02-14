@@ -22,7 +22,7 @@ include_recipe "wordpress"
 passwords = data_bag_item("switch2osm", "passwords")
 
 wordpress_site "switch2osm.org" do
-  aliases "www.switch2osm.org", "switch2osm.com", "www.switch2osm.com"
+  aliases ["www.switch2osm.org", "switch2osm.com", "www.switch2osm.com"]
   directory "/srv/switch2osm.org"
   database_name "switch2osm-blog"
   database_user "switch2osm-user"
