@@ -101,10 +101,6 @@ default_attributes(
         :revision => "master",
         :aliases => ["api06.dev.openstreetmap.org"]
       },
-      :routing => {
-        :repository => "git://github.com/apmon/openstreetmap-website.git",
-        :revision => "routing2"
-      },
       :tomh => {
         :repository => "git://github.com/tomhughes/openstreetmap-website.git",
         :revision => "next"
@@ -116,14 +112,6 @@ default_attributes(
       :groups => {
         :repository => "git://github.com/osmlab/openstreetmap-website.git",
         :revision => "groups-sketch"
-      },
-      :jsrouting => {
-        :repository => "git://github.com/systemed/openstreetmap-website.git",
-        :revision => "routing"
-      },
-      :jsrouting2 => {
-        :repository => "git://github.com/jfirebaugh/openstreetmap-website.git",
-        :revision => "routing"
       },
       :comments => {
         :repository => "git://github.com/ukasiu/openstreetmap-website.git",
