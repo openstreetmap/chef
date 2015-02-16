@@ -22,6 +22,6 @@ default_attributes(
 
 run_list(
   "role[ucl-wolfson]",
-  "role[hp-g5]",
+  "role[hp-g6]",
   "role[munin]"
 )
