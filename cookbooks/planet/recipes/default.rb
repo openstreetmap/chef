@@ -89,3 +89,5 @@ template "/etc/logrotate.d/apache2" do
   group "root"
   mode 0644
 end
+
+munin_plugin "planet_age"
