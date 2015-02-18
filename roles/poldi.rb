@@ -47,6 +47,12 @@ default_attributes(
         :role => :external,
         :family => :inet,
         :address => "193.63.75.101"
+      },
+      :external_ipv6 => {
+        :interface => "eth1",
+        :role => :external,
+        :family => :inet6,
+        :address => "2001:630:12:500:2e0:81ff:fec5:333e"
       }
     }
   },
