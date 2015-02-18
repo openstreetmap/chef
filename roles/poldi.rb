@@ -40,13 +40,13 @@ default_attributes(
         :interface => "eth0",
         :role => :internal,
         :family => :inet,
-        :address => "10.0.0.16"
+        :address => "146.179.159.164"
       },
       :external_ipv4 => {
         :interface => "eth1",
         :role => :external,
         :family => :inet,
-        :address => "128.40.45.203"
+        :address => "193.63.75.101"
       }
     }
   },
@@ -99,7 +99,7 @@ default_attributes(
 )
 
 run_list(
-  "role[ucl-wolfson]",
+  "role[ic]",
   "role[tyan-s7010]",
   "role[nominatim]"
 )
