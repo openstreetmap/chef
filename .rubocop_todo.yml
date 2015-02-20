@@ -35,20 +35,9 @@ Metrics/PerceivedComplexity:
 Style/Documentation:
   Enabled: false
 
-# Offense count: 32
-# Configuration parameters: Exclude.
-Style/FileName:
-  Enabled: false
-
 # Offense count: 15
 # Configuration parameters: MaxLineLength.
 Style/IfUnlessModifier:
-  Enabled: false
-
-# Offense count: 2
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-Style/MultilineOperationIndentation:
   Enabled: false
 
 # Offense count: 29

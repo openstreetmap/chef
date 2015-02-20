@@ -4,6 +4,13 @@ Style/AlignParameters:
   Exclude:
     - '**/metadata.rb'
 
+Style/FileName:
+  Exclude:
+    - 'cookbooks/trac/files/default/trac-authenticate'
+    - 'cookbooks/planet/files/default/replication-bin/replicate-changesets'
+    - 'hooks/*'
+    - 'roles/*.rb'
+
 Style/HashSyntax:
   EnforcedStyle: hash_rockets
 

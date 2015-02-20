@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: planet
-# Recipe:: dump
+# Recipe:: notes
 #
 # Copyright 2013, OpenStreetMap Foundation
 #
