@@ -134,6 +134,7 @@ if node[:postgresql][:clusters][:"9.1/main"]
   end
 
   node[:dev][:rails].each do |name, details|
+    ruby node[:passenger][:ruby_version]
     database_name = details[:database] || "apis_#{name}"
     site_name = "#{name}.apis.dev.openstreetmap.org"
     rails_directory = "/srv/#{name}.apis.dev.openstreetmap.org"
