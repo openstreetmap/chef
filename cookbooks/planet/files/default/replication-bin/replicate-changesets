@@ -1,12 +1,12 @@
 #!/usr/bin/ruby
 
-require 'rubygems'
-require 'pg'
-require 'yaml'
-require 'time'
-require 'fileutils'
-require 'xml/libxml'
-require 'zlib'
+require "rubygems"
+require "pg"
+require "yaml"
+require "time"
+require "fileutils"
+require "xml/libxml"
+require "zlib"
 
 # after this many changes, a changeset will be closed
 CHANGES_LIMIT = 50000
@@ -22,10 +22,10 @@ class Changeset
   attr_reader :id, :created_at, :closed_at, :num_changes
 
   def initialize(row)
-    @id = row['id'].to_i
-    @created_at = Time.parse(row['created_at'])
-    @closed_at = Time.parse(row['closed_at'])
-    @num_changes = row['num_changes'].to_i
+    @id = row["id"].to_i
+    @created_at = Time.parse(row["created_at"])
+    @closed_at = Time.parse(row["closed_at"])
+    @num_changes = row["num_changes"].to_i
   end
 
   def closed?(t)
@@ -47,15 +47,15 @@ end
 class Replicator
   def initialize(config)
     @config = YAML.load(File.read(config))
-    @state = YAML.load(File.read(@config['state_file']))
-    @conn = PGconn.connect(@config['db'])
+    @state = YAML.load(File.read(@config["state_file"]))
+    @conn = PGconn.connect(@config["db"])
     @now = Time.now.getutc
   end
 
   def open_changesets
-    last_run = @state['last_run']
+    last_run = @state["last_run"]
     last_run = (@now - 60) if last_run.nil?
-    @state['last_run'] = @now
+    @state["last_run"] = @now
     # pretty much all operations on a changeset will modify its closed_at
     # time (see rails_port's changeset model). so it is probably enough
     # for us to look at anything that was closed recently, and filter from
@@ -71,40 +71,40 @@ class Replicator
   def changeset_dump(changesets)
     doc = XML::Document.new
     doc.root = XML::Node.new("osm")
-    { 'version' => '0.6',
-      'generator' => 'replicate_changesets.rb',
-      'copyright' => "OpenStreetMap and contributors",
-      'attribution' => "http://www.openstreetmap.org/copyright",
-      'license' => "http://opendatacommons.org/licenses/odbl/1-0/" }
+    { "version" => "0.6",
+      "generator" => "replicate_changesets.rb",
+      "copyright" => "OpenStreetMap and contributors",
+      "attribution" => "http://www.openstreetmap.org/copyright",
+      "license" => "http://opendatacommons.org/licenses/odbl/1-0/" }
       .each { |k, v| doc.root[k] = v }
 
     changesets.each do |cs|
       xml = XML::Node.new("changeset")
-      xml['id'] = cs.id.to_s
-      xml['created_at'] = cs.created_at.getutc.xmlschema
-      xml['closed_at'] = cs.closed_at.getutc.xmlschema if cs.closed?(@now)
-      xml['open'] = cs.open?(@now).to_s
-      xml['num_changes'] = cs.num_changes.to_s
+      xml["id"] = cs.id.to_s
+      xml["created_at"] = cs.created_at.getutc.xmlschema
+      xml["closed_at"] = cs.closed_at.getutc.xmlschema if cs.closed?(@now)
+      xml["open"] = cs.open?(@now).to_s
+      xml["num_changes"] = cs.num_changes.to_s
 
       res = @conn.exec("select u.id, u.display_name, c.min_lat, c.max_lat, c.min_lon, c.max_lon from users u join changesets c on u.id=c.user_id where c.id=#{cs.id}")
-      xml['user'] = res[0]['display_name']
-      xml['uid'] = res[0]['id']
+      xml["user"] = res[0]["display_name"]
+      xml["uid"] = res[0]["id"]
 
-      unless res[0]['min_lat'].nil? ||
-             res[0]['max_lat'].nil? ||
-             res[0]['min_lon'].nil? ||
-             res[0]['max_lon'].nil?
-        xml['min_lat'] = (res[0]['min_lat'].to_f / GEO_SCALE).to_s
-        xml['max_lat'] = (res[0]['max_lat'].to_f / GEO_SCALE).to_s
-        xml['min_lon'] = (res[0]['min_lon'].to_f / GEO_SCALE).to_s
-        xml['max_lon'] = (res[0]['max_lon'].to_f / GEO_SCALE).to_s
+      unless res[0]["min_lat"].nil? ||
+             res[0]["max_lat"].nil? ||
+             res[0]["min_lon"].nil? ||
+             res[0]["max_lon"].nil?
+        xml["min_lat"] = (res[0]["min_lat"].to_f / GEO_SCALE).to_s
+        xml["max_lat"] = (res[0]["max_lat"].to_f / GEO_SCALE).to_s
+        xml["min_lon"] = (res[0]["min_lon"].to_f / GEO_SCALE).to_s
+        xml["max_lon"] = (res[0]["max_lon"].to_f / GEO_SCALE).to_s
       end
 
       res = @conn.exec("select k, v from changeset_tags where changeset_id=#{cs.id}")
       res.each do |row|
         tag = XML::Node.new("tag")
-        tag['k'] = row['k']
-        tag['v'] = row['v']
+        tag["k"] = row["k"]
+        tag["v"] = row["v"]
         xml << tag
       end
 
@@ -116,12 +116,12 @@ class Replicator
 
   # saves new state (including the changeset dump xml)
   def save!
-    File.open(@config['state_file'], "r") do |fl|
+    File.open(@config["state_file"], "r") do |fl|
       fl.flock(File::LOCK_EX)
 
-      sequence = (@state.key?('sequence') ? @state['sequence'] + 1 : 0)
-      data_file = @config['data_dir'] + format("/%03d/%03d/%03d.osm.gz", sequence / 1000000, (sequence / 1000) % 1000, (sequence % 1000))
-      tmp_state = @config['state_file'] + ".tmp"
+      sequence = (@state.key?("sequence") ? @state["sequence"] + 1 : 0)
+      data_file = @config["data_dir"] + format("/%03d/%03d/%03d.osm.gz", sequence / 1000000, (sequence / 1000) % 1000, (sequence % 1000))
+      tmp_state = @config["state_file"] + ".tmp"
       tmp_data = "/tmp/changeset_data.osm.tmp"
       # try and write the files to tmp locations and then
       # move them into place later, to avoid in-progress
@@ -131,12 +131,12 @@ class Replicator
         Zlib::GzipWriter.open(tmp_data) do |fh|
           fh.write(changeset_dump(open_changesets))
         end
-        @state['sequence'] = sequence
+        @state["sequence"] = sequence
         File.open(tmp_state, "w") do |fh|
           fh.write(YAML.dump(@state))
         end
         FileUtils.mv(tmp_data, data_file)
-        FileUtils.mv(tmp_state, @config['state_file'])
+        FileUtils.mv(tmp_state, @config["state_file"])
         fl.flock(File::LOCK_UN)
 
       rescue

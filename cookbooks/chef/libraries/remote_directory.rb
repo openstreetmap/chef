@@ -15,7 +15,7 @@ class Chef
         return unless @new_resource.purge
 
         files_to_purge = Set.new(
-          Dir.glob(::File.join(@new_resource.path, '**', '*'), ::File::FNM_DOTMATCH).select do |name|
+          Dir.glob(::File.join(@new_resource.path, "**", "*"), ::File::FNM_DOTMATCH).select do |name|
             name !~ /(?:^|#{Regexp.escape(::File::SEPARATOR)})\.\.?$/
           end
         )

@@ -13,7 +13,7 @@ class Chef
       end
 
       def current_repository
-        @current_repository ||= repo_attrs['URL']
+        @current_repository ||= repo_attrs["URL"]
       end
 
       def current_repository_matches_target_repository?

@@ -95,7 +95,7 @@ define :mediawiki_site, :action => [:create, :enable] do
     not_if do
       File.exist?("#{mediawiki[:directory]}/LocalSettings-install.php")
     end
-    notifies :create, 'ruby_block[rename-installer-localsettings]', :immediately
+    notifies :create, "ruby_block[rename-installer-localsettings]", :immediately
   end
 
   execute "#{mediawiki[:directory]}/maintenance/update.php" do

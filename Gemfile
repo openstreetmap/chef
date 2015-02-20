@@ -1,4 +1,4 @@
-source 'https://rubygems.org'
+source "https://rubygems.org"
 
-gem 'rubocop'
-gem 'foodcritic'
+gem "rubocop"
+gem "foodcritic"

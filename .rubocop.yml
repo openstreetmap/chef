@@ -7,3 +7,6 @@ Style/AlignParameters:
 Style/SingleSpaceBeforeFirstArg:
   Exclude:
     - '**/metadata.rb'
+
+Style/StringLiterals:
+  EnforcedStyle: double_quotes

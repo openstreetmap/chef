@@ -1,11 +1,11 @@
 #!/usr/bin/ruby
 
-require 'rubygems'
-require 'proj4'
-require 'xml/libxml'
-require 'set'
-require 'time'
-require 'mmap'
+require "rubygems"
+require "proj4"
+require "xml/libxml"
+require "set"
+require "time"
+require "mmap"
 
 module Expire
   # projection object to go from latlon -> spherical mercator
@@ -50,8 +50,8 @@ module Expire
     # generate the path
     hash_path = (0..4).collect do |i|
       (((x >> 4 * i) & 0xf) << 4) | ((y >> 4 * i) & 0xf)
-    end.reverse.join('/')
-    z.to_s + '/' + hash_path + ".meta"
+    end.reverse.join("/")
+    z.to_s + "/" + hash_path + ".meta"
   end
 
   # time to reset to, some very stupidly early time, before OSM started
@@ -102,17 +102,17 @@ module Expire
 
     # we put all the nodes into the hash, as it doesn't matter whether the node was
     # added, deleted or modified - the tile will need updating anyway.
-    doc.find('//node').each do |node|
-      lat = node['lat'].to_f
+    doc.find("//node").each do |node|
+      lat = node["lat"].to_f
       if lat < -85
         lat = -85
       end
       if lat > 85
         lat = 85
       end
-      point = Proj4::Point.new(Math::PI * node['lon'].to_f / 180,
+      point = Proj4::Point.new(Math::PI * node["lon"].to_f / 180,
                                Math::PI * lat / 180)
-      nodes[node['id'].to_i] = tile_from_latlon(point, max_zoom)
+      nodes[node["id"].to_i] = tile_from_latlon(point, max_zoom)
     end
 
     # now we look for all the ways that have changed and put all of their nodes into
@@ -124,8 +124,8 @@ module Expire
     # itself deleted and the coverage of the point set isn't enough to encompass the
     # change.
     node_cache = NodeCache.new(NODE_CACHE_FILE)
-    doc.find('//way/nd').each do |node|
-      node_id = node['ref'].to_i
+    doc.find("//way/nd").each do |node|
+      node_id = node["ref"].to_i
 
       next if nodes.include? node_id
 

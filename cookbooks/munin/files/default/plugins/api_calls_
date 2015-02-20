@@ -1,16 +1,16 @@
 #!/usr/bin/ruby
 
-require 'rubygems'
-require 'date'
-require 'hpricot'
-require 'open-uri'
+require "rubygems"
+require "date"
+require "hpricot"
+require "open-uri"
 
 def uris_from_status(server)
   file = open("http://#{server}/server-status").read
   doc = Hpricot.parse(file)
-  tables = doc / 'table'
-  rows = (tables[0] / 'tr')[1..-1]
-  data = rows.collect { |r| (r  / 'td').collect(&:inner_html) }
+  tables = doc / "table"
+  rows = (tables[0] / "tr")[1..-1]
+  data = rows.collect { |r| (r  / "td").collect(&:inner_html) }
   # filter where the PID is numeric, status is 'W' and host matches the server
   matching_data = data.select { |r| (r[1].to_i > 0) && r[3].match(/W/) && r[11].match(server) }
   # return only the URI part
@@ -45,7 +45,7 @@ end
 
 server = $PROGRAM_NAME.match("api_calls_(.*)")[1]
 
-if ARGV[0] == 'config'
+if ARGV[0] == "config"
   puts "graph_title Active requests"
   puts "graph_vlabel Number of requests"
   puts "graph_category api"

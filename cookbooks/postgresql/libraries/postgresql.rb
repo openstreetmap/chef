@@ -1,4 +1,4 @@
-require 'chef/mixin/command'
+require "chef/mixin/command"
 
 class Chef
   class PostgreSQL

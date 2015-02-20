@@ -1,9 +1,9 @@
 #!/usr/bin/ruby
 
-require 'rubygems'
-require 'date'
-gem 'home_run', '>= 0'
-require 'apache_log_regex'
+require "rubygems"
+require "date"
+gem "home_run", ">= 0"
+require "apache_log_regex"
 
 NUM_LINES = 10000
 
@@ -53,7 +53,7 @@ def categorise_uri(line)
   end
 end
 
-if ARGV[0] == 'config'
+if ARGV[0] == "config"
   puts "graph_title Requests processed"
   puts "graph_vlabel Number of requests per minute"
   puts "graph_category api"
