@@ -79,7 +79,7 @@ define :rails_port, :action => [:create, :enable] do
 
   execute "#{rails_directory}/public/assets" do
     action :nothing
-    command "rake#{ruby_version} assets:precompile"
+    command "bundle#{ruby_version} exec rake#{ruby_version} assets:precompile"
     environment "RAILS_ENV" => "production"
     cwd rails_directory
     user rails_user
@@ -90,7 +90,7 @@ define :rails_port, :action => [:create, :enable] do
 
   execute "#{rails_directory}/db/migrate" do
     action :nothing
-    command "rake#{ruby_version} db:migrate"
+    command "bundle#{ruby_version} exec rake#{ruby_version} db:migrate"
     cwd rails_directory
     user rails_user
     group rails_group
