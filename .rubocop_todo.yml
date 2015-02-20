@@ -40,12 +40,6 @@ Style/Documentation:
 Style/FileName:
   Enabled: false
 
-# Offense count: 3116
-# Cop supports --auto-correct.
-# Configuration parameters: SupportedStyles.
-Style/HashSyntax:
-  EnforcedStyle: hash_rockets
-
 # Offense count: 15
 # Configuration parameters: MaxLineLength.
 Style/IfUnlessModifier:
