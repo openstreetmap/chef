@@ -40,8 +40,8 @@ define :rails_port, :action => [:create, :enable] do
 
   package "ruby#{ruby_version}"
   package "ruby#{ruby_version}-dev"
-  package "rubygems#{ruby_version}"
-  package "irb#{ruby_version}"
+  package "rubygems#{ruby_version}" if ruby_version.to_f < 1.9
+  package "irb#{ruby_version}" if ruby_version.to_f < 1.9
   package "imagemagick"
   package "nodejs"
 

@@ -21,8 +21,11 @@ include_recipe "apache"
 
 package "ruby#{node[:passenger][:ruby_version]}"
 package "ruby#{node[:passenger][:ruby_version]}-dev"
-package "rubygems#{node[:passenger][:ruby_version]}"
-package "irb#{node[:passenger][:ruby_version]}"
+
+if node[:passenger][:ruby_version].to_f < 1.9
+  package "rubygems#{node[:passenger][:ruby_version]}"
+  package "irb#{node[:passenger][:ruby_version]}"
+end
 
 template "/usr/local/bin/passenger-ruby" do
   source "ruby.erb"
