@@ -7,6 +7,7 @@ require "time"
 require "fileutils"
 require "xml/libxml"
 require "zlib"
+require "set"
 
 # after this many changes, a changeset will be closed
 CHANGES_LIMIT = 50000
@@ -60,10 +61,28 @@ class Replicator
     # time (see rails_port's changeset model). so it is probably enough
     # for us to look at anything that was closed recently, and filter from
     # there.
-    @conn
+    changesets = @conn
       .exec("select id, created_at, closed_at, num_changes from changesets where closed_at > ((now() at time zone 'utc') - '1 hour'::interval)")
       .map { |row| Changeset.new(row) }
       .select { |cs| cs.activity_between?(last_run, @now) }
+
+    # set for faster presence lookups by ID
+    cs_ids = Set.new(changesets.map { |c| c.id })
+
+    # but also add any changesets which have new comments
+    new_ids = @conn
+      .exec("select distinct changeset_id from changeset_comments where created_at >= '#{last_run}' and created_at < '#{@now}' and visible")
+      .map { |row| row["changeset_id"].to_i }
+      .select { |c_id| not cs_ids.include?(c_id) }
+
+    new_ids.each do |id|
+      @conn
+        .exec("select id, created_at, closed_at, num_changes from changesets where id=#{id}")
+        .map { |row| Changeset.new(row) }
+        .each { |cs| changesets << cs }
+    end
+
+    changesets.sort_by { |cs| cs.id }
   end
 
   # creates an XML file containing the changeset information from the
@@ -106,6 +125,24 @@ class Replicator
         tag["k"] = row["k"]
         tag["v"] = row["v"]
         xml << tag
+      end
+
+      # grab the visible changeset comments as well
+      res = @conn.exec("select cc.author_id, u.display_name as author, cc.body, cc.created_at from changeset_comments cc join users u on cc.author_id=u.id where cc.changeset_id=#{cs.id} and cc.visible order by cc.created_at asc")
+      xml["comments_count"] = res.num_tuples.to_s
+      if res.num_tuples > 0
+        discussion = XML::Node.new("discussion")
+        res.each do |row|
+          comment = XML::Node.new("comment")
+          comment["uid"] = row["author_id"]
+          comment["user"] = row["author"]
+          comment["date"] = Time.parse(row["created_at"]).getutc.xmlschema
+          text = XML::Node.new("text")
+          text.content = row["body"]
+          comment << text
+          discussion << comment
+        end
+        xml << discussion
       end
 
       doc.root << xml
