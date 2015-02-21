@@ -43,6 +43,75 @@ class Changeset
 end
 
 ##
+# builds an XML representation of a changeset from the database
+class ChangesetBuilder
+  def initialize(now, conn)
+    @now = now
+    @conn = conn
+  end
+
+  def changeset_xml(cs)
+    xml = XML::Node.new("changeset")
+    xml["id"] = cs.id.to_s
+    xml["created_at"] = cs.created_at.getutc.xmlschema
+    xml["closed_at"] = cs.closed_at.getutc.xmlschema if cs.closed?(@now)
+    xml["open"] = cs.open?(@now).to_s
+    xml["num_changes"] = cs.num_changes.to_s
+
+    res = @conn.exec("select u.id, u.display_name, c.min_lat, c.max_lat, c.min_lon, c.max_lon from users u join changesets c on u.id=c.user_id where c.id=#{cs.id}")
+    xml["user"] = res[0]["display_name"]
+    xml["uid"] = res[0]["id"]
+
+    unless res[0]["min_lat"].nil? ||
+           res[0]["max_lat"].nil? ||
+           res[0]["min_lon"].nil? ||
+           res[0]["max_lon"].nil?
+      xml["min_lat"] = (res[0]["min_lat"].to_f / GEO_SCALE).to_s
+      xml["max_lat"] = (res[0]["max_lat"].to_f / GEO_SCALE).to_s
+      xml["min_lon"] = (res[0]["min_lon"].to_f / GEO_SCALE).to_s
+      xml["max_lon"] = (res[0]["max_lon"].to_f / GEO_SCALE).to_s
+    end
+
+    add_tags(xml, cs)
+    add_comments(xml, cs)
+
+    xml
+  end
+
+  def add_tags(xml, cs)
+    res = @conn.exec("select k, v from changeset_tags where changeset_id=#{cs.id}")
+    res.each do |row|
+      tag = XML::Node.new("tag")
+      tag["k"] = row["k"]
+      tag["v"] = row["v"]
+      xml << tag
+    end
+  end
+
+  def add_comments(xml, cs)
+    # grab the visible changeset comments as well
+    res = @conn.exec("select cc.author_id, u.display_name as author, cc.body, cc.created_at from changeset_comments cc join users u on cc.author_id=u.id where cc.changeset_id=#{cs.id} and cc.visible order by cc.created_at asc")
+    xml["comments_count"] = res.num_tuples.to_s
+
+    # early return if there aren't any comments
+    return unless res.num_tuples > 0
+
+    discussion = XML::Node.new("discussion")
+    res.each do |row|
+      comment = XML::Node.new("comment")
+      comment["uid"] = row["author_id"]
+      comment["user"] = row["author"]
+      comment["date"] = Time.parse(row["created_at"]).getutc.xmlschema
+      text = XML::Node.new("text")
+      text.content = row["body"]
+      comment << text
+      discussion << comment
+    end
+    xml << discussion
+  end
+end
+
+##
 # state and connections associated with getting changeset data
 # replicated to a file.
 class Replicator
@@ -62,18 +131,18 @@ class Replicator
     # for us to look at anything that was closed recently, and filter from
     # there.
     changesets = @conn
-      .exec("select id, created_at, closed_at, num_changes from changesets where closed_at > ((now() at time zone 'utc') - '1 hour'::interval)")
-      .map { |row| Changeset.new(row) }
-      .select { |cs| cs.activity_between?(last_run, @now) }
+                 .exec("select id, created_at, closed_at, num_changes from changesets where closed_at > ((now() at time zone 'utc') - '1 hour'::interval)")
+                 .map { |row| Changeset.new(row) }
+                 .select { |cs| cs.activity_between?(last_run, @now) }
 
     # set for faster presence lookups by ID
-    cs_ids = Set.new(changesets.map { |c| c.id })
+    cs_ids = Set.new(changesets.map(&:id))
 
     # but also add any changesets which have new comments
     new_ids = @conn
-      .exec("select distinct changeset_id from changeset_comments where created_at >= '#{last_run}' and created_at < '#{@now}' and visible")
-      .map { |row| row["changeset_id"].to_i }
-      .select { |c_id| not cs_ids.include?(c_id) }
+              .exec("select distinct changeset_id from changeset_comments where created_at >= '#{last_run}' and created_at < '#{@now}' and visible")
+              .map { |row| row["changeset_id"].to_i }
+              .select { |c_id| !cs_ids.include?(c_id) }
 
     new_ids.each do |id|
       @conn
@@ -82,7 +151,7 @@ class Replicator
         .each { |cs| changesets << cs }
     end
 
-    changesets.sort_by { |cs| cs.id }
+    changesets.sort_by(&:id)
   end
 
   # creates an XML file containing the changeset information from the
@@ -97,55 +166,9 @@ class Replicator
       "license" => "http://opendatacommons.org/licenses/odbl/1-0/" }
       .each { |k, v| doc.root[k] = v }
 
+    builder = ChangesetBuilder.new(@now, @conn)
     changesets.each do |cs|
-      xml = XML::Node.new("changeset")
-      xml["id"] = cs.id.to_s
-      xml["created_at"] = cs.created_at.getutc.xmlschema
-      xml["closed_at"] = cs.closed_at.getutc.xmlschema if cs.closed?(@now)
-      xml["open"] = cs.open?(@now).to_s
-      xml["num_changes"] = cs.num_changes.to_s
-
-      res = @conn.exec("select u.id, u.display_name, c.min_lat, c.max_lat, c.min_lon, c.max_lon from users u join changesets c on u.id=c.user_id where c.id=#{cs.id}")
-      xml["user"] = res[0]["display_name"]
-      xml["uid"] = res[0]["id"]
-
-      unless res[0]["min_lat"].nil? ||
-             res[0]["max_lat"].nil? ||
-             res[0]["min_lon"].nil? ||
-             res[0]["max_lon"].nil?
-        xml["min_lat"] = (res[0]["min_lat"].to_f / GEO_SCALE).to_s
-        xml["max_lat"] = (res[0]["max_lat"].to_f / GEO_SCALE).to_s
-        xml["min_lon"] = (res[0]["min_lon"].to_f / GEO_SCALE).to_s
-        xml["max_lon"] = (res[0]["max_lon"].to_f / GEO_SCALE).to_s
-      end
-
-      res = @conn.exec("select k, v from changeset_tags where changeset_id=#{cs.id}")
-      res.each do |row|
-        tag = XML::Node.new("tag")
-        tag["k"] = row["k"]
-        tag["v"] = row["v"]
-        xml << tag
-      end
-
-      # grab the visible changeset comments as well
-      res = @conn.exec("select cc.author_id, u.display_name as author, cc.body, cc.created_at from changeset_comments cc join users u on cc.author_id=u.id where cc.changeset_id=#{cs.id} and cc.visible order by cc.created_at asc")
-      xml["comments_count"] = res.num_tuples.to_s
-      if res.num_tuples > 0
-        discussion = XML::Node.new("discussion")
-        res.each do |row|
-          comment = XML::Node.new("comment")
-          comment["uid"] = row["author_id"]
-          comment["user"] = row["author"]
-          comment["date"] = Time.parse(row["created_at"]).getutc.xmlschema
-          text = XML::Node.new("text")
-          text.content = row["body"]
-          comment << text
-          discussion << comment
-        end
-        xml << discussion
-      end
-
-      doc.root << xml
+      doc.root << builder.changeset_xml(cs)
     end
 
     doc.to_s
