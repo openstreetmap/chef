@@ -38,7 +38,7 @@ end
 
 service "apache2" do
   action :nothing
-  subscribes :restart, "cookbook_file[/etc/ssl/certs/rapidssl.pem]"
+  subscribes :restart, "cookbook_file[/etc/ssl/certs/startcom.pem]"
   subscribes :restart, "cookbook_file[/etc/ssl/certs/#{certificate}.pem]"
   subscribes :restart, "file[/etc/ssl/private/#{certificate}.key]"
 end
