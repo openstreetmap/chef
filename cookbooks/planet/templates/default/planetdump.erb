@@ -69,6 +69,7 @@ rm -rf relations relation_tags relation_members
 time nice -n 19 /opt/planet-dump-ng/planet-dump-ng \
      -c "pbzip2 -c" -f "/store/backup/${file}" --dense-nodes=1 \
      -C "changesets-${date}.osm.bz2" \
+     -D "discussions-${date}.osm.bz2" \
      -x "planet-${date}.osm.bz2" -X "history-${date}.osm.bz2" \
      -p "planet-${date}.osm.pbf" -P "history-${date}.osm.pbf"
 
@@ -91,6 +92,7 @@ function install_dump {
 
 # Move dumps into place
 install_dump "changesets" "bz2" "<%= node[:planet][:dump][:xml_directory] %>" "${year}"
+install_dump "discussions" "bz2" "<%= node[:planet][:dump][:xml_directory] %>" "${year}"
 install_dump "planet" "bz2" "<%= node[:planet][:dump][:xml_directory] %>" "${year}"
 install_dump "history" "bz2" "<%= node[:planet][:dump][:xml_history_directory] %>" "${year}"
 install_dump "planet" "pbf" "<%= node[:planet][:dump][:pbf_directory] %>"
