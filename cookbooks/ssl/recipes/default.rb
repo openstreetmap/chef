@@ -22,7 +22,7 @@ keys = data_bag_item("ssl", "keys")
 package "openssl"
 package "ssl-cert"
 
-cookbook_file "/etc/ssl/certs/startcom.pem" do
+cookbook_file "/etc/ssl/certs/rapidssl.pem" do
   owner "root"
   group "root"
   mode 0444
