@@ -1,5 +1,7 @@
 # OpenStreetMap chef cookbooks
 
+[![Build Status](https://travis-ci.org/openstreetmap/chef.svg?branch=master)](https://travis-ci.org/openstreetmap/chef)
+
 This repository manages the configuration of all the servers run by the
 OpenStreetMap Foundation's Operations Working Group. We use
 [Chef](https://www.chef.io/) to automated the configuration of all of our
