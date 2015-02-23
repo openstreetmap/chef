@@ -17,8 +17,6 @@
 # limitations under the License.
 #
 
-node.default[:ssl][:certificates] = node[:ssl][:certificates] | ["osmfoundation"]
-
 include_recipe "wordpress"
 include_recipe "mysql"
 
@@ -39,8 +37,6 @@ end
 
 wordpress_site "crm.osmfoundation.org" do
   ssl_enabled true
-  ssl_certificate "osmfoundation"
-  ssl_certificate_chain "startcom"
   database_name "civicrm"
   database_user "civicrm"
   database_password database_password

@@ -18,6 +18,7 @@
 #
 
 certificate = node[:apache][:ssl][:certificate]
+certificate_chain = node[:apache][:ssl][:certificate_chain]
 
 node.default[:ssl][:certificates] = node[:ssl][:certificates] | [certificate]
 
@@ -32,13 +33,13 @@ apache_module "ssl"
 
 apache_conf "ssl" do
   template "ssl.erb"
-  variables :certificate => certificate
+  variables :certificate => certificate, :certificate_chain => certificate_chain
   notifies :reload, "service[apache2]"
 end
 
 service "apache2" do
   action :nothing
-  subscribes :restart, "cookbook_file[/etc/ssl/certs/rapidssl.pem]"
+  subscribes :restart, "cookbook_file[/etc/ssl/certs/#{certificate_chain}.pem]"
   subscribes :restart, "cookbook_file[/etc/ssl/certs/#{certificate}.pem]"
   subscribes :restart, "file[/etc/ssl/private/#{certificate}.key]"
 end
