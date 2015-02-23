@@ -23,7 +23,7 @@ class Chef
       def repo_attrs
         return {} unless ::File.exist?(::File.join(@new_resource.destination, ".svn"))
 
-        @repo_attrs ||= svn_info.lines.each_with_object({}) do |attrs, line|
+        @repo_attrs ||= svn_info.lines.each_with_object({}) do |line, attrs|
           if line =~ SVN_INFO_PATTERN
             property, value = Regexp.last_match[1], Regexp.last_match[2]
             attrs[property] = value
