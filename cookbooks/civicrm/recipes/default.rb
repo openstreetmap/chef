@@ -47,6 +47,10 @@ wordpress_theme "osmblog-wp-theme" do
   repository "git://github.com/harry-wood/osmblog-wp-theme.git"
 end
 
+wordpress_plugin "registration-honeypot" do
+  site "crm.osmfoundation.org"
+end
+
 civicrm_version = node[:civicrm][:version]
 civicrm_directory = "/srv/crm.osmfoundation.org/wp-content/plugins/civicrm"
 
