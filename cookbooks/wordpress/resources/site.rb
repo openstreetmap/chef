@@ -30,6 +30,7 @@ attribute :database_password, :kind_of => String, :required => true
 attribute :database_prefix, :kind_of => String, :default => "wp_"
 attribute :ssl_enabled, :kind_of => [TrueClass, FalseClass], :default => false
 attribute :ssl_certificate, :kind_of => String
+attribute :ssl_certificate_chain, :kind_of => String
 attribute :urls, :kind_of => Hash, :default => {}
 attribute :reload_apache, :kind_of => [TrueClass, FalseClass], :default => true
 

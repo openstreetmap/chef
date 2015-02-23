@@ -22,14 +22,16 @@ keys = data_bag_item("ssl", "keys")
 package "openssl"
 package "ssl-cert"
 
-cookbook_file "/etc/ssl/certs/rapidssl.pem" do
-  owner "root"
-  group "root"
-  mode 0444
-  backup false
+%w(rapidssl startcom).each do |certificate|
+  cookbook_file "/etc/ssl/certs/#{certificate}.pem" do
+    owner "root"
+    group "root"
+    mode 0444
+    backup false
+  end
 end
 
-["openstreetmap", "tile.openstreetmap", "crm.osmfoundation"].each do |certificate|
+["openstreetmap", "tile.openstreetmap", "osmfoundation"].each do |certificate|
   if node[:ssl][:certificates].include?(certificate)
     cookbook_file "/etc/ssl/certs/#{certificate}.pem" do
       owner "root"

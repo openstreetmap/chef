@@ -131,7 +131,8 @@ action :create do
     variables :aliases => Array(new_resource.aliases),
               :urls => new_resource.urls,
               :ssl_enabled => new_resource.ssl_enabled,
-              :ssl_certificate => new_resource.ssl_certificate
+              :ssl_certificate => new_resource.ssl_certificate,
+              :ssl_certificate_chain => new_resource.ssl_certificate_chain
     reload_apache false
   end
 

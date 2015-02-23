@@ -31,6 +31,9 @@
   SSLCertificateFile /etc/ssl/certs/<%= @ssl_certificate %>.pem
   SSLCertificateKeyFile /etc/ssl/private/<%= @ssl_certificate %>.key
 <% end -%>
+<% if @ssl_certificate -%>
+  SSLCertificateChainFile /etc/ssl/certs/<%= @ssl_certificate_chain %>.pem
+<% end -%>
 
   CustomLog /var/log/apache2/<%= @name %>-access.log combined
   ErrorLog /var/log/apache2/<%= @name %>-error.log
