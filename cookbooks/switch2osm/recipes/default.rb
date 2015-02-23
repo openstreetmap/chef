@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+node.default[:ssl][:certificates] = node[:ssl][:certificates] | ["osmfoundation"]
+
 include_recipe "wordpress"
 
 passwords = data_bag_item("switch2osm", "passwords")
@@ -24,6 +26,9 @@ passwords = data_bag_item("switch2osm", "passwords")
 wordpress_site "switch2osm.org" do
   aliases ["www.switch2osm.org", "switch2osm.com", "www.switch2osm.com"]
   directory "/srv/switch2osm.org"
+  ssl_enabled true
+  ssl_certificate "osmfoundation"
+  ssl_certificate_chain "startcom"
   database_name "switch2osm-blog"
   database_user "switch2osm-user"
   database_password passwords["switch2osm-user"]
