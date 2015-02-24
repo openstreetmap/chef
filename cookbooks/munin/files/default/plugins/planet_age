@@ -5,25 +5,33 @@ files = [
     :label => "planet",
     :name => "/store/planet/planet/planet-latest.osm.bz2",
     :title => "Planet Dump",
-    :frequency => 7 * 24 * 60 * 60
+    :frequency => 7 * 24 * 60 * 60,
+    :warning => 1.05,
+    :critical => 1.1
   },
   {
     :label => "day",
     :name => "/store/planet/replication/day/state.txt",
     :title => "Daily Replication",
-    :frequency => 24 * 60 * 60
+    :frequency => 24 * 60 * 60,
+    :warning => 1.05,
+    :critical => 1.1
   },
   {
     :label => "hour",
     :name => "/store/planet/replication/hour/state.txt",
     :title => "Hourly Replication",
-    :frequency => 60 * 60
+    :frequency => 60 * 60,
+    :warning => 1.05,
+    :critical => 1.1
   },
   {
     :label => "minute",
     :name => "/store/planet/replication/minute/state.txt",
     :title => "Minutely Replication",
-    :frequency => 60
+    :frequency => 60,
+    :warning => 3,
+    :critical => 5
   }
 ]
 
@@ -37,8 +45,8 @@ if ARGV[0] == "config"
   files.each do |file|
     puts "#{file[:label]}.label #{file[:title]}"
     puts "#{file[:label]}.type GAUGE"
-    puts "#{file[:label]}.warning 0:1.05"
-    puts "#{file[:label]}.critical 0:1.1"
+    puts "#{file[:label]}.warning 0:#{file[:warning]}"
+    puts "#{file[:label]}.critical 0:#{file[:critical]}"
   end
 else
 
