@@ -24,6 +24,7 @@ passwords = data_bag_item("foundation", "passwords")
 mediawiki_site "wiki.osmfoundation.org" do
   aliases "www.osmfoundation.org", "osmfoundation.org"
   directory "/srv/wiki.osmfoundation.org"
+  enable_ssl true
   database_name "osmf-wiki"
   database_username "osmf-wikiuser"
   database_password passwords["wiki"]["database"]
