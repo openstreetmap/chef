@@ -11,6 +11,7 @@ else
 @define('CONST_Postgis_Version', '<%= node[:nominatim][:database][:postgis] %>');
 
 @define('CONST_Osm2pgsql_Flatnode_File', '<%= node[:nominatim][:flatnode_file] %>');
+@define('CONST_Search_NameOnlySearchFrequencyThreshold', 500);
 
 <% node[:nominatim][:tablespaces].each do |part,name| -%>
 @define('CONST_Tablespace_<%= part %>', '<%= name %>');
