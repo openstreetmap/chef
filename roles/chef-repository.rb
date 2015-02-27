@@ -4,6 +4,10 @@ description "Role applied to all chef repositories"
 default_attributes(
   :accounts => {
     :users => {
+      :jochen => {
+        :status => :user,
+        :shell => "/usr/bin/git-shell"
+      },
       :lonvia => {
         :status => :user,
         :shell => "/usr/bin/git-shell"
@@ -15,7 +19,7 @@ default_attributes(
       :chefrepo => {
         :status => :role,
         :members => [
-          :tomh, :grant, :matt, :jburgess, :lonvia, :yellowbkpk, :bretth
+          :tomh, :grant, :matt, :jburgess, :lonvia, :yellowbkpk, :bretth, :jochen
         ]
       }
     }
