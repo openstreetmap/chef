@@ -124,7 +124,7 @@ node[:taginfo][:sites].each do |site|
     settings["sources"]["db"]["tagstats"] = "#{directory}/taginfo/tagstats/tagstats"
     settings["tagstats"]["cxxflags"] = "-I../../osmium/include"
     settings["tagstats"]["geodistribution"] = "MmapAnon"
-    settings["user_interface"]["key_page"]["show_similar_tab"] = true
+    settings["user_interface"]["key_page"]["show_tab_similar"] = true
 
     JSON.pretty_generate(settings)
   end
