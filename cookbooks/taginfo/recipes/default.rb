@@ -134,6 +134,7 @@ node[:taginfo][:sites].each do |site|
     group "taginfo"
     mode 0644
     content settings
+    notifies :restart, "service[apache2]"
   end
 
   execute "#{directory}/taginfo/tagstats/Makefile" do
