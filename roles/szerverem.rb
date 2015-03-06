@@ -4,8 +4,8 @@ description "Role applied to all servers at szerverem.hu"
 default_attributes(
   :networking => {
     :nameservers => [
-      "8.8.8.8",
-      "8.8.4.4"
+      "84.2.44.1",
+      "84.2.46.1"
     ],
     :roles => {
       :external => {
