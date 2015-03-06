@@ -32,3 +32,5 @@ service "fail2ban" do
   supports :status => true, :reload => true, :restart => true
   subscribes :reload, "template[/etc/fail2ban/jail.local]"
 end
+
+munin_plugin "fail2ban"
