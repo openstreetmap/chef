@@ -45,7 +45,9 @@ acl blacklist_path urlpath_regex ^/zecmd/
 http_access allow osmtile_sites whitelist_path
 http_access deny blacklist_path
 
-http_access allow osmtile_sites
+acl requestMethodGet method GET
+
+http_access allow osmtile_sites requestMethodGet
 
 acl osmtile_nocache_url urlpath_regex \.png/(status|dirty)$
 cache deny osmtile_sites osmtile_nocache_url
