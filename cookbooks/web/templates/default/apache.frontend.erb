@@ -145,36 +145,13 @@
   Alias /attachments /store/rails/attachments
 
   #
-  # Preserve the host name when forwarding to the proxy
+  # Pass supported calls to cgimap
   #
-  ProxyPreserveHost on
-
-  #
-  # Set a long timeout - changeset uploads can take a long time
-  #
-  ProxyTimeout 3600
-
-  #
-  # Allow all proxy requests
-  #
-  <Proxy *>
-    Allow from all
-  </Proxy>
-
-  #
-  # Pass some other API calls to the backends via a load balancer
-  #
-  ProxyPass /api/0.6/map balancer://backend/api/0.6/map
-  ProxyPass /api/0.6/tracepoints balancer://backend/api/0.6/tracepoints
-  ProxyPass /api/0.6/amf/read balancer://backend/api/0.6/amf/read
-  ProxyPass /api/0.6/swf/trackpoints balancer://backend/api/0.6/swf/trackpoints
-  ProxyPassMatch ^(/api/0\.6/changeset/[0-9]+/(upload|download))$ balancer://backend$1
-  ProxyPassMatch ^(/api/0\.6/(node|way|relation)/[0-9]+)$ balancer://backend$1
-  ProxyPassMatch ^(/api/0\.6/(node|way|relation)/[0-9]+/(full|history|search|ways))$ balancer://backend$1
-  ProxyPass /api/0.6/nodes balancer://backend/api/0.6/nodes
-  ProxyPass /api/0.6/ways balancer://backend/api/0.6/ways
-  ProxyPass /api/0.6/relations balancer://backend/api/0.6/relations
-  ProxyPassMatch ^(/trace/[0-9]+/data(|/|.xml))$ balancer://backend$1
+  RewriteRule ^/api/0\.6/map$ fcgi://127.0.0.1:8000$0 [P]
+  RewriteCond %{REQUEST_METHOD} ^(HEAD|GET)$
+  RewriteRule ^/api/0\.6/(node|way|relation)/[0-9]+$ fcgi://127.0.0.1:8000$0 [P]
+  RewriteRule ^/api/0\.6/(way|relation)/[0-9]+/full$ fcgi://127.0.0.1:8000$0 [P]
+  RewriteRule ^/api/0\.6/(nodes|ways|relations)$ fcgi://127.0.0.1:8000$0 [P]
 
   #
   # Redirect trac and wiki requests to the right places
@@ -187,22 +164,6 @@
   #
   RedirectPermanent /images/osm_logo.png http://www.openstreetmap.org/assets/osm_logo.png
   RedirectPermanent /images/cc_button.png http://www.openstreetmap.org/assets/cc_button.png
-
-  #
-  # Define a load balancer for the backends
-  #
-  <Proxy balancer://backend>
-    ProxySet lbmethod=bybusyness
-<% if port == 443 -%>
-    BalancerMember https://rails1 disablereuse=on
-    BalancerMember https://rails2 disablereuse=on
-    BalancerMember https://rails3 disablereuse=on
-<% else -%>
-    BalancerMember http://rails1
-    BalancerMember http://rails2
-    BalancerMember http://rails3
-<% end -%>
-  </Proxy>
 <% if port == 80 -%>
 
   #
