@@ -13,9 +13,6 @@ default_attributes(
       :max_requests_per_child => 10000
     }
   },
-  :networking => {
-    :nameservers => ["193.63.75.107"]
-  },
   :passenger => {
     :max_pool_size => 50
   },

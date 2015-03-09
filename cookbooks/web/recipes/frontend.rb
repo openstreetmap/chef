@@ -17,10 +17,8 @@
 # limitations under the License.
 #
 
-include_recipe "memcached"
 include_recipe "apache::ssl"
 include_recipe "web::rails"
-include_recipe "web::cgimap"
 
 web_passwords = data_bag_item("web", "passwords")
 
@@ -28,7 +26,6 @@ apache_module "alias"
 apache_module "deflate"
 apache_module "expires"
 apache_module "headers"
-apache_module "proxy_fcgi"
 apache_module "proxy_http"
 apache_module "proxy_balancer"
 apache_module "lbmethod_byrequests"
@@ -65,26 +62,4 @@ end
 
 munin_plugin "api_waits_#{node[:hostname]}" do
   target "api_waits_"
-end
-
-node.set[:memcached][:ip_address] = node.external_ipaddress
-
-firewall_rule "accept-memcache-tcp" do
-  action :accept
-  family "inet"
-  source "ic"
-  dest "fw"
-  proto "tcp"
-  dest_ports "11211"
-  source_ports "1024:"
-end
-
-firewall_rule "accept-memcache-udp" do
-  action :accept
-  family "inet"
-  source "ic"
-  dest "fw"
-  proto "udp"
-  dest_ports "11211"
-  source_ports "1024:"
 end

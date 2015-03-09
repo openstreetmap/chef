@@ -4,6 +4,13 @@ description "Master role applied to spike-01"
 default_attributes(
   :networking => {
     :interfaces => {
+      :internal_ipv4 => {
+        :interface => "eth0",
+        :role => :internal,
+        :family => :inet,
+        :address => "146.179.159.162",
+        :hwaddress => "00:1a:4b:a5:0f:ca"
+      },
       :external_ipv4 => {
         :interface => "eth1",
         :role => :external,
