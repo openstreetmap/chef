@@ -28,6 +28,15 @@ default_attributes(
         }
       }
     }
+  },
+  :sysfs => {
+    :cpufreq_ondemand_low => {
+      :comment => "Tune the ondemand CPU frequency governor for reduced scaling",
+      :parameters => {
+        "devices/system/cpu/cpufreq/ondemand/up_threshold" => "95",
+        "devices/system/cpu/cpufreq/ondemand/sampling_down_factor" => "1"
+      }
+    }
   }
 )
 
