@@ -14,6 +14,7 @@ default_attributes(
     "/store/rails" => { :host => "ironbelly", :path => "/store/rails" }
   },
   :passenger => {
+    :version => 4,
     :pool_idle_time => 0
   },
   :web => {
