@@ -69,8 +69,11 @@ define :rails_port, :action => [:create, :enable] do
     recursive true
   end
 
-  file "#{rails_directory}/tmp/restart.txt" do
+  execute rails_directory do
     action :nothing
+    command "passenger-config restart-app #{rails_directory}"
+    user "root"
+    group "root"
   end
 
   file "#{rails_directory}/public/export/embed.html" do
@@ -85,7 +88,7 @@ define :rails_port, :action => [:create, :enable] do
     user rails_user
     group rails_group
     notifies :delete, "file[#{rails_directory}/public/export/embed.html]"
-    notifies :touch, "file[#{rails_directory}/tmp/restart.txt]"
+    notifies :run, "execute[#{rails_directory}]"
   end
 
   execute "#{rails_directory}/db/migrate" do
@@ -144,7 +147,7 @@ define :rails_port, :action => [:create, :enable] do
     group rails_group
     mode 0664
     variables database_params
-    notifies :touch, "file[#{rails_directory}/tmp/restart.txt]"
+    notifies :run, "execute[#{rails_directory}]"
   end
 
   application_yml = edit_file "#{rails_directory}/config/example.application.yml" do |line|
@@ -219,7 +222,7 @@ define :rails_port, :action => [:create, :enable] do
     group rails_group
     mode 0664
     content application_yml
-    notifies :touch, "file[#{rails_directory}/tmp/restart.txt]"
+    notifies :run, "execute[#{rails_directory}]"
   end
 
   if params[:piwik_configuration]
@@ -256,7 +259,7 @@ define :rails_port, :action => [:create, :enable] do
         File.mtime("#{rails_directory}/lib/quad_tile/quad_tile_so.so") >= File.mtime("#{rails_directory}/lib/quad_tile/quad_tile.c") &&
         File.mtime("#{rails_directory}/lib/quad_tile/quad_tile_so.so") >= File.mtime("#{rails_directory}/lib/quad_tile/quad_tile.h")
     end
-    notifies :touch, "file[#{rails_directory}/tmp/restart.txt]"
+    notifies :run, "execute[#{rails_directory}]"
   end
 
   template "/etc/cron.daily/rails-#{name}" do

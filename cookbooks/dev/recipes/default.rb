@@ -175,7 +175,7 @@ if node[:postgresql][:clusters][:"9.1/main"]
         group "apis"
         mode 0644
         variables :site => site_name
-        notifies :touch, "file[#{rails_directory}/tmp/restart.txt]"
+        notifies :run, "execute[#{rails_directory}]"
       end
 
       apache_site site_name do
