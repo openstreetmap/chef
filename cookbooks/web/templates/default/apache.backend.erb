@@ -35,7 +35,11 @@
   RailsEnv production
   PassengerMinInstances 3
   PassengerMaxRequests 500
+<% if port == 443 -%>
+  PassengerPreStart https://www.openstreetmap.org/
+<% else -%>
   PassengerPreStart http://www.openstreetmap.org/
+<% end -%>
   SetEnv SECRET_KEY_BASE <%= @secret_key_base %>
 
   #

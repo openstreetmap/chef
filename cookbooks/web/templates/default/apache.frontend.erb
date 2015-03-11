@@ -136,7 +136,11 @@
   RailsEnv production
   PassengerMinInstances 10
   PassengerMaxRequests 5000
+<% if port == 443 -%>
+  PassengerPreStart https://www.openstreetmap.org/
+<% else -%>
   PassengerPreStart http://www.openstreetmap.org/
+<% end -%>
   SetEnv SECRET_KEY_BASE <%= @secret_key_base %>
   Alias /favicon.ico <%= node[:web][:base_directory] %>/rails/app/assets/images/favicon.ico
   Alias /openlayers <%= node[:web][:base_directory] %>/rails/vendor/assets/openlayers
