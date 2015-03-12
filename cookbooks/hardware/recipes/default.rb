@@ -253,6 +253,49 @@ end
   end
 end
 
+disks = []
+
+node[:block_device].each do |name, attributes|
+  disks << { :device => name } if attributes[:vendor] == "ATA"
+end
+
+if status_packages["cciss-vol-status"]
+  status_packages["cciss-vol-status"].each do |device|
+    IO.popen(["cciss_vol_status", "-V", "/dev/#{device}"]).each do |line|
+      disks << { :device => device, :driver => "cciss", :id => Regexp.last_match[1].to_i - 1 } if line =~ / bay ([0-9]+) /
+    end
+  end
+end
+
+if disks.count > 0
+  package "smartmontools"
+
+  template "/etc/smartd.conf" do
+    source "smartd.conf.erb"
+    owner "root"
+    group "root"
+    mode 0644
+    variables :disks => disks
+    notifies :reload, "service[smartmontools]"
+  end
+
+  template "/etc/default/smartmontools" do
+    source "smartmontools.erb"
+    owner "root"
+    group "root"
+    mode 0644
+    notifies :restart, "service[smartmontools]"
+  end
+
+  service "smartmontools" do
+    action [:enable, :start]
+  end
+else
+  service "smartmontools" do
+    action [:stop, :disable]
+  end
+end
+
 if File.exist?("/etc/mdadm/mdadm.conf")
   mdadm_conf = edit_file "/etc/mdadm/mdadm.conf" do |line|
     line.gsub!(/^MAILADDR .*$/, "MAILADDR admins@openstreetmap.org")

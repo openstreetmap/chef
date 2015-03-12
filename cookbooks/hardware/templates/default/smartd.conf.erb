@@ -1,0 +1,9 @@
+# DO NOT EDIT - This file is being maintained by Chef
+  
+<% @disks.each do |disk| -%>
+<% if disk[:driver] -%>
+/dev/<%= disk[:device] %> -d <%= disk[:driver] %>,<%= disk[:id] %> -m admins@openstreetmap.org
+<% else -%>
+/dev/<%= disk[:device] %> -m admins@openstreetmap.org
+<% end -%>
+<% end -%>
