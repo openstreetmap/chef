@@ -200,6 +200,8 @@ node[:kernel][:modules].each_key do |modname|
   when "aacraid"
     tools_packages << "arcconf"
     status_packages["aacraid-status"] ||= []
+  when "arcmsr"
+    tools_packages << "areca"
   end
 end
 
@@ -222,6 +224,22 @@ end
     package tools_package do
       action :purge
     end
+  end
+end
+
+if tools_packages.include?("areca")
+  include_recipe "git"
+
+  git "/opt/areca" do
+    action :sync
+    repository "git://chef.openstreetmap.org/areca.git"
+    user "root"
+    group "root"
+  end
+else
+  directory "/opt/areca" do
+    action :delete
+    recursive true
   end
 end
 
