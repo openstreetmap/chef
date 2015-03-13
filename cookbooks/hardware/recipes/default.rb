@@ -275,7 +275,8 @@ if status_packages["megaclisas-status"]
 
     next unless driver == "megaraid_sas"
 
-    device = host.sub("/sys/class/scsi_host/host", "bus/")
+    bus = host.sub("/sys/class/scsi_host/host", "")
+    device = File.basename(Dir.glob("/sys/bus/scsi/devices/#{bus}:*/scsi_generic/*").first)
 
     IO.popen(["megacli", "-PDList", "-a#{controller}", "-NoLog"]).each do |line|
       disks << { :device => device, :driver => "megaraid",  :id => Regexp.last_match[1] } if line =~ /^Device Id: ([0-9]+)$/
