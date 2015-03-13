@@ -302,6 +302,20 @@ if status_packages["sas2ircu-status"]
   end
 end
 
+if status_packages["aacraid-status"]
+  Dir.glob("/sys/class/scsi_host/host*") do |host|
+    driver = File.new("#{host}/proc_name").read.chomp
+
+    next unless driver == "aacraid"
+
+    bus = host.sub("/sys/class/scsi_host/host", "")
+
+    Dir.glob("/sys/bus/scsi/devices/#{bus}:1:*/scsi_generic/*").each do |sg|
+      disks << { :device => File.basename(sg) }
+    end
+  end
+end
+
 if disks.count > 0
   package "smartmontools"
 
