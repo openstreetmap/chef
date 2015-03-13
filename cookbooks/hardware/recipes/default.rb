@@ -262,7 +262,7 @@ end
 if status_packages["cciss-vol-status"]
   status_packages["cciss-vol-status"].each do |device|
     IO.popen(["cciss_vol_status", "-V", "/dev/#{device}"]).each do |line|
-      disks << { :device => device, :driver => "cciss", :id => Regexp.last_match[1].to_i - 1 } if line =~ / bay ([0-9]+) /
+      disks << { :device => device, :driver => "cciss", :id => Regexp.last_match[1].to_i - 1 } if line =~ / bay ([0-9]+) +HP /
     end
   end
 end
