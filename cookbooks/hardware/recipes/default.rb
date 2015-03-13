@@ -267,6 +267,24 @@ if status_packages["cciss-vol-status"]
   end
 end
 
+if status_packages["megaclisas-status"]
+  controller = 0
+
+  Dir.glob("/sys/class/scsi_host/host*") do |host|
+    driver = File.new("#{host}/proc_name").read.chomp
+
+    next unless driver == "megaraid_sas"
+
+    device = host.sub("/sys/class/scsi_host/host", "bus/")
+
+    IO.popen(["megacli", "-PDList", "-a#{controller}", "-NoLog"]).each do |line|
+      disks << { :device => device, :driver => "megaraid",  :id => Regexp.last_match[1] } if line =~ /^Device Id: ([0-9]+)$/
+    end
+
+    controller += 1
+  end
+end
+
 if disks.count > 0
   package "smartmontools"
 
