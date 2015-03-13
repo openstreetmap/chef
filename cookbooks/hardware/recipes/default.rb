@@ -280,6 +280,8 @@ if status_packages["megaclisas-status"]
 
     IO.popen(["megacli", "-PDList", "-a#{controller}", "-NoLog"]).each do |line|
       disks << { :device => device, :driver => "megaraid",  :id => Regexp.last_match[1] } if line =~ /^Device Id: ([0-9]+)$/
+
+      disks.pop if line =~ /^Firmware state: Hotspare, Spun down$/
     end
 
     controller += 1
