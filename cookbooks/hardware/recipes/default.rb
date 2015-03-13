@@ -334,6 +334,25 @@ if status_packages["aacraid-status"]
   end
 end
 
+if tools_packages.include?("areca")
+  device = IO.popen(["lsscsi", "-g"]).grep(%r{Areca +RAID controller .*/dev/(sg[0-9]+)}) do
+    Regexp.last_match[1]
+  end.first
+
+  IO.popen(["/opt/areca/x86_64/cli64", "disk", "info"]).each do |line|
+    next if line =~ /N\.A\./
+
+    if line =~ /^ +[0-9]+ +0*([0-9]+) +(?:Slot#|SLOT )0*([0-9]+) +/
+      enc = Regexp.last_match[1]
+      slot = Regexp.last_match[2]
+
+      disks << { :device => device, :driver => "areca", :id => "#{slot}/#{enc}" }
+    elsif line =~ /^ +([0-9]+) +[0-9]+ +/
+      disks << { :device => device, :driver => "areca", :id => Regexp.last_match[1] }
+    end
+  end
+end
+
 if disks.count > 0
   package "smartmontools"
 
