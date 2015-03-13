@@ -1,0 +1,8 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+[smart_<%= @disk[:munin] %>]
+<% if @disk[:driver] -%>
+env.smartargs -H -d <%= @disk[:driver] %>,<%= @disk[:id] %>
+<% else -%>
+env.smartargs -H
+<% end -%>

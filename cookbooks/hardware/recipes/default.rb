@@ -353,6 +353,22 @@ if tools_packages.include?("areca")
   end
 end
 
+disks.each do |disk|
+  if disk[:device] =~ /^cciss\/(.*)$/
+    id = File.read("/sys/bus/cciss/devices/#{Regexp.last_match[1]}/unique_id").chomp
+
+    disk[:munin] = "cciss-3#{id.downcase}"
+  else
+    disk[:munin] = disk[:device]
+  end
+
+  if disk[:id]
+    disk[:munin] = "#{disk[:munin]}-#{disk[:id].to_s.tr('/', ':')}"
+  end
+
+  disk[:hddtemp] = disk[:munin].tr("-:", "_")
+end
+
 if disks.count > 0
   package "smartmontools"
 
@@ -376,9 +392,35 @@ if disks.count > 0
   service "smartmontools" do
     action [:enable, :start]
   end
+
+  disks.each do |disk|
+    munin_plugin "smart_#{disk[:munin]}" do
+      target "smart_"
+      conf "munin.smart.erb"
+      conf_variables :disk => disk
+    end
+  end
+
+  munin_plugin "hddtemp_smartctl" do
+    conf "munin.hddtemp.erb"
+    conf_variables :disks => disks
+  end
 else
   service "smartmontools" do
     action [:stop, :disable]
+  end
+
+  munin_plugin "hddtemp_smartctl" do
+    action :delete
+  end
+end
+
+plugins = Dir.glob("/etc/munin/plugins/smart_*").map { |p| File.basename(p) } -
+          disks.map { |d| "smart_#{d[:munin_name]}" }
+
+plugins.each do |plugin|
+  munin_plugin plugin do
+    action :delete
   end
 end
 

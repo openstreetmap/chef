@@ -1,0 +1,10 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+[hddtemp_smartctl]
+env.drives <%= @disks.map { |d| d[:hddtemp] }.sort.join(" ") %>
+<% @disks.sort_by { |d| d[:hddtemp] }.each do |disk| -%>
+<% if disk[:driver] -%>
+env.type_<%= disk[:hddtemp] %> <%= disk[:driver] %>,<%= disk[:id] %>
+<% end -%>
+env.dev_<%= disk[:hddtemp] %> <%= disk[:device] %>
+<% end -%>

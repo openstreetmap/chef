@@ -125,21 +125,6 @@ else
   end
 end
 
-disks = node[:block_device].select do |_, attributes|
-  ["ATA", "FUJITSU", "SEAGATE", "DELL", "COMPAQ", "IBM-ESXS"].include?(attributes[:vendor])
-end
-
-if disks.empty?
-  munin_plugin "hddtemp_smartctl" do
-    action :delete
-  end
-else
-  munin_plugin "hddtemp_smartctl" do
-    conf "hddtemp.erb"
-    conf_variables :disks => disks
-  end
-end
-
 if File.exist?("/sbin/hpasmcli")
   munin_plugin "hpasmcli2_temp" do
     target "hpasmcli2_"
@@ -314,20 +299,6 @@ if sensors_volt
 else
   munin_plugin "sensors_volt" do
     action :delete
-  end
-end
-
-node[:block_device].each do |name, attributes|
-  if attributes[:vendor] == "ATA"
-    munin_plugin "smart_#{name}" do
-      target "smart_"
-      conf "smart.erb"
-      conf_variables :disk => name
-    end
-  else
-    munin_plugin "smart_#{name}" do
-      action :delete
-    end
   end
 end
 
