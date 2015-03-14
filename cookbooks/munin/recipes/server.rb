@@ -21,6 +21,7 @@ include_recipe "apache"
 
 package "munin"
 package "rrdcached"
+package "libcgi-fast-perl"
 
 template "/etc/default/rrdcached" do
   source "rrdcached.erb"
@@ -61,6 +62,9 @@ template "/etc/munin/munin.conf" do
   mode 0644
   variables :expiry_time => expiry_time, :clients => clients, :frontends => frontends, :backends => backends, :tilecaches => tilecaches, :renderers => renderers
 end
+
+apache_module "fcgid"
+apache_module "rewrite"
 
 apache_site "munin.openstreetmap.org" do
   template "apache.erb"

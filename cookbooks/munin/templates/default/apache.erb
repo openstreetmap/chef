@@ -9,8 +9,18 @@
 	ErrorLog /var/log/apache2/munin.openstreetmap.org-error.log
 
 	DocumentRoot /var/cache/munin/www
+	ScriptAlias /munin-cgi/ /usr/lib/munin/cgi/
+
+	RewriteEngine on
+	RewriteRule ^(/.*\.html)?$ /munin-cgi/munin-cgi-html/$1 [PT]
 </VirtualHost>
 
 <Directory /var/cache/munin/www>
+	Require all granted
+</Directory>
+
+<Directory /usr/lib/munin/cgi>
+	Options +ExecCGI
+	SetHandler fcgid-script
 	Require all granted
 </Directory>

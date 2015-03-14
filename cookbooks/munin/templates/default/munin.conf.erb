@@ -3,6 +3,14 @@
 # Set maximum number of update processes to run at once
 max_processes 64
 
+# Maximum number of graphs to generate at once
+max_graph_jobs 24
+max_cgi_graph_jobs 24
+
+# Render pages and graphs on demand
+html_strategy cgi
+graph_strategy cgi
+
 # Use rrdcached
 rrdcached_socket /var/run/rrdcached.sock
 
