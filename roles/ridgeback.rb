@@ -2,6 +2,16 @@ name "ridgeback"
 description "Master role applied to ridgeback"
 
 default_attributes(
+  :munin => {
+    :plugins => {
+      :ipmi_fans => {
+        :Fan4 => { :graph => "no", :warning => "0:" },
+        :Fan5 => { :graph => "no", :warning => "0:" },
+        :Fan6 => { :graph => "no", :warning => "0:" },
+        :Fan7CPU1 => { :graph => "no", :warning => "0:" }
+      }
+    }
+  },
   :networking => {
     :interfaces => {
       :external_ipv4 => {
