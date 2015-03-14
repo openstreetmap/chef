@@ -9,6 +9,16 @@ default_attributes(
         :Fan5 => { :graph => "no", :warning => "0:" },
         :Fan6 => { :graph => "no", :warning => "0:" },
         :Fan7CPU1 => { :graph => "no", :warning => "0:" }
+      },
+      :smart_sda => {
+        :smartctl_exit_status => {
+          :warning => 8
+        }
+      },
+      :smart_sdb => {
+        :smartctl_exit_status => {
+          :warning => 8
+        }
       }
     }
   },
@@ -50,20 +60,6 @@ default_attributes(
       "gorynych.openstreetmap.org",
       "simurgh.openstreetmap.org"
     ]
-  },
-  :munin => {
-    :plugins => {
-      :smart_sda => {
-        :smartctl_exit_status => {
-          :warning => 8
-        }
-      },
-      :smart_sdb => {
-        :smartctl_exit_status => {
-          :warning => 8
-        }
-      }
-    }
   }
 )
 
