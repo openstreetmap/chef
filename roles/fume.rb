@@ -2,6 +2,13 @@ name "fume"
 description "Master role applied to fume"
 
 default_attributes(
+  :munin => {
+    :plugins => {
+      :df => {
+        :_dev_cciss_c0d1p1 => { :warning => ":95" }
+      }
+    }
+  },
   :networking => {
     :interfaces => {
       :external_ipv4 => {
