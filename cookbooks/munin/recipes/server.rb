@@ -72,3 +72,4 @@ end
 
 munin_plugin "munin_stats"
 munin_plugin "munin_update"
+munin_plugin "munin_rrdcached"
