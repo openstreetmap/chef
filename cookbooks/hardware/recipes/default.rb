@@ -306,6 +306,20 @@ if status_packages["megaclisas-status"]
   end
 end
 
+if tools_packages.include?("lsiutil")
+  Dir.glob("/sys/class/scsi_host/host*") do |host|
+    driver = File.new("#{host}/proc_name").read.chomp
+
+    next unless driver == "mptsas"
+
+    bus = host.sub("/sys/class/scsi_host/host", "")
+
+    Dir.glob("/sys/bus/scsi/devices/#{bus}:0:*/scsi_generic/*").each do |sg|
+      disks << { :device => File.basename(sg) }
+    end
+  end
+end
+
 if status_packages["sas2ircu-status"]
   Dir.glob("/sys/class/scsi_host/host*") do |host|
     driver = File.new("#{host}/proc_name").read.chomp
