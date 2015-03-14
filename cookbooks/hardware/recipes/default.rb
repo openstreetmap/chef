@@ -430,7 +430,7 @@ else
 end
 
 plugins = Dir.glob("/etc/munin/plugins/smart_*").map { |p| File.basename(p) } -
-          disks.map { |d| "smart_#{d[:munin_name]}" }
+          disks.map { |d| "smart_#{d[:munin]}" }
 
 plugins.each do |plugin|
   munin_plugin plugin do
