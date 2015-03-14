@@ -2,6 +2,16 @@ name "gorynych"
 description "Master role applied to gorynych"
 
 default_attributes(
+  :munin => {
+    :plugins => {
+      :smart_sdc => {
+        :smartctl_exit_status => { :warning => ":8" }
+      },
+      :smart_sdd => {
+        :smartctl_exit_status => { :warning => ":8" }
+      }
+    }
+  },
   :networking => {
     :interfaces => {
       :external_ipv4 => {
