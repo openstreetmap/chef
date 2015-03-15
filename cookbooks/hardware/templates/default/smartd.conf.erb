@@ -2,8 +2,8 @@
   
 <% @disks.each do |disk| -%>
 <% if disk[:driver] -%>
-/dev/<%= disk[:device] %> -d <%= disk[:driver] %>,<%= disk[:id] %> -m admins@openstreetmap.org
+/dev/<%= disk[:device] %> -d <%= disk[:driver] %>,<%= disk[:id] %> -s S/../../7/02 -m admins@openstreetmap.org
 <% else -%>
-/dev/<%= disk[:device] %> -m admins@openstreetmap.org
+/dev/<%= disk[:device] %> -s S/../../7/02 -m admins@openstreetmap.org
 <% end -%>
 <% end -%>
