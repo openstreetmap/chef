@@ -54,7 +54,7 @@ default_attributes(
         :CPU0belowTmax => { :critical => "10:" },
         :CPU1belowTmax => { :critical => "10:" }
       },
-      :sensors_volts => {
+      :sensors_volt => {
         "VCoreA" => { :warning => "0.70:1.42", :critical => "0.70:1.42" },
         "VCoreB" => { :warning => "0.70:1.42", :critical => "0.70:1.42" },
         "in2" => { :warning => "0.00:2.05", :critical => "0.00:2.05" },
