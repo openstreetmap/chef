@@ -405,6 +405,7 @@ if disks.count > 0
 
   service "smartmontools" do
     action [:enable, :start]
+    supports :status => true, :restart => true, :reload => true
   end
 
   disks.each do |disk|
