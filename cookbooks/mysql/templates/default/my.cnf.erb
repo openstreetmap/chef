@@ -1,1 +1,8 @@
 # DO NOT EDIT - This file is being maintained by Chef
+<% node[:mysql][:settings].each do |section,settings| -%>
+
+[<%= section %>]
+<% settings.each do |name, value| -%>
+<%= name %> = <%= value %>
+<% end -%>
+<% end -%>
