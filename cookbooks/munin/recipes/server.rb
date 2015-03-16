@@ -66,6 +66,17 @@ end
 apache_module "fcgid"
 apache_module "rewrite"
 
+remote_directory "/srv/munin.openstreetmap.org" do
+  source "www"
+  owner "root"
+  group "root"
+  mode 0755
+  files_owner "root"
+  files_group "root"
+  files_mode 0755
+  purge true
+end
+
 apache_site "munin.openstreetmap.org" do
   template "apache.erb"
 end
