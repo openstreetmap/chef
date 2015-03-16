@@ -12,7 +12,10 @@
 	ScriptAlias /munin-cgi/ /usr/lib/munin/cgi/
 
 	RewriteEngine on
-	RewriteRule ^(/.*\.html)?$ /munin-cgi/munin-cgi-html/$1 [PT]
+	RewriteCond %{REQUEST_URI} !^/static/
+	RewriteCond %{REQUEST_URI} .html$ [or]
+	RewriteCond %{REQUEST_URI} =/
+	RewriteRule ^/(.*) /munin-cgi/munin-cgi-html/$1 [PT]
 </VirtualHost>
 
 <Directory /var/cache/munin/www>
