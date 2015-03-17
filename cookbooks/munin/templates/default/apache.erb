@@ -8,8 +8,10 @@
 	CustomLog /var/log/apache2/munin.openstreetmap.org-access.log combined
 	ErrorLog /var/log/apache2/munin.openstreetmap.org-error.log
 
+	SetEnv RRDCACHED_ADDRESS /var/run/rrdcached.sock
+
 	DocumentRoot /srv/munin.openstreetmap.org
-        Alias /static/favicon.ico /srv/munin.openstreetmap.org/favicon.ico
+	Alias /static/favicon.ico /srv/munin.openstreetmap.org/favicon.ico
 	Alias /static/ /etc/munin/static/
 	ScriptAlias /munin-cgi/ /usr/lib/munin/cgi/
 

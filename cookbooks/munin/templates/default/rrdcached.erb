@@ -7,7 +7,7 @@ DISABLE=0
 # options to be passed to rrdcached
 # (do not specify -p <pidfile> - this is handled by the init script)
 # default: see /etc/init.d/rrdcached
-OPTS="-s munin -m 660 -l unix:/var/run/rrdcached.sock -w 1800 -z 1800 -j /var/lib/munin/rrdcached -F -b /var/lib/munin -B"
+OPTS="-s munin -m 666 -l unix:/var/run/rrdcached.sock -w 1800 -z 1800 -j /var/lib/munin/rrdcached -F -b /var/lib/munin -B"
 
 # number of seconds to wait for rrdcached to shut down
 # (writing the data to disk may take some time;
