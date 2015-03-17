@@ -30,6 +30,16 @@ default_attributes(
   :hardware => {
     :watchdog => "w83627hf_wdt"
   },
+  :munin => {
+    :plugins => {
+      :smart_sg0_33 => {
+        :smartctl_exit_status => { :warning => ":8" }
+      },
+      :smart_sg0_34 => {
+        :smartctl_exit_status => { :warning => ":8" }
+      }
+    }
+  },
   :networking => {
     :interfaces => {
       :internal_ipv4 => {
