@@ -57,7 +57,7 @@ cache deny osmtile_sites osmtile_nocache_url
 cache_peer <%= sibling %> sibling 3128 3130 weight=1500
 <% end -%>
 #Primary Parent
-cache_peer <%= node[:tilecache][:tile_parent] %> parent 80 0 no-query originserver name=osmtileAccel login=PASS connect-timeout=60 no-digest weight=1000
+cache_peer <%= node[:tilecache][:tile_parent] %> parent 80 0 no-query originserver name=osmtileAccel login=PASS connect-timeout=120 no-digest weight=1000
 cache_peer_access osmtileAccel allow osmtile_sites
 
 #Backup Parents
