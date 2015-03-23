@@ -12,11 +12,9 @@ ModTileRequestTimeout 2
 # Timeout before giving up for a tile to be rendered that is otherwise missing
 ModTileMissingRequestTimeout 10
 
-# Don't try and re-render dirty tiles if the load is higher than this
-ModTileMaxLoadOld 36
-
-# Don't try and render missing tiles if the load is higher than this
-ModTileMaxLoadMissing 72
+# Always try and re-render dirty or missing tiles
+ModTileMaxLoadOld 1000
+ModTileMaxLoadMissing 1000
 
 # Maximum expiry to set on a tile
 ModTileCacheDurationMax 604800
