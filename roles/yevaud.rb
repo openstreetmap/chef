@@ -88,6 +88,13 @@ default_attributes(
         "kernel.shmmax" => 4 * 1024 * 1024 * 1024,
         "kernel.shmall" => 4 * 1024 * 1024 * 1024 / 4096
       }
+    },
+    :cpu_tune => {
+      :comment => "Tune kern sched migration cost",
+      :parameters => {
+        "kernel.sched_autogroup_enabled" => 0,
+        "kernel.sched_migration_cost_ns" => 25000000
+      }
     }
   },
   :tile => {
