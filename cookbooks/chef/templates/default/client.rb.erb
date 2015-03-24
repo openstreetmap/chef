@@ -44,7 +44,7 @@ begin
   exception_handlers << email_handler
   report_handlers << email_handler
 
-rescue
+rescue LoadError
 
   # Ignore errors in case required gems not installed yet
 
