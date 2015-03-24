@@ -9,10 +9,6 @@
 
 Encoding.default_external = Encoding::UTF_8
 
-# Load supporting code for report handlers
-
-require "/etc/chef/report"
-
 # Log at level info
 
 log_level :info
@@ -29,15 +25,27 @@ ssl_verify_mode :verify_peer
 
 chef_server_url "https://chef.openstreetmap.org"
 
-# Create report handler
-
-email_handler = Chef::Handler::Email.new(:to => "tom@compton.nu")
-
-# Configure report handlers
-
-exception_handlers << email_handler
-report_handlers << email_handler
-
 # Make our plugins visible to ohai
 
 Ohai::Config[:plugin_path] << "<%= node[:ohai][:plugin_dir] %>"
+
+begin
+
+  # Load supporting code for report handlers
+
+  require "/etc/chef/report"
+
+  # Create report handler
+
+  email_handler = Chef::Handler::Email.new(:to => "tom@compton.nu")
+
+  # Configure report handlers
+
+  exception_handlers << email_handler
+  report_handlers << email_handler
+
+rescue
+
+  # Ignore errors in case required gems not installed yet
+
+end
