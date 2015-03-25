@@ -29,23 +29,15 @@ chef_server_url "https://chef.openstreetmap.org"
 
 Ohai::Config[:plugin_path] << "<%= node[:ohai][:plugin_dir] %>"
 
-begin
+# Load supporting code for report handlers
 
-  # Load supporting code for report handlers
+require "/etc/chef/report"
 
-  require "/etc/chef/report"
+# Create report handler
 
-  # Create report handler
+email_handler = Chef::Handler::Email.new(:to => "tom@compton.nu")
 
-  email_handler = Chef::Handler::Email.new(:to => "tom@compton.nu")
+# Configure report handlers
 
-  # Configure report handlers
-
-  exception_handlers << email_handler
-  report_handlers << email_handler
-
-rescue LoadError
-
-  # Ignore errors in case required gems not installed yet
-
-end
+exception_handlers << email_handler
+report_handlers << email_handler

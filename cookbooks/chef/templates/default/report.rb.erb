@@ -1,34 +1,35 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
 require "rubygems"
-require "pony"
- 
+
 class Chef
   class Handler
     class Email < Chef::Handler
       attr_reader :config
 
-      def initialize(config={})
+      def initialize(config = {})
         @config = config
         @config[:from] ||= "root@openstreetmap.org"
         @config
       end
- 
+
       def report
-        if failed? and not exception.is_a? SystemExit
+        if failed? && !exception.is_a?(SystemExit)
           subject = "Chef run failed on #{node.name}"
           message = "#{run_status.formatted_exception}\n"
         elsif elapsed_time > 300
           subject = "Chef run took #{elapsed_time} on #{node.name}"
           message = ""
         end
-        
-        if subject
-          message << Array(backtrace).join("\n")
 
-          Pony.mail(:to => @config[:to], :from => @config[:from],
-                    :subject => subject, :body => message, :via => :smtp)
-        end
+        return unless subject
+
+        message << Array(backtrace).join("\n")
+
+        require "pony"
+
+        Pony.mail(:to => @config[:to], :from => @config[:from],
+                  :subject => subject, :body => message, :via => :smtp)
       end
     end
   end
