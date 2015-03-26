@@ -22,6 +22,11 @@ default_attributes(
       :threads_per_child => 50
     }
   },
+  :chef => {
+    :client => {
+      :version => "12.1.2-1"
+    }
+  },
   :postgresql => {
     :settings => {
       :defaults => {
