@@ -5,6 +5,11 @@ default_attributes(
   :apt => {
     :sources => ["ubuntugis-unstable"]
   },
+  :chef => {
+    :client => {
+      :version => "12.1.2-1"
+    }
+  },
   :git => {
     :allowed_nodes => "*:*",
     :user => "chefrepo",
