@@ -2,11 +2,6 @@ name "errol"
 description "Master role applied to errol"
 
 default_attributes(
-  :chef => {
-    :client => {
-      :version => "12.1.2-1"
-    }
-  },
   :devices => {
     :osdsk => {
       :comment => "First os disk",

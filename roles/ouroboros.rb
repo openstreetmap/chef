@@ -2,6 +2,11 @@ name "ouroboros"
 description "Master role applied to ouroboros"
 
 default_attributes(
+  :chef => {
+    :client => {
+      :version => "11.18.0-1"
+    }
+  },
   :networking => {
     :interfaces => {
       :internal_ipv4 => {

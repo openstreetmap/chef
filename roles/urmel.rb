@@ -2,11 +2,6 @@ name "urmel"
 description "Master role applied to urmel"
 
 default_attributes(
-  :chef => {
-    :client => {
-      :version => "12.1.2-1"
-    }
-  },
   :networking => {
     :interfaces => {
       :internal_ipv4 => {

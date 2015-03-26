@@ -2,11 +2,6 @@ name "eustace"
 description "Master role applied to eustace"
 
 default_attributes(
-  :chef => {
-    :client => {
-      :version => "12.1.2-1"
-    }
-  },
   :networking => {
     :interfaces => {
       :internal_ipv4 => {

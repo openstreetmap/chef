@@ -8,6 +8,11 @@ default_attributes(
       :certificate_chain => "startcom"
     }
   },
+  :chef => {
+    :client => {
+      :version => "11.18.0-1"
+    }
+  },
   :dhcpd => {
     :first_address => "10.0.15.1",
     :last_address => "10.0.15.254"
