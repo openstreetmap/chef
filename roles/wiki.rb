@@ -39,6 +39,5 @@ default_attributes(
 )
 
 run_list(
-  "recipe[elasticsearch]",
   "recipe[wiki]"
 )
