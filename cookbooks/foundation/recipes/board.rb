@@ -23,9 +23,9 @@ passwords = data_bag_item("foundation", "passwords")
 
 mediawiki_site "board.osmfoundation.org" do
   directory "/srv/board.osmfoundation.org"
-  enable_ssl true
+  ssl_enabled true
   database_name "board-wiki"
-  database_username "board-wikiuser"
+  database_user "board-wikiuser"
   database_password passwords["board"]["database"]
   admin_password passwords["board"]["admin"]
   logo "/Wiki.png"

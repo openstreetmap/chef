@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: web
-# Definition:: mediawiki_site
+# Cookbook Name:: mediawiki
+# Provider:: mediawiki_site
 #
-# Copyright 2012, OpenStreetMap Foundation
+# Copyright 2015, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,91 +17,58 @@
 # limitations under the License.
 #
 
-define :mediawiki_site, :action => [:create, :enable] do
-  name = params[:name]
+require "securerandom"
 
-  # /etc/cron.d names cannot contain a dot
-  cron_name = name.tr(".", "_")
+include Chef::Mixin::EditFile
 
-  aliases = Array(params[:aliases])
+def whyrun_supported?
+  true
+end
 
-  site_directory = params[:directory] || "/srv/#{name}"
+use_inline_resources
 
-  database_params = {
-    :host => params[:database_host] || "localhost",
-    :name => params[:database_name],
-    :username => params[:database_username],
-    :password => params[:database_password]
-  }
+action :create do
+  node.set_unless[:mediawiki][:sites][new_resource.name] = {}
 
-  mediawiki_repository     = "git://github.com/wikimedia/mediawiki-core"
-  mediawiki_version        = params[:version] || "1.22"
-  mediawiki_reference      = "refs/heads/REL#{mediawiki_version}".tr(".", "_")
+  node.set[:mediawiki][:sites][new_resource.name][:directory] = site_directory
+  node.set[:mediawiki][:sites][new_resource.name][:version] = new_resource.version
 
-  mediawiki = {
-    :directory         => "#{site_directory}/w",
-    :site              => name,
-    :sitename          => params[:sitename] || "OpenStreetMap Wiki",
-    :metanamespace     => params[:metanamespace] || "OpenStreetMap",
-    :logo              => params[:logo] || "$wgStylePath/common/images/wiki.png",
-    :email_contact     => params[:email_contact] || "",
-    :email_sender      => params[:email_sender] || "",
-    :email_sender_name => params[:email_sender_name] || "MediaWiki Mail",
-    :commons           => params[:commons] || TRUE,
-    :skin              => params[:skin] || "vector",
-    :site_notice       => params[:site_notice] || "",
-    :site_readonly     => params[:site_readonly] || FALSE,
-    :site_admin_user   => "Admin",
-    :site_admin_pw     => params[:admin_password],
-    :enable_ssl        => params[:enable_ssl] || FALSE,
-    :private_accounts  => params[:private_accounts] || FALSE,
-    :private           => params[:private] || FALSE,
-    :recaptcha_public  => params[:recaptcha_public_key],
-    :recaptcha_private => params[:recaptcha_private_key]
-  }
+  node.set_unless[:mediawiki][:sites][new_resource.name][:wgSecretKey] = SecureRandom.base64(48)
 
-  #----------------
-
-  node.set_unless[:mediawiki][:sites][name] = {}
-  node.set[:mediawiki][:sites][name][:site_directory] = site_directory
-  node.set[:mediawiki][:sites][name][:directory] = mediawiki[:directory]
-  node.set[:mediawiki][:sites][name][:version] = mediawiki_version
-  node.set_unless[:mediawiki][:sites][name][:wgSecretKey] = random_password(64)
-
-  #----------------
-
-  mysql_user "#{database_params[:username]}@localhost" do
-    password database_params[:password]
+  mysql_user "#{new_resource.database_user}@localhost" do
+    password new_resource.database_password
   end
 
-  mysql_database database_params[:name] do
-    permissions "#{database_params[:username]}@localhost" => :all
+  mysql_database new_resource.database_name do
+    permissions "#{new_resource.database_user}@localhost" => :all
   end
+
+  mediawiki_directory = "#{site_directory}/w"
 
   ruby_block "rename-installer-localsettings" do
     action :nothing
     block do
-      ::File.rename("#{mediawiki[:directory]}/LocalSettings.php", "#{mediawiki[:directory]}/LocalSettings-install.php")
+      ::File.rename("#{mediawiki_directory}/LocalSettings.php", "#{mediawiki_directory}/LocalSettings-install.php")
     end
   end
 
-  execute "#{mediawiki[:directory]}/maintenance/install.php" do
+  execute "#{mediawiki_directory}/maintenance/install.php" do
     action :nothing
     # Use metanamespace as Site Name to ensure correct set namespace
-    command "php maintenance/install.php --server '#{name}' --dbtype 'mysql' --dbname '#{database_params[:name]}' --dbuser '#{database_params[:username]}' --dbpass '#{database_params[:password]}' --dbserver '#{database_params[:host]}' --scriptpath /w --pass '#{mediawiki[:site_admin_pw]}' '#{mediawiki[:metanamespace]}' '#{mediawiki[:site_admin_user]}'"
-    cwd mediawiki[:directory]
+    command "php maintenance/install.php --server '#{name}' --dbtype 'mysql' --dbname '#{new_resource.database_name}' --dbuser '#{new_resource.database_user}' --dbpass '#{new_resource.database_password}' --dbserver 'localhost' --scriptpath /w --pass '#{new_resource.admin_password}' '#{new_resource.metanamespace}' '#{new_resource.admin_user}'"
+    cwd mediawiki_directory
     user node[:mediawiki][:user]
     group node[:mediawiki][:group]
     not_if do
-      File.exist?("#{mediawiki[:directory]}/LocalSettings-install.php")
+      ::File.exist?("#{mediawiki_directory}/LocalSettings-install.php")
     end
     notifies :create, "ruby_block[rename-installer-localsettings]", :immediately
   end
 
-  execute "#{mediawiki[:directory]}/maintenance/update.php" do
+  execute "#{mediawiki_directory}/maintenance/update.php" do
     action :nothing
     command "php maintenance/update.php --quick"
-    cwd mediawiki[:directory]
+    cwd mediawiki_directory
     user node[:mediawiki][:user]
     group node[:mediawiki][:group]
   end
@@ -112,61 +79,66 @@ define :mediawiki_site, :action => [:create, :enable] do
     mode 0775
   end
 
-  directory mediawiki[:directory] do
+  directory mediawiki_directory do
     owner node[:mediawiki][:user]
     group node[:mediawiki][:group]
     mode 0775
   end
 
-  git mediawiki[:directory] do
+  mediawiki_reference = "refs/heads/REL#{new_resource.version}".tr(".", "_")
+
+  git site_directory do
     action :sync
-    repository mediawiki_repository
+    repository "git://github.com/wikimedia/mediawiki-core"
     reference mediawiki_reference
     # depth 1
     user node[:mediawiki][:user]
     group node[:mediawiki][:group]
-    notifies :run, "execute[#{mediawiki[:directory]}/maintenance/install.php]", :immediately
-    notifies :run, "execute[#{mediawiki[:directory]}/maintenance/update.php]"
+    notifies :run, "execute[#{mediawiki_directory}/maintenance/install.php]", :immediately
+    notifies :run, "execute[#{mediawiki_directory}/maintenance/update.php]"
   end
 
   # Safety catch if git doesn't update but install.php hasn't run
   ruby_block "catch-installer-localsettings-run" do
+    action :create
     block do
       #
     end
     not_if do
-      File.exist?("#{mediawiki[:directory]}/LocalSettings-install.php")
+      ::File.exist?("#{mediawiki_directory}/LocalSettings-install.php")
     end
-    notifies :run, "execute[#{mediawiki[:directory]}/maintenance/install.php]", :immediately
-    action :create
+    notifies :run, "execute[#{mediawiki_directory}/maintenance/install.php]", :immediately
   end
 
-  directory "#{mediawiki[:directory]}/images" do
+  directory "#{mediawiki_directory}/images" do
     owner "www-data"
-    group "wiki"
+    group node[:mediawiki][:group]
     mode 0775
   end
 
-  directory "#{mediawiki[:directory]}/cache" do
+  directory "#{mediawiki_directory}/cache" do
     owner "www-data"
-    group "wiki"
+    group node[:mediawiki][:group]
     mode 0775
   end
 
-  directory "#{mediawiki[:directory]}/LocalSettings.d" do
+  directory "#{mediawiki_directory}/LocalSettings.d" do
     user node[:mediawiki][:user]
     group node[:mediawiki][:group]
     mode 0775
   end
 
-  template "#{mediawiki[:directory]}/LocalSettings.php" do
+  template "#{mediawiki_directory}/LocalSettings.php" do
     cookbook "mediawiki"
     source "LocalSettings.php.erb"
     owner node[:mediawiki][:user]
     group node[:mediawiki][:group]
     mode 0664
-    variables :name => name, :database_params => database_params, :mediawiki => mediawiki
-    notifies :run, "execute[#{mediawiki[:directory]}/maintenance/update.php]"
+    variables :name => new_resource.name,
+              :directory => mediawiki_directory,
+              :database_params => new_resource.database_params,
+              :mediawiki => new_resource.mediawiki_params
+    notifies :run, "execute[#{mediawiki_directory}/maintenance/update.php]"
   end
 
   template "/etc/cron.d/mediawiki-#{cron_name}" do
@@ -175,7 +147,8 @@ define :mediawiki_site, :action => [:create, :enable] do
     owner "root"
     group "root"
     mode 0644
-    variables :name => name, :directory => site_directory, :user => node[:mediawiki][:user]
+    variables :name => new_resource.name, :directory => site_directory,
+              :user => node[:mediawiki][:user]
   end
 
   template "/etc/cron.daily/mediawiki-#{cron_name}-backup" do
@@ -184,83 +157,96 @@ define :mediawiki_site, :action => [:create, :enable] do
     owner "root"
     group "root"
     mode 0700
-    variables :name => name, :directory => site_directory, :database_params => database_params
+    variables :name => new_resource.name, :directory => site_directory,
+              :database_params => new_resource.database_params
   end
 
-  # MediaWiki Default Extension
-
   mediawiki_extension "Cite" do
-    site name
+    site new_resource.name
     template "mw-ext-Cite.inc.php.erb"
+    update_site false
   end
 
   mediawiki_extension "ConfirmEdit" do
-    site name
+    site new_resource.name
     template "mw-ext-ConfirmEdit.inc.php.erb"
-    variables :public_key => mediawiki[:recaptcha_public],
-              :private_key => mediawiki[:recaptcha_private]
+    variables :public_key => new_resource.recaptcha_public_key,
+              :private_key => new_resource.recaptcha_private_key
+    update_site false
   end
 
   mediawiki_extension "Gadgets" do
-    site name
+    site new_resource.name
+    update_site false
   end
 
   mediawiki_extension "ImageMap" do
-    site name
+    site new_resource.name
+    update_site false
   end
 
   mediawiki_extension "InputBox" do
-    site name
+    site new_resource.name
+    update_site false
   end
 
   mediawiki_extension "Interwiki" do
-    site name
+    site new_resource.name
+    update_site false
   end
 
-  # "LocalisationUpdate" part of Language Extension Bundle, bundled per site
-
   mediawiki_extension "Nuke" do
-    site name
+    site new_resource.name
+    update_site false
   end
 
   mediawiki_extension "ParserFunctions" do
-    site name
+    site new_resource.name
     template "mw-ext-ParserFunctions.inc.php.erb"
+    update_site false
   end
 
   mediawiki_extension "PdfHandler" do
-    site name
+    site new_resource.name
     template "mw-ext-PdfHandler.inc.php.erb"
+    update_site false
   end
 
   mediawiki_extension "Poem" do
-    site name
+    site new_resource.name
+    update_site false
   end
 
   mediawiki_extension "Renameuser" do
-    site name
+    site new_resource.name
+    update_site false
   end
 
   mediawiki_extension "SimpleAntiSpam" do
-    site name
+    site new_resource.name
+    update_site false
   end
 
   mediawiki_extension "SpamBlacklist" do
-    site name
+    site new_resource.name
     template "mw-ext-SpamBlacklist.inc.php.erb"
+    update_site false
   end
 
   mediawiki_extension "SyntaxHighlight_GeSHi" do
-    site name
+    site new_resource.name
+    update_site false
   end
 
   mediawiki_extension "TitleBlacklist" do
-    site name
+    site new_resource.name
     template "mw-ext-TitleBlacklist.inc.php.erb"
+    update_site false
   end
 
   mediawiki_extension "WikiEditor" do
-    site name
+    site new_resource.name
+    update_site false
   end
 
   # MediaWiki Language Extension Bundle
@@ -268,26 +254,30 @@ define :mediawiki_site, :action => [:create, :enable] do
   mw_lang_ext_bundle_tag = "2014.09"
 
   mediawiki_extension "Babel" do
-    site name
+    site new_resource.name
     template "mw-ext-Babel.inc.php.erb"
     tag mw_lang_ext_bundle_tag
+    update_site false
   end
 
   mediawiki_extension "cldr" do
-    site name
+    site new_resource.name
     tag mw_lang_ext_bundle_tag
+    update_site false
   end
 
   mediawiki_extension "CleanChanges" do
-    site name
+    site new_resource.name
     template "mw-ext-CleanChanges.inc.php.erb"
     tag mw_lang_ext_bundle_tag
+    update_site false
   end
 
   mediawiki_extension "LocalisationUpdate" do
-    site name
+    site new_resource.name
     template "mw-ext-LocalisationUpdate.inc.php.erb"
     tag mw_lang_ext_bundle_tag
+    update_site false
   end
 
   # LocalisationUpdate Update Cron
@@ -301,62 +291,70 @@ define :mediawiki_site, :action => [:create, :enable] do
   # end
 
   # mediawiki_extension "Translate" do
-  #   site name
+  #   site new_resource.name
   #   template "mw-ext-Translate.inc.php.erb"
   #   tag mw_lang_ext_bundle_tag
+  #   update_site false
   # end
 
   mediawiki_extension "UniversalLanguageSelector" do
-    site name
+    site new_resource.name
     tag mw_lang_ext_bundle_tag
+    update_site false
   end
 
-  # Global Extra Mediawiki Extensions
-
   mediawiki_extension "AntiSpoof" do
-    site name
+    site new_resource.name
+    update_site false
   end
 
   mediawiki_extension "AbuseFilter" do
-    site name
+    site new_resource.name
     template "mw-ext-AbuseFilter.inc.php.erb"
+    update_site false
   end
 
   mediawiki_extension "CheckUser" do
-    site name
+    site new_resource.name
     template "mw-ext-CheckUser.inc.php.erb"
+    update_site false
   end
 
   mediawiki_extension "DismissableSiteNotice" do
-    site name
+    site new_resource.name
+    update_site false
   end
 
   mediawiki_extension "Elastica" do
-    site name
+    site new_resource.name
+    update_site false
   end
 
   mediawiki_extension "CirrusSearch" do
-    site name
+    site new_resource.name
     template "mw-ext-CirrusSearch.inc.php.erb"
+    update_site false
   end
-
-  # OSM specifc extensions
 
   mediawiki_extension "osmtaginfo" do
-    site name
+    site new_resource.name
     repository "git://github.com/Firefishy/osmtaginfo.git"
     tag "live"
+    update_site false
   end
+
   mediawiki_extension "SimpleMap" do
-    site name
+    site new_resource.name
     repository "git://github.com/Firefishy/SimpleMap.git"
     tag "live"
+    update_site false
   end
 
   mediawiki_extension "SlippyMap" do
-    site name
+    site new_resource.name
     repository "git://github.com/Firefishy/SlippyMap.git"
     tag "live"
+    update_site false
   end
 
   cookbook_file "#{site_directory}/cc-wiki.png" do
@@ -383,20 +381,52 @@ define :mediawiki_site, :action => [:create, :enable] do
     backup false
   end
 
-  apache_site name do
+  apache_site new_resource.name do
     cookbook "mediawiki"
     template "apache.erb"
     directory site_directory
-    variables :aliases => aliases, :mediawiki => mediawiki
-    notifies :reload, "service[apache2]"
+    variables :aliases => Array(new_resource.aliases),
+              :private => new_resource.private,
+              :ssl_enabled => new_resource.ssl_enabled,
+              :ssl_certificate => new_resource.ssl_certificate,
+              :ssl_certificate_chain => new_resource.ssl_certificate_chain
+    reload_apache false
   end
 
-  # FIXME: needs to run once
-  execute "#{mediawiki[:directory]}/extensions/CirrusSearch/maintenance/updateSearchIndexConfig.php" do
+  # FIXME: needs to run one
+  execute "#{mediawiki_directory}/extensions/CirrusSearch/maintenance/updateSearchIndexConfig.php" do
     action :nothing
     command "php extensions/CirrusSearch/maintenance/updateSearchIndexConfig.php"
-    cwd mediawiki[:directory]
+    cwd mediawiki_directory
     user node[:mediawiki][:user]
     group node[:mediawiki][:group]
   end
+end
+
+action :delete do
+  apache_site new_resource.name do
+    action :delete
+    reload_apache false
+  end
+
+  directory site_directory do
+    action :delete
+    recursive true
+  end
+
+  mysql_database new_resource.database_name do
+    action :drop
+  end
+
+  mysql_user "#{new_resource.database_user}@localhost" do
+    action :drop
+  end
+end
+
+def site_directory
+  new_resource.directory || "/srv/#{new_resource.name}"
+end
+
+def cron_name
+  new_resource.name.tr(".", "_")
 end

@@ -28,7 +28,7 @@ attribute :variables, :kind_of => Hash, :default => {}
 attribute :version, :kind_of => String
 attribute :repository, :kind_of => String
 attribute :tag, :kind_of => String
-attribute :update_site, :kind_of => [TrueClass, FalseClass], :default => false
+attribute :update_site, :kind_of => [TrueClass, FalseClass], :default => true
 
 def after_created
   if update_site
@@ -36,7 +36,7 @@ def after_created
   else
     site_directory = node[:mediawiki][:sites][site][:directory]
 
-    notifies :create, "template[#{site_directory}/LocalSettings.php]"
-    notifies :run, "execute[#{site_directory}/maintenance/update.php]"
+    notifies :create, "template[#{site_directory}/w/LocalSettings.php]"
+    notifies :run, "execute[#{site_directory}/w/maintenance/update.php]"
   end
 end

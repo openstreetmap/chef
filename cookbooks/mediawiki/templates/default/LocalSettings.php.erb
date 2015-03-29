@@ -291,7 +291,6 @@ $wgNamespacesToBeSearchedDefault[NS_LANG_JA] = TRUE;
 $wgReadOnly = "<%= @mediawiki[:site_readonly] %>";
 <% end -%>
 
-<% Dir.glob("#{@mediawiki[:directory]}/LocalSettings.d/*.php") do |file| -%>
+<% Dir.glob("#{@directory}/LocalSettings.d/*.php") do |file| -%>
 <%= "require_once('#{file}');" %>
 <% end -%>
-

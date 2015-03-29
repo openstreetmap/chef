@@ -55,7 +55,7 @@ action :create do
   end
 
   if new_resource.template # ~FC023
-    template "#{site_directory}/LocalSettings.d/Ext-#{new_resource.name}.inc.php" do
+    template "#{mediawiki_directory}/LocalSettings.d/Ext-#{new_resource.name}.inc.php" do
       cookbook "mediawiki"
       source new_resource.template
       user node[:mediawiki][:user]
@@ -67,7 +67,7 @@ action :create do
 
   extension_script = "#{extension_directory}/#{new_resource.name}.php"
 
-  file "#{site_directory}/LocalSettings.d/Ext-#{new_resource.name}.inc.php" do
+  file "#{mediawiki_directory}/LocalSettings.d/Ext-#{new_resource.name}.inc.php" do
     action :create
     content "<?php require_once('#{extension_script}');\n"
     user node[:mediawiki][:user]
@@ -84,12 +84,12 @@ action :delete do
   end
 
   if new_resource.template # ~FC023
-    file "#{site_directory}/LocalSettings.d/Ext-#{new_resource.name}.inc.php" do
+    file "#{mediawiki_directory}/LocalSettings.d/Ext-#{new_resource.name}.inc.php" do
       action :delete
     end
   end
 
-  file "#{site_directory}/LocalSettings.d/Ext-#{new_resource.name}.inc.php" do
+  file "#{mediawiki_directory}/LocalSettings.d/Ext-#{new_resource.name}.inc.php" do
     action :delete
   end
 end
@@ -100,8 +100,12 @@ def site_directory
   node[:mediawiki][:sites][new_resource.site][:directory]
 end
 
+def mediawiki_directory
+  "#{site_directory}/w"
+end
+
 def extension_directory
-  "#{site_directory}/extensions/#{new_resource.name}"
+  "#{mediawiki_directory}/extensions/#{new_resource.name}"
 end
 
 def extension_version

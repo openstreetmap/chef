@@ -28,13 +28,15 @@ apache_site "default" do
 end
 
 mediawiki_site "wiki.openstreetmap.org" do
-  aliases "wiki.osm.org", "wiki.openstreetmap.com", "wiki.openstreetmap.net", "wiki.openstreetmap.ca", "wiki.openstreetmap.eu", "wiki.openstreetmap.pro", "wiki.openstreetmaps.org"
+  aliases ["wiki.osm.org", "wiki.openstreetmap.com", "wiki.openstreetmap.net",
+           "wiki.openstreetmap.ca", "wiki.openstreetmap.eu",
+           "wiki.openstreetmap.pro", "wiki.openstreetmaps.org"]
   directory "/srv/wiki.openstreetmap.org"
 
-  enable_ssl TRUE
+  ssl_enabled TRUE
 
   database_name "wiki"
-  database_username "wiki-user"
+  database_user "wiki-user"
   database_password passwords["database"]
 
   admin_password passwords["admin"]
