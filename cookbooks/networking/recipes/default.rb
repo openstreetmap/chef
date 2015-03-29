@@ -25,18 +25,18 @@ require "ipaddr"
 node[:networking][:interfaces].each do |name, interface|
   if interface[:role] && role = node[:networking][:roles][interface[:role]]
     if role[interface[:family]]
-      node.default[:networking][:interfaces][name][:prefix] = role[interface[:family]][:prefix]
-      node.default[:networking][:interfaces][name][:gateway] = role[interface[:family]][:gateway]
+      node.set[:networking][:interfaces][name][:prefix] = role[interface[:family]][:prefix]
+      node.set[:networking][:interfaces][name][:gateway] = role[interface[:family]][:gateway]
     end
 
-    node.default[:networking][:interfaces][name][:metric] = role[:metric]
-    node.default[:networking][:interfaces][name][:zone] = role[:zone]
+    node.set[:networking][:interfaces][name][:metric] = role[:metric]
+    node.set[:networking][:interfaces][name][:zone] = role[:zone]
   end
 
   prefix = node[:networking][:interfaces][name][:prefix]
 
-  node.default[:networking][:interfaces][name][:netmask] = (~IPAddr.new(interface[:address]).mask(0)).mask(prefix)
-  node.default[:networking][:interfaces][name][:network] = IPAddr.new(interface[:address]).mask(prefix)
+  node.set[:networking][:interfaces][name][:netmask] = (~IPAddr.new(interface[:address]).mask(0)).mask(prefix)
+  node.set[:networking][:interfaces][name][:network] = IPAddr.new(interface[:address]).mask(prefix)
 end
 
 template "/etc/network/interfaces" do
