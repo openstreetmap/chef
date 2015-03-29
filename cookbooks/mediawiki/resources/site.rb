@@ -73,6 +73,7 @@ def mediawiki_params
     :skin => skin,
     :site_notice => site_notice,
     :site_readonly => site_readonly,
+    :ssl_enabled => ssl_enabled,
     :private_accounts => private_accounts,
     :private => private
   }

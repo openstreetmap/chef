@@ -24,10 +24,10 @@ $wgUsePathInfo      = true;
 $wgScriptExtension  = ".php";
 
 ## The protocol and server name to use in fully-qualified URLs
-$wgServer           = "//<%= @mediawiki[:site] %>";
-$wgInternalServer   = 'http://<%= @mediawiki[:site] %>';
+$wgServer           = "//<%= @name %>";
+$wgInternalServer   = 'http://<%= @name %>';
 
-<% if @mediawiki[:enable_ssl] -%>
+<% if @mediawiki[:ssl_enabled] -%>
 $wgSecureLogin = true;
 $wgDefaultUserOptions['prefershttps'] = 0;
 <% end -%>
