@@ -29,6 +29,7 @@ mediawiki_site "wiki.osmfoundation.org" do
   database_name "osmf-wiki"
   database_user "osmf-wikiuser"
   database_password passwords["wiki"]["database"]
+  admin_password passwords["wiki"]["admin"]
   skin "osmf"
   logo "/Wiki.png"
   email_contact "webmaster@openstreetmap.org"
