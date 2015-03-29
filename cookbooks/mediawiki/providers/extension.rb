@@ -63,17 +63,17 @@ action :create do
       mode 0664
       variables new_resource.variables
     end
-  end
+  else
+    extension_script = "#{extension_directory}/#{new_resource.name}.php"
 
-  extension_script = "#{extension_directory}/#{new_resource.name}.php"
-
-  file "#{mediawiki_directory}/LocalSettings.d/Ext-#{new_resource.name}.inc.php" do
-    action :create
-    content "<?php require_once('#{extension_script}');\n"
-    user node[:mediawiki][:user]
-    group node[:mediawiki][:group]
-    mode 0664
-    only_if { ::File.exist?(extension_script) }
+    file "#{mediawiki_directory}/LocalSettings.d/Ext-#{new_resource.name}.inc.php" do
+      action :create
+      content "<?php require_once('#{extension_script}');\n"
+      user node[:mediawiki][:user]
+      group node[:mediawiki][:group]
+      mode 0664
+      only_if { ::File.exist?(extension_script) }
+    end
   end
 end
 
@@ -81,12 +81,6 @@ action :delete do
   directory extension_directory do
     action :delete
     recursive true
-  end
-
-  if new_resource.template # ~FC023
-    file "#{mediawiki_directory}/LocalSettings.d/Ext-#{new_resource.name}.inc.php" do
-      action :delete
-    end
   end
 
   file "#{mediawiki_directory}/LocalSettings.d/Ext-#{new_resource.name}.inc.php" do
