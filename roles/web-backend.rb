@@ -13,10 +13,6 @@ default_attributes(
   },
   :passenger => {
     :max_pool_size => 12
-  },
-  :web => {
-    :rails_soft_memory_limit => 512,
-    :rails_hard_memory_limit => 2048
   }
 )
 

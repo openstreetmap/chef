@@ -16,10 +16,6 @@ default_attributes(
   :passenger => {
     :max_pool_size => 50
   },
-  :web => {
-    :rails_soft_memory_limit => 256,
-    :rails_hard_memory_limit => 1024
-  },
   :exim => {
     :local_domains => ["messages.openstreetmap.org"],
     :trusted_users => ["rails"],

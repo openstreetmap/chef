@@ -57,8 +57,6 @@ rails_port "www.openstreetmap.org" do
   messages_domain "messages.openstreetmap.org"
   quova_username "ws360602"
   quova_password web_passwords["quova"]
-  soft_memory_limit node[:web][:rails_soft_memory_limit]
-  hard_memory_limit node[:web][:rails_hard_memory_limit]
   gpx_dir "/store/rails/gpx"
   attachments_dir "/store/rails/attachments"
   log_path "#{node[:web][:log_directory]}/rails.log"
