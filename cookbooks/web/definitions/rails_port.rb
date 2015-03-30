@@ -74,6 +74,7 @@ define :rails_port, :action => [:create, :enable] do
     command "passenger-config restart-app #{rails_directory}"
     user "root"
     group "root"
+    only_if { File.exist?("/usr/bin/passenger-config") }
   end
 
   file "#{rails_directory}/public/export/embed.html" do
