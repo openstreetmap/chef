@@ -189,6 +189,14 @@ template "/etc/shorewall/rules" do
   notifies :restart, "service[shorewall]"
 end
 
+template "/etc/logrotate.d/shorewall" do
+  source "logrotate.shorewall.erb"
+  owner "root"
+  group "root"
+  mode 0644
+  variables :name => "shorewall"
+end
+
 firewall_rule "limit-icmp-echo" do
   action :accept
   family :inet
@@ -292,6 +300,14 @@ unless node.interfaces(:family => :inet6).empty?
     mode 0644
     variables :rules => []
     notifies :restart, "service[shorewall6]"
+  end
+
+  template "/etc/logrotate.d/shorewall6" do
+    source "logrotate.shorewall.erb"
+    owner "root"
+    group "root"
+    mode 0644
+    variables :name => "shorewall6"
   end
 
   firewall_rule "limit-icmp6-echo" do
