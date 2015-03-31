@@ -3,6 +3,8 @@
 # by Dan Manges, http://www.dcmanges.com/blog/rails-application-visualization-with-munin
 # NOTE: you might need to add munin to allow passwordless sudo for passenger-memory-stats
 
+require "English"
+
 def output_config
   puts <<-END
 graph_args --base 1024 -l 0 --vertical-label bytes --upper-limit 4056231936

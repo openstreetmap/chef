@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+require "English"
+
 def output_config
   puts <<-END
 graph_category passenger

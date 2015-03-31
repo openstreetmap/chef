@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+require "English"
+
 def output_config
   puts <<-END
 graph_category passenger
@@ -17,7 +19,7 @@ def output_values
     $stderr.puts "failed executing passenger-status"
     exit 1
   end
-  status =~ /Waiting on global queue:\s+(\d+)/
+  status =~ /Requests in top-level queue :\s+(\d+)/
   puts "global.value #{Regexp.last_match[1]}"
 end
 
