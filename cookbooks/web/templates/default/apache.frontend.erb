@@ -136,6 +136,7 @@
   RailsEnv production
   PassengerMinInstances 10
   PassengerMaxRequests 5000
+  PassengerMaxRequestQueueSize 250
 <% if port == 443 -%>
   PassengerPreStart https://www.openstreetmap.org/
 <% else -%>
