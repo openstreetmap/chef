@@ -251,7 +251,7 @@ action :create do
 
   # MediaWiki Language Extension Bundle
   # FIXME: should automatically resolve tag
-  mw_lang_ext_bundle_tag = "2014.09"
+  mw_lang_ext_bundle_tag = "2015.03"
 
   mediawiki_extension "Babel" do
     site new_resource.name
