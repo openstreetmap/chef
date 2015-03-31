@@ -85,7 +85,7 @@ action :create do
     mode 0775
   end
 
-  mediawiki_reference = "refs/heads/REL#{new_resource.version}".tr(".", "_")
+  mediawiki_reference = "REL#{new_resource.version}".tr(".", "_")
 
   git site_directory do
     action :sync
