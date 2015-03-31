@@ -9,10 +9,10 @@ def uri_and_times_from_status(server)
   file = open("http://#{server}/server-status").read
   doc = Hpricot.parse(file)
   tables = doc / "table"
-  rows = (tables[0] / "tr")[1..-1]
+  rows = (tables[1] / "tr")[1..-1]
   data = rows.collect { |r| (r  / "td").collect(&:inner_html) }
   # filter where the PID is numeric, status is 'W' and host matches the server
-  matching_data = data.select { |r| (r[1].to_i > 0) && r[3].match(/W/) && r[11].match(server) }
+  matching_data = data.select { |r| r[1].to_i > 0 && r[3].match(/W/) && r[11].match(server) }
   # return URI and number of seconds processing for each request
   matching_data.collect { |r| [r[12], r[5].to_i] }
 end
@@ -54,7 +54,7 @@ if ARGV[0] == "config"
 else
   counts = uri_and_times_from_status(server)
            .collect { |x, y| [categorise_uri(x), y] }
-           .each_with_object({}) do |h, e|
+           .each_with_object({}) do |e, h|
     category, time = e
     if h.key? category
       h[category] += [time]
