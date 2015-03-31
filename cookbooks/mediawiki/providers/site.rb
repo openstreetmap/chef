@@ -87,7 +87,7 @@ action :create do
 
   mediawiki_reference = "REL#{new_resource.version}".tr(".", "_")
 
-  git site_directory do
+  git mediawiki_directory do
     action :sync
     repository "git://github.com/wikimedia/mediawiki"
     revision mediawiki_reference
