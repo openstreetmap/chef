@@ -57,6 +57,7 @@
     RewriteRule ^wp-includes/[^/]+\.php$ - [F,L]
     RewriteRule ^wp-includes/js/tinymce/langs/.+\.php - [F,L]
     RewriteRule ^wp-includes/theme-compat/ - [F,L]
+    RewriteRule ^readme\.html$ [F,L]
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteRule . /index.php [L]
@@ -84,6 +85,10 @@
   <Directory ~ "\.git">
     Require all denied
   </Directory>
+
+  <Files ~ "\.(txt|md)$">
+    Require all denied
+  </Files>
 
   <Files ~ "~$">
     Require all denied
