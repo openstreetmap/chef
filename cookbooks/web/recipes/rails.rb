@@ -66,3 +66,27 @@ rails_port "www.openstreetmap.org" do
   oauth_key web_passwords["oauth_key"]
   piwik_configuration piwik_configuration
 end
+
+gem_package "apachelogregex"
+gem_package "file-tail"
+
+template "/usr/local/bin/api-statistics" do
+  source "api-statistics.erb"
+  owner "root"
+  group "root"
+  mode 0755
+end
+
+template "/etc/init.d/api-statistics" do
+  source "api-statistics.init.erb"
+  owner "root"
+  group "root"
+  mode 0755
+end
+
+service "api-statistics" do
+  action [:enable, :start]
+  supports :restart => true
+  subscribes :restart, "template[/usr/local/bin/api-statistics]"
+  subscribes :restart, "template[/etc/init.d/api-statistics]"
+end

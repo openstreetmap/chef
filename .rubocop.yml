@@ -8,6 +8,7 @@ Style/FileName:
   Exclude:
     - 'cookbooks/trac/files/default/trac-authenticate'
     - 'cookbooks/planet/files/default/replication-bin/replicate-changesets'
+    - 'cookbooks/*/templates/*/*.erb'
     - 'hooks/*'
     - 'roles/*.rb'
 

@@ -1,0 +1,42 @@
+#!/usr/bin/ruby
+
+require "apache_log_regex"
+require "file-tail"
+require "json"
+
+def categorise_uri(line)
+  uri = line.split(" ")[1]
+
+  case uri
+  when %r{api/0\.6/map} then :map
+  when %r{api/0\.6/changeset/[0-9]*/upload} then :upload
+  when %r{api/0\.6/amf} then :amf
+  when %r{api/0\.6/(node|way|relation)/[0-9]*/history} then :history
+  when %r{api/0\.6/(node|way|relation)/[0-9]*/full} then :full
+  when %r{api/0\.6/trackpoints} then :trkpts
+  when %r{api/0\.6/} then :other
+  else :web
+  end
+end
+
+parser = ApacheLogRegex.new('%h %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\" %Ts')
+last_write = Time.now
+statistics = { :status => Hash.new(0), :uri => Hash.new(0) }
+
+File::Tail::Logfile.tail("/var/log/apache2/access.log") do |line|
+  begin
+    hash = parser.parse(line)
+    status = hash["%>s"]
+    uri = categorise_uri(hash["%r"])
+
+    statistics[:status][status] += 1
+    statistics[:uri][uri] += 1
+  rescue ApacheLogRegex::ParseError
+    # nil
+  end
+
+  if Time.now - last_write > 10
+    File.write("/srv/www.openstreetmap.org/rails/tmp/statistics.json", statistics.to_json)
+    last_write = Time.now
+  end
+end
