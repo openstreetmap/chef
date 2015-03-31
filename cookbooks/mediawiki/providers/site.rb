@@ -89,9 +89,8 @@ action :create do
 
   git site_directory do
     action :sync
-    repository "git://github.com/wikimedia/mediawiki-core"
-    reference mediawiki_reference
-    # depth 1
+    repository "git://github.com/wikimedia/mediawiki"
+    revision mediawiki_reference
     user node[:mediawiki][:user]
     group node[:mediawiki][:group]
     notifies :run, "execute[#{mediawiki_directory}/maintenance/install.php]", :immediately
