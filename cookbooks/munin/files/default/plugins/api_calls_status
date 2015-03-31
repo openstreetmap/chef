@@ -1,0 +1,39 @@
+#!/usr/bin/ruby
+
+require "json"
+
+HTTP_STATUSES = {
+  "200" => "OK",
+  "301" => "Moved Permanently",
+  "302" => "Found",
+  "303" => "See Other",
+  "304" => "Not Modified",
+  "400" => "Bad Request",
+  "401" => "Unauthorized",
+  "403" => "Forbidden",
+  "404" => "Not Found",
+  "408" => "Request Timeout",
+  "409" => "Conflict",
+  "410" => "Gone",
+  "500" => "Internal Server Error",
+  "509" => "Bandwidth Limit Exceeded"
+}
+
+if ARGV[0] == "config"
+  puts "graph_title HTTP response codes"
+  puts "graph_args --lower-limit 0 --base 1000 --logarithmic"
+  puts "graph_vlabel Number of requests per ${graph_period}"
+  puts "graph_category api"
+
+  HTTP_STATUSES.each do |code, label|
+    puts "http#{code}.label #{label}"
+    puts "http#{code}.type DERIVE"
+  end
+else
+  statistics = JSON.parse(File.read("/srv/www.openstreetmap.org/rails/tmp/statistics.json"))
+
+  HTTP_STATUSES.keys.each do |code|
+    count = statistics["status"][code] || 0
+    puts "http#{code}.value #{count}"
+  end
+end

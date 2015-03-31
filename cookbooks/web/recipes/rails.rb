@@ -91,6 +91,7 @@ service "api-statistics" do
   subscribes :restart, "template[/etc/init.d/api-statistics]"
 end
 
+munin_plugin "api_calls_status"
 munin_plugin "api_calls_num"
 
 munin_plugin "api_calls_#{node[:hostname]}" do
