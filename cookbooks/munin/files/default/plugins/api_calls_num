@@ -1,31 +1,6 @@
 #!/usr/bin/ruby
 
-require "rubygems"
-require "date"
-gem "home_run", ">= 0"
-require "apache_log_regex"
-
-NUM_LINES = 10000
-
-def uris_from_logs
-  lines = []
-  max_time = nil
-  min_time = nil
-  parser = ApacheLogRegex.new('%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\" %x')
-  IO.popen("tail -n #{NUM_LINES} /var/log/apache2/access.log").each_line do |line|
-    begin
-      hash = parser.parse(line)
-      uri = hash["%r"]
-      t = DateTime.strptime(hash["%t"], "[%d/%b/%Y:%H:%M:%S %z]")
-      min_time = [min_time, t].compact.min
-      max_time = [max_time, t].compact.max
-      lines << uri
-    rescue ApacheLogRegex::ParseError
-      # nil
-    end
-  end
-  [min_time, max_time, lines]
-end
+require "json"
 
 CALL_TYPES = {
   :map => "Map API calls",
@@ -38,42 +13,21 @@ CALL_TYPES = {
   :other => "Other API calls"
 }
 
-def categorise_uri(line)
-  uri = line.split(" ")[1]
-
-  case uri
-  when %r{api/0\.6/map} then :map
-  when %r{api/0\.6/changeset/[0-9]*/upload} then :upload
-  when %r{api/0\.6/amf} then :amf
-  when %r{api/0\.6/(node|way|relation)/[0-9]*/history} then :history
-  when %r{api/0\.6/(node|way|relation)/[0-9]*/full} then :full
-  when %r{api/0\.6/trackpoints} then :trkpts
-  when %r{api/0\.6/} then :other
-  else :web
-  end
-end
-
 if ARGV[0] == "config"
   puts "graph_title Requests processed"
-  puts "graph_vlabel Number of requests per minute"
+  puts "graph_args --base 1000"
+  puts "graph_vlabel Number of requests per ${graph_period}"
   puts "graph_category api"
-  CALL_TYPES.each { |k, v| puts "#{k}.label #{v}" }
 
-else
-  min_time, max_time, lines = uris_from_logs
-  delta_t = (max_time - min_time).to_f * 24 * 60
-  counts = lines
-           .collect { |x| categorise_uri(x) }
-           .each_with_object({}) do |e, h|
-    if h.key? e
-      h[e] += 1
-    else
-      h[e] = 1
-    end
+  CALL_TYPES.each do |type, label|
+    puts "#{type}.label #{label}"
+    puts "#{type}.type DERIVE"
   end
+else
+  statistics = JSON.parse(File.read("/srv/www.openstreetmap.org/rails/tmp/statistics.json"))
 
   CALL_TYPES.keys.each do |type|
-    count = counts[type] || 0
-    puts "#{type}.value #{count / delta_t}"
+    count = statistics["uri"][type.to_s] || 0
+    puts "#{type}.value #{count}"
   end
 end

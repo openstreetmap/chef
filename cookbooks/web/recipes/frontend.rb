@@ -41,10 +41,6 @@ apache_site "www.openstreetmap.org" do
   variables :secret_key_base => web_passwords["secret_key_base"]
 end
 
-gem_package "hpricot"
-gem_package "home_run"
-gem_package "apachelogregex"
-
 template "/etc/logrotate.d/apache2" do
   source "logrotate.apache.erb"
   owner "root"
@@ -52,9 +48,7 @@ template "/etc/logrotate.d/apache2" do
   mode 0644
 end
 
-munin_plugin "api_calls_num" do
-  action :delete
-end
+munin_plugin "api_calls_num"
 
 munin_plugin "api_calls_#{node[:hostname]}" do
   target "api_calls_"
