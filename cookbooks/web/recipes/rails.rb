@@ -90,3 +90,13 @@ service "api-statistics" do
   subscribes :restart, "template[/usr/local/bin/api-statistics]"
   subscribes :restart, "template[/etc/init.d/api-statistics]"
 end
+
+munin_plugin "api_calls_num"
+
+munin_plugin "api_calls_#{node[:hostname]}" do
+  target "api_calls_"
+end
+
+munin_plugin "api_waits_#{node[:hostname]}" do
+  target "api_waits_"
+end

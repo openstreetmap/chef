@@ -47,13 +47,3 @@ template "/etc/logrotate.d/apache2" do
   group "root"
   mode 0644
 end
-
-munin_plugin "api_calls_num"
-
-munin_plugin "api_calls_#{node[:hostname]}" do
-  target "api_calls_"
-end
-
-munin_plugin "api_waits_#{node[:hostname]}" do
-  target "api_waits_"
-end
