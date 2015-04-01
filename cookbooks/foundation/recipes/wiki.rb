@@ -42,7 +42,7 @@ end
 
 mediawiki_skin "osmf" do
   site "wiki.osmfoundation.org"
-  repository "git://github.com/tomhughes/mediawiki-skins-osmf.git"
+  repository "git://github.com/openstreetmap/mediawiki-skins-osmf.git"
   revision "master"
 end
 
