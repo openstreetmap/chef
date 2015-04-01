@@ -422,6 +422,31 @@ action :create do
   end
 end
 
+action :update do
+  mediawiki_directory = "#{site_directory}/w"
+
+  template "#{mediawiki_directory}/LocalSettings.php" do
+    cookbook "mediawiki"
+    source "LocalSettings.php.erb"
+    owner node[:mediawiki][:user]
+    group node[:mediawiki][:group]
+    mode 0664
+    variables :name => new_resource.name,
+              :directory => mediawiki_directory,
+              :database_params => new_resource.database_params,
+              :mediawiki => new_resource.mediawiki_params
+    notifies :run, "execute[#{mediawiki_directory}/maintenance/update.php]"
+  end
+
+  execute "#{mediawiki_directory}/maintenance/update.php" do
+    action :run
+    command "php maintenance/update.php --quick"
+    cwd mediawiki_directory
+    user node[:mediawiki][:user]
+    group node[:mediawiki][:group]
+  end
+end
+
 action :delete do
   apache_site new_resource.name do
     action :delete

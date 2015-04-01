@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-actions :create, :delete
+actions :create, :update, :delete
 default_action :create
 
 attribute :name, :kind_of => String, :name_attribute => true
