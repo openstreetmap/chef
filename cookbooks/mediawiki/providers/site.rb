@@ -160,6 +160,26 @@ action :create do
               :database_params => new_resource.database_params
   end
 
+  mediawiki_skin "CologneBlue" do
+    site new_resource.name
+     update_site false
+  end
+
+  mediawiki_skin "Modern" do
+    site new_resource.name
+    update_site false
+  end
+
+  mediawiki_skin "MonoBook" do
+    site new_resource.name
+    update_site false
+  end
+
+  mediawiki_skin "Vector" do
+    site new_resource.name
+    update_site false
+  end
+
   mediawiki_extension "Cite" do
     site new_resource.name
     template "mw-ext-Cite.inc.php.erb"
