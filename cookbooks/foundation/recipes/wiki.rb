@@ -40,32 +40,14 @@ mediawiki_site "wiki.osmfoundation.org" do
   recaptcha_private_key passwords["wiki"]["recaptcha"]
 end
 
+mediawiki_skin "osmf" do
+  site "wiki.osmfoundation.org"
+  repository "git://github.com/tomhughes/mediawiki-skins-osmf.git"
+  revision "master"
+end
+
 cookbook_file "/srv/wiki.osmfoundation.org/Wiki.png" do
   owner node[:mediawiki][:user]
   group node[:mediawiki][:group]
   mode 0644
-end
-
-subversion "/srv/wiki.osmfoundation.org/w/skins/osmf-skin" do
-  repository "http://svn.openstreetmap.org/extensions/mediawiki/osmf"
-  user node[:mediawiki][:user]
-  group node[:mediawiki][:group]
-end
-
-link "/srv/wiki.osmfoundation.org/w/skins/osmf" do
-  to "osmf-skin/osmf"
-  owner node[:mediawiki][:user]
-  group node[:mediawiki][:group]
-end
-
-link "/srv/wiki.osmfoundation.org/w/skins/osmf.deps.php" do
-  to "osmf-skin/osmf.deps.php"
-  owner node[:mediawiki][:user]
-  group node[:mediawiki][:group]
-end
-
-link "/srv/wiki.osmfoundation.org/w/skins/osmf.php" do
-  to "osmf-skin/osmf.php"
-  owner node[:mediawiki][:user]
-  group node[:mediawiki][:group]
 end

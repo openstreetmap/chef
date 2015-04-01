@@ -37,16 +37,12 @@ action :create do
     end
   else
     skin_repository = new_resource.repository || default_repository
-    skin_reference = if new_resource.tag
-                       "refs/tags/#{new_resource.tag}"
-                     else
-                       "REL#{skin_version}".tr(".", "_")
-                     end
+    skin_revision = new_resource.revision || "REL#{skin_version}".tr(".", "_")
 
     git skin_directory do
       action :sync
       repository skin_repository
-      reference skin_reference
+      revision skin_revision
       enable_submodules true
       user node[:mediawiki][:user]
       group node[:mediawiki][:group]
