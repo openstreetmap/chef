@@ -160,9 +160,9 @@ action :create do
               :database_params => new_resource.database_params
   end
 
-  mediawiki_skin "CologneBlue" do
+  mediawiki_skin "CologneBlue" do # ~FC005
     site new_resource.name
-     update_site false
+    update_site false
   end
 
   mediawiki_skin "Modern" do

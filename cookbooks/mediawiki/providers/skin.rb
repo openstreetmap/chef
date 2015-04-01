@@ -38,10 +38,10 @@ action :create do
   else
     skin_repository = new_resource.repository || default_repository
     skin_reference = if new_resource.tag
-                            "refs/tags/#{new_resource.tag}"
-                          else
-                            "REL#{skin_version}".tr(".", "_")
-                          end
+                       "refs/tags/#{new_resource.tag}"
+                     else
+                       "REL#{skin_version}".tr(".", "_")
+                     end
 
     git skin_directory do
       action :sync

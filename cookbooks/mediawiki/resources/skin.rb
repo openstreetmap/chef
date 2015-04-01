@@ -32,7 +32,7 @@ attribute :update_site, :kind_of => [TrueClass, FalseClass], :default => true
 
 def after_created
   if update_site
-    notifies :update, "mediawik_site[site]"
+    notifies :update, "mediawiki_site[#{site}]"
   else
     site_directory = node[:mediawiki][:sites][site][:directory]
 
