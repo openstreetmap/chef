@@ -65,13 +65,7 @@ action :create do
     notifies :create, "ruby_block[rename-installer-localsettings]", :immediately
   end
 
-  execute "#{mediawiki_directory}/maintenance/update.php" do
-    action :nothing
-    command "php maintenance/update.php --quick"
-    cwd mediawiki_directory
-    user node[:mediawiki][:user]
-    group node[:mediawiki][:group]
-  end
+  execute_update
 
   directory site_directory do
     owner node[:mediawiki][:user]
@@ -127,18 +121,7 @@ action :create do
     mode 0775
   end
 
-  template "#{mediawiki_directory}/LocalSettings.php" do
-    cookbook "mediawiki"
-    source "LocalSettings.php.erb"
-    owner node[:mediawiki][:user]
-    group node[:mediawiki][:group]
-    mode 0664
-    variables :name => new_resource.name,
-              :directory => mediawiki_directory,
-              :database_params => new_resource.database_params,
-              :mediawiki => new_resource.mediawiki_params
-    notifies :run, "execute[#{mediawiki_directory}/maintenance/update.php]"
-  end
+  create_local_settings
 
   template "/etc/cron.d/mediawiki-#{cron_name}" do
     cookbook "mediawiki"
@@ -422,6 +405,11 @@ action :create do
   end
 end
 
+action :update do
+  create_local_settings
+  execute_update
+end
+
 action :delete do
   apache_site new_resource.name do
     action :delete
@@ -439,6 +427,35 @@ action :delete do
 
   mysql_user "#{new_resource.database_user}@localhost" do
     action :drop
+  end
+end
+
+def execute_update
+  mediawiki_directory = "#{site_directory}/w"
+
+  execute "#{mediawiki_directory}/maintenance/update.php" do
+    action :nothing
+    command "php maintenance/update.php --quick"
+    cwd mediawiki_directory
+    user node[:mediawiki][:user]
+    group node[:mediawiki][:group]
+  end
+end
+
+def create_local_settings
+  mediawiki_directory = "#{site_directory}/w"
+
+  template "#{mediawiki_directory}/LocalSettings.php" do
+    cookbook "mediawiki"
+    source "LocalSettings.php.erb"
+    owner node[:mediawiki][:user]
+    group node[:mediawiki][:group]
+    mode 0664
+    variables :name => new_resource.name,
+              :directory => mediawiki_directory,
+              :database_params => new_resource.database_params,
+              :mediawiki => new_resource.mediawiki_params
+    notifies :run, "execute[#{mediawiki_directory}/maintenance/update.php]"
   end
 end
 
