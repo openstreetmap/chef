@@ -16,7 +16,9 @@ rrdcached_socket /var/run/rrdcached.sock
 
 # Configure alert targets
 contact.admins.command mail -s "Munin Notification for ${var:host}" admins@openstreetmap.org
+contact.admins.always_send invalid
 contact.null.command cat > /dev/null
+contact.null.always_send invalid
 
 # Send alerts to the admins by default
 contacts admins
