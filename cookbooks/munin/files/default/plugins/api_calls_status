@@ -4,6 +4,7 @@ require "json"
 
 HTTP_STATUSES = {
   "200" => "OK",
+  "206" => "Partial Content",
   "301" => "Moved Permanently",
   "302" => "Found",
   "303" => "See Other",
@@ -12,21 +13,26 @@ HTTP_STATUSES = {
   "401" => "Unauthorized",
   "403" => "Forbidden",
   "404" => "Not Found",
+  "405" => "Method Not Allowed",
   "408" => "Request Timeout",
   "409" => "Conflict",
   "410" => "Gone",
+  "412" => "Precondition Failed",
+  "416" => "Requested Range Not Satisfiable",
   "500" => "Internal Server Error",
+  "502" => "Bad Gateway",
+  "503" => "Service Unavailable",
   "509" => "Bandwidth Limit Exceeded"
 }
 
 if ARGV[0] == "config"
   puts "graph_title HTTP response codes"
-  puts "graph_args --base 1000 --logarithmic"
+  puts "graph_args --base 1000"
   puts "graph_vlabel Number of requests per ${graph_period}"
   puts "graph_category api"
 
   HTTP_STATUSES.each do |code, label|
-    puts "http#{code}.label #{label}"
+    puts "http#{code}.label #{code} #{label}"
     puts "http#{code}.type DERIVE"
   end
 else
