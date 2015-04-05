@@ -23,6 +23,7 @@ passwords = data_bag_item("foundation", "passwords")
 
 mediawiki_site "board.osmfoundation.org" do
   sitename "OSMF Board Wiki"
+  metanamespace "OSMFBoard"
   directory "/srv/board.osmfoundation.org"
   ssl_enabled true
   database_name "board-wiki"
