@@ -22,6 +22,7 @@ if ARGV[0] == "config"
   CALL_TYPES.each do |type, label|
     puts "#{type}.label #{label}"
     puts "#{type}.type DERIVE"
+    puts "#{type}.min 0"
   end
 else
   statistics = JSON.parse(File.read("/srv/www.openstreetmap.org/rails/tmp/statistics.json"))

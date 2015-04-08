@@ -34,6 +34,7 @@ if ARGV[0] == "config"
   HTTP_STATUSES.each do |code, label|
     puts "http#{code}.label #{code} #{label}"
     puts "http#{code}.type DERIVE"
+    puts "http#{code}.min 0"
   end
 else
   statistics = JSON.parse(File.read("/srv/www.openstreetmap.org/rails/tmp/statistics.json"))
