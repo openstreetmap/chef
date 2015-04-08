@@ -135,6 +135,17 @@ unknown_limit 144
     api_calls_www.map.label Map API calls
     api_calls_www.trkpts.sum <%= Chef::Munin.expand "%%.openstreetmap:api_calls_%%.trkpts", @frontends %>
     api_calls_www.trkpts.label GPX trackpoints calls
+    api_calls_error.graph_title HTTP errors
+    api_calls_error.graph_vlabel Number of errors per ${graph_period}
+    api_calls_error.graph_category api
+    api_calls_error.http500.sum <%= Chef::Munin.expand "%%.openstreetmap:api_calls_status.http500", @frontends %>
+    api_calls_error.http500.label 500 Internal Server Error
+    api_calls_error.http502.sum <%= Chef::Munin.expand "%%.openstreetmap:api_calls_status.http502", @frontends %>
+    api_calls_error.http502.label 502 Bad Gateway
+    api_calls_error.http503.sum <%= Chef::Munin.expand "%%.openstreetmap:api_calls_status.http503", @frontends %>
+    api_calls_error.http503.label 503 Service Unavailable
+    api_calls_error.http509.sum <%= Chef::Munin.expand "%%.openstreetmap:api_calls_status.http509", @frontends %>
+    api_calls_error.http509.label 509 Bandwidth Limit Exceeded 
     api_calls_num.graph_title Requests processed
     api_calls_num.graph_vlabel Number of requests per minute
     api_calls_num.graph_category api
