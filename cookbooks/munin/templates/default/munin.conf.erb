@@ -101,6 +101,7 @@ unknown_limit 144
     if_eth0.graph_title eth0 traffic
     if_eth0.graph_vlabel bits in (-) / out (+) per ${graph_period}
     if_eth0.graph_category network
+    if_eth0.graph_order down up
     if_eth0.down.sum <%= Chef::Munin.expand "%%.openstreetmap:if_eth0.down", @frontends %>
     if_eth0.down.label received
     if_eth0.down.cdef down,8,*
@@ -110,6 +111,7 @@ unknown_limit 144
     if_eth1.graph_title eth1 traffic
     if_eth1.graph_vlabel bits in (-) / out (+) per ${graph_period}
     if_eth1.graph_category network
+    if_eth1.graph_order down up
     if_eth1.down.sum <%= Chef::Munin.expand "%%.openstreetmap:if_eth1.down", @frontends %>
     if_eth1.down.label received
     if_eth1.down.cdef down,8,*
@@ -119,6 +121,7 @@ unknown_limit 144
     api_calls_www.graph_title Active requests
     api_calls_www.graph_vlabel Number of requests
     api_calls_www.graph_category api
+    api_calls_www.graph_order map upload amf history full trkpts web other
     api_calls_www.web.sum <%= Chef::Munin.expand "%%.openstreetmap:api_calls_%%%.web", @frontends %>
     api_calls_www.web.label Web site traffic
     api_calls_www.upload.sum <%= Chef::Munin.expand "%%.openstreetmap:api_calls_%%%.upload", @frontends %>
@@ -138,6 +141,7 @@ unknown_limit 144
     api_calls_error.graph_title HTTP errors
     api_calls_error.graph_vlabel Number of errors per ${graph_period}
     api_calls_error.graph_category api
+    api_calls_error.graph_order http500 http502 http503 http509
     api_calls_error.http500.sum <%= Chef::Munin.expand "%%.openstreetmap:api_calls_status.http500", @frontends %>
     api_calls_error.http500.label 500 Internal Server Error
     api_calls_error.http502.sum <%= Chef::Munin.expand "%%.openstreetmap:api_calls_status.http502", @frontends %>
@@ -149,6 +153,7 @@ unknown_limit 144
     api_calls_num.graph_title Requests processed
     api_calls_num.graph_vlabel Number of requests per minute
     api_calls_num.graph_category api
+    api_calls_num.graph_order map upload amf history full trkpts web other
     api_calls_num.web.sum <%= Chef::Munin.expand "%%.openstreetmap:api_calls_num.web", @frontends %>
     api_calls_num.web.label Web site traffic
     api_calls_num.upload.sum <%= Chef::Munin.expand "%%.openstreetmap:api_calls_num.upload", @frontends %>
@@ -168,6 +173,7 @@ unknown_limit 144
     api_waits_www.graph_title Wait times for active requests
     api_waits_www.graph_vlabel Average time of requests
     api_waits_www.graph_category api
+    api_waits_www.graph_order map upload amf history full trkpts web other
     api_waits_www.web.sum <%= Chef::Munin.expand "%%.openstreetmap:api_waits_%%%.web", @frontends %>
     api_waits_www.web.label Web site traffic
     api_waits_www.web.cdef web,2,/
@@ -192,22 +198,16 @@ unknown_limit 144
     api_waits_www.trkpts.sum <%= Chef::Munin.expand "%%.openstreetmap:api_waits_%%%.trkpts", @frontends %>
     api_waits_www.trkpts.label GPX trackpoints calls
     api_waits_www.trkpts.cdef trkpts,2,/
-    memcached_multi_bytes.graph_title Network Traffic
-    memcached_multi_bytes.graph_vlabel bits in (-) / out (+)
-    memcached_multi_bytes.graph_category memcached
-    memcached_multi_bytes.bytes_read.sum <%= Chef::Munin.expand "%%.openstreetmap:memcached_multi_bytes.bytes_read", @backends %>
-    memcached_multi_bytes.bytes_read.label Network Traffic coming in (-)
-    memcached_multi_bytes.bytes_read.cdef bytes_read,8,*
-    memcached_multi_bytes.bytes_written.sum <%= Chef::Munin.expand "%%.openstreetmap:memcached_multi_bytes.bytes_written", @backends %>
-    memcached_multi_bytes.bytes_written.label Traffic in (-) / out (+)
-    memcached_multi_bytes.bytes_written.cdef bytes_written,8,*
     memcached_commands.graph_title Commands
     memcached_commands.graph_vlabel Commands per ${graph_period}
     memcached_commands.graph_category memcached
+    memcached_commands.graph_order cmd_get cmd_set cmd_touch get_hits get_misses delete_hits delete_misses incr_hits incr_misses decr_hits decr_misses touch_hits touch_misses
     memcached_commands.cmd_get.sum <%= Chef::Munin.expand "%%.openstreetmap:memcached_commands.cmd_get", @backends %>
     memcached_commands.cmd_get.label Gets
     memcached_commands.cmd_set.sum <%= Chef::Munin.expand "%%.openstreetmap:memcached_commands.cmd_set", @backends %>
     memcached_commands.cmd_set.label Sets
+    memcached_commands.cmd_touch.sum <%= Chef::Munin.expand "%%.openstreetmap:memcached_commands.cmd_touch", @backends %>
+    memcached_commands.cmd_touch.label Touches
     memcached_commands.get_hits.sum <%= Chef::Munin.expand "%%.openstreetmap:memcached_commands.get_hits", @backends %>
     memcached_commands.get_hits.label Get Hits
     memcached_commands.get_misses.sum <%= Chef::Munin.expand "%%.openstreetmap:memcached_commands.get_misses", @backends %>
@@ -224,38 +224,57 @@ unknown_limit 144
     memcached_commands.decr_hits.label Decrement Hits
     memcached_commands.decr_misses.sum <%= Chef::Munin.expand "%%.openstreetmap:memcached_commands.decr_misses", @backends %>
     memcached_commands.decr_misses.label Decrement Misses
+    memcached_commands.touch_hits.sum <%= Chef::Munin.expand "%%.openstreetmap:memcached_commands.touch_hits", @backends %>
+    memcached_commands.touch_hits.label Touch Hits
+    memcached_commands.touch_misses.sum <%= Chef::Munin.expand "%%.openstreetmap:memcached_commands.touch_misses", @backends %>
+    memcached_commands.touch_misses.label Touch Misses
     memcached_multi_conns.graph_title Connections
     memcached_multi_conns.graph_vlabel Connections per ${graph_period}
     memcached_multi_conns.graph_category memcached
+    memcached_multi_conns.graph_order max_conns curr_conns avg_conns
     memcached_multi_conns.curr_conns.sum <%= Chef::Munin.expand "%%.openstreetmap:memcached_multi_conns.curr_conns", @backends %>
     memcached_multi_conns.curr_conns.label Current Connections
     memcached_multi_conns.max_conns.sum <%= Chef::Munin.expand "%%.openstreetmap:memcached_multi_conns.max_conns", @backends %>
     memcached_multi_conns.max_conns.label Max Connections
     memcached_multi_conns.avg_conns.sum <%= Chef::Munin.expand "%%.openstreetmap:memcached_multi_conns.avg_conns", @backends %>
     memcached_multi_conns.avg_conns.label Avg Connections
-    memcached_evictions.graph_title Evictions
-    memcached_evictions.graph_vlabel Evictions per ${graph_period}
-    memcached_evictions.graph_category memcached
-    memcached_evictions.evictions.sum <%= Chef::Munin.expand "%%.openstreetmap:memcached_evictions.evictions", @backends %>
-    memcached_evictions.evictions.label Evictions
-    memcached_evictions.evicted_nonzero.sum <%= Chef::Munin.expand "%%.openstreetmap:memcached_evictions.evicted_nonzero", @backends %>
-    memcached_evictions.evicted_nonzero.label Evictions prior to Expire
-    memcached_evictions.reclaimed.sum <%= Chef::Munin.expand "%%.openstreetmap:memcached_evictions.reclaimed", @backends %>
-    memcached_evictions.reclaimed.label Reclaimed Items
-    memcached_items.graph_title Items
-    memcached_items.graph_vlabel Items in Memcached
-    memcached_items.graph_category memcached
-    memcached_items.curr_items.sum <%= Chef::Munin.expand "%%.openstreetmap:memcached_items.curr_items", @backends %>
-    memcached_items.curr_items.label Current Items
-    memcached_items.total_items.sum <%= Chef::Munin.expand "%%.openstreetmap:memcached_items.total_items", @backends %>
-    memcached_items.total_items.label New Items
-    memcached_memory.graph_title Memory Usage
-    memcached_memory.graph_vlabel Bytes Used
-    memcached_memory.graph_category memcached
-    memcached_memory.limit_maxbytes.sum <%= Chef::Munin.expand "%%.openstreetmap:memcached_memory.limit_maxbytes", @backends %>
-    memcached_memory.limit_maxbytes.label Maximum Bytes Allocated
-    memcached_memory.bytes.sum <%= Chef::Munin.expand "%%.openstreetmap:memcached_memory.bytes", @backends %>
-    memcached_memory.bytes.label Current Bytes Used
+    memcached_multi_evictions.graph_title Evictions
+    memcached_multi_evictions.graph_vlabel Evictions per ${graph_period}
+    memcached_multi_evictions.graph_category memcached
+    memcached_multi_evictions.evictions.sum <%= Chef::Munin.expand "%%.openstreetmap:memcached_multi_evictions.evictions", @backends %>
+    memcached_multi_evictions.evictions.label Evictions
+    memcached_multi_evictions.evicted_nonzero.sum <%= Chef::Munin.expand "%%.openstreetmap:memcached_multi_evictions.evicted_nonzero", @backends %>
+    memcached_multi_evictions.evicted_nonzero.label Evictions prior to Expire
+    memcached_multi_evictions.reclaimed.sum <%= Chef::Munin.expand "%%.openstreetmap:memcached_multi_evictions.reclaimed", @backends %>
+    memcached_multi_evictions.reclaimed.label Reclaimed Items
+    memcached_multi_items.graph_title Items
+    memcached_multi_items.graph_vlabel Items in Memcached
+    memcached_multi_items.graph_category memcached
+    memcached_multi_items.graph_order curr_items total_items
+    memcached_multi_items.curr_items.sum <%= Chef::Munin.expand "%%.openstreetmap:memcached_multi_items.curr_items", @backends %>
+    memcached_multi_items.curr_items.label Current Items
+    memcached_multi_items.total_items.sum <%= Chef::Munin.expand "%%.openstreetmap:memcached_multi_items.total_items", @backends %>
+    memcached_multi_items.total_items.label New Items
+    memcached_multi_memory.graph_title Memory Usage
+    memcached_multi_memory.graph_vlabel Bytes Used
+    memcached_multi_memory.graph_category memcached
+    memcached_multi_memory.graph_order limit_maxbytes bytes
+    memcached_multi_memory.limit_maxbytes.sum <%= Chef::Munin.expand "%%.openstreetmap:memcached_multi_memory.limit_maxbytes", @backends %>
+    memcached_multi_memory.limit_maxbytes.label Maximum Bytes Allocated
+    memcached_multi_memory.bytes.sum <%= Chef::Munin.expand "%%.openstreetmap:memcached_multi_memory.bytes", @backends %>
+    memcached_multi_memory.bytes.label Current Bytes Used
+    memcached_multi_bytes.graph_title Network Traffic
+    memcached_multi_bytes.graph_vlabel bits in (-) / out (+)
+    memcached_multi_bytes.graph_category memcached
+    memcached_multi_bytes.graph_order bytes_read bytes_written
+    memcached_multi_bytes.bytes_read.sum <%= Chef::Munin.expand "%%.openstreetmap:memcached_multi_bytes.bytes_read", @backends %>
+    memcached_multi_bytes.bytes_read.label Network Traffic coming in (-)
+    memcached_multi_bytes.bytes_read.cdef bytes_read,8,*
+    memcached_multi_bytes.bytes_read.graph no
+    memcached_multi_bytes.bytes_written.sum <%= Chef::Munin.expand "%%.openstreetmap:memcached_multi_bytes.bytes_written", @backends %>
+    memcached_multi_bytes.bytes_written.negative bytes_read
+    memcached_multi_bytes.bytes_written.label Traffic in (-) / out (+)
+    memcached_multi_bytes.bytes_written.cdef bytes_written,8,*
 
 # Configure compound graphs for tile.openstreetmap.org
 [tile.openstreetmap]
