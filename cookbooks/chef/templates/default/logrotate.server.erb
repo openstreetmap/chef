@@ -1,0 +1,12 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+/var/log/chef-server/nginx/access.log
+/var/log/chef-server/nginx/error.log
+/var/log/chef-server/nginx/rewrite-port-80.log {
+  rotate 12
+  weekly
+  compress
+  postrotate
+        chef-server-ctl hup
+  endscript
+}

@@ -102,3 +102,10 @@ template "/etc/cron.daily/chef-server-backup" do
   group "root"
   mode 0755
 end
+
+template "/etc/logrotate.d/chef-server" do
+  source "logrotate.server.erb"
+  owner "root"
+  group "root"
+  mode 0644
+end
