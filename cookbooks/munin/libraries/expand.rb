@@ -5,7 +5,7 @@ class Chef
         if node.is_a?(Hash)
           template.gsub(/%%([^%]+)%%/) { node[Regexp.last_match[1].to_sym] }
         else
-          template.gsub("%%", node)
+          template.gsub("%%%", node.tr("-", "_")).gsub("%%", node)
         end
       end.join(" ")
     end
