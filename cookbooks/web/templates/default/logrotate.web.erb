@@ -11,7 +11,7 @@
   sharedscripts
   postrotate
 <% if File.directory?("#{node[:web][:base_directory]}/rails") -%>
-    /usr/bin/passenger-config restart-app <%= node[:web][:base_directory] %>/rails
+    /usr/bin/passenger-config restart-app <%= node[:web][:base_directory] %>/rails > /dev/null
 <% end -%>
 <% if File.directory?("#{node[:web][:base_directory]}/gpx-import") -%>
     /usr/bin/service gpx-import rotated
