@@ -19,6 +19,6 @@ mv $ROOT/data/taginfo-* $ROOT/data/old
 mv $ROOT/sources/taginfo-*.db $ROOT/sources/*/taginfo-*.db $ROOT/data
 mv $ROOT/sources/download/* $ROOT/download
 
-passenger-config restart-app $ROOT/taginfo/web > /dev/null
+sudo /usr/bin/passenger-config restart-app $ROOT/taginfo/web > /dev/null
 
 find $ROOT/sources/log -mtime +28 -delete

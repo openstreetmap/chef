@@ -69,6 +69,13 @@ file "/etc/logrotate.d/taginfo" do
   action :delete
 end
 
+template "/etc/sudoers.d/taginfo" do
+  source "sudoers.erb"
+  owner "root"
+  group "root"
+  mode 0440
+end
+
 node[:taginfo][:sites].each do |site|
   name = site[:name]
   directory = site[:directory] || "/srv/#{name}"
