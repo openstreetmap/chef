@@ -20,7 +20,7 @@ cd $TMPDIR
 mkdir db
 nice -n 19 $ANALYZE $LOGDIR/*-${DATE}.xz > analyze.log
 if [ -f tiles.txt ]; then
-		nice -n 19 xz -z tiles.txt
+		nice -n 19 xz -9e -z tiles.txt
 		mv tiles.txt.xz $OUTDIR/tiles-${DATE}.txt.xz
 
 else
