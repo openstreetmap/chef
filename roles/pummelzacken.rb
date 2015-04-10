@@ -43,7 +43,7 @@ default_attributes(
       :www => {
         :port => "8000",
         :pm => "dynamic",
-        :max_children => "70"
+        :max_children => "60"
       },
       :bulk => {
         :port => "8001",
