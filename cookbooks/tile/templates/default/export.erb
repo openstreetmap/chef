@@ -60,7 +60,7 @@ if not os.environ.has_key('HTTP_USER_AGENT'):
 loadavg = float(open("/proc/loadavg").readline().split(" ")[0])
 
 # Process the request
-if loadavg > 35.0:
+if loadavg > 70.0:
   # Abort if the load average on the machine is too high
   print "Status: 503 Service Unavailable"
   output_error("The load average on the server is too high at the moment. Please wait a few minutes before trying again.")
