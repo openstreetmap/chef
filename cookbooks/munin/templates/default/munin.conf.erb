@@ -141,7 +141,9 @@ unknown_limit 144
     api_calls_error.graph_title HTTP errors
     api_calls_error.graph_vlabel Number of errors per ${graph_period}
     api_calls_error.graph_category api
-    api_calls_error.graph_order http500 http502 http503 http509
+    api_calls_error.graph_order http401 http500 http502 http503 http509
+    api_calls_error.http401.sum <%= Chef::Munin.expand "%%.openstreetmap:api_calls_status.http401", @frontends %>
+    api_calls_error.http401.label 401 Unauthorized
     api_calls_error.http500.sum <%= Chef::Munin.expand "%%.openstreetmap:api_calls_status.http500", @frontends %>
     api_calls_error.http500.label 500 Internal Server Error
     api_calls_error.http502.sum <%= Chef::Munin.expand "%%.openstreetmap:api_calls_status.http502", @frontends %>
