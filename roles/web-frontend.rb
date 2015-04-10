@@ -14,6 +14,7 @@ default_attributes(
     }
   },
   :passenger => {
+    :version => 4,
     :max_pool_size => 50
   },
   :exim => {
