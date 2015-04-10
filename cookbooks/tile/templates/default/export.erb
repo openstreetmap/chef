@@ -57,18 +57,19 @@ if not os.environ.has_key('HTTP_USER_AGENT'):
   os.environ['HTTP_USER_AGENT'] = 'NONE'
 
 # Get the load average
-loadavg = float(open("/proc/loadavg").readline().split(" ")[0])
+cputimes = [float(n) for n in open("/proc/stat").readline().rstrip().split()[1:-1]]
+idletime = cputimes[3] / sum(cputimes)
 
 # Process the request
-if loadavg > 70.0:
-  # Abort if the load average on the machine is too high
+if idletime < 20:
+  # Abort if the CPU idle time on the machine is too low
   print "Status: 503 Service Unavailable"
-  output_error("The load average on the server is too high at the moment. Please wait a few minutes before trying again.")
+  output_error("The server is too busy at the moment. Please wait a few minutes before trying again.")
 <% @blocks["user_agents"].each do |user_agent| -%>
 elif os.environ['HTTP_USER_AGENT'] == '<%= user_agent %>':
   # Block scraper
   print "Status: 503 Service Unavailable"
-  output_error("The load average on the server is too high at the moment. Please wait a few minutes before trying again.")
+  output_error("The server is too busy at the moment. Please wait a few minutes before trying again.")
 <% end -%>
 elif not form.has_key("bbox"):
   # No bounding box specified
