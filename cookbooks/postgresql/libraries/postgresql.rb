@@ -109,7 +109,7 @@ class Chef
 
     def parse_acl(acl)
       acl.sub(/^\{(.*)\}$/, "\\1").split(",").each_with_object({}) do |entry, permissions|
-        entry = entry.sub(/^"(.*)"$/) { Regexp.last_match[1].gsub(/\\"/, '"') }.sub(/\/.*$/, "")
+        entry = entry.sub(/^"(.*)"$/) { Regexp.last_match[1].gsub(/\\"/, '"') }.sub(%r{/.*$}, "")
         user, privileges = entry.split("=")
 
         user = user.sub(/^"(.*)"$/, "\\1")

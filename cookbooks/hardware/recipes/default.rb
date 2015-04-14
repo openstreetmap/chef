@@ -368,7 +368,7 @@ if tools_packages.include?("areca")
 end
 
 disks.each do |disk|
-  if disk[:device] =~ /^cciss\/(.*)$/
+  if disk[:device] =~ %r{^cciss/(.*)$}
     id = File.read("/sys/bus/cciss/devices/#{Regexp.last_match[1]}/unique_id").chomp
 
     disk[:munin] = "cciss-3#{id.downcase}"

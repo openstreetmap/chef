@@ -37,7 +37,7 @@ source_directory = "#{home_directory}/nominatim"
 email_errors = data_bag_item("accounts", "lonvia")["email"]
 
 database_cluster = node[:nominatim][:database][:cluster]
-database_version = database_cluster.sub(/\/.*/, "")
+database_version = database_cluster.sub(%r{/.*}, "")
 database_name = node[:nominatim][:database][:dbname]
 
 postgis_version = node[:nominatim][:database][:postgis]

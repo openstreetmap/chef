@@ -23,7 +23,7 @@
 require "ipaddr"
 
 node[:networking][:interfaces].each do |name, interface|
-  if interface[:role] && role = node[:networking][:roles][interface[:role]]
+  if interface[:role] && (role = node[:networking][:roles][interface[:role]])
     if role[interface[:family]]
       node.set[:networking][:interfaces][name][:prefix] = role[interface[:family]][:prefix]
       node.set[:networking][:interfaces][name][:gateway] = role[interface[:family]][:gateway]
