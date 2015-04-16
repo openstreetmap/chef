@@ -61,7 +61,7 @@ cputimes = [float(n) for n in open("/proc/stat").readline().rstrip().split()[1:-
 idletime = cputimes[3] / sum(cputimes)
 
 # Process the request
-if idletime < 20:
+if idletime < 0.2:
   # Abort if the CPU idle time on the machine is too low
   print "Status: 503 Service Unavailable"
   output_error("The server is too busy at the moment. Please wait a few minutes before trying again.")
