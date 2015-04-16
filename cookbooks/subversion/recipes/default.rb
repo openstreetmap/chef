@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-include_recipe "apache"
+include_recipe "apache::ssl"
 
 package "subversion"
 

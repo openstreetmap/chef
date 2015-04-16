@@ -1,30 +1,36 @@
 # DO NOT EDIT - This file is being maintained by Chef
+<% [80, 443].each do |port| -%>
 
-<VirtualHost *:80>
+<VirtualHost *:<%= port %>>
         ServerName <%= @name %>
         ServerAdmin webmaster@openstreetmap.org
+<% if port == 443 -%>
+
+        SSLEngine on
+<% end -%>
 
         CustomLog /var/log/apache2/<%= @name %>-access.log combined
         CustomLog /var/log/apache2/<%= @name %>-svn-access.log "%h %t %u %{SVN-ACTION}e" env=SVN-ACTION
         ErrorLog /var/log/apache2/<%= @name %>-error.log
 
-	<Location />
-		DAV svn
-		SVNPath <%= @directory %>
+        <Location />
+                DAV svn
+                SVNPath <%= @directory %>
 
-		AuthType Basic
-		AuthName "<%= @realm %>"
-		AuthUserFile <%= @password_file %>
+                AuthType Basic
+                AuthName "<%= @realm %>"
+                AuthUserFile <%= @password_file %>
 
-		LimitXMLRequestBody 0
-		LimitRequestBody 0
+                LimitXMLRequestBody 0
+                LimitRequestBody 0
 
-		<Limit GET PROPFIND OPTIONS REPORT>
-			Require all granted
-		</Limit>
+                <Limit GET PROPFIND OPTIONS REPORT>
+                        Require all granted
+                </Limit>
 
-		<LimitExcept GET PROPFIND OPTIONS REPORT>
-			Require valid-user
-		</LimitExcept>
-	</Location>
+                <LimitExcept GET PROPFIND OPTIONS REPORT>
+                        Require valid-user
+                </LimitExcept>
+        </Location>
 </VirtualHost>
+<% end -%>
