@@ -144,14 +144,19 @@ unknown_limit 144
     api_calls_error.graph_order http401 http500 http502 http503 http509
     api_calls_error.http401.sum <%= Chef::Munin.expand "%%.openstreetmap:api_calls_status.http401", @frontends %>
     api_calls_error.http401.label 401 Unauthorized
+    api_calls_error.http401.warning :0.5
     api_calls_error.http500.sum <%= Chef::Munin.expand "%%.openstreetmap:api_calls_status.http500", @frontends %>
     api_calls_error.http500.label 500 Internal Server Error
+    api_calls_error.http500.warning :0.5
     api_calls_error.http502.sum <%= Chef::Munin.expand "%%.openstreetmap:api_calls_status.http502", @frontends %>
     api_calls_error.http502.label 502 Bad Gateway
+    api_calls_error.http502.warning :0.5
     api_calls_error.http503.sum <%= Chef::Munin.expand "%%.openstreetmap:api_calls_status.http503", @frontends %>
     api_calls_error.http503.label 503 Service Unavailable
+    api_calls_error.http503.warning :0.5
     api_calls_error.http509.sum <%= Chef::Munin.expand "%%.openstreetmap:api_calls_status.http509", @frontends %>
     api_calls_error.http509.label 509 Bandwidth Limit Exceeded 
+    api_calls_error.http509.warning :5
     api_calls_num.graph_title Requests processed
     api_calls_num.graph_vlabel Number of requests per ${graph_period}
     api_calls_num.graph_category api
