@@ -30,8 +30,8 @@ files = [
     :name => "/store/planet/replication/minute/state.txt",
     :title => "Minutely Replication",
     :frequency => 60,
-    :warning => 3,
-    :critical => 5
+    :warning => 5,
+    :critical => 10
   }
 ]
 
