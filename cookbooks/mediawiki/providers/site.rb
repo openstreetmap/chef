@@ -400,13 +400,15 @@ action :create do
     backup false
   end
 
+  ports = new_resource.ssl_enabled ? [80, 443] : [80]
+
   apache_site new_resource.name do
     cookbook "mediawiki"
     template "apache.erb"
     directory site_directory
     variables :aliases => Array(new_resource.aliases),
               :private => new_resource.private,
-              :ssl_enabled => new_resource.ssl_enabled,
+              :ports => ports,
               :ssl_certificate => new_resource.ssl_certificate,
               :ssl_certificate_chain => new_resource.ssl_certificate_chain
     reload_apache false

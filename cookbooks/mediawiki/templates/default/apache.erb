@@ -1,6 +1,7 @@
 # DO NOT EDIT - This file is being maintained by Chef
+<% @ports.each do |port| -%>
 
-<VirtualHost *:80>
+<VirtualHost *:<%= port %>>
   ServerName <%= @name %>
 <% @aliases.each do |alias_name| -%>
   ServerAlias <%= alias_name %>
@@ -8,8 +9,15 @@
 
   ServerAdmin webmaster@openstreetmap.org
 
+<% if port == 443 -%>
+  SSLEngine on
+
+  CustomLog /var/log/apache2/<%= @name %>-secure-access.log combined
+  ErrorLog /var/log/apache2/<%= @name %>-secure-error.log
+<% else -%>
   CustomLog /var/log/apache2/<%= @name %>-access.log combined
   ErrorLog /var/log/apache2/<%= @name %>-error.log
+<% end -%>
 
   DocumentRoot <%= @directory %>
 
@@ -89,116 +97,6 @@
   <Files <%= @directory %>/w/LocalSettings.php>
     Require all denied
   </Files>
-
-  <Directory <%= @directory %>/w/cache/>
-    Options -ExecCGI -Includes -Indexes
-    AllowOverride None
-    AddType text/plain .html .htm .shtml
-    php_admin_flag engine off
-  </Directory>
-
-  <Directory ~ "\.svn">
-    Require all denied
-  </Directory>
-
-  <Directory ~ "\.git">
-    Require all denied
-  </Directory>
-
-  <Files ~ "~$">
-    Require all denied
-  </Files>
-</VirtualHost>
-<% if @ssl_enabled -%>
-<VirtualHost *:443>
-  ServerName <%= @name %>
-<% @aliases.each do |alias_name| -%>
-  ServerAlias <%= alias_name %>
-<% end -%>
-
-  ServerAdmin webmaster@openstreetmap.org
-
-  SSLEngine on
-
-  CustomLog /var/log/apache2/<%= @name %>-secure-access.log combined
-  ErrorLog /var/log/apache2/<%= @name %>-secure-error.log
-
-  DocumentRoot <%= @directory %>
-
-  php_admin_value open_basedir <%= @directory %>/:/usr/share/php/:/tmp/
-  #php_admin_value disable_functions "exec,shell_exec,system,passthru,popen,proc_open"
-  php_value memory_limit 128M
-  php_value max_execution_time 240
-  php_value upload_max_filesize 70M
-  php_value post_max_size 100M
-
-  RedirectMatch 301 ^/$                           /wiki/Main_Page
-
-  #Historical Compatibility Links
-  RedirectMatch 301 ^/index\.php$                 /w/index.php
-  RedirectMatch 301 ^/index\.php/(.*)$            /wiki/$1
-  RedirectMatch 301 ^/skins/(.*)$                 /w/skins/$1
-  RedirectMatch 301 ^/images/(.*)$                /w/images/$1
-  RedirectMatch 301 ^/api\.php$                   /w/api.php
-  RedirectMatch 301 ^/opensearch_desc\.php$       /w/opensearch_desc.php
-
-  Alias /wiki <%= @directory %>/w/index.php
-
-  #Support /pagename -> /wiki/pagename
-  RewriteEngine on
-  RewriteCond %{REQUEST_URI} !^/w/
-  RewriteCond %{REQUEST_URI} !^/wiki/
-  RewriteCond %{REQUEST_URI} !^/index\.php
-  RewriteCond %{REQUEST_URI} !^/skins/
-  RewriteCond %{REQUEST_URI} !^/images/
-  RewriteCond %{REQUEST_URI} !^/api\.php$
-  RewriteCond %{REQUEST_URI} !^/opensearch_desc\.php$
-  RewriteCond %{REQUEST_URI} !^/server-status
-  RewriteCond %{LA-U:REQUEST_FILENAME} !-f
-  RewriteCond %{LA-U:REQUEST_FILENAME} !-d
-  RewriteRule ^/(.*) /wiki/$1 [R,L]
-
-  <Directory <%= @directory %>>
-    Options -Indexes
-    Require all granted
-  </Directory>
-
-  <Directory <%= @directory %>/w/images/>
-    # No php execution in the upload area
-    php_admin_flag engine off
-    Options -ExecCGI -Includes -Indexes
-    AllowOverride None
-<% if @private -%>
-    Require all denied
-<% end -%>
-  </Directory>
-
-  <Directory <%= @directory %>/w/images/thumb/>
-    RewriteEngine on
-
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^[0-9a-f]/[0-9a-f][0-9a-f]/([^/]+)/([0-9]+)px-.*$ /w/thumb.php?f=$1&width=$2 [L,QSA,B]
-
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^archive/[0-9a-f]/[0-9a-f][0-9a-f]/([^/]+)/([0-9]+)px-.*$ /w/thumb.php?f=$1&width=$2&archived=1 [L,QSA,B]
-  </Directory>
-
-  <Directory <%= @directory %>/w/maintenance/>
-    Require all denied
-  </Directory>
-
-  <Files <%= @directory %>/w/LocalSettings.php>
-    Require all denied
-  </Files>
-
-  <Directory <%= @directory %>/w/images/>
-    Options -ExecCGI -Includes -Indexes
-    AllowOverride None
-    AddType text/plain .html .htm .shtml
-    php_admin_flag engine off
-  </Directory>
 
   <Directory <%= @directory %>/w/cache/>
     Options -ExecCGI -Includes -Indexes
