@@ -28,6 +28,13 @@
   php_value upload_max_filesize 70M
   php_value post_max_size 100M
 
+  RewriteCond %{SERVER_NAME} !=<%= @name %>
+<% if port == 443 -%>
+  RewriteRule ^/(.*)$ https://<%= @name %>/$1 [R=permanent]
+<% else -%>
+  RewriteRule ^/(.*)$ http://<%= @name %>/$1 [R=permanent]
+<% end -%>
+
   RedirectMatch 301 ^/$                           /wiki/Main_Page
 
   #Historical Compatibility Links
