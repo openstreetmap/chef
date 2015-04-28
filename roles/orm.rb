@@ -65,6 +65,9 @@ default_attributes(
     }
   },
   :tile => {
+    :database => {
+      :cluster => "9.1/main"
+    },
     :node_file => "/store/database/nodes",
     :styles => {
       :default => {

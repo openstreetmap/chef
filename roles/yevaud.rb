@@ -72,7 +72,7 @@ default_attributes(
     }
   },
   :postgresql => {
-    :versions => ["9.1"],
+    :versions => ["9.4"],
     :settings => {
       :defaults => {
         :shared_buffers => "3GB",
@@ -98,6 +98,9 @@ default_attributes(
     }
   },
   :tile => {
+    :database => {
+      :cluster => "9.4/main"
+    },
     :node_file => "/store/database/nodes",
     :styles => {
       :default => {

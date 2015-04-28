@@ -51,9 +51,6 @@ default_attributes(
     }
   },
   :tile => {
-    :database => {
-      :cluster => "9.1/main"
-    },
     :data => {
       :world_boundaries => {
         :url => "http://planet.openstreetmap.org/historical-shapefiles/world_boundaries-spherical.tgz"
