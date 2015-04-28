@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+include_recipe "tools"
+
 case node[:cpu][:"0"][:vendor_id]
 when "GenuineIntel"
   package "intel-microcode"
@@ -277,7 +279,7 @@ node[:block_device].each do |name, attributes|
   disks << { :device => name } if attributes[:vendor] == "ATA"
 end
 
-if status_packages["cciss-vol-status"]
+if status_packages["cciss-vol-status"] && File.exist?("/usr/sbin/cciss_vol_status")
   status_packages["cciss-vol-status"].each do |device|
     IO.popen(["cciss_vol_status", "-V", "/dev/#{device}"]).each do |line|
       disks << { :device => device, :driver => "cciss", :id => Regexp.last_match[1].to_i - 1 } if line =~ / bay ([0-9]+) +HP /
@@ -348,7 +350,7 @@ if status_packages["aacraid-status"]
   end
 end
 
-if tools_packages.include?("areca")
+if tools_packages.include?("areca") && File.exist?("/opt/areca/x86_64/cli64")
   device = IO.popen(["lsscsi", "-g"]).grep(%r{Areca +RAID controller .*/dev/(sg[0-9]+)}) do
     Regexp.last_match[1]
   end.first
