@@ -75,9 +75,9 @@ default_attributes(
     :versions => ["9.4"],
     :settings => {
       :defaults => {
-        :shared_buffers => "3GB",
+        :shared_buffers => "8GB",
         :maintenance_work_mem => "7144MB",
-        :effective_cache_size => "8GB"
+        :effective_cache_size => "16GB"
       }
     }
   },
@@ -85,8 +85,8 @@ default_attributes(
     :postgres => {
       :comment => "Increase shared memory for postgres",
       :parameters => {
-        "kernel.shmmax" => 4 * 1024 * 1024 * 1024,
-        "kernel.shmall" => 4 * 1024 * 1024 * 1024 / 4096
+        "kernel.shmmax" => 9 * 1024 * 1024 * 1024,
+        "kernel.shmall" => 9 * 1024 * 1024 * 1024 / 4096
       }
     },
     :cpu_tune => {
