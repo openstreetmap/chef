@@ -18,6 +18,7 @@
 #
 
 include_recipe "tools"
+include_recipe "munin"
 
 case node[:cpu][:"0"][:vendor_id]
 when "GenuineIntel"
