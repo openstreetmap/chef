@@ -22,9 +22,6 @@ default_attributes(
       :max_requests_per_child => 100000
     }
   },
-  :apt => {
-    :sources => ["ubuntugis-stable"]
-  },
   :postgresql => {
     :versions => ["9.1"],
     :settings => {

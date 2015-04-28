@@ -2,6 +2,9 @@ name "orm"
 description "Master role applied to orm"
 
 default_attributes(
+  :apt => {
+    :sources => ["ubuntugis-stable"]
+  },
   :devices => {
     :ssd_samsung => {
       :comment => "Tune scheduler for SSD",
