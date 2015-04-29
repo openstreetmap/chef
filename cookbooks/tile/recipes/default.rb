@@ -26,6 +26,7 @@ include_recipe "tools"
 blocks = data_bag_item("tile", "blocks")
 
 apache_module "alias"
+apache_module "cgi"
 apache_module "expires"
 apache_module "headers"
 apache_module "remoteip"
