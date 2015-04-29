@@ -12,7 +12,6 @@ default_attributes(
     :memory_limit => 4096
   },
   :passenger => {
-    :version => 4,
     :max_pool_size => 12
   }
 )
