@@ -2,6 +2,9 @@ name "yevaud"
 description "Master role applied to yevaud"
 
 default_attributes(
+  :apt => {
+    :sources => ["postgresql"]
+  },
   :devices => {
     :osdisktune1 => {
       :comment => "Tune os disk",
