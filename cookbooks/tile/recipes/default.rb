@@ -403,7 +403,7 @@ package "libxml2-dev"
 
 gem_package "proj4rb"
 gem_package "libxml-ruby"
-gem_package "mmap"
+gem_package "simple-mmap"
 
 remote_directory "/usr/local/lib/site_ruby" do
   source "ruby"

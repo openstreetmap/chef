@@ -5,7 +5,7 @@ require "proj4"
 require "xml/libxml"
 require "set"
 require "time"
-require "mmap"
+require "simple-mmap"
 
 module Expire
   # projection object to go from latlon -> spherical mercator
@@ -164,7 +164,7 @@ module Expire
 
     # open the cache
     def initialize(filename)
-      @cache = Mmap.new(filename)
+      @cache = SimpleMmap::FileWindow.open(filename)
 
       throw "Unexpected format" unless @cache[0..3].unpack("l").first == 1
       throw "Unexpected ID size" unless @cache[4..7].unpack("l").first == 8
