@@ -392,7 +392,10 @@ package "osm2pgsql"
 package "osmosis"
 
 package "ruby"
-package "rubygems"
+
+if node[:lsb][:release].to_f < 14.04
+  package "rubygems"
+end
 
 package "libproj-dev"
 package "libxml2-dev"
