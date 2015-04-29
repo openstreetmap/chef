@@ -145,6 +145,8 @@ directory "/srv/tile.openstreetmap.org/data" do
   mode 0755
 end
 
+package "mapnik-utils"
+
 node[:tile][:data].each_value do |data|
   url = data[:url]
   file = "/srv/tile.openstreetmap.org/data/#{File.basename(url)}"
