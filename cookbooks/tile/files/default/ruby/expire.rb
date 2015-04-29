@@ -5,7 +5,7 @@ require "proj4"
 require "xml/libxml"
 require "set"
 require "time"
-require "simple-mmap"
+require "simple_mmap"
 
 module Expire
   # projection object to go from latlon -> spherical mercator
