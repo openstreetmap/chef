@@ -21,3 +21,7 @@ package "nodejs"
 package "npm"
 package "g++"
 package "make"
+
+if node[:lsb][:release].to_f >= 14.04
+  package "nodejs-legacy"
+end
