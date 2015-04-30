@@ -21,12 +21,6 @@ chef_gem "pony"
 
 chef_package = "chef_#{node[:chef][:client][:version]}_amd64.deb"
 
-chef_platform = case node[:platform_version]
-                when "12.10" then "12.04"
-                when "14.04" then "13.04"
-                else node[:platform_version]
-                end
-
 directory "/var/cache/chef" do
   owner "root"
   group "root"
@@ -43,7 +37,7 @@ Dir.glob("/var/cache/chef/chef_*.deb").each do |deb|
 end
 
 remote_file "/var/cache/chef/#{chef_package}" do
-  source "https://opscode-omnibus-packages.s3.amazonaws.com/ubuntu/#{chef_platform}/x86_64/#{chef_package}"
+  source "https://opscode-omnibus-packages.s3.amazonaws.com/ubuntu/10.04/x86_64/#{chef_package}"
   owner "root"
   group "root"
   mode 0644
