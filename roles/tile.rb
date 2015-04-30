@@ -23,7 +23,6 @@ default_attributes(
     }
   },
   :postgresql => {
-    :versions => ["9.1"],
     :settings => {
       :defaults => {
         :temp_buffers => "32MB",
