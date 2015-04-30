@@ -5,7 +5,6 @@ require "proj4"
 require "xml/libxml"
 require "set"
 require "time"
-require "simple_mmap"
 
 module Expire
   # projection object to go from latlon -> spherical mercator
@@ -136,6 +135,7 @@ module Expire
         nodes[node_id] = tile_from_merc(point, max_zoom)
       end
     end
+    node_cache.close
 
     # create a set of all the tiles at the maximum zoom level which are touched by
     # any of the nodes we've collected. we'll create the tiles at other zoom levels
@@ -164,12 +164,17 @@ module Expire
 
     # open the cache
     def initialize(filename)
-      @cache = SimpleMmap::FileWindow.open(filename)
+      @cache = File.new(filename, "r")
 
-      throw "Unexpected format" unless @cache[0..3].unpack("l").first == 1
-      throw "Unexpected ID size" unless @cache[4..7].unpack("l").first == 8
+      throw "Unexpected format" unless @cache.sysread(4).unpack("l").first == 1
+      throw "Unexpected ID size" unless @cache.sysread(4).unpack("l").first == 8
 
-      @max_id = @cache[8..15].unpack("q").first
+      @max_id = @cache.sysread(8).unpack("q").first
+    end
+
+    # close the cache
+    def close
+      @cache.close
     end
 
     # lookup a node
@@ -177,7 +182,9 @@ module Expire
       if id <= @max_id
         offset = 16 + id * 8
 
-        lon, lat = @cache[offset..offset + 7].unpack("ll")
+        @cache.sysseek(offset)
+
+        lon, lat = @cache.sysread(8).unpack("ll")
 
         if lon != -2147483648 && lat != -2147483648
           node = Node.new(lon, lat)
