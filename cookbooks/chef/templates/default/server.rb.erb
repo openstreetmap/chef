@@ -1,14 +1,21 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
-nginx['enable_non_ssl'] = true
-nginx['non_ssl_port'] = 4000
+api_fqdn "chef.openstreetmap.org"
+default_orgname "openstreetmap"
+
+addons['install'] = false
+
+bookshelf['url'] = "https://chef.openstreetmap.org:443"
+bookshelf['vip'] = "chef.openstreetmap.org"
+
+lb['api_fqdn'] = "chef.openstreetmap.org"
+lb['web_ui_fqdn'] = "chef.openstreetmap.org"
+
+nginx['non_ssl_port'] = false
 nginx['ssl_port'] = 4443
 nginx['ssl_certificate'] = '/etc/ssl/certs/openstreetmap.pem'
 nginx['ssl_certificate_key'] = '/etc/ssl/private/openstreetmap.key'
 nginx['server_name'] = "chef.openstreetmap.org"
 nginx['url'] = "http://chef.openstreetmap.org:4000"
-bookshelf['url'] = "https://chef.openstreetmap.org:443"
-bookshelf['vip'] = "chef.openstreetmap.org"
-lb['api_fqdn'] = "chef.openstreetmap.org"
-lb['web_ui_fqdn'] = "chef.openstreetmap.org"
-erchef['base_resource_url'] = "https://chef.openstreetmap.org"
+
+opscode_erchef['base_resource_url'] = "https://chef.openstreetmap.org"

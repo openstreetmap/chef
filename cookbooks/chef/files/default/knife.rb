@@ -1,4 +1,4 @@
-node_name "chef-git"
+node_name "git"
 client_key "client.pem"
 validation_client_name "chef-validator"
 validation_key "/etc/chef/validation.pem"

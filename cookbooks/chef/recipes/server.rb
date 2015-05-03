@@ -19,56 +19,38 @@
 
 include_recipe "apache::ssl"
 
-chef_platform = case node[:platform_version]
-                when "12.10" then "12.04"
-                when "14.04" then "12.04"
-                else node[:platform_version]
-                end
+# chef_package = "chef-server-core_#{node[:chef][:server][:version]}_amd64.deb"
+#
+# directory "/var/cache/chef" do
+#   owner "root"
+#   group "root"
+#   mode 0755
+# end
+#
+# Dir.glob("/var/cache/chef/chef-server-core_*.deb").each do |deb|
+#   next if deb == "/var/cache/chef/#{chef_package}"
 
-chef_package = "chef-server_#{node[:chef][:server][:version]}_amd64.deb"
+#   file deb do
+#     action :delete
+#     backup false
+#   end
+# end
+#
+# remote_file "/var/cache/chef/#{chef_package}" do
+#   source "https://web-dl.packagecloud.io/chef/stable/packages/ubuntu/#{node[:lsb][:codename]}/#{chef_package}"
+#   owner "root"
+#   group "root"
+#   mode 0644
+#   backup false
+# end
+#
+# dpkg_package "chef-server-core" do
+#   source "/var/cache/chef/#{chef_package}"
+#   version node[:chef][:server][:version]
+#   notifies :run, "execute[chef-server-reconfigure]"
+# end
 
-directory "/var/cache/chef" do
-  owner "root"
-  group "root"
-  mode 0755
-end
-
-Dir.glob("/var/cache/chef/chef-server_*.deb").each do |deb|
-  next if deb == "/var/cache/chef/#{chef_package}"
-
-  file deb do
-    action :delete
-    backup false
-  end
-end
-
-remote_file "/var/cache/chef/#{chef_package}" do
-  source "https://opscode-omnibus-packages.s3.amazonaws.com/ubuntu/#{chef_platform}/x86_64/#{chef_package}"
-  owner "root"
-  group "root"
-  mode 0644
-  backup false
-end
-
-dpkg_package "chef-erver" do
-  source "/var/cache/chef/#{chef_package}"
-  version node[:chef][:server][:version]
-  notifies :run, "execute[chef-server-reconfigure]"
-end
-
-ruby_block "/opt/chef-server/embedded/service/chef-server-webui/app/controllers/status_controller.rb" do
-  block do
-    rc = Chef::Util::FileEdit.new("/opt/chef-server/embedded/service/chef-server-webui/app/controllers/status_controller.rb")
-    rc.search_file_delete(/&rows=20/)
-    rc.write_file
-
-    if rc.file_edited?
-      resources(:execute => "chef-server-reconfigure").run_action(:run)
-    end
-  end
-end
-
-template "/etc/chef-server/chef-server.rb" do
+template "/etc/opscode/chef-server.rb" do
   source "server.rb.erb"
   owner "root"
   group "root"
@@ -83,7 +65,7 @@ execute "chef-server-reconfigure" do
   group "root"
 end
 
-service "chef-server-runsvdir" do
+service "private-chef-runsvdir" do
   provider Chef::Provider::Service::Upstart
   action [:enable, :start]
   supports :status => true, :restart => true, :reload => true

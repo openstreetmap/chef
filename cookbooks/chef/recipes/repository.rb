@@ -42,7 +42,7 @@ directory "/var/lib/chef/.chef" do
 end
 
 file "/var/lib/chef/.chef/client.pem" do
-  content keys["chef-git"].join("\n")
+  content keys["git"].join("\n")
   owner "chefrepo"
   group "chefrepo"
   mode 0660

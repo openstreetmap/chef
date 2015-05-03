@@ -7,8 +7,8 @@ B=chef-server-$D.tar.gz
 mkdir $T/chef-server-$D
 chgrp opscode-pgsql $T $T/chef-server-$D
 chmod g+rwx $T $T/chef-server-$D
-sudo -u opscode-pgsql /opt/chef-server/embedded/bin/pg_dump --file=$T/chef-server-$D/chef.dmp --clean opscode_chef
-ln -s /var/opt/chef-server/bookshelf/data $T/chef-server-$D/bookshelf
+sudo -u opscode-pgsql /opt/opscode/embedded/bin/pg_dumpall --file=$T/chef-server-$D/chef.dmp --clean
+ln -s /var/opt/opscode/bookshelf/data $T/chef-server-$D/bookshelf
 
 export GZIP="--rsyncable -9"
 
