@@ -88,8 +88,8 @@ define :rails_port, :action => [:create, :enable] do
     cwd rails_directory
     user rails_user
     group rails_group
-    notifies :delete, "file[#{rails_directory}/public/export/embed.html]"
-    notifies :run, "execute[#{rails_directory}]"
+    notifies :delete, "file[#{rails_directory}/public/export/embed.html]", :immediate
+    notifies :run, "execute[#{rails_directory}]", :immediate
   end
 
   execute "#{rails_directory}/db/migrate" do
@@ -98,7 +98,7 @@ define :rails_port, :action => [:create, :enable] do
     cwd rails_directory
     user rails_user
     group rails_group
-    notifies :run, "execute[#{rails_directory}/public/assets]"
+    notifies :run, "execute[#{rails_directory}/public/assets]", :immediate
   end
 
   execute "#{rails_directory}/Gemfile" do
@@ -109,9 +109,9 @@ define :rails_port, :action => [:create, :enable] do
     group "root"
     environment "NOKOGIRI_USE_SYSTEM_LIBRARIES" => "yes"
     if run_migrations
-      notifies :run, "execute[#{rails_directory}/db/migrate]"
+      notifies :run, "execute[#{rails_directory}/db/migrate]", :immediate
     else
-      notifies :run, "execute[#{rails_directory}/public/assets]"
+      notifies :run, "execute[#{rails_directory}/public/assets]", :immediate
     end
     subscribes :run, "gem_package[bundler#{ruby_version}]"
   end
@@ -128,7 +128,7 @@ define :rails_port, :action => [:create, :enable] do
     revision rails_revision
     user rails_user
     group rails_group
-    notifies :run, "execute[#{rails_directory}/Gemfile]"
+    notifies :run, "execute[#{rails_directory}/Gemfile]", :immediate
   end
 
   directory "#{rails_directory}/tmp" do
