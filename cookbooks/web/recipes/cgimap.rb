@@ -94,7 +94,7 @@ cgimap_init = edit_file "#{cgimap_directory}/scripts/cgimap.init" do |line|
   line.gsub!(/^CGIMAP_LOGFILE=.*;/, "CGIMAP_LOGFILE=#{log_directory}/cgimap.log;")
   line.gsub!(/^CGIMAP_MEMCACHE=.*;/, "CGIMAP_MEMCACHE=rails1,rails2,rails3;")
 
-  line.gsub!(%r{/home/rails/bin/map}, "#{cgimap_directory}/map")
+  line.gsub!(%r{/home/rails/bin/map}, "#{cgimap_directory}/.libs/lt-map")
 
   if database_readonly
     line.gsub!(/--daemon/, "--daemon --readonly")
