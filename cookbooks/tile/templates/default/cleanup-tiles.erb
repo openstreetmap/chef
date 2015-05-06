@@ -5,6 +5,7 @@
 use strict;
 use warnings;
 
+use File::Basename;
 use File::Temp qw(tmpnam);
 use Filesys::Df;
 use LockFile::Simple;
@@ -34,6 +35,11 @@ if (df($tiledir)->{per} > 90)
                 my($time,$tile) = split(/ /, $line);
 
                 unlink($tile) || warn "Can't remove $tile: $!";
+
+                for (my $dir = dirname($tile); $dir ne $tiledir; $dir = dirname($dir))
+                {
+                    unlink($dir);
+                }
             }
             else
             {
