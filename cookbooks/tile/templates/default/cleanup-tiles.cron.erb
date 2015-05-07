@@ -3,5 +3,5 @@
 MAILTO=admins@openstreetmap.org
 
 <% @directories.each do |directory| -%>
-0 1 * * * www-data ionice -c 3 /usr/local/bin/cleanup-tiles <%= directory %>
+0 * * * * www-data ionice -c 3 /usr/local/bin/cleanup-tiles <%= directory %>
 <% end -%>
