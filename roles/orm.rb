@@ -3,7 +3,7 @@ description "Master role applied to orm"
 
 default_attributes(
   :apt => {
-    :sources => ["ubuntugis-stable"]
+    :sources => ["postgresql"]
   },
   :devices => {
     :ssd_samsung => {
@@ -46,7 +46,7 @@ default_attributes(
     }
   },
   :postgresql => {
-    :versions => ["9.1"],
+    :versions => ["9.4"],
     :settings => {
       :defaults => {
         :shared_buffers => "8GB",
@@ -66,7 +66,7 @@ default_attributes(
   },
   :tile => {
     :database => {
-      :cluster => "9.1/main"
+      :cluster => "9.4/main"
     },
     :node_file => "/store/database/nodes",
     :styles => {
