@@ -6,7 +6,7 @@ export TZ=UTC
 
 exec >> /var/log/replication/streaming-replicator 2>&1
 
-exec /home/bretth/bin/osmosis -q \
-  --replicate-apidb iterations=0 minInterval=10000 maxInterval=60000 authFile=/etc/replication/auth.conf \
+exec /usr/local/bin/osmosis -q \
+  --replicate-apidb iterations=0 minInterval=10000 maxInterval=60000 authFile=/etc/replication/auth.conf validateSchemaVersion=false \
   --send-replication-sequence port=8081 \
   --write-replication workingDirectory=/var/lib/replication/streaming
