@@ -68,6 +68,7 @@ rails_port "www.openstreetmap.org" do
   google_auth_id "651529786092-6c5ahcu0tpp95emiec8uibg11asmk34t.apps.googleusercontent.com"
   google_auth_secret web_passwords["google_auth_secret"]
   google_openid_realm "https://www.openstreetmap.org"
+  nominatim_url "//poldi.openstreetmap.org/"
 end
 
 gem_package "apachelogregex"
