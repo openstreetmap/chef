@@ -31,6 +31,7 @@ package "apache2" do
 end
 
 package "xz-utils"
+package "openssl"
 
 tilecaches = search(:node, "roles:tilecache").sort_by { |n| n[:hostname] }
 tilerenders = search(:node, "roles:tile").sort_by { |n| n[:hostname] }
@@ -89,7 +90,7 @@ end
 
 nginx_site "tile-ssl" do
   template "nginx_tile_ssl.conf.erb"
-  variables :certificate => certificate, :resolvers => resolvers
+  variables :certificate => certificate, :resolvers => resolvers, :renders => tilerenders
 end
 
 service "nginx-certificate-restart" do
