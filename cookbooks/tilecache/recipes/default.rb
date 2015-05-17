@@ -90,7 +90,7 @@ end
 
 nginx_site "tile-ssl" do
   template "nginx_tile_ssl.conf.erb"
-  variables :certificate => certificate, :resolvers => resolvers, :renders => tilerenders
+  variables :certificate => certificate, :resolvers => resolvers, :caches => tilecaches
 end
 
 service "nginx-certificate-restart" do
