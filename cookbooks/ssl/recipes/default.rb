@@ -22,7 +22,7 @@ keys = data_bag_item("ssl", "keys")
 package "openssl"
 package "ssl-cert"
 
-%w(rapidssl startcom).each do |certificate|
+%w(rapidssl startcom dhparam).each do |certificate|
   cookbook_file "/etc/ssl/certs/#{certificate}.pem" do
     owner "root"
     group "root"
