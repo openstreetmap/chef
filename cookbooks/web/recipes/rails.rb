@@ -68,6 +68,10 @@ rails_port "www.openstreetmap.org" do
   google_auth_id "651529786092-6c5ahcu0tpp95emiec8uibg11asmk34t.apps.googleusercontent.com"
   google_auth_secret web_passwords["google_auth_secret"]
   google_openid_realm "https://www.openstreetmap.org"
+  facebook_auth_id "427915424036881"
+  facebook_auth_secret web_passwords["facebook_auth_secret"]
+  windowslive_auth_id "0000000040153C51"
+  windowslive_auth_secret web_passwords["windowslive_auth_secret"]
   nominatim_url "//poldi.openstreetmap.org/"
 end
 

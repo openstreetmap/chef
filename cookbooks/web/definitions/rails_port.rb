@@ -210,6 +210,16 @@ define :rails_port, :action => [:create, :enable] do
       line.gsub!(/^( *)#google_openid_realm:.*$/, "\\1google_openid_realm: \"#{params[:google_openid_realm]}\"")
     end
 
+    if params[:facebook_auth_id]
+      line.gsub!(/^( *)#facebook_auth_id:.*$/, "\\1facebook_auth_id: \"#{params[:facebook_auth_id]}\"")
+      line.gsub!(/^( *)#facebook_auth_secret:.*$/, "\\1facebook_auth_secret: \"#{params[:facebook_auth_secret]}\"")
+    end
+
+    if params[:windowslive_auth_id]
+      line.gsub!(/^( *)#windowslive_auth_id:.*$/, "\\1windowslive_auth_id: \"#{params[:windowslive_auth_id]}\"")
+      line.gsub!(/^( *)#windowslive_auth_secret:.*$/, "\\1windowslive_auth_secret: \"#{params[:windowslive_auth_secret]}\"")
+    end
+
     line.gsub!(/^( *)require_terms_seen:.*$/, "\\1require_terms_seen: true")
     line.gsub!(/^( *)require_terms_agreed:.*$/, "\\1require_terms_agreed: true")
 
