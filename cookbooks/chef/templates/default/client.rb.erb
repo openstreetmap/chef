@@ -35,7 +35,7 @@ require "/etc/chef/report"
 
 # Create report handler
 
-email_handler = Chef::Handler::Email.new(:to => "tom@compton.nu")
+email_handler = Chef::Handler::Email.new(:to => ["tom@compton.nu", "openstreetmap@firefishy.com"])
 
 # Configure report handlers
 
