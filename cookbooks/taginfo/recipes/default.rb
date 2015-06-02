@@ -132,6 +132,7 @@ node[:taginfo][:sites].each do |site|
     settings["tagstats"]["cxxflags"] = "-I../../osmium/include"
     settings["tagstats"]["geodistribution"] = "MmapAnon"
     settings["user_interface"]["key_page"]["show_tab_similar"] = true
+    settings["level0"]["overpass_url_prefix"] = 'http://overpass-api.de/api/interpreter?'
 
     JSON.pretty_generate(settings)
   end
