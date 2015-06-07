@@ -376,6 +376,11 @@ action :create do
     update_site false
   end
 
+  mediawiki_extension "MobileFrontend" do
+    site new_resource.name
+    template "mw-ext-MobileFrontend.inc.php.erb"
+  end
+
   cookbook_file "#{site_directory}/cc-wiki.png" do
     cookbook "mediawiki"
     owner node[:mediawiki][:user]
