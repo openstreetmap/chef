@@ -50,18 +50,6 @@ default_attributes(
         :pm => "static",
         :max_children => "10"
       }
-    },
-    :tablespaces => {
-      "Osm2pgsql_Data" => "ssd",
-      "Osm2pgsql_Index" => "ssd",
-      "Place_Data" => "ssd",
-      "Place_Index" => "ssd",
-      "Address_Data" => "ssd",
-      "Address_Index" => "ssd",
-      "Search_Data" => "ssd",
-      "Search_Index" => "ssd",
-      "Aux_Data" => "data",
-      "Aux_Index" => "ssd"
     }
   }
 )
