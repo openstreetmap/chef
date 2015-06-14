@@ -40,5 +40,6 @@ default_attributes(
 )
 
 run_list(
-  "role[nominatim]"
+  "role[nominatim]",
+  "recipe[rsyncd]"
 )
