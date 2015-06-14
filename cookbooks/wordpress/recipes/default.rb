@@ -42,6 +42,6 @@ end
 fail2ban_jail "wordpress" do
   filter "wordpress"
   logpath "/var/log/auth.log"
-  ports 80, 443
+  ports [80, 443]
   maxretry 6
 end
