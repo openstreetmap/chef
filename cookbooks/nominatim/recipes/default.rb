@@ -32,6 +32,7 @@ apache_module "rewrite"
 apache_module "proxy"
 apache_module "proxy_fcgi"
 
+passwords = data_bag_item("nominatim", "passwords")
 home_directory = data_bag_item("accounts", "nominatim")["home"]
 source_directory = "#{home_directory}/nominatim"
 email_errors = data_bag_item("accounts", "lonvia")["email"]
@@ -69,28 +70,23 @@ node[:nominatim][:fpm_pools].each do |name, data|
   end
 end
 
-postgresql_user "tomh" do
-  cluster database_cluster
-  superuser true
-end
+superusers = %w(tomh lonvia twain nominatim)
 
-postgresql_user "lonvia" do
-  cluster database_cluster
-  superuser true
-end
-
-postgresql_user "twain" do
-  cluster database_cluster
-  superuser true
-end
-
-postgresql_user "nominatim" do
-  cluster database_cluster
-  superuser true
+superusers.each do |user|
+  postgresql_user user do
+    cluster database_cluster
+    superuser true
+  end
 end
 
 postgresql_user "www-data" do
   cluster database_cluster
+end
+
+postgresql_user "replication" do
+  cluster database_cluster
+  password passwords["replication"]
+  replication true
 end
 
 postgresql_munin "nominatim" do
@@ -248,35 +244,31 @@ munin_plugin "nominatim_throttled_ips" do
   target "#{source_directory}/munin/nominatim_throttled_ips"
 end
 
-remote_file "#{source_directory}/data/wikipedia_article.sql.bin" do
-  action :create_if_missing
-  source "http://www.nominatim.org/data/wikipedia_article.sql.bin"
-  owner "nominatim"
-  group "nominatim"
-  mode 0644
+external_data = [
+  "wikipedia_article.sql.bin",
+  "wikipedia_redirect.sql.bin",
+  "gb_postcode_data.sql.gz"
+]
+
+external_data.each do |fname|
+  remote_file "#{source_directory}/data/#{fname}" do
+    action :create_if_missing
+    source "http://www.nominatim.org/data/#{fname}"
+    owner "nominatim"
+    group "nominatim"
+    mode 0644
+  end
 end
 
-remote_file "#{source_directory}/data/wikipedia_redirect.sql.bin" do
-  action :create_if_missing
-  source "http://www.nominatim.org/data/wikipedia_redirect.sql.bin"
-  owner "nominatim"
-  group "nominatim"
-  mode 0644
-end
+additional_scripts = %w(backup-nominatim clean-db-nominatim)
 
-remote_file "#{source_directory}/data/gb_postcode_data.sql.gz" do
-  action :create_if_missing
-  source "http://www.nominatim.org/data/gb_postcode_data.sql.gz"
-  owner "nominatim"
-  group "nominatim"
-  mode 0644
-end
-
-template "/usr/local/bin/backup-nominatim" do
-  source "backup-nominatim.erb"
-  owner "root"
-  group "root"
-  mode 0755
+additional_scripts.each do |fname|
+  template "/usr/local/bin/#{fname}" do
+    source "#{fname}.erb"
+    owner "root"
+    group "root"
+    mode 0755
+  end
 end
 
 directory File.dirname(node[:nominatim][:flatnode_file]) do

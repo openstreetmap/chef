@@ -19,15 +19,13 @@ default_attributes(
     }
   },
   :postgresql => {
-    :versions => ["9.3"],
     :settings => {
       :defaults => {
         :shared_buffers => "10GB",
         :work_mem => "160MB",
         :maintenance_work_mem => "10GB",
         :random_page_cost => "1.5",
-        :effective_cache_size => "60GB",
-        :fsync => "on"
+        :effective_cache_size => "60GB"
       }
     }
   },
@@ -56,5 +54,5 @@ default_attributes(
 
 run_list(
   "role[ucl-wolfson]",
-  "role[nominatim]"
+  "role[nominatim-master]"
 )

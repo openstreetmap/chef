@@ -27,7 +27,7 @@ default_attributes(
       :defaults => {
         :max_connections => "450",
         :synchronous_commit => "off",
-        :checkpoint_segments => "50",
+        :checkpoint_segments => "32",
         :checkpoint_timeout => "10min",
         :checkpoint_completion_target => "0.9",
         :autovacuum_max_workers => "1"

@@ -57,7 +57,6 @@ default_attributes(
     }
   },
   :postgresql => {
-    :versions => ["9.3"],
     :settings => {
       :defaults => {
         :shared_buffers => "10GB",
@@ -70,7 +69,7 @@ default_attributes(
     }
   },
   :nominatim => {
-    :enabled => false,
+    :enabled => true,
     :flatnode_file => "/ssd-old/nominatim/nodes.store",
     :database => {
       :cluster => "9.3/main",
@@ -95,5 +94,5 @@ default_attributes(
 run_list(
   "role[ic]",
   "role[tyan-s7010]",
-  "role[nominatim]"
+  "role[nominatim-slave]"
 )
