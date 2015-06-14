@@ -1,20 +1,13 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
-[DEFAULT]
-destemail = admins@openstreetmap.org
-banaction = shorewall
-bantime = 14400
-<% @jails.each do |jail| -%>
-
-[<%= jail[:name] %>]
+[<%= @name %>]
 enabled = true
-<% if jail[:protocol] -%>
-protocol = <%= jail[:protocol] %>
+<% if @protocol -%>
+protocol = <%= @protocol %>
 <% end -%>
-port = <%= jail[:port] %>
-filter = <%= jail[:filter] %>
-logpath = <%= jail[:logpath] %>
-<% if jail[:maxretry] -%>
-maxretry = <%= jail[:maxretry] %>
-<% end -%>
+port = <%= @ports.join(",") %>
+filter = <%= @filter %>
+logpath = <%= @logpath %>
+<% if @maxretry -%>
+maxretry = <%= @maxretry %>
 <% end -%>

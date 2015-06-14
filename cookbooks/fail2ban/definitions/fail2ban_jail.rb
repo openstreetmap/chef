@@ -18,14 +18,16 @@
 #
 
 define :fail2ban_jail, :action => :create do
-  config = resources(:template => "/etc/fail2ban/jail.local")
-
-  config.variables[:jails] << Hash[
-    :name => params[:name],
-    :filter => params[:filter],
-    :logpath => params[:logpath],
-    :protocol => params[:protocol],
-    :port => Array(params[:ports]).join(","),
-    :maxretry => params[:maxretry]
-  ]
+  template "/etc/fail2ban/jail.d/50-#{params[:name]}.conf" do
+    source "jail.erb"
+    owner "root"
+    group "root"
+    mode 0644
+    variables params
+    if node[:lsb][:release].to_f >= 14.04
+      notifies :create, "template[/etc/fail2ban/jail.local]"
+    else
+      notifies :reload, "service[fail2ban]"
+    end
+  end
 end

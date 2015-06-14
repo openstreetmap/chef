@@ -19,18 +19,38 @@
 
 package "fail2ban"
 
-template "/etc/fail2ban/jail.local" do
-  source "jail.erb"
+if node[:lsb][:release].to_f >= 14.04
+  file "/etc/fail2ban/jail.local" do
+    action :delete
+  end
+else
+  directory "/etc/fail2ban/jail.d" do
+    owner "root"
+    group "group"
+    mode 0755
+  end
+
+  template "/etc/fail2ban/jail.local" do
+    source "jail.local.erb"
+    owner "root"
+    group "root"
+    mode 0644
+    subscribes :create, "template[/etc/fail2ban/jail.d/00-default.conf]"
+    notifies :reload, "service[fail2ban]"
+  end
+end
+
+template "/etc/fail2ban/jail.d/00-default.conf" do
+  source "jail.default.erb"
   owner "root"
   group "root"
   mode 0644
-  variables :jails => []
+  notifies :reload, "service[fail2ban]"
 end
 
 service "fail2ban" do
   action [:enable, :start]
   supports :status => true, :reload => true, :restart => true
-  subscribes :reload, "template[/etc/fail2ban/jail.local]"
 end
 
 munin_plugin "fail2ban"
