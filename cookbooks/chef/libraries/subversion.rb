@@ -25,7 +25,8 @@ class Chef
 
         @repo_attrs ||= svn_info.lines.each_with_object({}) do |line, attrs|
           if line =~ SVN_INFO_PATTERN
-            property, value = Regexp.last_match[1], Regexp.last_match[2]
+            property = Regexp.last_match[1]
+            value = Regexp.last_match[2]
             attrs[property] = value
           else
             fail "Could not parse `svn info` data: #{line}"
