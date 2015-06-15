@@ -22,6 +22,8 @@ default_action :create
 
 attribute :name, :kind_of => String, :name_attribute => true
 attribute :source, :kind_of => String
+attribute :failregex, :kind_of => [String, Array]
+attribute :ignoreregex, :kind_of => [String, Array]
 
 def after_created
   notifies :reload, "service[fail2ban]"

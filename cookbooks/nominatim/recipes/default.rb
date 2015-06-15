@@ -284,3 +284,14 @@ directory "/data/postgresql-archive" do
   mode 0700
   only_if { node[:postgresql][:settings][:defaults][:archive_mode] == "on" }
 end
+
+fail2ban_filter "nominatim" do
+  failregex '^<HOST> - - \[[^]]+\] "[^"]+" (403|429) '
+end
+
+fail2ban_jail "nominatim" do
+  filter "nominatim"
+  logpath "/var/log/apache2/nominatim.openstreetmap.org-access.log"
+  ports [80, 443]
+  maxretry 100
+end

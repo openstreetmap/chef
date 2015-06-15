@@ -24,11 +24,23 @@ end
 use_inline_resources
 
 action :create do
-  remote_file "/etc/fail2ban/filter.d/#{new_resource.name}.conf" do
-    source new_resource.source
-    owner "root"
-    group "root"
-    mode 0644
+  if new_resource.source
+    remote_file "/etc/fail2ban/filter.d/#{new_resource.name}.conf" do
+      source new_resource.source
+      owner "root"
+      group "root"
+      mode 0644
+    end
+  else
+    template "/etc/fail2ban/filter.d/#{new_resource.name}.conf" do
+      cookbook "fail2ban"
+      source "filter.erb"
+      owner "root"
+      group "root"
+      mode 0644
+      variables :failregex => new_resource.failregex,
+                :ignoreregex => new_resource.ignoreregex
+    end
   end
 end
 
