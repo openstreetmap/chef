@@ -278,10 +278,9 @@ directory File.dirname(node[:nominatim][:flatnode_file]) do
   recursive true
 end
 
-if node[:postgresql][:settings][:defaults][:archive_mode] == "on"
-  directory "/data/postgresql-archive" do
-    owner "postgres"
-    group "postgres"
-    mode 0700
-  end
+directory "/data/postgresql-archive" do
+  owner "postgres"
+  group "postgres"
+  mode 0700
+  only_if { node[:postgresql][:settings][:defaults][:archive_mode] == "on" }
 end
