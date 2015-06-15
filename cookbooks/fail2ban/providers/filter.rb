@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: wordpress
-# Recipe:: default
+# Cookbook Name:: fail2ban
+# Provider:: fail2ban_filter
 #
-# Copyright 2013, OpenStreetMap Foundation
+# Copyright 2015, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,27 +17,23 @@
 # limitations under the License.
 #
 
-include_recipe "apache::ssl"
-include_recipe "chef::gems"
-include_recipe "mysql"
-
-package "subversion"
-
-package "php5"
-package "php5-mysql"
-
-package "php-apc"
-
-apache_module "php5"
-apache_module "rewrite"
-
-fail2ban_filter "wordpress" do
-  source "http://plugins.svn.wordpress.org/wp-fail2ban/trunk/wordpress.conf"
+def whyrun_supported?
+  true
 end
 
-fail2ban_jail "wordpress" do
-  filter "wordpress"
-  logpath "/var/log/auth.log"
-  ports [80, 443]
-  maxretry 6
+use_inline_resources
+
+action :create do
+  remote_file "/etc/fail2ban/filter.d/#{new_resource.name}.conf" do
+    source new_resource.source
+    owner "root"
+    group "root"
+    mode 0644
+  end
+end
+
+action :delete do
+  file "/etc/fail2ban/filter.d/#{new_resource.name}.conf" do
+    action :delete
+  end
 end
