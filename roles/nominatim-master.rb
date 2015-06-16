@@ -6,7 +6,6 @@ default_attributes(
     :versions => ["9.3"],
     :settings => {
       :defaults => {
-        :listen_addresses => "*",
         :wal_level => "hot_standby",
         :archive_mode => "on",
         :archive_command => "/bin/cp %p /data/postgresql-archive/%f",
