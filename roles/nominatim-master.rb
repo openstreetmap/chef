@@ -9,7 +9,7 @@ default_attributes(
         :wal_level => "hot_standby",
         :archive_mode => "on",
         :archive_command => "/bin/cp %p /data/postgresql-archive/%f",
-        :max_wal_senders => "1",
+        :max_wal_senders => "5",
         :late_authentication_rules => [
           { :database => "replication", :user => "replication", :address => "146.179.159.164/32" }
         ]
