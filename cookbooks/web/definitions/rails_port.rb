@@ -231,7 +231,7 @@ define :rails_port, :action => [:create, :enable] do
     group rails_group
     mode 0664
     content application_yml
-    notifies :run, "execute[#{rails_directory}]"
+    notifies :run, "execute[#{rails_directory}/public/assets]"
   end
 
   if params[:piwik_configuration]
