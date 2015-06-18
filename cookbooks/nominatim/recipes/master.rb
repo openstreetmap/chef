@@ -20,6 +20,7 @@
 include_recipe "nominatim::base"
 
 passwords = data_bag_item("nominatim", "passwords")
+database_cluster = node[:nominatim][:database][:cluster]
 home_directory = data_bag_item("accounts", "nominatim")["home"]
 
 superusers = %w(tomh lonvia twain nominatim)
