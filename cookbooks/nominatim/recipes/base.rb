@@ -1,8 +1,8 @@
 #
 # Cookbook Name:: nominatim
-# Recipe:: default
+# Recipe:: base
 #
-# Copyright 2012, OpenStreetMap Foundation
+# Copyright 2015, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -32,7 +32,6 @@ apache_module "rewrite"
 apache_module "proxy"
 apache_module "proxy_fcgi"
 
-passwords = data_bag_item("nominatim", "passwords")
 home_directory = data_bag_item("accounts", "nominatim")["home"]
 source_directory = "#{home_directory}/nominatim"
 email_errors = data_bag_item("accounts", "lonvia")["email"]
@@ -68,25 +67,6 @@ node[:nominatim][:fpm_pools].each do |name, data|
     variables data.merge(:name => name, :port => data[:port])
     notifies :reload, "service[php5-fpm]"
   end
-end
-
-superusers = %w(tomh lonvia twain nominatim)
-
-superusers.each do |user|
-  postgresql_user user do
-    cluster database_cluster
-    superuser true
-  end
-end
-
-postgresql_user "www-data" do
-  cluster database_cluster
-end
-
-postgresql_user "replication" do
-  cluster database_cluster
-  password passwords["replication"]
-  replication true
 end
 
 postgresql_munin "nominatim" do
@@ -141,14 +121,6 @@ execute "compile_nominatim" do
   user "nominatim"
 end
 
-git source_directory do
-  action :checkout
-  repository node[:nominatim][:repository]
-  enable_submodules true
-  user "nominatim"
-  group "nominatim"
-  notifies :run, "execute[compile_nominatim]"
-end
 
 directory "#{source_directory}/log" do
   owner "nominatim"
