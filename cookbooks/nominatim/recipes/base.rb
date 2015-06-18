@@ -121,7 +121,6 @@ execute "compile_nominatim" do
   user "nominatim"
 end
 
-
 directory "#{source_directory}/log" do
   owner "nominatim"
   group "nominatim"
