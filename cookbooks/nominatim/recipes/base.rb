@@ -31,6 +31,7 @@ package "php-apc"
 apache_module "rewrite"
 apache_module "proxy"
 apache_module "proxy_fcgi"
+apache_module "proxy_http"
 
 home_directory = data_bag_item("accounts", "nominatim")["home"]
 source_directory = "#{home_directory}/nominatim"

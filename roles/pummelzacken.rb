@@ -49,6 +49,9 @@ default_attributes(
         :pm => "static",
         :max_children => "10"
       }
+    },
+    :redirects => {
+      :reverse => "poldi.openstreetmap.org"
     }
   }
 )
