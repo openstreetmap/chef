@@ -33,7 +33,7 @@
     <% @pools.each do |name,details| -%>
     Alias /pool-<%= name %>/ "<%= @directory %>/website/"
     <% node[:nominatim][:redirects].each do |url,host| -%>
-    ProxyPassMatch ^/pool-<%= name %>/(<%= url %>\.php(/.*)?) http<%= if port == 443 %>s<%= end %>://<%= host %>/pool-<%= name %>/$1
+    ProxyPassMatch ^/pool-<%= name %>/(<%= url %>\.php(/.*)?) http<% if port == 443 -%>s<% end -%>://<%= host %>/pool-<%= name %>/$1
     <% end -%>
     ProxyPassMatch ^/pool-<%= name %>/(.*\.php(/.*)?) fcgi://127.0.0.1:<%= details[:port ]%><%= @directory %>/website/$1
     <% end -%>
