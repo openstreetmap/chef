@@ -17,6 +17,7 @@ default_attributes(
     }
   },
   :nominatim => {
+    :enabled => true,
     :enable_backup => true
   },
   :rsyncd => {

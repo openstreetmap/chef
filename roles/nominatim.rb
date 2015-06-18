@@ -69,7 +69,7 @@ default_attributes(
     }
   },
   :nominatim => {
-    :enabled => true,
+    :enabled => false,
     :repository => "git://git.openstreetmap.org/nominatim.git",
     :tablespaces => {
       "Osm2pgsql_Data" => "data",

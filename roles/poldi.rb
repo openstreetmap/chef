@@ -69,7 +69,6 @@ default_attributes(
     }
   },
   :nominatim => {
-    :enabled => true,
     :flatnode_file => "/ssd-old/nominatim/nodes.store",
     :database => {
       :cluster => "9.3/main",
