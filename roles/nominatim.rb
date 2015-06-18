@@ -82,6 +82,7 @@ default_attributes(
       "Search_Index" => "ssd1",
       "Aux_Data" => "aux",
       "Aux_Index" => "aux"
-    }
+    },
+    :redirects => {}
   }
 )
