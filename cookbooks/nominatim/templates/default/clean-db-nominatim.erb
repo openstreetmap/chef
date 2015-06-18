@@ -15,6 +15,6 @@ done
 <% if node[:postgresql][:settings][:defaults][:archive_mode] == "on" -%>
 
 # Cleanup archive directory
-find -L /data/postgresql-archive -mtime +3 -print0 | xargs -0r rm
+find -L /data/postgresql-archive -mtime +2 -print0 | xargs -0r rm
 
 <% end -%>
