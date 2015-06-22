@@ -258,7 +258,7 @@ directory "/data/postgresql-archive" do
 end
 
 fail2ban_filter "nominatim" do
-  failregex '^<HOST> - - \[[^]]+\] "[^"]+" (403|429) '
+  failregex '^<HOST> - - \[[^]]+\] "[^"]+" 429 '
 end
 
 fail2ban_jail "nominatim" do
