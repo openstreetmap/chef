@@ -10,7 +10,7 @@ default_attributes(
       :comment => "RAID array mounted on /store/postgresql/openstreetmap",
       :type => "block",
       :bus => "scsi",
-      :serial => "3600605b0039483a017092ecbe862082a",
+      :serial => "3600605b00599aa401c02b4f53bf5c805",
       :attrs => {
         "queue/scheduler" => "deadline",
         "queue/nr_requests" => "975"
