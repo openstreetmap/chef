@@ -1,4 +1,5 @@
 default[:hardware][:modules] = %w(loop lp rtc)
+default[:hardware][:grub][:cmdline] = %w(nomodeset)
 default[:hardware][:sensors] = {}
 
 if node[:dmi] && node[:dmi][:system]

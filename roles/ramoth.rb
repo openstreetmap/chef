@@ -28,6 +28,9 @@ default_attributes(
     }
   },
   :hardware => {
+    :grub => {
+      :cmdline => %w(ghes.disable=1)
+    },
     :watchdog => "w83627hf_wdt"
   },
   :munin => {
