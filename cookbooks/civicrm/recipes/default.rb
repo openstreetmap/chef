@@ -35,7 +35,8 @@ mysql_database "civicrm" do
   permissions "civicrm@localhost" => :all
 end
 
-wordpress_site "crm.osmfoundation.org" do
+wordpress_site "join.osmfoundation.org" do
+  aliases "crm.osmfoundation.org"
   ssl_enabled true
   database_name "civicrm"
   database_user "civicrm"
@@ -43,16 +44,16 @@ wordpress_site "crm.osmfoundation.org" do
 end
 
 wordpress_theme "osmblog-wp-theme" do
-  site "crm.osmfoundation.org"
+  site "join.osmfoundation.org"
   repository "git://github.com/harry-wood/osmblog-wp-theme.git"
 end
 
 wordpress_plugin "registration-honeypot" do
-  site "crm.osmfoundation.org"
+  site "join.osmfoundation.org"
 end
 
 civicrm_version = node[:civicrm][:version]
-civicrm_directory = "/srv/crm.osmfoundation.org/wp-content/plugins/civicrm"
+civicrm_directory = "/srv/join.osmfoundation.org/wp-content/plugins/civicrm"
 
 directory "/opt/civicrm-#{civicrm_version}" do
   owner "wordpress"
@@ -105,7 +106,7 @@ execute "/opt/civicrm-#{civicrm_version}/civicrm" do
   subscribes :run, "execute[/var/cache/chef/civicrm-#{civicrm_version}-l10n.tar.gz]", :immediately
 end
 
-directory "/srv/crm.osmfoundation.org/wp-content/plugins/files" do
+directory "/srv/join.osmfoundation.org/wp-content/plugins/files" do
   owner "www-data"
   group "www-data"
   mode 0755
@@ -122,8 +123,8 @@ settings = edit_file "#{civicrm_directory}/civicrm/templates/CRM/common/civicrm.
   line.gsub!(/%%dbHost%%/, "localhost")
   line.gsub!(/%%dbName%%/, "civicrm")
   line.gsub!(/%%crmRoot%%/, "#{civicrm_directory}/civicrm/")
-  line.gsub!(/%%templateCompileDir%%/, "/srv/crm.osmfoundation.org/wp-content/plugins/files/civicrm/templates_c/")
-  line.gsub!(/%%baseURL%%/, "http://crm.osmfoundation.org/")
+  line.gsub!(/%%templateCompileDir%%/, "/srv/join.osmfoundation.org/wp-content/plugins/files/civicrm/templates_c/")
+  line.gsub!(/%%baseURL%%/, "http://join.osmfoundation.org/")
   line.gsub!(/%%siteKey%%/, site_key)
 
   line

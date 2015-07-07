@@ -2,4 +2,4 @@
 
 MAILTO=jonobennett+civicrm@gmail.com
 
-*/15 * * * * www-data php <%= @directory %>/civicrm/bin/cli.php -s crm.osmfoundation.org -u batch -p "<%= @passwords["batch"] %>" -e Job -a execute
+*/15 * * * * www-data php <%= @directory %>/civicrm/bin/cli.php -s join.osmfoundation.org -u batch -p "<%= @passwords["batch"] %>" -e Job -a execute

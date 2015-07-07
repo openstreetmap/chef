@@ -35,9 +35,9 @@ default_attributes(
         :domains => ["tickets.openstreetmap.org"],
         :host => "ridley.ucl.openstreetmap.org"
       },
-      :crm => {
-        :comment => "crm.osmfoundation.org",
-        :domains => ["crm.osmfoundation.org"],
+      :join => {
+        :comment => "join.osmfoundation.org",
+        :domains => ["join.osmfoundation.org"],
         :host => "ridley.ucl.openstreetmap.org"
       }
     },

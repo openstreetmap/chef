@@ -8,7 +8,7 @@ B=osmf-crm-$D.tar.gz
 
 mkdir $T/osmf-crm-$D
 mysqldump --user=civicrm --password=<%= @passwords["database"] %> --opt --skip-lock-tables civicrm > $T/osmf-crm-$D/civicrm.sql
-ln -s /srv/crm.osmfoundation.org $T/osmf-crm-$D/www
+ln -s /srv/join.osmfoundation.org $T/osmf-crm-$D/www
 
 export GZIP="--rsyncable -9"
 export RSYNC_RSH="ssh -ax -c arcfour"

@@ -3,19 +3,19 @@ description "Role applied to CRM server"
 
 default_attributes(
   :exim => {
-    :local_domains => ["crm.osmfoundation.org"],
+    :local_domains => ["join.osmfoundation.org"],
     :routes => {
-      :crm_return => {
-        :comment => "return@crm.osmfoundation.org",
-        :domains => ["crm.osmfoundation.org"],
+      :join_return => {
+        :comment => "return@join.osmfoundation.org",
+        :domains => ["join.osmfoundation.org"],
         :local_parts => ["return"],
         :maildir => "/var/mail/crm-return",
         :user => "www-data",
         :group => "mail"
       },
-      :crm_mail => {
-        :comment => "mail@crm.osmfoundation.org",
-        :domains => ["crm.osmfoundation.org"],
+      :join_mail => {
+        :comment => "mail@join.osmfoundation.org",
+        :domains => ["join.osmfoundation.org"],
         :local_parts => ["mail"],
         :maildir => "/var/mail/crm-mail",
         :user => "www-data",
