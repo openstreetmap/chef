@@ -1,0 +1,9 @@
+# Move the default escape key to ^@ to get it out of the way
+escape ^@@
+
+# Make Alt-a an escape key
+bindkey "^[a" command
+bindkey "^[A" command
+
+# Disable alternate text buffer
+termcapinfo xterm* ti@:te@
