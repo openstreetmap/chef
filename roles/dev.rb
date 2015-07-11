@@ -66,6 +66,7 @@ default_attributes(
       :zverik => { :status => :user },
       :dodobas => { :status => :user },
       :mhohmann => { :status => :user },
+      :enelson => { :status => :user },
       :ooc => {
         :status => :role,
         :members => [:tomh, :blackadder, :timsc, :ollie]
