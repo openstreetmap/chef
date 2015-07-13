@@ -26,7 +26,7 @@ if node[:lsb][:release].to_f >= 14.04
 else
   directory "/etc/fail2ban/jail.d" do
     owner "root"
-    group "group"
+    group "root"
     mode 0755
   end
 
