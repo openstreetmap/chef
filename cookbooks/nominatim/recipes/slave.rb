@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-include_recipe "nominatim::base"
+include_recipe "git"
 
 home_directory = data_bag_item("accounts", "nominatim")["home"]
 
@@ -28,3 +28,5 @@ git "#{home_directory}/nominatim" do
   group "nominatim"
   notifies :run, "execute[compile_nominatim]"
 end
+
+include_recipe "nominatim::base"

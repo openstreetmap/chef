@@ -19,7 +19,6 @@
 
 include_recipe "apache::ssl"
 include_recipe "postgresql"
-include_recipe "git"
 
 package "php5"
 package "php5-cli"

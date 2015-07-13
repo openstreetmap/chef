@@ -17,6 +17,17 @@
 # limitations under the License.
 #
 
+include_recipe "git"
+
+git "#{home_directory}/nominatim" do
+  action :checkout
+  repository node[:nominatim][:repository]
+  enable_submodules true
+  user "nominatim"
+  group "nominatim"
+  notifies :run, "execute[compile_nominatim]"
+end
+
 include_recipe "nominatim::base"
 
 passwords = data_bag_item("nominatim", "passwords")
@@ -42,11 +53,3 @@ postgresql_user "replication" do
   replication true
 end
 
-git "#{home_directory}/nominatim" do
-  action :checkout
-  repository node[:nominatim][:repository]
-  enable_submodules true
-  user "nominatim"
-  group "nominatim"
-  notifies :run, "execute[compile_nominatim]"
-end
