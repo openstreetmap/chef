@@ -49,4 +49,8 @@ MaxRequestsPerChild <%= node[:apache][:event][:max_requests_per_child] %>
 # Default to UTF-8
 AddDefaultCharset utf-8
 
+# Add extra mime types
+AddType application/x-xz .xz
+
+# Configure logging
 BufferedLogs <%= node[:apache][:buffered_logs] ? "On" : "Off" %>
