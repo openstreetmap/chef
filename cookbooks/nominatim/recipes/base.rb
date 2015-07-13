@@ -49,16 +49,6 @@ service "php5-fpm" do
   supports :status => true, :restart => true, :reload => true
 end
 
-apache_site "nominatim.openstreetmap.org" do
-  template "apache.erb"
-  directory source_directory
-  variables :pools => node[:nominatim][:fpm_pools]
-end
-
-apache_site "default" do
-  action [:disable]
-end
-
 node[:nominatim][:fpm_pools].each do |name, data|
   template "/etc/php5/fpm/pool.d/#{name}.conf" do
     source "fpm.conf.erb"
@@ -255,6 +245,16 @@ directory "/data/postgresql-archive" do
   group "postgres"
   mode 0700
   only_if { node[:postgresql][:settings][:defaults][:archive_mode] == "on" }
+end
+
+apache_site "nominatim.openstreetmap.org" do
+  template "apache.erb"
+  directory source_directory
+  variables :pools => node[:nominatim][:fpm_pools]
+end
+
+apache_site "default" do
+  action [:disable]
 end
 
 fail2ban_filter "nominatim" do
