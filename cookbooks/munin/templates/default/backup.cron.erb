@@ -1,0 +1,15 @@
+#!/bin/sh
+
+# DO NOT EDIT - This file is being maintained by Chef
+
+T=$(mktemp -d -t -p /var/tmp munin.XXXXXXXXXX)
+D=$(date +%Y-%m-%d)
+B=munin-$D.tar.gz
+
+export GZIP="--rsyncable -9"
+export RSYNC_RSH="ssh -ax -c arcfour"
+
+nice tar --create --gzip --dereference --directory=/var/lib/munin --file=$T/$B openstreetmap *.storable
+nice rsync $T/$B backup::backup
+
+rm -rf $T

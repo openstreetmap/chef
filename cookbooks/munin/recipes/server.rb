@@ -81,6 +81,13 @@ apache_site "munin.openstreetmap.org" do
   template "apache.erb"
 end
 
+template "/etc/cron.daily/munin-backup" do
+  source "backup.cron.erb"
+  owner "root"
+  group "root"
+  mode 0750
+end
+
 munin_plugin "munin_stats"
 munin_plugin "munin_update"
 munin_plugin "munin_rrdcached"
