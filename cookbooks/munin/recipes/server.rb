@@ -85,7 +85,7 @@ template "/etc/cron.daily/munin-backup" do
   source "backup.cron.erb"
   owner "root"
   group "root"
-  mode 0750
+  mode 0755
 end
 
 munin_plugin "munin_stats"

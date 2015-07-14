@@ -6,10 +6,14 @@ T=$(mktemp -d -t -p /var/tmp munin.XXXXXXXXXX)
 D=$(date +%Y-%m-%d)
 B=munin-$D.tar.gz
 
+mkdir $T/munin-$D
+ln -s /var/lib/munin/openstreetmap $T/munin-$D
+ln -s /var/lib/munin/*.storable $T/munin-$D
+
 export GZIP="--rsyncable -9"
 export RSYNC_RSH="ssh -ax"
 
-nice tar --create --gzip --dereference --directory=/var/lib/munin --file=$T/$B openstreetmap *.storable
+nice tar --create --gzip --dereference --directory=$T --file=$T/$B munin-$D
 nice rsync $T/$B backup::backup
 
 rm -rf $T
