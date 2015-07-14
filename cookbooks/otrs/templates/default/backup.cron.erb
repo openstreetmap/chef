@@ -14,7 +14,7 @@ ln -s /opt/otrs $T/otrs-$D/otrs
 ln -s /etc/apache2/sites-available/otrs.openstreetmap.org.conf $T/otrs-$D/apache2-otrs.openstreetmap.org.conf
 
 export GZIP="--rsyncable -9"
-export RSYNC_RSH="ssh -ax -c arcfour"
+export RSYNC_RSH="ssh -ax"
 
 nice tar --create --gzip --dereference --directory=$T --file=$T/$B otrs-$D
 nice rsync $T/$B backup::backup

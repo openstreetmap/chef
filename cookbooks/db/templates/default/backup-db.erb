@@ -7,7 +7,7 @@ F=/store/backup/osm-${D}.dmp
 
 pg_dump --user=backup --format=custom --file=$F openstreetmap
 
-export RSYNC_RSH="ssh -ax -c arcfour"
+export RSYNC_RSH="ssh -ax"
 rsync $F backup.openstreetmap.org::backup
 
 rm -f $F

@@ -9,7 +9,7 @@ B=<%= node[:git][:backup] %>-$D.tar.gz
 ln -s /var/lib/git $T/git-$D
 
 export GZIP="--rsyncable -9"
-export RSYNC_RSH="ssh -ax -c arcfour"
+export RSYNC_RSH="ssh -ax"
 
 nice tar --create --gzip --dereference --directory=$T --file=$T/$B git-$D
 nice rsync $T/$B backup::backup

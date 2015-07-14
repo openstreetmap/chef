@@ -21,7 +21,7 @@ ln -s /srv/2012.stateofthemap.org $T/sotm-$D/www2012
 ln -s /srv/2016.stateofthemap.org $T/sotm-$D/www2016
 
 export GZIP="--rsyncable -9"
-export RSYNC_RSH="ssh -ax -c arcfour"
+export RSYNC_RSH="ssh -ax"
 
 nice tar --create --gzip --dereference --directory=$T --file=$T/$B sotm-$D
 nice rsync $T/$B backup::backup
