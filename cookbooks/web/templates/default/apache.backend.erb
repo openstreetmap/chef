@@ -19,7 +19,7 @@
   #
   # Setup logging
   #
-  LogFormat "%a %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\" %Ts %{SSL_PROTOCOL}x %{SSL_CIPHER}x" combined_with_time
+  LogFormat "%a %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\" %Dus %{UNIQUE_ID}e %{SSL_PROTOCOL}x %{SSL_CIPHER}x" combined_with_time
   CustomLog /var/log/apache2/access.log combined_with_time
   ErrorLog /var/log/apache2/error.log
 
