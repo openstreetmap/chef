@@ -29,6 +29,11 @@
   RewriteEngine on
 
   #
+  # Recover the unique ID from the request headers
+  #
+  SetEnvIf X-Request-Id ^(.*)$ UNIQUE_ID=$1
+
+  #
   # Configure rails
   #
   DocumentRoot <%= node[:web][:base_directory] %>/rails/public

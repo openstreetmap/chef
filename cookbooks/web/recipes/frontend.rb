@@ -31,6 +31,7 @@ apache_module "proxy_balancer"
 apache_module "lbmethod_byrequests"
 apache_module "lbmethod_bybusyness"
 apache_module "rewrite"
+apache_module "unique_id"
 
 apache_site "default" do
   action [:disable]

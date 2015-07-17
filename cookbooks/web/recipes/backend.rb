@@ -28,6 +28,7 @@ apache_module "remoteip"
 apache_module "rewrite"
 apache_module "proxy"
 apache_module "proxy_fcgi"
+apache_module "setenvif"
 
 apache_site "default" do
   action [:disable]
