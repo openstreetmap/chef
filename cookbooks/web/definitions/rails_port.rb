@@ -184,6 +184,10 @@ define :rails_port, :action => [:create, :enable] do
       line.gsub!(/^( *)#log_path:.*$/, "\\1log_path: \"#{params[:log_path]}\"")
     end
 
+    if params[:logstash_path]
+      line.gsub!(/^( *)#logstash_path:.*$/, "\\1logstash_path: \"#{params[:logstash_path]}\"")
+    end
+
     if params[:memcache_servers]
       line.gsub!(/^( *)#memcache_servers:.*$/, "\\1memcache_servers: [ \"#{params[:memcache_servers].join("\", \"")}\" ]")
     end
