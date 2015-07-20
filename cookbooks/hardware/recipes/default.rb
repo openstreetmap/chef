@@ -332,6 +332,8 @@ if status_packages["sas2ircu-status"]
     bus = host.sub("/sys/class/scsi_host/host", "")
 
     Dir.glob("/sys/bus/scsi/devices/#{bus}:0:*/scsi_generic/*").each do |sg|
+      next if File.directory?("#{sg}/../../block")
+
       disks << { :device => File.basename(sg) }
     end
   end
