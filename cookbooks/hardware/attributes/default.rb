@@ -23,7 +23,7 @@ if Chef::Util.compare_versions(node[:kernel][:release], [3, 3]) < 0
 end
 
 if node[:kernel] && node[:kernel][:modules]
-  raidmods = node[:kernel][:modules].keys & %w(cciss hpsa mptsas mpt2sas megaraid_mm megaraid_sas aacraid)
+  raidmods = node[:kernel][:modules].keys & %w(cciss hpsa mptsas mpt2sas mpt3sas megaraid_mm megaraid_sas aacraid)
 
   unless raidmods.empty?
     default[:apt][:sources] |= ["hwraid"]

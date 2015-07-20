@@ -191,7 +191,7 @@ node[:kernel][:modules].each_key do |modname|
   when "mptsas"
     tools_packages << "lsiutil"
     # status_packages["mpt-status"] ||= []
-  when "mpt2sas"
+  when "mpt2sas", "mpt3sas"
     tools_packages << "sas2ircu"
     status_packages["sas2ircu-status"] ||= []
   when "megaraid_mm"
@@ -327,7 +327,7 @@ if status_packages["sas2ircu-status"]
   Dir.glob("/sys/class/scsi_host/host*") do |host|
     driver = File.new("#{host}/proc_name").read.chomp
 
-    next unless driver == "mpt2sas"
+    next unless driver == "mpt2sas" || driver == "mpt3sas"
 
     bus = host.sub("/sys/class/scsi_host/host", "")
 
