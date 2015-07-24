@@ -10,6 +10,9 @@ default_attributes(
   :elasticsearch => {
     :cluster => {
       :name => "wiki"
+    },
+    :script => {
+      :disable_dynamic => false
     }
   },
   :exim => {

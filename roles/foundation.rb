@@ -13,6 +13,9 @@ default_attributes(
   :elasticsearch => {
     :cluster => {
       :name => "foundation"
+    },
+    :script => {
+      :disable_dynamic => false
     }
   },
   :memcached => {
