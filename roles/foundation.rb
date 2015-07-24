@@ -19,6 +19,7 @@ default_attributes(
 
 run_list(
   "role[crm]",
+  "role[elasticsearch]",
   "recipe[foundation::wiki]",
   "recipe[foundation::board]"
 )

@@ -13,6 +13,14 @@ default_attributes(
       :max_requests_per_child => 10000
     }
   },
+  :logstash => {
+    :forwarder => {
+      :files => [
+        { :paths => ["/var/log/apache2/access.log"], :fields => { :type => "apache" } },
+        { :paths => ["/var/log/web/rails-logstash.log"], :fields => { :type => "rails" } }
+      ]
+    }
+  },
   :passenger => {
     :max_pool_size => 50
   },
@@ -34,5 +42,6 @@ default_attributes(
 
 run_list(
   "role[web]",
+  "role[logstash-forwarder]",
   "recipe[web::frontend]"
 )

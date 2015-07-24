@@ -8,6 +8,14 @@ default_attributes(
       :max_requests_per_child => 10000
     }
   },
+  :logstash => {
+    :forwarder => {
+      :files => [
+        { :paths => ["/var/log/apache2/access.log"], :fields => { :type => "apache" } },
+        { :paths => ["/var/log/web/rails-logstash.log"], :fields => { :type => "rails" } }
+      ]
+    }
+  },
   :memcached  => {
     :memory_limit => 4096
   },
@@ -18,5 +26,6 @@ default_attributes(
 
 run_list(
   "role[web]",
+  "role[logstash-forwarder]",
   "recipe[web::backend]"
 )

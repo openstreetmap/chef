@@ -97,6 +97,7 @@ run_list(
   "role[stats]",
   "role[planet]",
   "role[planetdump]",
+  "role[logstash]",
   "recipe[rsyncd]",
   "recipe[openvpn]",
   "recipe[git::server]",

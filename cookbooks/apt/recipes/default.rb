@@ -87,6 +87,18 @@ apt_source "elasticsearch" do
   key "D88E42B4"
 end
 
+apt_source "logstash" do
+  template "elasticsearch.list.erb"
+  url "http://packages.elasticsearch.org/logstash/1.5/debian"
+  key "D88E42B4"
+end
+
+apt_source "logstash-forwarder" do
+  template "elasticsearch.list.erb"
+  url "http://packages.elasticsearch.org/logstashforwarder/debian"
+  key "D88E42B4"
+end
+
 apt_source "passenger" do
   url "https://oss-binaries.phusionpassenger.com/apt/passenger"
   key "AC40B2F7"

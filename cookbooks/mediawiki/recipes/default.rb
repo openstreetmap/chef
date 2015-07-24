@@ -21,7 +21,6 @@ include_recipe "memcached"
 include_recipe "apache::ssl"
 include_recipe "mysql"
 include_recipe "git"
-include_recipe "elasticsearch"
 
 # Mediawiki Base Requirements
 package "php5"

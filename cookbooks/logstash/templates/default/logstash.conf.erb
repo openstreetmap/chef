@@ -1,0 +1,28 @@
+input {
+  lumberjack {
+    port => 5043
+    ssl_certificate => "/var/lib/logstash/lumberjack.crt"
+    ssl_key => "/var/lib/logstash/lumberjack.key"
+  }
+}
+
+filter {
+  if [type] == "apache" {
+    grok {
+      match => [ "message", "%{COMBINEDAPACHELOG} %{NUMBER:duration:int}us %{WORD:request_id} %{NOTSPACE:ssl_protocol} %{NOTSPACE:ssl_cipher}" ]
+    }
+    date {
+      match => [ "timestamp", "dd/MMM/yyyy:HH:mm:ss Z" ]
+    }
+  } else if [type] == "rails" {
+    json {
+      source => "message"
+    }
+  }
+}
+
+output {
+  elasticsearch {
+    host => [ "127.0.0.1" ]
+  }
+}
