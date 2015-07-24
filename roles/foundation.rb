@@ -10,6 +10,11 @@ default_attributes(
   :apt => {
     :sources => ["passenger"]
   },
+  :elasticsearch => {
+    :cluster => {
+      :name => "foundation"
+    }
+  },
   :memcached => {
     :memory_limit => 400,
     :chunk_growth_factor => 1.05,

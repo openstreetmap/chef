@@ -7,6 +7,11 @@ default_attributes(
       :wiki => { :status => :role }
     }
   },
+  :elasticsearch => {
+    :cluster => {
+      :name => "wiki"
+    }
+  },
   :exim => {
     :trusted_users => ["www-data"],
     :aliases => {

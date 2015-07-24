@@ -18,8 +18,14 @@
 #
 
 package "openjdk-7-jre-headless"
-package "elasticsearch" do
-  action :install
+package "elasticsearch"
+
+template "/etc/elasticsearch/elasticsearch.yml" do
+  source "elasticsearch.yml.erb"
+  user "root"
+  group "root"
+  mode 0644
+  notifies :restart, "service[elasticsearch]"
 end
 
 service "elasticsearch" do

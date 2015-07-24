@@ -4,6 +4,11 @@ description "Role applied to all logstash servers"
 default_attributes(
   :apt => {
     :sources => ["logstash"]
+  },
+  :elasticsearch => {
+    :cluster => {
+      :name => "logstash"
+    }
   }
 )
 
