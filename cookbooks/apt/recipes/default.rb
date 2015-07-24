@@ -83,7 +83,7 @@ end
 
 apt_source "elasticsearch" do
   template "elasticsearch.list.erb"
-  url "http://packages.elasticsearch.org/elasticsearch/1.3/debian"
+  url "http://packages.elasticsearch.org/elasticsearch/1.7/debian"
   key "D88E42B4"
 end
 
