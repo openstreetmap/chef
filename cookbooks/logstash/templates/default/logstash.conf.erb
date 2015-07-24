@@ -18,6 +18,9 @@ filter {
     json {
       source => "message"
     }
+    mutate {
+      remove_field => [ "message" ]
+    }
   }
 }
 
