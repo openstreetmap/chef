@@ -24,5 +24,6 @@ filter {
 output {
   elasticsearch {
     host => [ "127.0.0.1" ]
+    cluster => "<%= node[:elasticsearch][:cluster][:name] %>"
   }
 }
