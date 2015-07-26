@@ -1,0 +1,18 @@
+# kibana
+#
+# Startup script for kibana
+
+description "starts up kibana"
+
+start on (net-device-up
+          and local-filesystems
+          and runlevel [345])
+stop on runlevel [!345]
+
+setuid kibana
+
+script
+        exec /opt/kibana-<%= node[:kibana][:version] %>/bin/kibana -c <%= @config %>
+end script
+
+respawn

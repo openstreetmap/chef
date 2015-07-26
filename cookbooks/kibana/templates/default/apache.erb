@@ -1,0 +1,32 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+<VirtualHost *:80>
+   ServerName <%= @site %>
+   ServerAdmin webmaster@openstreetmap.org
+
+   CustomLog /var/log/apache2/<%= @site %>-access.log combined
+   ErrorLog /var/log/apache2/<%= @site %>-error.log
+
+   Redirect permanent / https://<%= @site %>/
+</VirtualHost>
+
+<VirtualHost *:443>
+   ServerName <%= @site %>
+   ServerAdmin webmaster@openstreetmap.org
+
+   CustomLog /var/log/apache2/<%= @site %>-access.log combined
+   ErrorLog /var/log/apache2/<%= @site %>-error.log
+
+   SSLEngine on
+   SSLProxyEngine on
+
+   ProxyPass / http://127.0.0.1:<%= @port %>/
+
+   <Location />
+      AuthType basic
+      AuthName <%= @site %>
+      AuthBasicProvider file
+      AuthUserFile "<%= @passwd %>"
+      Require valid-user
+   </Location>
+</VirtualHost>
