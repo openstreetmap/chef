@@ -9,7 +9,7 @@ input {
 filter {
   if [type] == "apache" {
     grok {
-      match => [ "message", "%{COMBINEDAPACHELOG} %{NUMBER:duration:int}us %{WORD:request_id} %{NOTSPACE:ssl_protocol} %{NOTSPACE:ssl_cipher}" ]
+      match => [ "message", "%{COMBINEDAPACHELOG} %{NUMBER:duration:int}us %{NOTSPACE:request_id} %{NOTSPACE:ssl_protocol} %{NOTSPACE:ssl_cipher}" ]
     }
     date {
       match => [ "timestamp", "dd/MMM/yyyy:HH:mm:ss Z" ]
