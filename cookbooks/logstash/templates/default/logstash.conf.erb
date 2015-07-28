@@ -39,6 +39,16 @@ filter {
       ]
     }
   }
+
+  if [host] =~ /^spike-/ {
+    mutate {
+      add_tag => [ "frontend" ]
+    }
+  } else if [host] =~ /^thorn-/ {
+    mutate {
+      add_tag => [ "backend" ]
+    }
+  }
 }
 
 output {
