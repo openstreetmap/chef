@@ -14,6 +14,19 @@ filter {
     date {
       match => [ "timestamp", "dd/MMM/yyyy:HH:mm:ss Z" ]
     }
+    if [agent] == "-" {
+      mutate {
+        remove_field => [ "agent" ]
+      }
+    } else {
+      useragent {
+        source => "agent"
+        target => "useragent"
+      }
+      mutate {
+        rename => { "agent" => "[useragent][raw]" }
+      }
+    }
   } else if [type] == "rails" {
     json {
       source => "message"
