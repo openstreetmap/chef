@@ -71,6 +71,14 @@ default_attributes(
       :land_polygons => {
         :url => "http://data.openstreetmapdata.com/land-polygons-split-3857.zip",
         :refresh => true
+      },
+      :antarctica_icesheet_polygons => {
+        :url => "http://data.openstreetmapdata.com/antarctica-icesheet-polygons-3857.zip",
+        :refresh => true
+      },
+      :antarctica_icesheet_outlines => {
+        :url => "http://data.openstreetmapdata.com/antarctica-icesheet-outlines-3857.zip",
+        :refresh => true
       }
     },
     :styles => {
