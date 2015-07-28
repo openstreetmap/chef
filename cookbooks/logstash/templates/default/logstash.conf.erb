@@ -17,9 +17,13 @@ filter {
   } else if [type] == "rails" {
     json {
       source => "message"
-    }
-    mutate {
-      remove_field => [ "message" ]
+      remove_field => [
+        "message",
+        "[parameters][authenticity_token]",
+        "[parameters][pass_crypt]",
+        "[parameters][pass_crypt_confirmation]",
+        "[parameters][utf8]"
+      ]
     }
   }
 }
