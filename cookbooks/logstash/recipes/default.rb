@@ -53,6 +53,13 @@ service "logstash" do
   supports :status => true, :restart => true
 end
 
+template "/etc/cron.daily/expire-logstash" do
+  source "expire.erb"
+  owner "root"
+  group "root"
+  mode 0755
+end
+
 forwarders = search(:node, "recipes:logstash\\:\\:forwarder")
 
 forwarders.each do |forwarder|
