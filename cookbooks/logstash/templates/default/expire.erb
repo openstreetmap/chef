@@ -2,6 +2,6 @@
 
 # DO NOT EDIT - This file is being maintained by Chef
 
-D=$(date --date="4 days ago" +"%Y.%m.%d")
+D=$(date --date="3 days ago" +"%Y.%m.%d")
 
-curl -XDELETE "http://localhost:9200/logstash-${D}"
+curl -s -XDELETE "http://localhost:9200/logstash-${D}"
