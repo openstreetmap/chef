@@ -180,6 +180,10 @@ munin_plugin "iostat"
 munin_plugin "iostat_ios"
 
 if Dir.glob("/dev/ipmi*").empty?
+  munin_plugin_conf "ipmi" do
+    action :delete
+  end
+
   munin_plugin "ipmi_fans" do
     action :delete
   end
@@ -193,6 +197,10 @@ if Dir.glob("/dev/ipmi*").empty?
     only_if { node[:lsb][:release].to_f >= 14.04 }
   end
 else
+  munin_plugin_conf "ipmi" do
+    template "ipmi.erb"
+  end
+
   munin_plugin "ipmi_fans" do
     target "ipmi_"
   end
