@@ -137,6 +137,8 @@ if node[:postgresql][:clusters][:"9.1/main"]
     database_name = details[:database] || "apis_#{name}"
     site_name = "#{name}.apis.dev.openstreetmap.org"
     rails_directory = "/srv/#{name}.apis.dev.openstreetmap.org"
+    gpx_directory = "#{rails_directory}/gpx"
+    gpx_service_name = "gpx-import-#{name}"
 
     if details[:repository]
       site_aliases = details[:aliases] || []
@@ -166,6 +168,7 @@ if node[:postgresql][:clusters][:"9.1/main"]
         database_name database_name
         database_username "apis"
         run_migrations true
+        gpx_dir gpx_directory
       end
 
       template "#{rails_directory}/config/initializers/setup.rb" do
@@ -180,6 +183,27 @@ if node[:postgresql][:clusters][:"9.1/main"]
       apache_site site_name do
         template "apache.rails.erb"
         variables :name => site_name, :aliases => site_aliases, :secret_key_base => secret_key_base
+      end
+
+      execute "gpx-import-build" do
+        action :nothing
+        command "make DB=postgres"
+        cwd "#{gpx_directory}/src"
+        user "apis"
+        group "apis"
+      end
+
+      gpx_import gpx_service_name do
+        revision "live"
+        directory gpx_directory
+        user "apis"
+        group "apis"
+        pid_directory "#{gpx_directory}/pid"
+        log_directory "#{gpx_directory}/log"
+        database_port node[:postgresql][:clusters][:"9.3/main"][:port]
+        database_name database_name
+        database_username "apis"
+        store_directory gpx_directory
       end
     else
       apache_site site_name do
@@ -198,6 +222,14 @@ if node[:postgresql][:clusters][:"9.1/main"]
       postgresql_database database_name do
         action :drop
         cluster "9.3/main"
+      end
+
+      service gpx_service_name do
+        action :stop
+      end
+
+      file "/etc/init.d/#{gpx_service_name}" do
+        action :delete
       end
 
       node.normal[:dev][:rails].delete(name)

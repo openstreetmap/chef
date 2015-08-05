@@ -21,61 +21,18 @@ include_recipe "web::base"
 
 db_passwords = data_bag_item("db", "passwords")
 
-package "gcc"
-package "make"
-package "pkg-config"
-package "libarchive-dev"
-package "libbz2-dev"
-package "libexpat1-dev"
-package "libgd2-noxpm-dev"
-package "libmemcached-dev"
-package "libpq-dev"
-package "zlib1g-dev"
-
-gpx_directory = "#{node[:web][:base_directory]}/gpx-import"
-pid_directory = node[:web][:pid_directory]
-log_directory = node[:web][:log_directory]
-
-execute "gpx-import-build" do
-  action :nothing
-  command "make DB=postgres"
-  cwd "#{gpx_directory}/src"
-  user "rails"
-  group "rails"
-end
-
-git gpx_directory do
-  action :sync
-  repository "git://git.openstreetmap.org/gpx-import.git"
+gpx_import "gpx-import" do
   revision "live"
+  directory "#{node[:web][:base_directory]}/gpx-import"
   user "rails"
   group "rails"
-  notifies :run, "execute[gpx-import-build]", :immediate
-end
-
-template "/etc/init.d/gpx-import" do
-  source "init.gpx.erb"
-  owner "root"
-  group "root"
-  mode 0755
-  variables :gpx_directory => gpx_directory,
-            :pid_directory => pid_directory,
-            :log_directory => log_directory,
-            :database_host =>  node[:web][:database_host],
-            :database_name => "openstreetmap",
-            :database_username => "gpximport",
-            :database_password => db_passwords["gpximport"]
-end
-
-if %w(database_offline database_readonly gpx_offline).include?(node[:web][:status])
-  service "gpx-import" do
-    action :stop
-  end
-else
-  service "gpx-import" do
-    action [:enable, :start]
-    supports :restart => true, :reload => true
-    subscribes :restart, "execute[gpx-import-build]"
-    subscribes :restart, "template[/etc/init.d/gpx-import]"
-  end
+  pid_directory node[:web][:pid_directory]
+  log_directory node[:web][:log_directory]
+  database_host node[:web][:database_host]
+  database_name "openstreetmap"
+  database_username "gpximport"
+  database_password db_passwords["gpximport"]
+  store_directory "/store/rails/gpx"
+  memcache_servers %w(rails1 rails2 rails3)
+  status node[:web][:status]
 end

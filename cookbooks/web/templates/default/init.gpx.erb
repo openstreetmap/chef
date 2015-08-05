@@ -4,16 +4,17 @@ export GPX_PROGRAM="<%= @gpx_directory %>/src/gpx-import"
 
 export GPX_SLEEP_TIME="40"
 
-export GPX_PATH_TRACES="/store/rails/gpx/traces"
-export GPX_PATH_IMAGES="/store/rails/gpx/images"
+export GPX_PATH_TRACES="<%= @store_directory %>/traces"
+export GPX_PATH_IMAGES="<%= @store_directory %>/images"
 export GPX_PATH_TEMPLATES="<%= @gpx_directory %>/templates/"
 
 export GPX_PGSQL_HOST="<%= @database_host %>"
 export GPX_PGSQL_USER="<%= @database_username %>"
 export GPX_PGSQL_PASS="<%= @database_password %>"
+export GPX_PGSQL_PORT="<%= @database_port %>"
 export GPX_PGSQL_DB="<%= @database_name %>"
 
-export GPX_MEMCACHE_SERVERS="rails1,rails2,rails3"
+export GPX_MEMCACHE_SERVERS="<%= @memcache_servers.join(",") %>"
 
 export GPX_LOG_FILE="<%= @log_directory %>/gpx-import.log"
 export GPX_PID_FILE="<%= @pid_directory %>/gpx-import.pid"
