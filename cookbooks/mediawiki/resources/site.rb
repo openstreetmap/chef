@@ -46,6 +46,7 @@ attribute :private_accounts, :kind_of => [TrueClass, FalseClass], :default => fa
 attribute :private, :kind_of => [TrueClass, FalseClass], :default => false
 attribute :recaptcha_public_key, :kind_of => String
 attribute :recaptcha_private_key, :kind_of => String
+attribute :extra_file_extensions, :kind_of => [String, Array]
 attribute :reload_apache, :kind_of => [TrueClass, FalseClass], :default => true
 
 def after_created
@@ -74,6 +75,7 @@ def mediawiki_params
     :site_notice => site_notice,
     :site_readonly => site_readonly,
     :ssl_enabled => ssl_enabled,
+    :extra_file_extensions  => extra_file_extensions,
     :private_accounts => private_accounts,
     :private => private
   }

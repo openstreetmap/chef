@@ -39,6 +39,7 @@ mediawiki_site "wiki.osmfoundation.org" do
   private_accounts true
   recaptcha_public_key "6LflIQATAAAAAMXyDWpba-FgipVzE-aGF4HIR59N"
   recaptcha_private_key passwords["wiki"]["recaptcha"]
+  extra_file_extensions ["mp3"]
 end
 
 mediawiki_skin "osmf" do

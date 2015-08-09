@@ -95,6 +95,9 @@ $wgFileExtensions[] = 'pdf';
 $wgFileExtensions[] = 'odt';
 $wgFileExtensions[] = 'odp';
 $wgFileExtensions[] = 'svg';
+<% @mediawiki[:extra_file_extensions].each do |mw_extra_file_extension| -%>
+	$wgFileExtensions[] = '<%= mw_extra_file_extension %>';
+<% end -%>
 
 $wgSVGConverters = array( 'rsvg' => '/usr/bin/rsvg-convert -w $width -h $height -o $output $input');
 $wgSVGConverter = 'rsvg';
