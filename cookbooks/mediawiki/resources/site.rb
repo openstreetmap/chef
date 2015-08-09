@@ -46,7 +46,7 @@ attribute :private_accounts, :kind_of => [TrueClass, FalseClass], :default => fa
 attribute :private, :kind_of => [TrueClass, FalseClass], :default => false
 attribute :recaptcha_public_key, :kind_of => String
 attribute :recaptcha_private_key, :kind_of => String
-attribute :extra_file_extensions, :kind_of => [String, Array]
+attribute :extra_file_extensions, :kind_of => [String, Array], :default => []
 attribute :reload_apache, :kind_of => [TrueClass, FalseClass], :default => true
 
 def after_created
