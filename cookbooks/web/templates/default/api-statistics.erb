@@ -19,7 +19,7 @@ def categorise_uri(line)
   end
 end
 
-parser = ApacheLogRegex.new('%h %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\" %Ts')
+parser = ApacheLogRegex.new('%h %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\" %Dus %{UNIQUE_ID}e %{SSL_PROTOCOL}x %{SSL_CIPHER}x')
 last_write = Time.now
 statistics = { :status => Hash.new(0), :uri => Hash.new(0) }
 
