@@ -48,6 +48,12 @@
   RewriteRule . - [F,L]
 
   #
+  # Block changeset scraper
+  #
+  RewriteCond %{HTTP_USER_AGENT} "OSMApp Tuner"
+  RewriteRule . - [F,L]  
+
+  #
   # Block requests for the old 404 map tile
   #
   RewriteRule ^/openlayers/img/404.png$ - [G,L]
