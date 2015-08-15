@@ -61,7 +61,7 @@ end
 apt_source "management-component-pack" do
   template "hp.list.erb"
   url "http://downloads.linux.hp.com/SDR/downloads/ManagementComponentPack"
-  key "FADD8D64B1275EA3"
+  key "B1275EA3"
 end
 
 apt_source "hwraid" do
