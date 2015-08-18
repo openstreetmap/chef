@@ -42,7 +42,7 @@ end
 
 node[:sysctl].each_value do |group|
   group[:parameters].each do |key, value|
-    sysctl_file = "/proc/sys/#{key.gsub('.', '/')}"
+    sysctl_file = "/proc/sys/#{key.tr('.', '/')}"
 
     file sysctl_file do
       content "#{value}\n"

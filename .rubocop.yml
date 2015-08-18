@@ -4,6 +4,9 @@ Style/AlignParameters:
   Exclude:
     - '**/metadata.rb'
 
+Style/ExtraSpacing:
+  AllowForAlignment: true
+
 Style/FileName:
   Exclude:
     - 'cookbooks/trac/files/default/trac-authenticate'

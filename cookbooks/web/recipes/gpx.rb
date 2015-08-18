@@ -61,7 +61,7 @@ template "/etc/init.d/gpx-import" do
   variables :gpx_directory => gpx_directory,
             :pid_directory => pid_directory,
             :log_directory => log_directory,
-            :database_host =>  node[:web][:database_host],
+            :database_host => node[:web][:database_host],
             :database_name => "openstreetmap",
             :database_username => "gpximport",
             :database_password => db_passwords["gpximport"]

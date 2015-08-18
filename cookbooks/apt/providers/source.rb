@@ -31,7 +31,7 @@ action :create do
     end
   end
 
-  template source_path  do
+  template source_path do
     source new_resource.template
     owner "root"
     group "root"

@@ -16,7 +16,7 @@ default_attributes(
       ]
     }
   },
-  :memcached  => {
+  :memcached => {
     :memory_limit => 4096
   },
   :passenger => {

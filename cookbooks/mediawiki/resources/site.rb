@@ -34,7 +34,7 @@ attribute :email_contact, :kind_of => String, :default => ""
 attribute :email_sender, :kind_of => String, :default => ""
 attribute :email_sender_name, :kind_of => String, :default => "MediaWiki Mail"
 attribute :commons, :kind_of => [TrueClass, FalseClass], :default => true
-attribute :skin, :kind_of => String, :default =>  "vector"
+attribute :skin, :kind_of => String, :default => "vector"
 attribute :site_notice, :kind_of => String, :default => ""
 attribute :site_readonly, :kind_of => [TrueClass, FalseClass], :default => false
 attribute :admin_user, :kind_of => String, :default => "Admin"
@@ -75,7 +75,7 @@ def mediawiki_params
     :site_notice => site_notice,
     :site_readonly => site_readonly,
     :ssl_enabled => ssl_enabled,
-    :extra_file_extensions  => extra_file_extensions,
+    :extra_file_extensions => extra_file_extensions,
     :private_accounts => private_accounts,
     :private => private
   }
