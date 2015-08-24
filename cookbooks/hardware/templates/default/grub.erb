@@ -1,7 +1,12 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
-# Boot the first entry by default
+# Boot the first entry by default, unless we have configured
+# it to boot a specific version.
+<% if node[:hardware][:grub][:kernel] == :latest %>
 GRUB_DEFAULT="0"
+<% else %>
+GRUB_DEFAULT="Ubuntu, with Linux <%= node[:hardware][:grub][:kernel] %>-generic"
+<% end %>
 
 # Wait two seconds before booting the default entry
 GRUB_TIMEOUT="2"
