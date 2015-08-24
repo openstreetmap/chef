@@ -127,6 +127,7 @@ end
 unless node[:hardware][:grub][:kernel] == :latest
   package "linux-image-#{node[:hardware][:grub][:kernel]}-generic"
   package "linux-image-extra-#{node[:hardware][:grub][:kernel]}-generic"
+  package "linux-headers-#{node[:hardware][:grub][:kernel]}-generic"
 end
 
 if File.exist?("/etc/default/grub")
