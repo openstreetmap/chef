@@ -93,5 +93,5 @@ default_attributes(
 run_list(
   "role[ic]",
   "role[tyan-s7010]",
-  "role[nominatim-standalone]"
+  "role[nominatim-slave]"
 )
