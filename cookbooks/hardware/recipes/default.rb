@@ -120,6 +120,16 @@ unless unit.nil?
   end
 end
 
+# if we need a different / special kernel version to make the hardware
+# work (e.g: https://github.com/openstreetmap/operations/issues/45) then
+# ensure that we have the package installed. the grub template will
+# make sure that this is the default on boot.
+unless node[:hardware][:grub][:kernel] == :latest
+  package "linux-image-#{node[:hardware][:grub][:kernel]}-generic"
+  package "linux-image-extra-#{node[:hardware][:grub][:kernel]}-generic"
+  package "linux-headers-#{node[:hardware][:grub][:kernel]}-generic"
+end
+
 if File.exist?("/etc/default/grub")
   execute "update-grub" do
     action :nothing

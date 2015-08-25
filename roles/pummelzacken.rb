@@ -50,6 +50,14 @@ default_attributes(
       }
     },
     :redirects => {}
+  },
+  :hardware => {
+    :grub => {
+      # lock kernel to 3.16.0-46 due to some issue with igb driver
+      # see https://github.com/openstreetmap/operations/issues/45
+      # for more information.
+      :kernel => "3.16.0-46"
+    }
   }
 )
 
