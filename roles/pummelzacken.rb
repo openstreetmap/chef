@@ -49,7 +49,9 @@ default_attributes(
         :max_children => "10"
       }
     },
-    :redirects => {}
+    :redirects => {
+      :reverse => "poldi.openstreetmap.org"
+    }
   }
 )
 
