@@ -5,13 +5,13 @@ default_attributes(
   :networking => {
     :interfaces => {
       :internal_ipv4 => {
-        :interface => "eth0",
+        :interface => "em1",
         :role => :internal,
         :family => :inet,
         :address => "10.0.0.19"
       },
       :external_ipv4 => {
-        :interface => "eth1",
+        :interface => "em2",
         :role => :external,
         :family => :inet,
         :address => "128.40.45.199"
