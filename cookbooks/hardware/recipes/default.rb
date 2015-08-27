@@ -124,10 +124,18 @@ end
 # work (e.g: https://github.com/openstreetmap/operations/issues/45) then
 # ensure that we have the package installed. the grub template will
 # make sure that this is the default on boot.
-unless node[:hardware][:grub][:kernel] == :latest
-  package "linux-image-#{node[:hardware][:grub][:kernel]}-generic"
-  package "linux-image-extra-#{node[:hardware][:grub][:kernel]}-generic"
-  package "linux-headers-#{node[:hardware][:grub][:kernel]}-generic"
+if node[:hardware][:grub][:kernel]
+  kernel_version = node[:hardware][:grub][:kernel]
+
+  package "linux-image-#{kernel_version}-generic"
+  package "linux-image-extra-#{kernel_version}-generic"
+  package "linux-headers-#{kernel_version}-generic"
+
+  boot_device = IO.popen(["df", "/boot"]).readlines.last.split.first
+  boot_uuid = IO.popen(["blkid", "-o", "value", "-s", "UUID", boot_device]).readlines.first.chomp
+  grub_entry = "gnulinux-advanced-#{boot_uuid}>gnulinux-#{kernel_version}-advanced-#{boot_uuid}"
+else
+  grub_entry = "0"
 end
 
 if File.exist?("/etc/default/grub")
@@ -141,7 +149,7 @@ if File.exist?("/etc/default/grub")
     owner "root"
     group "root"
     mode 0644
-    variables :unit => unit, :speed => speed
+    variables :unit => unit, :speed => speed, :entry => grub_entry
     notifies :run, "execute[update-grub]"
   end
 end
