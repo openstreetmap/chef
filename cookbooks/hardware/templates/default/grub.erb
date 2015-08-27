@@ -1,7 +1,23 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
-# Boot the first entry by default
+# Boot the first entry by default, unless we have configured
+# it to boot a specific version.
+<% if node[:hardware][:grub][:kernel] == :latest %>
 GRUB_DEFAULT="0"
+<% else
+  df = Mixlib::ShellOut.new("df /boot/grub/grub.cfg | tail -n 1 | awk '{print $1;}'")
+  df.run_command
+  df.error!
+  root=df.stdout
+
+  blkid = Mixlib::ShellOut.new("blkid -o value -s UUID #{root}")
+  blkid.run_command
+  blkid.error!
+  uuid=blkid.stdout
+
+  version="#{node[:hardware][:grub][:kernel]}-generic" %>
+GRUB_DEFAULT="gnulinux-advanced-<%= uuid %>>gnulinux-<%= version %>-advanced-<%= uuid %>"
+<% end %>
 
 # Wait two seconds before booting the default entry
 GRUB_TIMEOUT="2"
