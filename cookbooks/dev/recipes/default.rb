@@ -41,6 +41,9 @@ package "php5-mysql"
 package "php5-pgsql"
 package "php5-sqlite"
 
+package "pngcrush"
+package "pngquant"
+
 package "python"
 package "python-argparse"
 package "python-beautifulsoup"
@@ -48,6 +51,7 @@ package "python-cheetah"
 package "python-dateutil"
 package "python-magic"
 package "python-psycopg2"
+package "python-gdal"
 
 easy_install_package "geojson"
 
