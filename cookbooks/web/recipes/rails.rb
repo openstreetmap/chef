@@ -23,9 +23,12 @@ include_recipe "web::base"
 include_recipe "apache"
 include_recipe "passenger"
 include_recipe "git"
+include_recipe "nodejs"
 
 web_passwords = data_bag_item("web", "passwords")
 db_passwords = data_bag_item("db", "passwords")
+
+nodejs_package "svgo"
 
 template "/etc/cron.hourly/passenger" do
   cookbook "web"

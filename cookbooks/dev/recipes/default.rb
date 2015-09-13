@@ -24,6 +24,7 @@ include_recipe "apache"
 include_recipe "passenger"
 include_recipe "git"
 include_recipe "mysql"
+include_recipe "nodejs"
 include_recipe "postgresql"
 
 package "php-apc"
@@ -52,6 +53,8 @@ package "python-dateutil"
 package "python-magic"
 package "python-psycopg2"
 package "python-gdal"
+
+nodejs_package "svgo"
 
 easy_install_package "geojson"
 
