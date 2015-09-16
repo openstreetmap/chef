@@ -91,3 +91,5 @@ template "/etc/logrotate.d/chef-server" do
   group "root"
   mode 0644
 end
+
+munin_plugin "chef_status"
