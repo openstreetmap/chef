@@ -1,6 +1,8 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
 cluster.name: <%= node[:elasticsearch][:cluster][:name] %>
+cluster.routing.allocation.disk.watermark.low: <%= node[:elasticsearch][:cluster][:routing][:allocation][:disk][:watermark][:low] %>
+cluster.routing.allocation.disk.watermark.high: <%= node[:elasticsearch][:cluster][:routing][:allocation][:disk][:watermark][:high] %>
 network.host: 127.0.0.1
 path.data: <%= node[:elasticsearch][:path][:data] %>
 script.disable_dynamic: <%= node[:elasticsearch][:script][:disable_dynamic] -%>

@@ -6,6 +6,18 @@ default_attributes(
     :sources => ["ubuntugis-unstable"]
   },
   :elasticsearch => {
+    :cluster => {
+      :routing => {
+        :allocation => {
+          :disk => {
+            :watermark => {
+              :low => "95%",
+              :high => "98%"
+            }
+          }
+        }
+      }
+    },
     :path => {
       :data => "/store/elasticsearch"
     }
