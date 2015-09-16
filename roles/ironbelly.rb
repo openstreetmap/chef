@@ -5,6 +5,11 @@ default_attributes(
   :apt => {
     :sources => ["ubuntugis-unstable"]
   },
+  :elasticsearch => {
+    :path => {
+      :data => "/store/elasticsearch"
+    }
+  },
   :git => {
     :allowed_nodes => "*:*",
     :user => "chefrepo",
