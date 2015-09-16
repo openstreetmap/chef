@@ -58,8 +58,8 @@ default_attributes(
       },
       :load => {
         :load => {
-          :warning => 250,
-          :critical => 300
+          :warning => 400,
+          :critical => 500
         }
       }
     }
