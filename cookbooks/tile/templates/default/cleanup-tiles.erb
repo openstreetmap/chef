@@ -38,7 +38,7 @@ if (df($tiledir)->{per} > 90)
 
                 for (my $dir = dirname($tile); $dir ne $tiledir; $dir = dirname($dir))
                 {
-                    unlink($dir);
+                    rmdir($dir);
                 }
             }
             else
