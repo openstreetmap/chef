@@ -703,6 +703,7 @@ noreply:
   driver = pipe
   command = <%= details[:command] %>
   home_directory = <%= details[:home_directory] %>
+  path = <%= details[:path] || "/bin:/usr/bin" %>
   return_output
 <% else -%>
   driver = appendfile

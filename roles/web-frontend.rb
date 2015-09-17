@@ -34,7 +34,8 @@ default_attributes(
         :command => "/srv/www.openstreetmap.org/rails/script/deliver-message $local_part",
         :user => "rails",
         :group => "rails",
-        :home_directory => "/srv/www.openstreetmap.org/rails"
+        :home_directory => "/srv/www.openstreetmap.org/rails",
+        :path => "/bin:/usr/bin:/usr/local/bin"
       }
     }
   }
