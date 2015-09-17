@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# Make sure /usr/local/bin is on the path
+export PATH=$PATH:/usr/local/bin
+
 # Generate new statistics
 <%= @directory %>/script/statistics > <%= @directory %>/tmp/data_stats.html
 
