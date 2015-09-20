@@ -215,6 +215,7 @@ node[:tile][:data].each_value do |data|
     if data[:refresh]
       action :create
       use_conditional_get true
+      ignore_failure true
     else
       action :create_if_missing
     end
