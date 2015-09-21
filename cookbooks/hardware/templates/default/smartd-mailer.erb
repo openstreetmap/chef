@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# DO NOT EDIT - This file is being maintained by Chef
+
+case "$SMARTD_DEVICETYPE" in
+    areca,*) [ "$SMARTD_FAILTYPE" = "FailedOpenDevice" ] && exit 0
+esac
+
+exec mail -s "$SMARTD_SUBJECT" $SMARTD_ADDRESS <<EOF
+$SMARTD_FULLMESSAGE
+EOF

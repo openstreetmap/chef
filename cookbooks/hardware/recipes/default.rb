@@ -409,6 +409,13 @@ end
 if disks.count > 0
   package "smartmontools"
 
+  template "/usr/local/bin/smartd-mailer" do
+    source "smartd-mailer.erb"
+    owner "root"
+    group "root"
+    mode 0755
+  end
+
   template "/etc/smartd.conf" do
     source "smartd.conf.erb"
     owner "root"
