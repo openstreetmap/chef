@@ -63,7 +63,7 @@ end
 
 remote_file "/var/cache/chef/civicrm-#{civicrm_version}-wordpress.zip" do
   action :create_if_missing
-  source "http://downloads.sourceforge.net/project/civicrm/civicrm-stable/#{civicrm_version}/civicrm-#{civicrm_version}-wordpress.zip"
+  source "https://download.civicrm.org/civicrm-#{civicrm_version}-wordpress.zip"
   owner "wordpress"
   group "wordpress"
   mode 0644
@@ -72,7 +72,7 @@ end
 
 remote_file "/var/cache/chef/civicrm-#{civicrm_version}-l10n.tar.gz" do
   action :create_if_missing
-  source "http://downloads.sourceforge.net/project/civicrm/civicrm-stable/#{civicrm_version}/civicrm-#{civicrm_version}-l10n.tar.gz"
+  source "https://download.civicrm.org/civicrm-#{civicrm_version}-l10n.tar.gz"
   owner "wordpress"
   group "wordpress"
   mode 0644
