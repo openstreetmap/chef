@@ -1,1 +1,1 @@
-default[:civicrm][:version] = "4.5.4"
+default[:civicrm][:version] = "4.6.8"
