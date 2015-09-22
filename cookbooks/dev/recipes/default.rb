@@ -199,7 +199,7 @@ if node[:postgresql][:clusters][:"9.1/main"]
         recursive true
       end
 
-      file "/etc/cron.daily/rails-#{name}" do
+      file "/etc/cron.daily/rails-#{site_name}" do
         action :delete
       end
 
