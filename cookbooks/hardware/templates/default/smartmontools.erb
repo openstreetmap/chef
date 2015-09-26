@@ -1,4 +1,7 @@
 # DO NOT EDIT - This file is being maintained by Chef
-  
+
 # Enable smartd
-start_smartd=yes
+start_smartd="yes"
+
+# Make smartd keep running when a disk dies
+smartd_opts="--quit=never"
