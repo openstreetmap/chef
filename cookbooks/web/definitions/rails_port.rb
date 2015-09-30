@@ -228,6 +228,10 @@ define :rails_port, :action => [:create, :enable] do
       line.gsub!(/^( *)#mapquest_key:.*$/, "\\1mapquest_key: \"#{params[:mapquest_key]}\"")
     end
 
+    if params[:mapzen_valhalla_key]
+      line.gsub!(/^( *)#mapzen_valhalla_key:.*$/, "\\1mapzen_valhalla_key: \"#{params[:mapzen_valhalla_key]}\"")
+    end
+
     line.gsub!(/^( *)require_terms_seen:.*$/, "\\1require_terms_seen: true")
     line.gsub!(/^( *)require_terms_agreed:.*$/, "\\1require_terms_agreed: true")
 
