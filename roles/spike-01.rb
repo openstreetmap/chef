@@ -31,7 +31,7 @@ default_attributes(
 
 run_list(
   "role[ic]",
-  "role[hp-g6]",
+  "role[hp-dl360-g6]",
   "role[web-frontend]",
   "role[web-gpximport]",
   "role[web-statistics]",

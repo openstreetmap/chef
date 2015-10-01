@@ -29,5 +29,6 @@ default_attributes(
 )
 
 run_list(
-  "role[ic]"
+  "role[ic]",
+  "role[hp-dl180-g6]"
 )

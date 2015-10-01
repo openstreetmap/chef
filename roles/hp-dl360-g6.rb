@@ -1,5 +1,5 @@
-name "hp-g6"
-description "Role applied to all HP G6 machines"
+name "hp-dl360-g6"
+description "Role applied to all HP DL360 G6 machines"
 
 default_attributes(
   :munin => {
