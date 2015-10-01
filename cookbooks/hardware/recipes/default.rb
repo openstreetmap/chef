@@ -80,6 +80,7 @@ if manufacturer == "HP" && node[:lsb][:release].to_f > 11.10
     repository "git://chef.openstreetmap.org/hp-legacy.git"
     user "root"
     group "root"
+    ignore_failure true
   end
 
   link "/opt/hp/hp-health/bin/hpasmd" do
