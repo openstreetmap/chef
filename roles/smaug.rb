@@ -29,16 +29,6 @@ default_attributes(
       }
     }
   },
-  :networking => {
-    :interfaces => {
-      :internal_ipv4 => {
-        :interface => "eth0",
-        :role => :internal,
-        :family => :inet,
-        :address => "146.179.159.168"
-      }
-    }
-  },
   :postgresql => {
     :settings => {
       :defaults => {
@@ -72,6 +62,5 @@ default_attributes(
 )
 
 run_list(
-  "role[ic]",
-  "role[db-slave]"
+  "role[ucl]"
 )
