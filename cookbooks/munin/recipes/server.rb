@@ -54,13 +54,19 @@ end
 renderers = search(:node, "roles:tile").reject { |n| Time.now - Time.at(n[:ohai_time]) > expiry_time }.sort_by { |n| n[:hostname] }.map do |n|
   { :name => n[:hostname], :interface => n.interfaces(:role => :external).first[:interface] }
 end
+geocoders = search(:node, "roles:nominatim").reject { |n| Time.now - Time.at(n[:ohai_time]) > expiry_time }.sort_by { |n| n[:hostname] }.map do |n|
+  { :name => n[:hostname], :interface => n.interfaces(:role => :external).first[:interface] }
+end
 
 template "/etc/munin/munin.conf" do
   source "munin.conf.erb"
   owner "root"
   group "root"
   mode 0644
-  variables :expiry_time => expiry_time, :clients => clients, :frontends => frontends, :backends => backends, :tilecaches => tilecaches, :renderers => renderers
+  variables :expiry_time => expiry_time, :clients => clients,
+            :frontends => frontends, :backends => backends,
+            :tilecaches => tilecaches, :renderers => renderers,
+            :geocoders => geocoders
 end
 
 apache_module "fcgid"
