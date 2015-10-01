@@ -15,7 +15,7 @@ default_attributes(
         :interface => "em1",
         :role => :external,
         :family => :inet6,
-        :address => "2001:630:12:500:dad3:85ff:fe5d:a7a0"
+        :address => "2001:630:12:500:dad3:85ff:fe5d:87a0"
       },
       :internal_ipv4 => {
         :interface => "em2",
