@@ -202,10 +202,10 @@ status_packages = {}
 node[:kernel][:modules].each_key do |modname|
   case modname
   when "cciss"
-    tools_packages << "hpacucli"
+    tools_packages << "hpssacli"
     status_packages["cciss-vol-status"] ||= []
   when "hpsa"
-    tools_packages << "hpacucli"
+    tools_packages << "hpssacli"
     status_packages["cciss-vol-status"] ||= []
   when "mptsas"
     tools_packages << "lsiutil"
