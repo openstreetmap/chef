@@ -31,11 +31,6 @@
   RewriteEngine on
 
   #
-  # Configure on the fly compression
-  #
-  AddOutputFilterByType DEFLATE image/svg+xml
-
-  #
   # Add the unique ID to the request headers
   #
   RequestHeader set X-Request-Id %{UNIQUE_ID}e

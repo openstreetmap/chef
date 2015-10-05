@@ -77,6 +77,10 @@ apache_module "status" do
   variables :hosts => admins["hosts"]
 end
 
+apache_module "deflate" do
+  conf "deflate.conf.erb"
+end
+
 apache_module "reqtimeout" do
   action [:disable]
 end

@@ -59,7 +59,6 @@ nodejs_package "svgo"
 easy_install_package "geojson"
 
 apache_module "env"
-apache_module "deflate"
 apache_module "expires"
 apache_module "proxy"
 apache_module "proxy_fcgi"

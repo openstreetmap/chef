@@ -23,7 +23,6 @@ include_recipe "web::rails"
 web_passwords = data_bag_item("web", "passwords")
 
 apache_module "alias"
-apache_module "deflate"
 apache_module "expires"
 apache_module "headers"
 apache_module "proxy_http"

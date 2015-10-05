@@ -36,8 +36,6 @@ gem_package "bundler#{node[:owl][:ruby]}" do
   options "--format-executable"
 end
 
-apache_module "deflate"
-
 apache_module "passenger" do
   conf "passenger.conf.erb"
 end
