@@ -536,6 +536,24 @@ end
 unless Dir.glob("/sys/class/hwmon/hwmon*").empty?
   package "lm-sensors"
 
+  Dir.glob("/sys/devices/platform/coretemp.*").each do |coretemp|
+    cpu = File.basename(coretemp).sub("coretemp.", "").to_i
+    chip = format("coretemp-isa-%04d", cpu)
+
+    temps = Dir.glob("#{coretemp}/temp*_input").map do |temp|
+      File.basename(temp).sub("temp", "").sub("_input", "").to_i
+    end.sort
+
+    if temps.first == 1
+      node.default[:hardware][:sensors][chip][:temps][:temp1][:label] = "CPU #{cpu}"
+      temps.shift
+    end
+
+    temps.each_with_index do |temp, index|
+      node.default[:hardware][:sensors][chip][:temps]["temp#{temp}"][:label] = "CPU #{cpu} Core #{index}"
+    end
+  end
+
   execute "/etc/sensors.d/chef.conf" do
     action :nothing
     command "/usr/bin/sensors -s"
