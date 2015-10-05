@@ -3,7 +3,7 @@ description "Role applied to machines using the Tyan S710 motherboard"
 
 default_attributes(
   :hardware => {
-    :modules => %w(i2c_i801 jc42),
+    :modules => %w(i2c_i801 jc42 w83793),
     :sensors => {
       "jc42-*" => {
         :temps => {
