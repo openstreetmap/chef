@@ -52,6 +52,11 @@ wordpress_plugin "registration-honeypot" do
   site "join.osmfoundation.org"
 end
 
+wordpress_plugin "sitepress-multilingual-cms" do
+  site "join.osmfoundation.org"
+  repository "git://chef.openstreetmap.org/sitepress-multilingual-cms.git"
+end
+
 civicrm_version = node[:civicrm][:version]
 civicrm_directory = "/srv/join.osmfoundation.org/wp-content/plugins/civicrm"
 
