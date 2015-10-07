@@ -452,18 +452,21 @@ if disks.count > 0
       conf_variables :disk => disk
     end
   end
+else
+  service "smartmontools" do
+    action [:stop, :disable]
+  end
+end
 
+if disks.count > 0
   munin_plugin "hddtemp_smartctl" do
     conf "munin.hddtemp.erb"
     conf_variables :disks => disks
   end
 else
-  service "smartmontools" do
-    action [:stop, :disable]
-  end
-
   munin_plugin "hddtemp_smartctl" do
     action :delete
+    conf "munin.hddtemp.erb"
   end
 end
 
