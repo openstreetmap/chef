@@ -4,20 +4,10 @@ description "Role applied to all servers at CARNet"
 default_attributes(
   :accounts => {
     :users => {
-      :anovak => { :status => :administrator },
       :hbogner => { :status => :administrator }
     }
   },
-  :munin => {
-    :allow => ["193.198.233.210"]
-  },
   :networking => {
-    :nameservers => [
-      "161.53.2.66",
-      "2001:b68:ff:1::2",
-      "2001:b68:ff:2::2",
-      "2001:4860:4860::8888"
-    ],
     :roles => {
       :external => {
         :zone => "cnt"

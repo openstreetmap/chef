@@ -1,14 +1,11 @@
-name "viserion"
-description "Master role applied to viserion"
+name "drogon"
+description "Master role applied to drogon"
 
 default_attributes(
   :accounts => {
     :users => {
-      :anovak => { :status => :administrator }
+      :zelja => { :status => :administrator }
     }
-  },
-  :munin => {
-    :allow => ["193.198.233.210"]
   },
   :networking => {
     :interfaces => {
@@ -16,24 +13,22 @@ default_attributes(
         :interface => "eth0",
         :role => :external,
         :family => :inet,
-        :address => "193.198.233.211",
+        :address => "161.53.30.107",
         :prefix => "27",
-        :gateway => "193.198.233.209"
+        :gateway => "161.53.30.97"
       },
       :external_ipv6 => {
         :interface => "eth0",
         :role => :external,
         :family => :inet6,
-        :address => "2001:b68:4cff:3::3",
+        :address => "2001:b68:c0ff:0:221:5eff:fe40:c7c4",
         :prefix => "64",
-        :gateway => "2001:b68:4cff:3::1"
+        :gateway => "fe80::161:53:30:97"
       }
     },
     :nameservers => [
-      "161.53.2.66",
-      "2001:b68:ff:1::2",
-      "2001:b68:ff:2::2",
-      "2001:4860:4860::8888"
+      "161.53.30.100",
+      "8.8.8.8"
     ]
   },
   :squid => {
@@ -43,7 +38,7 @@ default_attributes(
   :tilecache => {
     :tile_parent => "pula.render.openstreetmap.org",
     :tile_siblings => [
-      "drogon.openstreetmap.org"
+      "viserion.openstreetmap.org"
     ]
   }
 )
