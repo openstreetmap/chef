@@ -18,7 +18,7 @@ $lockmgr->lock("${tiledir}/cleanup") || exit 0;
 
 my $tempfile = tmpnam();
 
-if (df($tiledir)->{per} > 90)
+if (df($tiledir)->{per} > 88)
 {
     system("find", $tiledir, "-xdev", "-name", "lost+found", "-prune", "-o", "-type", "f", "-name", "*.meta", "-atime", "+5", "-fprintf", $tempfile, "%A@ %p\n");
 
