@@ -1,4 +1,4 @@
-default[:piwik][:version] = "2.14.3"
+default[:piwik][:version] = "2.15.0"
 default[:piwik][:plugins] = %w(
   Actions API BulkTracking Contents CoreAdminHome CoreConsole CoreHome
   CorePluginsAdmin CoreUpdater CoreVisualizations CustomVariables
