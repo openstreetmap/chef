@@ -21,7 +21,7 @@ actions :create, :delete
 default_action :create
 
 attribute :name, :kind_of => String, :name_attribute => true
-attribute :cookbook, :kind_of => String
+attribute :cookbook, :kind_of => [String, nil]
 attribute :template, :kind_of => String, :required => true
 attribute :variables, :kind_of => Hash, :default => {}
 attribute :restart_munin, :kind_of => [TrueClass, FalseClass], :default => true

@@ -18,6 +18,9 @@
 #
 
 node[:chef][:gems].each do |gem|
-  chef_gem gem
+  chef_gem gem do
+    compile_time false
+  end
+
   require gem
 end
