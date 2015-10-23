@@ -43,7 +43,6 @@ default_attributes(
       :tomchance => { :status => :user },
       :lfrancke => { :status => :user },
       :davidearl => { :status => :user },
-      :emacsen => { :status => :user },
       :rweait => { :status => :user },
       :ant => { :status => :user },
       :milliams => { :status => :user },
