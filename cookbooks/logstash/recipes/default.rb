@@ -60,7 +60,7 @@ template "/etc/cron.daily/expire-logstash" do
   mode 0755
 end
 
-forwarders = search(:node, "recipes:logstash\\:\\:forwarder")
+forwarders = search(:node, "recipes:logstash\\:\\:forwarder") # ~FC010
 
 forwarders.each do |forwarder|
   forwarder.interfaces(:role => :external) do |interface|
