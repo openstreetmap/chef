@@ -117,6 +117,24 @@ directory "/srv/join.osmfoundation.org/wp-content/plugins/files" do
   mode 0755
 end
 
+extensions_directory = "/srv/join.osmfoundation.org/wp-content/plugins/civicrm-extensions"
+
+directory extensions_directory do
+  owner "wordpress"
+  group "wordpress"
+  mode 0755
+end
+
+node[:civicrm][:extensions].each do |_, details|
+  git "#{extensions_directory}/#{details[:name]}" do
+    action :sync
+    repository details[:repository]
+    revision details[:revision]
+    user "wordpress"
+    group "wordpress"
+  end
+end
+
 settings = edit_file "#{civicrm_directory}/civicrm/templates/CRM/common/civicrm.settings.php.template" do |line|
   line.gsub!(/%%cms%%/, "WordPress")
   line.gsub!(/%%CMSdbUser%%/, "civicrm")
@@ -131,6 +149,7 @@ settings = edit_file "#{civicrm_directory}/civicrm/templates/CRM/common/civicrm.
   line.gsub!(/%%templateCompileDir%%/, "/srv/join.osmfoundation.org/wp-content/plugins/files/civicrm/templates_c/")
   line.gsub!(/%%baseURL%%/, "http://join.osmfoundation.org/")
   line.gsub!(/%%siteKey%%/, site_key)
+  line.gsub!(%r{// *(.*'ext_repo_url'.*)$}, "\\1")
 
   line
 end
