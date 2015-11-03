@@ -2,6 +2,13 @@ name "tilecache"
 description "Role applied to all tile cache servers"
 
 default_attributes(
+  :accounts => {
+    :groups => {
+      :proxy => {
+        :members => [:tomh, :grant, :matt, :jburgess]
+      }
+    }
+  },
   :apt => {
     :sources => ["nginx"]
   },
