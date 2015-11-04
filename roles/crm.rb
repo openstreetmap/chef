@@ -21,7 +21,8 @@ default_attributes(
         :user => "www-data",
         :group => "mail"
       }
-    }
+    },
+    :trusted_users => ["www-data"]
   }
 )
 
