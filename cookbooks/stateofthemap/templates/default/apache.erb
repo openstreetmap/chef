@@ -22,6 +22,8 @@
         CustomLog /var/log/apache2/stateofthemap.org-access.log combined
         ErrorLog /var/log/apache2/stateofthemap.org-error.log
 
+        SSLEngine on
+
         RedirectPermanent / https://stateofthemap.org/
 </VirtualHost>
 
@@ -31,6 +33,8 @@
 
         CustomLog /var/log/apache2/stateofthemap.org-access.log combined
         ErrorLog /var/log/apache2/stateofthemap.org-error.log
+
+        SSLEngine on
 
         DocumentRoot /srv/stateofthemap.org/html
 </VirtualHost>
