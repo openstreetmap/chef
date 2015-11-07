@@ -21,6 +21,19 @@ include_recipe "wordpress"
 
 passwords = data_bag_item("stateofthemap", "passwords")
 
+git "/srv/stateofthemap.org" do
+  action :sync
+  repository "git://git.openstreetmap.org/stateofthemap.git"
+  revision "chooser"
+  user "root"
+  group "root"
+end
+
+apache_site "stateofthemap.org" do
+  template "apache.erb"
+  directory "/srv/stateofthemap.org"
+end
+
 directory "/srv/2007.stateofthemap.org" do
   owner "wordpress"
   group "wordpress"
