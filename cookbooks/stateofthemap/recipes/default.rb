@@ -255,9 +255,7 @@ directory "/srv/2016.stateofthemap.org" do
 end
 
 wordpress_site "2016.stateofthemap.org" do
-  aliases ["2016.stateofthemap.com",
-           "www.stateofthemap.org", "stateofthemap.org",
-           "www.stateofthemap.com", "stateofthemap.com"]
+  aliases "2016.stateofthemap.com"
   directory "/srv/2016.stateofthemap.org/wp"
   ssl_enabled true
   database_name "sotm2016"
