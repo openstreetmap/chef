@@ -2,6 +2,11 @@ name "exonetric"
 description "Role applied to all servers at Exonetric"
 
 default_attributes(
+  :accounts => {
+    :users => {
+      :hatter => { :status => :administrator }
+    }
+  },
   :networking => {
     :roles => {
       :external => {
