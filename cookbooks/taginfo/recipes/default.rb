@@ -25,6 +25,7 @@ include_recipe "git"
 
 package "libsqlite3-dev"
 package "zlib1g-dev"
+package "libbz2-dev"
 package "libosmpbf-dev"
 package "libprotobuf-dev"
 package "libboost-dev"
