@@ -26,8 +26,6 @@ include_recipe "git"
 package "libsqlite3-dev"
 package "zlib1g-dev"
 package "libbz2-dev"
-package "libosmpbf-dev"
-package "libprotobuf-dev"
 package "libboost-dev"
 package "libexpat1-dev"
 package "libsparsehash-dev"
@@ -98,14 +96,6 @@ node[:taginfo][:sites].each do |site|
     mode 0755
   end
 
-#  git "#{directory}/osmium" do
-#    action :sync
-#    repository "git://github.com/joto/osmium.git"
-#    revision "osmorg-taginfo-live"
-#    user "taginfo"
-#    group "taginfo"
-#  end
-
   git "#{directory}/libosmium" do
     action :sync
     repository "git://github.com/osmcode/libosmium.git"
@@ -139,9 +129,7 @@ node[:taginfo][:sites].each do |site|
     settings["sources"]["db"]["planetfile"] = "#{directory}/planet/planet.pbf"
     settings["sources"]["db"]["bindir"] = "#{directory}/taginfo/tagstats"
     settings["sources"]["db"]["tagstats"] = "#{directory}/taginfo/tagstats/tagstats"
-#    settings["tagstats"]["cxxflags"] = "-I../../osmium/include"
     settings["tagstats"]["cxxflags"] = "-I../../libosmium/include"
-#    settings["tagstats"]["geodistribution"] = "MmapAnon"
     settings["tagstats"]["geodistribution"] = "DenseMmapArray"
     settings["user_interface"]["key_page"]["show_tab_similar"] = true
     settings["level0"]["overpass_url_prefix"] = "http://overpass-api.de/api/interpreter?"
@@ -163,7 +151,6 @@ node[:taginfo][:sites].each do |site|
     cwd "#{directory}/taginfo/tagstats"
     user "taginfo"
     group "taginfo"
-#    subscribes :run, "git[#{directory}/osmium]"
     subscribes :run, "git[#{directory}/libosmium]"
     subscribes :run, "git[#{directory}/taginfo]"
     notifies :restart, "service[apache2]"
