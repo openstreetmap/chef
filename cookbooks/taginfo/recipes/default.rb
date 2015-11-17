@@ -31,6 +31,7 @@ package "libexpat1-dev"
 package "libsparsehash-dev"
 package "libgd2-xpm-dev"
 package "libicu-dev"
+package "cmake"
 package "make"
 package "g++"
 
