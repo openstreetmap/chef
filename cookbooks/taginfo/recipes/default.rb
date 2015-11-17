@@ -38,7 +38,6 @@ package "sqlite3"
 package "osmosis"
 package "curl"
 package "m4"
-package "subversion"
 
 package "ruby#{node[:passenger][:ruby_version]}"
 package "rubygems#{node[:passenger][:ruby_version]}"
