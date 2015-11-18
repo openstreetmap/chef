@@ -16,7 +16,7 @@ done
 oldest=`date +%s`
 
 for fl in <% @streaming_clients %>; do
-  lastupdate=`wget -O - -q http://$fl/last_update.php`
+  lastupdate=`wget -O - -q http://${fl}.openstreetmap.org/last_update.php`
   if [[ "$?" != "0" ]]; then
     oldest=0
     break

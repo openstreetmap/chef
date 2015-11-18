@@ -24,7 +24,7 @@ database_cluster = node[:nominatim][:database][:cluster]
 home_directory = data_bag_item("accounts", "nominatim")["home"]
 
 wal_archives = node[:rsyncd][:modules][:archive][:path]
-slaves = search(:node, 'role:nominatim-slave').map{ |result| result[:fqdn] }.join(' ')
+slaves = search(:node, 'role:nominatim-slave').map{ |result| result['name'] }.join(' ')
 
 git "#{home_directory}/nominatim" do
   action :checkout
