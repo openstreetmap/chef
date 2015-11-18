@@ -19,11 +19,6 @@
 
 package "postgresql-common"
 
-service "postgresql" do
-  action [:enable, :start]
-  supports :status => true, :restart => true, :reload => true
-end
-
 node[:postgresql][:versions].each do |version|
   package "postgresql-#{version}"
   package "postgresql-client-#{version}"
@@ -87,6 +82,11 @@ node[:postgresql][:versions].each do |version|
       notifies :reload, "service[postgresql]"
     end
   end
+end
+
+service "postgresql" do
+  action [:enable, :start]
+  supports :status => true, :restart => true, :reload => true
 end
 
 ohai_plugin "postgresql" do
