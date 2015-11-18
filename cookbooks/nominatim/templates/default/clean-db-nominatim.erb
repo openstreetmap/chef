@@ -15,7 +15,7 @@ done
 # Cleanup archive directory
 oldest=`date +%s`
 
-for fl in <% @streaming_clients %>; do
+for fl in <%= @streaming_clients %>; do
   lastupdate=`wget -O - -q http://${fl}.openstreetmap.org/last_update.php`
   if [[ "$?" != "0" ]]; then
     oldest=0
