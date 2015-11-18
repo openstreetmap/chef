@@ -24,7 +24,8 @@ database_cluster = node[:nominatim][:database][:cluster]
 home_directory = data_bag_item("accounts", "nominatim")["home"]
 
 wal_archives = node[:rsyncd][:modules][:archive][:path]
-slaves = search(:node, 'role:nominatim-slave').map{ |result| result[:fqdn] }.join(' ')
+# XXX we really should get a list of nominatim-slave nodes here
+slaves = 'poldi'
 
 git "#{home_directory}/nominatim" do
   action :checkout
@@ -69,7 +70,7 @@ template "/usr/local/bin/clean-db-nominatim" do
   group "root"
   mode 0755
   variables :archive_dir => wal_archives,
-            :update_stop_file => "{home_directory}/status/updates_disabled",
+            :update_stop_file => "#{home_directory}/status/updates_disabled",
             :streaming_clients => slaves
   only_if { node[:postgresql][:settings][:defaults][:archive_mode] == "on" }
 end
