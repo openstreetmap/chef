@@ -70,6 +70,12 @@ directory "/var/log/nominatim" do
   mode 0755
 end
 
+directory "#{home_directory}/status" do
+  owner "nominatim"
+  group "postgres"
+  mode 0775
+end
+
 template "/etc/logrotate.d/nominatim" do
   source "logrotate.nominatim.erb"
   owner "root"
@@ -221,7 +227,7 @@ external_data.each do |fname|
   end
 end
 
-additional_scripts = %w(backup-nominatim clean-db-nominatim)
+additional_scripts = %w(backup-nominatim vacuum-db-nominatim)
 
 additional_scripts.each do |fname|
   template "/usr/local/bin/#{fname}" do
@@ -237,13 +243,6 @@ directory File.dirname(node[:nominatim][:flatnode_file]) do
   group "nominatim"
   mode 0755
   recursive true
-end
-
-directory "/data/postgresql-archive" do
-  owner "postgres"
-  group "postgres"
-  mode 0700
-  only_if { node[:postgresql][:settings][:defaults][:archive_mode] == "on" }
 end
 
 apache_site "nominatim.openstreetmap.org" do

@@ -1,0 +1,14 @@
+#!/bin/bash
+#
+# DO NOT EDIT - This file is being maintained by Chef
+
+
+# Vaccum all tables with indices on integer arrays.
+# Agressive vacuuming seems to help against index bloat.
+psql -q -d nominatim -c 'VACUUM ANALYSE search_name'
+psql -q -d nominatim -c 'VACUUM ANALYSE search_name_country'
+
+for i in `seq 0 246`; do
+  psql -q -d nominatim -c "VACUUM ANALYSE search_name_${i}"
+done
+

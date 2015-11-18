@@ -23,6 +23,9 @@ passwords = data_bag_item("nominatim", "passwords")
 database_cluster = node[:nominatim][:database][:cluster]
 home_directory = data_bag_item("accounts", "nominatim")["home"]
 
+wal_archives = node[:rsyncd][:modules][:archive][:path]
+slaves = search(:node, 'role:nominatim-slave').map{ |result| result[:fqdn] }.join(' ')
+
 git "#{home_directory}/nominatim" do
   action :checkout
   repository node[:nominatim][:repository]
@@ -52,3 +55,23 @@ postgresql_user "replication" do
   password passwords["replication"]
   replication true
 end
+
+directory wal_archives do
+  owner "postgres"
+  group "postgres"
+  mode 0700
+  only_if { node[:postgresql][:settings][:defaults][:archive_mode] == "on" }
+end
+
+template "/usr/local/bin/clean-db-nominatim" do
+  source "clean-db-nominatim.erb"
+  owner "root"
+  group "root"
+  mode 0755
+  variables :archive_dir => wal_archives,
+            :update_stop_file => "{home_directory}/status/updates_disabled",
+            :streaming_clients => slaves
+  only_if { node[:postgresql][:settings][:defaults][:archive_mode] == "on" }
+end
+
+

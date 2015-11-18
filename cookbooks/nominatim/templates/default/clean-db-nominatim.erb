@@ -12,9 +12,37 @@ for i in `seq 0 246`; do
   psql -q -d nominatim -c "VACUUM ANALYSE search_name_${i}"
 done
 
-<% if node[:postgresql][:settings][:defaults][:archive_mode] == "on" -%>
-
 # Cleanup archive directory
-#find -L /data/postgresql-archive -mmin +1440 -print0 | xargs -0r rm
+oldest=`date +%s`
 
-<% end -%>
+for fl in <% @streaming_clients %>; do
+  lastupdate=`wget -O - -q http://$fl/last_update.php`
+  if [[ "$?" != "0" ]]; then
+    oldest=0
+    break
+  else
+    epoch=`date +%s -d "$lastupdate"`
+    if [[ "$epoch" -lt "$oldest" ]]; then
+        oldest=$epoch
+    fi
+  fi
+done
+
+
+if [[ "$oldest" != "0" ]]; then
+    now=`date +%s`
+    timeago=$(( ( $now - $oldest ) / 60 + 180 ))
+    if [[ "$timeago" -le "180" ]]; then
+        echo "Oldest is in the future, something is wrong."
+        exit(1)
+    fi
+
+    echo "find -L <%= @archive_dir %> -mmin +$timeago -print0 | xargs -0r rm"
+fi
+
+diskfree=`df --output=pcent <%= @archive_dir %> | tail -n 1 | sed s:[^0-9.]::g
+
+if [[ "$diskfree" -lt 10 ]]; then
+    echo "WAL archives running out of space. Stopping updates."
+    touch <%= @update_stop_file %>
+fi

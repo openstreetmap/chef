@@ -6,4 +6,4 @@ MAILTO=<%= @mailto %>
 <% if node[:nominatim][:enable_backup] -%>
 00 3 1 * * nominatim /usr/local/bin/backup-nominatim
 <% end -%>
-30 1 * * * postgres /usr/local/bin/clean-db-nominatim
+30 1 * * * postgres /usr/local/bin/vacuum-db-nominatim
