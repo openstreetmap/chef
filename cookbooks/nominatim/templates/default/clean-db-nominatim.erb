@@ -3,15 +3,6 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
 
-# Vaccum all tables with indices on integer arrays.
-# Agressive vacuuming seems to help against index bloat.
-psql -q -d nominatim -c 'VACUUM ANALYSE search_name'
-psql -q -d nominatim -c 'VACUUM ANALYSE search_name_country'
-
-for i in `seq 0 246`; do
-  psql -q -d nominatim -c "VACUUM ANALYSE search_name_${i}"
-done
-
 # Cleanup archive directory
 oldest=`date +%s`
 
@@ -32,15 +23,18 @@ done
 if [[ "$oldest" != "0" ]]; then
     now=`date +%s`
     timeago=$(( ( $now - $oldest ) / 60 + 180 ))
-    if [[ "$timeago" -le "180" ]]; then
+    if [[ "$timeago" -lt "180" ]]; then
         echo "Oldest is in the future, something is wrong."
-        exit(1)
-    fi
+    else
+      if [[ "$timeago" -le "720" ]]; then
+          timeago=720
+      fi
 
-    echo "find -L <%= @archive_dir %> -mmin +$timeago -print0 | xargs -0r rm"
+      find -L <%= @archive_dir %> -mmin +$timeago -print0 | xargs -0r rm
+    fi
 fi
 
-diskfree=`df --output=pcent <%= @archive_dir %> | tail -n 1 | sed s:[^0-9.]::g
+diskfree=`df --output=pcent <%= @archive_dir %> | tail -n 1 | sed s:[^0-9.]::g`
 
 if [[ "$diskfree" -lt 10 ]]; then
     echo "WAL archives running out of space. Stopping updates."
