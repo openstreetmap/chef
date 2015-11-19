@@ -8,7 +8,7 @@ default_attributes(
     }
   },
   :networking => {
-    :nameservers => ["146.179.159.177"],
+    :nameservers => ["8.8.8.8", "146.179.159.177"],
     :roles => {
       :internal => {
         :inet => {
