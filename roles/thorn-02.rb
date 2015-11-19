@@ -11,9 +11,6 @@ default_attributes(
         :address => "146.179.159.166"
       }
     }
-  },
-  :web => {
-    :readonly_database_host => "db-slave"
   }
 )
 
