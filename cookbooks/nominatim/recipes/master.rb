@@ -25,7 +25,7 @@ home_directory = data_bag_item("accounts", "nominatim")["home"]
 
 wal_archives = node[:rsyncd][:modules][:archive][:path]
 # XXX we really should get a list of nominatim-slave nodes here
-slaves = 'poldi'
+slaves = "poldi"
 
 git "#{home_directory}/nominatim" do
   action :checkout
@@ -74,5 +74,3 @@ template "/usr/local/bin/clean-db-nominatim" do
             :streaming_clients => slaves
   only_if { node[:postgresql][:settings][:defaults][:archive_mode] == "on" }
 end
-
-
