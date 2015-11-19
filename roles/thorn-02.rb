@@ -17,6 +17,9 @@ default_attributes(
       :comment => "Disable IPv6 auto-configuration on internal interface",
       :parameters => { "net.ipv6.conf.eth0.autoconf" => "0" }
     }
+  },
+  :web => {
+    :readonly_database_host => "db-slave"
   }
 )
 
