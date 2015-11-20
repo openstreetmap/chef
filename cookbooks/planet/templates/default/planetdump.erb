@@ -97,3 +97,6 @@ install_dump "planet" "bz2" "<%= node[:planet][:dump][:xml_directory] %>" "${yea
 install_dump "history" "bz2" "<%= node[:planet][:dump][:xml_history_directory] %>" "${year}"
 install_dump "planet" "pbf" "<%= node[:planet][:dump][:pbf_directory] %>"
 install_dump "history" "pbf" "<%= node[:planet][:dump][:pbf_history_directory] %>"
+
+# Remove pbf dumps older than 90 days
+find "<%= node[:planet][:dump][:pbf_directory] %>" "<%= node[:planet][:dump][:pbf_history_directory] %>" -maxdepth 1 -mindepth 1 -type f -mtime +90 \( -iname 'planet-*.pbf' -o -iname 'history-*.pbf' -o -iname 'planet-*.pbf.md5' -o -iname 'history-*.pbf.md5' \) -delete
