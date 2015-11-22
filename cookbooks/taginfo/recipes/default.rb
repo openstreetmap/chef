@@ -105,6 +105,14 @@ node[:taginfo][:sites].each do |site|
     group "taginfo"
   end
 
+  git "#{directory}/osmium-tool" do
+    action :sync
+    repository "git://github.com/osmcode/osmium-tool.git"
+    revision "v1.3.0"
+    user "taginfo"
+    group "taginfo"
+  end
+
   git "#{directory}/taginfo" do
     action :sync
     repository "git://github.com/joto/taginfo.git"
@@ -155,6 +163,16 @@ node[:taginfo][:sites].each do |site|
     subscribes :run, "git[#{directory}/libosmium]"
     subscribes :run, "git[#{directory}/taginfo]"
     notifies :restart, "service[apache2]"
+  end
+
+  execute "compile-osmium" do
+    action :nothing
+    command "mkdir build && cd build && cmake .. && make"
+    cwd "#{directory}/osmium-tool"
+    user "taginfo"
+    group "taginfo"
+    subscribes :run, "git[#{directory}/libosmium]"
+    subscribes :run, "git[#{directory}/osmium-tool]"
   end
 
   %w(taginfo/web/tmp bin data data/old download sources planet planet/log planet/replication).each do |dir|
