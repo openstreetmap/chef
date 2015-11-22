@@ -165,14 +165,24 @@ node[:taginfo][:sites].each do |site|
     notifies :restart, "service[apache2]"
   end
 
+  directory "#{directory}/osmium-tool/build" do
+    owner 'taginfo'
+    group 'taginfo'
+    mode '0755'
+    action :create
+    subscribes :run, "git[#{directory}/libosmium]"
+    subscribes :run, "git[#{directory}/osmium-tool]"
+  end
+
   execute "compile-osmium" do
     action :nothing
-    command "mkdir build && cd build && cmake .. && make"
-    cwd "#{directory}/osmium-tool"
+    command "cmake .. && make"
+    cwd "#{directory}/osmium-tool/build"
     user "taginfo"
     group "taginfo"
     subscribes :run, "git[#{directory}/libosmium]"
     subscribes :run, "git[#{directory}/osmium-tool]"
+    subscribes :run, "directory[#{directory}/osmium-tool/build]"
   end
 
   %w(taginfo/web/tmp bin data data/old download sources planet planet/log planet/replication).each do |dir|
