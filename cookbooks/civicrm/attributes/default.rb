@@ -15,3 +15,7 @@ default[:civicrm][:extensions][:civirules][:revision] = "1.1"
 default[:civicrm][:extensions][:stripe][:name] = "com.drastikbydesign.stripe"
 default[:civicrm][:extensions][:stripe][:repository] = "git://github.com/drastik/com.drastikbydesign.stripe.git"
 default[:civicrm][:extensions][:stripe][:revision] = "1.9.1"
+
+default[:civicrm][:extensions][:mailchimp][:name] = "uk.co.vedaconsulting.mailchimp"
+default[:civicrm][:extensions][:mailchimp][:repository] = "git://github.com/veda-consulting/uk.co.vedaconsulting.mailchimp.git"
+default[:civicrm][:extensions][:mailchimp][:revision] = "v1.8.4"
