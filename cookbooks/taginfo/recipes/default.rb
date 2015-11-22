@@ -166,12 +166,12 @@ node[:taginfo][:sites].each do |site|
   end
 
   directory "#{directory}/osmium-tool/build" do
-    owner 'taginfo'
-    group 'taginfo'
-    mode '0755'
+    owner "taginfo"
+    group "taginfo"
+    mode "0755"
     action :create
-    subscribes :run, "git[#{directory}/libosmium]"
-    subscribes :run, "git[#{directory}/osmium-tool]"
+    subscribes :create, "git[#{directory}/libosmium]"
+    subscribes :create, "git[#{directory}/osmium-tool]"
   end
 
   execute "compile-osmium" do
