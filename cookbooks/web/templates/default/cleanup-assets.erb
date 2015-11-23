@@ -1,0 +1,73 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+
+use IO::Dir;
+use IO::File;
+use JSON::XS;
+
+my $root = shift @ARGV;
+
+my $manifest;
+
+if (my $file = IO::File->new("${root}/tmp/manifest.json", "r"))
+{
+    $manifest = decode_json(join("\n", $file->getlines));
+
+    $file->close;
+}
+else
+{
+    die "Can't open ${root}/tmp/manifest.json: $!";
+}
+
+expire_assets($manifest, "${root}/public/assets", "");
+
+exit 0;
+
+sub expire_assets
+{
+    my $manifest = shift;
+    my $assetroot = shift;
+    my $prefix = shift;
+
+    if (my $dir = IO::Dir->new("${assetroot}/${prefix}"))
+    {
+        $prefix = "${prefix}/" unless $prefix eq "";
+
+        while (my $name = $dir->read)
+        {
+            next if $name eq "." || $name eq "..";
+
+            my $path = $name = "${prefix}${name}";
+
+            $name =~ s/\.gz$//;
+
+            if (-d "${assetroot}/${path}")
+            {
+                expire_assets($manifest, $assetroot, $path);
+            }
+            elsif (exists($manifest->{files}->{$name}))
+            {
+                # Still a live asset (with checksum)
+            }
+            elsif (exists($manifest->{assets}->{$name}))
+            {
+                # Still a live asset (without checksum)
+            }
+            elsif (-A "${assetroot}/${path}" > 28)
+            {
+                unlink("${assetroot}/${path}") || die "Can't remove ${assetroot}/${path}: $!";
+            }
+        }
+
+        $dir->close;
+    }
+    else
+    {
+        die "Can't read ${assetroot}/${prefix}: $!";
+    }
+
+    return;
+}

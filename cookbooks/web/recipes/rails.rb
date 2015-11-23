@@ -79,6 +79,15 @@ rails_port "www.openstreetmap.org" do
   mapzen_valhalla_key web_passwords["mapzen_valhalla_key"]
 end
 
+package "libjson-xs-perl"
+
+template "/usr/local/bin/cleanup-rails-assets" do
+  source "cleanup-assets.erb"
+  owner "root"
+  group "root"
+  mode 0755
+end
+
 gem_package "apachelogregex"
 gem_package "file-tail"
 

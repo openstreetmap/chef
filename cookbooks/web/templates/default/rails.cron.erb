@@ -2,3 +2,6 @@
 
 # Cleanup temporary directory
 find <%= @directory %>/tmp \( \( -type f -mtime +28 \) -o \( -type d -empty \) \) -delete
+
+# Cleanup assets
+/usr/local/bin/cleanup-rails-assets <%= @directory %>
