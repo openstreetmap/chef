@@ -195,6 +195,14 @@ class Replicator
         File.open(tmp_state, "w") do |fh|
           fh.write(YAML.dump(@state))
         end
+
+        # sanity check: the files we're moving into place
+        # should be non-empty.
+        fail "Temporary gzip file should exist, but doesn't." unless File.exist?(tmp_data)
+        fail "Temporary state file should exist, but doesn't." unless File.exist?(tmp_state)
+        fail "Temporary gzip file should be non-empty, but isn't." if File.zero?(tmp_data)
+        fail "Temporary state file should be non-empty, but isn't." if File.zero?(tmp_state)
+
         FileUtils.mv(tmp_data, data_file)
         FileUtils.mv(tmp_state, @config["state_file"])
         fl.flock(File::LOCK_UN)
@@ -208,5 +216,10 @@ class Replicator
   end
 end
 
-rep = Replicator.new(ARGV[0])
-rep.save!
+begin
+  rep = Replicator.new(ARGV[0])
+  rep.save!
+rescue StandardError => e
+  STDERR.puts "ERROR: #{e.message}"
+  exit 1
+end
