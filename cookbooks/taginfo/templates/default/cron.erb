@@ -2,8 +2,8 @@
 
 <% node[:taginfo][:sites].each do |site| -%>
 <% if site[:directory] -%>
-0 1 * * * taginfo <%= site[:directory] %>/bin/update
+17 1 * * * taginfo <%= site[:directory] %>/bin/update
 <% else -%>
-0 1 * * * taginfo /srv/<%= site[:name] %>/bin/update
+17 1 * * * taginfo /srv/<%= site[:name] %>/bin/update
 <% end -%>
 <% end -%>
