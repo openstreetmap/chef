@@ -307,7 +307,7 @@ if status_packages["cciss-vol-status"] && File.exist?("/usr/sbin/cciss_vol_statu
   end
 end
 
-if status_packages["megaclisas-status"]
+if status_packages["megaclisas-status"] && File.exist?("/usr/sbin/megacli")
   controller = 0
 
   Dir.glob("/sys/class/scsi_host/host*") do |host|
