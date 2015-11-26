@@ -4,7 +4,7 @@ class Chef
       interfaces = []
 
       networking = construct_attributes[:networking] || {}
-      networking_interfaces = networking[:interfaces] || []
+      networking_interfaces = networking[:interfaces] || {}
 
       networking_interfaces.each_value  do |interface|
         next unless options[:role].nil? || interface[:role].to_s == options[:role].to_s
