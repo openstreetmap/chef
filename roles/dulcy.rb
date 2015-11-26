@@ -17,6 +17,13 @@ default_attributes(
         :role => :external,
         :family => :inet6,
         :address => "2001:630:12:500:ec4:7aff:fe66:96d2"
+      },
+      :internal_ipv4 => {
+        :interface => "p18p2",
+        :role => :internal,
+        :family => :inet,
+        :address => "146.179.159.179",
+        :hwaddress => "0c:c4:7a:66:96:d3"
       }
     }
   }
