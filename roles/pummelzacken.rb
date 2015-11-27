@@ -50,7 +50,6 @@ default_attributes(
       }
     },
     :redirects => {
-      :reverse => "poldi.openstreetmap.org"
     }
   },
   :hardware => {
