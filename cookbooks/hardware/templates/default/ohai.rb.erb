@@ -1,0 +1,80 @@
+Ohai.plugin(:Hardware) do
+  provides "hardware"
+
+  def read_sysctl_link(file)
+    File.basename(File.readlink(file))
+  rescue Errno::ENOENT
+  end
+
+  def read_sysctl_file(file)
+    IO.read(file).strip
+  rescue Errno::ENOENT, Errno::EINVAL
+  end
+
+  def pci_devices
+    device = nil
+
+    IO.popen(["lspci", "-Dkvmm"]).each_with_object(Mash.new) do |line, devices|
+      if line =~ /^Slot:\s+((\h{4}):(\h{2}):(\h{2}).(\h))\s*$/
+        device = {
+          :slot => Regexp.last_match(1),
+          :domain => Regexp.last_match(2),
+          :bus => Regexp.last_match(3),
+          :device => Regexp.last_match(4),
+          :function => Regexp.last_match(5)
+        }
+      elsif device && line =~ /^([A-Z]+):\s+(.*)\s*$/i
+        case Regexp.last_match(1)
+        when "Class" then device[:class_name] = Regexp.last_match(2)
+        when "Vendor" then device[:vendor_name] = Regexp.last_match(2)
+        when "Device" then device[:device_name] = Regexp.last_match(2)
+        when "SVendor" then device[:subsystem_vendor_name] = Regexp.last_match(2)
+        when "SDevice" then device[:subsystem_device_name] = Regexp.last_match(2)
+        when "PhySlot" then device[:physical_slot] = Regexp.last_match(2)
+        when "Rev" then device[:revision] = Regexp.last_match(2)
+        when "ProgIf" then device[:programming_interface] = Regexp.last_match(2)
+        when "Driver" then device[:driver] = Regexp.last_match(2)
+        when "Module" then device[:modules] = Array(device[:modules]) << Regexp.last_match(2)
+        end
+      elsif device && line =~ /^\s*$/
+        devices[device[:slot]] = device
+        device = nil
+      end
+    end
+  end
+
+  def network_devices
+    Dir.glob("/sys/class/net/*").each_with_object(Mash.new) do |device, devices|
+      name = File.basename(device)
+
+      devices[name] = {
+        :device => read_sysctl_link("#{device}/device"),
+        :duplex => read_sysctl_file("#{device}/duplex"),
+        :speed => read_sysctl_file("#{device}/speed")
+      }.delete_if { |_, v| v.nil? }
+    end
+  end
+
+  def memory_devices
+    device = nil
+
+    IO.popen(["dmidecode", "-t", "memory"]).each_with_object([]) do |line, devices|
+      if line =~ /^Memory Device\s*$/
+        device = {}
+      elsif device && line =~ /^\s+([A-Z ]+):\s+(.*)\s*$/i
+        device[Regexp.last_match(1).tr(" ", "_").downcase.to_sym] = Regexp.last_match(2).strip
+      elsif device && line =~ /^\s*$/
+        devices << device
+        device = nil
+      end
+    end
+  end
+
+  collect_data(:default) do
+    hardware Mash.new
+
+    hardware[:pci] = pci_devices
+    hardware[:network] = network_devices
+    hardware[:memory] = memory_devices
+  end
+end
