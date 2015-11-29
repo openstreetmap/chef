@@ -70,6 +70,103 @@ Ohai.plugin(:Hardware) do
     end
   end
 
+  def disk_devices
+    disk = Mash.new
+
+    disk[:controllers] = []
+    disk[:arrays] = []
+    disk[:disks] = []
+
+    find_hp_disks(disk) if File.exist?("/usr/sbin/hpssacli")
+
+    disk
+  end
+
+  def find_hp_disks(devices)
+    controllers = []
+    disks = []
+
+    controller = nil
+    array = nil
+    disk = nil
+
+    IO.popen(%w(hpssacli controller all show config detail)).each do |line|
+      if line =~ /^Smart Array (\S+) /
+        controller = {
+          :id => devices[:controllers].count,
+          :model => Regexp.last_match(1),
+          :arrays => [],
+          :disks => []
+        }
+
+        devices[:controllers] << controller
+
+        controllers << controller
+
+        array = nil
+        disk = nil
+      elsif controller && line =~ /^   (\S.*):\s+(.*)$/
+        case Regexp.last_match(1)
+        when "Serial Number" then controller[:serial_number] = Regexp.last_match(2)
+        when "Hardware Revision" then controller[:hardware_version] = Regexp.last_match(2)
+        when "Firmware Version" then controller[:firmware_version] = Regexp.last_match(2)
+        when "PCI Address (Domain:Bus:Device.Function)" then controller[:pci_slot] = Regexp.last_match(2)
+        end
+      elsif controller && line =~ /^      Logical Drive: (\d+)$/
+        array = {
+          :id => devices[:arrays].count,
+          :controller => controller[:id],
+          :number => Regexp.last_match(1),
+          :disks => []
+        }
+
+        devices[:arrays] << array
+        controller[:arrays] << array[:id]
+
+        disk = nil
+      elsif controller && line =~ /^      physicaldrive (\S+) /
+        disks << Regexp.last_match(1)
+      elsif array && line =~ /^      physicaldrive (\S+)$/
+        disk = {
+          :id => devices[:disks].count,
+          :controller => controller[:id],
+          :array => array[:id],
+          :location => Regexp.last_match(1),
+          :smart_device => "cciss,#{disks.find_index(Regexp.last_match(1))}"
+        }
+
+        devices[:disks] << disk
+        controller[:disks] << disk[:id]
+        array[:disks] << disk[:id]
+      elsif disk && line =~ /^         (\S[^:]+):\s+(.*)$/
+        case Regexp.last_match(1)
+        when "Interface Type" then disk[:interface] = Regexp.last_match(2)
+        when "Size" then disk[:size] = Regexp.last_match(2)
+        when "Rotational Speed" then disk[:rpm] = Regexp.last_match(2)
+        when "Firmware Revision" then disk[:firmware_version] = Regexp.last_match(2)
+        when "Serial Number" then disk[:serial_number] = Regexp.last_match(2)
+        when "Model" then disk[:model] = Regexp.last_match(2).squeeze(" ").strip.sub(/^ATA /, "")
+        end
+      elsif array && line =~ /^         (\S[^:]+):\s+(.*)$/
+        case Regexp.last_match(1)
+        when "Size" then array[:size] = Regexp.last_match(2)
+        when "Fault Tolerance" then array[:raid_level] = Regexp.last_match(2)
+        when "Disk Name" then array[:device] = Regexp.last_match(2).strip
+        when "Mount Points" then array[:mount_point] = Regexp.last_match(2).split.first
+        when "Unique Identifier" then array[:wwn] = Regexp.last_match(2)
+        end
+      end
+    end
+
+    controllers.each do |controller|
+      if device = Dir.glob("/sys/bus/pci/devices/#{controller[:pci_slot]}/cciss*").first
+        controller[:device] = File.basename(device).sub(/^cciss(\d+)$/, "/dev/cciss/c\\1d0")
+      elsif device = Dir.glob("/sys/bus/pci/devices/#{controller[:pci_slot]}/host*/target0:0:0/0:0:0:0/scsi_generic/sg*").first
+        controller[:device] = "/dev/#{File.basename(device)}"
+      end
+    end
+  end
+
   collect_data(:default) do
     hardware Mash.new
 
