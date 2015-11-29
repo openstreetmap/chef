@@ -243,7 +243,7 @@ node[:block_device].each do |name, attributes|
   end
 end
 
-%w(hpacucli lsiutil sas2ircu megactl megacli arcconf).each do |tools_package|
+%w(hpssacli lsiutil sas2ircu megactl megacli arcconf).each do |tools_package|
   if tools_packages.include?(tools_package)
     package tools_package
   else
