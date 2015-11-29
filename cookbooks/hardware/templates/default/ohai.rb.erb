@@ -78,6 +78,7 @@ Ohai.plugin(:Hardware) do
     disk[:disks] = []
 
     find_hp_disks(disk) if File.exist?("/usr/sbin/hpssacli")
+    find_megaraid_disks(disk) if File.exist?("/usr/sbin/megacli")
 
     disk
   end
@@ -145,7 +146,7 @@ Ohai.plugin(:Hardware) do
         when "Rotational Speed" then disk[:rpm] = Regexp.last_match(2)
         when "Firmware Revision" then disk[:firmware_version] = Regexp.last_match(2)
         when "Serial Number" then disk[:serial_number] = Regexp.last_match(2)
-        when "Model" then disk[:model] = Regexp.last_match(2).squeeze(" ").strip.sub(/^ATA /, "")
+        when "Model" then disk[:vendor], disk[:model] = Regexp.last_match(2).squeeze(" ").strip.sub(/^ATA /, "").split
         end
       elsif array && line =~ /^         (\S[^:]+):\s+(.*)$/
         case Regexp.last_match(1)
@@ -167,11 +168,127 @@ Ohai.plugin(:Hardware) do
     end
   end
 
+  def find_megaraid_disks(devices)
+    controllers = []
+    arrays = []
+
+    controller = nil
+    array = nil
+    disk = nil
+
+    IO.popen(%w(megacli -AdpGetPciInfo -aAll -NoLog)).each do |line|
+      if line =~ /^PCI information for Controller (\d+)$/
+        controller = {
+          :id => devices[:controllers].count,
+          :arrays => [],
+          :disks => []
+        }
+
+        devices[:controllers] << controller
+
+        controllers << controller
+      elsif line =~ /^Bus Number\s+:\s+(\d+)$/
+        controller[:pci_slot] = sprintf "0000:%02x", Integer("0x#{Regexp.last_match(1)}")
+      elsif line =~ /^Device Number\s+:\s+(\d+)$/
+        controller[:pci_slot] = sprintf "%s:%02x", controller[:pci_slot], Integer("0x#{Regexp.last_match(1)}")
+      elsif line =~ /^Function Number\s+:\s+(\d+)$/
+        controller[:pci_slot] = sprintf "%s.%01x", controller[:pci_slot], Integer("0x#{Regexp.last_match(1)}")
+      end
+    end
+
+    IO.popen(%w(megacli -AdpAllInfo -aAll -NoLog)).each do |line|
+      if line =~ /^Adapter #(\d+)$/
+        controller = controllers[Regexp.last_match(1).to_i]
+      elsif line =~ /^(\S.*\S)\s*:\s+(\S.*)$/
+        case Regexp.last_match(1)
+        when "Product Name" then controller[:model] = Regexp.last_match(2)
+        when "Serial No" then controller[:serial_number] = Regexp.last_match(2)
+        when "FW Package Build" then controller[:firmware_version] = Regexp.last_match(2)
+        end
+      end
+    end
+
+    IO.popen(%w(megacli -LdPdInfo -aAll -NoLog)).each do |line|
+      if line =~ /^Adapter #(\d+)$/
+        controller = controllers[Regexp.last_match(1).to_i]
+      elsif controller && line =~ /^Virtual Drive: (\d+) \(Target Id: (\d+)\)$/
+        array = {
+          :id => devices[:arrays].count,
+          :controller => controller[:id],
+          :number => Regexp.last_match(1),
+          :disks => []
+        }
+
+        devices[:arrays] << array
+        controller[:arrays] << array[:id]
+
+        arrays << array
+
+        disk = nil
+      elsif array && line =~ /^PD: (\d+) Information$/
+        disk = {
+          :id => devices[:disks].count,
+          :controller => controller[:id],
+          :array => array[:id]
+        }
+
+        devices[:disks] << disk
+        controller[:disks] << disk[:id]
+        array[:disks] << disk[:id]
+      elsif disk && line =~ /^(\S.*\S)\s*:\s+(\S.*)$/
+        case Regexp.last_match(1)
+        when "Device Id" then disk[:smart_devlce] = "megaraid,#{Regexp.last_match(2)}"
+        when "WWN" then disk[:wwn] = Regexp.last_match(2)
+        when "PD Type" then disk[:interface] = Regexp.last_match(2)
+        when "Raw Size" then disk[:size] = Regexp.last_match(2).sub(/\s*\[.*\]$/, "")
+        when "Inquiry Data" then disk[:vendor], disk[:model], disk[:serial] = Regexp.last_match(2).split
+        end
+      elsif array && line =~ /^(\S.*\S)\s*:\s+(\S.*)$/
+        case Regexp.last_match(1)
+        when "RAID Level" then array[:raid_level] = Regexp.last_match(2).scan(/Primary-(\d+)/).first.first
+        when "Size" then array[:size] = Regexp.last_match(2)
+        end
+      end
+    end
+
+    IO.popen(%w(megacli -PDList -aAll -NoLog)).each do |line|
+      if line =~ /^Adapter #(\d+)$/
+        controller = controllers[Regexp.last_match(1).to_i]
+      elsif controller && line =~ /^Enclosure Device ID: \d+$/
+        disk = {
+          :controller => controller[:id]
+        }
+      elsif disk && line =~ /^WWN:\s+(\S+)$/
+        unless devices[:disks].find { |d| d[:wwn] == Regexp.last_match(1) }
+          disk[:id] = devices[:disks].count
+          disk[:wwn] = Regexp.last_match(1)
+
+          devices[:disks] << disk
+        end
+      elsif disk && line =~ /^(\S.*\S)\s*:\s+(\S.*)$/
+        case Regexp.last_match(1)
+        when "Device Id" then disk[:smart_devlce] = "megaraid,#{Regexp.last_match(2)}"
+        when "WWN" then disk[:wwn] = Regexp.last_match(2)
+        when "PD Type" then disk[:interface] = Regexp.last_match(2)
+        when "Raw Size" then disk[:size] = Regexp.last_match(2).sub(/\s*\[.*\]$/, "")
+        when "Inquiry Data" then disk[:vendor], disk[:model], disk[:serial] = Regexp.last_match(2).split
+        end
+      end
+    end
+
+    controllers.each do |controller|
+      if device = Dir.glob("/sys/bus/pci/devices/#{controller[:pci_slot]}/host*/target*:2:0/*/scsi_generic/sg*").first
+        controller[:device] = "/dev/#{File.basename(device)}"
+      end
+    end
+  end
+
   collect_data(:default) do
     hardware Mash.new
 
     hardware[:pci] = pci_devices
     hardware[:network] = network_devices
     hardware[:memory] = memory_devices
+    hardware[:disk] = disk_devices
   end
 end
