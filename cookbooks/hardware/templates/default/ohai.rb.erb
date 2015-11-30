@@ -13,9 +13,9 @@ Ohai.plugin(:Hardware) do
 
   def parse_disk_size(size)
     if size =~ /^(\d+(?:\.\d+))?\s*TB/i
-      sprintf "%dTB", Regexp.last_match(1).to_f * 2**40 / 1_000_000_000_000
+      format "%dTB", Regexp.last_match(1).to_f * 2**40 / 1_000_000_000_000
     elsif size =~ /^(\d+(?:\.\d+))?\s*GB/i
-      sprintf "%dGB", Regexp.last_match(1).to_f * 2**30 / 1000000000
+      format "%dGB", Regexp.last_match(1).to_f * 2**30 / 1000000000
     end
   end
 
@@ -119,9 +119,9 @@ Ohai.plugin(:Hardware) do
           end
 
           if size > 1_000_000_000_000
-            size = sprintf "%d TB", size / 1_000_000_000_000
+            size = format "%d TB", size / 1_000_000_000_000
           elsif size > 1000000000
-            size = sprintf "%d GB", size / 1000000000
+            size = format "%d GB", size / 1000000000
           end
 
           devices[:disks] << {
@@ -265,11 +265,11 @@ Ohai.plugin(:Hardware) do
 
         controllers << controller
       elsif line =~ /^Bus Number\s+:\s+(\d+)$/
-        controller[:pci_slot] = sprintf "0000:%02x", Integer("0x#{Regexp.last_match(1)}")
+        controller[:pci_slot] = format "0000:%02x", Integer("0x#{Regexp.last_match(1)}")
       elsif line =~ /^Device Number\s+:\s+(\d+)$/
-        controller[:pci_slot] = sprintf "%s:%02x", controller[:pci_slot], Integer("0x#{Regexp.last_match(1)}")
+        controller[:pci_slot] = format "%s:%02x", controller[:pci_slot], Integer("0x#{Regexp.last_match(1)}")
       elsif line =~ /^Function Number\s+:\s+(\d+)$/
-        controller[:pci_slot] = sprintf "%s.%01x", controller[:pci_slot], Integer("0x#{Regexp.last_match(1)}")
+        controller[:pci_slot] = format "%s.%01x", controller[:pci_slot], Integer("0x#{Regexp.last_match(1)}")
       end
     end
 
