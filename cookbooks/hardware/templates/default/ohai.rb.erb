@@ -129,7 +129,7 @@ Ohai.plugin(:Hardware) do
     find_hp_disks(disk) if File.exist?("/usr/sbin/hpssacli")
     find_megaraid_disks(disk) if File.exist?("/usr/sbin/megacli")
     find_mpt_disks(disk) if File.exist?("/usr/sbin/sas2ircu")
-    # aacraid
+    find_adaptec_disks(disk) if File.exist?("/usr/sbin/arcconf")
     find_areca_disks(disk) if File.exist?("/opt/areca/x86_64/cli64")
 
     find_md_arrays(disk)
@@ -480,6 +480,106 @@ Ohai.plugin(:Hardware) do
       arrays.each do |array|
         array[:disks].map! do |location|
           disk = disks.find { |disk| disk[:location] == location }
+
+          disk[:arrays] << array[:id]
+          disk[:id]
+        end
+      end
+    end
+  end
+
+  def find_adaptec_disks(devices)
+    controller_count = IO.popen(%w(arcconf getconfig 0)).first.scan(/^Controllers found: (\d+)$/).first.first.to_i
+
+    1.upto(controller_count).each do |controller_number|
+      controller = {
+        :id => devices[:controllers].count,
+        :number => controller_number,
+        :arrays => [],
+        :disks => []
+      }
+
+      devices[:controllers] << controller
+
+      arrays = []
+      disks = []
+
+      array = nil
+      disk = nil
+
+      IO.popen(["arcconf", "getconfig", controller_number.to_s]).each do |line|
+        if line =~ /^Logical device number (\d+)$/
+          array = {
+            :id => devices[:arrays].count,
+            :controller => controller[:id],
+            :number => Regexp.last_match(1).to_i,
+            :disks => []
+          }
+
+          devices[:arrays] << array
+          controller[:arrays] << array[:id]
+
+          arrays << array
+        elsif line =~ /^      Device #(\d+)$/
+          disk = {
+            :id => devices[:disks].count,
+            :controller => controller[:id],
+            :arrays => [],
+            :number => Regexp.last_match(1).to_i
+          }
+
+          devices[:disks] << disk
+          controller[:disks] << disk[:id]
+
+          disks << disk
+        elsif disk && line =~ /^         Reported Channel,Device\(T:L\)\s*:\s+(\d+),(\d+)\(\d+:0\)\s*$/
+          disk[:channel_number] = Regexp.last_match(1)
+          disk[:device_number] = Regexp.last_match(1)
+        elsif disk && line =~ /^         (\S.*\S)\s*:\s+(\S.*\S)\s*$/
+          case Regexp.last_match(1)
+          when "Reported Location" then disk[:location] = Regexp.last_match(2)
+          when "Vendor" then disk[:vendor] = Regexp.last_match(2)
+          when "Model" then disk[:model] = Regexp.last_match(2)
+          when "Firmware" then disk[:firmware_version] = Regexp.last_match(2)
+          when "Serial" then disk[:serial_number] = Regexp.last_match(2)
+          when "World-wide name" then disk[:wwn] = Regexp.last_match(2)
+          when "Total Size" then disk[:size] = memory_to_disk_size(Regexp.last_match(2))
+          end
+        elsif array && line =~ / Present \(Controller:\d+,Connector:(\d+),Device:(\d+)\) /
+          array[:disks] << "Connector #{Regexp.last_match(1)}, Device #{Regexp.last_match(2)}"
+        elsif array && line =~ /^   (\S.*\S)\s*:\s+(\S.*\S)\s*$/
+          case Regexp.last_match(1)
+          when "RAID level" then array[:raid_level] = Regexp.last_match(2)
+          when "Size" then array[:size] = memory_to_disk_size(Regexp.last_match(2))
+          end
+        elsif line =~ /^   (\S.*\S)\s*:\s+(\S.*\S)\s*$/
+          case Regexp.last_match(1)
+          when "Controller Model" then controller[:model] = Regexp.last_match(2)
+          when "Controller Serial Number" then controller[:serial_number] = Regexp.last_match(2)
+          when "Controller World Wide Name" then controller[:wwn] = Regexp.last_match(2)
+          when "BIOS" then controller[:bios_version] = Regexp.last_match(2)
+          when "Firmware" then controller[:firmware_version] = Regexp.last_match(2)
+          end
+        end
+      end
+
+      host = Dir.glob("/sys/class/scsi_host/host*").find do |host|
+        read_sysctl_file("#{host}/serial_number") == controller[:serial_number]
+      end
+
+      arrays.each do |array|
+        array_number = array[:number]
+        device = Dir.glob("#{host}/device/target*:0:#{array_number}/*:0:#{array_number}:0/block/*").first
+
+        array[:device] = "/dev/#{File.basename(device)}"
+
+        array[:disks].map! do |location|
+          disk = disks.find { |disk| disk[:location] == location }
+
+          device_number = disk[:device_number]
+          device = Dir.glob("#{host}/device/target*:1:#{device_number}/*:1:#{device_number}:0/scsi_generic/*").first
+
+          disk[:device] = "/dev/#{File.basename(device)}"
 
           disk[:arrays] << array[:id]
           disk[:id]
