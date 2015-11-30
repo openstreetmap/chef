@@ -534,13 +534,22 @@ Ohai.plugin(:Hardware) do
 
     arrays.each do |array|
       IO.popen(["/opt/areca/x86_64/cli64", "vsf", "info", "vol=#{array[:number]}"]).each do |line|
-        next unless line =~ /^(\S.*\S)\s+:\s+(.*\S)\s*$/
+        if line =~ /^SCSI Ch\/Id\/Lun\s+:\s+(\d+)\/(\d+)\/(\d+)\s*$/
+          pci_slot = controller[:pci_slot]
+          channel = Regexp.last_match(1).to_i
+          id = Regexp.last_match(2).to_i
+          lun = Regexp.last_match(3).to_i
 
-        case Regexp.last_match(1)
-        when "Volume Set Name" then array[:volume_set] = Regexp.last_match(2)
-        when "Raid Set Name" then array[:raid_set] = Regexp.last_match(2)
-        when "Volume Capacity" then array[:size] = format_disk_size(Regexp.last_match(2).to_f * 1000 * 1000)
-        when "Raid Level" then array[:raid_level] = Regexp.last_match(2).sub(/^Raid/, "")
+          device = Dir.glob("/sys/bus/pci/devices/#{pci_slot}/host*/target*:0:0/0:#{channel}:#{id}:#{lun}/block/*").first
+
+          array[:device] = "/dev/#{File.basename(device)}"
+        elsif line =~ /^(\S.*\S)\s+:\s+(.*\S)\s*$/
+          case Regexp.last_match(1)
+          when "Volume Set Name" then array[:volume_set] = Regexp.last_match(2)
+          when "Raid Set Name" then array[:raid_set] = Regexp.last_match(2)
+          when "Volume Capacity" then array[:size] = format_disk_size(Regexp.last_match(2).to_f * 1000 * 1000)
+          when "Raid Level" then array[:raid_level] = Regexp.last_match(2).sub(/^Raid/, "")
+          end
         end
       end
     end
