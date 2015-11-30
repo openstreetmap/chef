@@ -385,17 +385,16 @@ Ohai.plugin(:Hardware) do
     controllers = []
 
     IO.popen(%w(sas2ircu list)).each do |line|
-      if line =~ /^\s+(\d+)\s+(\S+)\s+\h+h\s+\h+h\s+(\S+)\s+\h+h\s+\h+h\s*$/
-        controllers[$1.to_i] = {
-          :id => devices[:controllers].count,
-          :model => $2,
-          :pci_slot => $3.sub(/^(\h{2})h:(\h{2})h:(\h{2})h:0(\h)h$/, "00\\1:\\2:\\3.\\4"),
-          :arrays => [],
-          :disks => []
-        }
+      next unless line =~ /^\s+(\d+)\s+(\S+)\s+\h+h\s+\h+h\s+(\S+)\s+\h+h\s+\h+h\s*$/
+      controllers[Regexp.last_match(1).to_i] = {
+        :id => devices[:controllers].count,
+        :model => Regexp.last_match(2),
+        :pci_slot => Regexp.last_match(3).sub(/^(\h{2})h:(\h{2})h:(\h{2})h:0(\h)h$/, "00\\1:\\2:\\3.\\4"),
+        :arrays => [],
+        :disks => []
+      }
 
-        devices[:controllers] << controllers[$1.to_i]
-      end
+      devices[:controllers] << controllers[Regexp.last_match(1).to_i]
     end
 
     controllers.each_with_index do |controller, index|
@@ -436,7 +435,7 @@ Ohai.plugin(:Hardware) do
           when "Enclosure #" then disk[:location] = Regexp.last_match(2)
           when "Slot #" then disk[:location] = "#{disk[:location]}:#{Regexp.last_match(2)}"
           when "SAS Address" then disk[:device] = find_sas_device(Regexp.last_match(2).tr("-", ""))
-          when "Size (in MB)/(in sectors)" then disk[:size] = parse_disk_size("#{Regexp.last_match(2).split("/").first} MB")
+          when "Size (in MB)/(in sectors)" then disk[:size] = parse_disk_size("#{Regexp.last_match(2).split('/').first} MB")
           when "Manufacturer" then disk[:vendor] = Regexp.last_match(2)
           when "Model Number" then disk[:model] = Regexp.last_match(2)
           when "Firmware Revision" then disk[:firmware_version] = Regexp.last_match(2)
@@ -444,7 +443,7 @@ Ohai.plugin(:Hardware) do
           when "Protocol" then disk[:interface] = Regexp.last_match(2)
           end
         elsif array && line =~ /^  PHY\[\d+\] Enclosure#\/Slot#\s+:\s+(\d+:\d+)\s*$/
-          array[:disks] << $1
+          array[:disks] << Regexp.last_match(1)
         elsif array && line =~ /^  (\S.*\S)\s+:\s+(.*\S)\s*$/
           case Regexp.last_match(1)
           when "Volume wwid" then array[:device] = find_sas_device(Regexp.last_match(2))
@@ -469,8 +468,6 @@ Ohai.plugin(:Hardware) do
       end
     end
   end
-
-  disk_devices
 
   collect_data(:default) do
     hardware Mash.new
