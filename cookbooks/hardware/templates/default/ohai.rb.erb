@@ -305,10 +305,15 @@ Ohai.plugin(:Hardware) do
       if line =~ /^Adapter #(\d+)$/
         controller = controllers[Regexp.last_match(1).to_i]
       elsif controller && line =~ /^Virtual Drive: (\d+) \(Target Id: (\d+)\)$/
+        pci_slot = controller[:pci_slot]
+        target = Regexp.last_match(2)
+        device = Dir.glob("/sys/bus/pci/devices/#{pci_slot}/host*/target*:2:#{target}/*:2:#{target}:0/block/*").first
+
         array = {
           :id => devices[:arrays].count,
           :controller => controller[:id],
           :number => Regexp.last_match(1),
+          :device => "/dev/#{File.basename(device)}",
           :disks => []
         }
 
