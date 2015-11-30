@@ -11,14 +11,34 @@ Ohai.plugin(:Hardware) do
   rescue Errno::ENOENT, Errno::EINVAL
   end
 
-  def parse_disk_size(size)
+  def parse_memory_size(size)
     if size =~ /^(\d+(?:\.\d+)?)\s*TB/i
-      format "%dTB", Regexp.last_match(1).to_f * 2**40 / 1_000_000_000_000
+      Regexp.last_match(1).to_f * 2**30
     elsif size =~ /^(\d+(?:\.\d+)?)\s*GB/i
-      format "%dGB", Regexp.last_match(1).to_f * 2**30 / 1000000000
+      Regexp.last_match(1).to_f * 2**20
     elsif size =~ /^(\d+(?:\.\d+)?)\s*MB/i
-      format "%dGB", Regexp.last_match(1).to_f * 2**20 / 1000000000
+      Regexp.last_match(1).to_f * 2**10
     end
+  end
+
+  def format_disk_size(kb)
+    if kb == 0
+      ""
+    else
+      kblog10 = Math.log10(kb)
+
+      if kblog10 >= 9
+        format "%gTB", 10**(kblog10 - 9)
+      elsif kblog10 >= 6
+        format "%dGB", 10**(kblog10 - 6)
+      else
+        format "%dMB", 10**(kblog10 - 3)
+      end
+    end
+  end
+
+  def memory_to_disk_size(size)
+    format_disk_size(parse_memory_size(size))
   end
 
   def find_sas_device(address)
@@ -134,19 +154,13 @@ Ohai.plugin(:Hardware) do
             model = Regexp.last_match(2)
           end
 
-          if size > 1_000_000_000_000
-            size = format "%d TB", size / 1_000_000_000_000
-          elsif size > 1000000000
-            size = format "%d GB", size / 1000000000
-          end
-
           devices[:disks] << {
             :id => devices[:disks].count,
             :device => "/dev/#{File.basename(block)}",
             :vendor => vendor,
             :model => model,
             :firmware_version => read_sysctl_file("#{device}/rev"),
-            :size => size,
+            :size => format_disk_size(size),
             :arrays => []
           }
         end
@@ -155,24 +169,28 @@ Ohai.plugin(:Hardware) do
   end
 
   def find_md_arrays(devices)
+    array = nil
+
     File.new("/proc/mdstat", "r").each do |line|
-      next unless line =~ /^(md\d+) : active raid(\d+)((?: [a-z]+\d+\[\d+\](?:\([A-Z]\))*)+)$/
+      if line =~ /^(md\d+) : active raid(\d+)((?: [a-z]+\d+\[\d+\](?:\([A-Z]\))*)+)$/
+        array = {
+          :id => devices[:arrays].count,
+          :device => "/dev/#{Regexp.last_match(1)}",
+          :raid_level => Regexp.last_match(2),
+          :disks => []
+        }
 
-      array = {
-        :id => devices[:arrays].count,
-        :device => "/dev/#{Regexp.last_match(1)}",
-        :raid_level => Regexp.last_match(2),
-        :disks => []
-      }
-
-      Regexp.last_match(3).scan(/ ([a-z]+)\d+\[\d+\](?:\([A-Z]\))*/).flatten.each do |device|
-        if disk = devices[:disks].find { |d| d[:device] == "/dev/#{device}" }
-          disk[:arrays] << array[:id]
-          array[:disks] << disk[:id]
+        Regexp.last_match(3).scan(/ ([a-z]+)\d+\[\d+\](?:\([A-Z]\))*/).flatten.each do |device|
+          if disk = devices[:disks].find { |d| d[:device] == "/dev/#{device}" }
+            disk[:arrays] << array[:id]
+            array[:disks] << disk[:id]
+          end
         end
-      end
 
-      devices[:arrays] << array
+        devices[:arrays] << array
+      elsif line =~ /^\s+(\d+) blocks/
+        array[:size] = format_disk_size(Regexp.last_match(1).to_i)
+      end
     end
   end
 
@@ -338,7 +356,7 @@ Ohai.plugin(:Hardware) do
         when "Device Id" then disk[:smart_devlce] = "megaraid,#{Regexp.last_match(2)}"
         when "WWN" then disk[:wwn] = Regexp.last_match(2)
         when "PD Type" then disk[:interface] = Regexp.last_match(2)
-        when "Raw Size" then disk[:size] = parse_disk_size(Regexp.last_match(2).sub(/\s*\[.*\]$/, ""))
+        when "Raw Size" then disk[:size] = memory_to_disk_size(Regexp.last_match(2).sub(/\s*\[.*\]$/, ""))
         when "Inquiry Data" then disk[:vendor], disk[:model], disk[:serial] = Regexp.last_match(2).split
         end
       elsif array && line =~ /^(\S.*\S)\s*:\s+(\S.*)$/
@@ -368,7 +386,7 @@ Ohai.plugin(:Hardware) do
         when "Device Id" then disk[:smart_devlce] = "megaraid,#{Regexp.last_match(2)}"
         when "WWN" then disk[:wwn] = Regexp.last_match(2)
         when "PD Type" then disk[:interface] = Regexp.last_match(2)
-        when "Raw Size" then disk[:size] = parse_disk_size(Regexp.last_match(2).sub(/\s*\[.*\]$/, ""))
+        when "Raw Size" then disk[:size] = memory_to_disk_size(Regexp.last_match(2).sub(/\s*\[.*\]$/, ""))
         when "Inquiry Data" then disk[:vendor], disk[:model], disk[:serial] = Regexp.last_match(2).split
         end
       end
@@ -435,7 +453,7 @@ Ohai.plugin(:Hardware) do
           when "Enclosure #" then disk[:location] = Regexp.last_match(2)
           when "Slot #" then disk[:location] = "#{disk[:location]}:#{Regexp.last_match(2)}"
           when "SAS Address" then disk[:device] = find_sas_device(Regexp.last_match(2).tr("-", ""))
-          when "Size (in MB)/(in sectors)" then disk[:size] = parse_disk_size("#{Regexp.last_match(2).split('/').first} MB")
+          when "Size (in MB)/(in sectors)" then disk[:size] = memory_to_disk_size("#{Regexp.last_match(2).split('/').first} MB")
           when "Manufacturer" then disk[:vendor] = Regexp.last_match(2)
           when "Model Number" then disk[:model] = Regexp.last_match(2)
           when "Firmware Revision" then disk[:firmware_version] = Regexp.last_match(2)
