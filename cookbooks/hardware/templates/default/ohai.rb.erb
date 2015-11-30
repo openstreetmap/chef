@@ -13,9 +13,9 @@ Ohai.plugin(:Hardware) do
 
   def parse_disk_size(size)
     if size =~ /^(\d+(?:\.\d+))?\s*TB/i
-      sprintf "%dTB", $1.to_f * 2**40 / 1000000000000
+      sprintf "%dTB", Regexp.last_match(1).to_f * 2**40 / 1_000_000_000_000
     elsif size =~ /^(\d+(?:\.\d+))?\s*GB/i
-      sprintf "%dGB", $1.to_f * 2**30 / 1000000000
+      sprintf "%dGB", Regexp.last_match(1).to_f * 2**30 / 1000000000
     end
   end
 
@@ -85,10 +85,53 @@ Ohai.plugin(:Hardware) do
     disk[:arrays] = []
     disk[:disks] = []
 
+    find_direct_disks(disk)
     find_hp_disks(disk) if File.exist?("/usr/sbin/hpssacli")
     find_megaraid_disks(disk) if File.exist?("/usr/sbin/megacli")
+    # aacraid
+    # areca (/opt/areca/x86_64/cli64)
 
     disk
+  end
+
+  def find_direct_disks(devices)
+    Dir.glob("/sys/class/scsi_host/host*") do |host|
+      driver = read_sysctl_file("#{host}/proc_name")
+
+      if driver == "ahci" || driver == "mptsas" ||
+         driver == "mpt2sas" || driver == "mpt3sas"
+        bus = host.sub("/sys/class/scsi_host/host", "")
+
+        Dir.glob("/sys/bus/scsi/devices/#{bus}:0:*").each do |device|
+          next unless File.exist?("#{device}/scsi_disk")
+
+          block = Dir.glob("#{device}/block/*").first
+          vendor = read_sysctl_file("#{device}/vendor")
+          model = read_sysctl_file("#{device}/model")
+          size = read_sysctl_file("#{block}/size").to_i * 512
+
+          if vendor == "ATA" && model =~ /^(\S+)\s+(.*)$/
+            vendor = Regexp.last_match(1)
+            model = Regexp.last_match(2)
+          end
+
+          if size > 1_000_000_000_000
+            size = sprintf "%d TB", size / 1_000_000_000_000
+          elsif size > 1000000000
+            size = sprintf "%d GB", size / 1000000000
+          end
+
+          devices[:disks] << {
+            :id => devices[:disks].count,
+            :device => "/dev/#{File.basename(block)}",
+            :vendor => vendor,
+            :model => model,
+            :firmware_version => read_sysctl_file("#{device}/rev"),
+            :size => size
+          }
+        end
+      end
+    end
   end
 
   def find_hp_disks(devices)
