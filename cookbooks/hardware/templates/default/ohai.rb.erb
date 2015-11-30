@@ -435,9 +435,7 @@ Ohai.plugin(:Hardware) do
           controller[:arrays] << array[:id]
 
           arrays << array
-
-          disk = nil
-        elsif array && line =~ /^Device is a Hard disk$/
+        elsif line =~ /^Device is a Hard disk$/
           disk = {
             :id => devices[:disks].count,
             :controller => controller[:id],
