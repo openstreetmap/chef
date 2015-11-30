@@ -130,7 +130,7 @@ Ohai.plugin(:Hardware) do
     find_megaraid_disks(disk) if File.exist?("/usr/sbin/megacli")
     find_mpt_disks(disk) if File.exist?("/usr/sbin/sas2ircu")
     # aacraid
-    # areca (/opt/areca/x86_64/cli64)
+    find_areca_disks(disk) if File.exist?("/opt/areca/x86_64/cli64")
 
     find_md_arrays(disk)
 
@@ -483,6 +483,104 @@ Ohai.plugin(:Hardware) do
 
           disk[:arrays] << array[:id]
           disk[:id]
+        end
+      end
+    end
+  end
+
+  def find_areca_disks(devices)
+    controller = {
+      :id => devices[:controllers].count,
+      :arrays => [],
+      :disks => []
+    }
+
+    devices[:controllers] << controller
+
+    IO.popen(%w(/opt/areca/x86_64/cli64 sys info)).each do |line|
+      next unless line =~ /^(\S.*\S)\s+:\s+(.*\S)\s*$/
+
+      case Regexp.last_match(1)
+      when "Firmware Version" then controller[:firmware_version] = Regexp.last_match(2)
+      when "BOOT ROM Version" then controller[:bios_version] = Regexp.last_match(2)
+      when "Serial Number" then controller[:serial_number] = Regexp.last_match(2)
+      when "Controller Name" then controller[:model] = Regexp.last_match(2)
+      end
+    end
+
+    path = Dir.glob("/sys/bus/pci/devices/*/host*/scsi_host/host*/host_fw_model").find do |file|
+      read_sysctl_file(file) == controller[:model]
+    end
+
+    controller[:pci_slot] = File.basename(File.expand_path("#{path}/../../../.."))
+    controller[:device] = File.basename(Dir.glob(File.expand_path("#{path}/../../../target0:0:16/0:0:16:0/scsi_generic/*")).first)
+
+    arrays = []
+
+    IO.popen(%w(/opt/areca/x86_64/cli64 vsf info)).each do |line|
+      next unless line =~ /^\s+(\d+)\s+/
+      array = {
+        :id => devices[:arrays].count,
+        :number => Regexp.last_match(1),
+        :controller => controller[:id],
+        :disks => []
+      }
+
+      devices[:arrays] << array
+      controller[:arrays] << array[:id]
+
+      arrays << array
+    end
+
+    arrays.each do |array|
+      IO.popen(["/opt/areca/x86_64/cli64", "vsf", "info", "vol=#{array[:number]}"]).each do |line|
+        next unless line =~ /^(\S.*\S)\s+:\s+(.*\S)\s*$/
+
+        case Regexp.last_match(1)
+        when "Volume Set Name" then array[:volume_set] = Regexp.last_match(2)
+        when "Raid Set Name" then array[:raid_set] = Regexp.last_match(2)
+        when "Volume Capacity" then array[:size] = format_disk_size(Regexp.last_match(2).to_f * 1000 * 1000)
+        when "Raid Level" then array[:raid_level] = Regexp.last_match(2).sub(/^Raid/, "")
+        end
+      end
+    end
+
+    disks = []
+
+    IO.popen(%w(/opt/areca/x86_64/cli64 disk info)).each do |line|
+      next unless line =~ /^\s+(\d+)\s+.*\s+\d+\.\d+GB\s+(\S.*\S)\s*$/
+      next if Regexp.last_match(2) == "N.A."
+
+      disk = {
+        :id => devices[:disks].count,
+        :number => Regexp.last_match(1),
+        :controller => controller[:id],
+        :arrays => []
+      }
+
+      devices[:disks] << disk
+      controller[:disks] << disk[:id]
+
+      if array = arrays.find { |array| array[:raid_set] == Regexp.last_match(2) }
+        disk[:arrays] << array[:id]
+        array[:disks] << disk[:id]
+      end
+
+      disks << disk
+    end
+
+    disks.each do |disk|
+      IO.popen(["/opt/areca/x86_64/cli64", "disk", "info", "drv=#{disk[:number]}"]).each do |line|
+        if line =~ /^IDE Channel\s+:\s+(\d+)\s*$/i
+          disk[:smart_device] = "areca,#{Regexp.last_match(1)}"
+        elsif line =~ /^Device Location\s+:\s+Enclosure#(\d+) Slot#?\s*0*(\d+)\s*$/i
+          disk[:smart_device] = "areca,#{Regexp.last_match(2)}/#{Regexp.last_match(1)}"
+        elsif line =~ /^(\S.*\S)\s+:\s+(.*\S)\s*$/
+          case Regexp.last_match(1)
+          when "Model Name" then disk[:vendor], disk[:model] = Regexp.last_match(2).split
+          when "Serial Number" then disk[:serial_number] = Regexp.last_match(2)
+          when "Disk Capacity" then disk[:size] = format_disk_size(Regexp.last_match(2).to_f * 1000 * 1000)
+          end
         end
       end
     end
