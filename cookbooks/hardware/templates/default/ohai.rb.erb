@@ -25,14 +25,17 @@ Ohai.plugin(:Hardware) do
     if kb == 0
       ""
     else
-      kblog10 = Math.log10(kb)
+      kblog10 = Math.log10(kb).floor
+
+      kb = kb.to_f * 2 / 10**kblog10
+      kb = kb.round.to_f / 2
 
       if kblog10 >= 9
-        format "%gTB", 10**(kblog10 - 9)
+        format "%gTB", kb * 10**(kblog10 - 9)
       elsif kblog10 >= 6
-        format "%dGB", 10**(kblog10 - 6)
+        format "%dGB", kb * 10**(kblog10 - 6)
       else
-        format "%dMB", 10**(kblog10 - 3)
+        format "%dMB", kb * 10**(kblog10 - 3)
       end
     end
   end
