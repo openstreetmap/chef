@@ -12,10 +12,26 @@ Ohai.plugin(:Hardware) do
   end
 
   def parse_disk_size(size)
-    if size =~ /^(\d+(?:\.\d+))?\s*TB/i
+    if size =~ /^(\d+(?:\.\d+)?)\s*TB/i
       format "%dTB", Regexp.last_match(1).to_f * 2**40 / 1_000_000_000_000
-    elsif size =~ /^(\d+(?:\.\d+))?\s*GB/i
+    elsif size =~ /^(\d+(?:\.\d+)?)\s*GB/i
       format "%dGB", Regexp.last_match(1).to_f * 2**30 / 1000000000
+    elsif size =~ /^(\d+(?:\.\d+)?)\s*MB/i
+      format "%dGB", Regexp.last_match(1).to_f * 2**20 / 1000000000
+    end
+  end
+
+  def find_sas_device(address)
+    file = Dir.glob("/sys/class/scsi_generic/sg*/device/sas_address").find do |file|
+      read_sysctl_file(file) == "0x#{address}"
+    end
+
+    if file
+      dir = File.dirname(file)
+      device = Dir.glob("#{dir}/block/*").first ||
+               Dir.glob("#{dir}/scsi_generic/*").first
+
+      "/dev/#{File.basename(device)}"
     end
   end
 
@@ -89,6 +105,7 @@ Ohai.plugin(:Hardware) do
 
     find_hp_disks(disk) if File.exist?("/usr/sbin/hpssacli")
     find_megaraid_disks(disk) if File.exist?("/usr/sbin/megacli")
+    find_mpt_disks(disk) if File.exist?("/usr/sbin/sas2ircu")
     # aacraid
     # areca (/opt/areca/x86_64/cli64)
 
@@ -101,8 +118,7 @@ Ohai.plugin(:Hardware) do
     Dir.glob("/sys/class/scsi_host/host*") do |host|
       driver = read_sysctl_file("#{host}/proc_name")
 
-      if driver == "ahci" || driver == "mptsas" ||
-         driver == "mpt2sas" || driver == "mpt3sas"
+      if driver == "ahci" || driver == "mptsas"
         bus = host.sub("/sys/class/scsi_host/host", "")
 
         Dir.glob("/sys/bus/scsi/devices/#{bus}:0:*").each do |device|
@@ -359,6 +375,97 @@ Ohai.plugin(:Hardware) do
       end
     end
   end
+
+  def find_mpt_disks(devices)
+    controllers = []
+
+    IO.popen(%w(sas2ircu list)).each do |line|
+      if line =~ /^\s+(\d+)\s+(\S+)\s+\h+h\s+\h+h\s+(\S+)\s+\h+h\s+\h+h\s*$/
+        controllers[$1.to_i] = {
+          :id => devices[:controllers].count,
+          :model => $2,
+          :pci_slot => $3.sub(/^(\h{2})h:(\h{2})h:(\h{2})h:0(\h)h$/, "00\\1:\\2:\\3.\\4"),
+          :arrays => [],
+          :disks => []
+        }
+
+        devices[:controllers] << controllers[$1.to_i]
+      end
+    end
+
+    controllers.each_with_index do |controller, index|
+      arrays = []
+      disks = []
+
+      array = nil
+      disk = nil
+
+      IO.popen(["sas2ircu", index.to_s, "display"]).each do |line|
+        if line =~ /^IR volume (\d+)$/
+          array = {
+            :id => devices[:arrays].count,
+            :controller => controller[:id],
+            :number => Regexp.last_match(1),
+            :disks => []
+          }
+
+          devices[:arrays] << array
+          controller[:arrays] << array[:id]
+
+          arrays << array
+
+          disk = nil
+        elsif array && line =~ /^Device is a Hard disk$/
+          disk = {
+            :id => devices[:disks].count,
+            :controller => controller[:id],
+            :arrays => []
+          }
+
+          devices[:disks] << disk
+          controller[:disks] << disk[:id]
+
+          disks << disk
+        elsif disk && line =~ /^  (\S.*\S)\s+:\s+(.*\S)\s*$/
+          case Regexp.last_match(1)
+          when "Enclosure #" then disk[:location] = Regexp.last_match(2)
+          when "Slot #" then disk[:location] = "#{disk[:location]}:#{Regexp.last_match(2)}"
+          when "SAS Address" then disk[:device] = find_sas_device(Regexp.last_match(2).tr("-", ""))
+          when "Size (in MB)/(in sectors)" then disk[:size] = parse_disk_size("#{Regexp.last_match(2).split("/").first} MB")
+          when "Manufacturer" then disk[:vendor] = Regexp.last_match(2)
+          when "Model Number" then disk[:model] = Regexp.last_match(2)
+          when "Firmware Revision" then disk[:firmware_version] = Regexp.last_match(2)
+          when "Serial Number" then disk[:serial_number] = Regexp.last_match(2)
+          when "Protocol" then disk[:interface] = Regexp.last_match(2)
+          end
+        elsif array && line =~ /^  PHY\[\d+\] Enclosure#\/Slot#\s+:\s+(\d+:\d+)\s*$/
+          array[:disks] << $1
+        elsif array && line =~ /^  (\S.*\S)\s+:\s+(.*\S)\s*$/
+          case Regexp.last_match(1)
+          when "Volume wwid" then array[:device] = find_sas_device(Regexp.last_match(2))
+          when "RAID level" then array[:raid_level] = Regexp.last_match(2).sub(/^RAID/, "")
+          when "Size (in MB)" then array[:size] = "#{Regexp.last_match(2)} MB"
+          end
+        elsif line =~ /^  (\S.*\S)\s+:\s+(.*\S)\s*$/
+          case Regexp.last_match(1)
+          when "BIOS version" then controller[:bios_version] = Regexp.last_match(2)
+          when "Firmware version" then controller[:firmware_version] = Regexp.last_match(2)
+          end
+        end
+      end
+
+      arrays.each do |array|
+        array[:disks].map! do |location|
+          disk = disks.find { |disk| disk[:location] == location }
+
+          disk[:arrays] << array[:id]
+          disk[:id]
+        end
+      end
+    end
+  end
+
+  disk_devices
 
   collect_data(:default) do
     hardware Mash.new
