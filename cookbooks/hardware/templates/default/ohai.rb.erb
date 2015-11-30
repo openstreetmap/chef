@@ -150,7 +150,7 @@ Ohai.plugin(:Hardware) do
           block = Dir.glob("#{device}/block/*").first
           vendor = read_sysctl_file("#{device}/vendor")
           model = read_sysctl_file("#{device}/model")
-          size = read_sysctl_file("#{block}/size").to_i * 512
+          size = read_sysctl_file("#{block}/size").to_f / 2
 
           if vendor == "ATA" && model =~ /^(\S+)\s+(.*)$/
             vendor = Regexp.last_match(1)
