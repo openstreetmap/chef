@@ -86,10 +86,13 @@ Ohai.plugin(:Hardware) do
     disk[:disks] = []
 
     find_direct_disks(disk)
+
     find_hp_disks(disk) if File.exist?("/usr/sbin/hpssacli")
     find_megaraid_disks(disk) if File.exist?("/usr/sbin/megacli")
     # aacraid
     # areca (/opt/areca/x86_64/cli64)
+
+    find_md_arrays(disk)
 
     disk
   end
@@ -127,10 +130,33 @@ Ohai.plugin(:Hardware) do
             :vendor => vendor,
             :model => model,
             :firmware_version => read_sysctl_file("#{device}/rev"),
-            :size => size
+            :size => size,
+            :arrays => []
           }
         end
       end
+    end
+  end
+
+  def find_md_arrays(devices)
+    File.new("/proc/mdstat", "r").each do |line|
+      next unless line =~ /^(md\d+) : active raid(\d+)((?: [a-z]+\d+\[\d+\](?:\([A-Z]\))*)+)$/
+
+      array = {
+        :id => devices[:arrays].count,
+        :device => "/dev/#{Regexp.last_match(1)}",
+        :raid_level => Regexp.last_match(2),
+        :disks => []
+      }
+
+      Regexp.last_match(3).scan(/ ([a-z]+)\d+\[\d+\](?:\([A-Z]\))*/).flatten.each do |device|
+        if disk = devices[:disks].find { |d| d[:device] == "/dev/#{device}" }
+          disk[:arrays] << array[:id]
+          array[:disks] << disk[:id]
+        end
+      end
+
+      devices[:arrays] << array
     end
   end
 
@@ -182,7 +208,7 @@ Ohai.plugin(:Hardware) do
         disk = {
           :id => devices[:disks].count,
           :controller => controller[:id],
-          :array => array[:id],
+          :arrays => [array[:id]],
           :location => Regexp.last_match(1),
           :smart_device => "cciss,#{disks.find_index(Regexp.last_match(1))}"
         }
@@ -280,7 +306,7 @@ Ohai.plugin(:Hardware) do
         disk = {
           :id => devices[:disks].count,
           :controller => controller[:id],
-          :array => array[:id]
+          :arrays => [array[:id]]
         }
 
         devices[:disks] << disk
