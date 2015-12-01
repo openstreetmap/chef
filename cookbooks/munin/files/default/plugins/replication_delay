@@ -17,6 +17,8 @@ if [ "$1" = "config" ]; then
         echo 'age.label DB import age' 
         echo 'age.type GAUGE' 
 	echo 'age.cdef age,60,/'
+	echo 'age.warning :600'
+	echo 'age.critical :3600'
         exit 0 
 fi 
 
