@@ -137,6 +137,33 @@ Ohai.plugin(:Hardware) do
 
     find_md_arrays(disk)
 
+    disk[:disks].each do |disk|
+      if disk[:vendor] =~ /^CVPR/ && disk[:model] == "INTEL"
+        disk[:model] = disk[:serial_number]
+        disk[:serial_number] = disk[:vendor]
+        disk[:vendor] = "INTEL"
+      end
+
+      if disk[:vendor].nil? && disk[:model] =~ /^ATA\s+(.*)$/
+        disk[:vendor] = "ATA"
+        disk[:model] = Regexp.last_match(1)
+      end
+
+      if disk[:vendor].nil? || disk[:vendor] == "ATA"
+        if disk[:model] =~ /^(\S+)\s+(.*)$/
+          disk[:vendor] = Regexp.last_match(1)
+          disk[:model] = Regexp.last_match(2)
+        elsif disk[:model] =~ /^ST/
+          disk[:vendor] = "SEAGATE"
+        elsif disk[:model] =~ /^C300-(.*)$/
+          disk[:vendor] = "CRUCIAL"
+          disk[:model] = Regexp.last_match(1)
+        end
+      end
+
+      disk[:model].sub!(/-.*$/, "")
+    end
+
     disk
   end
 
@@ -151,20 +178,13 @@ Ohai.plugin(:Hardware) do
           next unless File.exist?("#{device}/scsi_disk")
 
           block = Dir.glob("#{device}/block/*").first
-          vendor = read_sysctl_file("#{device}/vendor")
-          model = read_sysctl_file("#{device}/model")
           size = read_sysctl_file("#{block}/size").to_f / 2
-
-          if vendor == "ATA" && model =~ /^(\S+)\s+(.*)$/
-            vendor = Regexp.last_match(1)
-            model = Regexp.last_match(2)
-          end
 
           devices[:disks] << {
             :id => devices[:disks].count,
             :device => "/dev/#{File.basename(block)}",
-            :vendor => vendor,
-            :model => model,
+            :vendor => read_sysctl_file("#{device}/vendor"),
+            :model => read_sysctl_file("#{device}/model"),
             :firmware_version => read_sysctl_file("#{device}/rev"),
             :size => format_disk_size(size),
             :arrays => []
@@ -294,16 +314,16 @@ Ohai.plugin(:Hardware) do
         devices[:disks] << disk
         controller[:disks] << disk[:id]
         array[:disks] << disk[:id]
-      elsif disk && line =~ /^         (\S[^:]+):\s+(.*)$/
+      elsif disk && line =~ /^         (\S[^:]+):\s+(\S.*\S)\s*$/
         case Regexp.last_match(1)
         when "Interface Type" then disk[:interface] = Regexp.last_match(2)
         when "Size" then disk[:size] = Regexp.last_match(2)
         when "Rotational Speed" then disk[:rpm] = Regexp.last_match(2)
         when "Firmware Revision" then disk[:firmware_version] = Regexp.last_match(2)
         when "Serial Number" then disk[:serial_number] = Regexp.last_match(2)
-        when "Model" then disk[:vendor], disk[:model] = Regexp.last_match(2).squeeze(" ").strip.sub(/^ATA /, "").split
+        when "Model" then disk[:model] = Regexp.last_match(2)
         end
-      elsif array && line =~ /^         (\S[^:]+):\s+(.*)$/
+      elsif array && line =~ /^         (\S[^:]+):\s+(\S.*\S)\s*$/
         case Regexp.last_match(1)
         when "Size" then array[:size] = Regexp.last_match(2)
         when "Fault Tolerance" then array[:raid_level] = Regexp.last_match(2)
@@ -401,7 +421,7 @@ Ohai.plugin(:Hardware) do
         when "WWN" then disk[:wwn] = Regexp.last_match(2)
         when "PD Type" then disk[:interface] = Regexp.last_match(2)
         when "Raw Size" then disk[:size] = memory_to_disk_size(Regexp.last_match(2).sub(/\s*\[.*\]$/, ""))
-        when "Inquiry Data" then disk[:vendor], disk[:model], disk[:serial] = Regexp.last_match(2).split
+        when "Inquiry Data" then disk[:vendor], disk[:model], disk[:serial_number] = Regexp.last_match(2).split
         end
       elsif array && line =~ /^(\S.*\S)\s*:\s+(\S.*)$/
         case Regexp.last_match(1)
@@ -431,7 +451,7 @@ Ohai.plugin(:Hardware) do
         when "WWN" then disk[:wwn] = Regexp.last_match(2)
         when "PD Type" then disk[:interface] = Regexp.last_match(2)
         when "Raw Size" then disk[:size] = memory_to_disk_size(Regexp.last_match(2).sub(/\s*\[.*\]$/, ""))
-        when "Inquiry Data" then disk[:vendor], disk[:model], disk[:serial] = Regexp.last_match(2).split
+        when "Inquiry Data" then disk[:vendor], disk[:model], disk[:serial_number] = Regexp.last_match(2).split
         end
       end
     end
