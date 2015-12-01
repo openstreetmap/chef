@@ -1,3 +1,5 @@
+require "pathname"
+
 Ohai.plugin(:Hardware) do
   provides "hardware"
 
@@ -125,6 +127,7 @@ Ohai.plugin(:Hardware) do
     disk[:disks] = []
 
     find_direct_disks(disk)
+    find_nvme_disks(disk)
 
     find_hp_disks(disk) if File.exist?("/usr/sbin/hpssacli")
     find_megaraid_disks(disk) if File.exist?("/usr/sbin/megacli")
@@ -171,11 +174,49 @@ Ohai.plugin(:Hardware) do
     end
   end
 
+  def find_nvme_disks(devices)
+    Dir.glob("/sys/class/misc/nvme*") do |device|
+      controller = {
+        :id => devices[:controllers].count,
+        :pci_slot => File.basename(Pathname.new("#{device}/device").realpath),
+        :arrays => [],
+        :disks => []
+      }
+
+      devices[:controllers] << controller
+
+      IO.popen(["lspci", "-Dkvmm", "-s", controller[:pci_slot]]).each do |line|
+        if line =~ /^SVendor:\s+(\S.*\S)\s*$/
+          controller[:vendor] = Regexp.last_match(1)
+        elsif line =~ /^SDevice:\s+(\S.*\S)\s*$/
+          controller[:model] = Regexp.last_match(1)
+        end
+      end
+
+      Dir.glob("#{device}/device/block/*").each do |block|
+        size = read_sysctl_file("#{block}/size").to_f / 2
+
+        disk = {
+          :id => devices[:disks].count,
+          :controller => controller[:id],
+          :device => "/dev/#{File.basename(block)}",
+          :vendor => controller[:vendor],
+          :model => controller[:model],
+          :size => format_disk_size(size),
+          :arrays => []
+        }
+
+        devices[:disks] << disk
+        controller[:disks] << disk[:id]
+      end
+    end
+  end
+
   def find_md_arrays(devices)
     array = nil
 
     File.new("/proc/mdstat", "r").each do |line|
-      if line =~ /^(md\d+) : active raid(\d+)((?: [a-z]+\d+\[\d+\](?:\([A-Z]\))*)+)$/
+      if line =~ /^(md\d+) : active raid(\d+)((?: (?:sd[a-z]|nvme\d+n\d+)\d*\[\d+\](?:\([A-Z]\))*)+)$/
         array = {
           :id => devices[:arrays].count,
           :device => "/dev/#{Regexp.last_match(1)}",
@@ -183,7 +224,7 @@ Ohai.plugin(:Hardware) do
           :disks => []
         }
 
-        Regexp.last_match(3).scan(/ ([a-z]+)\d+\[\d+\](?:\([A-Z]\))*/).flatten.each do |device|
+        Regexp.last_match(3).scan(/ (sd[a-z]+|nvme\d+n\d+)\d*\[\d+\](?:\([A-Z]\))*/).flatten.each do |device|
           if disk = devices[:disks].find { |d| d[:device] == "/dev/#{device}" }
             disk[:arrays] << array[:id]
             array[:disks] << disk[:id]
@@ -191,7 +232,7 @@ Ohai.plugin(:Hardware) do
         end
 
         devices[:arrays] << array
-      elsif line =~ /^\s+(\d+) blocks/
+      elsif array && line =~ /^\s+(\d+) blocks/
         array[:size] = format_disk_size(Regexp.last_match(1).to_i)
       end
     end
@@ -548,7 +589,7 @@ Ohai.plugin(:Hardware) do
           when "Size" then disk[:size] = memory_to_disk_size(Regexp.last_match(2))
           end
         elsif array && line =~ / Present \(Controller:\d+,((?:Connector|Enclosure):\d+,(?:Device|Slot):\d+)\) /
-          array[:disks] << Regexp.last_match(1).gsub(":", " ").gsub(",", ", ")
+          array[:disks] << Regexp.last_match(1).tr(":", " ").gsub(",", ", ")
         elsif array && line =~ /^   (\S.*\S)\s*:\s+(\S.*\S)\s*$/
           case Regexp.last_match(1)
           when "RAID level" then array[:raid_level] = Regexp.last_match(2)
