@@ -314,7 +314,7 @@ Ohai.plugin(:Hardware) do
         devices[:disks] << disk
         controller[:disks] << disk[:id]
         array[:disks] << disk[:id]
-      elsif disk && line =~ /^         (\S[^:]+):\s+(\S.*\S)\s*$/
+      elsif disk && line =~ /^         (\S[^:]+):\s+(.*\S)\s*$/
         case Regexp.last_match(1)
         when "Interface Type" then disk[:interface] = Regexp.last_match(2)
         when "Size" then disk[:size] = Regexp.last_match(2)
@@ -323,7 +323,7 @@ Ohai.plugin(:Hardware) do
         when "Serial Number" then disk[:serial_number] = Regexp.last_match(2)
         when "Model" then disk[:model] = Regexp.last_match(2)
         end
-      elsif array && line =~ /^         (\S[^:]+):\s+(\S.*\S)\s*$/
+      elsif array && line =~ /^         (\S[^:]+):\s+(.*\S)\s*$/
         case Regexp.last_match(1)
         when "Size" then array[:size] = Regexp.last_match(2)
         when "Fault Tolerance" then array[:raid_level] = Regexp.last_match(2)
