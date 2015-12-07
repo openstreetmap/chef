@@ -41,13 +41,15 @@ package "osmosis"
 package "curl"
 package "m4"
 
-package "ruby#{node[:passenger][:ruby_version]}"
+ruby_version = node[:passenger][:ruby_version]
 
-gem_package "json"
-gem_package "sqlite3"
-gem_package "sinatra"
-gem_package "sinatra-r18n"
-gem_package "rack-contrib"
+package "ruby#{ruby_version}"
+
+%w(json sqlite3 sinatra sinatra-r18n rack-contrib).each do |gem|
+  gem_package gem do
+    gem_binary "gem#{ruby_version}"
+  end
+end
 
 apache_module "cache"
 apache_module "cache_disk"
