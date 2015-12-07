@@ -33,6 +33,7 @@ directory "/srv/www.openstreetmap.org" do
 end
 
 rails_port "www.openstreetmap.org" do
+  ruby "2.1"
   directory "/srv/www.openstreetmap.org/rails"
   user "rails"
   group "rails"
