@@ -123,9 +123,6 @@ default_attributes(
       }
     }
   },
-  :passenger => {
-    :ruby_version => "2.1"
-  },
   :postgresql => {
     :versions => ["9.1", "9.3"],
     :settings => {
