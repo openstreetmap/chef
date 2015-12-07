@@ -42,7 +42,7 @@ package "curl"
 package "m4"
 
 package "ruby#{node[:passenger][:ruby_version]}"
-package "rubygems#{node[:passenger][:ruby_version]}"
+
 gem_package "json"
 gem_package "sqlite3"
 gem_package "sinatra"
