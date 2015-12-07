@@ -104,11 +104,6 @@ apt_source "passenger" do
   key "AC40B2F7"
 end
 
-apt_source "passenger4" do
-  url "https://oss-binaries.phusionpassenger.com/apt/passenger/4"
-  key "AC40B2F7"
-end
-
 apt_source "postgresql" do
   template "postgresql.list.erb"
   url "http://apt.postgresql.org/pub/repos/apt"
