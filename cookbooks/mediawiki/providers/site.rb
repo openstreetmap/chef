@@ -387,6 +387,12 @@ action :create do
     update_site false
   end
 
+  mediawiki_extension "DisableAccount" do
+    site new_resource.name
+    template "mw-ext-DisableAccount.inc.php.erb"
+    update_site false
+  end
+
   cookbook_file "#{site_directory}/cc-wiki.png" do
     cookbook "mediawiki"
     owner node[:mediawiki][:user]
