@@ -19,6 +19,7 @@
 
 include_recipe "web::base"
 
+ruby = "ruby#{node[:passenger][:ruby_version]}"
 rails_directory = "#{node[:web][:base_directory]}/rails"
 
 template "/usr/local/bin/statistics" do
@@ -26,7 +27,7 @@ template "/usr/local/bin/statistics" do
   owner "root"
   group "root"
   mode 0755
-  variables :directory => rails_directory
+  variables :ruby => ruby, :directory => rails_directory
 end
 
 template "/etc/cron.d/statistics" do
