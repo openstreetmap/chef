@@ -792,6 +792,26 @@ Ohai.plugin(:Hardware) do
     end
   end
 
+  def mc_device
+    device = {}
+
+    IO.popen(["ipmitool", "mc", "info"]).each_with_object([]) do |line, devices|
+      if line =~ /(Product [A-Z ]+[A-Z])\s*:\s+(.*\S)\s+\(.*\)\s*$/i
+        device[Regexp.last_match(1).tr(" ", "_").downcase.to_sym] = Regexp.last_match(2)
+      elsif line =~ /([A-Z ]+[A-Z])\s*:\s+(.*\S)\s*$/i
+        device[Regexp.last_match(1).tr(" ", "_").downcase.to_sym] = Regexp.last_match(2)
+      end
+    end
+
+    IO.popen(["ipmitool", "mc", "guid"]).each_with_object([]) do |line, devices|
+      if line =~ /^System GUID\s*:\s+(\S+)\s*$/
+        device[:system_guid] = Regexp.last_match(1)
+      end
+    end
+
+    device
+  end
+
   collect_data(:default) do
     hardware Mash.new
 
@@ -800,5 +820,6 @@ Ohai.plugin(:Hardware) do
     hardware[:memory] = memory_devices
     hardware[:disk] = disk_devices
     hardware[:psu] = psu_devices
+    hardware[:mc] = mc_device
   end
 end
