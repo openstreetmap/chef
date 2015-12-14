@@ -777,6 +777,71 @@ Ohai.plugin(:Hardware) do
     end
   end
 
+  def lvm_devices
+    {
+      :pvs => find_lvm_pvs,
+      :vgs => find_lvm_vgs,
+      :lvs => find_lvm_lvs
+    }
+  end
+
+  def find_lvm_pvs
+    IO.popen(["pvdisplay", "-c"]).each_with_object({}) do |line, pvs|
+      fields = line.strip.split(":")
+
+      pvs[fields[0]] = {
+        :vg => fields[1],
+        :pv_size => fields[2],
+        :pv_status => fields[4],
+        :pe_size => fields[7],
+        :pe_total => fields[8],
+        :pe_free => fields[9],
+        :pe_allocated => fields[10],
+        :pv_uuid => fields[11]
+      }
+    end
+  end
+
+  def find_lvm_vgs
+    IO.popen(["vgdisplay", "-c"]).each_with_object({}) do |line, vgs|
+      fields = line.strip.split(":")
+
+      vgs[fields[0]] = {
+        :vg_access => fields[1],
+        :vg_status => fields[2],
+        :lv_maximum => fields[4],
+        :lv_count => fields[5],
+        :lv_open => fields[6],
+        :pv_maximum => fields[8],
+        :pv_current => fields[9],
+        :pv_actual => fields[10],
+        :vg_size => fields[11],
+        :pe_size => fields[12],
+        :pe_total => fields[13],
+        :pe_allocated => fields[14],
+        :pe_free => fields[15],
+        :vg_uuid => fields[16]
+      }
+    end
+  end
+
+  def find_lvm_lvs
+    IO.popen(["lvdisplay", "-c"]).each_with_object({}) do |line, lvs|
+      fields = line.strip.split(":")
+
+      lvs[fields[0]] = {
+        :vg => fields[1],
+        :lv_access => fields[2],
+        :lv_status => fields[3],
+        :lv_open => fields[5],
+        :lv_size => fields[6],
+        :le_count => fields[7],
+        :lv_minor => fields[11],
+        :lv_major => fields[12]
+      }
+    end
+  end
+
   def psu_devices
     device = nil
 
@@ -821,6 +886,7 @@ Ohai.plugin(:Hardware) do
     hardware[:network] = network_devices
     hardware[:memory] = memory_devices
     hardware[:disk] = disk_devices
+    hardware[:lvm] = lvm_devices
     hardware[:psu] = psu_devices
     hardware[:mc] = mc_device
   end
