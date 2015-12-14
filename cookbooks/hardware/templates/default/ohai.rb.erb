@@ -61,9 +61,10 @@ Ohai.plugin(:Hardware) do
   end
 
   def pci_devices
+    devices = {}
     device = nil
 
-    IO.popen(["lspci", "-Dkvmm"]).each_with_object(Mash.new) do |line, devices|
+    IO.popen(["lspci", "-Dkvmm"]).each do |line|
       if line =~ /^Slot:\s+((\h{4}):(\h{2}):(\h{2}).(\h))\s*$/
         device = {
           :slot => Regexp.last_match(1),
@@ -90,6 +91,24 @@ Ohai.plugin(:Hardware) do
         device = nil
       end
     end
+
+    IO.popen(["lspci", "-Dkvmmn"]).each do |line|
+      if line =~ /^Slot:\s+((\h{4}):(\h{2}):(\h{2}).(\h))\s*$/
+        device = devices[Regexp.last_match(1)]
+      elsif device && line =~ /^([A-Z]+):\s+(.*)\s*$/i
+        case Regexp.last_match(1)
+        when "Class" then device[:class_id] = Regexp.last_match(2)
+        when "Vendor" then device[:vendor_id] = Regexp.last_match(2)
+        when "Device" then device[:device_id] = Regexp.last_match(2)
+        when "SVendor" then device[:subsystem_vendor_id] = Regexp.last_match(2)
+        when "SDevice" then device[:subsystem_device_id] = Regexp.last_match(2)
+        end
+      elsif device && line =~ /^\s*$/
+        device = nil
+      end
+    end
+
+    devices
   end
 
   def network_devices
