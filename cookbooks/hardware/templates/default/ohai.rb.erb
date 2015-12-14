@@ -796,7 +796,9 @@ Ohai.plugin(:Hardware) do
     device = {}
 
     IO.popen(["ipmitool", "mc", "info"]).each_with_object([]) do |line, devices|
-      if line =~ /(Product [A-Z ]+[A-Z])\s*:\s+(.*\S)\s+\(.*\)\s*$/i
+      if line =~ /(Manufacturer [A-Z ]+[A-Z])\s*:\s+(.*\S)\s+\(.*\)\s*$/i
+        device[Regexp.last_match(1).tr(" ", "_").downcase.to_sym] = Regexp.last_match(2)
+      elsif line =~ /(Product [A-Z ]+[A-Z])\s*:\s+(.*\S)\s+\(.*\)\s*$/i
         device[Regexp.last_match(1).tr(" ", "_").downcase.to_sym] = Regexp.last_match(2)
       elsif line =~ /([A-Z ]+[A-Z])\s*:\s+(.*\S)\s*$/i
         device[Regexp.last_match(1).tr(" ", "_").downcase.to_sym] = Regexp.last_match(2)
