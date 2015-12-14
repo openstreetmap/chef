@@ -758,6 +758,21 @@ Ohai.plugin(:Hardware) do
     end
   end
 
+  def psu_devices
+    device = nil
+
+    IO.popen(["dmidecode", "-t", "39"]).each_with_object([]) do |line, devices|
+      if line =~ /^System Power Supply\s*$/
+        device = {}
+      elsif device && line =~ /^\s+([A-Z ]+):\s+(.*)\s*$/i
+        device[Regexp.last_match(1).tr(" ", "_").downcase.to_sym] = Regexp.last_match(2).strip
+      elsif device && line =~ /^\s*$/
+        devices << device
+        device = nil
+      end
+    end
+  end
+
   collect_data(:default) do
     hardware Mash.new
 
@@ -765,5 +780,6 @@ Ohai.plugin(:Hardware) do
     hardware[:network] = network_devices
     hardware[:memory] = memory_devices
     hardware[:disk] = disk_devices
+    hardware[:psu] = psu_devices
   end
 end
