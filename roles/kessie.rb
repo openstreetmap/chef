@@ -8,13 +8,10 @@ default_attributes(
         :interface => "em1",
         :role => :external,
         :family => :inet,
-        :address => "10.42.0.98",
-        :hwaddress => "d8:d3:85:5d:87:5e",
-        :prefix => "24",
-        :gateway => "10.42.0.1"
+        :address => "178.250.74.36",
+        :hwaddress => "d8:d3:85:5d:87:5e"
       }
-    },
-    :nameservers => ["10.42.0.1"]
+    }
   }
 )
 
