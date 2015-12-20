@@ -118,5 +118,6 @@ run_list(
   "recipe[rsyncd]",
   "recipe[openvpn]",
   "recipe[git::server]",
-  "recipe[tilelog]"
+  "recipe[tilelog]",
+  "recipe[serverinfo]"
 )
