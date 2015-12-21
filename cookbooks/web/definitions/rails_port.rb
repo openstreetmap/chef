@@ -69,53 +69,6 @@ define :rails_port, :action => [:create, :enable] do
     recursive true
   end
 
-  execute rails_directory do
-    action :nothing
-    command "passenger-config restart-app #{rails_directory}"
-    user "root"
-    group "root"
-    only_if { File.exist?("/usr/bin/passenger-config") }
-  end
-
-  file "#{rails_directory}/public/export/embed.html" do
-    action :nothing
-  end
-
-  execute "#{rails_directory}/public/assets" do
-    action :nothing
-    command "bundle#{ruby_version} exec rake#{ruby_version} assets:precompile"
-    environment "RAILS_ENV" => "production"
-    cwd rails_directory
-    user rails_user
-    group rails_group
-    notifies :delete, "file[#{rails_directory}/public/export/embed.html]", :immediate
-    notifies :run, "execute[#{rails_directory}]", :immediate
-  end
-
-  execute "#{rails_directory}/db/migrate" do
-    action :nothing
-    command "bundle#{ruby_version} exec rake#{ruby_version} db:migrate"
-    cwd rails_directory
-    user rails_user
-    group rails_group
-    notifies :run, "execute[#{rails_directory}/public/assets]", :immediate
-  end
-
-  execute "#{rails_directory}/Gemfile" do
-    action :nothing
-    command "bundle#{ruby_version} install"
-    cwd rails_directory
-    user "root"
-    group "root"
-    environment "NOKOGIRI_USE_SYSTEM_LIBRARIES" => "yes"
-    if run_migrations
-      notifies :run, "execute[#{rails_directory}/db/migrate]", :immediate
-    else
-      notifies :run, "execute[#{rails_directory}/public/assets]", :immediate
-    end
-    subscribes :run, "gem_package[bundler#{ruby_version}]"
-  end
-
   directory rails_directory do
     owner rails_user
     group rails_group
@@ -128,7 +81,10 @@ define :rails_port, :action => [:create, :enable] do
     revision rails_revision
     user rails_user
     group rails_group
-    notifies :run, "execute[#{rails_directory}/Gemfile]", :immediate
+    notifies :run, "execute[#{rails_directory}/Gemfile]"
+    notifies :run, "execute[#{rails_directory}/public/assets]"
+    notifies :delete, "file[#{rails_directory}/public/export/embed.html]"
+    notifies :run, "execute[#{rails_directory}]"
   end
 
   directory "#{rails_directory}/tmp" do
@@ -261,6 +217,42 @@ define :rails_port, :action => [:create, :enable] do
     end
   end
 
+  execute "#{rails_directory}/Gemfile" do
+    action :nothing
+    command "bundle#{ruby_version} install"
+    cwd rails_directory
+    user "root"
+    group "root"
+    environment "NOKOGIRI_USE_SYSTEM_LIBRARIES" => "yes"
+    subscribes :run, "gem_package[bundler#{ruby_version}]"
+    notifies :run, "execute[#{rails_directory}]"
+  end
+
+  execute "#{rails_directory}/db/migrate" do
+    action :nothing
+    command "bundle#{ruby_version} exec rake#{ruby_version} db:migrate"
+    cwd rails_directory
+    user rails_user
+    group rails_group
+    subscribes :run, "git[#{rails_directory}]"
+    notifies :run, "execute[#{rails_directory}]"
+    only_if { run_migrations }
+  end
+
+  execute "#{rails_directory}/public/assets" do
+    action :nothing
+    command "bundle#{ruby_version} exec rake#{ruby_version} assets:precompile"
+    environment "RAILS_ENV" => "production"
+    cwd rails_directory
+    user rails_user
+    group rails_group
+    notifies :run, "execute[#{rails_directory}]"
+  end
+
+  file "#{rails_directory}/public/export/embed.html" do
+    action :nothing
+  end
+
   execute "#{rails_directory}/lib/quad_tile/extconf.rb" do
     command "ruby extconf.rb"
     cwd "#{rails_directory}/lib/quad_tile"
@@ -281,6 +273,14 @@ define :rails_port, :action => [:create, :enable] do
         File.mtime("#{rails_directory}/lib/quad_tile/quad_tile_so.so") >= File.mtime("#{rails_directory}/lib/quad_tile/quad_tile.h")
     end
     notifies :run, "execute[#{rails_directory}]"
+  end
+
+  execute rails_directory do
+    action :nothing
+    command "passenger-config restart-app #{rails_directory}"
+    user "root"
+    group "root"
+    only_if { File.exist?("/usr/bin/passenger-config") }
   end
 
   template "/etc/cron.daily/rails-#{name}" do
