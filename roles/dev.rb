@@ -120,6 +120,10 @@ default_attributes(
       :moderation => {
         :repository => "git://github.com/sbagroy986/openstreetmap-website.git",
         :revision => "moderation_queue"
+      },
+      :locale => {
+        :repository => "git://github.com/tomhughes/openstreetmap-website.git",
+        :revision => "locale"
       }
     }
   },
