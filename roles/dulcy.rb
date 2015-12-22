@@ -26,9 +26,41 @@ default_attributes(
         :hwaddress => "0c:c4:7a:66:96:d3"
       }
     }
+  },
+  :postgresql => {
+    :settings => {
+      :defaults => {
+        :shared_buffers => "10GB",
+        :work_mem => "160MB",
+        :maintenance_work_mem => "10GB",
+        :random_page_cost => "1.5",
+        :effective_cache_size => "60GB"
+      }
+    }
+  },
+  :nominatim => {
+    :flatnode_file => "/ssd/nominatim/nodes.store",
+    :database => {
+      :cluster => "9.4/main",
+      :dbname => "nominatim",
+      :postgis => "2.1"
+    },
+    :fpm_pools => {
+      :www => {
+        :port => "8000",
+        :pm => "dynamic",
+        :max_children => "60"
+      },
+      :bulk => {
+        :port => "8001",
+        :pm => "static",
+        :max_children => "10"
+      }
+    }
   }
 )
 
 run_list(
-  "role[ic]"
+  "role[ic]",
+  "role[nominatim-standalone]"
 )
