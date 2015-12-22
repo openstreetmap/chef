@@ -3,8 +3,8 @@
 [hddtemp_smartctl]
 env.drives <%= @disks.map { |d| d[:hddtemp] }.sort.join(" ") %>
 <% @disks.sort_by { |d| d[:hddtemp] }.each do |disk| -%>
-<% if disk[:driver] -%>
-env.type_<%= disk[:hddtemp] %> <%= disk[:driver] %>,<%= disk[:id] %>
+<% if disk[:smart] -%>
+env.type_<%= disk[:hddtemp] %> <%= disk[:smart] %> %>
 <% end -%>
 env.dev_<%= disk[:hddtemp] %> <%= disk[:device] %>
 <% end -%>

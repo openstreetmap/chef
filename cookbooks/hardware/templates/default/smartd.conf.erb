@@ -1,8 +1,8 @@
 # DO NOT EDIT - This file is being maintained by Chef
   
 <% @disks.each do |disk| -%>
-<% if disk[:driver] -%>
-/dev/<%= disk[:device] %> -d <%= disk[:driver] %>,<%= disk[:id] %> -s S/../../7/02 -m admins@openstreetmap.org -M exec /usr/local/bin/smartd-mailer
+<% if disk[:smart] -%>
+/dev/<%= disk[:device] %> -d <%= disk[:smart] %> -s S/../../7/02 -m admins@openstreetmap.org -M exec /usr/local/bin/smartd-mailer
 <% else -%>
 /dev/<%= disk[:device] %> -s S/../../7/02 -m admins@openstreetmap.org -M exec /usr/local/bin/smartd-mailer
 <% end -%>

@@ -297,118 +297,31 @@ end
   end
 end
 
-disks = []
+disks = node[:hardware][:disk][:disks].map do |disk|
+  if disk[:smart_device]
+    controller = node[:hardware][:disk][:controllers][disk[:controller]]
+    device = File.basename(controller[:device])
+    smart = disk[:smart_device]
 
-node[:block_device].each do |name, attributes|
-  disks << { :device => name } if attributes[:vendor] == "ATA"
-end
-
-if status_packages["cciss-vol-status"] && File.exist?("/usr/sbin/cciss_vol_status")
-  status_packages["cciss-vol-status"].each do |device|
-    IO.popen(["cciss_vol_status", "-V", "/dev/#{device}"]).each do |line|
-      disks << { :device => device, :driver => "cciss", :id => Regexp.last_match[1].to_i - 1 } if line =~ / bay ([0-9]+) +HP /
+    if device.start_with?("cciss/") && smart =~ /^cciss,(\d+)$/
+      array = node[:hardware][:disk][:arrays][disk[:arrays].first]
+      munin = "cciss-3#{array[:wwn]}-#{Regexp.last_match(1)}"
+    elsif smart =~ /^.*,(\d+)$/
+      munin = "#{device}-#{Regexp.last_match(1)}"
+    elsif smart =~ %r{^.*,(\d+)/(\d+)$}
+      munin = "#{device}-#{Regexp.last_match(1)}:#{Regexp.last_match(2)}"
     end
-  end
-end
-
-if status_packages["megaclisas-status"] && File.exist?("/usr/sbin/megacli")
-  controller = 0
-
-  Dir.glob("/sys/class/scsi_host/host*") do |host|
-    driver = File.new("#{host}/proc_name").read.chomp
-
-    next unless driver == "megaraid_sas"
-
-    bus = host.sub("/sys/class/scsi_host/host", "")
-    device = File.basename(Dir.glob("/sys/bus/scsi/devices/#{bus}:*/scsi_generic/*").first)
-
-    IO.popen(["megacli", "-PDList", "-a#{controller}", "-NoLog"]).each do |line|
-      disks << { :device => device, :driver => "megaraid",  :id => Regexp.last_match[1] } if line =~ /^Device Id: ([0-9]+)$/
-
-      disks.pop if line =~ /^Firmware state: Hotspare, Spun down$/
-    end
-
-    controller += 1
-  end
-end
-
-if tools_packages.include?("lsiutil")
-  Dir.glob("/sys/class/scsi_host/host*") do |host|
-    driver = File.new("#{host}/proc_name").read.chomp
-
-    next unless driver == "mptsas"
-
-    bus = host.sub("/sys/class/scsi_host/host", "")
-
-    Dir.glob("/sys/bus/scsi/devices/#{bus}:0:*/scsi_generic/*").each do |sg|
-      disks << { :device => File.basename(sg) }
-    end
-  end
-end
-
-if status_packages["sas2ircu-status"]
-  Dir.glob("/sys/class/scsi_host/host*") do |host|
-    driver = File.new("#{host}/proc_name").read.chomp
-
-    next unless driver == "mpt2sas" || driver == "mpt3sas"
-
-    bus = host.sub("/sys/class/scsi_host/host", "")
-
-    Dir.glob("/sys/bus/scsi/devices/#{bus}:0:*/scsi_generic/*").each do |sg|
-      next if File.directory?("#{sg}/../../block")
-
-      disks << { :device => File.basename(sg) }
-    end
-  end
-end
-
-if status_packages["aacraid-status"]
-  Dir.glob("/sys/class/scsi_host/host*") do |host|
-    driver = File.new("#{host}/proc_name").read.chomp
-
-    next unless driver == "aacraid"
-
-    bus = host.sub("/sys/class/scsi_host/host", "")
-
-    Dir.glob("/sys/bus/scsi/devices/#{bus}:1:*/scsi_generic/*").each do |sg|
-      disks << { :device => File.basename(sg) }
-    end
-  end
-end
-
-if tools_packages.include?("areca") && File.exist?("/opt/areca/x86_64/cli64")
-  device = IO.popen(["lsscsi", "-g"]).grep(%r{Areca +RAID controller .*/dev/(sg[0-9]+)}) do
-    Regexp.last_match[1]
-  end.first
-
-  IO.popen(["/opt/areca/x86_64/cli64", "disk", "info"]).each do |line|
-    next if line =~ /N\.A\./
-
-    if line =~ /^ +[0-9]+ +0*([0-9]+) +(?:Slot#|SLOT )0*([0-9]+) +/
-      enc = Regexp.last_match[1]
-      slot = Regexp.last_match[2]
-
-      disks << { :device => device, :driver => "areca", :id => "#{slot}/#{enc}" }
-    elsif line =~ /^ +([0-9]+) +[0-9]+ +/
-      disks << { :device => device, :driver => "areca", :id => Regexp.last_match[1] }
-    end
-  end
-end
-
-disks.each do |disk|
-  if disk[:device] =~ %r{^cciss/(.*)$}
-    id = File.read("/sys/bus/cciss/devices/#{Regexp.last_match[1]}/unique_id").chomp
-
-    disk[:munin] = "cciss-3#{id.downcase}"
   else
-    disk[:munin] = disk[:device]
+    device = File.basename(disk[:device])
+    munin = device
   end
 
-  if disk[:id]
-    disk[:munin] = "#{disk[:munin]}-#{disk[:id].to_s.tr('/', ':')}"
-  end
-
-  disk[:hddtemp] = disk[:munin].tr("-:", "_")
+  Hash[
+    :device => device,
+    :smart => smart,
+    :munin => munin,
+    :hddtemp => munin.tr("-:", "_")
+  ]
 end
 
 if disks.count > 0
@@ -447,7 +360,7 @@ if disks.count > 0
   # an Areca controller as they only allow one thing to
   # talk to the controller at a time and smartd will
   # throw errors if it clashes with munin
-  disks = disks.reject { |disk| disk[:driver] == "areca" }
+  disks = disks.reject { |disk| disk[:smart] && disk[:smart].start_with?("areca,") }
 
   disks.each do |disk|
     munin_plugin "smart_#{disk[:munin]}" do
