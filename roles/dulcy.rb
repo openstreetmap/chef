@@ -32,13 +32,15 @@ default_attributes(
       :defaults => {
         :shared_buffers => "10GB",
         :work_mem => "160MB",
-        :maintenance_work_mem => "10GB",
+        :maintenance_work_mem => "20GB",
         :random_page_cost => "1.5",
-        :effective_cache_size => "60GB"
+        :effective_cache_size => "60GB",
+        :fsync => "off"
       }
     }
   },
   :nominatim => {
+    :enabled => false,
     :flatnode_file => "/ssd/nominatim/nodes.store",
     :database => {
       :cluster => "9.4/main",
