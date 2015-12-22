@@ -26,6 +26,7 @@ package "php5-pgsql"
 package "php5-fpm"
 package "php-pear"
 package "php-apc"
+package "php-db"
 
 apache_module "rewrite"
 apache_module "proxy"
@@ -105,11 +106,6 @@ package "libboost-dev"
 package "libboost-system-dev"
 package "libboost-filesystem-dev"
 package "libboost-thread-dev"
-
-execute "php-pear-db" do
-  command "pear install DB"
-  not_if { File.exist?("/usr/share/php/DB") }
-end
 
 execute "compile_nominatim" do
   action :nothing
