@@ -300,7 +300,7 @@ end
 disks = node[:hardware][:disk][:disks].map do |disk|
   if disk[:smart_device]
     controller = node[:hardware][:disk][:controllers][disk[:controller]]
-    device = File.basename(controller[:device])
+    device = controller[:device].sub("/dev/", "")
     smart = disk[:smart_device]
 
     if device.start_with?("cciss/") && smart =~ /^cciss,(\d+)$/
@@ -312,7 +312,7 @@ disks = node[:hardware][:disk][:disks].map do |disk|
       munin = "#{device}-#{Regexp.last_match(1)}:#{Regexp.last_match(2)}"
     end
   else
-    device = File.basename(disk[:device])
+    device = disk[:device].sub("/dev/", "")
     munin = device
   end
 
