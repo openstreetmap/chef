@@ -311,10 +311,12 @@ disks = node[:hardware][:disk][:disks].map do |disk|
     elsif smart =~ %r{^.*,(\d+)/(\d+)$}
       munin = "#{device}-#{Regexp.last_match(1)}:#{Regexp.last_match(2)}"
     end
-  else
+  elsif disk[:device]
     device = disk[:device].sub("/dev/", "")
     munin = device
   end
+
+  next if device.nil?
 
   Hash[
     :device => device,
@@ -323,6 +325,8 @@ disks = node[:hardware][:disk][:disks].map do |disk|
     :hddtemp => munin.tr("-:", "_")
   ]
 end
+
+disks = disks.compact
 
 if disks.count > 0
   package "smartmontools"
