@@ -434,6 +434,15 @@ Ohai.plugin(:Hardware) do
         devices[:disks] << disk
         controller[:disks] << disk[:id]
         array[:disks] << disk[:id]
+      elsif disk && line =~ /^Firmware state:\s+(.*\S)\s*$/
+        Regexp.last_match(1).split(/,\s*/).each do |state|
+          case state
+          when "Online" then disk[:status] = "online"
+          when "Hotspare" then disk[:status] = "hotspare"
+          when "Spun Up" then disk[:spun_down] = false
+          when "Spun down" then disk[:spun_down] = true
+          end
+        end
       elsif disk && line =~ /^(\S.*\S)\s*:\s+(\S.*)$/
         case Regexp.last_match(1)
         when "Device Id" then disk[:smart_device] = "megaraid,#{Regexp.last_match(2)}"
@@ -464,10 +473,18 @@ Ohai.plugin(:Hardware) do
 
           devices[:disks] << disk
         end
+      elsif disk && line =~ /^Firmware state:\s+(.*\S)\s*$/
+        Regexp.last_match(1).split(/,\s*/).each do |state|
+          case state
+          when "Online" then disk[:status] = "online"
+          when "Hotspare" then disk[:status] = "hotspare"
+          when "Spun Up" then disk[:state] = "spun_up"
+          when "Spun down" then disk[:state] = "spun_down"
+          end
+        end
       elsif disk && line =~ /^(\S.*\S)\s*:\s+(\S.*)$/
         case Regexp.last_match(1)
         when "Device Id" then disk[:smart_device] = "megaraid,#{Regexp.last_match(2)}"
-        when "WWN" then disk[:wwn] = Regexp.last_match(2)
         when "PD Type" then disk[:interface] = Regexp.last_match(2)
         when "Raw Size" then disk[:size] = memory_to_disk_size(Regexp.last_match(2).sub(/\s*\[.*\]$/, ""))
         when "Inquiry Data" then disk[:vendor], disk[:model], disk[:serial_number] = Regexp.last_match(2).split

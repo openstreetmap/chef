@@ -298,6 +298,8 @@ end
 end
 
 disks = node[:hardware][:disk][:disks].map do |disk|
+  next if disk[:state] == "spun_down"
+
   if disk[:smart_device]
     controller = node[:hardware][:disk][:controllers][disk[:controller]]
     device = controller[:device].sub("/dev/", "")
