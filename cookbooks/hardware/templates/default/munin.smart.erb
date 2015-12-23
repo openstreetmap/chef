@@ -2,7 +2,7 @@
 
 [smart_<%= @disk[:munin] %>]
 <% if @disk[:smart] -%>
-env.smartargs -H -d <%= @disk[:smart] %> %>
+env.smartargs -H -d <%= @disk[:smart] %>
 <% else -%>
 env.smartargs -H
 <% end -%>
