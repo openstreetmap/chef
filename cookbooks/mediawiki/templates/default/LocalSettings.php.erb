@@ -164,6 +164,14 @@ $wgResourceLoaderMaxQueryLength = -1;
 #Only Allow Signed-in users to edit
 $wgGroupPermissions['*']['edit'] = false;
 
+#Only allow autoconfirmed for a few actions
+$wgGroupPermissions['user']['move'] = false;
+$wgGroupPermissions['user']['movefile'] = false;
+$wgGroupPermissions['user']['move-categorypages'] = false;
+$wgGroupPermissions['autoconfirmed']['move'] = false;
+$wgGroupPermissions['autoconfirmed']['movefile'] = false;
+$wgGroupPermissions['autoconfirmed']['move-categorypages'] = false;
+
 #Allow bureaucrat group access to oversight options
 $wgGroupPermissions['bureaucrat']['hideuser'] = true;
 $wgGroupPermissions['bureaucrat']['deletelogentry'] = true;
@@ -196,10 +204,14 @@ $wgNamespacesWithSubpages[NS_MAIN] = true;
 
 #DNS Blacklists to use
 $wgEnableDnsBlacklist = true;
-$wgDnsBlacklistUrls = array( 'proxies.dnsbl.sorbs.net.', 'opm.tornevall.org.', 'xbl.spamhaus.org.' );
+$wgDnsBlacklistUrls = array( 'proxies.dnsbl.sorbs.net.', 'opm.tornevall.org.', 'xbl.spamhaus.org.' 'dnsbl-3.uceprotect.net.' );
 
-#Redirect validated email to edit
+#Require validated email to edit
 $wgEmailConfirmToEdit = true;
+
+#Autopromote users to autoconfirmed
+$wgAutoConfirmAge = 345600; // 4 days
+$wgAutoConfirmCount = 10;
 
 #Disable Hit Counter for Performance
 $wgDisableCounters = TRUE;
