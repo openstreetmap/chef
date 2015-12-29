@@ -211,6 +211,12 @@ $wgDnsBlacklistUrls = array( 'proxies.dnsbl.sorbs.net.', 'opm.tornevall.org.', '
 #Require validated email to edit
 $wgEmailConfirmToEdit = true;
 
+# Extend autoblock period
+$wgAutoblockExpiry = 7776000; // 90 days
+
+# Spam filter regex
+$wgSpamRegex = '/\b(epson|brother|canon|hp|kodak|lexmark|mcafee|norton|avira|kaspersky|avg|avast|microsoft|outlook|printer)( helpline|( customer| technical| tech)?| customer service)? (support number|phone number)\b/i';
+
 #Autopromote users to autoconfirmed
 $wgAutoConfirmAge = 345600; // 4 days
 $wgAutoConfirmCount = 10;
