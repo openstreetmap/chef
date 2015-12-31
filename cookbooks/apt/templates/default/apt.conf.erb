@@ -1,0 +1,5 @@
+// DO NOT EDIT - This file is being maintained by Chef
+
+// Do automatic removal of new unused dependencies after the upgrade
+// (equivalent to apt-get autoremove)
+Unattended-Upgrade::Remove-Unused-Dependencies "<%= node['apt']['unattended_upgrades']['remove_unused_dependencies'] ? 'true' : 'false' %>";

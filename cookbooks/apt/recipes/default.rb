@@ -19,6 +19,7 @@
 
 package "apt"
 package "update-notifier-common"
+package "debconf-utils"
 
 file "/etc/motd.tail" do
   action :delete
@@ -108,4 +109,23 @@ apt_source "postgresql" do
   template "postgresql.list.erb"
   url "http://apt.postgresql.org/pub/repos/apt"
   key "ACCC4CF8"
+end
+
+package "unattended-upgrades" do
+  response_file "unattended-upgrades.seed.erb"
+  action :install
+end
+
+# Not idempotent - reconfig runs every time, required if package previously installed without response_file or response_file changes
+package "unattended-upgrades_reconfig" do
+  package_name "unattended-upgrades"
+  response_file "unattended-upgrades.seed.erb"
+  action :reconfig
+end
+
+template "/etc/apt/apt.conf.d/60chef" do
+  source "apt.conf.erb"
+  owner "root"
+  group "root"
+  mode 0644
 end
