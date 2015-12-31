@@ -2,6 +2,11 @@ name "katie"
 description "Master role applied to katie"
 
 default_attributes(
+  :apt => {
+    :unattended_upgrades => {
+      :remove_unused_dependencies => true
+    }
+  },
   :networking => {
     :interfaces => {
       :external_ipv4 => {
