@@ -109,3 +109,25 @@ apt_source "postgresql" do
   url "http://apt.postgresql.org/pub/repos/apt"
   key "ACCC4CF8"
 end
+
+package "unattended-upgrades"
+
+auto_upgrades = if node[:apt][:unattended_upgrades][:enable]
+                  IO.read("/usr/share/unattended-upgrades/20auto-upgrades")
+                else
+                  IO.read("/usr/share/unattended-upgrades/20auto-upgrades-disabled")
+                end
+
+file "/etc/apt/apt.conf.d/20auto-upgrades" do
+  user "root"
+  group "root"
+  mode 0644
+  content auto_upgrades
+end
+
+template "/etc/apt/apt.conf.d/60chef" do
+  source "apt.conf.erb"
+  owner "root"
+  group "root"
+  mode 0644
+end

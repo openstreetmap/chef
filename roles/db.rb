@@ -10,6 +10,11 @@ default_attributes(
       }
     }
   },
+  :apt => {
+    :unattended_upgrades => {
+      :enable => false
+    }
+  },
   :munin => {
     :plugins => {
       :postgres_connections_openstreetmap => {
