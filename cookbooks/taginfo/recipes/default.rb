@@ -39,7 +39,6 @@ package "g++"
 package "sqlite3"
 package "osmosis"
 package "curl"
-package "m4"
 
 ruby_version = node[:passenger][:ruby_version]
 
@@ -139,7 +138,6 @@ node[:taginfo][:sites].each do |site|
     settings["sources"]["create"] = "db languages projects wiki"
     settings["sources"]["db"]["planetfile"] = "#{directory}/planet/planet.pbf"
     settings["sources"]["db"]["bindir"] = "#{directory}/taginfo/tagstats"
-    settings["sources"]["db"]["tagstats"] = "#{directory}/taginfo/tagstats/tagstats"
     settings["tagstats"]["cxxflags"] = "-I../../libosmium/include"
     settings["tagstats"]["geodistribution"] = "DenseMmapArray"
     settings["user_interface"]["key_page"]["show_tab_similar"] = true
