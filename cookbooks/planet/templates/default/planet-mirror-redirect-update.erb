@@ -11,7 +11,7 @@ $_YEAR = date('Y');
 $_PLANET_FOLDER = '<%= node[:planet][:dump][:xml_directory] %>/'.$_YEAR.'/';
 $_PLANET_REGEX = "/^(planet|changesets)\-\d{6}(\-nolt)?\.osm\.(bz2|gz)$/";
 $_MIRROR = 'http://ftp.heanet.ie/mirrors/openstreetmap.org/planet/'.$_YEAR.'/';
-$_PLANET_HTACCESS = realpath($_PLANET_FOLDER.'../..').'/.htaccess';
+$_PLANET_HTACCESS = realpath('<%= node[:planet][:dump][:xml_directory] %>/..').'/.htaccess';
 
 function _MIRROR_FILE_SIZE($url) {
 	$ch = @curl_init();
@@ -34,9 +34,7 @@ if (is_dir($_PLANET_FOLDER)) {
 			if (preg_match($_PLANET_REGEX,$file)) {
 				$file_slashed = 'planet/'.$_YEAR.'/'.str_replace(array('.','-'), array('\.','\-'), $file);
 				if (strpos($htaccess_contents,$file_slashed) === false) {
-					//PHP IS BRAINDEAD filesize borked >4GB
-					//$file_size = $file_stats['size'];
-					$file_size = trim(`stat -c%s $_PLANET_FOLDER$file`);
+					$file_size = filesize($_PLANET_FOLDER$file);
 					sleep(rand(2,5));
 					$file_mirror_size = _MIRROR_FILE_SIZE($_MIRROR.$file);
 					if ($file_size==$file_mirror_size) {
