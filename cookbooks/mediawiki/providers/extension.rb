@@ -68,7 +68,7 @@ action :create do
 
     file "#{mediawiki_directory}/LocalSettings.d/Ext-#{new_resource.name}.inc.php" do
       action :create
-      content "<?php require_once('#{extension_script}');\n"
+      content "<?php wfLoadExtension( '#{new_resource.name}' );\n"
       user node[:mediawiki][:user]
       group node[:mediawiki][:group]
       mode 0664

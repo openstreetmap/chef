@@ -23,7 +23,7 @@ default_action :create
 attribute :name, :kind_of => String, :name_attribute => true
 attribute :aliases, :kind_of => [String, Array]
 attribute :directory, :kind_of => String
-attribute :version, :kind_of => String, :default => "1.24"
+attribute :version, :kind_of => String, :default => "1.26"
 attribute :database_name, :kind_of => String, :required => true
 attribute :database_user, :kind_of => String, :required => true
 attribute :database_password, :kind_of => String, :required => true

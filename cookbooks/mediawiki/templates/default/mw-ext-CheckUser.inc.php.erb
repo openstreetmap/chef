@@ -1,6 +1,6 @@
 <?php
 # DO NOT EDIT - This file is being maintained by Chef
-require_once($IP .'/extensions/CheckUser/CheckUser.php');
+wfLoadExtension( 'CheckUser' );
 
 #Only allow bureaucrat group to checkuser
 $wgGroupPermissions['bureaucrat']['checkuser'] = true;

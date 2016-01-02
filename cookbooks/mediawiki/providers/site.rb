@@ -87,12 +87,21 @@ action :create do
 
   mediawiki_reference = "REL#{new_resource.version}".tr(".", "_")
 
+  git "#{mediawiki_directory}/vendor" do
+    action :nothing
+    repository "https://gerrit.wikimedia.org/r/p/mediawiki/vendor.git"
+    revision mediawiki_reference
+    user node[:mediawiki][:user]
+    group node[:mediawiki][:group]
+  end
+
   git mediawiki_directory do
     action :sync
     repository "https://gerrit.wikimedia.org/r/p/mediawiki/core.git"
     revision mediawiki_reference
     user node[:mediawiki][:user]
     group node[:mediawiki][:group]
+    notifies :sync, "git[#{mediawiki_directory}/vendor]", :immediately
     notifies :run, "execute[#{mediawiki_directory}/maintenance/install.php]", :immediately
     notifies :run, "execute[#{mediawiki_directory}/maintenance/update.php]"
   end
@@ -182,7 +191,11 @@ action :create do
 
   mediawiki_extension "Cite" do
     site new_resource.name
-    template "mw-ext-Cite.inc.php.erb"
+    update_site false
+  end
+
+  mediawiki_extension "CiteThisPage" do
+    site new_resource.name
     update_site false
   end
 
@@ -244,6 +257,7 @@ action :create do
   mediawiki_extension "SimpleAntiSpam" do
     site new_resource.name
     update_site false
+    action :delete
   end
 
   mediawiki_extension "SpamBlacklist" do
@@ -270,7 +284,7 @@ action :create do
 
   # MediaWiki Language Extension Bundle
   # FIXME: should automatically resolve tag
-  mw_lang_ext_bundle_tag = "2015.08"
+  mw_lang_ext_bundle_tag = "2015.10"
 
   mediawiki_extension "Babel" do
     site new_resource.name
@@ -379,6 +393,7 @@ action :create do
   mediawiki_extension "Mantle" do
     site new_resource.name
     update_site false
+    action :delete
   end
 
   mediawiki_extension "MobileFrontend" do

@@ -1,6 +1,6 @@
 <?php
 # DO NOT EDIT - This file is being maintained by Chef
-require_once( $IP.'/extensions/DisableAccount/DisableAccount.php' );
+wfLoadExtension( 'DisableAccount' );
 
 // Allow bureaucrats to disable users
 $wgGroupPermissions['bureaucrat']['disableaccount'] = true;

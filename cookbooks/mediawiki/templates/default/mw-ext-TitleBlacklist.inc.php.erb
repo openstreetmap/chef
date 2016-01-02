@@ -1,6 +1,6 @@
 <?php
 # DO NOT EDIT - This file is being maintained by Chef
-require_once( $IP.'/extensions/TitleBlacklist/TitleBlacklist.php' );
+wfLoadExtension( 'TitleBlacklist' );
 $wgTitleBlacklistSources = array(
   array(
     'type' => TBLSRC_LOCALPAGE,
