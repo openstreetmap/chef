@@ -20,8 +20,8 @@ exports.setup = function(parsoidConfig) {
 	// The URL of your MediaWiki API endpoint.
 	//parsoidConfig.setMwApi({ prefix: 'localhost', uri: 'http://localhost/w/api.php' });
 
-	<% node[:mediawiki][:sites].keys.sort.each do |mediawiki_name| -%>
-  parsoidConfig.setMwApi({ uri: 'http://<%= @mediawiki_name %>/w/api.php' });
+	<% node[:mediawiki][:sites].keys.sort.each do |site_url| -%>
+  parsoidConfig.setMwApi({ uri: 'http://<%= site_url %>/w/api.php' });
 	<% end -%>
 
 	// To specify a proxy (or proxy headers) specific to this prefix (which
