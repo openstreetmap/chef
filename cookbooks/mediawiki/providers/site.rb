@@ -373,26 +373,26 @@ action :create do
 
   mediawiki_extension "osmtaginfo" do
     site new_resource.name
+    template "mw-ext-osmtaginfo.inc.php.erb"
     repository "git://github.com/Firefishy/osmtaginfo.git"
     tag "live"
     update_site false
-    action :delete
   end
 
   mediawiki_extension "SimpleMap" do
     site new_resource.name
+    template "mw-ext-SimpleMap.inc.php.erb"
     repository "git://github.com/Firefishy/SimpleMap.git"
     tag "live"
     update_site false
-    action :delete
   end
 
   mediawiki_extension "SlippyMap" do
     site new_resource.name
+    template "mw-ext-SlippyMap.inc.php.erb"
     repository "git://github.com/Firefishy/SlippyMap.git"
     tag "live"
     update_site false
-    action :delete
   end
 
   mediawiki_extension "Mantle" do
