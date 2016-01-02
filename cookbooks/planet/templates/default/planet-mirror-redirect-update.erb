@@ -34,7 +34,7 @@ if (is_dir($_PLANET_FOLDER)) {
 			if (preg_match($_PLANET_REGEX,$file)) {
 				$file_slashed = 'planet/'.$_YEAR.'/'.str_replace(array('.','-'), array('\.','\-'), $file);
 				if (strpos($htaccess_contents,$file_slashed) === false) {
-					$file_size = filesize($_PLANET_FOLDER$file);
+					$file_size = filesize($_PLANET_FOLDER.$file);
 					sleep(rand(2,5));
 					$file_mirror_size = _MIRROR_FILE_SIZE($_MIRROR.$file);
 					if ($file_size==$file_mirror_size) {
