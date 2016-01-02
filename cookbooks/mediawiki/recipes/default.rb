@@ -49,6 +49,19 @@ package "xz-utils"
 package "curl"
 package "parsoid"
 
+template "/etc/mediawiki/parsoid/settings.js" do
+  source "parsoid-settings.js.erb"
+  owner "root"
+  group "root"
+  mode 0644
+end
+
+service "parsoid" do
+  action [:enable]
+  supports :status => false, :restart => true, :reload => false
+  subscribes :restart, "template[/etc/mediawiki/parsoid/settings.js]"
+end
+
 link "/etc/php5/apache2/conf.d/20-wikidiff2.ini" do
   to "../../mods-available/wikidiff2.ini"
 end

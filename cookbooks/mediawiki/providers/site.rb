@@ -413,6 +413,12 @@ action :create do
     update_site false
   end
 
+  mediawiki_extension "VisualEditor" do
+    site new_resource.name
+    template "mw-ext-VisualEditor.inc.php.erb"
+    update_site false
+  end
+
   cookbook_file "#{site_directory}/cc-wiki.png" do
     cookbook "mediawiki"
     owner node[:mediawiki][:user]
