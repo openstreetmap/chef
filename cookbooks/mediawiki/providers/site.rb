@@ -295,6 +295,7 @@ action :create do
 
   mediawiki_extension "cldr" do
     site new_resource.name
+    template "mw-ext-cldr.inc.php.erb"
     tag mw_lang_ext_bundle_tag
     update_site false
   end
