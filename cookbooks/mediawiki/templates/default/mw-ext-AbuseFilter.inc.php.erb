@@ -1,6 +1,6 @@
 <?php
 # DO NOT EDIT - This file is being maintained by Chef
-wfLoadExtension( 'AbuseFilter' );
+require_once($IP .'/extensions/AbuseFilter/AbuseFilter.php');
 $wgGroupPermissions['sysop']['abusefilter-modify'] = true;
 $wgGroupPermissions['*']['abusefilter-log-detail'] = true;
 $wgGroupPermissions['*']['abusefilter-view'] = true;
