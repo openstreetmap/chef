@@ -45,6 +45,10 @@ package "poppler-utils"
 # Mediawiki backup
 package "xz-utils"
 
+# Mediawiki packages for VisualEditor support
+package "curl"
+package "parsoid"
+
 link "/etc/php5/apache2/conf.d/20-wikidiff2.ini" do
   to "../../mods-available/wikidiff2.ini"
 end

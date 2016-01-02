@@ -110,6 +110,12 @@ apt_source "postgresql" do
   key "ACCC4CF8"
 end
 
+apt_source "mediawiki" do
+  template "mediawiki.list.erb"
+  url "https://releases.wikimedia.org/debian"
+  key "664C383A3566A3481B942F007A322AC6E84AFDD2"
+end
+
 package "unattended-upgrades"
 
 auto_upgrades = if node[:apt][:unattended_upgrades][:enable]
