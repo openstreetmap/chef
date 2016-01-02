@@ -339,6 +339,7 @@ action :create do
 
   mediawiki_extension "AntiSpoof" do
     site new_resource.name
+    template "mw-ext-AntiSpoof.inc.php.erb"
     update_site false
   end
 
