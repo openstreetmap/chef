@@ -1,6 +1,9 @@
 <?php
 # DO NOT EDIT - This file is being maintained by Chef
-wfLoadExtension( 'MobileFrontend' );
+
+#!!! NEEDS REQUIRE !!!
+require_once "$IP/extensions/MobileFrontend/MobileFrontend.php";
+#!!! NEEDS REQUIRE !!!
 
 // Enable detection in PHP. Disable this if you put MW behind a caching layer
 $wgMFAutodetectMobileView = true;
