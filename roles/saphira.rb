@@ -41,5 +41,6 @@ default_attributes(
 
 run_list(
   "role[jump]",
+  "role[geodns]",
   "role[tilecache]"
 )

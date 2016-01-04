@@ -42,5 +42,6 @@ default_attributes(
 
 run_list(
   "role[hetzner]",
+  "role[geodns]",
   "role[tilecache]"
 )

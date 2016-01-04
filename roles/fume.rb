@@ -58,5 +58,6 @@ default_attributes(
 
 run_list(
   "role[teleservice]",
+  "role[geodns]",
   "role[tilecache]"
 )

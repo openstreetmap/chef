@@ -35,6 +35,5 @@ default_attributes(
 )
 
 run_list(
-  "role[geodns]",
   "recipe[tilecache]"
 )

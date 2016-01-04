@@ -59,5 +59,6 @@ default_attributes(
 
 run_list(
   "role[prgmr]",
+  "role[geodns]",
   "role[tilecache]"
 )
