@@ -632,7 +632,7 @@ Ohai.plugin(:Hardware) do
           disks << disk
         elsif disk && line =~ /^         Reported Channel,Device\(T:L\)\s*:\s+(\d+),(\d+)\(\d+:0\)\s*$/
           disk[:channel_number] = Regexp.last_match(1)
-          disk[:device_number] = Regexp.last_match(1)
+          disk[:device_number] = Regexp.last_match(2)
         elsif disk && line =~ /^         (\S.*\S)\s*:\s+(\S.*\S)\s*$/
           case Regexp.last_match(1)
           when "Reported Location" then disk[:location] = Regexp.last_match(2)
