@@ -50,7 +50,7 @@ default_attributes(
       }
     },
     :redirects => {
-      :reverse => "poldi.openstreetmap.org"
+      :reverse => "dulcy.openstreetmap.org"
     }
   },
   :hardware => {
