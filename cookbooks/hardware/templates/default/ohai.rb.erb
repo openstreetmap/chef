@@ -586,7 +586,7 @@ Ohai.plugin(:Hardware) do
   end
 
   def find_adaptec_disks(devices)
-    controller_count = IO.popen(%w(arcconf getconfig 0)).first.scan(/^Controllers found: (\d+)$/).first.first.to_i
+    controller_count = IO.popen(%w(arcconf getconfig 0)).first.scan(/^Controllers Found: (\d+)$/i).first.first.to_i
 
     1.upto(controller_count).each do |controller_number|
       controller = {
@@ -605,7 +605,7 @@ Ohai.plugin(:Hardware) do
       disk = nil
 
       IO.popen(["arcconf", "getconfig", controller_number.to_s]).each do |line|
-        if line =~ /^Logical device number (\d+)$/
+        if line =~ /^Logical Device Number (\d+)$/i
           array = {
             :id => devices[:arrays].count,
             :controller => controller[:id],
@@ -639,16 +639,19 @@ Ohai.plugin(:Hardware) do
           when "Vendor" then disk[:vendor] = Regexp.last_match(2)
           when "Model" then disk[:model] = Regexp.last_match(2)
           when "Firmware" then disk[:firmware_version] = Regexp.last_match(2)
-          when "Serial" then disk[:serial_number] = Regexp.last_match(2)
+          when "Serial number" then disk[:serial_number] = Regexp.last_match(2)
+          when "Serial Number" then disk[:serial_number] = Regexp.last_match(2)
           when "World-wide name" then disk[:wwn] = Regexp.last_match(2)
+          when "World-wide Name" then disk[:wwn] = Regexp.last_match(2)
           when "Total Size" then disk[:size] = memory_to_disk_size(Regexp.last_match(2))
           when "Size" then disk[:size] = memory_to_disk_size(Regexp.last_match(2))
           end
-        elsif array && line =~ / Present \(Controller:\d+,((?:Connector|Enclosure):\d+,(?:Device|Slot):\d+)\) /
-          array[:disks] << Regexp.last_match(1).tr(":", " ").gsub(",", ", ")
+        elsif array && line =~ / Present \(.*((?:Connector|Enclosure):\d+,\s*(?:Device|Slot):\d+)\) /
+          array[:disks] << Regexp.last_match(1).tr(":", " ").gsub(/,\s*/, ", ")
         elsif array && line =~ /^   (\S.*\S)\s*:\s+(\S.*\S)\s*$/
           case Regexp.last_match(1)
           when "RAID level" then array[:raid_level] = Regexp.last_match(2)
+          when "RAID Level" then array[:raid_level] = Regexp.last_match(2)
           when "Size" then array[:size] = memory_to_disk_size(Regexp.last_match(2))
           end
         elsif line =~ /^   (\S.*\S)\s*:\s+(\S.*\S)\s*$/
@@ -659,6 +662,8 @@ Ohai.plugin(:Hardware) do
           when "BIOS" then controller[:bios_version] = Regexp.last_match(2)
           when "Firmware" then controller[:firmware_version] = Regexp.last_match(2)
           end
+        elsif line =~ /^         Serial Number\s*:\s+(\S.*\S)\s*$/
+          controller[:serial_number] = Regexp.last_match(1)
         end
       end
 
