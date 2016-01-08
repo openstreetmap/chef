@@ -2,6 +2,11 @@ name "datahata"
 description "Role applied to all servers at DataHata"
 
 default_attributes(
+  :accounts => {
+    :users => {
+      :kom => { :status => :administrator }
+    }
+  },
   :networking => {
     :nameservers => [
       "31.130.200.2"
