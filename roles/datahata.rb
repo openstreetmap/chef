@@ -13,7 +13,7 @@ default_attributes(
     ],
     :roles => {
       :external => {
-        :zone => "dn"
+        :zone => "dh"
       }
     }
   }
