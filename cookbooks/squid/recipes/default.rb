@@ -40,13 +40,38 @@ directory "/etc/squid/squid.conf.d" do
   mode 0755
 end
 
-service "squid" do
-  provider Chef::Provider::Service::Upstart
-  action [:enable, :start]
-  supports :status => true, :restart => true, :reload => true
-  subscribes :reload, "template[/etc/squid/squid.conf]"
-  subscribes :restart, "template[/etc/default/squid]"
-  subscribes :reload, "template[/etc/resolv.conf]"
+if node[:lsb][:release].to_f >= 15.10
+  execute "systemctl-daemon-reload" do
+    action :nothing
+    command "systemctl daemon-reload"
+  end
+
+  template "/etc/systemd/system/squid.service" do
+    source "squid.service.erb"
+    owner "root"
+    group "root"
+    mode 0644
+    notifies :run, "execute[systemctl-daemon-reload]"
+  end
+
+  service "squid" do
+    provider Chef::Provider::Service::Systemd
+    action [:enable, :start]
+    supports :status => true, :restart => true, :reload => true
+    subscribes :restart, "template[/etc/systemd/system/squid.service]"
+    subscribes :reload, "template[/etc/squid/squid.conf]"
+    subscribes :restart, "template[/etc/default/squid]"
+    subscribes :reload, "template[/etc/resolv.conf]"
+  end
+else
+  service "squid" do
+    provider Chef::Provider::Service::Upstart
+    action [:enable, :start]
+    supports :status => true, :restart => true, :reload => true
+    subscribes :reload, "template[/etc/squid/squid.conf]"
+    subscribes :restart, "template[/etc/default/squid]"
+    subscribes :reload, "template[/etc/resolv.conf]"
+  end
 end
 
 munin_plugin "squid_cache"
