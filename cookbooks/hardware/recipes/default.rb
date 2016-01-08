@@ -297,7 +297,13 @@ end
   end
 end
 
-disks = node[:hardware][:disk][:disks].map do |disk|
+if node[:hardware][:disk]
+  disks = node[:hardware][:disk][:disks]
+else
+  disks = []
+end
+
+disks = disks.map do |disk|
   next if disk[:state] == "spun_down"
 
   if disk[:smart_device]
