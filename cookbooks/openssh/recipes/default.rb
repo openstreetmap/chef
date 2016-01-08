@@ -24,7 +24,9 @@ package "openssh-client"
 package "openssh-server"
 
 service "ssh" do
-  if node[:lsb][:release].to_f >= 14.04
+  if node[:lsb][:release].to_f >= 15.10
+    provider Chef::Provider::Service::Systemd
+  elsif node[:lsb][:release].to_f >= 14.04
     provider Chef::Provider::Service::Upstart
   end
   action [:enable, :start]
