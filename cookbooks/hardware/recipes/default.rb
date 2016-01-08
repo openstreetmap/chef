@@ -443,7 +443,11 @@ if node[:lsb][:release].to_f <= 12.10
   end
 else
   service "kmod" do
-    provider Chef::Provider::Service::Upstart
+    if node[:lsb][:release].to_f >= 15.10
+      provider Chef::Provider::Service::Systemd
+    else
+      provider Chef::Provider::Service::Upstart
+    end
     action :nothing
     subscribes :start, "template[/etc/modules]"
   end
