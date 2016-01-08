@@ -52,13 +52,6 @@ dpkg_package "chef" do
   version node[:chef][:client][:version]
 end
 
-template "/etc/init/chef-client.conf" do
-  source "chef-client.conf.erb"
-  owner "root"
-  group "root"
-  mode 0644
-end
-
 directory "/etc/chef" do
   owner "root"
   group "root"
@@ -117,12 +110,44 @@ directory "/var/log/chef" do
   mode 0755
 end
 
-service "chef-client" do
-  provider Chef::Provider::Service::Upstart
-  action [:enable, :start]
-  supports :status => true, :restart => true, :reload => true
-  subscribes :restart, "dpkg_package[chef]"
-  subscribes :restart, "template[/etc/init/chef-client.conf]"
-  subscribes :restart, "template[/etc/chef/client.rb]"
-  subscribes :restart, "template[/etc/chef/report.rb]"
+if node[:lsb][:release].to_f >= 15.10
+  execute "systemctl-daemon-reload" do
+    action :nothing
+    command "systemctl daemon-reload"
+  end
+
+  template "/etc/systemd/system/chef-client.service" do
+    source "chef-client.service.erb"
+    owner "root"
+    group "root"
+    mode 0644
+    notifies :run, "execute[systemctl-daemon-reload]"
+  end
+
+  service "chef-client" do
+    provider Chef::Provider::Service::Systemd
+    action [:enable, :start]
+    supports :status => true, :restart => true, :reload => true
+    subscribes :restart, "dpkg_package[chef]"
+    subscribes :restart, "template[/etc/systemd/system/chef-client.service]"
+    subscribes :restart, "template[/etc/chef/client.rb]"
+    subscribes :restart, "template[/etc/chef/report.rb]"
+  end
+else
+  template "/etc/init/chef-client.conf" do
+    source "chef-client.conf.erb"
+    owner "root"
+    group "root"
+    mode 0644
+  end
+
+  service "chef-client" do
+    provider Chef::Provider::Service::Upstart
+    action [:enable, :start]
+    supports :status => true, :restart => true, :reload => true
+    subscribes :restart, "dpkg_package[chef]"
+    subscribes :restart, "template[/etc/init/chef-client.conf]"
+    subscribes :restart, "template[/etc/chef/client.rb]"
+    subscribes :restart, "template[/etc/chef/report.rb]"
+  end
 end
