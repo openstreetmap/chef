@@ -283,7 +283,7 @@ define :rails_port, :action => [:create, :enable] do
     only_if { File.exist?("/usr/bin/passenger-config") }
   end
 
-  template "/etc/cron.daily/rails-#{name}" do
+  template "/etc/cron.daily/rails-#{name.tr('.', '-')}" do
     cookbook "web"
     source "rails.cron.erb"
     owner "root"
