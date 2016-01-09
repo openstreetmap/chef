@@ -135,9 +135,17 @@ search(:accounts, "*:*").each do |account|
   end
 end
 
-if node[:postgresql][:clusters][:"9.1/main"]
+if node[:postgresql][:clusters][:"9.3/main"]
   postgresql_user "apis" do
     cluster "9.3/main"
+  end
+
+  template "/usr/local/bin/cleanup-rails-assets" do
+    cookbook "web"
+    source "cleanup-assets.erb"
+    owner "root"
+    group "root"
+    mode 0755
   end
 
   node[:dev][:rails].each do |name, details|
