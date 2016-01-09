@@ -3,6 +3,7 @@
 use strict;
 use warnings;
 
+use Errno;
 use IO::Dir;
 use IO::File;
 use JSON::XS;
@@ -13,16 +14,16 @@ my $manifest;
 
 if (my $file = IO::File->new("${root}/tmp/manifest.json", "r"))
 {
-    $manifest = decode_json(join("\n", $file->getlines));
+    my $manifest = decode_json(join("\n", $file->getlines));
 
     $file->close;
+
+    expire_assets($manifest, "${root}/public/assets", "");
 }
 else
 {
-    die "Can't open ${root}/tmp/manifest.json: $!";
+    die "Can't open ${root}/tmp/manifest.json: $!" unless $!{ENOENT};
 }
-
-expire_assets($manifest, "${root}/public/assets", "");
 
 exit 0;
 
