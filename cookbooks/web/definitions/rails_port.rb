@@ -164,6 +164,10 @@ define :rails_port, :action => [:create, :enable] do
       line.gsub!(/^( *)nominatim_url:.*$/, "\\1nominatim_url: \"#{params[:nominatim_url]}\"")
     end
 
+    if params[:osrm_url]
+      line.gsub!(/^( *)osrm_url:.*$/, "\\1osrm_url: \"#{params[:osrm_url]}\"")
+    end
+
     if params[:google_auth_id]
       line.gsub!(/^( *)#google_auth_id:.*$/, "\\1google_auth_id: \"#{params[:google_auth_id]}\"")
       line.gsub!(/^( *)#google_auth_secret:.*$/, "\\1google_auth_secret: \"#{params[:google_auth_secret]}\"")

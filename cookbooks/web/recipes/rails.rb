@@ -77,6 +77,7 @@ rails_port "www.openstreetmap.org" do
   windowslive_auth_id "0000000040153C51"
   windowslive_auth_secret web_passwords["windowslive_auth_secret"]
   mapzen_valhalla_key web_passwords["mapzen_valhalla_key"]
+  osrm_url "//api-osrm-routed-production.tilestream.net/viaroute"
 end
 
 package "libjson-xs-perl"
