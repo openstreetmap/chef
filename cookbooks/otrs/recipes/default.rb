@@ -67,6 +67,7 @@ config = edit_file "/opt/otrs-#{version}/Kernel/Config.pm.dist" do |line|
   line.gsub!(/^( *)\$Self->{Database} = 'otrs'/, "\\1$Self->{Database} = '#{database_name}'")
   line.gsub!(/^( *\$Self->{DatabaseDSN} = "DBI:mysql:)/, "#\\1")
   line.gsub!(/^#( *\$Self->{DatabaseDSN} = "DBI:Pg:.*;host=)/, "\\1")
+  line.gsub!(/^( *)# (\$Self->{CheckMXRecord} = 0)/, "\\1\\2")
 
   line
 end
