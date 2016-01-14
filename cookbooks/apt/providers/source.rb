@@ -27,7 +27,7 @@ action :create do
   if new_resource.key
     execute "apt-key-#{new_resource.key}" do
       command "/usr/bin/apt-key adv --keyserver hkp://keys.gnupg.net --recv-keys #{new_resource.key}"
-      not_if "/usr/bin/apt-key list | /bin/fgrep -q #{new_resource.key}"
+      not_if "/usr/bin/apt-key adv --list-keys #{new_resource.key}"
     end
   end
 
