@@ -60,7 +60,7 @@ end
 
 apt_source "management-component-pack" do
   template "hp.list.erb"
-  url "http://downloads.linux.hp.com/SDR/downloads/ManagementComponentPack"
+  url "http://downloads.linux.hpe.com/SDR/repo/mcp"
   key "B1275EA3"
 end
 
