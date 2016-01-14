@@ -1,0 +1,39 @@
+[Unit]
+Description=<%= @description %>
+<% if @after -%>
+After=<%= Array(@after).join(" ") %>
+<% end -%>
+
+[Service]
+Type=<%= @type %>
+<% if @limit_nofile -%>
+LimitNOFILE=<%= @limit_nofile %>
+<% end -%>
+<% @environment.each do |name,value| -%>
+Environment="<%= name %>=<%= value %>"
+<% end -%>
+<% if @environment_file -%>
+EnvironmentFile=<%= @environment_file %>
+<% end -%>
+<% if @exec_start_pre -%>
+ExecStartPre=<%= @exec_start_pre %>
+<% end -%>
+ExecStart=<%= @exec_start %>
+<% if @exec_start_post -%>
+ExecStartPost=<%= @exec_start_post %>
+<% end -%>
+<% if @exec_stop -%>
+ExecStop=<%= @exec_stop %>
+<% end -%>
+<% if @exec_reload -%>
+ExecReload=<%= @exec_reload %>
+<% end -%>
+<% if @restart -%>
+Restart=<%= @restart %>
+<% end -%>
+<% if @timeout_sec -%>
+TimeoutSec=<%= @timeout_sec %>
+<% end -%>
+
+[Install]
+WantedBy=multi-user.target

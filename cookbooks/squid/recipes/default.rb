@@ -41,24 +41,25 @@ directory "/etc/squid/squid.conf.d" do
 end
 
 if node[:lsb][:release].to_f >= 15.10
-  execute "systemctl-daemon-reload" do
-    action :nothing
-    command "systemctl daemon-reload"
-  end
-
-  template "/etc/systemd/system/squid.service" do
-    source "squid.service.erb"
-    owner "root"
-    group "root"
-    mode 0644
-    notifies :run, "execute[systemctl-daemon-reload]"
+  systemd_service "squid" do
+    description "Squid caching proxy"
+    after ["network.target", "nss-lookup.target"]
+    limit_nofile 65536
+    environment "SQUID_ARGS" => "-D"
+    environment_file "/etc/default/squid"
+    exec_start_pre "/usr/sbin/squid $SQUID_ARGS -z"
+    exec_start "/usr/sbin/squid -N $SQUID_ARGS"
+    exec_reload "/usr/sbin/squid -k reconfigure"
+    exec_stop "/usr/sbin/squid -k shutdown"
+    restart "on-failure"
+    timeout_sec 0
   end
 
   service "squid" do
     provider Chef::Provider::Service::Systemd
     action [:enable, :start]
     supports :status => true, :restart => true, :reload => true
-    subscribes :restart, "template[/etc/systemd/system/squid.service]"
+    subscribes :restart, "systemd_service[squid]"
     subscribes :reload, "template[/etc/squid/squid.conf]"
     subscribes :restart, "template[/etc/default/squid]"
     subscribes :reload, "template[/etc/resolv.conf]"

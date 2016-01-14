@@ -111,17 +111,11 @@ directory "/var/log/chef" do
 end
 
 if node[:lsb][:release].to_f >= 15.10
-  execute "systemctl-daemon-reload" do
-    action :nothing
-    command "systemctl daemon-reload"
-  end
-
-  template "/etc/systemd/system/chef-client.service" do
-    source "chef-client.service.erb"
-    owner "root"
-    group "root"
-    mode 0644
-    notifies :run, "execute[systemctl-daemon-reload]"
+  systemd_service "chef-client" do
+    description "Chef client"
+    after "network.target"
+    exec_start "/usr/bin/chef-client -i 1800 -s 20"
+    restart "on-failure"
   end
 
   service "chef-client" do
@@ -129,7 +123,7 @@ if node[:lsb][:release].to_f >= 15.10
     action [:enable, :start]
     supports :status => true, :restart => true, :reload => true
     subscribes :restart, "dpkg_package[chef]"
-    subscribes :restart, "template[/etc/systemd/system/chef-client.service]"
+    subscribes :restart, "systemd_service[chef-client]"
     subscribes :restart, "template[/etc/chef/client.rb]"
     subscribes :restart, "template[/etc/chef/report.rb]"
   end
