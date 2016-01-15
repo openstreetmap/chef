@@ -35,7 +35,7 @@ node[:networking][:interfaces].each do |name, interface|
 
   prefix = node[:networking][:interfaces][name][:prefix]
 
-  node.set[:networking][:interfaces][name][:netmask] = (~IPAddr.new(interface[:address]).mask(0)).mask(prefix)
+  node.set[:networking][:interfaces][name][:netmask] = ~IPAddr.new(interface[:address]).mask(0).mask(prefix)
   node.set[:networking][:interfaces][name][:network] = IPAddr.new(interface[:address]).mask(prefix)
 end
 

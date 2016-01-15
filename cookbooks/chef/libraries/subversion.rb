@@ -17,20 +17,18 @@ class Chef
       end
 
       def current_repository_matches_target_repository?
-        (!current_repository.nil?) && (@new_resource.repository == current_repository)
+        !current_repository.nil? && (@new_resource.repository == current_repository)
       end
 
       def repo_attrs
         return {} unless ::File.exist?(::File.join(@new_resource.destination, ".svn"))
 
         @repo_attrs ||= svn_info.lines.each_with_object({}) do |line, attrs|
-          if line =~ SVN_INFO_PATTERN
-            property = Regexp.last_match[1]
-            value = Regexp.last_match[2]
-            attrs[property] = value
-          else
-            fail "Could not parse `svn info` data: #{line}"
-          end
+          fail "Could not parse `svn info` data: #{line}" unless line =~ SVN_INFO_PATTERN
+
+          property = Regexp.last_match[1]
+          value = Regexp.last_match[2]
+          attrs[property] = value
         end
       end
 

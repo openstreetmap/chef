@@ -7,7 +7,7 @@ class Chef
         if block.nil?
           addresses << interface[:address]
         else
-          block.call(interface[:address])
+          yield interface[:address]
         end
       end
 

@@ -158,11 +158,11 @@ file "#{source_directory}/settings/ip_blocks.map" do
   mode 0664
 end
 
-if node[:nominatim][:enabled]
-  cron_action = :create
-else
-  cron_action = :delete
-end
+cron_action = if node[:nominatim][:enabled]
+                :create
+              else
+                :delete
+              end
 
 template "/etc/cron.d/nominatim" do
   action cron_action

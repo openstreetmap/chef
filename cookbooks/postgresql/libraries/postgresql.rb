@@ -6,7 +6,7 @@ class Chef
 
     TABLE_PRIVILEGES = [
       :select, :insert, :update, :delete, :truncate, :references, :trigger
-    ]
+    ].freeze
 
     def initialize(cluster)
       @cluster = cluster
@@ -118,7 +118,7 @@ class Chef
         permissions[user] = {
           "a" => :insert, "r" => :select, "w" => :update, "d" => :delete,
           "D" => :truncate, "x" => :references, "t" => :trigger
-        }.values_at(*(privileges.chars)).compact
+        }.values_at(*privileges.chars).compact
       end
     end
   end

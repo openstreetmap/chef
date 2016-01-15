@@ -20,11 +20,11 @@
 package "nfs-common"
 
 node[:nfs].each do |mountpoint, details|
-  if details[:readonly]
-    mount_options = "ro,bg,soft,udp,rsize=8192,wsize=8192,nfsvers=3"
-  else
-    mount_options = "rw,bg,udp,rsize=8192,wsize=8192,nfsvers=3"
-  end
+  mount_options = if details[:readonly]
+                    "ro,bg,soft,udp,rsize=8192,wsize=8192,nfsvers=3"
+                  else
+                    "rw,bg,udp,rsize=8192,wsize=8192,nfsvers=3"
+                  end
 
   directory mountpoint do
     owner "root"

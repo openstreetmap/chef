@@ -1,10 +1,10 @@
 class Chef
   module Mixin
     module EditFile
-      def edit_file(file, &block)
+      def edit_file(file, &_block)
         Chef::DelayedEvaluator.new do
           ::File.new(file).collect do |line|
-            block.call(line)
+            yield line
           end.join("")
         end
       end

@@ -11,7 +11,7 @@ CALL_TYPES = {
   :trkpts => "GPX trackpoints calls",
   :web => "Web site traffic",
   :other => "Other API calls"
-}
+}.freeze
 
 if ARGV[0] == "config"
   puts "graph_title Requests processed"

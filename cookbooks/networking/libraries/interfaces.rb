@@ -13,7 +13,7 @@ class Chef
         if block.nil?
           interfaces << interface
         else
-          block.call(interface)
+          yield interface
         end
       end
 

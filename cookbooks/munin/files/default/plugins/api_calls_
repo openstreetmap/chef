@@ -26,7 +26,7 @@ CALL_TYPES = {
   :trkpts => "GPX trackpoints calls",
   :web => "Web site traffic",
   :other => "Other API calls"
-}
+}.freeze
 
 def categorise_uri(line)
   uri = line.split(" ")[1]

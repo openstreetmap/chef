@@ -145,7 +145,7 @@ define :rails_port, :action => [:create, :enable] do
     end
 
     if params[:memcache_servers]
-      line.gsub!(/^( *)#memcache_servers:.*$/, "\\1memcache_servers: [ \"#{params[:memcache_servers].join("\", \"")}\" ]")
+      line.gsub!(/^( *)#memcache_servers:.*$/, "\\1memcache_servers: [ \"#{params[:memcache_servers].join('", "')}\" ]")
     end
 
     if params[:potlatch2_key]

@@ -67,12 +67,10 @@ action :create do
               @pg.execute(:command => "GRANT #{privilege.to_s.upcase} ON #{@name} TO \"#{user}\"", :database => new_resource.database)
             end
           end
-        else
-          if current_privileges.include?(privilege)
-            converge_by("revoke #{privilege} for #{user} on #{new_resource}") do
-              Chef::Log.info("Revoking #{privilege} for #{user} on #{new_resource}")
-              @pg.execute(:command => "REVOKE #{privilege.to_s.upcase} ON #{@name} FROM \"#{user}\"", :database => new_resource.database)
-            end
+        elsif current_privileges.include?(privilege)
+          converge_by("revoke #{privilege} for #{user} on #{new_resource}") do
+            Chef::Log.info("Revoking #{privilege} for #{user} on #{new_resource}")
+            @pg.execute(:command => "REVOKE #{privilege.to_s.upcase} ON #{@name} FROM \"#{user}\"", :database => new_resource.database)
           end
         end
       end

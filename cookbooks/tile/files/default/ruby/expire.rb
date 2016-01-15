@@ -18,9 +18,9 @@ module Expire
   # the size of the meta tile blocks
   METATILE = 8
   # the directory root for meta tiles
-  HASH_ROOT = "/tiles/default/"
+  HASH_ROOT = "/tiles/default/".freeze
   # node cache file
-  NODE_CACHE_FILE = "/store/database/nodes"
+  NODE_CACHE_FILE = "/store/database/nodes".freeze
 
   # turns a spherical mercator coord into a tile coord
   def self.tile_from_merc(point, zoom)
@@ -143,7 +143,7 @@ module Expire
     set = Set.new nodes.values
 
     # expire tiles and shrink to the set of parents
-    (max_zoom).downto(min_zoom) do |_|
+    max_zoom.downto(min_zoom) do |_|
       # allow the block to work on the set, returning the set at the next
       # zoom level
       set = yield set

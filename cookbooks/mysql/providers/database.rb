@@ -65,12 +65,10 @@ action :create do
             @mysql.execute(:command => "GRANT #{@mysql.privilege_name(privilege)} ON `#{new_resource.database}`.* TO #{user}")
           end
         end
-      else
-        if current_privileges.include?(privilege)
-          converge_by("revoke #{privilege} for #{user} on #{new_resource}") do
-            Chef::Log.info("Revoking #{privilege} for #{user} on #{new_resource}")
-            @mysql.execute(:command => "REVOKE #{@mysql.privilege_name(privilege)} ON `#{new_resource.database}`.* FROM #{user}")
-          end
+      elsif current_privileges.include?(privilege)
+        converge_by("revoke #{privilege} for #{user} on #{new_resource}") do
+          Chef::Log.info("Revoking #{privilege} for #{user} on #{new_resource}")
+          @mysql.execute(:command => "REVOKE #{@mysql.privilege_name(privilege)} ON `#{new_resource.database}`.* FROM #{user}")
         end
       end
     end

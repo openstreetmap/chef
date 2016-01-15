@@ -297,11 +297,11 @@ end
   end
 end
 
-if node[:hardware][:disk]
-  disks = node[:hardware][:disk][:disks]
-else
-  disks = []
-end
+disks = if node[:hardware][:disk]
+          node[:hardware][:disk][:disks]
+        else
+          []
+        end
 
 disks = disks.map do |disk|
   next if disk[:state] == "spun_down"
@@ -476,15 +476,15 @@ unless Dir.glob("/sys/class/hwmon/hwmon*").empty?
     cpu = File.basename(coretemp).sub("coretemp.", "").to_i
     chip = format("coretemp-isa-%04d", cpu)
 
-    if File.exist?("#{coretemp}/name")
-      temps = Dir.glob("#{coretemp}/temp*_input").map do |temp|
-        File.basename(temp).sub("temp", "").sub("_input", "").to_i
-      end.sort
-    else
-      temps = Dir.glob("#{coretemp}/hwmon/hwmon*/temp*_input").map do |temp|
-        File.basename(temp).sub("temp", "").sub("_input", "").to_i
-      end.sort
-    end
+    temps = if File.exist?("#{coretemp}/name")
+              Dir.glob("#{coretemp}/temp*_input").map do |temp|
+                File.basename(temp).sub("temp", "").sub("_input", "").to_i
+              end.sort
+            else
+              Dir.glob("#{coretemp}/hwmon/hwmon*/temp*_input").map do |temp|
+                File.basename(temp).sub("temp", "").sub("_input", "").to_i
+              end.sort
+            end
 
     if temps.first == 1
       node.default[:hardware][:sensors][chip][:temps][:temp1][:label] = "CPU #{cpu}"

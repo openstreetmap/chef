@@ -11,14 +11,14 @@ class Chef
       :show_db, :super, :create_tmp_table, :lock_tables, :execute,
       :repl_slave, :repl_client, :create_view, :show_view, :create_routine,
       :alter_routine, :create_user, :event, :trigger, :create_tablespace
-    ]
+    ].freeze
 
     DATABASE_PRIVILEGES = [
       :select, :insert, :update, :delete, :create, :drop, :grant,
       :references, :index, :alter, :create_tmp_table, :lock_tables,
       :create_view, :show_view, :create_routine, :alter_routine,
       :execute, :event, :trigger
-    ]
+    ].freeze
 
     def execute(options)
       # Create argument array

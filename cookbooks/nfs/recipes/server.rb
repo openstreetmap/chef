@@ -41,11 +41,11 @@ search(:node, "*:*") do |client|
     client.ipaddresses do |address|
       exports[mount[:path]] ||= {}
 
-      if mount[:readonly]
-        exports[mount[:path]][address] = "ro"
-      else
-        exports[mount[:path]][address] = "rw"
-      end
+      exports[mount[:path]][address] = if mount[:readonly]
+                                         "ro"
+                                       else
+                                         "rw"
+                                       end
     end
   end
 end

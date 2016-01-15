@@ -34,21 +34,19 @@ def load_current_resource
 end
 
 action :install do
-  if new_resource.version
-    package_name = "#{new_resource.package_name}@#{new_resource.version}"
-  else
-    package_name = new_resource.package_name
-  end
+  package_name = if new_resource.version
+                   "#{new_resource.package_name}@#{new_resource.version}"
+                 else
+                   new_resource.package_name
+                 end
 
   if !@packages.include?(new_resource.package_name)
     shell_out!("npm install --global #{package_name}")
     new_resource.updated_by_last_action(true)
-  else
-    if new_resource.version &&
-       new_resource.version != @current_resource.version
-      shell_out!("npm install --global #{package_name}")
-      new_resource.updated_by_last_action(true)
-    end
+  elsif new_resource.version &&
+        new_resource.version != @current_resource.version
+    shell_out!("npm install --global #{package_name}")
+    new_resource.updated_by_last_action(true)
   end
 end
 
