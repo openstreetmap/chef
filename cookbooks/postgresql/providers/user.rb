@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+use_inline_resources
+
 def load_current_resource
   @pg = Chef::PostgreSQL.new(new_resource.cluster)
 

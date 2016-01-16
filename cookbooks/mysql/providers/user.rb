@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+use_inline_resources
+
 def load_current_resource
   @mysql = Chef::MySQL.new
 

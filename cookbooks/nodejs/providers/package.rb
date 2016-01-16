@@ -22,6 +22,8 @@ require "json"
 
 include Chef::Mixin::ShellOut
 
+use_inline_resources
+
 def load_current_resource
   @packages = JSON.parse(shell_out("npm list --global --json").stdout)["dependencies"] || {}
 
