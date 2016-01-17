@@ -29,12 +29,23 @@ package "cgi-mapserver"
 package "mapcache-cgi"
 package "mapcache-tools"
 
+# Mapserver via Nginx requires as fastcgi spawner
+package "spawn-fcgi"
+package "multiwatch"
+
 # Imagery processing Requirements
 package "imagemagick"
 
 # Imagery misc compression
 package "xz-utils"
 package "unzip"
+
+# Create Directory for mapserver-fastcgi imagery sockets
+directory "/var/run/mapserver-fastcgi" do
+  owner "imagery"
+  group "imagery"
+  mode 0755
+end
 
 directory "/srv/imagery/common" do
   owner "root"
