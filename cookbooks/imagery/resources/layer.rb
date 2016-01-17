@@ -23,15 +23,15 @@ property :name, String
 property :site, String, :required => true
 property :source, String, :required => true
 property :text, String
-property :copyright, String, :default =>  "Copyright"
+property :copyright, String, :default => "Copyright"
 property :projection, String, :default => "EPSG:3857"
 property :palette, String
 property :extent, String
 property :background, String
-property :resample, String, :default =>  "average"
+property :resample, String, :default => "average"
 property :imagemode, String
 property :extension, String
-property :max_zoom, Fixnum, :default =>  23
+property :max_zoom, Fixnum, :default => 23
 
 action :create do
   template "/srv/imagery/mapserver/layer-#{name}.map" do

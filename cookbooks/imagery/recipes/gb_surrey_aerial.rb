@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: imagery
-# Resource:: imagery_site
+# Recipe:: gb-surrey-aerial
 #
 # Copyright 2016, OpenStreetMap Foundation
 #
@@ -8,7 +8,7 @@
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-# http://www.apache.org/licenses/LICENSE-2.0
+#     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,20 +17,12 @@
 # limitations under the License.
 #
 
-default_action :create
+include_recipe "imagery"
 
-property :name, String
-
-action :create do
-  directory "/srv/imagery/#{name}" do
-    owner "root"
-    group "root"
-    mode 0755
-  end
-
-  nginx_site name do
-    template "nginx_imagery.conf.erb"
-    directory "/srv/imagery/#{name}"
-    variables new_resource.to_hash
+imagery_site "surrey.aerial.openstreetmap.org.uk" do
+  imagery_layer "gb-surrey-aerial" do
+    site new_resource.name
+    projection "EPSG:27700"
+    source "/data/imagery/gb/surrey-aerial/SurreyMosaicECW.tif"
   end
 end
