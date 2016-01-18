@@ -18,7 +18,7 @@ GEO_SCALE = 10000000
 ##
 # replace characters which cannot be represented in XML 1.0.
 def xml_sanitize(str)
-  str.gsub(/[\x00-\x08\x0b\x0c\x0e-\x20]/,'?')
+  str.gsub(/[\x00-\x08\x0b\x0c\x0e-\x20]/, "?")
 end
 
 ##
