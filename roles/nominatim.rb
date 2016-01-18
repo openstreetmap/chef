@@ -30,6 +30,7 @@ default_attributes(
         :checkpoint_segments => "32",
         :checkpoint_timeout => "10min",
         :checkpoint_completion_target => "0.9",
+        :shared_buffers => "2GB",
         :autovacuum_max_workers => "1"
       }
     }

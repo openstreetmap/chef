@@ -30,7 +30,6 @@ default_attributes(
   :postgresql => {
     :settings => {
       :defaults => {
-        :shared_buffers => "10GB",
         :work_mem => "300MB",
         :maintenance_work_mem => "10GB",
         :random_page_cost => "1.5",
