@@ -16,6 +16,12 @@ CHANGES_LIMIT = 50000
 GEO_SCALE = 10000000
 
 ##
+# replace characters which cannot be represented in XML 1.0.
+def xml_sanitize(str)
+  str.gsub(/[\x00-\x08\x0b\x0c\x0e-\x20]/, "?")
+end
+
+##
 # changeset class keeps some information about changesets downloaded from the
 # database - enough to let us know which changesets are closed/open & recently
 # closed.
@@ -59,7 +65,7 @@ class ChangesetBuilder
     xml["num_changes"] = cs.num_changes.to_s
 
     res = @conn.exec("select u.id, u.display_name, c.min_lat, c.max_lat, c.min_lon, c.max_lon from users u join changesets c on u.id=c.user_id where c.id=#{cs.id}")
-    xml["user"] = res[0]["display_name"]
+    xml["user"] = xml_sanitize(res[0]["display_name"])
     xml["uid"] = res[0]["id"]
 
     unless res[0]["min_lat"].nil? ||
@@ -82,8 +88,8 @@ class ChangesetBuilder
     res = @conn.exec("select k, v from changeset_tags where changeset_id=#{cs.id}")
     res.each do |row|
       tag = XML::Node.new("tag")
-      tag["k"] = row["k"]
-      tag["v"] = row["v"]
+      tag["k"] = xml_sanitize(row["k"])
+      tag["v"] = xml_sanitize(row["v"])
       xml << tag
     end
   end
@@ -100,10 +106,10 @@ class ChangesetBuilder
     res.each do |row|
       comment = XML::Node.new("comment")
       comment["uid"] = row["author_id"]
-      comment["user"] = row["author"]
+      comment["user"] = xml_sanitize(row["author"])
       comment["date"] = Time.parse(row["created_at"]).getutc.xmlschema
       text = XML::Node.new("text")
-      text.content = row["body"]
+      text.content = xml_sanitize(row["body"])
       comment << text
       discussion << comment
     end
@@ -195,6 +201,14 @@ class Replicator
         File.open(tmp_state, "w") do |fh|
           fh.write(YAML.dump(@state))
         end
+
+        # sanity check: the files we're moving into place
+        # should be non-empty.
+        fail "Temporary gzip file should exist, but doesn't." unless File.exist?(tmp_data)
+        fail "Temporary state file should exist, but doesn't." unless File.exist?(tmp_state)
+        fail "Temporary gzip file should be non-empty, but isn't." if File.zero?(tmp_data)
+        fail "Temporary state file should be non-empty, but isn't." if File.zero?(tmp_state)
+
         FileUtils.mv(tmp_data, data_file)
         FileUtils.mv(tmp_state, @config["state_file"])
         fl.flock(File::LOCK_UN)
@@ -208,5 +222,10 @@ class Replicator
   end
 end
 
-rep = Replicator.new(ARGV[0])
-rep.save!
+begin
+  rep = Replicator.new(ARGV[0])
+  rep.save!
+rescue StandardError => e
+  STDERR.puts "ERROR: #{e.message}"
+  exit 1
+end
