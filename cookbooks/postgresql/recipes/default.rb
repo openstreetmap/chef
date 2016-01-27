@@ -64,16 +64,25 @@ node[:postgresql][:versions].each do |version|
     to "/etc/ssl/private/ssl-cert-snakeoil.key"
   end
 
-  restore_command = settings[:restore_command] || defaults[:restore_command]
   standby_mode = settings[:standby_mode] || defaults[:standby_mode]
+  primary_conninfo = settings[:primary_conninfo] || defaults[:primary_conninfo]
+  restore_command = settings[:restore_command] || defaults[:restore_command]
 
   if restore_command || standby_mode == "on"
+    passwords = if primary_conninfo
+                  data_bag_item(primary_conninfo[:passwords][:bag],
+                                primary_conninfo[:passwords][:item])
+                end
+
     template "/var/lib/postgresql/#{version}/main/recovery.conf" do
       source "recovery.conf.erb"
       owner "postgres"
       group "postgres"
       mode 0640
-      variables :defaults => defaults, :settings => settings
+      variables :standby_mode => standby_mode,
+                :primary_conninfo => primary_conninfo,
+                :restore_command => restore_command,
+                :passwords => passwords
       notifies :reload, "service[postgresql]"
     end
   else

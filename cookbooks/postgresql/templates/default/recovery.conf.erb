@@ -1,9 +1,9 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
-standby_mode = <%= @settings[:standby_mode] || @defaults[:standby_mode] %>
-<% if @settings[:primary_conninfo] || @defaults[:primary_conninfo] -%>
-primary_conninfo = '<%= @settings[:primary_conninfo] || @defaults[:primary_conninfo] %>'
+standby_mode = <%= @standby_mode %>
+<% if @primary_conninfo -%>
+primary_conninfo = 'host=<%= @primary_conninfo[:host] %> port=<%= @primary_conninfo[:port] %> user=<%= @primary_conninfo[:user] %> password=<%= @passwords[@primary_conninfo[:user]] %>'
 <% end -%>
-<% if @settings[:restore_command] || @defaults[:restore_command] -%>
-restore_command = '<%= @settings[:restore_command] || @defaults[:restore_command] %>'
+<% if @restore_command -%>
+restore_command = '<%= @restore_command %>'
 <% end -%>
