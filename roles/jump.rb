@@ -2,6 +2,7 @@ name "jump"
 description "Role applied to all servers at Jump Networks"
 
 default_attributes(
+  :location => "London, England",
   :networking => {
     :nameservers => [
       "185.73.44.3",
