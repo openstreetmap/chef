@@ -7,6 +7,7 @@ default_attributes(
       :zelja => { :status => :administrator }
     }
   },
+  :location => "Osijek, Croatia",
   :networking => {
     :interfaces => {
       :external_ipv4 => {
@@ -36,7 +37,7 @@ default_attributes(
     :cache_dir => "coss /store/squid/coss-01 128000 block-size=8192 max-size=262144 membufs=80"
   },
   :tilecache => {
-    :tile_parent => "pula.render.openstreetmap.org",
+    :tile_parent => "osijek.render.openstreetmap.org",
     :tile_siblings => [
       "viserion.openstreetmap.org"
     ]

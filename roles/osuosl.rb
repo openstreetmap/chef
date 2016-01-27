@@ -7,6 +7,7 @@ default_attributes(
       :osuadmin => { :status => :administrator }
     }
   },
+  :location => "Corvallis, Oregon",
   :networking => {
     :nameservers => ["8.8.8.8", "8.8.4.4"],
     :roles => {

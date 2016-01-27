@@ -2,6 +2,7 @@ name "hetzner"
 description "Role applied to all servers at Hetzner"
 
 default_attributes(
+  :location => "Falkenstein, Germany",
   :networking => {
     :nameservers => [
       "213.133.98.98",

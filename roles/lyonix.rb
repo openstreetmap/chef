@@ -7,6 +7,7 @@ default_attributes(
       :lyonix => { :status => :administrator }
     }
   },
+  :location => "Lyon, France",
   :networking => {
     :nameservers => ["77.95.64.205", "77.95.64.206", "8.8.8.8", "8.8.4.4"],
     :roles => {

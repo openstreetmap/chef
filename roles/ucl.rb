@@ -4,7 +4,8 @@ description "Role applied to all servers at UCL"
 default_attributes(
   :bind => {
     :forwarders => ["144.82.100.1", "144.82.100.41"]
-  }
+  },
+  :location => "London, England"
 )
 
 override_attributes(

@@ -7,6 +7,7 @@ default_attributes(
       :kom => { :status => :administrator }
     }
   },
+  :location => "Minsk, Belarus",
   :networking => {
     :nameservers => [
       "31.130.200.2"

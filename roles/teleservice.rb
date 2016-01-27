@@ -1,7 +1,9 @@
+# coding: utf-8
 name "teleservice"
 description "Role applied to all servers at Teleservice"
 
 default_attributes(
+  :location => "Sjöbo, Sweden",
   :networking => {
     :nameservers => ["8.8.8.8", "8.8.4.4"],
     :roles => {

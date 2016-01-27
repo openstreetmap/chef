@@ -8,6 +8,7 @@ default_attributes(
       :jpcw => { :status => :administrator }
     }
   },
+  :location => "Pau, France",
   :munin => {
     :allow => ["10.64.1.11"]
   },

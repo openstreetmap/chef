@@ -2,6 +2,7 @@ name "szerverem"
 description "Role applied to all servers at szerverem.hu"
 
 default_attributes(
+  :location => "Budapest, Hungary",
   :networking => {
     :nameservers => [
       "8.8.8.8",

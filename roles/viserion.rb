@@ -7,6 +7,7 @@ default_attributes(
       :anovak => { :status => :administrator }
     }
   },
+  :location => "Pula, Croatia",
   :munin => {
     :allow => ["193.198.233.210"]
   },

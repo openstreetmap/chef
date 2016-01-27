@@ -2,6 +2,7 @@ name "delta"
 description "Role applied to all servers at Delta Telecom"
 
 default_attributes(
+  :location => "Baku, Azerbaijan",
   :networking => {
     :nameservers => ["94.20.20.20", "8.8.8.8", "8.8.4.4"],
     :roles => {
