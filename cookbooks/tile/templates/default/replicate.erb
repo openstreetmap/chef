@@ -39,31 +39,31 @@ do
     if [ $? -eq 0 ]
     then
         # Enable exit on error
-	set -e
+        set -e
 
         # Remember the previous sequence number
-	prevSequenceNumber=$sequenceNumber
+        prevSequenceNumber=$sequenceNumber
 
         # Read in new state
-	. state.txt
+        . state.txt
 
         # Did we get any new data?
-	if [ "${sequenceNumber}" == "${prevSequenceNumber}" ]
+        if [ "${sequenceNumber}" == "${prevSequenceNumber}" ]
         then
             # Log the lack of data
-	    echo "No new data available. Sleeping..."
+            echo "No new data available. Sleeping..."
 
-	    # Remove file, it will just be an empty changeset
-	    rm ${file}
+            # Remove file, it will just be an empty changeset
+            rm ${file}
 
             # No need to rollback now
             rm state-prev.txt
 
             # Sleep for a short while
-	    sleep 30
-	else
+            sleep 30
+        else
             # Log the new data
-	    echo "Fetched new data from ${prevSequenceNumber} to ${sequenceNumber} into ${file}"
+            echo "Fetched new data from ${prevSequenceNumber} to ${sequenceNumber} into ${file}"
 
             # Apply the changes to the database
 <% if node[:tile][:node_file] -%>
@@ -77,18 +77,18 @@ do
 
             # Expire tiles which are touched by the changes
             sudo -u www-data /usr/local/bin/expire-tiles ${file} > /dev/null 2>&1 &
-	fi
+        fi
 
         # Delete old downloads
-	find . -name 'changes-*.gz' -mmin +300 -exec rm -f {} \;
+        find . -name 'changes-*.gz' -mmin +300 -exec rm -f {} \;
 
         # Disable exit on error
         set +e
     else
         # Log our failure to fetch changes
-	echo "Failed to fetch changes - waiting a few minutes before retry"
+        echo "Failed to fetch changes - waiting a few minutes before retry"
 
         # Wait five minutes and have another go
-	sleep 300
+        sleep 300
     fi
 done
