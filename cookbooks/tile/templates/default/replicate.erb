@@ -2,9 +2,10 @@
 
 # DO NOT EDIT - This file is being maintained by Chef
 
-# Initialize timestamp with day of latest planet dump
-# Setting to midnight ensures we get conistent data after first run
-# osmosis --read-replication-interval-init
+# Before running updates, the replication needs to be set up with the timestamp
+# set to the day of the latest planet dump. Setting to midnight ensures we get
+# conistent data after first run. osmosis --read-replication-interval-init is
+# used to initially create the state file
 
 # Define exit handler
 function onexit {
