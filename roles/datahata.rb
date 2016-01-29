@@ -7,6 +7,7 @@ default_attributes(
       :kom => { :status => :administrator }
     }
   },
+  :hosted_by => "DataHata",
   :location => "Minsk, Belarus",
   :networking => {
     :nameservers => [
