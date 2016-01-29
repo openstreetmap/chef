@@ -2,6 +2,7 @@ name "szerverem"
 description "Role applied to all servers at szerverem.hu"
 
 default_attributes(
+  :hosted_by => "szerverem.hu",
   :location => "Budapest, Hungary",
   :networking => {
     :nameservers => [

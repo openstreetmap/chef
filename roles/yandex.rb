@@ -2,6 +2,7 @@ name "yandex"
 description "Role applied to all servers at Yandex"
 
 default_attributes(
+  :hosted_by => "Yandex",
   :location => "Moscow, Russia",
   :networking => {
     :nameservers => ["8.8.8.8", "8.8.4.4"],

@@ -2,6 +2,7 @@ name "euserv"
 description "Role applied to all servers at EUserv"
 
 default_attributes(
+  :hosted_by => "EUserv",
   :location => "Jena, Germany",
   :networking => {
     :nameservers => [

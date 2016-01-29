@@ -7,6 +7,7 @@ default_attributes(
       :osuadmin => { :status => :administrator }
     }
   },
+  :hosted_by => "OSUOSL",
   :location => "Corvallis, Oregon",
   :networking => {
     :nameservers => ["8.8.8.8", "8.8.4.4"],

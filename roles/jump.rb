@@ -2,6 +2,7 @@ name "jump"
 description "Role applied to all servers at Jump Networks"
 
 default_attributes(
+  :hosted_by => "Jump Networks",
   :location => "London, England",
   :networking => {
     :nameservers => [

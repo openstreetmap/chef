@@ -8,6 +8,7 @@ default_attributes(
       :ceasar => { :status => :administrator }
     }
   },
+  :hosted_by => "NCHC",
   :location => "Hsinchu, Taiwan",
   :networking => {
     :nameservers => ["8.8.8.8", "8.8.4.4"],

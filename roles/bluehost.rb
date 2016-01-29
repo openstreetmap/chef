@@ -2,6 +2,7 @@ name "bluehost"
 description "Role applied to all servers at Bluehost"
 
 default_attributes(
+  :hosted_by => "Bluehost",
   :location => "Provo, Utah",
   :networking => {
     :nameservers => ["8.8.8.8", "8.8.4.4"],

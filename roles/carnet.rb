@@ -7,6 +7,7 @@ default_attributes(
       :hbogner => { :status => :administrator }
     }
   },
+  :hosted_by => "CARNet",
   :networking => {
     :roles => {
       :external => {
