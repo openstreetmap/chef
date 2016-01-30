@@ -79,7 +79,7 @@ remote_directory "/srv/munin.openstreetmap.org" do
   mode 0755
   files_owner "root"
   files_group "root"
-  files_mode 0755
+  files_mode 0644
   purge true
 end
 
