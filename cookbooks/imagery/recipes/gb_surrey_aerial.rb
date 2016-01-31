@@ -20,9 +20,11 @@
 include_recipe "imagery"
 
 imagery_site "surrey.aerial.openstreetmap.org.uk" do
-  imagery_layer "gb-surrey-aerial" do
-    site new_resource.name
-    projection "EPSG:27700"
-    source "/data/imagery/gb/surrey-aerial/SurreyMosaicECW.tif"
-  end
+  # aliases
+end
+
+imagery_layer "gb_surrey_aerial" do
+  site "surrey.aerial.openstreetmap.org.uk"
+  projection "EPSG:27700"
+  source "/data/imagery/gb/surrey-aerial/SurreyMosaicECW.tif"
 end

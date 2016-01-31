@@ -20,19 +20,21 @@
 include_recipe "imagery"
 
 imagery_site "hampshire.aerial.openstreetmap.org.uk" do
-  imagery_layer "gb_hampshire_aerial-rgb" do
-    site new_resource.name
-    text "Hampshire Aerial - Summer 2013"
-    source "/data/imagery/gb/hampshire-aerial/hampshire-aerial-RGB.tif"
-    projection "EPSG:27700"
-    copyright "Hampshire Hub - Open Government Licence (OGL) 2014"
-  end
+  # aliases
+end
 
-  imagery_layer "gb_hampshire_aerial_fcir" do
-    site new_resource.name
-    text "Hampshire Aerial - Summer 2013 (FCIR)"
-    source "/data/imagery/gb/hampshire-aerial/hampshire-aerial-FCIR.tif"
-    projection "EPSG:27700"
-    copyright "Hampshire Hub - Open Government Licence (OGL) 2014"
-  end
+imagery_layer "gb_hampshire_aerial_rgb" do
+  site "hampshire.aerial.openstreetmap.org.uk"
+  text "Hampshire Aerial - Summer 2013"
+  source "/data/imagery/gb/hampshire-aerial/hampshire-aerial-RGB.tif"
+  projection "EPSG:27700"
+  copyright "Hampshire Hub - Open Government Licence (OGL) 2014"
+end
+
+imagery_layer "gb_hampshire_aerial_fcir" do
+  site "hampshire.aerial.openstreetmap.org.uk"
+  text "Hampshire Aerial - Summer 2013 (FCIR)"
+  source "/data/imagery/gb/hampshire-aerial/hampshire-aerial-FCIR.tif"
+  projection "EPSG:27700"
+  copyright "Hampshire Hub - Open Government Licence (OGL) 2014"
 end

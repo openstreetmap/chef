@@ -21,12 +21,12 @@ include_recipe "imagery"
 
 imagery_site "agri.openstreetmap.org" do
   # aliases ["agri.openstreetmap.org.au"]
+end
 
-  imagery_layer "au_ga_agri" do
-    site new_resource.name
-    text "AGRI: The Australian Geographic Reference Image"
-    copyright "Commonwealth of Australia (Geoscience Australia) - Creative Commons Attribution 4.0 International Licence"
-    projection "EPSG:3857"
-    source "/data/imagery/au/agri/combine.vrt"
-  end
+imagery_layer "au_ga_agri" do
+  site "agri.openstreetmap.org"
+  text "AGRI: The Australian Geographic Reference Image"
+  copyright "Commonwealth of Australia (Geoscience Australia) - Creative Commons Attribution 4.0 International Licence"
+  projection "EPSG:3857"
+  source "/data/imagery/au/agri/combine.vrt"
 end
