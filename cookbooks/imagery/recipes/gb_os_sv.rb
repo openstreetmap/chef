@@ -27,7 +27,7 @@ cookbook_file "/srv/imagery/common/ossv-palette.txt" do
 end
 
 imagery_site "os.openstreetmap.org" do
-  aliases ["os.openstreetmap.org.uk"]
+  # aliases ["os.openstreetmap.org.uk"]
 end
 
 imagery_layer "gb_os_sv_2010_04" do
