@@ -6,14 +6,14 @@ MAP
   UNITS METERS
   IMAGETYPE <%= @extension %>
     PROJECTION
-    "init=<%= @projection %>"
+    "init=<%= @projection.downcase %>"
   END
 
   LAYER
     NAME "<%= @name %>"
     DATA "<%= @source %>"
     PROJECTION
-      "init=<%= @projection %>"
+      "init=<%= @projection.downcase %>"
     END
     STATUS       DEFAULT
     TYPE         RASTER
