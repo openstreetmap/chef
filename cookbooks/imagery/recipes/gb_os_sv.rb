@@ -140,7 +140,7 @@ imagery_layer "gb_os_sv_2014_10" do
   extent "5000 5000 660000 1225000"
 end
 
-imagery_layer "gb_os_sv_2015-05" do
+imagery_layer "gb_os_sv_2015_05" do
   site "os.openstreetmap.org"
   projection "EPSG:27700"
   source "/data/imagery/gb/os-sv/ossv-2015-05-combined.vrt"
