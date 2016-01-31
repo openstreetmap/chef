@@ -1,6 +1,6 @@
 server {
     listen       80;
-    server_name  <%= @name %>;
+    server_name  <%= @name %> a.<%= @name %> b.<%= @name %> c.<%= @name %><% @aliases.each do |alias_name| %> <%= alias_name %><%- end -%>;
 
     # Include site imagery layers
     include /srv/imagery/nginx/<%= @name %>/layer-*.conf;

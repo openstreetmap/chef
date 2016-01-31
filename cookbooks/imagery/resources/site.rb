@@ -20,9 +20,10 @@
 default_action :create
 
 property :name, String
+property :aliases, [String, Array], :default => []
 
 action :create do
-  directory "/srv/imagery/#{name}" do
+  directory "/srv/#{name}" do
     owner "root"
     group "root"
     mode 0755

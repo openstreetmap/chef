@@ -20,7 +20,7 @@
 include_recipe "imagery"
 
 imagery_site "agri.openstreetmap.org" do
-  # aliases ["agri.openstreetmap.org.au"]
+  aliases [ "agri.openstreetmap.org.au" ]
 end
 
 imagery_layer "au_ga_agri" do
