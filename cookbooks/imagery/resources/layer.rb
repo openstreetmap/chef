@@ -76,7 +76,6 @@ action :create do
     variables new_resource.to_hash
     notifies :reload, "service[nginx]", :delayed
   end
-
 end
 
 action :delete do

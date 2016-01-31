@@ -19,6 +19,13 @@
 
 include_recipe "imagery"
 
+cookbook_file "/srv/imagery/common/ossv-palette.txt" do
+  source "ossv-palette.txt"
+  owner "root"
+  group "root"
+  mode "0644"
+end
+
 imagery_site "os.openstreetmap.org" do
   aliases ["os.openstreetmap.org.uk"]
 
@@ -29,7 +36,7 @@ imagery_site "os.openstreetmap.org" do
     copyright "Contains Ordnance Survey data © Crown copyright and database right 2010" # FIXME: Correct Copyright?
     background_colour "230 246 255" # OSSV Water Blue
     extension "png"
-    palette "ossv-palette.txt"
+    palette "/srv/imagery/common/ossv-palette.txt"
     extent "5000 5000 660000 1225000"
   end
 
@@ -40,7 +47,7 @@ imagery_site "os.openstreetmap.org" do
     copyright "Contains Ordnance Survey data © Crown copyright and database right 2010" # FIXME: Correct Copyright?
     background_colour "230 246 255" # OSSV Water Blue
     extension "png"
-    palette "ossv-palette.txt"
+    palette "/srv/imagery/common/ossv-palette.txt"
     extent "5000 5000 660000 1225000"
   end
 
@@ -51,7 +58,7 @@ imagery_site "os.openstreetmap.org" do
     copyright "Contains Ordnance Survey data © Crown copyright and database right 2011" # FIXME: Correct Copyright?
     background_colour "230 246 255" # OSSV Water Blue
     extension "png"
-    palette "ossv-palette.txt"
+    palette "/srv/imagery/common/ossv-palette.txt"
     extent "5000 5000 660000 1225000"
   end
 
@@ -62,7 +69,7 @@ imagery_site "os.openstreetmap.org" do
     copyright "Contains Ordnance Survey data © Crown copyright and database right 2011" # FIXME: Correct Copyright?
     background_colour "230 246 255" # OSSV Water Blue
     extension "png"
-    palette "ossv-palette.txt"
+    palette "/srv/imagery/common/ossv-palette.txt"
     extent "5000 5000 660000 1225000"
   end
 
@@ -73,7 +80,7 @@ imagery_site "os.openstreetmap.org" do
     copyright "Contains Ordnance Survey data © Crown copyright and database right 2012"
     background_colour "230 246 255" # OSSV Water Blue
     extension "png"
-    palette "ossv-palette.txt"
+    palette "/srv/imagery/common/ossv-palette.txt"
     extent "5000 5000 660000 1225000"
   end
 
@@ -84,7 +91,7 @@ imagery_site "os.openstreetmap.org" do
     copyright "Contains Ordnance Survey data © Crown copyright and database right 2012"
     background_colour "230 246 255" # OSSV Water Blue
     extension "png"
-    palette "ossv-palette.txt"
+    palette "/srv/imagery/common/ossv-palette.txt"
     extent "5000 5000 660000 1225000"
   end
 
@@ -95,7 +102,7 @@ imagery_site "os.openstreetmap.org" do
     copyright "Contains Ordnance Survey data © Crown copyright and database right 2013"
     background_colour "230 246 255" # OSSV Water Blue
     extension "png"
-    palette "ossv-palette.txt"
+    palette "/srv/imagery/common/ossv-palette.txt"
     extent "5000 5000 660000 1225000"
   end
 
@@ -106,7 +113,7 @@ imagery_site "os.openstreetmap.org" do
     copyright "Contains Ordnance Survey data © Crown copyright and database right 2013"
     background_colour "230 246 255" # OSSV Water Blue
     extension "png"
-    palette "ossv-palette.txt"
+    palette "/srv/imagery/common/ossv-palette.txt"
     extent "5000 5000 660000 1225000"
   end
 
@@ -117,7 +124,7 @@ imagery_site "os.openstreetmap.org" do
     copyright "Contains Ordnance Survey data © Crown copyright and database right 2014"
     background_colour "230 246 255" # OSSV Water Blue
     extension "png"
-    palette "ossv-palette.txt"
+    palette "/srv/imagery/common/ossv-palette.txt"
     extent "5000 5000 660000 1225000"
   end
 
@@ -128,7 +135,7 @@ imagery_site "os.openstreetmap.org" do
     copyright "Contains Ordnance Survey data © Crown copyright and database right 2014"
     background_colour "230 246 255" # OSSV Water Blue
     extension "png"
-    palette "ossv-palette.txt"
+    palette "/srv/imagery/common/ossv-palette.txt"
     extent "5000 5000 660000 1225000"
   end
 
@@ -139,7 +146,7 @@ imagery_site "os.openstreetmap.org" do
     copyright "Contains Ordnance Survey data © Crown copyright and database right 2015"
     background_colour "230 246 255" # OSSV Water Blue
     extension "png"
-    palette "ossv-palette.txt"
+    palette "/srv/imagery/common/ossv-palette.txt"
     extent "5000 5000 660000 1225000"
   end
 
@@ -150,7 +157,7 @@ imagery_site "os.openstreetmap.org" do
     copyright "Contains Ordnance Survey data © Crown copyright and database right 2015"
     background_colour "230 246 255" # OSSV Water Blue
     extension "png"
-    palette "ossv-palette.txt"
+    palette "/srv/imagery/common/ossv-palette.txt"
     extent "5000 5000 660000 1225000"
   end
 end
