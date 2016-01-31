@@ -11,6 +11,9 @@ default_attributes(
       }
     }
   },
+  :apt => {
+    :sources => ["nginx"]
+  },
   :sysctl => {
     :sockets => {
       :comment => "Increase size of connection queue",
