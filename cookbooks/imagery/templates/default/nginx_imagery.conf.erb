@@ -2,7 +2,6 @@ server {
     listen       80;
     server_name  <%= @name %>;
 
-    #FIXME WIP
-    #Needs to include or iterate through layers with rewrite + fastcgi
-    #Git checkout of web?
+    include /srv/imagery/nginx/<%= @name %>/layer-*.conf
+
 }

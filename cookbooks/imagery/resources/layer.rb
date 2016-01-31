@@ -59,4 +59,43 @@ action :create do
     subscribes :restart, "template[/srv/imagery/mapserver/layer-#{name}.map]"
     subscribes :restart, "template[/etc/init/mapserv-fgi-layer-#{name}.conf]"
   end
+
+  directory "/srv/imagery/nginx/#{site}" do
+    owner "root"
+    group "root"
+    mode 0755
+    recursive true
+  end
+
+  template "/srv/imagery/nginx/#{site}/layer-#{name}.conf" do
+    cookbook "imagery"
+    source "nginx_imagery_layer_fragment.conf.erb"
+    owner "root"
+    group "root"
+    mode 0644
+    variables new_resource.to_hash
+    notifies :reload, "service[nginx]", :delayed
+  end
+
+end
+
+action :delete do
+  service "mapserv-fgi-layer-#{name}.conf" do
+    provider Chef::Provider::Service::Upstart
+    action [:stop, :disable]
+    supports :status => true, :restart => true, :reload => false
+  end
+
+  file "/srv/imagery/mapserver/layer-#{name}.map" do
+    action :delete
+  end
+
+  file "/etc/init/mapserv-fgi-layer-#{name}.conf" do
+    action :delete
+  end
+
+  file "/srv/imagery/nginx/#{site}/layer-#{name}.conf" do
+    action :delete
+    notifies :reload, "service[nginx]", :delayed
+  end
 end
