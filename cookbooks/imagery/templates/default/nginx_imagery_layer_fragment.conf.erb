@@ -1,6 +1,7 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
 location ~* "^/layer/<%= @name %>/(\d+)/(\d+)/(\d+)\.(png|jpg|jpeg)$" {
+  # Override QUERY_STRING to force mapserver query parameters
   fastcgi_param  QUERY_STRING "map=/srv/imagery/<%= @name %>.map&mode=tile&layers=<%= @name %>&tilemode=gmap&tile=$2+$3+$1";
   fastcgi_pass "unix:/var/run/mapserver-fastcgi/layer-<%= @name %>.socket";
   include fastcgi_params;
