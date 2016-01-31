@@ -2,6 +2,21 @@ server {
     listen       80;
     server_name  <%= @name %> a.<%= @name %> b.<%= @name %> c.<%= @name %><% @aliases.each do |alias_name| %> <%= alias_name %><%- end -%>;
 
+    root "/srv/<%= @name %>";
+
+    gzip on;
+    gzip_disable "msie6";
+    # text/html is implicit
+    gzip_types text/plain text/css application/json application/javascript application/x-javascript text/javascript text/xml application/xml application/rss+xml application/atom+xml application/rdf+xml image/svg+xml;
+    gzip_min_length 1024;
+    gzip_http_version 1.0;
+    gzip_proxied any;
+    gzip_comp_level 6;
+    gzip_vary on;
+
+    sendfile   on;
+    tcp_nopush on;
+
     # Include site imagery layers
     include /srv/imagery/nginx/<%= @name %>/layer-*.conf;
 }
