@@ -199,12 +199,20 @@ action :create do
     update_site false
   end
 
-  mediawiki_extension "ConfirmEdit" do
-    site new_resource.name
-    template "mw-ext-ConfirmEdit.inc.php.erb"
-    variables :public_key => new_resource.recaptcha_public_key,
-              :private_key => new_resource.recaptcha_private_key
-    update_site false
+  if new_resource.private_accounts || new_resource.private
+    mediawiki_extension "ConfirmEdit" do
+      site new_resource.name
+      update_site false
+      action :delete
+    end
+  else
+    mediawiki_extension "ConfirmEdit" do
+      site new_resource.name
+      template "mw-ext-ConfirmEdit.inc.php.erb"
+      variables :public_key => new_resource.recaptcha_public_key,
+                :private_key => new_resource.recaptcha_private_key
+      update_site false
+    end
   end
 
   mediawiki_extension "Gadgets" do
