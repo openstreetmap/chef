@@ -72,3 +72,8 @@ execute "unzip-ostn02-ntv2-data" do
   group "root"
   not_if { File.exist?("/srv/imagery/common/ostn02-ntv2-data/OSTN02_NTv2.gsb") }
 end
+
+nginx_site "default" do
+  action [:delete]
+  restart_nginx false
+end

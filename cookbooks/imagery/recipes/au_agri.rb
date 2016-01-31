@@ -20,7 +20,7 @@
 include_recipe "imagery"
 
 imagery_site "agri.openstreetmap.org" do
-  aliases [ "agri.openstreetmap.org.au" ]
+  # aliases [ "agri.openstreetmap.org.au" ]
 end
 
 imagery_layer "au_ga_agri" do
@@ -28,6 +28,7 @@ imagery_layer "au_ga_agri" do
   root_layer true
   text "AGRI: The Australian Geographic Reference Image"
   copyright "Commonwealth of Australia (Geoscience Australia) - Creative Commons Attribution 4.0 International Licence"
+  background_colour "0 0 0" # Black
   projection "EPSG:3857"
   source "/data/imagery/au/agri/combine.vrt"
 end

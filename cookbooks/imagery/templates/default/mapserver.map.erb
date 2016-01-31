@@ -1,9 +1,25 @@
 # DO NOT EDIT - This file is being maintained by Chef
 MAP
+<% if @extension == "os_sv_png" -%>
+  OUTPUTFORMAT
+    NAME "os_sv_png"
+    DRIVER AGG/PNG
+    MIMETYPE "image/png"
+    IMAGEMODE RGB
+    EXTENSION "png"
+    FORMATOPTION "COMPRESSION=9"
+    FORMATOPTION "PALETTE_FORCE=on"
+    FORMATOPTION "PALETTE=/srv/imagery/common/ossv-palette.txt"
+  END
+<% end -%>
+
   NAME "map-<%= @layer %>"
   STATUS ON
   SIZE 256 256
   UNITS METERS
+  <% if @background_colour -%>
+  IMAGECOLOR <%= @background_colour %>
+  <% end -%>
   IMAGETYPE <%= @extension %>
     PROJECTION
     "init=<%= @projection.downcase %>"
@@ -13,7 +29,12 @@ MAP
     NAME "<%= @layer %>"
     DATA "<%= @source %>"
     PROJECTION
+    <% if @projection == "EPSG:27700" -%>
+      <%# Override EPSG:27700 to use accurate nadgrid %>
+      "+proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +ellps=airy +datum=OSGB36 +units=m +no_defs +nadgrids=/srv/imagery/common/ostn02-ntv2-data/OSTN02_NTv2.gsb"
+    <% else -%>
       "init=<%= @projection.downcase %>"
+    <% end -%>
     END
     STATUS       DEFAULT
     TYPE         RASTER
