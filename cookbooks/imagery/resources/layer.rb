@@ -30,7 +30,9 @@ property :extent, String
 property :background, String
 property :resample, String, :default => "average"
 property :imagemode, String
-property :extension, String
+property :extension, String,
+         :is => %w(png png8 jpeg),
+         :default => "png"
 property :max_zoom, Fixnum, :default => 23
 
 action :create do
