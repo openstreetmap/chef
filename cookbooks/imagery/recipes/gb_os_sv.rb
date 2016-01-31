@@ -39,6 +39,7 @@ imagery_layer "gb_os_sv_2010_04" do
   extension "png"
   palette "/srv/imagery/common/ossv-palette.txt"
   extent "5000 5000 660000 1225000"
+  url_aliases [ "/sv-2010-04" ]
 end
 
 imagery_layer "gb_os_sv_2010_11" do
@@ -50,6 +51,7 @@ imagery_layer "gb_os_sv_2010_11" do
   extension "png"
   palette "/srv/imagery/common/ossv-palette.txt"
   extent "5000 5000 660000 1225000"
+  url_aliases [ "/sv-2010-11" ]
 end
 
 imagery_layer "gb_os_sv_2011_05" do
@@ -61,6 +63,7 @@ imagery_layer "gb_os_sv_2011_05" do
   extension "png"
   palette "/srv/imagery/common/ossv-palette.txt"
   extent "5000 5000 660000 1225000"
+  url_aliases [ "/sv-2011-05" ]
 end
 
 imagery_layer "gb_os_sv_2011_11" do
@@ -72,6 +75,7 @@ imagery_layer "gb_os_sv_2011_11" do
   extension "png"
   palette "/srv/imagery/common/ossv-palette.txt"
   extent "5000 5000 660000 1225000"
+  url_aliases [ "/sv-2011-11" ]
 end
 
 imagery_layer "gb_os_sv_2012_05" do
@@ -83,6 +87,7 @@ imagery_layer "gb_os_sv_2012_05" do
   extension "png"
   palette "/srv/imagery/common/ossv-palette.txt"
   extent "5000 5000 660000 1225000"
+  url_aliases [ "/sv-2012-05" ]
 end
 
 imagery_layer "gb_os_sv_2012_11" do
@@ -94,6 +99,7 @@ imagery_layer "gb_os_sv_2012_11" do
   extension "png"
   palette "/srv/imagery/common/ossv-palette.txt"
   extent "5000 5000 660000 1225000"
+  url_aliases [ "/sv-2012-11" ]
 end
 
 imagery_layer "gb_os_sv_2013_05" do
@@ -105,6 +111,7 @@ imagery_layer "gb_os_sv_2013_05" do
   extension "png"
   palette "/srv/imagery/common/ossv-palette.txt"
   extent "5000 5000 660000 1225000"
+  url_aliases [ "/sv-2013-05" ]
 end
 
 imagery_layer "gb_os_sv_2013_11" do
@@ -116,6 +123,7 @@ imagery_layer "gb_os_sv_2013_11" do
   extension "png"
   palette "/srv/imagery/common/ossv-palette.txt"
   extent "5000 5000 660000 1225000"
+  url_aliases [ "/sv-2013-11" ]
 end
 
 imagery_layer "gb_os_sv_2014_04" do
@@ -127,6 +135,7 @@ imagery_layer "gb_os_sv_2014_04" do
   extension "png"
   palette "/srv/imagery/common/ossv-palette.txt"
   extent "5000 5000 660000 1225000"
+  url_aliases [ "/sv-2014-04" ]
 end
 
 imagery_layer "gb_os_sv_2014_10" do
@@ -138,6 +147,7 @@ imagery_layer "gb_os_sv_2014_10" do
   extension "png"
   palette "/srv/imagery/common/ossv-palette.txt"
   extent "5000 5000 660000 1225000"
+  url_aliases [ "/sv-2014-10" ]
 end
 
 imagery_layer "gb_os_sv_2015_05" do
@@ -149,6 +159,7 @@ imagery_layer "gb_os_sv_2015_05" do
   extension "png"
   palette "/srv/imagery/common/ossv-palette.txt"
   extent "5000 5000 660000 1225000"
+  url_aliases [ "/sv-2015-05" ]
 end
 
 imagery_layer "gb_os_sv_2015_11" do
@@ -161,4 +172,5 @@ imagery_layer "gb_os_sv_2015_11" do
   extension "png"
   palette "/srv/imagery/common/ossv-palette.txt"
   extent "5000 5000 660000 1225000"
+  url_aliases [ "/sv-2015-11", "/sv" ]
 end

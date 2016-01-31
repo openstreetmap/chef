@@ -28,4 +28,5 @@ imagery_layer "gb_surrey_aerial" do
   root_layer true
   projection "EPSG:27700"
   source "/data/imagery/gb/surrey-aerial/SurreyMosaicECW.tif"
+  url_aliases [ "/sas" ]
 end

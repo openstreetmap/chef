@@ -11,3 +11,6 @@ location ~* "^/layer/<%= @layer %>/(\d+)/(\d+)/(\d+)\.(png|jpg|jpeg)$" {
 <% if @root_layer -%>
 rewrite "^/(\d+)/(\d+)/(\d+)\.(png|jpg|jpeg)$" "/layer/<%= @layer %>/$1/$2/$3.$4" last;
 <% end -%>
+<% @url_aliases.each do |url| -%>
+rewrite "^<%= url %>/(\d+)/(\d+)/(\d+)\.(png|jpg|jpeg)$" "/layer/<%= @layer %>/$1/$2/$3.$4" last;
+<% end -%>
