@@ -27,7 +27,7 @@ property :copyright, String, :default => "Copyright"
 property :projection, String, :default => "EPSG:3857"
 property :palette, String
 property :extent, String
-property :background, String
+property :background_colour, String
 property :resample, String, :default => "average"
 property :imagemode, String
 property :extension, String,
