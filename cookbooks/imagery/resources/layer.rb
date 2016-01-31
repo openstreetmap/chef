@@ -22,6 +22,7 @@ default_action :create
 property :layer, String, :name_property => true
 property :site, String, :required => true
 property :source, String, :required => true
+property :root_layer, [TrueClass, FalseClass], :default => false
 property :text, String
 property :copyright, String, :default => "Copyright"
 property :projection, String, :default => "EPSG:3857"
@@ -34,6 +35,7 @@ property :extension, String,
          :is => %w(png png8 jpeg),
          :default => "png"
 property :max_zoom, Fixnum, :default => 23
+property :url_aliases, [String, Array]
 
 action :create do
   template "/srv/imagery/mapserver/layer-#{layer}.map" do

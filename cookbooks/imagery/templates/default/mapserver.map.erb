@@ -1,6 +1,6 @@
 # DO NOT EDIT - This file is being maintained by Chef
 MAP
-  NAME "map-<%= @name %>"
+  NAME "map-<%= @layer %>"
   STATUS ON
   SIZE 256 256
   UNITS METERS
@@ -10,7 +10,7 @@ MAP
   END
 
   LAYER
-    NAME "<%= @name %>"
+    NAME "<%= @layer %>"
     DATA "<%= @source %>"
     PROJECTION
       "init=<%= @projection.downcase %>"

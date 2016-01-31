@@ -25,6 +25,7 @@ end
 
 imagery_layer "gb_surrey_aerial" do
   site "surrey.aerial.openstreetmap.org.uk"
+  root_layer true
   projection "EPSG:27700"
   source "/data/imagery/gb/surrey-aerial/SurreyMosaicECW.tif"
 end

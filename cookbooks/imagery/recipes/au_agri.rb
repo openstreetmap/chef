@@ -25,6 +25,7 @@ end
 
 imagery_layer "au_ga_agri" do
   site "agri.openstreetmap.org"
+  root_layer true
   text "AGRI: The Australian Geographic Reference Image"
   copyright "Commonwealth of Australia (Geoscience Australia) - Creative Commons Attribution 4.0 International Licence"
   projection "EPSG:3857"

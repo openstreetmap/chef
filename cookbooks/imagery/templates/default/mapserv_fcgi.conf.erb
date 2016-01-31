@@ -12,9 +12,9 @@ respawn
 limit nofile 16384 16384
 
 # https://trac.osgeo.org/mapserver/wiki/EnvironmentVariables
-env MS_MAPFILE="/srv/imagery/mapserver/layer-<%= @name %>.map"
+env MS_MAPFILE="/srv/imagery/mapserver/layer-<%= @layer %>.map"
 env MS_MAP_PATTERN="^/srv/imagery/mapserver/"
-env MS_ERRORFILE="/tmp/mapserver-layer-<%= @name %>.log"
+env MS_ERRORFILE="/tmp/mapserver-layer-<%= @layer %>.log"
 env MS_DEBUGLEVEL="5"
 
 pre-start script
@@ -27,7 +27,7 @@ script
         -n \
         -u imagery \
         -g imagery \
-        -s /var/run/mapserver-fastcgi/layer-<%= @name %>.socket \
+        -s /var/run/mapserver-fastcgi/layer-<%= @layer %>.socket \
         -M 0666 \
         -f /usr/lib/cgi-bin/mapserv
 end script
