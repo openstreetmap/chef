@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: imagery
-# Recipe:: au-agri
+# Recipe:: au_agri
 #
 # Copyright 2016, OpenStreetMap Foundation
 #

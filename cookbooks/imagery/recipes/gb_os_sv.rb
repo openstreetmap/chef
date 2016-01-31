@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: imagery
-# Recipe:: gb-ossv
+# Recipe:: gb_os_sv
 #
 # Copyright 2016, OpenStreetMap Foundation
 #

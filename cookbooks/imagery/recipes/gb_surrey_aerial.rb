@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: imagery
-# Recipe:: gb-surrey-aerial
+# Recipe:: gb_surrey_aerial
 #
 # Copyright 2016, OpenStreetMap Foundation
 #

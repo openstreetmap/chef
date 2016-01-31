@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: imagery
-# Recipe:: gb-hampshire-aerial
+# Recipe:: gb_hampshire_aerial
 #
 # Copyright 2016, OpenStreetMap Foundation
 #
