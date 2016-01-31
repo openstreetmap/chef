@@ -19,7 +19,7 @@
 
 default_action :create
 
-property :name, String
+property :layer, String, :name_property => true
 property :site, String, :required => true
 property :source, String, :required => true
 property :text, String
@@ -36,7 +36,7 @@ property :extension, String,
 property :max_zoom, Fixnum, :default => 23
 
 action :create do
-  template "/srv/imagery/mapserver/layer-#{name}.map" do
+  template "/srv/imagery/mapserver/layer-#{layer}.map" do
     cookbook "imagery"
     source "mapserver.map.erb"
     owner "root"
@@ -45,7 +45,7 @@ action :create do
     variables new_resource.to_hash
   end
 
-  template "/etc/init/mapserv-fgi-layer-#{name}.conf" do
+  template "/etc/init/mapserv-fcgi-layer-#{layer}.conf" do
     cookbook "imagery"
     source "mapserv_fcgi.conf.erb"
     owner "root"
@@ -54,12 +54,12 @@ action :create do
     variables new_resource.to_hash
   end
 
-  service "mapserv-fgi-layer-#{name}.conf" do
+  service "mapserv-fcgi-layer-#{layer}" do
     provider Chef::Provider::Service::Upstart
     action [:enable, :start]
     supports :status => true, :restart => true, :reload => false
-    subscribes :restart, "template[/srv/imagery/mapserver/layer-#{name}.map]"
-    subscribes :restart, "template[/etc/init/mapserv-fgi-layer-#{name}.conf]"
+    subscribes :restart, "template[/srv/imagery/mapserver/layer-#{layer}.map]"
+    subscribes :restart, "template[/etc/init/mapserv-fcgi-layer-#{layer}.conf]"
   end
 
   directory "/srv/imagery/nginx/#{site}" do
@@ -69,7 +69,7 @@ action :create do
     recursive true
   end
 
-  template "/srv/imagery/nginx/#{site}/layer-#{name}.conf" do
+  template "/srv/imagery/nginx/#{site}/layer-#{layer}.conf" do
     cookbook "imagery"
     source "nginx_imagery_layer_fragment.conf.erb"
     owner "root"
@@ -80,21 +80,21 @@ action :create do
 end
 
 action :delete do
-  service "mapserv-fgi-layer-#{name}.conf" do
+  service "mapserv-fcgi-layer-#{layer}" do
     provider Chef::Provider::Service::Upstart
     action [:stop, :disable]
     supports :status => true, :restart => true, :reload => false
   end
 
-  file "/srv/imagery/mapserver/layer-#{name}.map" do
+  file "/srv/imagery/mapserver/layer-#{layer}.map" do
     action :delete
   end
 
-  file "/etc/init/mapserv-fgi-layer-#{name}.conf" do
+  file "/etc/init/mapserv-fcgi-layer-#{layer}.conf" do
     action :delete
   end
 
-  file "/srv/imagery/nginx/#{site}/layer-#{name}.conf" do
+  file "/srv/imagery/nginx/#{site}/layer-#{layer}.conf" do
     action :delete
   end
 end
