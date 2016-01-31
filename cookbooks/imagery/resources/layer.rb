@@ -76,7 +76,6 @@ action :create do
     group "root"
     mode 0644
     variables new_resource.to_hash
-    # FIXME notifies :reload, "service[nginx]", :delayed
   end
 end
 
@@ -97,6 +96,5 @@ action :delete do
 
   file "/srv/imagery/nginx/#{site}/layer-#{name}.conf" do
     action :delete
-    # FIXME notifies :reload, "service[nginx]", :delayed
   end
 end

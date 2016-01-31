@@ -31,6 +31,11 @@ action :create do
   nginx_site name do
     template "nginx_imagery.conf.erb"
     directory "/srv/imagery/#{name}"
+    restart_nginx false
     variables new_resource.to_hash
   end
+end
+
+def after_created
+  notifies :restart, "service[nginx]"
 end
