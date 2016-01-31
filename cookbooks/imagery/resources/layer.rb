@@ -100,3 +100,7 @@ action :delete do
     action :delete
   end
 end
+
+def after_created
+  notifies :restart, "service[nginx]"
+end
