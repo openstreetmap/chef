@@ -9,9 +9,6 @@ stop on runlevel [!2345]
 
 respawn
 
-setuid imagery
-setgid imagery
-
 limit nofile 16384 16384
 
 # https://trac.osgeo.org/mapserver/wiki/EnvironmentVariables
@@ -20,9 +17,16 @@ env MS_MAP_PATTERN="^/srv/imagery/mapserver/"
 env MS_ERRORFILE="/tmp/mapserver-layer-<%= @name %>.log"
 env MS_DEBUGLEVEL="5"
 
+pre-start script
+    mkdir -p -m 0775 /var/run/mapserver-fastcgi
+    chown imagery:imagery /var/run/mapserver-fastcgi
+end script
+
 script
     exec /usr/bin/spawn-fcgi \
         -n \
+        -u imagery \
+        -g imagery \
         -s /var/run/mapserver-fastcgi/layer-<%= @name %>.socket \
         -M 0666 \
         -f /usr/lib/cgi-bin/mapserv

@@ -40,13 +40,6 @@ package "imagemagick"
 package "xz-utils"
 package "unzip"
 
-# Create Directory for mapserver-fastcgi imagery sockets
-directory "/var/run/mapserver-fastcgi" do
-  owner "imagery"
-  group "imagery"
-  mode 0755
-end
-
 directory "/srv/imagery/mapserver" do
   owner "root"
   group "root"
