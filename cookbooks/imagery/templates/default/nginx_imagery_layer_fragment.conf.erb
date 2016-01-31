@@ -2,7 +2,7 @@
 
 location ~* "^/layer/<%= @layer %>/(\d+)/(\d+)/(\d+)\.(png|jpg|jpeg)$" {
   # Override QUERY_STRING to force mapserver query parameters
-  fastcgi_param  QUERY_STRING "map=/srv/imagery/mapserver/layer-<%= @layer %>.map&mode=tile&layers=<%= @layer %>&tilemode=gmap&tile=$2+$3+$1";
+  fastcgi_param QUERY_STRING "map=/srv/imagery/mapserver/layer-<%= @layer %>.map&mode=tile&layers=<%= @layer %>&tilemode=gmap&tile=$2+$3+$1";
   fastcgi_pass "unix:/var/run/mapserver-fastcgi/layer-<%= @layer %>.socket";
   include fastcgi_params;
   gzip off;

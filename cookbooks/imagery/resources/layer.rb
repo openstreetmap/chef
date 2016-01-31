@@ -35,7 +35,7 @@ property :extension, String,
          :is => %w(png png8 jpeg),
          :default => "png"
 property :max_zoom, Fixnum, :default => 23
-property :url_aliases, [String, Array]
+property :url_aliases, [String, Array], :default => []
 
 action :create do
   template "/srv/imagery/mapserver/layer-#{layer}.map" do
