@@ -1,0 +1,23 @@
+# DO NOT EDIT - This file is being maintained by Chef
+MAP
+  NAME "map-<%= @name %>"
+  STATUS ON
+  SIZE 256 256
+  UNITS METERS
+  IMAGETYPE <%= @extension %>
+    PROJECTION
+    "init=<%= @projection %>"
+  END
+
+  LAYER
+    NAME "<%= @name %>"
+    DATA "<%= @source %>"
+    PROJECTION
+      "init=<%= @projection %>"
+    END
+    STATUS       DEFAULT
+    TYPE         RASTER
+    PROCESSING "RESAMPLE=AVERAGE"
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+  END # layer
+END

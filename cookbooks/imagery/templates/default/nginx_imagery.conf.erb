@@ -1,0 +1,7 @@
+server {
+    listen       80;
+    server_name  <%= @name %>;
+
+    # Include site imagery layers
+    include /srv/imagery/nginx/<%= @name %>/layer-*.conf
+}

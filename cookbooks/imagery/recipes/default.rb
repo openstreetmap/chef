@@ -47,6 +47,13 @@ directory "/var/run/mapserver-fastcgi" do
   mode 0755
 end
 
+directory "/srv/imagery/mapserver" do
+  owner "root"
+  group "root"
+  mode 0755
+  recursive true
+end
+
 directory "/srv/imagery/common" do
   owner "root"
   group "root"
