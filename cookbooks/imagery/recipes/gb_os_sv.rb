@@ -27,7 +27,7 @@ cookbook_file "/srv/imagery/common/ossv-palette.txt" do
 end
 
 imagery_site "os.openstreetmap.org" do
-  aliases [ "os.openstreetmap.org.uk" ]
+  aliases ["os.openstreetmap.org.uk"]
 end
 
 imagery_layer "gb_os_sv_2010_04" do
@@ -37,7 +37,7 @@ imagery_layer "gb_os_sv_2010_04" do
   copyright "Contains Ordnance Survey data © Crown copyright and database right 2010" # FIXME: Correct Copyright?
   background_colour "230 246 255" # OSSV Water Blue
   extension "os_sv_png"
-  url_aliases [ "/sv-2010-04" ]
+  url_aliases ["/sv-2010-04"]
 end
 
 imagery_layer "gb_os_sv_2010_11" do
@@ -47,7 +47,7 @@ imagery_layer "gb_os_sv_2010_11" do
   copyright "Contains Ordnance Survey data © Crown copyright and database right 2010" # FIXME: Correct Copyright?
   background_colour "230 246 255" # OSSV Water Blue
   extension "os_sv_png"
-  url_aliases [ "/sv-2010-11" ]
+  url_aliases ["/sv-2010-11"]
 end
 
 imagery_layer "gb_os_sv_2011_05" do
@@ -57,7 +57,7 @@ imagery_layer "gb_os_sv_2011_05" do
   copyright "Contains Ordnance Survey data © Crown copyright and database right 2011" # FIXME: Correct Copyright?
   background_colour "230 246 255" # OSSV Water Blue
   extension "os_sv_png"
-  url_aliases [ "/sv-2011-05" ]
+  url_aliases ["/sv-2011-05"]
 end
 
 imagery_layer "gb_os_sv_2011_11" do
@@ -67,7 +67,7 @@ imagery_layer "gb_os_sv_2011_11" do
   copyright "Contains Ordnance Survey data © Crown copyright and database right 2011" # FIXME: Correct Copyright?
   background_colour "230 246 255" # OSSV Water Blue
   extension "os_sv_png"
-  url_aliases [ "/sv-2011-11" ]
+  url_aliases ["/sv-2011-11"]
 end
 
 imagery_layer "gb_os_sv_2012_05" do
@@ -77,7 +77,7 @@ imagery_layer "gb_os_sv_2012_05" do
   copyright "Contains Ordnance Survey data © Crown copyright and database right 2012"
   background_colour "230 246 255" # OSSV Water Blue
   extension "os_sv_png"
-  url_aliases [ "/sv-2012-05" ]
+  url_aliases ["/sv-2012-05"]
 end
 
 imagery_layer "gb_os_sv_2012_11" do
@@ -87,7 +87,7 @@ imagery_layer "gb_os_sv_2012_11" do
   copyright "Contains Ordnance Survey data © Crown copyright and database right 2012"
   background_colour "230 246 255" # OSSV Water Blue
   extension "os_sv_png"
-  url_aliases [ "/sv-2012-11" ]
+  url_aliases ["/sv-2012-11"]
 end
 
 imagery_layer "gb_os_sv_2013_05" do
@@ -97,7 +97,7 @@ imagery_layer "gb_os_sv_2013_05" do
   copyright "Contains Ordnance Survey data © Crown copyright and database right 2013"
   background_colour "230 246 255" # OSSV Water Blue
   extension "os_sv_png"
-  url_aliases [ "/sv-2013-05" ]
+  url_aliases ["/sv-2013-05"]
 end
 
 imagery_layer "gb_os_sv_2013_11" do
@@ -107,7 +107,7 @@ imagery_layer "gb_os_sv_2013_11" do
   copyright "Contains Ordnance Survey data © Crown copyright and database right 2013"
   background_colour "230 246 255" # OSSV Water Blue
   extension "os_sv_png"
-  url_aliases [ "/sv-2013-11" ]
+  url_aliases ["/sv-2013-11"]
 end
 
 imagery_layer "gb_os_sv_2014_04" do
@@ -117,7 +117,7 @@ imagery_layer "gb_os_sv_2014_04" do
   copyright "Contains Ordnance Survey data © Crown copyright and database right 2014"
   background_colour "230 246 255" # OSSV Water Blue
   extension "os_sv_png"
-  url_aliases [ "/sv-2014-04" ]
+  url_aliases ["/sv-2014-04"]
 end
 
 imagery_layer "gb_os_sv_2014_10" do
@@ -127,7 +127,7 @@ imagery_layer "gb_os_sv_2014_10" do
   copyright "Contains Ordnance Survey data © Crown copyright and database right 2014"
   background_colour "230 246 255" # OSSV Water Blue
   extension "os_sv_png"
-  url_aliases [ "/sv-2014-10" ]
+  url_aliases ["/sv-2014-10"]
 end
 
 imagery_layer "gb_os_sv_2015_05" do
@@ -137,7 +137,7 @@ imagery_layer "gb_os_sv_2015_05" do
   copyright "Contains Ordnance Survey data © Crown copyright and database right 2015"
   background_colour "230 246 255" # OSSV Water Blue
   extension "os_sv_png"
-  url_aliases [ "/sv-2015-05" ]
+  url_aliases ["/sv-2015-05"]
 end
 
 imagery_layer "gb_os_sv_2015_11" do
@@ -148,5 +148,5 @@ imagery_layer "gb_os_sv_2015_11" do
   copyright "Contains Ordnance Survey data © Crown copyright and database right 2015"
   background_colour "230 246 255" # OSSV Water Blue
   extension "os_sv_png"
-  url_aliases [ "/sv-2015-11", "/sv" ]
+  url_aliases ["/sv-2015-11", "/sv"]
 end
