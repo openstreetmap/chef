@@ -30,7 +30,7 @@ imagery_layer "gb_hampshire_aerial_rgb" do
   source "/data/imagery/gb/hampshire-aerial/hampshire-aerial-RGB.tif"
   projection "EPSG:27700"
   copyright "Hampshire Hub - Open Government Licence (OGL) 2014"
-  url_aliases [ "/hampshire-rgb" ]
+  url_aliases ["/hampshire-rgb"]
 end
 
 imagery_layer "gb_hampshire_aerial_fcir" do
@@ -39,5 +39,5 @@ imagery_layer "gb_hampshire_aerial_fcir" do
   source "/data/imagery/gb/hampshire-aerial/hampshire-aerial-FCIR.tif"
   projection "EPSG:27700"
   copyright "Hampshire Hub - Open Government Licence (OGL) 2014"
-  url_aliases [ "/hampshire-fcir" ]
+  url_aliases ["/hampshire-fcir"]
 end
