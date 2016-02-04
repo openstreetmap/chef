@@ -4,7 +4,7 @@ $wgVirtualRestConfig['modules']['parsoid'] = array(
 );
 $wgVirtualRestConfig['modules']['parsoid']['forwardCookies'] = true;
 
-require_once "$IP/extensions/VisualEditor/VisualEditor.php";
+require_once($IP .'/extensions/VisualEditor/VisualEditor.php');
 
 // Enable by default for everybody
 $wgDefaultUserOptions['visualeditor-enable'] = 1;
