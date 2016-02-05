@@ -1,10 +1,11 @@
-default[:piwik][:version] = "2.15.0"
+default[:piwik][:version] = "2.16.0"
 default[:piwik][:plugins] = %w(
   Actions API BulkTracking Contents CoreAdminHome CoreConsole CoreHome
   CorePluginsAdmin CoreUpdater CoreVisualizations CustomVariables
-  Dashboard DevicesDetection DevicePlugins DoNotTrack Feedback Goals
-  ImageGraph Installation LanguagesManager Live Login Morpheus MultiSites
-  PrivacyManager Provider Proxy Referrers Resolution SEO SitesManager
-  UserCountry UserCountryMap UserSettings UsersManager Widgetize
-  VisitFrequency VisitorInterest VisitsSummary VisitTime
+  Dashboard DevicesDetection DevicePlugins DoNotTrack Events Feedback Goals
+  Heartbeat ImageGraph Installation LanguagesManager Live Login Morpheus
+  MultiSites Overlay PrivacyManager Provider Proxy Referrers Resolution
+  SegmentEditor SEO SitesManager Transitions UserCountry UserCountryMap
+  UserLanguage UsersManager Widgetize VisitFrequency VisitorInterest
+  VisitsSummary VisitTime
 )
