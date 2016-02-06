@@ -44,6 +44,7 @@ package "poppler-utils"
 
 # Mediawiki backup
 package "xz-utils"
+package "liblz4-tool"
 
 # Mediawiki packages for VisualEditor support
 package "curl"
