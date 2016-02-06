@@ -7,7 +7,7 @@ mkdir $T/wiki-<%= @name %>-$D
 mysqldump --user="<%= @database_params[:username] %>" --password="<%= @database_params[:password] %>" --opt --skip-lock-tables --single-transaction "<%= @database_params[:name] %>" | lz4 -9 > $T/wiki-<%= @name %>-$D/wiki.sql.lz4
 ln -s <%= @directory %>  $T/wiki-<%= @name %>-$D/www
 export GZIP="--rsyncable -9" #make backup rsyncable
-nice tar --create --gzip --dereference --directory=$T --exclude=wiki-<%= @name %>-$D/w/images/thumb --exclude=wiki-<%= @name %>-$D/w/.git --file=$T/$B wiki-<%= @name %>-$D
+nice tar --create --gzip --dereference --directory=$T --exclude=wiki-<%= @name %>-$D/www/w/images/thumb --exclude=wiki-<%= @name %>-$D/www/w/.git --exclude=wiki-<%= @name %>-$D/www/w/extensions/*/.git --file=$T/$B wiki-<%= @name %>-$D
 nice rsync $T/$B backup::backup --fuzzy
 
 rm -rf $T
