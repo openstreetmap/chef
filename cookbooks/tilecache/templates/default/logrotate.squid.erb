@@ -12,6 +12,6 @@
   sharedscripts
   postrotate
     test ! -e /var/run/squid.pid || /usr/sbin/squid -k rotate
-    /usr/bin/rsync /var/log/squid/zere.log.2.xz ironbelly::logs/tile.openstreetmap.org/<%= node[:hostname] %>-`date -d "-2 days" +%Y-%m-%d`.xz || true
+    /usr/bin/rsync /var/log/squid/zere.log.1.xz ironbelly::logs/tile.openstreetmap.org/<%= node[:hostname] %>-`date -d "-1 days" +%Y-%m-%d`.xz || true
   endscript
 }

@@ -4,7 +4,7 @@ ANALYZE=<%= @analyze_bin %>
 LOGDIR=<%= @input_dir %>
 OUTDIR=<%= @output_dir %>
 if [ -z "$DATE" ]; then
-		DATE=`date -d "2 days ago" "+%Y-%m-%d"`
+		DATE=`date -d "1 day ago" "+%Y-%m-%d"`
 fi
 TMPDIR=`mktemp -d -t tmp.XXXXXXXXX`
 ORIGDIR=`pwd`
