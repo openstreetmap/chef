@@ -62,12 +62,6 @@ default_attributes(
         :url => "http://www.naturalearthdata.com/http//www.naturalearthdata.com/download/110m/cultural/ne_110m_admin_0_boundary_lines_land.zip",
         :directory => "ne_110m_admin_0_boundary_lines_land"
       },
-      :populated_places => {
-        :url => "http://www.naturalearthdata.com/http//www.naturalearthdata.com/download/10m/cultural/ne_10m_populated_places.zip",
-        :directory => "ne_10m_populated_places",
-        :original => "ne_10m_populated_places.shp",
-        :processed => "ne_10m_populated_places_fixed.shp"
-      },
       :land_polygons => {
         :url => "http://data.openstreetmapdata.com/land-polygons-split-3857.zip",
         :refresh => true

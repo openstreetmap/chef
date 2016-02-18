@@ -188,21 +188,6 @@ node[:tile][:data].each_value do |data|
     end
   end
 
-  if data[:processed]
-    original = "#{directory}/#{data[:original]}"
-    processed = "#{directory}/#{data[:processed]}"
-
-    package "gdal-bin"
-
-    execute processed do
-      action :nothing
-      command "ogr2ogr #{processed} #{original}"
-      user "tile"
-      group "tile"
-      subscribes :run, "execute[#{file}]", :immediately
-    end
-  end
-
   execute "#{file}_shapeindex" do
     action :nothing
     command "find #{directory} -type f -iname '*.shp' -print0 | xargs -0 --no-run-if-empty shapeindex --shape_files"
