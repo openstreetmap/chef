@@ -52,7 +52,6 @@ default_attributes(
   :tilecache => {
     :tile_parent => "oslo.render.openstreetmap.org",
     :tile_siblings => [
-      "fume.openstreetmap.org",
       "trogdor.openstreetmap.org",
       "katie.openstreetmap.org",
       "konqi.openstreetmap.org",
@@ -65,5 +64,6 @@ default_attributes(
 
 run_list(
   "role[blix-no]",
+  "role[geodns]",
   "role[tilecache]"
 )

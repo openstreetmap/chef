@@ -33,7 +33,6 @@ default_attributes(
       "katie.openstreetmap.org",
       "konqi.openstreetmap.org",
       "ridgeback.openstreetmap.org",
-      "fume.openstreetmap.org",
       "gorynych.openstreetmap.org"
     ]
   }

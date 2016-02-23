@@ -49,7 +49,6 @@ default_attributes(
     :tile_parent => "moscow.render.openstreetmap.org",
     :tile_siblings => [
       "trogdor.openstreetmap.org",
-      "fume.openstreetmap.org",
       "katie.openstreetmap.org",
       "konqi.openstreetmap.org",
       "nepomuk.openstreetmap.org",
