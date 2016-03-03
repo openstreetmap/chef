@@ -101,7 +101,7 @@ node[:taginfo][:sites].each do |site|
   git "#{directory}/libosmium" do
     action :sync
     repository "git://github.com/osmcode/libosmium.git"
-    revision "v2.5.3"
+    revision "v2.6.1"
     user "taginfo"
     group "taginfo"
   end
