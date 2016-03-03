@@ -169,8 +169,6 @@ node[:taginfo][:sites].each do |site|
     group "taginfo"
     mode "0755"
     action :create
-    subscribes :create, "git[#{directory}/libosmium]"
-    subscribes :create, "git[#{directory}/osmium-tool]"
   end
 
   execute "compile-osmium" do
@@ -181,7 +179,6 @@ node[:taginfo][:sites].each do |site|
     group "taginfo"
     subscribes :run, "git[#{directory}/libosmium]"
     subscribes :run, "git[#{directory}/osmium-tool]"
-    subscribes :run, "directory[#{directory}/osmium-tool/build]"
   end
 
   %w(taginfo/web/tmp bin data data/old download sources planet planet/log planet/replication).each do |dir|
