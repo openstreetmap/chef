@@ -30,7 +30,7 @@ group = www-data
 ;                            specific port;
 ;   '/path/to/unix/socket' - to listen on a unix socket.
 ; Note: This value is mandatory.
-listen = /var/run/php5-fpm-default.sock
+listen = 127.0.0.1:7000
 
 ; Set listen(2) backlog. A value of '-1' means unlimited.
 ; Default Value: 128 (-1 on FreeBSD and OpenBSD)
@@ -41,9 +41,9 @@ listen = /var/run/php5-fpm-default.sock
 ; BSD-derived systems allow connections regardless of permissions. 
 ; Default Values: user and group are set as the running user
 ;                 mode is set to 0666
-listen.owner = www-data
-listen.group = www-data
-listen.mode = 0660
+;listen.owner = www-data
+;listen.group = www-data
+;listen.mode = 0660
  
 ; List of ipv4 addresses of FastCGI clients which are allowed to connect.
 ; Equivalent to the FCGI_WEB_SERVER_ADDRS environment variable in the original

@@ -9,12 +9,7 @@
 
 	DocumentRoot /usr/share/phppgadmin
 
-	<IfModule mod_fastcgi_handler.c>
-		<FilesMatch "\.ph(p3?|tml)$">
-			SetHandler fcgi:/var/run/php5-fpm-default.sock
-		</FilesMatch>
-		<FilesMatch "\.phps$">
-			SetHandler fcgi:/var/run/php5-fpm-default.sock
-		</FilesMatch>
-	</IfModule>
+	ProxyPassMatch ^/(.*\.php(/.*)?)$ fcgi://127.0.0.1:7000/usr/share/phppgadmin
+	ProxyPassMatch ^/(.*\.phpx(/.*)?)$ fcgi://127.0.0.1:7000/usr/share/phppgadmin
+	ProxyPassMatch ^/(.*\.phpj(/.*)?)$ fcgi://127.0.0.1:7000/usr/share/phppgadmin
 </VirtualHost>
