@@ -306,6 +306,12 @@ log_selector = +all -skip_delivery
 trusted_users = <%= node[:exim][:trusted_users].join(" : ") %>
 
 
+# Don't keep any environment when starting programs - this is the
+# default but setting it stops exim warning
+
+keep_environment =
+
+
 
 ######################################################################
 #                       ACL CONFIGURATION                            #
