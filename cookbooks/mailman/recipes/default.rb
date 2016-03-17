@@ -17,9 +17,21 @@
 # limitations under the License.
 #
 
+require "securerandom"
+
 include_recipe "apache::ssl"
 
 package "mailman"
+
+node.set_unless[:mailman][:subscribe_form_secret] = SecureRandom.base64(48)
+
+template "/etc/mailman/mm_cfg.py" do
+  source "mm_cfg.py.erb"
+  user "root"
+  group "root"
+  mode 0644
+  notifies :restart, "service[mailman]"
+end
 
 service "mailman" do
   action [:enable, :start]
