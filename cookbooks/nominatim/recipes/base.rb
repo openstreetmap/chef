@@ -84,6 +84,13 @@ template "/etc/logrotate.d/nominatim" do
   mode 0644
 end
 
+template "/etc/logrotate.d/apache2" do
+  source "logrotate.apache.erb"
+  owner "root"
+  group "root"
+  mode 0644
+end
+
 package "osmosis"
 package "gcc"
 package "proj-bin"

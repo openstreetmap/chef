@@ -1,0 +1,15 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+/var/log/apache2/*.log {
+  weekly
+  missingok
+  rotate 8
+  compress
+  delaycompress
+  notifempty
+  create 640 root adm
+  sharedscripts
+  postrotate
+    /usr/bin/service apache2 reload > /dev/null 2>&1
+  endscript
+}
