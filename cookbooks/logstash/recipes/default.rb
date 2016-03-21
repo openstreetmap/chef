@@ -48,6 +48,10 @@ template "/etc/logstash/conf.d/chef.conf" do
   notifies :restart, "service[logstash]"
 end
 
+file "/etc/logrotate.d/logstash" do
+  mode 0644
+end
+
 service "logstash" do
   action [:enable, :start]
   supports :status => true, :restart => true
