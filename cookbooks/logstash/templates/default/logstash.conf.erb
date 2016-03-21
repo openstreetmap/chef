@@ -23,6 +23,11 @@ filter {
         source => "agent"
         target => "useragent"
       }
+      grok {
+        match => { "agent" => "%{JOSM:[useragent][name]=JOSM}/%{POSINT:[useragent][major]}\.%{POSINT:[useragent][minor]} \(%{POSINT:[useragent][patch]} \w+\) " }
+        overwrite => [ "[useragent][name]", "[useragent][major]", "[useragent][minor]", "[useragent][patch]" ]
+        tag_on_failure => []
+      }
       mutate {
         rename => { "agent" => "[useragent][raw]" }
       }
