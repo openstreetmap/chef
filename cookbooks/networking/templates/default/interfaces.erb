@@ -3,8 +3,10 @@
 iface lo inet loopback
 <% node[:networking][:interfaces].each do |name,interface| -%>
 
-iface <%= interface[:interface] %> <%= interface[:family] %> static
+iface <%= interface[:interface] %> <%= interface[:family] %> <%= interface[:method] %>
+<% if interface[:address] -%>
       address   <%= interface[:address] %>
+<% end -%>
 <% if interface[:family] == "inet" -%>
       netmask   <%= interface[:netmask] %>
 <% elsif interface[:family] == "inet6" -%>
