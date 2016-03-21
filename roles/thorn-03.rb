@@ -11,6 +11,12 @@ default_attributes(
         :address => "146.179.159.167"
       }
     }
+  },
+  :sysctl => {
+    :ipv6_autoconf => {
+      :comment => "Disable IPv6 auto-configuration on internal interface",
+      :parameters => { "net.ipv6.conf.eth0.autoconf" => "0" }
+    }
   }
 )
 
