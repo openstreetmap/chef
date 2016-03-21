@@ -14,9 +14,6 @@ default_attributes(
         :inet => {
           :prefix => "27",
           :gateway => "146.179.159.177"
-        },
-        :inet6 => {
-          :method => "manual"
         }
       },
       :external => {
