@@ -22,6 +22,7 @@ include_recipe "web::base"
 
 db_passwords = data_bag_item("db", "passwords")
 
+package "g++"
 package "gcc"
 package "make"
 package "autoconf"
