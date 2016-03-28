@@ -64,6 +64,7 @@ apache_module "proxy"
 apache_module "proxy_fcgi"
 apache_module "rewrite"
 apache_module "wsgi"
+apache_module "headers"
 
 gem_package "sqlite3"
 
