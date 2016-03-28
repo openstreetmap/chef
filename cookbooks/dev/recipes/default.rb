@@ -134,14 +134,6 @@ search(:accounts, "*:*").each do |account|
     directory "#{user_home}/public_html"
     variables :user => name, :port => port
   end
-
-  template "/etc/sudoers.d/#{name}" do
-    source "sudoers.user.erb"
-    owner "root"
-    group "root"
-    mode 0440
-    variables :user => name
-  end
 end
 
 if node[:postgresql][:clusters][:"9.3/main"]
