@@ -17,5 +17,5 @@ else
 @define('CONST_Tablespace_<%= part %>', '<%= name %>');
 <% end -%>
 
-@define('CONST_Log_File', '/var/log/nominatim/query.log');
+@define('CONST_Log_File', '<%= node[:nominatim][:logdir] %>/query.log');
 @define('CONST_Log_DB', false);

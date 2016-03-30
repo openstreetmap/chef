@@ -9,7 +9,7 @@ cd $DIR/..
 while [ ! -f "<%= @update_stop_file %>" ]
 do
     # Send output to the log (logrotatable)
-    exec >> /var/log/nominatim/update.log 2>&1
+    exec >> <%= node[:nominatim][:logdir] %>/update.log 2>&1
     starttime=`date +%s`
 
     ./utils/update.php --no-npi --import-osmosis

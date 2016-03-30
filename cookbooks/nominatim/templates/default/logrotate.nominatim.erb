@@ -1,6 +1,6 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
-/var/log/nominatim/update.log {
+<%= node[:nominatim][:logdir] %>/update.log {
   weekly
   missingok
   rotate 5
@@ -10,7 +10,7 @@
   create 640 nominatim adm
 }
 
-/var/log/nominatim/query.log {
+<%= node[:nominatim][:logdir] %>/query.log {
   weekly
   missingok
   rotate 8

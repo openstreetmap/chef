@@ -1,4 +1,4 @@
-LOGFILE='/var/log/nominatim/restricted_ips.log'
+LOGFILE='<%= node[:nominatim][:logdir] %>/restricted_ips.log'
 # space-separated list of IPs that are never banned
 WHITELIST = ''
 # space-separated list of IPs manually blocked

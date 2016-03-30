@@ -65,10 +65,25 @@ postgresql_munin "nominatim" do
   database database_name
 end
 
-directory "/var/log/nominatim" do
+directory node[:nominatim][:logdir] do
   owner "nominatim"
   group "nominatim"
   mode 0755
+  recursive true
+end
+
+file "#{node[:nominatim][:logdir]}/query.log" do
+  action :create_if_missing
+  owner "www-data"
+  group "adm"
+  mode 0664
+end
+
+file "#{node[:nominatim][:logdir]}/update.log" do
+  action :create_if_missing
+  owner "nominatim"
+  group "adm"
+  mode 0664
 end
 
 directory "#{home_directory}/status" do
@@ -119,12 +134,6 @@ execute "compile_nominatim" do
   action :nothing
   command "cd #{source_directory} && ./autogen.sh && ./configure && make"
   user "nominatim"
-end
-
-directory "#{source_directory}/log" do
-  owner "nominatim"
-  group "nominatim"
-  mode 0755
 end
 
 template "#{source_directory}/.git/hooks/post-merge" do

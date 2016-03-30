@@ -41,6 +41,7 @@ default_attributes(
   :nominatim => {
     :enabled => false,
     :flatnode_file => "/ssd/nominatim/nodes.store",
+    :logdir => "/ssd/nominatim/log",
     :database => {
       :cluster => "9.4/main",
       :dbname => "nominatim",

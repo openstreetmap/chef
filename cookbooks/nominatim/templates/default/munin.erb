@@ -4,4 +4,4 @@
 user www-data
 env.PGDATABASE <%= node[:nominatim][:database][:dbname] %>
 env.PGUSER www-data
-env.NOMINATIM_QUERYLOG /var/log/nominatim/query.log
+env.NOMINATIM_QUERYLOG <%= node[:nominatim][:logdir] %>/query.log
