@@ -26,6 +26,12 @@ default_attributes(
         :hwaddress => "00:1a:4b:a5:fd:2a"
       }
     }
+  },
+  :sysctl => {
+    :ipv6_autoconf => {
+      :comment => "Disable IPv6 auto-configuration on internal interface",
+      :parameters => { "net.ipv6.conf.eth0.autoconf" => "0" }
+    }
   }
 )
 
