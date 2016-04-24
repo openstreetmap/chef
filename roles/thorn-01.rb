@@ -15,7 +15,10 @@ default_attributes(
   :sysctl => {
     :ipv6_autoconf => {
       :comment => "Disable IPv6 auto-configuration on internal interface",
-      :parameters => { "net.ipv6.conf.eth0.autoconf" => "0" }
+      :parameters => {
+        "net.ipv6.conf.eth0.autoconf" => "0",
+        "net.ipv6.conf.eth0.accept_ra" => "0"
+      }
     }
   },
   :web => {
