@@ -33,6 +33,7 @@ package "numactl"
 package "xfsprogs"
 package "sysv-rc-conf"
 package "iotop"
+package "lvm2"
 
 if node[:lsb][:release].to_f <= 11.04
   package "lslk"
