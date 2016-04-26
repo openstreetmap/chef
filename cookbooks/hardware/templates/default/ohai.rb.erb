@@ -865,7 +865,6 @@ Ohai.plugin(:Hardware) do
   end
 
   def psu_devices
-    devices = {}
     device = nil
 
     IO.popen(["dmidecode", "-t", "39"]).each_with_object([]) do |line, devices|
@@ -878,8 +877,6 @@ Ohai.plugin(:Hardware) do
         device = nil
       end
     end
-
-    devices
   end
 
   def mc_device
