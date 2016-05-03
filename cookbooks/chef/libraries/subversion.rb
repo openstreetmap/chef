@@ -24,7 +24,7 @@ class Chef
         return {} unless ::File.exist?(::File.join(@new_resource.destination, ".svn"))
 
         @repo_attrs ||= svn_info.lines.each_with_object({}) do |line, attrs|
-          fail "Could not parse `svn info` data: #{line}" unless line =~ SVN_INFO_PATTERN
+          raise "Could not parse `svn info` data: #{line}" unless line =~ SVN_INFO_PATTERN
 
           property = Regexp.last_match[1]
           value = Regexp.last_match[2]
