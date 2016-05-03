@@ -39,7 +39,7 @@ Dir.glob("/var/cache/chef/chef_*.deb").each do |deb|
 end
 
 remote_file "/var/cache/chef/#{chef_package}" do
-  source "https://opscode-omnibus-packages.s3.amazonaws.com/ubuntu/10.04/x86_64/#{chef_package}"
+  source "https://packages.chef.io/stable/ubuntu/10.04/#{chef_package}"
   owner "root"
   group "root"
   mode 0644
