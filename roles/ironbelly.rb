@@ -59,6 +59,13 @@ default_attributes(
         :peer => {
           :host => "ridley.openstreetmap.org"
         }
+      },
+      :aws2ic => {
+        :port => "1195",
+        :mode => "server",
+        :peer => {
+          :host => "fafnir.openstreetmap.org"
+        }
       }
     }
   },

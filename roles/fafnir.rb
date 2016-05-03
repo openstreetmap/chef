@@ -16,6 +16,18 @@ default_attributes(
       }
     }
   },
+  :openvpn => {
+    :address => "10.0.16.4",
+    :tunnels => {
+      :aws2ic => {
+        :port => "1194",
+        :mode => "client",
+        :peer => {
+          :host => "ironbelly.openstreetmap.org"
+        }
+      }
+    }
+  },
   :postgresql => {
     :settings => {
       :defaults => {
@@ -38,5 +50,6 @@ default_attributes(
 )
 
 run_list(
-  "role[aws]"
+  "role[aws]",
+  "recipe[openvpn]"
 )
