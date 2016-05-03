@@ -12,7 +12,8 @@ default_attributes(
         :max_wal_senders => "2",
         :late_authentication_rules => [
           { :database => "replication", :user => "replication", :address => "146.179.159.168/32" },
-          { :database => "replication", :user => "replication", :address => "146.179.159.170/32" }
+          { :database => "replication", :user => "replication", :address => "146.179.159.170/32" },
+          { :database => "replication", :user => "replication", :address => "10.0.16.4/32" }
         ]
       }
     }
@@ -29,7 +30,7 @@ default_attributes(
         :gid => "postgres",
         :transfer_logging => false,
         :hosts_allow => [
-          "146.179.159.168", "146.179.159.170"
+          "146.179.159.168", "146.179.159.170, 10.0.16.4"
         ]
       }
     }
