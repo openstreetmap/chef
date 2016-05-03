@@ -57,5 +57,6 @@ default_attributes(
 
 run_list(
   "role[aws]",
+  "role[db-slave]",
   "recipe[openvpn]"
 )
