@@ -35,10 +35,8 @@ node[:networking][:interfaces].each do |name, interface|
 
   prefix = node[:networking][:interfaces][name][:prefix]
 
-  # rubocop:disable Style/RedundantParentheses
   node.set[:networking][:interfaces][name][:netmask] = (~IPAddr.new(interface[:address]).mask(0)).mask(prefix)
   node.set[:networking][:interfaces][name][:network] = IPAddr.new(interface[:address]).mask(prefix)
-  # rubocop:enable Style/RedundantParentheses
 end
 
 template "/etc/network/interfaces" do
@@ -209,7 +207,7 @@ firewall_rule "limit-icmp-echo" do
   rate_limit "s:1/sec:5"
 end
 
-%w(ucl ic bm).each do |zone|
+%w(ucl ic bm aws).each do |zone|
   firewall_rule "accept-openvpn-#{zone}" do
     action :accept
     family :inet
