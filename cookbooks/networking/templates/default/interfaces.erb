@@ -2,6 +2,7 @@
 
 iface lo inet loopback
 <% node[:networking][:interfaces].each do |name,interface| -%>
+<% if interface[:interface] -%>
 
 iface <%= interface[:interface] %> <%= interface[:family] %> static
       address   <%= interface[:address] %>
@@ -31,5 +32,6 @@ iface <%= interface[:interface] %> <%= interface[:family] %> static
       autoconf  0
 <% end -%>
 <% end -%>
+<% end -%>
 
-auto lo <%= node[:networking][:interfaces].collect { |n,i| i[:interface] }.sort.uniq.join(" ") %>
+auto lo <%= node[:networking][:interfaces].collect { |n,i| i[:interface] }.compact.sort.uniq.join(" ") %>

@@ -13,6 +13,11 @@ default_attributes(
         :family => :inet,
         :address => "172.31.10.210",
         :hwaddress => "02:c1:c5:8b:5f:1d"
+      },
+      :external_ipv4 => {
+        :role => :external,
+        :family => :inet,
+        :address => "52.50.86.69"
       }
     }
   },

@@ -2,7 +2,7 @@
 
 # ZONE	INTERFACE	BROADCAST	OPTIONS
 <% node[:networking][:interfaces].each do |name,interface| -%>
-<% if interface[:family] == "inet" -%>
+<% if interface[:interface] && interface[:family] == "inet" -%>
 <% if interface[:role] == "internal" -%>
 loc	<%= interface[:interface] %>		detect		nosmurfs,tcpflags
 <% elsif interface[:role] == "external" -%>

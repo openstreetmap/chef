@@ -10,6 +10,12 @@ default_attributes(
           :prefix => "20",
           :gateway => "172.31.0.1"
         }
+      },
+      :external => {
+        :zone => "aws",
+        :inet => {
+          :prefix => "32"
+        }
       }
     }
   }
