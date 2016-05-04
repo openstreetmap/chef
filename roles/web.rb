@@ -19,7 +19,7 @@ default_attributes(
   :web => {
     :status => "online",
     :database_host => "db",
-    :readonly_database_host => "db"
+    :readonly_database_host => "db-slave"
   }
 )
 
