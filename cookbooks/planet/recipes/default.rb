@@ -76,7 +76,15 @@ directory "/store/planet/notes" do
   mode 0775
 end
 
+template "/usr/local/bin/apache-latest-planet-filename" do
+  source "apache-latest-planet-filename.erb"
+  owner "root"
+  group "root"
+  mode 0755
+end
+
 apache_module "rewrite"
+apache_module "proxy"
 apache_module "proxy_http"
 
 apache_site "planet.openstreetmap.org" do
