@@ -22,7 +22,12 @@
 
 require "ipaddr"
 
+network_packages = []
+
 node[:networking][:interfaces].each do |name, interface|
+  network_packages |= ["vlan"] if interface[:interface] =~ /\.\d+$/
+  network_packages |= ["ifenslave"] if interface[:bond]
+
   if interface[:role] && (role = node[:networking][:roles][interface[:role]])
     if role[interface[:family]]
       node.set[:networking][:interfaces][name][:prefix] = role[interface[:family]][:prefix]
@@ -38,6 +43,8 @@ node[:networking][:interfaces].each do |name, interface|
   node.set[:networking][:interfaces][name][:netmask] = (~IPAddr.new(interface[:address]).mask(0)).mask(prefix)
   node.set[:networking][:interfaces][name][:network] = IPAddr.new(interface[:address]).mask(prefix)
 end
+
+package network_packages
 
 template "/etc/network/interfaces" do
   source "interfaces.erb"

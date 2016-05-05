@@ -31,6 +31,14 @@ iface <%= interface[:interface] %> <%= interface[:family] %> static
 <% if interface[:family] == "inet6" -%>
       autoconf  0
 <% end -%>
+<% if interface[:bond] -%>
+      bond-mode <%= interface[:bond][:mode] || "active-backup" %>
+      bond-slaves <%= interface[:bond][:slaves].join(" ") %>
+      bond-primary <%= interface[:bond][:slaves].first %>
+      bond-miimon <%= interface[:bond][:miimon] || 100 %>
+      bond-downdelay <%= interface[:bond][:downdelay] || 200 %>
+      bond-updelay <%= interface[:bond][:updelay] || 200 %>
+<% end -%>
 <% end -%>
 <% end -%>
 
