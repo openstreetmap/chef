@@ -30,8 +30,7 @@
         ProxyPass /replication/streaming http://127.0.0.1:8080
 
         <Location /replication/steaming>
-                Order deny,allow
-                Allow from all
+                Require all granted
         </Location>
 
         Redirect /pbf-experimental/	/pbf/
