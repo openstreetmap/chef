@@ -76,34 +76,6 @@ when "IBM"
   speed = "115200"
 end
 
-if manufacturer == "HP" && node[:lsb][:release].to_f > 11.10
-  include_recipe "git"
-
-  git "/opt/hp/hp-legacy" do
-    action :sync
-    repository "git://chef.openstreetmap.org/hp-legacy.git"
-    user "root"
-    group "root"
-    ignore_failure true
-  end
-
-  link "/opt/hp/hp-health/bin/hpasmd" do
-    to "/opt/hp/hp-legacy/hpasmd"
-  end
-
-  link "/usr/lib/libhpasmintrfc.so.3.0" do
-    to "/opt/hp/hp-legacy/libhpasmintrfc.so.3.0"
-  end
-
-  link "/usr/lib/libhpasmintrfc.so.3" do
-    to "libhpasmintrfc.so.3.0"
-  end
-
-  link "/usr/lib/libhpasmintrfc.so" do
-    to "libhpasmintrfc.so.3.0"
-  end
-end
-
 unless unit.nil?
   file "/etc/init/ttySttyS#{unit}.conf" do
     action :delete
