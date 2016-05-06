@@ -40,6 +40,13 @@ action :install do
 end
 
 action :enable do
+  execute "a2enmod-#{new_resource.name}" do
+    command "a2enmod #{new_resource.name}"
+    user "root"
+    group "root"
+    not_if { ::File.exist?(enabled_name("load")) }
+  end
+
   link enabled_name("load") do
     to available_name("load")
     owner "root"

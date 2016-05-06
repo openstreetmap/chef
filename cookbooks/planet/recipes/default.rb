@@ -84,7 +84,6 @@ template "/usr/local/bin/apache-latest-planet-filename" do
 end
 
 apache_module "rewrite"
-apache_module "proxy"
 apache_module "proxy_http"
 
 apache_site "planet.openstreetmap.org" do
