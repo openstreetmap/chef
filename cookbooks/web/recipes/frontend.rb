@@ -25,6 +25,7 @@ web_passwords = data_bag_item("web", "passwords")
 apache_module "alias"
 apache_module "expires"
 apache_module "headers"
+apache_module "proxy"
 apache_module "proxy_http"
 apache_module "proxy_balancer"
 apache_module "lbmethod_byrequests"
