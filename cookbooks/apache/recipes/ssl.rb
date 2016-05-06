@@ -25,10 +25,6 @@ node.default[:ssl][:certificates] = node[:ssl][:certificates] | [certificate]
 include_recipe "apache"
 include_recipe "ssl"
 
-apache_module "socache_shmcb" do
-  only_if { node[:lsb][:release].to_f >= 14.04 }
-end
-
 apache_module "ssl"
 
 apache_conf "ssl" do

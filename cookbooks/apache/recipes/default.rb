@@ -20,39 +20,23 @@
 package "apache2"
 package "libwww-perl"
 
-if node[:lsb][:release].to_f < 14.04
-  package "apache2-mpm-#{node[:apache][:mpm]}" do
-    notifies :restart, "service[apache2]"
-  end
-else
-  %w(event itk prefork worker).each do |mpm|
-    if mpm == node[:apache][:mpm]
-      apache_module "mpm_#{mpm}" do
-        action [:enable]
-      end
-    else
-      apache_module "mpm_#{mpm}" do
-        action [:disable]
-      end
+%w(event itk prefork worker).each do |mpm|
+  if mpm == node[:apache][:mpm]
+    apache_module "mpm_#{mpm}" do
+      action [:enable]
+    end
+  else
+    apache_module "mpm_#{mpm}" do
+      action [:disable]
     end
   end
 end
 
 admins = data_bag_item("apache", "admins")
 
-if node[:lsb][:release].to_f < 14.04
-  template "/etc/apache2/httpd.conf" do
-    source "httpd.conf.erb"
-    owner "root"
-    group "root"
-    mode 0644
-    notifies :reload, "service[apache2]"
-  end
-else
-  apache_conf "httpd" do
-    template "httpd.conf.erb"
-    notifies :reload, "service[apache2]"
-  end
+apache_conf "httpd" do
+  template "httpd.conf.erb"
+  notifies :reload, "service[apache2]"
 end
 
 template "/etc/apache2/ports.conf" do

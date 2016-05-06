@@ -1,23 +1,14 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
 # Listen on port 80
-<% if node[:lsb][:release].to_f < 14.04 -%>
-NameVirtualHost *:80
-<% end -%>
 Listen <%= node[:apache][:listen_address] %>:80
 
 # Listen on port 443 if mod_ssl is enabled
 <IfModule mod_ssl.c>
-    <% if node[:lsb][:release].to_f < 14.04 -%>
-    NameVirtualHost *:443
-    <% end -%>
     Listen <%= node[:apache][:listen_address] %>:443
 </IfModule>
 
 # Listen on port 443 if mod_gnutls is enabled
 <IfModule mod_gnutls.c>
-    <% if node[:lsb][:release].to_f < 14.04 -%>
-    NameVirtualHost *:443
-    <% end -%>
     Listen <%= node[:apache][:listen_address] %>:443
 </IfModule>

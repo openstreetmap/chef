@@ -23,32 +23,20 @@ end
 
 use_inline_resources
 
-action :create do # ~FC017
-  if node[:lsb][:release].to_f >= 14.04
-    create_conf
-  end
+action :create do
+  create_conf
 end
 
-action :enable do # ~FC017
-  if node[:lsb][:release].to_f >= 14.04
-    enable_conf
-  else
-    create_conf
-  end
+action :enable do
+  enable_conf
 end
 
-action :disable do # ~FC017
-  if node[:lsb][:release].to_f >= 14.04
-    disable_conf
-  else
-    delete_conf
-  end
+action :disable do
+  disable_conf
 end
 
-action :delete do # ~FC017
-  if node[:lsb][:release].to_f >= 14.04
-    delete_conf
-  end
+action :delete do
+  delete_conf
 end
 
 def create_conf
@@ -83,17 +71,9 @@ def delete_conf
 end
 
 def available_name
-  if node[:lsb][:release].to_f >= 14.04
-    "/etc/apache2/conf-available/#{new_resource.name}.conf"
-  else
-    "/etc/apache2/conf.d/#{new_resource.name}"
-  end
+  "/etc/apache2/conf-available/#{new_resource.name}.conf"
 end
 
 def enabled_name
-  if node[:lsb][:release].to_f >= 14.04
-    "/etc/apache2/conf-enabled/#{new_resource.name}.conf"
-  else
-    "/etc/apache2/conf.d/#{new_resource.name}"
-  end
+  "/etc/apache2/conf-enabled/#{new_resource.name}.conf"
 end

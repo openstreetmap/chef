@@ -8,10 +8,8 @@ SSLCipherSuite <%= node[:ssl][:ciphers] -%>
 SSLCertificateFile /etc/ssl/certs/<%= @certificate %>.pem
 SSLCertificateKeyFile /etc/ssl/private/<%= @certificate %>.key
 SSLCertificateChainFile /etc/ssl/certs/<%= @certificate_chain %>.pem
-<% if node[:lsb][:release].to_f >= 14.04 -%>
 
 SSLUseStapling On
 SSLStaplingResponderTimeout 5
 SSLStaplingReturnResponderErrors off
 SSLStaplingCache shmcb:${APACHE_RUN_DIR}/ssl_ocspcache(512000)
-<% end -%>

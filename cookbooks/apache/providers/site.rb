@@ -59,27 +59,14 @@ def site_directory
 end
 
 def available_name
-  if node[:lsb][:release].to_f >= 14.04
-    "/etc/apache2/sites-available/#{new_resource.name}.conf"
-  else
-    "/etc/apache2/sites-available/#{new_resource.name}"
-  end
+  "/etc/apache2/sites-available/#{new_resource.name}.conf"
 end
 
 def enabled_name
-  if node[:lsb][:release].to_f >= 14.04
-    case new_resource.name
-    when "default"
-      "/etc/apache2/sites-enabled/000-default.conf"
-    else
-      "/etc/apache2/sites-enabled/#{new_resource.name}.conf"
-    end
+  case new_resource.name
+  when "default"
+    "/etc/apache2/sites-enabled/000-default.conf"
   else
-    case new_resource.name
-    when "default"
-      "/etc/apache2/sites-enabled/000-default"
-    else
-      "/etc/apache2/sites-enabled/#{new_resource.name}"
-    end
+    "/etc/apache2/sites-enabled/#{new_resource.name}.conf"
   end
 end

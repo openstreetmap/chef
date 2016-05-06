@@ -381,10 +381,6 @@ package "osmosis"
 package "ruby"
 package "ruby-dev"
 
-if node[:lsb][:release].to_f < 14.04
-  package "rubygems"
-end
-
 package "libproj-dev"
 package "libxml2-dev"
 
