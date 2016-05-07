@@ -28,6 +28,9 @@ default_attributes(
         }
       }
     }
+  },
+  :web => {
+    :backends => %w(rails1 rails2 rails3)
   }
 )
 

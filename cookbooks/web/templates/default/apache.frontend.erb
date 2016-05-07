@@ -209,14 +209,12 @@
   #
   <Proxy balancer://backend>
     ProxySet lbmethod=bybusyness
+<% node[:web][:backends].each do |backend| -%>
 <% if port == 443 -%>
-    BalancerMember https://rails1 disablereuse=on
-    BalancerMember https://rails2 disablereuse=on
-    BalancerMember https://rails3 disablereuse=on
+    BalancerMember https://<%= backend %> disablereuse=on
 <% else -%>
-    BalancerMember http://rails1
-    BalancerMember http://rails2
-    BalancerMember http://rails3
+    BalancerMember http://<%= backend %>
+<% end -%>
 <% end -%>
   </Proxy>
 <% if port == 80 -%>
