@@ -3,6 +3,15 @@
 iface lo inet loopback
 <% node[:networking][:interfaces].each do |name,interface| -%>
 <% if interface[:interface] -%>
+<% if interface[:bond] -%>
+<% interface[:bond][:slaves].each do |slave| -%>
+
+iface <%= slave %> inet manual
+      bond-master <%= interface[:interface] %>
+<% end -%>
+
+auto <%= interface[:bond][:slaves].sort.uniq.join(" ") %>
+<% end -%>
 
 iface <%= interface[:interface] %> <%= interface[:family] %> static
       address   <%= interface[:address] %>
@@ -33,7 +42,7 @@ iface <%= interface[:interface] %> <%= interface[:family] %> static
 <% end -%>
 <% if interface[:bond] -%>
       bond-mode <%= interface[:bond][:mode] || "active-backup" %>
-      bond-slaves <%= interface[:bond][:slaves].join(" ") %>
+      bond-slaves none
       bond-primary <%= interface[:bond][:slaves].first %>
       bond-miimon <%= interface[:bond][:miimon] || 100 %>
       bond-downdelay <%= interface[:bond][:downdelay] || 200 %>
