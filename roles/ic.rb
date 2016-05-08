@@ -30,7 +30,8 @@ default_attributes(
     }
   },
   :web => {
-    :backends => %w(rails1 rails2 rails3)
+    :backends => %w(rails1 rails2 rails3),
+    :fileserver => "ironbelly"
   }
 )
 

@@ -17,6 +17,13 @@
 # limitations under the License.
 #
 
+node.set[:nfs]["/store/rails"] = {
+  :host => node[:web][:fileserver],
+  :path => "/store/rails"
+}
+
+include_recipe "nfs"
+
 directory node[:web][:base_directory] do
   group "rails"
   mode 02775

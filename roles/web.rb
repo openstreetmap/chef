@@ -10,9 +10,6 @@ default_attributes(
       }
     }
   },
-  :nfs => {
-    "/store/rails" => { :host => "ironbelly", :path => "/store/rails" }
-  },
   :passenger => {
     :pool_idle_time => 0
   },
@@ -21,8 +18,4 @@ default_attributes(
     :database_host => "db",
     :readonly_database_host => "db-slave"
   }
-)
-
-run_list(
-  "recipe[nfs]"
 )
