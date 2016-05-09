@@ -27,7 +27,7 @@ chef_server_url "https://chef.openstreetmap.org/organizations/openstreetmap"
 
 # Make our plugins visible to ohai
 
-Ohai::Config[:plugin_path] << "<%= node[:ohai][:plugin_dir] %>"
+ohai.plugin_path << "<%= node[:ohai][:plugin_dir] %>"
 
 # Load supporting code for report handlers
 
