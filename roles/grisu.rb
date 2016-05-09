@@ -30,14 +30,14 @@ default_attributes(
   :openvpn => {
     :address => "10.0.16.5",
     :tunnels => {
-      :aws2bm => {
+      :ic2bm => {
         :port => "1194",
         :mode => "server",
         :peer => {
           :host => "ironbelly.openstreetmap.org"
         }
       },
-      :ic2bm => {
+      :aws2bm => {
         :port => "1195",
         :mode => "server",
         :peer => {
