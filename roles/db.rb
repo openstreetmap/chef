@@ -49,7 +49,8 @@ default_attributes(
         :checkpoint_completion_target => "0.8",
         :cpu_tuple_cost => "0.1",
         :late_authentication_rules => [
-          { :address => "146.179.159.160/27" }
+          { :address => "146.179.159.160/27" },
+          { :address => "10.0.32.0/20" }
         ]
       }
     }
