@@ -2,6 +2,8 @@ name "aws"
 description "Role applied to all servers on AWS"
 
 default_attributes(
+  :hosted_by => "AWS",
+  :location => "Ireland",
   :networking => {
     :nameservers => ["172.31.0.2"],
     :roles => {
