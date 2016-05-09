@@ -146,11 +146,17 @@ link "/var/lib/replication/day/data" do
   to "/store/planet/replication/day"
 end
 
-template "/etc/cron.d/replication" do
-  source "replication.cron.erb"
-  owner "root"
-  group "root"
-  mode 0644
+if node[:planet][:replication] == "enabled"
+  template "/etc/cron.d/replication" do
+    source "replication.cron.erb"
+    owner "root"
+    group "root"
+    mode 0644
+  end
+else
+  file "/etc/cron.d/replication" do
+    action :delete
+  end
 end
 
 directory "/var/lib/replication/streaming" do
@@ -174,9 +180,16 @@ end
     variables :service => name
   end
 
-  service name do
-    action [:enable, :start]
-    supports :restart => true, :status => true
-    subscribes :restart, "template[/etc/init.d/#{name}]"
+  if node[:planet][:replication] == "enabled"
+    service name do
+      action [:enable, :start]
+      supports :restart => true, :status => true
+      subscribes :restart, "template[/etc/init.d/#{name}]"
+    end
+  else
+    service name do
+      action [:disable, :stop]
+      supports :restart => true, :status => true
+    end
   end
 end

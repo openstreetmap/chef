@@ -52,6 +52,9 @@ default_attributes(
         }
       }
     }
+  },
+  :planet => {
+    :replication => "disabled"
   }
 )
 
