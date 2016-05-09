@@ -1,5 +1,8 @@
 require "chef/mixin/command"
 
+require "httpclient"
+require "php_serialize"
+
 class Chef
   module Wordpress
     extend Chef::Mixin::Command
