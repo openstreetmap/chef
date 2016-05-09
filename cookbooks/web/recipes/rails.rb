@@ -64,7 +64,7 @@ rails_port "www.openstreetmap.org" do
   attachments_dir "/store/rails/attachments"
   log_path "#{node[:web][:log_directory]}/rails.log"
   logstash_path "#{node[:web][:log_directory]}/rails-logstash.log"
-  memcache_servers %w(rails1 rails2 rails3)
+  memcache_servers node[:web][:backends]
   potlatch2_key web_passwords["potlatch2_key"]
   id_key web_passwords["id_key"]
   oauth_key web_passwords["oauth_key"]
