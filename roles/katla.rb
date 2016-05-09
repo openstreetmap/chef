@@ -50,11 +50,13 @@ default_attributes(
   :networking => {
     :interfaces => {
       :internal_ipv4 => {
-        :interface => "eth0",
+        :interface => "bond0",
         :role => :internal,
         :family => :inet,
-        :address => "146.179.159.173",
-        :hwaddress => "00:25:90:94:91:00"
+        :address => "10.0.32.40",
+        :bond => {
+          :slaves => %w(eth0 eth1)
+        }
       }
     }
   },
@@ -69,6 +71,13 @@ default_attributes(
     }
   },
   :sysctl => {
+    :ipv6_autoconf => {
+      :comment => "Disable IPv6 auto-configuration on internal interface",
+      :parameters => {
+        "net.ipv6.conf.bond0.autoconf" => "0",
+        "net.ipv6.conf.bond0.accept_ra" => "0"
+      }
+    },
     :postgres => {
       :comment => "Increase shared memory for postgres",
       :parameters => {
@@ -80,7 +89,7 @@ default_attributes(
 )
 
 run_list(
-  "role[ic]",
+  "role[bytemark]",
   "role[db-master]",
   "role[db-backup]"
 )

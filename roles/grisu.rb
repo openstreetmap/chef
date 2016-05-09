@@ -4,34 +4,55 @@ description "Master role applied to grisu"
 default_attributes(
   :networking => {
     :interfaces => {
-      :external_ipv4 => {
-        :interface => "em1",
-        :role => :external,
-        :family => :inet,
-        :address => "193.63.75.108",
-        :hwaddress => "d8:d3:85:5d:87:a0"
-      },
-      :external_ipv6 => {
-        :interface => "em1",
-        :role => :external,
-        :family => :inet6,
-        :address => "2001:630:12:500:dad3:85ff:fe5d:87a0"
-      },
       :internal_ipv4 => {
-        :interface => "em2",
+        :interface => "bond0",
         :role => :internal,
         :family => :inet,
-        :address => "146.179.159.168",
-        :hwaddress => "d8:d3:85:5d:87:a1"
+        :address => "10.0.32.20",
+        :bond => {
+          :slaves => %w(em1 em2)
+        }
+      },
+      :external_ipv4 => {
+        :interface => "bond0.214",
+        :role => :external,
+        :family => :inet,
+        :address => "89.16.162.20"
+      },
+      :external_ipv6 => {
+        :interface => "bond0.214",
+        :role => :external,
+        :family => :inet6,
+        :address => "2001:41c9:2:d6::20"
+      }
+    }
+  },
+  :openvpn => {
+    :address => "10.0.16.5",
+    :tunnels => {
+      :aws2bm => {
+        :port => "1194",
+        :mode => "server",
+        :peer => {
+          :host => "ironbelly.openstreetmap.org"
+        }
+      },
+      :ic2bm => {
+        :port => "1195",
+        :mode => "server",
+        :peer => {
+          :host => "fafnir.openstreetmap.org"
+        }
       }
     }
   }
 )
 
 run_list(
-  "role[ic]",
+  "role[bytemark]",
   "role[hp-dl180-g6]",
   "role[gateway]",
   "role[web-storage]",
-  "role[planet]"
+  "role[planet]",
+  "recipe[openvpn]"
 )

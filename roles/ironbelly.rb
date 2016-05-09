@@ -66,6 +66,14 @@ default_attributes(
         :peer => {
           :host => "fafnir.openstreetmap.org"
         }
+      },
+      :ic2bm => {
+        :port => "1196",
+        :mode => "client",
+        :peer => {
+          :host => "grisu.openstreetmap.org",
+          :port => "1194"
+        }
       }
     }
   },

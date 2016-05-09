@@ -15,7 +15,7 @@ default_attributes(
   },
   :web => {
     :status => "database_readonly",
-    :database_host => "db-slave",
-    :readonly_database_host => "db-slave"
+    :database_host => "ramoth.ic.openstreetmap.org",
+    :readonly_database_host => "ramoth.ic.openstreetmap.org"
   }
 )

@@ -10,12 +10,12 @@ default_attributes(
         :hot_standby_feedback => "on",
         :standby_mode => "on",
         :primary_conninfo => {
-          :host => "katla.ic.openstreetmap.org",
+          :host => "katla.bm.openstreetmap.org",
           :port => "5432",
           :user => "replication",
           :passwords => { :bag => "db", :item => "passwords" }
         },
-        :restore_command => "/usr/bin/rsync katla.ic.openstreetmap.org::archive/%f %p"
+        :restore_command => "/usr/bin/rsync katla.bm.openstreetmap.org::archive/%f %p"
       }
     }
   }

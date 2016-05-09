@@ -31,6 +31,14 @@ default_attributes(
           :host => "ironbelly.openstreetmap.org",
           :port => "1195"
         }
+      },
+      :aws2bm => {
+        :port => "1195",
+        :mode => "client",
+        :peer => {
+          :host => "grisu.openstreetmap.org",
+          :port => "1195"
+        }
       }
     }
   },
