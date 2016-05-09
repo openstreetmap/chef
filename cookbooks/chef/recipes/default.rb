@@ -17,10 +17,6 @@
 # limitations under the License.
 #
 
-chef_gem "pony" do
-  compile_time false
-end
-
 chef_package = "chef_#{node[:chef][:client][:version]}_amd64.deb"
 
 directory "/var/cache/chef" do

@@ -18,7 +18,6 @@
 #
 
 include_recipe "apache::ssl"
-include_recipe "chef::gems"
 include_recipe "mysql"
 
 package "subversion"
