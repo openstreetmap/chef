@@ -67,8 +67,16 @@ default_attributes(
           :port => "1194"
         }
       },
-      :firefishy => {
+      :ucl2bm => {
         :port => "1196",
+        :mode => "client",
+        :peer => {
+          :host => "grisu.openstreetmap.org",
+          :port => "1196"
+        }
+      },
+      :firefishy => {
+        :port => "1197",
         :mode => "client",
         :peer => {
           :host => "home.firefishy.com",

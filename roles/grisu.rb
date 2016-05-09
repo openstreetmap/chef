@@ -43,6 +43,13 @@ default_attributes(
         :peer => {
           :host => "fafnir.openstreetmap.org"
         }
+      },
+      :ucl2bm => {
+        :port => "1196",
+        :mode => "server",
+        :peer => {
+          :host => "ridley.openstreetmap.org"
+        }
       }
     }
   }

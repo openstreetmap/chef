@@ -221,8 +221,8 @@ end
     source zone
     dest "fw"
     proto "udp"
-    dest_ports "1194:1196"
-    source_ports "1194:1196"
+    dest_ports "1194:1197"
+    source_ports "1194:1197"
   end
 end
 
