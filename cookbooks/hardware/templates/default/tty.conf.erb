@@ -9,4 +9,4 @@ start on stopped rc RUNLEVEL=[2345]
 stop on runlevel [!2345]
 
 respawn
-exec /sbin/getty -L <%= @speed %> ttyS<%= @unit %> vt102
+exec /sbin/getty -L 115200 ttyS<%= @unit %> vt102

@@ -50,33 +50,33 @@ else
   product = "Unknown"
 end
 
+units = []
+
+if node[:roles].include?("bytemark")
+  units << "0"
+end
+
 case manufacturer
 when "HP"
   package "hponcfg"
   package "hp-health"
-  unit = "1"
-  speed = "115200"
+  units << "1"
 when "TYAN"
-  unit = "0"
-  speed = "115200"
+  units << "0"
 when "TYAN Computer Corporation"
-  unit = "0"
-  speed = "115200"
+  units << "0"
 when "Supermicro"
   case product
   when "H8DGU", "X9SCD", "X7DBU", "X7DW3", "X9DR7/E-(J)LN4F", "X9DR3-F", "X9DRW"
-    unit = "1"
-    speed = "115200"
+    units << "1"
   else
-    unit = "0"
-    speed = "115200"
+    units << "0"
   end
 when "IBM"
-  unit = "0"
-  speed = "115200"
+  units << "0"
 end
 
-unless unit.nil?
+units.sort.uniq.each do |unit|
   file "/etc/init/ttySttyS#{unit}.conf" do
     action :delete
   end
@@ -86,7 +86,7 @@ unless unit.nil?
     owner "root"
     group "root"
     mode 0644
-    variables :unit => unit, :speed => speed
+    variables :unit => unit
   end
 
   service "ttyS#{unit}" do
@@ -126,7 +126,7 @@ if File.exist?("/etc/default/grub")
     owner "root"
     group "root"
     mode 0644
-    variables :unit => unit, :speed => speed, :entry => grub_entry
+    variables :units => units, :entry => grub_entry
     notifies :run, "execute[update-grub]"
   end
 end

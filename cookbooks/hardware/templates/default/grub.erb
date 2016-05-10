@@ -15,10 +15,10 @@ GRUB_HIDDEN_TIMEOUT_QUIET="true"
 GRUB_DISTRIBUTOR=`lsb_release -i -s 2> /dev/null || echo Debian`
 
 # Arguments to add to the kernel command line (all entries)
-<% if @unit.nil? -%>
+<% if @units.nil? -%>
 GRUB_CMDLINE_LINUX="<%= node[:hardware][:grub][:cmdline].join(" ") %>"
 <% else -%>
-GRUB_CMDLINE_LINUX="console=tty0 console=ttyS<%= @unit %>,115200n8 <%= node[:hardware][:grub][:cmdline].join(" ") %>"
+GRUB_CMDLINE_LINUX="console=tty0 <%= @units.sort.uniq.collect { |unit| "console=ttyS#{unit},115200n8" }.join(" ") %> <%= node[:hardware][:grub][:cmdline].join(" ") %>"
 <% end -%>
 
 # Arguments to add to the kernel command line (except recovery entries)
@@ -27,7 +27,7 @@ GRUB_CMDLINE_LINUX_DEFAULT="panic=30"
 # Do not wait for infinite time on a failed boot
 GRUB_RECORDFAIL_TIMEOUT=2
 
-<% if @unit.nil? -%>
+<% if @units.nil? -%>
 # Send console output to the screen
 GRUB_TERMINAL="console"
 <% else -%>
@@ -40,5 +40,5 @@ GRUB_TERMINAL="serial"
 <% end -%>
 
 # Configure the serial console
-GRUB_SERIAL_COMMAND="serial --speed=<%= @speed %> --unit=<%= @unit %> --word=8 --parity=no --stop=1"
+GRUB_SERIAL_COMMAND="serial --speed=115200 --unit=<%= @units.first %> --word=8 --parity=no --stop=1"
 <% end -%>
