@@ -86,6 +86,8 @@ else
   database_readonly = node[:web][:status] == "database_readonly"
 end
 
+backends = node[:web][:backends]
+
 cgimap_init = edit_file "#{cgimap_directory}/scripts/cgimap.init" do |line|
   line.gsub!(/^CGIMAP_HOST=.*;/, "CGIMAP_HOST=#{database_host};")
   line.gsub!(/^CGIMAP_DBNAME=.*;/, "CGIMAP_DBNAME=openstreetmap;")
@@ -93,7 +95,7 @@ cgimap_init = edit_file "#{cgimap_directory}/scripts/cgimap.init" do |line|
   line.gsub!(/^CGIMAP_PASSWORD=.*;/, "CGIMAP_PASSWORD=#{db_passwords['rails']};")
   line.gsub!(/^CGIMAP_PIDFILE=.*;/, "CGIMAP_PIDFILE=#{pid_directory}/cgimap.pid;")
   line.gsub!(/^CGIMAP_LOGFILE=.*;/, "CGIMAP_LOGFILE=#{log_directory}/cgimap.log;")
-  line.gsub!(/^CGIMAP_MEMCACHE=.*;/, "CGIMAP_MEMCACHE=rails1,rails2,rails3;")
+  line.gsub!(/^CGIMAP_MEMCACHE=.*;/, "CGIMAP_MEMCACHE=#{backends.join(',')};")
   line.gsub!(/^CGIMAP_RATELIMIT=.*;/, "CGIMAP_RATELIMIT=204800;")
 
   line.gsub!(%r{--pidfile \$CGIMAP_PIDFILE --exec /home/rails/bin/map}, "--pidfile $CGIMAP_PIDFILE")
