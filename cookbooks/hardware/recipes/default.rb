@@ -52,7 +52,7 @@ end
 
 units = []
 
-if node[:roles].include?("bytemark")
+if node[:roles].include?("bytemark") || node[:roles].include?("exonetric")
   units << "0"
 end
 
