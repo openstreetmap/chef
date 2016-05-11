@@ -101,6 +101,13 @@ service "nginx-certificate-restart" do
   subscribes :restart, "file[/etc/ssl/private/#{certificate}.key]"
 end
 
+template "/etc/logrotate.d/nginx" do
+  source "logrotate.nginx.erb"
+  owner "root"
+  group "root"
+  mode 0644
+end
+
 tilerenders.each do |render|
   munin_plugin "ping_#{render[:fqdn]}" do
     target "ping_"
