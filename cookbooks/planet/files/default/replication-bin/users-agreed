@@ -8,9 +8,9 @@ export PGPASSFILE=/etc/replication/users-agreed.conf
 
 echo "# user IDs < 286582 who have agreed to the contributor terms. " > $T/users_agreed
 echo "# any active user IDs >= 286582 would have agreed as part of the sign-up process." >> $T/users_agreed
-psql -h db -U planetdiff -t -c "select id from users where id < 286582 and terms_agreed is not null order by id asc" openstreetmap >> $T/users_agreed
+psql -h ramoth.ic.openstreetmap.org -U planetdiff -t -c "select id from users where id < 286582 and terms_agreed is not null order by id asc" openstreetmap >> $T/users_agreed
 
-psql -h db -U planetdiff -t -c "select id from users where terms_seen and terms_agreed is null order by id asc" openstreetmap > $T/users_disagreed
+psql -h ramoth.ic.openstreetmap.org -U planetdiff -t -c "select id from users where terms_seen and terms_agreed is null order by id asc" openstreetmap > $T/users_disagreed
 
 if cmp -s "${T}/users_agreed" "/store/planet/users_agreed/users_agreed.txt"; then
   : # do nothing
