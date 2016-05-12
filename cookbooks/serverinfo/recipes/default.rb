@@ -62,7 +62,7 @@ end
 
 execute "/srv/hardware.openstreetmap.org" do
   action :nothing
-  command "jekyll build"
+  command "jekyll build --trace"
   cwd "/srv/hardware.openstreetmap.org"
   user "nobody"
   group "nogroup"
