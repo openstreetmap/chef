@@ -14,8 +14,10 @@ default_attributes(
     :pool_idle_time => 0
   },
   :web => {
-    :status => "online",
-    :database_host => "katla.bm.openstreetmap.org",
-    :readonly_database_host => "ramoth.ic.openstreetmap.org"
+    :status => "online"
   }
+)
+
+run_list(
+  "role[web-db]"
 )
