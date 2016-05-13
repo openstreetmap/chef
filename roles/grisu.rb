@@ -54,7 +54,7 @@ default_attributes(
     }
   },
   :planet => {
-    :replication => "disabled"
+    :replication => "enabled"
   }
 )
 
