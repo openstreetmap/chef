@@ -52,7 +52,7 @@ mediawiki_site "wiki.openstreetmap.org" do
   recaptcha_public_key "6LdFIQATAAAAAMwtHeI8KDgPqvRbXeNYSq1gujKz"
   recaptcha_private_key passwords["recaptcha"]
 
-  # site_readonly "MAINTENANCE UPDATE: WIKI READ-ONLY. ETA: Tuesday 8:00am UTC/GMT."
+  site_readonly "MAINTENANCE: WIKI READ-ONLY UNTIL Monday 16 May 2016 - 11:00am UTC/GMT."
 end
 
 cookbook_file "/srv/wiki.openstreetmap.org/osm_logo_wiki.png" do
