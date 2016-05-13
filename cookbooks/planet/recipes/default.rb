@@ -83,6 +83,7 @@ template "/usr/local/bin/apache-latest-planet-filename" do
   mode 0755
 end
 
+apache_module "cgid"
 apache_module "rewrite"
 apache_module "proxy_http"
 
