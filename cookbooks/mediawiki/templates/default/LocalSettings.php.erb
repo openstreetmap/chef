@@ -312,6 +312,9 @@ $wgNamespacesToBeSearchedDefault[NS_LANG_NL] = TRUE;
 $wgNamespacesToBeSearchedDefault[NS_LANG_RU] = TRUE;
 $wgNamespacesToBeSearchedDefault[NS_LANG_JA] = TRUE;
 
+<% if @mediawiki[:site_notice] -%>
+$wgSiteNotice = "<%= @mediawiki[:site_notice] %>";
+<% end -%>
 <% if @mediawiki[:site_readonly] -%>
 $wgReadOnly = "<%= @mediawiki[:site_readonly] %>";
 <% end -%>
