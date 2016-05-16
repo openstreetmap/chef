@@ -184,7 +184,8 @@
   ProxyPass /api/0.6/tracepoints balancer://backend/api/0.6/tracepoints
   ProxyPass /api/0.6/amf/read balancer://backend/api/0.6/amf/read
   ProxyPass /api/0.6/swf/trackpoints balancer://backend/api/0.6/swf/trackpoints
-  ProxyPassMatch ^(/api/0\.6/changeset/[0-9]+/(upload|download))$ balancer://backend$1
+  ProxyPassMatch ^(/api/0\.6/changeset/[0-9]+/upload)$ balancer://bytemark$1
+  ProxyPassMatch ^(/api/0\.6/changeset/[0-9]+/download)$ balancer://backend$1
   ProxyPassMatch ^(/api/0\.6/(node|way|relation)/[0-9]+)$ balancer://backend$1
   ProxyPassMatch ^(/api/0\.6/(node|way|relation)/[0-9]+/(full|history|search|ways))$ balancer://backend$1
   ProxyPass /api/0.6/nodes balancer://backend/api/0.6/nodes
@@ -205,11 +206,25 @@
   RedirectPermanent /images/cc_button.png http://www.openstreetmap.org/assets/cc_button.png
 
   #
-  # Define a load balancer for the backends
+  # Define a load balancer for the local backends
   #
   <Proxy balancer://backend>
     ProxySet lbmethod=bybusyness
 <% node[:web][:backends].each do |backend| -%>
+<% if port == 443 -%>
+    BalancerMember https://<%= backend %> disablereuse=on
+<% else -%>
+    BalancerMember http://<%= backend %>
+<% end -%>
+<% end -%>
+  </Proxy>
+
+  #
+  # Define a load balancer for the Bytemark backends
+  #
+  <Proxy balancer://bytemark>
+    ProxySet lbmethod=bybusyness
+<% ["rails4.bm", "rails5.bm"].each do |backend| -%>
 <% if port == 443 -%>
     BalancerMember https://<%= backend %> disablereuse=on
 <% else -%>
