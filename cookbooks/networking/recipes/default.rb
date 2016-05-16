@@ -131,12 +131,6 @@ end
 
 package "shorewall"
 
-service "shorewall" do
-  action [:enable, :start]
-  supports :restart => true
-  status_command "shorewall status"
-end
-
 template "/etc/default/shorewall" do
   source "shorewall-default.erb"
   owner "root"
@@ -196,6 +190,12 @@ template "/etc/shorewall/rules" do
   notifies :restart, "service[shorewall]"
 end
 
+service "shorewall" do
+  action [:enable, :start]
+  supports :restart => true
+  status_command "shorewall status"
+end
+
 template "/etc/logrotate.d/shorewall" do
   source "logrotate.shorewall.erb"
   owner "root"
@@ -243,12 +243,6 @@ end
 
 unless node.interfaces(:family => :inet6).empty?
   package "shorewall6"
-
-  service "shorewall6" do
-    action [:enable, :start]
-    supports :restart => true
-    status_command "shorewall6 status"
-  end
 
   template "/etc/default/shorewall6" do
     source "shorewall-default.erb"
@@ -307,6 +301,12 @@ unless node.interfaces(:family => :inet6).empty?
     mode 0644
     variables :rules => []
     notifies :restart, "service[shorewall6]"
+  end
+
+  service "shorewall6" do
+    action [:enable, :start]
+    supports :restart => true
+    status_command "shorewall6 status"
   end
 
   template "/etc/logrotate.d/shorewall6" do
