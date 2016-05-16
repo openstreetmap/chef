@@ -12,7 +12,8 @@ my $pg = Munin::Plugin::Pgsql->new(
     basequery => "SELECT (extract(epoch FROM now()) - extract(epoch FROM pg_last_xact_replay_timestamp()))::int AS delay",
     pivotquery => 1,
     configquery => "VALUES ('delay','Replication delay')",
-    extraconfig => "delay.warning 300\ndelay.critical 3600"
+    extraconfig => "delay.warning 300\ndelay.critical 3600",
+    graphmin  => 0
 );
 
 $pg->Process();
