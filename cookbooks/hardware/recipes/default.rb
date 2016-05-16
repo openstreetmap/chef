@@ -77,23 +77,29 @@ when "IBM"
 end
 
 units.sort.uniq.each do |unit|
-  file "/etc/init/ttySttyS#{unit}.conf" do
-    action :delete
-  end
+  if node[:lsb][:release].to_f >= 16.04
+    service "serial-getty@ttyS#{unit}" do
+      action [:enable, :start]
+    end
+  else
+    file "/etc/init/ttySttyS#{unit}.conf" do
+      action :delete
+    end
 
-  template "/etc/init/ttyS#{unit}.conf" do
-    source "tty.conf.erb"
-    owner "root"
-    group "root"
-    mode 0644
-    variables :unit => unit
-  end
+    template "/etc/init/ttyS#{unit}.conf" do
+      source "tty.conf.erb"
+      owner "root"
+      group "root"
+      mode 0644
+      variables :unit => unit
+    end
 
-  service "ttyS#{unit}" do
-    provider Chef::Provider::Service::Upstart
-    action [:enable, :start]
-    supports :status => true, :restart => true, :reload => false
-    subscribes :restart, "template[/etc/init/ttyS#{unit}.conf]"
+    service "ttyS#{unit}" do
+      provider Chef::Provider::Service::Upstart
+      action [:enable, :start]
+      supports :status => true, :restart => true, :reload => false
+      subscribes :restart, "template[/etc/init/ttyS#{unit}.conf]"
+    end
   end
 end
 
