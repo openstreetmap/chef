@@ -1,4 +1,9 @@
-default[:hardware][:modules] = %w(loop lp rtc)
+default[:hardware][:modules] = if node[:lsb][:release].to_f >= 16.04
+                                 %w(lp)
+                               else
+                                 %w(loop lp rtc)
+                               end
+
 default[:hardware][:grub][:cmdline] = %w(nomodeset)
 default[:hardware][:sensors] = {}
 
