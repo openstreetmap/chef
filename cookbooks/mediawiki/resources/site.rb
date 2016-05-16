@@ -35,8 +35,8 @@ attribute :email_sender, :kind_of => String, :default => ""
 attribute :email_sender_name, :kind_of => String, :default => "MediaWiki Mail"
 attribute :commons, :kind_of => [TrueClass, FalseClass], :default => true
 attribute :skin, :kind_of => String, :default => "vector"
-attribute :site_notice, :kind_of => String, :default => ""
-attribute :site_readonly, :kind_of => String, :default => ""
+attribute :site_notice, :kind_of => [String, TrueClass, FalseClass], :default => false
+attribute :site_readonly, :kind_of => [String, TrueClass, FalseClass], :default => false
 attribute :admin_user, :kind_of => String, :default => "Admin"
 attribute :admin_password, :kind_of => String, :required => true
 attribute :ssl_enabled, :kind_of => [TrueClass, FalseClass], :default => false
