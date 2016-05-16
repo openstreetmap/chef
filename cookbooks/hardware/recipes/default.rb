@@ -67,7 +67,7 @@ when "TYAN Computer Corporation"
   units << "0"
 when "Supermicro"
   case product
-  when "H8DGU", "X9SCD", "X7DBU", "X7DW3", "X9DR7/E-(J)LN4F", "X9DR3-F", "X9DRW"
+  when "H8DGU", "X9SCD", "X7DBU", "X7DW3", "X9DR7/E-(J)LN4F", "X9DR3-F", "X9DRW", "SYS-2028U-TN24R4T+"
     units << "1"
   else
     units << "0"
