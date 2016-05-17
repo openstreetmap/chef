@@ -22,7 +22,6 @@ default_attributes(
   :nominatim => {
     :enable_backup => false
   }
-
 )
 
 run_list(

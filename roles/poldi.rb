@@ -57,6 +57,7 @@ default_attributes(
     }
   },
   :postgresql => {
+    :versions => ["9.3"],
     :settings => {
       :defaults => {
         :work_mem => "160MB",
