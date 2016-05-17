@@ -3,7 +3,6 @@ description "Role applied to the master nominatim server"
 
 default_attributes(
   :postgresql => {
-    :versions => ["9.3"],
     :settings => {
       :defaults => {
         :wal_level => "hot_standby",

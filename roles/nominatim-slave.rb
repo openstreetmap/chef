@@ -3,7 +3,6 @@ description "Role applied to all slave nominatim servers"
 
 default_attributes(
   :postgresql => {
-    :versions => ["9.3"],
     :settings => {
       :defaults => {
         :hot_standby => "on",

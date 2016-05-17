@@ -5,9 +5,6 @@ default_attributes(
   :apt => {
     :sources => ["postgresql"]
   },
-  :postgresql => {
-    :versions => ["9.4"]
-  },
   :nominatim => {
     :enable_backup => false
   }
