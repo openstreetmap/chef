@@ -1,9 +1,0 @@
-# DO NOT EDIT - This file is being maintained by Chef
-
-<% if node[:lsb][:release].to_f < 14.04 -%>
-deb <%= @url %> precise main
-deb-src <%= @url %> precise main
-<% else -%>
-deb <%= @url %> trusty main
-deb-src <%= @url %> trusty main
-<% end -%>

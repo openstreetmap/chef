@@ -53,7 +53,6 @@ apt_source "ubuntugis-unstable" do
 end
 
 apt_source "openstreetmap" do
-  template "openstreetmap.list.erb"
   url "http://ppa.launchpad.net/osmadmins/ppa/ubuntu"
   key "0AC4F2CB"
 end
