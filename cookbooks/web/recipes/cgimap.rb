@@ -86,7 +86,7 @@ else
   database_readonly = node[:web][:status] == "database_readonly"
 end
 
-backends = node[:web][:backends]
+memcached_servers = node[:web][:memcached_servers]
 
 cgimap_init = edit_file "#{cgimap_directory}/scripts/cgimap.init" do |line|
   line.gsub!(/^CGIMAP_HOST=.*;/, "CGIMAP_HOST=#{database_host};")
@@ -95,7 +95,7 @@ cgimap_init = edit_file "#{cgimap_directory}/scripts/cgimap.init" do |line|
   line.gsub!(/^CGIMAP_PASSWORD=.*;/, "CGIMAP_PASSWORD=#{db_passwords['rails']};")
   line.gsub!(/^CGIMAP_PIDFILE=.*;/, "CGIMAP_PIDFILE=#{pid_directory}/cgimap.pid;")
   line.gsub!(/^CGIMAP_LOGFILE=.*;/, "CGIMAP_LOGFILE=#{log_directory}/cgimap.log;")
-  line.gsub!(/^CGIMAP_MEMCACHE=.*;/, "CGIMAP_MEMCACHE=#{backends.join(',')};")
+  line.gsub!(/^CGIMAP_MEMCACHE=.*;/, "CGIMAP_MEMCACHE=#{memcached_servers.join(',')};")
   line.gsub!(/^CGIMAP_RATELIMIT=.*;/, "CGIMAP_RATELIMIT=204800;")
 
   line.gsub!(%r{--pidfile \$CGIMAP_PIDFILE --exec /home/rails/bin/map}, "--pidfile $CGIMAP_PIDFILE")
