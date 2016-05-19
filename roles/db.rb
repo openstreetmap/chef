@@ -43,7 +43,7 @@ default_attributes(
     :settings => {
       :defaults => {
         :listen_addresses => "*",
-        :max_connections => "500",
+        :max_connections => "600",
         :max_stack_depth => "7MB",
         :checkpoint_segments => "32",
         :checkpoint_completion_target => "0.8",
