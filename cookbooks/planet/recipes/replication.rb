@@ -40,6 +40,13 @@ remote_directory "/usr/local/bin" do
   files_mode 0755
 end
 
+template "/usr/local/bin/users-agreed" do
+  source "users-agreed.erb"
+  owner "root"
+  group "root"
+  mode 0755
+end
+
 remote_directory "/store/planet/replication" do
   source "replication-cgi"
   owner "root"
