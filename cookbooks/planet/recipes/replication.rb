@@ -104,6 +104,13 @@ template "/etc/replication/users-agreed.conf" do
   variables :password => db_passwords["planetdiff"]
 end
 
+template "/usr/local/bin/users-agreed" do
+  source "users-agreed.erb"
+  user "root"
+  group "root"
+  mode 0755
+end
+
 directory "/var/lib/replication" do
   owner "planet"
   group "planet"
