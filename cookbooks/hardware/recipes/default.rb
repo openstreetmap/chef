@@ -281,6 +281,45 @@ disks = if node[:hardware][:disk]
           []
         end
 
+intel_ssds = disks.select { |d| d[:vendor] == "INTEL" && d[:model] =~ /^SSD/ }
+
+nvmes = if node[:hardware][:pci]
+          node[:hardware][:pci].values.select { |pci| pci[:driver] == "nvme" }
+        else
+          []
+        end
+
+intel_nvmes = nvmes.select { |pci| pci[:vendor_name] == "Intel Corporation" }
+
+if !intel_ssds.empty? || !intel_nvmes.empty?
+  package "unzip"
+  package "alien"
+
+  remote_file "#{Chef::Config[:file_cache_path]}/DataCenterTool_3_0_0_Linux.zip" do
+    source "https://downloadmirror.intel.com/23931/eng/DataCenterTool_3_0_0_Linux.zip"
+  end
+
+  execute "unzip-DataCenterTool" do
+    command "unzip DataCenterTool_3_0_0_Linux.zip isdct-3.0.0.400-15.x86_64.rpm"
+    cwd Chef::Config[:file_cache_path]
+    user "root"
+    group "root"
+    not_if { File.exist?("#{Chef::Config[:file_cache_path]}/isdct-3.0.0.400-15.x86_64.rpm") }
+  end
+
+  execute "alien-isdct" do
+    command "alien --to-deb isdct-3.0.0.400-15.x86_64.rpm"
+    cwd Chef::Config[:file_cache_path]
+    user "root"
+    group "root"
+    not_if { File.exist?("#{Chef::Config[:file_cache_path]}/isdct_3.0.0.400-16_amd64.deb") }
+  end
+
+  dpkg_package "isdct" do
+    source "#{Chef::Config[:file_cache_path]}/isdct_3.0.0.400-16_amd64.deb"
+  end
+end
+
 disks = disks.map do |disk|
   next if disk[:state] == "spun_down"
 
