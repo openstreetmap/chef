@@ -214,7 +214,7 @@ Ohai.plugin(:Hardware) do
   end
 
   def find_nvme_disks(devices)
-    Dir.glob("/sys/class/misc/nvme*") do |device|
+    Dir.glob("/sys/class/nvme/nvme*") do |device|
       controller = {
         :id => devices[:controllers].count,
         :pci_slot => File.basename(Pathname.new("#{device}/device").realpath),
@@ -232,7 +232,7 @@ Ohai.plugin(:Hardware) do
         end
       end
 
-      Dir.glob("#{device}/device/block/*").each do |block|
+      Dir.glob("#{device}/nvme*").each do |block|
         size = read_sysctl_file("#{block}/size").to_f / 2
 
         disk = {
