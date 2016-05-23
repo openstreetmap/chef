@@ -12,6 +12,19 @@ default_attributes(
         :hwaddress => "0c:c4:7a:a3:aa:ac"
       }
     }
+  },
+  :sysfs => {
+    :md_tune => {
+      :comment => "Enable request merging for NVMe devices",
+      :parameters => {
+        "block/nvme0n1/queue/nomerges" => "1",
+        "block/nvme1n1/queue/nomerges" => "1",
+        "block/nvme2n1/queue/nomerges" => "1",
+        "block/nvme3n1/queue/nomerges" => "1",
+        "block/nvme4n1/queue/nomerges" => "1",
+        "block/nvme5n1/queue/nomerges" => "1"
+      }
+    }
   }
 )
 
