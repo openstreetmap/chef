@@ -22,12 +22,12 @@ include_recipe "mysql"
 
 passwords = data_bag_item("forum", "passwords")
 
-package "php5"
-package "php5-cli"
-package "php5-mysql"
-package "php-apc"
+package "php"
+package "php-cli"
+package "php-mysql"
+package "php-apcu"
 
-apache_module "php5"
+apache_module "php7.0"
 
 apache_site "default" do
   action [:disable]
