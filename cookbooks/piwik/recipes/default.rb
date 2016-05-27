@@ -22,17 +22,17 @@ include_recipe "mysql"
 
 passwords = data_bag_item("piwik", "passwords")
 
-package "php5"
-package "php5-cli"
-package "php5-curl"
-package "php5-mysql"
-package "php5-gd"
-
-package "php-apc"
+package "php"
+package "php-cli"
+package "php-curl"
+package "php-mbstring"
+package "php-mysql"
+package "php-gd"
+package "php-apcu"
 
 package "geoip-database-contrib"
 
-apache_module "php5"
+apache_module "php7.0"
 apache_module "geoip"
 
 version = node[:piwik][:version]
