@@ -37,9 +37,15 @@ template "/etc/apt/sources.list" do
   notifies :run, "execute[apt-update]", :immediately
 end
 
-apt_source "brightbox-ruby-ng" do
-  url "http://ppa.launchpad.net/brightbox/ruby-ng/ubuntu"
-  key "C3173AA6"
+if node[:lsb][:release].to_f >= 16.04
+  apt_source "brightbox-ruby-ng" do
+    action :delete
+  end
+else
+  apt_source "brightbox-ruby-ng" do
+    url "http://ppa.launchpad.net/brightbox/ruby-ng/ubuntu"
+    key "C3173AA6"
+  end
 end
 
 apt_source "ubuntugis-stable" do
