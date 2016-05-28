@@ -19,10 +19,9 @@
 
 include_recipe "apache"
 
-package "php5"
-package "php5-cli"
-
-package "php-apc"
+package "php"
+package "php-cli"
+package "php-apcu"
 
 # Required for osmosis
 package "default-jre-headless"
@@ -38,10 +37,9 @@ package "libcurl3"
 package "buffer"
 package "git"
 package "cmake"
-package "libqt4-core"
 package "libqt4-dev"
 package "qt4-dev-tools"
 package "qt4-linguist-tools"
-package "libicu52"
+package "libicu-dev"
 
-apache_module "php5"
+apache_module "php7.0"
