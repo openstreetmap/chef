@@ -1,0 +1,50 @@
+#!/bin/bash
+set -e
+
+if [ -z "$1" ] || [ ! -d $1 ] || [ -z "$2" ]; then
+  echo $0 SOURCE_DIR DESTINATION_DIR
+  exit 1
+fi
+
+osstvw_source_dir="$1"
+osstvw_destination_dir="$2"
+
+mkdir -p "${osstvw_destination_dir}"
+
+osstvw_source_files=("osstvw_hp.zip" "osstvw_ht.zip" "osstvw_hu.zip" "osstvw_hw.zip" "osstvw_hx.zip" "osstvw_hy.zip" "osstvw_hz.zip" "osstvw_na.zip" "osstvw_nb.zip" "osstvw_nc.zip" "osstvw_nd.zip" "osstvw_nf.zip" "osstvw_ng.zip" "osstvw_nh.zip" "osstvw_nj.zip" "osstvw_nk.zip" "osstvw_nl.zip" "osstvw_nm.zip" "osstvw_nn.zip" "osstvw_no.zip" "osstvw_nr.zip" "osstvw_ns.zip" "osstvw_nt.zip" "osstvw_nu.zip" "osstvw_nw.zip" "osstvw_nx.zip" "osstvw_ny.zip" "osstvw_nz.zip" "osstvw_ov.zip" "osstvw_sd.zip" "osstvw_se.zip" "osstvw_sh.zip" "osstvw_sj.zip" "osstvw_sk.zip" "osstvw_sm.zip" "osstvw_sn.zip" "osstvw_so.zip" "osstvw_sp.zip" "osstvw_sr.zip" "osstvw_ss.zip" "osstvw_st.zip" "osstvw_su.zip" "osstvw_sv.zip" "osstvw_sw.zip" "osstvw_sx.zip" "osstvw_sy.zip" "osstvw_sz.zip" "osstvw_ta.zip" "osstvw_tf.zip" "osstvw_tg.zip" "osstvw_tl.zip" "osstvw_tm.zip" "osstvw_tq.zip" "osstvw_tr.zip" "osstvw_tv.zip")
+
+# get length of an array
+osstvw_source_length=${#osstvw_source_files[@]}
+
+osstvw_process_dir=$(mktemp -d --suffix=osstvw_process)
+
+function cleanup {
+  rm -rf "${osstvw_process_dir}"
+}
+trap cleanup EXIT
+
+# check files
+for (( i=0; i<${osstvw_source_length}; i++ )); do
+  if [ ! -f ${osstvw_source_dir}/${osstvw_source_files[$i]} ]; then
+    echo Missing: ${osstvw_source_dir}/${osstvw_source_files[$i]}
+    exit 1
+  fi
+  # unzip -tq ${osstvw_source_dir}/${osstvw_source_files[$i]}
+done
+
+# unzip all osstvw file
+for (( i=0; i<${osstvw_source_length}; i++ )); do
+  echo Unzipping ${osstvw_source_files[$i]} - $(($i+1)) of $osstvw_source_length
+  unzip -ojq ${osstvw_source_dir}/${osstvw_source_files[$i]} '*.[tT]*' -d "${osstvw_process_dir}"
+done
+
+# rename all files lowercase, older editions are broken
+( cd "${osstvw_process_dir}" && rename -vf 'y/A-Z/a-z/' *.[tT]* )
+
+# gdal recompress all files with tiling
+echo Started re-compessing with tiling... Around 1 hour...
+find "${osstvw_process_dir}" -maxdepth 1 -name '*.tif' -printf '%f\0' | xargs -0 -I '{}' -n1 -P8 gdal_translate -q -of GTiff -co TILED=YES -co COMPRESS=DEFLATE -co ZLEVEL=9 -co BLOCKXSIZE=512 -co BLOCKYSIZE=512 -co BIGTIFF=NO -a_srs epsg:27700 "${osstvw_process_dir}/"'{}' "${osstvw_destination_dir}/"'{}'
+
+echo Now create the VRT and external overview layers
+echo 1: gdalbuildvrt -resolution highest -hidenodata -vrtnodata "209" ossv-2016-04-combined.vrt 2016-04/*.tif
+echo 2: gdaladdo -ro --config COMPRESS DEFLATE --config COMPRESS_OVERVIEW DEFLATE --config ZLEVEL 9 --config BIGTIFF_OVERVIEW IF_SAFER --config GDAL_TIFF_OVR_BLOCKSIZE 512 -r average ossv-2016-04-combined.vrt 4 16 64 256 1024 4096
