@@ -5,8 +5,15 @@ location ~* "^/layer/<%= @layer %>/(\d+)/(\d+)/(\d+)\.(png|jpg|jpeg)$" {
   fastcgi_param QUERY_STRING "map=/srv/imagery/mapserver/layer-<%= @layer %>.map&mode=tile&layers=<%= @layer %>&tilemode=gmap&tile=$2+$3+$1";
   fastcgi_pass "unix:/var/run/mapserver-fastcgi/layer-<%= @layer %>.socket";
   fastcgi_buffers 8 64k;
-  fastcgi_cache "fastcgi_cache_zone";
   include fastcgi_params;
+
+  # Caching
+  fastcgi_cache "fastcgi_cache_zone";
+  fastcgi_cache_key "<%= @layer %> $request_method $1 $2 $3";
+  fastcgi_cache_lock on;
+  fastcgi_cache_lock_timeout 30s;
+  fastcgi_cache_valid 200 21d;
+  fastcgi_cache_use_stale error timeout updating http_500 http_502 http_503 http_504;
 
   gzip off;
 }
