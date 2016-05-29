@@ -55,7 +55,7 @@ action :create do
                 "MS_DEBUGLEVEL" => "1"
     user "imagery"
     group "imagery"
-    exec_start "/usr/bin/spawn-fcgi -n -s /run/mapserver-fastcgi/layer-#{layer}.socket -M 0666 -f /usr/lib/cgi-bin/mapserv"
+    exec_start "/usr/bin/spawn-fcgi -n -s /run/mapserver-fastcgi/layer-#{layer}.socket -M 0666 -- /usr/bin/multiwatch -f 4 -- /usr/lib/cgi-bin/mapserv"
     restart "on-failure"
   end
 
