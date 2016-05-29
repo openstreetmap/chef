@@ -38,6 +38,7 @@ property :exec_reload, String
 property :restart, String,
          :is => %w(on-success on-failure on-abnormal on-watchdog on-abort always)
 property :timeout_sec, Fixnum
+property :pid_file, String
 
 action :create do
   template "/etc/systemd/system/#{name}.service" do

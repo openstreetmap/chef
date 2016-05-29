@@ -42,6 +42,9 @@ Restart=<%= @restart %>
 <% if @timeout_sec -%>
 TimeoutSec=<%= @timeout_sec %>
 <% end -%>
+<% if @pid_file -%>
+PIDFile=<%= @pid_file %>
+<% end -%>
 
 [Install]
 WantedBy=multi-user.target
