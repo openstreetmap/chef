@@ -28,6 +28,22 @@ template "/etc/nginx/nginx.conf" do
   mode 0644
 end
 
+if node['nginx']['cache']['fastcgi']['enable']
+  directory "/var/lib/nginx/fastcgi-cache" do
+    owner "nginx"
+    group "nginx"
+    mode 0755
+  end
+end
+
+if node['nginx']['cache']['proxy']['enable']
+  directory "/var/lib/nginx/proxy-cache" do
+    owner "nginx"
+    group "nginx"
+    mode 0755
+  end
+end
+
 service "nginx" do
   action [:enable]
   supports :status => true, :restart => true, :reload => true

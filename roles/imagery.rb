@@ -28,6 +28,13 @@ default_attributes(
         "kernel.sched_wakeup_granularity_ns" => 15000000
       }
     }
+  },
+  :nginx => {
+    :cache => {
+      :fastcgi => {
+        :enable => true
+      }
+    }
   }
 )
 
