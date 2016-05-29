@@ -53,8 +53,10 @@ action :create do
                 "MS_MAP_PATTERN" => "^/srv/imagery/mapserver/"
     user "imagery"
     group "imagery"
-    exec_start "/usr/bin/spawn-fcgi -n -s /run/mapserver-fastcgi/layer-#{layer}.socket -M 0666 -- /usr/bin/multiwatch -f 4 -- /usr/lib/cgi-bin/mapserv"
-    restart "on-failure"
+    exec_start "/usr/bin/spawn-fcgi -s /run/mapserver-fastcgi/layer-#{layer}.socket -M 0666 -P /run/mapserver-fastcgi/layer-#{layer}.pid -- /usr/bin/multiwatch -f 6 -- /usr/lib/cgi-bin/mapserv"
+    pid_file "/run/mapserver-fastcgi/layer-#{layer}.pid"
+    type "forking"
+    restart "always"
   end
 
   service "mapserv-fcgi-#{layer}" do
