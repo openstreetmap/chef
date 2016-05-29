@@ -11,7 +11,7 @@
   sharedscripts
   postrotate
 <% if File.directory?("#{node[:web][:base_directory]}/rails") -%>
-    /usr/bin/passenger-config restart-app <%= node[:web][:base_directory] %>/rails > /dev/null
+    /usr/bin/passenger-config restart-app --ignore-app-not-running <%= node[:web][:base_directory] %>/rails > /dev/null
 <% if node[:recipes].include?("logstash::forwarder") -%>
     /usr/bin/service logstash-forwarder restart > /dev/null
 <% end -%>
