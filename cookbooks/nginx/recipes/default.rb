@@ -29,17 +29,17 @@ template "/etc/nginx/nginx.conf" do
 end
 
 if node['nginx']['cache']['fastcgi']['enable']
-  directory "/var/lib/nginx/fastcgi-cache" do
-    owner "nginx"
-    group "nginx"
+  directory "/var/cache/nginx/fastcgi-cache" do
+    owner "www-data"
+    group "root"
     mode 0755
   end
 end
 
 if node['nginx']['cache']['proxy']['enable']
-  directory "/var/lib/nginx/proxy-cache" do
-    owner "nginx"
-    group "nginx"
+  directory "/var/cache/nginx/proxy-cache" do
+    owner "www-data"
+    group "root"
     mode 0755
   end
 end

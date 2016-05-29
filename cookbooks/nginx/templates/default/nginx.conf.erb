@@ -29,10 +29,10 @@ http {
     server_tokens off;
 
     <% if node['nginx']['cache']['fastcgi']['enable'] -%>
-    fastcgi_cache_path /var/lib/nginx/fastcgi-cache levels=1:2 keys_zone=<%= node['nginx']['cache']['fastcgi']['keys_zone'] %> inactive=<%= node['nginx']['cache']['fastcgi']['inactive'] %> max_size=<%= node['nginx']['cache']['fastcgi']['max_size'] %>;
+    fastcgi_cache_path /var/cache/nginx/fastcgi-cache levels=1:2 keys_zone=<%= node['nginx']['cache']['fastcgi']['keys_zone'] %> inactive=<%= node['nginx']['cache']['fastcgi']['inactive'] %> max_size=<%= node['nginx']['cache']['fastcgi']['max_size'] %>;
     <% end -%>
     <% if node['nginx']['cache']['proxy']['enable'] -%>
-    fastcgi_cache_path /var/lib/nginx/proxy-cache levels=1:2 keys_zone=<%= node['nginx']['cache']['proxy']['keys_zone'] %> inactive=<%= node['nginx']['cache']['proxy']['inactive'] %> max_size=<%= node['nginx']['cache']['proxy']['max_size'] %>;
+    fastcgi_cache_path /var/cache/nginx/proxy-cache levels=1:2 keys_zone=<%= node['nginx']['cache']['proxy']['keys_zone'] %> inactive=<%= node['nginx']['cache']['proxy']['inactive'] %> max_size=<%= node['nginx']['cache']['proxy']['max_size'] %>;
     <% end -%>
 
     include /etc/nginx/conf.d/*.conf;
