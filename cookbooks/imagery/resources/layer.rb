@@ -47,21 +47,23 @@ action :create do
     variables new_resource.to_hash
   end
 
-  template "/etc/init/mapserv-fcgi-layer-#{layer}.conf" do
-    cookbook "imagery"
-    source "mapserv_fcgi.conf.erb"
-    owner "root"
-    group "root"
-    mode 0644
-    variables new_resource.to_hash
+  systemd_service "mapserv-fcgi-#{layer}" do
+    description "Map server for #{layer} layer"
+    limit_nofile 16384
+    environment "MS_MAPFILE" => "/srv/imagery/mapserver/layer-#{layer}.map",
+                "MS_MAP_PATTERN" => "^/srv/imagery/mapserver/",
+                "MS_ERRORFILE" => "/tmp/mapserver-layer-#{layer}.log",
+                "MS_DEBUGLEVEL" => "5"
+    user "imagery"
+    group "imagery"
+    exec_start "/usr/bin/spawn-fcgi -n -s /run/mapserver-fastcgi/layer-#{layer}.socket -M 0666 -f /usr/lib/cgi-bin/mapserv"
+    restart "on-failure"
   end
 
-  service "mapserv-fcgi-layer-#{layer}" do
-    provider Chef::Provider::Service::Upstart
+  service "mapserv-fcgi-#{layer}" do
     action [:enable, :start]
-    supports :status => true, :restart => true, :reload => false
     subscribes :restart, "template[/srv/imagery/mapserver/layer-#{layer}.map]"
-    subscribes :restart, "template[/etc/init/mapserv-fcgi-layer-#{layer}.conf]"
+    subscribes :restart, "systemd_service[mapserv-fcgi]"
   end
 
   directory "/srv/imagery/nginx/#{site}" do
@@ -83,16 +85,14 @@ end
 
 action :delete do
   service "mapserv-fcgi-layer-#{layer}" do
-    provider Chef::Provider::Service::Upstart
     action [:stop, :disable]
-    supports :status => true, :restart => true, :reload => false
   end
 
   file "/srv/imagery/mapserver/layer-#{layer}.map" do
     action :delete
   end
 
-  file "/etc/init/mapserv-fcgi-layer-#{layer}.conf" do
+  systemd_service "mapserv-fcgi-#{layer}" do
     action :delete
   end
 

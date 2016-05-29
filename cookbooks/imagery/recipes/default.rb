@@ -77,3 +77,10 @@ nginx_site "default" do
   action [:delete]
   restart_nginx false
 end
+
+systemd_tmpfile "/run/mapserver-fastcgi" do
+  type "d"
+  owner "imagery"
+  group "imagery"
+  mode "0755"
+end

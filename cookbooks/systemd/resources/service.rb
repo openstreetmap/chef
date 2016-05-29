@@ -28,6 +28,8 @@ property :type, String,
 property :limit_nofile, Fixnum
 property :environment, Hash, :default => {}
 property :environment_file, String
+property :user, String
+property :group, String
 property :exec_start_pre, String
 property :exec_start, String, :required => true
 property :exec_start_post, String

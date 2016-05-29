@@ -1,3 +1,5 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
 [Unit]
 Description=<%= @description %>
 <% if @after -%>
@@ -14,6 +16,12 @@ Environment="<%= name %>=<%= value %>"
 <% end -%>
 <% if @environment_file -%>
 EnvironmentFile=<%= @environment_file %>
+<% end -%>
+<% if @user -%>
+User=<%= @user %>
+<% end -%>
+<% if @group -%>
+Group=<%= @group %>
 <% end -%>
 <% if @exec_start_pre -%>
 ExecStartPre=<%= @exec_start_pre %>
