@@ -50,9 +50,7 @@ action :create do
     description "Map server for #{layer} layer"
     limit_nofile 16384
     environment "MS_MAPFILE" => "/srv/imagery/mapserver/layer-#{layer}.map",
-                "MS_MAP_PATTERN" => "^/srv/imagery/mapserver/",
-                "MS_ERRORFILE" => "/tmp/mapserver-layer-#{layer}.log",
-                "MS_DEBUGLEVEL" => "1"
+                "MS_MAP_PATTERN" => "^/srv/imagery/mapserver/"
     user "imagery"
     group "imagery"
     exec_start "/usr/bin/spawn-fcgi -n -s /run/mapserver-fastcgi/layer-#{layer}.socket -M 0666 -- /usr/bin/multiwatch -f 4 -- /usr/lib/cgi-bin/mapserv"
