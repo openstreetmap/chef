@@ -31,11 +31,10 @@ property :extent, String
 property :background_colour, String
 property :resample, String, :default => "average"
 property :imagemode, String
-property :extension, String,
-         :is => %w(png png8 jpeg),
-         :default => "png"
+property :extension, String, :default => "png"
 property :max_zoom, Fixnum, :default => 23
 property :url_aliases, [String, Array], :default => []
+property :revision, Fixnum, :default => 1
 
 action :create do
   template "/srv/imagery/mapserver/layer-#{layer}.map" do
@@ -53,7 +52,7 @@ action :create do
     environment "MS_MAPFILE" => "/srv/imagery/mapserver/layer-#{layer}.map",
                 "MS_MAP_PATTERN" => "^/srv/imagery/mapserver/",
                 "MS_ERRORFILE" => "/tmp/mapserver-layer-#{layer}.log",
-                "MS_DEBUGLEVEL" => "5"
+                "MS_DEBUGLEVEL" => "1"
     user "imagery"
     group "imagery"
     exec_start "/usr/bin/spawn-fcgi -n -s /run/mapserver-fastcgi/layer-#{layer}.socket -M 0666 -f /usr/lib/cgi-bin/mapserv"
