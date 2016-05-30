@@ -43,8 +43,8 @@ package "libprotobuf-dev"
 package "osmpbf-bin"
 
 # Add planet-mirror-redirect-update dependencies
-package "php5-cli"
-package "php5-curl"
+package "php-cli"
+package "php-curl"
 
 directory "/opt/planet-dump-ng" do
   owner "root"
