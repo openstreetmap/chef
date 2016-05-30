@@ -21,7 +21,7 @@ default_action :create
 
 property :name, String
 property :aliases, [String, Array], :default => []
-property :git_repository, String, :default => ["https://github.com/Firefishy/osm-imagery-default.git"]
+property :git_repository, String, :default => "https://github.com/Firefishy/osm-imagery-default.git"
 
 action :create do
   git "/srv/#{name}" do
