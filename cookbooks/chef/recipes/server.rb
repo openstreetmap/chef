@@ -65,10 +65,14 @@ execute "chef-server-reconfigure" do
   group "root"
 end
 
-service "private-chef-runsvdir" do
-  provider Chef::Provider::Service::Upstart
+systemd_service "chef-server" do
+  description "Chef server"
+  after "network.target"
+  exec_start "/opt/opscode/embedded/bin/runsvdir-start"
+end
+
+service "chef-server" do
   action [:enable, :start]
-  supports :status => true, :restart => true, :reload => true
 end
 
 apache_module "alias"
