@@ -63,6 +63,14 @@ directory "/var/log/kibana" do
   mode 0755
 end
 
+systemd_service "kibana@" do
+  description "Kibana server"
+  after "network.target"
+  user "kibana"
+  exec_start "/opt/kibana-#{version}/bin/kibana -c /etc/kibana/%i.yml"
+  restart "on-failure"
+end
+
 node[:kibana][:sites].each do |name, details|
   file "/etc/kibana/#{name}.yml" do
     content YAML.dump(YAML.load(File.read("/opt/kibana-#{version}/config/kibana.yml")).merge(
@@ -75,19 +83,10 @@ node[:kibana][:sites].each do |name, details|
     owner "root"
     group "root"
     mode 0644
-    notifies :restart, "service[kibana-#{name}]"
+    notifies :restart, "service[kibana@#{name}]"
   end
 
-  template "/etc/init/kibana-#{name}.conf" do
-    source "kibana.conf.erb"
-    owner "root"
-    group "root"
-    mode 0644
-    variables :config => "/etc/kibana/#{name}.yml"
-    notifies :restart, "service[kibana-#{name}]"
-  end
-
-  service "kibana-#{name}" do
+  service "kibana@#{name}" do
     action [:enable, :start]
     supports :status => true, :restart => true, :reload => false
   end
