@@ -47,4 +47,4 @@ find "${osstvw_process_dir}" -maxdepth 1 -name '*.tif' -printf '%f\0' | xargs -0
 
 echo Now create the VRT and external overview layers
 echo 1: gdalbuildvrt -resolution highest -hidenodata -vrtnodata "209" ossv-2016-04-combined.vrt 2016-04/*.tif
-echo 2: gdaladdo -ro --config COMPRESS DEFLATE --config COMPRESS_OVERVIEW DEFLATE --config ZLEVEL 9 --config BIGTIFF_OVERVIEW IF_SAFER --config GDAL_TIFF_OVR_BLOCKSIZE 512 -r average ossv-2016-04-combined.vrt 4 16 64 256 1024 4096
+echo 2: gdaladdo --config GDAL_CACHEMAX=16000 -ro --config COMPRESS DEFLATE --config COMPRESS_OVERVIEW DEFLATE --config ZLEVEL 9 --config BIGTIFF_OVERVIEW IF_SAFER --config GDAL_TIFF_OVR_BLOCKSIZE 512 -r average ossv-2016-04-combined.vrt 4 16 64 256 1024 4096
