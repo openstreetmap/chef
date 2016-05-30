@@ -21,7 +21,7 @@ include_recipe "networking"
 
 keys = data_bag_item("logstash", "keys")
 
-package "openjdk-7-jre-headless"
+package "default-jre-headless"
 package "logstash"
 
 cookbook_file "/var/lib/logstash/lumberjack.crt" do
