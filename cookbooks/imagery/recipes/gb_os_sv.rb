@@ -166,5 +166,5 @@ imagery_layer "gb_os_sv_2016_04" do
   copyright "Contains Ordnance Survey data © Crown copyright and database right 2015"
   background_colour "230 246 255" # OSSV Water Blue
   extension "os_sv_png"
-  url_aliases [ "/sv-2016-04", "/sv" ] # Add "/sv" to current edition for backward compatibility
+  url_aliases ["/sv-2016-04", "/sv"] # Add "/sv" to current edition for backward compatibility
 end
