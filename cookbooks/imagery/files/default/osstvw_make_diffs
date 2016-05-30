@@ -48,6 +48,7 @@ for (( i=0; i<${OSSV_EDITIONS_LENGTH}; i++ )); do
       # Wait for background jobs to finish
       wait
 
+      echo "Removing empty diffs"
       # TIF cleanup loop for images which have no diff
       while IFS= read -r -d $'\0' FILE; do
         ( FILE_COLOURS=$(identify -quiet -format '%k' "${OSSV_DIFF_NAME}/${FILE}")
@@ -63,9 +64,11 @@ for (( i=0; i<${OSSV_EDITIONS_LENGTH}; i++ )); do
           running=($(jobs -rp))
         done
       done < <(find "${OSSV_DIFF_NAME}" -maxdepth 1 -name '*.tif' -size -180000c -printf '%f\0')
+      if [ ! -f "ossv-${OSSV_DIFF_NAME}-combined.vrt" ]; then
+        gdalbuildvrt -resolution highest -hidenodata "ossv-${OSSV_DIFF_NAME}-combined.vrt" ${OSSV_DIFF_NAME}/*.tif
+      fi
     fi
   done
 done
-echo Now create the VRT and external overview layers
-echo 1: gdalbuildvrt -resolution highest -hidenodata diffXYZ.vrt diff/*.tif
-echo 2: gdaladdo --config GDAL_CACHEMAX=16000 -ro --config COMPRESS DEFLATE --config COMPRESS_OVERVIEW DEFLATE --config ZLEVEL 9 --config BIGTIFF_OVERVIEW IF_SAFER --config GDAL_TIFF_OVR_BLOCKSIZE 512 -r average ossv-2016-04-combined.vrt 4 16 64 256 1024 4096
+echo Now create external overview layers
+echo eg: gdaladdo --config GDAL_CACHEMAX=16000 -ro --config COMPRESS DEFLATE --config COMPRESS_OVERVIEW DEFLATE --config ZLEVEL 9 --config BIGTIFF_OVERVIEW IF_SAFER --config GDAL_TIFF_OVR_BLOCKSIZE 512 -r average ossv-2016-04-combined.vrt 4 16 64 256 1024 4096
