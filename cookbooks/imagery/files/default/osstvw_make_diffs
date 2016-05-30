@@ -64,6 +64,8 @@ for (( i=0; i<${OSSV_EDITIONS_LENGTH}; i++ )); do
           running=($(jobs -rp))
         done
       done < <(find "${OSSV_DIFF_NAME}" -maxdepth 1 -name '*.tif' -size -180000c -printf '%f\0')
+      # Wait for background jobs to finish
+      wait
       if [ ! -f "ossv-${OSSV_DIFF_NAME}-combined.vrt" ]; then
         gdalbuildvrt -resolution highest -hidenodata "ossv-${OSSV_DIFF_NAME}-combined.vrt" ${OSSV_DIFF_NAME}/*.tif
       fi
