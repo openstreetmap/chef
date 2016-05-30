@@ -62,7 +62,7 @@ for (( i=0; i<${OSSV_EDITIONS_LENGTH}; i++ )); do
           sleep 1   # this is not optimal, but you can't use wait here
           running=($(jobs -rp))
         done
-      done < <(find "${OSSV_DIFF_NAME}" -maxdepth 1 -name '*.tif' -size -180000 -printf '%f\0')
+      done < <(find "${OSSV_DIFF_NAME}" -maxdepth 1 -name '*.tif' -size -180000c -printf '%f\0')
     fi
   done
 done
