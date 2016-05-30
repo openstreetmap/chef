@@ -30,8 +30,8 @@ for (( i=0; i<${OSSV_EDITIONS_LENGTH}; i++ )); do
         if [ ! -f "${FILE_1}" ]; then
           FILE_1="${OSSV_EDITIONS_TMP}/blue.png"
         fi
-        # Skip existing files
-        if [ ! -f "${OSSV_DIFF_NAME}/${FILE}" ]; then
+        # Skip existing files or excluded files
+        if [ ! -f "${OSSV_DIFF_NAME}/${FILE}" ] && [ ! -f "${OSSV_DIFF_NAME}/${FILE}.skip" ]; then
           echo Creating diff ${OSSV_EDITIONS[$i]} ${OSSV_EDITIONS[$o]} "${FILE_1}" "${OSSV_DIFF_NAME}/${FILE}"
           # Background compare + gdalcopyproj
           ((compare -quiet "${FILE_1}" "${FILE_2}" -compose Src -highlight-color Red -lowlight-color 'rgba(255,255,255,0)' -define tiff:tile-geometry=512x512 "${OSSV_DIFF_NAME}/${FILE}" || true) && python ${GDALCOPYPROJ} "${FILE_2}" "${OSSV_DIFF_NAME}/${FILE}" ) &
@@ -53,6 +53,7 @@ for (( i=0; i<${OSSV_EDITIONS_LENGTH}; i++ )); do
         ( FILE_COLOURS=$(identify -quiet -format '%k' "${OSSV_DIFF_NAME}/${FILE}")
         if [ "$FILE_COLOURS" -lt "2" ]; then
           rm -f "${OSSV_DIFF_NAME}/${FILE}"
+          touch "${OSSV_DIFF_NAME}/${FILE}.skip"
         fi ) &
 
         # Check how many background processes and wait if exceed
