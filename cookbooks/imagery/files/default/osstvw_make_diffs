@@ -1,0 +1,49 @@
+#!/bin/bash
+set -e
+GDALCOPYPROJ="/usr/share/doc/python-gdal/examples/gdalcopyproj.py"
+
+# Expected directory names: 2010-04, 2010-11, ... 2016-04
+OSSV_EDITIONS=($(ls -d 201*|sort -n))
+OSSV_EDITIONS_LENGTH=${#OSSV_EDITIONS[@]}
+
+OSSV_EDITIONS_TMP=$(mktemp -d --suffix=osstvw_edit)
+function cleanup {
+  rm -rf "${OSSV_EDITIONS_TMP}"
+}
+trap cleanup EXIT
+
+# Create OSSTVW ocean blue to compare new files against
+convert -size 5000x5000 xc:'#e6f6ff' -depth 8 ${OSSV_EDITIONS_TMP}/blue.png
+
+# Outer loop (compare from)
+for (( i=0; i<${OSSV_EDITIONS_LENGTH}; i++ )); do
+  # Inner loop (compare to)
+  for (( o=${i}; o<${OSSV_EDITIONS_LENGTH}; o++ )); do
+    # Skip when outer == inner edition
+    if [ "$i" != "$o" ]; then
+      OSSV_DIFF_NAME="diff-${OSSV_EDITIONS[$i]}-${OSSV_EDITIONS[$o]}"
+      mkdir -p "${OSSV_DIFF_NAME}"
+      # TIF file loop for edition - see end of loop for find
+      while IFS= read -r -d $'\0' FILE; do
+        FILE_1="${OSSV_EDITIONS[$i]}/${FILE}"
+        FILE_2="${OSSV_EDITIONS[$o]}/${FILE}"
+        if [ ! -f "${FILE_1}" ]; then
+          FILE_1="${OSSV_EDITIONS_TMP}/blue.png"
+        fi
+        # Skip existing files
+        if [ ! -f "${OSSV_DIFF_NAME}/${FILE}" ]; then
+          echo Creating diff ${OSSV_EDITIONS[$i]} ${OSSV_EDITIONS[$o]} "${FILE_1}" "${OSSV_DIFF_NAME}/${FILE}"
+          # Background compare + gdalcopyproj
+          ((compare -quiet "${FILE_1}" "${FILE_2}" -compose Src -highlight-color Red -lowlight-color 'rgba(255,255,255,0)' -define tiff:tile-geometry=512x512 "${OSSV_DIFF_NAME}/${FILE}" || true) && python ${GDALCOPYPROJ} "${FILE_2}" "${OSSV_DIFF_NAME}/${FILE}" ) &
+
+          # Check how many background processes and wait if exceed
+          running=($(jobs -rp))
+          while [ ${#running[@]} -ge 16 ] ; do
+            sleep 1   # this is not optimal, but you can't use wait here
+            running=($(jobs -rp))
+          done
+        fi
+      done < <(find "${OSSV_EDITIONS[$o]}" -maxdepth 1 -name '*.tif' -printf '%f\0')
+    fi
+  done
+done

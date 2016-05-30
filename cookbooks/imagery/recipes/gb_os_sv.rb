@@ -33,6 +33,13 @@ cookbook_file "/srv/imagery/common/osstvw_process" do
   mode "0755"
 end
 
+cookbook_file "/srv/imagery/common/osstvw_make_diffs" do
+  source "osstvw_make_diffs"
+  owner "root"
+  group "root"
+  mode "0755"
+end
+
 imagery_site "os.openstreetmap.org" do
   aliases ["os.openstreetmap.org.uk"]
 end
