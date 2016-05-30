@@ -21,7 +21,7 @@ include_recipe "imagery"
 
 imagery_site "surrey.aerial.openstreetmap.org.uk" do
   # aliases
-  git_repository "https://github.com/Firefishy/osm-imagery-surrey-aerial-site.git"
+  bbox [[51.0595, -0.873413], [51.466, 0.0617981]]
 end
 
 imagery_layer "gb_surrey_aerial" do

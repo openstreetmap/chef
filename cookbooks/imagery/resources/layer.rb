@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+require "yaml"
+
 default_action :create
 
 property :layer, String, :name_property => true
@@ -37,6 +39,15 @@ property :url_aliases, [String, Array], :default => []
 property :revision, Fixnum, :default => 1
 
 action :create do
+  file "/srv/imagery/layers/#{site}/#{layer}.yml" do
+    owner "root"
+    group "root"
+    mode 0644
+    content YAML.dump(:name => layer,
+                      :url => "http://#{site}/layer/#{layer}/{z}/{x}/{y}.png",
+                      :attribution => copyright)
+  end
+
   template "/srv/imagery/mapserver/layer-#{layer}.map" do
     cookbook "imagery"
     source "mapserver.map.erb"
@@ -102,5 +113,6 @@ action :delete do
 end
 
 def after_created
+  notifies :create, "imagery_site[#{site}]"
   notifies :restart, "service[nginx]"
 end

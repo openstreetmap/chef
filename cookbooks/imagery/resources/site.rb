@@ -17,21 +17,64 @@
 # limitations under the License.
 #
 
+require "yaml"
+
 default_action :create
 
 property :name, String
 property :aliases, [String, Array], :default => []
-property :git_repository, String, :default => "https://github.com/Firefishy/osm-imagery-default.git"
+property :bbox, Array, :required => true
 
 action :create do
-  git "/srv/#{name}" do
-    action :sync
-    repository "#{git_repository}"
-    revision "master"
-    enable_submodules true
-    retries 3
+  directory "/srv/#{name}" do
     user "root"
     group "root"
+    mode 0755
+  end
+
+  directory "/srv/imagery/layers/#{name}" do
+    user "root"
+    group "root"
+    mode 0755
+    recursive true
+  end
+
+  directory "/srv/imagery/overlays/#{name}" do
+    user "root"
+    group "root"
+    mode 0755
+    recursive true
+  end
+
+  template "/srv/#{name}/index.html" do
+    source "index.html.erb"
+    user "root"
+    group "root"
+    mode 0644
+    variables :title => name
+  end
+
+  cookbook_file "/srv/#{name}/imagery.css" do
+    source "imagery.css"
+    user "root"
+    group "root"
+    mode 0644
+  end
+
+  layers = Dir.glob("/srv/imagery/layers/#{name}/*.yml").collect do |path|
+    YAML.load(::File.read(path))
+  end
+
+  overlays = Dir.glob("/srv/imagery/overlays/#{name}/*.yml").collect do |path|
+    YAML.load(::File.read(path))
+  end
+
+  template "/srv/#{name}/imagery.js" do
+    source "imagery.js.erb"
+    user "root"
+    group "root"
+    mode 0644
+    variables :bbox => bbox, :layers => layers, :overlays => overlays
   end
 
   nginx_site name do
