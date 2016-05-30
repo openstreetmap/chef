@@ -54,7 +54,7 @@ action :create do
     user "imagery"
     group "imagery"
     exec_start_pre "/bin/rm -f /run/mapserver-fastcgi/layer-#{layer}.socket"
-    exec_start "/usr/bin/spawn-fcgi -s /run/mapserver-fastcgi/layer-#{layer}.socket -M 0666 -P /run/mapserver-fastcgi/layer-#{layer}.pid -- /usr/bin/multiwatch -f 4 -- /usr/lib/cgi-bin/mapserv"
+    exec_start "/usr/bin/spawn-fcgi -s /run/mapserver-fastcgi/layer-#{layer}.socket -M 0666 -P /run/mapserver-fastcgi/layer-#{layer}.pid -- /usr/bin/multiwatch -f 4 --signal=TERM -- /usr/lib/cgi-bin/mapserv"
     pid_file "/run/mapserver-fastcgi/layer-#{layer}.pid"
     type "forking"
     restart "always"
