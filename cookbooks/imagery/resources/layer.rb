@@ -45,7 +45,7 @@ action :create do
     owner "root"
     group "root"
     mode 0644
-    if @overlay
+    if new_resource.overlay
       path "/srv/imagery/overlays/#{site}/#{layer}.yml"
     else
       path "/srv/imagery/layers/#{site}/#{layer}.yml"
@@ -57,7 +57,7 @@ action :create do
   end
 
   file "remove old layer yaml" do
-    if @overlay
+    if new_resource.overlay
       path "/srv/imagery/layers/#{site}/#{layer}.yml" # remove layer if overlay
     else
       path "/srv/imagery/overlays/#{site}/#{layer}.yml" # remove overlay if layer
