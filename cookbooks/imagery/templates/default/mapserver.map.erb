@@ -12,6 +12,16 @@ MAP
     FORMATOPTION "PALETTE=/srv/imagery/common/ossv-palette.txt"
   END
 <% end -%>
+<% if @extension == "os_sv_diff_png" -%>
+  OUTPUTFORMAT
+    NAME "os_sv_diff_png"
+    DRIVER AGG/PNG
+    MIMETYPE "image/png"
+    IMAGEMODE RGBA
+    EXTENSION "png"
+    FORMATOPTION "COMPRESSION=9"
+  END
+<% end -%>
 
   NAME "map-<%= @layer %>"
   STATUS ON
