@@ -163,7 +163,7 @@ imagery_layer "gb_os_sv_2016_04" do
   root_layer true
   projection "EPSG:27700"
   source "/data/imagery/gb/os-sv/ossv-2016-04-combined.vrt"
-  copyright "Contains Ordnance Survey data © Crown copyright and database right 2015"
+  copyright "Contains Ordnance Survey data © Crown copyright and database right 2016"
   background_colour "230 246 255" # OSSV Water Blue
   extension "os_sv_png"
   url_aliases ["/sv-2016-04", "/sv"] # Add "/sv" to current edition for backward compatibility
