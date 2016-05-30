@@ -20,9 +20,14 @@
 include_recipe "apache::ssl"
 
 package "perl"
-package "php5-cli"
 package "pbzip2"
 package "osmosis"
+
+if node[:lsb][:release].to_f >= 16.04
+  package "php-cli"
+else
+  package "php5-cli"
+end
 
 template "/etc/cron.d/planet" do
   source "cron.erb"
