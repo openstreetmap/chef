@@ -37,15 +37,32 @@ property :extension, String, :default => "png"
 property :max_zoom, Fixnum, :default => 23
 property :url_aliases, [String, Array], :default => []
 property :revision, Fixnum, :default => 1
+property :overlay, [TrueClass, FalseClass], :default => false
 
 action :create do
-  file "/srv/imagery/layers/#{site}/#{layer}.yml" do
+
+  file "create layer yaml definition" do
     owner "root"
     group "root"
     mode 0644
+    if @overlay
+      path "/srv/imagery/overlays/#{site}/#{layer}.yml"
+    else
+      path "/srv/imagery/layers/#{site}/#{layer}.yml"
+    end
     content YAML.dump(:name => layer,
-                      :url => "http://#{site}/layer/#{layer}/{z}/{x}/{y}.png",
-                      :attribution => copyright)
+                      :url => "http://#{site}/layer/#{layer}/{z}/{x}/{y}.#{extension}",
+                      :attribution => copyright,
+                      :maxZoom => max_zoom)
+  end
+
+  file "remove old layer yaml" do
+    if @overlay
+      path "/srv/imagery/layers/#{site}/#{layer}.yml" # remove layer if overlay
+    else
+      path "/srv/imagery/overlays/#{site}/#{layer}.yml" # remove overlay if layer
+    end
+    action :delete
   end
 
   template "/srv/imagery/mapserver/layer-#{layer}.map" do

@@ -186,6 +186,7 @@ imagery_layer "gb_os_sv_diff_2010_04_2010_11" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2010"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2010-04-2010-11"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2010_04_2011_05" do
@@ -195,6 +196,7 @@ imagery_layer "gb_os_sv_diff_2010_04_2011_05" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2011"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2010-04-2011-05"]
+  overlay true
 end
 
 =begin
@@ -206,6 +208,7 @@ imagery_layer "gb_os_sv_diff_2010_04_2011_11" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2011"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2010-04-2011-11"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2010_04_2012_05" do
@@ -215,6 +218,7 @@ imagery_layer "gb_os_sv_diff_2010_04_2012_05" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2012"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2010-04-2012-05"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2010_04_2012_11" do
@@ -224,6 +228,7 @@ imagery_layer "gb_os_sv_diff_2010_04_2012_11" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2012"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2010-04-2012-11"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2010_04_2013_05" do
@@ -233,6 +238,7 @@ imagery_layer "gb_os_sv_diff_2010_04_2013_05" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2013"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2010-04-2013-05"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2010_04_2013_11" do
@@ -242,6 +248,7 @@ imagery_layer "gb_os_sv_diff_2010_04_2013_11" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2013"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2010-04-2013-11"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2010_04_2014_04" do
@@ -251,6 +258,7 @@ imagery_layer "gb_os_sv_diff_2010_04_2014_04" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2014"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2010-04-2014-04"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2010_04_2014_10" do
@@ -260,6 +268,7 @@ imagery_layer "gb_os_sv_diff_2010_04_2014_10" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2014"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2010-04-2014-10"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2010_04_2015_05" do
@@ -269,6 +278,7 @@ imagery_layer "gb_os_sv_diff_2010_04_2015_05" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2010-04-2015-05"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2010_04_2015_11" do
@@ -278,6 +288,7 @@ imagery_layer "gb_os_sv_diff_2010_04_2015_11" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2010-04-2015-11"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2010_04_2016_04" do
@@ -287,6 +298,7 @@ imagery_layer "gb_os_sv_diff_2010_04_2016_04" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2016"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2010-04-2016-04"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2010_11_2011_05" do
@@ -296,6 +308,7 @@ imagery_layer "gb_os_sv_diff_2010_11_2011_05" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2011"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2010-11-2011-05"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2010_11_2011_11" do
@@ -305,6 +318,7 @@ imagery_layer "gb_os_sv_diff_2010_11_2011_11" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2011"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2010-11-2011-11"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2010_11_2012_05" do
@@ -314,6 +328,7 @@ imagery_layer "gb_os_sv_diff_2010_11_2012_05" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2012"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2010-11-2012-05"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2010_11_2012_11" do
@@ -323,6 +338,7 @@ imagery_layer "gb_os_sv_diff_2010_11_2012_11" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2012"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2010-11-2012-11"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2010_11_2013_05" do
@@ -332,6 +348,7 @@ imagery_layer "gb_os_sv_diff_2010_11_2013_05" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2013"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2010-11-2013-05"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2010_11_2013_11" do
@@ -341,6 +358,7 @@ imagery_layer "gb_os_sv_diff_2010_11_2013_11" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2013"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2010-11-2013-11"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2010_11_2014_04" do
@@ -350,6 +368,7 @@ imagery_layer "gb_os_sv_diff_2010_11_2014_04" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2014"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2010-11-2014-04"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2010_11_2014_10" do
@@ -359,6 +378,7 @@ imagery_layer "gb_os_sv_diff_2010_11_2014_10" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2014"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2010-11-2014-10"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2010_11_2015_05" do
@@ -368,6 +388,7 @@ imagery_layer "gb_os_sv_diff_2010_11_2015_05" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2010-11-2015-05"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2010_11_2015_11" do
@@ -377,6 +398,7 @@ imagery_layer "gb_os_sv_diff_2010_11_2015_11" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2010-11-2015-11"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2010_11_2016_04" do
@@ -386,6 +408,7 @@ imagery_layer "gb_os_sv_diff_2010_11_2016_04" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2016"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2010-11-2016-04"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2011_05_2011_11" do
@@ -395,6 +418,7 @@ imagery_layer "gb_os_sv_diff_2011_05_2011_11" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2011"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2011-05-2011-11"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2011_05_2012_05" do
@@ -404,6 +428,7 @@ imagery_layer "gb_os_sv_diff_2011_05_2012_05" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2012"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2011-05-2012-05"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2011_05_2012_11" do
@@ -413,6 +438,7 @@ imagery_layer "gb_os_sv_diff_2011_05_2012_11" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2012"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2011-05-2012-11"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2011_05_2013_05" do
@@ -422,6 +448,7 @@ imagery_layer "gb_os_sv_diff_2011_05_2013_05" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2013"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2011-05-2013-05"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2011_05_2013_11" do
@@ -431,6 +458,7 @@ imagery_layer "gb_os_sv_diff_2011_05_2013_11" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2013"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2011-05-2013-11"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2011_05_2014_04" do
@@ -440,6 +468,7 @@ imagery_layer "gb_os_sv_diff_2011_05_2014_04" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2014"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2011-05-2014-04"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2011_05_2014_10" do
@@ -449,6 +478,7 @@ imagery_layer "gb_os_sv_diff_2011_05_2014_10" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2014"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2011-05-2014-10"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2011_05_2015_05" do
@@ -458,6 +488,7 @@ imagery_layer "gb_os_sv_diff_2011_05_2015_05" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2011-05-2015-05"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2011_05_2015_11" do
@@ -467,6 +498,7 @@ imagery_layer "gb_os_sv_diff_2011_05_2015_11" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2011-05-2015-11"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2011_05_2016_04" do
@@ -476,6 +508,7 @@ imagery_layer "gb_os_sv_diff_2011_05_2016_04" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2016"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2011-05-2016-04"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2011_11_2012_05" do
@@ -485,6 +518,7 @@ imagery_layer "gb_os_sv_diff_2011_11_2012_05" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2012"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2011-11-2012-05"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2011_11_2012_11" do
@@ -494,6 +528,7 @@ imagery_layer "gb_os_sv_diff_2011_11_2012_11" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2012"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2011-11-2012-11"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2011_11_2013_05" do
@@ -503,6 +538,7 @@ imagery_layer "gb_os_sv_diff_2011_11_2013_05" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2013"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2011-11-2013-05"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2011_11_2013_11" do
@@ -512,6 +548,7 @@ imagery_layer "gb_os_sv_diff_2011_11_2013_11" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2013"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2011-11-2013-11"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2011_11_2014_04" do
@@ -521,6 +558,7 @@ imagery_layer "gb_os_sv_diff_2011_11_2014_04" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2014"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2011-11-2014-04"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2011_11_2014_10" do
@@ -530,6 +568,7 @@ imagery_layer "gb_os_sv_diff_2011_11_2014_10" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2011"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2011-11-2014-10"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2011_11_2015_05" do
@@ -539,6 +578,7 @@ imagery_layer "gb_os_sv_diff_2011_11_2015_05" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2011-11-2015-05"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2011_11_2015_11" do
@@ -548,6 +588,7 @@ imagery_layer "gb_os_sv_diff_2011_11_2015_11" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2011-11-2015-11"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2011_11_2016_04" do
@@ -557,6 +598,7 @@ imagery_layer "gb_os_sv_diff_2011_11_2016_04" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2016"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2011-11-2016-04"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2012_05_2012_11" do
@@ -566,6 +608,7 @@ imagery_layer "gb_os_sv_diff_2012_05_2012_11" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2012"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2012-05-2012-11"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2012_05_2013_05" do
@@ -575,6 +618,7 @@ imagery_layer "gb_os_sv_diff_2012_05_2013_05" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2013"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2012-05-2013-05"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2012_05_2013_11" do
@@ -584,6 +628,7 @@ imagery_layer "gb_os_sv_diff_2012_05_2013_11" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2013"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2012-05-2013-11"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2012_05_2014_04" do
@@ -593,6 +638,7 @@ imagery_layer "gb_os_sv_diff_2012_05_2014_04" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2014"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2012-05-2014-04"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2012_05_2014_10" do
@@ -602,6 +648,7 @@ imagery_layer "gb_os_sv_diff_2012_05_2014_10" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2014"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2012-05-2014-10"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2012_05_2015_05" do
@@ -611,6 +658,7 @@ imagery_layer "gb_os_sv_diff_2012_05_2015_05" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2012-05-2015-05"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2012_05_2015_11" do
@@ -620,6 +668,7 @@ imagery_layer "gb_os_sv_diff_2012_05_2015_11" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2012-05-2015-11"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2012_05_2016_04" do
@@ -629,6 +678,7 @@ imagery_layer "gb_os_sv_diff_2012_05_2016_04" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2016"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2012-05-2016-04"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2012_11_2013_05" do
@@ -638,6 +688,7 @@ imagery_layer "gb_os_sv_diff_2012_11_2013_05" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2013"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2012-11-2013-05"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2012_11_2013_11" do
@@ -647,6 +698,7 @@ imagery_layer "gb_os_sv_diff_2012_11_2013_11" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2013"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2012-11-2013-11"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2012_11_2014_04" do
@@ -656,6 +708,7 @@ imagery_layer "gb_os_sv_diff_2012_11_2014_04" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2014"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2012-11-2014-04"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2012_11_2014_10" do
@@ -665,6 +718,7 @@ imagery_layer "gb_os_sv_diff_2012_11_2014_10" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2014"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2012-11-2014-10"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2012_11_2015_05" do
@@ -674,6 +728,7 @@ imagery_layer "gb_os_sv_diff_2012_11_2015_05" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2012-11-2015-05"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2012_11_2015_11" do
@@ -683,6 +738,7 @@ imagery_layer "gb_os_sv_diff_2012_11_2015_11" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2012-11-2015-11"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2012_11_2016_04" do
@@ -692,6 +748,7 @@ imagery_layer "gb_os_sv_diff_2012_11_2016_04" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2016"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2012-11-2016-04"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2013_05_2013_11" do
@@ -701,6 +758,7 @@ imagery_layer "gb_os_sv_diff_2013_05_2013_11" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2013"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2013-05-2013-11"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2013_05_2014_04" do
@@ -710,6 +768,7 @@ imagery_layer "gb_os_sv_diff_2013_05_2014_04" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2014"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2013-05-2014-04"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2013_05_2014_10" do
@@ -719,6 +778,7 @@ imagery_layer "gb_os_sv_diff_2013_05_2014_10" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2014"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2013-05-2014-10"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2013_05_2015_05" do
@@ -728,6 +788,7 @@ imagery_layer "gb_os_sv_diff_2013_05_2015_05" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2013-05-2015-05"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2013_05_2015_11" do
@@ -737,6 +798,7 @@ imagery_layer "gb_os_sv_diff_2013_05_2015_11" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2013-05-2015-11"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2013_05_2016_04" do
@@ -746,6 +808,7 @@ imagery_layer "gb_os_sv_diff_2013_05_2016_04" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2016"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2013-05-2016-04"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2013_11_2014_04" do
@@ -755,6 +818,7 @@ imagery_layer "gb_os_sv_diff_2013_11_2014_04" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2014"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2013-11-2014-04"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2013_11_2014_10" do
@@ -764,6 +828,7 @@ imagery_layer "gb_os_sv_diff_2013_11_2014_10" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2014"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2013-11-2014-10"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2013_11_2015_05" do
@@ -773,6 +838,7 @@ imagery_layer "gb_os_sv_diff_2013_11_2015_05" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2013-11-2015-05"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2013_11_2015_11" do
@@ -782,6 +848,7 @@ imagery_layer "gb_os_sv_diff_2013_11_2015_11" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2013-11-2015-11"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2013_11_2016_04" do
@@ -791,6 +858,7 @@ imagery_layer "gb_os_sv_diff_2013_11_2016_04" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2016"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2013-11-2016-04"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2014_04_2014_10" do
@@ -800,6 +868,7 @@ imagery_layer "gb_os_sv_diff_2014_04_2014_10" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2014"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2014-04-2014-10"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2014_04_2015_05" do
@@ -809,6 +878,7 @@ imagery_layer "gb_os_sv_diff_2014_04_2015_05" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2014-04-2015-05"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2014_04_2015_11" do
@@ -818,6 +888,7 @@ imagery_layer "gb_os_sv_diff_2014_04_2015_11" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2014-04-2015-11"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2014_04_2016_04" do
@@ -827,6 +898,7 @@ imagery_layer "gb_os_sv_diff_2014_04_2016_04" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2016"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2014-04-2016-04"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2014_10_2015_05" do
@@ -836,6 +908,7 @@ imagery_layer "gb_os_sv_diff_2014_10_2015_05" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2014-10-2015-05"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2014_10_2015_11" do
@@ -845,6 +918,7 @@ imagery_layer "gb_os_sv_diff_2014_10_2015_11" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2014-10-2015-11"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2014_10_2016_04" do
@@ -854,6 +928,7 @@ imagery_layer "gb_os_sv_diff_2014_10_2016_04" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2016"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2014-10-2016-04"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2015_05_2015_11" do
@@ -863,6 +938,7 @@ imagery_layer "gb_os_sv_diff_2015_05_2015_11" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2015-05-2015-11"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2015_05_2016_04" do
@@ -872,6 +948,7 @@ imagery_layer "gb_os_sv_diff_2015_05_2016_04" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2016"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2015-05-2016-04"]
+  overlay true
 end
 
 imagery_layer "gb_os_sv_diff_2015_11_2016_04" do
@@ -881,6 +958,7 @@ imagery_layer "gb_os_sv_diff_2015_11_2016_04" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2016"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2015-11-2016-04"]
+  overlay true
 end
 
 =end
