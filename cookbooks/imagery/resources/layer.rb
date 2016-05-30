@@ -51,7 +51,7 @@ action :create do
       path "/srv/imagery/layers/#{site}/#{layer}.yml"
     end
     content YAML.dump(:name => layer,
-                      :url => "http://#{site}/layer/#{layer}/{z}/{x}/{y}.#{extension}",
+                      :url => "http://#{site}/layer/#{layer}/{z}/{x}/{y}.png",
                       :attribution => copyright,
                       :maxZoom => max_zoom)
   end
