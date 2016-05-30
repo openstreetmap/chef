@@ -20,12 +20,10 @@
 include_recipe "apache::ssl"
 include_recipe "git"
 
-package "ruby2.0"
-package "ruby2.0-dev"
+package "ruby"
+package "ruby-dev"
 
-gem_package "jekyll" do
-  gem_binary "gem2.0"
-end
+gem_package "jekyll"
 
 git "/srv/hardware.openstreetmap.org" do
   action :sync
