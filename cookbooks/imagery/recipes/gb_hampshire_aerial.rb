@@ -20,6 +20,7 @@
 include_recipe "imagery"
 
 imagery_site "hampshire.aerial.openstreetmap.org.uk" do
+  title "OpenStreetMap - Hampshire Hub Aerial"
   # aliases
   bbox [[50.564, -1.9899], [51.3606, -0.712738]]
 end

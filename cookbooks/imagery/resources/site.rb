@@ -22,6 +22,7 @@ require "yaml"
 default_action :create
 
 property :name, String
+property :title, String, :required => true
 property :aliases, [String, Array], :default => []
 property :bbox, Array, :required => true
 
@@ -51,7 +52,7 @@ action :create do
     user "root"
     group "root"
     mode 0644
-    variables :title => name
+    variables :title => title
   end
 
   cookbook_file "/srv/#{name}/imagery.css" do

@@ -20,6 +20,7 @@
 include_recipe "imagery"
 
 imagery_site "agri.openstreetmap.org" do
+  title "OpenStreetMap - The Australian Geographic Reference Image"
   # aliases [ "agri.openstreetmap.org.au" ]
   bbox [[-44.74673, 111.5332], [-9.75237, 154.6875]]
 end
