@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-package "openjdk-7-jre-headless"
+package "default-jre-headless"
 package "elasticsearch"
 
 template "/etc/elasticsearch/elasticsearch.yml" do
