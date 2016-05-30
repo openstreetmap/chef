@@ -21,12 +21,17 @@ default_action :create
 
 property :name, String
 property :aliases, [String, Array], :default => []
+property :git_repository, String, :default => ["https://github.com/Firefishy/osm-imagery-default.git"]
 
 action :create do
-  directory "/srv/#{name}" do
-    owner "root"
+  git "/srv/#{name}" do
+    action :sync
+    repository "#{git_repository}"
+    revision "master"
+    enable_submodules true
+    retries 3
+    user "root"
     group "root"
-    mode 0755
   end
 
   nginx_site name do

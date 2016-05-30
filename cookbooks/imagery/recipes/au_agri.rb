@@ -21,6 +21,7 @@ include_recipe "imagery"
 
 imagery_site "agri.openstreetmap.org" do
   # aliases [ "agri.openstreetmap.org.au" ]
+  git_repository "https://github.com/Firefishy/osm-imagery-agri-site.git"
 end
 
 imagery_layer "au_ga_agri" do

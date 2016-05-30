@@ -42,6 +42,7 @@ end
 
 imagery_site "os.openstreetmap.org" do
   aliases ["os.openstreetmap.org.uk"]
+  git_repository "https://github.com/Firefishy/osm-imagery-os-site.git"
 end
 
 imagery_layer "gb_os_sv_2010_04" do
