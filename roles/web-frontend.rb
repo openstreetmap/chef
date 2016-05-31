@@ -11,7 +11,8 @@ default_attributes(
       :max_spare_threads => 150,
       :threads_per_child => 50,
       :max_requests_per_child => 10000
-    }
+    },
+    :graceful_shutdown_timeout => 300
   },
   :logstash => {
     :forwarder => {
