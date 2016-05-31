@@ -40,7 +40,6 @@ property :revision, Fixnum, :default => 1
 property :overlay, [TrueClass, FalseClass], :default => false
 
 action :create do
-
   file "create layer yaml definition" do
     owner "root"
     group "root"
