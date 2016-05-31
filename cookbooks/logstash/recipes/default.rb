@@ -79,3 +79,19 @@ forwarders.each do |forwarder|
     end
   end
 end
+
+gateways = search(:node, "roles:gateway") # ~FC010
+
+gateways.each do |gateway|
+  gateway.interfaces(:role => :external) do |interface|
+    firewall_rule "accept-lumberjack-#{gateway}" do
+      action :accept
+      family interface[:family]
+      source "#{interface[:zone]}:#{interface[:address]}"
+      dest "fw"
+      proto "tcp:syn"
+      dest_ports "5043"
+      source_ports "1024:"
+    end
+  end
+end
