@@ -11,7 +11,7 @@ function createMap(divName) {
     maxZoom: 19
   }), "OpenStreetMap");
 
-  <% @layers.each do |layer| -%>
+  <% @layers.sort_by { |layer| layer[:name] }.each do |layer| -%>
   // Add <%= layer[:name].to_json %> layer
   layers.addBaseLayer(L.tileLayer(<%= layer[:url].to_json %>, {
     attribution: <%= layer[:attribution].to_json %>,
@@ -19,7 +19,7 @@ function createMap(divName) {
   }), <%= layer[:name].to_json %>);
 
   <% end -%>
-  <% @overlays.each do |layer| -%>
+  <% @overlays.sort_by { |layer| layer[:name] }.each do |layer| -%>
   // Add <%= layer[:name].to_json %> layer
   layers.addOverlay(L.tileLayer(<%= layer[:url].to_json %>, {
     attribution: <%= layer[:attribution].to_json %>,
