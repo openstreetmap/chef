@@ -22,7 +22,7 @@ include_recipe "imagery"
 imagery_site "surrey.aerial.openstreetmap.org.uk" do
   title "OpenStreetMap - Surrey Air Survey - 2009"
   # aliases
-  bbox [[51.0595, -0.873413], [51.466, 0.0617981]]
+  bbox [[51.06686, -0.85762], [51.47753, 0.06592]]
 end
 
 imagery_layer "gb_surrey_aerial" do
