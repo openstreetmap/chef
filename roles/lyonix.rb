@@ -2,11 +2,6 @@ name "lyonix"
 description "Role applied to all servers at LyonIX"
 
 default_attributes(
-  :accounts => {
-    :users => {
-      :lyonix => { :status => :administrator }
-    }
-  },
   :hosted_by => "LyonIX",
   :location => "Lyon, France",
   :networking => {
