@@ -98,8 +98,13 @@ else
   end
 end
 
+munin_plugin_conf "df" do
+  template "df.erb"
+end
+
 munin_plugin "df"
 munin_plugin "df_inode"
+
 munin_plugin "diskstats"
 munin_plugin "entropy"
 munin_plugin "forks"
