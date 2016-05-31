@@ -4,6 +4,8 @@ default[:apache][:timeout] = 300
 
 default[:apache][:keepalive] = true
 
+default[:apache][:graceful_shutdown_timeout] = nil
+
 default[:apache][:prefork][:start_servers] = 5
 default[:apache][:prefork][:min_spare_servers] = 5
 default[:apache][:prefork][:max_spare_servers] = 10
