@@ -28,6 +28,7 @@ end
 imagery_layer "gb_hampshire_aerial_rgb" do
   site "hampshire.aerial.openstreetmap.org.uk"
   root_layer true
+  default_layer true
   text "Hampshire Aerial - Summer 2013"
   source "/data/imagery/gb/hampshire-aerial/hampshire-aerial-RGB.tif"
   projection "EPSG:27700"

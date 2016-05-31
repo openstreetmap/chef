@@ -28,6 +28,7 @@ end
 imagery_layer "gb_surrey_aerial" do
   site "surrey.aerial.openstreetmap.org.uk"
   root_layer true
+  default_layer true
   projection "EPSG:27700"
   source "/data/imagery/gb/surrey-aerial/SurreyMosaicECW.tif"
   text "Surrey Air Survey - 2008/2009"

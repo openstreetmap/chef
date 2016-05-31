@@ -38,6 +38,7 @@ property :max_zoom, Fixnum, :default => 23
 property :url_aliases, [String, Array], :default => []
 property :revision, Fixnum, :default => 1
 property :overlay, [TrueClass, FalseClass], :default => false
+property :default_layer, [TrueClass, FalseClass], :default => false
 
 action :create do
   file "create layer yaml definition" do
@@ -52,6 +53,7 @@ action :create do
     content YAML.dump(:name => layer,
                       :url => "http://#{site}/layer/#{layer}/{z}/{x}/{y}.png",
                       :attribution => copyright,
+                      :default => default_layer,
                       :maxZoom => max_zoom)
   end
 

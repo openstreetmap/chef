@@ -171,6 +171,7 @@ end
 imagery_layer "gb_os_sv_2016_04" do
   site "os.openstreetmap.org"
   root_layer true
+  default_layer true
   projection "EPSG:27700"
   source "/data/imagery/gb/os-sv/ossv-2016-04-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2016"

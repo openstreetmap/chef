@@ -12,15 +12,22 @@ function createMap(divName) {
   }), "OpenStreetMap");
 
   <% @layers.sort_by { |layer| layer[:name] }.each do |layer| -%>
-  // Add <%= layer[:name].to_json %> layer
-  layers.addBaseLayer(L.tileLayer(<%= layer[:url].to_json %>, {
+  // Create <%= layer[:name] %> layer
+  var <%= layer[:name] %> = L.tileLayer(<%= layer[:url].to_json %>, {
     attribution: <%= layer[:attribution].to_json %>,
     maxZoom: <%= layer[:maxZoom].to_json %>
-  }), <%= layer[:name].to_json %>);
+  });
 
+  // Add <%= layer[:name] %> to layer switcher
+  layers.addBaseLayer(<%= layer[:name] %>, <%= layer[:name].to_json %>);
+
+  <% if layer[:default] -%>
+  // Add <%= layer[:name] %> to map
+  <%= layer[:name] %>.addTo(map);
+  <% end -%>
   <% end -%>
   <% @overlays.sort_by { |layer| layer[:name] }.each do |layer| -%>
-  // Add <%= layer[:name].to_json %> layer
+  // Add <%= layer[:name] %> to layer switcher
   layers.addOverlay(L.tileLayer(<%= layer[:url].to_json %>, {
     attribution: <%= layer[:attribution].to_json %>,
     maxZoom: <%= layer[:maxZoom].to_json %>
