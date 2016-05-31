@@ -31,7 +31,7 @@ imagery_layer "gb_surrey_aerial" do
   default_layer true
   projection "EPSG:27700"
   source "/data/imagery/gb/surrey-aerial/SurreyMosaicECW.tif"
-  text "Surrey Air Survey - 2008/2009"
+  title "Surrey Air Survey - 2008/2009"
   copyright "ODC Open Database License (ODbL) - Surrey Heath Borough Council"
   url_aliases ["/sas"]
 end

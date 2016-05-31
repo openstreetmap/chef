@@ -49,6 +49,7 @@ end
 
 imagery_layer "gb_os_sv_2010_04" do
   site "os.openstreetmap.org"
+  title "April 2010"
   projection "EPSG:27700"
   source "/data/imagery/gb/os-sv/ossv-2010-04-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2010" # FIXME: Correct Copyright?
@@ -59,6 +60,7 @@ end
 
 imagery_layer "gb_os_sv_2010_11" do
   site "os.openstreetmap.org"
+  title "November 2010"
   projection "EPSG:27700"
   source "/data/imagery/gb/os-sv/ossv-2010-11-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2010" # FIXME: Correct Copyright?
@@ -69,6 +71,7 @@ end
 
 imagery_layer "gb_os_sv_2011_05" do
   site "os.openstreetmap.org"
+  title "May 2011"
   projection "EPSG:27700"
   source "/data/imagery/gb/os-sv/ossv-2011-05-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2011" # FIXME: Correct Copyright?
@@ -79,6 +82,7 @@ end
 
 imagery_layer "gb_os_sv_2011_11" do
   site "os.openstreetmap.org"
+  title "November 2011"
   projection "EPSG:27700"
   source "/data/imagery/gb/os-sv/ossv-2011-11-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2011" # FIXME: Correct Copyright?
@@ -89,6 +93,7 @@ end
 
 imagery_layer "gb_os_sv_2012_05" do
   site "os.openstreetmap.org"
+  title "May 2012"
   projection "EPSG:27700"
   source "/data/imagery/gb/os-sv/ossv-2012-05-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2012"
@@ -99,6 +104,7 @@ end
 
 imagery_layer "gb_os_sv_2012_11" do
   site "os.openstreetmap.org"
+  title "November 2012"
   projection "EPSG:27700"
   source "/data/imagery/gb/os-sv/ossv-2012-11-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2012"
@@ -109,6 +115,7 @@ end
 
 imagery_layer "gb_os_sv_2013_05" do
   site "os.openstreetmap.org"
+  title "May 2013"
   projection "EPSG:27700"
   source "/data/imagery/gb/os-sv/ossv-2013-05-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2013"
@@ -119,6 +126,7 @@ end
 
 imagery_layer "gb_os_sv_2013_11" do
   site "os.openstreetmap.org"
+  title "November 2013"
   projection "EPSG:27700"
   source "/data/imagery/gb/os-sv/ossv-2013-11-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2013"
@@ -129,6 +137,7 @@ end
 
 imagery_layer "gb_os_sv_2014_04" do
   site "os.openstreetmap.org"
+  title "April 2014"
   projection "EPSG:27700"
   source "/data/imagery/gb/os-sv/ossv-2014-04-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2014"
@@ -139,6 +148,7 @@ end
 
 imagery_layer "gb_os_sv_2014_10" do
   site "os.openstreetmap.org"
+  title "October 2014"
   projection "EPSG:27700"
   source "/data/imagery/gb/os-sv/ossv-2014-10-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2014"
@@ -149,6 +159,7 @@ end
 
 imagery_layer "gb_os_sv_2015_05" do
   site "os.openstreetmap.org"
+  title "May 2015"
   projection "EPSG:27700"
   source "/data/imagery/gb/os-sv/ossv-2015-05-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
@@ -159,6 +170,7 @@ end
 
 imagery_layer "gb_os_sv_2015_11" do
   site "os.openstreetmap.org"
+  title "November 2015"
   root_layer true
   projection "EPSG:27700"
   source "/data/imagery/gb/os-sv/ossv-2015-11-combined.vrt"
@@ -170,6 +182,7 @@ end
 
 imagery_layer "gb_os_sv_2016_04" do
   site "os.openstreetmap.org"
+  title "April 2016"
   root_layer true
   default_layer true
   projection "EPSG:27700"

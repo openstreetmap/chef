@@ -29,7 +29,7 @@ imagery_layer "au_ga_agri" do
   site "agri.openstreetmap.org"
   root_layer true
   default_layer true
-  text "AGRI: The Australian Geographic Reference Image"
+  title "AGRI: The Australian Geographic Reference Image"
   copyright "Commonwealth of Australia (Geoscience Australia) - Creative Commons Attribution 4.0 International Licence"
   background_colour "0 0 0" # Black
   projection "EPSG:3857"

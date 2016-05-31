@@ -25,7 +25,7 @@ property :layer, String, :name_property => true
 property :site, String, :required => true
 property :source, String, :required => true
 property :root_layer, [TrueClass, FalseClass], :default => false
-property :text, String
+property :title, String
 property :copyright, String, :default => "Copyright"
 property :projection, String, :default => "EPSG:3857"
 property :palette, String
@@ -51,6 +51,7 @@ action :create do
       path "/srv/imagery/layers/#{site}/#{layer}.yml"
     end
     content YAML.dump(:name => layer,
+                      :title => title || layer,
                       :url => "http://#{site}/layer/#{layer}/{z}/{x}/{y}.png",
                       :attribution => copyright,
                       :default => default_layer,
