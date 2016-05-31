@@ -14,14 +14,16 @@ function createMap(divName) {
   <% @layers.each do |layer| -%>
   // Add <%= layer[:name].to_json %> layer
   layers.addBaseLayer(L.tileLayer(<%= layer[:url].to_json %>, {
-    attribution: <%= layer[:attribution].to_json %>
+    attribution: <%= layer[:attribution].to_json %>,
+    maxZoom: <%= layer[:maxZoom].to_json %>
   }), <%= layer[:name].to_json %>);
 
   <% end -%>
   <% @overlays.each do |layer| -%>
   // Add <%= layer[:name].to_json %> layer
   layers.addOverlay(L.tileLayer(<%= layer[:url].to_json %>, {
-    attribution: <%= layer[:attribution].to_json %>
+    attribution: <%= layer[:attribution].to_json %>,
+    maxZoom: <%= layer[:maxZoom].to_json %>
   }), <%= layer[:name].to_json %>);
 
   <% end -%>
