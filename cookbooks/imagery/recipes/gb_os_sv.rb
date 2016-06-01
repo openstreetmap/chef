@@ -279,26 +279,26 @@ imagery_layer "gb_os_sv_diff_2010_04_2014_04" do
   overlay true
 end
 
-# imagery_layer "gb_os_sv_diff_2010_04_2014_10" do
-#   site "os.openstreetmap.org"
-#   projection "EPSG:27700"
-#   source "/data/imagery/gb/os-sv/ossv-diff-2010-04-2014-10-combined.vrt"
-#   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2014"
-#   extension "os_sv_diff_png"
-#   url_aliases ["/sv-diff-2010-04-2014-10"]
-#   overlay true
-# end
-#
-# imagery_layer "gb_os_sv_diff_2010_04_2015_05" do
-#   site "os.openstreetmap.org"
-#   projection "EPSG:27700"
-#   source "/data/imagery/gb/os-sv/ossv-diff-2010-04-2015-05-combined.vrt"
-#   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
-#   extension "os_sv_diff_png"
-#   url_aliases ["/sv-diff-2010-04-2015-05"]
-#   overlay true
-# end
-#
+imagery_layer "gb_os_sv_diff_2010_04_2014_10" do
+  site "os.openstreetmap.org"
+  projection "EPSG:27700"
+  source "/data/imagery/gb/os-sv/ossv-diff-2010-04-2014-10-combined.vrt"
+  copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2014"
+  extension "os_sv_diff_png"
+  url_aliases ["/sv-diff-2010-04-2014-10"]
+  overlay true
+end
+
+imagery_layer "gb_os_sv_diff_2010_04_2015_05" do
+  site "os.openstreetmap.org"
+  projection "EPSG:27700"
+  source "/data/imagery/gb/os-sv/ossv-diff-2010-04-2015-05-combined.vrt"
+  copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
+  extension "os_sv_diff_png"
+  url_aliases ["/sv-diff-2010-04-2015-05"]
+  overlay true
+end
+
 # imagery_layer "gb_os_sv_diff_2010_04_2015_11" do
 #   site "os.openstreetmap.org"
 #   projection "EPSG:27700"
