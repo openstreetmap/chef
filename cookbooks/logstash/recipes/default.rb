@@ -45,7 +45,7 @@ template "/etc/logstash/conf.d/chef.conf" do
   user "root"
   group "root"
   mode 0644
-  notifies :restart, "service[logstash]"
+  notifies :reload, "service[logstash]"
 end
 
 file "/etc/logrotate.d/logstash" do
@@ -54,7 +54,7 @@ end
 
 service "logstash" do
   action [:enable, :start]
-  supports :status => true, :restart => true
+  supports :status => true, :restart => true, :reload => true
 end
 
 template "/etc/cron.daily/expire-logstash" do
