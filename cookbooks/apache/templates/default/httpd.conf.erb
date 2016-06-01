@@ -5,6 +5,12 @@ Timeout <%= node[:apache][:timeout] %>
 
 # Decide whether or not to allow persistent connections
 Keepalive <%= node[:apache][:keepalive] ? "On" : "Off" %>
+
+<% if node[:apache][:graceful_shutdown_timeout] -%>
+# Set the number of seconds to wait before dropping any open connections when a
+# process is shutting down.
+GracefulShutdownTimeout <%= node[:apache][:graceful_shutdown_timeout] %>
+<% end -%>
 <% if node[:apache][:mpm] == "prefork" -%>
 
 # Configure prefork MPM
