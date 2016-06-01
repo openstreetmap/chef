@@ -17,6 +17,7 @@ location ~* "^/layer/<%= @layer %>/(\d+)/(\d+)/(\d+)\.(png|jpg|jpeg)$" {
   fastcgi_cache_use_stale error timeout updating http_500 http_503;
 
   gzip off;
+  expires 7d;
 }
 
 <% if @root_layer -%>
