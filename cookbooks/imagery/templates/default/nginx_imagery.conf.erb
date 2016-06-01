@@ -1,5 +1,5 @@
 server {
-    listen       80;
+    listen       80 fastopen=1024;
     server_name  <%= @name %> a.<%= @name %> b.<%= @name %> c.<%= @name %><% @aliases.each do |alias_name| %> <%= alias_name %> a.<%= alias_name %> b.<%= alias_name %> c.<%= alias_name %><%- end -%>;
 
     root "/srv/<%= @name %>";
