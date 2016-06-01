@@ -43,6 +43,21 @@ filter {
         "[parameters][utf8]"
       ]
     }
+    if [duration] {
+      ruby {
+        code => "event['duration'] = Integer(event['duration'] * 1000000)"
+      }
+    }
+    if [db] {
+      ruby {
+        code => "event['db'] = Integer(event['db'] * 1000000)"
+      }
+    }
+    if [view] {
+      ruby {
+        code => "event['view'] = Integer(event['view'] * 1000000)"
+      }
+    }
   }
 
   if [host] =~ /^spike-/ {
