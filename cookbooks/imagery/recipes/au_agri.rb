@@ -33,5 +33,6 @@ imagery_layer "au_ga_agri" do
   background_colour "0 0 0" # Black
   projection "EPSG:3857"
   source "/data/imagery/au/agri/combine.vrt"
+  max_zoom 17
   revision 1
 end

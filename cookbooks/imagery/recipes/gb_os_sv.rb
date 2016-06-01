@@ -244,7 +244,7 @@ imagery_layer "gb_os_sv_diff_2010_04_2012_11" do
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2010-04-2012-11"]
   overlay true
-  revision 1
+  revision 2
 end
 
 imagery_layer "gb_os_sv_diff_2010_04_2013_05" do
@@ -255,7 +255,7 @@ imagery_layer "gb_os_sv_diff_2010_04_2013_05" do
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2010-04-2013-05"]
   overlay true
-  revision 1
+  revision 2
 end
 
 imagery_layer "gb_os_sv_diff_2010_04_2013_11" do
@@ -266,7 +266,7 @@ imagery_layer "gb_os_sv_diff_2010_04_2013_11" do
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2010-04-2013-11"]
   overlay true
-  revision 1
+  revision 2
 end
 
 imagery_layer "gb_os_sv_diff_2010_04_2014_04" do
@@ -277,6 +277,7 @@ imagery_layer "gb_os_sv_diff_2010_04_2014_04" do
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2010-04-2014-04"]
   overlay true
+  revision 2
 end
 
 imagery_layer "gb_os_sv_diff_2010_04_2014_10" do

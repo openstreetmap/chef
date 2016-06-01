@@ -34,7 +34,7 @@ property :background_colour, String
 property :resample, String, :default => "average"
 property :imagemode, String
 property :extension, String, :default => "png"
-property :max_zoom, Fixnum, :default => 23
+property :max_zoom, Fixnum, :default => 18
 property :url_aliases, [String, Array], :default => []
 property :revision, Fixnum, :default => 1
 property :overlay, [TrueClass, FalseClass], :default => false

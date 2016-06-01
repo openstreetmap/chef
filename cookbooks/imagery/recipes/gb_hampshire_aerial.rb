@@ -30,6 +30,7 @@ imagery_layer "gb_hampshire_aerial_rgb" do
   default_layer true
   title "Hampshire Aerial - Summer 2013"
   source "/data/imagery/gb/hampshire-aerial/hampshire-aerial-RGB.tif"
+  max_zoom 20
   projection "EPSG:27700"
   copyright "Hampshire Hub - Open Government Licence (OGL) 2014"
   url_aliases ["/hampshire-rgb"]
@@ -39,6 +40,7 @@ imagery_layer "gb_hampshire_aerial_fcir" do
   site "hampshire.aerial.openstreetmap.org.uk"
   title "Hampshire Aerial - Summer 2013 (False Colour IR)"
   source "/data/imagery/gb/hampshire-aerial/hampshire-aerial-FCIR.tif"
+  max_zoom 20
   projection "EPSG:27700"
   copyright "Hampshire Hub - Open Government Licence (OGL) 2014"
   url_aliases ["/hampshire-fcir"]
