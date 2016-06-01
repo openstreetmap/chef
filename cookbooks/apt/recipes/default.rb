@@ -94,7 +94,7 @@ end
 
 apt_source "logstash" do
   template "elasticsearch.list.erb"
-  url "http://packages.elasticsearch.org/logstash/1.5/debian"
+  url "http://packages.elasticsearch.org/logstash/2.3/debian"
   key "D88E42B4"
 end
 
