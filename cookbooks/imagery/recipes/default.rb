@@ -74,7 +74,8 @@ execute "unzip-ostn02-ntv2-data" do
 end
 
 nginx_site "default" do
-  action [:delete]
+  template "nginx_default.conf.erb"
+  directory "/srv/imagery/default"
   restart_nginx false
 end
 
