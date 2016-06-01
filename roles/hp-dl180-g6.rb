@@ -4,6 +4,9 @@ description "Role applied to all HP DL180 G6 machines"
 default_attributes(
   :munin => {
     :plugins => {
+      :hpasmcli2_temp => {
+        :temp3 => { :warning => "80.0", :critical => "85" }
+      },
       :ipmi_temp => {
         :Temp1 => { :label => "Air Inlet" },
         :Temp2CPU1 => { :warning => ":", :label => "CPU 1" },

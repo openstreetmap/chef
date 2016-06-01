@@ -2,6 +2,16 @@ name "kessie"
 description "Master role applied to kessie"
 
 default_attributes(
+  :munin => {
+    :plugins => {
+      :sensors_temp => {
+        :temp6 => { :warning => "71.0", :critical => "76.0" },
+        :temp7 => { :warning => "71.0", :critical => "76.0" },
+        :temp8 => { :warning => "71.0", :critical => "76.0" },
+        :temp9 => { :warning => "71.0", :critical => "76.0" }
+      }
+    }
+  },
   :networking => {
     :interfaces => {
       :external_ipv4 => {
