@@ -10,6 +10,7 @@ location ~* "^/layer/<%= @layer %>/(\d+)/(\d+)/(\d+)\.(png|jpg|jpeg)$" {
   # Caching
   fastcgi_cache "fastcgi_cache_zone";
   fastcgi_cache_key "<%= @layer %><%= @revision %> $request_method $1 $2 $3";
+  fastcgi_keep_conn on;
   fastcgi_cache_lock on;
   fastcgi_cache_lock_timeout 30s;
   fastcgi_cache_valid 200 21d;

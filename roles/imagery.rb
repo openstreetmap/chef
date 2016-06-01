@@ -32,7 +32,10 @@ default_attributes(
   :nginx => {
     :cache => {
       :fastcgi => {
-        :enable => true
+        :enable => true,
+        :keys_zone => "fastcgi_cache_zone:256M",
+        :inactive => "45d",
+        :max_size => "51200M"
       }
     }
   }
