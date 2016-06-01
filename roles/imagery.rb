@@ -27,6 +27,12 @@ default_attributes(
         "kernel.sched_min_granularity_ns" => 10000000,
         "kernel.sched_wakeup_granularity_ns" => 15000000
       }
+    },
+    :kernel_tfo_listen_enable => {
+      :comment => "Enable TCP Fast Open for listening sockets",
+      :parameters => {
+        "net.ipv4.tcp_fastopen" => 3
+      }
     }
   },
   :nginx => {
