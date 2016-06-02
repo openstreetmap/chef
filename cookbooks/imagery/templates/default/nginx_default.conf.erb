@@ -1,6 +1,6 @@
 server {
     listen 80 fastopen=1024 default_server;
     server_name  _;
-    return 404 'default imagery server vhost. Please use correct URL.';
-    add_header Content-Type text/plain;
+    default_type text/html;
+    return 404 '<html><head><title>404 Not Found</title></head><body bgcolor="white"><center><h1>404 Not Found</h1></center><hr><center>default imagery server vhost. Please use correct URL.</center></body></html>';
 }
