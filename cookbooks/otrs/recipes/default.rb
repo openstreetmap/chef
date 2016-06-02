@@ -79,11 +79,15 @@ file "/opt/otrs-#{version}/Kernel/Config.pm" do
   content config
 end
 
+generic_agent = edit_file "/opt/otrs-#{version}/Kernel/Config/GenericAgent.pm.dist" do |line|
+  line
+end
+
 file "/opt/otrs-#{version}/Kernel/Config/GenericAgent.pm" do
   owner user
   group "www-data"
   mode 0664
-  content IO.read("/opt/otrs-#{version}/Kernel/Config/GenericAgent.pm.dist")
+  content generic_agent
 end
 
 link "/opt/otrs" do
@@ -95,7 +99,7 @@ execute "/opt/otrs/bin/otrs.SetPermissions.pl" do
   command "/opt/otrs/bin/otrs.SetPermissions.pl --otrs-user=#{user} --web-user=www-data --otrs-group=www-data --web-group=www-data /opt/otrs-#{version}"
   user "root"
   group "root"
-  not_if { File.stat("/opt/otrs/README.md").uid != Etc.getpwnam("otrs").uid }
+  only_if { File.stat("/opt/otrs/README.md").uid != Etc.getpwnam("otrs").uid }
 end
 
 execute "/opt/otrs/bin/otrs.RebuildConfig.pl" do
