@@ -62,6 +62,20 @@ action :create do
     mode 0644
   end
 
+  cookbook_file "/srv/#{name}/clientaccesspolicy.xml" do
+    source "clientaccesspolicy.xml"
+    user "root"
+    group "root"
+    mode 0644
+  end
+
+  cookbook_file "/srv/#{name}/crossdomain.xml" do
+    source "crossdomain.xml"
+    user "root"
+    group "root"
+    mode 0644
+  end
+
   layers = Dir.glob("/srv/imagery/layers/#{name}/*.yml").collect do |path|
     YAML.load(::File.read(path))
   end
