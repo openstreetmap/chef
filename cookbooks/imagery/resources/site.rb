@@ -83,5 +83,5 @@ action :create do
 end
 
 def after_created
-  notifies :restart, "service[nginx]"
+  notifies :reload, "service[nginx]"
 end
