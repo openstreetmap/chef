@@ -20,9 +20,9 @@ function createMap(divName) {
 
   // Add <%= layer[:name] %> to layer switcher
   <% if layer[:overlay] -%>
-  layers.addBaseLayer(<%= layer[:name] %>, <%= layer[:title].to_json %>);
-  <% else %>
   layers.addOverlay(<%= layer[:name] %>, <%= layer[:title].to_json %>);
+  <% else %>
+  layers.addBaseLayer(<%= layer[:name] %>, <%= layer[:title].to_json %>);
   <% end -%>
 
   <% if layer[:default] -%>
