@@ -16,8 +16,14 @@ location ~* "^/layer/<%= @layer %>/(\d+)/(\d+)/(\d+)\.(png|jpg|jpeg)$" {
   fastcgi_cache_valid 200 21d;
   fastcgi_cache_use_stale error timeout updating http_500 http_503;
 
+  # Do not GZIP tiles
   gzip off;
+
+  # Add HTTP Cache-Control + Expires Headers
   expires 7d;
+
+  # Allow CORS requests
+  add_header 'Access-Control-Allow-Origin' '*';
 }
 
 <% if @root_layer -%>
