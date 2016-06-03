@@ -41,29 +41,21 @@ property :overlay, [TrueClass, FalseClass], :default => false
 property :default_layer, [TrueClass, FalseClass], :default => false
 
 action :create do
-  file "create layer yaml definition" do
+  file "/srv/imagery/layers/#{site}/#{layer}.yml" do
     owner "root"
     group "root"
     mode 0644
-    if new_resource.overlay
-      path "/srv/imagery/overlays/#{site}/#{layer}.yml"
-    else
-      path "/srv/imagery/layers/#{site}/#{layer}.yml"
-    end
     content YAML.dump(:name => layer,
                       :title => title || layer,
                       :url => "http://{s}.#{site}/layer/#{layer}/{z}/{x}/{y}.png",
                       :attribution => copyright,
                       :default => default_layer,
-                      :maxZoom => max_zoom)
+                      :maxZoom => max_zoom,
+                      :overlay => overlay)
   end
 
-  file "remove old layer yaml" do
-    if new_resource.overlay
-      path "/srv/imagery/layers/#{site}/#{layer}.yml" # remove layer if overlay
-    else
-      path "/srv/imagery/overlays/#{site}/#{layer}.yml" # remove overlay if layer
-    end
+  file "remove old overlay yaml" do
+    path "/srv/imagery/overlays/#{site}/#{layer}.yml"
     action :delete
   end
 

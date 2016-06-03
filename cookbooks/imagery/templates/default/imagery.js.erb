@@ -1,6 +1,6 @@
 function createMap(divName) {
   // Create a map
-  var map = L.map(divName);
+  var map = L.map(divName).fitBounds(<%= @bbox.to_json %>);
 
   // Create a layer switcher
   var layers = L.control.layers();
@@ -19,26 +19,20 @@ function createMap(divName) {
   });
 
   // Add <%= layer[:name] %> to layer switcher
+  <% if layer[:overlay] -%>
   layers.addBaseLayer(<%= layer[:name] %>, <%= layer[:title].to_json %>);
+  <% else %>
+  layers.addOverlay(<%= layer[:name] %>, <%= layer[:title].to_json %>);
+  <% end -%>
 
   <% if layer[:default] -%>
   // Add <%= layer[:name] %> to map
   <%= layer[:name] %>.addTo(map);
   <% end -%>
   <% end -%>
-  <% @overlays.sort_by { |layer| layer[:name] }.each do |layer| -%>
-  // Add <%= layer[:name] %> to layer switcher
-  layers.addOverlay(L.tileLayer(<%= layer[:url].to_json %>, {
-    attribution: <%= layer[:attribution].to_json %>,
-    maxZoom: <%= layer[:maxZoom].to_json %>
-  }), <%= layer[:title].to_json %>);
 
-  <% end -%>
   // Add the layer switch to the mao
   layers.addTo(map);
-
-  // Zoom to specified bounds
-  map.fitBounds(<%= @bbox.to_json %>);
 
   return map;
 }
