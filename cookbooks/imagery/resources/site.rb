@@ -66,16 +66,12 @@ action :create do
     YAML.load(::File.read(path))
   end
 
-  overlays = Dir.glob("/srv/imagery/overlays/#{name}/*.yml").collect do |path|
-    YAML.load(::File.read(path))
-  end
-
   template "/srv/#{name}/imagery.js" do
     source "imagery.js.erb"
     user "root"
     group "root"
     mode 0644
-    variables :bbox => bbox, :layers => layers, :overlays => overlays
+    variables :bbox => bbox, :layers => layers
   end
 
   nginx_site name do

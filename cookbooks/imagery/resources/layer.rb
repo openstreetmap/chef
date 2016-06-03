@@ -54,11 +54,6 @@ action :create do
                       :overlay => overlay)
   end
 
-  file "remove old overlay yaml" do
-    path "/srv/imagery/overlays/#{site}/#{layer}.yml"
-    action :delete
-  end
-
   template "/srv/imagery/mapserver/layer-#{layer}.map" do
     cookbook "imagery"
     source "mapserver.map.erb"
