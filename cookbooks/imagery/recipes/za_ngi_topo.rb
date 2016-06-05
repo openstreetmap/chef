@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: imagery
-# Recipe:: za-ngi-topo
+# Recipe:: za_ngi_topo
 #
 # Copyright 2016, OpenStreetMap Foundation
 #
@@ -29,7 +29,7 @@ imagery_layer "za_ngi_topo_250k" do
   site "topo.openstreetmap.org.za"
   title "NGI Topo 250k"
   projection "EPSG:3857"
-  source "/data/imagery/za/ngi-250k/ngi-topo-250k-combined.vrt"
+  source "/data/imagery/za/ngi-topo-250k/ngi-topo-250k-combined.vrt"
   copyright 'State Copyright &copy; 1996&ndash;2010 <a href="http://www.ngi.gov.za/">Chief Directorate: National Geo-spatial Information</a>'
 end
 
@@ -37,6 +37,6 @@ imagery_layer "za_ngi_topo_50k" do
   site "topo.openstreetmap.org.za"
   title "NGI Topo 50k"
   projection "EPSG:3857"
-  source "/data/imagery/za/ngi-50k/ngi-topo-50k-combined.vrt"
+  source "/data/imagery/za/ngi-topo-50k/ngi-topo-50k-combined.vrt"
   copyright 'State Copyright &copy; 1996&ndash;2013 <a href="http://www.ngi.gov.za/">Chief Directorate: National Geo-spatial Information</a>'
 end
