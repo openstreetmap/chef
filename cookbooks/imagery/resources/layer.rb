@@ -120,5 +120,5 @@ end
 
 def after_created
   notifies :create, "imagery_site[#{site}]"
-  notifies :restart, "service[nginx]"
+  notifies :reload, "service[nginx]"
 end
