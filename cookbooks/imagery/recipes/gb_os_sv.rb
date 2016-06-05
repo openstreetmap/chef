@@ -43,7 +43,7 @@ end
 
 imagery_site "os.openstreetmap.org" do
   title "OpenStreetMap - Ordnance Survey OpenData - Street View"
-  aliases ["os.openstreetmap.org.uk"]
+  aliases ["os.osm.org","os.openstreetmap.org.uk"]
   bbox [[49.85, -10.5], [58.75, 1.9]]
 end
 
