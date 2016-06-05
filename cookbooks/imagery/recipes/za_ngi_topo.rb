@@ -22,7 +22,7 @@ include_recipe "imagery"
 imagery_site "topo.openstreetmap.org.za" do
   title "OpenStreetMap - NGI - Topographic Series"
   aliases ["topo.osm.org.za"]
-  bbox [[16.23, -35.12], [,33.18, -22.1]]
+  bbox [[16.23, -35.12], [33.18, -22.1]]
 end
 
 imagery_layer "za_ngi_topo_250k" do
