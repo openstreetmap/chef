@@ -5,12 +5,12 @@ Ohai.plugin(:Hardware) do
 
   def read_sysctl_link(file)
     File.basename(File.readlink(file))
-  rescue Errno::ENOENT
+  rescue Errno::ENOENT, Errno::ENOTDIR
   end
 
   def read_sysctl_file(file)
     IO.read(file).strip
-  rescue Errno::ENOENT, Errno::EINVAL
+  rescue Errno::ENOENT, Errno::ENOTDIR, Errno::EINVAL
   end
 
   def parse_memory_size(size)
