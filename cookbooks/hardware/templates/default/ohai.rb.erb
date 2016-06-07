@@ -180,7 +180,7 @@ Ohai.plugin(:Hardware) do
         end
       end
 
-      disk[:model].sub!(/-.*$/, "")
+      disk[:model].sub!(/-.*$/, "") if disk[:model]
     end
 
     disk
