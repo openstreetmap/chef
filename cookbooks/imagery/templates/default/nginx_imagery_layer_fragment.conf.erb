@@ -6,6 +6,7 @@ location ~* "^/layer/<%= @layer %>/(\d+)/(\d+)/(\d+)\.(png|jpg|jpeg)$" {
   fastcgi_pass "unix:/var/run/mapserver-fastcgi/layer-<%= @layer %>.socket";
   fastcgi_buffers 8 64k;
   include fastcgi_params;
+  fastcgi_param REQUEST_METHOD "GET";
 
   # Caching
   fastcgi_cache "fastcgi_cache_zone";
