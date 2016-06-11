@@ -67,7 +67,9 @@ action :create do
     description "Map server for #{layer} layer"
     limit_nofile 16384
     environment "MS_MAPFILE" => "/srv/imagery/mapserver/layer-#{layer}.map",
-                "MS_MAP_PATTERN" => "^/srv/imagery/mapserver/"
+                "MS_MAP_PATTERN" => "^/srv/imagery/mapserver/",
+                "MS_DEBUGLEVEL" => "0",
+                "MS_ERRORFILE" => "stderr"
     user "imagery"
     group "imagery"
     exec_start_pre "/bin/rm -f /run/mapserver-fastcgi/layer-#{layer}.socket"
