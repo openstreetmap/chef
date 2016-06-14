@@ -68,9 +68,9 @@ do
 
             # Apply the changes to the database
 <% if node[:tile][:node_file] -%>
-            osm2pgsql --slim --append --flat-nodes=<%= node[:tile][:node_file] %> ${file}
+            osm2pgsql --slim --append --number-processes=1 --flat-nodes=<%= node[:tile][:node_file] %> ${file}
 <% else -%>
-            osm2pgsql --slim --append ${file}
+            osm2pgsql --slim --append --number-processes=1 ${file}
 <% end -%>
 
             # No need to rollback now
