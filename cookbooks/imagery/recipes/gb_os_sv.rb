@@ -546,509 +546,508 @@ imagery_layer "gb_os_sv_diff_2011_05_2015_11" do
   overlay true
 end
 
-# imagery_layer "gb_os_sv_diff_2011_05_2016_04" do
-#   site "os.openstreetmap.org"
-#   title "Changes May 2011 to April 2016"
-#   projection "EPSG:27700"
-#   source "/data/imagery/gb/os-sv/ossv-diff-2011-05-2016-04-combined.vrt"
-#   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2016"
-#   extension "os_sv_diff_png"
-#   url_aliases ["/sv-diff-2011-05-2016-04"]
-#   overlay true
-# end
-#
-# imagery_layer "gb_os_sv_diff_2011_11_2012_05" do
-#   site "os.openstreetmap.org"
-#   title "Changes November 2011 to May 2012"
-#   projection "EPSG:27700"
-#   source "/data/imagery/gb/os-sv/ossv-diff-2011-11-2012-05-combined.vrt"
-#   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2012"
-#   extension "os_sv_diff_png"
-#   url_aliases ["/sv-diff-2011-11-2012-05"]
-#   overlay true
-# end
-#
-# imagery_layer "gb_os_sv_diff_2011_11_2012_11" do
-#   site "os.openstreetmap.org"
-#   title "Changes November 2011 to November 2012"
-#   projection "EPSG:27700"
-#   source "/data/imagery/gb/os-sv/ossv-diff-2011-11-2012-11-combined.vrt"
-#   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2012"
-#   extension "os_sv_diff_png"
-#   url_aliases ["/sv-diff-2011-11-2012-11"]
-#   overlay true
-# end
-#
-# imagery_layer "gb_os_sv_diff_2011_11_2013_05" do
-#   site "os.openstreetmap.org"
-#   title "Changes November 2011 to May 2013"
-#   projection "EPSG:27700"
-#   source "/data/imagery/gb/os-sv/ossv-diff-2011-11-2013-05-combined.vrt"
-#   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2013"
-#   extension "os_sv_diff_png"
-#   url_aliases ["/sv-diff-2011-11-2013-05"]
-#   overlay true
-# end
-#
-# imagery_layer "gb_os_sv_diff_2011_11_2013_11" do
-#   site "os.openstreetmap.org"
-#   title "Changes November 2011 to November 2013"
-#   projection "EPSG:27700"
-#   source "/data/imagery/gb/os-sv/ossv-diff-2011-11-2013-11-combined.vrt"
-#   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2013"
-#   extension "os_sv_diff_png"
-#   url_aliases ["/sv-diff-2011-11-2013-11"]
-#   overlay true
-# end
-#
-# imagery_layer "gb_os_sv_diff_2011_11_2014_04" do
-#   site "os.openstreetmap.org"
-#   title "Changes November 2011 to April 2014"
-#   projection "EPSG:27700"
-#   source "/data/imagery/gb/os-sv/ossv-diff-2011-11-2014-04-combined.vrt"
-#   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2014"
-#   extension "os_sv_diff_png"
-#   url_aliases ["/sv-diff-2011-11-2014-04"]
-#   overlay true
-# end
-#
-# imagery_layer "gb_os_sv_diff_2011_11_2014_10" do
-#   site "os.openstreetmap.org"
-#   title "Changes November 2011 to October 2014"
-#   projection "EPSG:27700"
-#   source "/data/imagery/gb/os-sv/ossv-diff-2011-11-2014-10-combined.vrt"
-#   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2011"
-#   extension "os_sv_diff_png"
-#   url_aliases ["/sv-diff-2011-11-2014-10"]
-#   overlay true
-# end
-#
-# imagery_layer "gb_os_sv_diff_2011_11_2015_05" do
-#   site "os.openstreetmap.org"
-#   title "Changes November 2011 to May 2015"
-#   projection "EPSG:27700"
-#   source "/data/imagery/gb/os-sv/ossv-diff-2011-11-2015-05-combined.vrt"
-#   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
-#   extension "os_sv_diff_png"
-#   url_aliases ["/sv-diff-2011-11-2015-05"]
-#   overlay true
-# end
-#
-# imagery_layer "gb_os_sv_diff_2011_11_2015_11" do
-#   site "os.openstreetmap.org"
-#   title "Changes November 2011 to November 2015"
-#   projection "EPSG:27700"
-#   source "/data/imagery/gb/os-sv/ossv-diff-2011-11-2015-11-combined.vrt"
-#   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
-#   extension "os_sv_diff_png"
-#   url_aliases ["/sv-diff-2011-11-2015-11"]
-#   overlay true
-# end
-#
-# imagery_layer "gb_os_sv_diff_2011_11_2016_04" do
-#   site "os.openstreetmap.org"
-#   title "Changes November 2011 to April 2016"
-#   projection "EPSG:27700"
-#   source "/data/imagery/gb/os-sv/ossv-diff-2011-11-2016-04-combined.vrt"
-#   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2016"
-#   extension "os_sv_diff_png"
-#   url_aliases ["/sv-diff-2011-11-2016-04"]
-#   overlay true
-# end
-#
-# imagery_layer "gb_os_sv_diff_2012_05_2012_11" do
-#   site "os.openstreetmap.org"
-#   title "Changes May 2012 to November 2012"
-#   projection "EPSG:27700"
-#   source "/data/imagery/gb/os-sv/ossv-diff-2012-05-2012-11-combined.vrt"
-#   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2012"
-#   extension "os_sv_diff_png"
-#   url_aliases ["/sv-diff-2012-05-2012-11"]
-#   overlay true
-# end
-#
-# imagery_layer "gb_os_sv_diff_2012_05_2013_05" do
-#   site "os.openstreetmap.org"
-#   title "Changes May 2012 to May 2013"
-#   projection "EPSG:27700"
-#   source "/data/imagery/gb/os-sv/ossv-diff-2012-05-2013-05-combined.vrt"
-#   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2013"
-#   extension "os_sv_diff_png"
-#   url_aliases ["/sv-diff-2012-05-2013-05"]
-#   overlay true
-# end
-#
-# imagery_layer "gb_os_sv_diff_2012_05_2013_11" do
-#   site "os.openstreetmap.org"
-#   title "Changes May 2012 to November 2013"
-#   projection "EPSG:27700"
-#   source "/data/imagery/gb/os-sv/ossv-diff-2012-05-2013-11-combined.vrt"
-#   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2013"
-#   extension "os_sv_diff_png"
-#   url_aliases ["/sv-diff-2012-05-2013-11"]
-#   overlay true
-# end
-#
-# imagery_layer "gb_os_sv_diff_2012_05_2014_04" do
-#   site "os.openstreetmap.org"
-#   title "Changes May 2012 to April 2014"
-#   projection "EPSG:27700"
-#   source "/data/imagery/gb/os-sv/ossv-diff-2012-05-2014-04-combined.vrt"
-#   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2014"
-#   extension "os_sv_diff_png"
-#   url_aliases ["/sv-diff-2012-05-2014-04"]
-#   overlay true
-# end
-#
-# imagery_layer "gb_os_sv_diff_2012_05_2014_10" do
-#   site "os.openstreetmap.org"
-#   title "Changes May 2012 to October 2014"
-#   projection "EPSG:27700"
-#   source "/data/imagery/gb/os-sv/ossv-diff-2012-05-2014-10-combined.vrt"
-#   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2014"
-#   extension "os_sv_diff_png"
-#   url_aliases ["/sv-diff-2012-05-2014-10"]
-#   overlay true
-# end
-#
-# imagery_layer "gb_os_sv_diff_2012_05_2015_05" do
-#   site "os.openstreetmap.org"
-#   title "Changes May 2012 to May 2015"
-#   projection "EPSG:27700"
-#   source "/data/imagery/gb/os-sv/ossv-diff-2012-05-2015-05-combined.vrt"
-#   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
-#   extension "os_sv_diff_png"
-#   url_aliases ["/sv-diff-2012-05-2015-05"]
-#   overlay true
-# end
-#
-# imagery_layer "gb_os_sv_diff_2012_05_2015_11" do
-#   site "os.openstreetmap.org"
-#   title "Changes May 2012 to November 2015"
-#   projection "EPSG:27700"
-#   source "/data/imagery/gb/os-sv/ossv-diff-2012-05-2015-11-combined.vrt"
-#   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
-#   extension "os_sv_diff_png"
-#   url_aliases ["/sv-diff-2012-05-2015-11"]
-#   overlay true
-# end
-#
-# imagery_layer "gb_os_sv_diff_2012_05_2016_04" do
-#   site "os.openstreetmap.org"
-#   title "Changes May 2012 to April 2016"
-#   projection "EPSG:27700"
-#   source "/data/imagery/gb/os-sv/ossv-diff-2012-05-2016-04-combined.vrt"
-#   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2016"
-#   extension "os_sv_diff_png"
-#   url_aliases ["/sv-diff-2012-05-2016-04"]
-#   overlay true
-# end
-#
-# imagery_layer "gb_os_sv_diff_2012_11_2013_05" do
-#   site "os.openstreetmap.org"
-#   title "Changes November 2012 to May 2013"
-#   projection "EPSG:27700"
-#   source "/data/imagery/gb/os-sv/ossv-diff-2012-11-2013-05-combined.vrt"
-#   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2013"
-#   extension "os_sv_diff_png"
-#   url_aliases ["/sv-diff-2012-11-2013-05"]
-#   overlay true
-# end
-#
-# imagery_layer "gb_os_sv_diff_2012_11_2013_11" do
-#   site "os.openstreetmap.org"
-#   title "Changes November 2012 to November 2013"
-#   projection "EPSG:27700"
-#   source "/data/imagery/gb/os-sv/ossv-diff-2012-11-2013-11-combined.vrt"
-#   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2013"
-#   extension "os_sv_diff_png"
-#   url_aliases ["/sv-diff-2012-11-2013-11"]
-#   overlay true
-# end
-#
-# imagery_layer "gb_os_sv_diff_2012_11_2014_04" do
-#   site "os.openstreetmap.org"
-#   title "Changes November 2012 to April 2014"
-#   projection "EPSG:27700"
-#   source "/data/imagery/gb/os-sv/ossv-diff-2012-11-2014-04-combined.vrt"
-#   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2014"
-#   extension "os_sv_diff_png"
-#   url_aliases ["/sv-diff-2012-11-2014-04"]
-#   overlay true
-# end
-#
-# imagery_layer "gb_os_sv_diff_2012_11_2014_10" do
-#   site "os.openstreetmap.org"
-#   title "Changes November 2012 to October 2014"
-#   projection "EPSG:27700"
-#   source "/data/imagery/gb/os-sv/ossv-diff-2012-11-2014-10-combined.vrt"
-#   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2014"
-#   extension "os_sv_diff_png"
-#   url_aliases ["/sv-diff-2012-11-2014-10"]
-#   overlay true
-# end
-#
-# imagery_layer "gb_os_sv_diff_2012_11_2015_05" do
-#   site "os.openstreetmap.org"
-#   title "Changes November 2012 to May 2015"
-#   projection "EPSG:27700"
-#   source "/data/imagery/gb/os-sv/ossv-diff-2012-11-2015-05-combined.vrt"
-#   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
-#   extension "os_sv_diff_png"
-#   url_aliases ["/sv-diff-2012-11-2015-05"]
-#   overlay true
-# end
-#
-# imagery_layer "gb_os_sv_diff_2012_11_2015_11" do
-#   site "os.openstreetmap.org"
-#   title "Changes November 2012 to November 2015"
-#   projection "EPSG:27700"
-#   source "/data/imagery/gb/os-sv/ossv-diff-2012-11-2015-11-combined.vrt"
-#   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
-#   extension "os_sv_diff_png"
-#   url_aliases ["/sv-diff-2012-11-2015-11"]
-#   overlay true
-# end
-#
-# imagery_layer "gb_os_sv_diff_2012_11_2016_04" do
-#   site "os.openstreetmap.org"
-#   title "Changes November 2012 to April 2016"
-#   projection "EPSG:27700"
-#   source "/data/imagery/gb/os-sv/ossv-diff-2012-11-2016-04-combined.vrt"
-#   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2016"
-#   extension "os_sv_diff_png"
-#   url_aliases ["/sv-diff-2012-11-2016-04"]
-#   overlay true
-# end
-#
-# imagery_layer "gb_os_sv_diff_2013_05_2013_11" do
-#   site "os.openstreetmap.org"
-#   title "Changes May 2013 to November 2013"
-#   projection "EPSG:27700"
-#   source "/data/imagery/gb/os-sv/ossv-diff-2013-05-2013-11-combined.vrt"
-#   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2013"
-#   extension "os_sv_diff_png"
-#   url_aliases ["/sv-diff-2013-05-2013-11"]
-#   overlay true
-# end
-#
-# imagery_layer "gb_os_sv_diff_2013_05_2014_04" do
-#   site "os.openstreetmap.org"
-#   title "Changes May 2013 to April 2014"
-#   projection "EPSG:27700"
-#   source "/data/imagery/gb/os-sv/ossv-diff-2013-05-2014-04-combined.vrt"
-#   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2014"
-#   extension "os_sv_diff_png"
-#   url_aliases ["/sv-diff-2013-05-2014-04"]
-#   overlay true
-# end
-#
-# imagery_layer "gb_os_sv_diff_2013_05_2014_10" do
-#   site "os.openstreetmap.org"
-#   title "Changes May 2013 to October 2014"
-#   projection "EPSG:27700"
-#   source "/data/imagery/gb/os-sv/ossv-diff-2013-05-2014-10-combined.vrt"
-#   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2014"
-#   extension "os_sv_diff_png"
-#   url_aliases ["/sv-diff-2013-05-2014-10"]
-#   overlay true
-# end
-#
-# imagery_layer "gb_os_sv_diff_2013_05_2015_05" do
-#   site "os.openstreetmap.org"
-#   title "Changes May 2013 to May 2015"
-#   projection "EPSG:27700"
-#   source "/data/imagery/gb/os-sv/ossv-diff-2013-05-2015-05-combined.vrt"
-#   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
-#   extension "os_sv_diff_png"
-#   url_aliases ["/sv-diff-2013-05-2015-05"]
-#   overlay true
-# end
-#
-# imagery_layer "gb_os_sv_diff_2013_05_2015_11" do
-#   site "os.openstreetmap.org"
-#   title "Changes May 2013 to November 2015"
-#   projection "EPSG:27700"
-#   source "/data/imagery/gb/os-sv/ossv-diff-2013-05-2015-11-combined.vrt"
-#   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
-#   extension "os_sv_diff_png"
-#   url_aliases ["/sv-diff-2013-05-2015-11"]
-#   overlay true
-# end
-#
-# imagery_layer "gb_os_sv_diff_2013_05_2016_04" do
-#   site "os.openstreetmap.org"
-#   title "Changes May 2013 to April 2016"
-#   projection "EPSG:27700"
-#   source "/data/imagery/gb/os-sv/ossv-diff-2013-05-2016-04-combined.vrt"
-#   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2016"
-#   extension "os_sv_diff_png"
-#   url_aliases ["/sv-diff-2013-05-2016-04"]
-#   overlay true
-# end
-#
-# imagery_layer "gb_os_sv_diff_2013_11_2014_04" do
-#   site "os.openstreetmap.org"
-#   title "Changes November 2013 to April 2014"
-#   projection "EPSG:27700"
-#   source "/data/imagery/gb/os-sv/ossv-diff-2013-11-2014-04-combined.vrt"
-#   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2014"
-#   extension "os_sv_diff_png"
-#   url_aliases ["/sv-diff-2013-11-2014-04"]
-#   overlay true
-# end
-#
-# imagery_layer "gb_os_sv_diff_2013_11_2014_10" do
-#   site "os.openstreetmap.org"
-#   title "Changes November 2013 to October 2014"
-#   projection "EPSG:27700"
-#   source "/data/imagery/gb/os-sv/ossv-diff-2013-11-2014-10-combined.vrt"
-#   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2014"
-#   extension "os_sv_diff_png"
-#   url_aliases ["/sv-diff-2013-11-2014-10"]
-#   overlay true
-# end
-#
-# imagery_layer "gb_os_sv_diff_2013_11_2015_05" do
-#   site "os.openstreetmap.org"
-#   title "Changes November 2013 to May 2015"
-#   projection "EPSG:27700"
-#   source "/data/imagery/gb/os-sv/ossv-diff-2013-11-2015-05-combined.vrt"
-#   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
-#   extension "os_sv_diff_png"
-#   url_aliases ["/sv-diff-2013-11-2015-05"]
-#   overlay true
-# end
-#
-# imagery_layer "gb_os_sv_diff_2013_11_2015_11" do
-#   site "os.openstreetmap.org"
-#   title "Changes November 2013 to November 2015"
-#   projection "EPSG:27700"
-#   source "/data/imagery/gb/os-sv/ossv-diff-2013-11-2015-11-combined.vrt"
-#   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
-#   extension "os_sv_diff_png"
-#   url_aliases ["/sv-diff-2013-11-2015-11"]
-#   overlay true
-# end
-#
-# imagery_layer "gb_os_sv_diff_2013_11_2016_04" do
-#   site "os.openstreetmap.org"
-#   title "Changes November 2013 to April 2016"
-#   projection "EPSG:27700"
-#   source "/data/imagery/gb/os-sv/ossv-diff-2013-11-2016-04-combined.vrt"
-#   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2016"
-#   extension "os_sv_diff_png"
-#   url_aliases ["/sv-diff-2013-11-2016-04"]
-#   overlay true
-# end
-#
-# imagery_layer "gb_os_sv_diff_2014_04_2014_10" do
-#   site "os.openstreetmap.org"
-#   title "Changes April 2014 to October 2014"
-#   projection "EPSG:27700"
-#   source "/data/imagery/gb/os-sv/ossv-diff-2014-04-2014-10-combined.vrt"
-#   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2014"
-#   extension "os_sv_diff_png"
-#   url_aliases ["/sv-diff-2014-04-2014-10"]
-#   overlay true
-# end
-#
-# imagery_layer "gb_os_sv_diff_2014_04_2015_05" do
-#   site "os.openstreetmap.org"
-#   title "Changes April 2014 to May 2015"
-#   projection "EPSG:27700"
-#   source "/data/imagery/gb/os-sv/ossv-diff-2014-04-2015-05-combined.vrt"
-#   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
-#   extension "os_sv_diff_png"
-#   url_aliases ["/sv-diff-2014-04-2015-05"]
-#   overlay true
-# end
-#
-# imagery_layer "gb_os_sv_diff_2014_04_2015_11" do
-#   site "os.openstreetmap.org"
-#   title "Changes April 2014 to November 2015"
-#   projection "EPSG:27700"
-#   source "/data/imagery/gb/os-sv/ossv-diff-2014-04-2015-11-combined.vrt"
-#   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
-#   extension "os_sv_diff_png"
-#   url_aliases ["/sv-diff-2014-04-2015-11"]
-#   overlay true
-# end
-#
-# imagery_layer "gb_os_sv_diff_2014_04_2016_04" do
-#   site "os.openstreetmap.org"
-#   title "Changes April 2014 to April 2016"
-#   projection "EPSG:27700"
-#   source "/data/imagery/gb/os-sv/ossv-diff-2014-04-2016-04-combined.vrt"
-#   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2016"
-#   extension "os_sv_diff_png"
-#   url_aliases ["/sv-diff-2014-04-2016-04"]
-#   overlay true
-# end
-#
-# imagery_layer "gb_os_sv_diff_2014_10_2015_05" do
-#   site "os.openstreetmap.org"
-#   title "Changes October 2014 to May 2015"
-#   projection "EPSG:27700"
-#   source "/data/imagery/gb/os-sv/ossv-diff-2014-10-2015-05-combined.vrt"
-#   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
-#   extension "os_sv_diff_png"
-#   url_aliases ["/sv-diff-2014-10-2015-05"]
-#   overlay true
-# end
-#
-# imagery_layer "gb_os_sv_diff_2014_10_2015_11" do
-#   site "os.openstreetmap.org"
-#   title "Changes October 2014 to November 2015"
-#   projection "EPSG:27700"
-#   source "/data/imagery/gb/os-sv/ossv-diff-2014-10-2015-11-combined.vrt"
-#   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
-#   extension "os_sv_diff_png"
-#   url_aliases ["/sv-diff-2014-10-2015-11"]
-#   overlay true
-# end
-#
-# imagery_layer "gb_os_sv_diff_2014_10_2016_04" do
-#   site "os.openstreetmap.org"
-#   title "Changes October 2014 to April 2016"
-#   projection "EPSG:27700"
-#   source "/data/imagery/gb/os-sv/ossv-diff-2014-10-2016-04-combined.vrt"
-#   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2016"
-#   extension "os_sv_diff_png"
-#   url_aliases ["/sv-diff-2014-10-2016-04"]
-#   overlay true
-# end
-#
-# imagery_layer "gb_os_sv_diff_2015_05_2015_11" do
-#   site "os.openstreetmap.org"
-#   title "Changes May 2015 to November 2015"
-#   projection "EPSG:27700"
-#   source "/data/imagery/gb/os-sv/ossv-diff-2015-05-2015-11-combined.vrt"
-#   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
-#   extension "os_sv_diff_png"
-#   url_aliases ["/sv-diff-2015-05-2015-11"]
-#   overlay true
-# end
-#
-# imagery_layer "gb_os_sv_diff_2015_05_2016_04" do
-#   site "os.openstreetmap.org"
-#   title "Changes May 2015 to April 2016"
-#   projection "EPSG:27700"
-#   source "/data/imagery/gb/os-sv/ossv-diff-2015-05-2016-04-combined.vrt"
-#   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2016"
-#   extension "os_sv_diff_png"
-#   url_aliases ["/sv-diff-2015-05-2016-04"]
-#   overlay true
-# end
-#
-# imagery_layer "gb_os_sv_diff_2015_11_2016_04" do
-#   site "os.openstreetmap.org"
-#   title "Changes November 2015 to April 2016"
-#   projection "EPSG:27700"
-#   source "/data/imagery/gb/os-sv/ossv-diff-2015-11-2016-04-combined.vrt"
-#   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2016"
-#   extension "os_sv_diff_png"
-#   url_aliases ["/sv-diff-2015-11-2016-04"]
-#   overlay true
-# end
-#
+imagery_layer "gb_os_sv_diff_2011_05_2016_04" do
+  site "os.openstreetmap.org"
+  title "Changes May 2011 to April 2016"
+  projection "EPSG:27700"
+  source "/data/imagery/gb/os-sv/ossv-diff-2011-05-2016-04-combined.vrt"
+  copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2016"
+  extension "os_sv_diff_png"
+  url_aliases ["/sv-diff-2011-05-2016-04"]
+  overlay true
+end
+
+imagery_layer "gb_os_sv_diff_2011_11_2012_05" do
+  site "os.openstreetmap.org"
+  title "Changes November 2011 to May 2012"
+  projection "EPSG:27700"
+  source "/data/imagery/gb/os-sv/ossv-diff-2011-11-2012-05-combined.vrt"
+  copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2012"
+  extension "os_sv_diff_png"
+  url_aliases ["/sv-diff-2011-11-2012-05"]
+  overlay true
+end
+
+imagery_layer "gb_os_sv_diff_2011_11_2012_11" do
+  site "os.openstreetmap.org"
+  title "Changes November 2011 to November 2012"
+  projection "EPSG:27700"
+  source "/data/imagery/gb/os-sv/ossv-diff-2011-11-2012-11-combined.vrt"
+  copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2012"
+  extension "os_sv_diff_png"
+  url_aliases ["/sv-diff-2011-11-2012-11"]
+  overlay true
+end
+
+imagery_layer "gb_os_sv_diff_2011_11_2013_05" do
+  site "os.openstreetmap.org"
+  title "Changes November 2011 to May 2013"
+  projection "EPSG:27700"
+  source "/data/imagery/gb/os-sv/ossv-diff-2011-11-2013-05-combined.vrt"
+  copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2013"
+  extension "os_sv_diff_png"
+  url_aliases ["/sv-diff-2011-11-2013-05"]
+  overlay true
+end
+
+imagery_layer "gb_os_sv_diff_2011_11_2013_11" do
+  site "os.openstreetmap.org"
+  title "Changes November 2011 to November 2013"
+  projection "EPSG:27700"
+  source "/data/imagery/gb/os-sv/ossv-diff-2011-11-2013-11-combined.vrt"
+  copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2013"
+  extension "os_sv_diff_png"
+  url_aliases ["/sv-diff-2011-11-2013-11"]
+  overlay true
+end
+
+imagery_layer "gb_os_sv_diff_2011_11_2014_04" do
+  site "os.openstreetmap.org"
+  title "Changes November 2011 to April 2014"
+  projection "EPSG:27700"
+  source "/data/imagery/gb/os-sv/ossv-diff-2011-11-2014-04-combined.vrt"
+  copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2014"
+  extension "os_sv_diff_png"
+  url_aliases ["/sv-diff-2011-11-2014-04"]
+  overlay true
+end
+
+imagery_layer "gb_os_sv_diff_2011_11_2014_10" do
+  site "os.openstreetmap.org"
+  title "Changes November 2011 to October 2014"
+  projection "EPSG:27700"
+  source "/data/imagery/gb/os-sv/ossv-diff-2011-11-2014-10-combined.vrt"
+  copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2011"
+  extension "os_sv_diff_png"
+  url_aliases ["/sv-diff-2011-11-2014-10"]
+  overlay true
+end
+
+imagery_layer "gb_os_sv_diff_2011_11_2015_05" do
+  site "os.openstreetmap.org"
+  title "Changes November 2011 to May 2015"
+  projection "EPSG:27700"
+  source "/data/imagery/gb/os-sv/ossv-diff-2011-11-2015-05-combined.vrt"
+  copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
+  extension "os_sv_diff_png"
+  url_aliases ["/sv-diff-2011-11-2015-05"]
+  overlay true
+end
+
+imagery_layer "gb_os_sv_diff_2011_11_2015_11" do
+  site "os.openstreetmap.org"
+  title "Changes November 2011 to November 2015"
+  projection "EPSG:27700"
+  source "/data/imagery/gb/os-sv/ossv-diff-2011-11-2015-11-combined.vrt"
+  copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
+  extension "os_sv_diff_png"
+  url_aliases ["/sv-diff-2011-11-2015-11"]
+  overlay true
+end
+
+imagery_layer "gb_os_sv_diff_2011_11_2016_04" do
+  site "os.openstreetmap.org"
+  title "Changes November 2011 to April 2016"
+  projection "EPSG:27700"
+  source "/data/imagery/gb/os-sv/ossv-diff-2011-11-2016-04-combined.vrt"
+  copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2016"
+  extension "os_sv_diff_png"
+  url_aliases ["/sv-diff-2011-11-2016-04"]
+  overlay true
+end
+
+imagery_layer "gb_os_sv_diff_2012_05_2012_11" do
+  site "os.openstreetmap.org"
+  title "Changes May 2012 to November 2012"
+  projection "EPSG:27700"
+  source "/data/imagery/gb/os-sv/ossv-diff-2012-05-2012-11-combined.vrt"
+  copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2012"
+  extension "os_sv_diff_png"
+  url_aliases ["/sv-diff-2012-05-2012-11"]
+  overlay true
+end
+
+imagery_layer "gb_os_sv_diff_2012_05_2013_05" do
+  site "os.openstreetmap.org"
+  title "Changes May 2012 to May 2013"
+  projection "EPSG:27700"
+  source "/data/imagery/gb/os-sv/ossv-diff-2012-05-2013-05-combined.vrt"
+  copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2013"
+  extension "os_sv_diff_png"
+  url_aliases ["/sv-diff-2012-05-2013-05"]
+  overlay true
+end
+
+imagery_layer "gb_os_sv_diff_2012_05_2013_11" do
+  site "os.openstreetmap.org"
+  title "Changes May 2012 to November 2013"
+  projection "EPSG:27700"
+  source "/data/imagery/gb/os-sv/ossv-diff-2012-05-2013-11-combined.vrt"
+  copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2013"
+  extension "os_sv_diff_png"
+  url_aliases ["/sv-diff-2012-05-2013-11"]
+  overlay true
+end
+
+imagery_layer "gb_os_sv_diff_2012_05_2014_04" do
+  site "os.openstreetmap.org"
+  title "Changes May 2012 to April 2014"
+  projection "EPSG:27700"
+  source "/data/imagery/gb/os-sv/ossv-diff-2012-05-2014-04-combined.vrt"
+  copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2014"
+  extension "os_sv_diff_png"
+  url_aliases ["/sv-diff-2012-05-2014-04"]
+  overlay true
+end
+
+imagery_layer "gb_os_sv_diff_2012_05_2014_10" do
+  site "os.openstreetmap.org"
+  title "Changes May 2012 to October 2014"
+  projection "EPSG:27700"
+  source "/data/imagery/gb/os-sv/ossv-diff-2012-05-2014-10-combined.vrt"
+  copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2014"
+  extension "os_sv_diff_png"
+  url_aliases ["/sv-diff-2012-05-2014-10"]
+  overlay true
+end
+
+imagery_layer "gb_os_sv_diff_2012_05_2015_05" do
+  site "os.openstreetmap.org"
+  title "Changes May 2012 to May 2015"
+  projection "EPSG:27700"
+  source "/data/imagery/gb/os-sv/ossv-diff-2012-05-2015-05-combined.vrt"
+  copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
+  extension "os_sv_diff_png"
+  url_aliases ["/sv-diff-2012-05-2015-05"]
+  overlay true
+end
+
+imagery_layer "gb_os_sv_diff_2012_05_2015_11" do
+  site "os.openstreetmap.org"
+  title "Changes May 2012 to November 2015"
+  projection "EPSG:27700"
+  source "/data/imagery/gb/os-sv/ossv-diff-2012-05-2015-11-combined.vrt"
+  copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
+  extension "os_sv_diff_png"
+  url_aliases ["/sv-diff-2012-05-2015-11"]
+  overlay true
+end
+
+imagery_layer "gb_os_sv_diff_2012_05_2016_04" do
+  site "os.openstreetmap.org"
+  title "Changes May 2012 to April 2016"
+  projection "EPSG:27700"
+  source "/data/imagery/gb/os-sv/ossv-diff-2012-05-2016-04-combined.vrt"
+  copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2016"
+  extension "os_sv_diff_png"
+  url_aliases ["/sv-diff-2012-05-2016-04"]
+  overlay true
+end
+
+imagery_layer "gb_os_sv_diff_2012_11_2013_05" do
+  site "os.openstreetmap.org"
+  title "Changes November 2012 to May 2013"
+  projection "EPSG:27700"
+  source "/data/imagery/gb/os-sv/ossv-diff-2012-11-2013-05-combined.vrt"
+  copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2013"
+  extension "os_sv_diff_png"
+  url_aliases ["/sv-diff-2012-11-2013-05"]
+  overlay true
+end
+
+imagery_layer "gb_os_sv_diff_2012_11_2013_11" do
+  site "os.openstreetmap.org"
+  title "Changes November 2012 to November 2013"
+  projection "EPSG:27700"
+  source "/data/imagery/gb/os-sv/ossv-diff-2012-11-2013-11-combined.vrt"
+  copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2013"
+  extension "os_sv_diff_png"
+  url_aliases ["/sv-diff-2012-11-2013-11"]
+  overlay true
+end
+
+imagery_layer "gb_os_sv_diff_2012_11_2014_04" do
+  site "os.openstreetmap.org"
+  title "Changes November 2012 to April 2014"
+  projection "EPSG:27700"
+  source "/data/imagery/gb/os-sv/ossv-diff-2012-11-2014-04-combined.vrt"
+  copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2014"
+  extension "os_sv_diff_png"
+  url_aliases ["/sv-diff-2012-11-2014-04"]
+  overlay true
+end
+
+imagery_layer "gb_os_sv_diff_2012_11_2014_10" do
+  site "os.openstreetmap.org"
+  title "Changes November 2012 to October 2014"
+  projection "EPSG:27700"
+  source "/data/imagery/gb/os-sv/ossv-diff-2012-11-2014-10-combined.vrt"
+  copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2014"
+  extension "os_sv_diff_png"
+  url_aliases ["/sv-diff-2012-11-2014-10"]
+  overlay true
+end
+
+imagery_layer "gb_os_sv_diff_2012_11_2015_05" do
+  site "os.openstreetmap.org"
+  title "Changes November 2012 to May 2015"
+  projection "EPSG:27700"
+  source "/data/imagery/gb/os-sv/ossv-diff-2012-11-2015-05-combined.vrt"
+  copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
+  extension "os_sv_diff_png"
+  url_aliases ["/sv-diff-2012-11-2015-05"]
+  overlay true
+end
+
+imagery_layer "gb_os_sv_diff_2012_11_2015_11" do
+  site "os.openstreetmap.org"
+  title "Changes November 2012 to November 2015"
+  projection "EPSG:27700"
+  source "/data/imagery/gb/os-sv/ossv-diff-2012-11-2015-11-combined.vrt"
+  copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
+  extension "os_sv_diff_png"
+  url_aliases ["/sv-diff-2012-11-2015-11"]
+  overlay true
+end
+
+imagery_layer "gb_os_sv_diff_2012_11_2016_04" do
+  site "os.openstreetmap.org"
+  title "Changes November 2012 to April 2016"
+  projection "EPSG:27700"
+  source "/data/imagery/gb/os-sv/ossv-diff-2012-11-2016-04-combined.vrt"
+  copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2016"
+  extension "os_sv_diff_png"
+  url_aliases ["/sv-diff-2012-11-2016-04"]
+  overlay true
+end
+
+imagery_layer "gb_os_sv_diff_2013_05_2013_11" do
+  site "os.openstreetmap.org"
+  title "Changes May 2013 to November 2013"
+  projection "EPSG:27700"
+  source "/data/imagery/gb/os-sv/ossv-diff-2013-05-2013-11-combined.vrt"
+  copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2013"
+  extension "os_sv_diff_png"
+  url_aliases ["/sv-diff-2013-05-2013-11"]
+  overlay true
+end
+
+imagery_layer "gb_os_sv_diff_2013_05_2014_04" do
+  site "os.openstreetmap.org"
+  title "Changes May 2013 to April 2014"
+  projection "EPSG:27700"
+  source "/data/imagery/gb/os-sv/ossv-diff-2013-05-2014-04-combined.vrt"
+  copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2014"
+  extension "os_sv_diff_png"
+  url_aliases ["/sv-diff-2013-05-2014-04"]
+  overlay true
+end
+
+imagery_layer "gb_os_sv_diff_2013_05_2014_10" do
+  site "os.openstreetmap.org"
+  title "Changes May 2013 to October 2014"
+  projection "EPSG:27700"
+  source "/data/imagery/gb/os-sv/ossv-diff-2013-05-2014-10-combined.vrt"
+  copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2014"
+  extension "os_sv_diff_png"
+  url_aliases ["/sv-diff-2013-05-2014-10"]
+  overlay true
+end
+
+imagery_layer "gb_os_sv_diff_2013_05_2015_05" do
+  site "os.openstreetmap.org"
+  title "Changes May 2013 to May 2015"
+  projection "EPSG:27700"
+  source "/data/imagery/gb/os-sv/ossv-diff-2013-05-2015-05-combined.vrt"
+  copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
+  extension "os_sv_diff_png"
+  url_aliases ["/sv-diff-2013-05-2015-05"]
+  overlay true
+end
+
+imagery_layer "gb_os_sv_diff_2013_05_2015_11" do
+  site "os.openstreetmap.org"
+  title "Changes May 2013 to November 2015"
+  projection "EPSG:27700"
+  source "/data/imagery/gb/os-sv/ossv-diff-2013-05-2015-11-combined.vrt"
+  copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
+  extension "os_sv_diff_png"
+  url_aliases ["/sv-diff-2013-05-2015-11"]
+  overlay true
+end
+
+imagery_layer "gb_os_sv_diff_2013_05_2016_04" do
+  site "os.openstreetmap.org"
+  title "Changes May 2013 to April 2016"
+  projection "EPSG:27700"
+  source "/data/imagery/gb/os-sv/ossv-diff-2013-05-2016-04-combined.vrt"
+  copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2016"
+  extension "os_sv_diff_png"
+  url_aliases ["/sv-diff-2013-05-2016-04"]
+  overlay true
+end
+
+imagery_layer "gb_os_sv_diff_2013_11_2014_04" do
+  site "os.openstreetmap.org"
+  title "Changes November 2013 to April 2014"
+  projection "EPSG:27700"
+  source "/data/imagery/gb/os-sv/ossv-diff-2013-11-2014-04-combined.vrt"
+  copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2014"
+  extension "os_sv_diff_png"
+  url_aliases ["/sv-diff-2013-11-2014-04"]
+  overlay true
+end
+
+imagery_layer "gb_os_sv_diff_2013_11_2014_10" do
+  site "os.openstreetmap.org"
+  title "Changes November 2013 to October 2014"
+  projection "EPSG:27700"
+  source "/data/imagery/gb/os-sv/ossv-diff-2013-11-2014-10-combined.vrt"
+  copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2014"
+  extension "os_sv_diff_png"
+  url_aliases ["/sv-diff-2013-11-2014-10"]
+  overlay true
+end
+
+imagery_layer "gb_os_sv_diff_2013_11_2015_05" do
+  site "os.openstreetmap.org"
+  title "Changes November 2013 to May 2015"
+  projection "EPSG:27700"
+  source "/data/imagery/gb/os-sv/ossv-diff-2013-11-2015-05-combined.vrt"
+  copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
+  extension "os_sv_diff_png"
+  url_aliases ["/sv-diff-2013-11-2015-05"]
+  overlay true
+end
+
+imagery_layer "gb_os_sv_diff_2013_11_2015_11" do
+  site "os.openstreetmap.org"
+  title "Changes November 2013 to November 2015"
+  projection "EPSG:27700"
+  source "/data/imagery/gb/os-sv/ossv-diff-2013-11-2015-11-combined.vrt"
+  copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
+  extension "os_sv_diff_png"
+  url_aliases ["/sv-diff-2013-11-2015-11"]
+  overlay true
+end
+
+imagery_layer "gb_os_sv_diff_2013_11_2016_04" do
+  site "os.openstreetmap.org"
+  title "Changes November 2013 to April 2016"
+  projection "EPSG:27700"
+  source "/data/imagery/gb/os-sv/ossv-diff-2013-11-2016-04-combined.vrt"
+  copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2016"
+  extension "os_sv_diff_png"
+  url_aliases ["/sv-diff-2013-11-2016-04"]
+  overlay true
+end
+
+imagery_layer "gb_os_sv_diff_2014_04_2014_10" do
+  site "os.openstreetmap.org"
+  title "Changes April 2014 to October 2014"
+  projection "EPSG:27700"
+  source "/data/imagery/gb/os-sv/ossv-diff-2014-04-2014-10-combined.vrt"
+  copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2014"
+  extension "os_sv_diff_png"
+  url_aliases ["/sv-diff-2014-04-2014-10"]
+  overlay true
+end
+
+imagery_layer "gb_os_sv_diff_2014_04_2015_05" do
+  site "os.openstreetmap.org"
+  title "Changes April 2014 to May 2015"
+  projection "EPSG:27700"
+  source "/data/imagery/gb/os-sv/ossv-diff-2014-04-2015-05-combined.vrt"
+  copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
+  extension "os_sv_diff_png"
+  url_aliases ["/sv-diff-2014-04-2015-05"]
+  overlay true
+end
+
+imagery_layer "gb_os_sv_diff_2014_04_2015_11" do
+  site "os.openstreetmap.org"
+  title "Changes April 2014 to November 2015"
+  projection "EPSG:27700"
+  source "/data/imagery/gb/os-sv/ossv-diff-2014-04-2015-11-combined.vrt"
+  copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
+  extension "os_sv_diff_png"
+  url_aliases ["/sv-diff-2014-04-2015-11"]
+  overlay true
+end
+
+imagery_layer "gb_os_sv_diff_2014_04_2016_04" do
+  site "os.openstreetmap.org"
+  title "Changes April 2014 to April 2016"
+  projection "EPSG:27700"
+  source "/data/imagery/gb/os-sv/ossv-diff-2014-04-2016-04-combined.vrt"
+  copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2016"
+  extension "os_sv_diff_png"
+  url_aliases ["/sv-diff-2014-04-2016-04"]
+  overlay true
+end
+
+imagery_layer "gb_os_sv_diff_2014_10_2015_05" do
+  site "os.openstreetmap.org"
+  title "Changes October 2014 to May 2015"
+  projection "EPSG:27700"
+  source "/data/imagery/gb/os-sv/ossv-diff-2014-10-2015-05-combined.vrt"
+  copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
+  extension "os_sv_diff_png"
+  url_aliases ["/sv-diff-2014-10-2015-05"]
+  overlay true
+end
+
+imagery_layer "gb_os_sv_diff_2014_10_2015_11" do
+  site "os.openstreetmap.org"
+  title "Changes October 2014 to November 2015"
+  projection "EPSG:27700"
+  source "/data/imagery/gb/os-sv/ossv-diff-2014-10-2015-11-combined.vrt"
+  copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
+  extension "os_sv_diff_png"
+  url_aliases ["/sv-diff-2014-10-2015-11"]
+  overlay true
+end
+
+imagery_layer "gb_os_sv_diff_2014_10_2016_04" do
+  site "os.openstreetmap.org"
+  title "Changes October 2014 to April 2016"
+  projection "EPSG:27700"
+  source "/data/imagery/gb/os-sv/ossv-diff-2014-10-2016-04-combined.vrt"
+  copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2016"
+  extension "os_sv_diff_png"
+  url_aliases ["/sv-diff-2014-10-2016-04"]
+  overlay true
+end
+
+imagery_layer "gb_os_sv_diff_2015_05_2015_11" do
+  site "os.openstreetmap.org"
+  title "Changes May 2015 to November 2015"
+  projection "EPSG:27700"
+  source "/data/imagery/gb/os-sv/ossv-diff-2015-05-2015-11-combined.vrt"
+  copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
+  extension "os_sv_diff_png"
+  url_aliases ["/sv-diff-2015-05-2015-11"]
+  overlay true
+end
+
+imagery_layer "gb_os_sv_diff_2015_05_2016_04" do
+  site "os.openstreetmap.org"
+  title "Changes May 2015 to April 2016"
+  projection "EPSG:27700"
+  source "/data/imagery/gb/os-sv/ossv-diff-2015-05-2016-04-combined.vrt"
+  copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2016"
+  extension "os_sv_diff_png"
+  url_aliases ["/sv-diff-2015-05-2016-04"]
+  overlay true
+end
+
+imagery_layer "gb_os_sv_diff_2015_11_2016_04" do
+  site "os.openstreetmap.org"
+  title "Changes November 2015 to April 2016"
+  projection "EPSG:27700"
+  source "/data/imagery/gb/os-sv/ossv-diff-2015-11-2016-04-combined.vrt"
+  copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2016"
+  extension "os_sv_diff_png"
+  url_aliases ["/sv-diff-2015-11-2016-04"]
+  overlay true
+end
