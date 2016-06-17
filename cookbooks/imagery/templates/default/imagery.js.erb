@@ -33,6 +33,6 @@ function createMap(divName) {
 
   // Add the layer switch to the mao
   layers.addTo(map);
-
+  map.addControl(new L.Control.Permalink());
   return map;
 }
