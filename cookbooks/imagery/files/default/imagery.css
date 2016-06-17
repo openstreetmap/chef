@@ -10,9 +10,3 @@
   max-height: 700px;/*less than map height! */
   overflow: auto;
 }
-
-@media print {
-  .leaflet-control {
-    display:none
-  }
-}
