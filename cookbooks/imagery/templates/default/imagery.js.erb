@@ -16,26 +16,26 @@ function createMap(divName) {
 
   <% if layer[:overlay] -%>
   // Create <%= layer[:name] %> overlay
-  var leaflet_overlays[<%= layer[:name] %>] = L.tileLayer(<%= layer[:url].to_json %>, {
+  leaflet_overlays["<%= layer[:name] %>"] = L.tileLayer(<%= layer[:url].to_json %>, {
     attribution: <%= layer[:attribution].to_json %>,
     maxZoom: <%= layer[:maxZoom].to_json %>
   });
 
   <% if layer[:default] -%>
   // Add <%= layer[:name] %> to map
-  leaflet_overlays[<%= layer[:name] %>].addTo(map);
+  leaflet_overlays["<%= layer[:name] %>"].addTo(map);
   <% end -%>
 
   <% else %>
   // Create <%= layer[:name] %> layer
-  var leaflet_layers[<%= layer[:name] %>] = L.tileLayer(<%= layer[:url].to_json %>, {
+  leaflet_layers["<%= layer[:name] %>"] = L.tileLayer(<%= layer[:url].to_json %>, {
     attribution: <%= layer[:attribution].to_json %>,
     maxZoom: <%= layer[:maxZoom].to_json %>
   });
 
   <% if layer[:default] -%>
   // Add <%= layer[:name] %> to map
-  leaflet_layers[<%= layer[:name] %>].addTo(map);
+  leaflet_layers["<%= layer[:name] %>"].addTo(map);
   <% end -%>
 
   <% end -%>
