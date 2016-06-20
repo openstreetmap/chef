@@ -19,7 +19,6 @@
 
 include_recipe "tools"
 include_recipe "web::base"
-include_recipe "web::nfs"
 
 include_recipe "apache"
 include_recipe "passenger"
