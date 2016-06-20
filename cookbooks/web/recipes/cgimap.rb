@@ -24,12 +24,29 @@ db_passwords = data_bag_item("db", "passwords")
 
 package "openstreetmap-cgimap-bin"
 
+if node[:web][:readonly_database_host]
+  database_host = node[:web][:readonly_database_host]
+  database_readonly = true
+else
+  database_host = node[:web][:database_host]
+  database_readonly = node[:web][:status] == "database_readonly"
+end
+
+memcached_servers = node[:web][:memcached_servers] || []
+
 template "/etc/init.d/cgimap" do
   owner "root"
   group "root"
   mode 0o755
   source "cgimap.init.erb"
-  variables :db_password => db_passwords["rails"]
+  variables {
+    :db_password => db_passwords["rails"],
+    :pid_directory => node[:web][:pid_directory],
+    :log_directory => node[:web][:log_directory],
+    :database_host => database_host,
+    :database_readonly => database_readonly,
+    :memcached_servers => memcached_servers
+  }
 end
 
 if %w(database_offline api_offline).include?(node[:web][:status])

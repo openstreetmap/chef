@@ -1,29 +1,14 @@
 #!/bin/bash
 
-<%
-pid_directory = node[:web][:pid_directory]
-log_directory = node[:web][:log_directory]
-
-if node[:web][:readonly_database_host]
-  database_host = node[:web][:readonly_database_host]
-  database_readonly = true
-else
-  database_host = node[:web][:database_host]
-  database_readonly = node[:web][:status] == "database_readonly"
-end
-
-memcached_servers = node[:web][:memcached_servers] || []
-%>
-
-CGIMAP_HOST=<%= database_host %>; export CGIMAP_HOST
+CGIMAP_HOST=<%= @database_host %>; export CGIMAP_HOST
 CGIMAP_DBNAME=openstreetmap; export CGIMAP_DBNAME
 CGIMAP_USERNAME=rails; export CGIMAP_USERNAME
 CGIMAP_PASSWORD=<%= @db_password %>; export CGIMAP_PASSWORD
 
-CGIMAP_PIDFILE=<%= pid_directory + "/cgimap.pid" %>; export CGIMAP_PIDFILE
-CGIMAP_LOGFILE=<%= log_directory + "/cgimap.log" %>; export CGIMAP_LOGFILE
+CGIMAP_PIDFILE=<%= @pid_directory + "/cgimap.pid" %>; export CGIMAP_PIDFILE
+CGIMAP_LOGFILE=<%= @log_directory + "/cgimap.log" %>; export CGIMAP_LOGFILE
 
-CGIMAP_MEMCACHE=<%= memcached_servers.join(",") %>; export CGIMAP_MEMCACHE
+CGIMAP_MEMCACHE=<%= @memcached_servers.join(",") %>; export CGIMAP_MEMCACHE
 CGIMAP_RATELIMIT=204800; export CGIMAP_RATELIMIT
 CGIMAP_MAXDEBT=250; export CGIMAP_MAXDEBT
 
