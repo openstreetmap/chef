@@ -18,6 +18,7 @@
 #
 
 include_recipe "web::base"
+include_recipe "web::nfs"
 
 db_passwords = data_bag_item("db", "passwords")
 
