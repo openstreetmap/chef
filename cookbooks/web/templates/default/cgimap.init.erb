@@ -13,7 +13,7 @@ CGIMAP_RATELIMIT=204800; export CGIMAP_RATELIMIT
 CGIMAP_MAXDEBT=250; export CGIMAP_MAXDEBT
 
 start() {
-  start-stop-daemon --start --chuid rails --exec /usr/bin/openstreetmap-cgimap -- --daemon --port=8000 --instances=30 --pidfile $CGIMAP_PIDFILE
+  start-stop-daemon --start --chuid rails --exec /usr/bin/openstreetmap-cgimap --pidfile $CGIMAP_PIDFILE -- --daemon <% if @database_readonly %>--readonly<% end %> --port=8000 --instances=30
 }
 
 stop() {
