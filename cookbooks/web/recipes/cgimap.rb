@@ -29,7 +29,7 @@ template "/etc/init.d/cgimap" do
   group "root"
   mode 0o755
   source "cgimap.init.erb"
-  variables :db_password => db_passwords['rails']
+  variables :db_password => db_passwords["rails"]
 end
 
 if %w(database_offline api_offline).include?(node[:web][:status])
