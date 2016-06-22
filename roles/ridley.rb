@@ -12,11 +12,6 @@ default_attributes(
     :first_address => "10.0.15.1",
     :last_address => "10.0.15.254"
   },
-  :exim => {
-    :aliases => {
-      :root => "grant"
-    }
-  },
   :munin => {
     :graphs => {
       :apcpdu_ucl => {
