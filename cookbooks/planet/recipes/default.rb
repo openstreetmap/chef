@@ -29,7 +29,7 @@ else
   package "php5-cli"
 end
 
-template "/etc/cron.d/planet" do
+file "/etc/cron.d/planet" do
   action :delete
 end
 
