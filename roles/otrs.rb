@@ -5,6 +5,11 @@ default_attributes(
   :accounts => {
     :users => {
       :otrs => { :status => :role }
+    },
+    :groups => {
+      :"www-data" => {
+        :members => [:otrs]
+      }
     }
   },
   :exim => {
