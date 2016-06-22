@@ -101,3 +101,10 @@ end
     mode 0755
   end
 end
+
+template "/etc/cron.d/planet-dump-mirror" do
+  source "planet-dump-mirror-cron.erb"
+  owner "root"
+  group "root"
+  mode 0644
+end

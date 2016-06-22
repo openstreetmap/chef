@@ -30,10 +30,7 @@ else
 end
 
 template "/etc/cron.d/planet" do
-  source "cron.erb"
-  owner "root"
-  group "root"
-  mode 0644
+  action :delete
 end
 
 remote_directory "/store/planet" do
