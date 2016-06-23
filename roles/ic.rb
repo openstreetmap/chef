@@ -29,6 +29,9 @@ default_attributes(
       }
     }
   },
+  :passenger => {
+    :ruby_version => "2.3"
+  },
   :web => {
     :backends => %w(rails1 rails2 rails3),
     :fileserver => "ironbelly"
