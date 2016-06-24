@@ -36,7 +36,7 @@ package "libboost-system-dev"
 package "libboost-program-options-dev"
 package "libboost-date-time-dev"
 package "libboost-filesystem-dev"
-package "libpqxx3-dev"
+package "libpqxx-dev"
 package "zlib1g-dev"
 
 cgimap_directory = "#{node[:web][:base_directory]}/cgimap"
@@ -98,9 +98,9 @@ cgimap_init = edit_file "#{cgimap_directory}/scripts/cgimap.init" do |line|
   line.gsub!(/^CGIMAP_MEMCACHE=.*;/, "CGIMAP_MEMCACHE=#{memcached_servers.join(',')};")
   line.gsub!(/^CGIMAP_RATELIMIT=.*;/, "CGIMAP_RATELIMIT=204800;")
 
-  line.gsub!(%r{--pidfile \$CGIMAP_PIDFILE --exec /home/rails/bin/map}, "--pidfile $CGIMAP_PIDFILE")
+  line.gsub!(%r{--pidfile \$CGIMAP_PIDFILE --exec /home/rails/bin/openstreetmap-cgimap}, "--pidfile $CGIMAP_PIDFILE")
 
-  line.gsub!(%r{/home/rails/bin/map}, "#{cgimap_directory}/map")
+  line.gsub!(%r{/home/rails/bin/openstreetmap-cgimap}, "#{cgimap_directory}/openstreetmap-cgimap")
 
   if database_readonly
     line.gsub!(/--daemon/, "--daemon --readonly")
