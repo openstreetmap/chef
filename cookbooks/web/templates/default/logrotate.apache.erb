@@ -10,7 +10,7 @@
   create 640 root adm
   sharedscripts
   postrotate
-    /usr/bin/service apache2 reload > /dev/null
+    /etc/init.d/apache2 reload > /dev/null
     /usr/bin/rsync /var/log/apache2/access.log.2.gz ironbelly::logs/www.openstreetmap.org/<%= node[:hostname] %>-`date -d "-2 days" +%Y-%m-%d`.gz
   endscript
 }
