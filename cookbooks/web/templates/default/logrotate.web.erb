@@ -13,14 +13,14 @@
 <% if File.directory?("#{node[:web][:base_directory]}/rails") -%>
     /usr/bin/passenger-config restart-app --ignore-app-not-running <%= node[:web][:base_directory] %>/rails > /dev/null
 <% if node[:recipes].include?("logstash::forwarder") -%>
-    /usr/bin/service logstash-forwarder restart > /dev/null
+    /etc/init.d/logstash-forwarder restart > /dev/null
 <% end -%>
 <% end -%>
 <% if File.directory?("#{node[:web][:base_directory]}/gpx-import") -%>
-    /usr/bin/service gpx-import rotated
+    /etc/init.d/gpx-import rotated
 <% end -%>
 <% if File.directory?("#{node[:web][:base_directory]}/cgimap") -%>
-    /usr/bin/service cgimap reload
+    /etc/init.d/cgimap reload
     /usr/bin/rsync <%= node[:web][:log_directory] %>/cgimap.log.2.gz ironbelly::logs/www.openstreetmap.org/cgimap-<%= node[:hostname] %>-`date -d "-2 days" +%Y-%m-%d`.gz
 <% end -%>
   endscript
