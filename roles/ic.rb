@@ -34,7 +34,8 @@ default_attributes(
   },
   :web => {
     :backends => %w(rails1 rails2 rails3),
-    :fileserver => "ironbelly"
+    :fileserver => "ironbelly",
+    :readonly_database_host => "ramoth.ic.openstreetmap.org"
   }
 )
 
