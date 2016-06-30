@@ -25,20 +25,20 @@ template "/etc/nginx/nginx.conf" do
   source "nginx.conf.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
 end
 
 directory "/var/cache/nginx/fastcgi-cache" do
   owner "www-data"
   group "root"
-  mode 0755
+  mode 0o755
   only_if { node[:nginx][:cache][:fastcgi][:enable] }
 end
 
 directory "/var/cache/nginx/proxy-cache" do
   owner "www-data"
   group "root"
-  mode 0755
+  mode 0o755
   only_if { node[:nginx][:cache][:proxy][:enable] }
 end
 

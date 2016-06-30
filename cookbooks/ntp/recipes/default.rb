@@ -33,7 +33,7 @@ end
 file "/etc/timezone" do
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
   content "#{node[:tz]}\n"
   notifies :run, "execute[dpkg-reconfigure-tzdata]", :immediately
 end
@@ -47,7 +47,7 @@ template "/etc/ntp.conf" do
   source "ntp.conf.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
   notifies :restart, "service[ntp]"
 end
 

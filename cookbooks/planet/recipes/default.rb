@@ -40,27 +40,27 @@ remote_directory "/store/planet" do
   mode "0755"
   files_owner "root"
   files_group "root"
-  files_mode 0644
+  files_mode 0o644
 end
 
 remote_directory "/store/planet" do
   source "cgi"
   owner "root"
   group "root"
-  mode 0755
+  mode 0o755
   files_owner "root"
   files_group "root"
-  files_mode 0755
+  files_mode 0o755
 end
 
 remote_directory node[:planet][:dump][:xml_history_directory] do
   source "history_cgi"
   owner "www-data"
   group "planet"
-  mode 0755
+  mode 0o755
   files_owner "root"
   files_group "root"
-  files_mode 0755
+  files_mode 0o755
 end
 
 [:xml_directory, :xml_history_directory,
@@ -68,21 +68,21 @@ end
   directory node[:planet][:dump][dir] do
     owner "www-data"
     group "planet"
-    mode 0775
+    mode 0o775
   end
 end
 
 directory "/store/planet/notes" do
   owner "www-data"
   group "planet"
-  mode 0775
+  mode 0o775
 end
 
 template "/usr/local/bin/apache-latest-planet-filename" do
   source "apache-latest-planet-filename.erb"
   owner "root"
   group "root"
-  mode 0755
+  mode 0o755
 end
 
 apache_module "cgid"
@@ -97,7 +97,7 @@ template "/etc/logrotate.d/apache2" do
   source "logrotate.apache.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
 end
 
 munin_plugin "planet_age"

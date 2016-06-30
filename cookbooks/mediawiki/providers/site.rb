@@ -76,13 +76,13 @@ action :create do
   directory site_directory do
     owner node[:mediawiki][:user]
     group node[:mediawiki][:group]
-    mode 0775
+    mode 0o775
   end
 
   directory mediawiki_directory do
     owner node[:mediawiki][:user]
     group node[:mediawiki][:group]
-    mode 0775
+    mode 0o775
   end
 
   mediawiki_reference = "REL#{new_resource.version}".tr(".", "_")
@@ -121,19 +121,19 @@ action :create do
   directory "#{mediawiki_directory}/images" do
     owner "www-data"
     group node[:mediawiki][:group]
-    mode 0775
+    mode 0o775
   end
 
   directory "#{mediawiki_directory}/cache" do
     owner "www-data"
     group node[:mediawiki][:group]
-    mode 0775
+    mode 0o775
   end
 
   directory "#{mediawiki_directory}/LocalSettings.d" do
     user node[:mediawiki][:user]
     group node[:mediawiki][:group]
-    mode 0775
+    mode 0o775
   end
 
   template "#{mediawiki_directory}/LocalSettings.php" do
@@ -141,7 +141,7 @@ action :create do
     source "LocalSettings.php.erb"
     owner node[:mediawiki][:user]
     group node[:mediawiki][:group]
-    mode 0664
+    mode 0o664
     variables :name => new_resource.name,
               :directory => mediawiki_directory,
               :database_params => new_resource.database_params,
@@ -154,7 +154,7 @@ action :create do
     source "mediawiki.cron.erb"
     owner "root"
     group "root"
-    mode 0644
+    mode 0o644
     variables :name => new_resource.name, :directory => site_directory,
               :user => node[:mediawiki][:user]
   end
@@ -164,7 +164,7 @@ action :create do
     source "mediawiki-backup.cron.erb"
     owner "root"
     group "root"
-    mode 0700
+    mode 0o700
     variables :name => new_resource.name, :directory => site_directory,
               :database_params => new_resource.database_params
   end
@@ -431,7 +431,7 @@ action :create do
     cookbook "mediawiki"
     owner node[:mediawiki][:user]
     group node[:mediawiki][:group]
-    mode 0644
+    mode 0o644
     backup false
   end
 
@@ -439,7 +439,7 @@ action :create do
     cookbook "mediawiki"
     owner node[:mediawiki][:user]
     group node[:mediawiki][:group]
-    mode 0644
+    mode 0o644
     backup false
   end
 
@@ -447,7 +447,7 @@ action :create do
     cookbook "mediawiki"
     owner node[:mediawiki][:user]
     group node[:mediawiki][:group]
-    mode 0644
+    mode 0o644
     backup false
   end
 
@@ -483,7 +483,7 @@ action :update do
     source "LocalSettings.php.erb"
     owner node[:mediawiki][:user]
     group node[:mediawiki][:group]
-    mode 0664
+    mode 0o664
     variables :name => new_resource.name,
               :directory => mediawiki_directory,
               :database_params => new_resource.database_params,

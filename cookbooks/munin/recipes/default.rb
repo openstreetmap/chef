@@ -51,7 +51,7 @@ template "/etc/munin/munin-node.conf" do
   source "munin-node.conf.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
   variables :servers => servers
   notifies :restart, "service[munin-node]"
 end
@@ -60,10 +60,10 @@ remote_directory "/usr/local/share/munin/plugins" do
   source "plugins"
   owner "root"
   group "root"
-  mode 0755
+  mode 0o755
   files_owner "root"
   files_group "root"
-  files_mode 0755
+  files_mode 0o755
   purge true
 end
 
@@ -71,10 +71,10 @@ remote_directory "/etc/munin/plugin-conf.d" do
   source "plugin-conf.d"
   owner "root"
   group "munin"
-  mode 0750
+  mode 0o750
   files_owner "root"
   files_group "root"
-  files_mode 0644
+  files_mode 0o644
   purge false
   notifies :restart, "service[munin-node]"
 end

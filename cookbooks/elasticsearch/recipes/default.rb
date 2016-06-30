@@ -24,7 +24,7 @@ template "/etc/elasticsearch/elasticsearch.yml" do
   source "elasticsearch.yml.erb"
   user "root"
   group "root"
-  mode 0644
+  mode 0o644
   notifies :restart, "service[elasticsearch]"
 end
 

@@ -26,6 +26,6 @@ template "/etc/cron.daily/web-cleanup" do
   source "cleanup.cron.erb"
   owner "root"
   group "root"
-  mode 0755
+  mode 0o755
   variables :ruby => ruby, :directory => rails_directory
 end

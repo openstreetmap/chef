@@ -35,7 +35,7 @@ template "/etc/cron.hourly/passenger" do
   source "passenger.cron.erb"
   owner "root"
   group "root"
-  mode 0755
+  mode 0o755
 end
 
 rails_directory = "#{node[:web][:base_directory]}/rails"
@@ -85,7 +85,7 @@ template "/usr/local/bin/cleanup-rails-assets" do
   source "cleanup-assets.erb"
   owner "root"
   group "root"
-  mode 0755
+  mode 0o755
 end
 
 gem_package "apachelogregex"
@@ -95,14 +95,14 @@ template "/usr/local/bin/api-statistics" do
   source "api-statistics.erb"
   owner "root"
   group "root"
-  mode 0755
+  mode 0o755
 end
 
 template "/etc/init.d/api-statistics" do
   source "api-statistics.init.erb"
   owner "root"
   group "root"
-  mode 0755
+  mode 0o755
 end
 
 service "api-statistics" do

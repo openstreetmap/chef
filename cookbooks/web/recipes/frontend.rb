@@ -45,5 +45,5 @@ template "/etc/logrotate.d/apache2" do
   source "logrotate.apache.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
 end

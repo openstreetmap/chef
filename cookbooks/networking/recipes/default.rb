@@ -50,7 +50,7 @@ template "/etc/network/interfaces" do
   source "interfaces.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
 end
 
 execute "hostname" do
@@ -62,7 +62,7 @@ template "/etc/hostname" do
   source "hostname.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
   notifies :run, "execute[hostname]"
 end
 
@@ -70,7 +70,7 @@ template "/etc/hosts" do
   source "hosts.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
 end
 
 link "/etc/resolv.conf" do
@@ -84,7 +84,7 @@ template "/etc/resolv.conf" do
   source "resolv.conf.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
 end
 
 node.interfaces(:role => :internal) do |interface|
@@ -135,7 +135,7 @@ template "/etc/default/shorewall" do
   source "shorewall-default.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
   notifies :restart, "service[shorewall]"
 end
 
@@ -143,7 +143,7 @@ template "/etc/shorewall/shorewall.conf" do
   source "shorewall.conf.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
   notifies :restart, "service[shorewall]"
 end
 
@@ -151,7 +151,7 @@ template "/etc/shorewall/zones" do
   source "shorewall-zones.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
   variables :type => "ipv4"
   notifies :restart, "service[shorewall]"
 end
@@ -160,7 +160,7 @@ template "/etc/shorewall/interfaces" do
   source "shorewall-interfaces.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
   notifies :restart, "service[shorewall]"
 end
 
@@ -168,7 +168,7 @@ template "/etc/shorewall/hosts" do
   source "shorewall-hosts.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
   variables :zones => zones
   notifies :restart, "service[shorewall]"
 end
@@ -177,7 +177,7 @@ template "/etc/shorewall/policy" do
   source "shorewall-policy.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
   notifies :restart, "service[shorewall]"
 end
 
@@ -185,7 +185,7 @@ template "/etc/shorewall/rules" do
   source "shorewall-rules.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
   variables :rules => []
   notifies :restart, "service[shorewall]"
 end
@@ -200,7 +200,7 @@ template "/etc/logrotate.d/shorewall" do
   source "logrotate.shorewall.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
   variables :name => "shorewall"
 end
 
@@ -231,7 +231,7 @@ if node[:roles].include?("gateway")
     source "shorewall-masq.erb"
     owner "root"
     group "root"
-    mode 0644
+    mode 0o644
     notifies :restart, "service[shorewall]"
   end
 else
@@ -248,7 +248,7 @@ unless node.interfaces(:family => :inet6).empty?
     source "shorewall-default.erb"
     owner "root"
     group "root"
-    mode 0644
+    mode 0o644
     notifies :restart, "service[shorewall6]"
   end
 
@@ -256,7 +256,7 @@ unless node.interfaces(:family => :inet6).empty?
     source "shorewall6.conf.erb"
     owner "root"
     group "root"
-    mode 0644
+    mode 0o644
     notifies :restart, "service[shorewall6]"
   end
 
@@ -264,7 +264,7 @@ unless node.interfaces(:family => :inet6).empty?
     source "shorewall-zones.erb"
     owner "root"
     group "root"
-    mode 0644
+    mode 0o644
     variables :type => "ipv6"
     notifies :restart, "service[shorewall6]"
   end
@@ -273,7 +273,7 @@ unless node.interfaces(:family => :inet6).empty?
     source "shorewall6-interfaces.erb"
     owner "root"
     group "root"
-    mode 0644
+    mode 0o644
     notifies :restart, "service[shorewall6]"
   end
 
@@ -281,7 +281,7 @@ unless node.interfaces(:family => :inet6).empty?
     source "shorewall6-hosts.erb"
     owner "root"
     group "root"
-    mode 0644
+    mode 0o644
     variables :zones => zones
     notifies :restart, "service[shorewall6]"
   end
@@ -290,7 +290,7 @@ unless node.interfaces(:family => :inet6).empty?
     source "shorewall-policy.erb"
     owner "root"
     group "root"
-    mode 0644
+    mode 0o644
     notifies :restart, "service[shorewall6]"
   end
 
@@ -298,7 +298,7 @@ unless node.interfaces(:family => :inet6).empty?
     source "shorewall-rules.erb"
     owner "root"
     group "root"
-    mode 0644
+    mode 0o644
     variables :rules => []
     notifies :restart, "service[shorewall6]"
   end
@@ -313,7 +313,7 @@ unless node.interfaces(:family => :inet6).empty?
     source "logrotate.shorewall.erb"
     owner "root"
     group "root"
-    mode 0644
+    mode 0o644
     variables :name => "shorewall6"
   end
 

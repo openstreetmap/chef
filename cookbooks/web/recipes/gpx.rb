@@ -57,7 +57,7 @@ template "/etc/init.d/gpx-import" do
   source "init.gpx.erb"
   owner "root"
   group "root"
-  mode 0755
+  mode 0o755
   variables :gpx_directory => gpx_directory,
             :pid_directory => pid_directory,
             :log_directory => log_directory,

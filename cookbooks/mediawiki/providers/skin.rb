@@ -30,10 +30,10 @@ action :create do
       source new_resource.source
       owner node[:mediawiki][:user]
       group node[:mediawiki][:group]
-      mode 0755
+      mode 0o755
       files_owner node[:mediawiki][:user]
       files_group node[:mediawiki][:group]
-      files_mode 0755
+      files_mode 0o755
     end
   else
     skin_repository = new_resource.repository || default_repository
@@ -56,7 +56,7 @@ action :create do
       source new_resource.template
       user node[:mediawiki][:user]
       group node[:mediawiki][:group]
-      mode 0664
+      mode 0o664
       variables new_resource.variables
     end
   else
@@ -67,7 +67,7 @@ action :create do
       content "<?php require_once('#{skin_script}');\n"
       user node[:mediawiki][:user]
       group node[:mediawiki][:group]
-      mode 0664
+      mode 0o664
       only_if { ::File.exist?(skin_script) }
     end
   end

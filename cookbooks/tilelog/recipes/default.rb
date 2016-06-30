@@ -72,7 +72,7 @@ template "/usr/local/bin/tilelog" do
   source "tilelog.erb"
   owner "root"
   group "root"
-  mode 0755
+  mode 0o755
   variables :analyze_bin => "#{tilelog_source_directory}/openstreetmap-tile-analyze",
             :input_dir => tilelog_input_directory,
             :output_dir => tilelog_output_directory
@@ -82,7 +82,7 @@ template "/etc/cron.d/tilelog" do
   source "tilelog.cron.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
 end
 
 # resources related to the output of the analysis and where it
@@ -91,5 +91,5 @@ directory tilelog_output_directory do
   action :create
   user "www-data"
   group "www-data"
-  mode 0755
+  mode 0o755
 end

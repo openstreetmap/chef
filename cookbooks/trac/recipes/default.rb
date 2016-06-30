@@ -30,7 +30,7 @@ template "/var/lib/trac/conf/trac.ini" do
   source "trac.ini.erb"
   owner "trac"
   group "www-data"
-  mode 0644
+  mode 0o644
   variables :name => site_name
 end
 
@@ -38,10 +38,10 @@ remote_directory "/var/lib/trac/htdocs" do
   source "htdocs"
   owner "trac"
   group "trac"
-  mode 0755
+  mode 0o755
   files_owner "trac"
   files_group "trac"
-  files_mode 0644
+  files_mode 0o644
   purge true
 end
 
@@ -49,10 +49,10 @@ remote_directory "/var/lib/trac/templates" do
   source "templates"
   owner "trac"
   group "trac"
-  mode 0755
+  mode 0o755
   files_owner "trac"
   files_group "trac"
-  files_mode 0644
+  files_mode 0o644
   purge true
 end
 
@@ -66,7 +66,7 @@ end
 cookbook_file "/usr/local/bin/trac-authenticate" do
   owner "root"
   group "root"
-  mode 0755
+  mode 0o755
 end
 
 apache_module "wsgi"
@@ -81,12 +81,12 @@ template "/etc/sudoers.d/trac" do
   source "sudoers.erb"
   owner "root"
   group "root"
-  mode 0440
+  mode 0o440
 end
 
 template "/etc/cron.daily/trac-backup" do
   source "backup.cron.erb"
   owner "root"
   group "root"
-  mode 0755
+  mode 0o755
 end

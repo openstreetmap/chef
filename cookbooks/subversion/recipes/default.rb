@@ -28,10 +28,10 @@ remote_directory "#{repository_directory}/hooks" do
   source "hooks"
   owner "www-data"
   group "www-data"
-  mode 0755
+  mode 0o755
   files_owner "www-data"
   files_group "www-data"
-  files_mode 0755
+  files_mode 0o755
   purge false
 end
 
@@ -61,5 +61,5 @@ template "/etc/cron.daily/svn-backup" do
   source "backup.cron.erb"
   owner "root"
   group "root"
-  mode 0755
+  mode 0o755
 end

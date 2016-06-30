@@ -28,7 +28,7 @@ template "/etc/memcached.conf" do
   source "memcached.conf.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
   notifies :restart, "service[memcached]"
 end
 

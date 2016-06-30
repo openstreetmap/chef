@@ -63,7 +63,7 @@ civicrm_directory = "/srv/join.osmfoundation.org/wp-content/plugins/civicrm"
 directory "/opt/civicrm-#{civicrm_version}" do
   owner "wordpress"
   group "wordpress"
-  mode 0755
+  mode 0o755
 end
 
 remote_file "/var/cache/chef/civicrm-#{civicrm_version}-wordpress.zip" do
@@ -71,7 +71,7 @@ remote_file "/var/cache/chef/civicrm-#{civicrm_version}-wordpress.zip" do
   source "https://download.civicrm.org/civicrm-#{civicrm_version}-wordpress.zip"
   owner "wordpress"
   group "wordpress"
-  mode 0644
+  mode 0o644
   backup false
 end
 
@@ -80,7 +80,7 @@ remote_file "/var/cache/chef/civicrm-#{civicrm_version}-l10n.tar.gz" do
   source "https://download.civicrm.org/civicrm-#{civicrm_version}-l10n.tar.gz"
   owner "wordpress"
   group "wordpress"
-  mode 0644
+  mode 0o644
   backup false
 end
 
@@ -114,7 +114,7 @@ end
 directory "/srv/join.osmfoundation.org/wp-content/plugins/files" do
   owner "www-data"
   group "www-data"
-  mode 0755
+  mode 0o755
 end
 
 extensions_directory = "/srv/join.osmfoundation.org/wp-content/plugins/civicrm-extensions"
@@ -122,7 +122,7 @@ extensions_directory = "/srv/join.osmfoundation.org/wp-content/plugins/civicrm-e
 directory extensions_directory do
   owner "wordpress"
   group "wordpress"
-  mode 0755
+  mode 0o755
 end
 
 node[:civicrm][:extensions].each do |_, details|
@@ -157,7 +157,7 @@ end
 file "#{civicrm_directory}/civicrm.settings.php" do
   owner "wordpress"
   group "wordpress"
-  mode 0644
+  mode 0o644
   content settings
 end
 
@@ -165,7 +165,7 @@ template "/etc/cron.d/osmf-crm" do
   source "cron.erb"
   owner "root"
   group "root"
-  mode 0600
+  mode 0o600
   variables :directory => civicrm_directory, :passwords => passwords
 end
 
@@ -173,6 +173,6 @@ template "/etc/cron.daily/osmf-crm-backup" do
   source "backup.cron.erb"
   owner "root"
   group "root"
-  mode 0750
+  mode 0o750
   variables :passwords => passwords
 end

@@ -62,12 +62,11 @@ def plugin_path
 end
 
 def target_path
-  case
-  when ::File.exist?(target)
+  if ::File.exist?(target)
     target
-  when ::File.exist?("/usr/local/share/munin/plugins/#{target}")
+  elsif ::File.exist?("/usr/local/share/munin/plugins/#{target}")
     "/usr/local/share/munin/plugins/#{target}"
-  when ::File.exist?("/usr/share/munin/plugins/#{target}")
+  elsif ::File.exist?("/usr/share/munin/plugins/#{target}")
     "/usr/share/munin/plugins/#{target}"
   end
 end

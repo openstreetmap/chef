@@ -29,7 +29,7 @@ action :create do
       source new_resource.source
       owner "root"
       group "root"
-      mode 0644
+      mode 0o644
     end
   else
     template "/etc/fail2ban/filter.d/#{new_resource.name}.conf" do
@@ -37,7 +37,7 @@ action :create do
       source "filter.erb"
       owner "root"
       group "root"
-      mode 0644
+      mode 0o644
       variables :failregex => new_resource.failregex,
                 :ignoreregex => new_resource.ignoreregex
     end

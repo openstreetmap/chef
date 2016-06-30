@@ -77,7 +77,7 @@ template "/etc/logrotate.d/squid" do
   source "logrotate.squid.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
 end
 
 nginx_site "default" do
@@ -105,7 +105,7 @@ template "/etc/logrotate.d/nginx" do
   source "logrotate.nginx.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
 end
 
 tilerenders.each do |render|

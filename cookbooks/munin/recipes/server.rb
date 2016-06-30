@@ -27,13 +27,13 @@ template "/etc/default/rrdcached" do
   source "rrdcached.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
 end
 
 directory "/var/lib/munin/rrdcached" do
   owner "munin"
   group "munin"
-  mode 0755
+  mode 0o755
 end
 
 service "rrdcached" do
@@ -62,7 +62,7 @@ template "/etc/munin/munin.conf" do
   source "munin.conf.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
   variables :expiry_time => expiry_time, :clients => clients,
             :frontends => frontends, :backends => backends,
             :tilecaches => tilecaches, :renderers => renderers,
@@ -76,10 +76,10 @@ remote_directory "/srv/munin.openstreetmap.org" do
   source "www"
   owner "root"
   group "root"
-  mode 0755
+  mode 0o755
   files_owner "root"
   files_group "root"
-  files_mode 0644
+  files_mode 0o644
   purge true
 end
 
@@ -91,7 +91,7 @@ template "/etc/cron.daily/munin-backup" do
   source "backup.cron.erb"
   owner "root"
   group "root"
-  mode 0755
+  mode 0o755
 end
 
 munin_plugin "munin_stats"

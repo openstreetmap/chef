@@ -54,7 +54,7 @@ template "/etc/opscode/chef-server.rb" do
   source "server.rb.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
   notifies :run, "execute[chef-server-reconfigure]"
 end
 
@@ -86,14 +86,14 @@ template "/etc/cron.daily/chef-server-backup" do
   source "server-backup.cron.erb"
   owner "root"
   group "root"
-  mode 0755
+  mode 0o755
 end
 
 template "/etc/logrotate.d/chef-server" do
   source "logrotate.server.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
 end
 
 munin_plugin "chef_status"

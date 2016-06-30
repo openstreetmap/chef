@@ -90,7 +90,7 @@ end
 file "/srv/thinkup.openstreetmap.org/webapp/config.inc.php" do
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
   content thinkup_config
   notifies :reload, "service[apache2]"
 end
@@ -108,7 +108,7 @@ end
 file "/srv/thinkup.openstreetmap.org/extras/cron/config" do
   owner "root"
   group "thinkup"
-  mode 0640
+  mode 0o640
   content thinkup_cron
 end
 
@@ -123,6 +123,6 @@ template "/etc/cron.daily/thinkup-backup" do
   source "backup.cron.erb"
   owner "root"
   group "root"
-  mode 0750
+  mode 0o750
   variables :passwords => passwords
 end

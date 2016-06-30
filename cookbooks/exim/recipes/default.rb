@@ -37,7 +37,7 @@ template "/tmp/exim.ssl.cnf" do
   source "ssl.cnf.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
   not_if do
     File.exist?("/etc/ssl/certs/exim.pem") && File.exist?("/etc/ssl/private/exim.key")
   end
@@ -76,7 +76,7 @@ template "/etc/exim4/exim4.conf" do
   source "exim4.conf.erb"
   owner "root"
   group "Debian-exim"
-  mode 0644
+  mode 0o644
   variables :relay_to_domains => relay_to_domains.sort,
             :relay_from_hosts => relay_from_hosts.sort
   notifies :restart, "service[exim4]"
@@ -103,17 +103,17 @@ template "/etc/aliases" do
   source "aliases.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
 end
 
 remote_directory "/etc/exim4/noreply" do
   source "noreply"
   owner "root"
   group "Debian-exim"
-  mode 0755
+  mode 0o755
   files_owner "root"
   files_group "Debian-exim"
-  files_mode 0755
+  files_mode 0o755
   purge true
 end
 

@@ -28,7 +28,7 @@ template "/etc/sysfs.conf" do
   source "sysfs.conf.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
   notifies :restart, "service[sysfsutils]"
 end
 

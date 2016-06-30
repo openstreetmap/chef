@@ -54,7 +54,7 @@ action :create do
   directory site_directory do
     owner node[:wordpress][:user]
     group node[:wordpress][:group]
-    mode 0755
+    mode 0o755
   end
 
   subversion site_directory do
@@ -98,14 +98,14 @@ action :create do
   file "#{site_directory}/wp-config.php" do
     owner node[:wordpress][:user]
     group node[:wordpress][:group]
-    mode 0644
+    mode 0o644
     content wp_config
   end
 
   directory "#{site_directory}/wp-content/uploads" do
     owner "www-data"
     group "www-data"
-    mode 0755
+    mode 0o755
   end
 
   file "#{site_directory}/sitemap.xml" do
@@ -120,7 +120,7 @@ action :create do
     cookbook "wordpress"
     owner node[:wordpress][:user]
     group node[:wordpress][:group]
-    mode 0644
+    mode 0o644
     backup false
   end
 

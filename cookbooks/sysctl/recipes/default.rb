@@ -24,7 +24,7 @@ end
 directory "/etc/sysctl.d" do
   owner "root"
   group "root"
-  mode 0755
+  mode 0o755
 end
 
 execute "sysctl" do
@@ -36,7 +36,7 @@ template "/etc/sysctl.d/60-chef.conf" do
   source "chef.conf.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
   notifies :run, "execute[sysctl]"
 end
 

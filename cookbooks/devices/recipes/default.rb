@@ -26,6 +26,6 @@ template "/etc/udev/rules.d/99-chef.rules" do
   source "udev.rules.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
   notifies :run, "execute[udevadm-trigger]"
 end

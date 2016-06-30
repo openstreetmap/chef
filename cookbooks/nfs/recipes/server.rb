@@ -58,7 +58,7 @@ template "/etc/exports" do
   source "exports.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
   variables :exports => exports
   notifies :run, "execute[exportfs]"
 end

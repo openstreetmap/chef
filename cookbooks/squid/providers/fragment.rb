@@ -28,7 +28,7 @@ action :create do
     source new_resource.template
     owner "root"
     group "root"
-    mode 0644
+    mode 0o644
     variables new_resource.variables
   end
 end

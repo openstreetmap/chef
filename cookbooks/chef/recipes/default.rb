@@ -22,7 +22,7 @@ chef_package = "chef_#{node[:chef][:client][:version]}_amd64.deb"
 directory "/var/cache/chef" do
   owner "root"
   group "root"
-  mode 0755
+  mode 0o755
 end
 
 Dir.glob("/var/cache/chef/chef_*.deb").each do |deb|
@@ -38,7 +38,7 @@ remote_file "/var/cache/chef/#{chef_package}" do
   source "https://packages.chef.io/stable/ubuntu/10.04/#{chef_package}"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
   backup false
   ignore_failure true
 end
@@ -51,59 +51,59 @@ end
 directory "/etc/chef" do
   owner "root"
   group "root"
-  mode 0755
+  mode 0o755
 end
 
 template "/etc/chef/client.rb" do
   source "client.rb.erb"
   owner "root"
   group "root"
-  mode 0640
+  mode 0o640
 end
 
 file "/etc/chef/client.pem" do
   owner "root"
   group "root"
-  mode 0400
+  mode 0o400
 end
 
 template "/etc/chef/report.rb" do
   source "report.rb.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
 end
 
 template "/etc/logrotate.d/chef" do
   source "logrotate.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
 end
 
 directory "/etc/chef/trusted_certs" do
   owner "root"
   group "root"
-  mode 0755
+  mode 0o755
 end
 
 template "/etc/chef/trusted_certs/verisign.pem" do
   source "verisign.pem.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
 end
 
 directory node[:ohai][:plugin_dir] do
   owner "root"
   group "root"
-  mode 0755
+  mode 0o755
 end
 
 directory "/var/log/chef" do
   owner "root"
   group "root"
-  mode 0755
+  mode 0o755
 end
 
 if node[:lsb][:release].to_f >= 15.10
@@ -128,7 +128,7 @@ else
     source "chef-client.conf.erb"
     owner "root"
     group "root"
-    mode 0644
+    mode 0o644
   end
 
   service "chef-client" do

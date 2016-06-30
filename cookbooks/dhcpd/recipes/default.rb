@@ -27,7 +27,7 @@ template "/etc/dhcp/dhcpd.conf" do
   source "dhcpd.conf.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
   variables :domain => domain
 end
 

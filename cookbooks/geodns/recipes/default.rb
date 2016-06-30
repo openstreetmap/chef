@@ -30,7 +30,7 @@ template "/etc/gdnsd/config" do
   source "config.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
   notifies :restart, "service[gdnsd]"
 end
 
@@ -38,7 +38,7 @@ template "/etc/gdnsd/zones/geo.openstreetmap.org" do
   source "geo.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
   notifies :restart, "service[gdnsd]"
 end
 

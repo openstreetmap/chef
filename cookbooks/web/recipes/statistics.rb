@@ -26,7 +26,7 @@ template "/usr/local/bin/statistics" do
   source "statistics.erb"
   owner "root"
   group "root"
-  mode 0755
+  mode 0o755
   variables :ruby => ruby, :directory => rails_directory
 end
 
@@ -34,5 +34,5 @@ template "/etc/cron.d/statistics" do
   source "statistics.cron.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
 end

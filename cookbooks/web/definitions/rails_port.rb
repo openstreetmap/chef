@@ -72,7 +72,7 @@ define :rails_port, :action => [:create, :enable] do
   directory rails_directory do
     owner rails_user
     group rails_group
-    mode 02775
+    mode 0o2775
   end
 
   git rails_directory do
@@ -102,7 +102,7 @@ define :rails_port, :action => [:create, :enable] do
     source "database.yml.erb"
     owner rails_user
     group rails_group
-    mode 0664
+    mode 0o664
     variables database_params
     notifies :run, "execute[#{rails_directory}]"
   end
@@ -201,7 +201,7 @@ define :rails_port, :action => [:create, :enable] do
   file "#{rails_directory}/config/application.yml" do
     owner rails_user
     group rails_group
-    mode 0664
+    mode 0o664
     content application_yml
     notifies :run, "execute[#{rails_directory}/public/assets]"
   end
@@ -210,7 +210,7 @@ define :rails_port, :action => [:create, :enable] do
     file "#{rails_directory}/config/piwik.yml" do
       owner rails_user
       group rails_group
-      mode 0664
+      mode 0o664
       content YAML.dump(params[:piwik_configuration])
       notifies :run, "execute[#{rails_directory}/public/assets]"
     end
@@ -292,7 +292,7 @@ define :rails_port, :action => [:create, :enable] do
     source "rails.cron.erb"
     owner "root"
     group "root"
-    mode 0755
+    mode 0o755
     variables :directory => rails_directory
   end
 end

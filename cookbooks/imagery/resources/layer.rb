@@ -44,7 +44,7 @@ action :create do
   file "/srv/imagery/layers/#{site}/#{layer}.yml" do
     owner "root"
     group "root"
-    mode 0644
+    mode 0o644
     content YAML.dump(:name => layer,
                       :title => title || layer,
                       :url => "http://{s}.#{site}/layer/#{layer}/{z}/{x}/{y}.png",
@@ -59,7 +59,7 @@ action :create do
     source "mapserver.map.erb"
     owner "root"
     group "root"
-    mode 0644
+    mode 0o644
     variables new_resource.to_hash
   end
 
@@ -90,7 +90,7 @@ action :create do
   directory "/srv/imagery/nginx/#{site}" do
     owner "root"
     group "root"
-    mode 0755
+    mode 0o755
     recursive true
   end
 
@@ -99,7 +99,7 @@ action :create do
     source "nginx_imagery_layer_fragment.conf.erb"
     owner "root"
     group "root"
-    mode 0644
+    mode 0o644
     variables new_resource.to_hash
   end
 end

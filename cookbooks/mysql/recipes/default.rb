@@ -29,7 +29,7 @@ template "/etc/mysql/conf.d/chef.cnf" do
   source "my.cnf.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
   notifies :reload, "service[mysql]"
 end
 

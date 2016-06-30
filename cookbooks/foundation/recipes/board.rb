@@ -42,5 +42,5 @@ end
 cookbook_file "/srv/board.osmfoundation.org/Wiki.png" do
   owner node[:mediawiki][:user]
   group node[:mediawiki][:group]
-  mode 0644
+  mode 0o644
 end

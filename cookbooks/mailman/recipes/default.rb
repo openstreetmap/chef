@@ -29,7 +29,7 @@ template "/etc/mailman/mm_cfg.py" do
   source "mm_cfg.py.erb"
   user "root"
   group "root"
-  mode 0644
+  mode 0o644
   notifies :restart, "service[mailman]"
 end
 
@@ -49,5 +49,5 @@ template "/etc/cron.daily/lists-backup" do
   source "backup.cron.erb"
   owner "root"
   group "root"
-  mode 0755
+  mode 0o755
 end

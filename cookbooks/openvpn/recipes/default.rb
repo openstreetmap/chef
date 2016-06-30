@@ -55,7 +55,7 @@ node[:openvpn][:tunnels].each do |name, details|
     file "/etc/openvpn/#{name}.key" do
       owner "root"
       group "root"
-      mode 0600
+      mode 0o600
       content peer[:openvpn][:keys][name]
     end
   end
@@ -65,7 +65,7 @@ node[:openvpn][:tunnels].each do |name, details|
       source "tunnel.conf.erb"
       owner "root"
       group "root"
-      mode 0644
+      mode 0o644
       variables :name => name,
                 :address => node[:openvpn][:address],
                 :port => node[:openvpn][:tunnels][name][:port],

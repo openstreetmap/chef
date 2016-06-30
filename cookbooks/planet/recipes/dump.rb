@@ -49,7 +49,7 @@ package "php-curl"
 directory "/opt/planet-dump-ng" do
   owner "root"
   group "root"
-  mode 0755
+  mode 0o755
 end
 
 git "/opt/planet-dump-ng" do
@@ -90,7 +90,7 @@ end
 directory "/store/planetdump" do
   owner "www-data"
   group "www-data"
-  mode 0755
+  mode 0o755
 end
 
 ["planetdump", "planet-mirror-redirect-update", "apache-latest-planet-filename"].each do |program|
@@ -98,7 +98,7 @@ end
     source "#{program}.erb"
     owner "root"
     group "root"
-    mode 0755
+    mode 0o755
   end
 end
 
@@ -106,5 +106,5 @@ template "/etc/cron.d/planet-dump-mirror" do
   source "planet-dump-mirror-cron.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
 end

@@ -27,7 +27,7 @@ node[:stats][:sites].each do |site|
     source "awstats.conf.erb"
     owner "root"
     group "root"
-    mode 0644
+    mode 0o644
     variables :site => site
   end
 end
@@ -36,41 +36,41 @@ template "/etc/cron.d/awstats" do
   source "awstats.cron.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
   variables :sites => node[:stats][:sites]
 end
 
 cookbook_file "/usr/local/bin/repack-archived-logs" do
   owner "root"
   group "root"
-  mode 0755
+  mode 0o755
 end
 
 template "/etc/cron.d/repack-archived-logs" do
   source "repack.cron.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
 end
 
 directory "/srv/stats.openstreetmap.org" do
   owner "root"
   group "root"
-  mode 0755
+  mode 0o755
 end
 
 template "/srv/stats.openstreetmap.org/index.html" do
   source "index.html.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
   variables :sites => node[:stats][:sites]
 end
 
 cookbook_file "/srv/stats.openstreetmap.org/robots.txt" do
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
 end
 
 apache_site "stats.openstreetmap.org" do

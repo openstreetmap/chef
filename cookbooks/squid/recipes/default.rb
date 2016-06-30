@@ -24,20 +24,20 @@ template "/etc/squid/squid.conf" do
   source "squid.conf.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
 end
 
 template "/etc/default/squid" do
   source "squid.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
 end
 
 directory "/etc/squid/squid.conf.d" do
   owner "root"
   group "root"
-  mode 0755
+  mode 0o755
 end
 
 if node[:lsb][:release].to_f >= 15.10

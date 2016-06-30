@@ -63,10 +63,10 @@ search(:accounts, "*:*").each do |account|
       source name.to_s
       owner name.to_s
       group name.to_s
-      mode 0755
+      mode 0o755
       files_owner name.to_s
       files_group name.to_s
-      files_mode 0644
+      files_mode 0o644
       only_if do
         begin
           cookbook = run_context.cookbook_collection[cookbook_name]

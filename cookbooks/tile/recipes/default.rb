@@ -51,13 +51,13 @@ template "/etc/logrotate.d/apache2" do
   source "logrotate.apache.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
 end
 
 directory "/srv/tile.openstreetmap.org" do
   owner "tile"
   group "tile"
-  mode 0755
+  mode 0o755
 end
 
 package "renderd"
@@ -70,14 +70,14 @@ end
 directory "/srv/tile.openstreetmap.org/tiles" do
   owner "tile"
   group "tile"
-  mode 0755
+  mode 0o755
 end
 
 template "/etc/renderd.conf" do
   source "renderd.conf.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
   notifies :reload, "service[apache2]"
   notifies :restart, "service[renderd]"
 end
@@ -86,17 +86,17 @@ remote_directory "/srv/tile.openstreetmap.org/html" do
   source "html"
   owner "tile"
   group "tile"
-  mode 0755
+  mode 0o755
   files_owner "tile"
   files_group "tile"
-  files_mode 0644
+  files_mode 0o644
 end
 
 template "/srv/tile.openstreetmap.org/html/index.html" do
   source "index.html.erb"
   owner "tile"
   group "tile"
-  mode 0644
+  mode 0o644
 end
 
 package "python-cairo"
@@ -115,14 +115,14 @@ package "ttf-kannada-fonts"
 directory "/srv/tile.openstreetmap.org/cgi-bin" do
   owner "tile"
   group "tile"
-  mode 0755
+  mode 0o755
 end
 
 template "/srv/tile.openstreetmap.org/cgi-bin/export" do
   source "export.erb"
   owner "tile"
   group "tile"
-  mode 0755
+  mode 0o755
   variables :blocks => blocks
 end
 
@@ -130,20 +130,20 @@ template "/srv/tile.openstreetmap.org/cgi-bin/debug" do
   source "debug.erb"
   owner "tile"
   group "tile"
-  mode 0755
+  mode 0o755
 end
 
 template "/etc/cron.hourly/export" do
   source "export.cron.erb"
   owner "root"
   group "root"
-  mode 0755
+  mode 0o755
 end
 
 directory "/srv/tile.openstreetmap.org/data" do
   owner "tile"
   group "tile"
-  mode 0755
+  mode 0o755
 end
 
 package "mapnik-utils"
@@ -156,7 +156,7 @@ node[:tile][:data].each_value do |data|
   directory directory do
     owner "tile"
     group "tile"
-    mode 0755
+    mode 0o755
   end
 
   if file =~ /\.tgz$/
@@ -208,7 +208,7 @@ node[:tile][:data].each_value do |data|
     source url
     owner "tile"
     group "tile"
-    mode 0644
+    mode 0o644
     backup false
     notifies :run, "execute[#{file}]", :immediately
     notifies :restart, "service[renderd]"
@@ -221,7 +221,7 @@ nodejs_package "millstone"
 directory "/srv/tile.openstreetmap.org/styles" do
   owner "tile"
   group "tile"
-  mode 0755
+  mode 0o755
 end
 
 node[:tile][:styles].each do |name, details|
@@ -232,7 +232,7 @@ node[:tile][:styles].each do |name, details|
     source "update-lowzoom.erb"
     owner "root"
     group "root"
-    mode 0755
+    mode 0o755
     variables :style => name
   end
 
@@ -240,7 +240,7 @@ node[:tile][:styles].each do |name, details|
     source "update-lowzoom.init.erb"
     owner "root"
     group "root"
-    mode 0755
+    mode 0o755
     variables :style => name
   end
 
@@ -252,21 +252,21 @@ node[:tile][:styles].each do |name, details|
   directory tile_directory do
     owner "tile"
     group "tile"
-    mode 0755
+    mode 0o755
   end
 
   details[:tile_directories].each do |directory|
     directory directory[:name] do
       owner "www-data"
       group "www-data"
-      mode 0755
+      mode 0o755
     end
 
     directory[:min_zoom].upto(directory[:max_zoom]) do |zoom|
       directory "#{directory[:name]}/#{zoom}" do
         owner "www-data"
         group "www-data"
-        mode 0755
+        mode 0o755
       end
 
       link "#{tile_directory}/#{zoom}" do
@@ -281,7 +281,7 @@ node[:tile][:styles].each do |name, details|
     action :create_if_missing
     owner "tile"
     group "tile"
-    mode 0444
+    mode 0o444
   end
 
   git style_directory do
@@ -366,13 +366,13 @@ end
 file node[:tile][:node_file] do
   owner "tile"
   group "www-data"
-  mode 0640
+  mode 0o640
 end
 
 directory "/var/log/tile" do
   owner "tile"
   group "tile"
-  mode 0755
+  mode 0o755
 end
 
 package "osm2pgsql"
@@ -391,51 +391,51 @@ remote_directory "/usr/local/lib/site_ruby" do
   source "ruby"
   owner "root"
   group "root"
-  mode 0755
+  mode 0o755
   files_owner "root"
   files_group "root"
-  files_mode 0644
+  files_mode 0o644
 end
 
 template "/usr/local/bin/expire-tiles" do
   source "expire-tiles.erb"
   owner "root"
   group "root"
-  mode 0755
+  mode 0o755
 end
 
 template "/etc/sudoers.d/tile" do
   source "sudoers.erb"
   owner "root"
   group "root"
-  mode 0440
+  mode 0o440
 end
 
 directory "/var/lib/replicate" do
   owner "tile"
   group "tile"
-  mode 0755
+  mode 0o755
 end
 
 template "/var/lib/replicate/configuration.txt" do
   source "replicate.configuration.erb"
   owner "tile"
   group "tile"
-  mode 0644
+  mode 0o644
 end
 
 template "/usr/local/bin/replicate" do
   source "replicate.erb"
   owner "root"
   group "root"
-  mode 0755
+  mode 0o755
 end
 
 template "/etc/init.d/replicate" do
   source "replicate.init.erb"
   owner "root"
   group "root"
-  mode 0755
+  mode 0o755
 end
 
 service "replicate" do
@@ -449,28 +449,28 @@ template "/etc/logrotate.d/replicate" do
   source "replicate.logrotate.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
 end
 
 template "/usr/local/bin/render-lowzoom" do
   source "render-lowzoom.erb"
   owner "root"
   group "root"
-  mode 0755
+  mode 0o755
 end
 
 template "/etc/cron.d/render-lowzoom" do
   source "render-lowzoom.cron.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
 end
 
 template "/etc/rsyslog.d/20-renderd.conf" do
   source "renderd.rsyslog.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
   notifies :restart, "service[rsyslog]"
 end
 
@@ -478,7 +478,7 @@ template "/etc/logrotate.d/renderd" do
   source "renderd.logrotate.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
 end
 
 package "liblockfile-simple-perl"
@@ -488,7 +488,7 @@ template "/usr/local/bin/cleanup-tiles" do
   source "cleanup-tiles.erb"
   owner "root"
   group "root"
-  mode 0755
+  mode 0o755
 end
 
 tile_directories = node[:tile][:styles].collect do |_, style|
@@ -499,7 +499,7 @@ template "/etc/cron.d/cleanup-tiles" do
   source "cleanup-tiles.cron.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
   variables :directories => tile_directories
 end
 

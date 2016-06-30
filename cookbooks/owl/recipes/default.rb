@@ -82,7 +82,7 @@ end
 directory "/srv/owl.openstreetmap.org" do
   owner "owl"
   group "owl"
-  mode 02775
+  mode 0o2775
 end
 
 file "/srv/owl.openstreetmap.org/openstreetmap-watch-list/rails/tmp/restart.txt" do
@@ -121,7 +121,7 @@ template "/srv/owl.openstreetmap.org/openstreetmap-watch-list/rails/config/datab
   source "database.yml.erb"
   owner "owl"
   group "owl"
-  mode 0664
+  mode 0o664
   notifies :run, "execute[/srv/owl.openstreetmap.org/openstreetmap-watch-list/rails/Gemfile]"
   only_if { node[:postgresql][:clusters][:"9.1/main"] }
 end

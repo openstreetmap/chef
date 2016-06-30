@@ -28,7 +28,7 @@ cookbook_file "/var/lib/logstash/lumberjack.crt" do
   source "lumberjack.crt"
   user "root"
   group "logstash"
-  mode 0644
+  mode 0o644
   notifies :restart, "service[logstash]"
 end
 
@@ -36,7 +36,7 @@ file "/var/lib/logstash/lumberjack.key" do
   content keys["lumberjack"].join("\n")
   user "root"
   group "logstash"
-  mode 0640
+  mode 0o640
   notifies :restart, "service[logstash]"
 end
 
@@ -44,12 +44,12 @@ template "/etc/logstash/conf.d/chef.conf" do
   source "logstash.conf.erb"
   user "root"
   group "root"
-  mode 0644
+  mode 0o644
   notifies :reload, "service[logstash]"
 end
 
 file "/etc/logrotate.d/logstash" do
-  mode 0644
+  mode 0o644
 end
 
 service "logstash" do
@@ -61,7 +61,7 @@ template "/etc/cron.daily/expire-logstash" do
   source "expire.erb"
   owner "root"
   group "root"
-  mode 0755
+  mode 0o755
 end
 
 forwarders = search(:node, "recipes:logstash\\:\\:forwarder") # ~FC010

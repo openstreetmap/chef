@@ -54,7 +54,7 @@ node[:nominatim][:fpm_pools].each do |name, data|
     source "fpm.conf.erb"
     owner "root"
     group "root"
-    mode 0644
+    mode 0o644
     variables data.merge(:name => name, :port => data[:port])
     notifies :reload, "service[php5-fpm]"
   end
@@ -68,7 +68,7 @@ end
 directory node[:nominatim][:logdir] do
   owner "nominatim"
   group "nominatim"
-  mode 0755
+  mode 0o755
   recursive true
 end
 
@@ -76,34 +76,34 @@ file "#{node[:nominatim][:logdir]}/query.log" do
   action :create_if_missing
   owner "www-data"
   group "adm"
-  mode 0664
+  mode 0o664
 end
 
 file "#{node[:nominatim][:logdir]}/update.log" do
   action :create_if_missing
   owner "nominatim"
   group "adm"
-  mode 0664
+  mode 0o664
 end
 
 directory "#{home_directory}/status" do
   owner "nominatim"
   group "postgres"
-  mode 0775
+  mode 0o775
 end
 
 template "/etc/logrotate.d/nominatim" do
   source "logrotate.nominatim.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
 end
 
 template "/etc/logrotate.d/apache2" do
   source "logrotate.apache.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
 end
 
 package "osmosis"
@@ -140,7 +140,7 @@ template "#{source_directory}/.git/hooks/post-merge" do
   source "update_source.erb"
   owner "nominatim"
   group "nominatim"
-  mode 0755
+  mode 0o755
   variables :source_directory => source_directory
 end
 
@@ -148,7 +148,7 @@ template "#{source_directory}/settings/local.php" do
   source "nominatim.erb"
   owner "nominatim"
   group "nominatim"
-  mode 0664
+  mode 0o664
   variables :postgres_version => database_version
 end
 
@@ -157,21 +157,21 @@ template "#{source_directory}/settings/ip_blocks.conf" do
   source "ipblocks.erb"
   owner "nominatim"
   group "nominatim"
-  mode 0664
+  mode 0o664
 end
 
 file "#{source_directory}/settings/apache_blocks.conf" do
   action :create_if_missing
   owner "nominatim"
   group "nominatim"
-  mode 0664
+  mode 0o664
 end
 
 file "#{source_directory}/settings/ip_blocks.map" do
   action :create_if_missing
   owner "nominatim"
   group "nominatim"
-  mode 0664
+  mode 0o664
 end
 
 cron_action = if node[:nominatim][:enabled]
@@ -193,14 +193,14 @@ template "#{source_directory}/utils/nominatim-update" do
   source "updater.erb"
   user "nominatim"
   group "nominatim"
-  mode 0755
+  mode 0o755
 end
 
 template "/etc/init.d/nominatim-update" do
   source "updater.init.erb"
   user "nominatim"
   group "nominatim"
-  mode 0755
+  mode 0o755
   variables :source_directory => source_directory
 end
 
@@ -236,7 +236,7 @@ external_data.each do |fname|
     source "http://www.nominatim.org/data/#{fname}"
     owner "nominatim"
     group "nominatim"
-    mode 0644
+    mode 0o644
   end
 end
 
@@ -247,14 +247,14 @@ additional_scripts.each do |fname|
     source "#{fname}.erb"
     owner "root"
     group "root"
-    mode 0755
+    mode 0o755
   end
 end
 
 directory File.dirname(node[:nominatim][:flatnode_file]) do
   owner "nominatim"
   group "nominatim"
-  mode 0755
+  mode 0o755
   recursive true
 end
 

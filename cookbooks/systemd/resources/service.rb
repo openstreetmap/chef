@@ -46,7 +46,7 @@ action :create do
     source "service.erb"
     owner "root"
     group "root"
-    mode 0644
+    mode 0o644
     variables new_resource.to_hash
   end
 

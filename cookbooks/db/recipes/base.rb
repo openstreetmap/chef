@@ -29,7 +29,7 @@ end
 
 directory "/srv/www.openstreetmap.org" do
   group "rails"
-  mode 02775
+  mode 0o2775
 end
 
 rails_port "www.openstreetmap.org" do

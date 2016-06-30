@@ -59,20 +59,20 @@ end
 cookbook_file "/srv/wiki.openstreetmap.org/osm_logo_wiki.png" do
   owner node[:mediawiki][:user]
   group node[:mediawiki][:group]
-  mode 0644
+  mode 0o644
 end
 
 template "/srv/wiki.openstreetmap.org/robots.txt" do
   owner node[:mediawiki][:user]
   group node[:mediawiki][:group]
-  mode 0644
+  mode 0o644
   source "robots.txt.erb"
 end
 
 cookbook_file "/srv/wiki.openstreetmap.org/favicon.ico" do
   owner node[:mediawiki][:user]
   group node[:mediawiki][:group]
-  mode 0644
+  mode 0o644
 end
 
 directory "/srv/dump.wiki.openstreetmap.org" do
@@ -90,6 +90,6 @@ end
 template "/etc/cron.d/wiki-osm-org-dump" do
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
   source "cron_wiki_dump.erb"
 end

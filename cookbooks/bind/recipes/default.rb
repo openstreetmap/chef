@@ -30,7 +30,7 @@ template "/etc/bind/named.conf.local" do
   source "named.local.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
   notifies :restart, "service[bind9]"
 end
 
@@ -38,7 +38,7 @@ template "/etc/bind/named.conf.options" do
   source "named.options.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
   notifies :restart, "service[bind9]"
 end
 
@@ -46,7 +46,7 @@ template "/etc/bind/db.10" do
   source "db.10.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
   notifies :reload, "service[bind9]"
 end
 

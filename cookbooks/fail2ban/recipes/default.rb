@@ -27,14 +27,14 @@ else
   directory "/etc/fail2ban/jail.d" do
     owner "root"
     group "root"
-    mode 0755
+    mode 0o755
   end
 
   template "/etc/fail2ban/jail.local" do
     source "jail.local.erb"
     owner "root"
     group "root"
-    mode 0644
+    mode 0o644
     subscribes :create, "template[/etc/fail2ban/jail.d/00-default.conf]"
     notifies :reload, "service[fail2ban]"
   end
@@ -44,7 +44,7 @@ template "/etc/fail2ban/jail.d/00-default.conf" do
   source "jail.default.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
   notifies :reload, "service[fail2ban]"
 end
 

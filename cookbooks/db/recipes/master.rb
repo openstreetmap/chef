@@ -87,5 +87,5 @@ template "/etc/cron.daily/rails-db" do
   source "cron.erb"
   owner "root"
   group "root"
-  mode 0755
+  mode 0o755
 end

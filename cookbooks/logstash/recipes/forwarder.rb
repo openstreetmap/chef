@@ -25,7 +25,7 @@ cookbook_file "/var/lib/logstash-forwarder/lumberjack.crt" do
   source "lumberjack.crt"
   user "root"
   group "root"
-  mode 0644
+  mode 0o644
   notifies :restart, "service[logstash-forwarder]"
 end
 
@@ -33,7 +33,7 @@ file "/etc/logstash-forwarder.conf" do
   content JSON.pretty_generate(node[:logstash][:forwarder])
   user "root"
   group "root"
-  mode 0644
+  mode 0o644
   notifies :restart, "service[logstash-forwarder]"
 end
 

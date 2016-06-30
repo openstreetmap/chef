@@ -38,7 +38,7 @@ roles = { :rows => search(:role, "*:*") }
 
 file "/srv/hardware.openstreetmap.org/_data/nodes.json" do
   content nodes.to_json
-  mode 0644
+  mode 0o644
   owner "root"
   group "root"
   notifies :run, "execute[/srv/hardware.openstreetmap.org]"
@@ -46,14 +46,14 @@ end
 
 file "/srv/hardware.openstreetmap.org/_data/roles.json" do
   content roles.to_json
-  mode 0644
+  mode 0o644
   owner "root"
   group "root"
   notifies :run, "execute[/srv/hardware.openstreetmap.org]"
 end
 
 directory "/srv/hardware.openstreetmap.org/_site" do
-  mode 0755
+  mode 0o755
   owner "nobody"
   group "nogroup"
 end

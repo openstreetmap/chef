@@ -26,7 +26,7 @@ passwords = data_bag_item("blog", "passwords")
 directory "/srv/blog.openstreetmap.org" do
   owner "wordpress"
   group "wordpress"
-  mode 0755
+  mode 0o755
 end
 
 wordpress_site "blog.openstreetmap.org" do
@@ -96,6 +96,6 @@ template "/etc/cron.daily/blog-backup" do
   source "backup.cron.erb"
   owner "root"
   group "root"
-  mode 0750
+  mode 0o750
   variables :passwords => passwords
 end

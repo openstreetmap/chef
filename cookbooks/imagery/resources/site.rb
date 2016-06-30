@@ -30,20 +30,20 @@ action :create do
   directory "/srv/#{name}" do
     user "root"
     group "root"
-    mode 0755
+    mode 0o755
   end
 
   directory "/srv/imagery/layers/#{name}" do
     user "root"
     group "root"
-    mode 0755
+    mode 0o755
     recursive true
   end
 
   directory "/srv/imagery/overlays/#{name}" do
     user "root"
     group "root"
-    mode 0755
+    mode 0o755
     recursive true
   end
 
@@ -51,7 +51,7 @@ action :create do
     source "index.html.erb"
     user "root"
     group "root"
-    mode 0644
+    mode 0o644
     variables :title => title
   end
 
@@ -59,21 +59,21 @@ action :create do
     source "imagery.css"
     user "root"
     group "root"
-    mode 0644
+    mode 0o644
   end
 
   cookbook_file "/srv/#{name}/clientaccesspolicy.xml" do
     source "clientaccesspolicy.xml"
     user "root"
     group "root"
-    mode 0644
+    mode 0o644
   end
 
   cookbook_file "/srv/#{name}/crossdomain.xml" do
     source "crossdomain.xml"
     user "root"
     group "root"
-    mode 0644
+    mode 0o644
   end
 
   layers = Dir.glob("/srv/imagery/layers/#{name}/*.yml").collect do |path|
@@ -84,7 +84,7 @@ action :create do
     source "imagery.js.erb"
     user "root"
     group "root"
-    mode 0644
+    mode 0o644
     variables :bbox => bbox, :layers => layers
   end
 

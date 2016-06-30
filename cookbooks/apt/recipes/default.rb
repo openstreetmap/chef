@@ -33,7 +33,7 @@ template "/etc/apt/sources.list" do
   source "sources.list.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
   notifies :run, "execute[apt-update]", :immediately
 end
 
@@ -132,7 +132,7 @@ auto_upgrades = if node[:apt][:unattended_upgrades][:enable]
 file "/etc/apt/apt.conf.d/20auto-upgrades" do
   user "root"
   group "root"
-  mode 0644
+  mode 0o644
   content auto_upgrades
 end
 
@@ -140,5 +140,5 @@ template "/etc/apt/apt.conf.d/60chef" do
   source "apt.conf.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
 end

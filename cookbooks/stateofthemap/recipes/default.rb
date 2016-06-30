@@ -37,7 +37,7 @@ end
 directory "/srv/2007.stateofthemap.org" do
   owner "wordpress"
   group "wordpress"
-  mode 0755
+  mode 0o755
 end
 
 wordpress_site "2007.stateofthemap.org" do
@@ -68,7 +68,7 @@ end
 directory "/srv/2008.stateofthemap.org" do
   owner "wordpress"
   group "wordpress"
-  mode 0755
+  mode 0o755
 end
 
 wordpress_site "2008.stateofthemap.org" do
@@ -94,7 +94,7 @@ end
 directory "/srv/2009.stateofthemap.org" do
   owner "wordpress"
   group "wordpress"
-  mode 0755
+  mode 0o755
 end
 
 git "/srv/2009.stateofthemap.org" do
@@ -130,7 +130,7 @@ end
 directory "/srv/2010.stateofthemap.org" do
   owner "wordpress"
   group "wordpress"
-  mode 0755
+  mode 0o755
 end
 
 git "/srv/2010.stateofthemap.org" do
@@ -169,7 +169,7 @@ end
 directory "/srv/2011.stateofthemap.org" do
   owner "wordpress"
   group "wordpress"
-  mode 0755
+  mode 0o755
 end
 
 git "/srv/2011.stateofthemap.org" do
@@ -208,7 +208,7 @@ end
 directory "/srv/2012.stateofthemap.org" do
   owner "wordpress"
   group "wordpress"
-  mode 0755
+  mode 0o755
 end
 
 git "/srv/2012.stateofthemap.org" do
@@ -251,7 +251,7 @@ end
 directory "/srv/2016.stateofthemap.org" do
   owner "wordpress"
   group "wordpress"
-  mode 0755
+  mode 0o755
 end
 
 wordpress_site "2016.stateofthemap.org" do
@@ -286,6 +286,6 @@ template "/etc/cron.daily/sotm-backup" do
   source "backup.cron.erb"
   owner "root"
   group "root"
-  mode 0750
+  mode 0o750
   variables :passwords => passwords
 end

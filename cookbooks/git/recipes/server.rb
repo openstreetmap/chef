@@ -25,7 +25,7 @@ git_directory = node[:git][:directory]
 directory git_directory do
   owner node[:git][:user]
   group node[:git][:group]
-  mode 02775
+  mode 0o2775
 end
 
 if node[:git][:allowed_nodes]
@@ -58,7 +58,7 @@ Dir.new(git_directory).select { |name| name =~ /\.git$/ }.each do |repository|
     source "post-update.erb"
     owner "root"
     group node[:git][:group]
-    mode 0755
+    mode 0o755
   end
 
   next unless node[:recipes].include?("trac") && repository != "dns.git"
@@ -67,7 +67,7 @@ Dir.new(git_directory).select { |name| name =~ /\.git$/ }.each do |repository|
     source "post-receive.erb"
     owner "root"
     group node[:git][:group]
-    mode 0755
+    mode 0o755
     variables :repository => "#{git_directory}/#{repository}"
   end
 end
@@ -76,13 +76,13 @@ template "/etc/cron.daily/git-backup" do
   source "backup.cron.erb"
   owner "root"
   group "root"
-  mode 0755
+  mode 0o755
 end
 
 template "/etc/xinetd.d/git" do
   source "xinetd.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
   notifies :reload, "service[xinetd]"
 end

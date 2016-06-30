@@ -40,7 +40,7 @@ end
 directory "/srv/forum.openstreetmap.org" do
   owner "forum"
   group "forum"
-  mode 0755
+  mode 0o755
 end
 
 git "/srv/forum.openstreetmap.org/html/" do
@@ -55,13 +55,13 @@ end
 directory "/srv/forum.openstreetmap.org/html/cache/" do
   owner "www-data"
   group "www-data"
-  mode 0755
+  mode 0o755
 end
 
 directory "/srv/forum.openstreetmap.org/html/img/avatars/" do
   owner "www-data"
   group "www-data"
-  mode 0755
+  mode 0o755
 end
 
 mysql_user "forum@localhost" do
@@ -76,6 +76,6 @@ template "/etc/cron.daily/forum-backup" do
   source "backup.cron.erb"
   owner "root"
   group "root"
-  mode 0750
+  mode 0o750
   variables :passwords => passwords
 end

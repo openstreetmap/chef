@@ -26,24 +26,24 @@ include_recipe "nfs"
 
 directory node[:web][:base_directory] do
   group "rails"
-  mode 02775
+  mode 0o2775
 end
 
 directory node[:web][:pid_directory] do
   owner "rails"
   group "rails"
-  mode 0775
+  mode 0o775
 end
 
 directory node[:web][:log_directory] do
   owner "rails"
   group "rails"
-  mode 0775
+  mode 0o775
 end
 
 template "/etc/logrotate.d/web" do
   source "logrotate.web.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
 end

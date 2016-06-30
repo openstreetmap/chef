@@ -34,17 +34,17 @@ package "libjson-xs-perl"
 directory "/srv/dns.openstreetmap.org" do
   owner "root"
   group "root"
-  mode 0755
+  mode 0o755
 end
 
 remote_directory "/srv/dns.openstreetmap.org/html" do
   source "html"
   owner "root"
   group "root"
-  mode 0755
+  mode 0o755
   files_owner "root"
   files_group "root"
-  files_mode 0644
+  files_mode 0o644
 end
 
 zones = []
@@ -56,7 +56,7 @@ Dir.glob("/var/lib/dns/json/*.json").each do |kmlfile|
     source "zone.html.erb"
     owner "root"
     group "root"
-    mode 0644
+    mode 0o644
     variables :zone => zone
   end
 
@@ -67,7 +67,7 @@ template "/srv/dns.openstreetmap.org/html/index.html" do
   source "index.html.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
   variables :zones => zones
 end
 
@@ -80,7 +80,7 @@ template "/usr/local/bin/dns-update" do
   source "dns-update.erb"
   owner "root"
   group "git"
-  mode 0750
+  mode 0o750
   variables :passwords => passwords
 end
 
@@ -94,7 +94,7 @@ end
 directory "/var/lib/dns" do
   owner "git"
   group "git"
-  mode 02775
+  mode 0o2775
   notifies :run, "execute[dns-update]"
 end
 
@@ -102,14 +102,14 @@ cookbook_file "#{node[:dns][:repository]}/hooks/post-receive" do
   source "post-receive"
   owner "git"
   group "git"
-  mode 0750
+  mode 0o750
 end
 
 template "/usr/local/bin/dns-check" do
   source "dns-check.erb"
   owner "root"
   group "git"
-  mode 0750
+  mode 0o750
   variables :passwords => passwords
 end
 
@@ -117,5 +117,5 @@ template "/etc/cron.d/dns" do
   source "cron.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
 end

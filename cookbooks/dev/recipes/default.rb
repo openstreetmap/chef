@@ -82,7 +82,7 @@ template "/etc/php5/fpm/pool.d/default.conf" do
   source "fpm-default.conf.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
   notifies :reload, "service[php5-fpm]"
 end
 
@@ -97,7 +97,7 @@ template "/etc/phppgadmin/config.inc.php" do
   source "phppgadmin.conf.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
 end
 
 file "/etc/apache2/conf.d/phppgadmin" do
@@ -124,7 +124,7 @@ search(:accounts, "*:*").each do |account|
     source "fpm.conf.erb"
     owner "root"
     group "root"
-    mode 0644
+    mode 0o644
     variables :user => name, :port => port
     notifies :reload, "service[php5-fpm]"
   end
@@ -139,7 +139,7 @@ search(:accounts, "*:*").each do |account|
     source "sudoers.user.erb"
     owner "root"
     group "root"
-    mode 0440
+    mode 0o440
     variables :user => name
   end
 end
@@ -154,7 +154,7 @@ if node[:postgresql][:clusters][:"9.3/main"]
     source "cleanup-assets.erb"
     owner "root"
     group "root"
-    mode 0755
+    mode 0o755
   end
 
   node[:dev][:rails].each do |name, details|
@@ -196,7 +196,7 @@ if node[:postgresql][:clusters][:"9.3/main"]
         source "rails.setup.rb.erb"
         owner "apis"
         group "apis"
-        mode 0644
+        mode 0o644
         variables :site => site_name
         notifies :run, "execute[#{rails_directory}]"
       end
@@ -231,14 +231,14 @@ if node[:postgresql][:clusters][:"9.3/main"]
   directory "/srv/apis.dev.openstreetmap.org" do
     owner "apis"
     group "apis"
-    mode 0755
+    mode 0o755
   end
 
   template "/srv/apis.dev.openstreetmap.org/index.html" do
     source "apis.html.erb"
     owner "apis"
     group "apis"
-    mode 0644
+    mode 0o644
   end
 
   apache_site "apis.dev.openstreetmap.org" do

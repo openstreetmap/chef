@@ -29,7 +29,7 @@ template "/etc/gitweb.conf" do
   source "gitweb.conf.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
 end
 
 apache_site node[:git][:host] do
@@ -41,5 +41,5 @@ template "#{git_directory}/robots.txt" do
   source "robots.txt.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
 end

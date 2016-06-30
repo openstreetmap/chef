@@ -24,7 +24,7 @@ keys = data_bag_item("chef", "keys")
 directory "/var/lib/chef" do
   owner "chefrepo"
   group "chefrepo"
-  mode 02775
+  mode 0o2775
 end
 
 git "/var/lib/chef" do
@@ -38,33 +38,33 @@ end
 directory "/var/lib/chef/.chef" do
   owner "chefrepo"
   group "chefrepo"
-  mode 02775
+  mode 0o2775
 end
 
 file "/var/lib/chef/.chef/client.pem" do
   content keys["git"].join("\n")
   owner "chefrepo"
   group "chefrepo"
-  mode 0660
+  mode 0o660
 end
 
 cookbook_file "/var/lib/chef/.chef/knife.rb" do
   source "knife.rb"
   owner "chefrepo"
   group "chefrepo"
-  mode 0660
+  mode 0o660
 end
 
 template "#{node[:chef][:repository]}/hooks/post-receive" do
   source "post-receive.erb"
   owner "chefrepo"
   group "chefrepo"
-  mode 0750
+  mode 0o750
 end
 
 template "/etc/cron.daily/chef-repository-backup" do
   source "repository-backup.cron.erb"
   owner "root"
   group "root"
-  mode 0755
+  mode 0o755
 end

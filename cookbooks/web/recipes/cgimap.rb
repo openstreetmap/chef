@@ -112,7 +112,7 @@ end
 file "/etc/init.d/cgimap" do
   owner "root"
   group "root"
-  mode 0755
+  mode 0o755
   content cgimap_init
 end
 

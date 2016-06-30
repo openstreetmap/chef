@@ -58,13 +58,13 @@ template "/etc/cron.d/taginfo" do
   source "cron.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
 end
 
 directory "/var/log/taginfo" do
   owner "taginfo"
   group "taginfo"
-  mode 0755
+  mode 0o755
 end
 
 file "/etc/logrotate.d/taginfo" do
@@ -75,7 +75,7 @@ template "/etc/sudoers.d/taginfo" do
   source "sudoers.erb"
   owner "root"
   group "root"
-  mode 0440
+  mode 0o440
 end
 
 node[:taginfo][:sites].each do |site|
@@ -89,13 +89,13 @@ node[:taginfo][:sites].each do |site|
   directory "/var/log/taginfo/#{name}" do
     owner "taginfo"
     group "taginfo"
-    mode 0755
+    mode 0o755
   end
 
   directory directory do
     owner "taginfo"
     group "taginfo"
-    mode 0755
+    mode 0o755
   end
 
   git "#{directory}/libosmium" do
@@ -148,7 +148,7 @@ node[:taginfo][:sites].each do |site|
   file "#{directory}/taginfo-config.json" do
     owner "taginfo"
     group "taginfo"
-    mode 0644
+    mode 0o644
     content settings
     notifies :restart, "service[apache2]"
   end
@@ -185,7 +185,7 @@ node[:taginfo][:sites].each do |site|
     directory "#{directory}/#{dir}" do
       owner "taginfo"
       group "taginfo"
-      mode 0755
+      mode 0o755
     end
   end
 
@@ -194,27 +194,27 @@ node[:taginfo][:sites].each do |site|
     source "http://planet.openstreetmap.org/pbf/planet-latest.osm.pbf"
     owner "taginfo"
     group "taginfo"
-    mode 0644
+    mode 0o644
   end
 
   template "#{directory}/planet/replication/configuration.txt" do
     source "configuration.txt.erb"
     owner "taginfo"
     group "taginfo"
-    mode 0644
+    mode 0o644
   end
 
   file "#{directory}/planet/replication/download.lock" do
     owner "taginfo"
     group "taginfo"
-    mode 0644
+    mode 0o644
   end
 
   template "#{directory}/bin/update-planet" do
     source "update-planet.erb"
     owner "taginfo"
     group "taginfo"
-    mode 0755
+    mode 0o755
     variables :directory => directory
   end
 
@@ -222,7 +222,7 @@ node[:taginfo][:sites].each do |site|
     source "update-taginfo.erb"
     owner "taginfo"
     group "taginfo"
-    mode 0755
+    mode 0o755
     variables :directory => directory
   end
 
@@ -230,7 +230,7 @@ node[:taginfo][:sites].each do |site|
     source "update.erb"
     owner "taginfo"
     group "taginfo"
-    mode 0755
+    mode 0o755
     variables :name => name, :directory => directory
   end
 

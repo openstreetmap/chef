@@ -32,7 +32,7 @@ template "/etc/snmp/snmpd.conf" do
   source "snmpd.conf.erb"
   owner "root"
   group "root"
-  mode 0600
+  mode 0o600
   variables :communities => communities
   notifies :restart, "service[snmpd]"
 end

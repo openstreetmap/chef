@@ -37,7 +37,7 @@ end
 directory osmosis_directory do
   owner "root"
   group "root"
-  mode 0755
+  mode 0o755
 end
 
 execute "/var/cache/chef/#{osmosis_package}" do
@@ -53,7 +53,7 @@ remote_file "/var/cache/chef/#{osmosis_package}" do
   source "http://bretth.dev.openstreetmap.org/osmosis-build/#{osmosis_package}"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
   backup false
   notifies :run, "execute[/var/cache/chef/#{osmosis_package}]"
 end

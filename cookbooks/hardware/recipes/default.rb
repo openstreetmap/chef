@@ -90,7 +90,7 @@ units.sort.uniq.each do |unit|
       source "tty.conf.erb"
       owner "root"
       group "root"
-      mode 0644
+      mode 0o644
       variables :unit => unit
     end
 
@@ -131,7 +131,7 @@ if File.exist?("/etc/default/grub")
     source "grub.erb"
     owner "root"
     group "root"
-    mode 0644
+    mode 0o644
     variables :units => units, :entry => grub_entry
     notifies :run, "execute[update-grub]"
   end
@@ -148,7 +148,7 @@ template "/etc/initramfs-tools/conf.d/mdadm" do
   source "initramfs-mdadm.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
   notifies :run, "execute[update-initramfs]"
 end
 
@@ -168,7 +168,7 @@ if node[:lsb][:release].to_f >= 12.10
     source "irqbalance.erb"
     owner "root"
     group "root"
-    mode 0644
+    mode 0o644
   end
 
   service "irqbalance" do
@@ -255,7 +255,7 @@ end
       source "raid.default.erb"
       owner "root"
       group "root"
-      mode 0644
+      mode 0o644
       variables :devices => status_packages[status_package]
     end
 
@@ -360,14 +360,14 @@ if disks.count > 0
     source "smartd-mailer.erb"
     owner "root"
     group "root"
-    mode 0755
+    mode 0o755
   end
 
   template "/etc/smartd.conf" do
     source "smartd.conf.erb"
     owner "root"
     group "root"
-    mode 0644
+    mode 0o644
     variables :disks => disks
     notifies :reload, "service[smartmontools]"
   end
@@ -376,7 +376,7 @@ if disks.count > 0
     source "smartmontools.erb"
     owner "root"
     group "root"
-    mode 0644
+    mode 0o644
     notifies :restart, "service[smartmontools]"
   end
 
@@ -435,7 +435,7 @@ if File.exist?("/etc/mdadm/mdadm.conf")
   file "/etc/mdadm/mdadm.conf" do
     owner "root"
     group "root"
-    mode 0644
+    mode 0o644
     content mdadm_conf
   end
 
@@ -449,7 +449,7 @@ template "/etc/modules" do
   source "modules.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
 end
 
 if node[:lsb][:release].to_f <= 12.10
@@ -477,7 +477,7 @@ if node[:hardware][:watchdog]
     source "watchdog.erb"
     owner "root"
     group "root"
-    mode 0644
+    mode 0o644
     variables :module => node[:hardware][:watchdog]
   end
 
@@ -524,7 +524,7 @@ unless Dir.glob("/sys/class/hwmon/hwmon*").empty?
     source "sensors.conf.erb"
     owner "root"
     group "root"
-    mode 0644
+    mode 0o644
     notifies :run, "execute[/etc/sensors.d/chef.conf]"
   end
 end

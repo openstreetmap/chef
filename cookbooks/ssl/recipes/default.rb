@@ -26,7 +26,7 @@ package "ssl-cert"
   cookbook_file "/etc/ssl/certs/#{certificate}.pem" do
     owner "root"
     group "root"
-    mode 0444
+    mode 0o444
     backup false
   end
 end
@@ -36,14 +36,14 @@ end
     cookbook_file "/etc/ssl/certs/#{certificate}.pem" do
       owner "root"
       group "root"
-      mode 0444
+      mode 0o444
       backup false
     end
 
     file "/etc/ssl/private/#{certificate}.key" do
       owner "root"
       group "ssl-cert"
-      mode 0440
+      mode 0o440
       content keys[certificate].join("\n")
       backup false
     end

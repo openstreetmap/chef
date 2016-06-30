@@ -43,7 +43,7 @@ template "/etc/apache2/ports.conf" do
   source "ports.conf.erb"
   owner "root"
   group "root"
-  mode 0644
+  mode 0o644
 end
 
 service "apache2" do
