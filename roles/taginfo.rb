@@ -24,9 +24,6 @@ default_attributes(
       :max_requests_per_child => 10000
     }
   },
-  :passenger => {
-    :ruby_version => "2.3"
-  },
   :taginfo => {
     :sites => [
       {
