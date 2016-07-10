@@ -5,13 +5,11 @@ server {
     root "/srv/<%= @name %>";
 
     gzip on;
-    gzip_disable "msie6";
-    # text/html is implicit
-    gzip_types text/plain text/css application/json application/javascript application/x-javascript text/javascript text/xml application/xml application/rss+xml application/atom+xml application/rdf+xml image/svg+xml;
-    gzip_min_length 1024;
+    gzip_types text/plain text/css application/json application/javascript application/x-javascript text/javascript text/xml application/xml application/rss+xml application/atom+xml application/rdf+xml image/svg+xml; # text/html is implicit
+    gzip_min_length 512;
     gzip_http_version 1.0;
     gzip_proxied any;
-    gzip_comp_level 6;
+    gzip_comp_level 9;
     gzip_vary on;
 
     sendfile   on;
