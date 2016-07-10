@@ -19,7 +19,7 @@
 
 imagery_site "ea.openstreetmap.org.uk" do
   title "OpenStreetMap - Environment Agency OpenData"
-  bbox [[49.85, -10.5], [58.75, 1.9]]
+  bbox [[51.35, -2.2], [52.65, 0.10]]
 end
 
 imagery_layer "gb_ea_night" do
