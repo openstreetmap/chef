@@ -27,9 +27,8 @@ imagery_layer "gb_ea_night" do
   title "Environment Agency - Night Time Aerial"
   default_layer true
   projection "EPSG:27700"
-  source "/data/imagery/gb/ea/night/ea-night.vrt"
+  source "/data/imagery/gb/ea/night/ea-night-test.vrt"
   max_zoom 19
   copyright "&copy; Environment Agency copyright and/or database right 2016. All rights reserved."
   background_colour "0 0 0"
-  extension "os_sv_png"
 end
