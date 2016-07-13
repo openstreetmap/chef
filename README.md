@@ -30,7 +30,7 @@ These cover the services that the server is running, and will include the recipe
 
 # Cookbooks
 
-We use the 'Organization Repository' approach, where we have all our cookbooks in this repository (as opposed to one repository per cookbook). Additionally we don't make use of external cookbooks so every cookbook required is in this repository
+We use the 'Organization Repository' approach, where we have all our cookbooks in this repository (as opposed to one repository per cookbook). Additionally we don't make use of external cookbooks so every cookbook required is in this repository.
 
 # Contributing
 
