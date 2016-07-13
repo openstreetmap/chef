@@ -108,9 +108,10 @@ package "ttf-unifont"
 package "fonts-sipa-arundina"
 package "fonts-sil-padauk"
 package "fonts-khmeros"
-package "ttf-indic-fonts-core"
-package "ttf-tamil-fonts"
-package "ttf-kannada-fonts"
+package "fonts-beng-extra"
+package "fonts-gargi"
+package "fonts-taml-tscu"
+package "fonts-tibetan-machine"
 
 directory "/srv/tile.openstreetmap.org/cgi-bin" do
   owner "tile"
