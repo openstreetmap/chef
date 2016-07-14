@@ -76,6 +76,8 @@ rails_port "www.openstreetmap.org" do
   facebook_auth_secret web_passwords["facebook_auth_secret"]
   windowslive_auth_id "0000000040153C51"
   windowslive_auth_secret web_passwords["windowslive_auth_secret"]
+  github_auth_id "acf7da34edee99e35499"
+  github_auth_secret web_passwords["github_auth_secret"]
   mapzen_valhalla_key web_passwords["mapzen_valhalla_key"]
 end
 

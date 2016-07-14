@@ -184,6 +184,11 @@ define :rails_port, :action => [:create, :enable] do
       line.gsub!(/^( *)#windowslive_auth_secret:.*$/, "\\1windowslive_auth_secret: \"#{params[:windowslive_auth_secret]}\"")
     end
 
+    if params[:github_auth_id]
+      line.gsub!(/^( *)#github_auth_id:.*$/, "\\1github_auth_id: \"#{params[:github_auth_id]}\"")
+      line.gsub!(/^( *)#github_auth_secret:.*$/, "\\1github_auth_secret: \"#{params[:github_auth_secret]}\"")
+    end
+
     if params[:mapquest_key]
       line.gsub!(/^( *)#mapquest_key:.*$/, "\\1mapquest_key: \"#{params[:mapquest_key]}\"")
     end
