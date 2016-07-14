@@ -18,7 +18,7 @@ default_attributes(
         :role => :external,
         :family => :inet,
         :address => "193.198.233.211",
-        :prefix => "27",
+        :prefix => "29",
         :gateway => "193.198.233.209"
       },
       :external_ipv6 => {
