@@ -32,3 +32,14 @@ imagery_layer "gb_ea_night" do
   copyright "&copy; Environment Agency copyright and/or database right 2016. All rights reserved."
   background_colour "0 0 0"
 end
+
+imagery_layer "gb_ea_ortho_2015" do
+  site "ea.openstreetmap.org.uk"
+  title "Environment Agency - Ortho - 2015"
+  default_layer true
+  projection "EPSG:27700"
+  source "/data/imagery/gb/ea/ortho/ea-ortho-2015-combined.vrt"
+  max_zoom 19
+  copyright "&copy; Environment Agency copyright and/or database right 2016. All rights reserved."
+  background_colour "0 0 0"
+end
