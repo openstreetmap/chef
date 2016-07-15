@@ -36,7 +36,6 @@ end
 imagery_layer "gb_ea_ortho_2015" do
   site "ea.openstreetmap.org.uk"
   title "Environment Agency - Ortho - 2015"
-  default_layer true
   projection "EPSG:27700"
   source "/data/imagery/gb/ea/ortho/ea-ortho-2015-combined.vrt"
   max_zoom 19
