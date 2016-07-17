@@ -47,18 +47,6 @@ default_attributes(
       :cluster => "9.4/main",
       :dbname => "nominatim",
       :postgis => "2.1"
-    },
-    :fpm_pools => {
-      :www => {
-        :port => "8000",
-        :pm => "dynamic",
-        :max_children => "60"
-      },
-      :bulk => {
-        :port => "8001",
-        :pm => "static",
-        :max_children => "10"
-      }
     }
   },
   :sysfs => {
