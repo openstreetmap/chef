@@ -15,6 +15,9 @@
 	Alias /static/ /etc/munin/static/
 	ScriptAlias /munin-cgi/ /usr/lib/munin/cgi/
 
+	# Remove Proxy request header to mitigate https://httpoxy.org/
+	RequestHeader unset Proxy early
+
 	RewriteEngine on
 	RewriteCond %{REQUEST_URI} !^/static/
 	RewriteRule ^(/.*\.html)?$ /munin-cgi/munin-cgi-html/$1 [PT]
