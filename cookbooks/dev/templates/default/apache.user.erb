@@ -7,6 +7,9 @@ WSGIDaemonProcess <%= @user %>.dev.openstreetmap.org user=<%= @user %> inactivit
 	ServerAdmin webmaster@openstreetmap.org
 	ServerAlias <%= @user %>.dev.osm.org
 
+	# Remove Proxy request header to mitigate https://httpoxy.org/
+	RequestHeader unset Proxy early
+
 	UseCanonicalName Off
 	DocumentRoot <%= @directory %>
 	ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/

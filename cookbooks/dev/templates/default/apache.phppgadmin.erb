@@ -9,6 +9,9 @@
 
 	DocumentRoot /usr/share/phppgadmin
 
+	# Remove Proxy request header to mitigate https://httpoxy.org/
+	RequestHeader unset Proxy early
+
 	ProxyPassMatch ^/(.*\.php(/.*)?)$ fcgi://127.0.0.1:7000/usr/share/phppgadmin
 	ProxyPassMatch ^/(.*\.phpx(/.*)?)$ fcgi://127.0.0.1:7000/usr/share/phppgadmin
 	ProxyPassMatch ^/(.*\.phpj(/.*)?)$ fcgi://127.0.0.1:7000/usr/share/phppgadmin
