@@ -30,6 +30,9 @@
   # will always work and can be cached
   Header set Access-Control-Allow-Origin "*"
 
+  # Remove Proxy request header to mitigate https://httpoxy.org/
+  RequestHeader unset Proxy early
+
   # Enable the rewrite engine
   RewriteEngine on
 

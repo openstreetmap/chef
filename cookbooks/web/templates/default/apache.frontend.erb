@@ -36,6 +36,11 @@
   RequestHeader set X-Request-Id %{UNIQUE_ID}e
 
   #
+  # Remove Proxy request header to mitigate https://httpoxy.org/
+  #
+  RequestHeader unset Proxy early
+
+  #
   # Block troublesome GPX data scrapping
   #
   RewriteCond %{REQUEST_METHOD} HEAD
