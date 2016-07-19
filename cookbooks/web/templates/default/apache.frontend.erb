@@ -191,12 +191,12 @@
   ProxyPass /api/0.6/swf/trackpoints balancer://bytemark/api/0.6/swf/trackpoints
   ProxyPassMatch ^(/api/0\.6/changeset/[0-9]+/upload)$ balancer://bytemark$1
   ProxyPassMatch ^(/api/0\.6/changeset/[0-9]+/download)$ balancer://bytemark$1
-  ProxyPassMatch ^(/api/0\.6/(node|way|relation)/[0-9]+)$ balancer://bytemark$1
-  ProxyPassMatch ^(/api/0\.6/(node|way|relation)/[0-9]+/(full|history|search|ways))$ balancer://bytemark$1
+  ProxyPassMatch ^(/api/0\.6/(node|way|relation)/[0-9]+)$ balancer://backend$1
+  ProxyPassMatch ^(/api/0\.6/(node|way|relation)/[0-9]+/(full|history|search|ways))$ balancer://backend$1
   ProxyPass /api/0.6/nodes balancer://backend/api/0.6/nodes
-  ProxyPass /api/0.6/ways balancer://bytemark/api/0.6/ways
-  ProxyPass /api/0.6/relations balancer://bytemark/api/0.6/relations
-  ProxyPassMatch ^(/trace/[0-9]+/data(|/|.xml))$ balancer://bytemark$1
+  ProxyPass /api/0.6/ways balancer://backend/api/0.6/ways
+  ProxyPass /api/0.6/relations balancer://backend/api/0.6/relations
+  ProxyPassMatch ^(/trace/[0-9]+/data(|/|.xml))$ balancer://backend$1
 
   #
   # Redirect trac and wiki requests to the right places
