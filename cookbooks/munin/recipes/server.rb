@@ -71,6 +71,7 @@ end
 
 apache_module "fcgid"
 apache_module "rewrite"
+apache_module "headers"
 
 remote_directory "/srv/munin.openstreetmap.org" do
   source "www"
