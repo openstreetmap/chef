@@ -99,7 +99,7 @@ default_attributes(
         :port => "8002",
         :pm => "static",
         :max_children => "2"
-      },
+      }
     },
     :redirects => {}
   }
