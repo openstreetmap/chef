@@ -215,7 +215,7 @@
   #
   <Proxy balancer://backend>
     ProxySet lbmethod=bybusyness
-<% (node[:web][:backends] + ["rails4.bm", "rails5.bm"]).each do |backend| -%>
+<% node[:web][:backends].each do |backend| -%>
 <% if port == 443 -%>
     BalancerMember https://<%= backend %> disablereuse=on
 <% else -%>
