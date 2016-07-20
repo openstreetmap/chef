@@ -35,3 +35,8 @@ We use the 'Organization Repository' approach, where we have all our cookbooks i
 # Contributing
 
 Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for more details.
+
+# Contact Us
+
+* Twitter: [@OSM_Tech](https://twitter.com/OSM_Tech)
+* IRC: [#OSM-Dev on irc.oftc.net](http://irc.openstreetmap.org/)
