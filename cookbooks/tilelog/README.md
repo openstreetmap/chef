@@ -1,9 +1,8 @@
-tilelog Cookbook
-================
+# tilelog Cookbook
+
 This cookbook contains the tile log processing / analysis tools. This includes creating the tile log summaries of the number of tiles downloaded from the tile caches.
 
-Requirements
-------------
+## Requirements
 
 #### cookbooks
 - `tools` - tilelog needs the OSM tools cookbook.
@@ -18,9 +17,7 @@ Requirements
 - `libboost-system-dev` - a dependency of the analysis tool.
 - `libboost-program-options-dev` - a dependency of the analysis tool.
 
-
-Attributes
-----------
+## Attributes
 
 #### tilelog::default
 <table>
@@ -50,8 +47,8 @@ Attributes
   </tr>
 </table>
 
-Usage
------
+## Usage
+
 #### tilelog::default
 TODO: Write usage instructions for each cookbook.
 
@@ -67,8 +64,8 @@ Just include `tilelog` in your node's `run_list`:
 }
 ```
 
-License and Authors
--------------------
+## License and Authors
+
 Released under the [Apache 2.0 license](http://www.apache.org/licenses/LICENSE-2.0).
 
 Authors: Matt Amos
