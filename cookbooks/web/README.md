@@ -1,34 +1,13 @@
-Cookbook
-========
-TODO: Enter the cookbook description here.
+# web cookbook
 
-e.g.
-This cookbook makes your favorite breakfast sandwich.
+This cookbook installs and configures the web frontend machines that power
+[www.openstreetmap.org](http://www.openstreetmap.org). There are several recipes
 
-Requirements
-------------
-TODO: List your cookbook requirements. Be sure to include any requirements this cookbook has on platforms, libraries, other cookbooks, packages, operating systems, etc.
-
-Attributes
-----------
-TODO: List you cookbook attributes here.
-
-Usage
------
-TODO: Write usage instructions for each cookbook.
-
-Contributing
-------------
-TODO: (optional) If this is a public cookbook, detail the process for contributing. If this is a private cookbook, remove this section.
-
-e.g.
-1. Fork the repository on Github
-2. Create a named feature branch (like `add_component_x`)
-3. Write your change
-4. Write tests for your change (if applicable)
-5. Run the tests, ensuring they all pass
-6. Submit a Pull Request using Github
-
-License and Authors
--------------------
-Authors: TODO: List authors
+* `web::backend` - sets up the backend servers, used for processing longer-running requests
+* `web::base` - sets up common storage configuration between all the machines
+* `web::cgimap` - builds and configures [cgimap](https://github.com/openstreetmap/cgimap)
+* `web::cleanup` - configures a cleanup script to be run daily
+* `web::frontend` - sets up the frontend servers, that handle all inbound requests
+* `web::gpx` - sets up the GPX importer
+* `web::rails` - installs and configures the [openstreetmap-website](https://github.com/openstreetmap/openstreetmap-website) rails app
+* `web::statistics` - sets up the scripts for generating the [statistics page](http://www.openstreetmap.org/stats/data_stats.html) for OSM contributions
