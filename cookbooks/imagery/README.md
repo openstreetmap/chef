@@ -1,3 +1,3 @@
 # Imagery Cookbook
 
-This installs various packages needed for aerial imagery processing.
+This installs and configures various imagery sites and imagery layers.
