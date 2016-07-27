@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+require "shellwords"
+
 use_inline_resources
 
 def load_current_resource
@@ -35,7 +37,7 @@ def load_current_resource
 end
 
 action :create do
-  password = new_resource.password ? "ENCRYPTED PASSWORD '#{new_resource.password}'" : ""
+  password = new_resource.password ? "ENCRYPTED PASSWORD '#{new_resource.password.shellescape}'" : ""
   superuser = new_resource.superuser ? "SUPERUSER" : "NOSUPERUSER"
   createdb = new_resource.createdb ? "CREATEDB" : "NOCREATEDB"
   createrole = new_resource.createrole ? "CREATEROLE" : "NOCREATEROLE"
