@@ -2,6 +2,12 @@ name "karm"
 description "Master role applied to karm"
 
 default_attributes(
+  :apt => {
+    :sources => ["postgresql"]
+  },
+  :db => {
+    :cluster => "9.1/main"
+  },
   :networking => {
     :interfaces => {
       :internal_ipv4 => {
@@ -10,6 +16,25 @@ default_attributes(
         :family => :inet,
         :address => "146.179.159.168",
         :hwaddress => "0c:c4:7a:a3:aa:ac"
+      }
+    }
+  },
+  :postgresql => {
+    :settings => {
+      :defaults => {
+        :shared_buffers => "64GB",
+        :work_mem => "64MB",
+        :maintenance_work_mem => "1GB",
+        :effective_cache_size => "180GB"
+      }
+    }
+  },
+  :sysctl => {
+    :postgres => {
+      :comment => "Increase shared memory for postgres",
+      :parameters => {
+        "kernel.shmmax" => 66 * 1024 * 1024 * 1024,
+        "kernel.shmall" => 66 * 1024 * 1024 * 1024 / 4096
       }
     }
   },
@@ -29,5 +54,6 @@ default_attributes(
 )
 
 run_list(
-  "role[ic]"
+  "role[ic]",
+  "role[db-master]"
 )
