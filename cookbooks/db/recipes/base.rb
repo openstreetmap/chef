@@ -53,11 +53,28 @@ rails_port "www.openstreetmap.org" do
   file_column_root "/store/rails"
 end
 
-execute "/srv/www.openstreetmap.org/rails/db/functions/Makefile" do
+db_version = node[:db][:cluster].split("/").first
+pg_config = "/usr/lib/postgresql/#{db_version}/bin/pg_config"
+function_directory = "/srv/www.openstreetmap.org/rails/db/functions/#{db_version}"
+
+directory function_directory do
+  owner "rails"
+  group "rails"
+  mode 0o755
+end
+
+execute function_directory do
   action :nothing
-  command "make"
+  command "make PG_CONFIG=#{pg_config} DESTDIR=#{function_directory}"
   cwd "/srv/www.openstreetmap.org/rails/db/functions"
   user "rails"
   group "rails"
+  subscribes :run, "directory[#{function_directory}]"
   subscribes :run, "git[/srv/www.openstreetmap.org/rails]"
+end
+
+link "/usr/lib/postgresql/#{db_version}/lib/libpgosm.so" do
+  to "#{function_directory}/libpgosm.so"
+  owner "root"
+  group "root"
 end
