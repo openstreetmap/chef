@@ -32,8 +32,14 @@ directory "/srv/www.openstreetmap.org" do
   mode 0o2775
 end
 
+ruby_version = if node[:lsb][:release].to_f >= 16.04
+                 "2.3"
+               else
+                 "2.1"
+               end
+
 rails_port "www.openstreetmap.org" do
-  ruby "2.1"
+  ruby ruby_version
   directory "/srv/www.openstreetmap.org/rails"
   user "rails"
   group "rails"
