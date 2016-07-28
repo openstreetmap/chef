@@ -1,0 +1,14 @@
+---
+driver:
+  name: vagrant
+
+provisioner:
+  name: chef_zero
+
+platforms:
+  - name: ubuntu-16.04
+
+suites:
+  - name: tools
+    run_list:
+      - recipe[tools::default]
