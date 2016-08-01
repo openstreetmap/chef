@@ -6,7 +6,7 @@ default_attributes(
     :sources => ["postgresql"]
   },
   :db => {
-    :cluster => "9.1/main"
+    :cluster => "9.5/main"
   },
   :networking => {
     :interfaces => {
@@ -27,7 +27,8 @@ default_attributes(
         :maintenance_work_mem => "1GB",
         :effective_cache_size => "180GB"
       }
-    }
+    },
+    :versions => ["9.5"]
   },
   :sysctl => {
     :postgres => {
