@@ -13,6 +13,13 @@ default_attributes(
   :apt => {
     :sources => ["openstreetmap"]
   },
+  :munin => {
+    :plugins => {
+      :ntp_offset => {
+        :offset => { :warning => "20", :critical => "100" }
+      }
+    }
+  },
   :networking => {
     :roles => {
       :internal => { :metric => 200, :zone => "loc" },
