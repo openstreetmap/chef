@@ -166,37 +166,37 @@ else
   end
 end
 
-directory "/var/lib/replication/streaming" do
-  owner "planet"
-  group "planet"
-  mode 0o755
-end
-
-directory "/var/log/replication" do
-  owner "planet"
-  group "planet"
-  mode 0o755
-end
-
-["streaming-replicator", "streaming-server"].each do |name|
-  template "/etc/init.d/#{name}" do
-    source "streaming.init.erb"
-    owner "root"
-    group "root"
-    mode 0o755
-    variables :service => name
-  end
-
-  if node[:planet][:replication] == "enabled"
-    service name do
-      action [:enable, :start]
-      supports :restart => true, :status => true
-      subscribes :restart, "template[/etc/init.d/#{name}]"
-    end
-  else
-    service name do
-      action [:disable, :stop]
-      supports :restart => true, :status => true
-    end
-  end
-end
+# directory "/var/lib/replication/streaming" do
+#   owner "planet"
+#   group "planet"
+#   mode 0o755
+# end
+#
+# directory "/var/log/replication" do
+#   owner "planet"
+#   group "planet"
+#   mode 0o755
+# end
+#
+# ["streaming-replicator", "streaming-server"].each do |name|
+#   template "/etc/init.d/#{name}" do
+#     source "streaming.init.erb"
+#     owner "root"
+#     group "root"
+#     mode 0o755
+#     variables :service => name
+#   end
+#
+#   if node[:planet][:replication] == "enabled"
+#     service name do
+#       action [:enable, :start]
+#       supports :restart => true, :status => true
+#       subscribes :restart, "template[/etc/init.d/#{name}]"
+#     end
+#   else
+#     service name do
+#       action [:disable, :stop]
+#       supports :restart => true, :status => true
+#     end
+#   end
+# end
