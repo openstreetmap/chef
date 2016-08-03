@@ -26,6 +26,11 @@ acl osmtileScrapers browser ^app_name$
 
 http_access deny osmtile_sites osmtileScrapers
 
+acl osmtileOverusers referer_regex ^https?://pmap\.kuku\.lu/
+acl osmtileOverusers referer_regex ^https?://[^.]*\.pmap\.kuku\.lu/
+
+http_access deny osmtile_sites osmtileOverusers
+
 acl whitelist_path urlpath_regex ^/cgi-bin/(export|debug)
 acl blacklist_path urlpath_regex ^/cgi-bin/
 acl blacklist_path urlpath_regex ^/MyAdmin/
