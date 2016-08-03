@@ -292,22 +292,22 @@ unknown_limit 144
     network_in.graph_title Inbound network traffic
     network_in.graph_vlabel bits in per ${graph_period}
     network_in.graph_category network
-    network_in.graph_order <%= Chef::Munin.expand "%%name%%=%%name%%.openstreetmap:if_%%interface%%.down", @tilecaches %>
+    network_in.graph_order <%= Chef::Munin.expand "%%%name%%%=%%name%%.openstreetmap:if_%%interface%%.down", @tilecaches %>
     network_in.graph_total total
 <% @tilecaches.each do |tc| -%>
-    network_in.<%= tc[:name] %>.label <%= tc[:name] %>
-    network_in.<%= tc[:name] %>.cdef <%= tc[:name] %>,8,*
-    network_in.<%= tc[:name] %>.draw AREASTACK
+    network_in.<%= tc[:name].tr("-", "_") %>.label <%= tc[:name] %>
+    network_in.<%= tc[:name].tr("-", "_") %>.cdef <%= tc[:name].tr("-", "_") %>,8,*
+    network_in.<%= tc[:name].tr("-", "_") %>.draw AREASTACK
 <% end -%>
     network_out.graph_title Outbound network traffic
     network_out.graph_vlabel bits out per ${graph_period}
     network_out.graph_category network
-    network_out.graph_order <%= Chef::Munin.expand "%%name%%=%%name%%.openstreetmap:if_%%interface%%.up", @tilecaches %>
+    network_out.graph_order <%= Chef::Munin.expand "%%%name%%%=%%name%%.openstreetmap:if_%%interface%%.up", @tilecaches %>
     network_out.graph_total total
 <% @tilecaches.each do |tc| -%>
-    network_out.<%= tc[:name] %>.label <%= tc[:name] %>
-    network_out.<%= tc[:name] %>.cdef <%= tc[:name] %>,8,*
-    network_out.<%= tc[:name] %>.draw AREASTACK
+    network_out.<%= tc[:name].tr("-", "_") %>.label <%= tc[:name] %>
+    network_out.<%= tc[:name].tr("-", "_") %>.cdef <%= tc[:name].tr("-", "_") %>,8,*
+    network_out.<%= tc[:name].tr("-", "_") %>.draw AREASTACK
 <% end -%>
     squid_delay_pools.graph_title IPs being delayed
     squid_delay_pools.graph_args --base 1000 -l 0
@@ -351,49 +351,49 @@ unknown_limit 144
     squid_times_http.graph_category squid
     squid_times_http.graph_args --lower-limit 0
     squid_times_http.graph_vlabel median reponse times (s)
-    squid_times_http.graph_order <%= Chef::Munin.expand "%%name%%=%%name%%.openstreetmap:squid_times.mean_http", @tilecaches %>
+    squid_times_http.graph_order <%= Chef::Munin.expand "%%%name%%%=%%name%%.openstreetmap:squid_times.mean_http", @tilecaches %>
 <% @tilecaches.each do |tc| -%>
-    squid_times_http.<%= tc[:name] %>.label <%= tc[:name] %>
+    squid_times_http.<%= tc[:name].tr("-", "_") %>.label <%= tc[:name] %>
 <% end -%>
     squid_times_cmis.graph_title Squid Cache Miss Service Times
     squid_times_cmis.graph_category squid
     squid_times_cmis.graph_args --lower-limit 0
     squid_times_cmis.graph_vlabel median reponse times (s)
-    squid_times_cmis.graph_order <%= Chef::Munin.expand "%%name%%=%%name%%.openstreetmap:squid_times.mean_cmis", @tilecaches %>
+    squid_times_cmis.graph_order <%= Chef::Munin.expand "%%%name%%%=%%name%%.openstreetmap:squid_times.mean_cmis", @tilecaches %>
 <% @tilecaches.each do |tc| -%>
-    squid_times_cmis.<%= tc[:name] %>.label <%= tc[:name] %>
+    squid_times_cmis.<%= tc[:name].tr("-", "_") %>.label <%= tc[:name] %>
 <% end -%>
     squid_times_chits.graph_title Squid Cache Hit Service Times
     squid_times_chits.graph_category squid
     squid_times_chits.graph_args --lower-limit 0
     squid_times_chits.graph_vlabel median reponse times (s)
-    squid_times_chits.graph_order <%= Chef::Munin.expand "%%name%%=%%name%%.openstreetmap:squid_times.mean_chits", @tilecaches %>
+    squid_times_chits.graph_order <%= Chef::Munin.expand "%%%name%%%=%%name%%.openstreetmap:squid_times.mean_chits", @tilecaches %>
 <% @tilecaches.each do |tc| -%>
-    squid_times_chits.<%= tc[:name] %>.label <%= tc[:name] %>
+    squid_times_chits.<%= tc[:name].tr("-", "_") %>.label <%= tc[:name] %>
 <% end -%>
     squid_times_nhits.graph_title Squid Cache Near Hit Service Times
     squid_times_nhits.graph_category squid
     squid_times_nhits.graph_args --lower-limit 0
     squid_times_nhits.graph_vlabel median reponse times (s)
-    squid_times_nhits.graph_order <%= Chef::Munin.expand "%%name%%=%%name%%.openstreetmap:squid_times.mean_nhits", @tilecaches %>
+    squid_times_nhits.graph_order <%= Chef::Munin.expand "%%%name%%%=%%name%%.openstreetmap:squid_times.mean_nhits", @tilecaches %>
 <% @tilecaches.each do |tc| -%>
-    squid_times_nhits.<%= tc[:name] %>.label <%= tc[:name] %>
+    squid_times_nhits.<%= tc[:name].tr("-", "_") %>.label <%= tc[:name] %>
 <% end -%>
     squid_times_nmr.graph_title Squid Cache Not Modified Service Times
     squid_times_nmr.graph_category squid
     squid_times_nmr.graph_args --lower-limit 0
     squid_times_nmr.graph_vlabel median reponse times (s)
-    squid_times_nmr.graph_order <%= Chef::Munin.expand "%%name%%=%%name%%.openstreetmap:squid_times.mean_nmr", @tilecaches %>
+    squid_times_nmr.graph_order <%= Chef::Munin.expand "%%%name%%%=%%name%%.openstreetmap:squid_times.mean_nmr", @tilecaches %>
 <% @tilecaches.each do |tc| -%>
-    squid_times_nmr.<%= tc[:name] %>.label <%= tc[:name] %>
+    squid_times_nmr.<%= tc[:name].tr("-", "_") %>.label <%= tc[:name] %>
 <% end -%>
     squid_times_dnsl.graph_title Squid Cache DNS Lookup Service Times
     squid_times_dnsl.graph_category squid
     squid_times_dnsl.graph_args --lower-limit 0
     squid_times_dnsl.graph_vlabel median reponse times (s)
-    squid_times_dnsl.graph_order <%= Chef::Munin.expand "%%name%%=%%name%%.openstreetmap:squid_times.mean_dnsl", @tilecaches %>
+    squid_times_dnsl.graph_order <%= Chef::Munin.expand "%%%name%%%=%%name%%.openstreetmap:squid_times.mean_dnsl", @tilecaches %>
 <% @tilecaches.each do |tc| -%>
-    squid_times_dnsl.<%= tc[:name] %>.label <%= tc[:name] %>
+    squid_times_dnsl.<%= tc[:name].tr("-", "_") %>.label <%= tc[:name] %>
 <% end -%>
 
 # Configure compound graphs for render.openstreetmap.org
@@ -402,40 +402,40 @@ unknown_limit 144
     apache_accesses.graph_title Apache accesses
     apache_accesses.graph_vlabel accesses / ${graph_period}
     apache_accesses.graph_category apache
-    apache_accesses.graph_order <%= Chef::Munin.expand "%%name%%=%%name%%.openstreetmap:apache_accesses.accesses80", @renderers %>
+    apache_accesses.graph_order <%= Chef::Munin.expand "%%%name%%%=%%name%%.openstreetmap:apache_accesses.accesses80", @renderers %>
     apache_accesses.graph_total total
 <% @renderers.each do |rs| -%>
-    apache_accesses.<%= rs[:name] %>.label <%= rs[:name] %>
-    apache_accesses.<%= rs[:name] %>.draw AREASTACK
+    apache_accesses.<%= rs[:name].tr("-", "_") %>.label <%= rs[:name] %>
+    apache_accesses.<%= rs[:name].tr("-", "_") %>.draw AREASTACK
 <% end -%>
     apache_volume.graph_title Apache volume
     apache_volume.graph_vlabel bytes per ${graph_period}
     apache_volume.graph_category apache
-    apache_volume.graph_order <%= Chef::Munin.expand "%%name%%=%%name%%.openstreetmap:apache_volume.volume80", @renderers %>
+    apache_volume.graph_order <%= Chef::Munin.expand "%%%name%%%=%%name%%.openstreetmap:apache_volume.volume80", @renderers %>
     apache_volume.graph_total total
 <% @renderers.each do |rs| -%>
-    apache_volume.<%= rs[:name] %>.label <%= rs[:name] %>
-    apache_volume.<%= rs[:name] %>.draw AREASTACK
+    apache_volume.<%= rs[:name].tr("-", "_") %>.label <%= rs[:name] %>
+    apache_volume.<%= rs[:name].tr("-", "_") %>.draw AREASTACK
 <% end -%>
     network_in.graph_title Inbound network traffic
     network_in.graph_vlabel bits in per ${graph_period}
     network_in.graph_category network
-    network_in.graph_order <%= Chef::Munin.expand "%%name%%=%%name%%.openstreetmap:if_%%interface%%.down", @renderers %>
+    network_in.graph_order <%= Chef::Munin.expand "%%%name%%%=%%name%%.openstreetmap:if_%%interface%%.down", @renderers %>
     network_in.graph_total total
 <% @renderers.each do |rs| -%>
-    network_in.<%= rs[:name] %>.label <%= rs[:name] %>
-    network_in.<%= rs[:name] %>.cdef <%= rs[:name] %>,8,*
-    network_in.<%= rs[:name] %>.draw AREASTACK
+    network_in.<%= rs[:name].tr("-", "_") %>.label <%= rs[:name] %>
+    network_in.<%= rs[:name].tr("-", "_") %>.cdef <%= rs[:name].tr("-", "_") %>,8,*
+    network_in.<%= rs[:name].tr("-", "_") %>.draw AREASTACK
 <% end -%>
     network_out.graph_title Outbound network traffic
     network_out.graph_vlabel bits out per ${graph_period}
     network_out.graph_category network
-    network_out.graph_order <%= Chef::Munin.expand "%%name%%=%%name%%.openstreetmap:if_%%interface%%.up", @renderers %>
+    network_out.graph_order <%= Chef::Munin.expand "%%%name%%%=%%name%%.openstreetmap:if_%%interface%%.up", @renderers %>
     network_out.graph_total total
 <% @renderers.each do |rs| -%>
-    network_out.<%= rs[:name] %>.label <%= rs[:name] %>
-    network_out.<%= rs[:name] %>.cdef <%= rs[:name] %>,8,*
-    network_out.<%= rs[:name] %>.draw AREASTACK
+    network_out.<%= rs[:name].tr("-", "_") %>.label <%= rs[:name] %>
+    network_out.<%= rs[:name].tr("-", "_") %>.cdef <%= rs[:name].tr("-", "_") %>,8,*
+    network_out.<%= rs[:name].tr("-", "_") %>.draw AREASTACK
 <% end -%>
     mod_tile_fresh.graph_title freshness of served tiles
     mod_tile_fresh.graph_args --base 1000 -l 0
