@@ -58,7 +58,9 @@ commit_delay = <%= @settings[:commit_delay] || @defaults[:commit_delay] %>
 
 # - Checkpoints -
 
+<% if @version.to_f < 9.5 %>
 checkpoint_segments = <%= @settings[:checkpoint_segments] || @defaults[:checkpoint_segments] %>
+<% end -%>
 checkpoint_timeout = <%= @settings[:checkpoint_timeout] || @defaults[:checkpoint_timeout] %>
 checkpoint_completion_target = <%= @settings[:checkpoint_completion_target] || @defaults[:checkpoint_completion_target] %>
 
