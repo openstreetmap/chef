@@ -140,7 +140,6 @@ node[:taginfo][:sites].each do |site|
     settings["sources"]["db"]["bindir"] = "#{directory}/taginfo/tagstats"
     settings["tagstats"]["cxxflags"] = "-I../../libosmium/include"
     settings["tagstats"]["geodistribution"] = "DenseMmapArray"
-    settings["level0"]["overpass_url_prefix"] = "http://overpass-api.de/api/interpreter?"
 
     JSON.pretty_generate(settings)
   end
