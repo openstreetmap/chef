@@ -31,7 +31,7 @@ apache_module "php5"
 apache_module "rewrite"
 
 fail2ban_filter "wordpress" do
-  source "http://plugins.svn.wordpress.org/wp-fail2ban/trunk/wordpress-hard.conf"
+  source "https://plugins.svn.wordpress.org/wp-fail2ban/trunk/filters.d/wordpress-hard.conf"
 end
 
 fail2ban_jail "wordpress" do
