@@ -36,10 +36,11 @@ acl osmtileOverusers referer_regex ^https?://[^.]*\.fastpokemap\.com/
 http_access deny osmtile_sites osmtileOverusers
 
 # Block when neither the referer nor User-Agent is set - policy requires some identification of the site / app.
-acl has_referer referer_regex .
-acl has_user_agent browser .
+# This doesn't seem to work! Revisit later!
+#acl has_referer referer_regex .
+#acl has_user_agent browser .
 
-http_access deny osmtile_sites !has_referer !has_user_agent
+#http_access deny osmtile_sites !has_referer !has_user_agent
 
 acl whitelist_path urlpath_regex ^/cgi-bin/(export|debug)
 acl blacklist_path urlpath_regex ^/cgi-bin/
