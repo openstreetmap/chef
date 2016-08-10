@@ -28,6 +28,8 @@ http_access deny osmtile_sites osmtileScrapers
 
 acl osmtileOverusers referer_regex ^https?://pmap\.kuku\.lu/
 acl osmtileOverusers referer_regex ^https?://[^.]*\.pmap\.kuku\.lu/
+acl osmtileOverusers referer_regex ^https?://fastpokemap\.com/
+acl osmtileOverusers referer_regex ^https?://[^.]*\.fastpokemap\.com/
 
 http_access deny osmtile_sites osmtileOverusers
 
