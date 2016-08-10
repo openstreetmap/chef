@@ -23,6 +23,8 @@ acl osmtileScrapers browser MSIE.7\.0.*Windows.NT.5\.1.*2\.0\.50727.$
 acl osmtileScrapers browser MSIE.5.5
 acl osmtileScrapers browser ^LoadOSM\.exe$
 acl osmtileScrapers browser ^app_name$
+acl osmtileScrapers browser ^osmdroid$ # app using osmdroid library not setting app-specific User-Agent
+acl osmtileScrapers browser ^Mozilla/5.0 (Windows NT 5.1)$ # Faked User-Agent
 
 http_access deny osmtile_sites osmtileScrapers
 
@@ -30,6 +32,12 @@ acl osmtileOverusers referer_regex ^https?://pmap\.kuku\.lu/
 acl osmtileOverusers referer_regex ^https?://[^.]*\.pmap\.kuku\.lu/
 
 http_access deny osmtile_sites osmtileOverusers
+
+# Block when neither the referer nor User-Agent is set - policy requires some identification of the site / app.
+acl has_referer referer_regex .
+acl has_user_agent browser_regex .
+
+http_access deny osmtile_sites !has_referer !has_user_agent
 
 acl whitelist_path urlpath_regex ^/cgi-bin/(export|debug)
 acl blacklist_path urlpath_regex ^/cgi-bin/
