@@ -24,7 +24,7 @@ acl osmtileScrapers browser MSIE.5.5
 acl osmtileScrapers browser ^LoadOSM\.exe$
 acl osmtileScrapers browser ^app_name$
 acl osmtileScrapers browser ^osmdroid$ # app using osmdroid library not setting app-specific User-Agent
-acl osmtileScrapers browser ^Mozilla/5.0 (Windows NT 5.1)$ # Faked User-Agent
+acl osmtileScrapers browser ^Mozilla/5\.0 (Windows NT 5\.1)$ # Faked User-Agent
 
 http_access deny osmtile_sites osmtileScrapers
 
