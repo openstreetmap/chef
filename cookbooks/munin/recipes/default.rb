@@ -17,8 +17,6 @@
 # limitations under the License.
 #
 
-include_recipe "networking"
-
 package "munin-node"
 
 service "munin-node" do
