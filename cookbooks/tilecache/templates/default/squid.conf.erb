@@ -111,8 +111,8 @@ acl pool_<%= sprintf("%03d", 2*i) %> src <%= 2*i %>.0.0.0/7
 delay_pools 256
 delay_initial_bucket_level 25
 
-<% (0..255).each do |i| %>
-delay_class <%= i+1 %> 3
+<% (1..256).each do |i| %>
+delay_class <%= i %> 3
 <% end %>
 #bit mask
 # xxxxxxx- -------- xxxxxxxx xxxxxxxx
