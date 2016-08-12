@@ -128,7 +128,7 @@ delay_parameters <%= i+1 %> -1/-1 <%= node[:tilecache][:net_bucket_refill] / 10 
 # bigger pools for users providing a referer (assuming it's not blocked)
 # or non-browser users.
 <% (0..127).each do |i| %>
-delay_access <%= i+129 %> allow pool_<%= sprintf("%03d", 2*i)) %> !pool_unlimited osmtile_sites
+delay_access <%= i+129 %> allow pool_<%= sprintf("%03d", 2*i) %> !pool_unlimited osmtile_sites
 delay_access <%= i+129 %> deny all
 delay_parameters <%= i+129 %> -1/-1 <%= node[:tilecache][:net_bucket_refill] %>/<%= node[:tilecache][:net_bucket_size] %> <%= node[:tilecache][:ip_bucket_refill] %>/<%= node[:tilecache][:ip_bucket_size] %>
 <% end %>
