@@ -39,6 +39,7 @@ package "g++"
 package "sqlite3"
 package "osmosis"
 package "curl"
+package "pbzip2"
 
 ruby_version = node[:passenger][:ruby_version]
 
