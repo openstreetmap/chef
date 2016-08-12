@@ -104,14 +104,14 @@ acl pool_unlimited src 185.52.244.32/29
 #Allow tile_caches ICP access
 icp_access allow tile_caches
 
-<% (0..127).each do |i| %>
+<% (0..127).each do |i| -%>
 acl pool_<%= sprintf("%03d", 2*i) %> src <%= 2*i %>.0.0.0/7
 <% end %>
 
 delay_pools 256
 delay_initial_bucket_level 25
 
-<% (1..256).each do |i| %>
+<% (1..256).each do |i| -%>
 delay_class <%= i %> 3
 <% end %>
 #bit mask
@@ -119,7 +119,7 @@ delay_class <%= i %> 3
 
 # small pools for !has_referer && is_browser - designed to slow down anyone
 # using no-referer to bypass blocks due to abusive levels of use.
-<% (0..127).each do |i| %>
+<% (0..127).each do |i| -%>
 delay_access <%= i+1 %> allow pool_<%= sprintf("%03d", 2*i) %> !pool_unlimited !has_referer is_browser osmtile_sites
 delay_access <%= i+1 %> deny all
 delay_parameters <%= i+1 %> -1/-1 <%= node[:tilecache][:net_bucket_refill] / 10 %>/<%= node[:tilecache][:net_bucket_size] / 10 %> <%= node[:tilecache][:ip_bucket_refill] / 10 %>/<%= node[:tilecache][:ip_bucket_size] / 10 %>
