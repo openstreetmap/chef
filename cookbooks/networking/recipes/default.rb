@@ -73,18 +73,20 @@ template "/etc/hosts" do
   mode 0o644
 end
 
-link "/etc/resolv.conf" do
-  action :delete
-  link_type :symbolic
-  to "/run/resolvconf/resolv.conf"
-  only_if { File.symlink?("/etc/resolv.conf") }
-end
+unless node[:networking][:nameservers].empty?
+  link "/etc/resolv.conf" do
+    action :delete
+    link_type :symbolic
+    to "/run/resolvconf/resolv.conf"
+    only_if { File.symlink?("/etc/resolv.conf") }
+  end
 
-template "/etc/resolv.conf" do
-  source "resolv.conf.erb"
-  owner "root"
-  group "root"
-  mode 0o644
+  template "/etc/resolv.conf" do
+    source "resolv.conf.erb"
+    owner "root"
+    group "root"
+    mode 0o644
+  end
 end
 
 node.interfaces(:role => :internal) do |interface|
