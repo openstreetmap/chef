@@ -29,11 +29,18 @@ execute "apt-update" do
   command "/usr/bin/apt-get update"
 end
 
+archive_host = if node[:country]
+                 "#{node[:country]}.archive.ubuntu.com"
+               else
+                 "archive.ubuntu.com"
+               end
+
 template "/etc/apt/sources.list" do
   source "sources.list.erb"
   owner "root"
   group "root"
   mode 0o644
+  variables :archive_host => archive_host, :codename => node[:lsb][:codename]
   notifies :run, "execute[apt-update]", :immediately
 end
 
