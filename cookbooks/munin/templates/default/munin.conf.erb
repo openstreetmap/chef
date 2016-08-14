@@ -309,7 +309,7 @@ unknown_limit 144
     network_out.<%= tc[:name].tr("-", "_") %>.cdef <%= tc[:name].tr("-", "_") %>,8,*
     network_out.<%= tc[:name].tr("-", "_") %>.draw AREASTACK
 <% end -%>
-    squid_delay_pools.graph_title IPs being delayed
+    squid_delay_pools.graph_title IPs being delayed with referer
     squid_delay_pools.graph_args --base 1000 -l 0
     squid_delay_pools.graph_vlabel IPs
     squid_delay_pools.graph_order squid_delay1
@@ -318,6 +318,15 @@ unknown_limit 144
     squid_delay_pools.squid_delay1.label IPs
     squid_delay_pools.squid_delay1.min 0
     squid_delay_pools.squid_delay1.draw AREA
+    squid_delay_pools_noreferer.graph_title No-referer IPs being delayed
+    squid_delay_pools_noreferer.graph_args --base 1000 -l 0
+    squid_delay_pools_noreferer.graph_vlabel IPs
+    squid_delay_pools_noreferer.graph_order squid_delay2
+    squid_delay_pools_noreferer.graph_category squid
+    squid_delay_pools_noreferer.squid_delay2.sum <%= Chef::Munin.expand "%%name%%.openstreetmap:squid_delay_pools_noreferer.squid_delay2", @tilecaches %>
+    squid_delay_pools_noreferer.squid_delay2.label IPs
+    squid_delay_pools_noreferer.squid_delay2.min 0
+    squid_delay_pools_noreferer.squid_delay2.draw AREA
     squid_requests.graph_title Squid client requests
     squid_requests.graph_args --base 1000 -l 0
     squid_requests.graph_vlabel requests / ${graph_period}
