@@ -188,7 +188,7 @@ template "/etc/shorewall/rules" do
   owner "root"
   group "root"
   mode 0o644
-  variables :rules => []
+  variables :family => "inet"
   notifies :restart, "service[shorewall]"
 end
 
@@ -301,7 +301,7 @@ unless node.interfaces(:family => :inet6).empty?
     owner "root"
     group "root"
     mode 0o644
-    variables :rules => []
+    variables :family => "inet6"
     notifies :restart, "service[shorewall6]"
   end
 

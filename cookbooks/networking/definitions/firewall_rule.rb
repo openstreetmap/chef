@@ -18,15 +18,6 @@
 #
 
 define :firewall_rule, :action => :accept do
-  inet = nil
-  inet6 = nil
-
-  begin
-    inet = resources(:template => "/etc/shorewall/rules")
-    inet6 = resources(:template => "/etc/shorewall6/rules")
-  rescue
-  end
-
   rule = Hash[
     :action => params[:action].to_s.upcase,
     :source => params[:source],
@@ -38,12 +29,12 @@ define :firewall_rule, :action => :accept do
   ]
 
   if params[:family].nil?
-    inet.variables[:rules] << rule unless inet.nil?
-    inet6.variables[:rules] << rule unless inet6.nil?
+    node.default[:networking][:firewall][:inet] << rule
+    node.default[:networking][:firewall][:inet6] << rule
   elsif params[:family].to_s == "inet"
-    inet.variables[:rules] << rule unless inet.nil?
+    node.default[:networking][:firewall][:inet] << rule
   elsif params[:family].to_s == "inet6"
-    inet6.variables[:rules] << rule unless inet6.nil?
+    node.default[:networking][:firewall][:inet6] << rule
   else
     log "Unsupported network family" do
       level :error
