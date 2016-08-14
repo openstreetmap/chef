@@ -77,6 +77,7 @@ end
 
 munin_plugin "squid_cache"
 munin_plugin "squid_delay_pools"
+munin_plugin "squid_delay_pools_noreferer"
 munin_plugin "squid_times"
 munin_plugin "squid_icp"
 munin_plugin "squid_objectsize"
