@@ -23,7 +23,9 @@ acl osmtileScrapers browser MSIE.7\.0.*Windows.NT.5\.1.*2\.0\.50727.$
 acl osmtileScrapers browser MSIE.5.5
 acl osmtileScrapers browser ^LoadOSM\.exe$
 acl osmtileScrapers browser ^app_name$
-acl osmtileScrapers browser ^osmdroid$ # app using osmdroid library not setting app-specific User-Agent
+# TEMPORARY unblock of osmdroid-based apps which should be setting their unique
+# User-Agent, but aren't. Re-block on/near 2016-08-29.
+#acl osmtileScrapers browser ^osmdroid$ # app using osmdroid library not setting app-specific User-Agent
 #acl osmtileScrapers browser ^Mozilla/5\.0 \(Windows NT 5\.1\)$ # Faked User-Agent
 
 http_access deny osmtile_sites osmtileScrapers
