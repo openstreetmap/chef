@@ -29,6 +29,7 @@ default_attributes(
         :synchronous_commit => "off",
         :checkpoint_segments => "32",
         :checkpoint_timeout => "10min",
+        :max_wal_size => "1536MB",
         :checkpoint_completion_target => "0.9",
         :shared_buffers => "2GB",
         :autovacuum_max_workers => "1"

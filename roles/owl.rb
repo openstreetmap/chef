@@ -29,6 +29,7 @@ default_attributes(
       :defaults => {
         :fsync => "off",
         :checkpoint_segments => "30",
+        :max_wal_size => "1440MB",
         :checkpoint_completion_target => "0.9",
         :random_page_cost => "2.0",
         :log_min_duration_statement => "3000"
