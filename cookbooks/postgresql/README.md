@@ -9,3 +9,4 @@ defines a number of providers that can be used in other cookbooks:
 * munin: For configuring munin plugins for a given database name.
 * table: For managing database tables.
 * user: For managing database users.
+* tablespace: For managing tablespaces.

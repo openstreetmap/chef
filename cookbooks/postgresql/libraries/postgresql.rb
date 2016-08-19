@@ -93,6 +93,14 @@ class Chef
       end
     end
 
+    def tablespaces
+      @tablespaces ||= query("SELECT spcname, usename FROM pg_tablespace AS t INNER JOIN pg_user AS u ON t.spcowner = u.usesysid").each_with_object({}) do |tablespace, tablespaces|
+        tablespaces[tablespace[:spcname]] = {
+          :owner => tablespace[:usename]
+        }
+      end
+    end
+
     def tables(database)
       @tables ||= {}
       @tables[database] ||= query("SELECT n.nspname, c.relname, u.usename, c.relacl FROM pg_class AS c INNER JOIN pg_user AS u ON c.relowner = u.usesysid INNER JOIN pg_namespace AS n ON c.relnamespace = n.oid", :database => database).each_with_object({}) do |table, tables|
