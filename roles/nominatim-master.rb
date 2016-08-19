@@ -8,38 +8,31 @@ default_attributes(
         :wal_level => "hot_standby",
         :archive_mode => "on",
         :archive_command => "/bin/cp %p /data/postgresql-archive/%f",
-        :max_wal_senders => "5",
-        :late_authentication_rules => [
-          { :database => "replication", :user => "replication", :address => "146.179.159.164/32" }
-        ]
+        :max_wal_senders => "5"
       }
     }
   },
   :nominatim => {
-    :enabled => true,
+    :state => "master",
     :enable_backup => true
   },
   :rsyncd => {
     :modules => {
       :archive => {
         :comment => "WAL Archive",
-        :path => "/data/postgresql-archive",
         :read_only => true,
         :write_only => false,
         :list => false,
         :uid => "postgres",
         :gid => "postgres",
-        :transfer_logging => false,
-        :hosts_allow => [
-          "146.179.159.164"
-        ]
+        :transfer_logging => false
       }
     }
   }
 )
 
 run_list(
-  "role[nominatim]",
+  "recipe[rsyncd]",
   "recipe[nominatim::master]",
-  "recipe[rsyncd]"
+  "role[nominatim-base]"
 )

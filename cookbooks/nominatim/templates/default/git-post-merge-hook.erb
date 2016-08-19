@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# DO NOT EDIT - This file is being maintained by Chef
+
+cd <%= @srcdir %>
+
+git submodule update
+
+cd <%= @builddir %>
+
+cmake <%= @srcdir %> &&
+make
+
+psql -d <%= @dbname %> -c "SELECT version();" >/dev/null 2>&1
+if [[ "$?" == "0" ]]; then
+  ./utils/setup.php --create-functions --create-partition-functions --enable-diff-updates
+fi

@@ -1,0 +1,27 @@
+<?php
+# DO NOT EDIT - This file is being maintained by Chef
+
+@define('CONST_Database_DSN', 'pgsql://@/<%= @dbname %>');
+if (isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS']))
+    @define('CONST_Website_BaseURL', 'https://nominatim.openstreetmap.org/');
+else
+    @define('CONST_Website_BaseURL', 'http://nominatim.openstreetmap.org/');
+
+<% if @flatnode_file -%>
+@define('CONST_Osm2pgsql_Flatnode_File', '<%= @flatnode_file %>');
+<% end -%>
+@define('CONST_Search_NameOnlySearchFrequencyThreshold', 500);
+
+@define('CONST_Tablespace_Osm2pgsql_Data', 'dosm');
+@define('CONST_Tablespace_Osm2pgsql_Index', 'iosm');
+@define('CONST_Tablespace_Place_Data', 'dplace');
+@define('CONST_Tablespace_Place_Index', 'iplace');
+@define('CONST_Tablespace_Address_Data', 'daddress');
+@define('CONST_Tablespace_Address_Index', 'iaddress');
+@define('CONST_Tablespace_Search_Data', 'dsearch');
+@define('CONST_Tablespace_Search_Index', 'isearch');
+@define('CONST_Tablespace_Aux_Data', 'daux');
+@define('CONST_Tablespace_Aux_Index', 'iaux');
+
+@define('CONST_Log_File', '<%= @log_file %>');
+@define('CONST_Log_DB', false);

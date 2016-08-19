@@ -17,16 +17,15 @@
 # limitations under the License.
 #
 
-include_recipe "git"
+master = search(:node, "roles:nominatim-master")[0] # ~FC010
+host = master[:nominatim][:master_host]
 
-home_directory = data_bag_item("accounts", "nominatim")["home"]
+node.default[:postgresql][:settings][:defaults][:primary_conninfo] = {
+  :host => host,
+  :port => "5432",
+  :user => "replication",
+  :passwords => { :bag => "nominatim", :item => "passwords" }
+}
 
-git "#{home_directory}/nominatim" do
-  repository node[:nominatim][:repository]
-  enable_submodules true
-  user "nominatim"
-  group "nominatim"
-  notifies :run, "execute[compile_nominatim]"
-end
-
-include_recipe "nominatim::base"
+node.default[:postgresql][:settings][:defaults][:restore_command] =
+  "/usr/bin/rsync #{host}::archive/%f %p"

@@ -17,60 +17,20 @@
 # limitations under the License.
 #
 
-include_recipe "git"
+slaves = search(:node, "roles:nominatim-slave") # ~FC010
 
-passwords = data_bag_item("nominatim", "passwords")
-database_cluster = node[:nominatim][:database][:cluster]
-home_directory = data_bag_item("accounts", "nominatim")["home"]
+node.default[:postgresql][:settings][:defaults][:late_authentication_rules] = []
+node.default[:rsyncd][:modules] = { :archive => { :hosts_allow => [] } }
 
-wal_archives = node[:rsyncd][:modules][:archive][:path]
-# XXX we really should get a list of nominatim-slave nodes here
-slaves = "poldi"
-
-git "#{home_directory}/nominatim" do
-  action :checkout
-  repository node[:nominatim][:repository]
-  enable_submodules true
-  user "nominatim"
-  group "nominatim"
-  notifies :run, "execute[compile_nominatim]"
-end
-
-include_recipe "nominatim::base"
-
-superusers = %w(tomh lonvia twain nominatim)
-
-superusers.each do |user|
-  postgresql_user user do
-    cluster database_cluster
-    superuser true
-  end
-end
-
-postgresql_user "www-data" do
-  cluster database_cluster
-end
-
-postgresql_user "replication" do
-  cluster database_cluster
-  password passwords["replication"]
-  replication true
-end
-
-directory wal_archives do
-  owner "postgres"
-  group "postgres"
-  mode 0o700
-  only_if { node[:postgresql][:settings][:defaults][:archive_mode] == "on" }
-end
-
-template "/usr/local/bin/clean-db-nominatim" do
-  source "clean-db-nominatim.erb"
-  owner "root"
-  group "root"
-  mode 0o755
-  variables :archive_dir => wal_archives,
-            :update_stop_file => "#{home_directory}/status/updates_disabled",
-            :streaming_clients => slaves
-  only_if { node[:postgresql][:settings][:defaults][:archive_mode] == "on" }
+slaves.each do |slave|
+  # set up DB access for each slave
+  node.default[:postgresql][:settings][:defaults][:late_authentication_rules].push(
+    :database => "replication",
+    :user => "replication",
+    :address => "#{slave[:networking][:internal_ipv4][:address]}/32"
+  )
+  # allow slaves access to the WAL logs
+  node.default[:rsyncd][:modules][:archive][:hosts_allow].push(
+    slave[:networking][:internal_ipv4][:address]
+  )
 end

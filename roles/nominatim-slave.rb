@@ -7,23 +7,17 @@ default_attributes(
       :defaults => {
         :hot_standby => "on",
         :hot_standby_feedback => "on",
-        :standby_mode => "on",
-        :primary_conninfo => {
-          :host => "pummelzacken.ucl.openstreetmap.org",
-          :port => "5432",
-          :user => "replication",
-          :passwords => { :bag => "nominatim", :item => "passwords" }
-        },
-        :restore_command => "/usr/bin/rsync pummelzacken.ucl.openstreetmap.org::archive/%f %p"
+        :standby_mode => "on"
       }
     }
   },
   :nominatim => {
+    :state => "slave",
     :enable_backup => false
   }
 )
 
 run_list(
-  "role[nominatim]",
-  "recipe[nominatim::slave]"
+  "recipe[nominatim::slave]",
+  "role[nominatim-base]"
 )
