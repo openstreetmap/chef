@@ -380,6 +380,11 @@ acl_check_rcpt:
           local_parts   = ^[./|] : ^.*[@!] : ^.*/\\.\\./
   #############################################################################
 
+  # Block bounces to selected addresses
+
+  deny    local_parts   = root:postmaster:webmaster:abuse:support
+          senders       = :
+
   # Accept mail to postmaster in any local domain, regardless of the source,
   # and without verifying the sender.
 
