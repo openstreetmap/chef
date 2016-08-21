@@ -385,6 +385,10 @@ acl_check_rcpt:
   deny    local_parts   = root:postmaster:webmaster:abuse:support
           senders       = :
 
+  # Block sender of spam backscatter
+
+  deny    senders       = www-data@www.easyticket.de
+
   # Accept mail to postmaster in any local domain, regardless of the source,
   # and without verifying the sender.
 
