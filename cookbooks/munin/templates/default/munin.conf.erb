@@ -341,6 +341,7 @@ unknown_limit 144
     squid_requests.errors.draw STACK
     squid_requests.requests.sum <%= Chef::Munin.expand "%%name%%.openstreetmap:squid_requests.requests", @tilecaches %>
     squid_requests.requests.label misses
+    squid_requests.requests.cdef requests,hits,-,errors,-
     squid_requests.requests.draw STACK
     squid_traffic.graph_title Squid traffic status
     squid_traffic.graph_args --base 1000
