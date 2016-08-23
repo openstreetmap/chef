@@ -103,8 +103,14 @@ package "python-cairo"
 package "python-mapnik"
 
 package "ttf-dejavu"
-package "fonts-droid"
 package "ttf-unifont"
+
+if node[:lsb][:release].to_f >= 16.04
+  package "fonts-droid-fallback"
+else
+  package "fonts-droid"
+end
+
 package "fonts-sipa-arundina"
 package "fonts-sil-padauk"
 package "fonts-khmeros"
