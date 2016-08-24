@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-node.set[:nfs]["/store/rails"] = {
+node.default[:nfs]["/store/rails"] = {
   :host => node[:web][:fileserver],
   :path => "/store/rails"
 }

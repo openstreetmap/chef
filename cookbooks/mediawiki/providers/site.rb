@@ -28,12 +28,12 @@ end
 use_inline_resources
 
 action :create do
-  node.set_unless[:mediawiki][:sites][new_resource.name] = {}
+  node.normal_unless[:mediawiki][:sites][new_resource.name] = {}
 
-  node.set[:mediawiki][:sites][new_resource.name][:directory] = site_directory
-  node.set[:mediawiki][:sites][new_resource.name][:version] = new_resource.version
+  node.normal[:mediawiki][:sites][new_resource.name][:directory] = site_directory
+  node.normal[:mediawiki][:sites][new_resource.name][:version] = new_resource.version
 
-  node.set_unless[:mediawiki][:sites][new_resource.name][:wgSecretKey] = SecureRandom.base64(48)
+  node.normal_unless[:mediawiki][:sites][new_resource.name][:wgSecretKey] = SecureRandom.base64(48)
 
   mysql_user "#{new_resource.database_user}@localhost" do
     password new_resource.database_password

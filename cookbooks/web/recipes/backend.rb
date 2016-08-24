@@ -39,4 +39,4 @@ apache_site "www.openstreetmap.org" do
   variables :secret_key_base => web_passwords["secret_key_base"]
 end
 
-node.set[:memcached][:ip_address] = node.internal_ipaddress
+node.normal[:memcached][:ip_address] = node.internal_ipaddress

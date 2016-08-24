@@ -30,18 +30,18 @@ use_inline_resources
 action :create do
   version = new_resource.version || Chef::Wordpress.current_version
 
-  node.set_unless[:wordpress][:sites][new_resource.name] = {}
+  node.normal_unless[:wordpress][:sites][new_resource.name] = {}
 
-  node.set[:wordpress][:sites][new_resource.name][:directory] = site_directory
+  node.normal[:wordpress][:sites][new_resource.name][:directory] = site_directory
 
-  node.set_unless[:wordpress][:sites][new_resource.name][:auth_key] = SecureRandom.base64(48)
-  node.set_unless[:wordpress][:sites][new_resource.name][:secure_auth_key] = SecureRandom.base64(48)
-  node.set_unless[:wordpress][:sites][new_resource.name][:logged_in_key] = SecureRandom.base64(48)
-  node.set_unless[:wordpress][:sites][new_resource.name][:nonce_key] = SecureRandom.base64(48)
-  node.set_unless[:wordpress][:sites][new_resource.name][:auth_salt] = SecureRandom.base64(48)
-  node.set_unless[:wordpress][:sites][new_resource.name][:secure_auth_salt] = SecureRandom.base64(48)
-  node.set_unless[:wordpress][:sites][new_resource.name][:logged_in_salt] = SecureRandom.base64(48)
-  node.set_unless[:wordpress][:sites][new_resource.name][:nonce_salt] = SecureRandom.base64(48)
+  node.normal_unless[:wordpress][:sites][new_resource.name][:auth_key] = SecureRandom.base64(48)
+  node.normal_unless[:wordpress][:sites][new_resource.name][:secure_auth_key] = SecureRandom.base64(48)
+  node.normal_unless[:wordpress][:sites][new_resource.name][:logged_in_key] = SecureRandom.base64(48)
+  node.normal_unless[:wordpress][:sites][new_resource.name][:nonce_key] = SecureRandom.base64(48)
+  node.normal_unless[:wordpress][:sites][new_resource.name][:auth_salt] = SecureRandom.base64(48)
+  node.normal_unless[:wordpress][:sites][new_resource.name][:secure_auth_salt] = SecureRandom.base64(48)
+  node.normal_unless[:wordpress][:sites][new_resource.name][:logged_in_salt] = SecureRandom.base64(48)
+  node.normal_unless[:wordpress][:sites][new_resource.name][:nonce_salt] = SecureRandom.base64(48)
 
   mysql_user "#{new_resource.database_user}@localhost" do
     password new_resource.database_password

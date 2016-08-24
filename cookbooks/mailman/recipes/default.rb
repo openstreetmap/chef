@@ -23,7 +23,7 @@ include_recipe "apache::ssl"
 
 package "mailman"
 
-node.set_unless[:mailman][:subscribe_form_secret] = SecureRandom.base64(48)
+node.normal_unless[:mailman][:subscribe_form_secret] = SecureRandom.base64(48)
 
 template "/etc/mailman/mm_cfg.py" do
   source "mm_cfg.py.erb"
