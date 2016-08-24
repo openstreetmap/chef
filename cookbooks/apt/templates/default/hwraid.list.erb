@@ -4,6 +4,6 @@
 deb <%= @url %> precise main
 deb-src <%= @url %> precise main
 <% else -%>
-deb <%= @url %> <%= node.lsb.codename %> main
-deb-src <%= @url %> <%= node.lsb.codename %> main
+deb <%= @url %> <%= node[:lsb][:codename] %> main
+deb-src <%= @url %> <%= node[:lsb][:codename] %> main
 <% end -%>
