@@ -7,7 +7,11 @@ tile_dir=/srv/tile.openstreetmap.org/tiles
 stats_file=/var/run/renderd/renderd.stats
 
 [mapnik]
+<% if node[:lsb][:release].to_f >= 16.04 -%>
+plugins_dir=/usr/lib/mapnik/3.0/input
+<% else -%>
 plugins_dir=/usr/lib/mapnik/2.2/input
+<% end -%>
 font_dir=/usr/share/fonts
 font_dir_recurse=true
 <% node[:tile][:styles].each do |name,details| -%>
