@@ -8,11 +8,11 @@ default[:hardware][:grub][:cmdline] = %w(nomodeset)
 default[:hardware][:sensors] = {}
 
 if node[:dmi] && node[:dmi][:system]
-  case dmi.system.manufacturer
+  case node[:dmi][:system][:manufacturer]
   when "HP"
     default[:apt][:sources] |= ["management-component-pack"]
 
-    case dmi.system.product_name
+    case node[:dmi][:system][:product_name]
     when "ProLiant DL360 G6", "ProLiant DL360 G7"
       default[:hardware][:sensors][:"power_meter-*"][:power][:power1] = { :ignore => true }
     end
