@@ -4,4 +4,7 @@
 find <%= @directory %>/tmp \( \( -type f -mtime +28 \) -o \( -type d -empty \) \) -delete
 
 # Cleanup assets
-/usr/local/bin/cleanup-rails-assets <%= @directory %>
+if [ -x /usr/local/bin/cleanup-rails-assets ]
+then
+    /usr/local/bin/cleanup-rails-assets <%= @directory %>
+fi
