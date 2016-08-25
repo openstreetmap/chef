@@ -473,19 +473,30 @@ template "/etc/cron.d/render-lowzoom" do
   mode 0o644
 end
 
-template "/etc/rsyslog.d/20-renderd.conf" do
-  source "renderd.rsyslog.erb"
-  owner "root"
-  group "root"
-  mode 0o644
-  notifies :restart, "service[rsyslog]"
-end
+if node[:lsb][:release].to_f >= 16.04
+  file "/etc/rsyslog.d/20-renderd.conf" do
+    action :delete
+    notifies :restart, "service[rsyslog]"
+  end
 
-template "/etc/logrotate.d/renderd" do
-  source "renderd.logrotate.erb"
-  owner "root"
-  group "root"
-  mode 0o644
+  file "/etc/logrotate.d/renderd" do
+    action :delete
+  end
+else
+  template "/etc/rsyslog.d/20-renderd.conf" do
+    source "renderd.rsyslog.erb"
+    owner "root"
+    group "root"
+    mode 0o644
+    notifies :restart, "service[rsyslog]"
+  end
+
+  template "/etc/logrotate.d/renderd" do
+    source "renderd.logrotate.erb"
+    owner "root"
+    group "root"
+    mode 0o644
+  end
 end
 
 package "liblockfile-simple-perl"
