@@ -53,6 +53,6 @@ run_list(
   "recipe[imagery::gb_hampshire_aerial]",
   "recipe[imagery::gb_os_sv]",
   "recipe[imagery::gb_surrey_aerial]",
-  "recipe[imagery::za_ngi_topo],"
+  "recipe[imagery::za_ngi_topo]",
   "recipe[imagery::za_coct_aerial]"
 )
