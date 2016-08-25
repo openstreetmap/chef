@@ -158,12 +158,17 @@ package "mapnik-utils"
 node[:tile][:data].each_value do |data|
   url = data[:url]
   file = "/srv/tile.openstreetmap.org/data/#{File.basename(url)}"
-  directory = "/srv/tile.openstreetmap.org/data/#{data[:directory]}"
 
-  directory directory do
-    owner "tile"
-    group "tile"
-    mode 0o755
+  if data[:directory]
+    directory = "/srv/tile.openstreetmap.org/data/#{data[:directory]}"
+
+    directory directory do
+      owner "tile"
+      group "tile"
+      mode 0o755
+    end
+  else
+    directory = "/srv/tile.openstreetmap.org/data"
   end
 
   if file =~ /\.tgz$/
