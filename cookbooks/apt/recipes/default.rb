@@ -130,17 +130,19 @@ end
 
 package "unattended-upgrades"
 
-auto_upgrades = if node[:apt][:unattended_upgrades][:enable]
-                  IO.read("/usr/share/unattended-upgrades/20auto-upgrades")
-                else
-                  IO.read("/usr/share/unattended-upgrades/20auto-upgrades-disabled")
-                end
+if Dir.exist?("/usr/share/unattended-upgrades")
+  auto_upgrades = if node[:apt][:unattended_upgrades][:enable]
+                    IO.read("/usr/share/unattended-upgrades/20auto-upgrades")
+                  else
+                    IO.read("/usr/share/unattended-upgrades/20auto-upgrades-disabled")
+                  end
 
-file "/etc/apt/apt.conf.d/20auto-upgrades" do
-  user "root"
-  group "root"
-  mode 0o644
-  content auto_upgrades
+  file "/etc/apt/apt.conf.d/20auto-upgrades" do
+    user "root"
+    group "root"
+    mode 0o644
+    content auto_upgrades
+  end
 end
 
 template "/etc/apt/apt.conf.d/60chef" do
