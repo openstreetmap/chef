@@ -49,7 +49,6 @@ default_attributes(
       "rails" => "root",
       "trac" => "root",
       "munin" => "root",
-      "thinkup" => "root",
       "www-data" => "root",
       "osmbackup" => "root",
       "noreply" => "/dev/null",
