@@ -28,6 +28,18 @@ acl osmtileScrapers browser ^app_name$
 #acl osmtileScrapers browser ^osmdroid$ # app using osmdroid library not setting app-specific User-Agent
 #acl osmtileScrapers browser ^Mozilla/5\.0 \(Windows NT 5\.1\)$ # Faked User-Agent
 
+acl is_fake_browser browser Firefox\/3\.0
+acl is_fake_browser browser Firefox\/4\.0
+acl is_fake_browser browser Firefox\/5\.0
+acl is_fake_browser browser Firefox\/6\.0
+acl is_fake_browser browser Firefox\/7\.0
+acl is_fake_browser browser Firefox\/8\.0
+acl is_fake_browser browser Firefox\/9\.0
+acl is_fake_browser browser Firefox\/10\.0
+acl is_fake_browser browser Firefox\/11\.0
+acl is_fake_browser browser Firefox\/12\.0
+acl is_fake_browser browser Firefox\/13\.0
+
 http_access deny osmtile_sites osmtileScrapers
 
 acl osmtileOverusers referer_regex ^https?://pmap\.kuku\.lu/
@@ -118,6 +130,13 @@ delay_class <%= i %> 3
 <% end %>
 #bit mask
 # xxxxxxx- -------- xxxxxxxx xxxxxxxx
+
+# small pools for faked browsers
+<% (0..127).each do |i| -%>
+delay_access <%= i+1 %> allow pool_<%= sprintf("%03d", 2*i) %> !pool_unlimited is_fake_browser osmtile_sites
+delay_access <%= i+1 %> deny all
+delay_parameters <%= i+1 %> -1/-1 <%= node[:tilecache][:net_bucket_refill] / 30 %>/<%= node[:tilecache][:net_bucket_size] / 30 %> <%= node[:tilecache][:ip_bucket_refill] / 30 %>/<%= node[:tilecache][:ip_bucket_size] / 30 %>
+<% end %>
 
 # small pools for !has_referer && is_browser - designed to slow down anyone
 # using no-referer to bypass blocks due to abusive levels of use.
