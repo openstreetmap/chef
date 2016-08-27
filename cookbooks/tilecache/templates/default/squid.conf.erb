@@ -27,6 +27,17 @@ acl osmtileScrapers browser ^app_name$
 # User-Agent, but aren't. Re-block on/near 2016-08-29.
 #acl osmtileScrapers browser ^osmdroid$ # app using osmdroid library not setting app-specific User-Agent
 #acl osmtileScrapers browser ^Mozilla/5\.0 \(Windows NT 5\.1\)$ # Faked User-Agent
+acl osmtileScrapers browser Firefox\/3\.0
+acl osmtileScrapers browser Firefox\/4\.0
+acl osmtileScrapers browser Firefox\/5\.0
+acl osmtileScrapers browser Firefox\/6\.0
+acl osmtileScrapers browser Firefox\/7\.0
+acl osmtileScrapers browser Firefox\/8\.0
+acl osmtileScrapers browser Firefox\/9\.0
+acl osmtileScrapers browser Firefox\/10\.0
+acl osmtileScrapers browser Firefox\/11\.0
+acl osmtileScrapers browser Firefox\/12\.0
+acl osmtileScrapers browser Firefox\/13\.0
 
 acl is_fake_browser browser Firefox\/3\.0
 acl is_fake_browser browser Firefox\/4\.0
