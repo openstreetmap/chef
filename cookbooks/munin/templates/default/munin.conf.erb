@@ -405,6 +405,28 @@ unknown_limit 144
 <% @tilecaches.each do |tc| -%>
     squid_times_dnsl.<%= tc[:name].tr("-", "_") %>.label <%= tc[:name] %>
 <% end -%>
+    squid_request_hitrates.graph_title Squid Cache Request Hit Rates
+    squid_request_hitrates.graph_category squid
+    squid_request_hitrates.graph_args --lower-limit 0 --upper-limit 100
+    squid_request_hitrates.graph_vlabel %
+    squid_request_hitrates.graph_order <%= Chef::Munin.expand "%%%name%%%_total=%%name%%.openstreetmap:squid_requests.requests %%%name%%%_hits=%%name%%.openstreetmap:squid_requests.hits", @tilecaches %>
+<% @tilecaches.each do |tc| -%>
+    squid_request_hitrates.<%= tc[:name].tr("-", "_") %>_total.graph no
+    squid_request_hitrates.<%= tc[:name].tr("-", "_") %>_hits.cdef <%= tc[:name].tr("-", "_") %>_hits,<%= tc[:name].tr("-", "_") %>_total,/,100,*
+    squid_request_hitrates.<%= tc[:name].tr("-", "_") %>_hits.label <%= tc[:name] %>
+    squid_request_hitrates.<%= tc[:name].tr("-", "_") %>_hits.draw LINE1
+<% end -%>
+    squid_byte_hitrates.graph_title Squid Cache Byte Hit Rates
+    squid_byte_hitrates.graph_category squid
+    squid_byte_hitrates.graph_args --lower-limit 0 --upper-limit 100
+    squid_byte_hitrates.graph_vlabel %
+    squid_byte_hitrates.graph_order <%= Chef::Munin.expand "%%%name%%%_total=%%name%%.openstreetmap:squid_traffic.kbytes_out %%%name%%%_hits=%%name%%.openstreetmap:squid_trafffic.hit_kbytes_out", @tilecaches %>
+<% @tilecaches.each do |tc| -%>
+    squid_byte_hitrates.<%= tc[:name].tr("-", "_") %>_total.graph no
+    squid_byte_hitrates.<%= tc[:name].tr("-", "_") %>_hits.cdef <%= tc[:name].tr("-", "_") %>_hits,<%= tc[:name].tr("-", "_") %>_total,/,100,*
+    squid_byte_hitrates.<%= tc[:name].tr("-", "_") %>_hits.label <%= tc[:name] %>
+    squid_byte_hitrates.<%= tc[:name].tr("-", "_") %>_hits.draw LINE1
+<% end -%>
 
 # Configure compound graphs for render.openstreetmap.org
 [render.openstreetmap]
