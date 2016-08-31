@@ -420,7 +420,7 @@ unknown_limit 144
     squid_byte_hitrates.graph_category squid
     squid_byte_hitrates.graph_args --lower-limit 0 --upper-limit 100
     squid_byte_hitrates.graph_vlabel %
-    squid_byte_hitrates.graph_order <%= Chef::Munin.expand "%%%name%%%_total=%%name%%.openstreetmap:squid_traffic.kbytes_out %%%name%%%_hits=%%name%%.openstreetmap:squid_trafffic.hit_kbytes_out", @tilecaches %>
+    squid_byte_hitrates.graph_order <%= Chef::Munin.expand "%%%name%%%_total=%%name%%.openstreetmap:squid_traffic.kbytes_out %%%name%%%_hits=%%name%%.openstreetmap:squid_traffic.hit_kbytes_out", @tilecaches %>
 <% @tilecaches.each do |tc| -%>
     squid_byte_hitrates.<%= tc[:name].tr("-", "_") %>_total.graph no
     squid_byte_hitrates.<%= tc[:name].tr("-", "_") %>_hits.cdef <%= tc[:name].tr("-", "_") %>_hits,<%= tc[:name].tr("-", "_") %>_total,/,100,*
