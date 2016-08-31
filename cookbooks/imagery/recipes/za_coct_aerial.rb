@@ -22,7 +22,7 @@ include_recipe "imagery"
 imagery_site "coct.aerial.openstreetmap.org.za" do
   title "OpenStreetMap - City of Cape Town Aerial"
   aliases ["coct.aerial.osm.org.za"]
-  bbox [[-35.12, 16.23], [-22.1, 33.18]]
+  bbox [[-34.365, 18.290], [-33.465, 19.015]]
 end
 
 imagery_layer "za_coct_aerial_2015" do
