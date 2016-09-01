@@ -1,6 +1,6 @@
 class Chef
   class Munin
-    def self.expand(template, nodes)
+    def self.expand(template, nodes, separator = " ")
       nodes.map do |node|
         if node.is_a?(Hash)
           template
@@ -11,7 +11,7 @@ class Chef
             .gsub("%%%", node.tr("-", "_"))
             .gsub("%%", node)
         end
-      end.join(" ")
+      end.join(separator)
     end
   end
 end
