@@ -38,21 +38,17 @@ imagery_layer "za_coct_aerial_2015" do
 end
 
 imagery_layer "za_coct_aerial_2015_hart94" do
-  projection "EPSG:3857"
+  action :delete
   site "coct.aerial.openstreetmap.org.za"
-  title "City of Cape Town Aerial - 2015 (Hart94 Reproj) (OSM USE ONLY)"
   source "/data/imagery/za/coct/2015-hart94-epsg-3857.tif"
-  copyright 'Copyright &copy; 2015 <a href="https://www.capetown.gov.za/">City of Cape Town</a>'
-  background_colour "0 0 0"
-  extension "jpeg"
-  max_zoom 21
 end
 
-# imagery_layer "za_coct_aerial_2013" do
+imagery_layer "za_coct_aerial_2013" do
+  action :delete
 #   projection "EPSG:3857"
-#   site "coct.aerial.openstreetmap.org.za"
+  site "coct.aerial.openstreetmap.org.za"
 #   title "City of Cape Town Aerial - 2013 (OSM USE ONLY)"
-#   source "/data/imagery/za/coct/2013-tif-epsg-3857.vrt"
+  source "/data/imagery/za/coct/2013-tif-epsg-3857.vrt"
 #   copyright 'Copyright &copy; 2013 <a href="https://www.capetown.gov.za/">City of Cape Town</a>'
 #   max_zoom 21
-# end
+end
