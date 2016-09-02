@@ -330,7 +330,7 @@ unknown_limit 144
     squid_requests.graph_title Squid client requests
     squid_requests.graph_args --base 1000 -l 0
     squid_requests.graph_vlabel requests / ${graph_period}
-    squid_requests.graph_order <%= Chef::Munin.expand "%%%name%%%_hits=%%name%%.openstreetmap:squid_requests.hits %%%name%%%_errors=%%name%%.openstreetmap:squid_requests.errors %%%name%%%_requests=%%name%%.openstreetmap:squid_requests.requests", @tilecaches %> hits errors requests
+    squid_requests.graph_order <%= Chef::Munin.expand "%%%name%%%_hits=%%name%%.openstreetmap:squid_requests.hits %%%name%%%_errors=%%name%%.openstreetmap:squid_requests.errors %%%name%%%_requests=%%name%%.openstreetmap:squid_requests.requests", @tilecaches %> hits=<%= @tilecaches.first[:name] %>.openstreetmap:squid_requests.hits errors=<%= @tilecaches.first[:name] %>.openstreetmap:squid_requests.errors requests=<%= @tilecaches.first[:name] %>.openstreetmap:squid_requests.requests
     squid_requests.graph_total total
     squid_requests.graph_category squid
 <% @tilecaches.each do |tc| -%>
