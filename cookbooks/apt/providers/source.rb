@@ -25,7 +25,12 @@ use_inline_resources
 
 action :create do
   if new_resource.key
-    execute "apt-key-#{new_resource.key}" do
+    execute "apt-key-#{new_resource.key}-clean" do
+      command "/usr/bin/apt-key adv --batch --delete-key --yes #{new_resource.key}"
+      only_if "/usr/bin/apt-key adv --list-keys #{new_resource.key} | fgrep expired"
+    end
+
+    execute "apt-key-#{new_resource.key}-install" do
       command "/usr/bin/apt-key adv --keyserver hkp://keys.gnupg.net --recv-keys #{new_resource.key}"
       not_if "/usr/bin/apt-key adv --list-keys #{new_resource.key}"
     end
