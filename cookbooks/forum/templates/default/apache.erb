@@ -29,9 +29,12 @@
 </VirtualHost>
 
 <Directory /srv/forum.openstreetmap.org/html>
-           RewriteEngine on
+        RewriteEngine on
+        RewriteRule ^config\.php$ - [F,L]
 
-           RewriteRule ^config\.php$ - [F,L]
+        Options -Indexes
+
+        Require all granted
 </Directory>
 
 <Directory /srv/forum.openstreetmap.org/html/img>

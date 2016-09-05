@@ -28,6 +28,7 @@ package "php-mysql"
 package "php-apcu"
 
 apache_module "php7.0"
+apache_module "rewrite"
 
 apache_site "default" do
   action [:disable]
@@ -67,7 +68,7 @@ end
 template "/srv/forum.openstreetmap.org/html/config.php" do
   source "config.php.erb"
   owner "forum"
-  group "forum"
+  group "www-data"
   mode 0o440
   variables :passwords => passwords
 end
