@@ -16,13 +16,24 @@
 	ServerAdmin webmaster@openstreetmap.org
 
 	SSLEngine on
-	SSLProtocol all -SSLv2
-	SSLCipherSuite ALL:!ADH:!EXPORT:!SSLv2:RC4+RSA:+HIGH:+MEDIUM:+LOW
-	SSLCertificateFile /etc/ssl/certs/openstreetmap.pem
-	SSLCertificateKeyFile /etc/ssl/private/openstreetmap.key
 
 	CustomLog /var/log/apache2/forum.openstreetmap.org-access.log combined
 	ErrorLog /var/log/apache2/forum.openstreetmap.org-error.log
 
 	DocumentRoot /srv/forum.openstreetmap.org/html
+
+        php_admin_value open_basedir /srv/forum.openstreetmap.org/html/:/usr/share/php/:/tmp/
+        php_admin_value disable_functions "exec,shell_exec,system,passthru,popen,proc_open"
+        php_value upload_max_filesize 70M
+        php_value post_max_size 100M
 </VirtualHost>
+
+<Directory /srv/forum.openstreetmap.org/html>
+           RewriteEngine on
+
+           RewriteRule ^config\.php$ - [F,L]
+</Directory>
+
+<Directory /srv/forum.openstreetmap.org/html/img>
+        php_admin_flag engine off
+</Directory>
