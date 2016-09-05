@@ -25,6 +25,7 @@ passwords = data_bag_item("forum", "passwords")
 package "php"
 package "php-cli"
 package "php-mysql"
+package "php-xml"
 package "php-apcu"
 
 apache_module "php7.0"
