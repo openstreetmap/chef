@@ -45,8 +45,8 @@ end
 
 git "/srv/forum.openstreetmap.org/html/" do
   action :sync
-  repository "http://github.com/fluxbb/fluxbb.git"
-  revision "refs/tags/fluxbb-1.5.6"
+  repository "http://github.com/openstreetmap/openstreetmap-forum.git"
+  revision "openstreetmap"
   depth 1
   user "forum"
   group "forum"
