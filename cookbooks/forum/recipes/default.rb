@@ -64,6 +64,14 @@ directory "/srv/forum.openstreetmap.org/html/img/avatars/" do
   mode 0o755
 end
 
+template "/srv/forum.openstreetmap.org/html/config.php" do
+  source "config.php.erb"
+  owner "forum"
+  group "forum"
+  mode 0o440
+  variables :passwords => passwords
+end
+
 mysql_user "forum@localhost" do
   password passwords["database"]
 end
