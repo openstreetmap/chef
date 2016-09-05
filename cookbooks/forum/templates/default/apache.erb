@@ -8,7 +8,7 @@
 	CustomLog /var/log/apache2/forum.openstreetmap.org-access.log combined
 	ErrorLog /var/log/apache2/forum.openstreetmap.org-error.log
 
-	DocumentRoot /srv/forum.openstreetmap.org/html/
+	RedirectPermanent / https://forum.openstreetmap.org/
 </VirtualHost>
 
 <VirtualHost *:443>
@@ -24,5 +24,5 @@
 	CustomLog /var/log/apache2/forum.openstreetmap.org-access.log combined
 	ErrorLog /var/log/apache2/forum.openstreetmap.org-error.log
 
-	DocumentRoot /srv/forum.openstreetmap.org
+	DocumentRoot /srv/forum.openstreetmap.org/html
 </VirtualHost>
