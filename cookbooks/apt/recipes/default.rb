@@ -63,7 +63,7 @@ end
 
 apt_source "ubuntugis-unstable" do
   url "http://ppa.launchpad.net/ubuntugis/ubuntugis-unstable/ubuntu"
-  key "3089EBE08314DF160"
+  key "089EBE08314DF160"
 end
 
 apt_source "openstreetmap" do
