@@ -33,9 +33,8 @@ apache_conf "ssl" do
   notifies :reload, "service[apache2]"
 end
 
-service "apache2" do
-  action :nothing
-  subscribes :restart, "cookbook_file[/etc/ssl/certs/#{certificate_chain}.pem]"
-  subscribes :restart, "cookbook_file[/etc/ssl/certs/#{certificate}.pem]"
-  subscribes :restart, "file[/etc/ssl/private/#{certificate}.key]"
-end
+apache = resources("service[apache2]")
+
+apache.subscribes(:restart, "cookbook_file[/etc/ssl/certs/#{certificate_chain}.pem]")
+apache.subscribes(:restart, "cookbook_file[/etc/ssl/certs/#{certificate}.pem]")
+apache.subscribes(:restart, "file[/etc/ssl/private/#{certificate}.key]")
