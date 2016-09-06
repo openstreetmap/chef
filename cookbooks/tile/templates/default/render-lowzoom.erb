@@ -4,17 +4,29 @@
 
 # Send output to the log
 exec > /var/log/tile/render-lowzoom.log 2>&1
+
+# Get current time
+timestamp=$(date +%s)
 <% node[:tile][:styles].each_key do |style| -%>
 
-# Update tiles from z0 to z12 for style "<%= @style %>"
-render_list \
-  --all --force \
-  --tile-dir=/srv/tile.openstreetmap.org/tiles \
-  --socket=/var/run/renderd/renderd.sock \
-  --num-threads=<%= ( node[:cpu][:total] - 2 ) / 2 %> \
-  --map="<%= style %>" \
-  --max-load=70 \
-  --min-zoom=0 --max-zoom=12
+# Define function to update tiles from z0 to z12 for style "<%= style %>"
+function update_<%= style %>
+{
+  render_old \
+    --timestamp=${timestamp} \        
+    --tile-dir=/srv/tile.openstreetmap.org/tiles \
+    --socket=/var/run/renderd/renderd.sock \
+    --num-threads=<%= ( node[:cpu][:total] - 2 ) / 2 %> \
+    --map="<%= style %>" \
+    --max-load=70 \
+    --min-zoom=0 --max-zoom=12
+}
+
+# Loop running the update command until it suceeds
+until update_<%= style %>
+do
+  sleep 30
+done
 <% end -%>
 
 exit 0
