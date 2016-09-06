@@ -52,76 +52,76 @@ if node[:lsb][:release].to_f >= 16.04
 else
   apt_source "brightbox-ruby-ng" do
     url "http://ppa.launchpad.net/brightbox/ruby-ng/ubuntu"
-    key "C3173AA6"
+    key "F5DA5F09C3173AA6"
   end
 end
 
 apt_source "ubuntugis-stable" do
   url "http://ppa.launchpad.net/ubuntugis/ppa/ubuntu"
-  key "314DF160"
+  key "089EBE08314DF160"
 end
 
 apt_source "ubuntugis-unstable" do
   url "http://ppa.launchpad.net/ubuntugis/ubuntugis-unstable/ubuntu"
-  key "314DF160"
+  key "3089EBE08314DF160"
 end
 
 apt_source "openstreetmap" do
   url "http://ppa.launchpad.net/osmadmins/ppa/ubuntu"
-  key "0AC4F2CB"
+  key "D57F48750AC4F2CB"
 end
 
 apt_source "management-component-pack" do
   template "hp.list.erb"
   url "http://downloads.linux.hpe.com/SDR/repo/mcp"
-  key "26C2B797"
+  key "C208ADDE26C2B797"
   key_url "https://downloads.linux.hpe.com/SDR/hpePublicKey2048_key1.pub"
 end
 
 apt_source "hwraid" do
   template "hwraid.list.erb"
   url "http://hwraid.le-vert.net/ubuntu"
-  key "23B3D3B4"
+  key "6005210E23B3D3B4"
 end
 
 apt_source "mapnik-v210" do
   url "http://ppa.launchpad.net/mapnik/v2.1.0/ubuntu"
-  key "5D50B6BA"
+  key "4F7B93595D50B6BA"
 end
 
 apt_source "nginx" do
   template "nginx.list.erb"
   url "http://nginx.org/packages/ubuntu"
-  key "7BD9BF62"
+  key "ABF5BD827BD9BF62"
 end
 
 apt_source "elasticsearch" do
   template "elasticsearch.list.erb"
   url "http://packages.elasticsearch.org/elasticsearch/1.7/debian"
-  key "D88E42B4"
+  key "D27D666CD88E42B4"
 end
 
 apt_source "logstash" do
   template "elasticsearch.list.erb"
   url "http://packages.elasticsearch.org/logstash/2.3/debian"
-  key "D88E42B4"
+  key "D27D666CD88E42B4"
 end
 
 apt_source "logstash-forwarder" do
   template "elasticsearch.list.erb"
   url "http://packages.elasticsearch.org/logstashforwarder/debian"
-  key "D88E42B4"
+  key "D27D666CD88E42B4"
 end
 
 apt_source "passenger" do
   url "https://oss-binaries.phusionpassenger.com/apt/passenger"
-  key "AC40B2F7"
+  key "561F9B9CAC40B2F7"
 end
 
 apt_source "postgresql" do
   template "postgresql.list.erb"
   url "http://apt.postgresql.org/pub/repos/apt"
-  key "ACCC4CF8"
+  key "7FCC7D46ACCC4CF8"
 end
 
 apt_source "mediawiki" do
