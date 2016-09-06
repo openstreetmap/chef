@@ -127,7 +127,7 @@ end
 apt_source "mediawiki" do
   template "mediawiki.list.erb"
   url "https://releases.wikimedia.org/debian"
-  key "664C383A3566A3481B942F007A322AC6E84AFDD2"
+  key "90E9F83F22250DD7"
 end
 
 package "unattended-upgrades"
