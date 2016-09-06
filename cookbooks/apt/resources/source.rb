@@ -24,6 +24,7 @@ attribute :name, :kind_of => String, :name_attribute => true
 attribute :template, :kind_of => String, :default => "default.list.erb"
 attribute :url, :kind_of => String, :required => true
 attribute :key, :kind_of => String
+attribute :key_url, :kind_of => String
 
 def initialize(name, run_context = nil)
   super(name, run_context)

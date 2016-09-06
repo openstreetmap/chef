@@ -30,9 +30,16 @@ action :create do
       only_if "/usr/bin/apt-key adv --list-keys #{new_resource.key} | fgrep expired"
     end
 
-    execute "apt-key-#{new_resource.key}-install" do
-      command "/usr/bin/apt-key adv --keyserver hkp://keys.gnupg.net --recv-keys #{new_resource.key}"
-      not_if "/usr/bin/apt-key adv --list-keys #{new_resource.key}"
+    if new_resource.key_url
+      execute "apt-key-#{new_resource.key}-install" do
+        command "/usr/bin/apt-key adv --fetch-keys #{new_resource.key_url}"
+        not_if "/usr/bin/apt-key adv --list-keys #{new_resource.key}"
+      end
+    else
+      execute "apt-key-#{new_resource.key}-install" do
+        command "/usr/bin/apt-key adv --keyserver hkp://keys.gnupg.net --recv-keys #{new_resource.key}"
+        not_if "/usr/bin/apt-key adv --list-keys #{new_resource.key}"
+      end
     end
   end
 

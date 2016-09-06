@@ -18,6 +18,7 @@
 #
 
 package "apt"
+package "gnupg-curl"
 package "update-notifier-common"
 
 file "/etc/motd.tail" do
@@ -73,7 +74,8 @@ end
 apt_source "management-component-pack" do
   template "hp.list.erb"
   url "http://downloads.linux.hpe.com/SDR/repo/mcp"
-  key "B1275EA3"
+  key "26C2B797"
+  key_url "https://downloads.linux.hpe.com/SDR/hpePublicKey2048_key1.pub"
 end
 
 apt_source "hwraid" do
