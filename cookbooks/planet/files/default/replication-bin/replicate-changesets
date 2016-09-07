@@ -120,9 +120,7 @@ end
 ##
 # sync a file to guarantee it's on disk
 def fsync(f)
-  File.open(f) do |fh|
-    fh.fsync
-  end
+  File.open(f, &:fsync)
 end
 
 ##
