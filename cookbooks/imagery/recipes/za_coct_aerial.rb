@@ -46,4 +46,5 @@ imagery_layer "za_coct_aerial_2015_drift" do
   background_colour "0 0 0"
   extension "jpeg"
   max_zoom 21
+  revision 2
 end
