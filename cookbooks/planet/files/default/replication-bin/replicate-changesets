@@ -200,7 +200,7 @@ class Replicator
   end
 
   def sequence
-    sequence = (@state.key?("sequence") ? @state["sequence"] + 1 : 0)
+    @state.key?("sequence") ? @state["sequence"] + 1 : 0
   end
 
   def data_stem
