@@ -118,6 +118,27 @@ class ChangesetBuilder
 end
 
 ##
+# sync a file to guarantee it's on disk
+def fsync(f)
+  File.open(f) do |fh|
+    fh.fsync
+  end
+end
+
+##
+# sync a directory to guarantee it's on disk. have to recurse to the root
+# to guarantee sync for newly created directories.
+def fdirsync(d)
+  while d != "/"
+    Dir.open(d) do |dh|
+      io = IO.for_fd(dh.fileno)
+      io.fsync
+    end
+    d = File.dirname(d)
+  end
+end
+
+##
 # state and connections associated with getting changeset data
 # replicated to a file.
 class Replicator
@@ -186,7 +207,9 @@ class Replicator
       fl.flock(File::LOCK_EX)
 
       sequence = (@state.key?("sequence") ? @state["sequence"] + 1 : 0)
-      data_file = @config["data_dir"] + format("/%03d/%03d/%03d.osm.gz", sequence / 1000000, (sequence / 1000) % 1000, (sequence % 1000))
+      data_stem = @config["data_dir"] + format("/%03d/%03d/%03d", sequence / 1000000, (sequence / 1000) % 1000, (sequence % 1000))
+      data_file = data_stem + ".osm.gz"
+      data_state_file = data_stem + ".state.txt"
       tmp_state = @config["state_file"] + ".tmp"
       tmp_data = data_file + ".tmp"
       # try and write the files to tmp locations and then
@@ -196,12 +219,10 @@ class Replicator
         FileUtils.mkdir_p(File.dirname(data_file))
         Zlib::GzipWriter.open(tmp_data) do |fh|
           fh.write(changeset_dump(open_changesets))
-          fh.finish.fdatasync
         end
         @state["sequence"] = sequence
         File.open(tmp_state, "w") do |fh|
           fh.write(YAML.dump(@state))
-          fh.fdatasync
         end
 
         # sanity check: the files we're moving into place
@@ -212,7 +233,20 @@ class Replicator
         raise "Temporary state file should be non-empty, but isn't." if File.zero?(tmp_state)
 
         FileUtils.mv(tmp_data, data_file)
-        FileUtils.mv(tmp_state, @config["state_file"])
+        FileUtils.cp(tmp_state, @config["state_file"])
+        FileUtils.mv(tmp_state, data_state_file)
+
+        # fsync the files in their new locations, in case the inodes have
+        # changed in the move / copy.
+        fsync(data_fie)
+        fsync(@config["state_file"])
+        fsync(data_state_file)
+
+        # sync the directory as well, to ensure that the file is reachable
+        # from the dirent and has been updated to account for any allocations.
+        fdirsync(File.dirname(data_file))
+        fdirsync(File.dirname(@config["state_file"]))
+
         fl.flock(File::LOCK_UN)
 
       rescue
