@@ -30,6 +30,28 @@ package "ruby-libxml"
 package "libpq-dev"
 gem_package "pg"
 
+package "make"
+package "gcc"
+
+remote_directory "/opt/flush" do
+  source "flush"
+  owner "root"
+  group "root"
+  mode 0o755
+  files_owner "root"
+  files_group "root"
+  files_mode 0o755
+end
+
+execute "/opt/flush/Makefile" do
+  action :nothing
+  command "make"
+  cwd "/opt/flush"
+  user "root"
+  group "root"
+  subscribes :run, "remote_directory[/opt/flush]"
+end
+
 remote_directory "/usr/local/bin" do
   source "replication-bin"
   owner "root"
