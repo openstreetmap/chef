@@ -246,7 +246,7 @@ class Replicator
 
     # fsync the files in their new locations, in case the inodes have
     # changed in the move / copy.
-    fsync(data_fie)
+    fsync(data_file)
     fsync(@config["state_file"])
     fsync(data_state_file)
 
