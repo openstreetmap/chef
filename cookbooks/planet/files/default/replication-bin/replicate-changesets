@@ -199,60 +199,77 @@ class Replicator
     doc.to_s
   end
 
+  def data_stem
+    sequence = (@state.key?("sequence") ? @state["sequence"] + 1 : 0)
+    @config["data_dir"] + format("/%03d/%03d/%03d", sequence / 1000000, (sequence / 1000) % 1000, (sequence % 1000))
+  end
+
+  def write_tmp_files!
+    data_file = data_stem + ".osm.gz"
+    tmp_state = @config["state_file"] + ".tmp"
+    tmp_data = data_file + ".tmp"
+
+    FileUtils.mkdir_p(File.dirname(data_file))
+    Zlib::GzipWriter.open(tmp_data) do |fh|
+      fh.write(changeset_dump(open_changesets))
+    end
+    File.open(tmp_state, "w") do |fh|
+      fh.write(YAML.dump(@state))
+    end
+
+    # fsync the files in their old locations.
+    fsync(tmp_data)
+    fsync(tmp_state)
+
+    # sync the directory as well, to ensure that the file is reachable
+    # from the dirent and has been updated to account for any allocations.
+    fdirsync(File.dirname(tmp_data))
+    fdirsync(File.dirname(tmp_state))
+
+    # sanity check: the files we're moving into place
+    # should be non-empty.
+    raise "Temporary gzip file should exist, but doesn't." unless File.exist?(tmp_data)
+    raise "Temporary state file should exist, but doesn't." unless File.exist?(tmp_state)
+    raise "Temporary gzip file should be non-empty, but isn't." if File.zero?(tmp_data)
+    raise "Temporary state file should be non-empty, but isn't." if File.zero?(tmp_state)
+  end
+
+  def move_tmp_files_into_place!
+    data_file = data_stem + ".osm.gz"
+    data_state_file = data_stem + ".state.txt"
+    tmp_state = @config["state_file"] + ".tmp"
+    tmp_data = data_file + ".tmp"
+
+    FileUtils.mv(tmp_data, data_file)
+    FileUtils.cp(tmp_state, @config["state_file"])
+    FileUtils.mv(tmp_state, data_state_file)
+
+    # fsync the files in their new locations, in case the inodes have
+    # changed in the move / copy.
+    fsync(data_fie)
+    fsync(@config["state_file"])
+    fsync(data_state_file)
+
+    # sync the directory as well, to ensure that the file is reachable
+    # from the dirent and has been updated to account for any allocations.
+    fdirsync(File.dirname(data_file))
+    fdirsync(File.dirname(@config["state_file"]))
+  end
+
   # saves new state (including the changeset dump xml)
   def save!
     File.open(@config["state_file"], "r") do |fl|
       fl.flock(File::LOCK_EX)
 
-      sequence = (@state.key?("sequence") ? @state["sequence"] + 1 : 0)
-      data_stem = @config["data_dir"] + format("/%03d/%03d/%03d", sequence / 1000000, (sequence / 1000) % 1000, (sequence % 1000))
-      data_file = data_stem + ".osm.gz"
-      data_state_file = data_stem + ".state.txt"
-      tmp_state = @config["state_file"] + ".tmp"
-      tmp_data = data_file + ".tmp"
       # try and write the files to tmp locations and then
       # move them into place later, to avoid in-progress
       # clashes, or people seeing incomplete files.
       begin
-        FileUtils.mkdir_p(File.dirname(data_file))
-        Zlib::GzipWriter.open(tmp_data) do |fh|
-          fh.write(changeset_dump(open_changesets))
-        end
         @state["sequence"] = sequence
-        File.open(tmp_state, "w") do |fh|
-          fh.write(YAML.dump(@state))
-        end
 
-        # fsync the files in their old locations.
-        fsync(tmp_data)
-        fsync(tmp_state)
+        write_tmp_files!
 
-        # sync the directory as well, to ensure that the file is reachable
-        # from the dirent and has been updated to account for any allocations.
-        fdirsync(File.dirname(tmp_data))
-        fdirsync(File.dirname(tmp_state))
-
-        # sanity check: the files we're moving into place
-        # should be non-empty.
-        raise "Temporary gzip file should exist, but doesn't." unless File.exist?(tmp_data)
-        raise "Temporary state file should exist, but doesn't." unless File.exist?(tmp_state)
-        raise "Temporary gzip file should be non-empty, but isn't." if File.zero?(tmp_data)
-        raise "Temporary state file should be non-empty, but isn't." if File.zero?(tmp_state)
-
-        FileUtils.mv(tmp_data, data_file)
-        FileUtils.cp(tmp_state, @config["state_file"])
-        FileUtils.mv(tmp_state, data_state_file)
-
-        # fsync the files in their new locations, in case the inodes have
-        # changed in the move / copy.
-        fsync(data_fie)
-        fsync(@config["state_file"])
-        fsync(data_state_file)
-
-        # sync the directory as well, to ensure that the file is reachable
-        # from the dirent and has been updated to account for any allocations.
-        fdirsync(File.dirname(data_file))
-        fdirsync(File.dirname(@config["state_file"]))
+        move_tmp_files_into_place!
 
         fl.flock(File::LOCK_UN)
 
