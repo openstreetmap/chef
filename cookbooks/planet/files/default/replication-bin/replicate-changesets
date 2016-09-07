@@ -225,6 +225,15 @@ class Replicator
           fh.write(YAML.dump(@state))
         end
 
+        # fsync the files in their old locations.
+        fsync(tmp_data)
+        fsync(tmp_state)
+
+        # sync the directory as well, to ensure that the file is reachable
+        # from the dirent and has been updated to account for any allocations.
+        fdirsync(File.dirname(tmp_data))
+        fdirsync(File.dirname(tmp_state))
+
         # sanity check: the files we're moving into place
         # should be non-empty.
         raise "Temporary gzip file should exist, but doesn't." unless File.exist?(tmp_data)
