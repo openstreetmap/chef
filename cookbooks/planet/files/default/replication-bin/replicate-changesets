@@ -199,8 +199,11 @@ class Replicator
     doc.to_s
   end
 
-  def data_stem
+  def sequence
     sequence = (@state.key?("sequence") ? @state["sequence"] + 1 : 0)
+  end
+
+  def data_stem
     @config["data_dir"] + format("/%03d/%03d/%03d", sequence / 1000000, (sequence / 1000) % 1000, (sequence % 1000))
   end
 
