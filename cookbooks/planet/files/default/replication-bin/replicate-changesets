@@ -196,7 +196,7 @@ class Replicator
         FileUtils.mkdir_p(File.dirname(data_file))
         Zlib::GzipWriter.open(tmp_data) do |fh|
           fh.write(changeset_dump(open_changesets))
-          fh.fdatasync
+          fh.finish.fdatasync
         end
         @state["sequence"] = sequence
         File.open(tmp_state, "w") do |fh|
