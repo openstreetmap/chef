@@ -62,7 +62,11 @@ http_access deny osmtile_sites osmtileOverusers
 
 # Delay pool when !has_referer and is_browser
 acl has_referer referer_regex .
-acl is_browser browser Mozilla
+acl is_browser browser Chrome\/
+acl is_browser browser Firefox\/
+acl is_browser browser Trident\/
+acl is_browser browser Safari\/
+acl is_browser browser AppleWebKit\/
 
 acl whitelist_path urlpath_regex ^/cgi-bin/(export|debug)
 acl blacklist_path urlpath_regex ^/cgi-bin/
