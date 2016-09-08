@@ -105,6 +105,10 @@ action :create do
 end
 
 action :delete do
+  file "/srv/imagery/layers/#{site}/#{layer}.yml" do
+    action :delete
+  end
+
   service "mapserv-fcgi-layer-#{layer}" do
     action [:stop, :disable]
   end
