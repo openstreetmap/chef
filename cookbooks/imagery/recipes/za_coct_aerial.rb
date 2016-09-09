@@ -36,10 +36,3 @@ imagery_layer "za_coct_aerial_2015" do
   default_layer true
   max_zoom 21
 end
-
-imagery_layer "za_coct_aerial_2015_drift" do
-  site "coct.aerial.openstreetmap.org.za"
-  source "/data/imagery/za/coct/2015-drift2-epsg-3857.tif"
-  action :delete
-end
-
