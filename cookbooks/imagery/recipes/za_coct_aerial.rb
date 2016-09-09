@@ -38,13 +38,13 @@ imagery_layer "za_coct_aerial_2015" do
 end
 
 imagery_layer "za_coct_aerial_2015_drift" do
+  projection "EPSG:3857"
   site "coct.aerial.openstreetmap.org.za"
-  source "/data/imagery/za/coct/2015-drift1-epsg-3857.tif"
-  action :delete
+  title "City of Cape Town Aerial - 2015 DRIFT2 TEST (OSM USE ONLY)"
+  source "/data/imagery/za/coct/2015-drift2-epsg-3857.tif"
+  copyright 'Copyright &copy; 2015 <a href="https://www.capetown.gov.za/">City of Cape Town</a>'
+  background_colour "0 0 0"
+  extension "jpeg"
+  max_zoom 21
 end
 
-imagery_layer "za_coct_aerial_2015_hart94" do
-  site "coct.aerial.openstreetmap.org.za"
-  source "/data/imagery/za/coct/2015-drift1-epsg-3857.tif"
-  action :delete
-end
