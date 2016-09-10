@@ -23,8 +23,8 @@ default_attributes(
     }
   },
   :squid => {
-    :cache_mem => "16000 MB",
-    :cache_dir => "coss /store/squid/coss-01 80000 block-size=8192 max-size=262144 membufs=80"
+    :cache_mem => "14000 MB",
+    :cache_dir => "coss /store/squid/coss-01 128000 block-size=8192 max-size=262144 membufs=80"
   },
   :tilecache => {
     :tile_parent => "aalborg.render.openstreetmap.org",
