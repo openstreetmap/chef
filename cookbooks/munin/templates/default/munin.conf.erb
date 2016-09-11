@@ -298,6 +298,7 @@ unknown_limit 144
     network_in.<%= tc[:name].tr("-", "_") %>.label <%= tc[:name] %>
     network_in.<%= tc[:name].tr("-", "_") %>.cdef <%= tc[:name].tr("-", "_") %>,8,*
     network_in.<%= tc[:name].tr("-", "_") %>.draw AREASTACK
+    network_in.<%= tc[:name].tr("-", "_") %>.min 0
 <% end -%>
     network_out.graph_title Outbound network traffic
     network_out.graph_vlabel bits out per ${graph_period}
@@ -308,6 +309,7 @@ unknown_limit 144
     network_out.<%= tc[:name].tr("-", "_") %>.label <%= tc[:name] %>
     network_out.<%= tc[:name].tr("-", "_") %>.cdef <%= tc[:name].tr("-", "_") %>,8,*
     network_out.<%= tc[:name].tr("-", "_") %>.draw AREASTACK
+    network_out.<%= tc[:name].tr("-", "_") %>.min 0
 <% end -%>
     squid_delay_pools.graph_title IPs being delayed with referer
     squid_delay_pools.graph_args --base 1000 -l 0
@@ -462,6 +464,7 @@ unknown_limit 144
     network_in.<%= rs[:name].tr("-", "_") %>.label <%= rs[:name] %>
     network_in.<%= rs[:name].tr("-", "_") %>.cdef <%= rs[:name].tr("-", "_") %>,8,*
     network_in.<%= rs[:name].tr("-", "_") %>.draw AREASTACK
+    network_in.<%= rs[:name].tr("-", "_") %>.min 0
 <% end -%>
     network_out.graph_title Outbound network traffic
     network_out.graph_vlabel bits out per ${graph_period}
@@ -472,6 +475,7 @@ unknown_limit 144
     network_out.<%= rs[:name].tr("-", "_") %>.label <%= rs[:name] %>
     network_out.<%= rs[:name].tr("-", "_") %>.cdef <%= rs[:name].tr("-", "_") %>,8,*
     network_out.<%= rs[:name].tr("-", "_") %>.draw AREASTACK
+    network_out.<%= rs[:name].tr("-", "_") %>.min 0
 <% end -%>
     mod_tile_fresh.graph_title freshness of served tiles
     mod_tile_fresh.graph_args --base 1000 -l 0
