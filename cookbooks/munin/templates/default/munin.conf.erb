@@ -93,12 +93,14 @@ unknown_limit 144
     apache_accesses.graph_title Apache accesses
     apache_accesses.graph_vlabel accesses / ${graph_period}
     apache_accesses.graph_category apache
+    apache_accesses.graph_args --lower-limit 0
     apache_accesses.accesses80.sum <%= Chef::Munin.expand "%%.openstreetmap:apache_accesses.accesses80", @frontends %>
     apache_accesses.accesses80.label port 80
     apache_accesses.accesses80.min 0
     apache_volume.graph_title Apache volume
     apache_volume.graph_vlabel bytes per ${graph_period}
     apache_volume.graph_category apache
+    apache_volume.graph_args --lower-limit 0
     apache_volume.volume80.sum <%= Chef::Munin.expand "%%.openstreetmap:apache_volume.volume80", @frontends %>
     apache_volume.volume80.label port 80
     apache_volume.volume80.min 0
@@ -296,6 +298,7 @@ unknown_limit 144
     network_in.graph_category network
     network_in.graph_order <%= Chef::Munin.expand "%%%name%%%=%%name%%.openstreetmap:if_%%interface%%.down", @tilecaches %>
     network_in.graph_total total
+    network_in.graph_args --lower-limit 0
 <% @tilecaches.each do |tc| -%>
     network_in.<%= tc[:name].tr("-", "_") %>.label <%= tc[:name] %>
     network_in.<%= tc[:name].tr("-", "_") %>.cdef <%= tc[:name].tr("-", "_") %>,8,*
@@ -307,6 +310,7 @@ unknown_limit 144
     network_out.graph_category network
     network_out.graph_order <%= Chef::Munin.expand "%%%name%%%=%%name%%.openstreetmap:if_%%interface%%.up", @tilecaches %>
     network_out.graph_total total
+    network_out.graph_args --lower-limit 0
 <% @tilecaches.each do |tc| -%>
     network_out.<%= tc[:name].tr("-", "_") %>.label <%= tc[:name] %>
     network_out.<%= tc[:name].tr("-", "_") %>.cdef <%= tc[:name].tr("-", "_") %>,8,*
@@ -444,6 +448,7 @@ unknown_limit 144
     apache_accesses.graph_category apache
     apache_accesses.graph_order <%= Chef::Munin.expand "%%%name%%%=%%name%%.openstreetmap:apache_accesses.accesses80", @renderers %>
     apache_accesses.graph_total total
+    apache_accesses.graph_args --lower-limit 0
 <% @renderers.each do |rs| -%>
     apache_accesses.<%= rs[:name].tr("-", "_") %>.label <%= rs[:name] %>
     apache_accesses.<%= rs[:name].tr("-", "_") %>.draw AREASTACK
@@ -454,6 +459,7 @@ unknown_limit 144
     apache_volume.graph_category apache
     apache_volume.graph_order <%= Chef::Munin.expand "%%%name%%%=%%name%%.openstreetmap:apache_volume.volume80", @renderers %>
     apache_volume.graph_total total
+    apache_volume.graph_args --lower-limit 0
 <% @renderers.each do |rs| -%>
     apache_volume.<%= rs[:name].tr("-", "_") %>.label <%= rs[:name] %>
     apache_volume.<%= rs[:name].tr("-", "_") %>.draw AREASTACK
@@ -464,6 +470,7 @@ unknown_limit 144
     network_in.graph_category network
     network_in.graph_order <%= Chef::Munin.expand "%%%name%%%=%%name%%.openstreetmap:if_%%interface%%.down", @renderers %>
     network_in.graph_total total
+    network_in.graph_args --lower-limit 0
 <% @renderers.each do |rs| -%>
     network_in.<%= rs[:name].tr("-", "_") %>.label <%= rs[:name] %>
     network_in.<%= rs[:name].tr("-", "_") %>.cdef <%= rs[:name].tr("-", "_") %>,8,*
@@ -475,6 +482,7 @@ unknown_limit 144
     network_out.graph_category network
     network_out.graph_order <%= Chef::Munin.expand "%%%name%%%=%%name%%.openstreetmap:if_%%interface%%.up", @renderers %>
     network_out.graph_total total
+    network_out.graph_args --lower-limit 0
 <% @renderers.each do |rs| -%>
     network_out.<%= rs[:name].tr("-", "_") %>.label <%= rs[:name] %>
     network_out.<%= rs[:name].tr("-", "_") %>.cdef <%= rs[:name].tr("-", "_") %>,8,*
