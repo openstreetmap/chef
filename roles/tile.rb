@@ -22,6 +22,19 @@ default_attributes(
       :max_requests_per_child => 100000
     }
   },
+  :munin => {
+    :plugins => {
+      :renderd_processed => {
+        :graph_order => "reqPrio req reqLow dirty reqBulk dropped"
+      },
+      :renderd_queue => {
+        :graph_order => "reqPrio req reqLow dirty reqBulk"
+      },
+      :renderd_queue_time => {
+        :graph_order => "reqPrio req reqLow dirty reqBulk"
+      }
+    }
+  },
   :postgresql => {
     :settings => {
       :defaults => {
