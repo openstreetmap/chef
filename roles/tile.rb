@@ -25,13 +25,9 @@ default_attributes(
   :munin => {
     :plugins => {
       :renderd_processed => {
-        :graph_order => "reqPrio req reqLow dirty reqBulk dropped"
-      },
-      :renderd_queue => {
-        :graph_order => "reqPrio req reqLow dirty reqBulk"
-      },
-      :renderd_queue_time => {
-        :graph_order => "reqPrio req reqLow dirty reqBulk"
+        :graph_order => "reqPrio req reqLow dirty reqBulk dropped",
+        :reqPrio => { :draw => "AREA" },
+        :req => { :draw => "STACK" }
       }
     }
   },

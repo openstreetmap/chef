@@ -49,6 +49,9 @@ unknown_limit 144
 <% if client[:munin][:plugins][plugin][value][:graph] -%>
     <%= plugin %>.<%= value %>.graph <%= client[:munin][:plugins][plugin][value][:graph] %>
 <% end -%>
+<% if client[:munin][:plugins][plugin][value][:draw] -%>
+    <%= plugin %>.<%= value %>.draw <%= client[:munin][:plugins][plugin][value][:draw] %>
+<% end -%>
 <% if client[:munin][:plugins][plugin][value][:label] -%>
     <%= plugin %>.<%= value %>.label <%= client[:munin][:plugins][plugin][value][:label] %>
 <% end -%>
@@ -578,18 +581,18 @@ unknown_limit 144
     renderd_processed.graph_order reqPrio req reqLow dirty reqBulk dropped
     renderd_processed.graph_category renderd
     renderd_processed.graph_info Displays the number of metatiles being rendered by renderd per ${graph_period}
+    renderd_processed.reqPrio.sum <%= Chef::Munin.expand "%%name%%.openstreetmap:renderd_processed.reqPrio", @renderers %>
+    renderd_processed.reqPrio.label Priority request Queue
+    renderd_processed.reqPrio.draw AREA
+    renderd_processed.reqPrio.info Throughput of Metatiles submitted high priority for on the fly rendering
     renderd_processed.req.sum <%= Chef::Munin.expand "%%name%%.openstreetmap:renderd_processed.req", @renderers %>
     renderd_processed.req.label Request Queue
-    renderd_processed.req.draw AREA
+    renderd_processed.req.draw STACK
     renderd_processed.req.info Throughput of Metatiles submitted for on the fly rendering
     renderd_processed.reqLow.sum <%= Chef::Munin.expand "%%name%%.openstreetmap:renderd_processed.reqLow", @renderers %>
     renderd_processed.reqLow.label Low priority request Queue
     renderd_processed.reqLow.draw STACK
     renderd_processed.reqLow.info Throughput of Metatiles submitted low priority for on the fly rendering
-    renderd_processed.reqPrio.sum <%= Chef::Munin.expand "%%name%%.openstreetmap:renderd_processed.reqPrio", @renderers %>
-    renderd_processed.reqPrio.label Priority request Queue
-    renderd_processed.reqPrio.draw STACK
-    renderd_processed.reqPrio.info Throughput of Metatiles submitted high priority for on the fly rendering
     renderd_processed.dirty.sum <%= Chef::Munin.expand "%%name%%.openstreetmap:renderd_processed.dirty", @renderers %>
     renderd_processed.dirty.label Dirty Queue
     renderd_processed.dirty.draw STACK
