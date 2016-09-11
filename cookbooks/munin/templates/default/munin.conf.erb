@@ -95,11 +95,13 @@ unknown_limit 144
     apache_accesses.graph_category apache
     apache_accesses.accesses80.sum <%= Chef::Munin.expand "%%.openstreetmap:apache_accesses.accesses80", @frontends %>
     apache_accesses.accesses80.label port 80
+    apache_accesses.accesses80.min 0
     apache_volume.graph_title Apache volume
     apache_volume.graph_vlabel bytes per ${graph_period}
     apache_volume.graph_category apache
     apache_volume.volume80.sum <%= Chef::Munin.expand "%%.openstreetmap:apache_volume.volume80", @frontends %>
     apache_volume.volume80.label port 80
+    apache_volume.volume80.min 0
     if_eth0.graph_title eth0 traffic
     if_eth0.graph_vlabel bits in (-) / out (+) per ${graph_period}
     if_eth0.graph_category network
@@ -445,6 +447,7 @@ unknown_limit 144
 <% @renderers.each do |rs| -%>
     apache_accesses.<%= rs[:name].tr("-", "_") %>.label <%= rs[:name] %>
     apache_accesses.<%= rs[:name].tr("-", "_") %>.draw AREASTACK
+    apache_accesses.<%= rs[:name].tr("-", "_") %>.min 0
 <% end -%>
     apache_volume.graph_title Apache volume
     apache_volume.graph_vlabel bytes per ${graph_period}
@@ -454,6 +457,7 @@ unknown_limit 144
 <% @renderers.each do |rs| -%>
     apache_volume.<%= rs[:name].tr("-", "_") %>.label <%= rs[:name] %>
     apache_volume.<%= rs[:name].tr("-", "_") %>.draw AREASTACK
+    apache_volume.<%= rs[:name].tr("-", "_") %>.min 0
 <% end -%>
     network_in.graph_title Inbound network traffic
     network_in.graph_vlabel bits in per ${graph_period}
