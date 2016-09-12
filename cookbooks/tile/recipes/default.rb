@@ -62,9 +62,23 @@ end
 
 package "renderd"
 
+systemd_service "renderd" do
+  description "Mapnik rendering daemon"
+  after "postgresql.service"
+  wants "postgresql.service"
+  user "www-data"
+  exec_start "/usr/bin/renderd -f"
+  standard_error "null"
+  private_tmp true
+  private_devices true
+  private_network true
+  protect_system "full"
+  protect_home true
+  restart "on-failure"
+end
+
 service "renderd" do
   action [:enable, :start]
-  supports :status => false, :restart => true, :reload => false
 end
 
 directory "/srv/tile.openstreetmap.org/tiles" do

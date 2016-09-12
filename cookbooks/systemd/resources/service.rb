@@ -22,6 +22,7 @@ default_action :create
 property :name, String
 property :description, String, :required => true
 property :after, [String, Array]
+property :wants, [String, Array]
 property :type, String,
          :default => "simple",
          :is => %w(simple forking oneshot dbus notify idle)
@@ -35,8 +36,19 @@ property :exec_start, String, :required => true
 property :exec_start_post, String
 property :exec_stop, String
 property :exec_reload, String
+property :standard_input, String,
+         :is => %w(null tty tty-force tty-fail socket)
+property :standard_output, String,
+         :is => %w(inherit null tty journal syslog kmsg journal+console syslog+console kmsg+console socket)
+property :standard_error, String,
+         :is => %w(inherit null tty journal syslog kmsg journal+console syslog+console kmsg+console socket)
 property :restart, String,
          :is => %w(on-success on-failure on-abnormal on-watchdog on-abort always)
+property :private_tmp, [TrueClass, FalseClass]
+property :private_devices, [TrueClass, FalseClass]
+property :private_network, [TrueClass, FalseClass]
+property :protect_system, [TrueClass, FalseClass, String]
+property :protect_home, [TrueClass, FalseClass, String]
 property :timeout_sec, Fixnum
 property :pid_file, String
 

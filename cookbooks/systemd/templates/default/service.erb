@@ -5,6 +5,9 @@ Description=<%= @description %>
 <% if @after -%>
 After=<%= Array(@after).join(" ") %>
 <% end -%>
+<% if @wants -%>
+Wants=<%= Array(@wants).join(" ") %>
+<% end -%>
 
 [Service]
 Type=<%= @type %>
@@ -35,6 +38,30 @@ ExecStop=<%= @exec_stop %>
 <% end -%>
 <% if @exec_reload -%>
 ExecReload=<%= @exec_reload %>
+<% end -%>
+<% if @standard_input -%>
+StandardInput=<%= @standard_input %>
+<% end -%>
+<% if @standard_output -%>
+StandardOutput=<%= @standard_output %>
+<% end -%>
+<% if @standard_error -%>
+StandardError=<%= @standard_error %>
+<% end -%>
+<% if @private_tmp -%>
+PrivateTmp=<%= @private_tmp %>
+<% end -%>
+<% if @private_devices -%>
+PrivateDevices=<%= @private_devices %>
+<% end -%>
+<% if @private_network -%>
+PrivateNetwork=<%= @private_network %>
+<% end -%>
+<% if @protect_system -%>
+ProtectSystem=<%= @protect_system %>
+<% end -%>
+<% if @protect_home -%>
+ProtectHome=<%= @protect_home %>
 <% end -%>
 <% if @restart -%>
 Restart=<%= @restart %>
