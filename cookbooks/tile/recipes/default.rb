@@ -118,13 +118,7 @@ package "python-mapnik"
 
 package "ttf-dejavu"
 package "ttf-unifont"
-
-if node[:lsb][:release].to_f >= 16.04
-  package "fonts-droid-fallback"
-else
-  package "fonts-droid"
-end
-
+package "fonts-droid-fallback"
 package "fonts-sipa-arundina"
 package "fonts-sil-padauk"
 package "fonts-khmeros"
@@ -495,32 +489,6 @@ template "/etc/cron.d/render-lowzoom" do
   owner "root"
   group "root"
   mode 0o644
-end
-
-if node[:lsb][:release].to_f >= 16.04
-  file "/etc/rsyslog.d/20-renderd.conf" do
-    action :delete
-    notifies :restart, "service[rsyslog]"
-  end
-
-  file "/etc/logrotate.d/renderd" do
-    action :delete
-  end
-else
-  template "/etc/rsyslog.d/20-renderd.conf" do
-    source "renderd.rsyslog.erb"
-    owner "root"
-    group "root"
-    mode 0o644
-    notifies :restart, "service[rsyslog]"
-  end
-
-  template "/etc/logrotate.d/renderd" do
-    source "renderd.logrotate.erb"
-    owner "root"
-    group "root"
-    mode 0o644
-  end
 end
 
 package "liblockfile-simple-perl"
