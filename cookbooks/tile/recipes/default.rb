@@ -457,18 +457,23 @@ template "/usr/local/bin/replicate" do
   mode 0o755
 end
 
-template "/etc/init.d/replicate" do
-  source "replicate.init.erb"
-  owner "root"
-  group "root"
-  mode 0o755
+systemd_service "replicate" do
+  description "Rendering database replication service"
+  after "postgresql.service"
+  wants "postgresql.service"
+  user "tile"
+  exec_start "/usr/local/bin/replicate"
+  private_tmp true
+  private_devices true
+  protect_system "full"
+  protect_home true
+  restart "on-failure"
 end
 
 service "replicate" do
   action [:enable, :start]
-  supports :restart => true
   subscribes :restart, "template[/usr/local/bin/replicate]"
-  subscribes :restart, "template[/etc/init.d/replicate]"
+  subscribes :restart, "systemd_service[replicate]"
 end
 
 template "/etc/logrotate.d/replicate" do
