@@ -144,13 +144,13 @@ class Replicator
     @config = YAML.load(File.read(config))
     @state = YAML.load(File.read(@config["state_file"]))
     @conn = PGconn.connect(@config["db"])
-    @now = Time.now.getutc
+    # get current time from the database rather than the current system
+    @now = @conn.exec("select now() as now").map { |row| Time.parse(row["now"]) }[0]
   end
 
   def open_changesets
     last_run = @state["last_run"]
     last_run = (@now - 60) if last_run.nil?
-    @state["last_run"] = @now
     # pretty much all operations on a changeset will modify its closed_at
     # time (see rails_port's changeset model). so it is probably enough
     # for us to look at anything that was closed recently, and filter from
@@ -207,14 +207,14 @@ class Replicator
     @config["data_dir"] + format("/%03d/%03d/%03d", sequence / 1000000, (sequence / 1000) % 1000, (sequence % 1000))
   end
 
-  def write_tmp_files!
+  def write_tmp_files!(changesets)
     data_file = data_stem + ".osm.gz"
     tmp_state = @config["state_file"] + ".tmp"
     tmp_data = data_file + ".tmp"
 
     FileUtils.mkdir_p(File.dirname(data_file))
     Zlib::GzipWriter.open(tmp_data) do |fh|
-      fh.write(changeset_dump(open_changesets))
+      fh.write(changeset_dump(changesets))
     end
     File.open(tmp_state, "w") do |fh|
       fh.write(YAML.dump(@state))
@@ -269,8 +269,10 @@ class Replicator
       # clashes, or people seeing incomplete files.
       begin
         @state["sequence"] = sequence
+        @state["last_run"] = @now
+        changesets = open_changesets
 
-        write_tmp_files!
+        write_tmp_files!(changesets)
 
         move_tmp_files_into_place!
 
