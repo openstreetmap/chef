@@ -268,9 +268,9 @@ class Replicator
       # move them into place later, to avoid in-progress
       # clashes, or people seeing incomplete files.
       begin
+        changesets = open_changesets
         @state["sequence"] = sequence
         @state["last_run"] = @now
-        changesets = open_changesets
 
         write_tmp_files!(changesets)
 
