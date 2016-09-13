@@ -5,6 +5,6 @@
   delaycompress
   notifempty
   postrotate
-    /usr/bin/service replicate restart
+    /bin/systemctl try-restart replicate
   endscript
 }
