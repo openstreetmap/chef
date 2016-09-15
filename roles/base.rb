@@ -16,7 +16,7 @@ default_attributes(
   :munin => {
     :plugins => {
       :ntp_offset => {
-        :offset => { :warning => "20", :critical => "100" }
+        :offset => { :warning => "100", :critical => "250" }
       }
     }
   },
