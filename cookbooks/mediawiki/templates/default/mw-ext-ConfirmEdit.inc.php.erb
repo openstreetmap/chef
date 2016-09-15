@@ -1,7 +1,8 @@
 <?php
 # DO NOT EDIT - This file is being maintained by Chef
-wfLoadExtensions( array( 'ConfirmEdit', 'ConfirmEdit/ReCaptcha' ) );
-$wgCaptchaClass = 'ReCaptcha';
+wfLoadExtensions( array( 'ConfirmEdit', 'ConfirmEdit/ReCaptchaNoCaptcha' ) );
+$wgCaptchaClass = 'ReCaptchaNoCaptcha';
+$wgReCaptchaSendRemoteIP = true;
 $recaptcha_public_key = '<%= @public_key %>';
 $recaptcha_private_key = '<%= @private_key %>';
 
