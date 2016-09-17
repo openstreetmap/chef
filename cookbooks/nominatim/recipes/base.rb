@@ -207,6 +207,8 @@ end
 
 munin_plugin_conf "nominatim" do
   template "munin.erb"
+  variables :db => node[:nominatim][:database][:dbname],
+            :querylog => "#{node[:nominatim][:logdir]}/query.log"
 end
 
 munin_plugin "nominatim_importlag" do
@@ -249,6 +251,7 @@ additional_scripts.each do |fname|
     owner "root"
     group "root"
     mode 0o755
+    variables :db => node[:nominatim][:database][:dbname]
   end
 end
 

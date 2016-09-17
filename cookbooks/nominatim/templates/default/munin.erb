@@ -2,6 +2,6 @@
 
 [nominatim_*]
 user www-data
-env.PGDATABASE <%= node[:nominatim][:database][:dbname] %>
+env.PGDATABASE <%= @db %>
 env.PGUSER www-data
-env.NOMINATIM_QUERYLOG <%= node[:nominatim][:logdir] %>/query.log
+env.NOMINATIM_QUERYLOG <%= @querylog %>
