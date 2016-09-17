@@ -25,6 +25,7 @@ home_directory = data_bag_item("accounts", "nominatim")["home"]
 git "#{home_directory}/nominatim" do
   action :checkout
   repository node[:nominatim][:repository]
+  revision node[:nominatim][:revision]
   enable_submodules true
   user "nominatim"
   group "nominatim"
