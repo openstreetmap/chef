@@ -51,6 +51,5 @@ default_attributes(
 )
 
 run_list(
-  "role[ucl-wolfson]",
-  "role[nominatim-standalone]"
+  "role[ucl-wolfson]"
 )
