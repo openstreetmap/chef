@@ -19,7 +19,7 @@ default_attributes(
     }
   },
   :postgresql => {
-    :versions => ["9.3"],
+    :versions => ["9.5"],
     :settings => {
       :defaults => {
         :listen_addresses => "10.0.0.20",
