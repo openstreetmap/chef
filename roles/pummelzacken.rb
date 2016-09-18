@@ -31,20 +31,20 @@ default_attributes(
     }
   },
   :nominatim => {
-    :dbadmins => ["lonvia", "tomh"],
+    :dbadmins => %w(lonvia tomh),
     :dbcluster => "9.5/main",
     :flatnode_file => "/ssd/nominatim/nodes.store",
     :tablespaces => {
-      "dosm"=> "/ssd/tablespaces/dosm",
-      "iosm"=> "/ssd/tablespaces/iosm",
-      "dplace"=> "/ssd/tablespaces/dplace",
-      "iplace"=> "/ssd/tablespaces/iplace",
-      "daddress"=> "/ssd/tablespaces/daddress",
-      "iaddress"=> "/ssd/tablespaces/iaddress",
-      "dsearch"=> "/ssd/tablespaces/dsearch",
-      "isearch"=> "/ssd/tablespaces/isearch",
-      "daux"=> "/data/tablespaces/daux",
-      "iaux"=> "/data/tablespaces/iaux"
+      "dosm" => "/ssd/tablespaces/dosm",
+      "iosm" => "/ssd/tablespaces/iosm",
+      "dplace" => "/ssd/tablespaces/dplace",
+      "iplace" => "/ssd/tablespaces/iplace",
+      "daddress" => "/ssd/tablespaces/daddress",
+      "iaddress" => "/ssd/tablespaces/iaddress",
+      "dsearch" => "/ssd/tablespaces/dsearch",
+      "isearch" => "/ssd/tablespaces/isearch",
+      "daux" => "/data/tablespaces/daux",
+      "iaux" => "/data/tablespaces/iaux"
     },
     :revision => "cmake-port"
   }
