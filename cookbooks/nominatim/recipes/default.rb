@@ -104,29 +104,28 @@ node[:nominatim][:tablespaces].each do |name, location|
   end
 end
 
-postgresql_user "replication" do
-  cluster node[:nominatim][:dbcluster]
-  password data_bag_item("nominatim", "passwords")["replication"]
-  replication true
-  only_if { node[:nominatim][:state] == "master" }
-end
+if node[:nominatim][:state] == "master" # ~FC023
+  postgresql_user "replication" do
+    cluster node[:nominatim][:dbcluster]
+    password data_bag_item("nominatim", "passwords")["replication"]
+    replication true
+  end
 
-directory node[:rsyncd][:modules][:archive][:path] do
-  owner "postgres"
-  group "postgres"
-  mode 0o700
-  only_if { node[:nominatim][:state] == "master" }
-end
+  directory node[:rsyncd][:modules][:archive][:path] do
+    owner "postgres"
+    group "postgres"
+    mode 0o700
+  end
 
-template "/usr/local/bin/clean-db-nominatim" do
-  source "clean-db-nominatim.erb"
-  owner "root"
-  group "root"
-  mode 0o755
-  variables :archive_dir => node[:rsyncd][:modules][:archive][:path],
-            :update_stop_file => "#{basedir}/status/updates_disabled",
-            :streaming_clients => search(:node, "nominatim_state:slave").map { |slave| slave[:fdqn] }.join(" ")
-  only_if { node[:nominatim][:state] == "master" }
+  template "/usr/local/bin/clean-db-nominatim" do
+    source "clean-db-nominatim.erb"
+    owner "root"
+    group "root"
+    mode 0o755
+    variables :archive_dir => node[:rsyncd][:modules][:archive][:path],
+              :update_stop_file => "#{basedir}/status/updates_disabled",
+              :streaming_clients => search(:node, "nominatim_state:slave").map { |slave| slave[:fdqn] }.join(" ")
+  end
 end
 
 ## Nominatim backend
