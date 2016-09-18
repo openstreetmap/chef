@@ -9,14 +9,14 @@ cd $DIR/..
 while [ ! -f "<%= @update_stop_file %>" ]
 do
     # Send output to the log (logrotatable)
-    exec >> <%= node[:nominatim][:logdir] %>/update.log 2>&1
+    exec >> <%= @logfile %>/update.log 2>&1
     starttime=`date +%s`
 
     ./utils/update.php --no-npi --import-osmosis
 
     if git fetch origin; then
       # will trigger recompilation if necessary
-      git merge origin/master
+      git merge origin/<%= @branch %>
     else
       echo "WARNING: git fetch failed."
     fi
