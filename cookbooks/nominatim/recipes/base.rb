@@ -197,7 +197,7 @@ template "#{source_directory}/utils/nominatim-update" do
   mode 0o755
   variables :logfile => "#{node[:nominatim][:logdir]}/update.log",
             :branch => node[:nominatim][:revision],
-            :update_stop_file => "#{basedir}/status/updates_disabled"
+            :update_stop_file => "#{home_directory}/status/updates_disabled"
 end
 
 template "/etc/init.d/nominatim-update" do
