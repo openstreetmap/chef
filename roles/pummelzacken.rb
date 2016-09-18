@@ -31,18 +31,26 @@ default_attributes(
     }
   },
   :nominatim => {
+    :dbadmins => ["lonvia", "tomh"],
+    :dbcluster => "9.5/main",
     :flatnode_file => "/ssd/nominatim/nodes.store",
-    :database => {
-      :cluster => "9.3/main",
-      :dbname => "nominatim",
-      :postgis => "2.1"
+    :tablespaces => {
+      "dosm"=> "/ssd/tablespaces/dosm",
+      "iosm"=> "/ssd/tablespaces/iosm",
+      "dplace"=> "/ssd/tablespaces/dplace",
+      "iplace"=> "/ssd/tablespaces/iplace",
+      "daddress"=> "/ssd/tablespaces/daddress",
+      "iaddress"=> "/ssd/tablespaces/iaddress",
+      "dsearch"=> "/ssd/tablespaces/dsearch",
+      "isearch"=> "/ssd/tablespaces/isearch",
+      "daux"=> "/data/tablespaces/daux",
+      "iaux"=> "/data/tablespaces/iaux"
     },
-    :redirects => {
-    }
+    :revision => "cmake-port"
   }
 )
 
 run_list(
   "role[ucl-wolfson]",
-  "role[nominatim]"
+  "role[nominatim-base]"
 )
