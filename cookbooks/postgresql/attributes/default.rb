@@ -26,6 +26,7 @@ default[:postgresql][:settings][:defaults][:random_page_cost] = "4.0"
 default[:postgresql][:settings][:defaults][:cpu_tuple_cost] = "0.01"
 default[:postgresql][:settings][:defaults][:effective_cache_size] = "128MB"
 default[:postgresql][:settings][:defaults][:log_min_duration_statement] = "-1"
+default[:postgresql][:settings][:defaults][:track_activity_query_size] = "1024"
 default[:postgresql][:settings][:defaults][:autovacuum_max_workers] = "3"
 default[:postgresql][:settings][:defaults][:user_name_maps] = {}
 default[:postgresql][:settings][:defaults][:early_authentication_rules] = []

@@ -111,6 +111,14 @@ log_min_duration_statement = <%= @settings[:log_min_duration_statement] || @defa
 log_line_prefix = '%t '
 
 #------------------------------------------------------------------------------
+# RUNTIME STATISTICS
+#------------------------------------------------------------------------------
+
+# - Query/Index Statistics Collector -
+
+track_activity_query_size = <%= @settings[:track_activity_query_size] || @defaults[:track_activity_query_size] %>
+
+#------------------------------------------------------------------------------
 # AUTOVACUUM PARAMETERS
 #------------------------------------------------------------------------------
 

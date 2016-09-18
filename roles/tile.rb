@@ -40,7 +40,8 @@ default_attributes(
         :wal_writer_delay => "500ms",
         :commit_delay => "10000",
         :checkpoint_segments => "60",
-        :max_wal_size => "2880MB"
+        :max_wal_size => "2880MB",
+        :track_activity_query_size => "16384"
       }
     }
   },
