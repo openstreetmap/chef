@@ -2,6 +2,9 @@ name "pummelzacken"
 description "Master role applied to pummelzacken"
 
 default_attributes(
+  :apt => {
+    :sources => ["postgresql"]
+  },
   :networking => {
     :interfaces => {
       :internal_ipv4 => {
