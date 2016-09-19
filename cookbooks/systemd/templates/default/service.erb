@@ -39,6 +39,12 @@ ExecStop=<%= @exec_stop %>
 <% if @exec_reload -%>
 ExecReload=<%= @exec_reload %>
 <% end -%>
+<% if @runtime_directory -%>
+RuntimeDirectory=<%= @runtime_directory %>
+<% end -%>
+<% if @runtime_directory_mode -%>
+RuntimeDirectoryMode=<%= sprintf("0%o", @runtime_directory_mode) %>
+<% end -%>
 <% if @standard_input -%>
 StandardInput=<%= @standard_input %>
 <% end -%>

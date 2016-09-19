@@ -68,6 +68,7 @@ systemd_service "renderd" do
   wants "postgresql.service"
   user "www-data"
   exec_start "/usr/bin/renderd -f"
+  runtime_directory "renderd"
   standard_error "null"
   private_tmp true
   private_devices true

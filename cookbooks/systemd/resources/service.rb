@@ -36,6 +36,8 @@ property :exec_start, String, :required => true
 property :exec_start_post, String
 property :exec_stop, String
 property :exec_reload, String
+property :runtime_directory, String
+property :runtime_directory_mode, Fixnum
 property :standard_input, String,
          :is => %w(null tty tty-force tty-fail socket)
 property :standard_output, String,
