@@ -43,6 +43,10 @@ work_mem = <%= @settings[:work_mem] || @defaults[:work_mem] %>
 maintenance_work_mem = <%= @settings[:maintenance_work_mem] || @defaults[:maintenance_work_mem] %>
 max_stack_depth = <%= @settings[:max_stack_depth] || @defaults[:max_stack_depth] %>
 
+# - Asynchronous Behavior -
+
+effective_io_concurrency = <%= @settings[:effective_io_concurrency] || @defaults[:effective_io_concurrency] %>
+
 #------------------------------------------------------------------------------
 # WRITE AHEAD LOG
 #------------------------------------------------------------------------------

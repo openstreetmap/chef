@@ -25,7 +25,8 @@ default_attributes(
         :shared_buffers => "64GB",
         :work_mem => "64MB",
         :maintenance_work_mem => "1GB",
-        :effective_cache_size => "180GB"
+        :effective_cache_size => "180GB",
+        :effective_io_concurrency => "256"
       }
     },
     :versions => ["9.5"]
