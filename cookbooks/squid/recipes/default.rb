@@ -40,39 +40,26 @@ directory "/etc/squid/squid.conf.d" do
   mode 0o755
 end
 
-if node[:lsb][:release].to_f >= 15.10
-  systemd_service "squid" do
-    description "Squid caching proxy"
-    after ["network.target", "nss-lookup.target"]
-    limit_nofile 65536
-    environment "SQUID_ARGS" => "-D"
-    environment_file "/etc/default/squid"
-    exec_start_pre "/usr/sbin/squid $SQUID_ARGS -z"
-    exec_start "/usr/sbin/squid -N $SQUID_ARGS"
-    exec_reload "/usr/sbin/squid -k reconfigure"
-    exec_stop "/usr/sbin/squid -k shutdown"
-    restart "on-failure"
-    timeout_sec 0
-  end
+systemd_service "squid" do
+  description "Squid caching proxy"
+  after ["network.target", "nss-lookup.target"]
+  limit_nofile 65536
+  environment "SQUID_ARGS" => "-D"
+  environment_file "/etc/default/squid"
+  exec_start_pre "/usr/sbin/squid $SQUID_ARGS -z"
+  exec_start "/usr/sbin/squid -N $SQUID_ARGS"
+  exec_reload "/usr/sbin/squid -k reconfigure"
+  exec_stop "/usr/sbin/squid -k shutdown"
+  restart "on-failure"
+  timeout_sec 0
+end
 
-  service "squid" do
-    provider Chef::Provider::Service::Systemd
-    action [:enable, :start]
-    supports :status => true, :restart => true, :reload => true
-    subscribes :restart, "systemd_service[squid]"
-    subscribes :reload, "template[/etc/squid/squid.conf]"
-    subscribes :restart, "template[/etc/default/squid]"
-    subscribes :reload, "template[/etc/resolv.conf]"
-  end
-else
-  service "squid" do
-    provider Chef::Provider::Service::Upstart
-    action [:enable, :start]
-    supports :status => true, :restart => true, :reload => true
-    subscribes :reload, "template[/etc/squid/squid.conf]"
-    subscribes :restart, "template[/etc/default/squid]"
-    subscribes :reload, "template[/etc/resolv.conf]"
-  end
+service "squid" do
+  action [:enable, :start]
+  subscribes :restart, "systemd_service[squid]"
+  subscribes :reload, "template[/etc/squid/squid.conf]"
+  subscribes :restart, "template[/etc/default/squid]"
+  subscribes :reload, "template[/etc/resolv.conf]"
 end
 
 munin_plugin "squid_cache"
