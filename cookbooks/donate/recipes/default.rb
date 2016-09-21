@@ -51,6 +51,12 @@ mysql_database "donate" do
   permissions "donate@localhost" => :all
 end
 
+directory "/srv/donate.openstreetmap.org" do
+  owner "donate"
+  group "donate"
+  mode 0o755
+end
+
 git "/srv/donate.openstreetmap.org" do
   action :sync
   repository "git://github.com/osmfoundation/donation-drive.git"
