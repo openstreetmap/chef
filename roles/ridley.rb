@@ -2,6 +2,9 @@ name "ridley"
 description "Master role applied to ridley"
 
 default_attributes(
+  :ssl => {
+    :certificates => ["osmfoundation", "openstreetmap"]
+  },
   :apache => {
     :ssl => {
       :certificate => "osmfoundation",
