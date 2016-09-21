@@ -23,6 +23,9 @@
    # Enable SSL
    #
    SSLEngine on
+   SSLCertificateFile /etc/ssl/certs/openstreetmap.pem
+   SSLCertificateKeyFile /etc/ssl/private/openstreetmap.key
+   SSLCertificateChainFile /etc/ssl/certs/rapidssl.pem
 
    # HSTS (mod_headers is required)
    Header always set Strict-Transport-Security "max-age=300"

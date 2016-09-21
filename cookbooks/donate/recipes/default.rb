@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+node.default[:ssl][:certificates] = node[:ssl][:certificates] | ["openstreetmap"]
+
 include_recipe "apache::ssl"
 include_recipe "mysql"
 include_recipe "git"
@@ -62,6 +64,12 @@ git "/srv/donate.openstreetmap.org" do
   repository "git://github.com/osmfoundation/donation-drive.git"
   user "donate"
   group "donate"
+end
+
+directory "/srv/donate.openstreetmap.org/data" do
+  owner "donate"
+  group "donate"
+  mode 0o755
 end
 
 apache_site "donate.openstreetmap.org" do
