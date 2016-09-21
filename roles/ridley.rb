@@ -92,6 +92,7 @@ run_list(
   "role[switch2osm]",
   "role[blog]",
   "role[otrs]",
+  "role[donate]",
   "recipe[dhcpd]",
   "recipe[openvpn]"
 )

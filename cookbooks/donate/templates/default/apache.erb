@@ -1,0 +1,75 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+<% [80, 443].each do |port| -%>
+<VirtualHost *:<%= port %>>
+
+	ServerName donate.openstreetmap.org
+  ServerAlias donate.openstreetmap.com
+  ServerAlias donate.openstreetmap.net
+	ServerAlias donate.osm.org
+  ServerAlias donate.osm.org.za
+  ServerAlias donate.openstreetmap.org.za
+  ServerAlias donate.openstreetmap.org.uk
+  ServerAlias donate.openstreetmap.co.uk
+
+	ServerAdmin webmaster@openstreetmap.org
+
+<% if port == 80 -%>
+   # Redirect to secure site
+   Redirect permanent / https://donate.openstreetmap.org
+<% end -%>
+<% if port == 443 -%>
+   #
+   # Enable SSL
+   #
+   SSLEngine on
+
+   # HSTS (mod_headers is required)
+   Header always set Strict-Transport-Security "max-age=300"
+<% end -%>
+
+	CustomLog /var/log/apache2/donate.openstreetmap.org-access.log combined
+	ErrorLog /var/log/apache2/donate.openstreetmap.org-error.log
+
+	Options -Indexes
+
+	DocumentRoot /srv/donate.openstreetmap.org
+
+  php_admin_value open_basedir /srv/donate.openstreetmap.org/:/usr/share/php/:/tmp/
+  php_admin_value disable_functions "exec,shell_exec,system,passthru,popen,proc_open"
+
+  # Alias Dynamic Content to data folder to avoid serving dummy git content
+  Alias /donors-eur.csv /srv/donate.openstreetmap.org/data/donors-eur.csv
+  Alias /donors.csv /srv/donate.openstreetmap.org/data/donors.csv
+
+  # Redirect previous compaigns to homepage
+  Redirect permanent /server2013 https://donate.openstreetmap.org/
+  Redirect permanent /server2015 https://donate.openstreetmap.org/
+
+  <Directory /srv/donate.openstreetmap.org>
+  	Require all granted
+  </Directory>
+
+  <Directory /srv/donate.openstreetmap.org/scripts>
+    Require all denied
+  </Directory>
+
+  <Directory ~ "\.svn">
+    Require all denied
+  </Directory>
+
+  <Directory ~ "\.git">
+    Require all denied
+  </Directory>
+
+  <Files ~ "~$">
+    Require all denied
+  </Files>
+
+  # Enable deflate compression on .csv files if possible
+  <IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/csv
+  </IfModule>
+</VirtualHost>
+
+<% end -%>
