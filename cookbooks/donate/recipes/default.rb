@@ -21,14 +21,22 @@ include_recipe "apache::ssl"
 include_recipe "mysql"
 include_recipe "git"
 
-package "php"
-package "php-cli"
-package "php-curl"
-package "php-mbstring"
-package "php-mysql"
-package "php-gd"
+if node[:lsb][:release].to_f >= 16.04
+  package "php"
+  package "php-cli"
+  package "php-mysql"
+  package "php-gd"
 
-apache_module "php7.0"
+  apache_module "php7.0"
+else
+  package "php5"
+  package "php5-cli"
+  package "php5-mysql"
+  package "php5-gd"
+
+  apache_module "php5"
+end
+
 apache_module "headers"
 
 passwords = data_bag_item("donate", "passwords")
