@@ -1,0 +1,4 @@
+<?php
+$_DB_H = mysql_connect('localhost','donate','<%= @database_password %>');
+mysql_select_db('donate', $_DB_H);
+mysql_query('SET NAMES \'utf8\'', $_DB_H);

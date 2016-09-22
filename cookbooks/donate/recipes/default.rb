@@ -26,6 +26,7 @@ include_recipe "git"
 if node[:lsb][:release].to_f >= 16.04
   package "php"
   package "php-cli"
+  package "php-curl"
   package "php-mysql"
   package "php-gd"
 
@@ -33,6 +34,7 @@ if node[:lsb][:release].to_f >= 16.04
 else
   package "php5"
   package "php5-cli"
+  package "php5-curl"
   package "php5-mysql"
   package "php5-gd"
 
@@ -72,6 +74,13 @@ directory "/srv/donate.openstreetmap.org/data" do
   mode 0o755
 end
 
+template "/srv/donate.openstreetmap.org/scripts/db-connect.inc.php" do
+  source "db-connect.inc.php.erb"
+  owner "root"
+  group "donate"
+  mode 0o640
+end
+
 apache_site "donate.openstreetmap.org" do
   template "apache.erb"
 end
@@ -81,7 +90,7 @@ template "/etc/cron.d/osmf-donate" do
   owner "root"
   group "root"
   mode 0o600
-  variables :passwords => passwords
+  variables :database_password => database_password
 end
 
 template "/etc/cron.daily/osmf-donate-backup" do
@@ -89,5 +98,5 @@ template "/etc/cron.daily/osmf-donate-backup" do
   owner "root"
   group "root"
   mode 0o750
-  variables :passwords => passwords
+  variables :database_password => database_password
 end
