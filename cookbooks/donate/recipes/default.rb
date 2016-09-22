@@ -90,7 +90,7 @@ template "/etc/cron.d/osmf-donate" do
   owner "root"
   group "root"
   mode 0o600
-  variables :database_password => database_password
+  variables :passwords => passwords
 end
 
 template "/etc/cron.daily/osmf-donate-backup" do
@@ -98,5 +98,5 @@ template "/etc/cron.daily/osmf-donate-backup" do
   owner "root"
   group "root"
   mode 0o750
-  variables :database_password => database_password
+  variables :passwords => passwords
 end
