@@ -78,7 +78,8 @@ template "/srv/donate.openstreetmap.org/scripts/db-connect.inc.php" do
   source "db-connect.inc.php.erb"
   owner "root"
   group "donate"
-  mode 0o640
+  mode 0o644
+  variables :passwords => passwords
 end
 
 apache_site "donate.openstreetmap.org" do
