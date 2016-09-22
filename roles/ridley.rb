@@ -3,7 +3,7 @@ description "Master role applied to ridley"
 
 default_attributes(
   :ssl => {
-    :certificates => ["osmfoundation", "openstreetmap"]
+    :certificates => %w(osmfoundation openstreetmap)
   },
   :apache => {
     :ssl => {
