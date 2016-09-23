@@ -124,7 +124,7 @@ if node[:nominatim][:state] == "master" # ~FC023
     mode 0o755
     variables :archive_dir => node[:rsyncd][:modules][:archive][:path],
               :update_stop_file => "#{basedir}/status/updates_disabled",
-              :streaming_clients => search(:node, "nominatim_state:slave").map { |slave| slave[:fdqn] }.join(" ")
+              :streaming_clients => search(:node, "nominatim_state:slave").map { |slave| slave[:fqdn] }.join(" ")
   end
 end
 
@@ -194,7 +194,7 @@ template "#{build_directory}/settings/local.php" do
   owner "nominatim"
   group "nominatim"
   mode 0o664
-  variables :base_url => node[:nominatim][:state] == "off" ? node[:fdqn] : "nominatim.openstreetmap.org",
+  variables :base_url => node[:nominatim][:state] == "off" ? node[:fqdn] : "nominatim.openstreetmap.org",
             :dbname => node[:nominatim][:dbname],
             :flatnode_file => node[:nominatim][:flatnode_file],
             :log_file => "#{node[:nominatim][:logdir]}/query.log"
