@@ -268,7 +268,7 @@ end
 
 ## webserver frontend
 
-template "#{source_directory}/settings/ip_blocks.conf" do
+template "#{build_directory}/settings/ip_blocks.conf" do
   action :create_if_missing
   source "ipblocks.erb"
   owner "nominatim"
@@ -276,14 +276,14 @@ template "#{source_directory}/settings/ip_blocks.conf" do
   mode 0o664
 end
 
-file "#{source_directory}/settings/apache_blocks.conf" do
+file "#{build_directory}/settings/apache_blocks.conf" do
   action :create_if_missing
   owner "nominatim"
   group "nominatim"
   mode 0o664
 end
 
-file "#{source_directory}/settings/ip_blocks.map" do
+file "#{build_directory}/settings/ip_blocks.map" do
   action :create_if_missing
   owner "nominatim"
   group "nominatim"
