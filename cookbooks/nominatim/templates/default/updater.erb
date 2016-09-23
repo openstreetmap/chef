@@ -3,8 +3,7 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
 # Change to Nominatim directory
-DIR="$( cd "$( dirname "$0" )" && pwd )"
-cd $DIR/..
+cd <%= @bindir %>
 
 while [ ! -f "<%= @update_stop_file %>" ]
 do

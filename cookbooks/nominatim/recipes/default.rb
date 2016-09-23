@@ -243,7 +243,8 @@ template "#{source_directory}/utils/nominatim-update" do
   user "nominatim"
   group "nominatim"
   mode 0o755
-  variables :logfile => "#{node[:nominatim][:logdir]}/update.log",
+  variables :bindir => build_directory,
+            :logfile => "#{node[:nominatim][:logdir]}/update.log",
             :branch => node[:nominatim][:revision],
             :update_stop_file => "#{basedir}/status/updates_disabled"
 end
