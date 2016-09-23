@@ -330,7 +330,7 @@ end
 
 apache_site "nominatim.openstreetmap.org" do
   template "apache.erb"
-  directory source_directory
+  directory build_directory
   variables :pools => node[:nominatim][:fpm_pools]
 end
 
