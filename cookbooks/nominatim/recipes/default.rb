@@ -194,7 +194,8 @@ template "#{build_directory}/settings/local.php" do
   owner "nominatim"
   group "nominatim"
   mode 0o664
-  variables :dbname => node[:nominatim][:dbname],
+  variables :base_url => node[:nominatim][:state] == "off" ? node[:fdqn] : "nominatim.openstreetmap.org",
+            :dbname => node[:nominatim][:dbname],
             :flatnode_file => node[:nominatim][:flatnode_file],
             :log_file => "#{node[:nominatim][:logdir]}/query.log"
 end

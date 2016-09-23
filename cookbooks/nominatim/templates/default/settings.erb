@@ -3,9 +3,9 @@
 
 @define('CONST_Database_DSN', 'pgsql://@/<%= @dbname %>');
 if (isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS']))
-    @define('CONST_Website_BaseURL', 'https://nominatim.openstreetmap.org/');
+    @define('CONST_Website_BaseURL', 'https://<%= @base_url %>/');
 else
-    @define('CONST_Website_BaseURL', 'http://nominatim.openstreetmap.org/');
+    @define('CONST_Website_BaseURL', 'http://<%= @base_url %>/');
 
 <% if @flatnode_file -%>
 @define('CONST_Osm2pgsql_Flatnode_File', '<%= @flatnode_file %>');
