@@ -31,6 +31,11 @@ default_attributes(
       }
     }
   },
+  :networking => {
+    :firewall => {
+      :http_connection_limit => 10
+    }
+  },
   :apache => {
     :mpm => "event",
     :keepalive => true,
