@@ -117,16 +117,8 @@ end
 package "python-cairo"
 package "python-mapnik"
 
-package "ttf-dejavu"
+package "fonts-noto"
 package "ttf-unifont"
-package "fonts-droid-fallback"
-package "fonts-sipa-arundina"
-package "fonts-sil-padauk"
-package "fonts-khmeros"
-package "fonts-beng-extra"
-package "fonts-gargi"
-package "fonts-taml-tscu"
-package "fonts-tibetan-machine"
 
 directory "/srv/tile.openstreetmap.org/cgi-bin" do
   owner "tile"
