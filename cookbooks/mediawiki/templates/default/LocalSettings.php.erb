@@ -28,7 +28,7 @@ $wgInternalServer   = 'http://<%= @name %>';
 
 <% if @mediawiki[:ssl_enabled] -%>
 $wgSecureLogin = true;
-$wgDefaultUserOptions['prefershttps'] = 0;
+$wgDefaultUserOptions['prefershttps'] = 1;
 <% end -%>
 $wgCookieSecure = false;
 
