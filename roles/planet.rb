@@ -42,7 +42,8 @@ default_attributes(
     :event => {
       :server_limit => 20,
       :max_clients => 1000,
-      :threads_per_child => 50
+      :threads_per_child => 50,
+      :max_spare_threads => 525
     }
   }
 )
