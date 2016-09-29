@@ -27,20 +27,19 @@ include_recipe "mysql"
 include_recipe "nodejs"
 include_recipe "postgresql"
 
-package "php-apc"
-package "php-db"
+package "php"
+package "php-cgi"
 package "php-cgiwrap"
+package "php-cli"
+package "php-curl"
+package "php-db"
+package "php-fpm"
+package "php-imagick"
+package "php-mcrypt"
+package "php-mysql"
 package "php-pear"
-
-package "php5-cgi"
-package "php5-cli"
-package "php5-curl"
-package "php5-fpm"
-package "php5-imagick"
-package "php5-mcrypt"
-package "php5-mysql"
-package "php5-pgsql"
-package "php5-sqlite"
+package "php-pgsql"
+package "php-sqlite"
 
 package "pngcrush"
 package "pngquant"
@@ -72,23 +71,21 @@ gem_package "rails" do
   version "3.0.9"
 end
 
-service "php5-fpm" do
-  provider Chef::Provider::Service::Upstart
+service "php7.0-fpm" do
   action [:enable, :start]
-  supports :status => true, :restart => true, :reload => true
 end
 
-template "/etc/php5/fpm/pool.d/default.conf" do
+template "/etc/php/7.0/fpm/pool.d/default.conf" do
   source "fpm-default.conf.erb"
   owner "root"
   group "root"
   mode 0o644
-  notifies :reload, "service[php5-fpm]"
+  notifies :reload, "service[php7.0-fpm]"
 end
 
-file "/etc/php5/fpm/pool.d/www.conf" do
+file "/etc/php/7.0/fpm/pool.d/www.conf" do
   action :delete
-  notifies :reload, "service[php5-fpm]"
+  notifies :reload, "service[php7.0-fpm]"
 end
 
 package "phppgadmin"
@@ -120,13 +117,13 @@ search(:accounts, "*:*").each do |account|
 
   port = 7000 + account["uid"].to_i
 
-  template "/etc/php5/fpm/pool.d/#{name}.conf" do
+  template "/etc/php/7.0/fpm/pool.d/#{name}.conf" do
     source "fpm.conf.erb"
     owner "root"
     group "root"
     mode 0o644
     variables :user => name, :port => port
-    notifies :reload, "service[php5-fpm]"
+    notifies :reload, "service[php7.0-fpm]"
   end
 
   apache_site "#{name}.dev.openstreetmap.org" do
