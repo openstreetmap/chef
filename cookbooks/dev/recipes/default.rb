@@ -29,7 +29,6 @@ include_recipe "postgresql"
 
 package "php"
 package "php-cgi"
-# package "php-cgiwrap"
 package "php-cli"
 package "php-curl"
 package "php-db"
@@ -59,11 +58,15 @@ easy_install_package "geojson"
 
 apache_module "env"
 apache_module "expires"
+apache_module "headers"
 apache_module "proxy"
 apache_module "proxy_fcgi"
 apache_module "rewrite"
+apache_module "suexec"
+apache_module "userdir"
 apache_module "wsgi"
-apache_module "headers"
+
+package "apache2-suexec-pristine"
 
 gem_package "sqlite3"
 
