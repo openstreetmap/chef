@@ -39,7 +39,7 @@ package "php-mcrypt"
 package "php-mysql"
 package "php-pear"
 package "php-pgsql"
-package "php-sqlite"
+package "php-sqlite3"
 
 package "pngcrush"
 package "pngquant"
