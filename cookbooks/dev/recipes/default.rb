@@ -29,7 +29,7 @@ include_recipe "postgresql"
 
 package "php"
 package "php-cgi"
-package "php-cgiwrap"
+# package "php-cgiwrap"
 package "php-cli"
 package "php-curl"
 package "php-db"
