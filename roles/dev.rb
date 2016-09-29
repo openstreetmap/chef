@@ -95,6 +95,9 @@ default_attributes(
       :max_requests_per_child => 10000
     }
   },
+  :apt => {
+    :sources => ["postgresql"]
+  },
   :dev => {
     :rails => {
       :master => {
