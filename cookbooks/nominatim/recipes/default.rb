@@ -20,13 +20,12 @@
 basedir = data_bag_item("accounts", "nominatim")["home"]
 email_errors = data_bag_item("accounts", "lonvia")["email"]
 
-directory "#{basedir}" do
+directory basedir do
   owner "nominatim"
   group "nominatim"
   mode 0o755
   recursive true
 end
-
 
 directory node[:nominatim][:logdir] do
   owner "nominatim"
