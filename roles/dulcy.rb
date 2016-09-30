@@ -45,7 +45,7 @@ default_attributes(
     :database => {
       :cluster => "9.5/main",
       :dbname => "nominatim",
-      :postgis => "2.2"
+      :postgis => "2.3"
     }
   },
   :sysfs => {
