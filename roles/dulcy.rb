@@ -1,6 +1,5 @@
 name "dulcy"
-description "Master role applied to dulcy
-"
+description "Master role applied to dulcy"
 
 default_attributes(
   :networking => {
@@ -28,7 +27,7 @@ default_attributes(
     }
   },
   :postgresql => {
-    :versions => ["9.4"],
+    :versions => ["9.5"],
     :settings => {
       :defaults => {
         :work_mem => "300MB",
@@ -44,9 +43,9 @@ default_attributes(
     :flatnode_file => "/ssd/nominatim/nodes.store",
     :logdir => "/ssd/nominatim/log",
     :database => {
-      :cluster => "9.4/main",
+      :cluster => "9.5/main",
       :dbname => "nominatim",
-      :postgis => "2.1"
+      :postgis => "2.2"
     }
   },
   :sysfs => {

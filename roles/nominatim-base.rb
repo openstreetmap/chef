@@ -22,6 +22,9 @@ default_attributes(
       :threads_per_child => 50
     }
   },
+  :apt => {
+    :sources => ["postgresql"]
+  },
   :postgresql => {
     :settings => {
       :defaults => {
