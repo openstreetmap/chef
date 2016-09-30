@@ -13,12 +13,14 @@ do
 
     ./utils/update.php --no-npi --import-osmosis
 
+    pushd <%= @srcdir %>
     if git fetch origin; then
       # will trigger recompilation if necessary
       git merge origin/<%= @branch %>
     else
       echo "WARNING: git fetch failed."
     fi
+    popd
 
     # sleep a bit if updates take less than a minute
     endtime=`date +%s`
