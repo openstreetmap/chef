@@ -60,6 +60,5 @@ default_attributes(
 )
 
 run_list(
-  "role[ic]",
-  "role[nominatim-standalone]"
+  "role[ic]"
 )
