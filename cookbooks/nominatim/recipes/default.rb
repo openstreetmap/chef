@@ -41,12 +41,6 @@ file "#{node[:nominatim][:logdir]}/update.log" do
   mode 0o664
 end
 
-directory "#{basedir}/status" do
-  owner "nominatim"
-  group "postgres"
-  mode 0o775
-end
-
 ## Postgresql
 
 include_recipe "postgresql"
@@ -380,4 +374,10 @@ end
 
 munin_plugin "nominatim_throttled_ips" do
   target "#{source_directory}/munin/nominatim_throttled_ips"
+end
+
+directory "#{basedir}/status" do
+  owner "nominatim"
+  group "postgres"
+  mode 0o775
 end
