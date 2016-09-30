@@ -39,13 +39,22 @@ default_attributes(
     }
   },
   :nominatim => {
-    :enabled => false,
+    :state => "off",
+    :dbadmins => %w(lonvia tomh),
+    :dbcluster => "9.5/main",
     :flatnode_file => "/ssd/nominatim/nodes.store",
     :logdir => "/ssd/nominatim/log",
-    :database => {
-      :cluster => "9.5/main",
-      :dbname => "nominatim",
-      :postgis => "2.3"
+    :tablespaces => {
+      "dosm" => "/ssd/tablespaces/dosm",
+      "iosm" => "/ssd/tablespaces/iosm",
+      "dplace" => "/ssd/tablespaces/dplace",
+      "iplace" => "/ssd/tablespaces/iplace",
+      "daddress" => "/ssd/tablespaces/daddress",
+      "iaddress" => "/ssd/tablespaces/iaddress",
+      "dsearch" => "/ssd/tablespaces/dsearch",
+      "isearch" => "/ssd/tablespaces/isearch",
+      "daux" => "/ssd/tablespaces/daux",
+      "iaux" => "/ssd/tablespaces/iaux"
     }
   },
   :sysfs => {
@@ -61,5 +70,5 @@ default_attributes(
 
 run_list(
   "role[ic]",
-  "role[nominatim-standalone]"
+  "role[nominatim-base]"
 )
