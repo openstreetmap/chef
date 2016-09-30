@@ -20,12 +20,11 @@
 include_recipe "apache::ssl"
 include_recipe "postgresql"
 
-package "php5"
-package "php5-cli"
-package "php5-pgsql"
-package "php5-fpm"
+package "php"
+package "php-cli"
+package "php-pgsql"
+package "php-fpm"
 package "php-pear"
-package "php-apc"
 package "php-db"
 
 apache_module "rewrite"
@@ -44,20 +43,18 @@ database_name = node[:nominatim][:database][:dbname]
 
 postgis_version = node[:nominatim][:database][:postgis]
 
-service "php5-fpm" do
-  provider Chef::Provider::Service::Upstart
+service "php7.0-fpm" do
   action [:enable, :start]
-  supports :status => true, :restart => true, :reload => true
 end
 
 node[:nominatim][:fpm_pools].each do |name, data|
-  template "/etc/php5/fpm/pool.d/#{name}.conf" do
+  template "/etc/php/7.0/fpm/pool.d/#{name}.conf" do
     source "fpm.conf.erb"
     owner "root"
     group "root"
     mode 0o644
     variables data.merge(:name => name, :port => data[:port])
-    notifies :reload, "service[php5-fpm]"
+    notifies :reload, "service[php7.0-fpm]"
   end
 end
 
