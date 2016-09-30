@@ -107,7 +107,7 @@ end
 package "osmosis"
 package "gcc"
 package "proj-bin"
-package "libgeos-c1"
+package "libgeos-c1v5"
 package "postgresql-#{database_version}-postgis-#{postgis_version}"
 package "postgresql-server-dev-#{database_version}"
 package "build-essential"
