@@ -702,6 +702,7 @@ unknown_limit 144
     renderd_zoom_time.zoomtime6.cdef zoomtime6,1000,/
     renderd_zoom_time.zoomtime6.draw STACK
     renderd_zoom_time.zoomtime6.info Time for Metatiles for z19 - z20
+<% unless @geocoders.empty? -%>
 
 # Configure compound graphs for nominatim.openstreetmap.org
 [nominatim.openstreetmap]
@@ -740,3 +741,4 @@ unknown_limit 144
     nominatim_throttled_ips.block.label blocked
     nominatim_throttled_ips.block.draw STACK
     nominatim_throttled_ips.block.type GAUGE
+<% end -%>
