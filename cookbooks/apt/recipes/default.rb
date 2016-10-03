@@ -130,11 +130,6 @@ apt_source "mediawiki" do
   key "90E9F83F22250DD7"
 end
 
-apt_source "openstreetmap-cgimap" do
-  url "http://ppa.launchpad.net/zerebubuth/openstreetmap-cgimap/ubuntu"
-  key "CDADED50"
-end
-
 package "unattended-upgrades"
 
 if Dir.exist?("/usr/share/unattended-upgrades")
