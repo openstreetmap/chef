@@ -16,3 +16,7 @@
 	ProxyPassMatch ^/(.*\.phpx(/.*)?)$ fcgi://127.0.0.1:7000/usr/share/phppgadmin
 	ProxyPassMatch ^/(.*\.phpj(/.*)?)$ fcgi://127.0.0.1:7000/usr/share/phppgadmin
 </VirtualHost>
+
+<Directory /usr/share/phppgadmin>
+	Require all granted
+</Directory>
