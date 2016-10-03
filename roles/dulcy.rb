@@ -71,5 +71,5 @@ default_attributes(
 
 run_list(
   "role[ic]",
-  "role[nominatim-base]"
+  "role[nominatim]"
 )

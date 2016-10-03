@@ -1,5 +1,5 @@
-name "nominatim-base"
-description "Role applied to all nominatim servers. Use for standalone server."
+name "nominatim"
+description "Role applied to all nominatim servers."
 
 default_attributes(
   :accounts => {
