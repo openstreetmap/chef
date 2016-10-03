@@ -74,6 +74,7 @@
 
   # Enable deflate compression on .csv files if possible
   <IfModule mod_deflate.c>
+    DeflateCompressionLevel 9
     AddOutputFilterByType DEFLATE text/csv
   </IfModule>
 
