@@ -117,18 +117,18 @@ acl pool_unlimited src <%= address %>
 acl tile_caches src <%= address %>
 <% end -%>
 <% end -%>
-#AOL External (London Hack Weekend)
-acl pool_unlimited src 64.236.163.23
-#SoTM-US 2014
+# SoTM-US 2014
 acl pool_unlimited src 66.78.217.141
-#SoTM-US 2014 Hack Day Red Cross
+# SoTM-US 2014 Hack Day Red Cross
 acl pool_unlimited src 162.6.86.34
 acl pool_unlimited src 162.6.86.35
 acl pool_unlimited src 162.6.86.36
-#Telenav Whitelist - mvexel
+# Telenav Whitelist - mvexel
 acl pool_unlimited src 108.60.98.6
-#SoTM-EU 2014
+# SoTM-EU 2014
 acl pool_unlimited src 185.52.244.32/29
+# Juno Minsk office - me@komzpa.net
+acl pool_unlimited src 212.98.173.54
 
 #Allow tile_caches ICP access
 icp_access allow tile_caches
@@ -152,7 +152,7 @@ delay_class <%= i %> 3
 delay_access <%= i+1 %> allow pool_<%= sprintf("%03d", 2*i) %> !pool_unlimited is_fake_browser osmtile_sites
 delay_access <%= i+1 %> allow pool_<%= sprintf("%03d", 2*i) %> !pool_unlimited !has_referer is_browser osmtile_sites
 delay_access <%= i+1 %> deny all
-delay_parameters <%= i+1 %> -1/-1 <%= node[:tilecache][:net_bucket_refill] / 30 %>/<%= node[:tilecache][:net_bucket_size] / 30 %> <%= node[:tilecache][:ip_bucket_refill] / 30 %>/<%= node[:tilecache][:ip_bucket_size] / 30 %>
+delay_parameters <%= i+1 %> -1/-1 <%= node[:tilecache][:net_bucket_refill] / 10 %>/<%= node[:tilecache][:net_bucket_size] / 10 %> <%= node[:tilecache][:ip_bucket_refill] / 10 %>/<%= node[:tilecache][:ip_bucket_size] / 10 %>
 <% end %>
 
 # bigger pools for users providing a referer (assuming it's not blocked)
