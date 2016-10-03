@@ -43,6 +43,7 @@ systemd_service "cgimap" do
               "CGIMAP_DBNAME" => "openstreetmap",
               "CGIMAP_USERNAME" => "rails",
               "CGIMAP_PASSWORD" => db_passwords["rails"],
+              "CGIMAP_OAUTH_HOST" => node[:web][:database_host],
               "CGIMAP_PIDFILE" => "#{node[:web][:pid_directory]}/cgimap.pid",
               "CGIMAP_LOGFILE" => "#{node[:web][:log_directory]}/cgimap.log",
               "CGIMAP_MEMCACHE" => memcached_servers.join(","),
