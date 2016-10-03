@@ -34,19 +34,28 @@ end
 
 memcached_servers = node[:web][:memcached_servers] || []
 
-template "/etc/init.d/cgimap" do
-  owner "root"
-  group "root"
-  mode 0o755
-  source "cgimap.init.erb"
-  variables(
-    :db_password => db_passwords["rails"],
-    :pid_directory => node[:web][:pid_directory],
-    :log_directory => node[:web][:log_directory],
-    :database_host => database_host,
-    :database_readonly => database_readonly,
-    :memcached_servers => memcached_servers
-  )
+switches = database_readonly ? " --readonly" : ""
+
+systemd_service "cgimap" do
+  description "OpenStreetMap API Server"
+  type "forking"
+  environment "CGIMAP_HOST" => database_host,
+              "CGIMAP_DBNAME" => "openstreetmap",
+              "CGIMAP_USERNAME" => "rails",
+              "CGIMAP_PASSWORD" => db_passwords["rails"],
+              "CGIMAP_PIDFILE" => "#{node[:web][:pid_directory]}/cgimap.pid",
+              "CGIMAP_LOGFILE" => "#{node[:web][:log_directory]}/cgimap.log",
+              "CGIMAP_MEMCACHE" => memcached_servers.join(","),
+              "CGIMAP_RATELIMIT" => "204800",
+              "CGIMAP_MAXDEBT" => "250"
+  user "rails"
+  exec_start "/usr/bin/openstreetmap-cgimap --daemon --port 8000 --instances 30#{switches}"
+  private_tmp true
+  private_devices true
+  protect_system "full"
+  protect_home true
+  restart "on-failure"
+  pid_file "#{node[:web][:pid_directory]}/cgimap.pid"
 end
 
 if %w(database_offline api_offline).include?(node[:web][:status])
@@ -58,6 +67,6 @@ else
     action [:enable, :start]
     supports :restart => true, :reload => true
     subscribes :restart, "dpkg_package[openstreetmap-cgimap-bin]"
-    subscribes :restart, "file[/etc/init.d/cgimap]"
+    subscribes :restart, "systemd_service[cgimap]"
   end
 end
