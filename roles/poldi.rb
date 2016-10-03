@@ -55,43 +55,10 @@ default_attributes(
         :address => "2001:630:12:500:2e0:81ff:fec5:333e"
       }
     }
-  },
-  :postgresql => {
-    :versions => ["9.3"],
-    :settings => {
-      :defaults => {
-        :work_mem => "160MB",
-        :maintenance_work_mem => "10GB",
-        :random_page_cost => "1.5",
-        :effective_cache_size => "40GB",
-        :fsync => "on"
-      }
-    }
-  },
-  :nominatim => {
-    :flatnode_file => "/ssd-old/nominatim/nodes.store",
-    :database => {
-      :cluster => "9.3/main",
-      :dbname => "nominatim",
-      :postgis => "2.1"
-    },
-    :fpm_pools => {
-      :www => {
-        :port => "8000",
-        :pm => "dynamic",
-        :max_children => "60"
-      },
-      :bulk => {
-        :port => "8001",
-        :pm => "static",
-        :max_children => "10"
-      }
-    }
   }
 )
 
 run_list(
   "role[ic]",
-  "role[tyan-s7010]",
-  "role[nominatim-standalone]"
+  "role[tyan-s7010]"
 )
