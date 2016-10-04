@@ -28,7 +28,7 @@ property :type, String,
          :is => %w(simple forking oneshot dbus notify idle)
 property :limit_nofile, Fixnum
 property :environment, Hash, :default => {}
-property :environment_file, String
+property :environment_file, [String, Hash]
 property :user, String
 property :group, String
 property :exec_start_pre, String
@@ -55,13 +55,28 @@ property :timeout_sec, Fixnum
 property :pid_file, String
 
 action :create do
+  service_variables = new_resource.to_hash
+
+  if environment_file.is_a?(Hash)
+    template "/etc/default/#{name}" do
+      cookbook "systemd"
+      source "environment.erb"
+      owner "root"
+      group "root"
+      mode 0o640
+      variables :environment => environment_file
+    end
+
+    service_variables[:environment_file] = "/etc/default/#{name}"
+  end
+
   template "/etc/systemd/system/#{name}.service" do
     cookbook "systemd"
     source "service.erb"
     owner "root"
     group "root"
     mode 0o644
-    variables new_resource.to_hash
+    variables service_variables
   end
 
   execute "systemctl-reload-#{name}.service" do
@@ -74,6 +89,11 @@ action :create do
 end
 
 action :delete do
+  file "/etc/default/#{name}" do
+    action :delete
+    only_if { environment_file.is_a?(Hash) }
+  end
+
   file "/etc/systemd/system/#{name}.service" do
     action :delete
   end

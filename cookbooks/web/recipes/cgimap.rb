@@ -39,16 +39,16 @@ switches = database_readonly ? " --readonly" : ""
 systemd_service "cgimap" do
   description "OpenStreetMap API Server"
   type "forking"
-  environment "CGIMAP_HOST" => database_host,
-              "CGIMAP_DBNAME" => "openstreetmap",
-              "CGIMAP_USERNAME" => "rails",
-              "CGIMAP_PASSWORD" => db_passwords["rails"],
-              "CGIMAP_OAUTH_HOST" => node[:web][:database_host],
-              "CGIMAP_PIDFILE" => "#{node[:web][:pid_directory]}/cgimap.pid",
-              "CGIMAP_LOGFILE" => "#{node[:web][:log_directory]}/cgimap.log",
-              "CGIMAP_MEMCACHE" => memcached_servers.join(","),
-              "CGIMAP_RATELIMIT" => "204800",
-              "CGIMAP_MAXDEBT" => "250"
+  environment_file "CGIMAP_HOST" => database_host,
+                   "CGIMAP_DBNAME" => "openstreetmap",
+                   "CGIMAP_USERNAME" => "rails",
+                   "CGIMAP_PASSWORD" => db_passwords["rails"],
+                   "CGIMAP_OAUTH_HOST" => node[:web][:database_host],
+                   "CGIMAP_PIDFILE" => "#{node[:web][:pid_directory]}/cgimap.pid",
+                   "CGIMAP_LOGFILE" => "#{node[:web][:log_directory]}/cgimap.log",
+                   "CGIMAP_MEMCACHE" => memcached_servers.join(","),
+                   "CGIMAP_RATELIMIT" => "204800",
+                   "CGIMAP_MAXDEBT" => "250"
   user "rails"
   exec_start "/usr/bin/openstreetmap-cgimap --daemon --port 8000 --instances 30#{switches}"
   exec_reload "/bin/kill -HUP $MAINPID"
