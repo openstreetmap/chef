@@ -51,6 +51,7 @@ systemd_service "cgimap" do
               "CGIMAP_MAXDEBT" => "250"
   user "rails"
   exec_start "/usr/bin/openstreetmap-cgimap --daemon --port 8000 --instances 30#{switches}"
+  exec_reload "/bin/kill -HUP $MAINPID"
   private_tmp true
   private_devices true
   protect_system "full"
