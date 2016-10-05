@@ -144,9 +144,9 @@ search(:accounts, "*:*").each do |account|
   end
 end
 
-if node[:postgresql][:clusters][:"9.3/main"]
+if node[:postgresql][:clusters][:"9.5/main"]
   postgresql_user "apis" do
-    cluster "9.3/main"
+    cluster "9.5/main"
   end
 
   template "/usr/local/bin/cleanup-rails-assets" do
@@ -169,12 +169,12 @@ if node[:postgresql][:clusters][:"9.3/main"]
       node.normal[:dev][:rails][name][:secret_key_base] = secret_key_base
 
       postgresql_database database_name do
-        cluster "9.3/main"
+        cluster "9.5/main"
         owner "apis"
       end
 
       postgresql_extension "#{database_name}_btree_gist" do
-        cluster "9.3/main"
+        cluster "9.5/main"
         database database_name
         extension "btree_gist"
       end
@@ -186,7 +186,7 @@ if node[:postgresql][:clusters][:"9.3/main"]
         group "apis"
         repository details[:repository]
         revision details[:revision]
-        database_port node[:postgresql][:clusters][:"9.3/main"][:port]
+        database_port node[:postgresql][:clusters][:"9.5/main"][:port]
         database_name database_name
         database_username "apis"
         run_migrations true
@@ -221,7 +221,7 @@ if node[:postgresql][:clusters][:"9.3/main"]
 
       postgresql_database database_name do
         action :drop
-        cluster "9.3/main"
+        cluster "9.5/main"
       end
 
       node.normal[:dev][:rails].delete(name)
