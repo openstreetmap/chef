@@ -57,7 +57,9 @@
   #
   # Pass authentication related headers to cgimap
   #
-  CGIPassAuth On
+  <Location />
+    CGIPassAuth On
+  </Location>
 
   #
   # Pass supported calls to cgimap
