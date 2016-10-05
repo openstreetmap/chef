@@ -55,6 +55,11 @@
   RemoteIPTrustedProxy 10.0.32.0/24
 
   #
+  # Pass authentication related headers to cgimap
+  #
+  CGIPassAuth On
+
+  #
   # Pass supported calls to cgimap
   #
   RewriteRule ^/api/0\.6/map$ fcgi://127.0.0.1:8000$0 [P]
