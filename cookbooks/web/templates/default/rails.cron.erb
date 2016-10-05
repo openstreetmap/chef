@@ -1,7 +1,10 @@
 #!/bin/sh
 
 # Cleanup temporary directory
-find <%= @directory %>/tmp \( \( -type f -mtime +28 \) -o \( -type d -empty \) \) -delete
+if [ -d <%= @directory %>/tmp ]
+then
+    find <%= @directory %>/tmp \( \( -type f -mtime +28 \) -o \( -type d -empty \) \) -delete
+fi
 
 # Cleanup assets
 if [ -x /usr/local/bin/cleanup-rails-assets ]
