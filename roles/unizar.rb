@@ -4,6 +4,7 @@ description "Role applied to all servers at University of Zaragoza"
 default_attributes(
   :accounts => {
     :users => {
+      :osluz => { :status => :administrator }
     }
   },
   :hosted_by => "University of Zaragoza",
