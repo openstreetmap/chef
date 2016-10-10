@@ -31,7 +31,7 @@ search(:accounts, "*:*").each do |account|
   if details[:status]
     group_members = details[:members] || account["members"] || []
     user_home = details[:home] || account["home"] || "#{node[:accounts][:home]}/#{name}"
-    manage_home = details[:manage_home] || account["manage_home"] || node[:accounts][:manage_home]
+    manage_user_home = details[:manage_home] || account["manage_home"] || node[:accounts][:manage_home]
 
     group_members = group_members.collect(&:to_s).sort
 
@@ -55,7 +55,7 @@ search(:accounts, "*:*").each do |account|
       comment account["comment"] if account["comment"]
       home user_home
       shell user_shell
-      supports :manage_home => manage_home
+      manage_home manage_user_home
     end
 
     remote_directory "/home/#{name}" do
