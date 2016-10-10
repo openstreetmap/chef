@@ -61,7 +61,7 @@ Dir.new(git_directory).select { |name| name =~ /\.git$/ }.each do |repository|
     mode 0o755
   end
 
-  next unless node[:recipes].include?("trac") && repository != "dns.git"
+  next unless node[:recipes].include?("trac") && repository != "dns.git" && repository != "chef.git"
 
   template "#{git_directory}/#{repository}/hooks/post-receive" do
     source "post-receive.erb"
