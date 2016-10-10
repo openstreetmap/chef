@@ -33,7 +33,8 @@ file "/etc/cron.d/planet" do
   action :delete
 end
 
-remote_directory "/store/planet" do
+remote_directory "/store/planet#html" do
+  path "/store/planet"
   source "html"
   owner "root"
   group "root"
@@ -43,7 +44,8 @@ remote_directory "/store/planet" do
   files_mode 0o644
 end
 
-remote_directory "/store/planet" do
+remote_directory "/store/planet#cgi" do
+  path "/store/planet"
   source "cgi"
   owner "root"
   group "root"
