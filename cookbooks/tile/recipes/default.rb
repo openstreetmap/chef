@@ -117,7 +117,9 @@ end
 package "python-cairo"
 package "python-mapnik"
 
-package "fonts-noto"
+package "fonts-noto-cjk"
+package "fonts-noto-hinted"
+package "fonts-noto-unhinted"
 package "ttf-unifont"
 
 directory "/srv/tile.openstreetmap.org/cgi-bin" do
