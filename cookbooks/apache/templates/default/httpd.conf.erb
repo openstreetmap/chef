@@ -44,6 +44,9 @@ ThreadLimit <%= node[:apache][:event][:thread_limit] %>
 ThreadsPerChild <%= node[:apache][:event][:threads_per_child] %>
 MaxRequestWorkers <%= node[:apache][:event][:max_request_workers] %>
 MaxConnectionsPerChild <%= node[:apache][:event][:max_connections_per_child] %>
+<% if node[:apache][:event][:async_request_worker_factor] -%>
+AsyncRequestWorkerFactor <%= node[:apache][:event][:async_request_worker_factor] %>
+<% end -%>
 <% end -%>
 
 # Default to UTF-8
