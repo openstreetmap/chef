@@ -15,7 +15,7 @@ default_attributes(
     :timeout => 60,
     :event => {
       :server_limit => 60,
-      :max_clients => 1200,
+      :max_request_workers => 1200,
       :threads_per_child => 20,
       :min_spare_threads => 30,
       :max_spare_threads => 180,

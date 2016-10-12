@@ -17,7 +17,7 @@ default_attributes(
     :mpm => "event",
     :event => {
       :server_limit => 40,
-      :max_clients => 1000,
+      :max_request_workers => 1000,
       :min_spare_threads => 50,
       :max_spare_threads => 150,
       :threads_per_child => 50,
