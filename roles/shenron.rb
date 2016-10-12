@@ -13,7 +13,7 @@ default_attributes(
   :apache => {
     :mpm => "event",
     :event => {
-      :max_requests_per_child => 2000
+      :max_connections_per_child => 2000
     }
   },
   :hardware => {

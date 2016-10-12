@@ -19,7 +19,7 @@ default_attributes(
       :threads_per_child => 20,
       :min_spare_threads => 30,
       :max_spare_threads => 180,
-      :max_requests_per_child => 100000
+      :max_connections_per_child => 100000
     }
   },
   :munin => {

@@ -5,7 +5,7 @@ default_attributes(
   :apache => {
     :mpm => "worker",
     :worker => {
-      :max_requests_per_child => 10000
+      :max_connections_per_child => 10000
     }
   },
   :logstash => {

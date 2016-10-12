@@ -10,7 +10,7 @@ default_attributes(
       :min_spare_threads => 50,
       :max_spare_threads => 150,
       :threads_per_child => 50,
-      :max_requests_per_child => 10000
+      :max_connections_per_child => 10000
     }
   },
   :logstash => {

@@ -15,7 +15,7 @@ ServerLimit <%= node[:apache][:prefork][:server_limit] %>
 MinSpareServers <%= node[:apache][:prefork][:min_spare_servers] %>
 MaxSpareServers <%= node[:apache][:prefork][:max_spare_servers] %>
 MaxRequestWorkers <%= node[:apache][:prefork][:max_request_workers] %>
-MaxRequestsPerChild <%= node[:apache][:prefork][:max_requests_per_child] %>
+MaxConnectionsPerChild <%= node[:apache][:prefork][:max_connections_per_child] %>
 <% end -%>
 <% if node[:apache][:mpm] == "worker" -%>
 
@@ -29,7 +29,7 @@ MaxSpareThreads <%= node[:apache][:worker][:max_spare_threads] %>
 ThreadLimit <%= node[:apache][:worker][:thread_limit] %>
 ThreadsPerChild <%= node[:apache][:worker][:threads_per_child] %>
 MaxRequestWorkers <%= node[:apache][:worker][:max_request_workers] %>
-MaxRequestsPerChild <%= node[:apache][:worker][:max_requests_per_child] %>
+MaxConnectionsPerChild <%= node[:apache][:worker][:max_connections_per_child] %>
 <% end -%>
 <% if node[:apache][:mpm] == "event" -%>
 
@@ -43,7 +43,7 @@ MaxSpareThreads <%= node[:apache][:event][:max_spare_threads] %>
 ThreadLimit <%= node[:apache][:event][:thread_limit] %>
 ThreadsPerChild <%= node[:apache][:event][:threads_per_child] %>
 MaxRequestWorkers <%= node[:apache][:event][:max_request_workers] %>
-MaxRequestsPerChild <%= node[:apache][:event][:max_requests_per_child] %>
+MaxConnectionsPerChild <%= node[:apache][:event][:max_connections_per_child] %>
 <% end -%>
 
 # Default to UTF-8

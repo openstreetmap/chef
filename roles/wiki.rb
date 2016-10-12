@@ -41,7 +41,7 @@ default_attributes(
       :server_limit => 32,
       :max_request_workers => 800,
       :threads_per_child => 50,
-      :max_requests_per_child => 10000
+      :max_connections_per_child => 10000
     }
   }
 )
