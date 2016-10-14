@@ -34,10 +34,10 @@
      refuse options = <%= details[:refuse_options].join(" ") %>
 <% end -%>
 <% unless @hosts_allow[name].empty? -%>
-     hosts allow = <%= @hosts_allow[name].join(",") %>
+     hosts allow = <%= @hosts_allow[name].sort.join(",") %>
 <% end -%>
 <% unless @hosts_deny[name].empty? -%>
-     hosts deny = <%= @hosts_deny[name].join(",") %>
+     hosts deny = <%= @hosts_deny[name].sort.join(",") %>
 <% end -%>
      dont compress = *.gz *.tgz *.zip *.z *.rpm *.deb *.iso *.bz2 *.tbz *.7z
 <% end -%>
