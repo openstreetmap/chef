@@ -54,7 +54,7 @@ template "/etc/opscode/chef-server.rb" do
   source "server.rb.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode 0o640
   notifies :run, "execute[chef-server-reconfigure]"
 end
 
