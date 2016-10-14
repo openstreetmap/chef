@@ -59,7 +59,7 @@ remote_directory node[:planet][:dump][:xml_history_directory] do
   source "history_cgi"
   owner "www-data"
   group "planet"
-  mode 0o755
+  mode 0o775
   files_owner "root"
   files_group "root"
   files_mode 0o755
