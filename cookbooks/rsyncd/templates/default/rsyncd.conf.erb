@@ -1,5 +1,5 @@
 # DO NOT EDIT - This file is being maintained by Chef
-<% node[:rsyncd][:modules].each do |name,details| -%>
+<% node[:rsyncd][:modules].sort.each do |name,details| -%>
 
 [<%= name %>]
      comment = <%= details[:comment] %>
