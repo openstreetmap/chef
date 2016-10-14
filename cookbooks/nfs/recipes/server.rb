@@ -21,12 +21,10 @@ package "nfs-kernel-server"
 
 service "rpcbind" do
   action [:enable, :start]
-  supports :status => true, :restart => true, :reload => true
 end
 
-service "nfs-kernel-server" do
+service "nfs-server" do
   action [:enable, :start]
-  supports :status => true, :restart => true, :reload => true
 end
 
 exports = {}
