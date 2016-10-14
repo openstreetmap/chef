@@ -39,7 +39,7 @@ default_attributes(
   :apache => {
     :mpm => "worker",
     :keepalive => true,
-    :event => {
+    :worker => {
       :server_limit => 20,
       :max_request_workers => 1000,
       :threads_per_child => 50,
