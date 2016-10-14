@@ -37,15 +37,14 @@ default_attributes(
     }
   },
   :apache => {
-    :mpm => "event",
+    :mpm => "worker",
     :keepalive => true,
     :event => {
       :server_limit => 20,
       :max_request_workers => 1000,
       :threads_per_child => 50,
       :min_spare_threads => 75,
-      :max_spare_threads => 525,
-      :async_request_worker_factor => 4
+      :max_spare_threads => 525
     }
   }
 )
