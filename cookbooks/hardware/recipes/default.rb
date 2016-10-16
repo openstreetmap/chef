@@ -351,6 +351,12 @@ disks = disks.map do |disk|
   ]
 end
 
+smartd_service = if node[:lsb][:release].to_f >= 16.04
+                   "smartd"
+                 else
+                   "smartmontools"
+                 end
+
 disks = disks.compact
 
 if disks.count > 0
@@ -369,7 +375,6 @@ if disks.count > 0
     group "root"
     mode 0o644
     variables :disks => disks
-    notifies :reload, "service[smartmontools]"
   end
 
   template "/etc/default/smartmontools" do
@@ -377,12 +382,12 @@ if disks.count > 0
     owner "root"
     group "root"
     mode 0o644
-    notifies :restart, "service[smartmontools]"
   end
 
-  service "smartmontools" do
+  service smartd_service do
     action [:enable, :start]
-    supports :status => true, :restart => true, :reload => true
+    subscribes :reload, "template[/etc/smartd.conf]"
+    subscribes :restart, "template[/etc/default/smartmontools]"
   end
 
   # Don't try and do munin monitoring of disks behind
@@ -399,7 +404,7 @@ if disks.count > 0
     end
   end
 else
-  service "smartmontools" do
+  service smartd_service do
     action [:stop, :disable]
   end
 end
