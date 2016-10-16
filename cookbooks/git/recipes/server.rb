@@ -29,7 +29,7 @@ directory git_directory do
 end
 
 if node[:git][:allowed_nodes]
-  search(:node, node[:git][:allowed_nodes]).each do |n|
+  search(:node, node[:git][:allowed_nodes]).sort_by { |n| n[:fqdn] }.each do |n|
     n.interfaces(:role => :external).each do |interface|
       firewall_rule "accept-git" do
         action :accept
