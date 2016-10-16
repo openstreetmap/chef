@@ -66,7 +66,7 @@ end
 
 forwarders = search(:node, "recipes:logstash\\:\\:forwarder") # ~FC010
 
-forwarders.each do |forwarder|
+forwarders.sort_by { |n| n[:fqdn] }.each do |forwarder|
   forwarder.interfaces(:role => :external) do |interface|
     firewall_rule "accept-lumberjack-#{forwarder}" do
       action :accept
@@ -82,7 +82,7 @@ end
 
 gateways = search(:node, "roles:gateway") # ~FC010
 
-gateways.each do |gateway|
+gateways.sort_by { |n| n[:fqdn] }.each do |gateway|
   gateway.interfaces(:role => :external) do |interface|
     firewall_rule "accept-lumberjack-#{gateway}" do
       action :accept
