@@ -9,6 +9,7 @@ import shutil
 import sys
 import tempfile
 import resource
+import signal
 
 # Limit maximum CPU time
 # The Postscript output format can sometimes take hours
@@ -37,7 +38,8 @@ def file_size(file):
   return os.fstat(file.fileno()).st_size
 
 # Routine to report an error
-def output_error(message):
+def output_error(message, status = "400 Bad Request"):
+  print "Status: %s" % status
   output_headers("text/html")
   print "<html>"
   print "<head>"
@@ -63,13 +65,11 @@ idletime = cputimes[3] / sum(cputimes)
 # Process the request
 if idletime < 0.2:
   # Abort if the CPU idle time on the machine is too low
-  print "Status: 503 Service Unavailable"
-  output_error("The server is too busy at the moment. Please wait a few minutes before trying again.")
+  output_error("The server is too busy at the moment. Please wait a few minutes before trying again.", "503 Service Unavailable")
 <% @blocks["user_agents"].each do |user_agent| -%>
 elif os.environ['HTTP_USER_AGENT'] == '<%= user_agent %>':
   # Block scraper
-  print "Status: 503 Service Unavailable"
-  output_error("The server is too busy at the moment. Please wait a few minutes before trying again.")
+  output_error("The server is too busy at the moment. Please wait a few minutes before trying again.", "503 Service Unavailable")
 <% end -%>
 elif not form.has_key("bbox"):
   # No bounding box specified
@@ -116,39 +116,51 @@ else:
       # Zoom the map to the bounding box
       map.zoom_to_box(bbox)
 
+      # Fork so that we can handle crashes rendering the map
+      pid = os.fork()
+
       # Render the map
-      if form.getvalue("format") == "png":
-        image = mapnik.Image(map.width, map.height)
-        mapnik.render(map, image)
-        png = image.tostring("png")
-        output_headers("image/png", "map.png", len(png))
-        sys.stdout.write(png)
-      elif form.getvalue("format") == "jpeg":
-        image = mapnik.Image(map.width, map.height)
-        mapnik.render(map, image)
-        jpeg = image.tostring("jpeg")
-        output_headers("image/jpeg", "map.jpg", len(jpeg))
-        sys.stdout.write(jpeg)
-      elif form.getvalue("format") == "svg":
-        file = tempfile.NamedTemporaryFile(prefix = "export")
-        surface = cairo.SVGSurface(file.name, map.width, map.height)
-        mapnik.render(map, surface)
-        surface.finish()
-        output_headers("image/svg+xml", "map.svg", file_size(file))
-        output_file(file)
-      elif form.getvalue("format") == "pdf":
-        file = tempfile.NamedTemporaryFile(prefix = "export")
-        surface = cairo.PDFSurface(file.name, map.width, map.height)
-        mapnik.render(map, surface)
-        surface.finish()
-        output_headers("application/pdf", "map.pdf", file_size(file))
-        output_file(file)
-      elif form.getvalue("format") == "ps":
-        file = tempfile.NamedTemporaryFile(prefix = "export")
-        surface = cairo.PSSurface(file.name, map.width, map.height)
-        mapnik.render(map, surface)
-        surface.finish()
-        output_headers("application/postscript", "map.ps", file_size(file))
-        output_file(file)
+      if pid == 0:
+        if form.getvalue("format") == "png":
+          image = mapnik.Image(map.width, map.height)
+          mapnik.render(map, image)
+          png = image.tostring("png")
+          output_headers("image/png", "map.png", len(png))
+          sys.stdout.write(png)
+        elif form.getvalue("format") == "jpeg":
+          image = mapnik.Image(map.width, map.height)
+          mapnik.render(map, image)
+          jpeg = image.tostring("jpeg")
+          output_headers("image/jpeg", "map.jpg", len(jpeg))
+          sys.stdout.write(jpeg)
+        elif form.getvalue("format") == "svg":
+          file = tempfile.NamedTemporaryFile(prefix = "export")
+          surface = cairo.SVGSurface(file.name, map.width, map.height)
+          mapnik.render(map, surface)
+          surface.finish()
+          output_headers("image/svg+xml", "map.svg", file_size(file))
+          output_file(file)
+        elif form.getvalue("format") == "pdf":
+          file = tempfile.NamedTemporaryFile(prefix = "export")
+          surface = cairo.PDFSurface(file.name, map.width, map.height)
+          mapnik.render(map, surface)
+          surface.finish()
+          output_headers("application/pdf", "map.pdf", file_size(file))
+          output_file(file)
+        elif form.getvalue("format") == "ps":
+          file = tempfile.NamedTemporaryFile(prefix = "export")
+          surface = cairo.PSSurface(file.name, map.width, map.height)
+          mapnik.render(map, surface)
+          surface.finish()
+          output_headers("application/postscript", "map.ps", file_size(file))
+          output_file(file)
+        else:
+          output_error("Unknown format '%s'" % form.getvalue("format"))
       else:
-        output_error("Unknown format '%s'" % form.getvalue("format"))
+        pid, status = os.waitpid(pid, 0)
+        if status & 0xff == signal.SIGXCPU:
+          output_error("CPU time limit exceeded", "509 Resource Limit Exceeded")
+        elif status & 0xff == signal.SIGSEGV:
+          output_error("Memory limit exceeded", "509 Resource Limit Exceeded")
+        elif status != 0:
+          output_error("Internal server error", "500 Internal Server Error")
