@@ -1,5 +1,4 @@
 #!/bin/sh
-exit 0
 
 # DO NOT EDIT - This file is being maintained by Chef
 
@@ -8,7 +7,10 @@ D=$(date +%Y-%m-%d)
 B=forum-$D.tar.gz
 
 mkdir $T/forum-$D
-mysqldump --user=forum --password=<%= @passwords["database"] %> --opt forum > $T/forum-$D/forum.sql
+echo '[mysqldump]' > $T/mysqldump.opts
+echo 'user=forum' >> $T/mysqldump.opts
+echo 'password=<%= @passwords["database"] %>' >> $T/mysqldump.opts
+mysqldump --defaults-file=$T/mysqldump.opts --opt forum > $T/forum-$D/forum.sql
 ln -s /srv/forum.openstreetmap.org $T/forum-$D/www
 
 export GZIP="--rsyncable -9"
