@@ -7,7 +7,10 @@ D=$(date +%Y-%m-%d)
 B=switch2osm-$D.tar.gz
 
 mkdir $T/switch2osm-$D
-mysqldump --user=switch2osm-user --password=<%= @passwords["switch2osm-user"] %> --opt switch2osm-blog > $T/switch2osm-$D/switch2osm-blog.sql
+echo '[mysqldump]' > $T/mysqldump.opts
+echo 'user=switch2osm-user' >> $T/mysqldump.opts
+echo 'password=<%= @passwords["switch2osm-user"] %>' >> $T/mysqldump.opts
+mysqldump --defaults-file=$T/mysqldump.opts --opt switch2osm-blog > $T/switch2osm-$D/switch2osm-blog.sql
 ln -s /srv/switch2osm.org $T/switch2osm-$D/www
 
 export GZIP="--rsyncable -9"

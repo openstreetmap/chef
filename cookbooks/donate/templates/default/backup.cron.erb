@@ -7,7 +7,10 @@ D=$(date +%Y-%m-%d)
 B=osm-donate-$D.tar.gz
 
 mkdir $T/osm-donate-$D
-mysqldump --user=donate --password="<%= @passwords['database'] %>" --opt donate > $T/osm-donate-$D/osm-donate.sql
+echo '[mysqldump]' > $T/mysqldump.opts
+echo 'user=donate' >> $T/mysqldump.opts
+echo 'password=<%= @passwords["database"] %>' >> $T/mysqldump.opts
+mysqldump --defaults-file=$T/mysqldump.opts --opt donate > $T/osm-donate-$D/osm-donate.sql
 ln -s /srv/donate.openstreetmap.org $T/osm-donate-$D/www
 
 export GZIP="--rsyncable -9"

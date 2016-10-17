@@ -9,7 +9,10 @@ B=sotm-$D.tar.gz
 mkdir $T/sotm-$D
 
 <% %w(2007 2008 2009 2010 2011 2012 2016).each do |year| -%>
-mysqldump --user=sotm<%= year %> --password=<%= @passwords["sotm#{year}"] %> --opt sotm<%= year %> > $T/sotm-$D/sotm<%= year %>.sql
+echo '[mysqldump]' > $T/mysqldump.opts
+echo 'user=sotm<%= year %>' >> $T/mysqldump.opts
+echo 'password=<%= @passwords["sotm#{year}"] %>' >> $T/mysqldump.opts
+mysqldump --defaults-file=$T/mysqldump.opts --opt sotm<%= year %> > $T/sotm-$D/sotm<%= year %>.sql
 <% end -%>
 
 ln -s /srv/2007.stateofthemap.org $T/sotm-$D/www2007

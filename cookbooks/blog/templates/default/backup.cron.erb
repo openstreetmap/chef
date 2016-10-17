@@ -7,7 +7,10 @@ D=$(date +%Y-%m-%d)
 B=osm-blog-$D.tar.gz
 
 mkdir $T/osm-blog-$D
-mysqldump --user=osm-blog-user --password=<%= @passwords["osm-blog-user"] %> --opt osm-blog > $T/osm-blog-$D/osm-blog.sql
+echo '[mysqldump]' > $T/mysqldump.opts
+echo 'user=osm-blog-user' >> $T/mysqldump.opts
+echo 'password=<%= @passwords["osm-blog-user"] %>' >> $T/mysqldump.opts
+mysqldump --defaults-file=$T/mysqldump.opts --opt osm-blog > $T/osm-blog-$D/osm-blog.sql
 ln -s /srv/blog.openstreetmap.org $T/osm-blog-$D/www
 
 export GZIP="--rsyncable -9"
