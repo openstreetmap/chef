@@ -25,6 +25,5 @@ default_attributes(
 
 run_list(
   "role[ic]",
-  "role[hp-g5]",
   "role[web-backend]"
 )
