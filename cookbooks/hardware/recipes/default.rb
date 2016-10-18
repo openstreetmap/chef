@@ -78,19 +78,10 @@ end
 
 # Remove legacy HP G4 support which breaks modern hp-health 10.4
 if manufacturer == "HP"
-  file "/opt/hp/hp-health/bin/hpasmd" do
-    action :delete
-  end
-  file "/usr/lib/libhpasmintrfc.so.3.0" do
-    action :delete
-  end
-
-  file "/usr/lib/libhpasmintrfc.so.3" do
-    action :delete
-  end
-
-  file "/usr/lib/libhpasmintrfc.so" do
-    action :delete
+  %w(/opt/hp/hp-health/bin/hpasmd /usr/lib/libhpasmintrfc.so.3.0 %/usr/lib/libhpasmintrfc.so.3 /usr/lib/libhpasmintrfc.so).each do |filename|
+    file filename do
+      action :delete
+    end
   end
 
   directory "/opt/hp/hp-legacy" do
