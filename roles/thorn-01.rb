@@ -20,6 +20,9 @@ default_attributes(
         "net.ipv6.conf.eth0.accept_ra" => "0"
       }
     }
+  },
+  :web => {
+    :readonly_database_host => "db-slave"
   }
 )
 
