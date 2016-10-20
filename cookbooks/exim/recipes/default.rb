@@ -23,9 +23,7 @@ package "exim4"
 package "openssl"
 package "ssl-cert"
 
-if File.exist?("/var/run/clamav/clamd.ctl")
-  package "exim4-daemon-heavy"
-end
+package "exim4-daemon-heavy" if File.exist?("/var/run/clamav/clamd.ctl")
 
 group "ssl-cert" do
   action :modify

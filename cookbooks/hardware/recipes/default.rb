@@ -31,9 +31,7 @@ end
 
 case node[:cpu][:"0"][:vendor_id]
 when "AuthenticAMD"
-  if node[:lsb][:release].to_f >= 14.04
-    package "amd64-microcode"
-  end
+  package "amd64-microcode" if node[:lsb][:release].to_f >= 14.04
 end
 
 if node[:dmi] && node[:dmi][:system]
@@ -184,9 +182,7 @@ service "haveged" do
   action [:enable, :start]
 end
 
-if node[:kernel][:modules].include?("ipmi_si")
-  package "ipmitool"
-end
+package "ipmitool" if node[:kernel][:modules].include?("ipmi_si")
 
 if node[:lsb][:release].to_f >= 12.10
   package "irqbalance"

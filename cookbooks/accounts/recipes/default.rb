@@ -78,9 +78,7 @@ search(:accounts, "*:*").each do |account|
       end
     end
 
-    if details[:status] == "administrator"
-      administrators.push(name.to_s)
-    end
+    administrators.push(name.to_s) if details[:status] == "administrator"
   else
     user name.to_s do
       action :remove

@@ -291,9 +291,7 @@ Dir.glob("/sys/class/hwmon/hwmon*").each do |hwmon|
   sensors_volt = true unless Dir.glob("#{hwmon}/in*_input").empty?
 end
 
-if sensors_fan || sensors_temp || sensors_volt
-  package "lm-sensors"
-end
+package "lm-sensors" if sensors_fan || sensors_temp || sensors_volt
 
 if sensors_fan
   munin_plugin "sensors_fan" do

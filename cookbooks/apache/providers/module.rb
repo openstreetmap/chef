@@ -24,9 +24,7 @@ end
 use_inline_resources
 
 action :install do
-  unless installed?
-    package package_name
-  end
+  package package_name unless installed?
 
   if new_resource.conf # ~FC023
     template available_name("conf") do

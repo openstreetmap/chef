@@ -103,12 +103,8 @@ module Expire
     # added, deleted or modified - the tile will need updating anyway.
     doc.find("//node").each do |node|
       lat = node["lat"].to_f
-      if lat < -85
-        lat = -85
-      end
-      if lat > 85
-        lat = 85
-      end
+      lat = -85 if lat < -85
+      lat = 85 if lat > 85
       point = Proj4::Point.new(Math::PI * node["lon"].to_f / 180,
                                Math::PI * lat / 180)
       nodes[node["id"].to_i] = tile_from_latlon(point, max_zoom)
@@ -186,9 +182,7 @@ module Expire
 
         lon, lat = @cache.sysread(8).unpack("ll")
 
-        if lon != -2147483648 && lat != -2147483648
-          node = Node.new(lon, lat)
-        end
+        node = Node.new(lon, lat) if lon != -2147483648 && lat != -2147483648
       end
 
       node

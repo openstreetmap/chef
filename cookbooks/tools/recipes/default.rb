@@ -35,9 +35,7 @@ package "sysv-rc-conf"
 package "iotop"
 package "lvm2"
 
-if node[:lsb][:release].to_f <= 11.04
-  package "lslk"
-end
+package "lslk" if node[:lsb][:release].to_f <= 11.04
 
 package "rsyslog"
 

@@ -26,7 +26,7 @@ property :wants, [String, Array]
 property :type, String,
          :default => "simple",
          :is => %w(simple forking oneshot dbus notify idle)
-property :limit_nofile, Fixnum
+property :limit_nofile, Integer
 property :environment, Hash, :default => {}
 property :environment_file, [String, Hash]
 property :user, String
@@ -37,7 +37,7 @@ property :exec_start_post, String
 property :exec_stop, String
 property :exec_reload, String
 property :runtime_directory, String
-property :runtime_directory_mode, Fixnum
+property :runtime_directory_mode, Integer
 property :standard_input, String,
          :is => %w(null tty tty-force tty-fail socket)
 property :standard_output, String,
@@ -51,7 +51,7 @@ property :private_devices, [TrueClass, FalseClass]
 property :private_network, [TrueClass, FalseClass]
 property :protect_system, [TrueClass, FalseClass, String]
 property :protect_home, [TrueClass, FalseClass, String]
-property :timeout_sec, Fixnum
+property :timeout_sec, Integer
 property :pid_file, String
 
 action :create do

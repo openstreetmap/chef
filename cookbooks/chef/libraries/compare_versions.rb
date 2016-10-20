@@ -1,13 +1,9 @@
 class Chef
   class Util
     def self.compare_versions(a, b)
-      if a.is_a?(String)
-        a = a.split(".").map(&:to_i)
-      end
+      a = a.split(".").map(&:to_i) if a.is_a?(String)
 
-      if b.is_a?(String)
-        b = b.split(".").map(&:to_i)
-      end
+      b = b.split(".").map(&:to_i) if b.is_a?(String)
 
       a <=> b
     end

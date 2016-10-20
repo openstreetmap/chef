@@ -30,9 +30,7 @@ end
 if node[:kernel] && node[:kernel][:modules]
   raidmods = node[:kernel][:modules].keys & %w(cciss hpsa mptsas mpt2sas mpt3sas megaraid_mm megaraid_sas aacraid)
 
-  unless raidmods.empty?
-    default[:apt][:sources] |= ["hwraid"]
-  end
+  default[:apt][:sources] |= ["hwraid"] unless raidmods.empty?
 end
 
 if node[:kernel][:modules].include?("ipmi_si")
