@@ -64,7 +64,7 @@ when "HP"
   package "hp-health" do
     action :install
     version "10.0.0.1.3-4."
-    options "--allow-downgrades"
+    options "--force-yes"
     notifies :restart, "service[hp-health]"
   end
 
