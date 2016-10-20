@@ -58,8 +58,6 @@ rails_port "www.openstreetmap.org" do
   email_from "OpenStreetMap <web@noreply.openstreetmap.org>"
   status node[:web][:status]
   messages_domain "messages.openstreetmap.org"
-  quova_username "ws360602"
-  quova_password web_passwords["quova"]
   gpx_dir "/store/rails/gpx"
   attachments_dir "/store/rails/attachments"
   log_path "#{node[:web][:log_directory]}/rails.log"

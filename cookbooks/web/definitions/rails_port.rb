@@ -122,11 +122,6 @@ define :rails_port, :action => [:create, :enable] do
 
     line.gsub!(/^( *)#geonames_username:.*$/, "\\1geonames_username: \"openstreetmap\"")
 
-    if params[:quova_username]
-      line.gsub!(/^( *)#quova_username:.*$/, "\\1quova_username: \"#{params[:quova_username]}\"")
-      line.gsub!(/^( *)#quova_password:.*$/, "\\1quova_password: \"#{params[:quova_password]}\"")
-    end
-
     if params[:gpx_dir]
       line.gsub!(/^( *)gpx_trace_dir:.*$/, "\\1gpx_trace_dir: \"#{params[:gpx_dir]}/traces\"")
       line.gsub!(/^( *)gpx_image_dir:.*$/, "\\1gpx_image_dir: \"#{params[:gpx_dir]}/images\"")
