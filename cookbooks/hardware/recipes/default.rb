@@ -70,7 +70,7 @@ when "HP"
 
   service "hp-health" do
     action [:enable, :start]
-    supports :status => true, :restart => true, :reload => true
+    supports :status => true, :restart => true
   end
 
   units << "1"
