@@ -101,18 +101,24 @@ template "/usr/local/bin/api-statistics" do
   mode 0o755
 end
 
-template "/etc/init.d/api-statistics" do
-  source "api-statistics.init.erb"
-  owner "root"
-  group "root"
-  mode 0o755
+systemd_service "api-statistics" do
+  description "OpenStreetMap API Statistics Daemon"
+  user "rails"
+  group "adm"
+  exec_start "/usr/local/bin/api-statistics"
+  private_tmp true
+  private_devices true
+  private_network true
+  protect_system "full"
+  protect_home true
+  restart "on-failure"
 end
 
 service "api-statistics" do
   action [:enable, :start]
   supports :restart => true
   subscribes :restart, "template[/usr/local/bin/api-statistics]"
-  subscribes :restart, "template[/etc/init.d/api-statistics]"
+  subscribes :restart, "systemd_service[api-statistics]"
 end
 
 gem_package "hpricot"
