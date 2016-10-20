@@ -70,7 +70,7 @@ else
   service "cgimap" do
     action [:enable, :start]
     supports :restart => true, :reload => true
-    subscribes :restart, "dpkg_package[openstreetmap-cgimap-bin]"
+    subscribes :restart, "package[openstreetmap-cgimap-bin]"
     subscribes :restart, "systemd_service[cgimap]"
   end
 end
