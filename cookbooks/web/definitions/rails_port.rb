@@ -44,6 +44,7 @@ define :rails_port, :action => [:create, :enable] do
   package "irb#{ruby_version}" if ruby_version.to_f < 1.9
   package "imagemagick"
   package "nodejs"
+  package "geoip-database"
 
   package "g++"
   package "pkg-config"
@@ -121,6 +122,8 @@ define :rails_port, :action => [:create, :enable] do
     end
 
     line.gsub!(/^( *)#geonames_username:.*$/, "\\1geonames_username: \"openstreetmap\"")
+
+    line.gsub!(/^( *)#geoip_database:.*$/, "\\1geoip_database: \"/usr/share/GeoIP/GeoIPv6.dat\"")
 
     if params[:gpx_dir]
       line.gsub!(/^( *)gpx_trace_dir:.*$/, "\\1gpx_trace_dir: \"#{params[:gpx_dir]}/traces\"")
