@@ -17,14 +17,14 @@
 # limitations under the License.
 #
 
-actions :create, :delete
 default_action :create
 
-attribute :name, :kind_of => String, :name_attribute => true
-attribute :template, :kind_of => String, :default => "default.list.erb"
-attribute :url, :kind_of => String, :required => true
-attribute :key, :kind_of => String
-attribute :key_url, :kind_of => String
+property :name, String, :name_property => true
+property :source_template, String, :default => "default.list.erb"
+property :url, String, :required => true
+property :key, String
+property :key_url, String
+property :update, [TrueClass, FalseClass], :default => false
 
 def initialize(name, run_context = nil)
   super(name, run_context)
@@ -32,6 +32,49 @@ def initialize(name, run_context = nil)
   @action = node[:apt][:sources].include?(name) ? :create : :delete
 end
 
-def after_created
-  notifies :run, "execute[apt-update]", :immediately if @action == :create
+action :create do
+  if key
+    execute "apt-key-#{key}-clean" do
+      command "/usr/bin/apt-key adv --batch --delete-key --yes #key}"
+      only_if "/usr/bin/apt-key adv --list-keys #{key} | fgrep expired"
+    end
+
+    if key_url
+      execute "apt-key-#{key}-install" do
+        command "/usr/bin/apt-key adv --fetch-keys #{key_url}"
+        not_if "/usr/bin/apt-key adv --list-keys #{key}"
+        notifies :run, "execute[apt-update-#{new_resource.name}]"
+      end
+    else
+      execute "apt-key-#{key}-install" do
+        command "/usr/bin/apt-key adv --keyserver hkp://keys.gnupg.net --recv-keys #{key}"
+        not_if "/usr/bin/apt-key adv --list-keys #{key}"
+        notifies :run, "execute[apt-update-#{new_resource.name}]"
+      end
+    end
+  end
+
+  template source_path do
+    source source_template
+    owner "root"
+    group "root"
+    mode 0o644
+    variables :url => url
+    notifies :run, "execute[apt-update-#{new_resource.name}]"
+  end
+
+  execute "apt-update-#{name}" do
+    action update ? :run : :nothing
+    command "/usr/bin/apt-get update --no-list-cleanup -o Dir::Etc::sourcelist='#{source_path}' -o Dir::Etc::sourceparts='-'"
+  end
+end
+
+action :delete do
+  file source_path do
+    action :delete
+  end
+end
+
+def source_path
+  "/etc/apt/sources.list.d/#{name}.list"
 end

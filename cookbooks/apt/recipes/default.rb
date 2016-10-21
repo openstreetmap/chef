@@ -69,17 +69,18 @@ end
 apt_source "openstreetmap" do
   url "http://ppa.launchpad.net/osmadmins/ppa/ubuntu"
   key "D57F48750AC4F2CB"
+  update true
 end
 
 apt_source "management-component-pack" do
-  template "hp.list.erb"
+  source_template "hp.list.erb"
   url "http://downloads.linux.hpe.com/SDR/repo/mcp"
   key "C208ADDE26C2B797"
   key_url "https://downloads.linux.hpe.com/SDR/hpePublicKey2048_key1.pub"
 end
 
 apt_source "hwraid" do
-  template "hwraid.list.erb"
+  source_template "hwraid.list.erb"
   url "http://hwraid.le-vert.net/ubuntu"
   key "6005210E23B3D3B4"
 end
@@ -90,25 +91,25 @@ apt_source "mapnik-v210" do
 end
 
 apt_source "nginx" do
-  template "nginx.list.erb"
+  source_template "nginx.list.erb"
   url "http://nginx.org/packages/ubuntu"
   key "ABF5BD827BD9BF62"
 end
 
 apt_source "elasticsearch" do
-  template "elasticsearch.list.erb"
+  source_template "elasticsearch.list.erb"
   url "http://packages.elasticsearch.org/elasticsearch/1.7/debian"
   key "D27D666CD88E42B4"
 end
 
 apt_source "logstash" do
-  template "elasticsearch.list.erb"
+  source_template "elasticsearch.list.erb"
   url "http://packages.elasticsearch.org/logstash/2.3/debian"
   key "D27D666CD88E42B4"
 end
 
 apt_source "logstash-forwarder" do
-  template "elasticsearch.list.erb"
+  source_template "elasticsearch.list.erb"
   url "http://packages.elasticsearch.org/logstashforwarder/debian"
   key "D27D666CD88E42B4"
 end
@@ -119,13 +120,13 @@ apt_source "passenger" do
 end
 
 apt_source "postgresql" do
-  template "postgresql.list.erb"
+  source_template "postgresql.list.erb"
   url "http://apt.postgresql.org/pub/repos/apt"
   key "7FCC7D46ACCC4CF8"
 end
 
 apt_source "mediawiki" do
-  template "mediawiki.list.erb"
+  source_template "mediawiki.list.erb"
   url "https://releases.wikimedia.org/debian"
   key "90E9F83F22250DD7"
 end
