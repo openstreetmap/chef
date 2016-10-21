@@ -20,6 +20,7 @@ GEM
     gherkin (4.0.0)
     kitchen-vagrant (0.20.0)
       test-kitchen (~> 1.4)
+    mini_portile2 (2.1.0)
     mixlib-install (2.1.4)
       artifactory
       mixlib-shellout
@@ -35,6 +36,7 @@ GEM
       net-ssh (>= 2.6.5)
     net-telnet (0.1.1)
     nokogiri (1.6.8.1)
+      mini_portile2 (~> 2.1.0)
     parser (2.3.1.4)
       ast (~> 2.2)
     polyglot (0.3.5)
