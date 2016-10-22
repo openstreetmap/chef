@@ -7,7 +7,7 @@ start() {
 }
 
 stop() {
-  start-stop-daemon --stop --retry 300 --pidfile /var/run/supybot.pid
+  start-stop-daemon --stop --retry TERM/15/KILL/30 --pidfile /var/run/supybot.pid
 }
 
 case "$1" in
