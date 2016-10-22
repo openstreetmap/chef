@@ -1,3 +1,5 @@
+# Note use git:// protocol instead of ssh based to avoid host key verification issue
+
 [osm-website]
 short name = osm-website
 url = git://git.openstreetmap.org/rails.git
@@ -117,14 +119,14 @@ commit message = [%s|%b|%a] %m %l
 
 [osmf-server-info]
 short name = osmf-server-info
-url = git@github.com:gravitystorm/osmf-server-info.git
+url = git://github.com/gravitystorm/osmf-server-info.git
 commit link = https://github.com/gravitystorm/osmf-server-info/commit/%c
 channels = #osm-dev
 commit message = [%s|%b|%a] %m %l
 
 [osm-forum]
 short name = osm-forum
-url = git@github.com:openstreetmap/openstreetmap-forum.git
+url = git://github.com/openstreetmap/openstreetmap-forum.git
 branch = openstreetmap
 commit link = https://github.com/openstreetmap/openstreetmap-forum/commit/%c
 channels = #osm-dev
@@ -132,21 +134,21 @@ commit message = [%s|%b|%a] %m %l
 
 [osm-osmosis]
 short name = osm-osmosis
-url = git@github.com:openstreetmap/osmosis.git
+url = git://github.com/openstreetmap/osmosis.git
 commit link = https://github.com/openstreetmap/osmosis/commit/%c
 channels = #osm-dev
 commit message = [%s|%b|%a] %m %l
 
 [osmlab-editor-layer-index]
 short name = osmlab-editor-layer-index
-url = git@github.com:osmlab/editor-layer-index.git
+url = git://github.com/osmlab/editor-layer-index.git
 commit link = https://github.com/osmlab/editor-layer-index/commit/%c
 channels = #osm-dev
 commit message = [%s|%b|%a] %m %l
 
 [osm-owg-log]
 short name = osm-owg-log
-url = git@github.com:gravitystorm/owg-log.git
+url = git://github.com/gravitystorm/owg-log.git
 commit link = https://github.com/gravitystorm/owg-log/commit/%c
 channels = #osm-dev
 commit message = [%s|%b|%a] %m %l
