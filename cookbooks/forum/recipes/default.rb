@@ -52,6 +52,7 @@ git "/srv/forum.openstreetmap.org/html/" do
   depth 1
   user "forum"
   group "forum"
+  notifies :reload, "service[apache2]"
 end
 
 directory "/srv/forum.openstreetmap.org/html/cache/" do
