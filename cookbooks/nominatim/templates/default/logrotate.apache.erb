@@ -10,6 +10,8 @@
   create 640 root adm
   sharedscripts
   postrotate
-    /usr/bin/service apache2 reload > /dev/null 2>&1
+    if /etc/init.d/apache2 status > /dev/null ; then \
+        /etc/init.d/apache2 reload > /dev/null; \
+    fi;
   endscript
 }
