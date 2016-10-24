@@ -21,6 +21,21 @@ default_attributes(
       "it87"
     ]
   },
+  :openvpn => {
+    :address => "10.0.16.3",
+    :tunnels => {
+      :shenron2ucl => {
+        :port => "1194",
+        :mode => "server",
+        :peer => {
+          :host => "ridley.openstreetmap.org"
+        }
+      }
+    }
+  }
+)
+
+override_attributes(
   :networking => {
     :interfaces => {
       :external_ipv4 => {
@@ -38,18 +53,6 @@ default_attributes(
         :address => "2001:41c9:1:400::32",
         :prefix => "64",
         :gateway => "fe80::1"
-      }
-    }
-  },
-  :openvpn => {
-    :address => "10.0.16.3",
-    :tunnels => {
-      :shenron2ucl => {
-        :port => "1194",
-        :mode => "server",
-        :peer => {
-          :host => "ridley.openstreetmap.org"
-        }
       }
     }
   }
