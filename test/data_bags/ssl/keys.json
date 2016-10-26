@@ -1,0 +1,18 @@
+{
+  "id": "keys",
+  "openstreetmap": [
+    "-----BEGIN RSA PRIVATE KEY-----",
+    "dummy",
+    "-----END RSA PRIVATE KEY-----"
+  ],
+  "tile.openstreetmap": [
+    "-----BEGIN RSA PRIVATE KEY-----",
+    "dummy",
+    "-----END RSA PRIVATE KEY-----"
+  ],
+  "osmfoundation": [
+    "-----BEGIN PRIVATE KEY-----",
+    "dummy",
+    "-----END PRIVATE KEY-----"
+  ]
+}

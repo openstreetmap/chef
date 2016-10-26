@@ -7,11 +7,18 @@ driver:
 
 provisioner:
   name: chef_zero
+  data_bags_path: test/data_bags
 
 platforms:
   - name: ubuntu-16.04
 
 suites:
+  - name: apache
+    run_list:
+      - recipe[apache::default]
+  - name: apache-ssl
+    run_list:
+      - recipe[apache::ssl]
   - name: apt
     run_list:
       - recipe[apt::default]
