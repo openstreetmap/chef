@@ -15,6 +15,9 @@ suites:
   - name: apt
     run_list:
       - recipe[apt::default]
+  - name: bind
+    run_list:
+      - recipe[bind::default]
   - name: munin
     run_list:
       - recipe[munin::default]
