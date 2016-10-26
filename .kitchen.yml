@@ -1,6 +1,9 @@
 ---
 driver:
   name: vagrant
+  provision: true
+  vagrantfiles:
+    - .kitchen.provision.rb
 
 provisioner:
   name: chef_zero
