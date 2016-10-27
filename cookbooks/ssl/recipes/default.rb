@@ -18,6 +18,7 @@
 #
 
 keys = data_bag_item("ssl", "keys")
+certs = data_bag_item("ssl", "certs")
 
 package "openssl"
 package "ssl-cert"
@@ -33,10 +34,11 @@ end
 
 ["openstreetmap", "tile.openstreetmap", "osmfoundation"].each do |certificate|
   if node[:ssl][:certificates].include?(certificate)
-    cookbook_file "/etc/ssl/certs/#{certificate}.pem" do
+    file "/etc/ssl/certs/#{certificate}.pem" do
       owner "root"
       group "root"
       mode 0o444
+      content certs[certificate].join("\n")
       backup false
     end
 
