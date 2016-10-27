@@ -48,7 +48,7 @@ end
 git "/srv/forum.openstreetmap.org/html/" do
   action :sync
   repository "http://github.com/openstreetmap/openstreetmap-forum.git"
-  revision "openstreetmap"
+  revision "openstreetmap-1.5.10"
   depth 1
   user "forum"
   group "forum"
