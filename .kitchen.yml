@@ -13,6 +13,9 @@ platforms:
   - name: ubuntu-16.04
 
 suites:
+  - name: accounts
+    run_list:
+      - recipe[accounts::default]
   - name: apache
     run_list:
       - recipe[apache::default]
