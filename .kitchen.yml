@@ -28,6 +28,10 @@ suites:
   - name: bind
     run_list:
       - recipe[bind::default]
+  - name: forum
+    run_list:
+      - recipe[accounts::default]
+      - role[forum]
   - name: munin
     run_list:
       - recipe[munin::default]
