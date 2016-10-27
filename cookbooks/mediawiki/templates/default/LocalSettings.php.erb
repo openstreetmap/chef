@@ -327,7 +327,7 @@ $wgReadOnly = "<%= @mediawiki[:site_readonly] %>";
 $wgHooks['BeforePageDisplay'][] ='outputTaginfoScriptTag';
 function outputTaginfoScriptTag( OutputPage &$out, Skin &$skin )
 {
-    $script = '<script type="text/javascript" src="http://taginfo.openstreetmap.org/js/taglists.js"></script>';
+    $script = '<script type="text/javascript" src="https://taginfo.openstreetmap.org/js/taglists.js"></script>';
     $out->addHeadItem("taginfo script", $script);
     return true;
 };
