@@ -18,8 +18,9 @@ default_attributes(
       :max_request_workers => 1200,
       :threads_per_child => 20,
       :min_spare_threads => 30,
-      :max_spare_threads => 180,
-      :max_connections_per_child => 100000
+      :max_spare_threads => 540,
+      :max_connections_per_child => 100000,
+      :async_request_worker_factor => 4
     }
   },
   :munin => {
