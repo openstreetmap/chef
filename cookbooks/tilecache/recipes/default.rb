@@ -97,7 +97,7 @@ service "nginx-certificate-restart" do
   service_name "nginx"
   action :nothing
   subscribes :restart, "cookbook_file[/etc/ssl/certs/rapidssl.pem]"
-  subscribes :restart, "cookbook_file[/etc/ssl/certs/#{certificate}.pem]"
+  subscribes :restart, "file[/etc/ssl/certs/#{certificate}.pem]"
   subscribes :restart, "file[/etc/ssl/private/#{certificate}.key]"
 end
 

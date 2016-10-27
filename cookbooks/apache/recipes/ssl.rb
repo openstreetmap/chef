@@ -36,5 +36,5 @@ end
 apache = resources("service[apache2]")
 
 apache.subscribes(:restart, "cookbook_file[/etc/ssl/certs/#{certificate_chain}.pem]")
-apache.subscribes(:restart, "cookbook_file[/etc/ssl/certs/#{certificate}.pem]")
+apache.subscribes(:restart, "file[/etc/ssl/certs/#{certificate}.pem]")
 apache.subscribes(:restart, "file[/etc/ssl/private/#{certificate}.key]")
