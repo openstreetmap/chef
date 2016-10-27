@@ -322,3 +322,13 @@ $wgReadOnly = "<%= @mediawiki[:site_readonly] %>";
 <% Dir.glob("#{@directory}/LocalSettings.d/*.php") do |file| -%>
 <%= "require_once('#{file}');" %>
 <% end -%>
+
+# Output TagInfo script tag
+$wgHooks['BeforePageDisplay'][] ='outputTaginfoScriptTag';
+function outputTaginfoScriptTag( OutputPage &$out, Skin &$skin )
+{
+    $script = '<script type="text/javascript" src="http://taginfo.openstreetmap.org/js/taglists.js"></script>';
+    $out->addHeadItem("taginfo script", $script);
+    return true;
+};
+
