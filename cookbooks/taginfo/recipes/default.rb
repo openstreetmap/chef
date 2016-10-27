@@ -117,7 +117,7 @@ node[:taginfo][:sites].each do |site|
 
   git "#{directory}/taginfo" do
     action :sync
-    repository "git://github.com/joto/taginfo.git"
+    repository "git://github.com/taginfo/taginfo.git"
     revision "osmorg-taginfo-live"
     user "taginfo"
     group "taginfo"
