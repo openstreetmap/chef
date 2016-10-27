@@ -22,7 +22,7 @@ package "mysql-client"
 
 service "mysql" do
   action [:enable, :start]
-  supports :status => true, :restart => true, :reload => true
+  supports :status => true, :restart => true
 end
 
 template "/etc/mysql/conf.d/chef.cnf" do
@@ -30,7 +30,7 @@ template "/etc/mysql/conf.d/chef.cnf" do
   owner "root"
   group "root"
   mode 0o644
-  notifies :reload, "service[mysql]"
+  notifies :restart, "service[mysql]"
 end
 
 package "libdbd-mysql-perl"

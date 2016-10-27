@@ -34,6 +34,9 @@ suites:
   - name: munin-server
     run_list:
       - recipe[munin::server]
+  - name: mysql
+    run_list:
+      - recipe[mysql::default]
   - name: networking
     run_list:
       - recipe[networking::default]
