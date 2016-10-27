@@ -89,6 +89,7 @@ unknown_limit 144
 <% end -%>
 <% end -%>
 <% end -%>
+<% unless @frontends.empty? && @backends.empty? -%>
 
 # Configure compound graphs for www.openstreetmap.org
 [www.openstreetmap]
@@ -292,6 +293,8 @@ unknown_limit 144
     memcached_multi_bytes.bytes_written.negative bytes_read
     memcached_multi_bytes.bytes_written.label Traffic in (-) / out (+)
     memcached_multi_bytes.bytes_written.cdef bytes_written,8,*
+<% end -%>
+<% unless @tilecaches.empty? -%>
 
 # Configure compound graphs for tile.openstreetmap.org
 [tile.openstreetmap]
@@ -442,6 +445,8 @@ unknown_limit 144
     squid_byte_hitrates.<%= tc[:name].tr("-", "_") %>_hits.label <%= tc[:name] %>
     squid_byte_hitrates.<%= tc[:name].tr("-", "_") %>_hits.draw LINE1
 <% end -%>
+<% end -%>
+<% unless @renderers.empty? -%>
 
 # Configure compound graphs for render.openstreetmap.org
 [render.openstreetmap]
@@ -702,6 +707,7 @@ unknown_limit 144
     renderd_zoom_time.zoomtime6.cdef zoomtime6,1000,/
     renderd_zoom_time.zoomtime6.draw STACK
     renderd_zoom_time.zoomtime6.info Time for Metatiles for z19 - z20
+<% end -%>
 <% unless @geocoders.empty? -%>
 
 # Configure compound graphs for nominatim.openstreetmap.org
