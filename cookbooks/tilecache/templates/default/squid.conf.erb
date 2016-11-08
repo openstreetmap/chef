@@ -57,6 +57,8 @@ acl osmtileOverusers referer_regex ^https?://pmap\.kuku\.lu/
 acl osmtileOverusers referer_regex ^https?://[^.]*\.pmap\.kuku\.lu/
 acl osmtileOverusers referer_regex ^https?://fastpokemap\.com/
 acl osmtileOverusers referer_regex ^https?://[^.]*\.fastpokemap\.com/
+acl osmtileOverusers referer_regex ^https?://pkget\.com/
+acl osmtileOverusers referer_regex ^https?://[^.]*\.pkget\.com/
 
 http_access deny osmtile_sites osmtileOverusers
 
