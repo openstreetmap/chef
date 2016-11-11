@@ -41,7 +41,7 @@ imagery_layer "za_coct_aerial_2013" do
   projection "EPSG:3857"
   site "coct.aerial.openstreetmap.org.za"
   title "City of Cape Town Aerial - 2013 (OSM USE ONLY)"
-  source "/data/imagery/za/coct/2013-epsg-3857-fast.tif"
+  source "/data/imagery/za/coct/2013-epsg-3857.tif"
   copyright 'Copyright &copy; 2013 <a href="https://www.capetown.gov.za/">City of Cape Town</a>'
   background_colour "0 0 0"
   extension "jpeg"
