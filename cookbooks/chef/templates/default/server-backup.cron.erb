@@ -13,6 +13,6 @@ ln -s /var/opt/opscode/bookshelf/data $T/chef-server-$D/bookshelf
 export GZIP="--rsyncable -9"
 
 nice tar --create --gzip --dereference --directory=$T --file=$T/$B chef-server-$D
-nice rsync $T/$B backup::backup
+nice rsync --preallocate --fuzzy $T/$B backup::backup
 
 rm -rf $T

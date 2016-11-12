@@ -16,6 +16,6 @@ ln -s /srv/switch2osm.org $T/switch2osm-$D/www
 export GZIP="--rsyncable -9"
 
 nice tar --create --gzip --dereference --directory=$T --file=$T/$B switch2osm-$D
-nice rsync $T/$B backup::backup
+nice rsync --preallocate --fuzzy $T/$B backup::backup
 
 rm -rf $T

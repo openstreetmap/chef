@@ -9,6 +9,6 @@ ln -s /var/lib/git/chef.git $T/chef-repository-$D
 export GZIP="--rsyncable -9"
 
 nice tar --create --gzip --dereference --directory=$T --file=$T/$B chef-repository-$D
-nice rsync $T/$B backup::backup
+nice rsync --preallocate --fuzzy $T/$B backup::backup
 
 rm -rf $T

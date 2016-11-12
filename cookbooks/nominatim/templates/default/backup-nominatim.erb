@@ -15,6 +15,6 @@ F=/tmp/nominatim-${D}.dmp
 pg_dump --file=$F -F c -Z 9 -t file -t '*columns' -t 'import_polygon_*' -t import_status -t place_addressline -t location_property_osmline -t placex -t search_name -t 'seq_*' -t word <%= @db %>
 
 export RSYNC_RSH="ssh -ax"
-rsync $F backup.openstreetmap.org::backup
+rsync --preallocate --fuzzy $F backup.openstreetmap.org::backup
 
 rm -f $F

@@ -17,6 +17,6 @@ export GZIP="--rsyncable -9"
 export RSYNC_RSH="ssh -ax"
 
 nice tar --create --gzip --dereference --directory=$T --file=$T/$B osmf-crm-$D
-nice rsync $T/$B backup::backup
+nice rsync --preallocate --fuzzy $T/$B backup::backup
 
 rm -rf $T

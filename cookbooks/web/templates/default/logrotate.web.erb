@@ -3,7 +3,7 @@
 <%= node[:web][:log_directory] %>/*.log {
   daily
   missingok
-  rotate 7 
+  rotate 7
   compress
   delaycompress
   notifempty
@@ -21,7 +21,7 @@
 <% end -%>
 <% if File.directory?("#{node[:web][:base_directory]}/cgimap") -%>
     /bin/systemctl reload cgimap
-    /usr/bin/rsync <%= node[:web][:log_directory] %>/cgimap.log.2.gz ironbelly::logs/www.openstreetmap.org/cgimap-<%= node[:hostname] %>-`date -d "-2 days" +%Y-%m-%d`.gz
+    /usr/bin/rsync --preallocate <%= node[:web][:log_directory] %>/cgimap.log.2.gz ironbelly::logs/www.openstreetmap.org/cgimap-<%= node[:hostname] %>-`date -d "-2 days" +%Y-%m-%d`.gz
 <% end -%>
   endscript
 }
