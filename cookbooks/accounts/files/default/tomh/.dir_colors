@@ -1,0 +1,221 @@
+# Configuration file for the 256color ls utility
+# This file goes in the /etc directory, and must be world readable.
+# Synchronized with coreutils 8.5 dircolors
+# You can copy this file to .dir_colors in your $HOME directory to override
+# the system defaults.
+# In the case that you are not satisfied with supplied colors, please
+# submit your color configuration or attach your file with colors readable
+# on ALL color background schemas (white,gray,black) to RedHat Bugzilla
+# ticket on https://bugzilla.redhat.com/show_bug.cgi?id=429121 . TIA.
+# Please just keep ls color conventions from 8 color scheme.
+
+# COLOR needs one of these arguments: 'tty' colorizes output to ttys, but not
+# pipes. 'all' adds color characters to all output. 'none' shuts colorization
+# off.
+COLOR tty
+
+# Extra command line options for ls go here.
+# Basically these ones are:
+#  -F = show '/' for dirs, '*' for executables, etc.
+#  -T 0 = don't trust tab spacing when formatting ls output.
+OPTIONS -F -T 0
+
+# Below, there should be one TERM entry for each termtype that is colorizable
+TERM putty-256color
+TERM rxvt-256color
+TERM rxvt-unicode-256color
+TERM rxvt-unicode256
+TERM screen-256color
+TERM xterm-256color
+TERM gnome-256color
+
+# EIGHTBIT, followed by '1' for on, '0' for off. (8-bit output)
+EIGHTBIT 1
+
+# Below are the color init strings for the basic file types. A color init
+# string consists of one or more of the following numeric codes:
+# Attribute codes:
+# 00=none 01=bold 04=underscore 05=blink 07=reverse 08=concealed
+# Text color(8 colors mode) codes:
+# 30=black 31=red 32=green 33=yellow 34=blue 35=magenta 36=cyan 37=white
+# Background color(8 colors mode) codes:
+# 40=black 41=red 42=green 43=yellow 44=blue 45=magenta 46=cyan 47=white
+# Text color(256 colors mode) codes:
+# Valid syntax for text 256color is 38;5;<color number> , where color number
+# is number between 0 and 255.
+# You may find following command useful to search the best one for you:
+# for ((x=0; x<=255; x++));do echo -e "${x}:\033[38;5;${x}mcolor\033[000m";done
+# Background color(256 colors mode) codes:
+# Valid syntax for background 256color is 48;5;<color number> , where
+# color number is number between 0 and 255.
+# You may find following command useful to search the best one for you:
+# for ((x=0; x<=255; x++));do echo -e "${x}:\033[48;5;${x}mcolor\033[000m";done
+
+#NORMAL 00	# global default, no color code at all
+#FILE 00	# normal file, use no color at all
+RESET 0 # reset to "normal" color
+DIR 38;5;27	# directory
+LINK 38;5;37	# symbolic link (If you set this to 'target' instead of a
+		# numerical value, the color is as for the file pointed to.)
+MULTIHARDLINK 44;38;5;15 # regular file with more than one link
+FIFO 40;38;5;11	# pipe
+SOCK 38;5;13	# socket
+DOOR 38;5;5	# door
+BLK 48;5;232;38;5;11	# block device driver
+CHR 48;5;232;38;5;3	# character device driver
+ORPHAN 48;5;232;38;5;9  # symlink to nonexistent file, or non-stat'able file
+MISSING 05;48;5;232;38;5;15 # ... and the files they point to
+SETUID 48;5;196;38;5;15	# file that is setuid (u+s)
+SETGID 48;5;11;38;5;16	# file that is setgid (g+s)
+CAPABILITY 48;5;196;38;5;226	# file with capability
+STICKY_OTHER_WRITABLE 48;5;10;38;5;16 # dir that is sticky and other-writable (+t,o+w)
+OTHER_WRITABLE 48;5;10;38;5;21 # dir that is other-writable (o+w) and not sticky
+STICKY 48;5;21;38;5;15	# dir with the sticky bit set (+t) and not other-writable
+
+# This is for files with execute permission:
+EXEC 38;5;34
+
+# List any file extensions like '.gz' or '.tar' that you would like ls
+# to colorize below. Put the extension, a space, and the color init string.
+# (and any comments you want to add after a '#')
+# executables (bright green)
+#.cmd 38;5;34
+#.exe 38;5;34
+#.com 38;5;34
+#.btm 38;5;34
+#.bat 38;5;34
+#.sh  38;5;34
+#.csh 38;5;34
+ # archives or compressed (bright red)
+.tar 38;5;9
+.tgz 38;5;9
+.arj 38;5;9
+.taz 38;5;9
+.lzh 38;5;9
+.lzma 38;5;9
+.tlz 38;5;9
+.txz 38;5;9
+.zip 38;5;9
+.z   38;5;9
+.Z   38;5;9
+.dz  38;5;9
+.gz  38;5;9
+.lz  38;5;9
+.xz  38;5;9
+.bz2 38;5;9
+.tbz 38;5;9
+.tbz2 38;5;9
+.bz  38;5;9
+.tz  38;5;9
+.deb 38;5;9
+.rpm 38;5;9
+.jar 38;5;9
+.war 38;5;9
+.ear 38;5;9
+.sar 38;5;9
+.rar 38;5;9
+.ace 38;5;9
+.zoo 38;5;9
+.cpio 38;5;9
+.7z  38;5;9
+.rz  38;5;9
+
+# image formats (magenta)
+.jpg 38;5;13
+.jpeg 38;5;13
+.gif 38;5;13
+.bmp 38;5;13
+.pbm 38;5;13
+.pgm 38;5;13
+.ppm 38;5;13
+.tga 38;5;13
+.xbm 38;5;13
+.xpm 38;5;13
+.tif 38;5;13
+.tiff 38;5;13
+.png 38;5;13
+.svg 38;5;13
+.svgz 38;5;13
+.mng 38;5;13
+.pcx 38;5;13
+.mov 38;5;13
+.mpg 38;5;13
+.mpeg 38;5;13
+.m2v 38;5;13
+.mkv 38;5;13
+.ogm 38;5;13
+.mp4 38;5;13
+.m4v 38;5;13
+.mp4v 38;5;13
+.vob 38;5;13
+.qt  38;5;13
+.nuv 38;5;13
+.wmv 38;5;13
+.asf 38;5;13
+.rm  38;5;13
+.rmvb 38;5;13
+.flc 38;5;13
+.avi 38;5;13
+.fli 38;5;13
+.flv 38;5;13
+.gl 38;5;13
+.dl 38;5;13
+.xcf 38;5;13
+.xwd 38;5;13
+.yuv 38;5;13
+.cgm 38;5;13
+.emf 38;5;13
+
+# http://wiki.xiph.org/index.php/MIME_Types_and_File_Extensions
+.axv 38;5;13
+.anx 38;5;13
+.ogv 38;5;13
+.ogx 38;5;13
+
+# audio formats (cyan)
+.aac 38;5;45
+.au 38;5;45
+.flac 38;5;45
+.mid 38;5;45
+.midi 38;5;45
+.mka 38;5;45
+.mp3 38;5;45
+.mpc 38;5;45
+.ogg 38;5;45
+.ra 38;5;45
+.wav 38;5;45
+
+# http://wiki.xiph.org/index.php/MIME_Types_and_File_Extensions
+.axa 38;5;45
+.oga 38;5;45
+.spx 38;5;45
+.xspf 38;5;45
+
+# colorize binary documents (brown)
+#.pdf 00;33
+#.ps 00;33
+#.ps.gz 00;33
+#.tex 00;33
+#.xls 00;33
+#.xlsx 00;33
+#.ppt 00;33
+#.pptx 00;33
+#.rtf 00;33
+#.doc 00;33
+#.docx 00;33
+#.odt 00;33
+#.ods 00;33
+#.odp 00;33
+#.epub 00;33
+#.abw 00;33
+#.wpd 00;33
+#
+# colorize text documents (brown)
+#.txt 00;33
+#.patch 00;33
+#.diff 00;33
+#.log 00;33
+#.htm 00;33
+#.html 00;33
+#.shtml 00;33
+#.xml 00;33
