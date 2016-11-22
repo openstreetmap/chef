@@ -102,7 +102,7 @@ node[:taginfo][:sites].each do |site|
   git "#{directory}/libosmium" do
     action :sync
     repository "git://github.com/osmcode/libosmium.git"
-    revision "v2.9.0"
+    revision "v2.10.3"
     user "taginfo"
     group "taginfo"
   end
@@ -110,7 +110,7 @@ node[:taginfo][:sites].each do |site|
   git "#{directory}/osmium-tool" do
     action :sync
     repository "git://github.com/osmcode/osmium-tool.git"
-    revision "v1.4.0"
+    revision "v1.4.1"
     user "taginfo"
     group "taginfo"
   end
