@@ -2,6 +2,11 @@ name "longma"
 description "Master role applied to longma"
 
 default_attributes(
+  :exim => {
+    :aliases => {
+      :root => "ceasar"
+    }
+  },
   :networking => {
     :interfaces => {
       :external_ipv4 => {
