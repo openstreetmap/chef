@@ -10,7 +10,6 @@ default_attributes(
       :threads_per_child => 50,
       :min_spare_threads => 50,
       :max_spare_threads => 450,
-      :max_connections_per_child => 10000,
       :async_request_worker_factor => 4
     }
   },
