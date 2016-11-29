@@ -71,6 +71,11 @@ elif os.environ['HTTP_USER_AGENT'] == '<%= user_agent %>':
   # Block scraper
   output_error("The server is too busy at the moment. Please wait a few minutes before trying again.", "503 Service Unavailable")
 <% end -%>
+<% @blocks["referers"].each do |referer| -%>
+elif os.environ['HTTP_REFERER'] == '<%= referer %>':
+  # Block scraper
+  output_error("The server is too busy at the moment. Please wait a few minutes before trying again.", "503 Service Unavailable")
+<% end -%>
 elif not form.has_key("bbox"):
   # No bounding box specified
   output_error("No bounding box specified")
