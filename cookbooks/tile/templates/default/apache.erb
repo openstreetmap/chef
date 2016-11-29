@@ -22,7 +22,8 @@
 <% end -%>
 
   # Setup logging
-  CustomLog /var/log/apache2/access.log combined
+  LogFormat "%a %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\"" combined_with_remoteip
+  CustomLog /var/log/apache2/access.log combined_with_remoteip
   ErrorLog /var/log/apache2/error.log
   BufferedLogs on
 
