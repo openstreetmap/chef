@@ -59,3 +59,11 @@
   AllowOverride None
   Require all granted
 </Directory>
+
+<Location /cgi-bin/export>
+<% @caches.each do |cache| -%>
+<% cache.ipaddresses(:role => :external).sort.each do |address| -%>
+  Require ip <%= address %>
+<% end -%>
+<% end -%>
+</Location>
