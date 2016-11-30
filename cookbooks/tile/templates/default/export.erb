@@ -70,6 +70,9 @@ idletime = cputimes[3] / sum(cputimes)
 if idletime < 0.2:
   # Abort if the CPU idle time on the machine is too low
   output_error("The server is too busy at the moment. Please wait a few minutes before trying again.", "503 Service Unavailable")
+elif form.getvalue("scale") == "4600":
+  # Block scraper
+  output_error("The server is too busy at the moment. Please wait a few minutes before trying again.", "503 Service Unavailable")
 <% @blocks["user_agents"].each do |user_agent| -%>
 elif os.environ['HTTP_USER_AGENT'] == '<%= user_agent %>':
   # Block scraper
