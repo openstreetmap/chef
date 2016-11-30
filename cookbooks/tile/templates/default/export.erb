@@ -58,6 +58,10 @@ form = cgi.FieldStorage()
 if not os.environ.has_key('HTTP_USER_AGENT'):
   os.environ['HTTP_USER_AGENT'] = 'NONE'
 
+# Make sure we have a referer
+if not os.environ.has_key('HTTP_REFERER'):
+  os.environ['HTTP_REFERER'] = 'NONE'
+
 # Get the load average
 cputimes = [float(n) for n in open("/proc/stat").readline().rstrip().split()[1:-1]]
 idletime = cputimes[3] / sum(cputimes)
