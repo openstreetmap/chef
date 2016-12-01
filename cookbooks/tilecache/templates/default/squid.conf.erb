@@ -62,21 +62,6 @@ acl osmtileOverusers referer_regex ^https?://[^.]*\.pkget\.com/
 
 http_access deny osmtile_sites osmtileOverusers
 
-acl osmexportOverusers src 60.199.131.39
-acl osmexportOverusers src 92.217.67.26
-acl osmexportOverusers src 103.53.208.109
-acl osmexportOverusers src 113.196.123.178
-acl osmexportOverusers src 118.193.51.194
-acl osmexportOverusers src 119.188.70.34
-acl osmexportOverusers src 165.228.125.15
-acl osmexportOverusers src 171.13.14.152
-acl osmexportOverusers src 171.15.132.56
-acl osmexportOverusers src 199.203.108.5
-acl osmexportOverusers src 210.209.89.127
-acl osmexportOverusers src 210.65.88.6
-
-http_access deny osmtile_sites osmexportOverusers
-
 # Delay pool when !has_referer and is_browser
 acl has_referer referer_regex .
 acl is_browser browser Chrome\/

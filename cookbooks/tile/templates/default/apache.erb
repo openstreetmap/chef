@@ -59,21 +59,3 @@
   AllowOverride None
   Require all granted
 </Directory>
-
-<Location /cgi-bin/export>
-  <RequireAll>
-    Require all granted
-    Require not ip 60.199.131.39
-    Require not ip 92.217.67.26
-    Require not ip 103.53.208.109
-    Require not ip 113.196.123.178
-    Require not ip 118.193.51.194
-    Require not ip 119.188.70.34
-    Require not ip 165.228.125.15
-    Require not ip 171.13.14.152
-    Require not ip 171.15.132.56
-    Require not ip 199.203.108.5
-    Require not ip 210.209.89.127
-    Require not ip 210.65.88.6
-  </RequireAll>
-</Location>
