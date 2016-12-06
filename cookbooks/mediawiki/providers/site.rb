@@ -297,7 +297,8 @@ action :create do
   mediawiki_extension "Babel" do
     site new_resource.name
     template "mw-ext-Babel.inc.php.erb"
-    tag mw_lang_ext_bundle_tag
+    # tag mw_lang_ext_bundle_tag
+    reference "740782459d34e756a932ea1ceddde432a1295197"
     update_site false
   end
 
