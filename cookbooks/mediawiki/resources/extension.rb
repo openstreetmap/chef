@@ -28,6 +28,7 @@ attribute :variables, :kind_of => Hash, :default => {}
 attribute :version, :kind_of => String
 attribute :repository, :kind_of => String
 attribute :tag, :kind_of => String
+attribute :reference, :kind_of => String
 attribute :update_site, :kind_of => [TrueClass, FalseClass], :default => true
 
 def after_created

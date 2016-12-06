@@ -37,7 +37,9 @@ action :create do
     end
   else
     extension_repository = new_resource.repository || default_repository
-    extension_reference = if new_resource.tag
+    extension_reference = if new_resource.reference
+                            new_resource.reference
+                          elsif new_resource.tag
                             "refs/tags/#{new_resource.tag}"
                           else
                             "REL#{extension_version}".tr(".", "_")
