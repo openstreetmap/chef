@@ -36,14 +36,14 @@ default_attributes(
         :interface => "eth1",
         :role => :external,
         :family => :inet,
-        :address => "128.40.45.196"
+        :address => "193.60.236.13"
       }
     }
   }
 )
 
 run_list(
-  "role[ucl-wolfson]",
+  "role[ucl-slough]",
   "role[tyan-s7010]",
   "role[dev]"
 )

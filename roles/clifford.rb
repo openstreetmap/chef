@@ -14,14 +14,14 @@ default_attributes(
         :interface => "enp2s0f1",
         :role => :external,
         :family => :inet,
-        :address => "128.40.45.194"
+        :address => "193.60.236.11"
       }
     }
   }
 )
 
 run_list(
-  "role[ucl-wolfson]",
+  "role[ucl-slough]",
   "role[hp-dl360-g6]",
   "role[forum]"
 )
