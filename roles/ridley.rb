@@ -39,7 +39,7 @@ default_attributes(
         :address => "193.60.236.19"
       },
       :internal_ipv4 => {
-        :interface => "eth1",
+        :interface => "eth0",
         :role => :internal,
         :family => :inet,
         :address => "10.0.0.3"
