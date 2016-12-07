@@ -2,6 +2,9 @@ name "ucl-slough"
 description "Role applied to all servers at UCL which are in Slough"
 
 default_attributes(
+  :bind => {
+    :forwarders => ["8.8.8.8", "8.8.4.4"]
+  },
   :networking => {
     :roles => {
       :internal => {
