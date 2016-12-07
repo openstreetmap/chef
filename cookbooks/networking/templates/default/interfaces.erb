@@ -14,31 +14,34 @@ auto <%= interface[:bond][:slaves].sort.uniq.join(" ") %>
 <% end -%>
 
 iface <%= interface[:interface] %> <%= interface[:family] %> static
-      address   <%= interface[:address] %>
+<% if interface[:interface] =~ /\.\d+$/ -%>
+      vlan-raw-device <%= interface[:interface].split(".").first %>
+<% end -%>
+      address <%= interface[:address] %>
 <% if interface[:family] == "inet" -%>
-      netmask   <%= interface[:netmask] %>
+      netmask <%= interface[:netmask] %>
 <% elsif interface[:family] == "inet6" -%>
-      netmask   <%= interface[:prefix] %>
+      netmask <%= interface[:prefix] %>
 <% end -%>
 <% if interface[:hwaddress] -%>
       hwaddress <%= interface[:hwaddress] %>
 <% end -%>
 <% if interface[:gateway] -%>
 <% if interface[:network].include?(interface[:gateway]) or IPAddr.new("fe80::/64").include?(interface[:gateway]) -%>
-      gateway   <%= interface[:gateway] %>
-      metric    <%= interface[:metric] %>
+      gateway <%= interface[:gateway] %>
+      metric <%= interface[:metric] %>
 <% else -%>
-      post-up   /sbin/ip -f <%= interface[:family] %> route add <%= interface[:gateway] %> dev <%= interface[:interface] %>
-      post-up   /sbin/ip -f <%= interface[:family] %> route add default metric <%= interface[:metric] %> via <%= interface[:gateway] %>
-      pre-down  /sbin/ip -f <%= interface[:family] %> route del default metric <%= interface[:metric] %> via <%= interface[:gateway] %>
-      pre-down  /sbin/ip -f <%= interface[:family] %> route del <%= interface[:gateway] %> dev <%= interface[:interface] %>
+      post-up /sbin/ip -f <%= interface[:family] %> route add <%= interface[:gateway] %> dev <%= interface[:interface] %>
+      post-up /sbin/ip -f <%= interface[:family] %> route add default metric <%= interface[:metric] %> via <%= interface[:gateway] %>
+      pre-down /sbin/ip -f <%= interface[:family] %> route del default metric <%= interface[:metric] %> via <%= interface[:gateway] %>
+      pre-down /sbin/ip -f <%= interface[:family] %> route del <%= interface[:gateway] %> dev <%= interface[:interface] %>
 <% end -%>
 <% end -%>
 <% if interface[:mtu] -%>
-      mtu       <%= interface[:mtu] %>
+      mtu <%= interface[:mtu] %>
 <% end -%>
 <% if interface[:family] == "inet6" -%>
-      autoconf  0
+      autoconf 0
 <% end -%>
 <% if interface[:bond] -%>
       bond-mode <%= interface[:bond][:mode] || "active-backup" %>
