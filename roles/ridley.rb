@@ -33,7 +33,7 @@ default_attributes(
   :networking => {
     :interfaces => {
       :external_ipv4 => {
-        :interface => "eth0",
+        :interface => "eth0.2800",
         :role => :external,
         :family => :inet,
         :address => "193.60.236.19"
