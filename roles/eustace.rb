@@ -21,7 +21,7 @@ default_attributes(
 )
 
 run_list(
-  "role[ucl-slough]",
+  "role[ucl]",
   "role[hp-dl360-g6]",
   "role[piwik]"
 )

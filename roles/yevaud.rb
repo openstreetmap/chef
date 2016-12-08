@@ -116,7 +116,7 @@ default_attributes(
 )
 
 run_list(
-  "role[ucl-slough]",
+  "role[ucl]",
   "role[tyan-s7010]",
   "role[tile]"
 )
