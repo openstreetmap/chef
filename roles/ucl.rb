@@ -28,7 +28,7 @@ override_attributes(
     :search => ["ucl.openstreetmap.org", "openstreetmap.org"]
   },
   :ntp => {
-    :servers => ["0.uk.pool.ntp.org", "1.uk.pool.ntp.org", "europe.pool.ntp.org"]
+    :servers => ["ntp1.ucl.ac.uk", "ntp2.ucl.ac.uk"]
   }
 )
 
