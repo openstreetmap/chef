@@ -107,8 +107,7 @@ default_attributes(
         :gid => "www-data",
         :transfer_logging => false,
         :hosts_allow => [
-          "128.40.168.0/24",      # ucl external (wates)
-          "128.40.45.192/27",     # ucl external (wolfson)
+          "193.60.236.0/24",      # ucl external
           "146.179.159.160/27",   # ic internal
           "193.63.75.96/27",      # ic external
           "2001:630:12:500::/64", # ic external
