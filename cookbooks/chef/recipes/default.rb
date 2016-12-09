@@ -17,7 +17,8 @@
 # limitations under the License.
 #
 
-chef_package = "chef_#{node[:chef][:client][:version]}_amd64.deb"
+chef_version = node[:chef][:client][:version]
+chef_package = "chef_#{chef_version}-1_amd64.deb"
 
 directory "/var/cache/chef" do
   owner "root"
@@ -35,7 +36,7 @@ Dir.glob("/var/cache/chef/chef_*.deb").each do |deb|
 end
 
 remote_file "/var/cache/chef/#{chef_package}" do
-  source "https://packages.chef.io/stable/ubuntu/12.04/#{chef_package}"
+  source "https://packages.chef.io/files/stable/chef/#{chef_version}/ubuntu/16.04/#{chef_package}"
   owner "root"
   group "root"
   mode 0o644
@@ -45,7 +46,7 @@ end
 
 dpkg_package "chef" do
   source "/var/cache/chef/#{chef_package}"
-  version node[:chef][:client][:version]
+  version "#{chef_version}-1"
 end
 
 directory "/etc/chef" do
