@@ -1,0 +1,89 @@
+name "scorch"
+description "Master role applied to scorch"
+
+default_attributes(
+  :apt => {
+    :sources => ["postgresql"]
+  },
+  :devices => {
+    :ssd_system => {
+      :comment => "Tune scheduler for system disk",
+      :type => "block",
+      :bus => "scsi",
+      :serial => "3600605b009bbf5601fc3206407a43546",
+      :attrs => {
+        "queue/scheduler" => "noop",
+        "queue/nr_requests" => "256",
+        "queue/read_ahead_kb" => "2048"
+      }
+    },
+    :ssd_database => {
+      :comment => "Tune scheduler for database disk",
+      :type => "block",
+      :bus => "scsi",
+      :serial => "3600605b009bbf5601fd931c6dfac767f",
+      :attrs => {
+        "queue/scheduler" => "noop",
+        "queue/nr_requests" => "256",
+        "queue/read_ahead_kb" => "2048"
+      }
+    }
+  },
+  :networking => {
+    :interfaces => {
+      :external_ipv4 => {
+        :interface => "eth0",
+        :role => :external,
+        :family => :inet,
+        :address => "176.31.235.79",
+        :prefix => "24",
+        :gateway => "176.31.235.254"
+      },
+      :external_ipv6 => {
+        :interface => "eth0",
+        :role => :external,
+        :family => :inet6,
+        :address => "2001:41d0:2:fc4f::",
+        :prefix => "64",
+        :gateway => "fe80::12bd:18ff:fee5:2280"
+      }
+    }
+  },
+  :postgresql => {
+    :versions => ["9.5"],
+    :settings => {
+      :defaults => {
+        :shared_buffers => "8GB",
+        :maintenance_work_mem => "7144MB",
+        :effective_cache_size => "16GB"
+      }
+    }
+  },
+  :sysctl => {
+    :postgres => {
+      :comment => "Increase shared memory for postgres",
+      :parameters => {
+        "kernel.shmmax" => 9 * 1024 * 1024 * 1024,
+        "kernel.shmall" => 9 * 1024 * 1024 * 1024 / 4096
+      }
+    }
+  },
+  :tile => {
+    :database => {
+      :cluster => "9.5/main"
+    },
+    :node_file => "/store/database/nodes",
+    :styles => {
+      :default => {
+        :tile_directories => [
+          { :name => "/store/tiles/default", :min_zoom => 0, :max_zoom => 19 }
+        ]
+      }
+    }
+  }
+)
+
+run_list(
+  "role[ovh]",
+  "role[tile]"
+)
