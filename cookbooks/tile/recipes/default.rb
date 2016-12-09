@@ -325,7 +325,10 @@ node[:tile][:styles].each do |name, details|
   end
 end
 
+postgresql_version = node[:tile][:database][:cluster].split("/").first
+
 package "postgis"
+package "postgresql-#{postgresql_version}-postgis-2.3"
 
 postgresql_user "jburgess" do
   cluster node[:tile][:database][:cluster]
