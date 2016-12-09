@@ -162,7 +162,9 @@ end
 
 node[:network][:interfaces].each do |ifname, ifattr|
   if ifattr[:encapsulation] == "Ethernet" && ifattr[:state] == "up"
-    if node[:hardware] && node[:hardware][:network][ifname][:device] =~ /^virtio/
+    if node[:hardware] &&
+       node[:hardware][:network] &&
+       node[:hardware][:network][ifname][:device] =~ /^virtio/
       munin_plugin_conf "if_#{ifname}" do
         template "if.erb"
         variables :ifname => ifname
