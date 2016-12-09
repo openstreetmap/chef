@@ -52,6 +52,8 @@ units = []
 
 if node[:roles].include?("bytemark") || node[:roles].include?("exonetric")
   units << "0"
+elsif node[:roles].include?("ovh")
+  units << "2"
 end
 
 case manufacturer
