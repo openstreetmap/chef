@@ -52,8 +52,6 @@ units = []
 
 if node[:roles].include?("bytemark") || node[:roles].include?("exonetric")
   units << "0"
-elsif node[:roles].include?("ovh")
-  units << "2"
 end
 
 case manufacturer
@@ -80,7 +78,7 @@ when "TYAN Computer Corporation"
   units << "0"
 when "Supermicro"
   case product
-  when "H8DGU", "X9SCD", "X7DBU", "X7DW3", "X9DR7/E-(J)LN4F", "X9DR3-F", "X9DRW", "SYS-2028U-TN24R4T+"
+  when "H8DGU", "X9SCD", "X7DBU", "X7DW3", "X9DR7/E-(J)LN4F", "X9DR3-F", "X9DRW", "SYS-2028U-TN24R4T+", "Super Server"
     units << "1"
   else
     units << "0"
