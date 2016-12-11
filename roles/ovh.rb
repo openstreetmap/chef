@@ -3,7 +3,7 @@ description "Role applied to all servers at OVH"
 
 default_attributes(
   :hosted_by => "OVH",
-  :location => "Paris, France",
+  :location => "Roubaix, France",
   :networking => {
     :nameservers => [
       "213.186.33.99"
