@@ -49,13 +49,13 @@ clients = search(:node, "recipes:munin\\:\\:default").sort_by { |n| n[:hostname]
 frontends = search(:node, "recipes:web\\:\\:frontend").reject { |n| Time.now - Time.at(n[:ohai_time]) > expiry_time }.map { |n| n[:hostname] }.sort # ~FC010
 backends = search(:node, "recipes:web\\:\\:backend").reject { |n| Time.now - Time.at(n[:ohai_time]) > expiry_time }.map { |n| n[:hostname] }.sort # ~FC010
 tilecaches = search(:node, "roles:tilecache").reject { |n| Time.now - Time.at(n[:ohai_time]) > expiry_time }.sort_by { |n| n[:hostname] }.map do |n|
-  { :name => n[:hostname], :interface => n.interfaces(:role => :external).first[:interface] }
+  { :name => n[:hostname], :interface => n.interfaces(:role => :external).first[:interface].tr(".", "_") }
 end
 renderers = search(:node, "roles:tile").reject { |n| Time.now - Time.at(n[:ohai_time]) > expiry_time }.sort_by { |n| n[:hostname] }.map do |n|
-  { :name => n[:hostname], :interface => n.interfaces(:role => :external).first[:interface] }
+  { :name => n[:hostname], :interface => n.interfaces(:role => :external).first[:interface].tr(".", "_") }
 end
 geocoders = search(:node, "roles:nominatim").reject { |n| Time.now - Time.at(n[:ohai_time]) > expiry_time }.sort_by { |n| n[:hostname] }.map do |n|
-  { :name => n[:hostname], :interface => n.interfaces(:role => :external).first[:interface] }
+  { :name => n[:hostname], :interface => n.interfaces(:role => :external).first[:interface].tr(".", "_") }
 end
 
 template "/etc/munin/munin.conf" do
