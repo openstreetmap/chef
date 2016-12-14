@@ -12,6 +12,13 @@ default_attributes(
   :apt => {
     :sources => ["nginx"]
   },
+  :munin => {
+    :plugins => {
+      :cpu => {
+        :user => { :warning => 100, :critical => 200 }
+      }
+    }
+  },
   :sysctl => {
     :network_conntrack_time_wait => {
       :comment => "Only track completed connections for 30 seconds",
