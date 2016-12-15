@@ -15,7 +15,7 @@ default_attributes(
   :munin => {
     :plugins => {
       :cpu => {
-        :user => { :warning => 100, :critical => 200 }
+        :user => { :warning => 200, :critical => 400 }
       }
     }
   },
