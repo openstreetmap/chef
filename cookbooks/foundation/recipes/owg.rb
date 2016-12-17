@@ -23,7 +23,6 @@ include_recipe "git"
 package "ruby"
 package "ruby-dev"
 
-gem_package "jekyll"
 gem_package "bundler"
 
 git "/srv/operations.osmfoundation.org" do
@@ -51,7 +50,7 @@ end
 
 execute "/srv/operations.osmfoundation.org" do
   action :nothing
-  command "jekyll build --trace"
+  command "bundle exec jekyll build --trace"
   cwd "/srv/operations.osmfoundation.org"
   user "nobody"
   group "nogroup"
