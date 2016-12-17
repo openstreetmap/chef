@@ -24,19 +24,29 @@ package "ruby"
 package "ruby-dev"
 
 gem_package "jekyll"
+gem_package "bundler"
 
 git "/srv/operations.osmfoundation.org" do
   action :sync
   repository "git://github.com/gravitystorm/owg-log.git"
   user "root"
   group "root"
-  notifies :run, "execute[/srv/operations.osmfoundation.org]"
+  notifies :run, "execute[/srv/operations.osmfoundation.org/Gemfile]"
 end
 
 directory "/srv/operations.osmfoundation.org/_site" do
   mode 0o755
   owner "nobody"
   group "nogroup"
+end
+
+execute "/srv/operations.osmfoundation.org/Gemfile" do
+  action :nothing
+  command "bundle install"
+  cwd "/srv/operations.osmfoundation.org"
+  user "root"
+  group "root"
+  notifies :run, "execute[/srv/operations.osmfoundation.org]"
 end
 
 execute "/srv/operations.osmfoundation.org" do
