@@ -32,6 +32,12 @@ default_attributes(
         "net.netfilter.nf_conntrack_max" => "131072"
       }
     },
+    :kernel_tfo_listen_enable => {
+      :comment => "Enable TCP Fast Open for listening sockets",
+      :parameters => {
+        "net.ipv4.tcp_fastopen" => 3
+      }
+    },
     :squid_swappiness => {
       :comment => "Prefer not to swapout to free memory",
       :parameters => {
