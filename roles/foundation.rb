@@ -30,5 +30,6 @@ run_list(
   "role[elasticsearch]",
   "recipe[foundation::wiki]",
   "recipe[foundation::board]",
-  "recipe[foundation::dwg]"
+  "recipe[foundation::dwg]",
+  "recipe[foundation::owg]"
 )
