@@ -1,0 +1,18 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+# Add Sanesecurity foxhole databases
+ss_dbs="
+   ${ss_dbs}
+   foxhole_all.cdb
+   foxhole_all.ndb
+   foxhole_filename.cdb
+   foxhole_generic.cdb
+   foxhole_js.cdb
+   foxhole_js.ndb
+"
+
+# Disable SecuriteInfo databases as the domain no longer exists
+si_dbs=""
+
+# Disable MalwarePatrol databases as they fail checksum validation
+mbl_dbs=""
