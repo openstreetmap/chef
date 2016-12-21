@@ -76,6 +76,8 @@ rails_port "www.openstreetmap.org" do
   windowslive_auth_secret web_passwords["windowslive_auth_secret"]
   github_auth_id "acf7da34edee99e35499"
   github_auth_secret web_passwords["github_auth_secret"]
+  wikipedia_auth_id "e4fe0c2c5855d23ed7e1f1c0fa1f1c58"
+  wikipedia_auth_secret web_passwords["wikipedia_auth_secret"]
   mapzen_valhalla_key web_passwords["mapzen_valhalla_key"]
   thunderforest_key web_passwords["thunderforest_key"]
 end
