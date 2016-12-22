@@ -315,7 +315,7 @@ node[:tile][:styles].each do |name, details|
 
   execute "#{style_directory}/project.mml" do
     action :nothing
-    command "carto project.mml > project.xml"
+    command "carto -a 3.0.0 project.mml > project.xml"
     cwd style_directory
     user "tile"
     group "tile"
