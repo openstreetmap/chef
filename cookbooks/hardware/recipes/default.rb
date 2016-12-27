@@ -201,6 +201,13 @@ if node[:lsb][:release].to_f >= 12.10
   end
 end
 
+# Link Layer Discovery Protocol Daemon
+package "lldpd"
+service "lldpd" do
+  action [:start, :enable]
+  supports :status => true, :restart => true, :reload => true
+end
+
 tools_packages = []
 status_packages = {}
 
