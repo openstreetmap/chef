@@ -274,20 +274,21 @@ define :rails_port, :action => [:create, :enable] do
     cwd "#{rails_directory}/lib/quad_tile"
     user rails_user
     group rails_group
-    not_if { File.exist?("#{rails_directory}/lib/quad_tile/Makefile") && File.mtime("#{rails_directory}/lib/quad_tile/Makefile") >= File.mtime("#{rails_directory}/lib/quad_tile/extconf.rb") }
+    not_if do
+      File.exist?("#{rails_directory}/lib/quad_tile/quad_tile_so.so") &&
+        File.mtime("#{rails_directory}/lib/quad_tile/quad_tile_so.so") >= File.mtime("#{rails_directory}/lib/quad_tile/extconf.rb") &&
+        File.mtime("#{rails_directory}/lib/quad_tile/quad_tile_so.so") >= File.mtime("#{rails_directory}/lib/quad_tile/quad_tile.c") &&
+        File.mtime("#{rails_directory}/lib/quad_tile/quad_tile_so.so") >= File.mtime("#{rails_directory}/lib/quad_tile/quad_tile.h")
+    end
+    notifies :run, "execute[#{rails_directory}/lib/quad_tile/Makefile]"
   end
 
   execute "#{rails_directory}/lib/quad_tile/Makefile" do
+    action :nothing
     command "make"
     cwd "#{rails_directory}/lib/quad_tile"
     user rails_user
     group rails_group
-    not_if do
-      File.exist?("#{rails_directory}/lib/quad_tile/quad_tile_so.so") &&
-        File.mtime("#{rails_directory}/lib/quad_tile/quad_tile_so.so") >= File.mtime("#{rails_directory}/lib/quad_tile/Makefile") &&
-        File.mtime("#{rails_directory}/lib/quad_tile/quad_tile_so.so") >= File.mtime("#{rails_directory}/lib/quad_tile/quad_tile.c") &&
-        File.mtime("#{rails_directory}/lib/quad_tile/quad_tile_so.so") >= File.mtime("#{rails_directory}/lib/quad_tile/quad_tile.h")
-    end
     notifies :run, "execute[#{rails_directory}]"
   end
 
