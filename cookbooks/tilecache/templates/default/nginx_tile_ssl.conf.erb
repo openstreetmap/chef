@@ -88,8 +88,11 @@ server {
 
       # Allow Higher Traffic Rate from Approved User-Agents which do not support cookies (uses nginx Map)
       if ($approved_scraper) {
-        set $limit_rate 16384;
+        set $limit_rate 32768;
       }
+
+      # Strip any ?query parameters from urls
+      set $args '';
 
       # Allow cache purging headers only from select User-Agents (uses nginx Map)
       proxy_set_header Cache-Control $limit_http_cache_control;
