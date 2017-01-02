@@ -43,7 +43,7 @@ directory "/var/cache/nginx/proxy-cache" do
 end
 
 service "nginx" do
-  action [:enable]
+  action [:enable] # Do not start the service as config may be broken from failed chef run
   supports :status => true, :restart => true, :reload => true
   subscribes :restart, "template[/etc/nginx/nginx.conf]"
 end
