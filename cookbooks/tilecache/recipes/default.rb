@@ -93,11 +93,6 @@ resolvers = node[:networking][:nameservers].map do |resolver|
   IPAddr.new(resolver).ipv6? ? "[#{resolver}]" : resolver
 end
 
-nginx_site "tile-ssl" do
-  template "nginx_tile_ssl.conf.erb"
-  variables :certificate => certificate, :resolvers => resolvers, :caches => tilecaches
-end
-
 template "/usr/local/bin/nginx_generate_tilecache_qos_map" do
   source "nginx_generate_tilecache_qos_map.erb"
   owner "root"
@@ -117,6 +112,11 @@ execute "execute_nginx_generate_tilecache_qos_map" do
   command "/usr/local/bin/nginx_generate_tilecache_qos_map"
   creates "/etc/nginx/conf.d/tile_qos_rates.map"
   action :run
+end
+
+nginx_site "tile-ssl" do
+  template "nginx_tile_ssl.conf.erb"
+  variables :certificate => certificate, :resolvers => resolvers, :caches => tilecaches
 end
 
 service "nginx-certificate-restart" do
