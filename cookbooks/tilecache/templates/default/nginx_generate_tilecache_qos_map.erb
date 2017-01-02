@@ -41,4 +41,5 @@ default 'qos_token=${QOS_TOKEN_DEFAULT}; Max-Age=${VALID_TOKEN}; Domain=openstre
 "${QOS_TOKEN_OSM}" ''; # Do not Set-Cookie. # Exclusive
 EOF
 
-/etc/init.d/nginx configtest && service nginx reload
+# Check config, reload config and fail safe
+/etc/init.d/nginx configtest && ( /usr/sbin/service nginx reload || true )
