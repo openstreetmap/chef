@@ -113,9 +113,9 @@ template "/etc/cron.d/tilecache" do
   mode 0o644
 end
 
-execute 'execute_nginx_generate_tilecache_qos_map' do
-  command '/usr/local/bin/nginx_generate_tilecache_qos_map'
-  creates '/etc/nginx/conf.d/tile_qos_rates.map'
+execute "execute_nginx_generate_tilecache_qos_map" do
+  command "/usr/local/bin/nginx_generate_tilecache_qos_map"
+  creates "/etc/nginx/conf.d/tile_qos_rates.map"
   action :run
 end
 
