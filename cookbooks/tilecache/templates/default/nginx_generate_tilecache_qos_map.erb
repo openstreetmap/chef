@@ -34,7 +34,7 @@ default 4096; # Default Rate (No QoS cookie)
 EOF
 
 cat <<EOF >/etc/nginx/conf.d/tile_qos_cookies.map
-default 'qos_token=${QOS_TOKEN_DEFAULT}; Secure; httponly; Max-Age=${VALID_TOKEN}; Domain=tile.openstreetmap.org; Path=/'; # Cookie Domain per RFC6265
+default 'qos_token=${QOS_TOKEN_DEFAULT}; Secure; httponly; Max-Age=${VALID_TOKEN}; Domain=openstreetmap.org; Path=/'; # Cookie Domain per RFC6265
 "${QOS_TOKEN_DEFAULT}" ''; # Do not Set-Cookie. # Default
 "${QOS_TOKEN_OSM}" ''; # Do not Set-Cookie. # Exclusive
 EOF
