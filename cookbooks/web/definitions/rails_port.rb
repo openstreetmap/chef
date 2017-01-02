@@ -204,6 +204,10 @@ define :rails_port, :action => [:create, :enable] do
       line.gsub!(/^( *)#thunderforest_key:.*$/, "\\1thunderforest_key: \"#{params[:thunderforest_key]}\"")
     end
 
+    if params[:totp_key]
+      line.gsub!(/^( *)#totp_key:.*$/, "\\1totp_key: \"#{params[:totp_key]}\"")
+    end
+
     line.gsub!(/^( *)require_terms_seen:.*$/, "\\1require_terms_seen: true")
     line.gsub!(/^( *)require_terms_agreed:.*$/, "\\1require_terms_agreed: true")
 

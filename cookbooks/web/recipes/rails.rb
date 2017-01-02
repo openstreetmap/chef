@@ -80,6 +80,7 @@ rails_port "www.openstreetmap.org" do
   wikipedia_auth_secret web_passwords["wikipedia_auth_secret"]
   mapzen_valhalla_key web_passwords["mapzen_valhalla_key"]
   thunderforest_key web_passwords["thunderforest_key"]
+  totp_key web_passwords["totp_key"]
 end
 
 package "libjson-xs-perl"
