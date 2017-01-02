@@ -103,7 +103,7 @@ template "/usr/local/bin/nginx_generate_tilecache_qos_map" do
   owner "root"
   group "root"
   mode 0o750
-  variables tokens: => tilecache_tokens
+  variables :tokens => tilecache_tokens
 end
 
 template "/etc/cron.d/tilecache" do
