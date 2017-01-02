@@ -42,4 +42,4 @@ default 'qos_token=${QOS_TOKEN_DEFAULT}; Max-Age=${VALID_TOKEN}; Domain=openstre
 EOF
 
 # Check config, reload config and fail safe
-/etc/init.d/nginx configtest && ( /usr/sbin/service nginx reload || true )
+/etc/init.d/nginx configtest && /bin/systemctl try-reload-or-restart nginx
