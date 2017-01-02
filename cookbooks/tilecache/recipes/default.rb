@@ -39,7 +39,7 @@ package "oathtool"
 tilecaches = search(:node, "roles:tilecache").sort_by { |n| n[:hostname] }
 tilerenders = search(:node, "roles:tile").sort_by { |n| n[:hostname] }
 
-tilecache_tokens = data_bag_item("tilecache", "tokens")
+web_passwords = data_bag_item("web", "passwords")
 
 tilecaches.each do |cache|
   cache.ipaddresses(:family => :inet, :role => :external).sort.each do |address|
@@ -103,7 +103,7 @@ template "/usr/local/bin/nginx_generate_tilecache_qos_map" do
   owner "root"
   group "root"
   mode 0o750
-  variables :tokens => tilecache_tokens
+  variables :web_passwords => web_passwords
 end
 
 template "/etc/cron.d/tilecache" do
