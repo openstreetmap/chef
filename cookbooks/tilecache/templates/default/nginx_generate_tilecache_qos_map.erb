@@ -4,7 +4,7 @@
 set -e
 NUM_TOKENS=4 # current + 4
 VALID_TOKEN=3600 # in seconds
-QOS_TOKENS=($(/usr/bin/oathtool --totp --window=${NUM_TOKENS} --time-step-size=${VALID_TOKEN}s <%= web_passwords[:totp_key] %>))
+QOS_TOKENS=($(/usr/bin/oathtool --totp --window=${NUM_TOKENS} --time-step-size=${VALID_TOKEN}s <%= totp_key %>))
 
 # ${qos_tokens[3]/[-1] } = OSM.org exclusive / current
 # ${qos_tokens[2]/[-2] } = tile.openstreetmap.org default

@@ -103,7 +103,7 @@ template "/usr/local/bin/nginx_generate_tilecache_qos_map" do
   owner "root"
   group "root"
   mode 0o750
-  variables :web_passwords => web_passwords
+  variables :totp_key => web_passwords["totp_key"]
 end
 
 template "/etc/cron.d/tilecache" do
