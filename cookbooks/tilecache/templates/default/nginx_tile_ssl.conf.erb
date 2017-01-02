@@ -1,3 +1,5 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
 upstream tile_cache_backend {
     server 127.0.0.1;
     <% @caches.each do |cache| -%>
@@ -12,16 +14,14 @@ upstream tile_cache_backend {
     keepalive 32;
 }
 
-# Rates table based on cookie value
+# Rates table based on current cookie value
 map $cookie_qos_token $limit_rate_qos {
-  default 8192; # Default Rate
-  "test" 32768; # FIXME - Future TOTP Token
+  include /etc/nginx/conf.d/tile_qos_rates.map;
 }
 
+# Set-Cookie table based on current cookie value
 map $cookie_qos_token $cookie_qos_token_set {
-  # Cookie Domain per RFC 6265
-  default 'qos_token=test; Secure; httponly; Max-Age=3600; Domain=tile.openstreetmap.org; Path=/'; # FIXME - Future TOTP Token
-  "test" ''; # Do not Set-Cookie if current is valid
+  include /etc/nginx/conf.d/tile_qos_cookies.map;
 }
 
 map $http_user_agent $approved_scraper {
