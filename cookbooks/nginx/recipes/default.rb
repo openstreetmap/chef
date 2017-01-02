@@ -43,7 +43,7 @@ directory "/var/cache/nginx/proxy-cache" do
 end
 
 service "nginx" do
-  action [:enable, :start]
+  action [:enable]
   supports :status => true, :restart => true, :reload => true
   subscribes :restart, "template[/etc/nginx/nginx.conf]"
 end
