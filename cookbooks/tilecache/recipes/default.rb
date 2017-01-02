@@ -33,8 +33,13 @@ end
 package "xz-utils"
 package "openssl"
 
+# oathtool for QoS token
+package "oathtool"
+
 tilecaches = search(:node, "roles:tilecache").sort_by { |n| n[:hostname] }
 tilerenders = search(:node, "roles:tile").sort_by { |n| n[:hostname] }
+
+tilecache_tokens = data_bag_item("tilecache", "tokens")
 
 tilecaches.each do |cache|
   cache.ipaddresses(:family => :inet, :role => :external).sort.each do |address|
@@ -91,6 +96,27 @@ end
 nginx_site "tile-ssl" do
   template "nginx_tile_ssl.conf.erb"
   variables :certificate => certificate, :resolvers => resolvers, :caches => tilecaches
+end
+
+template "/usr/local/bin/nginx_generate_tilecache_qos_map" do
+  source "nginx_generate_tilecache_qos_map.erb"
+  owner "root"
+  group "root"
+  mode 0o750
+  variables tokens: => tilecache_tokens
+end
+
+template "/etc/cron.d/tilecache" do
+  source "cron.erb"
+  owner "root"
+  group "root"
+  mode 0o644
+end
+
+execute 'execute_nginx_generate_tilecache_qos_map' do
+  command '/usr/local/bin/nginx_generate_tilecache_qos_map'
+  creates '/etc/nginx/conf.d/tile_qos_rates.map'
+  action :run
 end
 
 service "nginx-certificate-restart" do
