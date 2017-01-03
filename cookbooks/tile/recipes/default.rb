@@ -24,6 +24,7 @@ include_recipe "postgresql"
 include_recipe "tools"
 
 blocks = data_bag_item("tile", "blocks")
+web_passwords = data_bag_item("web", "passwords")
 
 apache_module "alias"
 apache_module "cgi"
@@ -116,6 +117,9 @@ end
 
 package "python-cairo"
 package "python-mapnik"
+package "python-setuptools"
+
+easy_install_package "pyotp"
 
 package "fonts-noto-cjk"
 package "fonts-noto-hinted"
@@ -133,7 +137,7 @@ template "/srv/tile.openstreetmap.org/cgi-bin/export" do
   owner "tile"
   group "tile"
   mode 0o755
-  variables :blocks => blocks
+  variables :blocks => blocks, :totp_key => web_passwords["totp_key"]
 end
 
 template "/srv/tile.openstreetmap.org/cgi-bin/debug" do
