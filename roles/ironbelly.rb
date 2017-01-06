@@ -78,7 +78,7 @@ default_attributes(
     }
   },
   :planet => {
-    :replication => "enabled"
+    :replication => "disabled"
   },
   :rsyncd => {
     :modules => {
