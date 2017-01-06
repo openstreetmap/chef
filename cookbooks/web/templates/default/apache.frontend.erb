@@ -6,7 +6,7 @@
   # Basic server configuration
   #
   ServerName <%= node[:fqdn] %>
-  ServerAlias api.openstreetmap.org www.openstreetmap.org
+  ServerAlias api.openstreetmap.org www.openstreetmap.org 127.0.0.1
   ServerAdmin webmaster@openstreetmap.org
 <% if port == 443 -%>
 
