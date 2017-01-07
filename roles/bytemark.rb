@@ -29,8 +29,7 @@ default_attributes(
   :web => {
     :backends => %w(rails4 rails5),
     :fileserver => "grisu",
-    :readonly_database_host => "katla.bm.openstreetmap.org",
-    :memcached_servers => %w(rails4.bm rails5.bm)
+    :readonly_database_host => "katla.bm.openstreetmap.org"
   }
 )
 
