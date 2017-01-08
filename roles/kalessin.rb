@@ -5,7 +5,7 @@ default_attributes(
   :networking => {
     :interfaces => {
       :external_ipv4 => {
-        :interface => "eth0",
+        :interface => "ens3",
         :role => :external,
         :family => :inet,
         :address => "185.66.195.245",
@@ -13,7 +13,7 @@ default_attributes(
         :gateway => "185.66.195.241"
       },
       :external_ipv6 => {
-        :interface => "eth0",
+        :interface => "ens3",
         :role => :external,
         :family => :inet6,
         :address => "2a03:2260:2000:1::5",
