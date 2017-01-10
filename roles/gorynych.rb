@@ -18,9 +18,9 @@ default_attributes(
         :interface => "eth1",
         :role => :external,
         :family => :inet,
-        :address => "130.193.62.73",
-        :prefix => "29",
-        :gateway => "130.193.62.78"
+        :address => "5.45.248.21",
+        :prefix => "30",
+        :gateway => "5.45.248.22"
       },
       :external_ipv6 => {
         :interface => "eth1",
