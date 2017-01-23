@@ -81,7 +81,13 @@ remote_directory "/srv/munin.openstreetmap.org" do
   files_owner "root"
   files_group "root"
   files_mode 0o644
-  purge true
+end
+
+# directory to put dumped files in
+directory "/srv/munin.openstreetmap.org/dumps" do
+  owner "www-data"
+  group "www-data"
+  mode 0o755
 end
 
 apache_site "munin.openstreetmap.org" do
@@ -90,6 +96,21 @@ end
 
 template "/etc/cron.daily/munin-backup" do
   source "backup.cron.erb"
+  owner "root"
+  group "root"
+  mode 0o755
+end
+
+# simple shell script to dump RRD data to a file
+cookbook_file "/usr/local/bin/rrddump" do
+  source "rrddump.sh"
+  owner "root"
+  group "root"
+  mode 0o755
+end
+
+template "/etc/cron.d/rrddump" do
+  source "rrddump.cron.erb"
   owner "root"
   group "root"
   mode 0o755
