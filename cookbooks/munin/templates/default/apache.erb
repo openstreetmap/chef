@@ -20,11 +20,16 @@
 
 	RewriteEngine on
 	RewriteCond %{REQUEST_URI} !^/static/
+	RewriteCond %{REQUEST_URI} !^/dumps/
 	RewriteRule ^(/.*\.html)?$ /munin-cgi/munin-cgi-html/$1 [PT]
 </VirtualHost>
 
 <Directory /srv/munin.openstreetmap.org>
 	Require all granted
+</Directory>
+
+<Directory /srv/munin.openstreetmap.org/dumps>
+	Options +Indexes
 </Directory>
 
 <Directory /etc/munin/static>
