@@ -1,0 +1,3 @@
+MAILTO=zerebubuth@gmail.com
+# do the dump in the early hours of the morning
+43 3 * * * www-data nice /usr/local/bin/rrddump > /srv/munin.openstreetmap.org/dumps/`date "+munin-data-%Y-%m-%d.tar.gz"`
