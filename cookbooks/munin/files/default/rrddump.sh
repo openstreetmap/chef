@@ -2,16 +2,18 @@
 
 RRD_DIR=/var/lib/munin/openstreetmap
 DIR=`mktemp -d`
-NPROCS=8
 
 function cleanup {
-rm -rf "$DIR"
+  rm -rf "$DIR"
 }
 
 trap cleanup EXIT
 
 cd "$RRD_DIR"
-find -name "*.rrd" -print0 | xargs --null --max-procs=$NPROCS -I {} rrdtool dump {} "$DIR/{}.xml"
+for f in *.rrd; do
+  rrdtool dump "$f" "$DIR/${f}.xml"
+  touch -r "$f" "$DIR/${f}.xml"
+done
 
 cd "$DIR"
 find -name "*.xml" -print0 | tar zcf - --null -T -
