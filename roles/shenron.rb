@@ -71,5 +71,6 @@ run_list(
   "role[dns]",
   "role[geodns]",
   "role[chef-repository]",
+  "recipe[blogs]",
   "recipe[openvpn]"
 )
