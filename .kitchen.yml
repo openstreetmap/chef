@@ -28,6 +28,10 @@ suites:
   - name: bind
     run_list:
       - recipe[bind::default]
+  - name: blogs
+    run_list:
+      - recipe[accounts::default]
+      - recipe[blogs::default]
   - name: forum
     run_list:
       - recipe[accounts::default]
