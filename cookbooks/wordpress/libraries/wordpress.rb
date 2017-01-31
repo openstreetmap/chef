@@ -1,11 +1,11 @@
-require "chef/mixin/command"
+require "chef/mixin/shell_out"
 
 require "httpclient"
 require "php_serialize"
 
 class Chef
   module Wordpress
-    extend Chef::Mixin::Command
+    extend Chef::Mixin::ShellOut
 
     @api_responses = {}
     @svn_responses = {}
@@ -35,10 +35,9 @@ class Chef
 
       def svn_cat(url)
         unless @svn_responses[url]
-          status, stdout, stderr = output_of_command("svn cat #{url}", {})
-          handle_command_failures(status, "STDOUT: #{stdout}\nSTDERR: #{stderr}", :output_on_failure => true)
+          result = shell_out!("svn", "cat", url)
 
-          @svn_responses[url] = stdout.force_encoding("UTF-8")
+          @svn_responses[url] = result.stdout.force_encoding("UTF-8")
         end
 
         @svn_responses[url]

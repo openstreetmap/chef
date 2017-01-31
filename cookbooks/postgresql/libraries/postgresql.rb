@@ -1,8 +1,8 @@
-require "chef/mixin/command"
+require "chef/mixin/shell_out"
 
 class Chef
   class PostgreSQL
-    include Chef::Mixin::Command
+    include Chef::Mixin::ShellOut
 
     TABLE_PRIVILEGES = [
       :select, :insert, :update, :delete, :truncate, :references, :trigger
@@ -16,37 +16,42 @@ class Chef
       # Create argument array
       args = []
 
-      # Build the arguments
-      args.push("--command=\"#{options[:command].gsub('"', '\\"')}\"") if options[:command]
-      args.push("--file=#{options[:file]}") if options[:file]
+      # Add the cluster
+      args.push("--cluster")
+      args.push(@cluster)
 
-      # Get the database to use
-      database = options[:database] || "template1"
+      # Set output format
+      args.push("--no-align") unless options.fetch(:align, true)
 
-      # Build the command to run
-      command = "/usr/bin/psql --cluster #{@cluster} #{args.join(' ')} #{database}"
+      # Add any SQL command to execute
+      if options[:command]
+        args.push("--command")
+        args.push(options[:command])
+      end
+
+      # Add any file to execute SQL commands from
+      if options[:file]
+        args.push("--file")
+        args.push(options[:file])
+      end
+
+      # Add the database name
+      args.push(options[:database] || "template1")
 
       # Get the user and group to run as
       user = options[:user] || "postgres"
       group = options[:group] || "postgres"
 
       # Run the command
-      run_command(:command => command, :user => user, :group => group)
+      shell_out!("/usr/bin/psql", *args, :user => user, :group => group)
     end
 
     def query(sql, options = {})
-      # Get the database to use
-      database = options[:database] || "template1"
-
-      # Construct the command string
-      command = "/usr/bin/psql --cluster #{@cluster} --no-align --command='#{sql}' #{database}"
-
       # Run the query
-      status, stdout, stderr = output_of_command(command, :user => "postgres", :group => "postgres")
-      handle_command_failures(status, "STDOUT: #{stdout}\nSTDERR: #{stderr}", :output_on_failure => true)
+      result = execute(options.merge(:command => sql, :align => false))
 
       # Split the output into lines
-      lines = stdout.split("\n")
+      lines = result.stdout.split("\n")
 
       # Remove the "(N rows)" line from the end
       lines.pop

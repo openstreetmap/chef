@@ -1,6 +1,10 @@
+require "chef/mixin/shell_out"
+
 class Chef
   class Provider
     class Subversion
+      extend Chef::Mixin::ShellOut
+
       def sync_command
         if current_repository_matches_target_repository?
           c = scm :update, @new_resource.svn_arguments, verbose, authentication, "-r#{revision_int}", @new_resource.destination
@@ -34,13 +38,7 @@ class Chef
 
       def svn_info
         command = scm(:info)
-        status, svn_info, error_message = output_of_command(command, run_options(:cwd => cwd))
-
-        unless [0, 1].include?(status.exitstatus)
-          handle_command_failures(status, "STDOUT: #{svn_info}\nSTDERR: #{error_message}")
-        end
-
-        svn_info
+        shell_out!(command, run_options(:cwd => cwd)).stdout
       end
     end
   end

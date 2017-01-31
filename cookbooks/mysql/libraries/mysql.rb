@@ -1,9 +1,9 @@
-require "chef/mixin/command"
+require "chef/mixin/shell_out"
 require "rexml/document"
 
 class Chef
   class MySQL
-    include Chef::Mixin::Command
+    include Chef::Mixin::ShellOut
 
     USER_PRIVILEGES = [
       :select, :insert, :update, :delete, :create, :drop, :reload,
@@ -26,41 +26,39 @@ class Chef
 
       # Work out how to authenticate
       if options[:user]
-        args.push("--username=#{options[:user]}")
-        args.push("--password=#{options[:password]}") if options[:password]
+        args.push("--username")
+        args.push(options[:user])
+
+        if options[:password]
+          args.push("--password")
+          args.push(options[:password])
+        end
       else
         args.push("--defaults-file=/etc/mysql/debian.cnf")
       end
 
-      # Build the other arguments
-      args.push("--execute=\"#{options[:command]}\"") if options[:command]
+      # Set output format
+      args.push("--xml") if options[:xml]
 
-      # Get the database to use
-      database = options[:database] || "mysql"
+      # Add any SQL command to execute
+      if options[:command]
+        args.push("--execute")
+        args.push(options[:command])
+      end
 
-      # Build the command to run
-      command = "/usr/bin/mysql #{args.join(' ')} #{database}"
-
-      # Escape backticks in the command
-      command.gsub!(/`/, "\\\\`")
+      # Add the database name
+      args.push(options[:database] || "mysql")
 
       # Run the command
-      run_command(:command => command, :user => "root", :group => "root")
+      shell_out!("/usr/bin/mysql", *args, :user => "root", :group => "root")
     end
 
     def query(sql, options = {})
-      # Get the database to use
-      database = options[:database] || "mysql"
-
-      # Construct the command string
-      command = "/usr/bin/mysql --defaults-file=/etc/mysql/debian.cnf --xml --execute='#{sql}' #{database}"
-
       # Run the query
-      status, stdout, stderr = output_of_command(command, :user => "root", :group => "root")
-      handle_command_failures(status, "STDOUT: #{stdout}\nSTDERR: #{stderr}", :output_on_failure => true)
+      result = execute(options.merge(:command => sql, :xml => :true))
 
       # Parse the output
-      document = REXML::Document.new(stdout)
+      document = REXML::Document.new(result.stdout)
 
       # Create
       records = []
