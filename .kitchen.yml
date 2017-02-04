@@ -48,6 +48,11 @@ suites:
   - name: networking
     run_list:
       - recipe[networking::default]
+  - name: otrs
+    run_list:
+      - recipe[accounts::default]
+      - recipe[chef::default]
+      - role[otrs]
   - name: tools
     run_list:
       - recipe[tools::default]

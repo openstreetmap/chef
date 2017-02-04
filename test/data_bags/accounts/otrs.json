@@ -1,0 +1,7 @@
+{
+  "id": "otrs",
+  "uid": "513",
+  "comment": "otrs.openstreetmap.org",
+  "home": "/opt/otrs",
+  "manage_home": false
+}
