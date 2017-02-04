@@ -47,6 +47,16 @@ database_user = node[:otrs][:database_user]
 database_password = passwords[node[:otrs][:database_password]]
 site = node[:otrs][:site]
 
+postgresql_user database_user do
+  cluster database_cluster
+  password database_password
+end
+
+postgresql_database database_name do
+  cluster database_cluster
+  owner database_user
+end
+
 remote_file "#{Chef::Config[:file_cache_path]}/otrs-#{version}.tar.bz2" do
   source "http://ftp.otrs.org/pub/otrs/otrs-#{version}.tar.bz2"
   not_if { File.exist?("/opt/otrs-#{version}") }
@@ -108,18 +118,6 @@ execute "/opt/otrs/bin/otrs.RebuildConfig.pl" do
   user "root"
   group "root"
   not_if { File.exist?("/opt/otrs/Kernel/Config/Files/ZZZAAuto.pm") }
-end
-
-if node[:postgresql][:clusters][database_cluster]
-  postgresql_user database_user do
-    cluster database_cluster
-    password database_password
-  end
-
-  postgresql_database database_name do
-    cluster database_cluster
-    owner database_user
-  end
 end
 
 execute "/opt/otrs/bin/Cron.sh" do
