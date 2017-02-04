@@ -1,4 +1,4 @@
-default[:civicrm][:version] = "4.6.21"
+default[:civicrm][:version] = "4.6.26"
 
 default[:civicrm][:extensions][:cividiscount][:name] = "org.civicrm.module.cividiscount"
 default[:civicrm][:extensions][:cividiscount][:repository] = "git://github.com/dlobo/org.civicrm.module.cividiscount.git"
