@@ -19,7 +19,7 @@ if IO.popen(["git", "ls-files", "--unmerged"]).read.empty?
 
   cookbooks = files.grep(%r{(cookbooks/[^/]+)/}) { Regexp.last_match(1) }.uniq
 
-  ok &&= system("bundle", "exec", "foodcritic", "-f", "any", *cookbooks) unless cookbooks.empty?
+  ok &&= system("bundle", "exec", "foodcritic", *cookbooks) unless cookbooks.empty?
 
   system("git", "stash", "pop", "--quiet") if need_stash
 else
