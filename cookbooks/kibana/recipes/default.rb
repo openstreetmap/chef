@@ -73,7 +73,7 @@ end
 
 node[:kibana][:sites].each do |name, details|
   file "/etc/kibana/#{name}.yml" do
-    content YAML.dump(YAML.load(File.read("/opt/kibana-#{version}/config/kibana.yml")).merge(
+    content YAML.dump(YAML.safe_load(File.read("/opt/kibana-#{version}/config/kibana.yml")).merge(
                         "port" => details[:port],
                         "host" => "127.0.0.1",
                         "elasticsearch_url" => details[:elasticsearch_url],

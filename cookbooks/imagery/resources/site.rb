@@ -77,7 +77,7 @@ action :create do
   end
 
   layers = Dir.glob("/srv/imagery/layers/#{name}/*.yml").collect do |path|
-    YAML.load(::File.read(path))
+    YAML.safe_load(::File.read(path))
   end
 
   template "/srv/#{name}/imagery.js" do
