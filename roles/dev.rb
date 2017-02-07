@@ -113,10 +113,6 @@ default_attributes(
         :repository => "git://github.com/ppawel/openstreetmap-website.git",
         :revision => "owl-activity-tab"
       },
-      :groups => {
-        :repository => "git://github.com/osmlab/openstreetmap-website.git",
-        :revision => "groups-sketch"
-      },
       :comments => {
         :repository => "git://github.com/ukasiu/openstreetmap-website.git",
         :revision => "comments_list"
