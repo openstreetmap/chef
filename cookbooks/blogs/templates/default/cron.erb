@@ -1,1 +1,1 @@
-*/30 * * * * blogs /usr/local/bin/pluto -c /srv/blogs.openstreetmap.org build -d /srv/blogs.openstreetmap.org -t osm -o /srv/blogs.openstreetmap.org/build /srv/blogs.openstreetmap.org/planet.yml
+*/30 * * * * blogs rm /srv/blogs.openstreetmap.org/planet.db && /usr/local/bin/pluto -c /srv/blogs.openstreetmap.org build -d /srv/blogs.openstreetmap.org -t osm -o /srv/blogs.openstreetmap.org/build /srv/blogs.openstreetmap.org/planet.yml
