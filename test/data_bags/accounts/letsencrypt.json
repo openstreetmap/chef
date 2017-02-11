@@ -1,0 +1,6 @@
+{
+  "id": "letsencrypt",
+  "uid": "526",
+  "comment": "Let's Encrypt",
+  "manage_home": false
+}

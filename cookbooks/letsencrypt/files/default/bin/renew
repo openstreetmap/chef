@@ -1,0 +1,8 @@
+#!/bin/sh
+
+/usr/bin/certbot renew \
+    --quiet \
+    --config-dir /srv/acme.openstreetmap.org/config \
+    --work-dir /srv/acme.openstreetmap.org/work \
+    --logs-dir /srv/acme.openstreetmap.org/logs \
+    --renew-hook /srv/acme.openstreetmap.org/renew-hook

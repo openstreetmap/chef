@@ -36,6 +36,15 @@ suites:
     run_list:
       - recipe[accounts::default]
       - role[forum]
+  - name: letsencrypt
+    run_list:
+      - recipe[accounts::default]
+      - recipe[apt::default]
+      - role[letsencrypt]
+    attributes:
+      apt:
+        sources:
+          - openstreetmap
   - name: munin
     run_list:
       - recipe[munin::default]

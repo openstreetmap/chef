@@ -1,0 +1,20 @@
+#!/usr/bin/ruby
+
+require "json"
+require "tempfile"
+
+domain = ARGV.shift
+directory = ARGV.shift
+
+bag = {
+  :id => domain,
+  :key => File.read(File.join(directory, "privkey.pem")),
+  :certificate => File.read(File.join(directory, "fullchain.pem"))
+}
+
+file = Tempfile.new(["letsencrypt", ".json"])
+
+file.puts JSON.generate(bag)
+file.close
+
+system("/usr/bin/knife", "data", "bag", "from", "file", "letsencrypt", file.path)

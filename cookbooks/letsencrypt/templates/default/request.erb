@@ -1,0 +1,20 @@
+#!/bin/sh
+
+# DO NOT EDIT - This file is being maintained by Chef
+
+/usr/bin/certbot certonly \
+    --non-interactive \
+    --config-dir /srv/acme.openstreetmap.org/config \
+    --work-dir /srv/acme.openstreetmap.org/work \
+    --logs-dir /srv/acme.openstreetmap.org/logs \
+    --email operations@osmfoundation.org \
+    --agree-tos \
+<% @domains.each do |domain| -%>
+    --domain <%= domain %> \
+<% end -%>
+    --webroot \
+    --webroot-path /srv/acme.openstreetmap.org/html
+
+/srv/acme.openstreetmap.org/bin/upload \
+    <%= @domains.first %> \
+    /srv/acme.openstreetmap.org/config/live/<%= @domains.first %>
