@@ -29,6 +29,12 @@ git "/srv/stateofthemap.org" do
   group "root"
 end
 
+ssl_certificate "stateofthemap.org" do
+  domains ["stateofthemap.org", "www.stateofthemap.org",
+           "stateofthemap.com", "www.stateofthemap.com"]
+  notifies :reload, "service[apache2]"
+end
+
 apache_site "stateofthemap.org" do
   template "apache.erb"
   directory "/srv/stateofthemap.org"

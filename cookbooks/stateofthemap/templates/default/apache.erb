@@ -10,6 +10,7 @@
         CustomLog /var/log/apache2/stateofthemap.org-access.log combined
         ErrorLog /var/log/apache2/stateofthemap.org-error.log
 
+        RedirectPermanent /.well-known/acme-challenge/ http://acme.openstreetmap.org/.well-known/acme-challenge/
         RedirectPermanent / https://stateofthemap.org/
 </VirtualHost>
 
@@ -23,6 +24,8 @@
         ErrorLog /var/log/apache2/stateofthemap.org-error.log
 
         SSLEngine on
+        SSLCertificateFile /etc/ssl/certs/stateofthemap.org.pem
+        SSLCertificateKeyFile /etc/ssl/private/stateofthemap.org.key
 
         RedirectPermanent / https://stateofthemap.org/
 </VirtualHost>
@@ -35,6 +38,8 @@
         ErrorLog /var/log/apache2/stateofthemap.org-error.log
 
         SSLEngine on
+        SSLCertificateFile /etc/ssl/certs/stateofthemap.org.pem
+        SSLCertificateKeyFile /etc/ssl/private/stateofthemap.org.key
 
         DocumentRoot /srv/stateofthemap.org/html
 </VirtualHost>
