@@ -134,9 +134,7 @@ action :create do
     directory site_directory
     variables :aliases => Array(new_resource.aliases),
               :urls => new_resource.urls,
-              :ssl_enabled => new_resource.ssl_enabled,
-              :ssl_certificate => new_resource.ssl_certificate,
-              :ssl_certificate_chain => new_resource.ssl_certificate_chain
+              :ssl_enabled => new_resource.ssl_enabled
     reload_apache false
   end
 

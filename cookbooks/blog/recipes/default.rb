@@ -34,8 +34,6 @@ wordpress_site "blog.openstreetmap.org" do
            "blog.openstreetmap.net", "blog.openstreetmaps.org",
            "blog.osmfoundation.org"]
   ssl_enabled true
-  ssl_certificate "osmfoundation"
-  ssl_certificate_chain "startcom"
   directory "/srv/blog.openstreetmap.org/wp"
   database_name "osm-blog"
   database_user "osm-blog-user"
