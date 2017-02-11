@@ -248,40 +248,6 @@ wordpress_plugin "wp-sticky" do
   site "2012.stateofthemap.org"
 end
 
-directory "/srv/2016.stateofthemap.org" do
-  owner "wordpress"
-  group "wordpress"
-  mode 0o755
-end
-
-wordpress_site "2016.stateofthemap.org" do
-  aliases "2016.stateofthemap.com"
-  directory "/srv/2016.stateofthemap.org/wp"
-  ssl_enabled true
-  database_name "sotm2016"
-  database_user "sotm2016"
-  database_password passwords["sotm2016"]
-end
-
-wordpress_theme "aerodrome" do
-  site "2016.stateofthemap.org"
-  repository "git://git.openstreetmap.org/stateofthemap.git"
-  revision "theme-2012"
-end
-
-wordpress_plugin "leaflet-maps-marker" do
-  site "2016.stateofthemap.org"
-end
-
-wordpress_plugin "sitepress-multilingual-cms" do
-  site "2016.stateofthemap.org"
-  repository "git://chef.openstreetmap.org/sitepress-multilingual-cms.git"
-end
-
-wordpress_plugin "wp-sticky" do
-  site "2016.stateofthemap.org"
-end
-
 template "/etc/cron.daily/sotm-backup" do
   source "backup.cron.erb"
   owner "root"
