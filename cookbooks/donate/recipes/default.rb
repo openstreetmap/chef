@@ -82,6 +82,12 @@ template "/srv/donate.openstreetmap.org/scripts/db-connect.inc.php" do
   variables :passwords => passwords
 end
 
+ssl_certificate "donate.openstreetmap.org" do
+  domains ["donate.openstreetmap.org", "donate.openstreetmap.com",
+           "donate.openstreetmap.net", "donate.osm.org"]
+  notifies :reload, "service[apache2]"
+end
+
 apache_site "donate.openstreetmap.org" do
   template "apache.erb"
 end

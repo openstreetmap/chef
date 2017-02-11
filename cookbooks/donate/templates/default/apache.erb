@@ -3,40 +3,29 @@
 <% [80, 443].each do |port| -%>
 <VirtualHost *:<%= port %>>
 
-	ServerName donate.openstreetmap.org
+  ServerName donate.openstreetmap.org
   ServerAlias donate.openstreetmap.com
   ServerAlias donate.openstreetmap.net
-	ServerAlias donate.osm.org
-  ServerAlias donate.osm.org.za
-  ServerAlias donate.openstreetmap.org.za
-  ServerAlias donate.openstreetmap.org.uk
-  ServerAlias donate.openstreetmap.co.uk
+  ServerAlias donate.osm.org
 
-	ServerAdmin webmaster@openstreetmap.org
+  ServerAdmin webmaster@openstreetmap.org
 
 <% if port == 80 -%>
-   # Redirect to secure site
-   Redirect permanent / https://donate.openstreetmap.org/
+  RedirectPermanent /.well-known/acme-challenge/ http://acme.openstreetmap.org/.well-known/acme-challenge/
+  RedirectPermanent / https://donate.openstreetmap.org/
 <% end -%>
 <% if port == 443 -%>
-   #
-   # Enable SSL
-   #
-   SSLEngine on
-   SSLCertificateFile /etc/ssl/certs/openstreetmap.pem
-   SSLCertificateKeyFile /etc/ssl/private/openstreetmap.key
-   SSLCertificateChainFile /etc/ssl/certs/rapidssl.pem
-
-   # HSTS (mod_headers is required)
-   Header always set Strict-Transport-Security "max-age=300"
+  SSLEngine on
+  SSLCertificateFile /etc/ssl/certs/donate.openstreetmap.org.pem
+  SSLCertificateKeyFile /etc/ssl/private/donate.openstreetmap.org.key
 <% end -%>
 
-	CustomLog /var/log/apache2/donate.openstreetmap.org-access.log combined
-	ErrorLog /var/log/apache2/donate.openstreetmap.org-error.log
+  CustomLog /var/log/apache2/donate.openstreetmap.org-access.log combined
+  ErrorLog /var/log/apache2/donate.openstreetmap.org-error.log
 
-	Options -Indexes
+  Options -Indexes
 
-	DocumentRoot /srv/donate.openstreetmap.org
+  DocumentRoot /srv/donate.openstreetmap.org
 
   php_admin_value open_basedir /srv/donate.openstreetmap.org/:/usr/share/php/:/tmp/
   php_admin_value disable_functions "exec,shell_exec,system,passthru,popen,proc_open"
