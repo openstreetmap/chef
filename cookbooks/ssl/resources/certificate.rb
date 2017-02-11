@@ -41,6 +41,7 @@ action :create do
       content certificate
       backup false
       manage_symlink_source false
+      force_unlink true
     end
 
     file "/etc/ssl/private/#{name}.key" do
@@ -50,6 +51,7 @@ action :create do
       content key
       backup false
       manage_symlink_source false
+      force_unlink true
     end
   elsif fallback_certificate
     link "/etc/ssl/certs/#{name}.pem" do
