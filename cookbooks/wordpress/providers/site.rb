@@ -124,6 +124,10 @@ action :create do
     backup false
   end
 
+  ssl_certificate new_resource.name do
+    domains [new_resource.name] + Array(new_resource.aliases)
+  end
+
   apache_site new_resource.name do
     cookbook "wordpress"
     template "apache.erb"

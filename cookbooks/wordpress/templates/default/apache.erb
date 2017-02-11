@@ -12,6 +12,7 @@
   ErrorLog /var/log/apache2/<%= @name %>-error.log
 
 <% if @ssl_enabled -%>
+  RedirectPermanent /.well-known/acme-challenge/ http://acme.openstreetmap.org/.well-known/acme-challenge/
   RedirectPermanent / https://<%= @name %>/
 </VirtualHost>
 
