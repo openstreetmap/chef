@@ -40,6 +40,7 @@ action :create do
       mode 0o444
       content certificate
       backup false
+      manage_symlink_source false
     end
 
     file "/etc/ssl/private/#{name}.key" do
@@ -48,6 +49,7 @@ action :create do
       mode 0o440
       content key
       backup false
+      manage_symlink_source false
     end
   elsif fallback_certificate
     link "/etc/ssl/certs/#{name}.pem" do
