@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-include_recipe "apache"
+include_recipe "apache::ssl"
 
 package "munin"
 package "rrdcached"
@@ -88,6 +88,11 @@ directory "/srv/munin.openstreetmap.org/dumps" do
   owner "www-data"
   group "www-data"
   mode 0o755
+end
+
+ssl_certificate "munin.openstreetmap.org" do
+  domains ["munin.openstreetmap.org", "munin.osm.org"]
+  notifies :reload, "service[apache2]"
 end
 
 apache_site "munin.openstreetmap.org" do

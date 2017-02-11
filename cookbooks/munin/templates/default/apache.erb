@@ -1,6 +1,6 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
-<VirtualHost *:80>
+<VirtualHost *:443>
 	ServerName munin.openstreetmap.org
 	ServerAlias munin.osm.org
 	ServerAdmin webmaster@openstreetmap.org
@@ -8,7 +8,11 @@
 	CustomLog /var/log/apache2/munin.openstreetmap.org-access.log combined
 	ErrorLog /var/log/apache2/munin.openstreetmap.org-error.log
 
-	SetEnv RRDCACHED_ADDRESS /var/run/rrdcached.sock
+	SSLEngine on
+	SSLCertificateFile /etc/ssl/certs/munin.openstreetmap.org.pem
+	SSLCertificateKeyFile /etc/ssl/private/munin.openstreetmap.org.key
+
+        SetEnv RRDCACHED_ADDRESS /var/run/rrdcached.sock
 
 	DocumentRoot /srv/munin.openstreetmap.org
 	Alias /static/favicon.ico /srv/munin.openstreetmap.org/favicon.ico
@@ -22,6 +26,18 @@
 	RewriteCond %{REQUEST_URI} !^/static/
 	RewriteCond %{REQUEST_URI} !^/dumps/
 	RewriteRule ^(/.*\.html)?$ /munin-cgi/munin-cgi-html/$1 [PT]
+</VirtualHost>
+
+<VirtualHost *:80>
+	ServerName munin.openstreetmap.org
+	ServerAlias munin.osm.org
+	ServerAdmin webmaster@openstreetmap.org
+
+	CustomLog /var/log/apache2/munin.openstreetmap.org-access.log combined
+	ErrorLog /var/log/apache2/munin.openstreetmap.org-error.log
+
+	RedirectPermanent /.well-known/acme-challenge/ http://acme.openstreetmap.org/.well-known/acme-challenge/
+	RedirectPermanent / https://munin.openstreetmap.org/
 </VirtualHost>
 
 <Directory /srv/munin.openstreetmap.org>
