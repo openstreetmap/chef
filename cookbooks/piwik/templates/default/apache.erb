@@ -1,5 +1,22 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
+<VirtualHost *:443>
+	ServerName piwik.openstreetmap.org
+	ServerAlias piwik.osm.org
+	ServerAdmin webmaster@openstreetmap.org
+
+	SSLEngine on
+	SSLCertificateFile /etc/ssl/certs/piwik.openstreetmap.org.pem
+	SSLCertificateKeyFile /etc/ssl/private/piwik.openstreetmap.org.key
+
+	CustomLog /var/log/apache2/piwik.openstreetmap.org-access.log combined
+	ErrorLog /var/log/apache2/piwik.openstreetmap.org-error.log
+
+	Options -Indexes
+
+	DocumentRoot /srv/piwik.openstreetmap.org
+</VirtualHost>
+
 <VirtualHost *:80>
 	ServerName piwik.openstreetmap.org
 	ServerAlias piwik.osm.org
@@ -8,24 +25,8 @@
 	CustomLog /var/log/apache2/piwik.openstreetmap.org-access.log combined
 	ErrorLog /var/log/apache2/piwik.openstreetmap.org-error.log
 
-	Options -Indexes
-
-	DocumentRoot /srv/piwik.openstreetmap.org
-	RedirectPermanent /index.php https://piwik.openstreetmap.org/index.php
-</VirtualHost>
-
-<VirtualHost *:443>
-	ServerName piwik.openstreetmap.org
-	ServerAdmin webmaster@openstreetmap.org
-
-	SSLEngine on
-
-	CustomLog /var/log/apache2/piwik.openstreetmap.org-access.log combined
-	ErrorLog /var/log/apache2/piwik.openstreetmap.org-error.log
-
-	Options -Indexes
-
-	DocumentRoot /srv/piwik.openstreetmap.org
+	RedirectPermanent /.well-known/acme-challenge/ http://acme.openstreetmap.org/.well-known/acme-challenge/
+	RedirectPermanent / https://piwik.openstreetmap.org/
 </VirtualHost>
 
 <Directory /srv/piwik.openstreetmap.org>

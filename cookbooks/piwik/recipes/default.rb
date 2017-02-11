@@ -91,6 +91,12 @@ mysql_database "piwik" do
   permissions "piwik@localhost" => :all
 end
 
+ssl_certificate "piwik.openstreetmap.org" do
+  domains ["piwik.openstreetmap.org", "piwik.osm.org"]
+  fallback_certificate "openstreetmap"
+  notifies :reload, "service[apache2]"
+end
+
 apache_site "piwik.openstreetmap.org" do
   template "apache.erb"
 end
