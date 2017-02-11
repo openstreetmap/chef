@@ -56,6 +56,12 @@ execute "/srv/operations.osmfoundation.org" do
   group "nogroup"
 end
 
+ssl_certificate "operations.osmfoundation.org" do
+  domains "operations.osmfoundation.org"
+  fallback_certificate "osmfoundation"
+  notifies :reload, "service[apache2]"
+end
+
 apache_site "operations.osmfoundation.org" do
   template "apache.owg.erb"
   directory "/srv/operations.osmfoundation.org/_site"

@@ -20,12 +20,12 @@
 default_action :create
 
 property :name, String
-property :domains, Array, :required => true
+property :domains, [String, Array], :required => true
 property :fallback_certificate, String
 
 action :create do
   node.default[:letsencrypt][:certificates][name] = {
-    :domains => domains
+    :domains => Array(domains)
   }
 
   if letsencrypt
@@ -64,7 +64,7 @@ action :create do
       owner "root"
       group "root"
       mode 0o644
-      variables :domains => new_resource.domains
+      variables :domains => Array(new_resource.domains)
       not_if do
         ::File.exist?("/etc/ssl/certs/#{new_resource.name}.pem") && ::File.exist?("/etc/ssl/private/#{new_resource.name}.key")
       end
