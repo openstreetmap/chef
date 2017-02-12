@@ -103,6 +103,19 @@ end
 
 apache_module "headers"
 
+ssl_certificate "gps-tile.openstreetmap.org" do
+  domains ["gps-tile.openstreetmap.org",
+           "a.gps-tile.openstreetmap.org",
+           "b.gps-tile.openstreetmap.org",
+           "c.gps-tile.openstreetmap.org",
+           "gps.tile.openstreetmap.org",
+           "gps-a.tile.openstreetmap.org",
+           "gps-b.tile.openstreetmap.org",
+           "gps-c.tile.openstreetmap.org"]
+  fallback_certificate "tile.openstreetmap"
+  notifies :reload, "service[apache2]"
+end
+
 apache_site "gps-tile.openstreetmap.org" do
   template "apache.erb"
 end

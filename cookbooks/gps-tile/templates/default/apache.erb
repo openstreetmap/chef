@@ -3,16 +3,17 @@
 <% [80, 443].each do |port| -%>
 <VirtualHost *:<%= port %>>
   # Basic server configuration
-  ServerName <%= node[:fqdn] %>
+  ServerName gps-tile.openstreetmap.org
+  ServerAlias *.gps-tile.openstreetmap.org
   ServerAlias gps.tile.openstreetmap.org
   ServerAlias gps-*.tile.openstreetmap.org
-  ServerAlias gps-tile.openstreetmap.org
-  ServerAlias *.gps-tile.openstreetmap.org
   ServerAdmin webmaster@openstreetmap.org
 <% if port == 443 -%>
 
   # Enable SSL
   SSLEngine on
+  SSLCertificateFile /etc/ssl/certs/gps-tile.openstreetmap.org.pem
+  SSLCertificateKeyFile /etc/ssl/private/gps-tile.openstreetmap.org.key
 <% end -%>
 
   # Configure location of static files
@@ -20,6 +21,9 @@
 
   # Configure the CGI script that serves the tiles
   ScriptAlias /lines /srv/gps-tile.openstreetmap.org/updater/tile
+
+  # Redirect for ACMI challenge validation
+  RedirectPermanent /.well-known/acme-challenge/ http://acme.openstreetmap.org/.well-known/acme-challenge/
 
   # Temporary redirect for old CGI location
   RedirectPermanent /gps-lines/tile /lines
