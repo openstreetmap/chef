@@ -38,8 +38,8 @@ apache_module "rewrite"
 apache_module "wsgi"
 
 node[:osqa][:sites].each do |site|
-  name = site[:name]
-  directory = site[:directory] || "/srv/#{name}"
+  site_name = site[:name]
+  directory = site[:directory] || "/srv/#{site_name}"
   site_user = site[:user] || node[:osqa][:user]
   site_user = Etc.getpwuid(site_user).name if site_user.is_a?(Integer)
   site_group = site[:group] || node[:osqa][:group] || Etc.getpwnam(site_user).gid
@@ -49,7 +49,13 @@ node[:osqa][:sites].each do |site|
   database_password = site[:database_user] || node[:osqa][:database_password]
   backup_name = site[:backup]
 
-  apache_site name do
+  ssl_certificate site_name do
+    domains site_name
+    fallback_certificate "openstreetmap"
+    notifies :reload, "service[apache2]"
+  end
+
+  apache_site site_name do
     template "apache.erb"
     directory directory
     variables :user => site_user, :group => site_group
@@ -101,7 +107,7 @@ node[:osqa][:sites].each do |site|
     line.gsub!(/^( *)'PASSWORD': '.*',/, "\\1'PASSWORD': '#{database_password}',")
     line.gsub!(/^ALLOWED_HOSTS = .*/, "ALLOWED_HOSTS = ('help.openstreetmap.org',)")
     line.gsub!(/^CACHE_BACKEND = .*/, "CACHE_BACKEND = 'memcached://127.0.0.1:11211/'")
-    line.gsub!(%r{^APP_URL = 'http://'}, "APP_URL = 'http://#{name}'")
+    line.gsub!(%r{^APP_URL = 'http://'}, "APP_URL = 'https://#{site_name}'")
     line.gsub!(%r{^TIME_ZONE = 'America/New_York'}, "TIME_ZONE = 'Europe/London'")
     line.gsub!(/^DISABLED_MODULES = \[([^\]]+)\]/, "DISABLED_MODULES = [\\1, 'localauth', 'facebookauth', 'oauthauth']")
 
