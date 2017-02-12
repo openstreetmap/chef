@@ -7,8 +7,7 @@ default_attributes(
   },
   :apache => {
     :ssl => {
-      :certificate => "osmfoundation",
-      :certificate_chain => "startcom"
+      :certificate => "osmfoundation"
     }
   },
   :dhcpd => {

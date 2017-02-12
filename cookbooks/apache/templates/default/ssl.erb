@@ -7,7 +7,6 @@ SSLCipherSuite <%= node[:ssl][:ciphers] -%>
 
 SSLCertificateFile /etc/ssl/certs/<%= @certificate %>.pem
 SSLCertificateKeyFile /etc/ssl/private/<%= @certificate %>.key
-SSLCertificateChainFile /etc/ssl/certs/<%= @certificate_chain %>.pem
 
 SSLUseStapling On
 SSLStaplingResponderTimeout 5
