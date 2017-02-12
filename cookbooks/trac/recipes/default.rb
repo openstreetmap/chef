@@ -71,6 +71,12 @@ end
 
 apache_module "wsgi"
 
+ssl_certificate "trac.openstreetmap.org" do
+  domains "trac.openstreetmap.org"
+  fallback_certificate "openstreetmap"
+  notifies :reload, "service[apache2]"
+end
+
 apache_site site_name do
   template "apache.erb"
   directory site_directory
