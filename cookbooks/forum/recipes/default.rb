@@ -31,8 +31,10 @@ package "php-apcu"
 apache_module "php7.0"
 apache_module "rewrite"
 
-apache_site "default" do
-  action [:disable]
+ssl_certificate "forum.openstreetmap.org" do
+  domains ["forum.openstreetmap.org", "forum.osm.org"]
+  fallback_certificate "openstreetmap"
+  notifies :reload, "service[apache2]"
 end
 
 apache_site "forum.openstreetmap.org" do
