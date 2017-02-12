@@ -18,7 +18,7 @@
 #
 
 include_recipe "git"
-include_recipe "apache"
+include_recipe "apache::ssl"
 
 passwords = data_bag_item("dns", "passwords")
 
@@ -69,6 +69,12 @@ template "/srv/dns.openstreetmap.org/html/index.html" do
   group "root"
   mode 0o644
   variables :zones => zones
+end
+
+ssl_certificate "dns.openstreetmap.org" do
+  domains "dns.openstreetmap.org"
+  fallback_certificate "openstreetmap"
+  notifies :reload, "service[apache2]"
 end
 
 apache_site "dns.openstreetmap.org" do
