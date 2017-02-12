@@ -23,7 +23,7 @@ certs = data_bag_item("ssl", "certs")
 package "openssl"
 package "ssl-cert"
 
-%w(rapidssl startcom dhparam).each do |certificate|
+%w(letsencrypt rapidssl startcom dhparam).each do |certificate|
   cookbook_file "/etc/ssl/certs/#{certificate}.pem" do
     owner "root"
     group "root"
