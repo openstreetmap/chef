@@ -11,6 +11,8 @@
 
 <% if port == 443 -%>
   SSLEngine on
+  SSLCertificateFile /etc/ssl/certs/<%= @name %>.pem
+  SSLCertificateKeyFile /etc/ssl/private/<%= @name %>.key
 
   CustomLog /var/log/apache2/<%= @name %>-secure-access.log combined
   ErrorLog /var/log/apache2/<%= @name %>-secure-error.log
