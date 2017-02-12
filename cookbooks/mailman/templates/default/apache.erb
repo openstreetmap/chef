@@ -7,6 +7,7 @@
         CustomLog /var/log/apache2/<%= @name %>-access.log combined
         ErrorLog /var/log/apache2/<%= @name %>-error.log
 
+        RedirectPermanent /.well-known/acme-challenge/ http://acme.openstreetmap.org/.well-known/acme-challenge/
         RedirectPermanent / https://<%= @name %>/
 </VirtualHost>
 
@@ -16,6 +17,8 @@
 	ServerSignature On
 
         SSLEngine on
+        SSLCertificateFile /etc/ssl/certs/<%= @name %>.pem
+        SSLCertificateKeyFile /etc/ssl/private/<%= @name %>.key
 
 	CustomLog /var/log/apache2/<%= @name %>-access.log combined
 	ErrorLog /var/log/apache2/<%= @name %>-error.log
