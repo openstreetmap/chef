@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-include_recipe "apache"
+include_recipe "apache::ssl"
 
 blocks = data_bag_item("cgiirc", "blocks")
 
@@ -36,6 +36,12 @@ template "/etc/cgiirc/ipaccess" do
   group "root"
   mode 0o644
   variables :blocks => blocks["addresses"]
+end
+
+ssl_certificate "irc.openstreetmap.org" do
+  domains "irc.openstreetmap.org"
+  fallback_certificate "openstreetmap"
+  notifies :reload, "service[apache2]"
 end
 
 apache_site "irc.openstreetmap.org" do

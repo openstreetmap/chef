@@ -1,8 +1,12 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
-<VirtualHost *:80>
+<VirtualHost *:443>
 	ServerName <%= @name %>
 	ServerAdmin webmaster@openstreetmap.org
+
+	SSLEngine on
+	SSLCertificateFile /etc/ssl/certs/<%= @name %>.pem
+	SSLCertificateKeyFile /etc/ssl/private/<%= @name %>.key
 
 	CustomLog /var/log/apache2/<%= @name %>-access.log combined
 	ErrorLog /var/log/apache2/<%= @name %>-error.log
@@ -24,4 +28,15 @@
 		RemoveOutputFilter DEFLATE
 		SetEnv no-gzip
 	</IfModule>
+</VirtualHost>
+
+<VirtualHost *:80>
+	ServerName <%= @name %>
+	ServerAdmin webmaster@openstreetmap.org
+
+	CustomLog /var/log/apache2/<%= @name %>-access.log combined
+	ErrorLog /var/log/apache2/<%= @name %>-error.log
+
+	RedirectPermanent /.well-known/acme-challenge/ http://acme.openstreetmap.org/.well-known/acme-challenge/
+	RedirectPermanent / https://<%= @name %>/
 </VirtualHost>
