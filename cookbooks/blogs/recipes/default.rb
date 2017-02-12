@@ -59,6 +59,12 @@ execute "/srv/blogs.openstreetmap.org" do
   group "blogs"
 end
 
+ssl_certificate "blops.openstreetmap.org" do
+  domains "blogs.openstreetmap.org"
+  fallback_certificate "openstreetmap"
+  notifies :reload, "service[apache2]"
+end
+
 apache_site "blogs.openstreetmap.org" do
   template "apache.erb"
   directory "/srv/blogs.openstreetmap.org/build"
