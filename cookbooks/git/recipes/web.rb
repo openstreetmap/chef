@@ -32,6 +32,12 @@ template "/etc/gitweb.conf" do
   mode 0o644
 end
 
+ssl_certificate node[:git][:host] do
+  domains node[:git][:host]
+  fallback_certificate "openstreetmap"
+  notifies :reload, "service[apache2]"
+end
+
 apache_site node[:git][:host] do
   template "apache.erb"
   directory git_directory
