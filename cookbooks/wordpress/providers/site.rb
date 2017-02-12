@@ -126,6 +126,7 @@ action :create do
 
   ssl_certificate new_resource.name do
     domains [new_resource.name] + Array(new_resource.aliases)
+    only_if { new_resource.ssl_enabled }
   end
 
   apache_site new_resource.name do
