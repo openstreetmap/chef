@@ -139,6 +139,12 @@ Dir.glob("/opt/otrs/var/cron/*.dist") do |distname|
   end
 end
 
+ssl_certificate site do
+  domains site
+  fallback_certificate "openstreetmap"
+  notifies :reload, "service[apache2]"
+end
+
 apache_site site do
   template "apache.erb"
 end

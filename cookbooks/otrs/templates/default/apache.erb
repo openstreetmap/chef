@@ -7,6 +7,7 @@
         CustomLog /var/log/apache2/<%= @name %>-access.log combined
         ErrorLog /var/log/apache2/<%= @name %>-error.log
 
+        RedirectPermanent /.well-known/acme-challenge/ http://acme.openstreetmap.org/.well-known/acme-challenge/
         RedirectPermanent / https://otrs.openstreetmap.org/
 </VirtualHost>
 
@@ -18,6 +19,8 @@
         ErrorLog /var/log/apache2/<%= @name %>-error.log
 
         SSLEngine on
+        SSLCertificateFile /etc/ssl/certs/<%= @name %>.pem
+        SSLCertificateKeyFile /etc/ssl/private/<%= @name %>.key
 
         ScriptAlias /otrs/ /opt/otrs/bin/cgi-bin/
         Alias /otrs-web/ /opt/otrs/var/httpd/htdocs/
