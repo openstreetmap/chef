@@ -454,15 +454,19 @@ action :create do
 
   ports = new_resource.ssl_enabled ? [80, 443] : [80]
 
+  ssl_certificate new_resource.name do
+    domains [new_resource.name] + Array(new_resource.aliases)
+    only_if { new_resource.ssl_enabled }
+  end
+
   apache_site new_resource.name do
     cookbook "mediawiki"
     template "apache.erb"
     directory site_directory
     variables :aliases => Array(new_resource.aliases),
               :private => new_resource.private,
-              :ports => ports,
-              :ssl_certificate => new_resource.ssl_certificate,
-              :ssl_certificate_chain => new_resource.ssl_certificate_chain
+              :ssl_enabled => new_resource.ssl_enabled,
+              :ports => ports
     reload_apache false
   end
 

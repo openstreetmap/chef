@@ -21,6 +21,10 @@
 
   DocumentRoot <%= @directory %>
 
+<% if @ssl_enabled -%>
+  RedirectPermanent /.well-known/acme-challenge/ http://acme.openstreetmap.org/.well-known/acme-challenge/
+<% end -%>
+
   php_admin_value open_basedir <%= @directory %>/:/usr/share/php/:/tmp/
   #php_admin_value disable_functions "exec,shell_exec,system,passthru,popen,proc_open"
   php_value memory_limit 128M
@@ -57,6 +61,7 @@
   RewriteCond %{REQUEST_URI} !^/api\.php$
   RewriteCond %{REQUEST_URI} !^/opensearch_desc\.php$
   RewriteCond %{REQUEST_URI} !^/server-status
+  RewriteCond %{REQUEST_URI} !^/.well-known/
   RewriteCond %{LA-U:REQUEST_FILENAME} !-f
   RewriteCond %{LA-U:REQUEST_FILENAME} !-d
   RewriteRule ^/(.*) /wiki/$1 [R,L]

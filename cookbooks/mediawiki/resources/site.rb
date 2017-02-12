@@ -40,8 +40,6 @@ attribute :site_readonly, :kind_of => [String, TrueClass, FalseClass], :default 
 attribute :admin_user, :kind_of => String, :default => "Admin"
 attribute :admin_password, :kind_of => String, :required => true
 attribute :ssl_enabled, :kind_of => [TrueClass, FalseClass], :default => false
-attribute :ssl_certificate, :kind_of => String
-attribute :ssl_certificate_chain, :kind_of => String
 attribute :private_accounts, :kind_of => [TrueClass, FalseClass], :default => false
 attribute :private, :kind_of => [TrueClass, FalseClass], :default => false
 attribute :recaptcha_public_key, :kind_of => String
