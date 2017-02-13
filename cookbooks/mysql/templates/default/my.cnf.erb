@@ -3,6 +3,10 @@
 
 [<%= section %>]
 <% settings.each do |name, value| -%>
+<% if value.is_a?(TrueClass) -%>
+<%= name %>
+<% else -%>
 <%= name %> = <%= value %>
+<% end -%>
 <% end -%>
 <% end -%>
