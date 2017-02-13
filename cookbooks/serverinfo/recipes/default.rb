@@ -66,6 +66,12 @@ execute "/srv/hardware.openstreetmap.org" do
   group "nogroup"
 end
 
+ssl_certificate "hardware.openstreetmap.org" do
+  domains "hardware.openstreetmap.org"
+  fallback_certificate "openstreetmap"
+  notifies :reload, "service[apache2]"
+end
+
 apache_site "hardware.openstreetmap.org" do
   template "apache.erb"
   directory "/srv/hardware.openstreetmap.org/_site"
