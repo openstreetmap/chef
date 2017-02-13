@@ -80,14 +80,14 @@ template "/etc/sudoers.d/taginfo" do
 end
 
 node[:taginfo][:sites].each do |site|
-  name = site[:name]
-  directory = site[:directory] || "/srv/#{name}"
+  site_name = site[:name]
+  directory = site[:directory] || "/srv/#{site_name}"
   description = site[:description]
   about = site[:about]
   icon = site[:icon]
   contact = site[:contact]
 
-  directory "/var/log/taginfo/#{name}" do
+  directory "/var/log/taginfo/#{site_name}" do
     owner "taginfo"
     group "taginfo"
     mode 0o755
@@ -126,13 +126,13 @@ node[:taginfo][:sites].each do |site|
   settings = Chef::DelayedEvaluator.new do
     settings = JSON.parse(IO.read("#{directory}/taginfo/taginfo-config-example.json"))
 
-    settings["instance"]["url"] = "http://#{name}/"
+    settings["instance"]["url"] = "http://#{site_name}/"
     settings["instance"]["description"] = description
     settings["instance"]["about"] = about
     settings["instance"]["icon"] = "/img/logo/#{icon}.png"
     settings["instance"]["contact"] = contact
     settings["instance"]["access_control_allow_origin"] = ""
-    settings["logging"]["directory"] = "/var/log/taginfo/#{name}"
+    settings["logging"]["directory"] = "/var/log/taginfo/#{site_name}"
     settings["opensearch"]["shortname"] = "Taginfo"
     settings["opensearch"]["contact"] = "webmaster@openstreetmap.org"
     settings["sources"]["download"] = ""
@@ -231,10 +231,16 @@ node[:taginfo][:sites].each do |site|
     owner "taginfo"
     group "taginfo"
     mode 0o755
-    variables :name => name, :directory => directory
+    variables :name => site_name, :directory => directory
   end
 
-  apache_site name do
+  ssl_certificate site_name do
+    domains site_name
+    fallback_certificate "openstreetmap"
+    notifies :reload, "service[apache2]"
+  end
+
+  apache_site site_name do
     template "apache.erb"
     directory "#{directory}/taginfo/web/public"
   end
