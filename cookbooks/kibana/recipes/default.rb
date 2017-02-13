@@ -91,6 +91,12 @@ node[:kibana][:sites].each do |name, details|
     supports :status => true, :restart => true, :reload => false
   end
 
+  ssl_certificate details[:site] do
+    domains details[:site]
+    fallback_certificate "openstreetmap"
+    notifies :reload, "service[apache2]"
+  end
+
   apache_site details[:site] do
     template "apache.erb"
     variables details.merge(:passwd => "/etc/kibana/#{name}.passwd")
