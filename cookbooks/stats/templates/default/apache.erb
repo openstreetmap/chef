@@ -29,6 +29,12 @@
 	RedirectPermanent / https://stats.openstreetmap.org/
 </VirtualHost>
 
+<Directory <%= @directory %>>
+	Options None
+	AllowOverride None
+	Require all granted
+</Directory>
+
 <Directory /var/lib/awstats>
 	Options None
 	AllowOverride None
