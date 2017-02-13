@@ -20,7 +20,7 @@
 require "yaml"
 require "securerandom"
 
-include_recipe "apache"
+include_recipe "apache::ssl"
 include_recipe "passenger"
 include_recipe "git"
 include_recipe "mysql"
@@ -201,6 +201,11 @@ if node[:postgresql][:clusters][:"9.5/main"]
         notifies :run, "execute[#{rails_directory}]"
       end
 
+      ssl_certificate site_name do
+        domains [site_name] + site_aliases
+        notifies :reload, "service[apache2]"
+      end
+
       apache_site site_name do
         template "apache.rails.erb"
         variables :name => site_name, :aliases => site_aliases, :secret_key_base => secret_key_base
@@ -239,6 +244,11 @@ if node[:postgresql][:clusters][:"9.5/main"]
     owner "apis"
     group "apis"
     mode 0o644
+  end
+
+  ssl_certificate "apis.dev.openstreetmap.org" do
+    domains "apis.dev.openstreetmap.org"
+    notifies :reload, "service[apache2]"
   end
 
   apache_site "apis.dev.openstreetmap.org" do

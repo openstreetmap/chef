@@ -1,5 +1,26 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
+<VirtualHost *:443>
+        ServerName <%= @name %>
+<% @aliases.each do |alias_name| -%>
+        ServerAlias <%= alias_name %>
+<% end -%>
+        ServerAdmin webmaster@openstreetmap.org
+
+        SSLEngine on
+        SSLCertificateFile /etc/ssl/certs/<%= @name %>.pem
+        SSLCertificateKeyFile /etc/ssl/private/<%= @name %>.key
+
+        CustomLog /var/log/apache2/<%= @name %>-access.log combined
+        ErrorLog /var/log/apache2/<%= @name %>-error.log
+
+        DocumentRoot /srv/<%= @name %>/public
+
+        RailsEnv production
+
+        SetEnv SECRET_KEY_BASE <%= @secret_key_base %>
+</VirtualHost>
+
 <VirtualHost *:80>
         ServerName <%= @name %>
 <% @aliases.each do |alias_name| -%>
@@ -7,14 +28,11 @@
 <% end -%>
         ServerAdmin webmaster@openstreetmap.org
 
-        DocumentRoot /srv/<%= @name %>/public
-
         CustomLog /var/log/apache2/<%= @name %>-access.log combined
         ErrorLog /var/log/apache2/<%= @name %>-error.log
 
-        RailsEnv production
-
-        SetEnv SECRET_KEY_BASE <%= @secret_key_base %>
+        RedirectPermanent /.well-known/acme-challenge/ http://acme.openstreetmap.org/.well-known/acme-challenge/
+        RedirectPermanent / https://<%= @name %>/
 </VirtualHost>
 
 <Directory /srv/<%= @name %>/public>
