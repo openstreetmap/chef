@@ -8,6 +8,7 @@
 	CustomLog /var/log/apache2/chef.openstreetmap.org-access.log combined
 	ErrorLog /var/log/apache2/chef.openstreetmap.org-error.log
 
+	RedirectPermanent /.well-known/acme-challenge/ http://acme.openstreetmap.org/.well-known/acme-challenge/
 	Redirect permanent / https://chef.openstreetmap.org/
 </VirtualHost>
 
@@ -20,6 +21,8 @@
 
 	SSLEngine on
 	SSLProxyEngine on
+	SSLCertificateFile /etc/ssl/certs/chef.openstreetmap.org.pem
+	SSLCertificateKeyFile /etc/ssl/private/chef.openstreetmap.org.key
 
 	ProxyPass / https://<%= node[:fqdn] %>:4443/
 </VirtualHost>

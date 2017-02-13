@@ -78,6 +78,12 @@ end
 apache_module "alias"
 apache_module "proxy_http"
 
+ssl_certificate "chef.openstreetmap.org" do
+  domains ["chef.openstreetmap.org", "chef.osm.org"]
+  fallback_certificate "openstreetmap"
+  notifies :reload, "service[apache2]"
+end
+
 apache_site "chef.openstreetmap.org" do
   template "apache.erb"
 end
