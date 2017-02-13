@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-include_recipe "apache"
+include_recipe "apache::ssl"
 
 package "awstats"
 package "libgeo-ipfree-perl"
@@ -71,6 +71,12 @@ cookbook_file "/srv/stats.openstreetmap.org/robots.txt" do
   owner "root"
   group "root"
   mode 0o644
+end
+
+ssl_certificate "stats.openstreetmap.org" do
+  domains ["stats.openstreetmap.org", "stats.osm.org"]
+  fallback_certificate "openstreetmap"
+  notifies :reload, "service[apache2]"
 end
 
 apache_site "stats.openstreetmap.org" do
