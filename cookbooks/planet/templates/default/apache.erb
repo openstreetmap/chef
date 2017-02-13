@@ -5,9 +5,13 @@
         ServerName planet.openstreetmap.org
         ServerAlias planet.osm.org
         ServerAdmin webmaster@openstreetmap.org
-<% if port == 443 -%>
 
+<% if port == 443 -%>
         SSLEngine on
+        SSLCertificateFile /etc/ssl/certs/planet.openstreetmap.org.pem
+        SSLCertificateKeyFile /etc/ssl/private/planet.openstreetmap.org.key
+<% else -%>
+        RedirectPermanent /.well-known/acme-challenge/ http://acme.openstreetmap.org/.well-known/acme-challenge/
 <% end -%>
 
         CustomLog /var/log/apache2/planet.openstreetmap.org-access.log combined

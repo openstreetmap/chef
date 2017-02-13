@@ -91,6 +91,12 @@ apache_module "cgid"
 apache_module "rewrite"
 apache_module "proxy_http"
 
+ssl_certificate "planet.openstreetmap.org" do
+  domains ["planet.openstreetmap.org", "planet.osm.org"]
+  fallback_certificate "openstreetmap"
+  notifies :reload, "service[apache2]"
+end
+
 apache_site "planet.openstreetmap.org" do
   template "apache.erb"
 end
