@@ -1,6 +1,8 @@
 server {
-    listen [::]:80;
-    listen [::]:443 ssl;
+    listen [::]:80 ipv6only=on;
+    listen *:80;
+    listen [::]:443 ipv6only=on ssl;
+    listen *:443 ssl;
     server_name  <%= @name %> a.<%= @name %> b.<%= @name %> c.<%= @name %><% @aliases.each do |alias_name| %> <%= alias_name %> a.<%= alias_name %> b.<%= alias_name %> c.<%= alias_name %><%- end -%>;
 
     ssl_certificate /etc/ssl/certs/<%= @name %>.pem;

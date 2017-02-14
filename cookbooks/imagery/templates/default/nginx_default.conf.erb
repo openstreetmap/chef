@@ -1,5 +1,6 @@
 server {
-    listen [::]:80 ipv6only=off fastopen=1024 default_server;
+    listen [::]:80 ipv6only=on fastopen=1024 default_server;
+    listen *:80 fastopen=1024 default_server;
     server_name  _;
     default_type text/html;
     return 404 '<html><head><title>404 Not Found</title></head><body bgcolor="white"><center><h1>404 Not Found</h1></center><hr><center>default imagery server vhost. Please use correct URL.</center></body></html>';
