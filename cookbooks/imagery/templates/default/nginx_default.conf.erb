@@ -1,5 +1,5 @@
 server {
-    listen [::]:80 ipv6only=on fastopen=1024 default_server;
+    listen [::]:80 fastopen=1024 default_server;
     listen *:80 fastopen=1024 default_server;
     server_name  _;
     default_type text/html;
