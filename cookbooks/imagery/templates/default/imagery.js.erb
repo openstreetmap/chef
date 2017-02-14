@@ -3,15 +3,15 @@ function createMap(divName) {
   var map = L.map(divName).fitBounds(<%= @bbox.to_json %>);
 
   // Create a layer switcher
-  var layers = L.control.layers(null, null, {collapsed:false});
+  var layers = L.control.layers(null, null, {collapsed:false}).addTo(map);
 
   // Add OpenStreetMap layer
   layers.addBaseLayer(L.tileLayer("//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution: "© <a target=\"_parent\" href=\"http://www.openstreetmap.org\">OpenStreetMap</a> and contributors, under an <a target=\"_parent\" href=\"http://www.openstreetmap.org/copyright\">open license</a>",
     maxZoom: 19
   }), "OpenStreetMap");
-
   <% @layers.sort_by { |layer| layer[:name] }.each do |layer| -%>
+
   // Create <%= layer[:name] %> layer
   var <%= layer[:name] %> = L.tileLayer(<%= layer[:url].to_json %>, {
     attribution: <%= layer[:attribution].to_json %>,
@@ -31,8 +31,8 @@ function createMap(divName) {
   <% end -%>
   <% end -%>
 
-  // Add the layer switch to the mao
-  layers.addTo(map);
+  // Add the permalink control
   map.addControl(new L.Control.Permalink());
+
   return map;
 }
