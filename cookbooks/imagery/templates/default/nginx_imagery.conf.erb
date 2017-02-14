@@ -1,8 +1,21 @@
 server {
     listen [::]:80;
+    listen [::]:443 ssl;
     server_name  <%= @name %> a.<%= @name %> b.<%= @name %> c.<%= @name %><% @aliases.each do |alias_name| %> <%= alias_name %> a.<%= alias_name %> b.<%= alias_name %> c.<%= alias_name %><%- end -%>;
 
+    ssl_certificate /etc/ssl/certs/<%= @name %>.pem;
+    ssl_certificate_key /etc/ssl/private/<%= @name %>.key;
+
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+    ssl_ciphers <%= node[:ssl][:ciphers] -%>;
+    ssl_prefer_server_ciphers on;
+    ssl_session_cache shared:SSL:50m;
+    ssl_session_timeout 30m;
+    ssl_stapling on;
+    ssl_dhparam /etc/ssl/certs/dhparam.pem;
+
     root "/srv/<%= @name %>";
+    rewrite ^/\.well-known/acme-challenge/(.*)$ http://acme.openstreetmap.org/.well-known/acme-challenge/$1 permanent;
 
     gzip on;
     gzip_types text/plain text/css application/json application/javascript application/x-javascript text/javascript text/xml application/xml application/rss+xml application/atom+xml application/rdf+xml image/svg+xml; # text/html is implicit

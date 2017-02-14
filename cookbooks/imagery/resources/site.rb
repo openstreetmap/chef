@@ -88,7 +88,13 @@ action :create do
     variables :bbox => bbox, :layers => layers
   end
 
-  nginx_site name do
+  base_domains = [name] + Array(aliases)
+
+  ssl_certificate new_resource.name do
+    domains base_domains.flat_map { |d| [d, "a.#{d}", "b.#{d}", "c.#{d}"] }
+  end
+
+  nginx_site new_resource.name do
     template "nginx_imagery.conf.erb"
     directory "/srv/imagery/#{name}"
     restart_nginx false
