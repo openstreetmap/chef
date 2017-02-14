@@ -47,7 +47,7 @@ action :create do
     mode 0o644
     content YAML.dump(:name => layer,
                       :title => title || layer,
-                      :url => "http://{s}.#{site}/layer/#{layer}/{z}/{x}/{y}.png",
+                      :url => "//{s}.#{site}/layer/#{layer}/{z}/{x}/{y}.png",
                       :attribution => copyright,
                       :default => default_layer,
                       :maxZoom => max_zoom,

@@ -6,7 +6,7 @@ function createMap(divName) {
   var layers = L.control.layers(null, null, {collapsed:false});
 
   // Add OpenStreetMap layer
-  layers.addBaseLayer(L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  layers.addBaseLayer(L.tileLayer("//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution: "© <a target=\"_parent\" href=\"http://www.openstreetmap.org\">OpenStreetMap</a> and contributors, under an <a target=\"_parent\" href=\"http://www.openstreetmap.org/copyright\">open license</a>",
     maxZoom: 19
   }), "OpenStreetMap");
