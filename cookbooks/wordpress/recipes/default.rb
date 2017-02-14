@@ -22,12 +22,10 @@ include_recipe "mysql"
 
 package "subversion"
 
-package "php5"
-package "php5-mysql"
+package "php"
+package "php-mysql"
 
-package "php-apc"
-
-apache_module "php5"
+apache_module "php7.0"
 apache_module "rewrite"
 
 fail2ban_filter "wordpress" do
