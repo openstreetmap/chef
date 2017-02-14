@@ -94,11 +94,15 @@ action :create do
     domains base_domains.flat_map { |d| [d, "a.#{d}", "b.#{d}", "c.#{d}"] }
   end
 
+  resolvers = node[:networking][:nameservers].map do |resolver|
+    IPAddr.new(resolver).ipv6? ? "[#{resolver}]" : resolver
+  end
+
   nginx_site new_resource.name do
     template "nginx_imagery.conf.erb"
     directory "/srv/imagery/#{name}"
     restart_nginx false
-    variables new_resource.to_hash
+    variables new_resource.to_hash.merge(:resolvers => resolvers)
   end
 end
 

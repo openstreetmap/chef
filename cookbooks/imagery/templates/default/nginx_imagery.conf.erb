@@ -13,6 +13,8 @@ server {
     ssl_session_timeout 30m;
     ssl_stapling on;
     ssl_dhparam /etc/ssl/certs/dhparam.pem;
+    resolver <%= @resolvers.join(" ") %>;
+    resolver_timeout 5s;
 
     root "/srv/<%= @name %>";
     rewrite ^/\.well-known/acme-challenge/(.*)$ http://acme.openstreetmap.org/.well-known/acme-challenge/$1 permanent;
