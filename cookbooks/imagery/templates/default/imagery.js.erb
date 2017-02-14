@@ -7,7 +7,7 @@ function createMap(divName) {
 
   // Add OpenStreetMap layer
   layers.addBaseLayer(L.tileLayer("//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    attribution: "© <a target=\"_parent\" href=\"http://www.openstreetmap.org\">OpenStreetMap</a> and contributors, under an <a target=\"_parent\" href=\"http://www.openstreetmap.org/copyright\">open license</a>",
+    attribution: "© <a target=\"_parent\" href=\"https://www.openstreetmap.org\">OpenStreetMap</a> and contributors, under an <a target=\"_parent\" href=\"https://www.openstreetmap.org/copyright\">open license</a>",
     maxZoom: 19
   }), "OpenStreetMap");
   <% @layers.sort_by { |layer| layer[:name] }.each do |layer| -%>
