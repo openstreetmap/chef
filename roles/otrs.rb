@@ -46,13 +46,13 @@ default_attributes(
   },
   :otrs => {
     :site => "otrs.openstreetmap.org",
-    :database_cluster => "9.3/main",
+    :database_cluster => "9.5/main",
     :database_name => "otrs",
     :database_user => "otrs",
     :database_password => "otrs"
   },
   :postgresql => {
-    :versions => ["9.3"]
+    :versions => ["9.5"]
   }
 )
 
