@@ -1,4 +1,6 @@
 <?php
-$_DB_H = mysql_connect('localhost','donate','<%= @passwords['database'] %>');
-mysql_select_db('donate', $_DB_H);
-mysql_query('SET NAMES \'utf8\'', $_DB_H);
+$_DB_H = new mysqli('localhost','donate','<%= @passwords['database'] %>','donate');
+if ($_DB_H->connect_errno) {
+    die('DB Connect Error: ' . $_DB_H->connect_errno);
+}
+$_DB_H->query('SET NAMES \'utf8\'');
