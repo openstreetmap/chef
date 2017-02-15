@@ -331,6 +331,17 @@ node[:nominatim][:fpm_pools].each do |name, data|
   end
 end
 
+ssl_certificate "nominatim.openstreetmap.org" do
+  domains ["nominatim.openstreetmap.org",
+           "nominatim.osm.org",
+           "nominatim.openstreetmap.com",
+           "nominatim.openstreetmap.net",
+           "nominatim.openstreetmaps.org",
+           "nominatim.openmaps.org"]
+  fallback_certificate "openstreetmap"
+  notifies :reload, "service[apache2]"
+end
+
 apache_site "nominatim.openstreetmap.org" do
   template "apache.erb"
   directory build_directory

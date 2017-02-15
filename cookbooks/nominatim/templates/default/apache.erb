@@ -5,18 +5,21 @@
     ServerName <%= node[:fqdn] %>
     ServerAlias nominatim.openstreetmap.org
     ServerAlias nominatim.osm.org
-    ServerAlias nominatim.openstreetmap.org
+    ServerAlias nominatim.openstreetmap.com
     ServerAlias nominatim.openstreetmap.net
     ServerAlias nominatim.openstreetmaps.org
     ServerAlias nominatim.openmaps.org
     ServerAdmin webmaster@openstreetmap.org
 
 <% if port == 443 -%>
-    #
     # Enable SSL
-    #
     SSLEngine on
     SSLProxyEngine on
+    SSLCertificateFile /etc/ssl/certs/nominatim.openstreetmap.org.pem
+    SSLCertificateKeyFile /etc/ssl/private/nominatim.openstreetmap.org.key
+<% else -%>
+    # Redirect ACME challenges for certificate issuance
+    RedirectPermanent /.well-known/acme-challenge/ http://acme.openstreetmap.org/.well-known/acme-challenge/
 <% end -%>
 
     # Remove Proxy request header to mitigate https://httpoxy.org/
