@@ -2,14 +2,6 @@ name "ridley"
 description "Master role applied to ridley"
 
 default_attributes(
-  :ssl => {
-    :certificates => %w(osmfoundation openstreetmap)
-  },
-  :apache => {
-    :ssl => {
-      :certificate => "osmfoundation"
-    }
-  },
   :dhcpd => {
     :first_address => "10.0.15.1",
     :last_address => "10.0.15.254"
