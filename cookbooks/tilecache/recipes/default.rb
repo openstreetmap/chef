@@ -19,9 +19,6 @@
 
 require "ipaddr"
 
-certificate = node[:tilecache][:ssl][:certificate]
-node.default[:ssl][:certificates] = node[:ssl][:certificates] | [certificate]
-
 include_recipe "ssl"
 include_recipe "squid"
 include_recipe "nginx"

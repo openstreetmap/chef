@@ -10,5 +10,3 @@ default[:tilecache][:ip_bucket_size] = 67108864
 default[:tilecache][:net_bucket_refill] = 8192
 # Per Class C bucket size
 default[:tilecache][:net_bucket_size] = 134217728
-
-default[:tilecache][:ssl][:certificate] = "tile.openstreetmap"
