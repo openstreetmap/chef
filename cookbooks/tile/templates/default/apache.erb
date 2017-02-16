@@ -43,9 +43,12 @@
   RewriteRule ^/(-?\d+)/(-?\d+)/(-?\d+)\.png/dirty/?$   /default/$1/$2/$3.png/dirty  [PT,T=text/plain,L]
 
   # Historical Files redirect
-  Redirect /processed_p.tar.bz2 http://planet.openstreetmap.org/historical-shapefiles/processed_p.tar.bz2
-  Redirect /shoreline_300.tar.bz2 http://planet.openstreetmap.org/historical-shapefiles/shoreline_300.tar.bz2
-  Redirect /world_boundaries-spherical.tgz http://planet.openstreetmap.org/historical-shapefiles/world_boundaries-spherical.tgz
+  RedirectPermanent /processed_p.tar.bz2 http://planet.openstreetmap.org/historical-shapefiles/processed_p.tar.bz2
+  RedirectPermanent /shoreline_300.tar.bz2 http://planet.openstreetmap.org/historical-shapefiles/shoreline_300.tar.bz2
+  RedirectPermanent /world_boundaries-spherical.tgz http://planet.openstreetmap.org/historical-shapefiles/world_boundaries-spherical.tgz
+
+  # Redirect ACME certificate challenges
+  RedirectPermanent /.well-known/acme-challenge/ http://acme.openstreetmap.org/.well-known/acme-challenge/
 </VirtualHost>
 
 <Directory /srv/tile.openstreetmap.org/html>
