@@ -50,8 +50,8 @@ server {
 
     proxy_buffers 8 64k;
 
-    ssl_certificate      /etc/ssl/certs/<%= @certificate %>.pem;
-    ssl_certificate_key  /etc/ssl/private/<%= @certificate %>.key;
+    ssl_certificate      /etc/ssl/certs/tile.openstreetmap.org.pem;
+    ssl_certificate_key  /etc/ssl/private/tile.openstreetmap.org.key;
 
     ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
     ssl_ciphers <%= node[:ssl][:ciphers] -%>;

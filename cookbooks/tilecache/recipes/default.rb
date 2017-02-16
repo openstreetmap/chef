@@ -114,17 +114,18 @@ execute "execute_nginx_generate_tilecache_qos_map" do
   action :run
 end
 
-nginx_site "tile-ssl" do
-  template "nginx_tile_ssl.conf.erb"
-  variables :certificate => certificate, :resolvers => resolvers, :caches => tilecaches
+ssl_certificate "tile.openstreetmap.org" do
+  domains ["tile.openstreetmap.org",
+           "a.tile.openstreetmap.org",
+           "b.tile.openstreetmap.org",
+           "c.tile.openstreetmap.org"]
+  fallback_certificate "tile.openstreetmap"
+  notifies :restart, "service[nginx]"
 end
 
-service "nginx-certificate-restart" do
-  service_name "nginx"
-  action :nothing
-  subscribes :restart, "cookbook_file[/etc/ssl/certs/rapidssl.pem]"
-  subscribes :restart, "file[/etc/ssl/certs/#{certificate}.pem]"
-  subscribes :restart, "file[/etc/ssl/private/#{certificate}.key]"
+nginx_site "tile-ssl" do
+  template "nginx_tile_ssl.conf.erb"
+  variables :resolvers => resolvers, :caches => tilecaches
 end
 
 template "/etc/logrotate.d/nginx" do
