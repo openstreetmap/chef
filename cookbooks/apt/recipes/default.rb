@@ -96,9 +96,15 @@ apt_source "nginx" do
   key "ABF5BD827BD9BF62"
 end
 
-apt_source "elasticsearch" do
+apt_source "elasticsearch1.7" do
   source_template "elasticsearch.list.erb"
   url "http://packages.elasticsearch.org/elasticsearch/1.7/debian"
+  key "D27D666CD88E42B4"
+end
+
+apt_source "elasticsearch2.x" do
+  source_template "elasticsearch.list.erb"
+  url "http://packages.elasticsearch.org/elasticsearch/2.x/debian"
   key "D27D666CD88E42B4"
 end
 

@@ -5,4 +5,6 @@ cluster.routing.allocation.disk.watermark.low: <%= node[:elasticsearch][:cluster
 cluster.routing.allocation.disk.watermark.high: <%= node[:elasticsearch][:cluster][:routing][:allocation][:disk][:watermark][:high] %>
 network.host: 127.0.0.1
 path.data: <%= node[:elasticsearch][:path][:data] %>
+<% if node[:elasticsearch][:script][:disable_dynamic] -%>
 script.disable_dynamic: <%= node[:elasticsearch][:script][:disable_dynamic] -%>
+<% end -%>
