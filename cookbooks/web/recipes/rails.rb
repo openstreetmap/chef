@@ -28,6 +28,14 @@ include_recipe "nodejs"
 web_passwords = data_bag_item("web", "passwords")
 db_passwords = data_bag_item("db", "passwords")
 
+ssl_certificate "www.openstreetmap.org" do
+  domains ["www.openstreetmap.org", "www.osm.org",
+           "api.openstreetmap.org", "api.osm.org",
+           "openstreetmap.org", "osm.org"]
+  fallback_certificate "openstreetmap"
+  notifies :reload, "service[apache2]"
+end
+
 nodejs_package "svgo"
 
 template "/etc/cron.hourly/passenger" do

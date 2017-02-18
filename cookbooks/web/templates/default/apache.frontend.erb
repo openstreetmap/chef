@@ -15,6 +15,8 @@
   #
   SSLEngine on
   SSLProxyEngine on
+  SSLCertificateFile /etc/ssl/certs/www.openstreetmap.org.pem
+  SSLCertificateKeyFile /etc/ssl/private/www.openstreetmap.org.key
 <% end -%>
 
   #
@@ -56,7 +58,7 @@
   # Block changeset scraper
   #
   RewriteCond %{HTTP_USER_AGENT} "OSMApp Tuner"
-  RewriteRule . - [F,L]  
+  RewriteRule . - [F,L]
 
   #
   # Block requests for the old 404 map tile
@@ -200,6 +202,11 @@
   ProxyPassMatch ^(/trace/[0-9]+/data(|/|.xml))$ balancer://backend$1
 
   #
+  # Redirect ACME certificate challenges
+  #
+  RedirectPermanent /.well-known/acme-challenge/ http://acme.openstreetmap.org/.well-known/acme-challenge/
+
+  #
   # Redirect trac and wiki requests to the right places
   #
   RedirectPermanent /trac/ http://trac.openstreetmap.org/
@@ -303,6 +310,8 @@
   ServerAlias *
 
   SSLEngine on
+  SSLCertificateFile /etc/ssl/certs/www.openstreetmap.org.pem
+  SSLCertificateKeyFile /etc/ssl/private/www.openstreetmap.org.key
 
   RedirectPermanent / https://www.openstreetmap.org/
 </VirtualHost>
