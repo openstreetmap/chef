@@ -32,7 +32,6 @@ ssl_certificate "www.openstreetmap.org" do
   domains ["www.openstreetmap.org", "www.osm.org",
            "api.openstreetmap.org", "api.osm.org",
            "openstreetmap.org", "osm.org"]
-  fallback_certificate "openstreetmap"
   notifies :reload, "service[apache2]"
 end
 

@@ -338,7 +338,6 @@ ssl_certificate "nominatim.openstreetmap.org" do
            "nominatim.openstreetmap.net",
            "nominatim.openstreetmaps.org",
            "nominatim.openmaps.org"]
-  fallback_certificate "openstreetmap"
   notifies :reload, "service[apache2]"
 end
 

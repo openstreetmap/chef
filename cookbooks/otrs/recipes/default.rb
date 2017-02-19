@@ -141,7 +141,6 @@ end
 
 ssl_certificate site do
   domains site
-  fallback_certificate "openstreetmap"
   notifies :reload, "service[apache2]"
 end
 

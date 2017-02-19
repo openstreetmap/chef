@@ -17,10 +17,6 @@
 # limitations under the License.
 #
 
-certificate = node[:apache][:ssl][:certificate]
-
-node.default[:ssl][:certificates] = node[:ssl][:certificates] | [certificate]
-
 include_recipe "apache"
 include_recipe "ssl"
 
@@ -28,11 +24,5 @@ apache_module "ssl"
 
 apache_conf "ssl" do
   template "ssl.erb"
-  variables :certificate => certificate
   notifies :reload, "service[apache2]"
 end
-
-apache = resources("service[apache2]")
-
-apache.subscribes(:restart, "file[/etc/ssl/certs/#{certificate}.pem]")
-apache.subscribes(:restart, "file[/etc/ssl/private/#{certificate}.key]")

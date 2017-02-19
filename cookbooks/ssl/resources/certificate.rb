@@ -21,7 +21,6 @@ default_action :create
 
 property :name, String
 property :domains, [String, Array], :required => true
-property :fallback_certificate, String
 
 action :create do
   node.default[:letsencrypt][:certificates][name] = {
@@ -52,14 +51,6 @@ action :create do
       backup false
       manage_symlink_source false
       force_unlink true
-    end
-  elsif fallback_certificate
-    link "/etc/ssl/certs/#{name}.pem" do
-      to "#{fallback_certificate}.pem"
-    end
-
-    link "/etc/ssl/private/#{name}.key" do
-      to "#{fallback_certificate}.key"
     end
   else
     template "/tmp/#{name}.ssl.cnf" do

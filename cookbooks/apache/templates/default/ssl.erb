@@ -3,11 +3,9 @@
 SSLProtocol All -SSLv2 -SSLv3
 
 SSLHonorCipherOrder On
-SSLCipherSuite <%= node[:ssl][:ciphers] -%>
-
-SSLCertificateFile /etc/ssl/certs/<%= @certificate %>.pem
-SSLCertificateKeyFile /etc/ssl/private/<%= @certificate %>.key
+SSLCipherSuite <%= node[:ssl][:ciphers] %>
 <% if node[:lsb][:release].to_f < 16.04 -%>
+
 SSLCertificateChainFile /etc/ssl/certs/letsencrypt.pem
 <% end -%>
 

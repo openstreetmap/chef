@@ -17,13 +17,10 @@
 # limitations under the License.
 #
 
-keys = data_bag_item("ssl", "keys")
-certs = data_bag_item("ssl", "certs")
-
 package "openssl"
 package "ssl-cert"
 
-%w(letsencrypt rapidssl startcom dhparam).each do |certificate|
+%w(letsencrypt dhparam).each do |certificate|
   cookbook_file "/etc/ssl/certs/#{certificate}.pem" do
     owner "root"
     group "root"
@@ -32,30 +29,12 @@ package "ssl-cert"
   end
 end
 
-["openstreetmap", "tile.openstreetmap", "osmfoundation"].each do |certificate|
-  if node[:ssl][:certificates].include?(certificate)
-    file "/etc/ssl/certs/#{certificate}.pem" do
-      owner "root"
-      group "root"
-      mode 0o444
-      content certs[certificate].join("\n")
-      backup false
-    end
+["openstreetmap", "tile.openstreetmap", "osmfoundation", "rapidssl", "startcom"].each do |certificate|
+  file "/etc/ssl/certs/#{certificate}.pem" do
+    action :delete
+  end
 
-    file "/etc/ssl/private/#{certificate}.key" do
-      owner "root"
-      group "ssl-cert"
-      mode 0o440
-      content keys[certificate].join("\n")
-      backup false
-    end
-  else
-    file "/etc/ssl/certs/#{certificate}.pem" do
-      action :delete
-    end
-
-    file "/etc/ssl/private/#{certificate}.key" do
-      action :delete
-    end
+  file "/etc/ssl/private/#{certificate}.key" do
+    action :delete
   end
 end

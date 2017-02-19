@@ -58,7 +58,6 @@ end
 
 ssl_certificate "operations.osmfoundation.org" do
   domains "operations.osmfoundation.org"
-  fallback_certificate "osmfoundation"
   notifies :reload, "service[apache2]"
 end
 

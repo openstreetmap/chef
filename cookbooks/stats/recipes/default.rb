@@ -75,7 +75,6 @@ end
 
 ssl_certificate "stats.openstreetmap.org" do
   domains ["stats.openstreetmap.org", "stats.osm.org"]
-  fallback_certificate "openstreetmap"
   notifies :reload, "service[apache2]"
 end
 

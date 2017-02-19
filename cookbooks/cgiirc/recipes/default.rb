@@ -40,7 +40,6 @@ end
 
 ssl_certificate "irc.openstreetmap.org" do
   domains "irc.openstreetmap.org"
-  fallback_certificate "openstreetmap"
   notifies :reload, "service[apache2]"
 end
 

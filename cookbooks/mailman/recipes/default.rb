@@ -43,7 +43,6 @@ apache_module "rewrite"
 
 ssl_certificate "lists.openstreetmap.org" do
   domains "lists.openstreetmap.org"
-  fallback_certificate "openstreetmap"
   notifies :reload, "service[apache2]"
 end
 

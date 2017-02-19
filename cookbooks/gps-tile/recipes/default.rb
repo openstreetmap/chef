@@ -112,7 +112,6 @@ ssl_certificate "gps-tile.openstreetmap.org" do
            "gps-a.tile.openstreetmap.org",
            "gps-b.tile.openstreetmap.org",
            "gps-c.tile.openstreetmap.org"]
-  fallback_certificate "tile.openstreetmap"
   notifies :reload, "service[apache2]"
 end
 

@@ -34,7 +34,6 @@ end
 
 ssl_certificate node[:git][:host] do
   domains node[:git][:host]
-  fallback_certificate "openstreetmap"
   notifies :reload, "service[apache2]"
 end
 

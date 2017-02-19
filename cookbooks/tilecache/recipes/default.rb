@@ -116,7 +116,6 @@ ssl_certificate "tile.openstreetmap.org" do
            "a.tile.openstreetmap.org",
            "b.tile.openstreetmap.org",
            "c.tile.openstreetmap.org"]
-  fallback_certificate "tile.openstreetmap"
   notifies :restart, "service[nginx]"
 end
 

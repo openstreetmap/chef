@@ -93,7 +93,6 @@ node[:kibana][:sites].each do |name, details|
 
   ssl_certificate details[:site] do
     domains details[:site]
-    fallback_certificate "openstreetmap"
     notifies :reload, "service[apache2]"
   end
 

@@ -28,6 +28,4 @@ default[:apache][:event][:max_connections_per_child] = 0
 
 default[:apache][:listen_address] = "*"
 
-default[:apache][:ssl][:certificate] = "openstreetmap"
-
 default[:apache][:buffered_logs] = true

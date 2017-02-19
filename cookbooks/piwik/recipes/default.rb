@@ -93,7 +93,6 @@ end
 
 ssl_certificate "piwik.openstreetmap.org" do
   domains ["piwik.openstreetmap.org", "piwik.osm.org"]
-  fallback_certificate "openstreetmap"
   notifies :reload, "service[apache2]"
 end
 

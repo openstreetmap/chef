@@ -68,7 +68,6 @@ end
 
 ssl_certificate "hardware.openstreetmap.org" do
   domains "hardware.openstreetmap.org"
-  fallback_certificate "openstreetmap"
   notifies :reload, "service[apache2]"
 end
 
