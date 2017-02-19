@@ -17,8 +17,6 @@
 # limitations under the License.
 #
 
-node.default[:ssl][:certificates] = node[:ssl][:certificates] | ["osmfoundation"]
-
 include_recipe "wordpress"
 
 passwords = data_bag_item("blog", "passwords")

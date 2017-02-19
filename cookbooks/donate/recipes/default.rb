@@ -17,8 +17,6 @@
 # limitations under the License.
 #
 
-node.default[:ssl][:certificates] = node[:ssl][:certificates] | ["openstreetmap"]
-
 include_recipe "apache::ssl"
 include_recipe "mysql"
 include_recipe "git"
