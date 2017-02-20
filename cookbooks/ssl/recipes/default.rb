@@ -28,13 +28,3 @@ package "ssl-cert"
     backup false
   end
 end
-
-["openstreetmap", "tile.openstreetmap", "osmfoundation", "rapidssl", "startcom"].each do |certificate|
-  file "/etc/ssl/certs/#{certificate}.pem" do
-    action :delete
-  end
-
-  file "/etc/ssl/private/#{certificate}.key" do
-    action :delete
-  end
-end
