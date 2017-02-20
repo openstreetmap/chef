@@ -20,7 +20,7 @@
 
 require "yaml"
 
-include_recipe "apache::ssl"
+include_recipe "apache"
 
 apache_module "proxy_http"
 

@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-include_recipe "apache::ssl"
+include_recipe "apache"
 
 # chef_package = "chef-server-core_#{node[:chef][:server][:version]}_amd64.deb"
 #

@@ -18,7 +18,7 @@
 #
 
 include_recipe "tools"
-include_recipe "apache::ssl"
+include_recipe "apache"
 include_recipe "memcached"
 
 package "python-django"

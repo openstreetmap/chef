@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-include_recipe "apache::ssl"
+include_recipe "apache"
 include_recipe "mysql"
 
 passwords = data_bag_item("piwik", "passwords")

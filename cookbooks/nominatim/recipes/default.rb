@@ -293,7 +293,7 @@ file "#{build_directory}/settings/ip_blocks.map" do
   mode 0o664
 end
 
-include_recipe "apache::ssl"
+include_recipe "apache"
 
 package "php"
 package "php-fpm"

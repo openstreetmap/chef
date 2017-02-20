@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-include_recipe "apache::ssl"
+include_recipe "apache"
 
 blocks = data_bag_item("cgiirc", "blocks")
 

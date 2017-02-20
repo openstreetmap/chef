@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-include_recipe "apache::ssl"
+include_recipe "apache"
 
 package "perl"
 package "pbzip2"

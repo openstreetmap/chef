@@ -19,7 +19,7 @@
 
 require "securerandom"
 
-include_recipe "apache::ssl"
+include_recipe "apache"
 
 package "mailman"
 

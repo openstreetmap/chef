@@ -18,7 +18,7 @@
 #
 
 include_recipe "git"
-include_recipe "apache::ssl"
+include_recipe "apache"
 
 passwords = data_bag_item("dns", "passwords")
 

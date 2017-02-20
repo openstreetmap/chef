@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+include_recipe "ssl"
+
 package "apache2"
 package "libwww-perl"
 
@@ -67,6 +69,12 @@ end
 
 apache_module "reqtimeout" do
   action [:disable]
+end
+
+apache_module "ssl"
+
+apache_conf "ssl" do
+  template "ssl.erb"
 end
 
 munin_plugin "apache_accesses"

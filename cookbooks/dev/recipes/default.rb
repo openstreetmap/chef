@@ -20,7 +20,7 @@
 require "yaml"
 require "securerandom"
 
-include_recipe "apache::ssl"
+include_recipe "apache"
 include_recipe "passenger"
 include_recipe "git"
 include_recipe "mysql"
