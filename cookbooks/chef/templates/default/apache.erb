@@ -25,4 +25,5 @@
 	SSLCertificateKeyFile /etc/ssl/private/chef.openstreetmap.org.key
 
 	ProxyPass / https://<%= node[:fqdn] %>:4443/
+	ProxyPreserveHost on
 </VirtualHost>

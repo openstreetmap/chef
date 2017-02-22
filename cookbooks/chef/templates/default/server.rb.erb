@@ -13,8 +13,8 @@ lb['web_ui_fqdn'] = "chef.openstreetmap.org"
 
 nginx['non_ssl_port'] = false
 nginx['ssl_port'] = 4443
-nginx['ssl_certificate'] = '/etc/ssl/certs/openstreetmap.pem'
-nginx['ssl_certificate_key'] = '/etc/ssl/private/openstreetmap.key'
+nginx['ssl_certificate'] = '/etc/ssl/certs/chef.openstreetmap.org.pem'
+nginx['ssl_certificate_key'] = '/etc/ssl/private/chef.openstreetmap.org.key'
 nginx['server_name'] = "chef.openstreetmap.org"
 
 opscode_erchef['base_resource_url'] = "https://chef.openstreetmap.org"
