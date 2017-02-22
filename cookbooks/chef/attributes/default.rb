@@ -5,4 +5,4 @@ default[:apt][:sources] = node[:apt][:sources] | ["opscode"]
 default[:chef][:server][:version] = "12.9.1-1"
 
 # Set the default client version
-default[:chef][:client][:version] = "12.17.44"
+default[:chef][:client][:version] = "12.19.33"
