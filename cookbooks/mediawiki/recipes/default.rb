@@ -26,9 +26,11 @@ include_recipe "git"
 package "php"
 package "php-cli"
 package "php-curl"
-package "php-mysql"
 package "php-gd"
 package "php-intl"
+package "php-mbstring"
+package "php-mysql"
+package "php-xml"
 
 # Mediawiki enhanced difference engine
 package "php-wikidiff2"
