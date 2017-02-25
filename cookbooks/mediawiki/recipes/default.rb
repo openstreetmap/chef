@@ -23,22 +23,12 @@ include_recipe "mysql"
 include_recipe "git"
 
 # Mediawiki Base Requirements
-if node[:lsb][:release].to_f >= 16.04
-  package "php"
-  package "php-cli"
-  package "php-curl"
-  package "php-mysql"
-  package "php-gd"
-  package "php-intl"
-else
-  package "php5"
-  package "php5-cli"
-  package "php5-curl"
-  package "php5-mysql"
-  package "php5-gd"
-  package "php-apc"
-  package "php5-intl"
-end
+package "php"
+package "php-cli"
+package "php-curl"
+package "php-mysql"
+package "php-gd"
+package "php-intl"
 
 # Mediawiki enhanced difference engine
 package "php-wikidiff2"
@@ -72,18 +62,10 @@ service "parsoid" do
   subscribes :restart, "template[/etc/mediawiki/parsoid/settings.js]"
 end
 
-if node[:lsb][:release].to_f >= 16.04
-  link "/etc/php/7.0/apache2/conf.d/20-wikidiff2.ini" do
-    to "../../mods-available/wikidiff2.ini"
-  end
+apache_module "php7.0"
 
-  apache_module "php7.0"
-else
-  link "/etc/php5/apache2/conf.d/20-wikidiff2.ini" do
-    to "../../mods-available/wikidiff2.ini"
-  end
-
-  apache_module "php5"
+link "/etc/php/7.0/apache2/conf.d/20-wikidiff2.ini" do
+  to "../../mods-available/wikidiff2.ini"
 end
 
 apache_module "rewrite"
