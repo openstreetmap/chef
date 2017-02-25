@@ -37,7 +37,8 @@ wordpress_site "blog.openstreetmap.org" do
   database_user "osm-blog-user"
   database_password passwords["osm-blog-user"]
   urls "/casts" => "/srv/blog.openstreetmap.org/casts",
-       "/images" => "/srv/blog.openstreetmap.org/images"
+       "/images" => "/srv/blog.openstreetmap.org/images",
+       "/static" => "/srv/blog.openstreetmap.org/static"
 end
 
 wordpress_theme "osmblog-wp-theme" do
@@ -77,6 +78,14 @@ end
 git "/srv/blog.openstreetmap.org/images" do
   action :sync
   repository "git://github.com/openstreetmap/opengeodata-images.git"
+  depth 1
+  user "wordpress"
+  group "wordpress"
+end
+
+git "/srv/blog.openstreetmap.org/static" do
+  action :sync
+  repository "git://github.com/openstreetmap/opengeodata-static.git"
   depth 1
   user "wordpress"
   group "wordpress"
