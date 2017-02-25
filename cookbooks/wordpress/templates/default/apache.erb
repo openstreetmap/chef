@@ -35,6 +35,11 @@
   DocumentRoot <%= @directory %>
 <% @urls.each do |url,directory| -%>
   Alias <%= url %> <%= directory %>
+  <Directory <%= directory %>>
+    AllowOverride None
+    php_admin_flag engine off
+    Require all granted
+  </Directory>
 <% end -%>
 
   php_admin_value open_basedir <%= @directory %>/:/usr/share/php/:/tmp/

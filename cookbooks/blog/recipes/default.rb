@@ -37,8 +37,7 @@ wordpress_site "blog.openstreetmap.org" do
   database_user "osm-blog-user"
   database_password passwords["osm-blog-user"]
   urls "/casts" => "/srv/blog.openstreetmap.org/casts",
-       "/images" => "/srv/blog.openstreetmap.org/images",
-       "/news" => "/srv/blog.openstreetmap.org/news"
+       "/images" => "/srv/blog.openstreetmap.org/images"
 end
 
 wordpress_theme "osmblog-wp-theme" do
