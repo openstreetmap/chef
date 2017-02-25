@@ -67,11 +67,7 @@ end
 apache_module "php7.0"
 
 link "/etc/php/7.0/apache2/conf.d/20-wikidiff2.ini" do
-  action :delete
+  to "../../mods-available/wikidiff2.ini"
 end
-
-# link "/etc/php/7.0/apache2/conf.d/20-wikidiff2.ini" do
-#   to "../../mods-available/wikidiff2.ini"
-# end
 
 apache_module "rewrite"
