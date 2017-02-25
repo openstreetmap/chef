@@ -25,7 +25,18 @@ service "mysql" do
   supports :status => true, :restart => true
 end
 
-template "/etc/mysql/conf.d/chef.cnf" do
+file "/etc/mysql/conf.d/chef.cnf" do
+  action :delete
+  notifies :restart, "service[mysql]"
+end
+
+conf_file = if node[:lsb][:release].to_f >= 16.04
+              "/etc/mysql/mysql.conf.d/zzz-chef.cnf"
+            else
+              "/etc/mysql/conf.d/zzz-chef.cnf"
+            end
+
+template conf_file do
   source "my.cnf.erb"
   owner "root"
   group "root"
