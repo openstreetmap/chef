@@ -31,6 +31,7 @@ default_attributes(
         :key_buffer_size => "64M",
         :max_connections => "200",
         :query_cache_size => "48M",
+        :query_cache_type => "1",
         :sort_buffer_size => "8M",
         :tmp_table_size => "48M"
       }
