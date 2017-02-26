@@ -53,18 +53,31 @@ git gpx_directory do
   notifies :run, "execute[gpx-import-build]", :immediate
 end
 
-template "/etc/init.d/gpx-import" do
-  source "init.gpx.erb"
-  owner "root"
-  group "root"
-  mode 0o755
-  variables :gpx_directory => gpx_directory,
-            :pid_directory => pid_directory,
-            :log_directory => log_directory,
-            :database_host => node[:web][:database_host],
-            :database_name => "openstreetmap",
-            :database_username => "gpximport",
-            :database_password => db_passwords["gpximport"]
+systemd_service "gpx-import" do
+  description "GPX Import Daemon"
+  after "network.target"
+  type "forking"
+  environment_file "GPX_SLEEP_TIME" => "40",
+                   "GPX_PATH_TRACES" => "/store/rails/gpx/traces",
+                   "GPX_PATH_IMAGES" => "/store/rails/gpx/images",
+                   "GPX_PATH_TEMPLATES" => "#{gpx_directory}/templates/",
+                   "GPX_PGSQL_HOST" => node[:web][:database_host],
+                   "GPX_PGSQL_USER" => "gpximport",
+                   "GPX_PGSQL_PASS" => db_passwords["gpximport"],
+                   "GPX_PGSQL_DB" => "openstreetmap",
+                   "GPX_LOG_FILE" => "#{log_directory}/gpx-import.log",
+                   "GPX_PID_FILE" => "#{pid_directory}/gpx-import.pid",
+                   "GPX_MAIL_SENDER" => "bounces@openstreetmap.org"
+  user "rails"
+  exec_start "#{gpx_directory}/src/gpx-import"
+  exec_reload "/bin/kill -HUP $MAINPID"
+  private_tmp true
+  private_devices true
+  protect_system "full"
+  protect_home true
+  no_new_privileges true
+  restart "on-failure"
+  pid_file "#{pid_directory}/gpx-import.pid"
 end
 
 if %w(database_offline database_readonly gpx_offline).include?(node[:web][:status])
@@ -76,6 +89,6 @@ else
     action [:enable, :start]
     supports :restart => true, :reload => true
     subscribes :restart, "execute[gpx-import-build]"
-    subscribes :restart, "template[/etc/init.d/gpx-import]"
+    subscribes :restart, "systemd_service[gpx-import]"
   end
 end
