@@ -123,16 +123,21 @@ git "/usr/local/lib/supybot/plugins/Git" do
   group "root"
 end
 
-template "/etc/init.d/supybot" do
-  source "supybot.init.erb"
-  owner "root"
-  group "root"
-  mode 0o755
+systemd_service "supybot" do
+  description "OpenStreetMap IRC Robot"
+  after "network.target"
+  user "supybot"
+  exec_start "/usr/bin/supybot /etc/supybot/supybot.conf"
+  private_tmp true
+  private_devices true
+  protect_system true
+  protect_home true
+  no_new_privileges true
+  restart "on-failure"
 end
 
 service "supybot" do
   action [:enable, :start]
-  supports :restart => true
   subscribes :restart, "template[/etc/supybot/supybot.conf]"
   subscribes :restart, "template[/etc/supybot/channels.conf]"
   subscribes :restart, "template[/etc/supybot/git.conf]"
@@ -140,5 +145,5 @@ service "supybot" do
   subscribes :restart, "template[/etc/supybot/userdata.conf]"
   subscribes :restart, "template[/etc/supybot/users.conf]"
   subscribes :restart, "git[/usr/local/lib/supybot/plugins/Git]"
-  subscribes :restart, "template[/etc/init.d/supybot]"
+  subscribes :restart, "systemd_service[supybot]"
 end
