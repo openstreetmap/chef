@@ -23,11 +23,7 @@ package "perl"
 package "pbzip2"
 package "osmosis"
 
-if node[:lsb][:release].to_f >= 16.04
-  package "php-cli"
-else
-  package "php5-cli"
-end
+package "php-cli"
 
 file "/etc/cron.d/planet" do
   action :delete

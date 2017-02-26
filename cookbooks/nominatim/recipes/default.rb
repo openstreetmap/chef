@@ -307,27 +307,19 @@ apache_module "proxy_fcgi"
 apache_module "proxy_http"
 apache_module "headers"
 
-service "php5-fpm" do
-  if node[:lsb][:release].to_f >= 15.10
-    provider Chef::Provider::Service::Systemd
-    service_name "php7.0-fpm"
-  elsif node[:lsb][:release].to_f >= 14.04
-    provider Chef::Provider::Service::Upstart
-  end
+service "php7.0-fpm" do
   action [:enable, :start]
   supports :status => true, :restart => true, :reload => true
 end
 
-php_confdir = node[:lsb][:release].to_f >= 15.10 ? "/etc/php/7.0" : "/etc/php5"
-
 node[:nominatim][:fpm_pools].each do |name, data|
-  template "#{php_confdir}/fpm/pool.d/#{name}.conf" do
+  template "/etc/php/7.0/fpm/pool.d/#{name}.conf" do
     source "fpm.conf.erb"
     owner "root"
     group "root"
     mode 0o644
     variables data.merge(:name => name)
-    notifies :reload, "service[php5-fpm]"
+    notifies :reload, "service[php7.0-fpm]"
   end
 end
 

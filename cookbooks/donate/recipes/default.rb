@@ -21,23 +21,13 @@ include_recipe "apache"
 include_recipe "mysql"
 include_recipe "git"
 
-if node[:lsb][:release].to_f >= 16.04
-  package "php"
-  package "php-cli"
-  package "php-curl"
-  package "php-mysql"
-  package "php-gd"
+package "php"
+package "php-cli"
+package "php-curl"
+package "php-mysql"
+package "php-gd"
 
-  apache_module "php7.0"
-else
-  package "php5"
-  package "php5-cli"
-  package "php5-curl"
-  package "php5-mysql"
-  package "php5-gd"
-
-  apache_module "php5"
-end
+apache_module "php7.0"
 
 apache_module "headers"
 
