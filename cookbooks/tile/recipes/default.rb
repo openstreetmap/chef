@@ -237,6 +237,19 @@ end
 nodejs_package "carto"
 nodejs_package "millstone"
 
+systemd_service "update-lowzoom@" do
+  description "Low zoom tile update service for %i layer"
+  user "tile"
+  exec_start "/usr/local/bin/update-lowzoom-%i"
+  private_tmp true
+  private_devices true
+  private_network true
+  protect_system "full"
+  protect_home true
+  no_new_privileges true
+  restart "on-failure"
+end
+
 directory "/srv/tile.openstreetmap.org/styles" do
   owner "tile"
   group "tile"
@@ -255,15 +268,7 @@ node[:tile][:styles].each do |name, details|
     variables :style => name
   end
 
-  template "/etc/init.d/update-lowzoom-#{name}" do
-    source "update-lowzoom.init.erb"
-    owner "root"
-    group "root"
-    mode 0o755
-    variables :style => name
-  end
-
-  service "update-lowzoom-#{name}" do
+  service "update-lowzoom@#{name}" do
     action :disable
     supports :restart => true
   end
@@ -325,7 +330,7 @@ node[:tile][:styles].each do |name, details|
     group "tile"
     subscribes :run, "git[#{style_directory}]"
     notifies :restart, "service[renderd]", :immediately
-    notifies :restart, "service[update-lowzoom-#{name}]"
+    notifies :restart, "service[update-lowzoom@#{name}]"
   end
 end
 
