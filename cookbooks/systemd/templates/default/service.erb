@@ -26,6 +26,9 @@ User=<%= @user %>
 <% if @group -%>
 Group=<%= @group %>
 <% end -%>
+<% if @working_directory -%>
+WorkingDirectory=<%= @working_directory %>
+<% end -%>
 <% if @exec_start_pre -%>
 ExecStartPre=<%= @exec_start_pre %>
 <% end -%>
@@ -68,6 +71,9 @@ ProtectSystem=<%= @protect_system %>
 <% end -%>
 <% if @protect_home -%>
 ProtectHome=<%= @protect_home %>
+<% end -%>
+<% if @no_new_privileges -%>
+NoNewPrivileges=<%= @no_new_privileges %>
 <% end -%>
 <% if @restart -%>
 Restart=<%= @restart %>

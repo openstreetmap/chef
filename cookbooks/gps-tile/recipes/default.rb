@@ -78,17 +78,25 @@ git "/srv/gps-tile.openstreetmap.org/updater" do
   group "gpstile"
 end
 
-template "/etc/init.d/gps-update" do
-  source "update.init.erb"
-  owner "root"
-  group "root"
-  mode 0o755
+systemd_service "gps-update" do
+  description "GPS tile update daemon"
+  after ["network.target", "memcached.service"]
+  wants ["memcached.service"]
+  user "gpstile"
+  working_directory "/srv/gps-tile.openstreetmap.org"
+  exec_start "/srv/gps-tile.openstreetmap.org/updater/update"
+  private_tmp true
+  private_devices true
+  protect_system "full"
+  protect_home true
+  no_new_privileges true
+  restart "on-failure"
 end
 
 service "gps-update" do
   action [:enable, :start]
-  supports :restart => true, :status => true
   subscribes :restart, "git[/srv/gps-tile.openstreetmap.org/updater]"
+  subscribes :restart, "systemd_service[gps-update]"
 end
 
 remote_directory "/srv/gps-tile.openstreetmap.org/html" do

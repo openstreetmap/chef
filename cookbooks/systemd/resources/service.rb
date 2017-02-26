@@ -31,6 +31,7 @@ property :environment, Hash, :default => {}
 property :environment_file, [String, Hash]
 property :user, String
 property :group, String
+property :working_directory, String
 property :exec_start_pre, String
 property :exec_start, String, :required => true
 property :exec_start_post, String
@@ -51,6 +52,7 @@ property :private_devices, [TrueClass, FalseClass]
 property :private_network, [TrueClass, FalseClass]
 property :protect_system, [TrueClass, FalseClass, String]
 property :protect_home, [TrueClass, FalseClass, String]
+property :no_new_privileges, [TrueClass, FalseClass]
 property :timeout_sec, Integer
 property :pid_file, String
 
