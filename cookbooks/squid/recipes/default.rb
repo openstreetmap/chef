@@ -50,6 +50,11 @@ systemd_service "squid" do
   exec_start "/usr/sbin/squid -N $SQUID_ARGS"
   exec_reload "/usr/sbin/squid -k reconfigure"
   exec_stop "/usr/sbin/squid -k shutdown"
+  private_tmp true
+  private_devices true
+  protect_system "full"
+  protect_home true
+  no_new_privileges true
   restart "on-failure"
   timeout_sec 0
 end

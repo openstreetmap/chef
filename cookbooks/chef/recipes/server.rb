@@ -73,6 +73,7 @@ end
 
 service "chef-server" do
   action [:enable, :start]
+  subscribes :restart, "systemd_service[chef-server]"
 end
 
 apache_module "alias"

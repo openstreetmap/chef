@@ -119,6 +119,7 @@ systemd_service "api-statistics" do
   private_network true
   protect_system "full"
   protect_home true
+  no_new_privileges true
   restart "on-failure"
 end
 

@@ -58,6 +58,7 @@ systemd_service "cgimap" do
   private_devices true
   protect_system "full"
   protect_home true
+  no_new_privileges true
   restart "on-failure"
   pid_file "#{node[:web][:pid_directory]}/cgimap.pid"
 end

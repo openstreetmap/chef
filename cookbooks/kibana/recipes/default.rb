@@ -68,6 +68,11 @@ systemd_service "kibana@" do
   after "network.target"
   user "kibana"
   exec_start "/opt/kibana-#{version}/bin/kibana -c /etc/kibana/%i.yml"
+  private_tmp true
+  private_devices true
+  protect_system "full"
+  protect_home true
+  no_new_privileges true
   restart "on-failure"
 end
 
@@ -89,6 +94,7 @@ node[:kibana][:sites].each do |name, details|
   service "kibana@#{name}" do
     action [:enable, :start]
     supports :status => true, :restart => true, :reload => false
+    subscribes :restart, "systemd_service[kibana@]"
   end
 
   ssl_certificate details[:site] do
