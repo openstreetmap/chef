@@ -117,7 +117,7 @@ end
 
 git "/usr/local/lib/supybot/plugins/Git" do
   action :sync
-  repository "git://github.com/mmueller/supybot-git"
+  repository "git://github.com/openstreetmap/supybot-git"
   revision "master"
   user "root"
   group "root"
