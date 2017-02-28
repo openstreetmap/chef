@@ -51,6 +51,9 @@ package "liblz4-tool"
 package "curl"
 package "parsoid"
 
+# Mediawiki packages for SyntaxHighight support
+package "python-pygments"
+
 template "/etc/mediawiki/parsoid/settings.js" do
   source "parsoid-settings.js.erb"
   owner "root"

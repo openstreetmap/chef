@@ -276,6 +276,7 @@ action :create do
 
   mediawiki_extension "SyntaxHighlight_GeSHi" do
     site new_resource.name
+    template "mw-ext-SyntaxHighlight.inc.php.erb"
     update_site false
   end
 
