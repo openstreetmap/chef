@@ -17,7 +17,7 @@
 <% end -%>
 <% end -%>
 <% if File.directory?("#{node[:web][:base_directory]}/gpx-import") -%>
-    /etc/init.d/gpx-import rotated
+    /bin/systemctl reload gpx-import
 <% end -%>
 <% if File.directory?("#{node[:web][:base_directory]}/cgimap") -%>
     /bin/systemctl reload cgimap
