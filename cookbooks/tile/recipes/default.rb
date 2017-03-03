@@ -470,7 +470,6 @@ systemd_service "replicate" do
   private_devices true
   protect_system "full"
   protect_home true
-  no_new_privileges true
   restart "on-failure"
 end
 
