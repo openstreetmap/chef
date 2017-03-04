@@ -2,6 +2,9 @@ name "ramoth"
 description "Master role applied to ramoth"
 
 default_attributes(
+  :apt => {
+    :sources => ["postgresql"]
+  },
   :db => {
     :cluster => "9.1/main"
   },
