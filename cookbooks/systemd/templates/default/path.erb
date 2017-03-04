@@ -1,0 +1,37 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+[Unit]
+Description=<%= @description %>
+<% if @after -%>
+After=<%= Array(@after).join(" ") %>
+<% end -%>
+<% if @wants -%>
+Wants=<%= Array(@wants).join(" ") %>
+<% end -%>
+
+[Path]
+<% Array(@path_exists).each do |path| -%>
+PathExists=<%= path %>
+<% end -%>
+<% Array(@path_exists_glob).each do |path| -%>
+PathExistsGlob=<%= path %>
+<% end -%>
+<% Array(@path_changed).each do |path| -%>
+PathChanged=<%= path %>
+<% end -%>
+<% Array(@path_modified).each do |path| -%>
+PathModified=<%= path %>
+<% end -%>
+<% Array(@directory_not_empty).each do |path| -%>
+DirectoryNotEmpty=<%= path %>
+<% end -%>
+Unit=<%= @unit %>
+<% if @make_directory -%>
+MakeDirectory=<%= @make_directory %>
+<% end -%>
+<% if @directory_mode -%>
+DirectoryMode=<%= sprintf("0%o", @directory_mode) %>
+<% end -%>
+
+[Install]
+WantedBy=multi-user.target
