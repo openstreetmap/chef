@@ -54,10 +54,6 @@ package "parsoid"
 # Mediawiki packages for SyntaxHighight support
 package "python-pygments"
 
-file "/usr/lib/parsoid/lib" do
-  action :delete
-end
-
 file "/etc/mediawiki/parsoid/settings.js" do
   action :delete
 end
