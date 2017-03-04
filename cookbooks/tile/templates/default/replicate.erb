@@ -76,8 +76,8 @@ do
             # No need to rollback now
             rm state-prev.txt
 
-            # Expire tiles which are touched by the changes
-            sudo -u www-data /usr/local/bin/expire-tiles ${file} > /dev/null 2>&1 &
+            # Queue these changes for expiry processing
+            ln ${file} expire-queue/$file
         fi
 
         # Delete old downloads

@@ -433,17 +433,16 @@ template "/usr/local/bin/expire-tiles" do
   mode 0o755
 end
 
-template "/etc/sudoers.d/tile" do
-  source "sudoers.erb"
-  owner "root"
-  group "root"
-  mode 0o440
-end
-
 directory "/var/lib/replicate" do
   owner "tile"
   group "tile"
   mode 0o755
+end
+
+directory "/var/lib/replicate/expire-queue" do
+  owner "tile"
+  group "www-data"
+  mode 0o775
 end
 
 template "/var/lib/replicate/configuration.txt" do
@@ -460,6 +459,29 @@ template "/usr/local/bin/replicate" do
   mode 0o755
 end
 
+systemd_service "expire-tiles" do
+  description "Tile dirtying service"
+  type "oneshot"
+  user "www-data"
+  exec_start "/usr/local/bin/expire-tiles"
+  standard_output "null"
+  private_tmp true
+  private_devices true
+  protect_system "full"
+  protect_home true
+  no_new_privileges true
+end
+
+systemd_path "expire-tiles" do
+  description "Tile dirtying trigger"
+  directory_not_empty "/var/lib/replicate/expire-queue"
+end
+
+service "expire-tiles.path" do
+  action [:enable, :start]
+  subscribes :restart, "systemd_path[expire-tiles]"
+end
+
 systemd_service "replicate" do
   description "Rendering database replication service"
   after "postgresql.service"
@@ -470,6 +492,7 @@ systemd_service "replicate" do
   private_devices true
   protect_system "full"
   protect_home true
+  no_new_privileges true
   restart "on-failure"
 end
 

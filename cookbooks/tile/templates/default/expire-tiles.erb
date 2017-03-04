@@ -12,6 +12,7 @@ tile_dirs = [
 
 max_zoom = <%= node[:tile][:styles].collect { |n,d| d[:max_zoom] }.max %>
 
-ARGV.each do |f|
+Dir.glob("/var/lib/replicate/expire-queue/changes-*.osm.gz").each do |f|
    Expire::expire(f, 13, max_zoom, tile_dirs)
+   File::unlink(f)
 end
