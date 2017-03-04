@@ -54,6 +54,13 @@ package "parsoid"
 # Mediawiki packages for SyntaxHighight support
 package "python-pygments"
 
+# parsoid 0.6.1all is broken with Ubuntu 16.04+ version of node. Monkey patch a fix.
+link "/usr/lib/parsoid/lib" do
+  to "/usr/lib/parsoid/src/lib"
+  link_type :symbolic
+  not_if { File.exist?("/usr/lib/parsoid/lib") }
+end
+
 template "/etc/mediawiki/parsoid/settings.js" do
   source "parsoid-settings.js.erb"
   owner "root"
@@ -65,6 +72,7 @@ service "parsoid" do
   action [:enable]
   supports :status => false, :restart => true, :reload => false
   subscribes :restart, "template[/etc/mediawiki/parsoid/settings.js]"
+  subscribes :restart, "link[/usr/lib/parsoid/lib]"
 end
 
 apache_module "php7.0"
