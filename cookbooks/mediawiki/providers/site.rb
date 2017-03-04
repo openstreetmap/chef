@@ -293,13 +293,13 @@ action :create do
 
   # MediaWiki Language Extension Bundle
   # FIXME: should automatically resolve tag
-  mw_lang_ext_bundle_tag = "2016.10"
+  mw_lang_ext_bundle_tag = "2017.01"
 
   mediawiki_extension "Babel" do
     site new_resource.name
     template "mw-ext-Babel.inc.php.erb"
     # tag mw_lang_ext_bundle_tag
-    reference "740782459d34e756a932ea1ceddde432a1295197"
+    tag mw_lang_ext_bundle_tag
     update_site false
   end
 
