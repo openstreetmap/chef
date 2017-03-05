@@ -17,7 +17,7 @@
 <% end -%>
 <% end -%>
 <% if File.directory?("#{node[:web][:base_directory]}/gpx-import") -%>
-    /bin/systemctl reload gpx-import
+    /bin/systemctl try-reload-or-restart gpx-import
 <% end -%>
 <% if File.directory?("#{node[:web][:base_directory]}/cgimap") -%>
     /bin/systemctl reload cgimap
