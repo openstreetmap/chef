@@ -2,6 +2,9 @@ name "katla"
 description "Master role applied to katla"
 
 default_attributes(
+  :apt => {
+    :sources => ["postgresql"]
+  },
   :db => {
     :cluster => "9.1/main"
   },
