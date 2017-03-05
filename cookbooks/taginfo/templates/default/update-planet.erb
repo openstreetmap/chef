@@ -36,7 +36,7 @@ fi
 # osc file is ready, create new planet file
 
 #osmosis --read-xml-change "$OSCFILE" --read-bin "$PLANETCURR" --buffer bufferCapacity=12000 --apply-change --buffer bufferCapacity=12000 --write-pbf file="$PLANETNEW"
-$OSMIUM apply-changes --verbose --remove-deleted --simplify --fsync --output=$PLANETNEW $PLANETCURR $OSCFILE
+$OSMIUM apply-changes --verbose --fsync --output=$PLANETNEW $PLANETCURR $OSCFILE
 
 # cleanup
 
