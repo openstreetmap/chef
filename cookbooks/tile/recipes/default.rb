@@ -461,7 +461,7 @@ end
 
 systemd_service "expire-tiles" do
   description "Tile dirtying service"
-  type "oneshot"
+  type "simple"
   user "www-data"
   exec_start "/usr/local/bin/expire-tiles"
   standard_output "null"
