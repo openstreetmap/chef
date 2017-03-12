@@ -237,7 +237,7 @@
   #
   <Proxy balancer://ic>
     ProxySet lbmethod=bybusyness
-<% ["rails1.bm", "rails2.bm", "rails3.bm"].each do |backend| -%>
+<% ["rails1", "rails2", "rails3"].each do |backend| -%>
 <% if port == 443 -%>
     BalancerMember https://<%= backend %> disablereuse=on
 <% else -%>
