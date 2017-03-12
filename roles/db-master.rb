@@ -13,7 +13,7 @@ default_attributes(
         :late_authentication_rules => [
           { :database => "replication", :user => "replication", :address => "146.179.159.168/32" },
           { :database => "replication", :user => "replication", :address => "146.179.159.170/32" },
-          { :database => "replication", :user => "replication", :address => "10.0.16.4/32" }
+          { :database => "replication", :user => "replication", :address => "10.0.32.40/32" }
         ]
       }
     }
@@ -22,7 +22,7 @@ default_attributes(
     :modules => {
       :archive => {
         :comment => "WAL Archive",
-        :path => "/store/arrays/slow/postgresql-archive",
+        :path => "/store/arrays/nvme/postgresql-archive",
         :read_only => true,
         :write_only => false,
         :list => false,
@@ -30,7 +30,7 @@ default_attributes(
         :gid => "postgres",
         :transfer_logging => false,
         :hosts_allow => [
-          "146.179.159.168", "146.179.159.170, 10.0.16.4"
+          "146.179.159.168", "146.179.159.170, 10.0.32.40"
         ]
       }
     }
