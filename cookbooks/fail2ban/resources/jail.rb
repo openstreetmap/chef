@@ -28,9 +28,5 @@ attribute :ports, :kind_of => Array, :default => []
 attribute :maxretry, :kind_of => Integer
 
 def after_created
-  if node[:lsb][:release].to_f >= 14.04
-    notifies :reload, "service[fail2ban]"
-  else
-    notifies :create, "template[/etc/fail2ban/jail.local]"
-  end
+  notifies :reload, "service[fail2ban]"
 end

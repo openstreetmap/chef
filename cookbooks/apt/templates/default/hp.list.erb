@@ -1,7 +1,3 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
-<% if node[:lsb][:release].to_f < 14.04 -%>
-deb <%= @url %> precise/current non-free
-<% else -%>
 deb <%= @url %> trusty/current non-free
-<% end -%>

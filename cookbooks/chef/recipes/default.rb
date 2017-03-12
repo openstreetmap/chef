@@ -114,16 +114,6 @@ if node[:lsb][:release].to_f >= 15.10
     exec_start "/usr/bin/chef-client -i 1800 -s 20"
     restart "on-failure"
   end
-
-  service "chef-client" do
-    provider Chef::Provider::Service::Systemd
-    action [:enable, :start]
-    supports :status => true, :restart => true, :reload => true
-    subscribes :restart, "dpkg_package[chef]"
-    subscribes :restart, "systemd_service[chef-client]"
-    subscribes :restart, "template[/etc/chef/client.rb]"
-    subscribes :restart, "template[/etc/chef/report.rb]"
-  end
 else
   template "/etc/init/chef-client.conf" do
     source "chef-client.conf.erb"
@@ -131,14 +121,13 @@ else
     group "root"
     mode 0o644
   end
+end
 
-  service "chef-client" do
-    provider Chef::Provider::Service::Upstart
-    action [:enable, :start]
-    supports :status => true, :restart => true, :reload => true
-    subscribes :restart, "dpkg_package[chef]"
-    subscribes :restart, "template[/etc/init/chef-client.conf]"
-    subscribes :restart, "template[/etc/chef/client.rb]"
-    subscribes :restart, "template[/etc/chef/report.rb]"
-  end
+service "chef-client" do
+  action [:enable, :start]
+  supports :status => true, :restart => true, :reload => true
+  subscribes :restart, "dpkg_package[chef]"
+  subscribes :restart, "template[/etc/init/chef-client.conf]"
+  subscribes :restart, "template[/etc/chef/client.rb]"
+  subscribes :restart, "template[/etc/chef/report.rb]"
 end

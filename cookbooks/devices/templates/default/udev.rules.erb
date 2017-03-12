@@ -24,11 +24,6 @@ ACTION=="add", SUBSYSTEM=="block", ENV{ID_BUS}=="<%= device[:bus] %>", ENV{ID_SE
 <% end -%>
 <% end -%>
 <% end -%>
-<% if node[:lsb][:release] == "12.04" && Chef::Util.compare_versions(node[:kernel][:release], [3, 11]) >= 0 -%>
-
-# Rule from 14.04 udev for 12.04 machines running newer kernels
-ACTION=="add", SUBSYSTEM=="cpu", ENV{MODALIAS}=="?*", RUN+="/sbin/modprobe -bv $env{MODALIAS}"
-<% end -%>
 
 # Disable scatter-gather offload for HP NC362i network controllers
 SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x10c9", ATTRS{subsystem_vendor}=="0x103c", ATTRS{subsystem_device}=="0x323f", RUN+="/sbin/ethtool -K $name gso off tso off sg off gro off"

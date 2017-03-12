@@ -31,13 +31,8 @@ GRUB_RECORDFAIL_TIMEOUT=2
 # Send console output to the screen
 GRUB_TERMINAL="console"
 <% else -%>
-<% if node[:lsb][:release].to_f >= 12.04 -%>
 # Send console output to the screen and serial port
 GRUB_TERMINAL="console serial"
-<% else -%>
-# Send console output to the serial port
-GRUB_TERMINAL="serial"
-<% end -%>
 
 # Configure the serial console
 GRUB_SERIAL_COMMAND="serial --speed=115200 --unit=<%= @units.first %> --word=8 --parity=no --stop=1"

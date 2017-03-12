@@ -27,11 +27,8 @@ end
 case node[:cpu][:"0"][:vendor_id]
 when "GenuineIntel"
   package "intel-microcode"
-end
-
-case node[:cpu][:"0"][:vendor_id]
 when "AuthenticAMD"
-  package "amd64-microcode" if node[:lsb][:release].to_f >= 14.04
+  package "amd64-microcode"
 end
 
 if node[:dmi] && node[:dmi][:system]
@@ -184,21 +181,19 @@ end
 
 package "ipmitool" if node[:kernel][:modules].include?("ipmi_si")
 
-if node[:lsb][:release].to_f >= 12.10
-  package "irqbalance"
+package "irqbalance"
 
-  template "/etc/default/irqbalance" do
-    source "irqbalance.erb"
-    owner "root"
-    group "root"
-    mode 0o644
-  end
+template "/etc/default/irqbalance" do
+  source "irqbalance.erb"
+  owner "root"
+  group "root"
+  mode 0o644
+end
 
-  service "irqbalance" do
-    action [:start, :enable]
-    supports :status => false, :restart => true, :reload => false
-    subscribes :restart, "template[/etc/default/irqbalance]"
-  end
+service "irqbalance" do
+  action [:start, :enable]
+  supports :status => false, :restart => true, :reload => false
+  subscribes :restart, "template[/etc/default/irqbalance]"
 end
 
 # Link Layer Discovery Protocol Daemon
@@ -487,22 +482,9 @@ template "/etc/modules" do
   mode 0o644
 end
 
-if node[:lsb][:release].to_f <= 12.10
-  service "module-init-tools" do
-    provider Chef::Provider::Service::Upstart
-    action :nothing
-    subscribes :start, "template[/etc/modules]"
-  end
-else
-  service "kmod" do
-    if node[:lsb][:release].to_f >= 15.10
-      provider Chef::Provider::Service::Systemd
-    else
-      provider Chef::Provider::Service::Upstart
-    end
-    action :nothing
-    subscribes :start, "template[/etc/modules]"
-  end
+service "kmod" do
+  action :nothing
+  subscribes :start, "template[/etc/modules]"
 end
 
 if node[:hardware][:watchdog]

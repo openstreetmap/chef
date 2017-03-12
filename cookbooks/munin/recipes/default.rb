@@ -20,11 +20,6 @@
 package "munin-node"
 
 service "munin-node" do
-  if node[:lsb][:release].to_f >= 15.10
-    provider Chef::Provider::Service::Systemd
-  elsif node[:lsb][:release].to_f >= 14.04
-    provider Chef::Provider::Service::Upstart
-  end
   action [:enable, :start]
   supports :status => true, :restart => true, :reload => true
 end
@@ -212,7 +207,6 @@ if Dir.glob("/dev/ipmi*").empty?
 
   munin_plugin "ipmi_power" do
     action :delete
-    only_if { node[:lsb][:release].to_f >= 14.04 }
   end
 else
   munin_plugin_conf "ipmi" do
@@ -229,7 +223,6 @@ else
 
   munin_plugin "ipmi_power" do
     target "ipmi_"
-    only_if { node[:lsb][:release].to_f >= 14.04 }
   end
 end
 
