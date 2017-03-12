@@ -14,7 +14,7 @@ default_attributes(
     :pool_idle_time => 0
   },
   :web => {
-    :status => "online",
+    :status => "database_offline",
     :memcached_servers => %w(rails1.ic rails2.ic rails3.ic)
   }
 )
