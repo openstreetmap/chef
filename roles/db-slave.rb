@@ -3,7 +3,7 @@ description "Role applied to all slave database servers"
 
 default_attributes(
   :postgresql => {
-    :versions => ["9.1"],
+    :versions => ["9.5"],
     :settings => {
       :defaults => {
         :hot_standby => "on",

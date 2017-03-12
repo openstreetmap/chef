@@ -6,7 +6,7 @@ default_attributes(
     :sources => ["postgresql"]
   },
   :db => {
-    :cluster => "9.1/main"
+    :cluster => "9.5/main"
   },
   :devices => {
     :store_slow => {
