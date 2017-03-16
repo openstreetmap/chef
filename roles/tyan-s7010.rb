@@ -1,5 +1,5 @@
 name "tyan-s7010"
-description "Role applied to machines using the Tyan S710 motherboard"
+description "Role applied to machines using the Tyan S7010 motherboard"
 
 default_attributes(
   :hardware => {
