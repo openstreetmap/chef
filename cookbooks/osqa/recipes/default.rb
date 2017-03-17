@@ -20,6 +20,7 @@
 include_recipe "tools"
 include_recipe "apache"
 include_recipe "memcached"
+include_recipe "python"
 
 package "python-django"
 package "python-html5lib"
@@ -30,9 +31,7 @@ package "python-mysqldb"
 package "python-psycopg2"
 package "python-setuptools"
 
-easy_install_package "South" do
-  package_name "south"
-end
+python_package "South"
 
 apache_module "rewrite"
 apache_module "wsgi"

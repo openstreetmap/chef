@@ -26,6 +26,7 @@ include_recipe "git"
 include_recipe "mysql"
 include_recipe "nodejs"
 include_recipe "postgresql"
+include_recipe "python"
 
 package "php"
 package "php-cgi"
@@ -54,7 +55,7 @@ package "python-gdal"
 
 nodejs_package "svgo"
 
-easy_install_package "geojson"
+python_package "geojson"
 
 apache_module "env"
 apache_module "expires"

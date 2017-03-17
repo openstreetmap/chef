@@ -11,6 +11,7 @@ depends           "git"
 depends           "mysql"
 depends           "nodejs"
 depends           "postgresql"
+depends           "python"
 depends           "tools"
 depends           "web"
 

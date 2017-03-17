@@ -21,6 +21,7 @@ include_recipe "apache"
 include_recipe "git"
 include_recipe "nodejs"
 include_recipe "postgresql"
+include_recipe "python"
 include_recipe "tools"
 
 blocks = data_bag_item("tile", "blocks")
@@ -121,7 +122,7 @@ package "python-cairo"
 package "python-mapnik"
 package "python-setuptools"
 
-easy_install_package "pyotp"
+python_package "pyotp"
 
 package "fonts-noto-cjk"
 package "fonts-noto-hinted"
