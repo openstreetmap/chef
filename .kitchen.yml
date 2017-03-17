@@ -62,6 +62,9 @@ suites:
       - recipe[accounts::default]
       - recipe[chef::default]
       - role[otrs]
+  - name: python
+    run_list:
+      - recipe[python::default]
   - name: tools
     run_list:
       - recipe[tools::default]
