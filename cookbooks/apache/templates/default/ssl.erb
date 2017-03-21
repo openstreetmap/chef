@@ -11,5 +11,7 @@ SSLCertificateChainFile /etc/ssl/certs/letsencrypt.pem
 
 SSLUseStapling On
 SSLStaplingResponderTimeout 5
+SSLStaplingErrorCacheTimeout 60
 SSLStaplingReturnResponderErrors off
+SSLStaplingFakeTryLater off
 SSLStaplingCache shmcb:${APACHE_RUN_DIR}/ssl_ocspcache(512000)
