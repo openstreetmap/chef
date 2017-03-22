@@ -28,6 +28,7 @@ define :rails_port, :action => [:create, :enable] do
   rails_repository = params[:repository] || "git://git.openstreetmap.org/rails.git"
   rails_revision = params[:revision] || "live"
   run_migrations = params[:run_migrations] || false
+  email_from = params[:email_from] || "OpenStreetMap <support@openstreetmap.org>"
   status = params[:status] || "online"
 
   database_params = {
@@ -114,9 +115,13 @@ define :rails_port, :action => [:create, :enable] do
 
     line.gsub!(/^( *)#publisher_url:.*$/, "\\1publisher_url: \"https://plus.google.com/111953119785824514010\"")
 
+    line.gsub!(/^( *)support_email:.*$/, "\\1support_email: \"support@openstreetmap.org\"")
+
     if params[:email_from]
-      line.gsub!(/^( *)email_from:.*$/, "\\1email_from: \"#{params[:email_from]}\"")
+      line.gsub!(/^( *)email_from:.*$/, "\\1email_from: \"#{email_from}\"")
     end
+
+    line.gsub!(/^( *)email_return_path:.*$/, "\\1email_return_path: \"bounces@openstreetmap.org\"")
 
     line.gsub!(/^( *)status:.*$/, "\\1status: :#{status}")
 
