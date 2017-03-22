@@ -109,7 +109,7 @@ define :rails_port, :action => [:create, :enable] do
   end
 
   application_yml = edit_file "#{rails_directory}/config/example.application.yml" do |line|
-    line.gsub!(/^( *)server_url:.*$/, "\\1server_url: \"#{name}\"")
+    line.gsub!(/^( *)#?server_url:.*$/, "\\1server_url: \"#{name}\"")
 
     if params[:email_from]
       line.gsub!(/^( *)email_from:.*$/, "\\1email_from: \"#{params[:email_from]}\"")
