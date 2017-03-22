@@ -112,6 +112,8 @@ define :rails_port, :action => [:create, :enable] do
     line.gsub!(/^( *)#server_protocol:.*$/, "\\1server_protocol: \"https\"")
     line.gsub!(/^( *)#server_url:.*$/, "\\1server_url: \"#{name}\"")
 
+    line.gsub!(/^( *)#publisher_url:.*$/, "\\1publisher_url: \"https://plus.google.com/111953119785824514010\"")
+
     if params[:email_from]
       line.gsub!(/^( *)email_from:.*$/, "\\1email_from: \"#{params[:email_from]}\"")
     end
