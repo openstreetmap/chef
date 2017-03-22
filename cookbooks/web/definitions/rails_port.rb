@@ -110,8 +110,8 @@ define :rails_port, :action => [:create, :enable] do
   end
 
   application_yml = edit_file "#{rails_directory}/config/example.application.yml" do |line|
-    line.gsub!(/^( *)#server_protocol:.*$/, "\\1server_protocol: \"https\"")
-    line.gsub!(/^( *)#server_url:.*$/, "\\1server_url: \"#{name}\"")
+    line.gsub!(/^( *)server_protocol:.*$/, "\\1server_protocol: \"https\"")
+    line.gsub!(/^( *)server_url:.*$/, "\\1server_url: \"#{name}\"")
 
     line.gsub!(/^( *)#publisher_url:.*$/, "\\1publisher_url: \"https://plus.google.com/111953119785824514010\"")
 
