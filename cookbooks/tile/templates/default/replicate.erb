@@ -28,7 +28,7 @@ trap onexit EXIT
 while true
 do
     # Work out the name of the next file
-    file="changes-${sequenceNumber}.osm.gz"
+    file="changes-${sequenceNumber}.osc.gz"
 
     # Save state file so we can rollback if an error occurs
     cp state.txt state-prev.txt
