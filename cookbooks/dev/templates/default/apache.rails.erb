@@ -19,6 +19,10 @@
         RailsEnv production
 
         SetEnv SECRET_KEY_BASE <%= @secret_key_base %>
+
+        # Ensure robots do not index dev site
+        # https://developers.google.com/webmasters/control-crawl-index/docs/robots_meta_tag
+        Header set X-Robots-Tag "noindex, nofollow"
 </VirtualHost>
 
 <VirtualHost *:80>
@@ -33,6 +37,10 @@
 
         RedirectPermanent /.well-known/acme-challenge/ http://acme.openstreetmap.org/.well-known/acme-challenge/
         RedirectPermanent / https://<%= @name %>/
+
+        # Ensure robots do not index dev site
+        # https://developers.google.com/webmasters/control-crawl-index/docs/robots_meta_tag
+        Header set X-Robots-Tag "noindex, nofollow"
 </VirtualHost>
 
 <Directory /srv/<%= @name %>/public>
