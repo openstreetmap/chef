@@ -353,7 +353,7 @@ end
 include_recipe "fail2ban"
 
 fail2ban_filter "nominatim" do
-  failregex '^<HOST> - - \[\] "[^"]+" 429 '
+  failregex '^<HOST> - - \[\] "[^"]+" (400|429) '
 end
 
 fail2ban_jail "nominatim" do
