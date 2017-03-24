@@ -1,17 +1,15 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
 /var/log/apache2/*.log {
-  weekly
+  daily
   missingok
-  rotate 6
+  rotate 42
   compress
   delaycompress
   notifempty
   create 640 root adm
   sharedscripts
   postrotate
-    if /etc/init.d/apache2 status > /dev/null ; then \
-        /etc/init.d/apache2 reload > /dev/null; \
-    fi;
+    /bin/systemctl reload apache2
   endscript
 }
