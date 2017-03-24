@@ -26,6 +26,7 @@ attribute :logpath, :kind_of => String
 attribute :protocol, :kind_of => String
 attribute :ports, :kind_of => Array, :default => []
 attribute :maxretry, :kind_of => Integer
+attribute :ignoreips, :kind_of => Array
 
 def after_created
   notifies :reload, "service[fail2ban]"

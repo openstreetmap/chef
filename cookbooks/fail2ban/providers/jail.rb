@@ -35,7 +35,8 @@ action :create do
               :logpath => new_resource.logpath,
               :protocol => new_resource.protocol,
               :ports => new_resource.ports,
-              :maxretry => new_resource.maxretry
+              :maxretry => new_resource.maxretry,
+              :ignoreips => new_resource.ignoreips
   end
 end
 
