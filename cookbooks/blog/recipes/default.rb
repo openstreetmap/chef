@@ -91,6 +91,10 @@ git "/srv/blog.openstreetmap.org/static" do
   group "wordpress"
 end
 
+ssl_certificate "opengeodata.org" do
+  domains ["opengeodata.org", "www.opengeodata.org", "old.opengeodata.org"]
+  notifies :reload, "service[apache2]"
+end
 apache_site "opengeodata.org" do
   template "opengeodata.erb"
   directory "/srv/opengeodata.org"
