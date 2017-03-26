@@ -12,5 +12,5 @@ logpath = <%= @logpath %>
 maxretry = <%= @maxretry %>
 <% end -%>
 <% if @ignoreips -%>
-ignoreip = <%= @ignoreips.sort.join(",") %>
+ignoreip = <%= @ignoreips.sort.join(" ") %>
 <% end -%>
