@@ -17,7 +17,8 @@ default_attributes(
         :role => :external,
         :family => :inet6,
         :address => "2001:43f8:1f4:b00:b283:feff:fed8:dd45",
-        :prefix => "64"
+        :prefix => "64",
+        :gateway => "2001:43f8:1f4:b00::1"
       }
     }
   },
