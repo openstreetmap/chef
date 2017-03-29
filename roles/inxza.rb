@@ -3,7 +3,7 @@ description "Role applied to all servers at INX-ZA"
 
 default_attributes(
   :hosted_by => "INX-ZA",
-  :location => "South Africa",
+  :location => "Cape Town, South Africa",
   :networking => {
     :nameservers => [
       "196.10.52.52",
