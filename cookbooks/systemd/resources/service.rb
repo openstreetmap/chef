@@ -45,6 +45,7 @@ property :standard_output, String,
          :is => %w(inherit null tty journal syslog kmsg journal+console syslog+console kmsg+console socket)
 property :standard_error, String,
          :is => %w(inherit null tty journal syslog kmsg journal+console syslog+console kmsg+console socket)
+property :success_exit_status, [Integer, String, Array]
 property :restart, String,
          :is => %w(on-success on-failure on-abnormal on-watchdog on-abort always)
 property :private_tmp, [TrueClass, FalseClass]

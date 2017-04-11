@@ -75,6 +75,9 @@ ProtectHome=<%= @protect_home %>
 <% if @no_new_privileges -%>
 NoNewPrivileges=<%= @no_new_privileges %>
 <% end -%>
+<% if @success_exit_status -%>
+SuccessExitStatus=<%= Array(@success_exit_status).join(" ") %>
+<% end -%>
 <% if @restart -%>
 Restart=<%= @restart %>
 <% end -%>
