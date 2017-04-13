@@ -13,6 +13,7 @@ do
 
     ./utils/update.php --no-npi --import-osmosis
 
+<% if node[:nominatim][:enable_git_updates] -%>
     pushd <%= @srcdir %>
     if git fetch origin; then
       # will trigger recompilation if necessary
@@ -21,6 +22,7 @@ do
       echo "WARNING: git fetch failed."
     fi
     popd
+<% end -%>
 
     # sleep a bit if updates take less than a minute
     endtime=`date +%s`
