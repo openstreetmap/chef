@@ -1,5 +1,7 @@
 #!/bin/sh
 
+cd /srv/acme.openstreetmap.org
+
 /usr/bin/certbot renew \
     --quiet \
     --config-dir /srv/acme.openstreetmap.org/config \
