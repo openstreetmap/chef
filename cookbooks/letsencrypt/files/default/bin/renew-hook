@@ -2,4 +2,6 @@
 
 domains=($RENEWED_DOMAINS)
 
+exec 2>&1
+
 exec /srv/acme.openstreetmap.org/bin/upload "${domains[0]}" "$RENEWED_LINEAGE"
