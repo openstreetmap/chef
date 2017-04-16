@@ -1,0 +1,7 @@
+# DO NOT EDIT - This file is being maintained by Chef
+<%# Have ntpd slew time around the 2015 leap second to avoid potential rare kernel / java issues %>
+<% if Time.now > Time.new(2015, 6, 29) and Time.now < Time.new(2015, 7, 2) %>
+NTPD_OPTS='-g -x'
+<% else %>
+NTPD_OPTS='-g'
+<% end %>
