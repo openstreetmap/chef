@@ -502,7 +502,7 @@ acl_check_data:
   #   X-PHP-Originating-Script: <digits>:SendMail.class.php
   #   X-PHP-Originating-Script: <digits>:ExtendedMail.php
   #   X-PHP-Originating-Script: <digits>:ExtendedMail.class.php
-  deny    condition  = ${if match {$h_X-PHP-Originating-Script:}{^[0-9]+:(Send|Extended)Mail(\\.class)?\\.php\$}}
+  deny    condition  = ${if match {$h_X-PHP-Originating-Script:}{^[0-9]+:(Send|Extended)[Mm]ail(\\.class)?\\.php\$}}
           message    = This message failed local spam checks.
 
   # Accept the message.
