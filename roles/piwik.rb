@@ -3,7 +3,10 @@ description "Role applied to all Piwik servers"
 
 default_attributes(
   :apache => {
-    :mpm => "prefork"
+    :mpm => "prefork",
+    :prefork => {
+      :max_request_workers => 450
+    }
   },
   :mysql => {
     :settings => {
