@@ -306,6 +306,7 @@ apache_module "proxy"
 apache_module "proxy_fcgi"
 apache_module "proxy_http"
 apache_module "headers"
+apache_module "reqtimeout"
 
 service "php7.0-fpm" do
   action [:enable, :start]
@@ -357,7 +358,7 @@ web_servers = search(:node, "recipes:web\\:\\:frontend").collect do |n| # ~FC010
 end.flatten
 
 fail2ban_filter "nominatim" do
-  failregex '^<HOST> - - \[\] "[^"]+" (400|429) '
+  failregex '^<HOST> - - \[\] "[^"]+" (408|429) '
 end
 
 fail2ban_jail "nominatim" do

@@ -25,6 +25,8 @@
     # Remove Proxy request header to mitigate https://httpoxy.org/
     RequestHeader unset Proxy early
 
+    RequestReadTimeout header=15-30,MinRate=500 body=15-30,MinRate=500
+
     CustomLog /var/log/apache2/nominatim.openstreetmap.org-access.log combined
     ErrorLog /var/log/apache2/nominatim.openstreetmap.org-error.log
 
