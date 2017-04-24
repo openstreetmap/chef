@@ -501,6 +501,7 @@ acl_check_data:
   #   X-PHP-Originating-Script: <digits>:<name>.php
   #   X-PHP-Originating-Script: <digits>:<name>.class.php
   deny    condition  = ${if match {$h_X-PHP-Originating-Script:}{^[0-9]+:[A-Za-z]+(\\.class)?\\.php\$}}
+         !hosts      = +relay_from_hosts
           message    = This message failed local spam checks.
 
   # Accept the message.
