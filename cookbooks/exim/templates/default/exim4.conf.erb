@@ -498,11 +498,9 @@ acl_check_data:
 
 <% end -%>
   # Deny spammy messages with headers of the form:
-  #   X-PHP-Originating-Script: <digits>:SendMail.php
-  #   X-PHP-Originating-Script: <digits>:SendMail.class.php
-  #   X-PHP-Originating-Script: <digits>:ExtendedMail.php
-  #   X-PHP-Originating-Script: <digits>:ExtendedMail.class.php
-  deny    condition  = ${if match {$h_X-PHP-Originating-Script:}{^[0-9]+:(Send|Extended)[Mm]ail(\\.class)?\\.php\$}}
+  #   X-PHP-Originating-Script: <digits>:<name>.php
+  #   X-PHP-Originating-Script: <digits>:<name>.class.php
+  deny    condition  = ${if match {$h_X-PHP-Originating-Script:}{^[0-9]+:[A-Za-z]+(\\.class)?\\.php\$}}
           message    = This message failed local spam checks.
 
   # Accept the message.
