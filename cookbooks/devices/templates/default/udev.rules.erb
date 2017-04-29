@@ -27,3 +27,18 @@ ACTION=="add", SUBSYSTEM=="block", ENV{ID_BUS}=="<%= device[:bus] %>", ENV{ID_SE
 
 # Disable scatter-gather offload for HP NC362i network controllers
 SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x10c9", ATTRS{subsystem_vendor}=="0x103c", ATTRS{subsystem_device}=="0x323f", RUN+="/sbin/ethtool -K $name gso off tso off sg off gro off"
+
+# Workaround unreliable Western Digital WD RE4 disks (ATA only)
+# Set sufficent Linux subsystem timeout
+ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{ID_BUS}=="ata", ENV{ID_MODEL}=="WDC_WD1003FBYX-01Y7B0", ATTR{device/timeout}="90"
+# Disable Disk Write Cache, Set AAM and Power Management correctly
+ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{ID_BUS}=="ata", ENV{ID_MODEL}=="WDC_WD1003FBYX-01Y7B0", RUN+="/sbin/hdparm -q -W0 -q -M254 -q -B254 $env{DEVNAME}"
+
+# Set Disks TLED / SCT Error Recovery Control
+ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{ID_BUS}=="ata", ENV{ID_MODEL}=="WDC_WD1003FBYX-01Y7B0", RUN+="/usr/sbin/smartctl -q errorsonly -l scterc,70,70 $env{DEVNAME}"
+ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{ID_BUS}=="ata", ENV{ID_MODEL}=="WDC_WD5000AAKS-00A7B0", RUN+="/usr/sbin/smartctl -q errorsonly -l scterc,70,70 $env{DEVNAME}"
+ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{ID_BUS}=="ata", ENV{ID_MODEL}=="WDC_WD2000FYYZ-01UL1B2", RUN+="/usr/sbin/smartctl -q errorsonly -l scterc,70,70 $env{DEVNAME}"
+ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{ID_BUS}=="ata", ENV{ID_MODEL}=="TOSHIBA_DT01ACA300", RUN+="/usr/sbin/smartctl -q errorsonly -l scterc,70,70 $env{DEVNAME}"
+ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{ID_BUS}=="ata", ENV{ID_MODEL}=="ST31000340NS", RUN+="/usr/sbin/smartctl -q errorsonly -l scterc,100,100 $env{DEVNAME}"
+ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{ID_BUS}=="ata", ENV{ID_MODEL}=="HGST_HTS725050A7E630", RUN+="/usr/sbin/smartctl -q errorsonly -l scterc,100,100 $env{DEVNAME}"
+ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{ID_BUS}=="ata", ENV{ID_MODEL}=="HGST_HTE721010A9E630", RUN+="/usr/sbin/smartctl -q errorsonly -l scterc,100,100 $env{DEVNAME}"
