@@ -112,7 +112,6 @@ if node[:lsb][:release].to_f >= 15.10
     description "Chef client"
     after "network.target"
     exec_start "/usr/bin/chef-client -i 1800 -s 20"
-    success_exit_status 3
     restart "on-failure"
   end
 else
@@ -126,6 +125,9 @@ end
 
 service "chef-client" do
   action [:enable, :start]
+  if node[:lsb][:release].to_f >= 15.10
+    restart_command "systemctl kill --signal=TERM chef-client.service"
+  end
   supports :status => true, :restart => true, :reload => true
   subscribes :restart, "dpkg_package[chef]"
   subscribes :restart, "template[/etc/init/chef-client.conf]"
