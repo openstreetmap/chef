@@ -17,6 +17,9 @@ default_attributes(
         :address => "193.60.236.51"
       }
     }
+  },
+  :hardware => {
+    :watchdog => "w83627hf_wdt"
   }
 )
 
