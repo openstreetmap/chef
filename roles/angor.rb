@@ -39,6 +39,5 @@ default_attributes(
 )
 
 run_list(
-  "role[inxza]",
-  "role[tilecache]"
+  "role[inxza]"
 )
