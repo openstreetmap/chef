@@ -23,7 +23,7 @@ default_attributes(
     }
   },
   :git => {
-    :allowed_nodes => "*:*",
+    :allowed_nodes => "fqdn:*",
     :user => "chefrepo",
     :group => "chefrepo",
     :backup => "chef-git"
