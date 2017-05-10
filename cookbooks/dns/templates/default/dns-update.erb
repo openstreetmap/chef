@@ -7,6 +7,8 @@ umask 0002
 export RSYNC_PASSWORD=<%= @passwords["rsync"] %>
 export PINGDOM_USERNAME=pingdom@openstreetmap.org
 export PINGDOM_PASSWORD=<%= @passwords["pingdom"] %>
+export STATUSCAKE_USERNAME=OpenStreetMap
+export STATUSCAKE_APIKEY=<%= @passwords["statuscake"] %>
 
 cd /var/lib/dns
 
