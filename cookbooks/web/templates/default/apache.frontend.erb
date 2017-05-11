@@ -178,6 +178,11 @@
   ProxyTimeout 3600
 
   #
+  # Forward authentication headers to the backends
+  #
+  SetEnv proxy-chain-auth On
+
+  #
   # Allow all proxy requests
   #
   <Proxy *>
