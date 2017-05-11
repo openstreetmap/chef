@@ -66,11 +66,6 @@ wordpress_plugin "geopress" do
   site "2007.stateofthemap.org"
 end
 
-wordpress_plugin "sem-static-front" do
-  site "2007.stateofthemap.org"
-  repository "git://chef.openstreetmap.org/sem-static-front.git"
-end
-
 directory "/srv/2008.stateofthemap.org" do
   owner "wordpress"
   group "wordpress"
