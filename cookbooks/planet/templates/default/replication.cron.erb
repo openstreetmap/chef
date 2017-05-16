@@ -11,5 +11,5 @@ MAILTO=brett@bretth.com
 LD_PRELOAD=/opt/flush/flush.so
 
 * * * * * planet /usr/local/bin/osmosis -q --replicate-apidb authFile=/etc/replication/auth.conf validateSchemaVersion=false --write-replication workingDirectory=/store/planet/replication/minute
-5 * * * * planet /home/bretth/bin/osmosis -q --merge-replication-files workingDirectory=/var/lib/replication/hour
-10 * * * * planet /home/bretth/bin/osmosis -q --merge-replication-files workingDirectory=/var/lib/replication/day
+2,7,12,17 * * * * planet /home/bretth/bin/osmosis -q --merge-replication-files workingDirectory=/var/lib/replication/hour
+5,10,15,20 * * * * planet /home/bretth/bin/osmosis -q --merge-replication-files workingDirectory=/var/lib/replication/day
