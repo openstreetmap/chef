@@ -93,6 +93,7 @@ $wgFileExtensions[] = 'doc';
 $wgFileExtensions[] = 'pdf';
 $wgFileExtensions[] = 'odt';
 $wgFileExtensions[] = 'odp';
+$wgFileExtensions[] = 'ods';
 $wgFileExtensions[] = 'svg';
 <% @mediawiki[:extra_file_extensions].each do |mw_extra_file_extension| -%>
 	$wgFileExtensions[] = '<%= mw_extra_file_extension %>';
