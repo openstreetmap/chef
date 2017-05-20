@@ -127,6 +127,7 @@ python_package "pyotp"
 package "fonts-noto-cjk"
 package "fonts-noto-hinted"
 package "fonts-noto-unhinted"
+package "fonts-hanazono"
 package "ttf-unifont"
 
 directory "/srv/tile.openstreetmap.org/cgi-bin" do
