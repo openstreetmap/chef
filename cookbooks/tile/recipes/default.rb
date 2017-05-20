@@ -244,7 +244,7 @@ nodejs_package "millstone"
 systemd_service "update-lowzoom@" do
   description "Low zoom tile update service for %i layer"
   user "tile"
-  exec_start "/usr/local/bin/update-lowzoom-%i"
+  exec_start "/bin/bash /usr/local/bin/update-lowzoom-%i"
   private_tmp true
   private_devices true
   private_network true
