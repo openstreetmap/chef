@@ -14,7 +14,7 @@ default_attributes(
         :bond => {
           :mode => "802.3ad",
           :miimon => "100",
-          :xmithashpolixt => "layer3+4",
+          :xmithashpolicy => "layer3+4",
           :slaves => %w(eth0 eth1)
         }
       },
