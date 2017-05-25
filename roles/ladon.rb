@@ -32,7 +32,7 @@ default_attributes(
     :cache_mem => "6100 MB",
     :cache_dir => "coss /store/squid/coss-01 80000 block-size=8192 max-size=262144 membufs=80"
   },
-  tilecache => {
+  :tilecache => {
     :tile_parent => "athens.render.openstreetmap.org",
     :tile_siblings => [
       "trogdor.openstreetmap.org",
