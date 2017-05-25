@@ -27,9 +27,24 @@ default_attributes(
         :gateway => "2001:648:2ffe:4::1"
       }
     }
+  },
+  :squid => {
+    :cache_mem => "6100 MB",
+    :cache_dir => "coss /store/squid/coss-01 80000 block-size=8192 max-size=262144 membufs=80"
+  },
+  tilecache => {
+    :tile_parent => "athens.render.openstreetmap.org",
+    :tile_siblings => [
+      "trogdor.openstreetmap.org",
+      "katie.openstreetmap.org",
+      "konqi.openstreetmap.org",
+      "ridgeback.openstreetmap.org",
+      "gorynych.openstreetmap.org"
+    ]
   }
 )
 
 run_list(
-  "role[grnet]"
+  "role[grnet]",
+  "role[tilecache]"
 )
