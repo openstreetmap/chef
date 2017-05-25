@@ -2,6 +2,11 @@ name "grnet"
 description "Role applied to all servers at GRNET"
 
 default_attributes(
+  :accounts => {
+    :users => {
+      :grnet => { :status => :administrator }
+    }
+  },
   :hosted_by => "GRNET",
   :location => "Athens, Greece",
   :networking => {
