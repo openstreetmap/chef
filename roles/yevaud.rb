@@ -61,6 +61,14 @@ default_attributes(
           :warning => 400,
           :critical => 500
         }
+      },
+      :sensors_temp => {
+        :temp1 => { :warning => 82 },
+        :temp2 => { :warning => 82 },
+        :temp3 => { :warning => 82 },
+        :temp4 => { :warning => 82 },
+        :temp5 => { :warning => 82 },
+        :temp6 => { :warning => 82 }
       }
     }
   },
