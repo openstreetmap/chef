@@ -6,7 +6,7 @@
 cd <%= @bindir %>
 
 num_cpus=`cat /proc/cpuinfo | grep -c processor`
-num_cpus=(($num_cpus - 2))
+num_cpus=$((num_cpus - 2))
 
 while [ ! -f "<%= @update_stop_file %>" ]
 do
