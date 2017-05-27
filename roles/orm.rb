@@ -46,7 +46,7 @@ default_attributes(
     }
   },
   :postgresql => {
-    :versions => ["9.5"],
+    :versions => ["9.6"],
     :settings => {
       :defaults => {
         :shared_buffers => "8GB",
@@ -66,11 +66,12 @@ default_attributes(
   },
   :tile => {
     :database => {
-      :cluster => "9.5/main"
+      :cluster => "9.6/main"
     },
     :node_file => "/store/database/nodes",
     :styles => {
       :default => {
+        :revision => "v4.0.0",
         :tile_directories => [
           { :name => "/store/tiles/default-low", :min_zoom => 0, :max_zoom => 17 },
           { :name => "/store/tiles/default-high", :min_zoom => 18, :max_zoom => 19 }
