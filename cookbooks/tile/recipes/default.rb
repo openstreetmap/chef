@@ -371,6 +371,11 @@ postgresql_extension "postgis" do
   database "gis"
 end
 
+postgresql_extension "hstore" do
+  cluster node[:tile][:database][:cluster]
+  database "gis"
+end
+
 %w(geography_columns planet_osm_nodes planet_osm_rels planet_osm_ways raster_columns raster_overviews spatial_ref_sys).each do |table|
   postgresql_table table do
     cluster node[:tile][:database][:cluster]
