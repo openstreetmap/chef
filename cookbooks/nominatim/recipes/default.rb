@@ -234,6 +234,14 @@ external_data.each do |fname|
   end
 end
 
+remote_file "#{source_directory}/data/country_osm_grid.sql.gz" do
+  action :create_if_missing
+  source "http://www.nominatim.org/data/country_grid.sql.gz"
+  owner "nominatim"
+  group "nominatim"
+  mode 0o644
+end
+
 template "/etc/cron.d/nominatim" do
   action node[:nominatim][:state] == :off ? :delete : :create
   source "nominatim.cron.erb"
