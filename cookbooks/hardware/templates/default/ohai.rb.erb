@@ -150,7 +150,8 @@ Ohai.plugin(:Hardware) do
 
     find_hp_disks(disk) if File.exist?("/usr/sbin/hpssacli")
     find_megaraid_disks(disk) if File.exist?("/usr/sbin/megacli")
-    find_mpt_disks(disk) if File.exist?("/usr/sbin/sas2ircu")
+    find_mpt1_disks(disk) if File.exist?("/usr/sbin/lsiutil")
+    find_mpt2_disks(disk) if File.exist?("/usr/sbin/sas2ircu")
     find_adaptec_disks(disk) if File.exist?("/usr/sbin/arcconf")
     find_areca_disks(disk) if File.exist?("/opt/areca/x86_64/cli64")
 
@@ -501,7 +502,84 @@ Ohai.plugin(:Hardware) do
     end
   end
 
-  def find_mpt_disks(devices)
+  def find_mpt1_disks(devices)
+    controllers = []
+    disks = []
+
+    controller = nil
+
+    IO.popen(%w(lsiutil -s)).each do |line|
+      if line =~ /^\/proc\/mpt\/ioc(\d+)\s+LSI Logic\s+(\S+)\s+/
+        controller = {
+          :id => devices[:controllers].count,
+          :model => Regexp.last_match(1),
+          :arrays => [],
+          :disks => []
+        }
+
+        controllers << controller
+        devices[:controllers] << controller
+      elsif line =~ /^\s+(\d+)\s+(\d+)\s+PhysDisk (\d+)\s+(\S+)\s+(\S+)\s+\d+\s+(\S+)\s+/
+        disks[Regexp.last_match(3).to_i] = {
+          :id => devices[:disks].count,
+          :controller => controller[:id],
+          :vendor => Regexp.last_match(4),
+          :model => Regexp.last_match(5),
+          :bus =>  Regexp.last_match(1),
+          :target =>  Regexp.last_match(2),
+          :arrays => []
+        }
+
+        controller[:disks] << devices[:disks].count
+        devices[:disks] << disks[Regexp.last_match(3).to_i]
+      end
+    end
+
+    controllers.each_with_index do |controller, index|
+      port = index + 1
+      array = nil
+
+      IO.popen(["lsiutil", "-p", port.to_s, "-a", "69,0"]).each do |line|
+        if line =~ /^ (\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+RAID/
+          seg = Regexp.last_match(1).to_i
+          bus = Regexp.last_match(2).to_i
+          dev = Regexp.last_match(3).to_i
+          fun = Regexp.last_match(4).to_i
+
+          controller[:pci_slot] = sprintf("%04x:%02x:%02x.%01x", seg, bus, dev, fun)
+        end
+      end
+
+      IO.popen(["lsiutil", "-p", port.to_s, "-a", "21,1,0,0"]).each do |line|
+        if line =~ /^Volume (\d+) is/
+          array = {
+            :id => devices[:arrays].count,
+            :controller => controller[:id],
+            :number => Regexp.last_match(1),
+            :disks => []
+          }
+
+          devices[:arrays] << array
+          controller[:arrays] << array[:id]
+        elsif line =~ /^  Member \d+ is PhysDisk (\d+) /
+          array[:disks] << disks[Regexp.last_match(1).to_i][:id]
+          disks[Regexp.last_match(1).to_i][:arrays] << array[:id]
+        end
+      end
+    end
+
+    disks.each do |disk|
+      slot = controllers[disk[:controller]][:pci_slot]
+      bus = disk[:bus]
+      target = disk[:target]
+
+      if device = Dir.glob("/sys/bus/pci/devices/#{slot}/host*/port-*:*/end_device-*:*/target*:#{bus}:#{target}/*:#{bus}:#{target}:0/scsi_generic/sg*").first
+        disk[:device] = "/dev/#{File.basename(device)}"
+      end
+    end
+  end
+
+  def find_mpt2_disks(devices)
     controllers = []
 
     IO.popen(%w(sas2ircu list)).each do |line|

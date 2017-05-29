@@ -216,7 +216,7 @@ node[:kernel][:modules].each_key do |modname|
     status_packages["cciss-vol-status"] ||= []
   when "mptsas"
     tools_packages << "lsiutil"
-    # status_packages["mpt-status"] ||= []
+    status_packages["mpt-status"] ||= []
   when "mpt2sas", "mpt3sas"
     tools_packages << "sas2ircu"
     status_packages["sas2ircu-status"] ||= []
