@@ -67,11 +67,16 @@ do
             echo "Fetched new data from ${prevSequenceNumber} to ${sequenceNumber} into ${file}"
 
             # Apply the changes to the database
+            osm2pgsql --database gis --slim --append --number-processes=1 \
 <% if node[:tile][:node_file] -%>
-            osm2pgsql --database gis --slim --append --number-processes=1 --flat-nodes=<%= node[:tile][:node_file] %> ${file}
-<% else -%>
-            osm2pgsql --database gis --slim --append --number-processes=1 ${file}
+                      --flat-nodes=<%= node[:tile][:node_file] %> \
 <% end -%>
+<% if node[:tile][:styles][:default][:revision] >= "v4.0.0" -%>
+                      --multi-geometry --hstore \
+                      --style=/srv/tile.openstreetmap.org/styles/default/openstreetmap-carto.style \
+                      --tag-transform-script=/srv/tile.openstreetmap.org/styles/default/openstreetmap-carto.lua \
+<% end -%>
+                      ${file}
 
             # No need to rollback now
             rm state-prev.txt
