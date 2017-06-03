@@ -52,7 +52,10 @@ end
 
 include_recipe "postgresql"
 
+postgresql_version = node[:nominatim][:dbcluster].split("/").first
+
 package "postgis"
+package "postgresql-#{postgresql_version}-postgis-2.3"
 
 node[:nominatim][:dbadmins].each do |user|
   postgresql_user user do
