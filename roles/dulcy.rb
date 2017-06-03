@@ -27,14 +27,14 @@ default_attributes(
     }
   },
   :postgresql => {
-    :versions => ["9.5"],
+    :versions => ["9.6"],
     :settings => {
       :defaults => {
         :work_mem => "300MB",
         :maintenance_work_mem => "10GB",
         :random_page_cost => "1.5",
         :effective_cache_size => "60GB",
-        :fsync => "on"
+        :fsync => "off"
       }
     }
   },
@@ -43,7 +43,7 @@ default_attributes(
     :enable_backup => false,
     :enable_git_updates => false,
     :dbadmins => %w(lonvia tomh),
-    :dbcluster => "9.5/main",
+    :dbcluster => "9.6/main",
     :flatnode_file => "/ssd/nominatim/nodes.store",
     :logdir => "/ssd/nominatim/log",
     :tablespaces => {
