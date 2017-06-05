@@ -315,6 +315,7 @@ package "php-fpm"
 package "php-pgsql"
 package "php-pear"
 package "php-db"
+package "php-intl"
 
 apache_module "rewrite"
 apache_module "proxy"
