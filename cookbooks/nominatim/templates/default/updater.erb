@@ -12,7 +12,6 @@ while [ ! -f "<%= @update_stop_file %>" ]
 do
     # Send output to the log (logrotatable)
     exec >> <%= @logfile %> 2>&1
-    starttime=`date +%s`
 
     current_load=`cat /proc/loadavg | cut -f 2 -d ' ' | sed 's:\..*::'`
 
@@ -23,7 +22,7 @@ do
         INST=1
     fi
 
-    ./utils/update.php --no-npi --import-osmosis --index-instances $INST
+    ./utils/update.php --import-osmosis --index-instances $INST
 
 <% if node[:nominatim][:enable_git_updates] -%>
     pushd <%= @srcdir %>
@@ -35,14 +34,4 @@ do
     fi
     popd
 <% end -%>
-
-    # sleep a bit if updates take less than a minute
-    endtime=`date +%s`
-    elapsed=$((endtime - starttime))
-    if [[ $elapsed -lt 60 ]]
-    then
-        sleepy=$((60 - $elapsed))
-        echo "Sleeping for ${sleepy}s..."
-        sleep $sleepy
-    fi
 done
