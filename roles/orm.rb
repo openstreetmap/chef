@@ -71,7 +71,6 @@ default_attributes(
     :node_file => "/store/database/nodes",
     :styles => {
       :default => {
-        :revision => "v4.0.0",
         :tile_directories => [
           { :name => "/store/tiles/default-low", :min_zoom => 0, :max_zoom => 17 },
           { :name => "/store/tiles/default-high", :min_zoom => 18, :max_zoom => 19 }
