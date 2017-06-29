@@ -19,6 +19,7 @@ HTTP_STATUSES = {
   "410" => "Gone",
   "412" => "Precondition Failed",
   "416" => "Requested Range Not Satisfiable",
+  "422" => "Unprocessable Entity",
   "500" => "Internal Server Error",
   "502" => "Bad Gateway",
   "503" => "Service Unavailable",
