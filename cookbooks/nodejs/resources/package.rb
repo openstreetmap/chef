@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-default_action :iinstall
+default_action :install
 
 actions :install, :upgrade, :remove
 
