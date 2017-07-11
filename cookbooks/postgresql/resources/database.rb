@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+default_action :create
+
 actions :create, :drop
 
 attribute :database, :kind_of => String, :name_attribute => true
@@ -25,8 +27,3 @@ attribute :owner, :kind_of => String, :required => true
 attribute :encoding, :kind_of => String, :default => "UTF8"
 attribute :collation, :kind_of => String, :default => "en_GB.UTF8"
 attribute :ctype, :kind_of => String, :default => "en_GB.UTF8"
-
-def initialize(*args)
-  super
-  @action = :create
-end

@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+default_action :create
+
 actions :create, :drop
 
 attribute :user, :kind_of => String, :name_attribute => true
@@ -26,8 +28,3 @@ attribute :superuser, :default => false
 attribute :createdb, :default => false
 attribute :createrole, :default => false
 attribute :replication, :default => false
-
-def initialize(*args)
-  super
-  @action = :create
-end

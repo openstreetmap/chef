@@ -34,11 +34,11 @@ end
 action :run do
   options = { :database => new_resource.database, :user => new_resource.user, :group => new_resource.group }
 
-  if ::File.exist?(new_resource.command)
-    @pg.execute(options.merge(:file => new_resource.command))
-  else
-    @pg.execute(options.merge(:command => new_resource.command))
+  converge_by "execute #{new_resource.command}" do
+    if ::File.exist?(new_resource.command)
+      @pg.execute(options.merge(:file => new_resource.command))
+    else
+      @pg.execute(options.merge(:command => new_resource.command))
+    end
   end
-
-  new_resource.updated_by_last_action(true)
 end

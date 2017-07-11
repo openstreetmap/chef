@@ -17,13 +17,10 @@
 # limitations under the License.
 #
 
+default_action :create
+
 actions :create, :drop
 
 attribute :extension, :kind_of => String, :name_attribute => true
 attribute :cluster, :kind_of => String, :required => true
 attribute :database, :kind_of => String, :required => true
-
-def initialize(*args)
-  super
-  @action = :create
-end

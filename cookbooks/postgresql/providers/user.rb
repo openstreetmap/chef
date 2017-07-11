@@ -44,28 +44,33 @@ action :create do
   replication = new_resource.replication ? "REPLICATION" : "NOREPLICATION"
 
   if !@pg.users.include?(new_resource.user)
-    @pg.execute(:command => "CREATE ROLE \"#{new_resource.user}\" LOGIN #{password} #{superuser} #{createdb} #{createrole}")
-    new_resource.updated_by_last_action(true)
+    converge_by "create role #{new_resource.user}" do
+      @pg.execute(:command => "CREATE ROLE \"#{new_resource.user}\" LOGIN #{password} #{superuser} #{createdb} #{createrole}")
+    end
   else
     if new_resource.superuser != @current_resource.superuser
-      @pg.execute(:command => "ALTER ROLE \"#{new_resource.user}\" #{superuser}")
-      new_resource.updated_by_last_action(true)
+      converge_by "alter role #{new_resource.user}" do
+        @pg.execute(:command => "ALTER ROLE \"#{new_resource.user}\" #{superuser}")
+      end
     end
 
     unless new_resource.superuser
       if new_resource.createdb != @current_resource.createdb
-        @pg.execute(:command => "ALTER ROLE \"#{new_resource.user}\" #{createdb}")
-        new_resource.updated_by_last_action(true)
+        converge_by "alter role #{new_resource.user}" do
+          @pg.execute(:command => "ALTER ROLE \"#{new_resource.user}\" #{createdb}")
+        end
       end
 
       if new_resource.createrole != @current_resource.createrole
-        @pg.execute(:command => "ALTER ROLE \"#{new_resource.user}\" #{createrole}")
-        new_resource.updated_by_last_action(true)
+        converge_by "alter role #{new_resource.user}" do
+          @pg.execute(:command => "ALTER ROLE \"#{new_resource.user}\" #{createrole}")
+        end
       end
 
       if new_resource.replication != @current_resource.replication
-        @pg.execute(:command => "ALTER ROLE \"#{new_resource.user}\" #{replication}")
-        new_resource.updated_by_last_action(true)
+        converge_by "alter role #{new_resource.user}" do
+          @pg.execute(:command => "ALTER ROLE \"#{new_resource.user}\" #{replication}")
+        end
       end
     end
   end
@@ -73,7 +78,8 @@ end
 
 action :drop do
   if @pg.users.include?(new_resource.user)
-    @pg.execute(:command => "DROP ROLE \"#{new_resource.user}\"")
-    new_resource.updated_by_last_action(true)
+    converge_by "drop role #{new_resource.user}" do
+      @pg.execute(:command => "DROP ROLE \"#{new_resource.user}\"")
+    end
   end
 end

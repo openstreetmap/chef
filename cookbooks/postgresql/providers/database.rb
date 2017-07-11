@@ -36,17 +36,20 @@ end
 
 action :create do
   if !@pg.databases.include?(new_resource.database)
-    @pg.execute(:command => "CREATE DATABASE \"#{new_resource.database}\" OWNER \"#{new_resource.owner}\" TEMPLATE template0 ENCODING '#{new_resource.encoding}' LC_COLLATE '#{new_resource.collation}' LC_CTYPE '#{new_resource.ctype}'")
-    new_resource.updated_by_last_action(true)
+    converge_by "create database #{new_resource.database}" do
+      @pg.execute(:command => "CREATE DATABASE \"#{new_resource.database}\" OWNER \"#{new_resource.owner}\" TEMPLATE template0 ENCODING '#{new_resource.encoding}' LC_COLLATE '#{new_resource.collation}' LC_CTYPE '#{new_resource.ctype}'")
+    end
   elsif new_resource.owner != @current_resource.owner
-    @pg.execute(:command => "ALTER DATABASE \"#{new_resource.database}\" OWNER TO \"#{new_resource.owner}\"")
-    new_resource.updated_by_last_action(true)
+    converge_by "alter database #{new_resource.database}" do
+      @pg.execute(:command => "ALTER DATABASE \"#{new_resource.database}\" OWNER TO \"#{new_resource.owner}\"")
+    end
   end
 end
 
 action :drop do
   if @pg.databases.include?(new_resource.database)
-    @pg.execute(:command => "DROP DATABASE \"#{new_resource.database}\"")
-    new_resource.updated_by_last_action(true)
+    converge_by "drop database #{new_resource.database}" do
+      @pg.execute(:command => "DROP DATABASE \"#{new_resource.database}\"")
+    end
   end
 end

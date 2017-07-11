@@ -43,25 +43,29 @@ action :install do
                  end
 
   if !@packages.include?(new_resource.package_name)
-    shell_out!("npm install --global #{package_name}")
-    new_resource.updated_by_last_action(true)
+    converge_by "install #{package_name}" do
+      shell_out!("npm install --global #{package_name}")
+    end
   elsif new_resource.version &&
         new_resource.version != @current_resource.version
-    shell_out!("npm install --global #{package_name}")
-    new_resource.updated_by_last_action(true)
+    converge_by "update #{package_name}" do
+      shell_out!("npm install --global #{package_name}")
+    end
   end
 end
 
 action :upgrade do
   if @packages.include?(new_resource.package_name)
-    shell_out!("npm update --global #{new_resource.package_name}")
-    new_resource.updated_by_last_action(true)
+    converge_by "update #{new_resource.package_name}" do
+      shell_out!("npm update --global #{new_resource.package_name}")
+    end
   end
 end
 
 action :remove do
   if @packages.include?(new_resource.package_name)
-    shell_out!("npm remove --global #{new_resource.package_name}")
-    new_resource.updated_by_last_action(true)
+    converge_by "remove #{new_resource.package_name}" do
+      shell_out!("npm remove --global #{new_resource.package_name}")
+    end
   end
 end

@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+default_action :run
+
 actions :nothing, :run
 
 attribute :command, :kind_of => String, :name_attribute => true
@@ -24,8 +26,3 @@ attribute :cluster, :kind_of => String, :required => true
 attribute :database, :kind_of => String, :required => true
 attribute :user, :default => "postgres"
 attribute :group, :default => "postgres"
-
-def initialize(*args)
-  super
-  @action = :run
-end

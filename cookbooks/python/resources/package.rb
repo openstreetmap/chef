@@ -19,8 +19,8 @@
 
 default_action :install
 
-attribute :package_name, :kind_of => String, :name_attribute => true
-attribute :version, :kind_of => String
+property :package_name, :kind_of => String, :name_property => true
+property :version, :kind_of => String
 
 action :install do
   if version.nil?

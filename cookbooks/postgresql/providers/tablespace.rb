@@ -30,14 +30,16 @@ end
 
 action :create do
   unless @pg.tablespaces.include?(new_resource.tablespace)
-    @pg.execute(:command => "CREATE TABLESPACE #{new_resource.tablespace} LOCATION '#{new_resource.location}'")
-    new_resource.updated_by_last_action(true)
+    converge_by "create tablespace #{new_resource.tablespace}" do
+      @pg.execute(:command => "CREATE TABLESPACE #{new_resource.tablespace} LOCATION '#{new_resource.location}'")
+    end
   end
 end
 
 action :drop do
   if @pg.tablespaces.include?(new_resource.tablespace)
-    @pg.execute(:command => "DROP TABLESPACE #{new_resource.tablespace}")
-    new_resource.updated_by_last_action(true)
+    converge_by "drop tablespace #{new_resource.tablespace}" do
+      @pg.execute(:command => "DROP TABLESPACE #{new_resource.tablespace}")
+    end
   end
 end

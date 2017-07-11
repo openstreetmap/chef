@@ -31,14 +31,16 @@ end
 
 action :create do
   unless @pg.extensions(new_resource.database).include?(new_resource.extension)
-    @pg.execute(:command => "CREATE EXTENSION #{new_resource.extension}", :database => new_resource.database)
-    new_resource.updated_by_last_action(true)
+    converge_by "create extension #{new_resource.extension}" do
+      @pg.execute(:command => "CREATE EXTENSION #{new_resource.extension}", :database => new_resource.database)
+    end
   end
 end
 
 action :drop do
   if @pg.extensions(new_resource.database).include?(new_resource.extension)
-    @pg.execute(:command => "DROP EXTENSION #{new_resource.extension}", :database => new_resource.database)
-    new_resource.updated_by_last_action(true)
+    converge_by "drop extension #{new_resource.extension}" do
+      @pg.execute(:command => "DROP EXTENSION #{new_resource.extension}", :database => new_resource.database)
+    end
   end
 end
