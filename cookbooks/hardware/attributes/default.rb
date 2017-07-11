@@ -1,10 +1,10 @@
 default[:hardware][:modules] = if node[:lsb][:release].to_f >= 16.04
-                                 %w(lp)
+                                 %w[lp]
                                else
-                                 %w(loop lp rtc)
+                                 %w[loop lp rtc]
                                end
 
-default[:hardware][:grub][:cmdline] = %w(nomodeset)
+default[:hardware][:grub][:cmdline] = %w[nomodeset]
 default[:hardware][:sensors] = {}
 
 if node[:dmi] && node[:dmi][:system]
@@ -19,7 +19,7 @@ if node[:dmi] && node[:dmi][:system]
   end
 end
 
-if Chef::Util.compare_versions(node[:kernel][:release], [3, 3]) < 0
+if Chef::Util.compare_versions(node[:kernel][:release], [3, 3]).negative?
   default[:hardware][:modules] |= ["microcode"]
 
   if node[:cpu][:"0"][:vendor_id] == "GenuineIntel"
@@ -28,7 +28,7 @@ if Chef::Util.compare_versions(node[:kernel][:release], [3, 3]) < 0
 end
 
 if node[:kernel] && node[:kernel][:modules]
-  raidmods = node[:kernel][:modules].keys & %w(cciss hpsa mptsas mpt2sas mpt3sas megaraid_mm megaraid_sas aacraid)
+  raidmods = node[:kernel][:modules].keys & %w[cciss hpsa mptsas mpt2sas mpt3sas megaraid_mm megaraid_sas aacraid]
 
   default[:apt][:sources] |= ["hwraid"] unless raidmods.empty?
 end

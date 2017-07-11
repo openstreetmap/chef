@@ -6,13 +6,13 @@
 require "English"
 
 def output_config
-  puts <<-END
-graph_args --base 1024 -l 0 --vertical-label bytes --upper-limit 4056231936
-graph_category passenger
-graph_title Passenger memory
+  puts <<~END
+    graph_args --base 1024 -l 0 --vertical-label bytes --upper-limit 4056231936
+    graph_category passenger
+    graph_title Passenger memory
 
-memory.label memory
-END
+    memory.label memory
+  END
   exit 0
 end
 

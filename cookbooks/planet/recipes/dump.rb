@@ -20,7 +20,7 @@
 node.default[:incron][:planetdump] = {
   :user => "www-data",
   :path => "/store/backup",
-  :events => %w(IN_CREATE IN_MOVED_TO),
+  :events => %w[IN_CREATE IN_MOVED_TO],
   :command => "/usr/local/bin/planetdump $#"
 }
 

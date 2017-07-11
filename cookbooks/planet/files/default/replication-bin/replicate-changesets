@@ -100,7 +100,7 @@ class ChangesetBuilder
     xml["comments_count"] = res.num_tuples.to_s
 
     # early return if there aren't any comments
-    return unless res.num_tuples > 0
+    return unless res.num_tuples.positive?
 
     discussion = XML::Node.new("discussion")
     res.each do |row|
@@ -167,7 +167,7 @@ class Replicator
     new_ids = @conn
               .exec("select distinct changeset_id from changeset_comments where created_at >= '#{last_run}' and created_at < '#{@now}' and visible")
               .map { |row| row["changeset_id"].to_i }
-              .select { |c_id| !cs_ids.include?(c_id) }
+              .reject { |c_id| cs_ids.include?(c_id) }
 
     new_ids.each do |id|
       @conn
@@ -277,7 +277,6 @@ class Replicator
         move_tmp_files_into_place!
 
         fl.flock(File::LOCK_UN)
-
       rescue
         STDERR.puts("Error! Couldn't update state.")
         fl.flock(File::LOCK_UN)

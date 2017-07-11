@@ -28,7 +28,7 @@ action :create do
   database = new_resource.database
 
   if cluster
-    %w(cache connections locks querylength scans size transactions tuples).each do |plugin|
+    %w[cache connections locks querylength scans size transactions tuples].each do |plugin|
       munin_plugin "postgres_#{plugin}_#{database}:#{suffix}" do
         target "postgres_#{plugin}_"
         conf "munin.erb"
@@ -45,7 +45,7 @@ end
 action :delete do
   database = new_resource.database
 
-  %w(cache connections locks querylength scans size transactions tuples).each do |plugin|
+  %w[cache connections locks querylength scans size transactions tuples].each do |plugin|
     munin_plugin "postgres_#{plugin}_#{database}:#{suffix}" do
       action :delete
       restart_munin false

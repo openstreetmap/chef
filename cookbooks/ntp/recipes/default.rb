@@ -51,7 +51,7 @@ template "/etc/ntp.conf" do
   notifies :restart, "service[ntp]"
 end
 
-munin_plugins = %w(ntp_kernel_err ntp_kernel_pll_freq ntp_kernel_pll_off ntp_offset)
+munin_plugins = %w[ntp_kernel_err ntp_kernel_pll_freq ntp_kernel_pll_off ntp_offset]
 
 munin_plugin "ntp_kernel_err"
 munin_plugin "ntp_kernel_pll_freq"

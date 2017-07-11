@@ -1,5 +1,5 @@
 default[:piwik][:version] = "3.0.4"
-default[:piwik][:plugins] = %w(
+default[:piwik][:plugins] = %w[
   Actions API BulkTracking Contents CoreAdminHome CoreConsole CoreHome
   CorePluginsAdmin CoreUpdater CoreVisualizations CustomVariables
   Dashboard DevicesDetection DevicePlugins DoNotTrack Events Feedback Goals
@@ -8,4 +8,4 @@ default[:piwik][:plugins] = %w(
   SegmentEditor SEO SitesManager Transitions UserCountry UserCountryMap
   UserLanguage UsersManager Widgetize VisitFrequency VisitorInterest
   VisitsSummary VisitTime
-)
+]

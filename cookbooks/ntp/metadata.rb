@@ -8,7 +8,7 @@ version           "0.8.2"
 
 recipe "ntp", "Installs and configures ntp either as a server or client"
 
-%w(ubuntu debian redhat centos fedora).each do |os|
+%w[ubuntu debian redhat centos fedora].each do |os|
   supports os
 end
 

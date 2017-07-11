@@ -79,7 +79,7 @@ systemd_service "gpx-import" do
   pid_file "#{pid_directory}/gpx-import.pid"
 end
 
-if %w(database_offline database_readonly gpx_offline).include?(node[:web][:status])
+if %w[database_offline database_readonly gpx_offline].include?(node[:web][:status])
   service "gpx-import" do
     action :stop
   end

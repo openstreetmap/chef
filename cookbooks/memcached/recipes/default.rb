@@ -36,7 +36,7 @@ munin_plugin_conf "memcached_multi" do
   template "munin.erb"
 end
 
-%w(bytes commands conns evictions items memory).each do |stat|
+%w[bytes commands conns evictions items memory].each do |stat|
   munin_plugin "memcached_multi_#{stat}" do
     target "memcached_multi_"
   end

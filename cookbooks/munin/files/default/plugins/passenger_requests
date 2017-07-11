@@ -3,17 +3,17 @@
 require "English"
 
 def output_config
-  puts <<-END
-graph_args --base 1000
-graph_category passenger
-graph_title Passenger requests
-graph_vlabel requests / ${graph_period}
+  puts <<~END
+    graph_args --base 1000
+    graph_category passenger
+    graph_title Passenger requests
+    graph_vlabel requests / ${graph_period}
 
-requests.label requests
-requests.type DERIVE
-requests.max 1000000
-requests.min 0
-END
+    requests.label requests
+    requests.type DERIVE
+    requests.max 1000000
+    requests.min 0
+  END
   exit 0
 end
 

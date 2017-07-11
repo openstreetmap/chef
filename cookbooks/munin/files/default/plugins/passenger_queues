@@ -3,13 +3,13 @@
 require "English"
 
 def output_config
-  puts <<-END
-graph_category passenger
-graph_title Passenger queues
-graph_vlabel count
+  puts <<~END
+    graph_category passenger
+    graph_title Passenger queues
+    graph_vlabel count
 
-global.label global
-END
+    global.label global
+  END
   exit 0
 end
 

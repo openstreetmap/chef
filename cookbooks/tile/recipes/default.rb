@@ -376,7 +376,7 @@ postgresql_extension "hstore" do
   database "gis"
 end
 
-%w(geography_columns planet_osm_nodes planet_osm_rels planet_osm_ways raster_columns raster_overviews spatial_ref_sys).each do |table|
+%w[geography_columns planet_osm_nodes planet_osm_rels planet_osm_ways raster_columns raster_overviews spatial_ref_sys].each do |table|
   postgresql_table table do
     cluster node[:tile][:database][:cluster]
     database "gis"
@@ -385,7 +385,7 @@ end
   end
 end
 
-%w(geometry_columns planet_osm_line planet_osm_point planet_osm_polygon planet_osm_roads).each do |table|
+%w[geometry_columns planet_osm_line planet_osm_point planet_osm_polygon planet_osm_roads].each do |table|
   postgresql_table table do
     cluster node[:tile][:database][:cluster]
     database "gis"

@@ -25,7 +25,7 @@ property :after, [String, Array]
 property :wants, [String, Array]
 property :type, String,
          :default => "simple",
-         :is => %w(simple forking oneshot dbus notify idle)
+         :is => %w[simple forking oneshot dbus notify idle]
 property :limit_nofile, Integer
 property :environment, Hash, :default => {}
 property :environment_file, [String, Hash]
@@ -40,14 +40,14 @@ property :exec_reload, String
 property :runtime_directory, String
 property :runtime_directory_mode, Integer
 property :standard_input, String,
-         :is => %w(null tty tty-force tty-fail socket)
+         :is => %w[null tty tty-force tty-fail socket]
 property :standard_output, String,
-         :is => %w(inherit null tty journal syslog kmsg journal+console syslog+console kmsg+console socket)
+         :is => %w[inherit null tty journal syslog kmsg journal+console syslog+console kmsg+console socket]
 property :standard_error, String,
-         :is => %w(inherit null tty journal syslog kmsg journal+console syslog+console kmsg+console socket)
+         :is => %w[inherit null tty journal syslog kmsg journal+console syslog+console kmsg+console socket]
 property :success_exit_status, [Integer, String, Array]
 property :restart, String,
-         :is => %w(on-success on-failure on-abnormal on-watchdog on-abort always)
+         :is => %w[on-success on-failure on-abnormal on-watchdog on-abort always]
 property :private_tmp, [TrueClass, FalseClass]
 property :private_devices, [TrueClass, FalseClass]
 property :private_network, [TrueClass, FalseClass]

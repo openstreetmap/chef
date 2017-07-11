@@ -1,4 +1,5 @@
 # coding: utf-8
+
 #
 # Cookbook Name:: kibana
 # Recipe:: default

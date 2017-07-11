@@ -15,7 +15,7 @@ default_attributes(
   },
   :web => {
     :status => "online",
-    :memcached_servers => %w(rails1.ic rails2.ic rails3.ic)
+    :memcached_servers => %w[rails1.ic rails2.ic rails3.ic]
   }
 )
 

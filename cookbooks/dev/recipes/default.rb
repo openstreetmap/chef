@@ -113,7 +113,7 @@ search(:accounts, "*:*").each do |account|
   name = account["id"]
   details = node[:accounts][:users][name] || {}
 
-  next unless %w(user administrator).include?(details[:status])
+  next unless %w[user administrator].include?(details[:status])
 
   user_home = details[:home] || account["home"] || "#{node[:accounts][:home]}/#{name}"
 

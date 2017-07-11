@@ -89,9 +89,10 @@ action :create do
   end
 
   base_domains = [name] + Array(aliases)
+  tile_domains = base_domains.flat_map { |d| [d, "a.#{d}", "b.#{d}", "c.#{d}"] }
 
   ssl_certificate new_resource.name do
-    domains base_domains.flat_map { |d| [d, "a.#{d}", "b.#{d}", "c.#{d}"] }
+    domains tile_domains
   end
 
   resolvers = node[:networking][:nameservers].map do |resolver|

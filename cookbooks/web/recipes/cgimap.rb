@@ -63,7 +63,7 @@ systemd_service "cgimap" do
   pid_file "#{node[:web][:pid_directory]}/cgimap.pid"
 end
 
-if %w(database_offline api_offline).include?(node[:web][:status])
+if %w[database_offline api_offline].include?(node[:web][:status])
   service "cgimap" do
     action :stop
   end

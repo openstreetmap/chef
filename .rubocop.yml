@@ -1,11 +1,17 @@
 inherit_from: .rubocop_todo.yml
 
-Style/AlignParameters:
+AllCops:
+  TargetRubyVersion: 2.3
+
+Layout/AlignParameters:
   Exclude:
     - '**/metadata.rb'
 
-Style/ExtraSpacing:
+Layout/ExtraSpacing:
   AllowForAlignment: true
+
+Layout/IndentHeredoc:
+  EnforcedStyle: squiggly
 
 Style/FileName:
   Exclude:
@@ -15,8 +21,14 @@ Style/FileName:
     - 'hooks/*'
     - 'roles/*.rb'
 
+Style/FrozenStringLiteralComment:
+  EnforcedStyle: never
+
 Style/HashSyntax:
   EnforcedStyle: hash_rockets
 
 Style/StringLiterals:
   EnforcedStyle: double_quotes
+
+Style/SymbolArray:
+  EnforcedStyle: brackets

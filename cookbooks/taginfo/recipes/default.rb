@@ -45,7 +45,7 @@ ruby_version = node[:passenger][:ruby_version]
 
 package "ruby#{ruby_version}"
 
-%w(json sqlite3 sinatra sinatra-r18n rack-contrib).each do |gem|
+%w[json sqlite3 sinatra sinatra-r18n rack-contrib].each do |gem|
   gem_package gem do
     gem_binary "gem#{ruby_version}"
   end
@@ -181,7 +181,7 @@ node[:taginfo][:sites].each do |site|
     subscribes :run, "git[#{directory}/osmium-tool]"
   end
 
-  %w(taginfo/web/tmp bin data data/old download sources planet planet/log planet/replication).each do |dir|
+  %w[taginfo/web/tmp bin data data/old download sources planet planet/log planet/replication].each do |dir|
     directory "#{directory}/#{dir}" do
       owner "taginfo"
       group "taginfo"

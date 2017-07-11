@@ -48,7 +48,7 @@ end
 rails_directory = "#{node[:web][:base_directory]}/rails"
 
 piwik_configuration = data_bag_item("web", "piwik").to_hash.reject do |k, _|
-  %w(chef_type data_bag id).include?(k)
+  %w[chef_type data_bag id].include?(k)
 end
 
 rails_port "www.openstreetmap.org" do

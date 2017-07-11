@@ -86,7 +86,7 @@ end
 
 # Remove legacy HP G4 support which breaks modern hp-health 10.4
 if manufacturer == "HP"
-  %w(/opt/hp/hp-health/bin/hpasmd /usr/lib/libhpasmintrfc.so.3.0 %/usr/lib/libhpasmintrfc.so.3 /usr/lib/libhpasmintrfc.so).each do |filename|
+  %w[/opt/hp/hp-health/bin/hpasmd /usr/lib/libhpasmintrfc.so.3.0 %/usr/lib/libhpasmintrfc.so.3 /usr/lib/libhpasmintrfc.so].each do |filename|
     file filename do
       action :delete
     end
@@ -246,7 +246,7 @@ node[:block_device].each do |name, attributes|
   end
 end
 
-%w(hpssacli lsiutil sas2ircu megactl megacli arcconf).each do |tools_package|
+%w[hpssacli lsiutil sas2ircu megactl megacli arcconf].each do |tools_package|
   if tools_packages.include?(tools_package)
     package tools_package
   else
@@ -384,7 +384,7 @@ smartd_service = if node[:lsb][:release].to_f >= 16.04
 
 disks = disks.compact
 
-if disks.count > 0
+if disks.count.positive?
   package "smartmontools"
 
   template "/usr/local/bin/smartd-mailer" do
@@ -434,7 +434,7 @@ else
   end
 end
 
-if disks.count > 0
+if disks.count.positive?
   munin_plugin "hddtemp_smartctl" do
     conf "munin.hddtemp.erb"
     conf_variables :disks => disks

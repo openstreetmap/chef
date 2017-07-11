@@ -274,7 +274,7 @@ template "/etc/init.d/nominatim-update" do
   variables :source_directory => source_directory
 end
 
-%w(backup-nominatim vacuum-db-nominatim).each do |fname|
+%w[backup-nominatim vacuum-db-nominatim].each do |fname|
   template "/usr/local/bin/#{fname}" do
     source "#{fname}.erb"
     owner "root"

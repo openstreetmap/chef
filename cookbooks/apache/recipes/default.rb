@@ -22,7 +22,7 @@ include_recipe "ssl"
 package "apache2"
 package "libwww-perl"
 
-%w(event itk prefork worker).each do |mpm|
+%w[event itk prefork worker].each do |mpm|
   if mpm == node[:apache][:mpm]
     apache_module "mpm_#{mpm}" do
       action [:enable]

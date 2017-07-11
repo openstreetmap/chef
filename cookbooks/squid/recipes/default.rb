@@ -72,7 +72,7 @@ log "squid-restart" do
   notifies :restart, "service[squid]"
   only_if do
     IO.popen(["squidclient", "--host=127.0.0.1", "--port=80", "mgr:counters"]) do |io|
-      io.each.grep(/^[a-z][a-z_.]+ = -[0-9]+$/).count > 0
+      io.each.grep(/^[a-z][a-z_.]+ = -[0-9]+$/).count.positive?
     end
   end
 end

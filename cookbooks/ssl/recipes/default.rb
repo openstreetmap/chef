@@ -20,7 +20,7 @@
 package "openssl"
 package "ssl-cert"
 
-%w(letsencrypt dhparam).each do |certificate|
+%w[letsencrypt dhparam].each do |certificate|
   cookbook_file "/etc/ssl/certs/#{certificate}.pem" do
     owner "root"
     group "root"
