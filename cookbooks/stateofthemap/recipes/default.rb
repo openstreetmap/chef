@@ -56,13 +56,15 @@ wordpress_site "2007.stateofthemap.org" do
   database_prefix "wp_sotm_"
 end
 
-wordpress_theme "refreshwp-11" do
+wordpress_theme "2007.stateofthemap.org-refreshwp-11" do
+  name "refreshwp-11"
   site "2007.stateofthemap.org"
   repository "git://git.openstreetmap.org/stateofthemap.git"
   revision "theme-2007"
 end
 
-wordpress_plugin "geopress" do
+wordpress_plugin "2007.stateofthemap.org-geopress" do
+  name "geopress"
   site "2007.stateofthemap.org"
 end
 
@@ -82,13 +84,15 @@ wordpress_site "2008.stateofthemap.org" do
   database_prefix "wp_sotm08_"
 end
 
-wordpress_theme "refreshwp-11" do
+wordpress_theme "2008.stateofthemap.org-refreshwp-11" do
+  name "refreshwp-11"
   site "2008.stateofthemap.org"
   repository "git://git.openstreetmap.org/stateofthemap.git"
   revision "theme-2008"
 end
 
-wordpress_plugin "geopress" do
+wordpress_plugin "2008.stateofthemap.org-geopress" do
+  name "geopress"
   site "2008.stateofthemap.org"
 end
 
@@ -118,13 +122,15 @@ wordpress_site "2009.stateofthemap.org" do
        "/podcasts" => "/srv/2009.stateofthemap.org/podcasts"
 end
 
-wordpress_theme "aerodrome" do
+wordpress_theme "2009.stateofthemap.org-aerodrome" do
+  name "aerodrome"
   site "2009.stateofthemap.org"
   repository "git://git.openstreetmap.org/stateofthemap.git"
   revision "theme-2009"
 end
 
-wordpress_plugin "wp-sticky" do
+wordpress_plugin "2009.stateofthemap.org-wp-sticky" do
+  name "wp-sticky"
   site "2009.stateofthemap.org"
 end
 
@@ -152,18 +158,21 @@ wordpress_site "2010.stateofthemap.org" do
   urls "/register" => "/srv/2010.stateofthemap.org/register"
 end
 
-wordpress_theme "aerodrome" do
+wordpress_theme "2010.stateofthemap.org-aerodrome" do
+  name "aerodrome"
   site "2010.stateofthemap.org"
   repository "git://git.openstreetmap.org/stateofthemap.git"
   revision "theme-2010"
 end
 
-wordpress_plugin "sitepress-multilingual-cms" do
+wordpress_plugin "2010.stateofthemap.org-sitepress-multilingual-cms" do
+  name "sitepress-multilingual-cms"
   site "2010.stateofthemap.org"
   repository "git://chef.openstreetmap.org/sitepress-multilingual-cms.git"
 end
 
-wordpress_plugin "wp-sticky" do
+wordpress_plugin "2010.stateofthemap.org-wp-sticky" do
+  name "wp-sticky"
   site "2010.stateofthemap.org"
 end
 
@@ -191,18 +200,21 @@ wordpress_site "2011.stateofthemap.org" do
   urls "/register" => "/srv/2011.stateofthemap.org/register"
 end
 
-wordpress_theme "aerodrome" do
+wordpress_theme "2011.stateofthemap.org-aerodrome" do
+  name "aerodrome"
   site "2011.stateofthemap.org"
   repository "git://git.openstreetmap.org/stateofthemap.git"
   revision "theme-2011"
 end
 
-wordpress_plugin "sitepress-multilingual-cms" do
+wordpress_plugin "2011.stateofthemap.org-sitepress-multilingual-cms" do
+  name "sitepress-multilingual-cms"
   site "2011.stateofthemap.org"
   repository "git://chef.openstreetmap.org/sitepress-multilingual-cms.git"
 end
 
-wordpress_plugin "wp-sticky" do
+wordpress_plugin "2011.stateofthemap.org-wp-sticky" do
+  name "wp-sticky"
   site "2011.stateofthemap.org"
 end
 
@@ -230,22 +242,26 @@ wordpress_site "2012.stateofthemap.org" do
   urls "/register" => "/srv/2012.stateofthemap.org/register"
 end
 
-wordpress_theme "aerodrome" do
+wordpress_theme "2012.stateofthemap.org-aerodrome" do
+  name "aerodrome"
   site "2012.stateofthemap.org"
   repository "git://git.openstreetmap.org/stateofthemap.git"
   revision "theme-2012"
 end
 
-wordpress_plugin "leaflet-maps-marker" do
+wordpress_plugin "2012.stateofthemap.org-leaflet-maps-marker" do
+  name "leaflet-maps-marker"
   site "2012.stateofthemap.org"
 end
 
-wordpress_plugin "sitepress-multilingual-cms" do
+wordpress_plugin "2012.stateofthemap.org-sitepress-multilingual-cms" do
+  name "sitepress-multilingual-cms"
   site "2012.stateofthemap.org"
   repository "git://chef.openstreetmap.org/sitepress-multilingual-cms.git"
 end
 
-wordpress_plugin "wp-sticky" do
+wordpress_plugin "2012.stateofthemap.org-wp-sticky" do
+  name "wp-sticky"
   site "2012.stateofthemap.org"
 end
 

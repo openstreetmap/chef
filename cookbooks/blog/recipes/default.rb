@@ -41,29 +41,35 @@ wordpress_site "blog.openstreetmap.org" do
        "/static" => "/srv/blog.openstreetmap.org/static"
 end
 
-wordpress_theme "osmblog-wp-theme" do
+wordpress_theme "blog.openstreetmap.org-osmblog-wp-theme" do
+  name "osmblog-wp-theme"
   site "blog.openstreetmap.org"
   repository "git://github.com/harry-wood/osmblog-wp-theme.git"
 end
 
-wordpress_plugin "google-analytics-for-wordpress" do
+wordpress_plugin "blog.openstreetmap.org-google-analytics-for-wordpress" do
+  name "google-analytics-for-wordpress"
   site "blog.openstreetmap.org"
 end
 
-wordpress_plugin "google-sitemap-generator" do
+wordpress_plugin "blog.openstreetmap.org-google-sitemap-generator" do
+  name "google-sitemap-generator"
   site "blog.openstreetmap.org"
 end
 
-wordpress_plugin "shareadraft" do
+wordpress_plugin "blog.openstreetmap.org-shareadraft" do
+  name "shareadraft"
   site "blog.openstreetmap.org"
 end
 
-wordpress_plugin "sitepress-multilingual-cms" do
+wordpress_plugin "blog.openstreetmap.org-sitepress-multilingual-cms" do
+  name "sitepress-multilingual-cms"
   site "blog.openstreetmap.org"
   repository "git://chef.openstreetmap.org/sitepress-multilingual-cms.git"
 end
 
-wordpress_plugin "wordpress-importer" do
+wordpress_plugin "blog.openstreetmap.org-wordpress-importer" do
+  name "wordpress-importer"
   site "blog.openstreetmap.org"
 end
 
@@ -95,6 +101,7 @@ ssl_certificate "opengeodata.org" do
   domains ["opengeodata.org", "www.opengeodata.org", "old.opengeodata.org"]
   notifies :reload, "service[apache2]"
 end
+
 apache_site "opengeodata.org" do
   template "opengeodata.erb"
   directory "/srv/opengeodata.org"

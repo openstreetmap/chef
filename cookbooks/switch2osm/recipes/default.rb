@@ -30,43 +30,51 @@ wordpress_site "switch2osm.org" do
   database_password passwords["switch2osm-user"]
 end
 
-wordpress_theme "picolight" do
+wordpress_theme "switch2osm.org-picolight" do
+  name "picolight"
   site "switch2osm.org"
   repository "git://github.com/Firefishy/picolight-s2o.git"
   revision "master"
 end
 
-wordpress_plugin "sitepress-multilingual-cms" do
+wordpress_plugin "switch2osm.org-sitepress-multilingual-cms" do
+  name "sitepress-multilingual-cms"
   site "switch2osm.org"
   repository "git://chef.openstreetmap.org/sitepress-multilingual-cms.git"
 end
 
-wordpress_plugin "wpml-cms-nav" do
+wordpress_plugin "switch2osm.org-wpml-cms-nav" do
+  name "wpml-cms-nav"
   site "switch2osm.org"
   repository "git://chef.openstreetmap.org/wpml-cms-nav.git"
 end
 
-wordpress_plugin "wpml-sticky-links" do
+wordpress_plugin "switch2osm.org-wpml-sticky-links" do
+  name "wpml-sticky-links"
   site "switch2osm.org"
   repository "git://chef.openstreetmap.org/wpml-sticky-links.git"
 end
 
-wordpress_plugin "wpml-string-translation" do
+wordpress_plugin "switch2osm.org-wpml-string-translation" do
+  name "wpml-string-translation"
   site "switch2osm.org"
   repository "git://chef.openstreetmap.org/wpml-string-translation.git"
 end
 
-wordpress_plugin "wpml-translation-analytics" do
+wordpress_plugin "switch2osm.org-wpml-translation-analytics" do
+  name "wpml-translation-analytics"
   site "switch2osm.org"
   repository "git://chef.openstreetmap.org/wpml-translation-analytics.git"
 end
 
-wordpress_plugin "wpml-translation-management" do
+wordpress_plugin "switch2osm.org-wpml-translation-management" do
+  name "wpml-translation-management"
   site "switch2osm.org"
   repository "git://chef.openstreetmap.org/wpml-translation-management.git"
 end
 
-wordpress_plugin "wpml-xliff" do
+wordpress_plugin "switch2osm.org-wpml-xliff" do
+  name "wpml-xliff"
   site "switch2osm.org"
   repository "git://chef.openstreetmap.org/wpml-xliff.git"
 end
