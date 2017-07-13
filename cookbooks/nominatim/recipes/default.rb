@@ -322,7 +322,6 @@ apache_module "proxy"
 apache_module "proxy_fcgi"
 apache_module "proxy_http"
 apache_module "headers"
-apache_module "reqtimeout"
 
 service "php7.0-fpm" do
   action [:enable, :start]

@@ -16,6 +16,7 @@ default_attributes(
     :mpm => "event",
     :timeout => 60,
     :keepalive => false,
+    :reqtimeout => true,
     :event => {
       :server_limit => 32,
       :max_request_workers => 1600,
