@@ -9,6 +9,7 @@
     --logs-dir /srv/acme.openstreetmap.org/logs \
     --email operations@osmfoundation.org \
     --agree-tos \
+    --expand \
 <% @domains.each do |domain| -%>
     --domain <%= domain %> \
 <% end -%>
