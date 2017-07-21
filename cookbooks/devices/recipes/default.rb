@@ -17,6 +17,12 @@
 # limitations under the License.
 #
 
+cookbook_file "/usr/local/bin/fixeep-82574_83.sh" do
+  owner "root"
+  group "root"
+  mode 0o755
+end
+
 execute "udevadm-trigger" do
   action :nothing
   command "/sbin/udevadm trigger --action=add"

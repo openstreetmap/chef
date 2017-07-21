@@ -28,6 +28,9 @@ ACTION=="add", SUBSYSTEM=="block", ENV{ID_BUS}=="<%= device[:bus] %>", ENV{ID_SE
 # Disable scatter-gather offload for HP NC362i network controllers
 SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x10c9", ATTRS{subsystem_vendor}=="0x103c", ATTRS{subsystem_device}=="0x323f", RUN+="/sbin/ethtool -K $name gso off tso off sg off gro off"
 
+# Fix Power Saving Bug on Intel 82574L network controller in Supermicro HPC machines
+SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x10d3", ATTRS{subsystem_vendor}=="0x15d9", ATTRS{subsystem_device}=="0x10d3", RUN+="/usr/local/bin/fixeep-82574_83.sh $name"
+
 # Workaround unreliable Western Digital WD RE3/RE4 disks (ATA only)
 # Set sufficent Linux subsystem timeout
 ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{ID_BUS}=="ata", ENV{ID_MODEL}=="WDC_WD1002FBYS-02A6B0", ATTR{device/timeout}="90"
