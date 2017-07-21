@@ -3,8 +3,10 @@
 <VirtualHost *:80>
         ServerName stateofthemap.org
         ServerAlias stateofthemap.com
+        ServerAlias sotm.org
         ServerAlias www.stateofthemap.org
         ServerAlias www.stateofthemap.com
+        ServerAlias www.sotm.org
         ServerAdmin webmaster@openstreetmap.org
 
         CustomLog /var/log/apache2/stateofthemap.org-access.log combined
@@ -16,8 +18,10 @@
 
 <VirtualHost *:443>
         ServerName stateofthemap.com
+        ServerAlias sotm.org
         ServerAlias www.stateofthemap.org
         ServerAlias www.stateofthemap.com
+        ServerAlias www.sotm.org
         ServerAdmin webmaster@openstreetmap.org
 
         CustomLog /var/log/apache2/stateofthemap.org-access.log combined

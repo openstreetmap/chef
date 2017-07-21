@@ -31,7 +31,8 @@ end
 
 ssl_certificate "stateofthemap.org" do
   domains ["stateofthemap.org", "www.stateofthemap.org",
-           "stateofthemap.com", "www.stateofthemap.com"]
+           "stateofthemap.com", "www.stateofthemap.com",
+           "sotm.org", "www.sotm.org"]
   notifies :reload, "service[apache2]"
 end
 
