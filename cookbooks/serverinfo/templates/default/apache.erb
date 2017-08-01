@@ -2,6 +2,7 @@
 
 <VirtualHost *:80>
    ServerName <%= @name %>
+   ServerAlias <%= @aliases %>
    ServerAdmin webmaster@openstreetmap.org
 
    CustomLog /var/log/apache2/<%= @name %>-access.log combined
@@ -13,6 +14,7 @@
 
 <VirtualHost *:443>
    ServerName <%= @name %>
+   ServerAlias <%= @aliases %>
    ServerAdmin webmaster@openstreetmap.org
 
    CustomLog /var/log/apache2/<%= @name %>-access.log combined
