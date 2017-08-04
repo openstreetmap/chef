@@ -525,8 +525,7 @@ Ohai.plugin(:Hardware) do
           :controller => controller[:id],
           :vendor => Regexp.last_match(4),
           :model => Regexp.last_match(5),
-          :bus =>  Regexp.last_match(1),
-          :target =>  Regexp.last_match(2),
+          :sas_address => Regexp.last_match(6),
           :arrays => []
         }
 
@@ -570,11 +569,14 @@ Ohai.plugin(:Hardware) do
 
     disks.each do |disk|
       slot = controllers[disk[:controller]][:pci_slot]
-      bus = disk[:bus]
-      target = disk[:target]
+      sas_address = "0x#{disk[:sas_address]}"
 
-      if device = Dir.glob("/sys/bus/pci/devices/#{slot}/host*/port-*:*/end_device-*:*/target*:#{bus}:#{target}/*:#{bus}:#{target}:0/scsi_generic/sg*").first
-        disk[:device] = "/dev/#{File.basename(device)}"
+      Dir.glob("/sys/bus/pci/devices/#{slot}/host*/port-*:*/end_device-*:*/sas_device/end_device-*:*").each do |sas_device|
+        if read_sysctl_file("#{sas_device}/sas_address") == sas_address
+          if device = Dir.glob("#{sas_device}/device/target*:0:*/*:0:*:0/scsi_generic/sg*").first
+            disk[:device] = "/dev/#{File.basename(device)}"            
+          end
+        end
       end
     end
   end
