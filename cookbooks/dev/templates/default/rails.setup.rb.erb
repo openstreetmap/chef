@@ -1,5 +1,5 @@
-unless Object.const_defined?(:Rake) or Object.const_defined?(:POTLATCH2_KEY)
-  OpenStreetMap::Application.config.after_initialize do
+OpenStreetMap::Application.config.after_initialize do
+  if ActiveRecord::Base.connection.table_exists?(:client_applications)
     unless webmaster = User.find_by_email("webmaster@openstreetmap.org")
       webmaster = User.new
       webmaster.display_name = "OpenStreetMap Webmaster"
