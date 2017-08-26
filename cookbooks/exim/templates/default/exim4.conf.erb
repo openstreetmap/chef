@@ -383,9 +383,10 @@ acl_check_rcpt:
   deny    local_parts   = root:postmaster:webmaster:abuse:support
           senders       = :
 
-  # Block sender of spam backscatter
+  # Block blacklisted senders
 
-  deny    senders       = www-data@www.easyticket.de:*@email.realestate.co.nz:sipdentistry@mail.mediaworksonline.com:www-data@*.consoglobe.com:lina-noreply@jobstreet.com:apache@704210-web2.tristatecamera.com:webmaster@openstreetmap.org:noreply@pring.co.uk:admin@honeygame.com
+  deny    senders       = lsearch*@;/etc/exim4/blocked-senders
+          message       = Rejected because $sender_address is blacklisted\nQueries to postmaster@$qualify_domain
           !hosts        = +relay_from_hosts
 
   # Accept mail to postmaster in any local domain, regardless of the source,
