@@ -70,6 +70,12 @@ if node[:exim][:smarthost_name]
   end
 end
 
+file "/etc/exim4/blocked-senders" do
+  owner "root"
+  group "Debian-exim"
+  mode 0o644
+end
+
 template "/etc/exim4/exim4.conf" do
   source "exim4.conf.erb"
   owner "root"
