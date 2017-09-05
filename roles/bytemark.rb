@@ -5,7 +5,7 @@ default_attributes(
   :hosted_by => "Bytemark",
   :location => "York, England",
   :networking => {
-    :nameservers => ["8.8.8.8", "8.8.4.4", "2001:4860:4860::8888", "2001:4860:4860::8844"],
+    :nameservers => ["80.68.80.24", "80.68.80.25", "2001:41c8:2::1", "2001:41c8:2::2"],
     :roles => {
       :internal => {
         :inet => {
