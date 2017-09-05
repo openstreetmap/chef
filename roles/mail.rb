@@ -18,7 +18,7 @@ default_attributes(
     :daemon_smtp_ports => [25, 26],
     :smarthost_name => "mail.openstreetmap.org",
     :smarthost_via => false,
-    :dns_blacklists => ["sbl-xbl.spamhaus.org"],
+    :dns_blacklists => ["zen.spamhaus.org"],
     :routes => {
       :messages => {
         :comment => "messages.openstreetmap.org",
