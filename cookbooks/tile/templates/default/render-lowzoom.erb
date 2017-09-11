@@ -13,7 +13,7 @@ timestamp=$(date +%s)
 function update_<%= style %>
 {
   render_old \
-    --timestamp=${timestamp} \        
+    --timestamp=${timestamp} \
     --tile-dir=/srv/tile.openstreetmap.org/tiles \
     --socket=/var/run/renderd/renderd.sock \
     --num-threads=<%= node[:cpu][:total] - 2 %> \
