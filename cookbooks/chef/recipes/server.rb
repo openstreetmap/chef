@@ -65,6 +65,13 @@ execute "chef-server-reconfigure" do
   group "root"
 end
 
+execute "chef-server-restart" do
+  action :nothing
+  command "chef-server-ctl restart"
+  user "root"
+  group "root"
+end
+
 systemd_service "chef-server" do
   description "Chef server"
   after "network.target"
@@ -82,6 +89,7 @@ apache_module "proxy_http"
 ssl_certificate "chef.openstreetmap.org" do
   domains ["chef.openstreetmap.org", "chef.osm.org"]
   notifies :reload, "service[apache2]"
+  notifies :run, "execute[chef-server-restart]"
 end
 
 apache_site "chef.openstreetmap.org" do
