@@ -177,6 +177,7 @@ git source_directory do
   enable_submodules true
   user "nominatim"
   group "nominatim"
+  not_if { node[:nominatim][:state] != "slave" and File.exist?("#{source_directory}/README.md") }
   notifies :run, "execute[compile_nominatim]", :immediately
 end
 
