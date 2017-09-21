@@ -332,7 +332,7 @@ if !intel_ssds.empty? || !intel_nvmes.empty?
   end
 
   dpkg_package "isdct" do
-    version "3.0.7.401"
+    version "3.0.7.401-17"
     source "#{Chef::Config[:file_cache_path]}/isdct_3.0.7.401-17_amd64.deb"
   end
 end
