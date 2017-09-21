@@ -13,6 +13,7 @@ default_attributes(
         :late_authentication_rules => [
           { :database => "replication", :user => "replication", :address => "146.179.159.168/32" },
           { :database => "replication", :user => "replication", :address => "146.179.159.170/32" },
+          { :database => "replication", :user => "replication", :address => "10.0.0.10/32" },
           { :database => "replication", :user => "replication", :address => "10.0.32.40/32" }
         ]
       }
@@ -30,7 +31,7 @@ default_attributes(
         :gid => "postgres",
         :transfer_logging => false,
         :hosts_allow => [
-          "146.179.159.168", "146.179.159.170, 10.0.32.40"
+          "146.179.159.168", "146.179.159.170, 10.0.0.10, 10.0.32.40"
         ]
       }
     }
