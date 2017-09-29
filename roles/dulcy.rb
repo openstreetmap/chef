@@ -34,7 +34,7 @@ default_attributes(
         :maintenance_work_mem => "10GB",
         :random_page_cost => "1.5",
         :effective_cache_size => "60GB",
-        :fsync => "on",
+        :fsync => "off",
         :effective_io_concurrency => "3"
       }
     }
@@ -42,7 +42,7 @@ default_attributes(
   :nominatim => {
     :state => "standalone",
     :enable_backup => false,
-    :enable_git_updates => false,
+    :enable_git_updates => true,
     :dbadmins => %w[lonvia tomh],
     :dbcluster => "9.6/main",
     :flatnode_file => "/ssd/nominatim/nodes.store",
