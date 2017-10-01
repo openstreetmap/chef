@@ -13,3 +13,18 @@
     /bin/systemctl reload apache2
   endscript
 }
+
+
+<%= node[:nominatim][:logdir] %>/nominatim.openstreetmap.org-access.log {
+  daily
+  missingok
+  rotate 42
+  compress
+  delaycompress
+  notifempty
+  create 640 root adm
+  sharedscripts
+  postrotate
+    /bin/systemctl reload apache2
+  endscript
+}

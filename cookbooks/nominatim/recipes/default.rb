@@ -379,7 +379,7 @@ end
 
 fail2ban_jail "nominatim" do
   filter "nominatim"
-  logpath "/var/log/apache2/nominatim.openstreetmap.org-access.log"
+  logpath "#{node[:nominatim][:logdir]}/nominatim.openstreetmap.org-access.log"
   ports [80, 443]
   maxretry 100
   ignoreips web_servers
