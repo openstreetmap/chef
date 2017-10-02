@@ -1,4 +1,4 @@
 #!/bin/sh
 
-# Cleanup archive directory - keep 3 weeks of WALs
-find -L /store/postgresql/archive -mtime +21 -print0 | xargs -0r rm
+# Cleanup archive directory - keep 2 weeks of WALs
+find -L /store/postgresql/archive -mtime +14 -print0 | xargs -0r rm
