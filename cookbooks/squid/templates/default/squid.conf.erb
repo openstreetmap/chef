@@ -84,10 +84,7 @@ http_access deny purge
 forwarded_for on
 follow_x_forwarded_for allow localhost
 
-#Loggin used for analysis
-logformat zerelog %ts.%03tu %rp "%{Etag}<h" %>a "%{User-Agent}>h" %<st
-access_log /var/log/squid/zere.log zerelog
-
+logformat openstreetmap %ts.%03tu %tr %>a %Ss/%03Hs %<st %rm %rp %Sh/%<A %mt "%{Referer}>h" "%{User-Agent}>h"
 access_log <%= node[:squid][:access_log] %>
 cache_log /var/log/squid/cache.log
 cache_store_log none

@@ -138,3 +138,7 @@ tilerenders.each do |render|
     conf_variables :host => render[:fqdn]
   end
 end
+
+Dir.glob("/var/log/nginx/access.log*") do |log|
+  File.unlink(log)
+end

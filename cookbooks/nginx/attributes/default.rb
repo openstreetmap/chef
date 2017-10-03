@@ -1,3 +1,6 @@
+# Tuning for access logging
+default[:nginx][:access_log] = "/var/log/nginx/access.log"
+
 # Tuning for nginx fastcgi cache zone
 default[:nginx][:cache][:fastcgi][:enable] = false
 default[:nginx][:cache][:fastcgi][:keys_zone] = "fastcgi_cache_zone:32M"

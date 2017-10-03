@@ -12,6 +12,9 @@ default_attributes(
   :apt => {
     :sources => ["nginx"]
   },
+  :nginx => {
+    :access_log => nil
+  },
   :sysctl => {
     :network_conntrack_time_wait => {
       :comment => "Only track completed connections for 30 seconds",
