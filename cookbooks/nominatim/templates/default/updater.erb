@@ -34,4 +34,9 @@ do
     fi
     popd
 <% end -%>
+
+    if [ -f "<%= @update_maintenance_trigger %>" ]; then
+        rm <%= @update_maintenance_trigger %>
+        ./utils/update.php --calculate-postcodes
+    fi
 done

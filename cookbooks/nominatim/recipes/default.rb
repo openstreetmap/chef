@@ -252,7 +252,9 @@ template "/etc/cron.d/nominatim" do
   owner "root"
   group "root"
   mode "0644"
-  variables :bin_directory => "#{source_directory}/utils", :mailto => email_errors
+  variables :bin_directory => "#{source_directory}/utils",
+            :mailto => email_errors,
+            :update_maintenance_trigger => "#{basedir}/status/update_maintenance"
 end
 
 template "#{source_directory}/utils/nominatim-update" do
@@ -264,7 +266,8 @@ template "#{source_directory}/utils/nominatim-update" do
             :srcdir => source_directory,
             :logfile => "#{node[:nominatim][:logdir]}/update.log",
             :branch => node[:nominatim][:revision],
-            :update_stop_file => "#{basedir}/status/updates_disabled"
+            :update_stop_file => "#{basedir}/status/updates_disabled",
+            :update_maintenance_trigger => "#{basedir}/status/update_maintenance"
 end
 
 template "/etc/init.d/nominatim-update" do

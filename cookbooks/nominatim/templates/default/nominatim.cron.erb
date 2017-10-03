@@ -6,7 +6,8 @@ MAILTO=<%= @mailto %>
 <% if node[:nominatim][:enable_backup] -%>
 00 3 1 * * nominatim /usr/local/bin/backup-nominatim
 <% end -%>
-30 1 * * * postgres /usr/local/bin/vacuum-db-nominatim
+20 0 * * * postgres /usr/local/bin/vacuum-db-nominatim
 <% if node[:nominatim][:state] == "master" -%>
 05 */4 * * * postgres /usr/local/bin/clean-db-nominatim
 <% end -%>
+18 1 * * * nominatim touch <%= @update_maintenance_trigger %>
