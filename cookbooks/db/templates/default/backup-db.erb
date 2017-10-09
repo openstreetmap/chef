@@ -5,9 +5,7 @@
 D=`date +%Y-%m-%d`
 F=/store/backup/osm-${D}.dmp
 
-pg_dump --user=backup --format=custom --file=$F openstreetmap
-
-export RSYNC_RSH="ssh -ax"
-rsync $F backup.openstreetmap.org::backup
+pg_dump --user=backup --format=custom --file=$F openstreetmap && \
+  rsync --rsh="ssh -ax" $F backup.openstreetmap.org::backup
 
 rm -f $F
