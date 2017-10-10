@@ -19,3 +19,6 @@
 
 package "python"
 package "python-pip"
+
+package "python3"
+package "python3-pip"

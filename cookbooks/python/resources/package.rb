@@ -21,24 +21,29 @@ default_action :install
 
 property :package_name, :kind_of => String, :name_property => true
 property :version, :kind_of => String
+property :python_version, :kind_of => String
 
 action :install do
   if version.nil?
     execute "pip-install-#{name}" do
-      command "pip install #{new_resource.package_name}"
-      not_if "pip show #{new_resource.package_name}"
+      command "#{pip_command} install #{new_resource.package_name}"
+      not_if "#{pip_command} show #{new_resource.package_name}"
     end
   else
     execute "pip-install-#{name}" do
-      command "pip install #{new_resource.package_name}==#{new_resource.version}"
-      not_if "pip show #{new_resource.package_name} | fgrep -q #{new_resource.version}"
+      command "#{pip_command} install #{new_resource.package_name}==#{new_resource.version}"
+      not_if "#{pip_command} show #{new_resource.package_name} | fgrep -q #{new_resource.version}"
     end
   end
 end
 
 action :remove do
   execute "pip-uninstall-#{name}" do
-    command "pip uninstall #{new_resource.package_name}"
-    only_if "pip show #{new_resource.package_name}"
+    command "#{pip_command} uninstall #{new_resource.package_name}"
+    only_if "#{pip_command} show #{new_resource.package_name}"
   end
+end
+
+def pip_command
+  "pip#{python_version}"
 end

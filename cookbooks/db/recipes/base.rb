@@ -19,8 +19,10 @@
 
 include_recipe "postgresql"
 include_recipe "git"
+include_recipe "python"
 
 passwords = data_bag_item("db", "passwords")
+wal_secrets = data_bag_item("db", "wal-secrets")
 
 postgresql_munin "openstreetmap" do
   cluster node[:db][:cluster]
@@ -71,4 +73,22 @@ link "/usr/lib/postgresql/#{db_version}/lib/libpgosm.so" do
   to "#{function_directory}/libpgosm.so"
   owner "root"
   group "root"
+end
+
+package "lzop"
+
+python_package "wal-e" do
+  python_version "3"
+end
+
+python_package "boto" do
+  python_version "3"
+end
+
+template "/usr/local/bin/openstreetmap-wal-e" do
+  source "wal-e.erb"
+  owner "root"
+  group "postgres"
+  mode 0o750
+  variables :s3_key => wal_secrets["s3_key"]
 end
