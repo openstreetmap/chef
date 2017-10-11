@@ -8,7 +8,7 @@ default_attributes(
       :defaults => {
         :wal_level => "hot_standby",
         :archive_mode => "on",
-        :archive_command => "/bin/cp %p /store/postgresql/archive/%f",
+        :archive_command => "/usr/local/bin/openstreetmap-wal-e --terse wal-push %p",
         :max_wal_senders => "3",
         :late_authentication_rules => [
           { :database => "replication", :user => "replication", :address => "146.179.159.168/32" },

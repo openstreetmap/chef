@@ -15,7 +15,7 @@ default_attributes(
           :user => "replication",
           :passwords => { :bag => "db", :item => "passwords" }
         },
-        :restore_command => "/usr/bin/rsync karm.ic.openstreetmap.org::archive/%f %p"
+        :restore_command => "/usr/local/bin/openstreetmap-wal-e --terse wal-fetch %f %p"
       }
     }
   }
