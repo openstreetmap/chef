@@ -17,12 +17,10 @@ default_attributes(
         :address => "193.60.236.40"
       }
     }
-  },
-  :hardware => {
-    :watchdog => "w83627hf_wdt"
   }
 )
 
 run_list(
-  "role[ucl]"
+  "role[ucl]",
+  "role[supermicro-x8dtt-h]"
 )
