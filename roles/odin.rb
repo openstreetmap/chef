@@ -5,15 +5,18 @@ default_attributes(
   :networking => {
     :interfaces => {
       :external_ipv4 => {
-        :interface => "eno1",
+        :interface => "bond0",
         :role => :external,
         :family => :inet,
         :address => "130.225.254.123",
         :prefix => "23",
-        :gateway => "130.225.254.97"
+        :gateway => "130.225.254.97",
+        :bond => {
+          :slaves => %w[eno1 eno2]
+        }
       },
       :external_ipv6 => {
-        :interface => "eno1",
+        :interface => "bond0",
         :role => :external,
         :family => :inet6,
         :address => "2001:878:346::123",
