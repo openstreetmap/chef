@@ -51,6 +51,9 @@ iface <%= interface[:interface] %> <%= interface[:family] %> static
 <% if interface[:bond][:xmithashpolicy] -%>
       bond_xmit_hash_policy <%= interface[:bond][:xmithashpolicy] %>
 <% end -%>
+<% if interface[:bond][:lacprate] -%>
+      bond-lacp-rate <%= interface[:bond][:lacprate] %>
+<% end -%>
       bond-downdelay <%= interface[:bond][:downdelay] || 200 %>
       bond-updelay <%= interface[:bond][:updelay] || 200 %>
 <% end -%>

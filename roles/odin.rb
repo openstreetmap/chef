@@ -12,6 +12,10 @@ default_attributes(
         :prefix => "23",
         :gateway => "130.225.254.97",
         :bond => {
+          :mode => "802.3ad",
+          :miimon => "100",
+          :xmithashpolicy => "layer3+4",
+          :lacprate => "fast",
           :slaves => %w[eno1 eno2]
         }
       },
