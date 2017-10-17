@@ -124,10 +124,6 @@ default_attributes(
       :locale => {
         :repository => "git://github.com/tomhughes/openstreetmap-website.git",
         :revision => "locale"
-      },
-      :rails50 => {
-        :repository => "git://github.com/tomhughes/openstreetmap-website.git",
-        :revision => "rails50"
       }
     }
   },
