@@ -2,6 +2,11 @@ name "g5solutions"
 description "Role applied to all servers at G5 Solutions"
 
 default_attributes(
+  :accounts => {
+    :users => {
+      :g5team => { :status => :administrator }
+    }
+  },
   :hosted_by => "G5 Solutions",
   :location => "Indonesia",
   :networking => {
