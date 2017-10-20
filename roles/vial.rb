@@ -18,6 +18,9 @@ default_attributes(
       }
     }
   },
+  :hardware => {
+    :modules => %w[nct6775]
+  },
   :munin => {
     :plugins => {
       :sensors_temp => {
