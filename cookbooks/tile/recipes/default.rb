@@ -130,6 +130,16 @@ package "fonts-noto-unhinted"
 package "fonts-hanazono"
 package "ttf-unifont"
 
+["NotoSansArabicUI-Regular.ttf", "NotoSansArabicUI-Bold.ttf"].each do |font|
+  remote_file "/usr/share/fonts/truetype/noto/#{font}" do
+    action :create_if_missing
+    source "https://github.com/googlei18n/noto-fonts/raw/master/hinted/#{font}"
+    owner "root"
+    group "root"
+    mode 0o644
+  end
+end
+
 directory "/srv/tile.openstreetmap.org/cgi-bin" do
   owner "tile"
   group "tile"
