@@ -148,7 +148,7 @@ Ohai.plugin(:Hardware) do
     find_direct_disks(disk)
     find_nvme_disks(disk)
 
-    find_hp_disks(disk) if File.exist?("/usr/sbin/hpssacli")
+    find_hp_disks(disk) if File.exist?("/usr/sbin/ssacli")
     find_megaraid_disks(disk) if File.exist?("/usr/sbin/megacli")
     find_mpt1_disks(disk) if File.exist?("/usr/sbin/lsiutil")
     find_mpt2_disks(disk) if File.exist?("/usr/sbin/sas2ircu")
@@ -286,7 +286,7 @@ Ohai.plugin(:Hardware) do
     array = nil
     disk = nil
 
-    IO.popen(%w(hpssacli controller all show config detail)).each do |line|
+    IO.popen(%w(ssacli controller all show config detail)).each do |line|
       if line =~ /^Smart Array (\S+) /
         controller = {
           :id => devices[:controllers].count,

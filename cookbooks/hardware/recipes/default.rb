@@ -206,10 +206,10 @@ status_packages = {}
 node[:kernel][:modules].each_key do |modname|
   case modname
   when "cciss"
-    tools_packages << "hpssacli"
+    tools_packages << "ssacli"
     status_packages["cciss-vol-status"] ||= []
   when "hpsa"
-    tools_packages << "hpssacli"
+    tools_packages << "ssacli"
     status_packages["cciss-vol-status"] ||= []
   when "mptsas"
     tools_packages << "lsiutil"
@@ -243,7 +243,7 @@ node[:block_device].each do |name, attributes|
   end
 end
 
-%w[hpssacli lsiutil sas2ircu megactl megacli arcconf].each do |tools_package|
+%w[ssacli lsiutil sas2ircu megactl megacli arcconf].each do |tools_package|
   if tools_packages.include?(tools_package)
     package tools_package
   else
