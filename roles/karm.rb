@@ -49,7 +49,8 @@ default_attributes(
         "block/nvme3n1/queue/nomerges" => "1",
         "block/nvme4n1/queue/nomerges" => "1",
         "block/nvme5n1/queue/nomerges" => "1",
-        "block/nvme6n1/queue/nomerges" => "1"
+        "block/nvme6n1/queue/nomerges" => "1",
+        "block/nvme7n1/queue/nomerges" => "1"
       }
     }
   }
