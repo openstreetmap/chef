@@ -55,11 +55,8 @@ case manufacturer
 when "HP"
   package "hponcfg"
 
-  # Downgrade hp-health to 10.0.0.1.3-4. as 10.40-1815.49 has issues with reliable startup
   package "hp-health" do
     action :install
-    version "10.0.0.1.3-4."
-    options "--force-yes"
     notifies :restart, "service[hp-health]"
   end
 
