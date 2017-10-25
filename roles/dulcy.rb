@@ -61,10 +61,10 @@ default_attributes(
     },
     :fpm_pools => {
       :www => {
-        :max_children => "120"
+        :max_children => "100"
       },
       :bulk => {
-        :max_children => "20"
+        :max_children => "15"
       }
     }
   },
