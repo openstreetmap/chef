@@ -370,24 +370,6 @@ template "/etc/logrotate.d/apache2" do
   mode 0o644
 end
 
-include_recipe "fail2ban"
-
-web_servers = search(:node, "recipes:web\\:\\:frontend").collect do |n| # ~FC010
-  n.ipaddresses(:role => :external)
-end.flatten
-
-fail2ban_filter "nominatim" do
-  failregex '^<HOST> - - \[\] "[^"]+" (408|429) '
-end
-
-fail2ban_jail "nominatim" do
-  filter "nominatim"
-  logpath "#{node[:nominatim][:logdir]}/nominatim.openstreetmap.org-access.log"
-  ports [80, 443]
-  maxretry 100
-  ignoreips web_servers
-end
-
 munin_plugin_conf "nominatim" do
   template "munin.erb"
   variables :db => node[:nominatim][:dbname],
