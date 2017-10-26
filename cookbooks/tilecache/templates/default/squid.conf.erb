@@ -39,7 +39,7 @@ acl osmtileScrapers browser Firefox\/10\.0
 acl osmtileScrapers browser Firefox\/11\.0
 acl osmtileScrapers browser Firefox\/12\.0
 acl osmtileScrapers browser Firefox\/13\.0
-
+    
 acl is_fake_browser browser Firefox\/3\.0
 acl is_fake_browser browser Firefox\/4\.0
 acl is_fake_browser browser Firefox\/5\.0
@@ -104,6 +104,12 @@ cache_peer <%= sibling %> sibling 3128 3130 weight=1500
 #Primary Parent
 cache_peer <%= node[:tilecache][:tile_parent] %> parent 80 0 no-query originserver name=osmtileAccel login=PASS connect-timeout=120 no-digest weight=1000
 cache_peer_access osmtileAccel allow osmtile_sites
+
+#Backup Parents
+<% @renders.each do |renders| -%>
+cache_peer <%= renders[:hostname] %>.render.openstreetmap.org parent 80 0 no-query originserver name=osmtileAccelBackup<%= renders[:hostname] %> login=PASS connect-timeout=60 no-digest weight=10
+cache_peer_access osmtileAccelBackup<%= renders[:hostname] %> allow osmtile_sites
+<% end -%>
 
 #----------------------------------
 #Create an unlimited pool for cache IP addresses
