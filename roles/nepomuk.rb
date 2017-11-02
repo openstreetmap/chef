@@ -4,22 +4,6 @@ description "Master role applied to nepomuk"
 default_attributes(
   :networking => {
     :interfaces => {
-      :external_ipv4_old => {
-        :interface => "eth0",
-        :role => :external,
-        :family => :inet,
-        :address => "77.95.70.166",
-        :prefix => "27",
-        :gateway => "77.95.70.161"
-      },
-      :external_ipv6_old => {
-        :interface => "eth0",
-        :role => :external,
-        :family => :inet6,
-        :address => "2a03:9180:1:21::a6",
-        :prefix => "64",
-        :gateway => "2a03:9180:1:21::a1"
-      },
       :external_ipv4 => {
         :interface => "eth1",
         :role => :external,
