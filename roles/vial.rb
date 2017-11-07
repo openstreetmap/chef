@@ -47,19 +47,6 @@ default_attributes(
       }
     }
   },
-  :munin => {
-    :plugins => {
-      :sensors_temp => {
-        :temp1 => { :warning => 96, :critical => 100 },
-        :temp2 => { :warning => 96, :critical => 100 },
-        :temp3 => { :warning => 96, :critical => 100 },
-        :temp4 => { :warning => 96, :critical => 100 },
-        :temp5 => { :warning => 96, :critical => 100 },
-        :temp6 => { :warning => 96, :critical => 100 },
-        :temp7 => { :warning => 96, :critical => 100 }
-      }
-    }
-  },
   :networking => {
     :interfaces => {
       :external_ipv4 => {
