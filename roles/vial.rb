@@ -19,7 +19,33 @@ default_attributes(
     }
   },
   :hardware => {
-    :modules => %w[nct6775]
+    :modules => %w[nct6775],
+    :sensors => {
+      "nct6779-isa-0290" => {
+        :volts => {
+          "in1" => { :ignore => true },
+          "in4" => { :ignore => true },
+          "in5" => { :ignore => true },
+          "in6" => { :ignore => true },
+          "in9" => { :ignore => true },
+          "in10" => { :ignore => true },
+          "in11" => { :ignore => true },
+          "in12" => { :ignore => true },
+          "in13" => { :ignore => true },
+          "in14" => { :ignore => true }
+        },
+        :fans => {
+          "fan1" => { :ignore => true },
+          "fan2" => { :ignore => true }
+        },
+        :temps => {
+          "temp7" => { :ignore => true },
+          "temp8" => { :ignore => true },
+          "temp9" => { :ignore => true },
+          "temp10" => { :ignore => true }
+        }
+      }
+    }
   },
   :munin => {
     :plugins => {
