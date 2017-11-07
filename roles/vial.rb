@@ -23,6 +23,7 @@ default_attributes(
     :sensors => {
       "nct6779-isa-0290" => {
         :volts => {
+          "in0" => { :ignore => true },
           "in1" => { :ignore => true },
           "in4" => { :ignore => true },
           "in5" => { :ignore => true },
@@ -39,6 +40,10 @@ default_attributes(
           "fan2" => { :ignore => true }
         },
         :temps => {
+          "temp1" => { :ignore => true },
+          "temp2" => { :ignore => true },
+          "temp5" => { :ignore => true },
+          "temp6" => { :ignore => true },
           "temp7" => { :ignore => true },
           "temp8" => { :ignore => true },
           "temp9" => { :ignore => true },
