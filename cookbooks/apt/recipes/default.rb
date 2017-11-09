@@ -110,7 +110,7 @@ end
 
 apt_source "elasticsearch5.x" do
   source_template "elasticsearch.list.erb"
-  url "http://packages.elasticsearch.org/elasticsearch/5.x/debian"
+  url "https://artifacts.elastic.co/packages/5.x/apt"
   key "D27D666CD88E42B4"
 end
 
