@@ -37,6 +37,7 @@ mediawiki_site "board.osmfoundation.org" do
   private true
   recaptcha_public_key "6LflIQATAAAAAMXyDWpba-FgipVzE-aGF4HIR59N"
   recaptcha_private_key passwords["board"]["recaptcha"]
+  version "1.29"
 end
 
 cookbook_file "/srv/board.osmfoundation.org/Wiki.png" do
