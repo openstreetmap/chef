@@ -108,6 +108,12 @@ apt_source "elasticsearch2.x" do
   key "D27D666CD88E42B4"
 end
 
+apt_source "elasticsearch5.x" do
+  source_template "elasticsearch.list.erb"
+  url "http://packages.elasticsearch.org/elasticsearch/5.x/debian"
+  key "D27D666CD88E42B4"
+end
+
 apt_source "logstash" do
   source_template "elasticsearch.list.erb"
   url "http://packages.elasticsearch.org/logstash/2.3/debian"

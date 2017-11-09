@@ -11,7 +11,7 @@ default_attributes(
     :sources => ["passenger", "brightbox-ruby-ng"]
   },
   :elasticsearch => {
-    :version => "2.x",
+    :version => "5.x",
     :cluster => {
       :name => "foundation"
     },
