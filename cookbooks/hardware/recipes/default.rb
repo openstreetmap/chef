@@ -200,6 +200,13 @@ service "lldpd" do
   supports :status => true, :restart => true, :reload => true
 end
 
+# mcelog Daemon to log / alert on machine check events
+package "mcelog"
+service "mcelog" do
+  action [:start, :enable]
+  supports :status => true, :restart => true, :reload => false
+end
+
 tools_packages = []
 status_packages = {}
 
