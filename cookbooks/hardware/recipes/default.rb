@@ -200,8 +200,17 @@ service "lldpd" do
   supports :status => true, :restart => true, :reload => true
 end
 
-# mcelog Daemon to log / alert on machine check events
 package "mcelog"
+
+%w[bus cache dimm iomca page socket-memory unknown].each do |trigger|
+  template "/etc/mcelog/#{trigger}-error-trigger.local" do
+    source "mcelog-trigger.erb"
+    owner "root"
+    group "root"
+    mode 0o755
+  end
+end
+
 service "mcelog" do
   action [:start, :enable]
   supports :status => true, :restart => true, :reload => false
