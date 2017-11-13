@@ -266,6 +266,41 @@ wordpress_plugin "2012.stateofthemap.org-wp-sticky" do
   site "2012.stateofthemap.org"
 end
 
+%w[2016 2017 2018].each do |year|
+  git "/srv/#{year}.stateofthemap.org" do
+    action :sync
+    repository "git://github.com/openstreetmap/stateofthemap-#{year}.git"
+    user "root"
+    group "root"
+    notifies :run, "execute[/srv/#{year}.stateofthemap.org]"
+  end
+
+  directory "/srv/#{year}.stateofthemap.org/_site" do
+    mode 0o755
+    owner "nobody"
+    group "nogroup"
+  end
+
+  execute "/srv/#{year}.stateofthemap.org" do
+    action :nothing
+    command "jekyll build --trace"
+    cwd "/srv/#{year}.stateofthemap.org"
+    user "nobody"
+    group "nogroup"
+  end
+
+  ssl_certificate "#{year}.stateofthemap.org" do
+    domains ["#{year}.stateofthemap.org", "#{year}.stateofthemap.com"]
+    notifies :reload, "service[apache2]"
+  end
+
+  apache_site "#{year}.stateofthemap.org" do
+    template "apache.jekyll.erb"
+    directory "/srv/#{year}.stateofthemap.org/_site"
+    variables :year => year
+  end
+end
+
 template "/etc/cron.daily/sotm-backup" do
   source "backup.cron.erb"
   owner "root"
