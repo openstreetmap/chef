@@ -42,13 +42,11 @@ search(:accounts, "*:*").each do |account|
     end
 
     group name.to_s do
-      action :create
       gid account["uid"].to_i
       members group_members & node[:etc][:passwd].keys
     end
 
     user name.to_s do
-      action :create
       uid account["uid"].to_i
       gid account["uid"].to_i
       comment account["comment"] if account["comment"]

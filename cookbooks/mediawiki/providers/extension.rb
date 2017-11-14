@@ -69,7 +69,6 @@ action :create do
     extension_script = "#{extension_directory}/#{new_resource.name}.php"
 
     file "#{mediawiki_directory}/LocalSettings.d/Ext-#{new_resource.name}.inc.php" do
-      action :create
       content "<?php wfLoadExtension( '#{new_resource.name}' );\n"
       user node[:mediawiki][:user]
       group node[:mediawiki][:group]

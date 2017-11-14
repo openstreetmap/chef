@@ -168,7 +168,6 @@ node[:taginfo][:sites].each do |site|
     owner "taginfo"
     group "taginfo"
     mode "0755"
-    action :create
   end
 
   execute "compile-osmium" do

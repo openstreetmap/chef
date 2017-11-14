@@ -19,7 +19,7 @@
 
 default_action :create
 
-property :name, String
+property :service, String, :name_property => true
 property :description, String, :required => true
 property :after, [String, Array]
 property :wants, [String, Array]
@@ -61,7 +61,7 @@ action :create do
   service_variables = new_resource.to_hash
 
   if environment_file.is_a?(Hash)
-    template "/etc/default/#{name}" do
+    template "/etc/default/#{service}" do
       cookbook "systemd"
       source "environment.erb"
       owner "root"
@@ -70,10 +70,10 @@ action :create do
       variables :environment => environment_file
     end
 
-    service_variables[:environment_file] = "/etc/default/#{name}"
+    service_variables[:environment_file] = "/etc/default/#{service}"
   end
 
-  template "/etc/systemd/system/#{name}.service" do
+  template "/etc/systemd/system/#{service}.service" do
     cookbook "systemd"
     source "service.erb"
     owner "root"
@@ -82,30 +82,30 @@ action :create do
     variables service_variables
   end
 
-  execute "systemctl-reload-#{name}.service" do
+  execute "systemctl-reload-#{service}.service" do
     action :nothing
     command "systemctl daemon-reload"
     user "root"
     group "root"
-    subscribes :run, "template[/etc/systemd/system/#{name}.service]"
+    subscribes :run, "template[/etc/systemd/system/#{service}.service]"
   end
 end
 
 action :delete do
-  file "/etc/default/#{name}" do
+  file "/etc/default/#{service}" do
     action :delete
     only_if { environment_file.is_a?(Hash) }
   end
 
-  file "/etc/systemd/system/#{name}.service" do
+  file "/etc/systemd/system/#{service}.service" do
     action :delete
   end
 
-  execute "systemctl-reload-#{name}.service" do
+  execute "systemctl-reload-#{service}.service" do
     action :nothing
     command "systemctl daemon-reload"
     user "root"
     group "root"
-    subscribes :run, "file[/etc/systemd/system/#{name}.service]"
+    subscribes :run, "file[/etc/systemd/system/#{service}.service]"
   end
 end

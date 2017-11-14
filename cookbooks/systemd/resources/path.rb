@@ -19,7 +19,7 @@
 
 default_action :create
 
-property :name, String
+property :path, String, :name_property => true
 property :description, String, :required => true
 property :after, [String, Array]
 property :wants, [String, Array]
@@ -35,7 +35,7 @@ property :directory_mode, Integer
 action :create do
   path_variables = new_resource.to_hash
 
-  template "/etc/systemd/system/#{name}.path" do
+  template "/etc/systemd/system/#{path}.path" do
     cookbook "systemd"
     source "path.erb"
     owner "root"
@@ -44,25 +44,25 @@ action :create do
     variables path_variables
   end
 
-  execute "systemctl-reload-#{name}.path" do
+  execute "systemctl-reload-#{path}.path" do
     action :nothing
     command "systemctl daemon-reload"
     user "root"
     group "root"
-    subscribes :run, "template[/etc/systemd/system/#{name}.path]"
+    subscribes :run, "template[/etc/systemd/system/#{path}.path]"
   end
 end
 
 action :delete do
-  file "/etc/systemd/system/#{name}.path" do
+  file "/etc/systemd/system/#{path}.path" do
     action :delete
   end
 
-  execute "systemctl-reload-#{name}.path" do
+  execute "systemctl-reload-#{path}.path" do
     action :nothing
     command "systemctl daemon-reload"
     user "root"
     group "root"
-    subscribes :run, "file[/etc/systemd/system/#{name}.path]"
+    subscribes :run, "file[/etc/systemd/system/#{path}.path]"
   end
 end

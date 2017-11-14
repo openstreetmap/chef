@@ -62,7 +62,7 @@ action :create do
     not_if do
       ::File.exist?("#{mediawiki_directory}/LocalSettings-install.php")
     end
-    notifies :create, "ruby_block[rename-installer-localsettings]", :immediately
+    notifies :run, "ruby_block[rename-installer-localsettings]", :immediately
   end
 
   execute "#{mediawiki_directory}/maintenance/update.php" do
@@ -108,7 +108,7 @@ action :create do
 
   # Safety catch if git doesn't update but install.php hasn't run
   ruby_block "catch-installer-localsettings-run" do
-    action :create
+    action :run
     block do
       #
     end

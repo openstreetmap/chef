@@ -88,7 +88,6 @@ end
 # resources related to the output of the analysis and where it
 # can be publicly downloaded.
 directory tilelog_output_directory do
-  action :create
   user "www-data"
   group "www-data"
   mode 0o755

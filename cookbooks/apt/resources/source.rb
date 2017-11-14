@@ -19,7 +19,7 @@
 
 default_action :create
 
-property :name, String, :name_property => true
+property :source_name, String, :name_property => true
 property :source_template, String, :default => "default.list.erb"
 property :url, String, :required => true
 property :key, String
@@ -43,13 +43,13 @@ action :create do
       execute "apt-key-#{key}-install" do
         command "/usr/bin/apt-key adv --fetch-keys #{key_url}"
         not_if "/usr/bin/apt-key adv --list-keys #{key}"
-        notifies :run, "execute[apt-update-#{new_resource.name}]"
+        notifies :run, "execute[apt-update-#{source_name}]"
       end
     else
       execute "apt-key-#{key}-install" do
         command "/usr/bin/apt-key adv --keyserver hkp://keys.gnupg.net --recv-keys #{key}"
         not_if "/usr/bin/apt-key adv --list-keys #{key}"
-        notifies :run, "execute[apt-update-#{new_resource.name}]"
+        notifies :run, "execute[apt-update-#{source_name}]"
       end
     end
   end
@@ -60,10 +60,10 @@ action :create do
     group "root"
     mode 0o644
     variables :url => url
-    notifies :run, "execute[apt-update-#{new_resource.name}]"
+    notifies :run, "execute[apt-update-#{source_name}]"
   end
 
-  execute "apt-update-#{name}" do
+  execute "apt-update-#{source_name}" do
     action update ? :run : :nothing
     command "/usr/bin/apt-get update --no-list-cleanup -o Dir::Etc::sourcelist='#{source_path}' -o Dir::Etc::sourceparts='-'"
   end
@@ -76,5 +76,5 @@ action :delete do
 end
 
 def source_path
-  "/etc/apt/sources.list.d/#{name}.list"
+  "/etc/apt/sources.list.d/#{source_name}.list"
 end

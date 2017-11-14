@@ -63,7 +63,6 @@ action :create do
     skin_script = "#{skin_directory}/#{new_resource.name}.php"
 
     file "#{mediawiki_directory}/LocalSettings.d/Skin-#{new_resource.name}.inc.php" do
-      action :create
       content "<?php require_once('#{skin_script}');\n"
       user node[:mediawiki][:user]
       group node[:mediawiki][:group]
