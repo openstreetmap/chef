@@ -6,20 +6,20 @@
 require "English"
 
 def output_config
-  puts <<~END
+  puts <<~CONFIG
     graph_args --base 1024 -l 0 --vertical-label bytes --upper-limit 4056231936
     graph_category passenger
     graph_title Passenger memory
 
     memory.label memory
-  END
+  CONFIG
   exit 0
 end
 
 def output_values
   status = `/usr/sbin/passenger-memory-stats | tail -1`
   unless $CHILD_STATUS.success?
-    $stderr.puts "failed executing passenger-memory-stats"
+    warn "failed executing passenger-memory-stats"
     exit 1
   end
   status =~ /(\d+\.\d+)/

@@ -277,7 +277,7 @@ class Replicator
         move_tmp_files_into_place!
 
         fl.flock(File::LOCK_UN)
-      rescue
+      rescue StandardError
         STDERR.puts("Error! Couldn't update state.")
         fl.flock(File::LOCK_UN)
         raise

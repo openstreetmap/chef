@@ -3,20 +3,20 @@
 require "English"
 
 def output_config
-  puts <<~END
+  puts <<~CONFIG
     graph_category passenger
     graph_title Passenger queues
     graph_vlabel count
 
     global.label global
-  END
+  CONFIG
   exit 0
 end
 
 def output_values
   status = `/usr/sbin/passenger-status`
   unless $CHILD_STATUS.success?
-    $stderr.puts "failed executing passenger-status"
+    warn "failed executing passenger-status"
     exit 1
   end
   status =~ /Requests in top-level queue :\s+(\d+)/

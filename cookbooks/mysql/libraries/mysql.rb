@@ -55,7 +55,7 @@ class Chef
 
     def query(sql, options = {})
       # Run the query
-      result = execute(options.merge(:command => sql, :xml => :true))
+      result = execute(options.merge(:command => sql, :xml => true))
 
       # Parse the output
       document = REXML::Document.new(result.stdout)
@@ -119,7 +119,7 @@ class Chef
     def canonicalise_user(user)
       local, host = user.split("@")
 
-      host = "%" unless host
+      host ||= "%"
 
       local = "'#{local}'" unless local =~ /^'.*'$/
       host = "'#{host}'" unless host =~ /^'.*'$/

@@ -155,14 +155,14 @@ action :create do
     interpreter "php"
     cwd site_directory
     user "wordpress"
-    code <<-EOS
+    code <<-WP_FAIL2BAN
     <?php
     @include "wp-config.php";
     @include_once "wp-includes/functions.php";
     @include_once "wp-admin/includes/plugin.php";
     activate_plugin("wp-fail2ban/wp-fail2ban.php", '', false, false);
     ?>
-    EOS
+    WP_FAIL2BAN
     subscribes :run, "wordpress_plugin[wp-fail2ban]"
   end
 end

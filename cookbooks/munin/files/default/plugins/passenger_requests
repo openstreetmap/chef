@@ -3,7 +3,7 @@
 require "English"
 
 def output_config
-  puts <<~END
+  puts <<~CONFIG
     graph_args --base 1000
     graph_category passenger
     graph_title Passenger requests
@@ -13,14 +13,14 @@ def output_config
     requests.type DERIVE
     requests.max 1000000
     requests.min 0
-  END
+  CONFIG
   exit 0
 end
 
 def output_values
   status = `/usr/sbin/passenger-status`
   unless $CHILD_STATUS.success?
-    $stderr.puts "failed executing passenger-status"
+    warn "failed executing passenger-status"
     exit 1
   end
   total_requests = 0

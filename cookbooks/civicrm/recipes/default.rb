@@ -129,7 +129,7 @@ directory extensions_directory do
   mode 0o755
 end
 
-node[:civicrm][:extensions].each do |_, details|
+node[:civicrm][:extensions].each_value do |details|
   git "#{extensions_directory}/#{details[:name]}" do
     action :sync
     repository details[:repository]

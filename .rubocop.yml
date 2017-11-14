@@ -13,7 +13,7 @@ Layout/ExtraSpacing:
 Layout/IndentHeredoc:
   EnforcedStyle: squiggly
 
-Style/FileName:
+Naming/FileName:
   Exclude:
     - 'cookbooks/trac/files/default/trac-authenticate'
     - 'cookbooks/planet/files/default/replication-bin/replicate-changesets'

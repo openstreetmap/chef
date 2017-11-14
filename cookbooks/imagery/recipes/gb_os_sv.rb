@@ -1,5 +1,3 @@
-# coding: utf-8
-
 #
 # Cookbook Name:: imagery
 # Recipe:: gb_os_sv

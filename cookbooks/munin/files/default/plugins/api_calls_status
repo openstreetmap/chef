@@ -40,7 +40,7 @@ if ARGV[0] == "config"
 else
   statistics = JSON.parse(File.read("/srv/www.openstreetmap.org/rails/tmp/statistics.json"))
 
-  HTTP_STATUSES.keys.each do |code|
+  HTTP_STATUSES.each_key do |code|
     count = statistics["status"][code] || 0
     puts "http#{code}.value #{count}"
   end

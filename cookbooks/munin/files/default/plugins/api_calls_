@@ -62,7 +62,7 @@ else
     end
   end
 
-  CALL_TYPES.keys.each do |type|
+  CALL_TYPES.each_key do |type|
     count = counts[type] || 0
     puts "#{type}.value #{count}"
   end

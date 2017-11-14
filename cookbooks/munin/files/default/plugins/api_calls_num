@@ -27,7 +27,7 @@ if ARGV[0] == "config"
 else
   statistics = JSON.parse(File.read("/srv/www.openstreetmap.org/rails/tmp/statistics.json"))
 
-  CALL_TYPES.keys.each do |type|
+  CALL_TYPES.each_key do |type|
     count = statistics["uri"][type.to_s] || 0
     puts "#{type}.value #{count}"
   end

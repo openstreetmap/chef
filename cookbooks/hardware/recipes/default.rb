@@ -424,7 +424,7 @@ if disks.count.positive?
   # an Areca controller as they only allow one thing to
   # talk to the controller at a time and smartd will
   # throw errors if it clashes with munin
-  disks = disks.reject { |disk| disk[:smart] && disk[:smart].start_with?("areca,") }
+  disks = disks.reject { |disk| disk[:smart]&.start_with?("areca,") }
 
   disks.each do |disk|
     munin_plugin "smart_#{disk[:munin]}" do
