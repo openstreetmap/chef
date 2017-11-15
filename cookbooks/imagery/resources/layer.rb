@@ -41,20 +41,20 @@ property :overlay, [TrueClass, FalseClass], :default => false
 property :default_layer, [TrueClass, FalseClass], :default => false
 
 action :create do
-  file "/srv/imagery/layers/#{site}/#{layer}.yml" do
+  file "/srv/imagery/layers/#{new_resource.site}/#{new_resource.layer}.yml" do
     owner "root"
     group "root"
     mode 0o644
-    content YAML.dump(:name => layer,
-                      :title => title || layer,
-                      :url => "//{s}.#{site}/layer/#{layer}/{z}/{x}/{y}.png",
-                      :attribution => copyright,
-                      :default => default_layer,
-                      :maxZoom => max_zoom,
-                      :overlay => overlay)
+    content YAML.dump(:name => new_resource.layer,
+                      :title => new_resource.title || new_resource.layer,
+                      :url => "//{s}.#{new_resource.site}/layer/#{new_resource.layer}/{z}/{x}/{y}.png",
+                      :attribution => new_resource.copyright,
+                      :default => new_resource.default_layer,
+                      :maxZoom => new_resource.max_zoom,
+                      :overlay => new_resource.overlay)
   end
 
-  template "/srv/imagery/mapserver/layer-#{layer}.map" do
+  template "/srv/imagery/mapserver/layer-#{new_resource.layer}.map" do
     cookbook "imagery"
     source "mapserver.map.erb"
     owner "root"
@@ -63,17 +63,17 @@ action :create do
     variables new_resource.to_hash
   end
 
-  systemd_service "mapserv-fcgi-#{layer}" do
-    description "Map server for #{layer} layer"
-    environment "MS_MAPFILE" => "/srv/imagery/mapserver/layer-#{layer}.map",
+  systemd_service "mapserv-fcgi-#{new_resource.layer}" do
+    description "Map server for #{new_resource.layer} layer"
+    environment "MS_MAPFILE" => "/srv/imagery/mapserver/layer-#{new_resource.layer}.map",
                 "MS_MAP_PATTERN" => "^/srv/imagery/mapserver/",
                 "MS_DEBUGLEVEL" => "0",
                 "MS_ERRORFILE" => "stderr"
     limit_nofile 16384
     user "imagery"
     group "imagery"
-    exec_start_pre "/bin/rm -f /run/mapserver-fastcgi/layer-#{layer}.socket"
-    exec_start "/usr/bin/spawn-fcgi -n -s /run/mapserver-fastcgi/layer-#{layer}.socket -M 0666 -P /run/mapserver-fastcgi/layer-#{layer}.pid -- /usr/bin/multiwatch -f 6 --signal=TERM -- /usr/lib/cgi-bin/mapserv"
+    exec_start_pre "/bin/rm -f /run/mapserver-fastcgi/layer-#{new_resource.layer}.socket"
+    exec_start "/usr/bin/spawn-fcgi -n -s /run/mapserver-fastcgi/layer-#{new_resource.layer}.socket -M 0666 -P /run/mapserver-fastcgi/layer-#{new_resource.layer}.pid -- /usr/bin/multiwatch -f 6 --signal=TERM -- /usr/lib/cgi-bin/mapserv"
     private_tmp true
     private_devices true
     private_network true
@@ -81,25 +81,25 @@ action :create do
     protect_home true
     no_new_privileges true
     restart "always"
-    pid_file "/run/mapserver-fastcgi/layer-#{layer}.pid"
+    pid_file "/run/mapserver-fastcgi/layer-#{new_resource.layer}.pid"
   end
 
-  service "mapserv-fcgi-#{layer}" do
+  service "mapserv-fcgi-#{new_resource.layer}" do
     provider Chef::Provider::Service::Systemd
     action [:enable, :start]
     supports :status => true, :restart => true, :reload => false
-    subscribes :restart, "template[/srv/imagery/mapserver/layer-#{layer}.map]"
-    subscribes :restart, "systemd_service[mapserv-fcgi-#{layer}]"
+    subscribes :restart, "template[/srv/imagery/mapserver/layer-#{new_resource.layer}.map]"
+    subscribes :restart, "systemd_service[mapserv-fcgi-#{new_resource.layer}]"
   end
 
-  directory "/srv/imagery/nginx/#{site}" do
+  directory "/srv/imagery/nginx/#{new_resource.site}" do
     owner "root"
     group "root"
     mode 0o755
     recursive true
   end
 
-  template "/srv/imagery/nginx/#{site}/layer-#{layer}.conf" do
+  template "/srv/imagery/nginx/#{new_resource.site}/layer-#{new_resource.layer}.conf" do
     cookbook "imagery"
     source "nginx_imagery_layer_fragment.conf.erb"
     owner "root"
@@ -110,23 +110,23 @@ action :create do
 end
 
 action :delete do
-  file "/srv/imagery/layers/#{site}/#{layer}.yml" do
+  file "/srv/imagery/layers/#{new_resource.site}/#{new_resource.layer}.yml" do
     action :delete
   end
 
-  service "mapserv-fcgi-layer-#{layer}" do
+  service "mapserv-fcgi-layer-#{new_resource.layer}" do
     action [:stop, :disable]
   end
 
-  file "/srv/imagery/mapserver/layer-#{layer}.map" do
+  file "/srv/imagery/mapserver/layer-#{new_resource.layer}.map" do
     action :delete
   end
 
-  systemd_service "mapserv-fcgi-#{layer}" do
+  systemd_service "mapserv-fcgi-#{new_resource.layer}" do
     action :delete
   end
 
-  file "/srv/imagery/nginx/#{site}/layer-#{layer}.conf" do
+  file "/srv/imagery/nginx/#{new_resource.site}/layer-#{new_resource.layer}.conf" do
     action :delete
   end
 end

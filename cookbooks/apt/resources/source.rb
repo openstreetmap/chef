@@ -34,22 +34,22 @@ end
 
 action :create do
   if key
-    execute "apt-key-#{key}-clean" do
+    execute "apt-key-#{new_resource.key}-clean" do
       command "/usr/bin/apt-key adv --batch --delete-key --yes #key}"
-      only_if "/usr/bin/apt-key adv --list-keys #{key} | fgrep expired"
+      only_if "/usr/bin/apt-key adv --list-keys #{new_resource.key} | fgrep expired"
     end
 
     if key_url
-      execute "apt-key-#{key}-install" do
-        command "/usr/bin/apt-key adv --fetch-keys #{key_url}"
-        not_if "/usr/bin/apt-key adv --list-keys #{key}"
-        notifies :run, "execute[apt-update-#{source_name}]"
+      execute "apt-key-#{new_resource.key}-install" do
+        command "/usr/bin/apt-key adv --fetch-keys #{new_resource.key_url}"
+        not_if "/usr/bin/apt-key adv --list-keys #{new_resource.key}"
+        notifies :run, "execute[apt-update-#{new_resource.source_name}]"
       end
     else
-      execute "apt-key-#{key}-install" do
-        command "/usr/bin/apt-key adv --keyserver hkp://keys.gnupg.net --recv-keys #{key}"
-        not_if "/usr/bin/apt-key adv --list-keys #{key}"
-        notifies :run, "execute[apt-update-#{source_name}]"
+      execute "apt-key-#{new_resource.key}-install" do
+        command "/usr/bin/apt-key adv --keyserver hkp://keys.gnupg.net --recv-keys #{new_resource.key}"
+        not_if "/usr/bin/apt-key adv --list-keys #{new_resource.key}"
+        notifies :run, "execute[apt-update-#{new_resource.source_name}]"
       end
     end
   end
@@ -60,10 +60,10 @@ action :create do
     group "root"
     mode 0o644
     variables :url => url
-    notifies :run, "execute[apt-update-#{source_name}]"
+    notifies :run, "execute[apt-update-#{new_resource.source_name}]"
   end
 
-  execute "apt-update-#{source_name}" do
+  execute "apt-update-#{new_resource.source_name}" do
     action update ? :run : :nothing
     command "/usr/bin/apt-get update --no-list-cleanup -o Dir::Etc::sourcelist='#{source_path}' -o Dir::Etc::sourceparts='-'"
   end
@@ -75,6 +75,8 @@ action :delete do
   end
 end
 
-def source_path
-  "/etc/apt/sources.list.d/#{source_name}.list"
+action_class do
+  def source_path
+    "/etc/apt/sources.list.d/#{new_resource.source_name}.list"
+  end
 end

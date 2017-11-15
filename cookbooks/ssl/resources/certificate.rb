@@ -23,69 +23,71 @@ property :certificate, String, :name_property => true
 property :domains, [String, Array], :required => true
 
 action :create do
-  node.default[:letsencrypt][:certificates][certificate] = {
+  node.default[:letsencrypt][:certificates][new_resource.certificate] = {
     :domains => Array(domains)
   }
 
   if letsencrypt
-    certificate_content = letsencrypt["certificate"]
-    key_content = letsencrypt["key"]
+    certificate = letsencrypt["certificate"]
+    key = letsencrypt["key"]
   end
 
-  if certificate_content
-    file "/etc/ssl/certs/#{certificate}.pem" do
+  if certificate
+    file "/etc/ssl/certs/#{new_resource.certificate}.pem" do
       owner "root"
       group "root"
       mode 0o444
-      content certificate_content
+      content certificate
       backup false
       manage_symlink_source false
       force_unlink true
     end
 
-    file "/etc/ssl/private/#{certificate}.key" do
+    file "/etc/ssl/private/#{new_resource.certificate}.key" do
       owner "root"
       group "ssl-cert"
       mode 0o440
-      content key_content
+      content key
       backup false
       manage_symlink_source false
       force_unlink true
     end
   else
-    template "/tmp/#{certificate}.ssl.cnf" do
+    template "/tmp/#{new_resource.certificate}.ssl.cnf" do
       cookbook "ssl"
       source "ssl.cnf.erb"
       owner "root"
       group "root"
       mode 0o644
-      variables :domains => Array(domains)
+      variables :domains => Array(new_resource.domains)
       not_if do
-        ::File.exist?("/etc/ssl/certs/#{certificate}.pem") && ::File.exist?("/etc/ssl/private/#{certificate}.key")
+        ::File.exist?("/etc/ssl/certs/#{new_resource.certificate}.pem") && ::File.exist?("/etc/ssl/private/#{new_resource.certificate}.key")
       end
     end
 
-    execute "/etc/ssl/certs/#{certificate}.pem" do
-      command "openssl req -x509 -newkey rsa:2048 -keyout /etc/ssl/private/#{certificate}.key -out /etc/ssl/certs/#{certificate}.pem -days 365 -nodes -config /tmp/#{certificate}.ssl.cnf"
+    execute "/etc/ssl/certs/#{new_resource.certificate}.pem" do
+      command "openssl req -x509 -newkey rsa:2048 -keyout /etc/ssl/private/#{new_resource.certificate}.key -out /etc/ssl/certs/#{new_resource.certificate}.pem -days 365 -nodes -config /tmp/#{new_resource.certificate}.ssl.cnf"
       user "root"
       group "ssl-cert"
       not_if do
-        ::File.exist?("/etc/ssl/certs/#{certificate}.pem") && ::File.exist?("/etc/ssl/private/#{certificate}.key")
+        ::File.exist?("/etc/ssl/certs/#{new_resource.certificate}.pem") && ::File.exist?("/etc/ssl/private/#{new_resource.certificate}.key")
       end
     end
   end
 end
 
 action :delete do
-  file "/etc/ssl/certs/#{certificate}.pem" do
+  file "/etc/ssl/certs/#{new_resource.certificate}.pem" do
     action :delete
   end
 
-  file "/etc/ssl/private/#{certificate}.key" do
+  file "/etc/ssl/private/#{new_resource.certificate}.key" do
     action :delete
   end
 end
 
-def letsencrypt
-  @letsencrypt ||= search(:letsencrypt, "id:#{certificate}").first
+action_class do
+  def letsencrypt
+    @letsencrypt ||= search(:letsencrypt, "id:#{new_resource.certificate}").first
+  end
 end

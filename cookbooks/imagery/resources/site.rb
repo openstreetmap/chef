@@ -27,27 +27,27 @@ property :aliases, [String, Array], :default => []
 property :bbox, Array, :required => true
 
 action :create do
-  directory "/srv/#{site}" do
+  directory "/srv/#{new_resource.site}" do
     user "root"
     group "root"
     mode 0o755
   end
 
-  directory "/srv/imagery/layers/#{site}" do
-    user "root"
-    group "root"
-    mode 0o755
-    recursive true
-  end
-
-  directory "/srv/imagery/overlays/#{site}" do
+  directory "/srv/imagery/layers/#{new_resource.site}" do
     user "root"
     group "root"
     mode 0o755
     recursive true
   end
 
-  template "/srv/#{site}/index.html" do
+  directory "/srv/imagery/overlays/#{new_resource.site}" do
+    user "root"
+    group "root"
+    mode 0o755
+    recursive true
+  end
+
+  template "/srv/#{new_resource.site}/index.html" do
     source "index.html.erb"
     user "root"
     group "root"
@@ -55,43 +55,43 @@ action :create do
     variables :title => title
   end
 
-  cookbook_file "/srv/#{site}/imagery.css" do
+  cookbook_file "/srv/#{new_resource.site}/imagery.css" do
     source "imagery.css"
     user "root"
     group "root"
     mode 0o644
   end
 
-  cookbook_file "/srv/#{site}/clientaccesspolicy.xml" do
+  cookbook_file "/srv/#{new_resource.site}/clientaccesspolicy.xml" do
     source "clientaccesspolicy.xml"
     user "root"
     group "root"
     mode 0o644
   end
 
-  cookbook_file "/srv/#{site}/crossdomain.xml" do
+  cookbook_file "/srv/#{new_resource.site}/crossdomain.xml" do
     source "crossdomain.xml"
     user "root"
     group "root"
     mode 0o644
   end
 
-  layers = Dir.glob("/srv/imagery/layers/#{site}/*.yml").collect do |path|
+  layers = Dir.glob("/srv/imagery/layers/#{new_resource.site}/*.yml").collect do |path|
     YAML.safe_load(::File.read(path), [Symbol])
   end
 
-  template "/srv/#{site}/imagery.js" do
+  template "/srv/#{new_resource.site}/imagery.js" do
     source "imagery.js.erb"
     user "root"
     group "root"
     mode 0o644
-    variables :bbox => bbox, :layers => layers
+    variables :bbox => new_resource.bbox, :layers => layers
   end
 
-  base_domains = [site] + Array(aliases)
+  base_domains = [new_resource.site] + Array(new_resource.aliases)
   tile_domains = base_domains.flat_map { |d| [d, "a.#{d}", "b.#{d}", "c.#{d}"] }
 
-  ssl_certificate site do
+  ssl_certificate new_resource.site do
     domains tile_domains
   end
 
@@ -99,9 +99,9 @@ action :create do
     IPAddr.new(resolver).ipv6? ? "[#{resolver}]" : resolver
   end
 
-  nginx_site site do
+  nginx_site new_resource.site do
     template "nginx_imagery.conf.erb"
-    directory "/srv/imagery/#{site}"
+    directory "/srv/imagery/#{new_resource.site}"
     restart_nginx false
     variables new_resource.to_hash.merge(:resolvers => resolvers)
   end
