@@ -19,9 +19,11 @@
 
 include_recipe "apache"
 
-package "trac"
-package "trac-git"
-package "ruby"
+package %w[
+  trac
+  trac-git
+  ruby
+]
 
 site_name = "trac.openstreetmap.org"
 site_directory = "/srv/#{site_name}"

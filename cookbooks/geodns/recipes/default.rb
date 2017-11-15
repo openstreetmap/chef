@@ -17,9 +17,10 @@
 # limitations under the License.
 #
 
-package "geoip-database-contrib"
-
-package "gdnsd"
+package %w[
+  geoip-database-contrib
+  gdnsd
+]
 
 service "gdnsd" do
   action [:enable, :start]

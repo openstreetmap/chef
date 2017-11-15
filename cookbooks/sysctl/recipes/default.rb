@@ -17,9 +17,7 @@
 # limitations under the License.
 #
 
-package "procps" do
-  action :install
-end
+package "procps"
 
 directory "/etc/sysctl.d" do
   owner "root"

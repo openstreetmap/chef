@@ -19,16 +19,18 @@
 
 include_recipe "apache"
 
-package "make"
-package "build-essential"
-package "pkg-config"
-package "zlib1g-dev"
-package "libbz2-dev"
-package "libarchive-dev"
-package "libexpat1-dev"
-package "libpng-dev"
-package "pngquant"
-package "libcache-memcached-perl"
+package %w[
+  make
+  build-essential
+  pkg-config
+  zlib1g-dev
+  libbz2-dev
+  libarchive-dev
+  libexpat1-dev
+  libpng-dev
+  pngquant
+  libcache-memcached-perl
+]
 
 directory "/srv/gps-tile.openstreetmap.org" do
   owner "gpstile"

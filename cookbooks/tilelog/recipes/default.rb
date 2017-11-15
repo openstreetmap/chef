@@ -19,13 +19,15 @@
 
 include_recipe "tools"
 
-package "gcc"
-package "make"
-package "autoconf"
-package "automake"
-package "libboost-filesystem-dev"
-package "libboost-system-dev"
-package "libboost-program-options-dev"
+package %w[
+  gcc
+  make
+  autoconf
+  automake
+  libboost-filesystem-dev
+  libboost-system-dev
+  libboost-program-options-dev
+]
 
 tilelog_source_directory = node[:tilelog][:source_directory]
 tilelog_input_directory = node[:tilelog][:input_directory]

@@ -21,11 +21,13 @@ include_recipe "apache"
 include_recipe "mysql"
 include_recipe "git"
 
-package "php"
-package "php-cli"
-package "php-curl"
-package "php-mysql"
-package "php-gd"
+package %w[
+  php
+  php-cli
+  php-curl
+  php-mysql
+  php-gd
+]
 
 apache_module "php7.0"
 

@@ -22,14 +22,15 @@ include_recipe "apache"
 
 passwords = data_bag_item("dns", "passwords")
 
-package "make"
-
-package "perl"
-package "libxml-treebuilder-perl"
-package "libxml-writer-perl"
-package "libyaml-perl"
-package "libwww-perl"
-package "libjson-xs-perl"
+package %w[
+  make
+  perl
+  libxml-treebuilder-perl
+  libxml-writer-perl
+  libyaml-perl
+  libwww-perl
+  libjson-xs-perl
+]
 
 directory "/srv/dns.openstreetmap.org" do
   owner "root"

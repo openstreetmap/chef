@@ -21,8 +21,10 @@ include_recipe "apache"
 
 keys = data_bag_item("chef", "keys")
 
-package "certbot"
-package "ruby"
+package %w[
+  certbot
+  ruby
+]
 
 directory "/etc/letsencrypt" do
   owner "letsencrypt"

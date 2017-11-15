@@ -23,33 +23,43 @@ include_recipe "mysql"
 include_recipe "git"
 
 # Mediawiki Base Requirements
-package "php"
-package "php-cli"
-package "php-curl"
-package "php-gd"
-package "php-intl"
-package "php-mbstring"
-package "php-mysql"
-package "php-xml"
+package %w[
+  php
+  php-cli
+  php-curl
+  php-gd
+  php-intl
+  php-mbstring
+  php-mysql
+  php-xml
+]
 
 # Mediawiki enhanced difference engine
 package "php-wikidiff2"
 
 # Mediawiki Image + SVG support
-package "imagemagick"
-package "librsvg2-bin"
+package %w[
+  imagemagick
+  librsvg2-bin
+]
 
 # Mediawiki PDF support via Extension:PdfHandler
-package "ghostscript"
-package "poppler-utils"
+package %w[
+  ghostscript
+  poppler-utils
+]
 
 # Mediawiki backup
-package "xz-utils"
-package "liblz4-tool"
+package %w[
+  xz-utils
+  liblz4-tool
+]
 
 # Mediawiki packages for VisualEditor support
-package "curl"
-package "parsoid"
+package %w[
+  curl
+  parsoid
+]
 
 # Mediawiki packages for SyntaxHighight support
 package "python-pygments"

@@ -28,30 +28,36 @@ include_recipe "nodejs"
 include_recipe "postgresql"
 include_recipe "python"
 
-package "php"
-package "php-cgi"
-package "php-cli"
-package "php-curl"
-package "php-db"
-package "php-fpm"
-package "php-imagick"
-package "php-mcrypt"
-package "php-mysql"
-package "php-pear"
-package "php-pgsql"
-package "php-sqlite3"
+package %w[
+  php
+  php-cgi
+  php-cli
+  php-curl
+  php-db
+  php-fpm
+  php-imagick
+  php-mcrypt
+  php-mysql
+  php-pear
+  php-pgsql
+  php-sqlite3
+]
 
-package "pngcrush"
-package "pngquant"
+package %w[
+  pngcrush
+  pngquant
+]
 
-package "python"
-package "python-argparse"
-package "python-beautifulsoup"
-package "python-cheetah"
-package "python-dateutil"
-package "python-magic"
-package "python-psycopg2"
-package "python-gdal"
+package %w[
+  python
+  python-argparse
+  python-beautifulsoup
+  python-cheetah
+  python-dateutil
+  python-magic
+  python-psycopg2
+  python-gdal
+]
 
 nodejs_package "svgo"
 

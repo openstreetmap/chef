@@ -17,9 +17,11 @@
 # limitations under the License.
 #
 
-package "clamav-daemon"
-package "clamav-freshclam"
-package "clamav-unofficial-sigs"
+package %w[
+  clamav-daemon
+  clamav-freshclam
+  clamav-unofficial-sigs
+]
 
 template "/etc/clamav-unofficial-sigs.conf.d/50-chef.conf" do
   source "clamav-unofficial-sigs.conf.erb"

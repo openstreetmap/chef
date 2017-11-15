@@ -19,9 +19,11 @@
 
 require "socket"
 
-package "ntp"
-package "ntpdate"
-package "tzdata"
+package %w[
+  ntp
+  ntpdate
+  tzdata
+]
 
 execute "dpkg-reconfigure-tzdata" do
   action :nothing

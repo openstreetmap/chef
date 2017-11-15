@@ -17,9 +17,7 @@
 # limitations under the License.
 #
 
-package "zsh" do
-  action :install
-end
+package "zsh"
 
 administrators = []
 
