@@ -21,24 +21,32 @@ include_recipe "nginx"
 include_recipe "git"
 
 # Imagery gdal Requirements
-package "gdal-bin"
-package "python-gdal"
+package %w[
+  gdal-bin
+  python-gdal
+]
 
 # Imagery MapServer + Mapcache Requirements
-package "cgi-mapserver"
-package "mapcache-cgi"
-package "mapcache-tools"
+package %w[
+  cgi-mapserver
+  mapcache-cgi
+  mapcache-tools
+]
 
 # Mapserver via Nginx requires as fastcgi spawner
-package "spawn-fcgi"
-package "multiwatch"
+package %w[
+  spawn-fcgi
+  multiwatch
+]
 
 # Imagery processing Requirements
 package "imagemagick"
 
 # Imagery misc compression
-package "xz-utils"
-package "unzip"
+package %w[
+  xz-utils
+  unzip
+]
 
 directory "/srv/imagery/mapserver" do
   owner "root"

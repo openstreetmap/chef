@@ -21,16 +21,18 @@ include_recipe "web::base"
 
 db_passwords = data_bag_item("db", "passwords")
 
-package "gcc"
-package "make"
-package "pkg-config"
-package "libarchive-dev"
-package "libbz2-dev"
-package "libexpat1-dev"
-package "libgd2-noxpm-dev"
-package "libmemcached-dev"
-package "libpq-dev"
-package "zlib1g-dev"
+package %w[
+  gcc
+  make
+  pkg-config
+  libarchive-dev
+  libbz2-dev
+  libexpat1-dev
+  libgd2-noxpm-dev
+  libmemcached-dev
+  libpq-dev
+  zlib1g-dev
+]
 
 gpx_directory = "#{node[:web][:base_directory]}/gpx-import"
 pid_directory = node[:web][:pid_directory]

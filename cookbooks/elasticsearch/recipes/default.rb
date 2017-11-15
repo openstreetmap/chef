@@ -17,8 +17,10 @@
 # limitations under the License.
 #
 
-package "default-jre-headless"
-package "elasticsearch"
+package %w[
+  default-jre-headless
+  elasticsearch
+]
 
 template "/etc/elasticsearch/elasticsearch.yml" do
   source "elasticsearch.yml.erb"

@@ -27,8 +27,10 @@ package "apache2" do
   action :remove
 end
 
-package "xz-utils"
-package "openssl"
+package %w[
+  xz-utils
+  openssl
+]
 
 # oathtool for QoS token
 package "oathtool"

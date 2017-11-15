@@ -118,17 +118,21 @@ template "/srv/tile.openstreetmap.org/html/index.html" do
   mode 0o644
 end
 
-package "python-cairo"
-package "python-mapnik"
-package "python-setuptools"
+package %w[
+  python-cairo
+  python-mapnik
+  python-setuptools
+]
 
 python_package "pyotp"
 
-package "fonts-noto-cjk"
-package "fonts-noto-hinted"
-package "fonts-noto-unhinted"
-package "fonts-hanazono"
-package "ttf-unifont"
+package %w[
+  fonts-noto-cjk
+  fonts-noto-hinted
+  fonts-noto-unhinted
+  fonts-hanazono
+  ttf-unifont
+]
 
 ["NotoSansArabicUI-Regular.ttf", "NotoSansArabicUI-Bold.ttf"].each do |font|
   remote_file "/usr/share/fonts/truetype/noto/#{font}" do
@@ -421,14 +425,20 @@ directory "/var/log/tile" do
   mode 0o755
 end
 
-package "osm2pgsql"
-package "osmosis"
+package %w[
+  osm2pgsql
+  osmosis
+]
 
-package "ruby"
-package "ruby-dev"
+package %w[
+  ruby
+  ruby-dev
+]
 
-package "libproj-dev"
-package "libxml2-dev"
+package %w[
+  libproj-dev
+  libxml2-dev
+]
 
 gem_package "proj4rb"
 gem_package "libxml-ruby"

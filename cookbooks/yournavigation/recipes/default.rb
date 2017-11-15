@@ -19,27 +19,30 @@
 
 include_recipe "apache"
 
-package "php"
-package "php-cli"
-package "php-apcu"
+package %w[
+  php
+  php-cli
+  php-apcu
+]
 
 # Required for osmosis
 package "default-jre-headless"
 
 # Required for building gosmore
-package "build-essential"
-package "libxml2-dev"
-package "libgtk2.0-dev"
-package "subversion"
-package "libcurl4-gnutls-dev"
-package "libgps-dev"
-package "libcurl3"
-package "buffer"
-package "git"
-package "cmake"
-package "libqt4-dev"
-package "qt4-dev-tools"
-package "qt4-linguist-tools"
-package "libicu-dev"
+package %w[
+  build-essential
+  libxml2-dev
+  libgtk2.0-dev
+  subversion
+  libcurl4-gnutls-dev
+  libgps-dev libcurl3
+  buffer
+  git
+  cmake
+  libqt4-dev
+  qt4-dev-tools
+  qt4-linguist-tools
+  libicu-dev
+]
 
 apache_module "php7.0"

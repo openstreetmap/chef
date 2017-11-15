@@ -17,8 +17,10 @@
 # limitations under the License.
 #
 
-package "perl"
-package "libdate-calc-perl"
+package %w[
+  perl
+  libdate-calc-perl
+]
 
 directory "/store/backup" do
   owner "osmbackup"

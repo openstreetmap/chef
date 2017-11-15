@@ -17,9 +17,11 @@
 # limitations under the License.
 #
 
-package "apt"
-package "gnupg-curl"
-package "update-notifier-common"
+package %w[
+  apt
+  gnupg-curl
+  update-notifier-common
+]
 
 file "/etc/motd.tail" do
   action :delete

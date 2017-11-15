@@ -23,23 +23,27 @@ include_recipe "apache"
 include_recipe "passenger"
 include_recipe "git"
 
-package "libsqlite3-dev"
-package "zlib1g-dev"
-package "libbz2-dev"
-package "libboost-dev"
-package "libexpat1-dev"
-package "libsparsehash-dev"
-package "libgd2-xpm-dev"
-package "libicu-dev"
-package "libboost-program-options-dev"
-package "cmake"
-package "make"
-package "g++"
+package %w[
+  libsqlite3-dev
+  zlib1g-dev
+  libbz2-dev
+  libboost-dev
+  libexpat1-dev
+  libsparsehash-dev
+  libgd2-xpm-dev
+  libicu-dev
+  libboost-program-options-dev
+  cmake
+  make
+  g++
+]
 
-package "sqlite3"
-package "osmosis"
-package "curl"
-package "pbzip2"
+package %w[
+  sqlite3
+  osmosis
+  curl
+  pbzip2
+]
 
 ruby_version = node[:passenger][:ruby_version]
 
