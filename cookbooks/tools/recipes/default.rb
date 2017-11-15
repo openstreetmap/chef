@@ -17,24 +17,26 @@
 # limitations under the License.
 #
 
-package "bash-completion"
-package "dmidecode"
-package "ethtool"
-package "lsof"
-package "lsscsi"
-package "pciutils"
-package "screen"
-package "smartmontools"
-package "strace"
-package "sysstat"
-package "tcpdump"
-package "usbutils"
-package "numactl"
-package "xfsprogs"
-package "sysv-rc-conf"
-package "iotop"
-package "lvm2"
-package "rsyslog"
+package %w[
+  bash-completion
+  dmidecode
+  ethtool
+  lsof
+  lsscsi
+  pciutils
+  screen
+  smartmontools
+  strace
+  sysstat
+  tcpdump
+  usbutils
+  numactl
+  xfsprogs
+  sysv-rc-conf
+  iotop
+  lvm2
+  rsyslog
+]
 
 service "rsyslog" do
   action [:enable, :start]

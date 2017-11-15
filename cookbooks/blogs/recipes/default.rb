@@ -20,11 +20,13 @@
 include_recipe "apache"
 include_recipe "git"
 
-package "ruby"
-package "ruby-dev"
-package "make"
-package "gcc"
-package "libsqlite3-dev"
+package %w[
+  ruby
+  ruby-dev
+  make
+  gcc
+  libsqlite3-dev
+]
 
 gem_package "bundler"
 

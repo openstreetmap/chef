@@ -19,9 +19,11 @@
 
 include_recipe "networking"
 
-package "exim4"
-package "openssl"
-package "ssl-cert"
+package %w[
+  exim4
+  openssl
+  ssl-cert
+]
 
 package "exim4-daemon-heavy" if File.exist?("/var/run/clamav/clamd.ctl")
 

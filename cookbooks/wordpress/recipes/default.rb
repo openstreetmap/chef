@@ -20,10 +20,11 @@
 include_recipe "apache"
 include_recipe "mysql"
 
-package "subversion"
-
-package "php"
-package "php-mysql"
+package %w[
+  subversion
+  php
+  php-mysql
+]
 
 apache_module "php7.0"
 apache_module "rewrite"

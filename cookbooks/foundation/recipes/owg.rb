@@ -20,8 +20,10 @@
 include_recipe "apache"
 include_recipe "git"
 
-package "ruby"
-package "ruby-dev"
+package %w[
+  ruby
+  ruby-dev
+]
 
 gem_package "bundler"
 

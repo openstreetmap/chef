@@ -22,11 +22,13 @@ include_recipe "mysql"
 
 passwords = data_bag_item("forum", "passwords")
 
-package "php"
-package "php-cli"
-package "php-mysql"
-package "php-xml"
-package "php-apcu"
+package %w[
+  php
+  php-cli
+  php-mysql
+  php-xml
+  php-apcu
+]
 
 apache_module "php7.0"
 apache_module "rewrite"
