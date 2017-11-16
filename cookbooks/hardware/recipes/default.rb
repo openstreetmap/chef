@@ -21,7 +21,7 @@ include_recipe "tools"
 include_recipe "munin"
 
 ohai_plugin "hardware" do
-  template "ohai.rb.erb"
+  template_source "ohai.rb.erb"
 end
 
 case node[:cpu][:"0"][:vendor_id]

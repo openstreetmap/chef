@@ -52,6 +52,8 @@ action :delete do
   end
 end
 
-def unit_name
-  path.sub(%r{^/}, "").gsub(%r{/}, "-")
+action_class do
+  def unit_name
+    path.sub(%r{^/}, "").gsub(%r{/}, "-")
+  end
 end

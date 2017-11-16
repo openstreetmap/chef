@@ -100,7 +100,7 @@ action :create do
   end
 
   nginx_site new_resource.site do
-    template "nginx_imagery.conf.erb"
+    template_source "nginx_imagery.conf.erb"
     directory "/srv/imagery/#{new_resource.site}"
     restart_nginx false
     variables new_resource.to_hash.merge(:resolvers => resolvers)

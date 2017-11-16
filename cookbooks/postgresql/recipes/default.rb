@@ -99,7 +99,7 @@ service "postgresql" do
 end
 
 ohai_plugin "postgresql" do
-  template "ohai.rb.erb"
+  template_source "ohai.rb.erb"
 end
 
 package "ptop"

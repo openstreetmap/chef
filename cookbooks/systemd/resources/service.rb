@@ -61,7 +61,7 @@ action :create do
   service_variables = new_resource.to_hash
 
   if environment_file.is_a?(Hash)
-    template "/etc/default/#{service}" do
+    template "/etc/default/#{new_resource.service}" do
       cookbook "systemd"
       source "environment.erb"
       owner "root"
@@ -70,10 +70,10 @@ action :create do
       variables :environment => environment_file
     end
 
-    service_variables[:environment_file] = "/etc/default/#{service}"
+    service_variables[:environment_file] = "/etc/default/#{new_resource.service}"
   end
 
-  template "/etc/systemd/system/#{service}.service" do
+  template "/etc/systemd/system/#{new_resource.service}.service" do
     cookbook "systemd"
     source "service.erb"
     owner "root"
@@ -82,30 +82,30 @@ action :create do
     variables service_variables
   end
 
-  execute "systemctl-reload-#{service}.service" do
+  execute "systemctl-reload-#{new_resource.service}.service" do
     action :nothing
     command "systemctl daemon-reload"
     user "root"
     group "root"
-    subscribes :run, "template[/etc/systemd/system/#{service}.service]"
+    subscribes :run, "template[/etc/systemd/system/#{new_resource.service}.service]"
   end
 end
 
 action :delete do
-  file "/etc/default/#{service}" do
+  file "/etc/default/#{new_resource.service}" do
     action :delete
     only_if { environment_file.is_a?(Hash) }
   end
 
-  file "/etc/systemd/system/#{service}.service" do
+  file "/etc/systemd/system/#{new_resource.service}.service" do
     action :delete
   end
 
-  execute "systemctl-reload-#{service}.service" do
+  execute "systemctl-reload-#{new_resource.service}.service" do
     action :nothing
     command "systemctl daemon-reload"
     user "root"
     group "root"
-    subscribes :run, "file[/etc/systemd/system/#{service}.service]"
+    subscribes :run, "file[/etc/systemd/system/#{new_resource.service}.service]"
   end
 end

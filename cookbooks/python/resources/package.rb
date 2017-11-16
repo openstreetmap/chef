@@ -25,12 +25,12 @@ property :python_version, :kind_of => String
 
 action :install do
   if version.nil?
-    execute "pip-install-#{name}" do
+    execute "pip-install-#{new_resource.package_name}" do
       command "#{pip_command} install #{new_resource.package_name}"
       not_if "#{pip_command} show #{new_resource.package_name}"
     end
   else
-    execute "pip-install-#{name}" do
+    execute "pip-install-#{new_resource.package_name}" do
       command "#{pip_command} install #{new_resource.package_name}==#{new_resource.version}"
       not_if "#{pip_command} show #{new_resource.package_name} | fgrep -q #{new_resource.version}"
     end
@@ -38,12 +38,14 @@ action :install do
 end
 
 action :remove do
-  execute "pip-uninstall-#{name}" do
+  execute "pip-uninstall-#{new_resource.package_name}" do
     command "#{pip_command} uninstall #{new_resource.package_name}"
     only_if "#{pip_command} show #{new_resource.package_name}"
   end
 end
 
-def pip_command
-  "pip#{python_version}"
+action_class do
+  def pip_command
+    "pip#{new_resource.python_version}"
+  end
 end

@@ -17,13 +17,39 @@
 # limitations under the License.
 #
 
-actions :create, :delete
 default_action :create
 
-attribute :name, :kind_of => String, :name_attribute => true
-attribute :source, :kind_of => String
-attribute :failregex, :kind_of => [String, Array]
-attribute :ignoreregex, :kind_of => [String, Array]
+property :filter, :kind_of => String, :name_attribute => true
+property :source, :kind_of => String
+property :failregex, :kind_of => [String, Array]
+property :ignoreregex, :kind_of => [String, Array]
+
+action :create do
+  if new_resource.source
+    remote_file "/etc/fail2ban/filter.d/#{new_resource.filter}.conf" do
+      source new_resource.source
+      owner "root"
+      group "root"
+      mode 0o644
+    end
+  else
+    template "/etc/fail2ban/filter.d/#{new_resource.filter}.conf" do
+      cookbook "fail2ban"
+      source "filter.erb"
+      owner "root"
+      group "root"
+      mode 0o644
+      variables :failregex => new_resource.failregex,
+                :ignoreregex => new_resource.ignoreregex
+    end
+  end
+end
+
+action :delete do
+  file "/etc/fail2ban/filter.d/#{new_resource.filter}.conf" do
+    action :delete
+  end
+end
 
 def after_created
   notifies :reload, "service[fail2ban]"

@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: munin
-# Resource:: munin_plugin
+# Provider:: munin_plugin
 #
 # Copyright 2013, OpenStreetMap Foundation
 #
@@ -8,7 +8,7 @@
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-# http://www.apache.org/licenses/LICENSE-2.0
+#     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,15 +17,68 @@
 # limitations under the License.
 #
 
-actions :create, :delete
 default_action :create
 
-attribute :name, :kind_of => String, :name_attribute => true
-attribute :target, :kind_of => String
-attribute :conf, :kind_of => String
-attribute :conf_cookbook, :kind_of => String
-attribute :conf_variables, :kind_of => Hash, :default => {}
-attribute :restart_munin, :kind_of => [TrueClass, FalseClass], :default => true
+property :plugin, :kind_of => String, :name_attribute => true
+property :target, :kind_of => String
+property :conf, :kind_of => String
+property :conf_cookbook, :kind_of => String
+property :conf_variables, :kind_of => Hash, :default => {}
+property :restart_munin, :kind_of => [TrueClass, FalseClass], :default => true
+
+action :create do
+  link_action = case target_path
+                when nil then :delete
+                else :create
+                end
+
+  link plugin_path do
+    action link_action
+    to target_path
+  end
+
+  if new_resource.conf # ~FC023
+    munin_plugin_conf new_resource.plugin do
+      cookbook new_resource.conf_cookbook
+      template_source new_resource.conf
+      variables new_resource.conf_variables
+      restart_munin false
+    end
+  end
+end
+
+action :delete do
+  link plugin_path do
+    action :delete
+  end
+
+  if new_resource.conf # ~FC023
+    munin_plugin_conf new_resource.plugin do
+      action :delete
+      restart_munin false
+    end
+  end
+end
+
+action_class do
+  def plugin_path
+    "/etc/munin/plugins/#{new_resource.plugin}"
+  end
+
+  def target_path
+    if ::File.exist?(target)
+      target
+    elsif ::File.exist?("/usr/local/share/munin/plugins/#{new_resource.target}")
+      "/usr/local/share/munin/plugins/#{new_resource.target}"
+    elsif ::File.exist?("/usr/share/munin/plugins/#{new_resource.target}")
+      "/usr/share/munin/plugins/#{new_resource.target}"
+    end
+  end
+
+  def target
+    new_resource.target || new_resource.plugin
+  end
+end
 
 def after_created
   notifies :restart, "service[munin-node]" if restart_munin && node[:recipes].include?("munin")

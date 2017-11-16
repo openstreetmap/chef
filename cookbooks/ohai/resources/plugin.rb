@@ -17,8 +17,33 @@
 # limitations under the License.
 #
 
-actions :create, :delete
 default_action :create
 
-attribute :name, :kind_of => String, :name_attribute => true
-attribute :template, :kind_of => String, :required => true
+property :plugin, :kind_of => String, :name_attribute => true
+property :template_source, :kind_of => String, :required => true
+
+action :create do
+  ohai new_resource.plugin do
+    action :nothing
+  end
+
+  template plugin_path do
+    source new_resource.template_source
+    owner "root"
+    group "root"
+    mode 0o644
+    notifies :reload, "ohai[#{new_resource.plugin}]"
+  end
+end
+
+action :delete do
+  template plugin_path do
+    action :delete
+  end
+end
+
+action_class do
+  def plugin_path
+    "/etc/chef/ohai/#{new_resource.plugin}.rb"
+  end
+end

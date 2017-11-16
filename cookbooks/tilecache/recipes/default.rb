@@ -122,7 +122,7 @@ ssl_certificate "tile.openstreetmap.org" do
 end
 
 nginx_site "tile-ssl" do
-  template "nginx_tile_ssl.conf.erb"
+  template_source "nginx_tile_ssl.conf.erb"
   variables :resolvers => resolvers, :caches => tilecaches
 end
 

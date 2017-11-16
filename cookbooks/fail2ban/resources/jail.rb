@@ -17,16 +17,38 @@
 # limitations under the License.
 #
 
-actions :create, :delete
 default_action :create
 
-attribute :name, :kind_of => String, :name_attribute => true
-attribute :filter, :kind_of => String
-attribute :logpath, :kind_of => String
-attribute :protocol, :kind_of => String
-attribute :ports, :kind_of => Array, :default => []
-attribute :maxretry, :kind_of => Integer
-attribute :ignoreips, :kind_of => Array
+property :jail, :kind_of => String, :name_attribute => true
+property :filter, :kind_of => String
+property :logpath, :kind_of => String
+property :protocol, :kind_of => String
+property :ports, :kind_of => Array, :default => []
+property :maxretry, :kind_of => Integer
+property :ignoreips, :kind_of => Array
+
+action :create do
+  template "/etc/fail2ban/jail.d/50-#{new_resource.jail}.conf" do
+    cookbook "fail2ban"
+    source "jail.erb"
+    owner "root"
+    group "root"
+    mode 0o644
+    variables :name => new_resource.jail,
+              :filter => new_resource.filter,
+              :logpath => new_resource.logpath,
+              :protocol => new_resource.protocol,
+              :ports => new_resource.ports,
+              :maxretry => new_resource.maxretry,
+              :ignoreips => new_resource.ignoreips
+  end
+end
+
+action :delete do
+  file "/etc/fail2ban/jail.d/50-#{new_resource.jail}.conf" do
+    action :delete
+  end
+end
 
 def after_created
   notifies :reload, "service[fail2ban]"

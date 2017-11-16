@@ -17,15 +17,41 @@
 # limitations under the License.
 #
 
-actions :create, :delete
 default_action :create
 
-attribute :name, :kind_of => String, :name_attribute => true
-attribute :directory, :kind_of => String
-attribute :cookbook, :kind_of => String
-attribute :template, :kind_of => String, :required => true
-attribute :variables, :kind_of => Hash, :default => {}
-attribute :restart_nginx, :kind_of => [TrueClass, FalseClass], :default => true
+property :site, :kind_of => String, :name_attribute => true
+property :directory, :kind_of => String
+property :cookbook, :kind_of => String
+property :template_source, :kind_of => String, :required => true
+property :variables, :kind_of => Hash, :default => {}
+property :restart_nginx, :kind_of => [TrueClass, FalseClass], :default => true
+
+action :create do
+  template conf_path do
+    cookbook new_resource.cookbook
+    source new_resource.template_source
+    owner "root"
+    group "root"
+    mode 0o644
+    variables new_resource.variables.merge(:name => new_resource.site, :directory => directory)
+  end
+end
+
+action :delete do
+  file conf_path do
+    action :delete
+  end
+end
+
+action_class do
+  def conf_path
+    "/etc/nginx/conf.d/#{new_resource.site}.conf"
+  end
+
+  def directory
+    new_resource.directory || "/var/www/#{new_resource.site}"
+  end
+end
 
 def after_created
   notifies :restart, "service[nginx]" if restart_nginx

@@ -33,7 +33,7 @@ template "/etc/memcached.conf" do
 end
 
 munin_plugin_conf "memcached_multi" do
-  template "munin.erb"
+  template_source "munin.erb"
 end
 
 %w[bytes commands conns evictions items memory].each do |stat|
