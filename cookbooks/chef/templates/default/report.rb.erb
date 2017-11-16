@@ -26,10 +26,14 @@ class Chef
 
         message << Array(backtrace).join("\n")
 
-        require "pony"
+        require "mail"
 
-        Pony.mail(:to => @config[:to], :from => @config[:from],
-                  :subject => subject, :body => message, :via => :smtp)
+        Mail.deliver do
+          to @config[:to]
+          from @config[:from]
+          subject subject
+          body message
+        end
       end
     end
   end
