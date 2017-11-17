@@ -7,6 +7,8 @@ default[:hardware][:modules] = if node[:lsb][:release].to_f >= 16.04
 default[:hardware][:grub][:cmdline] = %w[nomodeset]
 default[:hardware][:sensors] = {}
 
+default[:hardware][:mcelog][:enabled] = true
+
 if node[:dmi] && node[:dmi][:system]
   case node[:dmi][:system][:manufacturer]
   when "HP"

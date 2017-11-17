@@ -29,6 +29,11 @@ default_attributes(
       }
     }
   },
+  :hardware => {
+    :mcelog => {
+      :enabled => false
+    }
+  },
   :networking => {
     :interfaces => {
       :external_ipv4 => {

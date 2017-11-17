@@ -200,20 +200,22 @@ service "lldpd" do
   supports :status => true, :restart => true, :reload => true
 end
 
-package "mcelog"
+if node[:hardware][:mcelog][:enabled]
+  package "mcelog"
 
-%w[bus cache dimm iomca page socket-memory unknown].each do |trigger|
-  template "/etc/mcelog/#{trigger}-error-trigger.local" do
-    source "mcelog-trigger.erb"
-    owner "root"
-    group "root"
-    mode 0o755
+  %w[bus cache dimm iomca page socket-memory unknown].each do |trigger|
+    template "/etc/mcelog/#{trigger}-error-trigger.local" do
+      source "mcelog-trigger.erb"
+      owner "root"
+      group "root"
+      mode 0o755
+    end
   end
-end
 
-service "mcelog" do
-  action [:start, :enable]
-  supports :status => true, :restart => true, :reload => false
+  service "mcelog" do
+    action [:start, :enable]
+    supports :status => true, :restart => true, :reload => false
+  end
 end
 
 tools_packages = []
