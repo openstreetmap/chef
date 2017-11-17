@@ -14,25 +14,28 @@ class Chef
       end
 
       def report
+        from_address = @config[:from]
+        to_address = @config[:to]
+
         if failed? && !exception.is_a?(SystemExit)
-          subject = "Chef run failed on #{node.name}"
-          message = "#{run_status.formatted_exception}\n"
+          message_subject = "Chef run failed on #{node.name}"
+          message_body = "#{run_status.formatted_exception}\n"
         elsif elapsed_time > 600
-          subject = "Chef run took #{elapsed_time} on #{node.name}"
-          message = ""
+          message_subject = "Chef run took #{elapsed_time} on #{node.name}"
+          message_body = ""
         end
 
-        return unless subject
+        return unless message_subject
 
-        message << Array(backtrace).join("\n")
+        message_body << Array(backtrace).join("\n")
 
         require "mail"
 
         Mail.deliver do
-          to @config[:to]
-          from @config[:from]
-          subject subject
-          body message
+          to to_address
+          from from_address
+          subject message_subject
+          body message_body
         end
       end
     end
