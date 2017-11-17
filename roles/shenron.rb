@@ -21,6 +21,9 @@ default_attributes(
     :sources => ["brightbox-ruby-ng"]
   },
   :hardware => {
+    :mcelog => {
+      :enabled => false
+    },
     :modules => [
       "it87"
     ]
