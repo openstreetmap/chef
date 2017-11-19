@@ -68,10 +68,10 @@ action_class do
   def target_path
     if ::File.exist?(target)
       target
-    elsif ::File.exist?("/usr/local/share/munin/plugins/#{new_resource.target}")
-      "/usr/local/share/munin/plugins/#{new_resource.target}"
-    elsif ::File.exist?("/usr/share/munin/plugins/#{new_resource.target}")
-      "/usr/share/munin/plugins/#{new_resource.target}"
+    elsif ::File.exist?("/usr/local/share/munin/plugins/#{target}")
+      "/usr/local/share/munin/plugins/#{target}"
+    elsif ::File.exist?("/usr/share/munin/plugins/#{target}")
+      "/usr/share/munin/plugins/#{target}"
     end
   end
 
