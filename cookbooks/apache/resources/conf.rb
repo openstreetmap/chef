@@ -17,14 +17,70 @@
 # limitations under the License.
 #
 
-actions :create, :enable, :disable, :delete
 default_action [:create, :enable]
 
-attribute :name, :kind_of => String, :name_attribute => true
-attribute :cookbook, :kind_of => String
-attribute :template, :kind_of => String, :required => true
-attribute :variables, :kind_of => Hash, :default => {}
-attribute :reload_apache, :kind_of => [TrueClass, FalseClass], :default => true
+property :conf, :kind_of => String, :name_attribute => true
+property :cookbook, :kind_of => String
+property :template, :kind_of => String, :required => true
+property :variables, :kind_of => Hash, :default => {}
+property :reload_apache, :kind_of => [TrueClass, FalseClass], :default => true
+
+action :create do
+  create_conf
+end
+
+action :enable do
+  enable_conf
+end
+
+action :disable do
+  disable_conf
+end
+
+action :delete do
+  delete_conf
+end
+
+action_class do
+  def create_conf
+    declare_resource :template, available_name do
+      cookbook new_resource.cookbook
+      source new_resource.template
+      owner "root"
+      group "root"
+      mode 0o644
+      variables new_resource.variables
+    end
+  end
+
+  def enable_conf
+    link enabled_name do
+      to available_name
+      owner "root"
+      group "root"
+    end
+  end
+
+  def disable_conf
+    link enabled_name do
+      action :delete
+    end
+  end
+
+  def delete_conf
+    file available_name do
+      action :delete
+    end
+  end
+
+  def available_name
+    "/etc/apache2/conf-available/#{new_resource.conf}.conf"
+  end
+
+  def enabled_name
+    "/etc/apache2/conf-enabled/#{new_resource.conf}.conf"
+  end
+end
 
 def after_created
   notifies :reload, "service[apache2]" if reload_apache

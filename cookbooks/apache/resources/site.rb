@@ -17,15 +17,64 @@
 # limitations under the License.
 #
 
-actions :create, :enable, :disable, :delete
 default_action [:create, :enable]
 
-attribute :name, :kind_of => String, :name_attribute => true
-attribute :directory, :kind_of => String
-attribute :cookbook, :kind_of => String
-attribute :template, :kind_of => String, :required => true
-attribute :variables, :kind_of => Hash, :default => {}
-attribute :reload_apache, :kind_of => [TrueClass, FalseClass], :default => true
+property :site, :kind_of => String, :name_attribute => true
+property :directory, :kind_of => String
+property :cookbook, :kind_of => String
+property :template, :kind_of => String, :required => true
+property :variables, :kind_of => Hash, :default => {}
+property :reload_apache, :kind_of => [TrueClass, FalseClass], :default => true
+
+action :create do
+  declare_resource :template, available_name do
+    cookbook new_resource.cookbook
+    source new_resource.template
+    owner "root"
+    group "root"
+    mode 0o644
+    variables new_resource.variables.merge(:name => new_resource.site, :directory => site_directory)
+  end
+end
+
+action :enable do
+  link enabled_name do
+    to available_name
+    owner "root"
+    group "root"
+  end
+end
+
+action :disable do
+  link enabled_name do
+    action :delete
+  end
+end
+
+action :delete do
+  file available_name do
+    action :delete
+  end
+end
+
+action_class do
+  def site_directory
+    new_resource.directory || "/var/www/#{new_resource.site}"
+  end
+
+  def available_name
+    "/etc/apache2/sites-available/#{new_resource.site}.conf"
+  end
+
+  def enabled_name
+    case new_resource.site
+    when "default"
+      "/etc/apache2/sites-enabled/000-default.conf"
+    else
+      "/etc/apache2/sites-enabled/#{new_resource.site}.conf"
+    end
+  end
+end
 
 def after_created
   notifies :reload, "service[apache2]" if reload_apache

@@ -17,14 +17,83 @@
 # limitations under the License.
 #
 
-actions :install, :enable, :disable, :remove
 default_action [:install, :enable]
 
-attribute :name, :kind_of => String, :name_attribute => true
-attribute :package, :kind_of => String
-attribute :conf, :kind_of => String
-attribute :variables, :kind_of => Hash, :default => {}
-attribute :restart_apache, :kind_of => [TrueClass, FalseClass], :default => true
+property :module, :kind_of => String, :name_attribute => true
+property :package, :kind_of => String
+property :conf, :kind_of => String
+property :variables, :kind_of => Hash, :default => {}
+property :restart_apache, :kind_of => [TrueClass, FalseClass], :default => true
+
+action :install do
+  package package_name unless installed?
+
+  if new_resource.conf # ~FC023
+    template available_name("conf") do
+      source new_resource.conf
+      owner "root"
+      group "root"
+      mode 0o644
+      variables new_resource.variables
+    end
+  end
+end
+
+action :enable do
+  execute "a2enmod-#{new_resource.module}" do
+    command "a2enmod #{new_resource.module}"
+    user "root"
+    group "root"
+    not_if { ::File.exist?(enabled_name("load")) }
+  end
+
+  link enabled_name("load") do
+    to available_name("load")
+    owner "root"
+    group "root"
+  end
+
+  link enabled_name("conf") do
+    to available_name("conf")
+    owner "root"
+    group "root"
+    only_if { ::File.exist?(available_name("conf")) }
+  end
+end
+
+action :disable do
+  link enabled_name("load") do
+    action :delete
+  end
+
+  link enabled_name("conf") do
+    action :delete
+  end
+end
+
+action :delete do
+  package package_name do
+    action :remove
+  end
+end
+
+action_class do
+  def package_name
+    new_resource.package || "libapache2-mod-#{new_resource.module}"
+  end
+
+  def available_name(extension)
+    "/etc/apache2/mods-available/#{new_resource.module}.#{extension}"
+  end
+
+  def enabled_name(extension)
+    "/etc/apache2/mods-enabled/#{new_resource.module}.#{extension}"
+  end
+
+  def installed?
+    ::File.exist?(available_name("load"))
+  end
+end
 
 def after_created
   notifies :restart, "service[apache2]" if restart_apache
