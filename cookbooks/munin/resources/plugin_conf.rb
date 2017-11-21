@@ -21,14 +21,14 @@ default_action :create
 
 property :plugin_conf, :kind_of => String, :name_attribute => true
 property :cookbook, :kind_of => [String, nil]
-property :template_source, :kind_of => String, :required => true
+property :template, :kind_of => String, :required => true
 property :variables, :kind_of => Hash, :default => {}
 property :restart_munin, :kind_of => [TrueClass, FalseClass], :default => true
 
 action :create do
-  template config_file do
+  declare_resource :template, config_file do
     cookbook new_resource.cookbook
-    source new_resource.template_source
+    source new_resource.template
     owner "root"
     group "root"
     mode 0o644

@@ -20,15 +20,15 @@
 default_action :create
 
 property :plugin, :kind_of => String, :name_attribute => true
-property :template_source, :kind_of => String, :required => true
+property :template, :kind_of => String, :required => true
 
 action :create do
   ohai new_resource.plugin do
     action :nothing
   end
 
-  template plugin_path do
-    source new_resource.template_source
+  declare_resource :template, plugin_path do
+    source new_resource.template
     owner "root"
     group "root"
     mode 0o644
@@ -37,7 +37,7 @@ action :create do
 end
 
 action :delete do
-  template plugin_path do
+  file plugin_path do
     action :delete
   end
 end

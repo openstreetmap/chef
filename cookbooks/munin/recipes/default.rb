@@ -92,7 +92,7 @@ else
 end
 
 munin_plugin_conf "df" do
-  template_source "df.erb"
+  template "df.erb"
 end
 
 munin_plugin "df"
@@ -161,7 +161,7 @@ node[:network][:interfaces].each do |ifname, ifattr|
        node[:hardware][:network] &&
        node[:hardware][:network][ifname][:device] =~ /^virtio/
       munin_plugin_conf "if_#{ifname}" do
-        template_source "if.erb"
+        template "if.erb"
         variables :ifname => ifname
       end
     else
@@ -210,7 +210,7 @@ if Dir.glob("/dev/ipmi*").empty?
   end
 else
   munin_plugin_conf "ipmi" do
-    template_source "ipmi.erb"
+    template "ipmi.erb"
   end
 
   munin_plugin "ipmi_fans" do

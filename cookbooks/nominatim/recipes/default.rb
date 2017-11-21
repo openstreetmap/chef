@@ -371,7 +371,7 @@ template "/etc/logrotate.d/apache2" do
 end
 
 munin_plugin_conf "nominatim" do
-  template_source "munin.erb"
+  template "munin.erb"
   variables :db => node[:nominatim][:dbname],
             :querylog => "#{node[:nominatim][:logdir]}/query.log"
 end

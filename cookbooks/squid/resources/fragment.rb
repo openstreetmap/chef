@@ -20,12 +20,12 @@
 default_action :create
 
 property :fragment, :kind_of => String, :name_attribute => true
-property :template_source, :kind_of => String, :required => true
+property :template, :kind_of => String, :required => true
 property :variables, :kind_of => Hash, :default => {}
 
 action :create do
-  template fragment_path do
-    source new_resource.template_source
+  declare_resource :template, fragment_path do
+    source new_resource.template
     owner "root"
     group "root"
     mode 0o644

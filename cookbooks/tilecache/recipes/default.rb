@@ -73,7 +73,7 @@ tilecaches.each do |cache|
 end
 
 squid_fragment "tilecache" do
-  template_source "squid.conf.erb"
+  template "squid.conf.erb"
   variables :caches => tilecaches, :renders => tilerenders
 end
 
@@ -122,7 +122,7 @@ ssl_certificate "tile.openstreetmap.org" do
 end
 
 nginx_site "tile-ssl" do
-  template_source "nginx_tile_ssl.conf.erb"
+  template "nginx_tile_ssl.conf.erb"
   variables :resolvers => resolvers, :caches => tilecaches
 end
 

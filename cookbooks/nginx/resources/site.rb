@@ -22,14 +22,14 @@ default_action :create
 property :site, :kind_of => String, :name_attribute => true
 property :directory, :kind_of => String
 property :cookbook, :kind_of => String
-property :template_source, :kind_of => String, :required => true
+property :template, :kind_of => String, :required => true
 property :variables, :kind_of => Hash, :default => {}
 property :restart_nginx, :kind_of => [TrueClass, FalseClass], :default => true
 
 action :create do
-  template conf_path do
+  declare_resource :template, conf_path do
     cookbook new_resource.cookbook
-    source new_resource.template_source
+    source new_resource.template
     owner "root"
     group "root"
     mode 0o644

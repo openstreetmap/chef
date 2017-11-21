@@ -47,7 +47,7 @@ action :create do
     recursive true
   end
 
-  template "/srv/#{new_resource.site}/index.html" do
+  declare_resource :template, "/srv/#{new_resource.site}/index.html" do
     source "index.html.erb"
     user "root"
     group "root"
@@ -80,7 +80,7 @@ action :create do
     YAML.safe_load(::File.read(path), [Symbol])
   end
 
-  template "/srv/#{new_resource.site}/imagery.js" do
+  declare_resource :template, "/srv/#{new_resource.site}/imagery.js" do
     source "imagery.js.erb"
     user "root"
     group "root"
@@ -100,7 +100,7 @@ action :create do
   end
 
   nginx_site new_resource.site do
-    template_source "nginx_imagery.conf.erb"
+    template "nginx_imagery.conf.erb"
     directory "/srv/imagery/#{new_resource.site}"
     restart_nginx false
     variables new_resource.to_hash.merge(:resolvers => resolvers)

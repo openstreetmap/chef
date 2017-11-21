@@ -40,7 +40,7 @@ action :create do
   if new_resource.conf # ~FC023
     munin_plugin_conf new_resource.plugin do
       cookbook new_resource.conf_cookbook
-      template_source new_resource.conf
+      template new_resource.conf
       variables new_resource.conf_variables
       restart_munin false
     end
