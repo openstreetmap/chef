@@ -73,7 +73,7 @@ tilecaches.each do |cache|
 end
 
 squid_fragment "tilecache" do
-  template "squid.conf.erb"
+  template_source "squid.conf.erb"
   variables :caches => tilecaches, :renders => tilerenders
 end
 

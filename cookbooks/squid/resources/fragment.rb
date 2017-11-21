@@ -17,13 +17,33 @@
 # limitations under the License.
 #
 
-actions :create, :delete
 default_action :create
 
-attribute :name, :kind_of => String, :name_attribute => true
-attribute :directory, :kind_of => String
-attribute :template, :kind_of => String, :required => true
-attribute :variables, :kind_of => Hash, :default => {}
+property :fragment, :kind_of => String, :name_attribute => true
+property :template_source, :kind_of => String, :required => true
+property :variables, :kind_of => Hash, :default => {}
+
+action :create do
+  template fragment_path do
+    source new_resource.template_source
+    owner "root"
+    group "root"
+    mode 0o644
+    variables new_resource.variables
+  end
+end
+
+action :delete do
+  file fragment_path do
+    action :delete
+  end
+end
+
+action_class do
+  def fragment_path
+    "/etc/squid/squid.conf.d/#{new_resource.fragment}.conf"
+  end
+end
 
 def after_created
   notifies :create, "template[/etc/squid/squid.conf]"
