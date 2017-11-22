@@ -24,7 +24,7 @@ property :domains, [String, Array], :required => true
 
 action :create do
   node.default[:letsencrypt][:certificates][new_resource.certificate] = {
-    :domains => Array(domains)
+    :domains => Array(new_resource.domains)
   }
 
   if letsencrypt
