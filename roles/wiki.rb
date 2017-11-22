@@ -18,7 +18,7 @@ default_attributes(
     }
   },
   :elasticsearch => {
-    :version => "2.x",
+    :version => "5.x",
     :cluster => {
       :name => "wiki"
     },
