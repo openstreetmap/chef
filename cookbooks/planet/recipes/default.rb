@@ -61,6 +61,16 @@ remote_directory node[:planet][:dump][:xml_history_directory] do
   files_mode 0o755
 end
 
+remote_directory "/store/planet/cc-by-sa/full-experimental" do
+  source "ccbysa_history_cgi"
+  owner "www-data"
+  group "planet"
+  mode 0o775
+  files_owner "root"
+  files_group "root"
+  files_mode 0o755
+end
+
 [:xml_directory, :xml_history_directory,
  :pbf_directory, :pbf_history_directory].each do |dir|
   directory node[:planet][:dump][dir] do
