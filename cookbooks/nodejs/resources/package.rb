@@ -17,9 +17,54 @@
 # limitations under the License.
 #
 
+require "chef/mixin/shell_out"
+require "json"
+
 default_action :install
 
-actions :install, :upgrade, :remove
+property :package, :kind_of => String, :name_attribute => true
+property :version, :kind_of => String
 
-attribute :package_name, :kind_of => String, :name_attribute => true
-attribute :version, :kind_of => String
+action :install do
+  qualified_name = if new_resource.version
+                     "#{new_resource.package}@#{new_resource.version}"
+                   else
+                     new_resource.package
+                   end
+
+  if current_version.nil?
+    converge_by "install #{qualified_name}" do
+      shell_out!("npm install --global #{qualified_name}")
+    end
+  elsif new_resource.version &&
+        new_resource.version != current_version
+    converge_by "update #{qualified_name}" do
+      shell_out!("npm install --global #{qualified_name}")
+    end
+  end
+end
+
+action :upgrade do
+  unless current_version.nil?
+    converge_by "update #{new_resource.package}" do
+      shell_out!("npm update --global #{new_resource.package}")
+    end
+  end
+end
+
+action :remove do
+  unless current_version.nil?
+    converge_by "remove #{new_resource.package}" do
+      shell_out!("npm remove --global #{new_resource.package}")
+    end
+  end
+end
+
+action_class do
+  include Chef::Mixin::ShellOut
+
+  def current_version
+    @current_version ||= JSON.parse(shell_out("npm list --global --json").stdout)
+                             .dig("dependencies", new_resource.package, "version")
+  end
+end
