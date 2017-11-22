@@ -17,19 +17,106 @@
 # limitations under the License.
 #
 
-actions :create, :delete
 default_action :create
 
-attribute :name, :kind_of => String, :name_attribute => true
-attribute :site, :kind_of => String, :required => true
-attribute :source, :kind_of => String
-attribute :template, :kind_of => String
-attribute :variables, :kind_of => Hash, :default => {}
-attribute :version, :kind_of => String
-attribute :repository, :kind_of => String
-attribute :tag, :kind_of => String
-attribute :reference, :kind_of => String
-attribute :update_site, :kind_of => [TrueClass, FalseClass], :default => true
+property :extension, :kind_of => String, :name_attribute => true
+property :site, :kind_of => String, :required => true
+property :source, :kind_of => String
+property :template, :kind_of => String
+property :variables, :kind_of => Hash, :default => {}
+property :version, :kind_of => String
+property :repository, :kind_of => String
+property :tag, :kind_of => String
+property :reference, :kind_of => String
+property :update_site, :kind_of => [TrueClass, FalseClass], :default => true
+
+action :create do
+  if new_resource.source
+    remote_directory extension_directory do
+      cookbook "mediawiki"
+      source new_resource.source
+      owner node[:mediawiki][:user]
+      group node[:mediawiki][:group]
+      mode 0o755
+      files_owner node[:mediawiki][:user]
+      files_group node[:mediawiki][:group]
+      files_mode 0o755
+    end
+  else
+    extension_repository = new_resource.repository || default_repository
+    extension_reference = if new_resource.reference
+                            new_resource.reference
+                          elsif new_resource.tag
+                            "refs/tags/#{new_resource.tag}"
+                          else
+                            "REL#{extension_version}".tr(".", "_")
+                          end
+
+    git extension_directory do
+      action :sync
+      repository extension_repository
+      reference extension_reference
+      enable_submodules true
+      user node[:mediawiki][:user]
+      group node[:mediawiki][:group]
+      ignore_failure extension_repository.start_with?("git://github.com/wikimedia/mediawiki-extensions")
+    end
+  end
+
+  if new_resource.template # ~FC023
+    declare_resource :template, "#{mediawiki_directory}/LocalSettings.d/Ext-#{new_resource.extension}.inc.php" do
+      cookbook "mediawiki"
+      source new_resource.template
+      user node[:mediawiki][:user]
+      group node[:mediawiki][:group]
+      mode 0o664
+      variables new_resource.variables
+    end
+  else
+    extension_script = "#{extension_directory}/#{new_resource.extension}.php"
+
+    file "#{mediawiki_directory}/LocalSettings.d/Ext-#{new_resource.extension}.inc.php" do
+      content "<?php wfLoadExtension( '#{new_resource.extension}' );\n"
+      user node[:mediawiki][:user]
+      group node[:mediawiki][:group]
+      mode 0o664
+      only_if { ::File.exist?(extension_script) }
+    end
+  end
+end
+
+action :delete do
+  directory extension_directory do
+    action :delete
+    recursive true
+  end
+
+  file "#{mediawiki_directory}/LocalSettings.d/Ext-#{new_resource.extension}.inc.php" do
+    action :delete
+  end
+end
+
+action_class do
+  def site_directory
+    node[:mediawiki][:sites][new_resource.site][:directory]
+  end
+
+  def mediawiki_directory
+    "#{site_directory}/w"
+  end
+
+  def extension_directory
+    "#{mediawiki_directory}/extensions/#{new_resource.extension}"
+  end
+
+  def extension_version
+    new_resource.version || node[:mediawiki][:sites][new_resource.site][:version]
+  end
+
+  def default_repository
+    "git://github.com/wikimedia/mediawiki-extensions-#{new_resource.extension}.git"
+  end
+end
 
 def after_created
   if update_site

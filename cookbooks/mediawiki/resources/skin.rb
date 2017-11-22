@@ -17,18 +17,99 @@
 # limitations under the License.
 #
 
-actions :create, :delete
 default_action :create
 
-attribute :name, :kind_of => String, :name_attribute => true
-attribute :site, :kind_of => String, :required => true
-attribute :source, :kind_of => String
-attribute :template, :kind_of => String
-attribute :variables, :kind_of => Hash, :default => {}
-attribute :version, :kind_of => String
-attribute :repository, :kind_of => String
-attribute :revision, :kind_of => String
-attribute :update_site, :kind_of => [TrueClass, FalseClass], :default => true
+property :skin, :kind_of => String, :name_attribute => true
+property :site, :kind_of => String, :required => true
+property :source, :kind_of => String
+property :template, :kind_of => String
+property :variables, :kind_of => Hash, :default => {}
+property :version, :kind_of => String
+property :repository, :kind_of => String
+property :revision, :kind_of => String
+property :update_site, :kind_of => [TrueClass, FalseClass], :default => true
+
+action :create do
+  if new_resource.source
+    remote_directory skin_directory do
+      cookbook "mediawiki"
+      source new_resource.source
+      owner node[:mediawiki][:user]
+      group node[:mediawiki][:group]
+      mode 0o755
+      files_owner node[:mediawiki][:user]
+      files_group node[:mediawiki][:group]
+      files_mode 0o755
+    end
+  else
+    skin_repository = new_resource.repository || default_repository
+    skin_revision = new_resource.revision || "REL#{skin_version}".tr(".", "_")
+
+    git skin_directory do
+      action :sync
+      repository skin_repository
+      revision skin_revision
+      enable_submodules true
+      user node[:mediawiki][:user]
+      group node[:mediawiki][:group]
+      ignore_failure skin_repository.start_with?("git://github.com/wikimedia/mediawiki-skins")
+    end
+  end
+
+  if new_resource.template # ~FC023
+    declare_resource :template, "#{mediawiki_directory}/LocalSettings.d/Skin-#{new_resource.skin}.inc.php" do
+      cookbook "mediawiki"
+      source new_resource.template
+      user node[:mediawiki][:user]
+      group node[:mediawiki][:group]
+      mode 0o664
+      variables new_resource.variables
+    end
+  else
+    skin_script = "#{skin_directory}/#{new_resource.skin}.php"
+
+    file "#{mediawiki_directory}/LocalSettings.d/Skin-#{new_resource.skin}.inc.php" do
+      content "<?php require_once('#{skin_script}');\n"
+      user node[:mediawiki][:user]
+      group node[:mediawiki][:group]
+      mode 0o664
+      only_if { ::File.exist?(skin_script) }
+    end
+  end
+end
+
+action :delete do
+  directory skin_directory do
+    action :delete
+    recursive true
+  end
+
+  file "#{mediawiki_directory}/LocalSettings.d/Skin-#{new_resource.skin}.inc.php" do
+    action :delete
+  end
+end
+
+action_class do
+  def site_directory
+    node[:mediawiki][:sites][new_resource.site][:directory]
+  end
+
+  def mediawiki_directory
+    "#{site_directory}/w"
+  end
+
+  def skin_directory
+    "#{mediawiki_directory}/skins/#{new_resource.skin}"
+  end
+
+  def skin_version
+    new_resource.version || node[:mediawiki][:sites][new_resource.site][:version]
+  end
+
+  def default_repository
+    "git://github.com/wikimedia/mediawiki-skins-#{new_resource.skin}.git"
+  end
+end
 
 def after_created
   if update_site
