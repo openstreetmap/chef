@@ -1,8 +1,8 @@
 require "chef/mixin/shell_out"
 require "rexml/document"
 
-class Chef
-  class MySQL
+module OpenStreetMap
+  module MySQL
     include Chef::Mixin::ShellOut
 
     USER_PRIVILEGES = [
@@ -20,7 +20,7 @@ class Chef
       :execute, :event, :trigger
     ].freeze
 
-    def execute(options)
+    def mysql_execute(options)
       # Create argument array
       args = []
 
@@ -55,7 +55,7 @@ class Chef
 
     def query(sql, options = {})
       # Run the query
-      result = execute(options.merge(:command => sql, :xml => true))
+      result = mysql_execute(options.merge(:command => sql, :xml => true))
 
       # Parse the output
       document = REXML::Document.new(result.stdout)
@@ -84,8 +84,8 @@ class Chef
       records
     end
 
-    def users
-      @users ||= query("SELECT * FROM user").each_with_object({}) do |user, users|
+    def mysql_users
+      @mysql_users ||= query("SELECT * FROM user").each_with_object({}) do |user, users|
         name = "'#{user[:user]}'@'#{user[:host]}'"
 
         users[name] = USER_PRIVILEGES.each_with_object({}) do |privilege, privileges|
@@ -94,15 +94,15 @@ class Chef
       end
     end
 
-    def databases
-      @databases ||= query("SHOW databases").each_with_object({}) do |database, databases|
+    def mysql_databases
+      @mysql_databases ||= query("SHOW databases").each_with_object({}) do |database, databases|
         databases[database[:database]] = {
           :permissions => {}
         }
       end
 
       query("SELECT * FROM db").each do |record|
-        database = @databases[record[:db]]
+        database = @mysql_databases[record[:db]]
 
         next unless database
 
@@ -113,10 +113,10 @@ class Chef
         end
       end
 
-      @databases
+      @mysql_databases
     end
 
-    def canonicalise_user(user)
+    def mysql_canonicalise_user(user)
       local, host = user.split("@")
 
       host ||= "%"
@@ -127,7 +127,7 @@ class Chef
       "#{local}@#{host}"
     end
 
-    def privilege_name(privilege)
+    def mysql_privilege_name(privilege)
       case privilege
       when :grant
         "GRANT OPTION"
