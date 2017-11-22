@@ -26,7 +26,7 @@ property :variables, :kind_of => Hash, :default => {}
 property :restart_apache, :kind_of => [TrueClass, FalseClass], :default => true
 
 action :install do
-  package package_name unless installed?
+  declare_resource :package, package_name unless installed?
 
   if new_resource.conf # ~FC023
     template available_name("conf") do
