@@ -17,12 +17,47 @@
 # limitations under the License.
 #
 
-actions :create, :delete
 default_action :create
 
-attribute :name, :kind_of => String, :name_attribute => true
-attribute :cluster, :kind_of => String, :required => true
-attribute :database, :kind_of => String, :required => true
+property :munin, :kind_of => String, :name_attribute => true
+property :cluster, :kind_of => String, :required => true
+property :database, :kind_of => String, :required => true
+
+action :create do
+  cluster = node[:postgresql][:clusters] && node[:postgresql][:clusters][new_resource.cluster]
+  database = new_resource.database
+
+  if cluster
+    %w[cache connections locks querylength scans size transactions tuples].each do |plugin|
+      munin_plugin "postgres_#{plugin}_#{database}:#{suffix}" do
+        target "postgres_#{plugin}_"
+        conf "munin.erb"
+        conf_cookbook "postgresql"
+        conf_variables :port => cluster[:port]
+        restart_munin false
+      end
+    end
+  else
+    Chef::Log.info "Postgres cluster #{new_resource.cluster} not found"
+  end
+end
+
+action :delete do
+  database = new_resource.database
+
+  %w[cache connections locks querylength scans size transactions tuples].each do |plugin|
+    munin_plugin "postgres_#{plugin}_#{database}:#{suffix}" do
+      action :delete
+      restart_munin false
+    end
+  end
+end
+
+action_class do
+  def suffix
+    new_resource.cluster.tr("/", ":")
+  end
+end
 
 def after_created
   notifies :restart, "service[munin-node]"

@@ -19,8 +19,28 @@
 
 default_action :create
 
-actions :create, :drop
+property :extension, :kind_of => String, :name_attribute => true
+property :cluster, :kind_of => String, :required => true
+property :database, :kind_of => String, :required => true
 
-attribute :extension, :kind_of => String, :name_attribute => true
-attribute :cluster, :kind_of => String, :required => true
-attribute :database, :kind_of => String, :required => true
+action :create do
+  unless cluster.extensions(new_resource.database).include?(new_resource.extension)
+    converge_by "create extension #{new_resource.extension}" do
+      cluster.execute(:command => "CREATE EXTENSION #{new_resource.extension}", :database => new_resource.database)
+    end
+  end
+end
+
+action :drop do
+  if cluster.extensions(new_resource.database).include?(new_resource.extension)
+    converge_by "drop extension #{new_resource.extension}" do
+      cluster.execute(:command => "DROP EXTENSION #{new_resource.extension}", :database => new_resource.database)
+    end
+  end
+end
+
+action_class do
+  def cluster
+    @cluster ||= OpenStreetMap::PostgreSQL.new(new_resource.cluster)
+  end
+end

@@ -19,8 +19,28 @@
 
 default_action :create
 
-actions :create, :drop
+property :tablespace, :kind_of => String, :name_attribute => true
+property :cluster, :kind_of => String, :required => true
+property :location, :kind_of => String, :required => true
 
-attribute :tablespace, :kind_of => String, :name_attribute => true
-attribute :cluster, :kind_of => String, :required => true
-attribute :location, :kind_of => String, :required => true
+action :create do
+  unless cluster.tablespaces.include?(new_resource.tablespace)
+    converge_by "create tablespace #{new_resource.tablespace}" do
+      cluster.execute(:command => "CREATE TABLESPACE #{new_resource.tablespace} LOCATION '#{new_resource.location}'")
+    end
+  end
+end
+
+action :drop do
+  if cluster.tablespaces.include?(new_resource.tablespace)
+    converge_by "drop tablespace #{new_resource.tablespace}" do
+      cluster.execute(:command => "DROP TABLESPACE #{new_resource.tablespace}")
+    end
+  end
+end
+
+action_class do
+  def cluster
+    @cluster ||= OpenStreetMap::PostgreSQL.new(new_resource.cluster)
+  end
+end

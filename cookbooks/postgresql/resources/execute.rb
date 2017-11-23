@@ -19,10 +19,29 @@
 
 default_action :run
 
-actions :nothing, :run
+property :command, :kind_of => String, :name_attribute => true
+property :cluster, :kind_of => String, :required => true
+property :database, :kind_of => String, :required => true
+property :user, :default => "postgres"
+property :group, :default => "postgres"
 
-attribute :command, :kind_of => String, :name_attribute => true
-attribute :cluster, :kind_of => String, :required => true
-attribute :database, :kind_of => String, :required => true
-attribute :user, :default => "postgres"
-attribute :group, :default => "postgres"
+action :nothing do
+end
+
+action :run do
+  options = { :database => new_resource.database, :user => new_resource.user, :group => new_resource.group }
+
+  converge_by "execute #{new_resource.command}" do
+    if ::File.exist?(new_resource.command)
+      cluster.execute(options.merge(:file => new_resource.command))
+    else
+      cluster.execute(options.merge(:command => new_resource.command))
+    end
+  end
+end
+
+action_class do
+  def cluster
+    @cluster ||= OpenStreetMap::PostgreSQL.new(new_resource.cluster)
+  end
+end

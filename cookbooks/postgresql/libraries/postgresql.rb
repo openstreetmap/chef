@@ -1,6 +1,6 @@
 require "chef/mixin/shell_out"
 
-class Chef
+module OpenStreetMap
   class PostgreSQL
     include Chef::Mixin::ShellOut
 

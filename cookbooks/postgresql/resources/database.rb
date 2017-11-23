@@ -19,11 +19,35 @@
 
 default_action :create
 
-actions :create, :drop
+property :database, :kind_of => String, :name_attribute => true
+property :cluster, :kind_of => String, :required => true
+property :owner, :kind_of => String, :required => true
+property :encoding, :kind_of => String, :default => "UTF8"
+property :collation, :kind_of => String, :default => "en_GB.UTF8"
+property :ctype, :kind_of => String, :default => "en_GB.UTF8"
 
-attribute :database, :kind_of => String, :name_attribute => true
-attribute :cluster, :kind_of => String, :required => true
-attribute :owner, :kind_of => String, :required => true
-attribute :encoding, :kind_of => String, :default => "UTF8"
-attribute :collation, :kind_of => String, :default => "en_GB.UTF8"
-attribute :ctype, :kind_of => String, :default => "en_GB.UTF8"
+action :create do
+  if !cluster.databases.include?(new_resource.database)
+    converge_by "create database #{new_resource.database}" do
+      cluster.execute(:command => "CREATE DATABASE \"#{new_resource.database}\" OWNER \"#{new_resource.owner}\" TEMPLATE template0 ENCODING '#{new_resource.encoding}' LC_COLLATE '#{new_resource.collation}' LC_CTYPE '#{new_resource.ctype}'")
+    end
+  elsif new_resource.owner != cluster.databases[new_resource.database][:owner]
+    converge_by "alter database #{new_resource.database}" do
+      cluster.execute(:command => "ALTER DATABASE \"#{new_resource.database}\" OWNER TO \"#{new_resource.owner}\"")
+    end
+  end
+end
+
+action :drop do
+  if cluster.databases.include?(new_resource.database)
+    converge_by "drop database #{new_resource.database}" do
+      cluster.execute(:command => "DROP DATABASE \"#{new_resource.database}\"")
+    end
+  end
+end
+
+action_class do
+  def cluster
+    @cluster ||= OpenStreetMap::PostgreSQL.new(new_resource.cluster)
+  end
+end
