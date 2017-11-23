@@ -216,6 +216,10 @@ define :rails_port, :action => [:create, :enable] do
       line.gsub!(/^( *)#totp_key:.*$/, "\\1totp_key: \"#{params[:totp_key]}\"")
     end
 
+    if params[:csp_report_url]
+      line.gsub!(/^( *)#csp_report_url:.*$/, "\\1csp_report_url: \"#{params[:csp_report_url]}\"")
+    end
+
     line.gsub!(/^( *)require_terms_seen:.*$/, "\\1require_terms_seen: true")
     line.gsub!(/^( *)require_terms_agreed:.*$/, "\\1require_terms_agreed: true")
 
