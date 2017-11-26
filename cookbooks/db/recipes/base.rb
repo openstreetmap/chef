@@ -46,7 +46,6 @@ rails_port "www.openstreetmap.org" do
   database_username "openstreetmap"
   database_password passwords["openstreetmap"]
   gpx_dir "/store/rails/gpx"
-  file_column_root "/store/rails"
 end
 
 db_version = node[:db][:cluster].split("/").first
