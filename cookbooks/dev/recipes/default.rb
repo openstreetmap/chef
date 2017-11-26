@@ -205,7 +205,7 @@ if node[:postgresql][:clusters][:"9.5/main"]
         group "apis"
         mode 0o644
         variables :site => site_name
-        notifies :run, "execute[#{rails_directory}]"
+        notifies :restart, "rails_port[#{site_name}]"
       end
 
       ssl_certificate site_name do
