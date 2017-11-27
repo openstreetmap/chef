@@ -154,7 +154,7 @@ action :create do
     line.gsub!(/^( *)support_email:.*$/, "\\1support_email: \"support@openstreetmap.org\"")
 
     if new_resource.email_from
-      line.gsub!(/^( *)email_from:.*$/, "\\1email_from: \"#{email_from}\"")
+      line.gsub!(/^( *)email_from:.*$/, "\\1email_from: \"#{new_resource.email_from}\"")
     end
 
     line.gsub!(/^( *)email_return_path:.*$/, "\\1email_return_path: \"bounces@openstreetmap.org\"")

@@ -67,7 +67,7 @@ action :create do
       owner "root"
       group "root"
       mode 0o640
-      variables :environment => environment_file
+      variables :environment => new_resource.environment_file
     end
 
     service_variables[:environment_file] = "/etc/default/#{new_resource.service}"
