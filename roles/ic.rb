@@ -7,11 +7,6 @@ default_attributes(
       :icladmin => { :status => :user }
     }
   },
-  :chef => {
-    :client => {
-      :version => "13.6.4"
-    }
-  },
   :networking => {
     :nameservers => ["8.8.8.8", "146.179.159.177"],
     :roles => {
