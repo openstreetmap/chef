@@ -33,13 +33,13 @@ def initialize(name, run_context = nil)
 end
 
 action :create do
-  if key
+  if new_resource.key
     execute "apt-key-#{new_resource.key}-clean" do
       command "/usr/bin/apt-key adv --batch --delete-key --yes #key}"
       only_if "/usr/bin/apt-key adv --list-keys #{new_resource.key} | fgrep expired"
     end
 
-    if key_url
+    if new_resource.key_url
       execute "apt-key-#{new_resource.key}-install" do
         command "/usr/bin/apt-key adv --fetch-keys #{new_resource.key_url}"
         not_if "/usr/bin/apt-key adv --list-keys #{new_resource.key}"
@@ -55,16 +55,16 @@ action :create do
   end
 
   template source_path do
-    source source_template
+    source new_resource.source_template
     owner "root"
     group "root"
     mode 0o644
-    variables :url => url
+    variables :url => new_resource.url
     notifies :run, "execute[apt-update-#{new_resource.source_name}]"
   end
 
   execute "apt-update-#{new_resource.source_name}" do
-    action update ? :run : :nothing
+    action new_resource.update ? :run : :nothing
     command "/usr/bin/apt-get update --no-list-cleanup -o Dir::Etc::sourcelist='#{source_path}' -o Dir::Etc::sourceparts='-'"
   end
 end

@@ -60,7 +60,7 @@ property :pid_file, String
 action :create do
   service_variables = new_resource.to_hash
 
-  if environment_file.is_a?(Hash)
+  if new_resource.environment_file.is_a?(Hash)
     template "/etc/default/#{new_resource.service}" do
       cookbook "systemd"
       source "environment.erb"
