@@ -147,7 +147,7 @@ action :create do
 
   application_yml = edit_file "#{rails_directory}/config/example.application.yml" do |line|
     line.gsub!(/^( *)server_protocol:.*$/, "\\1server_protocol: \"https\"")
-    line.gsub!(/^( *)server_url:.*$/, "\\1server_url: \"#{name}\"")
+    line.gsub!(/^( *)server_url:.*$/, "\\1server_url: \"#{new_resource.site}\"")
 
     line.gsub!(/^( *)#publisher_url:.*$/, "\\1publisher_url: \"https://plus.google.com/111953119785824514010\"")
 
@@ -159,7 +159,7 @@ action :create do
 
     line.gsub!(/^( *)email_return_path:.*$/, "\\1email_return_path: \"bounces@openstreetmap.org\"")
 
-    line.gsub!(/^( *)status:.*$/, "\\1status: :#{status}")
+    line.gsub!(/^( *)status:.*$/, "\\1status: :#{new_resource.status}")
 
     if new_resource.messages_domain
       line.gsub!(/^( *)#messages_domain:.*$/, "\\1messages_domain: \"#{new_resource.messages_domain}\"")
@@ -352,7 +352,7 @@ action :create do
     only_if { ::File.exist?("/usr/bin/passenger-config") }
   end
 
-  template "/etc/cron.daily/rails-#{name.tr('.', '-')}" do
+  template "/etc/cron.daily/rails-#{new_resource.site.tr('.', '-')}" do
     cookbook "web"
     source "rails.cron.erb"
     owner "root"

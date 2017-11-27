@@ -24,7 +24,7 @@ property :version, :kind_of => String
 property :python_version, :kind_of => String
 
 action :install do
-  if version.nil?
+  if new_resource.version.nil?
     execute "pip-install-#{new_resource.package_name}" do
       command "#{pip_command} install #{new_resource.package_name}"
       not_if "#{pip_command} show #{new_resource.package_name}"
