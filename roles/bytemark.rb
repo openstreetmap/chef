@@ -2,6 +2,11 @@ name "bytemark"
 description "Role applied to all servers at Bytemark"
 
 default_attributes(
+  :chef => {
+    :client => {
+      :version => "13.6.4"
+    }
+  },
   :hosted_by => "Bytemark",
   :location => "York, England",
   :networking => {
