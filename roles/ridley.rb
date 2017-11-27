@@ -2,11 +2,6 @@ name "ridley"
 description "Master role applied to ridley"
 
 default_attributes(
-  :chef => {
-    :client => {
-      :version => "13.6.4"
-    }
-  },
   :dhcpd => {
     :first_address => "10.0.15.1",
     :last_address => "10.0.15.254"

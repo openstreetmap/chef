@@ -2,6 +2,11 @@ name "ucl"
 description "Role applied to all servers at UCL"
 
 default_attributes(
+  :chef => {
+    :client => {
+      :version => "13.6.4"
+    }
+  },
   :location => "Slough, England",
   :networking => {
     :roles => {
