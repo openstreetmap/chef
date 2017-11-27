@@ -86,6 +86,7 @@ if manufacturer == "HP"
   %w[/opt/hp/hp-health/bin/hpasmd /usr/lib/libhpasmintrfc.so.3.0 %/usr/lib/libhpasmintrfc.so.3 /usr/lib/libhpasmintrfc.so].each do |filename|
     file filename do
       action :delete
+      manage_symlink_source false
     end
   end
 
