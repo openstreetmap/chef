@@ -20,9 +20,9 @@ class Chef
         if failed? && !exception.is_a?(SystemExit)
           message_subject = "Chef run failed on #{node.name}"
           message_body = "#{run_status.formatted_exception}\n"
-        elsif elapsed_time > 600
-          message_subject = "Chef run took #{elapsed_time} on #{node.name}"
-          message_body = ""
+#        elsif elapsed_time > 600
+#          message_subject = "Chef run took #{elapsed_time} on #{node.name}"
+#          message_body = ""
         end
 
         return unless message_subject
