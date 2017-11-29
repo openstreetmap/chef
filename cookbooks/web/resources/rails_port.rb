@@ -87,6 +87,17 @@ action :create do
     libmemcached-dev
   ]
 
+  package %w[
+    pngcrush
+    advancecomp
+    optipng
+    pngquant
+    jhead
+    jpegoptim
+    gifsicle
+    libjpeg-turbo-progs
+  ]
+
   gem_package "bundler#{new_resource.ruby}" do
     package_name "bundler"
     version "1.3.5"
