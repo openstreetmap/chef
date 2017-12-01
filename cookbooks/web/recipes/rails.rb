@@ -73,9 +73,9 @@ rails_port "www.openstreetmap.org" do
   potlatch2_key web_passwords["potlatch2_key"]
   id_key web_passwords["id_key"]
   oauth_key web_passwords["oauth_key"]
-  piwik_configuration :location => piwik[:location],
-                      :site => piwik[:site],
-                      :goals => piwik[:goals].to_hash
+  piwik_configuration "location" => piwik[:location],
+                      "site" => piwik[:site],
+                      "goals" => piwik[:goals].to_hash
   google_auth_id "651529786092-6c5ahcu0tpp95emiec8uibg11asmk34t.apps.googleusercontent.com"
   google_auth_secret web_passwords["google_auth_secret"]
   google_openid_realm "https://www.openstreetmap.org"
