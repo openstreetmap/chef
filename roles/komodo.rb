@@ -27,7 +27,5 @@ default_attributes(
 )
 
 run_list(
-  "role[g5solutions]",
-  "role[geodns]",
-  "role[tilecache]"
+  "role[g5solutions]"
 )
