@@ -42,6 +42,7 @@ default_attributes(
         :commit_delay => "10000",
         :checkpoint_segments => "60",
         :max_wal_size => "2880MB",
+        :random_page_cost => "1.1",
         :track_activity_query_size => "16384"
       }
     }

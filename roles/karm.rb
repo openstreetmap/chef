@@ -26,7 +26,8 @@ default_attributes(
         :work_mem => "64MB",
         :maintenance_work_mem => "1GB",
         :effective_cache_size => "180GB",
-        :effective_io_concurrency => "256"
+        :effective_io_concurrency => "256",
+        :random_page_cost => "1.1"
       }
     }
   },
