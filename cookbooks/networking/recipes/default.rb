@@ -336,6 +336,7 @@ firewall_rule "accept-http" do
   dest "fw"
   proto "tcp:syn"
   dest_ports "http"
+  rate_limit node[:networking][:firewall][:http_rate_limit]
   connection_limit node[:networking][:firewall][:http_connection_limit]
 end
 
@@ -345,5 +346,6 @@ firewall_rule "accept-https" do
   dest "fw"
   proto "tcp:syn"
   dest_ports "https"
+  rate_limit node[:networking][:firewall][:http_rate_limit]
   connection_limit node[:networking][:firewall][:http_connection_limit]
 end
