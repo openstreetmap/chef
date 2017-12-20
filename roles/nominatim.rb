@@ -20,7 +20,9 @@ default_attributes(
     :event => {
       :server_limit => 32,
       :max_request_workers => 1600,
-      :threads_per_child => 50
+      :threads_per_child => 50,
+      :min_spare_threads => 125,
+      :max_spare_threads => 925
     }
   },
   :apt => {
