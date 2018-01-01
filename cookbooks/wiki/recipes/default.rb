@@ -44,7 +44,7 @@ mediawiki_site "wiki.openstreetmap.org" do
   logo "/osm_logo_wiki.png"
 
   email_contact "webmaster@openstreetmap.org"
-  email_sender "wiki@openstreetmap.org"
+  email_sender "wiki@noreply.openstreetmap.org"
   email_sender_name "OpenStreetMap Wiki"
 
   metanamespace "OpenStreetMap"
