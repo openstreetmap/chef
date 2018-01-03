@@ -2,4 +2,4 @@
 
 MAILTO=admins@openstreetmap.org
 
-*/30 * * * * blogs /usr/local/bin/pluto -q -c /srv/blogs.openstreetmap.org build -d /srv/blogs.openstreetmap.org -t osm -o /srv/blogs.openstreetmap.org/build /srv/blogs.openstreetmap.org/planet.ini > /dev/null
+*/30 * * * * blogs /usr/local/bin/pluto --quieter --config=/srv/blogs.openstreetmap.org build --dbpath=/srv/blogs.openstreetmap.org --template=osm --output=/srv/blogs.openstreetmap.org/build /srv/blogs.openstreetmap.org/planet.ini > /dev/null
