@@ -1,18 +1,13 @@
 # DO NOT EDIT - This file is being maintained by Chef
-<% [80, 443].each do |port| -%>
    
-<VirtualHost *:<%= port %>>
+<VirtualHost *:443>
         ServerName planet.openstreetmap.org
         ServerAlias planet.osm.org
         ServerAdmin webmaster@openstreetmap.org
 
-<% if port == 443 -%>
         SSLEngine on
         SSLCertificateFile /etc/ssl/certs/planet.openstreetmap.org.pem
         SSLCertificateKeyFile /etc/ssl/private/planet.openstreetmap.org.key
-<% else -%>
-        RedirectPermanent /.well-known/acme-challenge/ http://acme.openstreetmap.org/.well-known/acme-challenge/
-<% end -%>
 
         CustomLog /var/log/apache2/planet.openstreetmap.org-access.log combined
         ErrorLog /var/log/apache2/planet.openstreetmap.org-error.log
@@ -63,4 +58,15 @@
 
         RewriteRule     ^(/planet/planet\-latest\.osm\.bz2)$    ${latestplanet:$1}      [R,L]
 </VirtualHost>
-<% end -%>
+
+<VirtualHost *:80>
+	ServerName planet.openstreetmap.org
+	ServerAlias planet.osm.org
+	ServerAdmin webmaster@openstreetmap.org
+
+	CustomLog /var/log/apache2/planet.openstreetmap.org-access.log combined
+	ErrorLog /var/log/apache2/planet.openstreetmap.org-error.log
+
+	RedirectPermanent /.well-known/acme-challenge/ http://acme.openstreetmap.org/.well-known/acme-challenge/
+	RedirectPermanent / https://planet.openstreetmap.org/
+</VirtualHost>
