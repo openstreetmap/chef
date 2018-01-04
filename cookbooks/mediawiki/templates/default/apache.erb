@@ -1,7 +1,6 @@
 # DO NOT EDIT - This file is being maintained by Chef
-<% @ports.each do |port| -%>
 
-<VirtualHost *:<%= port %>>
+<VirtualHost *:80>
   ServerName <%= @name %>
 <% @aliases.each do |alias_name| -%>
   ServerAlias <%= alias_name %>
@@ -9,23 +8,31 @@
 
   ServerAdmin webmaster@openstreetmap.org
 
-<% if port == 443 -%>
+  CustomLog /var/log/apache2/<%= @name %>-access.log combined
+  ErrorLog /var/log/apache2/<%= @name %>-error.log
+
+<% if @ssl_enabled -%>
+  RedirectPermanent /.well-known/acme-challenge/ http://acme.openstreetmap.org/.well-known/acme-challenge/
+  RedirectPermanent / https://<%= @name %>/
+</VirtualHost>
+
+<VirtualHost *:443>
+  ServerName <%= @name %>
+<% @aliases.each do |alias_name| -%>
+  ServerAlias <%= alias_name %>
+<% end -%>
+
+  ServerAdmin webmaster@openstreetmap.org
+
   SSLEngine on
   SSLCertificateFile /etc/ssl/certs/<%= @name %>.pem
   SSLCertificateKeyFile /etc/ssl/private/<%= @name %>.key
 
   CustomLog /var/log/apache2/<%= @name %>-secure-access.log combined
   ErrorLog /var/log/apache2/<%= @name %>-secure-error.log
-<% else -%>
-  CustomLog /var/log/apache2/<%= @name %>-access.log combined
-  ErrorLog /var/log/apache2/<%= @name %>-error.log
 <% end -%>
 
   DocumentRoot <%= @directory %>
-
-<% if @ssl_enabled -%>
-  RedirectPermanent /.well-known/acme-challenge/ http://acme.openstreetmap.org/.well-known/acme-challenge/
-<% end -%>
 
   php_admin_value open_basedir <%= @directory %>/:/usr/share/php/:/tmp/
   #php_admin_value disable_functions "exec,shell_exec,system,passthru,popen,proc_open"
@@ -35,11 +42,7 @@
   php_value post_max_size 100M
 
   RewriteCond %{SERVER_NAME} !=<%= @name %>
-<% if port == 443 -%>
   RewriteRule ^/(.*)$ https://<%= @name %>/$1 [R=permanent]
-<% else -%>
-  RewriteRule ^/(.*)$ http://<%= @name %>/$1 [R=permanent]
-<% end -%>
 
   RedirectMatch 301 ^/$                           /wiki/Main_Page
 
@@ -131,4 +134,3 @@
     Require all denied
   </Files>
 </VirtualHost>
-<% end -%>

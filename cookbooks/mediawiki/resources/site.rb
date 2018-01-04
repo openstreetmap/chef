@@ -473,8 +473,6 @@ action :create do
     backup false
   end
 
-  ports = new_resource.ssl_enabled ? [80, 443] : [80]
-
   ssl_certificate new_resource.site do
     domains [new_resource.site] + Array(new_resource.aliases)
     only_if { new_resource.ssl_enabled }
@@ -486,8 +484,7 @@ action :create do
     directory site_directory
     variables :aliases => Array(new_resource.aliases),
               :private => new_resource.private,
-              :ssl_enabled => new_resource.ssl_enabled,
-              :ports => ports
+              :ssl_enabled => new_resource.ssl_enabled
     reload_apache false
   end
 
