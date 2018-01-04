@@ -1,9 +1,16 @@
 server {
     listen [::]:80;
     listen *:80;
+    server_name <%= @name %> a.<%= @name %> b.<%= @name %> c.<%= @name %><% @aliases.each do |alias_name| %> <%= alias_name %> a.<%= alias_name %> b.<%= alias_name %> c.<%= alias_name %><%- end -%>;
+
+    rewrite ^/\.well-known/acme-challenge/(.*)$ http://acme.openstreetmap.org/.well-known/acme-challenge/$1 permanent;
+    return 301 https://$host$request_uri;
+}
+
+server {
     listen [::]:443 ssl;
     listen *:443 ssl;
-    server_name  <%= @name %> a.<%= @name %> b.<%= @name %> c.<%= @name %><% @aliases.each do |alias_name| %> <%= alias_name %> a.<%= alias_name %> b.<%= alias_name %> c.<%= alias_name %><%- end -%>;
+    server_name <%= @name %> a.<%= @name %> b.<%= @name %> c.<%= @name %><% @aliases.each do |alias_name| %> <%= alias_name %> a.<%= alias_name %> b.<%= alias_name %> c.<%= alias_name %><%- end -%>;
 
     ssl_certificate /etc/ssl/certs/<%= @name %>.pem;
     ssl_certificate_key /etc/ssl/private/<%= @name %>.key;
@@ -19,7 +26,6 @@ server {
     resolver_timeout 5s;
 
     root "/srv/<%= @name %>";
-    rewrite ^/\.well-known/acme-challenge/(.*)$ http://acme.openstreetmap.org/.well-known/acme-challenge/$1 permanent;
 
     gzip on;
     gzip_types text/plain text/css application/json application/javascript application/x-javascript text/javascript text/xml application/xml application/rss+xml application/atom+xml application/rdf+xml image/svg+xml; # text/html is implicit
