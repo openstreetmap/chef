@@ -136,6 +136,11 @@ search(:accounts, "*:*").each do |account|
     notifies :reload, "service[php7.0-fpm]"
   end
 
+  ssl_certificate "#{name}.dev.openstreetmap.org" do
+    domains ["#{name}.dev.openstreetmap.org", "#{name}.dev.osm.org"]
+    notifies :reload, "service[apache2]"
+  end
+
   apache_site "#{name}.dev.openstreetmap.org" do
     template "apache.user.erb"
     directory "#{user_home}/public_html"
