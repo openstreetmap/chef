@@ -1,8 +1,12 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
-<VirtualHost *:80>
+<VirtualHost *:443>
 	ServerName phppgadmin.dev.openstreetmap.org
 	ServerAdmin webmaster@openstreetmap.org
+
+	SSLEngine on
+	SSLCertificateFile /etc/ssl/certs/phppgadmin.dev.openstreetmap.org.pem
+	SSLCertificateKeyFile /etc/ssl/private/phppgadmin.dev.openstreetmap.org.key
 
 	CustomLog /var/log/apache2/phppgadmin.dev.openstreetmap.org-access.log combined
 	ErrorLog /var/log/apache2/phppgadmin.dev.openstreetmap.org-error.log
@@ -15,6 +19,17 @@
 	ProxyPassMatch ^/(.*\.php(/.*)?)$ fcgi://127.0.0.1:7000/usr/share/phppgadmin
 	ProxyPassMatch ^/(.*\.phpx(/.*)?)$ fcgi://127.0.0.1:7000/usr/share/phppgadmin
 	ProxyPassMatch ^/(.*\.phpj(/.*)?)$ fcgi://127.0.0.1:7000/usr/share/phppgadmin
+</VirtualHost>
+
+<VirtualHost *:80>
+	ServerName phppgadmin.dev.openstreetmap.org
+	ServerAdmin webmaster@openstreetmap.org
+
+	CustomLog /var/log/apache2/phppgadmin.dev.openstreetmap.org-access.log combined
+	ErrorLog /var/log/apache2/phppgadmin.dev.openstreetmap.org-error.log
+
+	RedirectPermanent /.well-known/acme-challenge/ http://acme.openstreetmap.org/.well-known/acme-challenge/
+	RedirectPermanent / https://phppgadmin.dev.openstreetmap.org/
 </VirtualHost>
 
 <Directory /usr/share/phppgadmin>

@@ -111,6 +111,11 @@ file "/etc/apache2/conf.d/phppgadmin" do
   action :delete
 end
 
+ssl_certificate "phppgadmin.dev.openstreetmap.org" do
+  domains "phppgadmin.dev.openstreetmap.org"
+  notifies :reload, "service[apache2]"
+end
+
 apache_site "phppgadmin.dev.openstreetmap.org" do
   template "apache.phppgadmin.erb"
 end
