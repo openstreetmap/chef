@@ -194,7 +194,7 @@ node[:taginfo][:sites].each do |site|
 
   remote_file "#{directory}/planet/planet.pbf" do
     action :create_if_missing
-    source "http://planet.openstreetmap.org/pbf/planet-latest.osm.pbf"
+    source "https://planet.openstreetmap.org/pbf/planet-latest.osm.pbf"
     owner "taginfo"
     group "taginfo"
     mode 0o644

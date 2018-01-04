@@ -2,7 +2,7 @@
 
 This cookbook configures the various components of the planet service - used
 for distributing OpenStreetMap data at
-[planet.openstreetmap.org](http://planet.openstreetmap.org)
+[planet.openstreetmap.org](https://planet.openstreetmap.org)
 
 It includes the following recipes:
 * default: configures the website for serving the various planet files
