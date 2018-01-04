@@ -98,6 +98,28 @@ file "/etc/php/7.0/fpm/pool.d/www.conf" do
   notifies :reload, "service[php7.0-fpm]"
 end
 
+directory "/srv/dev.openstreetmap.org" do
+  owner "root"
+  group "root"
+  mode 0o755
+end
+
+template "/srv/dev.openstreetmap.org/index.html" do
+  source "dev.html.erb"
+  owner "root"
+  group "root"
+  mode 0o644
+end
+
+ssl_certificate "dev.openstreetmap.org" do
+  domains "dev.openstreetmap.org"
+  notifies :reload, "service[apache2]"
+end
+
+apache_site "dev.openstreetmap.org" do
+  template "apache.dev.erb"
+end
+
 package "phppgadmin"
 
 template "/etc/phppgadmin/config.inc.php" do

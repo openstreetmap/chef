@@ -1,0 +1,35 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+<VirtualHost *:443>
+	ServerName dev.openstreetmap.org
+	ServerAdmin webmaster@openstreetmap.org
+
+	SSLEngine on
+	SSLCertificateFile /etc/ssl/certs/dev.openstreetmap.org.pem
+	SSLCertificateKeyFile /etc/ssl/private/dev.openstreetmap.org.key
+
+	CustomLog /var/log/apache2/dev.openstreetmap.org-access.log combined
+	ErrorLog /var/log/apache2/dev.openstreetmap.org-error.log
+
+	DocumentRoot /srv/dev.openstreetmap.org
+
+	RewriteEngine on
+	RewriteCond %{REQUEST_URI} ^/~([^/]*)(/.*)?$
+	RewriteCond /home/%1/public_html -d
+	RewriteRule ^/~([^/]*)(/.*)?$ https://$1.dev.openstreetmap.org$2 [NS,R=307]
+</VirtualHost>
+
+<VirtualHost *:80>
+	ServerName dev.openstreetmap.org
+	ServerAdmin webmaster@openstreetmap.org
+
+	CustomLog /var/log/apache2/dev.openstreetmap.org-access.log combined
+	ErrorLog /var/log/apache2/dev.openstreetmap.org-error.log
+
+	RedirectPermanent /.well-known/acme-challenge/ http://acme.openstreetmap.org/.well-known/acme-challenge/
+	RedirectPermanent / https://dev.openstreetmap.org/
+</VirtualHost>
+
+<Directory /srv/dev.openstreetmap.org>
+	Require all granted
+</Directory>
