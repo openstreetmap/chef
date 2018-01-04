@@ -38,28 +38,11 @@ WSGIDaemonProcess <%= @user %>.dev.openstreetmap.org user=<%= @user %> inactivit
 	ServerAdmin webmaster@openstreetmap.org
 	ServerAlias <%= @user %>.dev.osm.org
 
-	# Remove Proxy request header to mitigate https://httpoxy.org/
-	RequestHeader unset Proxy early
-
-	UseCanonicalName Off
-	DocumentRoot <%= @directory %>
-	ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/
-
-	RedirectPermanent /.well-known/acme-challenge/ http://acme.openstreetmap.org/.well-known/acme-challenge/
-
-        WSGIProcessGroup <%= @user %>.dev.openstreetmap.org
-
-	RewriteEngine on
-	#LogLevel rewrite:trace2
-
 	CustomLog /var/log/apache2/<%= @user %>.dev.openstreetmap.org-access.log combined
 	ErrorLog /var/log/apache2/<%= @user %>.dev.openstreetmap.org-error.log
 
-	RewriteCond <%= @directory %>%{REQUEST_FILENAME} -f
-	RewriteRule ^/cgi-bin/(.*)$ /~<%= @user %>/cgi-bin/$1 [PT,L]
-
-	RewriteCond <%= @directory %>%{REQUEST_FILENAME} -f
-	RewriteRule ^/(.*\.ph(p|ps|p3|tml)(/.*)?)$ fcgi://127.0.0.1:<%= @port %><%= @directory %>/$1 [P]
+	RedirectPermanent /.well-known/acme-challenge/ http://acme.openstreetmap.org/.well-known/acme-challenge/
+	RedirectPermanent / https://<%= @user %>.dev.openstreetmap.org/
 </VirtualHost>
 
 <Directory <%= @directory %>>
