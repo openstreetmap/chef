@@ -1,29 +1,23 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
-<% [80, 443].each do |port| -%>
-<VirtualHost *:<%= port %>>
+<VirtualHost *:443>
   # Basic server configuration
   ServerName gps-tile.openstreetmap.org
   ServerAlias *.gps-tile.openstreetmap.org
   ServerAlias gps.tile.openstreetmap.org
   ServerAlias gps-*.tile.openstreetmap.org
   ServerAdmin webmaster@openstreetmap.org
-<% if port == 443 -%>
 
   # Enable SSL
   SSLEngine on
   SSLCertificateFile /etc/ssl/certs/gps-tile.openstreetmap.org.pem
   SSLCertificateKeyFile /etc/ssl/private/gps-tile.openstreetmap.org.key
-<% end -%>
 
   # Configure location of static files
   DocumentRoot /srv/gps-tile.openstreetmap.org/html
 
   # Configure the CGI script that serves the tiles
   ScriptAlias /lines /srv/gps-tile.openstreetmap.org/updater/tile
-
-  # Redirect for ACMI challenge validation
-  RedirectPermanent /.well-known/acme-challenge/ http://acme.openstreetmap.org/.well-known/acme-challenge/
 
   # Temporary redirect for old CGI location
   RedirectPermanent /gps-lines/tile /lines
@@ -38,7 +32,29 @@
   Header set Access-Control-Allow-Origin "*"
 </VirtualHost>
 
-<% end -%>
+<VirtualHost *:80>
+  # Basic server configuration
+  ServerName gps-tile.openstreetmap.org
+  ServerAlias *.gps-tile.openstreetmap.org
+  ServerAlias gps.tile.openstreetmap.org
+  ServerAlias gps-*.tile.openstreetmap.org
+  ServerAdmin webmaster@openstreetmap.org
+
+  # Enable rewriting
+  RewriteEngine On
+
+  # Redirect for ACME challenge validation
+  RedirectPermanent /.well-known/acme-challenge/ http://acme.openstreetmap.org/.well-known/acme-challenge/
+
+  # Redirect to https
+  RewriteRule (.*) https://%{SERVER_NAME}/$1 [R=permanent,L]
+
+  # Setup logging
+  CustomLog /var/log/apache2/access.log combined
+  ErrorLog /var/log/apache2/error.log
+  BufferedLogs on
+</VirtualHost>
+
 <Directory /srv/gps-tile.openstreetmap.org/html>
   Options None
   AllowOverride None

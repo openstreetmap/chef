@@ -112,6 +112,7 @@ remote_directory "/srv/gps-tile.openstreetmap.org/html" do
 end
 
 apache_module "headers"
+apache_module "rewrite"
 
 ssl_certificate "gps-tile.openstreetmap.org" do
   domains ["gps-tile.openstreetmap.org",
