@@ -14,7 +14,7 @@ We make extensive use of roles to configure the servers. In general we have:
 ## Server-specific roles (e.g. [katla.rb](roles/katla.rb))
 
 These deal with particular setup or quirks of a server, such as its IP address. They also include roles representing the service they are performing, and the location they are in and any particular hardware they have that needs configuration.
-All our servers are [named after dragons](http://wiki.openstreetmap.org/wiki/Servers/Name_Ideas).
+All our servers are [named after dragons](https://wiki.openstreetmap.org/wiki/Servers/Name_Ideas).
 
 ## Hardware-specific roles (e.g. [tyan-s7010.rb](roles/tyan-s7010.rb))
 
@@ -39,4 +39,4 @@ Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for mor
 # Contact Us
 
 * Twitter: [@OSM_Tech](https://twitter.com/OSM_Tech)
-* IRC: [#OSM-Dev on irc.oftc.net](http://irc.openstreetmap.org/)
+* IRC: [#OSM-Dev on irc.oftc.net](https://irc.openstreetmap.org/)

@@ -50,7 +50,7 @@ end
 
 remote_file "/var/cache/chef/#{osmosis_package}" do
   action :create_if_missing
-  source "http://bretth.dev.openstreetmap.org/osmosis-build/#{osmosis_package}"
+  source "https://bretth.dev.openstreetmap.org/osmosis-build/#{osmosis_package}"
   owner "root"
   group "root"
   mode 0o644

@@ -68,7 +68,7 @@ print """
 The files found here are complete copies of the OpenStreetMap.org
 database, including editing history. These are published under an 
 Open Data Commons Open Database License 1.0 licensed. For more 
-information, <a href="http://wiki.openstreetmap.org/wiki/Planet.osm/full">see the project wiki</a>.
+information, <a href="https://wiki.openstreetmap.org/wiki/Planet.osm/full">see the project wiki</a>.
 </p>
 
 <table id="about">
@@ -95,11 +95,11 @@ information, <a href="http://wiki.openstreetmap.org/wiki/Planet.osm/full">see th
     <td>
         <p>
         You are granted permission to use OpenStreetMap data by 
-        <a href="http://osm.org/copyright">the OpenStreetMap License</a>, which also describes 
+        <a href="https://osm.org/copyright">the OpenStreetMap License</a>, which also describes 
         your obligations.
         </p>
         <p>
-        You can <a href="http://wiki.openstreetmap.org/wiki/Planet.osm/full#Processing">process the file</a>
+        You can <a href="https://wiki.openstreetmap.org/wiki/Planet.osm/full#Processing">process the file</a>
         or extracts with a variety of tools, although some tools for processing OSM data will 
 	only work on 'current' planets and will not process a 'history' planet available here.
         </p>
@@ -107,7 +107,7 @@ information, <a href="http://wiki.openstreetmap.org/wiki/Planet.osm/full">see th
     <td>
         <p>
         The complete history planet is extremely large, so you may prefer to use one of
-        <a href="http://wiki.openstreetmap.org/wiki/Planet.osm/full#Extracts">the available extracts</a>
+        <a href="https://wiki.openstreetmap.org/wiki/Planet.osm/full#Extracts">the available extracts</a>
         (individual countries or states) from third parties. 
         </p>
     </td>
@@ -115,6 +115,6 @@ information, <a href="http://wiki.openstreetmap.org/wiki/Planet.osm/full">see th
 </table>
 
 <p>
-If you find data within OpenStreetMap that you believe is an infringement of someone else's copyright, then please make contact with the <a href="http://wiki.openstreetmap.org/wiki/Data_working_group">OpenStreetMap Data Working Group</a>.
+If you find data within OpenStreetMap that you believe is an infringement of someone else's copyright, then please make contact with the <a href="https://wiki.openstreetmap.org/wiki/Data_working_group">OpenStreetMap Data Working Group</a>.
 </p>
 """ % locals()

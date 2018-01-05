@@ -67,7 +67,7 @@ print """
 
 <p>
 The files found here are regularly-updated, complete copies of the OpenStreetMap.org
-database, and those published before the 12 September 2012 are distributed under a Creative Commons Attribution-ShareAlike 2.0 license, those published after are  Open Data Commons Open Database License 1.0 licensed. For more information, <a href="http://wiki.openstreetmap.org/wiki/Planet.osm">see the project wiki</a>.
+database, and those published before the 12 September 2012 are distributed under a Creative Commons Attribution-ShareAlike 2.0 license, those published after are  Open Data Commons Open Database License 1.0 licensed. For more information, <a href="https://wiki.openstreetmap.org/wiki/Planet.osm">see the project wiki</a>.
 </p>
 
 <table id="about">
@@ -102,18 +102,18 @@ database, and those published before the 12 September 2012 are distributed under
     <td>
         <p>
         You are granted permission to use OpenStreetMap data by 
-        <a href="http://osm.org/copyright">the OpenStreetMap License</a>, which also describes 
+        <a href="https://osm.org/copyright">the OpenStreetMap License</a>, which also describes 
         your obligations.
         </p>
         <p>
-        You can <a href="http://wiki.openstreetmap.org/wiki/Planet.osm#Processing_the_File">process the file</a>
-        or extracts with a variety of tools. <a href="http://wiki.openstreetmap.org/wiki/Osmosis">Osmosis</a>
+        You can <a href="https://wiki.openstreetmap.org/wiki/Planet.osm#Processing_the_File">process the file</a>
+        or extracts with a variety of tools. <a href="https://wiki.openstreetmap.org/wiki/Osmosis">Osmosis</a>
         is a general-purpose command-line tool for converting the data among different formats
-        and databases, and <a href="http://wiki.openstreetmap.org/wiki/Osm2pgsql">Osm2pgsql</a>
+        and databases, and <a href="https://wiki.openstreetmap.org/wiki/Osm2pgsql">Osm2pgsql</a>
         is a tool for importing the data into a Postgis database for rendering maps.
         </p>
         <p>
-        <a href="http://wiki.openstreetmap.org/wiki/Coastline_error_checker">Processed coastline data</a>
+        <a href="https://wiki.openstreetmap.org/wiki/Coastline_error_checker">Processed coastline data</a>
         derived from OSM data is also needed for rendering usable maps, and can be found in a
         <a href="historical-shapefiles/processed_p.tar.bz2">single shapefile</a> (360MB).
         </p>
@@ -121,7 +121,7 @@ database, and those published before the 12 September 2012 are distributed under
     <td>
         <p>
         The complete planet is very large, so you may prefer to use one of
-        <a href="http://wiki.openstreetmap.org/wiki/Planet.osm#Downloading">several periodic extracts</a>
+        <a href="https://wiki.openstreetmap.org/wiki/Planet.osm#Downloading">several periodic extracts</a>
         (individual countries or states) from third parties. <a href="http://download.geofabrik.de/openstreetmap/">GeoFabrik.de</a>
         and <a href="http://download.bbbike.org/osm/">BBBike.org</a> are two providers
         of extracts with up-to-date worldwide coverage.
@@ -131,6 +131,6 @@ database, and those published before the 12 September 2012 are distributed under
 </table>
 
 <p>
-If you find data within OpenStreetMap that you believe is an infringement of someone else's copyright, then please make contact with the <a href="http://wiki.openstreetmap.org/wiki/Data_working_group">OpenStreetMap Data Working Group</a>.
+If you find data within OpenStreetMap that you believe is an infringement of someone else's copyright, then please make contact with the <a href="https://wiki.openstreetmap.org/wiki/Data_working_group">OpenStreetMap Data Working Group</a>.
 </p>
 """ % locals()

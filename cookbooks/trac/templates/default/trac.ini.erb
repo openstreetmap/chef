@@ -42,7 +42,7 @@ templates_dir =
 [intertrac]
 josm.compat = false
 josm.title = JOSM Trac
-josm.url = http://josm.openstreetmap.de
+josm.url = https://josm.openstreetmap.de
 
 [logging]
 log_file = trac.log
@@ -95,10 +95,10 @@ use_tls = false
 admin = 
 admin_trac_url = .
 descr = OpenStreetMap is a free editable map of the whole world
-footer = Visit the map at<br /><a href="http://www.openstreetmap.org/">http://www.openstreetmap.org/</a>
+footer = Visit the map at<br /><a href="https://www.openstreetmap.org/">https://www.openstreetmap.org/</a>
 icon = site/osm.ico
 name = OpenStreetMap
-url = http://www.openstreetmap.org/
+url = https://www.openstreetmap.org/
 
 [query]
 default_anonymous_query = status!=closed&cc~=$USER
@@ -114,7 +114,7 @@ items_per_page_rss = 0
 subversion.dir = /var/lib/subversion/repos/openstreetmap
 subversion.description = Legacy subversion repository
 subversion.type = svn
-subversion.url = http://svn.openstreetmap.org/
+subversion.url = https://svn.openstreetmap.org/
 subversion.hidden = true
 <% Dir.glob("/var/lib/git/*.git").sort.each do |repository| -%>
 <%= File.basename(repository, ".git") %>.dir = <%= repository %>

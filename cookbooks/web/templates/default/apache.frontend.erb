@@ -72,7 +72,7 @@
 
   #
   # Block JOSM revisions  1722-1727 as they have a serious bug that causes
-  # lat/lon to be swapped (http://josm.openstreetmap.de/ticket/2804)
+  # lat/lon to be swapped (https://josm.openstreetmap.de/ticket/2804)
   #
   RewriteCond %{HTTP_USER_AGENT} "^JOSM/[0-9]+\.[0-9]+ \(172[234567]\)"
   RewriteRule . - [F,L]
@@ -209,14 +209,14 @@
   #
   # Redirect trac and wiki requests to the right places
   #
-  RedirectPermanent /trac/ http://trac.openstreetmap.org/
-  RedirectPermanent /wiki/ http://wiki.openstreetmap.org/
+  RedirectPermanent /trac/ https://trac.openstreetmap.org/
+  RedirectPermanent /wiki/ https://wiki.openstreetmap.org/
 
   #
   # Redirect requests for various images to the right place
   #
-  RedirectPermanent /images/osm_logo.png http://www.openstreetmap.org/assets/osm_logo.png
-  RedirectPermanent /images/cc_button.png http://www.openstreetmap.org/assets/cc_button.png
+  RedirectPermanent /images/osm_logo.png https://www.openstreetmap.org/assets/osm_logo.png
+  RedirectPermanent /images/cc_button.png https://www.openstreetmap.org/assets/cc_button.png
 
   #
   # Define a load balancer for the local backends
@@ -295,14 +295,14 @@
   ServerAlias www.openstreetmap.co.uk
 
   RedirectPermanent /events.ics http://calendar.openstreetmap.org.uk/events.ics
-  RedirectPermanent / http://www.openstreetmap.org/
+  RedirectPermanent / https://www.openstreetmap.org/
 </VirtualHost>
 
 <VirtualHost *:80>
   ServerName openstreetmap.org
   ServerAlias *
 
-  RedirectPermanent / http://www.openstreetmap.org/
+  RedirectPermanent / https://www.openstreetmap.org/
 </VirtualHost>
 
 <VirtualHost *:443>
