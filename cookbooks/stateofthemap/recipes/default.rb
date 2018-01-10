@@ -266,6 +266,27 @@ wordpress_plugin "2012.stateofthemap.org-wp-sticky" do
   site "2012.stateofthemap.org"
 end
 
+%w[2013].each do |year|
+  git "/srv/#{year}.stateofthemap.org" do
+    action :sync
+    repository "git://git.openstreetmap.org/stateofthemap.git"
+    revision "site-#{year}"
+    user "root"
+    group "root"
+  end
+
+  ssl_certificate "#{year}.stateofthemap.org" do
+    domains ["#{year}.stateofthemap.org", "#{year}.stateofthemap.com"]
+    notifies :reload, "service[apache2]"
+  end
+
+  apache_site "#{year}.stateofthemap.org" do
+    template "apache.static.erb"
+    directory "/srv/#{year}.stateofthemap.org"
+    variables :year => year
+  end
+end
+
 %w[2016 2017 2018].each do |year|
   git "/srv/#{year}.stateofthemap.org" do
     action :sync
