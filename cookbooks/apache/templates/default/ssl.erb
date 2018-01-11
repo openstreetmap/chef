@@ -15,3 +15,5 @@ SSLStaplingErrorCacheTimeout 60
 SSLStaplingReturnResponderErrors off
 SSLStaplingFakeTryLater off
 SSLStaplingCache shmcb:${APACHE_RUN_DIR}/ssl_ocspcache(512000)
+
+Header setifempty Strict-Transport-Security max-age=3600 env=HTTPS
