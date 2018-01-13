@@ -44,7 +44,7 @@ directory "/opt/piwik-#{version}" do
 end
 
 remote_file "#{Chef::Config[:file_cache_path]}/piwik-#{version}.zip" do
-  source "http://builds.piwik.org/piwik-#{version}.zip"
+  source "https://builds.matomo.org/piwik-#{version}.zip"
   not_if { File.exist?("/opt/piwik-#{version}/piwik") }
 end
 
