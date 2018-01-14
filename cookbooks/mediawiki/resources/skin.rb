@@ -28,6 +28,7 @@ property :version, :kind_of => String
 property :repository, :kind_of => String
 property :revision, :kind_of => String
 property :update_site, :kind_of => [TrueClass, FalseClass], :default => true
+property :legacy, :kind_of => Boolean, :default => true
 
 action :create do
   if new_resource.source
@@ -66,14 +67,19 @@ action :create do
       variables new_resource.variables
     end
   else
-    skin_script = "#{skin_directory}/#{new_resource.skin}.php"
-
+    if new_resource.legacy
+      file_content = "<?php require_once('#{skin_directory}/#{new_resource.skin}.php');\n"
+      skin_file = "#{skin_directory}/#{new_resource.skin}.php"
+    else
+      file_content = "wfLoadSkin('#{new_resource.skin}');"
+      skin_file = "#{skin_directory}/skin.json"
+    end
     file "#{mediawiki_directory}/LocalSettings.d/Skin-#{new_resource.skin}.inc.php" do
-      content "<?php require_once('#{skin_script}');\n"
+      content "<?php #{file_content}\n"
       user node[:mediawiki][:user]
       group node[:mediawiki][:group]
       mode 0o664
-      only_if { ::File.exist?(skin_script) }
+      only_if { ::File.exist?(skin_file) }
     end
   end
 end
