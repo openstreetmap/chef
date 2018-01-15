@@ -48,6 +48,13 @@ mediawiki_skin "osmf" do
   revision "master"
 end
 
+mediawiki_skin "OSMFoundation" do
+  site "wiki.osmfoundation.org"
+  repository "git://github.com/osmfoundation/osmf-mediawiki-skin.git"
+  revision "master"
+  legacy False
+end
+
 cookbook_file "/srv/wiki.osmfoundation.org/Wiki.png" do
   owner node[:mediawiki][:user]
   group node[:mediawiki][:group]
