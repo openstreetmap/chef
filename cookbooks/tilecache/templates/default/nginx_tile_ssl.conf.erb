@@ -52,10 +52,6 @@ server {
 
     ssl_certificate      /etc/ssl/certs/tile.openstreetmap.org.pem;
     ssl_certificate_key  /etc/ssl/private/tile.openstreetmap.org.key;
-<% if node[:ssl][:strict_transport_security] -%>
-
-    add_header Strict-Transport-Security "<%= node[:ssl][:strict_transport_security] %>" always;
-<% end -%>
 
     location / {
       proxy_pass http://tile_cache_backend;
@@ -76,6 +72,11 @@ server {
 
       # Set a QoS cookie if none presented (uses nginx Map)
       add_header Set-Cookie $cookie_qos_token_set;
+<% if node[:ssl][:strict_transport_security] -%>
+
+      # Enable HSTS
+      add_header Strict-Transport-Security "<%= node[:ssl][:strict_transport_security] %>" always;
+<% end -%>
 
       # QoS Traffic Rate see $limit_rate on http://nginx.org/en/docs/http/ngx_http_core_module.html
       set $limit_rate $limit_rate_qos;
