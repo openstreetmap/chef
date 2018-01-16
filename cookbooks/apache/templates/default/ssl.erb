@@ -15,5 +15,7 @@ SSLStaplingErrorCacheTimeout 60
 SSLStaplingReturnResponderErrors off
 SSLStaplingFakeTryLater off
 SSLStaplingCache shmcb:${APACHE_RUN_DIR}/ssl_ocspcache(512000)
+<% if node[:ssl][:strict_transport_security] -%>
 
-Header setifempty Strict-Transport-Security max-age=86400 env=HTTPS
+Header setifempty Strict-Transport-Security "<%= node[:ssl][:strict_transport_security] %>" env=HTTPS
+<% end -%>

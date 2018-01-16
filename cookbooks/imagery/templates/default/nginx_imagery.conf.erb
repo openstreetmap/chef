@@ -14,6 +14,10 @@ server {
 
     ssl_certificate /etc/ssl/certs/<%= @name %>.pem;
     ssl_certificate_key /etc/ssl/private/<%= @name %>.key;
+<% if node[:ssl][:strict_transport_security] -%>
+
+    add_header Strict-Transport-Security "<%= node[:ssl][:strict_transport_security] %>" always;
+<% end -%>
 
     root "/srv/<%= @name %>";
 
