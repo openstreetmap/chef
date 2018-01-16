@@ -54,6 +54,6 @@ end
 
 action_class do
   def unit_name
-    path.sub(%r{^/}, "").gsub(%r{/}, "-")
+    new_resource.path.sub(%r{^/}, "").gsub(%r{/}, "-")
   end
 end

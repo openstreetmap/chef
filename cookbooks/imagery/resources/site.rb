@@ -52,7 +52,7 @@ action :create do
     user "root"
     group "root"
     mode 0o644
-    variables :title => title
+    variables :title => new_resource.title
   end
 
   cookbook_file "/srv/#{new_resource.site}/imagery.css" do
