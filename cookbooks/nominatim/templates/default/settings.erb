@@ -2,10 +2,7 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
 @define('CONST_Database_DSN', 'pgsql://@/<%= @dbname %>');
-if (isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS']))
-    @define('CONST_Website_BaseURL', 'https://<%= @base_url %>/');
-else
-    @define('CONST_Website_BaseURL', 'http://<%= @base_url %>/');
+@define('CONST_Website_BaseURL', 'https://<%= @base_url %>/');
 
 @define('CONST_Pyosmium_Binary', '/usr/local/bin/pyosmium-get-changes');
 
