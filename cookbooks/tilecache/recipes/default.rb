@@ -88,10 +88,6 @@ nginx_site "default" do
   action [:delete]
 end
 
-resolvers = node[:networking][:nameservers].map do |resolver|
-  IPAddr.new(resolver).ipv6? ? "[#{resolver}]" : resolver
-end
-
 template "/usr/local/bin/nginx_generate_tilecache_qos_map" do
   source "nginx_generate_tilecache_qos_map.erb"
   owner "root"
@@ -123,7 +119,7 @@ end
 
 nginx_site "tile-ssl" do
   template "nginx_tile_ssl.conf.erb"
-  variables :resolvers => resolvers, :caches => tilecaches
+  variables :caches => tilecaches
 end
 
 template "/etc/logrotate.d/nginx" do

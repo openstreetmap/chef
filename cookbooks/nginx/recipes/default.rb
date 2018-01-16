@@ -19,13 +19,16 @@
 
 package "nginx"
 
-# admins = data_bag_item("nginx", "admins")
+resolvers = node[:networking][:nameservers].map do |resolver|
+  IPAddr.new(resolver).ipv6? ? "[#{resolver}]" : resolver
+end
 
 template "/etc/nginx/nginx.conf" do
   source "nginx.conf.erb"
   owner "root"
   group "root"
   mode 0o644
+  variables :resolvers => resolvers
 end
 
 directory "/var/cache/nginx/fastcgi-cache" do

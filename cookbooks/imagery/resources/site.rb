@@ -95,15 +95,11 @@ action :create do
     domains tile_domains
   end
 
-  resolvers = node[:networking][:nameservers].map do |resolver|
-    IPAddr.new(resolver).ipv6? ? "[#{resolver}]" : resolver
-  end
-
   nginx_site new_resource.site do
     template "nginx_imagery.conf.erb"
     directory "/srv/imagery/#{new_resource.site}"
     restart_nginx false
-    variables new_resource.to_hash.merge(:resolvers => resolvers)
+    variables new_resource.to_hash
   end
 end
 

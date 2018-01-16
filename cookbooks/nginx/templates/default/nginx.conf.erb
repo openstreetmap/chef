@@ -31,6 +31,16 @@ http {
 
     server_tokens off;
 
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+    ssl_ciphers <%= node[:ssl][:ciphers] -%>;
+    ssl_prefer_server_ciphers on;
+    ssl_session_cache shared:SSL:50m;
+    ssl_session_timeout 30m;
+    ssl_stapling on;
+    ssl_dhparam /etc/ssl/certs/dhparam.pem;
+    resolver <%= @resolvers.join(" ") %>;
+    resolver_timeout 5s;
+
     <% if node['nginx']['cache']['fastcgi']['enable'] -%>
     fastcgi_cache_path /var/cache/nginx/fastcgi-cache levels=1:2 keys_zone=<%= node['nginx']['cache']['fastcgi']['keys_zone'] %> inactive=<%= node['nginx']['cache']['fastcgi']['inactive'] %> max_size=<%= node['nginx']['cache']['fastcgi']['max_size'] %>;
     <% end -%>
