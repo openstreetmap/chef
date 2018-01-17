@@ -23,6 +23,11 @@
         # Ensure robots do not index dev site
         # https://developers.google.com/webmasters/control-crawl-index/docs/robots_meta_tag
         Header set X-Robots-Tag "noindex, nofollow"
+
+        # Force special MIME type for crossdomain.xml files
+        <Files crossdomain.xml>
+                ForceType text/x-cross-domain-policy
+        </Files>
 </VirtualHost>
 
 <VirtualHost *:80>
