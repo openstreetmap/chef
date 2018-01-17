@@ -79,6 +79,7 @@ else
   end
 end
 
+apache_module "headers"
 apache_module "ssl"
 
 apache_conf "ssl" do
