@@ -302,7 +302,10 @@
   ServerName openstreetmap.org
   ServerAlias *
 
-  RedirectPermanent / https://www.openstreetmap.org/
+  RewriteEngine on
+
+  RewriteCond %{REQUEST_URI} !^/server-status$
+  RewriteRule ^(.*)$ https://www.openstreetmap.org$1 [L,NE,R=permanent]
 </VirtualHost>
 
 <VirtualHost *:443>
