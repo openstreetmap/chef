@@ -114,3 +114,17 @@ template "/etc/logrotate.d/apache2" do
 end
 
 munin_plugin "planet_age"
+
+template "/usr/local/bin/old-planet-file-cleanup" do
+  source "old-planet-file-cleanup.erb"
+  owner "root"
+  group "root"
+  mode 0o755
+end
+
+template "/etc/cron.d/old-planet-file-cleanup" do
+  source "old-planet-file-cleanup.cron.erb"
+  owner "root"
+  group "root"
+  mode 0o644
+end

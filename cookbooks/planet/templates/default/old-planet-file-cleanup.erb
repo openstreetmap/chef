@@ -1,0 +1,124 @@
+#!/usr/bin/ruby
+
+require 'date'
+require 'optparse'
+
+# always keep the last 4 weeks
+ALWAYS_KEEP_DAYS = 4 * 7
+
+# otherwise, bucket by month and keep the earliest in the bucket
+def bucket(date)
+  Date.new(date.year, date.month, 1)
+end
+
+Candidate = Struct.new(:filename, :date)
+
+def list_files(glob, date_pattern)
+  # find all candidates for deletion
+  real_files = Dir.glob(glob).select do |file|
+    File.file?(file) && !File.symlink?(file)
+  end
+
+  real_files.map do |file|
+    # extract the date
+    m = date_pattern.match(file)
+    raise "Unable to extract date string from #{file.inspect}" if m.nil?
+    d = Date.strptime(m[1], "%y%m%d")
+    Candidate.new(file, d)
+  end
+end
+
+def deletion_candidates(today, candidates)
+  candidate_buckets = Hash.new
+
+  candidates.each do |c|
+    next if today - c.date < ALWAYS_KEEP_DAYS
+    b = bucket(c.date)
+
+    candidate_buckets[b] = Array.new unless candidate_buckets.has_key?(b)
+    candidate_buckets[b] << c
+  end
+
+  # delete all but the earliest in each bucket
+  candidate_buckets.collect_concat do |bucket, contents|
+    contents.sort_by {|c| c.date}[1..-1]
+  end
+end
+
+def deletions(glob, date_pattern, today, expansions)
+  candidates = list_files(glob, date_pattern)
+  to_delete = deletion_candidates(today, candidates)
+
+  expanded = to_delete.collect_concat do |candidate|
+    dir = File.dirname(candidate.filename)
+    expansions.map do |e|
+      exp = candidate.date.strftime(e)
+      "#{dir}/#{exp}"
+    end
+  end
+
+  expanded.select {|e| File.exist?(e)}
+end
+
+dry_run = false
+debug = false
+
+OptionParser.new do |opt|
+  opt.on('--dry-run') { dry_run = true }
+  opt.on('--debug') { debug = true }
+end.parse!
+
+xml_directory = "<%= node[:planet][:dump][:xml_directory] %>"
+xml_history_directory = "<%= node[:planet][:dump][:xml_history_directory] %>"
+pbf_directory = "<%= node[:planet][:dump][:pbf_directory] %>"
+pbf_history_directory = "<%= node[:planet][:dump][:pbf_history_directory] %>"
+
+today = Date.today
+to_delete = Array.new
+
+to_delete += deletions(
+  "#{xml_directory}/20??/planet-??????.osm.bz2",
+  /planet-([0-9]{6}).osm.bz2/,
+  today,
+  ["changesets-%y%m%d.osm.bz2",
+   "changesets-%y%m%d.osm.bz2.md5",
+   "discussions-%y%m%d.osm.bz2",
+   "discussions-%y%m%d.osm.bz2.md5",
+   "planet-%y%m%d.osm.bz2",
+   "planet-%y%m%d.osm.bz2.md5"])
+
+to_delete += deletions(
+  "#{xml_history_directory}/20??/planet-??????.osm.bz2",
+  /history-([0-9]{6}).osm.bz2/,
+  today,
+  ["history-%y%m%d.osm.bz2",
+   "history-%y%m%d.osm.bz2.md5"])
+
+to_delete += deletions(
+  "#{pbf_directory}/planet-??????.osm.pbf",
+  /planet-([0-9]{6}).osm.pbf/,
+  today,
+  ["planet-%y%m%d.osm.pbf",
+   "planet-%y%m%d.osm.pbf.md5"])
+
+to_delete += deletions(
+  "#{pbf_history_directory}/history-??????.osm.pbf",
+  /history-([0-9]{6}).osm.pbf/,
+  today,
+  ["history-%y%m%d.osm.pbf",
+   "history-%y%m%d.osm.pbf.md5"])
+
+total_size = 0
+num_deleted = 0
+cmd = dry_run ? "Would delete" : "Deleted"
+to_delete.each do |file|
+  s = File.stat(file)
+  File.delete(file) unless dry_run
+  puts "#{cmd} #{file.inspect}, #{s.size / 1000000} MB" if debug
+  total_size += s.size
+  num_deleted += 1
+end
+if debug
+  puts "#{cmd} files of total size #{total_size / 1000000000.0} GB"
+  puts "#{cmd} #{num_deleted} files"
+end
