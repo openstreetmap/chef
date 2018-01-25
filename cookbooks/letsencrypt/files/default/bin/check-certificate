@@ -1,0 +1,36 @@
+#!/usr/bin/ruby
+
+require "net/http"
+
+domain = ARGV.first
+
+begin
+  connection = Net::HTTP.start(domain, :use_ssl => true)
+  certificate = connection.peer_cert
+
+  if Time.now < certificate.not_before
+    puts "Certificate #{domain} not valid until #{certificate.not_before}"
+  elsif certificate.not_after - Time.now < 14 * 86400
+    puts "Certificate #{domain} expires at #{certificate.not_after}"
+  else
+    subject_alt_name = certificate.extensions.find { |e| e.oid == "subjectAltName" }
+
+    if subject_alt_name.nil?
+      puts "Certificate #{domain} has no subject_alt_name"
+    else
+      alt_names = subject_alt_name.value.split(/\s*,\s*/).sort
+
+      ARGV.sort.each do |expected|
+        puts "Certificate #{domain} is missing subject_alt_name #{expected}" unless alt_names.shift == "DNS:#{expected}"
+      end
+
+      alt_names.each do |name|
+        puts "Certificate #{domain} has unexpected altName #{name}"
+      end
+    end
+  end
+
+  connection.finish
+rescue OpenSSL::SSL::SSLError => error
+  puts "Error connecting to #{domain}: #{error.message}"
+end

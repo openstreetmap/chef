@@ -143,6 +143,14 @@ certificates.each do |name, details|
   end
 end
 
+template "/srv/acme.openstreetmap.org/bin/check-certificates" do
+  source "check-certificates.erb"
+  owner "root"
+  group "root"
+  mode 0o755
+  variables :certificates => certificates
+end
+
 template "/etc/cron.d/letsencrypt" do
   source "cron.erb"
   owner "root"
