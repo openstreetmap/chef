@@ -10,7 +10,7 @@ begin
 
   if Time.now < certificate.not_before
     puts "Certificate #{domain} not valid until #{certificate.not_before}"
-  elsif certificate.not_after - Time.now < 14 * 86400
+  elsif certificate.not_after - Time.now < 21 * 86400
     puts "Certificate #{domain} expires at #{certificate.not_after}"
   else
     subject_alt_name = certificate.extensions.find { |e| e.oid == "subjectAltName" }
