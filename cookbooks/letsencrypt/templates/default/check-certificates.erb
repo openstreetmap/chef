@@ -1,7 +1,7 @@
 #!/bin/sh
 
-<% @certificates.each_value do |certificate| -%>
-<% certificate[:nodes].each do |host| -%>
+<% @certificates.values.sort_by { |c| c[:domains].first }.each do |certificate| -%>
+<% certificate[:nodes].sort_by { |h| h[:name] }.each do |host| -%>
 /srv/acme.openstreetmap.org/bin/check-certificate <%= host[:name] %> <%= host[:address] %> <%= certificate[:domains].join(" ") %>
 <% end -%>
 <% end -%>
