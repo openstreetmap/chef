@@ -31,6 +31,6 @@ begin
   end
 
   connection.finish
-rescue OpenSSL::SSL::SSLError => error
+rescue StandardError => error
   puts "Error connecting to #{domain}: #{error.message}"
 end
