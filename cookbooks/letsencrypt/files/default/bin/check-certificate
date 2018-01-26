@@ -1,36 +1,52 @@
 #!/usr/bin/ruby
 
-require "net/http"
+require "socket"
+require "openssl"
 
-domain = ARGV.first
+host = ARGV.shift
+address = ARGV.shift
+domains = ARGV
+
+context = OpenSSL::SSL::SSLContext.new
+context.verify_mode = OpenSSL::SSL::VERIFY_NONE
 
 begin
-  connection = Net::HTTP.start(domain, :use_ssl => true)
-  certificate = connection.peer_cert
+  socket = TCPSocket.new(address, 443)
 
-  if Time.now < certificate.not_before
-    puts "Certificate #{domain} not valid until #{certificate.not_before}"
-  elsif certificate.not_after - Time.now < 21 * 86400
-    puts "Certificate #{domain} expires at #{certificate.not_after}"
+  ssl = OpenSSL::SSL::SSLSocket.new(socket, context)
+  ssl.sync_close = true
+  ssl.hostname = domains.first
+  ssl.connect
+rescue StandardError => error
+  puts "Error connecting to #{host}: #{error.message}"
+end
+
+certificate = ssl.peer_cert
+
+if Time.now < certificate.not_before
+  puts "Certificate #{domains.first} on #{host} not valid until #{certificate.not_before}"
+elsif certificate.not_after - Time.now < 21 * 86400
+  puts "Certificate #{domains.first} on #{host} expires at #{certificate.not_after}"
+else
+  subject_alt_name = certificate.extensions.find { |e| e.oid == "subjectAltName" }
+
+  if subject_alt_name.nil?
+    puts "Certificate #{domains.first} on #{host} has no subjectAltName"
   else
-    subject_alt_name = certificate.extensions.find { |e| e.oid == "subjectAltName" }
+    alt_names = subject_alt_name.value.split(/\s*,\s*/).map { |n| n.sub(/^DNS:/, "") }
 
-    if subject_alt_name.nil?
-      puts "Certificate #{domain} has no subjectAltName"
-    else
-      alt_names = subject_alt_name.value.split(/\s*,\s*/).sort
-
-      ARGV.sort.each do |expected|
-        puts "Certificate #{domain} is missing subjectAltName #{expected}" unless alt_names.shift == "DNS:#{expected}"
-      end
-
-      alt_names.each do |name|
-        puts "Certificate #{domain} has unexpected subjectAltName #{name}"
+    domains.each do |domain|
+      if alt_names.include?(domain)
+        alt_names.delete(domain)
+      else
+        puts "Certificate #{domains.first} on #{host} is missing subjectAltName #{domain}"
       end
     end
-  end
 
-  connection.finish
-rescue StandardError => error
-  puts "Error connecting to #{domain}: #{error.message}"
+    alt_names.each do |name|
+      puts "Certificate #{domains.first} on #{host} has unexpected subjectAltName #{name}"
+    end
+  end
 end
+
+ssl.close
