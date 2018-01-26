@@ -21,13 +21,15 @@ rescue StandardError => error
   puts "Error connecting to #{host}: #{error.message}"
 end
 
-certificate = ssl.peer_cert
+if ssl
+  certificate = ssl.peer_cert
 
-if Time.now < certificate.not_before
-  puts "Certificate #{domains.first} on #{host} not valid until #{certificate.not_before}"
-elsif certificate.not_after - Time.now < 21 * 86400
-  puts "Certificate #{domains.first} on #{host} expires at #{certificate.not_after}"
-else
+  if Time.now < certificate.not_before
+    puts "Certificate #{domains.first} on #{host} not valid until #{certificate.not_before}"
+  elsif certificate.not_after - Time.now < 21 * 86400
+    puts "Certificate #{domains.first} on #{host} expires at #{certificate.not_after}"
+  end
+
   subject_alt_name = certificate.extensions.find { |e| e.oid == "subjectAltName" }
 
   if subject_alt_name.nil?
@@ -47,6 +49,6 @@ else
       puts "Certificate #{domains.first} on #{host} has unexpected subjectAltName #{name}"
     end
   end
-end
 
-ssl.close
+  ssl.close
+end
