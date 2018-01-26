@@ -16,16 +16,16 @@ begin
     subject_alt_name = certificate.extensions.find { |e| e.oid == "subjectAltName" }
 
     if subject_alt_name.nil?
-      puts "Certificate #{domain} has no subject_alt_name"
+      puts "Certificate #{domain} has no subjectAltName"
     else
       alt_names = subject_alt_name.value.split(/\s*,\s*/).sort
 
       ARGV.sort.each do |expected|
-        puts "Certificate #{domain} is missing subject_alt_name #{expected}" unless alt_names.shift == "DNS:#{expected}"
+        puts "Certificate #{domain} is missing subjectAltName #{expected}" unless alt_names.shift == "DNS:#{expected}"
       end
 
       alt_names.each do |name|
-        puts "Certificate #{domain} has unexpected altName #{name}"
+        puts "Certificate #{domain} has unexpected subjectAltName #{name}"
       end
     end
   end
