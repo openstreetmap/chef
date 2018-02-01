@@ -11,7 +11,7 @@ default_attributes(
     }
   },
   :passenger => {
-    :pool_idle_time => 0
+    :pool_idle_time => 3600
   },
   :web => {
     :status => "online",
