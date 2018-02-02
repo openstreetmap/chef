@@ -301,3 +301,31 @@ if node[:postgresql][:clusters][:"9.5/main"]
     end
   end
 end
+
+directory "/srv/ooc.openstreetmap.org" do
+  owner "root"
+  group "root"
+  mode 0o755
+end
+
+remote_directory "/srv/ooc.openstreetmap.org/html" do
+  source "ooc"
+  owner "root"
+  group "root"
+  mode 0o755
+  files_owner "root"
+  files_group "root"
+  files_mode 0o644
+end
+
+ssl_certificate "ooc.openstreetmap.org" do
+  domains ["ooc.openstreetmap.org",
+           "a.ooc.openstreetmap.org",
+           "b.ooc.openstreetmap.org",
+           "c.ooc.openstreetmap.org"]
+  notifies :reload, "service[apache2]"
+end
+
+apache_site "ooc.openstreetmap.org" do
+  template "apache.ooc.erb"
+end
