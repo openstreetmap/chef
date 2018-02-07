@@ -44,7 +44,7 @@
   RewriteEngine On
 
   # Redirect for ACME challenge validation
-  RedirectPermanent /.well-known/acme-challenge/ http://acme.openstreetmap.org/.well-known/acme-challenge/
+  RewriteRule ^/\.well-known/acme-challenge/(.*)$ http://acme.openstreetmap.org/.well-known/acme-challenge/$1 [R=permanent,L]
 
   # Redirect to https
   RewriteRule (.*) https://%{SERVER_NAME}/$1 [R=permanent,L]
