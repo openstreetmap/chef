@@ -19,3 +19,13 @@
   notifempty
   create 640 www-data adm
 }
+
+<%= node[:nominatim][:logdir] %>/restricted_ips.log {
+  weekly
+  missingok
+  rotate 5
+  compress
+  delaycompress
+  notifempty
+  create 640 nominatim adm
+}
