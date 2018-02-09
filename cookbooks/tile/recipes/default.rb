@@ -38,6 +38,11 @@ apache_module "tile" do
   conf "tile.conf.erb"
 end
 
+ssl_certificate node[:fqdn] do
+  domains [node[:fqdn], "render.openstreetmap.org"]
+  notifies :reload, "service[apache2]"
+end
+
 tilecaches = search(:node, "roles:tilecache").sort_by { |n| n[:hostname] }
 
 apache_site "default" do

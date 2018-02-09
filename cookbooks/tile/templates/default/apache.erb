@@ -1,13 +1,22 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
-<VirtualHost *:80>
+<% [80, 443].each do |port| -%>
+<VirtualHost *:<%= port %>>
   # Basic server configuration
   ServerName <%= node[:fqdn] %>
-  ServerAlias tile.openstreetmap.org
   ServerAlias render.openstreetmap.org
   ServerAlias *.render.openstreetmap.org
-  ServerAlias parent.tile.openstreetmap.org
   ServerAdmin webmaster@openstreetmap.org
+<% if port == 443 -%>
+
+  #
+  # Enable SSL
+  #
+  SSLEngine on
+  SSLProxyEngine on
+  SSLCertificateFile /etc/ssl/certs/<%= node[:fqdn] %>.pem
+  SSLCertificateKeyFile /etc/ssl/private/<%= node[:fqdn] %>.key
+<% end -%>
 
   # Configure location of static files and CGI scripts
   DocumentRoot /srv/tile.openstreetmap.org/html
@@ -51,6 +60,7 @@
   RedirectPermanent /.well-known/acme-challenge/ http://acme.openstreetmap.org/.well-known/acme-challenge/
 </VirtualHost>
 
+<% end -%>
 <Directory /srv/tile.openstreetmap.org/html>
   Options None
   AllowOverride None
