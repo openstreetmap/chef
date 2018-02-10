@@ -4,8 +4,8 @@
 <VirtualHost *:<%= port %>>
   # Basic server configuration
   ServerName <%= node[:fqdn] %>
+  ServerAlias tile.openstreetmap.org
   ServerAlias render.openstreetmap.org
-  ServerAlias *.render.openstreetmap.org
   ServerAdmin webmaster@openstreetmap.org
 <% if port == 443 -%>
 

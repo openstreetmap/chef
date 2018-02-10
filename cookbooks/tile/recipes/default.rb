@@ -39,7 +39,7 @@ apache_module "tile" do
 end
 
 ssl_certificate node[:fqdn] do
-  domains [node[:fqdn], "render.openstreetmap.org"]
+  domains [node[:fqdn], "tile.openstreetmap.org", "render.openstreetmap.org"]
   notifies :reload, "service[apache2]"
 end
 
