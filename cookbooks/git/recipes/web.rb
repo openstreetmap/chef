@@ -33,13 +33,14 @@ template "/etc/gitweb.conf" do
 end
 
 ssl_certificate node[:git][:host] do
-  domains node[:git][:host]
+  domains [node[:git][:host]] + Array(node[:git][:aliases])
   notifies :reload, "service[apache2]"
 end
 
 apache_site node[:git][:host] do
   template "apache.erb"
   directory git_directory
+  variables :aliases => Array(node[:git][:aliases])
 end
 
 template "#{git_directory}/robots.txt" do
