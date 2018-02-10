@@ -1,5 +1,5 @@
-10 1 * * * <%= @user %> nice php -d memory_limit=1024M -d error_reporting=22517 <%= @directory %>/w/maintenance/generateSitemap.php --server="http://<%= @name %>" --urlpath="http://<%= @name %>/" --fspath="<%= @directory %>" --quiet
-0,10,20,40 * * * * www-data nice php -d memory_limit=1024M -d error_reporting=22517 <%= @directory %>/w/maintenance/runJobs.php --server="http://<%= @name %>" --maxtime=300 --memory-limit=1024M --quiet
-35,55 * * * * www-data nice php -d memory_limit=1024M -d error_reporting=22517 <%= @directory %>/w/maintenance/runJobs.php --server="http://<%= @name %>" --maxtime=60 --type=enotifNotify --memory-limit=1024M --quiet
+10 1 * * * <%= @user %> nice php -d memory_limit=1024M -d error_reporting=22517 <%= @directory %>/w/maintenance/generateSitemap.php --server="https://<%= @name %>" --urlpath="https://<%= @name %>/" --fspath="<%= @directory %>" --quiet
+0,10,20,40 * * * * www-data nice php -d memory_limit=1024M -d error_reporting=22517 <%= @directory %>/w/maintenance/runJobs.php --server="https://<%= @name %>" --maxtime=300 --memory-limit=1024M --quiet
+35,55 * * * * www-data nice php -d memory_limit=1024M -d error_reporting=22517 <%= @directory %>/w/maintenance/runJobs.php --server="https://<%= @name %>" --maxtime=60 --type=enotifNotify --memory-limit=1024M --quiet
 10 2 * * * www-data find /tmp/ -maxdepth 1 -type f -user www-data -mmin +90 -name 'gs_*' -delete
 10 2 * * * www-data find /tmp/ -maxdepth 1 -type f -user www-data -mmin +90 -name 'magick-*' -delete

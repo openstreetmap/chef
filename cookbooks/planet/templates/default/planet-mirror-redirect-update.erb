@@ -10,7 +10,7 @@
 $_YEAR = date('Y');
 $_PLANET_FOLDER = '<%= node[:planet][:dump][:xml_directory] %>/'.$_YEAR.'/';
 $_PLANET_REGEX = "/^(planet|changesets)\-\d{6}(\-nolt)?\.osm\.(bz2|gz)$/";
-$_MIRROR = 'http://ftp.heanet.ie/mirrors/openstreetmap.org/planet/'.$_YEAR.'/';
+$_MIRROR = 'https://ftp.heanet.ie/mirrors/openstreetmap.org/planet/'.$_YEAR.'/';
 $_PLANET_HTACCESS = realpath('<%= node[:planet][:dump][:xml_directory] %>/..').'/.htaccess';
 
 function _MIRROR_FILE_SIZE($url) {
@@ -41,7 +41,7 @@ if (is_dir($_PLANET_FOLDER)) {
 							echo 'Adding: '.$file."\n";
 							fwrite($htaccess_handle,	'RewriteRule'."\t".
 											'^('.$file_slashed.')$'."\t".
-											'http://ftp.heanet.ie/mirrors/openstreetmap.org/$1'."\t".
+											'https://ftp.heanet.ie/mirrors/openstreetmap.org/$1'."\t".
 											'[R,L]'."\n");
 					}
 				}

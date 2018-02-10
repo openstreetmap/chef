@@ -22,9 +22,9 @@ OpenLayers.Layer.NPE = OpenLayers.Class(OpenLayers.Layer.XYZ, {
      */
     initialize: function(name, options) {
         var url = [
-            "http://a.ooc.openstreetmap.org/npe/${z}/${x}/${y}.png",
-            "http://b.ooc.openstreetmap.org/npe/${z}/${x}/${y}.png",
-            "http://c.ooc.openstreetmap.org/npe/${z}/${x}/${y}.png"
+            "https://a.ooc.openstreetmap.org/npe/${z}/${x}/${y}.png",
+            "https://b.ooc.openstreetmap.org/npe/${z}/${x}/${y}.png",
+            "https://c.ooc.openstreetmap.org/npe/${z}/${x}/${y}.png"
         ];
         options = OpenLayers.Util.extend({
             numZoomLevels: 16,
@@ -57,9 +57,9 @@ OpenLayers.Layer.OS7 = OpenLayers.Class(OpenLayers.Layer.XYZ, {
      */
     initialize: function(name, options) {
         var url = [
-            "http://a.ooc.openstreetmap.org/os7/${z}/${x}/${y}.jpg",
-            "http://b.ooc.openstreetmap.org/os7/${z}/${x}/${y}.jpg",
-            "http://c.ooc.openstreetmap.org/os7/${z}/${x}/${y}.jpg"
+            "https://a.ooc.openstreetmap.org/os7/${z}/${x}/${y}.jpg",
+            "https://b.ooc.openstreetmap.org/os7/${z}/${x}/${y}.jpg",
+            "https://c.ooc.openstreetmap.org/os7/${z}/${x}/${y}.jpg"
         ];
         options = OpenLayers.Util.extend({
             numZoomLevels: 15,
@@ -92,9 +92,9 @@ OpenLayers.Layer.OS1 = OpenLayers.Class(OpenLayers.Layer.XYZ, {
      */
     initialize: function(name, options) {
         var url = [
-            "http://a.ooc.openstreetmap.org/os1/${z}/${x}/${y}.jpg",
-            "http://b.ooc.openstreetmap.org/os1/${z}/${x}/${y}.jpg",
-            "http://c.ooc.openstreetmap.org/os1/${z}/${x}/${y}.jpg"
+            "https://a.ooc.openstreetmap.org/os1/${z}/${x}/${y}.jpg",
+            "https://b.ooc.openstreetmap.org/os1/${z}/${x}/${y}.jpg",
+            "https://c.ooc.openstreetmap.org/os1/${z}/${x}/${y}.jpg"
         ];
         options = OpenLayers.Util.extend({
             numZoomLevels: 18,
@@ -127,9 +127,9 @@ OpenLayers.Layer.NPEScotland = OpenLayers.Class(OpenLayers.Layer.XYZ, {
      */
     initialize: function(name, options) {
         var url = [
-            "http://a.ooc.openstreetmap.org/npescotland/${z}/${x}/${y}.jpg",
-            "http://b.ooc.openstreetmap.org/npescotland/${z}/${x}/${y}.jpg",
-            "http://c.ooc.openstreetmap.org/npescotland/${z}/${x}/${y}.jpg"
+            "https://a.ooc.openstreetmap.org/npescotland/${z}/${x}/${y}.jpg",
+            "https://b.ooc.openstreetmap.org/npescotland/${z}/${x}/${y}.jpg",
+            "https://c.ooc.openstreetmap.org/npescotland/${z}/${x}/${y}.jpg"
         ];
         options = OpenLayers.Util.extend({
             numZoomLevels: 16,

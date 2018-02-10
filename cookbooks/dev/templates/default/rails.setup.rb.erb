@@ -12,7 +12,7 @@ OpenStreetMap::Application.config.after_initialize do
     unless id = webmaster.client_applications.find_by_name("iD")
       id = webmaster.client_applications.new
       id.name = "iD"
-      id.url = "http://<%= @site %>/"
+      id.url = "https://<%= @site %>/"
       ClientApplication.all_permissions.each { |p| id[p] = true }
       id.save!
     end
@@ -22,7 +22,7 @@ OpenStreetMap::Application.config.after_initialize do
     unless potlatch = webmaster.client_applications.find_by_name("Potlatch 2")
       potlatch = webmaster.client_applications.new
       potlatch.name = "Potlatch 2"
-      potlatch.url = "http://<%= @site %>/"
+      potlatch.url = "https://<%= @site %>/"
       ClientApplication.all_permissions.each { |p| potlatch[p] = true }
       potlatch.save!
     end
@@ -32,7 +32,7 @@ OpenStreetMap::Application.config.after_initialize do
     unless website = webmaster.client_applications.find_by_name("Web Site")
       website = webmaster.client_applications.new
       website.name = "Web Site"
-      website.url = "http://<%= @site %>/"
+      website.url = "https://<%= @site %>/"
       ClientApplication.all_permissions.each { |p| website[p] = true }
       website.save!
     end
