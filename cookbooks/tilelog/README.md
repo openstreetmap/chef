@@ -66,6 +66,6 @@ Just include `tilelog` in your node's `run_list`:
 
 ## License and Authors
 
-Released under the [Apache 2.0 license](http://www.apache.org/licenses/LICENSE-2.0).
+Released under the [Apache 2.0 license](https://www.apache.org/licenses/LICENSE-2.0).
 
 Authors: Matt Amos

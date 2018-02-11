@@ -16,7 +16,7 @@ class Chef
       end
 
       def current_plugin_version(name)
-        if svn_cat("http://plugins.svn.wordpress.org/#{name}/trunk/readme.txt") =~ /Stable tag:\s*([^\s\r]*)[\s\r]*/
+        if svn_cat("https://plugins.svn.wordpress.org/#{name}/trunk/readme.txt") =~ /Stable tag:\s*([^\s\r]*)[\s\r]*/
           Regexp.last_match[1]
         else
           "trunk"
@@ -26,7 +26,7 @@ class Chef
       private
 
       def core_version_check
-        api_get("http://api.wordpress.org/core/version-check/1.6")
+        api_get("https://api.wordpress.org/core/version-check/1.6")
       end
 
       def api_get(url)

@@ -8,7 +8,7 @@
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-# http://www.apache.org/licenses/LICENSE-2.0
+# https://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -56,7 +56,7 @@ action :create do
         repository theme_repository
         user node[:wordpress][:user]
         group node[:wordpress][:group]
-        ignore_failure theme_repository.start_with?("http://themes.svn.wordpress.org/")
+        ignore_failure theme_repository.start_with?("https://themes.svn.wordpress.org/")
       end
     end
   end
@@ -79,7 +79,7 @@ action_class do
   end
 
   def default_repository
-    "http://themes.svn.wordpress.org/#{new_resource.theme}/#{new_resource.version}"
+    "https://themes.svn.wordpress.org/#{new_resource.theme}/#{new_resource.version}"
   end
 end
 

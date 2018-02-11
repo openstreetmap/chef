@@ -8,7 +8,7 @@
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#     https://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -76,14 +76,14 @@ end
 
 apt_source "management-component-pack" do
   source_template "hp.list.erb"
-  url "http://downloads.linux.hpe.com/SDR/repo/mcp"
+  url "https://downloads.linux.hpe.com/SDR/repo/mcp"
   key "C208ADDE26C2B797"
   key_url "https://downloads.linux.hpe.com/SDR/hpePublicKey2048_key1.pub"
 end
 
 apt_source "hwraid" do
   source_template "hwraid.list.erb"
-  url "http://hwraid.le-vert.net/ubuntu"
+  url "https://hwraid.le-vert.net/ubuntu"
   key "6005210E23B3D3B4"
 end
 
@@ -94,19 +94,19 @@ end
 
 apt_source "nginx" do
   source_template "nginx.list.erb"
-  url "http://nginx.org/packages/ubuntu"
+  url "https://nginx.org/packages/ubuntu"
   key "ABF5BD827BD9BF62"
 end
 
 apt_source "elasticsearch1.7" do
   source_template "elasticsearch.list.erb"
-  url "http://packages.elasticsearch.org/elasticsearch/1.7/debian"
+  url "https://packages.elasticsearch.org/elasticsearch/1.7/debian"
   key "D27D666CD88E42B4"
 end
 
 apt_source "elasticsearch2.x" do
   source_template "elasticsearch.list.erb"
-  url "http://packages.elasticsearch.org/elasticsearch/2.x/debian"
+  url "https://packages.elasticsearch.org/elasticsearch/2.x/debian"
   key "D27D666CD88E42B4"
 end
 
@@ -118,13 +118,13 @@ end
 
 apt_source "logstash" do
   source_template "elasticsearch.list.erb"
-  url "http://packages.elasticsearch.org/logstash/2.3/debian"
+  url "https://packages.elasticsearch.org/logstash/2.3/debian"
   key "D27D666CD88E42B4"
 end
 
 apt_source "logstash-forwarder" do
   source_template "elasticsearch.list.erb"
-  url "http://packages.elasticsearch.org/logstashforwarder/debian"
+  url "https://packages.elasticsearch.org/logstashforwarder/debian"
   key "D27D666CD88E42B4"
 end
 
@@ -135,7 +135,7 @@ end
 
 apt_source "postgresql" do
   source_template "postgresql.list.erb"
-  url "http://apt.postgresql.org/pub/repos/apt"
+  url "https://apt.postgresql.org/pub/repos/apt"
   key "7FCC7D46ACCC4CF8"
 end
 

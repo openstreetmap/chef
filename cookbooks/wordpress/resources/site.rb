@@ -1,4 +1,4 @@
-#
+http
 # Cookbook Name:: wordpress
 # Resource:: wordpress_site
 #
@@ -8,7 +8,7 @@
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-# http://www.apache.org/licenses/LICENSE-2.0
+# https://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -65,7 +65,7 @@ action :create do
 
   subversion site_directory do
     action :sync
-    repository "http://core.svn.wordpress.org/tags/#{version}"
+    repository "https://core.svn.wordpress.org/tags/#{version}"
     user node[:wordpress][:user]
     group node[:wordpress][:group]
     ignore_failure true
