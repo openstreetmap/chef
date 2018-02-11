@@ -130,7 +130,7 @@ node[:taginfo][:sites].each do |site|
   settings = Chef::DelayedEvaluator.new do
     settings = JSON.parse(IO.read("#{directory}/taginfo/taginfo-config-example.json"))
 
-    settings["instance"]["url"] = "http://#{site_name}/"
+    settings["instance"]["url"] = "https://#{site_name}/"
     settings["instance"]["description"] = description
     settings["instance"]["about"] = about
     settings["instance"]["icon"] = "/img/logo/#{icon}.png"

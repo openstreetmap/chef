@@ -16,7 +16,7 @@ $wgMetaNamespace = '<%= @mediawiki[:metanamespace] %>';
 ## defaults for all runtime URL paths are based off of this.
 ## For more information on customizing the URLs
 ## (like /w/index.php/Page_title to /wiki/Page_title) please see:
-## http://www.mediawiki.org/wiki/Manual:Short_URL
+## https://www.mediawiki.org/wiki/Manual:Short_URL
 $wgScriptPath       = "/w";
 $wgArticlePath      = '/wiki/$1';
 $wgUsePathInfo      = true;
@@ -24,7 +24,7 @@ $wgScriptExtension  = ".php";
 
 ## The protocol and server name to use in fully-qualified URLs
 $wgServer           = "//<%= @name %>";
-$wgInternalServer   = 'http://<%= @name %>';
+$wgInternalServer   = 'https://<%= @name %>';
 
 <% if @mediawiki[:ssl_enabled] -%>
 $wgSecureLogin = true;
@@ -103,7 +103,7 @@ $wgSVGConverters = array( 'rsvg' => '/usr/bin/rsvg-convert -w $width -h $height 
 $wgSVGConverter = 'rsvg';
 $wgSVGMaxSize = 2000;
 
-# InstantCommons allows wiki to use images from http://commons.wikimedia.org
+# InstantCommons allows wiki to use images from https://commons.wikimedia.org
 <% if @mediawiki[:commons] -%>
 $wgUseInstantCommons  = true;
 <% else -%>
@@ -143,7 +143,7 @@ $wgDefaultSkin = "<%= @mediawiki[:skin] %>";
 ## appropriate copyright notice / icon. GNU Free Documentation
 ## License and Creative Commons licenses are supported so far.
 $wgRightsPage = "Wiki_content_license"; # Set to the title of a wiki page that describes your license/copyright
-$wgRightsUrl  = "http://creativecommons.org/licenses/by-sa/2.0/";
+$wgRightsUrl  = "https://creativecommons.org/licenses/by-sa/2.0/";
 $wgRightsText = "Creative Commons Attribution-ShareAlike 2.0 license";
 $wgRightsIcon = "/cc-wiki.png";
 
