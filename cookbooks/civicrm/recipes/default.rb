@@ -37,7 +37,6 @@ end
 
 wordpress_site "join.osmfoundation.org" do
   aliases "crm.osmfoundation.org"
-  ssl_enabled true
   database_name "civicrm"
   database_user "civicrm"
   database_password database_password

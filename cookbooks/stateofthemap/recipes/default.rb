@@ -50,7 +50,6 @@ end
 wordpress_site "2007.stateofthemap.org" do
   aliases "2007.stateofthemap.com"
   directory "/srv/2007.stateofthemap.org/wp"
-  ssl_enabled true
   database_name "sotm2007"
   database_user "sotm2007"
   database_password passwords["sotm2007"]
@@ -78,7 +77,6 @@ end
 wordpress_site "2008.stateofthemap.org" do
   aliases "2008.stateofthemap.com"
   directory "/srv/2008.stateofthemap.org/wp"
-  ssl_enabled true
   database_name "sotm2008"
   database_user "sotm2008"
   database_password passwords["sotm2008"]
@@ -114,7 +112,6 @@ end
 wordpress_site "2009.stateofthemap.org" do
   aliases "2009.stateofthemap.com"
   directory "/srv/2009.stateofthemap.org/wp"
-  ssl_enabled true
   database_name "sotm2009"
   database_user "sotm2009"
   database_password passwords["sotm2009"]
@@ -152,7 +149,6 @@ end
 wordpress_site "2010.stateofthemap.org" do
   aliases "2010.stateofthemap.com"
   directory "/srv/2010.stateofthemap.org/wp"
-  ssl_enabled true
   database_name "sotm2010"
   database_user "sotm2010"
   database_password passwords["sotm2010"]
@@ -194,7 +190,6 @@ end
 wordpress_site "2011.stateofthemap.org" do
   aliases "2011.stateofthemap.com"
   directory "/srv/2011.stateofthemap.org/wp"
-  ssl_enabled true
   database_name "sotm2011"
   database_user "sotm2011"
   database_password passwords["sotm2011"]
@@ -236,7 +231,6 @@ end
 wordpress_site "2012.stateofthemap.org" do
   aliases "2012.stateofthemap.com"
   directory "/srv/2012.stateofthemap.org/wp"
-  ssl_enabled true
   database_name "sotm2012"
   database_user "sotm2012"
   database_password passwords["sotm2012"]

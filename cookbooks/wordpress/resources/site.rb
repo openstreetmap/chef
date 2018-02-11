@@ -29,7 +29,6 @@ property :database_name, :kind_of => String, :required => true
 property :database_user, :kind_of => String, :required => true
 property :database_password, :kind_of => String, :required => true
 property :database_prefix, :kind_of => String, :default => "wp_"
-property :ssl_enabled, :kind_of => [TrueClass, FalseClass], :default => false
 property :urls, :kind_of => Hash, :default => {}
 property :reload_apache, :kind_of => [TrueClass, FalseClass], :default => true
 
@@ -92,10 +91,8 @@ action :create do
       line += " * Don't allow file editing.\n"
       line += " */\n"
       line += "define('DISALLOW_FILE_EDIT', true);\n"
-      if new_resource.ssl_enabled
-        line += "define('FORCE_SSL_LOGIN', true);\n"
-        line += "define('FORCE_SSL_ADMIN', true);\n"
-      end
+      line += "define('FORCE_SSL_LOGIN', true);\n"
+      line += "define('FORCE_SSL_ADMIN', true);\n"
     end
 
     line
@@ -132,7 +129,6 @@ action :create do
 
   ssl_certificate new_resource.site do
     domains [new_resource.site] + Array(new_resource.aliases)
-    only_if { new_resource.ssl_enabled }
   end
 
   apache_site new_resource.site do
@@ -140,14 +136,13 @@ action :create do
     template "apache.erb"
     directory site_directory
     variables :aliases => Array(new_resource.aliases),
-              :urls => new_resource.urls,
-              :ssl_enabled => new_resource.ssl_enabled
+              :urls => new_resource.urls
     reload_apache false
   end
 
-  http_request "http://#{new_resource.site}/wp-admin/upgrade.php" do
+  http_request "https://#{new_resource.site}/wp-admin/upgrade.php" do
     action :nothing
-    url "http://#{new_resource.site}/wp-admin/upgrade.php?step=1"
+    url "https://#{new_resource.site}/wp-admin/upgrade.php?step=1"
     subscribes :get, "subversion[#{site_directory}]"
   end
 

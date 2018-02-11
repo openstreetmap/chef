@@ -11,7 +11,6 @@
   CustomLog /var/log/apache2/<%= @name %>-access.log combined
   ErrorLog /var/log/apache2/<%= @name %>-error.log
 
-<% if @ssl_enabled -%>
   RedirectPermanent /.well-known/acme-challenge/ http://acme.openstreetmap.org/.well-known/acme-challenge/
   RedirectPermanent / https://<%= @name %>/
 </VirtualHost>
@@ -20,7 +19,6 @@
   ServerName <%= @name %>
 <% @aliases.each do |alias_name| -%>
   ServerAlias <%= alias_name %>
-<% end -%>
 
   ServerAdmin webmaster@openstreetmap.org
 
