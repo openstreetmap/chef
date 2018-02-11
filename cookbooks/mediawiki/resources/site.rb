@@ -38,7 +38,6 @@ property :site_notice, :kind_of => [String, TrueClass, FalseClass], :default => 
 property :site_readonly, :kind_of => [String, TrueClass, FalseClass], :default => false
 property :admin_user, :kind_of => String, :default => "Admin"
 property :admin_password, :kind_of => String, :required => true
-property :ssl_enabled, :kind_of => [TrueClass, FalseClass], :default => false
 property :private_accounts, :kind_of => [TrueClass, FalseClass], :default => false
 property :private, :kind_of => [TrueClass, FalseClass], :default => false
 property :recaptcha_public_key, :kind_of => String
@@ -475,7 +474,6 @@ action :create do
 
   ssl_certificate new_resource.site do
     domains [new_resource.site] + Array(new_resource.aliases)
-    only_if { new_resource.ssl_enabled }
   end
 
   apache_site new_resource.site do
@@ -483,8 +481,7 @@ action :create do
     template "apache.erb"
     directory site_directory
     variables :aliases => Array(new_resource.aliases),
-              :private => new_resource.private,
-              :ssl_enabled => new_resource.ssl_enabled
+              :private => new_resource.private
     reload_apache false
   end
 
@@ -573,7 +570,6 @@ action_class do
       :skin => new_resource.skin,
       :site_notice => new_resource.site_notice,
       :site_readonly => new_resource.site_readonly,
-      :ssl_enabled => new_resource.ssl_enabled,
       :extra_file_extensions => new_resource.extra_file_extensions,
       :private_accounts => new_resource.private_accounts,
       :private => new_resource.private

@@ -26,7 +26,6 @@ mediawiki_site "wiki.osmfoundation.org" do
            "foundation.openstreetmap.org", "foundation.osm.org"]
   sitename "OpenStreetMap Foundation"
   directory "/srv/wiki.osmfoundation.org"
-  ssl_enabled true
   database_name "osmf-wiki"
   database_user "osmf-wikiuser"
   database_password passwords["wiki"]["database"]

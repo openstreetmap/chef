@@ -25,7 +25,6 @@ mediawiki_site "dwg.osmfoundation.org" do
   sitename "OSMF Data Working Group Wiki"
   metanamespace "OSMFDWG"
   directory "/srv/dwg.osmfoundation.org"
-  ssl_enabled true
   database_name "dwg-wiki"
   database_user "dwg-wikiuser"
   database_password passwords["dwg"]["database"]

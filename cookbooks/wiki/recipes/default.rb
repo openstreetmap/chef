@@ -33,8 +33,6 @@ mediawiki_site "wiki.openstreetmap.org" do
            "wiki.openstreetmap.pro", "wiki.openstreetmaps.org"]
   directory "/srv/wiki.openstreetmap.org"
 
-  ssl_enabled TRUE
-
   database_name "wiki"
   database_user "wiki-user"
   database_password passwords["database"]

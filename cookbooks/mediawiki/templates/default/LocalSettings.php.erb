@@ -26,11 +26,9 @@ $wgScriptExtension  = ".php";
 $wgServer           = "//<%= @name %>";
 $wgInternalServer   = 'https://<%= @name %>';
 
-<% if @mediawiki[:ssl_enabled] -%>
 $wgSecureLogin = true;
 $wgDefaultUserOptions['prefershttps'] = 1;
-<% end -%>
-$wgCookieSecure = false;
+$wgCookieSecure = true;
 
 ## The relative URL path to the skins directory
 $wgStylePath        = "$wgScriptPath/skins";
