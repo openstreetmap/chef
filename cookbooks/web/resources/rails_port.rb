@@ -85,6 +85,7 @@ action :create do
     libxml2-dev
     libxslt1-dev
     libmemcached-dev
+    libffi-dev
   ]
 
   package %w[
