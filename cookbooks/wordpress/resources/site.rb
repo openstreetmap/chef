@@ -1,4 +1,3 @@
-http
 # Cookbook Name:: wordpress
 # Resource:: wordpress_site
 #
