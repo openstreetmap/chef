@@ -19,6 +19,7 @@
   ServerName <%= @name %>
 <% @aliases.each do |alias_name| -%>
   ServerAlias <%= alias_name %>
+<% end -%>
 
   ServerAdmin webmaster@openstreetmap.org
 
@@ -28,7 +29,6 @@
 
   CustomLog /var/log/apache2/<%= @name %>-secure-access.log combined
   ErrorLog /var/log/apache2/<%= @name %>-secure-error.log
-<% end -%>
 
   DocumentRoot <%= @directory %>
 
