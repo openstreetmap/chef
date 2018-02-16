@@ -19,6 +19,7 @@
 
 package %w[
   apt
+  apt-transport-https
   gnupg-curl
   update-notifier-common
 ]
