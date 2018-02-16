@@ -1,13 +1,11 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
-<% [80, 443].each do |port| -%>
-<VirtualHost *:<%= port %>>
+<VirtualHost *:443>
   # Basic server configuration
   ServerName <%= node[:fqdn] %>
   ServerAlias tile.openstreetmap.org
   ServerAlias render.openstreetmap.org
   ServerAdmin webmaster@openstreetmap.org
-<% if port == 443 -%>
 
   #
   # Enable SSL
@@ -16,7 +14,6 @@
   SSLProxyEngine on
   SSLCertificateFile /etc/ssl/certs/<%= node[:fqdn] %>.pem
   SSLCertificateKeyFile /etc/ssl/private/<%= node[:fqdn] %>.key
-<% end -%>
 
   # Configure location of static files and CGI scripts
   DocumentRoot /srv/tile.openstreetmap.org/html
@@ -60,7 +57,44 @@
   RedirectPermanent /.well-known/acme-challenge/ http://acme.openstreetmap.org/.well-known/acme-challenge/
 </VirtualHost>
 
+<VirtualHost *:80>
+  # Basic server configuration
+  ServerName <%= node[:fqdn] %>
+  ServerAlias tile.openstreetmap.org
+  ServerAlias render.openstreetmap.org
+  ServerAdmin webmaster@openstreetmap.org
+
+  # Get the real remote IP for requests via a trusted proxy
+  RemoteIPHeader X-Forwarded-For
+<% @caches.each do |cache| -%>
+<% cache.ipaddresses(:role => :external).sort.each do |address| -%>
+  RemoteIPTrustedProxy <%= address %>
 <% end -%>
+<% end -%>
+
+  # Setup logging
+  LogFormat "%a %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\"" combined_with_remoteip
+  CustomLog /var/log/apache2/access.log combined_with_remoteip
+  ErrorLog /var/log/apache2/error.log
+  BufferedLogs on
+
+  # Always set Access-Control-Allow-Origin so that simple CORS requests
+  # will always work and can be cached
+  Header set Access-Control-Allow-Origin "*"
+
+  # Remove Proxy request header to mitigate https://httpoxy.org/
+  RequestHeader unset Proxy early
+
+  # Enable the rewrite engine
+  RewriteEngine on
+
+  # Redirect ACME certificate challenges
+  RewriteRule ^/\.well-known/acme-challenge/(.*)$ http://acme.openstreetmap.org/.well-known/acme-challenge/$1 [R=permanent,L]
+
+  # Redirect to https
+  RewriteRule (.*) https://%{SERVER_NAME}/$1 [R=permanent,L]
+</VirtualHost>
+
 <Directory /srv/tile.openstreetmap.org/html>
   Options None
   AllowOverride None
