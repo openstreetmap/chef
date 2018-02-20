@@ -98,6 +98,14 @@ $wgFileExtensions[] = 'osm';
 	$wgFileExtensions[] = '<%= mw_extra_file_extension %>';
 <% end -%>
 
+# Add OSM XML file format per http://www.iana.org/assignments/media-types/media-types.xhtml
+# Shout out to Paul Norman for reserving this.
+# Helps MimeMagic determine XML-based formats and chooses the correct MimeType
+# for .osm files.
+$wgXMLMimeTypes[] = array('osm' => 'application/vnd.openstreetmap.data+xml');
+
+$wgTrustedMediaFormats[] = 'application/vnd.openstreetmap.data+xml';
+
 $wgSVGConverters = array( 'rsvg' => '/usr/bin/rsvg-convert -w $width -h $height -o $output $input');
 $wgSVGConverter = 'rsvg';
 $wgSVGMaxSize = 2000;
