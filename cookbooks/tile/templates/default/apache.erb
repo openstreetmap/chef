@@ -92,6 +92,7 @@
   RewriteRule ^/\.well-known/acme-challenge/(.*)$ http://acme.openstreetmap.org/.well-known/acme-challenge/$1 [R=permanent,L]
 
   # Redirect to https
+  RewriteCond %{REQUEST_URI} !^/server-status$
   RewriteRule (.*) https://%{SERVER_NAME}/$1 [R=permanent,L]
 </VirtualHost>
 
