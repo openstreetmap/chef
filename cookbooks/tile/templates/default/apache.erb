@@ -93,6 +93,7 @@
 
   # Redirect to https
   RewriteCond %{REQUEST_URI} !^/server-status$
+  RewriteCond %{REQUEST_URI} !^/mod_tile$
   RewriteRule (.*) https://%{SERVER_NAME}/$1 [R=permanent,L]
 </VirtualHost>
 
