@@ -2,8 +2,8 @@
   
 <% @disks.each do |disk| -%>
 <% if disk[:smart] -%>
-/dev/<%= disk[:device] %> -d <%= disk[:smart] %> -s S/../../7/02 -m admins@openstreetmap.org -M exec /usr/local/bin/smartd-mailer
+/dev/<%= disk[:device] %> -d <%= disk[:smart] %> -s (S/../.././4|L/../../7/2) -m admins@openstreetmap.org -M exec /usr/local/bin/smartd-mailer
 <% else -%>
-/dev/<%= disk[:device] %> -s S/../../7/02 -m admins@openstreetmap.org -M exec /usr/local/bin/smartd-mailer
+/dev/<%= disk[:device] %> -s (S/../.././4|L/../../7/2) -m admins@openstreetmap.org -M exec /usr/local/bin/smartd-mailer
 <% end -%>
 <% end -%>
