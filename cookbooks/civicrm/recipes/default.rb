@@ -153,6 +153,7 @@ settings = edit_file "#{civicrm_directory}/civicrm/templates/CRM/common/civicrm.
   line.gsub!(/%%baseURL%%/, "http://join.osmfoundation.org/")
   line.gsub!(/%%siteKey%%/, site_key)
   line.gsub!(%r{// *(.*'ext_repo_url'.*)$}, "\\1")
+  line.gsub!(%r{// *define\('CIVICRM_CMSDIR', '/path/to/install/root/'\);}, "define('CIVICRM_CMSDIR', '/srv/join.osmfoundation.org');")
 
   line
 end
