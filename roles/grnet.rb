@@ -11,9 +11,8 @@ default_attributes(
   :location => "Athens, Greece",
   :networking => {
     :nameservers => [
-      "2001:648:2ffc:2202::1",
-      "83.212.2.77",
-      "194.177.210.211"
+      "8.8.8.8",
+      "8.8.4.4"
     ],
     :roles => {
       :external => {
