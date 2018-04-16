@@ -73,6 +73,8 @@ server {
       # Set a QoS cookie if none presented (uses nginx Map)
       add_header Set-Cookie $cookie_qos_token_set;
 <% if node[:ssl][:strict_transport_security] -%>
+      # Ensure Strict-Transport-Security header is removed from proxied server responses
+      proxy_hide_header Strict-Transport-Security;
 
       # Enable HSTS
       add_header Strict-Transport-Security "<%= node[:ssl][:strict_transport_security] %>" always;
