@@ -88,7 +88,7 @@ to_delete += deletions(
    "planet-%y%m%d.osm.bz2.md5"])
 
 to_delete += deletions(
-  "#{xml_history_directory}/20??/planet-??????.osm.bz2",
+  "#{xml_history_directory}/20??/history-??????.osm.bz2",
   /history-([0-9]{6}).osm.bz2/,
   today,
   ["history-%y%m%d.osm.bz2",
