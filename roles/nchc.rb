@@ -11,7 +11,7 @@ default_attributes(
   :hosted_by => "NCHC",
   :location => "Hsinchu, Taiwan",
   :networking => {
-    :nameservers => ["8.8.8.8", "8.8.4.4"],
+    :nameservers => ["140.110.16.1", "140.110.4.1"],
     :roles => {
       :external => {
         :zone => "nc"
