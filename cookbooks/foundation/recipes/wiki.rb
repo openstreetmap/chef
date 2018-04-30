@@ -43,7 +43,7 @@ end
 
 mediawiki_extension "MobileFrontend" do
   action :delete
-  site "board.osmfoundation.org"
+  site "wiki.osmfoundation.org"
 end
 
 mediawiki_skin "osmf" do
