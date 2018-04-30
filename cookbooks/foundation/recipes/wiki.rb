@@ -30,7 +30,7 @@ mediawiki_site "wiki.osmfoundation.org" do
   database_user "osmf-wikiuser"
   database_password passwords["wiki"]["database"]
   admin_password passwords["wiki"]["admin"]
-  skin "osmf"
+  skin "OSMFoundation"
   logo "/Wiki.png"
   email_contact "webmaster@openstreetmap.org"
   email_sender "webmaster@openstreetmap.org"
