@@ -43,3 +43,9 @@ cookbook_file "/srv/board.osmfoundation.org/Wiki.png" do
   group node[:mediawiki][:group]
   mode 0o644
 end
+
+mediawiki_extension "MobileFrontend" do
+  site "board.osmfoundation.org"
+  template "mw-ext-MobileFrontend.inc.php.erb"
+  update_site false
+end

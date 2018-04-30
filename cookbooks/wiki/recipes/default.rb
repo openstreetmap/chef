@@ -91,3 +91,9 @@ template "/etc/cron.d/wiki-osm-org-dump" do
   mode 0o644
   source "cron_wiki_dump.erb"
 end
+
+mediawiki_extension "MobileFrontend" do
+  site "wiki.openstreetmap.org"
+  template "mw-ext-MobileFrontend.inc.php.erb"
+  update_site false
+end
