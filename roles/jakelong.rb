@@ -46,9 +46,8 @@ default_attributes(
   :tilecache => {
     :tile_parent => "sanfrancisco.render.openstreetmap.org",
     :tile_siblings => [
-      "nadder-01.openstreetmap.org",
-      "nadder-02.openstreetmap.org",
       "stormfly-02.openstreetmap.org",
+      "ascalon.openstreetmap.org",
       "nepomuk.openstreetmap.org",
       "katie.openstreetmap.org",
       "konqi.openstreetmap.org"
