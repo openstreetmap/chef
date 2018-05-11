@@ -22,11 +22,6 @@ package %w[
   gdnsd
 ]
 
-service "gdnsd" do
-  action [:enable, :start]
-  supports :status => true, :restart => true, :reload => true
-end
-
 template "/etc/gdnsd/config" do
   source "config.erb"
   owner "root"
@@ -41,6 +36,11 @@ template "/etc/gdnsd/zones/geo.openstreetmap.org" do
   group "root"
   mode 0o644
   notifies :restart, "service[gdnsd]"
+end
+
+service "gdnsd" do
+  action [:enable, :start]
+  supports :status => true, :restart => true, :reload => true
 end
 
 firewall_rule "accept-dns-udp" do
