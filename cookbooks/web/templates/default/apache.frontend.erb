@@ -1,14 +1,12 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
-<% [80, 443].each do |port| -%>
-<VirtualHost *:<%= port %>>
+<VirtualHost *:443>
   #
   # Basic server configuration
   #
   ServerName <%= node[:fqdn] %>
   ServerAlias api.openstreetmap.org www.openstreetmap.org 127.0.0.1
   ServerAdmin webmaster@openstreetmap.org
-<% if port == 443 -%>
 
   #
   # Enable SSL
@@ -17,7 +15,6 @@
   SSLProxyEngine on
   SSLCertificateFile /etc/ssl/certs/www.openstreetmap.org.pem
   SSLCertificateKeyFile /etc/ssl/private/www.openstreetmap.org.key
-<% end -%>
 
   #
   # Setup logging
@@ -155,11 +152,7 @@
   PassengerMinInstances 10
   PassengerMaxRequests 5000
   PassengerMaxRequestQueueSize 250
-<% if port == 443 -%>
   PassengerPreStart https://www.openstreetmap.org/
-<% else -%>
-  PassengerPreStart http://www.openstreetmap.org/
-<% end -%>
   SetEnv SECRET_KEY_BASE <%= @secret_key_base %>
   Alias /favicon.ico <%= node[:web][:base_directory] %>/rails/app/assets/favicons/favicon.ico
   Alias /openlayers <%= node[:web][:base_directory] %>/rails/vendor/assets/openlayers
@@ -202,11 +195,6 @@
   ProxyPassMatch ^(/trace/[0-9]+/data(|/|.xml))$ balancer://backend$1
 
   #
-  # Redirect ACME certificate challenges
-  #
-  RedirectPermanent /.well-known/acme-challenge/ http://acme.openstreetmap.org/.well-known/acme-challenge/
-
-  #
   # Redirect trac and wiki requests to the right places
   #
   RedirectPermanent /trac/ https://trac.openstreetmap.org/
@@ -224,11 +212,7 @@
   <Proxy balancer://backend>
     ProxySet lbmethod=bybusyness
 <% node[:web][:backends].each do |backend| -%>
-<% if port == 443 -%>
     BalancerMember https://<%= backend %> disablereuse=on
-<% else -%>
-    BalancerMember http://<%= backend %>
-<% end -%>
 <% end -%>
   </Proxy>
 
@@ -238,39 +222,9 @@
   <Proxy balancer://ic>
     ProxySet lbmethod=bybusyness
 <% ["rails1.ic", "rails2.ic", "rails3.ic"].each do |backend| -%>
-<% if port == 443 -%>
     BalancerMember https://<%= backend %> disablereuse=on
-<% else -%>
-    BalancerMember http://<%= backend %>
-<% end -%>
 <% end -%>
   </Proxy>
-<% if port == 80 -%>
-
-  #
-  # Redirect requests which should be secure to https
-  #
-  RewriteCond %{REQUEST_URI} ^/login(\.html)?$ [OR]
-  RewriteCond %{REQUEST_URI} ^/user/(new|create-account\.html)$ [OR]
-  RewriteCond %{REQUEST_URI} ^/user/terms$ [OR]
-  RewriteCond %{REQUEST_URI} ^/user/save$ [OR]
-  RewriteCond %{REQUEST_URI} ^/user/([^/]+)/account$ [OR]
-  RewriteCond %{REQUEST_URI} ^/user/reset-password$
-  RewriteRule ^(.*)$ https://www.openstreetmap.org$1 [L,NE,R=permanent]
-
-  #
-  # Redirect api requests made to www.osm.org to api.osm.org
-  #
-#  RewriteCond %{HTTP_HOST} =www.openstreetmap.org
-#  RewriteRule ^/api/(.*)$ http://api.openstreetmap.org/api/$1 [L,NE,R=permanent]
-
-  #
-  # Redirect non-api requests made to api.osm.org to www.osm.org
-  #
-  RewriteCond %{HTTP_HOST} =api.openstreetmap.org
-  RewriteCond %{REQUEST_URI} !^/api/
-  RewriteRule ^(.*)$ http://www.openstreetmap.org$1 [L,NE,R=permanent]
-<% elsif port == 443 -%>
 
   #
   # Redirect api requests made to www.osm.org to api.osm.org
@@ -284,10 +238,8 @@
   RewriteCond %{HTTP_HOST} =api.openstreetmap.org
   RewriteCond %{REQUEST_URI} !^/api/
   RewriteRule ^(.*)$ https://www.openstreetmap.org$1 [L,NE,R=permanent]
-<% end -%>
 </VirtualHost>
 
-<% end -%>
 <VirtualHost *:80>
   ServerName openstreetmap.org.uk
   ServerAlias www.openstreetmap.org.uk
@@ -303,6 +255,8 @@
   ServerAlias *
 
   RewriteEngine on
+
+  RewriteRule ^/\.well-known/acme-challenge/(.*)$ http://acme.openstreetmap.org/.well-known/acme-challenge/$1 [R=permanent,L]
 
   RewriteCond %{REQUEST_URI} !^/server-status$
   RewriteRule ^(.*)$ https://www.openstreetmap.org$1 [L,NE,R=permanent]
