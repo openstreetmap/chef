@@ -1,14 +1,12 @@
 # DO NOT EDIT - This file is being maintained by Chef
-<% [80, 443].each do |port| -%>
 
-<VirtualHost *:<%= port %>>
+<VirtualHost *:443>
   #
   # Basic server configuration
   #
   ServerName <%= node[:fqdn] %>
   ServerAlias api.openstreetmap.org www.openstreetmap.org
   ServerAdmin webmaster@openstreetmap.org
-<% if port == 443 -%>
 
   #
   # Enable SSL
@@ -16,7 +14,6 @@
   SSLEngine on
   SSLCertificateFile /etc/ssl/certs/www.openstreetmap.org.pem
   SSLCertificateKeyFile /etc/ssl/private/www.openstreetmap.org.key
-<% end -%>
 
   #
   # Setup logging
@@ -42,11 +39,7 @@
   RailsEnv production
   PassengerMinInstances 3
   PassengerMaxRequests 500
-<% if port == 443 -%>
   PassengerPreStart https://www.openstreetmap.org/
-<% else -%>
-  PassengerPreStart http://www.openstreetmap.org/
-<% end -%>
   SetEnv SECRET_KEY_BASE <%= @secret_key_base %>
 
   #
@@ -74,7 +67,6 @@
   RewriteRule ^/api/0\.6/(nodes|ways|relations)$ fcgi://127.0.0.1:8000$0 [P]
   RewriteRule ^/api/0\.6/changeset/[0-9]+/download$ fcgi://127.0.0.1:8000$0 [P]
 </VirtualHost>
-<% end -%>
 
 <Directory <%= node[:web][:base_directory] %>/rails/public>
   Require all granted
