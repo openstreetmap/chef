@@ -17,12 +17,6 @@
   SSLProxyEngine on
   SSLCertificateFile /etc/ssl/certs/www.openstreetmap.org.pem
   SSLCertificateKeyFile /etc/ssl/private/www.openstreetmap.org.key
-
-  #
-  # Disable HSTS for Firefox 52 to avoid issues with remote editing
-  #
-  BrowserMatch Firefox/52 no-hsts
-  Header set Strict-Transport-Security "max-age=0" env=no-hsts
 <% end -%>
 
   #
