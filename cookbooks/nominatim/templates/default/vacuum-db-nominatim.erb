@@ -8,7 +8,7 @@
 psql -q -d <%= @db %> -c 'VACUUM ANALYSE search_name'
 psql -q -d <%= @db %> -c 'VACUUM ANALYSE search_name_country'
 
-for i in `seq 0 246`; do
+for i in `seq 0 250`; do
   psql -q -d <%= @db %> -c "VACUUM ANALYSE search_name_${i}"
 done
 
