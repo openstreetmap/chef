@@ -90,7 +90,7 @@ rails_port "www.openstreetmap.org" do
   mapzen_valhalla_key web_passwords["mapzen_valhalla_key"]
   thunderforest_key web_passwords["thunderforest_key"]
   totp_key web_passwords["totp_key"]
-  csp_report_url "https://openstreetmap.report-uri.io/r/default/csp/reportOnly"
+  csp_enforce true
 end
 
 package "libjson-xs-perl"

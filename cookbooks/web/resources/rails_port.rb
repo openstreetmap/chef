@@ -65,6 +65,7 @@ property :mapquest_key, String
 property :mapzen_valhalla_key, String
 property :thunderforest_key, String
 property :totp_key, String
+property :csp_enforce, [TrueClass, FalseClass], :default => false
 property :csp_report_url, String
 property :piwik_configuration, Hash
 
@@ -262,6 +263,10 @@ action :create do
 
     if new_resource.totp_key
       line.gsub!(/^( *)#totp_key:.*$/, "\\1totp_key: \"#{new_resource.totp_key}\"")
+    end
+
+    if new_resource.csp_enforce
+      line.gsub!(/^( *)csp_enforce:.*$/, "\\1csp_enforce: \"#{new_resource.csp_enforce}\"")
     end
 
     if new_resource.csp_report_url
