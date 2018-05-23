@@ -23,6 +23,7 @@ require "securerandom"
 include_recipe "apache"
 include_recipe "passenger"
 include_recipe "git"
+include_recipe "memcached"
 include_recipe "mysql"
 include_recipe "nodejs"
 include_recipe "postgresql"
@@ -228,6 +229,7 @@ if node[:postgresql][:clusters][:"9.5/main"]
         database_port node[:postgresql][:clusters][:"9.5/main"][:port]
         database_name database_name
         database_username "apis"
+        memcache_servers ["127.0.0.1"]
         run_migrations true
       end
 
