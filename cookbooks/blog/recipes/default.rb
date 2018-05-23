@@ -41,34 +41,34 @@ wordpress_site "blog.openstreetmap.org" do
 end
 
 wordpress_theme "blog.openstreetmap.org-osmblog-wp-theme" do
-  name "osmblog-wp-theme"
+  theme "osmblog-wp-theme"
   site "blog.openstreetmap.org"
   repository "git://github.com/harry-wood/osmblog-wp-theme.git"
 end
 
 wordpress_plugin "blog.openstreetmap.org-google-analytics-for-wordpress" do
-  name "google-analytics-for-wordpress"
+  plugin "google-analytics-for-wordpress"
   site "blog.openstreetmap.org"
 end
 
 wordpress_plugin "blog.openstreetmap.org-google-sitemap-generator" do
-  name "google-sitemap-generator"
+  plugin "google-sitemap-generator"
   site "blog.openstreetmap.org"
 end
 
 wordpress_plugin "blog.openstreetmap.org-shareadraft" do
-  name "shareadraft"
+  plugin "shareadraft"
   site "blog.openstreetmap.org"
 end
 
 wordpress_plugin "blog.openstreetmap.org-sitepress-multilingual-cms" do
-  name "sitepress-multilingual-cms"
+  plugin "sitepress-multilingual-cms"
   site "blog.openstreetmap.org"
   repository "git://chef.openstreetmap.org/sitepress-multilingual-cms.git"
 end
 
 wordpress_plugin "blog.openstreetmap.org-wordpress-importer" do
-  name "wordpress-importer"
+  plugin "wordpress-importer"
   site "blog.openstreetmap.org"
 end
 
