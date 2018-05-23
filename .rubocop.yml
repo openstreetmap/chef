@@ -21,11 +21,17 @@ Naming/FileName:
     - 'hooks/*'
     - 'roles/*.rb'
 
+Naming/UncommunicativeMethodParamName:
+  Enabled: false
+
 Style/FrozenStringLiteralComment:
   EnforcedStyle: never
 
 Style/HashSyntax:
   EnforcedStyle: hash_rockets
+
+Style/IfUnlessModifier:
+  Enabled: false
 
 Style/StringLiterals:
   EnforcedStyle: double_quotes

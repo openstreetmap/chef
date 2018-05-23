@@ -83,7 +83,7 @@ end
 
 # Remove legacy HP G4 support which breaks modern hp-health 10.4
 if manufacturer == "HP"
-  %w[/opt/hp/hp-health/bin/hpasmd /usr/lib/libhpasmintrfc.so.3.0 %/usr/lib/libhpasmintrfc.so.3 /usr/lib/libhpasmintrfc.so].each do |filename|
+  %w[/opt/hp/hp-health/bin/hpasmd /usr/lib/libhpasmintrfc.so.3.0 /usr/lib/libhpasmintrfc.so.3 /usr/lib/libhpasmintrfc.so].each do |filename|
     file filename do
       action :delete
       manage_symlink_source false

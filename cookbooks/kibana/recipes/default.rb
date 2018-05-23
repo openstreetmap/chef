@@ -83,7 +83,7 @@ node[:kibana][:sites].each do |name, details|
                         "elasticsearch_url" => details[:elasticsearch_url],
                         "pid_file" => "/var/run/kibana/#{name}.pid",
                         "log_file" => "/var/log/kibana/#{name}.log"
-    ))
+                      ))
     owner "root"
     group "root"
     mode 0o644

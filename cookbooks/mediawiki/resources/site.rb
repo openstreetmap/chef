@@ -128,7 +128,6 @@ action :create do
   ruby_block "catch-installer-localsettings-run" do
     action :run
     block do
-      #
     end
     not_if do
       ::File.exist?("#{mediawiki_directory}/LocalSettings-install.php")
