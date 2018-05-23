@@ -230,6 +230,7 @@ if node[:postgresql][:clusters][:"9.5/main"]
         database_name database_name
         database_username "apis"
         memcache_servers ["127.0.0.1"]
+        csp_enforce true
         run_migrations true
       end
 
