@@ -47,6 +47,12 @@ database_user = node[:otrs][:database_user]
 database_password = passwords[node[:otrs][:database_password]]
 site = node[:otrs][:site]
 
+old_installation = begin
+                     File.readlink("/opt/otrs")
+                   rescue StandardError
+                     nil
+                   end
+
 postgresql_user database_user do
   cluster database_cluster
   password database_password
@@ -98,6 +104,16 @@ file "/opt/otrs-#{version}/Kernel/Config/GenericAgent.pm" do
   group "www-data"
   mode 0o664
   content generic_agent
+end
+
+link "/opt/otrs-#{version}/Kernel/Config/Files/ZZZAuto.pm" do
+  to "#{old_installation}/Kernel/Config/Files/ZZZAuto.pm"
+  link_type :hard
+end
+
+link "/opt/otrs-#{version}/var/log/TicketCounter.log" do
+  to "#{old_installation}/var/log/TicketCounter.log"
+  link_type :hard
 end
 
 link "/opt/otrs" do
