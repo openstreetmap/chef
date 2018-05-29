@@ -36,6 +36,7 @@ package "libpdf-api2-perl"
 package "libsoap-lite-perl"
 package "libyaml-libyaml-perl"
 package "libcrypt-eksblowfish-perl"
+package "libtemplate-perl"
 
 apache_module "headers"
 
@@ -122,7 +123,7 @@ end
 
 execute "/opt/otrs/bin/otrs.SetPermissions.pl" do
   action :run
-  command "/opt/otrs/bin/otrs.SetPermissions.pl --otrs-user=#{user} --web-user=www-data --otrs-group=www-data --web-group=www-data /opt/otrs-#{version}"
+  command "/opt/otrs/bin/otrs.SetPermissions.pl --otrs-user=#{user} --web-group=www-data /opt/otrs-#{version}"
   user "root"
   group "root"
   only_if { File.stat("/opt/otrs/README.md").uid != Etc.getpwnam("otrs").uid }
