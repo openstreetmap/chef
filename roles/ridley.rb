@@ -87,6 +87,7 @@ run_list(
   "role[blog]",
   "role[otrs]",
   "role[donate]",
+  "recipe[hot]",
   "recipe[dhcpd]",
   "recipe[openvpn]"
 )
