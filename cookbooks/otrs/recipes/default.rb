@@ -96,17 +96,6 @@ file "/opt/otrs-#{version}/Kernel/Config.pm" do
   content config
 end
 
-generic_agent = edit_file "/opt/otrs-#{version}/Kernel/Config/GenericAgent.pm.dist" do |line|
-  line
-end
-
-file "/opt/otrs-#{version}/Kernel/Config/GenericAgent.pm" do
-  owner user
-  group "www-data"
-  mode 0o664
-  content generic_agent
-end
-
 link "/opt/otrs-#{version}/Kernel/Config/Files/ZZZAuto.pm" do
   to "#{old_installation}/Kernel/Config/Files/ZZZAuto.pm"
   link_type :hard

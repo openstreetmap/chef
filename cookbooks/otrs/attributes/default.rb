@@ -1,4 +1,4 @@
-default[:otrs][:version] = "4.0.29"
+default[:otrs][:version] = "5.0.27"
 default[:otrs][:user] = "otrs"
 default[:otrs][:group] = nil
 default[:otrs][:database_cluster] = "9.5/main"
