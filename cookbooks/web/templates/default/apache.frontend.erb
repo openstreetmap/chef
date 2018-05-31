@@ -259,7 +259,7 @@
   RewriteRule ^/\.well-known/acme-challenge/(.*)$ http://acme.openstreetmap.org/.well-known/acme-challenge/$1 [R=permanent,L]
 
   RewriteCond %{REQUEST_URI} !^/server-status$
-  RewriteRule ^(.*)$ https://www.openstreetmap.org$1 [L,NE,R=permanent]
+  RewriteRule ^(.*)$ https://openstreetmap.org$1 [L,NE,R=permanent]
 </VirtualHost>
 
 <VirtualHost *:443>
