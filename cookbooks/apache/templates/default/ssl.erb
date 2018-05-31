@@ -19,3 +19,5 @@ SSLStaplingCache shmcb:${APACHE_RUN_DIR}/ssl_ocspcache(512000)
 
 Header setifempty Strict-Transport-Security "<%= node[:ssl][:strict_transport_security] %>" env=HTTPS
 <% end -%>
+
+Header setifempty Expect-CT "max-age=0, report-uri=\"https://openstreetmap.report-uri.com/r/d/ct/reportOnly\"" env=HTTPS
