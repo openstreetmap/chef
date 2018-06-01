@@ -118,7 +118,11 @@ ssl_certificate "tile.openstreetmap.org" do
 end
 
 nginx_site "tile-ssl" do
-  template "nginx_tile_ssl.conf.erb"
+  action :delete
+end
+
+nginx_site "tile" do
+  template "nginx_tile.conf.erb"
   variables :caches => tilecaches
 end
 

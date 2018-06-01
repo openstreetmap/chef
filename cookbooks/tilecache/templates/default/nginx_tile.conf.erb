@@ -1,7 +1,7 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
 upstream tile_cache_backend {
-    server 127.0.0.1;
+    server 127.0.0.1:8080;
     <% @caches.each do |cache| -%>
     <% if cache[:hostname] != node[:hostname] -%>
     #Server <%= cache[:hostname] %>
@@ -95,4 +95,12 @@ server {
       proxy_set_header Cache-Control $limit_http_cache_control;
       proxy_set_header Pragma $limit_http_pragma;
     }
+}
+
+# Convert all http requests to https
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    server_name _;
+    return 301 https://$host$request_uri;
 }
