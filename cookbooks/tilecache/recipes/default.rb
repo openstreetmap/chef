@@ -117,10 +117,6 @@ ssl_certificate "tile.openstreetmap.org" do
   notifies :restart, "service[nginx]"
 end
 
-nginx_site "tile-ssl" do
-  action :delete
-end
-
 nginx_site "tile" do
   template "nginx_tile.conf.erb"
   variables :caches => tilecaches
@@ -143,10 +139,4 @@ end
 
 Dir.glob("/var/log/nginx/access.log*") do |log|
   File.unlink(log)
-end
-
-log "restart" do
-  message "Restarting caching"
-  notifies :restart, "service[squid]"
-  notifies :restart, "service[nginx]"
 end
