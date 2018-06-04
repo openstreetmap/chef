@@ -2,14 +2,6 @@
 
 upstream tile_cache_backend {
     server 127.0.0.1:8080;
-    <% @caches.each do |cache| -%>
-    <% if cache[:hostname] != node[:hostname] -%>
-    #Server <%= cache[:hostname] %>
-    <% cache.ipaddresses(:family => :inet, :role => :external).sort.each do |address| -%>
-    server <%= address %> backup;
-    <% end -%>
-    <% end -%>
-    <% end -%>
 
     keepalive 32;
 }
