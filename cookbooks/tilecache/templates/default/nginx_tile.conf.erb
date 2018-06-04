@@ -94,6 +94,7 @@ server {
     listen 80 default_server;
     listen [::]:80 default_server;
     server_name _;
+    add_header Access-Control-Allow-Origin *;
     return 301 https://$host$request_uri;
 }
 
@@ -101,5 +102,6 @@ server {
     listen 80;
     listen [::]:80;
     server_name ~^(?<subdomain>(?:[a-d]\.)?tile)\.osm\.org$;
+    add_header Access-Control-Allow-Origin *;
     return 301 https://$subdomain.openstreetmap.org$request_uri;
 }
