@@ -144,3 +144,9 @@ end
 Dir.glob("/var/log/nginx/access.log*") do |log|
   File.unlink(log)
 end
+
+log "restart" do
+  message "Restarting caching"
+  notifies :restart, "service[squid]"
+  notifies :restart, "service[nginx]"
+end
