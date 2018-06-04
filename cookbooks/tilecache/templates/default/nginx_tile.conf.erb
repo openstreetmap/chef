@@ -1,7 +1,7 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
 upstream tile_cache_backend {
-    server 127.0.0.1:8080;
+    server 127.0.0.1;
 
     keepalive 32;
 }
@@ -87,21 +87,4 @@ server {
       proxy_set_header Cache-Control $limit_http_cache_control;
       proxy_set_header Pragma $limit_http_pragma;
     }
-}
-
-# Convert all http requests to https
-server {
-    listen 80 default_server;
-    listen [::]:80 default_server;
-    server_name _;
-    add_header Access-Control-Allow-Origin *;
-    return 301 https://$host$request_uri;
-}
-
-server {
-    listen 80;
-    listen [::]:80;
-    server_name ~^(?<subdomain>(?:[a-d]\.)?tile)\.osm\.org$;
-    add_header Access-Control-Allow-Origin *;
-    return 301 https://$subdomain.openstreetmap.org$request_uri;
 }
