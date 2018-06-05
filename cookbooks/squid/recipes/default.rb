@@ -18,6 +18,14 @@
 #
 
 if node[:squid][:version] == "3"
+  apt_package "squid" do
+    action :unlock
+  end
+
+  apt_package "squid-common" do
+    action :unlock
+  end
+
   package "squid" do
     action :remove
     only_if "dpkg-query -W squid | fgrep -q 2."
@@ -26,14 +34,6 @@ if node[:squid][:version] == "3"
   package "squid-common" do
     action :remove
     only_if "dpkg-query -W squid-common | fgrep -q 2."
-  end
-
-  apt_package "squid" do
-    action :unlock
-  end
-
-  apt_package "squid-common" do
-    action :unlock
   end
 
   file "/store/squid/coss-01" do
