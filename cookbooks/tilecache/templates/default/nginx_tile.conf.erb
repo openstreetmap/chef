@@ -53,6 +53,8 @@ server {
 
       proxy_connect_timeout 5s;
 
+      # Preserve host header.
+      proxy_set_header Host $host;
       # Do not pass cookies to backends.
       proxy_set_header Cookie '';
       # Do not pass Accept-Encoding to backends.
