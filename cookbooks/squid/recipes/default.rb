@@ -26,19 +26,23 @@ if node[:squid][:version] == "3"
     action :unlock
   end
 
-  package "squid" do
-    action :remove
+  apt_package "squid" do
+    action :purge
     only_if "dpkg-query -W squid | fgrep -q 2."
   end
 
-  package "squid-common" do
-    action :remove
+  apt_package "squid-common" do
+    action :purge
     only_if "dpkg-query -W squid-common | fgrep -q 2."
   end
 
   file "/store/squid/coss-01" do
     action :delete
     backup false
+  end
+
+  package "squidclient" do
+    action :upgrade
   end
 end
 
