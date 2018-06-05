@@ -89,7 +89,7 @@ systemd_service "squid" do
   after ["network.target", "nss-lookup.target"]
   type "forking"
   limit_nofile 65536
-  exec_start_pre "/usr/sbin/squid -z"
+  exec_start_pre "/usr/sbin/squid -N -z"
   exec_start "/usr/sbin/squid"
   exec_reload "/usr/sbin/squid -k reconfigure"
   exec_stop "/usr/sbin/squid -k shutdown"
