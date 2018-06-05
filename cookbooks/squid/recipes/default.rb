@@ -38,6 +38,7 @@ if node[:squid][:version] == "3"
 
   file "/store/squid/coss-01" do
     action :delete
+    backup false
   end
 end
 
