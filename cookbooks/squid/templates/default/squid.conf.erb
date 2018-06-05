@@ -12,14 +12,23 @@ icp_port 3130
 log_icp_queries off
 
 #FIXME - configurable
+<% if node[:squid][:version] == "2" -%>
 http_port 80 accel defaultsite=tile.openstreetmap.org tcpkeepalive=60,10,6 http11
+<% else -%>
+http_port 80 accel defaultsite=tile.openstreetmap.org tcpkeepalive=60,10,6
+
+#prefer IPv4 until everything is upgraded
+dns_v4_first on
+<% end -%>
 
 cache_effective_user proxy
 cache_effective_group proxy
 
 #FIXME - configurable
 cache_dir <%= node[:squid][:cache_dir] %>
+<% if node[:squid][:version] == "2" -%>
 cache_swap_log /var/spool/squid/%s
+<% end -%>
 
 cache_mgr webmaster@openstreetmap.org
 
@@ -39,7 +48,11 @@ persistent_request_timeout 1 minutes
 
 negative_ttl 15 seconds
 half_closed_clients off
+<% if node[:squid][:version] == "2" -%>
 pipeline_prefetch on
+<% else -%>
+pipeline_prefetch 1
+<% end -%>
 
 read_timeout 90 seconds
 request_timeout 90 seconds
@@ -84,8 +97,13 @@ http_access deny purge
 forwarded_for on
 follow_x_forwarded_for allow localhost
 
+<% if node[:squid][:version] == "2" -%>
 logformat openstreetmap %ts.%03tu %tr %>a %Ss/%03Hs %<st %rm %rp %Sh/%<A %mt "%{Referer}>h" "%{User-Agent}>h"
 access_log <%= node[:squid][:access_log] %>
+<% else -%>
+logformat openstreetmap %ts.%03tu %tr %>a %Ss/%03>Hs %<st %rm %>rp %Sh/%<A %mt "%{Referer}>h" "%{User-Agent}>h"
+access_log daemon:<%= node[:squid][:access_log] %>
+<% end -%>
 cache_log /var/log/squid/cache.log
 cache_store_log none
 buffered_logs on

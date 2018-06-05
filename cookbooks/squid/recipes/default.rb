@@ -17,6 +17,30 @@
 # limitations under the License.
 #
 
+if node[:squid][:version] == "3"
+  package "squid" do
+    action :remove
+    only_if "dpkg-query -W squid | fgrep -q 2."
+  end
+
+  package "squid-common" do
+    action :remove
+    only_if "dpkg-query -W squid-common | fgrep -q 2."
+  end
+
+  apt_package "squid" do
+    action :unlock
+  end
+
+  apt_package "squid-common" do
+    action :unlock
+  end
+
+  file "/store/squid/coss-01" do
+    action :delete
+  end
+end
+
 package "squid"
 package "squidclient"
 
@@ -40,21 +64,39 @@ directory "/etc/squid/squid.conf.d" do
   mode 0o755
 end
 
+if node[:squid][:cache_dir] =~ /^coss (\S+) /
+  cache_dir = File.dirname(Regexp.last_match(1))
+elsif node[:squid][:cache_dir] =~ /^\S+ (\S+) /
+  cache_dir = Regexp.last_match(1)
+end
+
+directory cache_dir do
+  owner "proxy"
+  group "proxy"
+  mode 0o750
+  recursive true
+end
+
+systemd_tmpfile "/var/run/squid" do
+  type "d"
+  owner "proxy"
+  group "proxy"
+  mode "0755"
+end
+
 systemd_service "squid" do
   description "Squid caching proxy"
   after ["network.target", "nss-lookup.target"]
+  type "forking"
   limit_nofile 65536
-  environment "SQUID_ARGS" => "-D"
-  environment_file "/etc/default/squid"
-  exec_start_pre "/usr/sbin/squid $SQUID_ARGS -z"
-  exec_start "/usr/sbin/squid -N $SQUID_ARGS"
+  exec_start_pre "/usr/sbin/squid -z"
+  exec_start "/usr/sbin/squid"
   exec_reload "/usr/sbin/squid -k reconfigure"
   exec_stop "/usr/sbin/squid -k shutdown"
   private_tmp true
   private_devices true
   protect_system "full"
   protect_home true
-  no_new_privileges true
   restart "on-failure"
   timeout_sec 0
 end
