@@ -95,7 +95,7 @@ systemd_service "squid" do
   type "forking"
   limit_nofile 65536
   exec_start_pre "/usr/sbin/squid -N -z"
-  exec_start "/usr/sbin/squid"
+  exec_start "/usr/sbin/squid -Y"
   exec_reload "/usr/sbin/squid -k reconfigure"
   exec_stop "/usr/sbin/squid -k shutdown"
   private_tmp true
