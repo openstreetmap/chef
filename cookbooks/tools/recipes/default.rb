@@ -32,11 +32,14 @@ package %w[
   usbutils
   numactl
   xfsprogs
-  sysv-rc-conf
   iotop
   lvm2
   rsyslog
 ]
+
+if node[:lsb][:release].to_f < 18.04
+  package "sysv-rc-conf"
+end
 
 service "rsyslog" do
   action [:enable, :start]
