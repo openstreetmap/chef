@@ -98,9 +98,18 @@ http_access allow osmtile_sites requestMethodGet
 acl osmtile_nocache_url urlpath_regex \.png/(status|dirty)$
 cache deny osmtile_sites osmtile_nocache_url
 
+<% @caches.each do |cache| -%>
+<% cache.ipaddresses(:family => :inet, :role => :external).sort.each do |address| -%>
+acl tile_caches src <%= address %>
+<% end -%>
+<% end -%>
+
+#Siblings
 <% node[:tilecache][:tile_siblings].each do |sibling| -%>
 cache_peer <%= sibling %> sibling 3128 3130 weight=1500
+cache_peer_access <%= sibling %> deny tile_caches
 <% end -%>
+
 #Primary Parent
 cache_peer <%= node[:tilecache][:tile_parent] %> parent 443 0 no-query originserver name=osmtileAccel login=PASS connect-timeout=120 no-digest weight=1000 ssl ssldomain=render.openstreetmap.org
 cache_peer_access osmtileAccel allow osmtile_sites
@@ -117,7 +126,6 @@ acl pool_unlimited src 127.0.0.1
 <% @caches.each do |cache| -%>
 <% cache.ipaddresses(:family => :inet, :role => :external).sort.each do |address| -%>
 acl pool_unlimited src <%= address %>
-acl tile_caches src <%= address %>
 <% end -%>
 <% end -%>
 
