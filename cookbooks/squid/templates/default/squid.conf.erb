@@ -60,14 +60,18 @@ connect_timeout 20 seconds
 client_lifetime 1 hours
 
 collapsed_forwarding on
+<% if node[:squid][:version] == "2" -%>
 refresh_stale_hit 300 seconds
+<% end -%>
 
 #Recommended minimum configuration:
 #----------------------------------
+<% if node[:squid][:version] == "2" -%>
 acl all src all
 acl manager proto cache_object
 acl localhost src 127.0.0.1/32
 acl to_localhost dst 127.0.0.0/8
+<% end -%>
 acl SSL_ports port 443
 acl Safe_ports port 80          # http
 acl Safe_ports port 21          # ftp
