@@ -20,9 +20,12 @@
 package %w[
   apt
   apt-transport-https
-  gnupg-curl
   update-notifier-common
 ]
+
+if node[:lsb][:release].to_f < 18.04
+  package "gnupg-curl"
+end
 
 file "/etc/motd.tail" do
   action :delete
