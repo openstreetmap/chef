@@ -102,6 +102,7 @@ end
 service "squid" do
   action [:enable, :start]
   subscribes :restart, "systemd_service[squid]"
+  subscribes :restart, "directory[#{cache_dir}]"
   subscribes :reload, "template[/etc/squid/squid.conf]"
   subscribes :reload, "template[/etc/resolv.conf]"
 end
