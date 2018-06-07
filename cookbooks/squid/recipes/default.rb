@@ -124,7 +124,3 @@ munin_plugin "squid_icp"
 munin_plugin "squid_objectsize"
 munin_plugin "squid_requests"
 munin_plugin "squid_traffic"
-
-Dir.glob("/var/log/squid/zere.log*") do |log|
-  File.unlink(log)
-end
