@@ -56,13 +56,6 @@ template "/etc/squid/squid.conf" do
   mode 0o644
 end
 
-template "/etc/default/squid" do
-  source "squid.erb"
-  owner "root"
-  group "root"
-  mode 0o644
-end
-
 directory "/etc/squid/squid.conf.d" do
   owner "root"
   group "root"
@@ -110,7 +103,6 @@ service "squid" do
   action [:enable, :start]
   subscribes :restart, "systemd_service[squid]"
   subscribes :reload, "template[/etc/squid/squid.conf]"
-  subscribes :restart, "template[/etc/default/squid]"
   subscribes :reload, "template[/etc/resolv.conf]"
 end
 
