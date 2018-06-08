@@ -32,11 +32,10 @@ execute "dpkg-reconfigure-tzdata" do
   group "root"
 end
 
-file "/etc/timezone" do
+link "/etc/localtime" do
+  to "/usr/share/zoneinfo/#{node[:tz]}"
   owner "root"
   group "root"
-  mode 0o644
-  content "#{node[:tz]}\n"
   notifies :run, "execute[dpkg-reconfigure-tzdata]", :immediately
 end
 
