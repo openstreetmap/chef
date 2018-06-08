@@ -15,8 +15,9 @@ default_attributes(
     }
   },
   :squid => {
+    :version => "3",
     :cache_mem => "16000 MB",
-    :cache_dir => "coss /store/squid/coss-01 128000 block-size=8192 max-size=262144 membufs=80"
+    :cache_dir => "rock /store/squid/rock-01 128000 swap-timeout=500 max-swap-rate=200 slot-size=4096 max-size=262144"
   },
   :tilecache => {
     :tile_parent => "montreal.render.openstreetmap.org",
