@@ -105,11 +105,11 @@ acl tile_caches src <%= address %>
 <% end -%>
 <% end -%>
 
+<% if node[:squid][:version] == "2" -%>
 #Siblings
 <% node[:tilecache][:tile_siblings].each do |sibling| -%>
 cache_peer <%= sibling %> sibling 3128 3130 weight=1500
-cache_peer_access <%= sibling %> deny tile_caches
-cache_peer_access <%= sibling %> deny osmtile_thishost
+<% end -%>
 <% end -%>
 
 #Primary Parent
