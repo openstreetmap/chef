@@ -28,7 +28,7 @@ default_attributes(
   :squid => {
     :version => 3,
     :cache_mem => "6400 MB",
-    :cache_dir => "rock /store/squid/rock-01 128000 swap-timeout=500 max-swap-rate=200 slot-size=4096 max-size=262144"
+    :cache_dir => "rock /store/squid/rock-01 128000 swap-timeout=500 max-swap-rate=150 slot-size=4096 max-size=262144"
   },
   :tilecache => {
     :tile_parent => "amsterdam.render.openstreetmap.org",
