@@ -24,7 +24,7 @@ default_attributes(
   },
   :squid => {
     :version => 3,
-    :cache_mem => "400 MB",
+    :cache_mem => "350 MB",
     :cache_dir => "rock /store/squid/rock-01 7500 swap-timeout=500 max-swap-rate=100 slot-size=4096 max-size=262144"
   },
   :sysctl => {
