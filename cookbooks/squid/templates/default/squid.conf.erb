@@ -113,6 +113,13 @@ cache_store_log none
 buffered_logs on
 client_db off
 strip_query_terms off
+<% if node[:squid][:version] == "3" -%>
+# Work around bug in squid 3 that causes log_fqdn to be
+# turned on by some of the (unused by us) default formats:
+# http://lists.squid-cache.org/pipermail/squid-users/2016-February/thread.html#8999
+url_rewrite_extras "%>a %un %>rm myip=%la myport=%lp"
+store_id_extras "%>a %un %>rm myip=%la myport=%lp"
+<% end -%>
 
 digest_generation on
 
