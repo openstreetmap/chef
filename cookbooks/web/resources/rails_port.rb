@@ -338,29 +338,6 @@ action :create do
     action :nothing
   end
 
-  execute "#{rails_directory}/lib/quad_tile/extconf.rb" do
-    command "ruby extconf.rb"
-    cwd "#{rails_directory}/lib/quad_tile"
-    user new_resource.user
-    group new_resource.group
-    not_if do
-      ::File.exist?("#{rails_directory}/lib/quad_tile/quad_tile_so.so") &&
-        ::File.mtime("#{rails_directory}/lib/quad_tile/quad_tile_so.so") >= ::File.mtime("#{rails_directory}/lib/quad_tile/extconf.rb") &&
-        ::File.mtime("#{rails_directory}/lib/quad_tile/quad_tile_so.so") >= ::File.mtime("#{rails_directory}/lib/quad_tile/quad_tile.c") &&
-        ::File.mtime("#{rails_directory}/lib/quad_tile/quad_tile_so.so") >= ::File.mtime("#{rails_directory}/lib/quad_tile/quad_tile.h")
-    end
-    notifies :run, "execute[#{rails_directory}/lib/quad_tile/Makefile]"
-  end
-
-  execute "#{rails_directory}/lib/quad_tile/Makefile" do
-    action :nothing
-    command "make"
-    cwd "#{rails_directory}/lib/quad_tile"
-    user new_resource.user
-    group new_resource.group
-    notifies :run, "execute[#{rails_directory}]"
-  end
-
   execute rails_directory do
     action :nothing
     command "passenger-config restart-app --ignore-app-not-running #{rails_directory}"
