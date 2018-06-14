@@ -335,21 +335,21 @@ intel_nvmes = nvmes.select { |pci| pci[:vendor_name] == "Intel Corporation" }
 if !intel_ssds.empty? || !intel_nvmes.empty?
   package "unzip"
 
-  remote_file "#{Chef::Config[:file_cache_path]}/Intel_SSD_Data_Center_Tool_3.0.7_Linux.zip" do
-    source "https://downloadmirror.intel.com/27144/eng/Intel_SSD_Data_Center_Tool_3.0.7_Linux.zip"
+  remote_file "#{Chef::Config[:file_cache_path]}/Intel_SSD_Data_Center_Tool_3.0.13_Linux.zip" do
+    source "https://downloadmirror.intel.com/27863/eng/Intel_SSD_Data_Center_Tool_3.0.13_Linux.zip"
   end
 
-  execute "#{Chef::Config[:file_cache_path]}/Intel_SSD_Data_Center_Tool_3.0.7_Linux.zip" do
-    command "unzip Intel_SSD_Data_Center_Tool_3.0.7_Linux.zip isdct_3.0.7.401-17_amd64.deb"
+  execute "#{Chef::Config[:file_cache_path]}/Intel_SSD_Data_Center_Tool_3.0.13_Linux.zip" do
+    command "unzip Intel_SSD_Data_Center_Tool_3.0.13_Linux.zip isdct_3.0.13.400-17_amd64.deb"
     cwd Chef::Config[:file_cache_path]
     user "root"
     group "root"
-    not_if { File.exist?("#{Chef::Config[:file_cache_path]}/isdct_3.0.7.401-17_amd64.deb") }
+    not_if { File.exist?("#{Chef::Config[:file_cache_path]}/isdct_3.0.13.400-17_amd64.deb") }
   end
 
   dpkg_package "isdct" do
-    version "3.0.7.401-17"
-    source "#{Chef::Config[:file_cache_path]}/isdct_3.0.7.401-17_amd64.deb"
+    version "3.0.13.400-17"
+    source "#{Chef::Config[:file_cache_path]}/isdct_3.0.13.400-17_amd64.deb"
   end
 end
 
