@@ -85,6 +85,7 @@ end
 
 node[:taginfo][:sites].each do |site|
   site_name = site[:name]
+  site_aliases = Array(site[:aliases])
   directory = site[:directory] || "/srv/#{site_name}"
   description = site[:description]
   about = site[:about]
@@ -238,12 +239,13 @@ node[:taginfo][:sites].each do |site|
   end
 
   ssl_certificate site_name do
-    domains site_name
+    domains [site_name] + site_aliases
     notifies :reload, "service[apache2]"
   end
 
   apache_site site_name do
     template "apache.erb"
     directory "#{directory}/taginfo/web/public"
+    variables :aliases => site_aliases
   end
 end

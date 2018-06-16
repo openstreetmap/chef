@@ -1,1 +1,1 @@
-default[:osqa][:sites] = []
+default[:taginfo][:sites] = []
