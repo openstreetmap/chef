@@ -106,7 +106,7 @@ database, and those published before the 12 September 2012 are distributed under
         your obligations.
         </p>
         <p>
-        You can <a href="https://wiki.openstreetmap.org/wiki/Planet.osm#Processing_the_File">process the file</a>
+        You can <a href="https://wiki.openstreetmap.org/wiki/Planet.osm#Processing_the_file">process the file</a>
         or extracts with a variety of tools. <a href="https://wiki.openstreetmap.org/wiki/Osmosis">Osmosis</a>
         is a general-purpose command-line tool for converting the data among different formats
         and databases, and <a href="https://wiki.openstreetmap.org/wiki/Osm2pgsql">Osm2pgsql</a>
