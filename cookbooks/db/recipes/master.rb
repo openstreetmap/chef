@@ -83,9 +83,6 @@ postgresql_extension "btree_gist" do
   only_if { node[:postgresql][:clusters][node[:db][:cluster]] && node[:postgresql][:clusters][node[:db][:cluster]][:version] >= 9.0 }
 end
 
-template "/etc/cron.daily/rails-db" do
-  source "cron.erb"
-  owner "root"
-  group "root"
-  mode 0o755
+file "/etc/cron.daily/rails-db" do
+  action :delete
 end
