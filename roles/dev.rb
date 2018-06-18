@@ -117,10 +117,6 @@ default_attributes(
         :repository => "git://github.com/ukasiu/openstreetmap-website.git",
         :revision => "comments_list"
       },
-      :moderation => {
-        :repository => "git://github.com/gravitystorm/openstreetmap-website.git",
-        :revision => "moderation"
-      },
       :locale => {
         :repository => "git://github.com/tomhughes/openstreetmap-website.git",
         :revision => "locale"
