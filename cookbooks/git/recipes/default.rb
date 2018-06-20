@@ -17,4 +17,4 @@
 # limitations under the License.
 #
 
-package "git-core"
+package "git"
