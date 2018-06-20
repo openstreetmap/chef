@@ -2,6 +2,12 @@ name "sarel"
 description "Master role applied to sarel"
 
 default_attributes(
+  :git => {
+    :allowed_nodes => "fqdn:*",
+    :user => "chefrepo",
+    :group => "chefrepo",
+    :backup => "chef-git"
+  },
   :networking => {
     :interfaces => {
       :internal_ipv4 => {
