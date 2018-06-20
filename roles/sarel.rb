@@ -23,5 +23,9 @@ default_attributes(
 run_list(
   "role[ucl]",
   "role[hp-g5]",
-  "role[yournavigation]"
+  "role[yournavigation]",
+  "role[chef-server]",
+  "role[chef-repository]",
+  "recipe[git::server]",
+  "recipe[serverinfo]"
 )
