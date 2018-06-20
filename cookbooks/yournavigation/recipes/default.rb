@@ -46,4 +46,4 @@ package %w[
   libicu-dev
 ]
 
-apache_module "php7.0"
+apache_module "php7.2"
