@@ -19,7 +19,8 @@
 
 include_recipe "apache"
 
-# chef_package = "chef-server-core_#{node[:chef][:server][:version]}_amd64.deb"
+# chef_version = node[:chef][:server][:version]
+# chef_package = "chef-server-core_#{chef_version}-1_amd64.deb"
 #
 # directory "/var/cache/chef" do
 #   owner "root"
@@ -37,7 +38,7 @@ include_recipe "apache"
 # end
 #
 # remote_file "/var/cache/chef/#{chef_package}" do
-#   source "https://web-dl.packagecloud.io/chef/stable/packages/ubuntu/#{node[:lsb][:codename]}/#{chef_package}"
+#   source "https://packages.chef.io/files/stable/chef-server/#{chef_version}/ubuntu/16.04/#{chef_package}"
 #   owner "root"
 #   group "root"
 #   mode 0644
@@ -46,7 +47,7 @@ include_recipe "apache"
 #
 # dpkg_package "chef-server-core" do
 #   source "/var/cache/chef/#{chef_package}"
-#   version node[:chef][:server][:version]
+#   version "#{chef_version}-1"
 #   notifies :run, "execute[chef-server-reconfigure]"
 # end
 
