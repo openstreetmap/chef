@@ -126,8 +126,6 @@ default_attributes(
 run_list(
   "role[ic]",
   "role[gateway]",
-  "role[chef-server]",
-  "role[chef-repository]",
   "role[web-storage]",
   "role[supybot]",
   "role[backup]",
@@ -138,7 +136,5 @@ run_list(
   "role[letsencrypt]",
   "recipe[rsyncd]",
   "recipe[openvpn]",
-  "recipe[git::server]",
-  "recipe[tilelog]",
-  "recipe[serverinfo]"
+  "recipe[tilelog]"
 )
