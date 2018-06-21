@@ -10,6 +10,17 @@ default_attributes(
         :members => [:enf, :tomh]
       }
     }
+  },
+  :apache => {
+    :mpm => "event",
+    :event => {
+      :server_limit => 20,
+      :max_request_workers => 1000,
+      :threads_per_child => 50,
+      :min_spare_threads => 50,
+      :max_spare_threads => 450,
+      :async_request_worker_factor => 4
+    }
   }
 )
 
