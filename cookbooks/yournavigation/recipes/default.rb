@@ -36,7 +36,7 @@ package %w[
   subversion
   libcurl4-gnutls-dev
   libgps-dev
-  libcurl3
+  libcurl4
   buffer
   git
   cmake
