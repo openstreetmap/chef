@@ -19,8 +19,6 @@
 	CustomLog /var/log/apache2/chef.openstreetmap.org-access.log combined
 	ErrorLog /var/log/apache2/chef.openstreetmap.org-error.log
 
-	DocumentRoot /var/lib/git
-
 	SSLEngine on
 	SSLProxyEngine on
 	SSLCertificateFile /etc/ssl/certs/chef.openstreetmap.org.pem
@@ -29,8 +27,13 @@
 	ProxyPassMatch ^/.*\.git/ !
 	ProxyPass / https://<%= node[:fqdn] %>:4443/
 	ProxyPreserveHost on
+
+	SetEnv GIT_PROJECT_ROOT /var/lib/git
+	SetEnv GIT_HTTP_EXPORT_ALL
+	ScriptAlias / /usr/lib/git-core/git-http-backend/
 </VirtualHost>
 
-<Directory /var/lib/git>
+<Directory /usr/lib/git-core>
+	Options ExecCGI
 	Require ip <%= @git_allowed.sort.join(" ") %>
 </Directory>
