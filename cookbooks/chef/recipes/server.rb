@@ -84,6 +84,10 @@ service "chef-server" do
   subscribes :restart, "systemd_service[chef-server]"
 end
 
+git_allowed = search(:node, node[:git][:allowed_nodes]).collect do |n|
+  n.ipaddresses(:role => :external)
+end.flatten
+
 apache_module "alias"
 apache_module "proxy_http"
 
@@ -95,6 +99,7 @@ end
 
 apache_site "chef.openstreetmap.org" do
   template "apache.erb"
+  variables :git_allowed => git_allowed
 end
 
 template "/etc/cron.daily/chef-server-backup" do
