@@ -31,10 +31,9 @@ package "php-gd"
 package "php-xml"
 package "php-apcu"
 
-package "geoip-database-contrib"
+package "geoipupdate"
 
 apache_module "php7.2"
-apache_module "geoip"
 
 version = node[:piwik][:version]
 
@@ -77,6 +76,18 @@ directory "/opt/piwik-#{version}/piwik/tmp" do
   owner "www-data"
   group "www-data"
   mode "0755"
+end
+
+link "/opt/piwik-#{version}/piwik/misc/GeoLite2-ASN.mmdb" do
+  to "/var/lib/GeoIP/GeoLite2-ASN.mmdb"
+end
+
+link "/opt/piwik-#{version}/piwik/misc/GeoLite2-City.mmdb" do
+  to "/var/lib/GeoIP/GeoLite2-City.mmdb"
+end
+
+link "/opt/piwik-#{version}/piwik/misc/GeoLite2-Country.mmdb" do
+  to "/var/lib/GeoIP/GeoLite2-Country.mmdb"
 end
 
 link "/srv/piwik.openstreetmap.org" do
