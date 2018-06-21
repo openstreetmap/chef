@@ -165,7 +165,7 @@ end
 wordpress_plugin "2010.stateofthemap.org-sitepress-multilingual-cms" do
   plugin "sitepress-multilingual-cms"
   site "2010.stateofthemap.org"
-  repository "git://chef.openstreetmap.org/sitepress-multilingual-cms.git"
+  repository "https://chef.openstreetmap.org/sitepress-multilingual-cms.git"
 end
 
 wordpress_plugin "2010.stateofthemap.org-wp-sticky" do
@@ -206,7 +206,7 @@ end
 wordpress_plugin "2011.stateofthemap.org-sitepress-multilingual-cms" do
   plugin "sitepress-multilingual-cms"
   site "2011.stateofthemap.org"
-  repository "git://chef.openstreetmap.org/sitepress-multilingual-cms.git"
+  repository "https://chef.openstreetmap.org/sitepress-multilingual-cms.git"
 end
 
 wordpress_plugin "2011.stateofthemap.org-wp-sticky" do
@@ -252,7 +252,7 @@ end
 wordpress_plugin "2012.stateofthemap.org-sitepress-multilingual-cms" do
   plugin "sitepress-multilingual-cms"
   site "2012.stateofthemap.org"
-  repository "git://chef.openstreetmap.org/sitepress-multilingual-cms.git"
+  repository "https://chef.openstreetmap.org/sitepress-multilingual-cms.git"
 end
 
 wordpress_plugin "2012.stateofthemap.org-wp-sticky" do

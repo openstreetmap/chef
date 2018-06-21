@@ -277,7 +277,7 @@ if tools_packages.include?("areca")
 
   git "/opt/areca" do
     action :sync
-    repository "git://chef.openstreetmap.org/areca.git"
+    repository "https://chef.openstreetmap.org/areca.git"
     user "root"
     group "root"
   end
