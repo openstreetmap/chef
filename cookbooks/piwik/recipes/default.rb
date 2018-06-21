@@ -28,6 +28,7 @@ package "php-curl"
 package "php-mbstring"
 package "php-mysql"
 package "php-gd"
+package "php-xml"
 package "php-apcu"
 
 package "geoip-database-contrib"
