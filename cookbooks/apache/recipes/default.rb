@@ -25,15 +25,15 @@ package %w[
 ]
 
 %w[event itk prefork worker].each do |mpm|
-  if mpm == node[:apache][:mpm]
-    apache_module "mpm_#{mpm}" do
-      action [:enable]
-    end
-  else
-    apache_module "mpm_#{mpm}" do
-      action [:disable]
-    end
+  next if mpm == node[:apache][:mpm]
+
+  apache_module "mpm_#{mpm}" do
+    action [:disable]
   end
+end
+
+apache_module "mpm_#{node[:apache][:mpm]}" do
+  action [:enable]
 end
 
 admins = data_bag_item("apache", "admins")
