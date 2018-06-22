@@ -36,6 +36,10 @@ apache_module "mpm_#{node[:apache][:mpm]}" do
   action [:enable]
 end
 
+if node[:lsb][:release].to_f >= 18.04
+  apache_module "http2"
+end
+
 admins = data_bag_item("apache", "admins")
 
 apache_conf "httpd" do
