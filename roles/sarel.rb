@@ -32,6 +32,7 @@ run_list(
   "role[yournavigation]",
   "role[chef-server]",
   "role[chef-repository]",
+  "role[letsencrypt]",
   "recipe[git::server]",
   "recipe[serverinfo]"
 )
