@@ -30,7 +30,7 @@ package %w[
   libboost-dev
   libexpat1-dev
   libsparsehash-dev
-  libgd2-xpm-dev
+  libgd-dev
   libicu-dev
   libboost-program-options-dev
   cmake
