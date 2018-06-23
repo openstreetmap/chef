@@ -4,6 +4,10 @@ description "Role applied to all git servers"
 default_attributes(
   :accounts => {
     :users => {
+      :bretth => {
+        :status => :user,
+        :shell => "/usr/bin/git-shell"
+      },
       :lonvia => {
         :status => :user,
         :shell => "/usr/bin/git-shell"
@@ -20,8 +24,7 @@ default_attributes(
   },
   :git => {
     :host => "git.openstreetmap.org",
-    :aliases => ["git.osm.org"],
-    :backup => "git"
+    :aliases => ["git.osm.org"]
   }
 )
 

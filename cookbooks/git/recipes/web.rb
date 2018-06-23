@@ -23,7 +23,7 @@ package "gitweb"
 
 apache_module "rewrite"
 
-git_directory = node[:git][:directory]
+git_site = node[:git][:host]
 
 template "/etc/gitweb.conf" do
   source "gitweb.conf.erb"
@@ -32,20 +32,31 @@ template "/etc/gitweb.conf" do
   mode 0o644
 end
 
-ssl_certificate node[:git][:host] do
-  domains [node[:git][:host]] + Array(node[:git][:aliases])
-  notifies :reload, "service[apache2]"
+directory "/srv/#{git_site}" do
+  owner "root"
+  group "root"
+  mode 0o755
 end
 
-apache_site node[:git][:host] do
-  template "apache.erb"
-  directory git_directory
-  variables :aliases => Array(node[:git][:aliases])
-end
-
-template "#{git_directory}/robots.txt" do
+template "/srv/#{git_site}/robots.txt" do
   source "robots.txt.erb"
   owner "root"
   group "root"
   mode 0o644
+end
+
+ssl_certificate git_site do
+  domains [git_site] + Array(node[:git][:aliases])
+  notifies :reload, "service[apache2]"
+end
+
+private_allowed = search(:node, node[:git][:private_nodes]).collect do |n|
+  n.ipaddresses(:role => :external)
+end.flatten
+
+apache_site git_site do
+  template "apache.erb"
+  directory "/srv/#{git_site}"
+  variables :aliases => Array(node[:git][:aliases]),
+            :private_allowed => private_allowed
 end

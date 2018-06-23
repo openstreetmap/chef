@@ -25,7 +25,8 @@ default_attributes(
     }
   },
   :chef => {
-    :repository => "/var/lib/git/chef.git"
+    :public_repository => "/var/lib/git/public/chef.git",
+    :private_repository => "/var/lib/git/private/chef.git"
   }
 )
 

@@ -44,17 +44,24 @@
         CustomLog /var/log/apache2/<%= @name %>-access.log combined
         ErrorLog /var/log/apache2/<%= @name %>-error.log
 
-        DocumentRoot <%= @directory %>
-        HeaderName HEADER
+        SetEnv GIT_PROJECT_ROOT /var/lib/git
+        SetEnv GIT_HTTP_EXPORT_ALL
+
+        ScriptAlias /public /usr/lib/git-core/git-http-backend/public
+        ScriptAlias /private /usr/lib/git-core/git-http-backend/private
         Alias /gitweb /usr/share/gitweb
         Alias /git /var/cache/git
-        ScriptAlias /gitweb.cgi /usr/lib/cgi-bin/gitweb.cgi
+        ScriptAlias / /usr/lib/cgi-bin/gitweb.cgi/
 
-        RewriteEngine On
-        RewriteRule ^/$ /gitweb.cgi%{REQUEST_URI} [L,PT]
-        RewriteRule ^/(.*\.git/(?!/?(HEAD|info|objects|refs)).*)?$ /gitweb.cgi%{REQUEST_URI} [L,PT]
+        <Location />
+                  Require all granted
+        </Location>
+
+        <Location /private>
+                  Require ip <%= @private_allowed.sort.join(" ") %>
+        </Location>
 </VirtualHost>
 
-<Directory <%= @directory %>>
-        Require all granted
+<Directory /usr/lib/git-core>
+        Options ExecCGI
 </Directory>

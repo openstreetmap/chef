@@ -27,44 +27,42 @@ directory "/var/lib/chef" do
   mode 0o2775
 end
 
-git "/var/lib/chef" do
-  action :checkout
-  repository node[:chef][:repository]
-  revision "master"
-  user "chefrepo"
-  group "chefrepo"
-end
+%w[public private].each do |repository|
+  repository_directory = node[:chef][:"#{repository}_repository"]
 
-directory "/var/lib/chef/.chef" do
-  owner "chefrepo"
-  group "chefrepo"
-  mode 0o2775
-end
+  git "/var/lib/chef/#{repository}" do
+    action :checkout
+    repository repository_directory
+    revision "master"
+    user "chefrepo"
+    group "chefrepo"
+  end
 
-file "/var/lib/chef/.chef/client.pem" do
-  content keys["git"].join("\n")
-  owner "chefrepo"
-  group "chefrepo"
-  mode 0o660
-end
+  directory "/var/lib/chef/#{repository}/.chef" do
+    owner "chefrepo"
+    group "chefrepo"
+    mode 0o2775
+  end
 
-cookbook_file "/var/lib/chef/.chef/knife.rb" do
-  source "knife.rb"
-  owner "chefrepo"
-  group "chefrepo"
-  mode 0o660
-end
+  file "/var/lib/chef/#{repository}/.chef/client.pem" do
+    content keys["git"].join("\n")
+    owner "chefrepo"
+    group "chefrepo"
+    mode 0o660
+  end
 
-template "#{node[:chef][:repository]}/hooks/post-receive" do
-  source "post-receive.erb"
-  owner "chefrepo"
-  group "chefrepo"
-  mode 0o750
-end
+  cookbook_file "/var/lib/chef/#{repository}/.chef/knife.rb" do
+    source "knife.rb"
+    owner "chefrepo"
+    group "chefrepo"
+    mode 0o660
+  end
 
-template "/etc/cron.daily/chef-repository-backup" do
-  source "repository-backup.cron.erb"
-  owner "root"
-  group "root"
-  mode 0o755
+  template "#{repository_directory}/hooks/post-receive" do
+    source "post-receive.erb"
+    owner "chefrepo"
+    group "chefrepo"
+    mode 0o750
+    variables :repository => repository
+  end
 end

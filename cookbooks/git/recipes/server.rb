@@ -18,57 +18,33 @@
 #
 
 include_recipe "networking"
-include_recipe "xinetd"
 
 git_directory = node[:git][:directory]
 
 directory git_directory do
-  owner node[:git][:user]
-  group node[:git][:group]
+  owner "root"
+  group "root"
+  mode 0o775
+end
+
+directory "#{git_directory}/public" do
+  owner node[:git][:public_user]
+  group node[:git][:public_group]
   mode 0o2775
 end
 
-if node[:git][:allowed_nodes]
-  search(:node, node[:git][:allowed_nodes]).sort_by { |n| n[:fqdn] }.each do |n|
-    n.interfaces(:role => :external).each do |interface|
-      firewall_rule "accept-git" do
-        action :accept
-        family interface[:family]
-        source "#{interface[:zone]}:#{interface[:address]}"
-        dest "fw"
-        proto "tcp:syn"
-        dest_ports "git"
-        source_ports "1024:"
-      end
-    end
-  end
-else
-  firewall_rule "accept-git" do
-    action :accept
-    source "net"
-    dest "fw"
-    proto "tcp:syn"
-    dest_ports "git"
-    source_ports "1024:"
-  end
+directory "#{git_directory}/private" do
+  owner node[:git][:private_user]
+  group node[:git][:private_group]
+  mode 0o2775
 end
 
-Dir.new(git_directory).select { |name| name =~ /\.git$/ }.each do |repository|
-  template "#{git_directory}/#{repository}/hooks/post-update" do
+Dir.glob("#{git_directory}/*/*.git").each do |repository|
+  template "#{repository}/hooks/post-update" do
     source "post-update.erb"
     owner "root"
     group node[:git][:group]
     mode 0o755
-  end
-
-  next unless node[:recipes].include?("trac") && repository != "dns.git" && repository != "chef.git"
-
-  template "#{git_directory}/#{repository}/hooks/post-receive" do
-    source "post-receive.erb"
-    owner "root"
-    group node[:git][:group]
-    mode 0o755
-    variables :repository => "#{git_directory}/#{repository}"
   end
 end
 
@@ -77,12 +53,4 @@ template "/etc/cron.daily/git-backup" do
   owner "root"
   group "root"
   mode 0o755
-end
-
-template "/etc/xinetd.d/git" do
-  source "xinetd.erb"
-  owner "root"
-  group "root"
-  mode 0o644
-  notifies :reload, "service[xinetd]"
 end

@@ -1,7 +1,7 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
 # path to git projects (<project>.git)
-$projectroot = "<%= node[:git][:directory] %>";
+$projectroot = "<%= node[:git][:directory] %>/public";
 
 # directory to use for temp files
 $git_temp = "/tmp";
@@ -31,4 +31,4 @@ our $javascript = "/gitweb/static/gitweb.js";
 $feature{'pathinfo'}{'default'} = [1];
 
 # define roots for cloning
-@git_base_url_list = qw(git://<%= node[:git][:host] %>);
+@git_base_url_list = qw(https://<%= node[:git][:host] %>/public);

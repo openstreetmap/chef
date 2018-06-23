@@ -1,3 +1,5 @@
 default[:git][:directory] = "/var/lib/git"
-default[:git][:user] = "git"
-default[:git][:group] = "git"
+default[:git][:public_user] = "git"
+default[:git][:public_group] = "git"
+default[:git][:private_user] = "git"
+default[:git][:private_group] = "git"

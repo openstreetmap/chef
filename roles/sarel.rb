@@ -3,10 +3,9 @@ description "Master role applied to sarel"
 
 default_attributes(
   :git => {
-    :allowed_nodes => "fqdn:*",
-    :user => "chefrepo",
-    :group => "chefrepo",
-    :backup => "chef-git"
+    :private_user => "chefrepo",
+    :private_group => "chefrepo",
+    :private_nodes => "fqdn:*"
   },
   :networking => {
     :interfaces => {
@@ -33,6 +32,7 @@ run_list(
   "role[chef-server]",
   "role[chef-repository]",
   "role[letsencrypt]",
-  "recipe[git::server]",
+  "role[git]",
+  "role[dns]",
   "recipe[serverinfo]"
 )

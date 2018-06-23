@@ -3,7 +3,7 @@ description "Role applied to DNS management servers"
 
 default_attributes(
   :dns => {
-    :repository => "/var/lib/git/dns.git"
+    :repository => "/var/lib/git/public/dns.git"
   }
 )
 

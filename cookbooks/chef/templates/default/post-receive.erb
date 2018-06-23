@@ -9,7 +9,7 @@ while read oldrev newrev refname
 do
   if [[ "$refname" = "refs/heads/master" ]]
   then
-    cd /var/lib/chef
+    cd /var/lib/chef/<%= @repository %>
 
     rm -f cookbooks/*/metadata.json(N)
 

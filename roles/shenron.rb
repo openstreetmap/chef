@@ -2,14 +2,6 @@ name "shenron"
 description "Master role applied to shenron"
 
 default_attributes(
-  :accounts => {
-    :users => {
-      :bretth => {
-        :status => :user,
-        :shell => "/usr/bin/git-shell"
-      }
-    }
-  },
   :apache => {
     :mpm => "event",
     :event => {
@@ -69,14 +61,11 @@ run_list(
   "role[bytemark]",
   "role[mail]",
   "role[lists]",
-  "role[git]",
   "role[subversion]",
   "role[trac]",
   "role[osqa]",
   "role[irc]",
-  "role[dns]",
   "role[geodns]",
-  "role[chef-repository]",
   "recipe[blogs]",
   "recipe[openvpn]"
 )
