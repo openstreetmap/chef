@@ -53,7 +53,7 @@ PATH=".:${HOME}/bin:/usr/local/bin:/bin:/usr/bin:/sbin:/usr/sbin"
 
 # Setup a pager
 PAGER="less"; export PAGER
-LESS="aceiMs"; export LESS
+LESS="aceiMRs"; export LESS
 
 # Use vi for editing
 EDITOR=/usr/bin/vi; export EDITOR
