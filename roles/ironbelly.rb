@@ -22,12 +22,6 @@ default_attributes(
       :data => "/store/elasticsearch"
     }
   },
-  :git => {
-    :allowed_nodes => "fqdn:*",
-    :user => "chefrepo",
-    :group => "chefrepo",
-    :backup => "chef-git"
-  },
   :networking => {
     :interfaces => {
       :internal_ipv4 => {
