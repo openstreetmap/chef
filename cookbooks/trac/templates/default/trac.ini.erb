@@ -120,7 +120,7 @@ subversion.hidden = true
 <%= File.basename(repository, ".git") %>.dir = <%= repository %>
 <%= File.basename(repository, ".git") %>.description = <%= IO.read("#{repository}/description").strip %>
 <%= File.basename(repository, ".git") %>.type = git
-<%= File.basename(repository, ".git") %>.url = git://git.openstreetmap.org/<%= File.basename(repository) %>
+<%= File.basename(repository, ".git") %>.url = https://git.openstreetmap.org/public/<%= File.basename(repository) %>
 <% end -%>
 .alias = subversion
 
