@@ -41,14 +41,18 @@ hosts = search(:node, "networking:interfaces").sort_by { |n| n[:hostname] }.coll
   end
 
   keys = {
-    "rsa" => node[:keys][:ssh][:host_rsa_public],            # ~FC039
-    "dsa" => node[:keys][:ssh][:host_dsa_public]             # ~FC039
+    "ssh-rsa" => node[:keys][:ssh][:host_rsa_public],        # ~FC039
+    "ssh-dss" => node[:keys][:ssh][:host_dsa_public]         # ~FC039
   }
 
   if node[:keys][:ssh][:host_ecdsa_public]                   # ~FC039
     ecdsa_type = node[:keys][:ssh][:host_ecdsa_type]         # ~FC039
 
     keys[ecdsa_type] = node[:keys][:ssh][:host_ecdsa_public] # ~FC039
+  end
+
+  if node[:keys][:ssh][:host_ed25519_public]                      # ~FC039
+    keys["ssh-ed25519"] = node[:keys][:ssh][:host_ed25519_public] # ~FC039
   end
 
   Hash[
