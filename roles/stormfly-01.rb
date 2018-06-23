@@ -17,9 +17,6 @@ default_attributes(
         :address => "2605:bc80:3010:700::8cde:a768"
       }
     }
-  },
-  :passenger => {
-    :ruby_version => "2.5"
   }
 )
 
