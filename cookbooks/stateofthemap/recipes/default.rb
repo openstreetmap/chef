@@ -23,7 +23,7 @@ passwords = data_bag_item("stateofthemap", "passwords")
 
 git "/srv/stateofthemap.org" do
   action :sync
-  repository "git://git.openstreetmap.org/stateofthemap.git"
+  repository "https://git.openstreetmap.org/public/stateofthemap.git"
   revision "chooser"
   user "root"
   group "root"
@@ -59,7 +59,7 @@ end
 wordpress_theme "2007.stateofthemap.org-refreshwp-11" do
   theme "refreshwp-11"
   site "2007.stateofthemap.org"
-  repository "git://git.openstreetmap.org/stateofthemap.git"
+  repository "https://git.openstreetmap.org/public/stateofthemap.git"
   revision "theme-2007"
 end
 
@@ -86,7 +86,7 @@ end
 wordpress_theme "2008.stateofthemap.org-refreshwp-11" do
   theme "refreshwp-11"
   site "2008.stateofthemap.org"
-  repository "git://git.openstreetmap.org/stateofthemap.git"
+  repository "https://git.openstreetmap.org/public/stateofthemap.git"
   revision "theme-2008"
 end
 
@@ -103,7 +103,7 @@ end
 
 git "/srv/2009.stateofthemap.org" do
   action :sync
-  repository "git://git.openstreetmap.org/stateofthemap.git"
+  repository "https://git.openstreetmap.org/public/stateofthemap.git"
   revision "resources-2009"
   user "wordpress"
   group "wordpress"
@@ -123,7 +123,7 @@ end
 wordpress_theme "2009.stateofthemap.org-aerodrome" do
   theme "aerodrome"
   site "2009.stateofthemap.org"
-  repository "git://git.openstreetmap.org/stateofthemap.git"
+  repository "https://git.openstreetmap.org/public/stateofthemap.git"
   revision "theme-2009"
 end
 
@@ -140,7 +140,7 @@ end
 
 git "/srv/2010.stateofthemap.org" do
   action :sync
-  repository "git://git.openstreetmap.org/stateofthemap.git"
+  repository "https://git.openstreetmap.org/public/stateofthemap.git"
   revision "resources-2010"
   user "wordpress"
   group "wordpress"
@@ -158,14 +158,14 @@ end
 wordpress_theme "2010.stateofthemap.org-aerodrome" do
   theme "aerodrome"
   site "2010.stateofthemap.org"
-  repository "git://git.openstreetmap.org/stateofthemap.git"
+  repository "https://git.openstreetmap.org/public/stateofthemap.git"
   revision "theme-2010"
 end
 
 wordpress_plugin "2010.stateofthemap.org-sitepress-multilingual-cms" do
   plugin "sitepress-multilingual-cms"
   site "2010.stateofthemap.org"
-  repository "https://chef.openstreetmap.org/sitepress-multilingual-cms.git"
+  repository "https://chef.openstreetmap.org/private/sitepress-multilingual-cms.git"
 end
 
 wordpress_plugin "2010.stateofthemap.org-wp-sticky" do
@@ -181,7 +181,7 @@ end
 
 git "/srv/2011.stateofthemap.org" do
   action :sync
-  repository "git://git.openstreetmap.org/stateofthemap.git"
+  repository "https://git.openstreetmap.org/public/stateofthemap.git"
   revision "resources-2011"
   user "wordpress"
   group "wordpress"
@@ -199,14 +199,14 @@ end
 wordpress_theme "2011.stateofthemap.org-aerodrome" do
   theme "aerodrome"
   site "2011.stateofthemap.org"
-  repository "git://git.openstreetmap.org/stateofthemap.git"
+  repository "https://git.openstreetmap.org/public/stateofthemap.git"
   revision "theme-2011"
 end
 
 wordpress_plugin "2011.stateofthemap.org-sitepress-multilingual-cms" do
   plugin "sitepress-multilingual-cms"
   site "2011.stateofthemap.org"
-  repository "https://chef.openstreetmap.org/sitepress-multilingual-cms.git"
+  repository "https://chef.openstreetmap.org/private/sitepress-multilingual-cms.git"
 end
 
 wordpress_plugin "2011.stateofthemap.org-wp-sticky" do
@@ -222,7 +222,7 @@ end
 
 git "/srv/2012.stateofthemap.org" do
   action :sync
-  repository "git://git.openstreetmap.org/stateofthemap.git"
+  repository "https://git.openstreetmap.org/public/stateofthemap.git"
   revision "resources-2012"
   user "wordpress"
   group "wordpress"
@@ -240,7 +240,7 @@ end
 wordpress_theme "2012.stateofthemap.org-aerodrome" do
   theme "aerodrome"
   site "2012.stateofthemap.org"
-  repository "git://git.openstreetmap.org/stateofthemap.git"
+  repository "https://git.openstreetmap.org/public/stateofthemap.git"
   revision "theme-2012"
 end
 
@@ -252,7 +252,7 @@ end
 wordpress_plugin "2012.stateofthemap.org-sitepress-multilingual-cms" do
   plugin "sitepress-multilingual-cms"
   site "2012.stateofthemap.org"
-  repository "https://chef.openstreetmap.org/sitepress-multilingual-cms.git"
+  repository "https://chef.openstreetmap.org/private/sitepress-multilingual-cms.git"
 end
 
 wordpress_plugin "2012.stateofthemap.org-wp-sticky" do
@@ -263,7 +263,7 @@ end
 %w[2013].each do |year|
   git "/srv/#{year}.stateofthemap.org" do
     action :sync
-    repository "git://git.openstreetmap.org/stateofthemap.git"
+    repository "https://git.openstreetmap.org/public/stateofthemap.git"
     revision "site-#{year}"
     user "root"
     group "root"

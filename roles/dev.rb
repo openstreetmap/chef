@@ -101,7 +101,7 @@ default_attributes(
   :dev => {
     :rails => {
       :master => {
-        :repository => "git://git.openstreetmap.org/rails.git",
+        :repository => "https://git.openstreetmap.org/public/rails.git",
         :revision => "master",
         :aliases => ["api06.dev.openstreetmap.org"]
       },

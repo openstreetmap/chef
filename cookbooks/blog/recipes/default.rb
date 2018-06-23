@@ -64,7 +64,7 @@ end
 wordpress_plugin "blog.openstreetmap.org-sitepress-multilingual-cms" do
   plugin "sitepress-multilingual-cms"
   site "blog.openstreetmap.org"
-  repository "https://chef.openstreetmap.org/sitepress-multilingual-cms.git"
+  repository "https://chef.openstreetmap.org/private/sitepress-multilingual-cms.git"
 end
 
 wordpress_plugin "blog.openstreetmap.org-wordpress-importer" do

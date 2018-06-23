@@ -48,7 +48,7 @@ end
 
 git gpx_directory do
   action :sync
-  repository "git://git.openstreetmap.org/gpx-import.git"
+  repository "https://git.openstreetmap.org/public/gpx-import.git"
   revision "live"
   user "rails"
   group "rails"

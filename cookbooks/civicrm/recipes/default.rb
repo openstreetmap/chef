@@ -53,7 +53,7 @@ end
 
 wordpress_plugin "sitepress-multilingual-cms" do
   site "join.osmfoundation.org"
-  repository "https://chef.openstreetmap.org/sitepress-multilingual-cms.git"
+  repository "https://chef.openstreetmap.org/private/sitepress-multilingual-cms.git"
 end
 
 wordpress_plugin "contact-form-7" do

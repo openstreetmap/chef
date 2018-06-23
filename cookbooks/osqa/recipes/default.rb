@@ -76,7 +76,7 @@ node[:osqa][:sites].each do |site|
 
   git "#{directory}/osqa" do
     action :sync
-    repository "git://git.openstreetmap.org/osqa.git"
+    repository "https://git.openstreetmap.org/public/osqa.git"
     revision "live"
     user site_user
     group site_group
