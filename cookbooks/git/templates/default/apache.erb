@@ -60,6 +60,10 @@
         <Location /private>
                   Require ip <%= @private_allowed.sort.join(" ") %>
         </Location>
+
+        <Location /private/chef.git>
+                  Require all denied
+        </Location>
 </VirtualHost>
 
 <Directory /usr/lib/git-core>
