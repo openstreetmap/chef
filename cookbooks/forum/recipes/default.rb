@@ -30,7 +30,7 @@ package %w[
   php-apcu
 ]
 
-apache_module "php7.0"
+apache_module "php7.2"
 apache_module "rewrite"
 
 ssl_certificate "forum.openstreetmap.org" do
