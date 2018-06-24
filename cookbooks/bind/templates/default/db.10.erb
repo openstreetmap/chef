@@ -2,11 +2,11 @@
 
 $TTL	604800
 @	IN	SOA	<%= node[:fdqn] %>. root.openstreetmap.org. (
-		     2012100902		; Serial
-			 604800		; Refresh
-			  86400		; Retry
-			2419200		; Expire
-			 604800 )	; Negative Cache TTL
+                     2018062401		; Serial
+                         604800		; Refresh
+                          86400		; Retry
+                        2419200		; Expire
+                         604800 )	; Negative Cache TTL
 
 @	IN	NS	<%= node[:fdqn] %>.
 
@@ -16,20 +16,68 @@ $TTL	604800
 7.0.0	IN	PTR	faffy.ucl.openstreetmap.org.
 8.0.0	IN	PTR	zark.ucl.openstreetmap.org.
 9.0.0	IN	PTR	eustace.ucl.openstreetmap.org.
+10.0.0	IN	PTR	eddie.ucl.openstreetmap.org.
 11.0.0	IN	PTR	draco.ucl.openstreetmap.org.
 12.0.0	IN	PTR	sarel.ucl.openstreetmap.org.
+13.0.0	IN	PTR	noquiklos.ucl.openstreetmap.org.
 14.0.0	IN	PTR	errol.ucl.openstreetmap.org.
 15.0.0	IN	PTR	yevaud.ucl.openstreetmap.org.
+17.0.0	IN	PTR	clifford.ucl.openstreetmap.org.
+19.0.0	IN	PTR	grindtooth.ucl.openstreetmap.org.
+20.0.0	IN	PTR	pummelzacken.ucl.openstreetmap.org.
+40.0.0	IN	PTR	tiamat-00.ucl.openstreetmap.org.
+41.0.0	IN	PTR	tiamat-01.ucl.openstreetmap.org.
+42.0.0	IN	PTR	tiamat-02.ucl.openstreetmap.org.
+43.0.0	IN	PTR	tiamat-03.ucl.openstreetmap.org.
+44.0.0	IN	PTR	tiamat-10.ucl.openstreetmap.org.
+45.0.0	IN	PTR	tiamat-11.ucl.openstreetmap.org.
+46.0.0	IN	PTR	tiamat-12.ucl.openstreetmap.org.
+47.0.0	IN	PTR	tiamat-13.ucl.openstreetmap.org.
+48.0.0	IN	PTR	tiamat-20.ucl.openstreetmap.org.
+49.0.0	IN	PTR	tiamat-21.ucl.openstreetmap.org.
+50.0.0	IN	PTR	tiamat-22.ucl.openstreetmap.org.
+51.0.0	IN	PTR	tiamat-23.ucl.openstreetmap.org.
 
+3.1.0	IN	PTR	ridley.oob.openstreetmap.org.
 5.1.0	IN	PTR	norbert.oob.openstreetmap.org.
 6.1.0	IN	PTR	urmel.oob.openstreetmap.org.
-7.1.0	IN	PTR	faffy.oob.openstreetmap.org.
-8.1.0	IN	PTR	soup.oob.openstreetmap.org.
+8.1.0	IN	PTR	zark.oob.openstreetmap.org.
 9.1.0	IN	PTR	eustace.oob.openstreetmap.org.
+10.1.0	IN	PTR	eddie.oob.openstreetmap.org.
 11.1.0	IN	PTR	draco.oob.openstreetmap.org.
 12.1.0	IN	PTR	sarel.oob.openstreetmap.org.
+13.1.0	IN	PTR	noquiklos.oob.openstreetmap.org.
 14.1.0	IN	PTR	errol.oob.openstreetmap.org.
 15.1.0	IN	PTR	yevaud.oob.openstreetmap.org.
+17.1.0	IN	PTR	clifford.oob.openstreetmap.org.
+19.1.0	IN	PTR	grindtooth.oob.openstreetmap.org.
+20.1.0	IN	PTR	pummelzacken.oob.openstreetmap.org.
+40.1.0	IN	PTR	tiamat-00.oob.openstreetmap.org.
+41.1.0	IN	PTR	tiamat-01.oob.openstreetmap.org.
+42.1.0	IN	PTR	tiamat-02.oob.openstreetmap.org.
+43.1.0	IN	PTR	tiamat-03.oob.openstreetmap.org.
+44.1.0	IN	PTR	tiamat-10.oob.openstreetmap.org.
+45.1.0	IN	PTR	tiamat-11.oob.openstreetmap.org.
+46.1.0	IN	PTR	tiamat-12.oob.openstreetmap.org.
+47.1.0	IN	PTR	tiamat-13.oob.openstreetmap.org.
+48.1.0	IN	PTR	tiamat-20.oob.openstreetmap.org.
+49.1.0	IN	PTR	tiamat-21.oob.openstreetmap.org.
+50.1.0	IN	PTR	tiamat-22.oob.openstreetmap.org.
+51.1.0	IN	PTR	tiamat-23.oob.openstreetmap.org.
 
-251.0.0	IN	PTR	shenron.internal.openstreetmap.org.
-252.0.0	IN	PTR	konqi.internal.openstreetmap.org.
+2.16.0	IN	PTR	orm.bm.openstreetmap.org.
+3.16.0	IN	PTR	shenron.bm.openstreetmap.org.
+
+20.32.0	IN	PTR	grisu.bm.openstreetmap.org.
+21.32.0	IN	PTR	spike-04.bm.openstreetmap.org.
+22.32.0	IN	PTR	spike-05.bm.openstreetmap.org.
+40.32.0	IN	PTR	katla.bm.openstreetmap.org.
+41.32.0	IN	PTR	thorn-04.bm.openstreetmap.org.
+42.32.0	IN	PTR	thorn-05.bm.openstreetmap.org.
+
+20.33.0	IN	PTR	grisu.oob.openstreetmap.org.
+21.33.0	IN	PTR	spike-04.oob.openstreetmap.org.
+22.33.0	IN	PTR	spike-05.oob.openstreetmap.org.
+40.33.0	IN	PTR	katla.oob.openstreetmap.org.
+41.33.0	IN	PTR	thorn-04.oob.openstreetmap.org.
+42.33.0	IN	PTR	thorn-05.oob.openstreetmap.org.
