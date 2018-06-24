@@ -14,24 +14,6 @@ subnet <%= interface[:network] %> netmask <%= interface[:netmask] %> {
 }
 <% end -%>
 
-host apc1.<%= @domain %> {
-  hardware ethernet 00:c0:b7:77:f3:d8;
-  server-name "apc1.<%= @domain %>";
-  fixed-address apc1.<%= @domain %>;
-}
-
-host apc2.<%= @domain %> {
-  hardware ethernet 00:c0:b7:52:b7:d2;
-  server-name "apc2.<%= @domain %>";
-  fixed-address apc2.<%= @domain %>;
-}
-
-host apc3.<%= @domain %> {
-  hardware ethernet 00:c0:b7:52:b9:1e;
-  server-name "apc3.<%= @domain %>";
-  fixed-address apc3.<%= @domain %>;
-}
-
 host ascalon.oob.openstreetmap.org {
   hardware ethernet 00:19:bb:39:3c:64;
   server-name "ascalon.oob.openstreetmap.org";
