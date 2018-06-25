@@ -35,14 +35,6 @@ default_attributes(
       }
     }
   },
-  :sysfs => {
-    :hdd_tune => {
-      :comment => "Tune the queue for improved performance",
-      :parameters => {
-        "block/xvda/queue/scheduler" => "deadline"
-      }
-    }
-  },
   :tilecache => {
     :tile_parent => "sanfrancisco.render.openstreetmap.org",
     :tile_siblings => [
