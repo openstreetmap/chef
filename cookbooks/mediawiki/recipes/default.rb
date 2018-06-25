@@ -82,9 +82,15 @@ service "parsoid" do
   subscribes :restart, "template[/etc/mediawiki/parsoid/config.yaml]"
 end
 
-apache_module "php7.0"
+php_version = if node[:lsb][:release].to_f >= 18.04
+                "7.2"
+              else
+                "7.0"
+              end
 
-link "/etc/php/7.0/apache2/conf.d/20-wikidiff2.ini" do
+apache_module "php#{php_version}"
+
+link "/etc/php/#{php_version}/apache2/conf.d/20-wikidiff2.ini" do
   to "../../mods-available/wikidiff2.ini"
 end
 
