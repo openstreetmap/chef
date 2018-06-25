@@ -26,7 +26,7 @@ package %w[
   php-mysql
 ]
 
-apache_module "php7.0"
+apache_module "php7.2"
 apache_module "rewrite"
 
 fail2ban_filter "wordpress" do
