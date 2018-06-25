@@ -78,6 +78,18 @@ apt_source "openstreetmap" do
   update true
 end
 
+apt_source "squid2" do
+  url "http://ppa.launchpad.net/osmadmins/squid2/ubuntu"
+  key "D57F48750AC4F2CB"
+  update true
+end
+
+apt_source "squid3" do
+  url "http://ppa.launchpad.net/osmadmins/squid3/ubuntu"
+  key "D57F48750AC4F2CB"
+  update true
+end
+
 apt_source "management-component-pack" do
   source_template "hp.list.erb"
   url "https://downloads.linux.hpe.com/SDR/repo/mcp"
