@@ -29,7 +29,7 @@ package %w[
   php-gd
 ]
 
-apache_module "php7.0"
+apache_module "php7.2"
 
 apache_module "headers"
 
