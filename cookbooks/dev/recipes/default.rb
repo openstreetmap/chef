@@ -76,12 +76,6 @@ apache_module "wsgi"
 
 package "apache2-suexec-pristine"
 
-gem_package "sqlite3"
-
-gem_package "rails" do
-  version "3.0.9"
-end
-
 service "php7.2-fpm" do
   action [:enable, :start]
 end
