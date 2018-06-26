@@ -37,7 +37,6 @@ package %w[
   php-db
   php-fpm
   php-imagick
-  php-mcrypt
   php-mysql
   php-pear
   php-pgsql
