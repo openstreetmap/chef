@@ -82,21 +82,21 @@ gem_package "rails" do
   version "3.0.9"
 end
 
-service "php7.0-fpm" do
+service "php7.2-fpm" do
   action [:enable, :start]
 end
 
-template "/etc/php/7.0/fpm/pool.d/default.conf" do
+template "/etc/php/7.2/fpm/pool.d/default.conf" do
   source "fpm-default.conf.erb"
   owner "root"
   group "root"
   mode 0o644
-  notifies :reload, "service[php7.0-fpm]"
+  notifies :reload, "service[php7.2-fpm]"
 end
 
-file "/etc/php/7.0/fpm/pool.d/www.conf" do
+file "/etc/php/7.2/fpm/pool.d/www.conf" do
   action :delete
-  notifies :reload, "service[php7.0-fpm]"
+  notifies :reload, "service[php7.2-fpm]"
 end
 
 directory "/srv/dev.openstreetmap.org" do
@@ -155,13 +155,13 @@ search(:accounts, "*:*").each do |account|
 
   port = 7000 + account["uid"].to_i
 
-  template "/etc/php/7.0/fpm/pool.d/#{name}.conf" do
+  template "/etc/php/7.2/fpm/pool.d/#{name}.conf" do
     source "fpm.conf.erb"
     owner "root"
     group "root"
     mode 0o644
     variables :user => name, :port => port
-    notifies :reload, "service[php7.0-fpm]"
+    notifies :reload, "service[php7.2-fpm]"
   end
 
   ssl_certificate "#{name}.dev.openstreetmap.org" do
