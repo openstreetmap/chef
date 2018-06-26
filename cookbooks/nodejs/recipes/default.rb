@@ -17,8 +17,13 @@
 # limitations under the License.
 #
 
-package "nodejs"
-package "nodejs-legacy"
-package "npm"
-package "g++"
-package "make"
+package %w[
+  nodejs
+  npm
+  g++
+  make
+]
+
+if node[:lsb][:release].to_f < 18.04
+  package "nodejs-legacy"
+end
