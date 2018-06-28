@@ -35,6 +35,7 @@ default_attributes(
     :state => "standalone",
     :dbadmins => %w[lonvia tomh],
     :dbcluster => "9.6/main",
+    :enable_backup => true,
     :flatnode_file => "/ssd/nominatim/nodes.store",
     :tablespaces => {
       "dosm" => "/ssd/tablespaces/dosm",
