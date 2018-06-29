@@ -775,6 +775,7 @@ begin retry
 # There are no rewriting specifications in this default configuration file.
 
 begin rewrite
+*@<%= node[:fqdn] %> $1@openstreetmap.org E
 <% node[:exim][:rewrites].each do |rewrite| -%>
 <%= rewrite[:pattern] %> <%= rewrite[:replacement] %> <%= rewrite[:flags] %>
 <% end -%>
