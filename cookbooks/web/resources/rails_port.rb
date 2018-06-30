@@ -102,7 +102,7 @@ action :create do
 
   gem_package "bundler#{new_resource.ruby}" do
     package_name "bundler"
-    version "1.3.5"
+    version "1.16.2"
     gem_binary "gem#{new_resource.ruby}"
     options "--format-executable"
   end
