@@ -107,6 +107,11 @@ action :create do
     options "--format-executable"
   end
 
+  gem_package "bundler#{new_resource.ruby}" do
+    package_name "pkg-config"
+    gem_binary "gem#{new_resource.ruby}"
+  end
+
   declare_resource :directory, rails_directory do
     owner new_resource.user
     group new_resource.group
