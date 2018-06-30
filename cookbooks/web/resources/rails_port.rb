@@ -107,15 +107,6 @@ action :create do
     options "--format-executable"
   end
 
-  file "/usr/lib/ruby/1.8/rack.rb" do
-    action :delete
-  end
-
-  declare_resource :directory, "/usr/lib/ruby/1.8/rack" do
-    action :delete
-    recursive true
-  end
-
   declare_resource :directory, rails_directory do
     owner new_resource.user
     group new_resource.group
