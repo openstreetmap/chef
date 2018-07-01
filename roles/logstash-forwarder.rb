@@ -3,7 +3,7 @@ description "Role applied to all logstash forwarders"
 
 default_attributes(
   :apt => {
-    :sources => ["logstash-forwarder"]
+    # :sources => ["logstash-forwarder"]
   }
 )
 
