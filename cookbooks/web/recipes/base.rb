@@ -29,10 +29,11 @@ directory node[:web][:base_directory] do
   mode 0o2775
 end
 
-directory node[:web][:pid_directory] do
+systemd_tmpfile node[:web][:pid_directory] do
+  type "d"
   owner "rails"
   group "rails"
-  mode 0o775
+  mode "0755"
 end
 
 directory node[:web][:log_directory] do
