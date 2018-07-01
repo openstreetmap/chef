@@ -35,8 +35,19 @@ template "/usr/local/bin/passenger-ruby" do
   notifies :reload, "service[apache2]"
 end
 
+systemd_tmpfile node[:passenger][:instance_registry_dir] do
+  type "d"
+  owner "root"
+  group "root"
+  mode "0755"
+end
+
 apache_module "passenger" do
   conf "passenger.conf.erb"
+end
+
+munin_plugin_conf "passenger" do
+  template "munin.erb"
 end
 
 munin_plugin "passenger_memory"

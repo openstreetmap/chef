@@ -4,7 +4,7 @@
 pgrep -u rails -f Rack | sort > /tmp/rails.actual.$$
 
 # Get a list of rack processes we expect to be running
-passenger-status | awk '/PID:/ { print $3 }' | sort > /tmp/rails.expected.$$
+PASSENGER_INSTANCE_REGISTRY_DIR=<%= node[:passenger][:instance_registry_dir] %> passenger-status | awk '/PID:/ { print $3 }' | sort > /tmp/rails.expected.$$
 
 # Get a list of unexpected rack processes
 pids=$(comm -23 /tmp/rails.actual.$$ /tmp/rails.expected.$$)

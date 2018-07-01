@@ -127,7 +127,7 @@ action :create do
     notifies :run, "execute[#{rails_directory}/Gemfile]"
     notifies :run, "execute[#{rails_directory}/public/assets]"
     notifies :delete, "file[#{rails_directory}/public/export/embed.html]"
-    notifies :run, "execute[#{rails_directory}]"
+    notifies :restart, "passenger_application[#{rails_directory}]"
   end
 
   declare_resource :directory, "#{rails_directory}/tmp" do
@@ -151,7 +151,7 @@ action :create do
               :name => new_resource.database_name,
               :username => new_resource.database_username,
               :password => new_resource.database_password
-    notifies :run, "execute[#{rails_directory}]"
+    notifies :restart, "passenger_application[#{rails_directory}]"
   end
 
   application_yml = edit_file "#{rails_directory}/config/example.application.yml" do |line|
@@ -306,7 +306,7 @@ action :create do
     group "root"
     environment "NOKOGIRI_USE_SYSTEM_LIBRARIES" => "yes"
     subscribes :run, "gem_package[bundler#{new_resource.ruby}]"
-    notifies :run, "execute[#{rails_directory}]"
+    notifies :restart, "passenger_application[#{rails_directory}]"
   end
 
   execute "#{rails_directory}/db/migrate" do
@@ -316,7 +316,7 @@ action :create do
     user new_resource.user
     group new_resource.group
     subscribes :run, "git[#{rails_directory}]"
-    notifies :run, "execute[#{rails_directory}]"
+    notifies :restart, "passenger_application[#{rails_directory}]"
     only_if { new_resource.run_migrations }
   end
 
@@ -327,20 +327,14 @@ action :create do
     cwd rails_directory
     user new_resource.user
     group new_resource.group
-    notifies :run, "execute[#{rails_directory}]"
+    notifies :restart, "passenger_application[#{rails_directory}]"
   end
 
   file "#{rails_directory}/public/export/embed.html" do
     action :nothing
   end
 
-  execute rails_directory do
-    action :nothing
-    command "passenger-config restart-app --ignore-app-not-running --ignore-passenger-not-running #{rails_directory}"
-    user "root"
-    group "root"
-    only_if { ::File.exist?("/usr/bin/passenger-config") }
-  end
+  passenger_application rails_directory
 
   template "/etc/cron.daily/rails-#{new_resource.site.tr('.', '-')}" do
     cookbook "web"
@@ -353,11 +347,8 @@ action :create do
 end
 
 action :restart do
-  execute rails_directory do
-    action :run
-    command "passenger-config restart-app --ignore-app-not-running --ignore-passenger-not-running #{rails_directory}"
-    user "root"
-    group "root"
+  passenger_application rails_directory do
+    action :restart
   end
 end
 
