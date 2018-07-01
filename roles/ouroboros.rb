@@ -30,6 +30,5 @@ default_attributes(
 
 run_list(
   "role[ic]",
-  "role[hp-dl360-g6]",
-  "role[wiki]"
+  "role[hp-dl360-g6]"
 )
