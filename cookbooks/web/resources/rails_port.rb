@@ -336,7 +336,7 @@ action :create do
 
   execute rails_directory do
     action :nothing
-    command "passenger-config restart-app --ignore-app-not-running #{rails_directory}"
+    command "passenger-config restart-app --ignore-app-not-running --ignore-passenger-not-running #{rails_directory}"
     user "root"
     group "root"
     only_if { ::File.exist?("/usr/bin/passenger-config") }
@@ -355,7 +355,7 @@ end
 action :restart do
   execute rails_directory do
     action :run
-    command "passenger-config restart-app --ignore-app-not-running #{rails_directory}"
+    command "passenger-config restart-app --ignore-app-not-running --ignore-passenger-not-running #{rails_directory}"
     user "root"
     group "root"
   end
