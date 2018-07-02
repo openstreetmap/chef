@@ -243,7 +243,7 @@ if node[:postgresql][:clusters][:"9.5/main"]
 
       apache_site site_name do
         template "apache.rails.erb"
-        variables :name => site_name, :aliases => site_aliases, :secret_key_base => secret_key_base
+        variables :application_name => name, :aliases => site_aliases, :secret_key_base => secret_key_base
       end
     else
       apache_site site_name do

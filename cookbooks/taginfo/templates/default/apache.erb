@@ -15,6 +15,7 @@
         RackEnv production
         PassengerMinInstances 10
         PassengerPreStart http://<%= @name %>/
+        PassengerAppGroupName taginfo
 
         CacheEnable disk /api
         CacheEnable disk /embed

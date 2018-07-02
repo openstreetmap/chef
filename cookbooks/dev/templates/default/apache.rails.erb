@@ -17,6 +17,7 @@
         DocumentRoot /srv/<%= @name %>/public
 
         RailsEnv production
+        PassengerAppGroupName <%= @application_name %>
 
         SetEnv SECRET_KEY_BASE <%= @secret_key_base %>
 

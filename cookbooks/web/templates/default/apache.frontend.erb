@@ -153,6 +153,7 @@
   PassengerMaxRequests 5000
   PassengerMaxRequestQueueSize 250
   PassengerPreStart https://www.openstreetmap.org/
+  PassengerAppGroupName rails
   SetEnv SECRET_KEY_BASE <%= @secret_key_base %>
   Alias /favicon.ico <%= node[:web][:base_directory] %>/rails/app/assets/favicons/favicon.ico
   Alias /openlayers <%= node[:web][:base_directory] %>/rails/vendor/assets/openlayers
