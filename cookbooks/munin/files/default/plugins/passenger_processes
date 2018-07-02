@@ -9,6 +9,7 @@ end
 
 def output_config
   puts <<~CONFIG
+    graph_args --lower-limit 0
     graph_category passenger
     graph_title Passenger processes
     graph_order active inactive
