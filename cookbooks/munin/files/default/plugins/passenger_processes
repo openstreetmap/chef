@@ -1,6 +1,11 @@
 #!/usr/bin/env ruby
 
 require "English"
+require "rexml/document"
+
+def passenger_status
+  @passenger_status ||= REXML::Document.new(`/usr/sbin/passenger-status --show=xml`)
+end
 
 def output_config
   puts <<~CONFIG
@@ -19,16 +24,19 @@ def output_config
 end
 
 def output_values
-  status = `/usr/sbin/passenger-status`
-  unless $CHILD_STATUS.success?
-    warn "failed executing passenger-status"
-    exit 1
-  end
-  status =~ /active\s+=\s+(\d+)/
-  puts "active.value #{Regexp.last_match[1]}"
+  active = 0
+  inactive = 0
 
-  status =~ /inactive\s+=\s+(\d+)/
-  puts "inactive.value #{Regexp.last_match[1]}"
+  passenger_status.get_elements("//process").each do |process|
+    if process.text("sessions").to_i.positive?
+      active += 1
+    else
+      inactive += 1
+    end
+  end
+
+  puts "active.value #{active}"
+  puts "inactive.value #{inactive}"
 end
 
 if ARGV[0] == "config"

@@ -1,6 +1,11 @@
 #!/usr/bin/env ruby
 
 require "English"
+require "rexml/document"
+
+def passenger_status
+  @passenger_status ||= REXML::Document.new(`/usr/sbin/passenger-status --show=xml`)
+end
 
 def output_config
   puts <<~CONFIG
@@ -9,23 +14,41 @@ def output_config
     graph_title Passenger requests
     graph_vlabel requests / ${graph_period}
 
-    requests.label requests
-    requests.type DERIVE
-    requests.max 1000000
-    requests.min 0
+    total.label total
+    total.type DERIVE
+    total.max 1000000
+    total.min 0
   CONFIG
-  exit 0
+
+  groups = passenger_status.get_elements("//supergroup").map do |supergroup|
+    supergroup.text("name")
+  end
+
+  groups.sort.each do |name|
+    puts "#{name}.label #{name}"
+    puts "#{name}.type DERIVE"
+    puts "#{name}.max 1000000"
+    puts "#{name}.min 0"
+  end
 end
 
 def output_values
-  status = `/usr/sbin/passenger-status`
-  unless $CHILD_STATUS.success?
-    warn "failed executing passenger-status"
-    exit 1
-  end
   total_requests = 0
-  status.scan(/Processed: (\d+)/).flatten.each { |count| total_requests += count.to_i }
-  puts "requests.value #{total_requests}"
+
+  passenger_status.get_elements("//supergroup").map do |supergroup|
+    name = supergroup.text("name")
+    requests = 0
+
+    supergroup.get_elements("group/processes/process").each do |process|
+      requests += process.text("processed").to_i
+    end
+
+    total_requests += requests
+
+    puts "#{name}.value #{requests}"
+  end
+
+  puts "total.value #{total_requests}"
 end
 
 if ARGV[0] == "config"
