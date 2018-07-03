@@ -49,10 +49,10 @@ ruby_version = node[:passenger][:ruby_version]
 
 package "ruby#{ruby_version}"
 
-%w[json sqlite3 sinatra sinatra-r18n rack-contrib].each do |gem|
-  gem_package gem do
-    gem_binary "gem#{ruby_version}"
-  end
+gem_package "bundler#{ruby_version}" do
+  package_name "bundler"
+  gem_binary "gem#{ruby_version}"
+  options "--format-executable"
 end
 
 apache_module "cache"
@@ -185,6 +185,17 @@ node[:taginfo][:sites].each do |site|
     subscribes :run, "git[#{directory}/osmium-tool]"
   end
 
+  execute "#{directory}/taginfo/Gemfile" do
+    action :nothing
+    command "bundle#{ruby_version} install"
+    cwd "#{directory}/taginfo"
+    user "root"
+    group "root"
+    subscribes :run, "gem_package[bundler#{ruby_version}]"
+    subscribes :run, "git[#{directory}/taginfo]"
+    notifies :restart, "passenger_application[#{directory}/taginfo/web/public]"
+  end
+
   %w[taginfo/web/tmp bin data data/old download sources planet planet/log planet/replication].each do |dir|
     directory "#{directory}/#{dir}" do
       owner "taginfo"
@@ -237,6 +248,8 @@ node[:taginfo][:sites].each do |site|
     mode 0o755
     variables :name => site_name, :directory => directory
   end
+
+  passenger_application "#{directory}/taginfo/web/public"
 
   ssl_certificate site_name do
     domains [site_name] + site_aliases
