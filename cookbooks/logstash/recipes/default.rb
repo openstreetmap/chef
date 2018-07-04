@@ -42,6 +42,22 @@ file "/var/lib/logstash/lumberjack.key" do
   notifies :restart, "service[logstash]"
 end
 
+cookbook_file "/var/lib/logstash/beats.crt" do
+  source "beats.crt"
+  user "root"
+  group "logstash"
+  mode 0o644
+  notifies :restart, "service[logstash]"
+end
+
+file "/var/lib/logstash/beats.key" do
+  content keys["beats"].join("\n")
+  user "root"
+  group "logstash"
+  mode 0o640
+  notifies :restart, "service[logstash]"
+end
+
 template "/etc/logstash/conf.d/chef.conf" do
   source "logstash.conf.erb"
   user "root"
@@ -79,6 +95,16 @@ forwarders.sort_by { |n| n[:fqdn] }.each do |forwarder|
       dest_ports "5043"
       source_ports "1024:"
     end
+
+    firewall_rule "accept-beats-#{forwarder}" do
+      action :accept
+      family interface[:family]
+      source "#{interface[:zone]}:#{interface[:address]}"
+      dest "fw"
+      proto "tcp:syn"
+      dest_ports "5044"
+      source_ports "1024:"
+    end
   end
 end
 
@@ -93,6 +119,16 @@ gateways.sort_by { |n| n[:fqdn] }.each do |gateway|
       dest "fw"
       proto "tcp:syn"
       dest_ports "5043"
+      source_ports "1024:"
+    end
+
+    firewall_rule "accept-beats-#{gateway}" do
+      action :accept
+      family interface[:family]
+      source "#{interface[:zone]}:#{interface[:address]}"
+      dest "fw"
+      proto "tcp:syn"
+      dest_ports "5044"
       source_ports "1024:"
     end
   end
