@@ -36,6 +36,7 @@ mediawiki_site "board.osmfoundation.org" do
   private true
   recaptcha_public_key "6LflIQATAAAAAMXyDWpba-FgipVzE-aGF4HIR59N"
   recaptcha_private_key passwords["board"]["recaptcha"]
+  version "1.31"
 end
 
 mediawiki_extension "MobileFrontend" do
