@@ -17,18 +17,6 @@
 # limitations under the License.
 #
 
-service "logstash-forwarder" do
-  action [:disable, :stop]
-end
-
-file "/var/lib/logstash-forwarder/lumberjack.crt" do
-  action :delete
-end
-
-package "logstash-forwarder" do
-  action :purge
-end
-
 require "yaml"
 
 package "filebeat"
