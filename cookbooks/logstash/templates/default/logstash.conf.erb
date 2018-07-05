@@ -1,6 +1,7 @@
 input {
   beats {
     port => 5044
+    ssl => true
     ssl_certificate => "/var/lib/logstash/beats.crt"
     ssl_key => "/var/lib/logstash/beats.key"
   }
