@@ -17,27 +17,39 @@
 # limitations under the License.
 #
 
-require "json"
-
-package "logstash-forwarder"
-
-cookbook_file "/var/lib/logstash-forwarder/lumberjack.crt" do
-  source "lumberjack.crt"
-  user "root"
-  group "root"
-  mode 0o644
-  notifies :restart, "service[logstash-forwarder]"
-end
-
-file "/etc/logstash-forwarder.conf" do
-  content JSON.pretty_generate(node[:logstash][:forwarder])
-  user "root"
-  group "root"
-  mode 0o644
-  notifies :restart, "service[logstash-forwarder]"
-end
-
 service "logstash-forwarder" do
+  action [:disable, :stop]
+end
+
+file "/var/lib/logstash-forwarder/lumberjack.crt" do
+  action :delete
+end
+
+package "logstash-forwarder" do
+  action :purge
+end
+
+require "yaml"
+
+package "filebeat"
+
+cookbook_file "/etc/filebeat/filebeat.crt" do
+  source "beats.crt"
+  user "root"
+  group "root"
+  mode 0o600
+  notifies :restart, "service[filebeat]"
+end
+
+file "/etc/filebeat/filebeat.yml" do
+  content YAML.dump(node[:logstash][:forwarder].to_hash)
+  user "root"
+  group "root"
+  mode 0o600
+  notifies :restart, "service[filebeat]"
+end
+
+service "filebeat" do
   action [:enable, :start]
   supports :status => true, :restart => true
 end

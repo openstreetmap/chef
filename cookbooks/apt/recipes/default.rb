@@ -138,12 +138,6 @@ apt_source "logstash" do
   key "D27D666CD88E42B4"
 end
 
-apt_source "logstash-forwarder" do
-  source_template "elasticsearch.list.erb"
-  url "https://packages.elasticsearch.org/logstashforwarder/debian"
-  key "D27D666CD88E42B4"
-end
-
 apt_source "passenger" do
   url "https://oss-binaries.phusionpassenger.com/apt/passenger"
   key "561F9B9CAC40B2F7"

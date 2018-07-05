@@ -1,3 +1,4 @@
-default[:logstash][:forwarder][:network][:servers] = ["logstash.openstreetmap.org:5043"]
-default[:logstash][:forwarder][:network][:"ssl ca"] = "/var/lib/logstash-forwarder/lumberjack.crt"
-default[:logstash][:forwarder][:files] = []
+default[:logstash][:forwarder]["output.logstash"]["hosts"] = ["logstash.openstreetmap.org:5044"]
+default[:logstash][:forwarder]["output.logstash"]["ssl.certificate_authorities"] = "/etc/filebeat/filebeat.crt"
+default[:logstash][:forwarder]["output.logstash"]["ssl.verification_mode"] = "none"
+default[:logstash][:forwarder]["filebeat.prospectors"] = []
