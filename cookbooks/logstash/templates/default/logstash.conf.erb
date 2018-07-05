@@ -1,10 +1,4 @@
 input {
-  lumberjack {
-    port => 5043
-    ssl_certificate => "/var/lib/logstash/lumberjack.crt"
-    ssl_key => "/var/lib/logstash/lumberjack.key"
-  }
-
   beats {
     port => 5044
     ssl_certificate => "/var/lib/logstash/beats.crt"

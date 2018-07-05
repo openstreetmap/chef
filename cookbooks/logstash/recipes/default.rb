@@ -26,22 +26,6 @@ package %w[
   logstash
 ]
 
-cookbook_file "/var/lib/logstash/lumberjack.crt" do
-  source "lumberjack.crt"
-  user "root"
-  group "logstash"
-  mode 0o644
-  notifies :restart, "service[logstash]"
-end
-
-file "/var/lib/logstash/lumberjack.key" do
-  content keys["lumberjack"].join("\n")
-  user "root"
-  group "logstash"
-  mode 0o640
-  notifies :restart, "service[logstash]"
-end
-
 cookbook_file "/var/lib/logstash/beats.crt" do
   source "beats.crt"
   user "root"
