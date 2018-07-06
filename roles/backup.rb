@@ -28,6 +28,10 @@ default_attributes(
           "2001:41c9:2:d6::/64",                 # bytemark external
           "212.110.172.32",                      # shenron
           "2001:41c9:1:400::32",                 # shenron
+          "140.211.167.104",                     # osuosl
+          "140.211.167.105",                     # osuosl
+          "2605:bc80:3010:700::8cde:a768",       # osuosl
+          "2605:bc80:3010:700::8cde:a769",       # osuosl
           "127.0.0.0/8",                         # localhost
           "::1"                                  # localhost
         ]
