@@ -4,6 +4,7 @@
 ACTION=="add", SUBSYSTEM=="block", ENV{ID_VENDOR}=="HP", ENV{ID_MODEL}=="LOGICAL_VOLUME", ATTR{queue/scheduler}="noop"
 ACTION=="add", SUBSYSTEM=="block", ENV{ID_VENDOR}=="HP", ENV{ID_MODEL}=="LOGICAL_VOLUME", ATTR{queue/nr_requests}="512"
 ACTION=="add", SUBSYSTEM=="block", ENV{ID_VENDOR}=="HP", ENV{ID_MODEL}=="LOGICAL_VOLUME", ATTR{queue/read_ahead_kb}="4096"
+ACTION=="add", SUBSYSTEM=="block", ENV{ID_VENDOR}=="HP", ENV{ID_MODEL}=="LOGICAL_VOLUME", ATTR{queue/rq_affinity}="2"
 <% node[:devices].each do |name,device| -%>
 
 # <%= device[:comment] %>
