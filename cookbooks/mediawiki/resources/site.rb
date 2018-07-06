@@ -368,12 +368,14 @@ action :create do
   mediawiki_extension "AntiSpoof" do
     site new_resource.site
     template "mw-ext-AntiSpoof.inc.php.erb"
+    compose true
     update_site false
   end
 
   mediawiki_extension "AbuseFilter" do
     site new_resource.site
     template "mw-ext-AbuseFilter.inc.php.erb"
+    compose true
     update_site false
   end
 
@@ -390,6 +392,7 @@ action :create do
 
   mediawiki_extension "Elastica" do
     site new_resource.site
+    compose true
     update_site false
   end
 
