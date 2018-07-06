@@ -1,8 +1,8 @@
 server {
-    listen [::]:80 fastopen=1024 default_server;
-    listen *:80 fastopen=1024 default_server;
-    listen [::]:443 fastopen=1024 ssl http2; # No default_server here unless certificate specified here too.
-    listen *:443 fastopen=1024 ssl http2; # No default_server here unless certificate specified here too.
+    listen [::]:80 fastopen=2048 default_server;
+    listen *:80 fastopen=2048 default_server;
+    listen [::]:443 fastopen=2048 ssl http2; # No default_server here unless certificate specified here too.
+    listen *:443 fastopen=2048 ssl http2; # No default_server here unless certificate specified here too.
     server_name  _;
     default_type text/html;
     return 404 '<html><head><title>404 Not Found</title></head><body bgcolor="white"><center><h1>404 Not Found</h1></center><hr><center>default imagery server vhost. Please use correct URL.</center></body></html>';
