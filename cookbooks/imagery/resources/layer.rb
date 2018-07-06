@@ -70,6 +70,8 @@ action :create do
                 "MS_DEBUGLEVEL" => "0",
                 "MS_ERRORFILE" => "stderr"
     limit_nofile 16384
+    memory_high "1G"
+    memory_max "2G"
     user "imagery"
     group "imagery"
     exec_start_pre "/bin/rm -f /run/mapserver-fastcgi/layer-#{new_resource.layer}.socket"

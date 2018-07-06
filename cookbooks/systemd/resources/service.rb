@@ -27,6 +27,9 @@ property :type, String,
          :default => "simple",
          :is => %w[simple forking oneshot dbus notify idle]
 property :limit_nofile, Integer
+property :memory_low, [Integer, String]
+property :memory_high, [Integer, String]
+property :memory_max, [Integer, String]
 property :environment, Hash, :default => {}
 property :environment_file, [String, Hash]
 property :user, String
