@@ -334,7 +334,9 @@ action :create do
     action :nothing
   end
 
-  passenger_application rails_directory
+  passenger_application rails_directory do
+    only_if { ::File.exist?("/usr/bin/passenger-config") }
+  end
 
   template "/etc/cron.daily/rails-#{new_resource.site.tr('.', '-')}" do
     cookbook "web"
