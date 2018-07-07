@@ -32,6 +32,7 @@ package %w[
   php-mbstring
   php-mysql
   php-xml
+  composer
 ]
 
 # Mediawiki enhanced difference engine
