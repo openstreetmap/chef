@@ -2,6 +2,17 @@ name "katie"
 description "Master role applied to katie"
 
 default_attributes(
+  :devices => {
+    :disktune => {
+      :comment => "Tune scheduler for Toshiba disks",
+      :type => "block",
+      :bus => "ata",
+      :serial => "TOSHIBA_DT01ACA300_*",
+      :attrs => {
+        "queue/scheduler" => "deadline"
+      }
+    }
+  },
   :networking => {
     :interfaces => {
       :external_ipv4 => {
