@@ -775,7 +775,7 @@ begin retry
 # There are no rewriting specifications in this default configuration file.
 
 begin rewrite
-*@<%= node[:fqdn] %> $1@openstreetmap.org Eh
+*@<%= node[:fqdn] %> "${if eq {${lookup{$1}lsearch{/etc/aliases}{yes}{no}}}{no} {$1@openstreetmap.org}fail}" Eh
 <% node[:exim][:rewrites].each do |rewrite| -%>
 <%= rewrite[:pattern] %> <%= rewrite[:replacement] %> <%= rewrite[:flags] %>
 <% end -%>
