@@ -372,17 +372,6 @@ end
 
 include_recipe "fail2ban"
 
-fail2ban_filter "nominatim" do
-  failregex "Warning ignored: <HOST>"
-end
-
-fail2ban_jail "nominatim" do
-  filter "nominatim"
-  logpath "#{node[:nominatim][:logdir]}/restricted_ips.log"
-  ports [80, 443]
-  maxretry 3
-end
-
 munin_plugin_conf "nominatim" do
   template "munin.erb"
   variables :db => node[:nominatim][:dbname],
