@@ -2,5 +2,5 @@
 
 MAILTO=admins@openstreetmap.org
 
-00 */12 * * * /usr/bin/certbot /srv/acme.openstreetmap.org/bin/renew
-30 */12 * * * /usr/bin/certbot /srv/acme.openstreetmap.org/bin/check-certificates
+00 */12 * * * letsencrypt /srv/acme.openstreetmap.org/bin/renew
+30 */12 * * * letsencrypt /srv/acme.openstreetmap.org/bin/check-certificates
