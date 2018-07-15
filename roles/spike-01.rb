@@ -42,7 +42,7 @@ run_list(
   "role[ic]",
   "role[hp-dl360-g6]",
   "role[web-frontend]",
-  # "role[web-gpximport]",
-  # "role[web-statistics]",
-  # "role[web-cleanup]"
+  "role[web-gpximport]",
+  "role[web-statistics]",
+  "role[web-cleanup]"
 )
