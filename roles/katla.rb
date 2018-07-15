@@ -93,5 +93,6 @@ default_attributes(
 
 run_list(
   "role[bytemark]",
-  "role[db-slave]"
+  "role[db-master]",
+  "role[db-backup]"
 )

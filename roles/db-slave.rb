@@ -10,7 +10,7 @@ default_attributes(
         :hot_standby_feedback => "on",
         :standby_mode => "on",
         :primary_conninfo => {
-          :host => "karm.ic.openstreetmap.org",
+          :host => "katla.ic.openstreetmap.org",
           :port => "5432",
           :user => "replication",
           :passwords => { :bag => "db", :item => "passwords" }
