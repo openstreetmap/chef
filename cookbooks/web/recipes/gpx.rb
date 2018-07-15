@@ -28,7 +28,7 @@ package %w[
   libarchive-dev
   libbz2-dev
   libexpat1-dev
-  libgd2-noxpm-dev
+  libgd-dev
   libmemcached-dev
   libpq-dev
   zlib1g-dev
