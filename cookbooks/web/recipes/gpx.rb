@@ -74,7 +74,6 @@ systemd_service "gpx-import" do
   exec_start "#{gpx_directory}/src/gpx-import"
   exec_reload "/bin/kill -HUP $MAINPID"
   private_tmp true
-  private_devices true
   protect_system "full"
   protect_home true
   restart "on-failure"
