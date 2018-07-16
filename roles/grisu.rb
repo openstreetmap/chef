@@ -63,6 +63,7 @@ run_list(
   "role[hp-dl180-g6]",
   "role[gateway]",
   "role[web-storage]",
+  "role[backup]",
   "role[planet]",
   "recipe[openvpn]"
 )
