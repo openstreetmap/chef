@@ -54,7 +54,7 @@ default_attributes(
     }
   },
   :planet => {
-    :replication => "disabled"
+    :replication => "enabled"
   }
 )
 
@@ -65,5 +65,6 @@ run_list(
   "role[web-storage]",
   "role[backup]",
   "role[planet]",
+  "role[planetdump]",
   "recipe[openvpn]"
 )

@@ -72,7 +72,7 @@ default_attributes(
     }
   },
   :planet => {
-    :replication => "enabled"
+    :replication => "disabled"
   },
   :rsyncd => {
     :modules => {
@@ -125,7 +125,7 @@ run_list(
   "role[backup]",
   "role[stats]",
   "role[planet]",
-  "role[planetdump]",
+  # "role[planetdump]",
   "role[logstash]",
   "recipe[rsyncd]",
   "recipe[openvpn]",
