@@ -20,9 +20,9 @@ default_attributes(
         :transfer_logging => false,
         :hosts_allow => [
           "193.60.236.0/24",                     # ucl external
-          "146.179.159.160/27",                  # ic internal
-          "193.63.75.96/27",                     # ic external
-          "2001:630:12:500::/64",                # ic external
+          "10.0.48.0/20",                        # equinix internal
+          "130.117.76.0/27",                     # equinix external
+          "2001:978:2:2C::172:0/112",            # equinix external
           "10.0.32.0/20",                        # bytemark internal
           "89.16.162.16/28",                     # bytemark external
           "2001:41c9:2:d6::/64",                 # bytemark external

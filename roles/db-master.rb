@@ -11,27 +11,10 @@ default_attributes(
         :archive_command => "/usr/local/bin/openstreetmap-wal-e --terse wal-push %p",
         :max_wal_senders => "3",
         :late_authentication_rules => [
-          { :database => "replication", :user => "replication", :address => "146.179.159.168/32" },
-          { :database => "replication", :user => "replication", :address => "146.179.159.170/32" },
+          { :database => "replication", :user => "replication", :address => "10.0.48.50/32" },
+          { :database => "replication", :user => "replication", :address => "10.0.48.5/32" },
           { :database => "replication", :user => "replication", :address => "10.0.0.10/32" },
           { :database => "replication", :user => "replication", :address => "10.0.32.40/32" }
-        ]
-      }
-    }
-  },
-  :rsyncd => {
-    :modules => {
-      :archive => {
-        :comment => "WAL Archive",
-        :path => "/store/arrays/nvme/postgresql-archive",
-        :read_only => true,
-        :write_only => false,
-        :list => false,
-        :uid => "postgres",
-        :gid => "postgres",
-        :transfer_logging => false,
-        :hosts_allow => [
-          "146.179.159.168", "146.179.159.170, 10.0.0.10, 10.0.32.40"
         ]
       }
     }

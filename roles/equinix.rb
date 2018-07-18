@@ -1,14 +1,9 @@
-name "ic"
-description "Role applied to all servers at Imperial College"
+name "equnix"
+description "Role applied to all servers at Equinix"
 
 default_attributes(
-  :accounts => {
-    :users => {
-      :icladmin => { :status => :user }
-    }
-  },
   :networking => {
-    :nameservers => ["8.8.8.8", "146.179.159.177"],
+    :nameservers => ["66.28.0.45", "66.28.0.61", "2001:978:1:1::d", "2001:978:1:2::d"],
     :roles => {
       :internal => {
         :inet => {
@@ -17,7 +12,7 @@ default_attributes(
         }
       },
       :external => {
-        :zone => "ic",
+        :zone => "ams",
         :inet => {
           :prefix => "27",
           :gateway => "130.117.76.30"
@@ -32,19 +27,19 @@ default_attributes(
   :web => {
     :backends => %w[rails1 rails2 rails3],
     :fileserver => "ironbelly",
-    :readonly_database_host => "karm.ic.openstreetmap.org"
+    :readonly_database_host => "karm.ams.openstreetmap.org"
   }
 )
 
 override_attributes(
   :networking => {
-    :search => ["ic.openstreetmap.org", "openstreetmap.org"]
+    :search => ["ams.openstreetmap.org", "openstreetmap.org"]
   },
   :ntp => {
-    :servers => ["0.uk.pool.ntp.org", "1.uk.pool.ntp.org", "europe.pool.ntp.org"]
+    :servers => ["0.nl.pool.ntp.org", "1.nl.pool.ntp.org", "europe.pool.ntp.org"]
   }
 )
 
 run_list(
-  "role[gb]"
+  "role[nl]"
 )

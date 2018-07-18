@@ -20,7 +20,7 @@ All our servers are [named after dragons](https://wiki.openstreetmap.org/wiki/Se
 
 Covers anything specific to a certain piece of hardware, like a motherboard, that could apply to multiple machines.
 
-## Location-specific roles (e.g. [ic.rb](roles/ic.rb))
+## Location-specific roles (e.g. [ams.rb](roles/ams.rb))
 
 These form a hierarchy of datacentres, organisations, and countries where our servers are located.
 
