@@ -7,7 +7,7 @@ set -e
 export PATH=$PATH:/usr/local/bin
 
 # Generate new statistics
-<%= @ruby %> <%= @directory %>/script/statistics > <%= @directory %>/tmp/data_stats.html
+<%= @ruby %> -W0 <%= @directory %>/script/statistics > <%= @directory %>/tmp/data_stats.html
 
 # Move new statistics into place
 mv -f <%= @directory %>/tmp/data_stats.html /store/rails/stats
