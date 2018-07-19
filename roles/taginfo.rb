@@ -24,6 +24,9 @@ default_attributes(
       :max_connections_per_child => 10000
     }
   },
+  :passenger => {
+    :max_pool_size => 50
+  },
   :taginfo => {
     :sites => [
       {
