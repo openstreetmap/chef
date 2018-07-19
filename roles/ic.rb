@@ -12,19 +12,19 @@ default_attributes(
     :roles => {
       :internal => {
         :inet => {
-          :prefix => "27",
-          :gateway => "146.179.159.177"
+          :prefix => "20",
+          :gateway => "10.0.48.2"
         }
       },
       :external => {
         :zone => "ic",
         :inet => {
           :prefix => "27",
-          :gateway => "193.63.75.97"
+          :gateway => "130.117.76.30"
         },
         :inet6 => {
           :prefix => "64",
-          :gateway => "fe80::5:73ff:fea0:1"
+          :gateway => "2001:978:2:2C::172:2"
         }
       }
     }

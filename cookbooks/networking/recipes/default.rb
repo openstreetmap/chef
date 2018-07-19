@@ -25,23 +25,27 @@ require "ipaddr"
 network_packages = []
 
 node[:networking][:interfaces].each do |name, interface|
-  network_packages |= ["vlan"] if interface[:interface] =~ /\.\d+$/
-  network_packages |= ["ifenslave"] if interface[:bond]
+  if interface[:interface]
+    network_packages |= ["vlan"] if interface[:interface] =~ /\.\d+$/
+    network_packages |= ["ifenslave"] if interface[:bond]
 
-  if interface[:role] && (role = node[:networking][:roles][interface[:role]])
-    if role[interface[:family]]
-      node.normal[:networking][:interfaces][name][:prefix] = role[interface[:family]][:prefix]
-      node.normal[:networking][:interfaces][name][:gateway] = role[interface[:family]][:gateway]
+    if interface[:role] && (role = node[:networking][:roles][interface[:role]])
+      if role[interface[:family]]
+        node.normal[:networking][:interfaces][name][:prefix] = role[interface[:family]][:prefix]
+        node.normal[:networking][:interfaces][name][:gateway] = role[interface[:family]][:gateway]
+      end
+
+      node.normal[:networking][:interfaces][name][:metric] = role[:metric]
+      node.normal[:networking][:interfaces][name][:zone] = role[:zone]
     end
 
-    node.normal[:networking][:interfaces][name][:metric] = role[:metric]
-    node.normal[:networking][:interfaces][name][:zone] = role[:zone]
+    prefix = node[:networking][:interfaces][name][:prefix]
+
+    node.normal[:networking][:interfaces][name][:netmask] = (~IPAddr.new(interface[:address]).mask(0)).mask(prefix)
+    node.normal[:networking][:interfaces][name][:network] = IPAddr.new(interface[:address]).mask(prefix)
+  else
+    node.rm(:networking, :interfaces, name)
   end
-
-  prefix = node[:networking][:interfaces][name][:prefix]
-
-  node.normal[:networking][:interfaces][name][:netmask] = (~IPAddr.new(interface[:address]).mask(0)).mask(prefix)
-  node.normal[:networking][:interfaces][name][:network] = IPAddr.new(interface[:address]).mask(prefix)
 end
 
 package network_packages

@@ -4,26 +4,27 @@ description "Master role applied to dulcy"
 default_attributes(
   :networking => {
     :interfaces => {
-      :external_ipv4 => {
-        :interface => "p18p1",
-        :role => :external,
-        :family => :inet,
-        :address => "193.63.75.109",
-        :hwaddress => "0c:c4:7a:66:96:d2"
-      },
-      :external_ipv6 => {
-        :interface => "p18p1",
-        :role => :external,
-        :family => :inet6,
-        :address => "2001:630:12:500:ec4:7aff:fe66:96d2"
-      },
       :internal_ipv4 => {
-        :interface => "p18p2",
+        :interface => "bond0",
         :role => :internal,
         :family => :inet,
-        :address => "146.179.159.179",
-        :hwaddress => "0c:c4:7a:66:96:d3"
-      }
+        :address => "10.0.48.1",
+        :bond => {
+          :slaves => %w[p18p1 p18p2]
+        }
+      },
+      :external_ipv4 => {
+        :interface => "bond0.3",
+        :role => :external,
+        :family => :inet,
+        :address => "130.117.76.1"
+      },
+      # :external_ipv6 => {
+      #   :interface => "bond0.3",
+      #   :role => :external,
+      #   :family => :inet6,
+      #   :address => "2001:978:2:2C::172:1001"
+      # }
     }
   },
   :postgresql => {

@@ -46,11 +46,13 @@ default_attributes(
   :networking => {
     :interfaces => {
       :internal_ipv4 => {
-        :interface => "eth0",
+        :interface => "bond0",
         :role => :internal,
         :family => :inet,
-        :address => "146.179.159.170",
-        :hwaddress => "00:25:90:4b:05:9a"
+        :address => "10.0.48.5",
+        :bond => {
+          :slaves => %w[eth0 eth1]
+        }
       }
     }
   },

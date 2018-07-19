@@ -5,25 +5,26 @@ default_attributes(
   :networking => {
     :interfaces => {
       :internal_ipv4 => {
-        :interface => "eth0",
+        :interface => "bond0",
         :role => :internal,
         :family => :inet,
-        :address => "146.179.159.172",
-        :hwaddress => "00:23:7d:ea:81:38"
+        :address => "10.0.48.4",
+        :bond => {
+          :slaves => %w[eth0 eth1]
+        }
       },
       :external_ipv4 => {
-        :interface => "eth1",
+        :interface => "bond0.3",
         :role => :external,
         :family => :inet,
-        :address => "193.63.75.106",
-        :hwaddress => "00:23:7d:ea:81:3a"
+        :address => "130.117.76.4"
       },
-      :external_ipv6 => {
-        :interface => "eth1",
-        :role => :external,
-        :family => :inet6,
-        :address => "2001:630:12:500:223:7dff:feea:813a"
-      }
+      # :external_ipv6 => {
+      #   :interface => "bond0.3",
+      #   :role => :external,
+      #   :family => :inet6,
+      #   :address => "2001:978:2:2C::172:1004"
+      # }
     }
   }
 )
