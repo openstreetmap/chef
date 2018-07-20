@@ -2,6 +2,11 @@ name "rhaegal"
 description "Master role applied to rhaegal"
 
 default_attributes(
+  :accounts => {
+    :users => {
+      :mmiler => { :status => :administrator }
+    }
+  },
   :location => "Zagreb, Croatia",
   :networking => {
     :interfaces => {
