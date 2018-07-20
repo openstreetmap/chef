@@ -7,7 +7,6 @@ default_attributes(
       :mmiler => { :status => :administrator }
     }
   },
-  :thanks => "GEOF and OpenIT",
   :location => "Zagreb, Croatia",
   :networking => {
     :interfaces => {
