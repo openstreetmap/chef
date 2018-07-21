@@ -42,7 +42,7 @@ services:
           #        'X-Forwarded-Proto': 'https'
 <% node[:mediawiki][:sites].keys.sort.each do |site_url| -%>
         - # This is the only required parameter,
-          uri: 'http://<%= site_url %>/w/api.php'
+          uri: 'https://<%= site_url %>/w/api.php'
 <% end -%>
 
         # We pre-define wikipedias as 'enwiki', 'dewiki' etc. Similarly
