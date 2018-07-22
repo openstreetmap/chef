@@ -35,6 +35,7 @@ default_attributes(
   :postgresql => {
     :settings => {
       :defaults => {
+        :max_connections => "250",
         :temp_buffers => "32MB",
         :work_mem => "128MB",
         :wal_buffers => "1024kB",
