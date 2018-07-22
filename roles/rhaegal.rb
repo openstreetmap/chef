@@ -7,6 +7,9 @@ default_attributes(
       :mmiler => { :status => :administrator }
     }
   },
+  :apt => {
+    :sources => ["postgresql"]
+  },
   :devices => {
     :ssd_samsung => {
       :comment => "Tune scheduler for SSD",
