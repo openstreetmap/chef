@@ -50,9 +50,9 @@ default_attributes(
       "iaux" => "/data/tablespaces/iaux"
     },
     :fpm_pools => {
-        :www => {
-            :max_children => "40"
-        }
+      :www => {
+        :max_children => "40"
+      }
     }
   }
 )
