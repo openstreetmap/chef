@@ -48,6 +48,11 @@ default_attributes(
       "isearch" => "/ssd/tablespaces/isearch",
       "daux" => "/data/tablespaces/daux",
       "iaux" => "/data/tablespaces/iaux"
+    },
+    :fpm_pools => {
+        :www => {
+            :max_children => "50"
+        }
     }
   }
 )
