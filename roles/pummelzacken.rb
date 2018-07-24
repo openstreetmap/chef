@@ -51,7 +51,7 @@ default_attributes(
     },
     :fpm_pools => {
         :www => {
-            :max_children => "50"
+            :max_children => "40"
         }
     }
   }
