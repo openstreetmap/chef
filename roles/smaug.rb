@@ -72,6 +72,6 @@ default_attributes(
 )
 
 run_list(
-  "role[ic]",
+  "role[equinix]",
   "role[db-slave]"
 )

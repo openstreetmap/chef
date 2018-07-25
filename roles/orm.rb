@@ -97,7 +97,7 @@ override_attributes(
 )
 
 run_list(
-  "role[ic]",
+  "role[equinix]",
   "role[tyan-s7010]",
   "role[tile]"
 )
