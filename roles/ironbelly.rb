@@ -28,23 +28,23 @@ default_attributes(
         :interface => "bond0",
         :role => :internal,
         :family => :inet,
-        :address => "10.0.48.2",
+        :address => "10.0.48.10",
         :bond => {
           :slaves => %w[eth0 eth1]
         }
       },
       :external_ipv4 => {
-        :interface => "bond0.3",
+        :interface => "bond0.2",
         :role => :external,
         :family => :inet,
-        :address => "130.117.76.2"
+        :address => "130.117.76.10"
       },
-      # :external_ipv6 => {
-      #   :interface => "bond0.3",
-      #   :role => :external,
-      #   :family => :inet6,
-      #   :address => "2001:978:2:2C::172:1002"
-      # }
+      :external_ipv6 => {
+        :interface => "bond0.2",
+        :role => :external,
+        :family => :inet6,
+        :address => "2001:978:2:2C::172:A"
+      }
     }
   },
   :openvpn => {

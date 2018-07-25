@@ -14,17 +14,17 @@ default_attributes(
         }
       },
       :external_ipv4 => {
-        :interface => "bond0.3",
+        :interface => "bond0.2",
         :role => :external,
         :family => :inet,
         :address => "130.117.76.4"
       },
-      # :external_ipv6 => {
-      #   :interface => "bond0.3",
-      #   :role => :external,
-      #   :family => :inet6,
-      #   :address => "2001:978:2:2C::172:1004"
-      # }
+      :external_ipv6 => {
+        :interface => "bond0.2",
+        :role => :external,
+        :family => :inet6,
+        :address => "2001:978:2:2C::172:4"
+      }
     }
   }
 )

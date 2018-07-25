@@ -8,18 +8,18 @@ default_attributes(
       :internal => {
         :inet => {
           :prefix => "20",
-          :gateway => "10.0.48.2"
+          :gateway => "10.0.48.10"
         }
       },
       :external => {
         :zone => "ams",
         :inet => {
           :prefix => "27",
-          :gateway => "130.117.76.30"
+          :gateway => "130.117.76.1"
         },
         :inet6 => {
           :prefix => "64",
-          :gateway => "2001:978:2:2C::172:2"
+          :gateway => "2001:978:2:2C::172:1"
         }
       }
     }
