@@ -1,4 +1,4 @@
-name "equnix"
+name "equinix"
 description "Role applied to all servers at Equinix"
 
 default_attributes(
