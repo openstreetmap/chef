@@ -8,7 +8,7 @@ default_attributes(
         :interface => "bond0",
         :role => :internal,
         :family => :inet,
-        :address => "10.0.48.1",
+        :address => "10.0.48.9",
         :bond => {
           :slaves => %w[p18p1 p18p2]
         }
