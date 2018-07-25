@@ -223,7 +223,6 @@ end
 %w[ucl ams bm].each do |zone|
   firewall_rule "accept-openvpn-#{zone}" do
     action :accept
-    family :inet
     source zone
     dest "fw"
     proto "udp"
