@@ -5,6 +5,10 @@ default_attributes(
   :apt => {
     :sources => ["ubuntugis-unstable"]
   },
+  :dhcpd => {
+    :first_address => "10.0.63.1",
+    :last_address => "10.0.63.254"
+  },
   :elasticsearch => {
     :cluster => {
       :routing => {
@@ -131,6 +135,7 @@ run_list(
   # "role[planetdump]",
   "role[logstash]",
   "recipe[rsyncd]",
+  "recipe[dhcpd]",
   "recipe[openvpn]",
   "recipe[tilelog]"
 )
