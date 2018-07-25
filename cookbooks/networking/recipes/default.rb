@@ -220,7 +220,7 @@ firewall_rule "limit-icmp-echo" do
   rate_limit "s:1/sec:5"
 end
 
-%w[ucl ic bm aws].each do |zone|
+%w[ucl ams bm].each do |zone|
   firewall_rule "accept-openvpn-#{zone}" do
     action :accept
     family :inet
