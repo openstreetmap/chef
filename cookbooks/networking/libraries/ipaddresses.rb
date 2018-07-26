@@ -4,10 +4,12 @@ class Chef
       addresses = []
 
       interfaces(options).each do |interface|
+        address = interface[:public_address] || interface[:address]
+
         if block.nil?
-          addresses << interface[:address]
+          addresses << address
         else
-          yield interface[:address]
+          yield address
         end
       end
 

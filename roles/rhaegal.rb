@@ -32,7 +32,8 @@ default_attributes(
         :family => :inet,
         :address => "10.5.0.77",
         :prefix => "16",
-        :gateway => "10.5.0.1"
+        :gateway => "10.5.0.1",
+        :public_address => "161.53.248.77"
       }
     },
     :nameservers => [
