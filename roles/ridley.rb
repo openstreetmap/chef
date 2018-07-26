@@ -6,21 +6,6 @@ default_attributes(
     :first_address => "10.0.15.1",
     :last_address => "10.0.15.254"
   },
-  :munin => {
-    :graphs => {
-      :apcpdu_ucl => {
-        :title => "Current for UCL",
-        :vlabel => "Amps",
-        :category => "Ups",
-        :values => {
-          :load => {
-            :sum => ["apcpdu_apc1.load", "apcpdu_apc2.load", "apcpdu_apc3.load"],
-            :label => "Load"
-          }
-        }
-      }
-    }
-  },
   :networking => {
     :interfaces => {
       :external_ipv4 => {

@@ -26,6 +26,21 @@ default_attributes(
       :data => "/store/elasticsearch"
     }
   },
+  :munin => {
+    :graphs => {
+      :apcpdu_ams => {
+        :title => "Current for Amsterdam",
+        :vlabel => "Amps",
+        :category => "Ups",
+        :values => {
+          :load => {
+            :sum => ["apcpdu_pdu1.load", "apcpdu_pdu2.load"],
+            :label => "Load"
+          }
+        }
+      }
+    }
+  },
   :networking => {
     :interfaces => {
       :internal_ipv4 => {
