@@ -34,7 +34,7 @@ unknown_limit 144
 <% end -%>
 <% if client[:networking][:roles][:external][:zone] == "ucl" -%>
     address <%= client.internal_ipaddress || client.external_ipaddress %>
-<% elsif client[:networking][:roles][:external][:zone] == "ic" -%>
+<% elsif client[:networking][:roles][:external][:zone] == "ams" -%>
     address <%= client.internal_ipaddress || client.external_ipaddress %>
 <% elsif client[:networking][:roles][:external][:zone] == "bm" -%>
     address <%= client.internal_ipaddress || client.external_ipaddress %>
