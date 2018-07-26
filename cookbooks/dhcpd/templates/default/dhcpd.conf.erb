@@ -14,6 +14,18 @@ subnet <%= interface[:network] %> netmask <%= interface[:netmask] %> {
 }
 <% end -%>
 
+host pdu1.openstreetmap.org {
+  hardware ethernet 00:c0:b7:e3:e8:f2;
+  server-name "pdu1.oob.openstreetmap.org";
+  fixed-address pdu1.oob.openstreetmap.org;
+}
+
+host pdu2.openstreetmap.org {
+  hardware ethernet 00:c0:b7:e3:1b:9a;
+  server-name "pdu2.oob.openstreetmap.org";
+  fixed-address pdu2.oob.openstreetmap.org;
+}
+
 host clifford.oob.openstreetmap.org {
   hardware ethernet 1c:c1:de:78:20:d6;
   server-name "clifford.oob.openstreetmap.org";
