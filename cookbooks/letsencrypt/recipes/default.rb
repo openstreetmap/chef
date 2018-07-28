@@ -124,7 +124,7 @@ certificates = search(:node, "letsencrypt:certificates").each_with_object({}) do
   n[:letsencrypt][:certificates].each do |name, details|
     c[name] ||= details.merge(:nodes => [])
 
-    c[name][:nodes] << { :name => n[:fqdn], :address => n[:ipaddress] }
+    c[name][:nodes] << { :name => n[:fqdn], :address => n.external_ipaddress }
   end
 end
 
