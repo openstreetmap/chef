@@ -58,7 +58,7 @@ default_attributes(
     }
   },
   :tilecache => {
-    :tile_parent => "lyon.render.openstreetmap.org",
+    :tile_parent => "france.render.openstreetmap.org",
     :tile_siblings => [
       "trogdor.openstreetmap.org",
       "katie.openstreetmap.org",
