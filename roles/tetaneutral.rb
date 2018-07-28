@@ -2,6 +2,11 @@ name "tetaneutral"
 description "Role applied to all servers at Tetaneutral.net"
 
 default_attributes(
+  :accounts => {
+    :users => {
+      :tetaneutral => { :status => :administrator }
+    }
+  },
   :hosted_by => "Tetaneutral.net",
   :location => "Toulouse, France",
   :networking => {
