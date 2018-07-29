@@ -32,7 +32,7 @@
 
   DocumentRoot <%= @directory %>
 
-  php_admin_value open_basedir <%= @directory %>/:/usr/share/php/:/tmp/
+  php_admin_value open_basedir <%= @directory %>/:/usr/share/php/:/dev/null:/tmp/
   #php_admin_value disable_functions "exec,shell_exec,system,passthru,popen,proc_open"
   php_value memory_limit 128M
   php_value max_execution_time 240
