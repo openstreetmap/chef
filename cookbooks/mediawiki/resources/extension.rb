@@ -23,6 +23,7 @@ property :extension, :kind_of => String, :name_attribute => true
 property :site, :kind_of => String, :required => true
 property :source, :kind_of => String
 property :template, :kind_of => String
+property :template_cookbook, :kind_of => String, :default => "mediawiki"
 property :variables, :kind_of => Hash, :default => {}
 property :version, :kind_of => String
 property :repository, :kind_of => String
@@ -66,7 +67,7 @@ action :create do
 
   if new_resource.template # ~FC023
     declare_resource :template, "#{mediawiki_directory}/LocalSettings.d/Ext-#{new_resource.extension}.inc.php" do
-      cookbook "mediawiki"
+      cookbook new_resource.template_cookbook
       source new_resource.template
       user node[:mediawiki][:user]
       group node[:mediawiki][:group]

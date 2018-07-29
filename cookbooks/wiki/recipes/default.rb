@@ -59,8 +59,14 @@ mediawiki_extension "MobileFrontend" do
   template "mw-ext-MobileFrontend.inc.php.erb"
 end
 
+mediawiki_extension "CodeEditor" do
+  site "wiki.openstreetmap.org"
+end
+
 mediawiki_extension "Scribunto" do
   site "wiki.openstreetmap.org"
+  template "mw-ext-Scribunto.inc.php.erb"
+  template_cookbook "wiki"
 end
 
 cookbook_file "/srv/wiki.openstreetmap.org/osm_logo_wiki.png" do
