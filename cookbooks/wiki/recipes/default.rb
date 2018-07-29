@@ -23,6 +23,8 @@ include_recipe "mediawiki"
 
 passwords = data_bag_item("wiki", "passwords")
 
+package "lua5.1" # newer versions do not work with Scribuntu!
+
 apache_site "default" do
   action [:disable]
 end

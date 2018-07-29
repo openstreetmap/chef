@@ -3,6 +3,12 @@
 
 wfLoadExtension('Scribunto');
 
+// Use standalone mode
+$wgScribuntoDefaultEngine = 'luastandalone';
+
+// Set path to lua interpreter
+$wgScribuntoEngineConf['luastandalone']['luaPath'] = '/usr/bin/lua';
+        
 // Enable syntax highlighting
 $wgScribuntoUseGeSHi = true;
 
