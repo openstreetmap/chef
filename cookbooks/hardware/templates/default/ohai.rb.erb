@@ -158,7 +158,7 @@ Ohai.plugin(:Hardware) do
     find_md_arrays(disk)
 
     disk[:disks].each do |disk|
-      if disk[:vendor] =~ /^CVPR/ && disk[:model] == "INTEL"
+      if disk[:vendor] =~ /^(BTWA|CVPR|PHDV)/ && disk[:model] == "INTEL"
         disk[:model] = disk[:serial_number]
         disk[:serial_number] = disk[:vendor]
         disk[:vendor] = "INTEL"
