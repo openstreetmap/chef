@@ -13,7 +13,7 @@ default_attributes(
     :sources => ["nginx"]
   },
   :nginx => {
-    :access_log => nil
+    :access_log => false
   },
   :sysctl => {
     :network_conntrack_time_wait => {
