@@ -39,4 +39,5 @@ email_handler = Chef::Handler::Email.new(:to => ["tom@compton.nu", "openstreetma
 
 # Configure report handlers
 
+exception_handlers << email_handler
 report_handlers << email_handler
