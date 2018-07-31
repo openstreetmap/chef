@@ -25,7 +25,7 @@ default_attributes(
     :network_conntrack_max => {
       :comment => "Increase max number of connections tracked",
       :parameters => {
-        "net.netfilter.nf_conntrack_max" => "131072"
+        "net.netfilter.nf_conntrack_max" => "262142"
       }
     },
     :kernel_tfo_listen_enable => {
