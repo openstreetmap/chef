@@ -33,6 +33,12 @@ default_attributes(
         "kernel.sched_min_granularity_ns" => 10000000,
         "kernel.sched_wakeup_granularity_ns" => 15000000
       }
+    },
+    :network_conntrack_max => {
+      :comment => "Increase max number of connections tracked",
+      :parameters => {
+        "net.netfilter.nf_conntrack_max" => "65536"
+      }
     }
   },
   :tilecache => {
