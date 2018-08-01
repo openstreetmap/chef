@@ -86,7 +86,7 @@ systemd_service "squid" do
   description "Squid caching proxy"
   after ["network.target", "nss-lookup.target"]
   type "forking"
-  limit_nofile 65536
+  limit_nofile 98304
   exec_start_pre "/usr/sbin/squid -N -z"
   exec_start "/usr/sbin/squid -Y"
   exec_reload "/usr/sbin/squid -k reconfigure"
