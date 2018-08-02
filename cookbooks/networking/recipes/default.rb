@@ -179,6 +179,14 @@ template "/etc/shorewall/hosts" do
   notifies :restart, "service[shorewall]"
 end
 
+template "/etc/shorewall/conntrack" do
+  source "shorewall-conntrack.erb"
+  owner "root"
+  group "root"
+  mode 0o644
+  notifies :restart, "service[shorewall]"
+end
+
 template "/etc/shorewall/policy" do
   source "shorewall-policy.erb"
   owner "root"
@@ -288,6 +296,14 @@ unless node.interfaces(:family => :inet6).empty?
     group "root"
     mode 0o644
     variables :zones => zones
+    notifies :restart, "service[shorewall6]"
+  end
+
+  template "/etc/shorewall6/conntrack" do
+    source "shorewall-conntrack.erb"
+    owner "root"
+    group "root"
+    mode 0o644
     notifies :restart, "service[shorewall6]"
   end
 
