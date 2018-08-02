@@ -63,6 +63,12 @@ default_attributes(
       :parameters => {
         "net.ipv4.tcp_syncookies" => "1"
       }
+    },
+    :default_qdisc => {
+      :comment => "Use pfifo_fast as the default queuing discipline",
+      :parameters => {
+        "net.core.default_qdisc" => "pfifo_fast"
+      }
     }
   },
   :sysfs => {
