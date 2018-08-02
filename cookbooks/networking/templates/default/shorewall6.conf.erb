@@ -13,117 +13,246 @@ STARTUP_ENABLED=Yes
 VERBOSITY=1
 
 ###############################################################################
+#			        P A G E R
+###############################################################################
+
+PAGER=
+
+###############################################################################
+#			     F I R E W A L L
+###############################################################################
+
+FIREWALL=
+
+###############################################################################
 #			       L O G G I N G
 ###############################################################################
 
-LOGFILE=/var/log/messages
+LOG_LEVEL="info"
 
-STARTUP_LOG=/var/log/shorewall6-init.log
+BLACKLIST_LOG_LEVEL=
+
+INVALID_LOG_LEVEL=
+
+LOG_BACKEND=
 
 LOG_VERBOSITY=2
 
-LOGFORMAT="Shorewall:%s:%s:"
+LOGALLNEW=
+
+LOGFILE=/var/log/messages
+
+LOGFORMAT="%s %s "
+
+LOGLIMIT="s:1/sec:10"
 
 LOGTAGONLY=No
 
-LOGALLNEW=
+MACLIST_LOG_LEVEL="$LOG_LEVEL"
 
-BLACKLIST_LOGLEVEL=
+RELATED_LOG_LEVEL=
 
-TCP_FLAGS_LOG_LEVEL=info
+RPFILTER_LOG_LEVEL="$LOG_LEVEL"
 
-SMURF_LOG_LEVEL=info
+SFILTER_LOG_LEVEL="$LOG_LEVEL"
+
+SMURF_LOG_LEVEL="$LOG_LEVEL"
+
+STARTUP_LOG=/var/log/shorewall6-init.log
+
+TCP_FLAGS_LOG_LEVEL="$LOG_LEVEL"
+
+UNTRACKED_LOG_LEVEL=
 
 ###############################################################################
 #	L O C A T I O N	  O F	F I L E S   A N D   D I R E C T O R I E S
 ###############################################################################
 
+CONFIG_PATH=":${CONFDIR}/shorewall6:/usr/share/shorewall6:${SHAREDIR}/shorewall"
+
+GEOIPDIR=/usr/share/xt_geoip/LE
+
 IP6TABLES=
 
 IP=
 
-TC=
-
 IPSET=
 
-PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin:/usr/local/sbin
+LOCKFILE=
+
+MODULESDIR=
+
+NFACCT=
+
+PERL=/usr/bin/perl
+
+PATH="/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin:/usr/local/sbin"
+
+RESTOREFILE=restore
 
 SHOREWALL_SHELL=/bin/sh
 
 SUBSYSLOCK=""
 
-MODULESDIR=
-
-CONFIG_PATH=/etc/shorewall6:/usr/share/shorewall6:/usr/share/shorewall
-
-RESTOREFILE=
-
-LOCKFILE=
+TC=
 
 ###############################################################################
 #		D E F A U L T   A C T I O N S / M A C R O S
 ###############################################################################
 
-DROP_DEFAULT="Drop"
-REJECT_DEFAULT="Reject"
+<%- if node[:lsb][:release].to_f <= 16.04 %>
 ACCEPT_DEFAULT="none"
-QUEUE_DEFAULT="none"
+DROP_DEFAULT="Drop"
 NFQUEUE_DEFAULT="none"
+QUEUE_DEFAULT="none"
+REJECT_DEFAULT="Reject"
+<%- else %>
+ACCEPT_DEFAULT="none"
+BLACKLIST_DEFAULT="AllowICMPs,Broadcast(DROP),Multicast(DROP),dropNotSyn:$LOG_LEVEL,dropInvalid:$LOG_LEVEL,DropDNSrep:$LOG_LEVEL"
+DROP_DEFAULT="AllowICMPs,Broadcast(DROP),Multicast(DROP)"
+NFQUEUE_DEFAULT="none"
+QUEUE_DEFAULT="none"
+REJECT_DEFAULT="AllowICMPs,Broadcast(DROP),Multicast(DROP)"
+<%- end %>
 
 ###############################################################################
 #                        R S H / R C P  C O M M A N D S
 ###############################################################################
 
-RSH_COMMAND='ssh ${root}@${system} ${command}'
 RCP_COMMAND='scp ${files} ${root}@${system}:${destination}'
+RSH_COMMAND='ssh ${root}@${system} ${command}'
 
 ###############################################################################
 #			F I R E W A L L	  O P T I O N S
 ###############################################################################
 
-IP_FORWARDING=Off
+ACCOUNTING=Yes
 
-TC_ENABLED=No
-
-TC_EXPERT=No
-
-CLEAR_TC=No
-
-MARK_IN_FORWARD_CHAIN=No
-
-CLAMPMSS=No
-
-MUTEX_TIMEOUT=60
+ACCOUNTING_TABLE=filter
 
 ADMINISABSENTMINDED=Yes
 
-MODULE_SUFFIX=ko
+AUTOCOMMENT=Yes
 
-FASTACCEPT=No
+AUTOHELPERS=Yes
 
-IMPLICIT_CONTINUE=Yes
+<%- if node[:lsb][:release].to_f <= 16.04 %>
+AUTOMAKE=No
+<%- else %>
+AUTOMAKE=Yes
+<%- end %>
 
-OPTIMIZE=1
+BALANCE_PROVIDERS=No
 
-EXPORTPARAMS=Yes
+BASIC_FILTERS=No
 
-EXPAND_POLICIES=Yes
+BLACKLIST="NEW,INVALID,UNTRACKED"
 
-KEEP_RT_TABLES=Yes
+CLAMPMSS=No
+
+CLEAR_TC=No
+
+COMPLETE=No
+
+DEFER_DNS_RESOLUTION=Yes
 
 DELETE_THEN_ADD=Yes
 
 DONT_LOAD=
 
-AUTO_COMMENT=Yes
+DYNAMIC_BLACKLIST=Yes
+
+EXPAND_POLICIES=Yes
+
+EXPORTMODULES=Yes
+
+FASTACCEPT=No
+
+FORWARD_CLEAR_MARK=Yes
+
+HELPERS=
+
+IGNOREUNKNOWNVARIABLES=No
+
+IMPLICIT_CONTINUE=No
+
+INLINE_MATCHES=No
+
+IPSET_WARNINGS=Yes
+
+IP_FORWARDING=Keep
+
+KEEP_RT_TABLES=No
+
+LOAD_HELPERS_ONLY=Yes
+
+MACLIST_TABLE=filter
+
+MACLIST_TTL=
 
 MANGLE_ENABLED=Yes
 
-AUTOMAKE=No
+MARK_IN_FORWARD_CHAIN=No
 
-TRACK_PROVIDERS=No
+MINIUPNPD=No
+<%- if node[:lsb][:release].to_f <= 16.04 %>
 
-ZONE2ZONE=2
+MODULE_SUFFIX=ko
+<%- end %>
+
+MUTEX_TIMEOUT=60
+
+<%- if node[:lsb][:release].to_f <= 14.04 %>
+OPTIMIZE=1
+<%- else %>
+OPTIMIZE=All
+<%- end %>
+
+OPTIMIZE_ACCOUNTING=No
+
+PERL_HASH_SEED=0
+
+REJECT_ACTION=
+
+REQUIRE_INTERFACE=No
+
+RESTART=restart
+
+RESTORE_DEFAULT_ROUTE=Yes
+
+RESTORE_ROUTEMARKS=Yes
+
+SAVE_IPSETS=No
+
+TC_ENABLED=Shared
+
+TC_EXPERT=No
+
+TC_PRIOMAP="2 3 3 3 2 3 1 1 2 2 2 2 2 2 2 2"
+
+TRACK_PROVIDERS=Yes
+
+TRACK_RULES=No
+
+USE_DEFAULT_RT=Yes
+<%- if node[:lsb][:release].to_f >= 18.04 %>
+
+USE_NFLOG_SIZE=No
+<%- end %>
+
+USE_PHYSICAL_NAMES=No
+
+USE_RT_NAMES=No
+
+VERBOSE_MESSAGES=Yes
+
+WARNOLDCAPVERSION=Yes
+
+WORKAROUNDS=No
+
+ZERO_MARKS=No
+
+ZONE2ZONE=
 
 ###############################################################################
 #			P A C K E T   D I S P O S I T I O N
@@ -131,6 +260,34 @@ ZONE2ZONE=2
 
 BLACKLIST_DISPOSITION=DROP
 
+INVALID_DISPOSITION=CONTINUE
+
+MACLIST_DISPOSITION=REJECT
+
+RELATED_DISPOSITION=ACCEPT
+
+SFILTER_DISPOSITION=DROP
+
+RPFILTER_DISPOSITION=DROP
+
+SMURF_DISPOSITION=DROP
+
 TCP_FLAGS_DISPOSITION=DROP
+
+UNTRACKED_DISPOSITION=CONTINUE
+
+################################################################################
+#			P A C K E T  M A R K  L A Y O U T
+################################################################################
+
+TC_BITS=
+
+PROVIDER_BITS=
+
+PROVIDER_OFFSET=
+
+MASK_BITS=
+
+ZONE_BITS=0
 
 #LAST LINE -- DO NOT REMOVE

@@ -13,161 +13,272 @@ STARTUP_ENABLED=Yes
 VERBOSITY=1
 
 ###############################################################################
+#			        P A G E R
+###############################################################################
+
+PAGER=
+
+###############################################################################
+#			     F I R E W A L L
+###############################################################################
+
+FIREWALL=
+
+###############################################################################
 #			       L O G G I N G
 ###############################################################################
 
-LOGFILE=/var/log/messages
+LOG_LEVEL="info"
 
-STARTUP_LOG=/var/log/shorewall-init.log
+BLACKLIST_LOG_LEVEL=
+
+INVALID_LOG_LEVEL=
+
+LOG_BACKEND=
+
+LOG_MARTIANS=Yes
 
 LOG_VERBOSITY=2
 
-LOGFORMAT="Shorewall:%s:%s:"
+LOGALLNEW=
+
+LOGFILE=/var/log/messages
+
+LOGFORMAT="%s %s "
 
 LOGTAGONLY=No
 
-LOGALLNEW=
+LOGLIMIT="s:1/sec:10"
 
-BLACKLIST_LOGLEVEL=
+MACLIST_LOG_LEVEL="$LOG_LEVEL"
 
-MACLIST_LOG_LEVEL=info
+RELATED_LOG_LEVEL=
 
-TCP_FLAGS_LOG_LEVEL=info
+RPFILTER_LOG_LEVEL="$LOG_LEVEL"
 
-SMURF_LOG_LEVEL=info
+SFILTER_LOG_LEVEL="$LOG_LEVEL"
 
-LOG_MARTIANS=Yes
+SMURF_LOG_LEVEL="$LOG_LEVEL"
+
+STARTUP_LOG=/var/log/shorewall-init.log
+
+TCP_FLAGS_LOG_LEVEL="$LOG_LEVEL"
+
+UNTRACKED_LOG_LEVEL=
 
 ###############################################################################
 #	L O C A T I O N	  O F	F I L E S   A N D   D I R E C T O R I E S
 ###############################################################################
 
+ARPTABLES=
+
+CONFIG_PATH=":${CONFDIR}/shorewall:${SHAREDIR}/shorewall"
+
+GEOIPDIR=/usr/share/xt_geoip/LE
+
 IPTABLES=
 
 IP=
 
-TC=
-
 IPSET=
 
+LOCKFILE=
+
+MODULESDIR=
+
+NFACCT=
+
 PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin:/usr/local/sbin
+
+PERL=/usr/bin/perl
+
+RESTOREFILE=restore
 
 SHOREWALL_SHELL=/bin/sh
 
 SUBSYSLOCK=""
 
-MODULESDIR=
-
-CONFIG_PATH=/etc/shorewall:/usr/share/shorewall
-
-RESTOREFILE=
-
-IPSECFILE=zones
-
-LOCKFILE=
+TC=
 
 ###############################################################################
 #		D E F A U L T   A C T I O N S / M A C R O S
 ###############################################################################
 
-DROP_DEFAULT="Drop"
-REJECT_DEFAULT="Reject"
+<%- if node[:lsb][:release].to_f <= 16.04 %>
 ACCEPT_DEFAULT="none"
-QUEUE_DEFAULT="none"
+DROP_DEFAULT="Drop"
 NFQUEUE_DEFAULT="none"
+QUEUE_DEFAULT="none"
+REJECT_DEFAULT="Reject"
+<%- else %>
+ACCEPT_DEFAULT="none"
+BLACKLIST_DEFAULT="Broadcast(DROP),Multicast(DROP),dropNotSyn:$LOG_LEVEL,dropInvalid:$LOG_LEVEL,DropDNSrep:$LOG_LEVEL"
+DROP_DEFAULT="Broadcast(DROP),Multicast(DROP)"
+NFQUEUE_DEFAULT="none"
+QUEUE_DEFAULT="none"
+REJECT_DEFAULT="Broadcast(DROP),Multicast(DROP)"
+<%- end %>
 
 ###############################################################################
 #                        R S H / R C P  C O M M A N D S
 ###############################################################################
 
-RSH_COMMAND='ssh ${root}@${system} ${command}'
 RCP_COMMAND='scp ${files} ${root}@${system}:${destination}'
+RSH_COMMAND='ssh ${root}@${system} ${command}'
 
 ###############################################################################
 #			F I R E W A L L	  O P T I O N S
 ###############################################################################
 
-IP_FORWARDING=Keep
+ACCOUNTING=Yes
 
-ADD_IP_ALIASES=Yes
+ACCOUNTING_TABLE=filter
+
+ADD_IP_ALIASES=No
 
 ADD_SNAT_ALIASES=No
 
-RETAIN_ALIASES=No
+ADMINISABSENTMINDED=Yes
 
-TC_ENABLED=Internal
+AUTOCOMMENT=Yes
 
-TC_EXPERT=No
+AUTOHELPERS=Yes
 
-CLEAR_TC=Yes
+<%- if node[:lsb][:release].to_f <= 16.04 %>
+AUTOMAKE=No
+<%- else %>
+AUTOMAKE=Yes
+<%- end %>
 
-MARK_IN_FORWARD_CHAIN=No
+BALANCE_PROVIDERS=No
+
+BASIC_FILTERS=No
+
+BLACKLIST="NEW,INVALID,UNTRACKED"
 
 CLAMPMSS=No
 
-ROUTE_FILTER=Yes
+CLEAR_TC=Yes
+
+COMPLETE=No
+
+DEFER_DNS_RESOLUTION=Yes
+
+DELETE_THEN_ADD=Yes
 
 DETECT_DNAT_IPADDRS=No
 
-MUTEX_TIMEOUT=60
-
-ADMINISABSENTMINDED=Yes
-
-DELAYBLACKLISTLOAD=No
-
-MODULE_SUFFIX=ko
-
 DISABLE_IPV6=No
 
-BRIDGING=No
+DOCKER=No
 
-DYNAMIC_ZONES=No
+DONT_LOAD=
 
-PKTTYPE=Yes
+DYNAMIC_BLACKLIST=Yes
 
-NULL_ROUTE_RFC1918=No
+EXPAND_POLICIES=Yes
+
+EXPORTMODULES=Yes
+
+FASTACCEPT=No
+
+FORWARD_CLEAR_MARK=
+
+HELPERS=
+
+IGNOREUNKNOWNVARIABLES=No
+
+IMPLICIT_CONTINUE=No
+
+INLINE_MATCHES=No
+
+IPSET_WARNINGS=Yes
+
+IP_FORWARDING=Keep
+
+KEEP_RT_TABLES=No
+
+LOAD_HELPERS_ONLY=Yes
 
 MACLIST_TABLE=filter
 
 MACLIST_TTL=
 
-SAVE_IPSETS=No
+MANGLE_ENABLED=Yes
 
 MAPOLDACTIONS=No
 
-FASTACCEPT=No
+MARK_IN_FORWARD_CHAIN=No
 
-IMPLICIT_CONTINUE=Yes
+MINIUPNPD=No
+<%- if node[:lsb][:release].to_f <= 16.04 %>
 
-USE_ACTIONS=Yes
-
-OPTIMIZE=1
-
-EXPORTPARAMS=Yes
-
-EXPAND_POLICIES=Yes
-
-KEEP_RT_TABLES=No
-
-DELETE_THEN_ADD=Yes
+MODULE_SUFFIX=ko
+<%- end %>
 
 MULTICAST=No
 
-DONT_LOAD=
+MUTEX_TIMEOUT=60
 
-AUTO_COMMENT=Yes
+NULL_ROUTE_RFC1918=No
 
-MANGLE_ENABLED=Yes
+<%- if node[:lsb][:release].to_f <= 14.04 %>
+OPTIMIZE=1
+<%- else %>
+OPTIMIZE=All
+<%- end %>
 
-USE_DEFAULT_RT=No
+OPTIMIZE_ACCOUNTING=No
+
+PERL_HASH_SEED=0
+
+REJECT_ACTION=
+
+REQUIRE_INTERFACE=No
+
+RESTART=restart
 
 RESTORE_DEFAULT_ROUTE=Yes
 
-AUTOMAKE=No
+RESTORE_ROUTEMARKS=Yes
 
-TRACK_PROVIDERS=No
+RETAIN_ALIASES=No
 
-ZONE2ZONE=2
+ROUTE_FILTER=Yes
+
+SAVE_ARPTABLES=No
+
+SAVE_IPSETS=No
+
+TC_ENABLED=Internal
+
+TC_EXPERT=No
+
+TC_PRIOMAP="2 3 3 3 2 3 1 1 2 2 2 2 2 2 2 2"
+
+TRACK_PROVIDERS=Yes
+
+TRACK_RULES=No
+
+USE_DEFAULT_RT=No
+<%- if node[:lsb][:release].to_f >= 18.04 %>
+
+USE_NFLOG_SIZE=No
+<%- end %>
+
+USE_PHYSICAL_NAMES=No
+
+USE_RT_NAMES=No
+
+VERBOSE_MESSAGES=Yes
+
+WARNOLDCAPVERSION=Yes
+
+WORKAROUNDS=No
+
+ZERO_MARKS=No
+
+ZONE2ZONE=-
 
 ###############################################################################
 #			P A C K E T   D I S P O S I T I O N
@@ -175,8 +286,32 @@ ZONE2ZONE=2
 
 BLACKLIST_DISPOSITION=DROP
 
+INVALID_DISPOSITION=CONTINUE
+
 MACLIST_DISPOSITION=REJECT
+
+RELATED_DISPOSITION=ACCEPT
+
+RPFILTER_DISPOSITION=DROP
+
+SMURF_DISPOSITION=DROP
+
+SFILTER_DISPOSITION=DROP
 
 TCP_FLAGS_DISPOSITION=DROP
 
-#LAST LINE -- DO NOT REMOVE
+UNTRACKED_DISPOSITION=CONTINUE
+
+################################################################################
+#			P A C K E T  M A R K  L A Y O U T
+################################################################################
+
+TC_BITS=
+
+PROVIDER_BITS=
+
+PROVIDER_OFFSET=
+
+MASK_BITS=
+
+ZONE_BITS=0

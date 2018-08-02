@@ -1,6 +1,8 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
-# ZONE	INTERFACE	UNICAST		OPTIONS
+?FORMAT 2
+  
+# ZONE	INTERFACE	OPTIONS
 <% node[:networking][:interfaces].each do |name,interface| -%>
 <% if interface[:family] == "inet6" -%>
 <% if interface[:role] == "internal" -%>

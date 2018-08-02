@@ -1,13 +1,15 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
-# ZONE	INTERFACE	BROADCAST	OPTIONS
+?FORMAT 2
+
+# ZONE	INTERFACE	OPTIONS
 <% node[:networking][:interfaces].each do |name,interface| -%>
 <% if interface[:interface] && interface[:family] == "inet" -%>
 <% if interface[:role] == "internal" -%>
-loc	<%= interface[:interface] %>		detect		nosmurfs,tcpflags
+loc	<%= interface[:interface] %>		nosmurfs,tcpflags
 <% elsif interface[:role] == "external" -%>
-net	<%= interface[:interface] %>		detect		nosmurfs,tcpflags
+net	<%= interface[:interface] %>		nosmurfs,tcpflags
 <% end -%>
 <% end -%>
 <% end -%>
-loc	tun+		detect		nosmurfs,tcpflags
+loc	tun+		nosmurfs,tcpflags
