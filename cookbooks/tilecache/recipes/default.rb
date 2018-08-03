@@ -113,7 +113,11 @@ ssl_certificate "tile.openstreetmap.org" do
   domains ["tile.openstreetmap.org",
            "a.tile.openstreetmap.org",
            "b.tile.openstreetmap.org",
-           "c.tile.openstreetmap.org"]
+           "c.tile.openstreetmap.org",
+           "tile.osm.org",
+           "a.tile.osm.org",
+           "b.tile.osm.org",
+           "c.tile.osm.org"]
   notifies :restart, "service[nginx]"
 end
 
