@@ -24,7 +24,7 @@ if (defined $ARGV[0] and $ARGV[0] eq "config") {
     print "graph_info This graph shows the power being supplied by the PDU.\n";
 
     print "power.label Power\n";
-    print "power.type GUAGE\n";
+    print "power.type GAUGE\n";
     print "power.info Current power draw in watts.\n";
     print "power.draw LINE2\n";
 } else {
