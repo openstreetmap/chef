@@ -16,17 +16,6 @@ default_attributes(
         "queue/nr_requests" => "256",
         "queue/read_ahead_kb" => "2048"
       }
-    },
-    :ssd_database => {
-      :comment => "Tune scheduler for database disk",
-      :type => "block",
-      :bus => "scsi",
-      :serial => "3600605b009bbf5601fd931c6dfac767f",
-      :attrs => {
-        "queue/scheduler" => "noop",
-        "queue/nr_requests" => "256",
-        "queue/read_ahead_kb" => "2048"
-      }
     }
   },
   :hardware => {
