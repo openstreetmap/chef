@@ -120,7 +120,23 @@ unknown_limit 144
     apcpdu_power.graph_total total
     apcpdu_power.power.label Power
     apcpdu_power.power.draw AREASTACK
-    apcpdu_power.power.min 0    
+    apcpdu_power.power.min 0
+    apcpdu_temperature.graph_title Temperature
+    apcpdu_temperature.graph_args --lower-limit 0
+    apcpdu_temperature.graph_vlabel Degrees Celsius
+    apcpdu_temperature.graph_category sensors
+    apcpdu_temperature.graph_order pdu1=pdu1.ams.openstreetmap.org:snmp_pdu1_ams_openstreetmap_org_apcpdu_temperature.temperature
+    apcpdu_temperature.temperature.label Temperature
+    apcpdu_temperature.temperature.draw LINE2
+    apcpdu_temperature.temperature.min 0
+    apcpdu_humidity.graph_title Humidity
+    apcpdu_humidity.graph_args --lower-limit 0
+    apcpdu_humidity.graph_vlabel %
+    apcpdu_humidity.graph_category sensors
+    apcpdu_humidity.graph_order pdu1=pdu1.ams.openstreetmap.org:snmp_pdu1_ams_openstreetmap_org_apcpdu_humidity.humidity
+    apcpdu_humidity.humidity.label Humidity
+    apcpdu_humidity.humidity.draw LINE2
+    apcpdu_humidity.humidity.min 0
 <% unless @frontends.empty? && @backends.empty? -%>
 
 # Configure compound graphs for www.openstreetmap.org
@@ -200,7 +216,7 @@ unknown_limit 144
     api_calls_error.http503.label 503 Service Unavailable
     api_calls_error.http503.warning :0.5
     api_calls_error.http509.sum <%= Chef::Munin.expand "%%.openstreetmap.org:api_calls_status.http509", @frontends %>
-    api_calls_error.http509.label 509 Bandwidth Limit Exceeded 
+    api_calls_error.http509.label 509 Bandwidth Limit Exceeded
     api_calls_error.http509.warning :5
     api_calls_num.graph_title Requests processed
     api_calls_num.graph_vlabel Number of requests per ${graph_period}
