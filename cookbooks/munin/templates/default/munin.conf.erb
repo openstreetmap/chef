@@ -89,6 +89,34 @@ unknown_limit 144
 <% end -%>
 <% end -%>
 <% end -%>
+
+# Configure monitoring for pdu1.ams.openstreetmap.org
+[pdu1.ams.openstreetmap]
+    address 10.0.48.10
+    use_node_name no
+
+# Configure monitoring for pdu1.ams.openstreetmap.org
+[pdu2.ams.openstreetmap]
+    address 10.0.48.10
+    use_node_name no
+
+# Configure compound graphs for ams.openstreetmap.org
+[ams.openstreetmap]
+    update no
+    apcpdu_current.graph_title Load
+    apcpdu_current.graph_args --lower-limit 0
+    apcpdu_current.graph_vlabel Amps
+    apcpdu_current.graph_category power
+    apcpdu_current.current.sum pdu1.ams.openstreetmap:snmp_pdu1.ams.openstreetmap.org_apcpdu_current.current pdu2.ams.openstreetmap:snmp_pdu2.ams.openstreetmap.org_apcpdu_current.current
+    apcpdu_current.current.label Current
+    apcpdu_current.current.min 0
+    apcpdu_power.graph_title Load
+    apcpdu_power.graph_args --base 1000 --lower-limit 0
+    apcpdu_power.graph_vlabel Watts
+    apcpdu_power.graph_category power
+    apcpdu_power.power.sum pdu1.ams.openstreetmap:snmp_pdu1.ams.openstreetmap.org_apcpdu_power.power pdu2.ams.openstreetmap:snmp_pdu2.ams.openstreetmap.org_apcpdu_power.power
+    apcpdu_power.power.label Power
+    apcpdu_power.power.min 0    
 <% unless @frontends.empty? && @backends.empty? -%>
 
 # Configure compound graphs for www.openstreetmap.org
