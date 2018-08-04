@@ -73,13 +73,14 @@ template "/srv/dns.openstreetmap.org/html/index.html" do
 end
 
 ssl_certificate "dns.openstreetmap.org" do
-  domains "dns.openstreetmap.org"
+  domains ["dns.openstreetmap.org", "dns.osm.org"]
   notifies :reload, "service[apache2]"
 end
 
 apache_site "dns.openstreetmap.org" do
   template "apache.erb"
   directory "/srv/dns.openstreetmap.org"
+  variables :aliases => ["dns.osm.org"]
 end
 
 template "/usr/local/bin/dns-update" do
