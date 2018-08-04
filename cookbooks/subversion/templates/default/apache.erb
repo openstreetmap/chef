@@ -1,45 +1,68 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
 <VirtualHost *:443>
-        ServerName <%= @name %>
-        ServerAdmin webmaster@openstreetmap.org
+  ServerName <%= @name %>
+  ServerAdmin webmaster@openstreetmap.org
 
-        SSLEngine on
-        SSLCertificateFile /etc/ssl/certs/<%= @name %>.pem
-        SSLCertificateKeyFile /etc/ssl/private/<%= @name %>.key
+  SSLEngine on
+  SSLCertificateFile /etc/ssl/certs/<%= @name %>.pem
+  SSLCertificateKeyFile /etc/ssl/private/<%= @name %>.key
 
-        CustomLog /var/log/apache2/<%= @name %>-access.log combined
-        CustomLog /var/log/apache2/<%= @name %>-svn-access.log "%h %t %u %{SVN-ACTION}e" env=SVN-ACTION
-        ErrorLog /var/log/apache2/<%= @name %>-error.log
+  CustomLog /var/log/apache2/<%= @name %>-access.log combined
+  CustomLog /var/log/apache2/<%= @name %>-svn-access.log "%h %t %u %{SVN-ACTION}e" env=SVN-ACTION
+  ErrorLog /var/log/apache2/<%= @name %>-error.log
 
-        <Location />
-                DAV svn
-                SVNPath <%= @directory %>
+  <Location />
+    DAV svn
+    SVNPath <%= @directory %>
 
-                AuthType Basic
-                AuthName "<%= @realm %>"
-                AuthUserFile <%= @password_file %>
+    AuthType Basic
+    AuthName "<%= @realm %>"
+    AuthUserFile <%= @password_file %>
 
-                LimitXMLRequestBody 0
-                LimitRequestBody 0
+    LimitXMLRequestBody 0
+    LimitRequestBody 0
 
-                <Limit GET PROPFIND OPTIONS REPORT>
-                        Require all granted
-                </Limit>
+    <Limit GET PROPFIND OPTIONS REPORT>
+      Require all granted
+    </Limit>
 
-                <LimitExcept GET PROPFIND OPTIONS REPORT>
-                        Require valid-user
-                </LimitExcept>
-        </Location>
+    <LimitExcept GET PROPFIND OPTIONS REPORT>
+      Require valid-user
+    </LimitExcept>
+  </Location>
 </VirtualHost>
+<% unless @aliases.empty? -%>
+
+<VirtualHost *:443>
+  ServerName <%= @aliases.first %>
+<% @aliases.drop(1).each do |alias_name| -%>
+  ServerAlias <%= alias_name %>
+<% end -%>
+  ServerAdmin webmaster@openstreetmap.org
+
+  SSLEngine on
+  SSLCertificateFile /etc/ssl/certs/<%= @name %>.pem
+  SSLCertificateKeyFile /etc/ssl/private/<%= @name %>.key
+
+  CustomLog /var/log/apache2/<%= @name %>-access.log combined
+  ErrorLog /var/log/apache2/<%= @name %>-error.log
+
+  RedirectPermanent / https://<%= @name %>/
+</VirtualHost>
+<% end -%>
 
 <VirtualHost *:80>
-        ServerName <%= @name %>
-        ServerAdmin webmaster@openstreetmap.org
+  ServerName <%= @name %>
+<% @aliases.each do |alias_name| -%>
+  ServerAlias <%= alias_name %>
+<% end -%>
 
-        CustomLog /var/log/apache2/<%= @name %>-access.log combined
-        ErrorLog /var/log/apache2/<%= @name %>-error.log
+  ServerAdmin webmaster@openstreetmap.org
 
-        RedirectPermanent /.well-known/acme-challenge/ http://acme.openstreetmap.org/.well-known/acme-challenge/
-        RedirectPermanent / https://<%= @name %>/
+  CustomLog /var/log/apache2/<%= @name %>-access.log combined
+  ErrorLog /var/log/apache2/<%= @name %>-error.log
+
+  RedirectPermanent /.well-known/acme-challenge/ http://acme.openstreetmap.org/.well-known/acme-challenge/
+  RedirectPermanent / https://<%= @name %>/
 </VirtualHost>

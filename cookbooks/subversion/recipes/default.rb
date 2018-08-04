@@ -21,7 +21,6 @@ include_recipe "apache"
 
 package "subversion"
 
-site_name = "svn.openstreetmap.org"
 repository_directory = "/var/lib/subversion/repos/openstreetmap"
 
 remote_directory "#{repository_directory}/hooks" do
@@ -51,15 +50,15 @@ apache_module "authz_svn" do
   package "libapache2-svn"
 end
 
-ssl_certificate site_name do
-  domains site_name
+ssl_certificate "svn.openstreetmap.org" do
+  domains ["svn.openstreetmap.org", "svn.osm.org"]
   notifies :reload, "service[apache2]"
 end
 
-apache_site site_name do
+apache_site "svn.openstreetmap.org" do
   template "apache.erb"
   directory repository_directory
-  variables :realm => "Subversion Repository", :password_file => "/etc/apache2/svn.passwd"
+  variables :realm => "Subversion Repository", :password_file => "/etc/apache2/svn.passwd", :aliases => ["svn.osm.org"]
 end
 
 template "/etc/cron.daily/svn-backup" do
