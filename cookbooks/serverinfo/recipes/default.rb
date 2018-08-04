@@ -67,11 +67,12 @@ execute "/srv/hardware.openstreetmap.org" do
 end
 
 ssl_certificate "hardware.openstreetmap.org" do
-  domains "hardware.openstreetmap.org"
+  domains ["hardware.openstreetmap.org", "hardware.osm.org"]
   notifies :reload, "service[apache2]"
 end
 
 apache_site "hardware.openstreetmap.org" do
   template "apache.erb"
   directory "/srv/hardware.openstreetmap.org/_site"
+  variables :aliases => ["hardware.osm.org"]
 end
