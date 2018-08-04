@@ -109,23 +109,29 @@ unknown_limit 144
     apcpdu_current.graph_category power
     apcpdu_current.graph_order pdu1=pdu1.ams.openstreetmap.org:snmp_pdu1_ams_openstreetmap_org_apcpdu_current.current pdu2=pdu2.ams.openstreetmap.org:snmp_pdu2_ams_openstreetmap_org_apcpdu_current.current
     apcpdu_current.graph_total total
-    apcpdu_current.current.label Current
-    apcpdu_current.current.draw AREASTACK
-    apcpdu_current.current.min 0
+    apcpdu_current.pdu1.label PDU A
+    apcpdu_current.pdu1.draw AREASTACK
+    apcpdu_current.pdu1.min 0
+    apcpdu_current.pdu2.label PDU B
+    apcpdu_current.pdu2.draw AREASTACK
+    apcpdu_current.pdu2.min 0
     apcpdu_power.graph_title Power
     apcpdu_power.graph_args --base 1000 --lower-limit 0
     apcpdu_power.graph_vlabel Watts
     apcpdu_power.graph_category power
     apcpdu_power.graph_order pdu1=pdu1.ams.openstreetmap.org:snmp_pdu1_ams_openstreetmap_org_apcpdu_power.power pdu2=pdu2.ams.openstreetmap.org:snmp_pdu2_ams_openstreetmap_org_apcpdu_power.power
     apcpdu_power.graph_total total
-    apcpdu_power.power.label Power
-    apcpdu_power.power.draw AREASTACK
-    apcpdu_power.power.min 0
+    apcpdu_power.pdu1.label PDU A
+    apcpdu_power.pdu1.draw AREASTACK
+    apcpdu_power.pdu1.min 0
+    apcpdu_power.pdu2.label PDU B
+    apcpdu_power.pdu2.draw AREASTACK
+    apcpdu_power.pdu2.min 0
     apcpdu_temperature.graph_title Temperature
     apcpdu_temperature.graph_args --lower-limit 0
     apcpdu_temperature.graph_vlabel Degrees Celsius
     apcpdu_temperature.graph_category sensors
-    apcpdu_temperature.graph_order pdu1=pdu1.ams.openstreetmap.org:snmp_pdu1_ams_openstreetmap_org_apcpdu_temperature.temperature
+    apcpdu_temperature.graph_order temperature=pdu1.ams.openstreetmap.org:snmp_pdu1_ams_openstreetmap_org_apcpdu_temperature.temperature
     apcpdu_temperature.temperature.label Temperature
     apcpdu_temperature.temperature.draw LINE2
     apcpdu_temperature.temperature.min 0
@@ -133,7 +139,7 @@ unknown_limit 144
     apcpdu_humidity.graph_args --lower-limit 0
     apcpdu_humidity.graph_vlabel %
     apcpdu_humidity.graph_category sensors
-    apcpdu_humidity.graph_order pdu1=pdu1.ams.openstreetmap.org:snmp_pdu1_ams_openstreetmap_org_apcpdu_humidity.humidity
+    apcpdu_humidity.graph_order humidity=pdu1.ams.openstreetmap.org:snmp_pdu1_ams_openstreetmap_org_apcpdu_humidity.humidity
     apcpdu_humidity.humidity.label Humidity
     apcpdu_humidity.humidity.draw LINE2
     apcpdu_humidity.humidity.min 0
