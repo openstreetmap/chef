@@ -47,6 +47,7 @@ database_name = node[:otrs][:database_name]
 database_user = node[:otrs][:database_user]
 database_password = passwords[node[:otrs][:database_password]]
 site = node[:otrs][:site]
+site_aliases = node[:otrs][:site_aliases] || []
 
 postgresql_user database_user do
   cluster database_cluster
@@ -130,12 +131,13 @@ Dir.glob("/opt/otrs/var/cron/*.dist") do |distname|
 end
 
 ssl_certificate site do
-  domains site
+  domains [site] + site_aliases
   notifies :reload, "service[apache2]"
 end
 
 apache_site site do
   template "apache.erb"
+  variables :aliases => site_aliases
 end
 
 template "/etc/sudoers.d/otrs" do

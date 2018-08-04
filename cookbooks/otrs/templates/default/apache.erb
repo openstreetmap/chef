@@ -1,72 +1,94 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
 <VirtualHost *:80>
-        ServerName <%= @name %>
-        ServerAdmin webmaster@openstreetmap.org
+  ServerName <%= @name %>
+<% @aliases.each do |alias_name| -%>
+  ServerAlias <%= alias_name %>
+<% end -%>
+  ServerAdmin webmaster@openstreetmap.org
 
-        CustomLog /var/log/apache2/<%= @name %>-access.log combined
-        ErrorLog /var/log/apache2/<%= @name %>-error.log
+  CustomLog /var/log/apache2/<%= @name %>-access.log combined
+  ErrorLog /var/log/apache2/<%= @name %>-error.log
 
-        RedirectPermanent /.well-known/acme-challenge/ http://acme.openstreetmap.org/.well-known/acme-challenge/
-        RedirectPermanent / https://otrs.openstreetmap.org/
+  RedirectPermanent /.well-known/acme-challenge/ http://acme.openstreetmap.org/.well-known/acme-challenge/
+  RedirectPermanent / https://otrs.openstreetmap.org/
 </VirtualHost>
+<% unless @aliases.empty? -%>
 
 <VirtualHost *:443>
-        ServerName <%= @name %>
-        ServerAdmin webmaster@openstreetmap.org
+  ServerName <%= @aliases.first %>
+<% @aliases.drop(1).each do |alias_name| -%>
+  ServerAlias <%= alias_name %>
+<% end -%>
+  ServerAdmin webmaster@openstreetmap.org
 
-        CustomLog /var/log/apache2/<%= @name %>-access.log combined
-        ErrorLog /var/log/apache2/<%= @name %>-error.log
+  SSLEngine on
+  SSLCertificateFile /etc/ssl/certs/<%= @name %>.pem
+  SSLCertificateKeyFile /etc/ssl/private/<%= @name %>.key
 
-        SSLEngine on
-        SSLCertificateFile /etc/ssl/certs/<%= @name %>.pem
-        SSLCertificateKeyFile /etc/ssl/private/<%= @name %>.key
+  CustomLog /var/log/apache2/<%= @name %>-access.log combined
+  ErrorLog /var/log/apache2/<%= @name %>-error.log
 
-        ScriptAlias /otrs/ /opt/otrs/bin/cgi-bin/
-        Alias /otrs-web/ /opt/otrs/var/httpd/htdocs/
-        RedirectMatch ^/$ /otrs/index.pl
+  RedirectPermanent / https://<%= @name %>/
+</VirtualHost>
+<% end -%>
 
-        PerlRequire /opt/otrs/scripts/apache2-perl-startup.pl
+<VirtualHost *:443>
+  ServerName <%= @name %>
+  ServerAdmin webmaster@openstreetmap.org
 
-        PerlModule Apache2::Reload
-        PerlInitHandler Apache2::Reload
-        PerlModule Apache2::RequestRec
+  CustomLog /var/log/apache2/<%= @name %>-access.log combined
+  ErrorLog /var/log/apache2/<%= @name %>-error.log
 
-        <Location /otrs>
-                ErrorDocument 403 /otrs/index.pl
-                ErrorDocument 404 /otrs/index.pl
-                SetHandler  perl-script
-                PerlResponseHandler ModPerl::Registry
-                Options +ExecCGI
-                PerlOptions +ParseHeaders
-                PerlOptions +SetupEnv
-                Require all granted
-        </Location>
+  SSLEngine on
+  SSLCertificateFile /etc/ssl/certs/<%= @name %>.pem
+  SSLCertificateKeyFile /etc/ssl/private/<%= @name %>.key
 
-        <Location /otrs/nph-genericinterface.pl>
-                PerlOptions -ParseHeaders
-        </Location>
+  ScriptAlias /otrs/ /opt/otrs/bin/cgi-bin/
+  Alias /otrs-web/ /opt/otrs/var/httpd/htdocs/
+  RedirectMatch ^/$ /otrs/index.pl
+
+  PerlRequire /opt/otrs/scripts/apache2-perl-startup.pl
+
+  PerlModule Apache2::Reload
+  PerlInitHandler Apache2::Reload
+  PerlModule Apache2::RequestRec
+
+  <Location /otrs>
+    ErrorDocument 403 /otrs/index.pl
+    ErrorDocument 404 /otrs/index.pl
+    SetHandler  perl-script
+    PerlResponseHandler ModPerl::Registry
+    Options +ExecCGI
+    PerlOptions +ParseHeaders
+    PerlOptions +SetupEnv
+    Require all granted
+  </Location>
+
+  <Location /otrs/nph-genericinterface.pl>
+    PerlOptions -ParseHeaders
+  </Location>
 </VirtualHost>
 
-<Directory /opt/otrs/bin/cgi-bin>
-        AllowOverride None
-        Options +ExecCGI -Includes
-        Require all granted
-</Directory>
+  <Directory /opt/otrs/bin/cgi-bin>
+    AllowOverride None
+    Options +ExecCGI -Includes
+    Require all granted
+  </Directory>
 
-<Directory /opt/otrs/var/httpd/htdocs>
-        AllowOverride None
-        Require all granted
-</Directory>
+  <Directory /opt/otrs/var/httpd/htdocs>
+    AllowOverride None
+    Require all granted
+  </Directory>
 
-<Directory /opt/otrs/var/httpd/htdocs/skins/*/*/css-cache>
-        <FilesMatch "\.(css|CSS)$">
-                Header set Cache-Control "max-age=2592000 must-revalidate"
-        </FilesMatch>
-</Directory>
+  <Directory /opt/otrs/var/httpd/htdocs/skins/*/*/css-cache>
+    <FilesMatch "\.(css|CSS)$">
+      Header set Cache-Control "max-age=2592000 must-revalidate"
+    </FilesMatch>
+  </Directory>
 
-<Directory /opt/otrs/var/httpd/htdocs/js/js-cache>
-        <FilesMatch "\.(js|JS)$">
-                Header set Cache-Control "max-age=2592000 must-revalidate"
-        </FilesMatch>
+  <Directory /opt/otrs/var/httpd/htdocs/js/js-cache>
+    <FilesMatch "\.(js|JS)$">
+      Header set Cache-Control "max-age=2592000 must-revalidate"
+    </FilesMatch>
 </Directory>

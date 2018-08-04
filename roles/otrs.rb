@@ -46,6 +46,7 @@ default_attributes(
   },
   :otrs => {
     :site => "otrs.openstreetmap.org",
+    :site_aliases => ["otrs.osm.org"],
     :database_cluster => "10/main",
     :database_name => "otrs",
     :database_user => "otrs",
