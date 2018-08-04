@@ -31,5 +31,6 @@ default_attributes(
 
 run_list(
   "role[equinix]",
-  "role[hp-dl360-g6]"
+  "role[hp-dl360-g6]",
+  "role[wiki]"
 )
