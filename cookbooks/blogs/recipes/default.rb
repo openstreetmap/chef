@@ -62,13 +62,14 @@ execute "/srv/blogs.openstreetmap.org" do
 end
 
 ssl_certificate "blogs.openstreetmap.org" do
-  domains "blogs.openstreetmap.org"
+  domains ["blogs.openstreetmap.org", "blogs.osm.org"]
   notifies :reload, "service[apache2]"
 end
 
 apache_site "blogs.openstreetmap.org" do
   template "apache.erb"
   directory "/srv/blogs.openstreetmap.org/build"
+  variables :aliases => ["blogs.osm.org"]
 end
 
 template "/etc/cron.d/blogs" do
