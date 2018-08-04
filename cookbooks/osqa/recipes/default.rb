@@ -38,6 +38,7 @@ apache_module "wsgi"
 
 node[:osqa][:sites].each do |site|
   site_name = site[:name]
+  site_aliases = site[:aliases] || []
   directory = site[:directory] || "/srv/#{site_name}"
   site_user = site[:user] || node[:osqa][:user]
   site_user = Etc.getpwuid(site_user).name if site_user.is_a?(Integer)
@@ -49,14 +50,14 @@ node[:osqa][:sites].each do |site|
   backup_name = site[:backup]
 
   ssl_certificate site_name do
-    domains site_name
+    domains [site_name] + site_aliases
     notifies :reload, "service[apache2]"
   end
 
   apache_site site_name do
     template "apache.erb"
     directory directory
-    variables :user => site_user, :group => site_group
+    variables :user => site_user, :group => site_group, :aliases => site_aliases
   end
 
   directory directory do
