@@ -39,10 +39,11 @@ template "/etc/cgiirc/ipaccess" do
 end
 
 ssl_certificate "irc.openstreetmap.org" do
-  domains "irc.openstreetmap.org"
+  domains ["irc.openstreetmap.org", "irc.osm.org"]
   notifies :reload, "service[apache2]"
 end
 
 apache_site "irc.openstreetmap.org" do
   template "apache.erb"
+  variables :aliases => ["irc.osm.org"]
 end
