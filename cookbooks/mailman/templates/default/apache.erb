@@ -1,65 +1,87 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
 <VirtualHost *:80>
-        ServerName <%= @name %>
-        ServerAdmin postmaster@openstreetmap.org
+  ServerName <%= @name %>
+<% @aliases.each do |alias_name| -%>
+  ServerAlias <%= alias_name %>
+<% end -%>
+  ServerAdmin postmaster@openstreetmap.org
 
-        CustomLog /var/log/apache2/<%= @name %>-access.log combined
-        ErrorLog /var/log/apache2/<%= @name %>-error.log
+  CustomLog /var/log/apache2/<%= @name %>-access.log combined
+  ErrorLog /var/log/apache2/<%= @name %>-error.log
 
-        RedirectPermanent /.well-known/acme-challenge/ http://acme.openstreetmap.org/.well-known/acme-challenge/
-        RedirectPermanent / https://<%= @name %>/
+  RedirectPermanent /.well-known/acme-challenge/ http://acme.openstreetmap.org/.well-known/acme-challenge/
+  RedirectPermanent / https://<%= @name %>/
 </VirtualHost>
+<% unless @aliases.empty? -%>
 
 <VirtualHost *:443>
-	ServerName <%= @name %>
-	ServerAdmin postmaster@openstreetmap.org
-	ServerSignature On
+  ServerName <%= @aliases.first %>
+<% @aliases.drop(1).each do |alias_name| -%>
+  ServerAlias <%= alias_name %>
+<% end -%>
+  ServerAdmin webmaster@openstreetmap.org
 
-        SSLEngine on
-        SSLCertificateFile /etc/ssl/certs/<%= @name %>.pem
-        SSLCertificateKeyFile /etc/ssl/private/<%= @name %>.key
+  SSLEngine on
+  SSLCertificateFile /etc/ssl/certs/<%= @name %>.pem
+  SSLCertificateKeyFile /etc/ssl/private/<%= @name %>.key
 
-	CustomLog /var/log/apache2/<%= @name %>-access.log combined
-	ErrorLog /var/log/apache2/<%= @name %>-error.log
-	LogLevel warn
+  CustomLog /var/log/apache2/<%= @name %>-access.log combined
+  ErrorLog /var/log/apache2/<%= @name %>-error.log
 
-        AddDefaultCharset off
+  RedirectPermanent / https://<%= @name %>/
+</VirtualHost>
+<% end -%>
 
-	DocumentRoot <%= @directory %>
+<VirtualHost *:443>
+  ServerName <%= @name %>
+  ServerAdmin postmaster@openstreetmap.org
+  ServerSignature On
 
-	RewriteEngine on
+  SSLEngine on
+  SSLCertificateFile /etc/ssl/certs/<%= @name %>.pem
+  SSLCertificateKeyFile /etc/ssl/private/<%= @name %>.key
 
-	RewriteCond %{HTTP_REFERER} www\.mailbait\.info
-	RewriteRule . - [F,L]
+  CustomLog /var/log/apache2/<%= @name %>-access.log combined
+  ErrorLog /var/log/apache2/<%= @name %>-error.log
+  LogLevel warn
 
-	RedirectMatch ^/$ /listinfo
-	RedirectMatch ^/cgi-bin/mailman/(.*)$ /$1
+  AddDefaultCharset off
 
-	<Directory /var/lib/mailman/archives/>
-		Options Indexes FollowSymLinks
-		AllowOverride None
-		Require all granted
-	</Directory>
+  DocumentRoot <%= @directory %>
 
-	Alias /pipermail/ /var/lib/mailman/archives/public/
-	Alias /images/ /usr/share/images/mailman/
+  RewriteEngine on
 
-	ScriptAlias /admin /usr/lib/cgi-bin/mailman/admin
-	ScriptAlias /admindb /usr/lib/cgi-bin/mailman/admindb
-	ScriptAlias /confirm /usr/lib/cgi-bin/mailman/confirm
-	ScriptAlias /create /usr/lib/cgi-bin/mailman/create
-	ScriptAlias /edithtml /usr/lib/cgi-bin/mailman/edithtml
-	ScriptAlias /listinfo /usr/lib/cgi-bin/mailman/listinfo
-	ScriptAlias /options /usr/lib/cgi-bin/mailman/options
-	ScriptAlias /private /usr/lib/cgi-bin/mailman/private
-	ScriptAlias /rmlist /usr/lib/cgi-bin/mailman/rmlist
-	ScriptAlias /roster /usr/lib/cgi-bin/mailman/roster
-	ScriptAlias /subscribe /usr/lib/cgi-bin/mailman/subscribe
-	ScriptAlias /mailman/ /usr/lib/cgi-bin/mailman/
+  RewriteCond %{HTTP_REFERER} www\.mailbait\.info
+  RewriteRule . - [F,L]
 
-	<Location ~ "/pipermail/([^/]+)/(2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016)">
-		ExpiresActive On
-		ExpiresDefault "access plus 180 days"
-	</Location>
+  RedirectMatch ^/$ /listinfo
+  RedirectMatch ^/cgi-bin/mailman/(.*)$ /$1
+
+  <Directory /var/lib/mailman/archives/>
+	  Options Indexes FollowSymLinks
+    AllowOverride None
+    Require all granted
+  </Directory>
+
+  Alias /pipermail/ /var/lib/mailman/archives/public/
+  Alias /images/ /usr/share/images/mailman/
+
+  ScriptAlias /admin /usr/lib/cgi-bin/mailman/admin
+  ScriptAlias /admindb /usr/lib/cgi-bin/mailman/admindb
+  ScriptAlias /confirm /usr/lib/cgi-bin/mailman/confirm
+  ScriptAlias /create /usr/lib/cgi-bin/mailman/create
+  ScriptAlias /edithtml /usr/lib/cgi-bin/mailman/edithtml
+  ScriptAlias /listinfo /usr/lib/cgi-bin/mailman/listinfo
+  ScriptAlias /options /usr/lib/cgi-bin/mailman/options
+  ScriptAlias /private /usr/lib/cgi-bin/mailman/private
+  ScriptAlias /rmlist /usr/lib/cgi-bin/mailman/rmlist
+  ScriptAlias /roster /usr/lib/cgi-bin/mailman/roster
+  ScriptAlias /subscribe /usr/lib/cgi-bin/mailman/subscribe
+  ScriptAlias /mailman/ /usr/lib/cgi-bin/mailman/
+
+  <Location ~ "/pipermail/([^/]+)/(2004|2005|2006|2007|2008|2009|2010|2011|2012|2013|2014|2015|2016|2017)">
+    ExpiresActive On
+    ExpiresDefault "access plus 180 days"
+  </Location>
 </VirtualHost>

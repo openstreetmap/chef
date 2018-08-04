@@ -42,12 +42,13 @@ apache_module "expires"
 apache_module "rewrite"
 
 ssl_certificate "lists.openstreetmap.org" do
-  domains "lists.openstreetmap.org"
+  domains ["lists.openstreetmap.org", "lists.osm.org"]
   notifies :reload, "service[apache2]"
 end
 
 apache_site "lists.openstreetmap.org" do
   template "apache.erb"
+  variables :aliases => ["lists.osm.org"]
 end
 
 template "/etc/cron.daily/lists-backup" do
