@@ -74,14 +74,14 @@ end
 apache_module "wsgi"
 
 ssl_certificate "trac.openstreetmap.org" do
-  domains "trac.openstreetmap.org"
+  domains ["trac.openstreetmap.org", "trac.osm.org"]
   notifies :reload, "service[apache2]"
 end
 
 apache_site site_name do
   template "apache.erb"
   directory site_directory
-  variables :user => "trac", :group => "trac"
+  variables :user => "trac", :group => "trac", :aliases => ["trac.osm.org"]
 end
 
 template "/etc/sudoers.d/trac" do
