@@ -132,7 +132,7 @@ run_list(
   "role[backup]",
   "role[stats]",
   "role[planet]",
-  # "role[planetdump]",
+  "role[planetdump]",
   "role[logstash]",
   "recipe[rsyncd]",
   "recipe[dhcpd]",
