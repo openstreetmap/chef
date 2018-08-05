@@ -59,8 +59,13 @@
 
   #
   # Block requests for the old 404 map tile
+  # and force cache headers on response
   #
   RewriteRule ^/openlayers/img/404.png$ - [G,L]
+  <Location /openlayers/img/404.png>
+    Header always set Cache-Control "max-age=31536000"
+    Header always set Expires "Tue, 19 Jan 2038 03:14:08 GMT"
+  </Location>
 
   #
   # Block attempts to access old API versions
@@ -268,6 +273,16 @@
   RewriteEngine on
 
   RewriteRule ^/\.well-known/acme-challenge/(.*)$ http://acme.openstreetmap.org/.well-known/acme-challenge/$1 [R=permanent,L]
+
+  #
+  # Block requests for the old 404 map tile
+  # and force cache headers on response
+  #
+  RewriteRule ^/openlayers/img/404.png$ - [G,L]
+  <Location /openlayers/img/404.png>
+    Header always set Cache-Control "max-age=31536000"
+    Header always set Expires "Tue, 19 Jan 2038 03:14:08 GMT"
+  </Location>
 
   RewriteCond %{REQUEST_URI} !^/server-status$
   RewriteRule ^(.*)$ https://openstreetmap.org$1 [L,NE,R=permanent]
