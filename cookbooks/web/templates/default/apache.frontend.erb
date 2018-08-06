@@ -62,7 +62,7 @@
   # and force cache headers on response
   #
   <Location /openlayers/img/404.png>
-    Header always set Cache-Control "max-age=31536000"
+    Header always set Cache-Control "public, max-age=31536000, immutable"
     Header always set Expires "Tue, 19 Jan 2038 03:14:07 GMT"
     RewriteRule ^ - [G,L]
   </Location>
