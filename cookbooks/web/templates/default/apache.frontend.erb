@@ -63,7 +63,7 @@
   #
   <Location /openlayers/img/404.png>
     Header always set Cache-Control "max-age=31536000"
-    Header always set Expires "Tue, 19 Jan 2038 03:14:08 GMT"
+    Header always set Expires "Tue, 19 Jan 2038 03:14:07 GMT"
     RewriteRule ^ - [G,L]
   </Location>
 
@@ -271,7 +271,7 @@
   ServerAlias *
 
   Header always set Cache-Control "max-age=31536000"
-  Header always set Expires "Tue, 19 Jan 2038 03:14:08 GMT"
+  Header always set Expires "Tue, 19 Jan 2038 03:14:07 GMT"
 
   RewriteEngine on
 
@@ -290,7 +290,7 @@
   SSLCertificateKeyFile /etc/ssl/private/www.openstreetmap.org.key
 
   Header always set Cache-Control "max-age=31536000"
-  Header always set Expires "Tue, 19 Jan 2038 03:14:08 GMT"
+  Header always set Expires "Tue, 19 Jan 2038 03:14:07 GMT"
 
   RedirectPermanent / https://www.openstreetmap.org/
 </VirtualHost>
