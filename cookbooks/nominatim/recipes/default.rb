@@ -135,7 +135,6 @@ end
 ## Nominatim backend
 
 include_recipe "git"
-include_recipe "python"
 
 package "build-essential"
 package "cmake"
@@ -143,7 +142,6 @@ package "g++"
 package "libboost-dev"
 package "libboost-system-dev"
 package "libboost-filesystem-dev"
-package "libboost-python-dev"
 package "libexpat1-dev"
 package "zlib1g-dev"
 package "libxml2-dev"
@@ -151,9 +149,7 @@ package "libbz2-dev"
 package "libpq-dev"
 package "libgeos++-dev"
 package "libproj-dev"
-package "osmosis"
-
-python_package "osmium"
+package "pyosmium"
 
 source_directory = "#{basedir}/nominatim"
 build_directory = "#{basedir}/bin"
