@@ -422,7 +422,7 @@ end
 file node[:tile][:node_file] do
   owner "tile"
   group "www-data"
-  mode 0o640
+  mode 0o660
 end
 
 directory "/var/log/tile" do
