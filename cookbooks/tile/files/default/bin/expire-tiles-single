@@ -4,7 +4,7 @@ Expire meta tiles from a OSM change file by resetting their modified time.
 """
 
 import argparse
-import os.path as ospath
+import os
 import osmium as o
 import pyproj
 
@@ -73,15 +73,15 @@ def xyz_to_meta(x, y, z, meta_size):
         if path is None:
             path = (part + ".meta")
         else:
-            path = ospath.join(part, path)
+            path = os.path.join(part, path)
 
-    return ospath.join(str(z), path)
+    return os.path.join(str(z), path)
 
 
 def expire_meta(meta):
     """Expire the meta tile by setting the modified time back.
     """
-    if ospath.exists(meta):
+    if os.path.exists(meta):
         print("Expiring " + meta)
         os.utime(meta, (EXPIRY_TIME, EXPIRY_TIME))
 
@@ -101,7 +101,7 @@ def expire_meta_tiles(options):
             meta = xyz_to_meta(xy[0], xy[1], xy[2], options.meta_size)
 
             for tile_dir in options.tile_dir:
-                meta_set.add(ospath.join(tile_dir, meta))
+                meta_set.add(os.path.join(tile_dir, meta))
 
             # add the parent into the set for the next round
             new_set.add((int(xy[0]/2), int(xy[1]/2), xy[2] - 1))
