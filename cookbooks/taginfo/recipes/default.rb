@@ -40,7 +40,7 @@ package %w[
 
 package %w[
   sqlite3
-  osmosis
+  pyosmium
   curl
   pbzip2
 ]
@@ -196,7 +196,7 @@ node[:taginfo][:sites].each do |site|
     notifies :restart, "passenger_application[#{directory}/taginfo/web/public]"
   end
 
-  %w[taginfo/web/tmp bin data data/old download sources planet planet/log planet/replication].each do |dir|
+  %w[taginfo/web/tmp bin data data/old download sources planet planet/log].each do |dir|
     directory "#{directory}/#{dir}" do
       owner "taginfo"
       group "taginfo"
@@ -207,19 +207,6 @@ node[:taginfo][:sites].each do |site|
   remote_file "#{directory}/planet/planet.pbf" do
     action :create_if_missing
     source "https://planet.openstreetmap.org/pbf/planet-latest.osm.pbf"
-    owner "taginfo"
-    group "taginfo"
-    mode 0o644
-  end
-
-  template "#{directory}/planet/replication/configuration.txt" do
-    source "configuration.txt.erb"
-    owner "taginfo"
-    group "taginfo"
-    mode 0o644
-  end
-
-  file "#{directory}/planet/replication/download.lock" do
     owner "taginfo"
     group "taginfo"
     mode 0o644

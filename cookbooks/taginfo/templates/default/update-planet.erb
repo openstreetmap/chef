@@ -2,10 +2,6 @@
 
 # DO NOT EDIT - This file is being maintained by Chef
 
-# abort on error
-
-set -e
-
 # setup
 
 PLANETDIR="<%= @directory %>/planet"
@@ -13,36 +9,25 @@ LOGDIR="${PLANETDIR}/log"
 PLANETPREV="${PLANETDIR}/planet-previous.pbf"
 PLANETCURR="${PLANETDIR}/planet.pbf"
 PLANETNEW="${PLANETDIR}/planet-new.pbf"
-STATEDIR="${PLANETDIR}/replication"
-OSCFILE="${PLANETDIR}/$(date +%Y%m%d-%H%M).osc"
-OSCFILEPREV="${PLANETDIR}/previous.osc"
-
-OSMIUM=<%= @directory %>/osmium-tool/build/src/osmium
 
 # start logging
 
 exec > "${LOGDIR}/$(date +%Y%m%d-%H%M).log" 2>&1
 
-# if there are old .osc files, they have to be taken into account
+retval=1
+while [ $retval -eq 1 ]; do
+    pyosmium-up-to-date -o $PLANETNEW $PLANETCURR
+    retval=$?
+done
 
-OLDFILE="$(find "${PLANETDIR}" -name "2*-*.osc" -print)"
-if [ -z "$OLDFILE" ]
-then
-   osmosis --rri "$STATEDIR" --simc --write-xml-change "$OSCFILE"
-else
-   osmosis --rxc "$OLDFILE" --rri "$STATEDIR" --mc --simc --write-xml-change "$OSCFILE" && rm "$OLDFILE"
+if [ $retval -ne 0 ]; then
+  exit $retval
 fi
-
-# osc file is ready, create new planet file
-
-#osmosis --read-xml-change "$OSCFILE" --read-bin "$PLANETCURR" --buffer bufferCapacity=12000 --apply-change --buffer bufferCapacity=12000 --write-pbf file="$PLANETNEW"
-$OSMIUM apply-changes --verbose --fsync --output=$PLANETNEW $PLANETCURR $OSCFILE
 
 # cleanup
 
 mv "$PLANETCURR" "$PLANETPREV"
 mv "$PLANETNEW" "$PLANETCURR"
-mv "$OSCFILE" "$OSCFILEPREV"
 
 # expire old logs
 
