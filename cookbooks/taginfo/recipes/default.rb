@@ -33,8 +33,6 @@ package %w[
   libgd-dev
   libicu-dev
   libboost-program-options-dev
-  libosmium2-dev
-  libprotozero-dev
   cmake
   make
   g++
@@ -42,7 +40,6 @@ package %w[
 
 package %w[
   sqlite3
-  osmium-tool
   pyosmium
   curl
   pbzip2
@@ -107,6 +104,22 @@ node[:taginfo][:sites].each do |site|
     mode 0o755
   end
 
+  git "#{directory}/libosmium" do
+    action :sync
+    repository "git://github.com/osmcode/libosmium.git"
+    revision "v2.12.1"
+    user "taginfo"
+    group "taginfo"
+  end
+
+  git "#{directory}/osmium-tool" do
+    action :sync
+    repository "git://github.com/osmcode/osmium-tool.git"
+    revision "v1.6.1"
+    user "taginfo"
+    group "taginfo"
+  end
+
   git "#{directory}/taginfo" do
     action :sync
     repository "git://github.com/taginfo/taginfo.git"
@@ -131,6 +144,7 @@ node[:taginfo][:sites].each do |site|
     settings["sources"]["create"] = "db languages projects wiki"
     settings["sources"]["db"]["planetfile"] = "#{directory}/planet/planet.pbf"
     settings["sources"]["db"]["bindir"] = "#{directory}/taginfo/tagstats"
+    settings["tagstats"]["cxxflags"] = "-I../../libosmium/include"
     settings["tagstats"]["geodistribution"] = "DenseMmapArray"
 
     JSON.pretty_generate(settings)
@@ -150,10 +164,25 @@ node[:taginfo][:sites].each do |site|
     cwd "#{directory}/taginfo/tagstats"
     user "taginfo"
     group "taginfo"
-    subscribes :run, "package[libprotozero-dev]"
-    subscribes :run, "package[libosmium2-dev]"
+    subscribes :run, "git[#{directory}/libosmium]"
     subscribes :run, "git[#{directory}/taginfo]"
     notifies :restart, "service[apache2]"
+  end
+
+  directory "#{directory}/osmium-tool/build" do
+    owner "taginfo"
+    group "taginfo"
+    mode "0755"
+  end
+
+  execute "compile-osmium" do
+    action :nothing
+    command "cmake .. && make"
+    cwd "#{directory}/osmium-tool/build"
+    user "taginfo"
+    group "taginfo"
+    subscribes :run, "git[#{directory}/libosmium]"
+    subscribes :run, "git[#{directory}/osmium-tool]"
   end
 
   execute "#{directory}/taginfo/Gemfile" do
