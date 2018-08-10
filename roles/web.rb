@@ -14,8 +14,8 @@ default_attributes(
     :pool_idle_time => 3600
   },
   :web => {
-    :status => "online",
-    :memcached_servers => %w[rails4.bm rails5.bm]
+    :status => "database_readonly",
+    :memcached_servers => %w[rails1.ams rails2.ams rails3.ams]
   }
 )
 
