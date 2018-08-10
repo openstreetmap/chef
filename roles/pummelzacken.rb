@@ -32,7 +32,7 @@ default_attributes(
     }
   },
   :nominatim => {
-    :state => "standalone",
+    :state => "off",
     :dbadmins => %w[lonvia tomh],
     :dbcluster => "10/main",
     :postgis => "2.4",
