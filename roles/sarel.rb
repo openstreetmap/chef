@@ -28,7 +28,6 @@ default_attributes(
 run_list(
   "role[ucl]",
   "role[hp-g5]",
-  "role[yournavigation]",
   "role[chef-server]",
   "role[chef-repository]",
   "role[letsencrypt]",
