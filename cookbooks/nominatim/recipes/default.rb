@@ -327,19 +327,25 @@ apache_module "proxy_fcgi"
 apache_module "proxy_http"
 apache_module "headers"
 
-service "php7.0-fpm" do
+php_version = if node[:lsb][:release].to_f >= 18.04
+                "7.2"
+              else
+                "7.0"
+              end
+
+service "php#{php_version}-fpm" do
   action [:enable, :start]
   supports :status => true, :restart => true, :reload => true
 end
 
 node[:nominatim][:fpm_pools].each do |name, data|
-  template "/etc/php/7.0/fpm/pool.d/#{name}.conf" do
+  template "/etc/php/#{php_version}/fpm/pool.d/#{name}.conf" do
     source "fpm.conf.erb"
     owner "root"
     group "root"
     mode 0o644
     variables data.merge(:name => name)
-    notifies :reload, "service[php7.0-fpm]"
+    notifies :reload, "service[php#{php_version}-fpm]"
   end
 end
 
