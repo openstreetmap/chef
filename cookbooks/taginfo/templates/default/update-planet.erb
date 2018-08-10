@@ -16,7 +16,7 @@ exec > "${LOGDIR}/$(date +%Y%m%d-%H%M).log" 2>&1
 
 retval=1
 while [ $retval -eq 1 ]; do
-    pyosmium-up-to-date -o $PLANETNEW $PLANETCURR
+    pyosmium-up-to-date -v -o $PLANETNEW $PLANETCURR
     retval=$?
 done
 
