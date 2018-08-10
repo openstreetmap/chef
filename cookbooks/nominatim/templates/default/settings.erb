@@ -4,8 +4,6 @@
 @define('CONST_Database_DSN', 'pgsql://@/<%= @dbname %>');
 @define('CONST_Website_BaseURL', 'https://<%= @base_url %>/');
 
-@define('CONST_Pyosmium_Binary', '/usr/local/bin/pyosmium-get-changes');
-
 <% if @flatnode_file -%>
 @define('CONST_Osm2pgsql_Flatnode_File', '<%= @flatnode_file %>');
 <% end -%>
