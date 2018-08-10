@@ -53,9 +53,10 @@ end
 include_recipe "postgresql"
 
 postgresql_version = node[:nominatim][:dbcluster].split("/").first
+postgis_version = node[:nominatim][:postgis]
 
 package "postgis"
-package "postgresql-#{postgresql_version}-postgis-2.3"
+package "postgresql-#{postgresql_version}-postgis-#{postgis_version}"
 
 node[:nominatim][:dbadmins].each do |user|
   postgresql_user user do
@@ -143,7 +144,6 @@ package "g++"
 package "libboost-dev"
 package "libboost-system-dev"
 package "libboost-filesystem-dev"
-package "libboost-python-dev"
 package "libexpat1-dev"
 package "zlib1g-dev"
 package "libxml2-dev"
@@ -153,7 +153,12 @@ package "libgeos++-dev"
 package "libproj-dev"
 package "osmosis"
 
-python_package "osmium"
+if node[:lsb][:release].to_f >= 18.04
+  package "pyosmium"
+else
+  package "libboost-python-dev"
+  python_package "osmium"
+end
 
 source_directory = "#{basedir}/nominatim"
 build_directory = "#{basedir}/bin"

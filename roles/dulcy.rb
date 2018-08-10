@@ -46,6 +46,7 @@ default_attributes(
     :enable_git_updates => true,
     :dbadmins => %w[lonvia tomh],
     :dbcluster => "9.6/main",
+    :postgis => "2.3",
     :flatnode_file => "/ssd/nominatim/nodes.store",
     :logdir => "/ssd/nominatim/log",
     :tablespaces => {

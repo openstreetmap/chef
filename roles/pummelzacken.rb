@@ -34,7 +34,8 @@ default_attributes(
   :nominatim => {
     :state => "standalone",
     :dbadmins => %w[lonvia tomh],
-    :dbcluster => "9.6/main",
+    :dbcluster => "10.0/main",
+    :postgis => "2.4",
     :enable_backup => true,
     :flatnode_file => "/ssd/nominatim/nodes.store",
     :tablespaces => {
