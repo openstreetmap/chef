@@ -252,7 +252,7 @@ remote_file "#{source_directory}/data/country_osm_grid.sql.gz" do
 end
 
 template "/etc/cron.d/nominatim" do
-  action node[:nominatim][:state] == :off ? :delete : :create
+  action node[:nominatim][:state] == "off" ? :delete : :create
   source "nominatim.cron.erb"
   owner "root"
   group "root"
