@@ -27,12 +27,12 @@ default_attributes(
         :maintenance_work_mem => "10GB",
         :random_page_cost => "1.5",
         :effective_cache_size => "60GB",
-        :fsync => "off"
+        :fsync => "on"
       }
     }
   },
   :nominatim => {
-    :state => "off",
+    :state => "standalone",
     :dbadmins => %w[lonvia tomh],
     :dbcluster => "10/main",
     :postgis => "2.4",
