@@ -309,36 +309,27 @@ action :create do
     update_site false
   end
 
-  # MediaWiki Language Extension Bundle
-  # FIXME: should automatically resolve tag
-  mw_lang_ext_bundle_tag = "2017.01"
-
   mediawiki_extension "Babel" do
     site new_resource.site
     template "mw-ext-Babel.inc.php.erb"
-    # tag mw_lang_ext_bundle_tag
-    tag mw_lang_ext_bundle_tag
     update_site false
   end
 
   mediawiki_extension "cldr" do
     site new_resource.site
     template "mw-ext-cldr.inc.php.erb"
-    tag mw_lang_ext_bundle_tag
     update_site false
   end
 
   mediawiki_extension "CleanChanges" do
     site new_resource.site
     template "mw-ext-CleanChanges.inc.php.erb"
-    tag mw_lang_ext_bundle_tag
     update_site false
   end
 
   mediawiki_extension "LocalisationUpdate" do
     site new_resource.site
     template "mw-ext-LocalisationUpdate.inc.php.erb"
-    tag mw_lang_ext_bundle_tag
     update_site false
   end
 
@@ -355,13 +346,11 @@ action :create do
   # mediawiki_extension "Translate" do
   #   site new_resource.site
   #   template "mw-ext-Translate.inc.php.erb"
-  #   tag mw_lang_ext_bundle_tag
   #   update_site false
   # end
 
   mediawiki_extension "UniversalLanguageSelector" do
     site new_resource.site
-    tag mw_lang_ext_bundle_tag
     update_site false
   end
 
