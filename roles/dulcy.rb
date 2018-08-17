@@ -35,13 +35,13 @@ default_attributes(
         :maintenance_work_mem => "10GB",
         :random_page_cost => "1.5",
         :effective_cache_size => "60GB",
-        :fsync => "on",
+        :fsync => "off",
         :effective_io_concurrency => "3"
       }
     }
   },
   :nominatim => {
-    :state => "standalone",
+    :state => "off",
     :enable_backup => false,
     :enable_git_updates => true,
     :dbadmins => %w[lonvia tomh],
