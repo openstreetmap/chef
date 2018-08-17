@@ -136,29 +136,23 @@ end
 ## Nominatim backend
 
 include_recipe "git"
-include_recipe "python"
 
-package "build-essential"
-package "cmake"
-package "g++"
-package "libboost-dev"
-package "libboost-system-dev"
-package "libboost-filesystem-dev"
-package "libexpat1-dev"
-package "zlib1g-dev"
-package "libxml2-dev"
-package "libbz2-dev"
-package "libpq-dev"
-package "libgeos++-dev"
-package "libproj-dev"
-package "osmosis"
-
-if node[:lsb][:release].to_f >= 18.04
-  package "pyosmium"
-else
-  package "libboost-python-dev"
-  python_package "osmium"
-end
+package %w[
+  build-essential
+  cmake
+  g++
+  libboost-dev
+  libboost-system-dev
+  libboost-filesystem-dev
+  libexpat1-dev
+  zlib1g-dev
+  libxml2-dev
+  libbz2-dev
+  libpq-dev
+  libgeos++-dev
+  libproj-dev
+  pyosmium
+]
 
 source_directory = "#{basedir}/nominatim"
 build_directory = "#{basedir}/bin"
