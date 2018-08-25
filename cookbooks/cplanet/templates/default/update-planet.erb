@@ -1,0 +1,26 @@
+#!/bin/sh
+
+# DO NOT EDIT - This file is being maintained by Chef
+
+# setup
+
+PLANETDIR="<%= @basedir %>/planet"
+PLANETPREV="${PLANETDIR}/planet-previous.pbf"
+PLANETCURR="${PLANETDIR}/planet.pbf"
+PLANETNEW="${PLANETDIR}/planet-new.pbf"
+
+retval=1
+while [ $retval -eq 1 ]; do
+    pyosmium-up-to-date -v -o $PLANETNEW $PLANETCURR
+    retval=$?
+done
+
+if [ $retval -ne 0 ]; then
+    exit $retval
+fi
+
+# cleanup
+
+mv "$PLANETCURR" "$PLANETPREV"
+mv "$PLANETNEW" "$PLANETCURR"
+
