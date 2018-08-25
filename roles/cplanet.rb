@@ -12,7 +12,7 @@ default_attributes(
         :members => [:jochen, :tomh]
       }
     }
-  },
+  }
 )
 
 run_list(

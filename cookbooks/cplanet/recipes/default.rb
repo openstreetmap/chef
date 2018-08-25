@@ -17,24 +17,24 @@
 # limitations under the License.
 #
 
-user = 'cplanet'
-basedir = '/srv/cplanet'
-planet_source = 'https://planet.openstreetmap.org/pbf/planet-latest.osm.pbf'
+user = "cplanet"
+basedir = "/srv/cplanet"
+planet_source = "https://planet.openstreetmap.org/pbf/planet-latest.osm.pbf"
 
 package %w[
   pyosmium
 ]
 
 directory basedir do
-  owner 'root'
-  group 'root'
+  owner "root"
+  group "root"
   mode 0o755
 end
 
 %w[bin jobs log].each do |dir|
   directory "#{basedir}/#{dir}" do
-    owner 'root'
-    group 'root'
+    owner "root"
+    group "root"
     mode 0o755
   end
 end
@@ -48,8 +48,8 @@ end
 %w[update update-planet].each do |file|
   template "#{basedir}/bin/#{file}" do
     source "#{file}.erb"
-    owner 'root'
-    group 'root'
+    owner "root"
+    group "root"
     mode 0o755
     variables :basedir => basedir, :user => user
   end
@@ -63,10 +63,9 @@ remote_file "#{basedir}/planet/planet.pbf" do
   mode 0o644
 end
 
-cron 'update-planet' do
+cron "update-planet" do
   hour 1
   minute 17
-  user 'root'
+  user "root"
   command "#{basedir}/bin/update"
 end
-
