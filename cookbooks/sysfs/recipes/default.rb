@@ -17,30 +17,36 @@
 # limitations under the License.
 #
 
-package "sysfsutils"
+if node[:virtualization][:role] == "guest" &&
+   node[:virtualization][:system] == "lxd"
+  package "sysfsutils" do
+    action :purge
+  end
+else
+  package "sysfsutils"
 
-service "sysfsutils" do
-  action :enable
-  supports :status => false, :restart => true, :reload => false
-end
+  service "sysfsutils" do
+    action :enable
+    supports :status => false, :restart => true, :reload => false
+  end
 
-template "/etc/sysfs.conf" do
-  source "sysfs.conf.erb"
-  owner "root"
-  group "root"
-  mode 0o644
-  notifies :restart, "service[sysfsutils]"
-end
+  template "/etc/sysfs.conf" do
+    source "sysfs.conf.erb"
+    owner "root"
+    group "root"
+    mode 0o644
+    notifies :restart, "service[sysfsutils]"
+  end
 
-node[:sysfs].each_value do |group|
-  group[:parameters].each do |key, value|
-    sysfs_file = "/sys/#{key}"
+  node[:sysfs].each_value do |group|
+    group[:parameters].each do |key, value|
+      sysfs_file = "/sys/#{key}"
 
-    file sysfs_file do
-      content "#{value}\n"
-      atomic_update false
-      ignore_failure true
-      only_if { File.exist?(sysfs_file) }
+      file sysfs_file do
+        content "#{value}\n"
+        atomic_update false
+        ignore_failure true
+      end
     end
   end
 end

@@ -17,36 +17,42 @@
 # limitations under the License.
 #
 
-package "procps"
+if node[:virtualization][:role] == "guest" &&
+   node[:virtualization][:system] == "lxd"
+  file "/etc/sysctl.d/60-chef.conf" do
+    action :delete
+  end
+else
+  package "procps"
 
-directory "/etc/sysctl.d" do
-  owner "root"
-  group "root"
-  mode 0o755
-end
+  directory "/etc/sysctl.d" do
+    owner "root"
+    group "root"
+    mode 0o755
+  end
 
-execute "sysctl" do
-  action :nothing
-  command "/sbin/sysctl -p /etc/sysctl.d/60-chef.conf"
-end
+  execute "sysctl" do
+    action :nothing
+    command "/sbin/sysctl -p /etc/sysctl.d/60-chef.conf"
+  end
 
-template "/etc/sysctl.d/60-chef.conf" do
-  source "chef.conf.erb"
-  owner "root"
-  group "root"
-  mode 0o644
-  notifies :run, "execute[sysctl]"
-end
+  template "/etc/sysctl.d/60-chef.conf" do
+    source "chef.conf.erb"
+    owner "root"
+    group "root"
+    mode 0o644
+    notifies :run, "execute[sysctl]"
+  end
 
-node[:sysctl].each_value do |group|
-  group[:parameters].each do |key, value|
-    sysctl_file = "/proc/sys/#{key.tr('.', '/')}"
+  node[:sysctl].each_value do |group|
+    group[:parameters].each do |key, value|
+      sysctl_file = "/proc/sys/#{key.tr('.', '/')}"
 
-    file sysctl_file do
-      content "#{value}\n"
-      atomic_update false
-      ignore_failure true
-      only_if { File.exist?(sysctl_file) }
+      file sysctl_file do
+        content "#{value}\n"
+        atomic_update false
+        ignore_failure true
+      end
     end
   end
 end
