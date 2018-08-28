@@ -125,7 +125,7 @@ action :create do
     user new_resource.user
     group new_resource.group
     notifies :run, "execute[#{rails_directory}/Gemfile]"
-    notifies :run, "execute[#{rails_directory}/public/assets]"
+    notifies :run, "execute[#{rails_directory}/app/assets/javascripts/i18n]"
     notifies :delete, "file[#{rails_directory}/public/export/embed.html]"
     notifies :restart, "passenger_application[#{rails_directory}]"
   end
@@ -318,6 +318,16 @@ action :create do
     subscribes :run, "git[#{rails_directory}]"
     notifies :restart, "passenger_application[#{rails_directory}]"
     only_if { new_resource.run_migrations }
+  end
+
+  execute "#{rails_directory}/app/assets/javascripts/i18n" do
+    action :nothing
+    command "bundle#{new_resource.ruby} exec rake i18n:js:export"
+    environment "RAILS_ENV" => "production"
+    cwd rails_directory
+    user new_resource.user
+    group new_resource.group
+    notifies :run, "execute[#{rails_directory}/public/assets]"
   end
 
   execute "#{rails_directory}/public/assets" do
