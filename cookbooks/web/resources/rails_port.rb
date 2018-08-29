@@ -126,6 +126,7 @@ action :create do
     group new_resource.group
     notifies :run, "execute[#{rails_directory}/Gemfile]"
     notifies :run, "execute[#{rails_directory}/app/assets/javascripts/i18n]"
+    notifies :run, "execute[#{rails_directory}/public/assets]"
     notifies :delete, "file[#{rails_directory}/public/export/embed.html]"
     notifies :restart, "passenger_application[#{rails_directory}]"
   end
