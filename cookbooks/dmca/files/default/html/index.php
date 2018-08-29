@@ -18,7 +18,7 @@ function process_data ($values) {
 <head>
 <title>OpenStreetMap Legal - Claim of Copyright Infringement</title>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
- <link rel="stylesheet" type="text/css" href="style.css" />
+ <link rel="stylesheet" type="text/css" href="/style.css" />
 </head>
 <body>
 <div class="regForm">
