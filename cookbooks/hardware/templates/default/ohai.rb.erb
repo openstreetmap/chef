@@ -359,7 +359,7 @@ Ohai.plugin(:Hardware) do
         controller[:device] = File.basename(device).sub(/^cciss(\d+)$/, "/dev/cciss/c\\1d0")
       elsif device = Dir.glob("/sys/bus/pci/devices/#{controller[:pci_slot]}/host*/target*:3:0/*:3:0:0/scsi_generic/sg*").first
         controller[:device] = "/dev/#{File.basename(device)}"
-      elsif device = Dir.glob("/sys/bus/pci/devices/#{controller[:pci_slot]}/host*/target*:1:0/*:1:0:0/scsi_generic/sg*").first
+      elsif device = Dir.glob("/sys/bus/pci/devices/#{controller[:pci_slot]}/host*/target*:1:0/*:1:0:*/scsi_generic/sg*").first
         controller[:device] = "/dev/#{File.basename(device)}"
       end
     end
