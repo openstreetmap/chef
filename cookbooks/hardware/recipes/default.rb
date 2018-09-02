@@ -358,16 +358,19 @@ disks = disks.map do |disk|
 
   if disk[:smart_device]
     controller = node[:hardware][:disk][:controllers][disk[:controller]]
-    device = controller[:device].sub("/dev/", "")
-    smart = disk[:smart_device]
 
-    if device.start_with?("cciss/") && smart =~ /^cciss,(\d+)$/
-      array = node[:hardware][:disk][:arrays][disk[:arrays].first]
-      munin = "cciss-3#{array[:wwn]}-#{Regexp.last_match(1)}"
-    elsif smart =~ /^.*,(\d+)$/
-      munin = "#{device}-#{Regexp.last_match(1)}"
-    elsif smart =~ %r{^.*,(\d+)/(\d+)$}
-      munin = "#{device}-#{Regexp.last_match(1)}:#{Regexp.last_match(2)}"
+    if controller && controller[:device]
+      device = controller[:device].sub("/dev/", "")
+      smart = disk[:smart_device]
+
+      if device.start_with?("cciss/") && smart =~ /^cciss,(\d+)$/
+        array = node[:hardware][:disk][:arrays][disk[:arrays].first]
+        munin = "cciss-3#{array[:wwn]}-#{Regexp.last_match(1)}"
+      elsif smart =~ /^.*,(\d+)$/
+        munin = "#{device}-#{Regexp.last_match(1)}"
+      elsif smart =~ %r{^.*,(\d+)/(\d+)$}
+        munin = "#{device}-#{Regexp.last_match(1)}:#{Regexp.last_match(2)}"
+      end
     end
   elsif disk[:device]
     device = disk[:device].sub("/dev/", "")
