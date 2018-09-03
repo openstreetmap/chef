@@ -14,10 +14,6 @@ default_attributes(
     :roles => {
       :external => {
         :zone => "ool",
-        :inet => {
-          :prefix => "28",
-          :gateway => "140.211.167.97"
-        },
         :inet6 => {
           :prefix => "64",
           :gateway => "2605:bc80:3010:700::1"
