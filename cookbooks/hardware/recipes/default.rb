@@ -93,21 +93,6 @@ when "IBM"
   units << "0"
 end
 
-# Remove legacy HP G4 support which breaks modern hp-health 10.4
-if manufacturer == "HP"
-  %w[/opt/hp/hp-health/bin/hpasmd /usr/lib/libhpasmintrfc.so.3.0 /usr/lib/libhpasmintrfc.so.3 /usr/lib/libhpasmintrfc.so].each do |filename|
-    file filename do
-      action :delete
-      manage_symlink_source false
-    end
-  end
-
-  directory "/opt/hp/hp-legacy" do
-    action :delete
-    recursive true
-  end
-end
-
 units.sort.uniq.each do |unit|
   if node[:lsb][:release].to_f >= 16.04
     service "serial-getty@ttyS#{unit}" do
