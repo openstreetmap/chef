@@ -65,6 +65,18 @@ when "HP"
     supports :status => true, :restart => true
   end
 
+  if product.end_with?("Gen8")
+    package "hp-ams" do
+      action :install
+      notifies :restart, "service[hp-ams]"
+    end
+
+    service "hp-ams" do
+      action [:enable, :start]
+      supports :status => true, :restart => true
+    end
+  end
+
   units << "1"
 when "TYAN"
   units << "0"
