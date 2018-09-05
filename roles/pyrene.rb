@@ -5,6 +5,14 @@ default_attributes(
   :apt => {
     :sources => ["postgresql"]
   },
+  :munin => {
+    :plugins => {
+      :hpasmcli2_temp => {
+        :temp15 => { :warning => "59.5", :critical => "70" },
+        :temp17 => { :warning => "59.5", :critical => "70" }
+      }
+    }
+  },
   :networking => {
     :interfaces => {
       :external_ipv4 => {
