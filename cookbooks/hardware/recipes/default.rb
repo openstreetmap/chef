@@ -65,7 +65,7 @@ when "HP"
     supports :status => true, :restart => true
   end
 
-  if product.end_with?("Gen8") || product.end_with?("Gen9")
+  if product.end_with?("Gen8", "Gen9")
     package "hp-ams" do
       action :install
       notifies :restart, "service[hp-ams]"
