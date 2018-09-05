@@ -77,6 +77,8 @@ squid_fragment "tilecache" do
   variables :caches => tilecaches, :renders => tilerenders
 end
 
+package "rsync"
+
 template "/etc/logrotate.d/squid" do
   source "logrotate.squid.erb"
   owner "root"
