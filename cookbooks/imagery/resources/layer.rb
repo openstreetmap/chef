@@ -61,38 +61,17 @@ action :create do
     group "root"
     mode 0o644
     variables new_resource.to_hash
+    notify :restart, "service[mapserv-fcgi-#{new_resource.site}]"
   end
 
-  systemd_service "mapserv-fcgi-#{new_resource.layer}" do
-    description "Map server for #{new_resource.layer} layer"
-    environment "MS_MAPFILE" => "/srv/imagery/mapserver/layer-#{new_resource.layer}.map",
-                "MS_MAP_PATTERN" => "^/srv/imagery/mapserver/",
-                "MS_DEBUGLEVEL" => "0",
-                "MS_ERRORFILE" => "stderr",
-                "GDAL_CACHEMAX" => "64"
-    limit_nofile 16384
-    memory_high "512M"
-    memory_max "1G"
-    user "imagery"
-    group "imagery"
-    exec_start_pre "/bin/rm -f /run/mapserver-fastcgi/layer-#{new_resource.layer}.socket"
-    exec_start "/usr/bin/spawn-fcgi -n -b 128 -s /run/mapserver-fastcgi/layer-#{new_resource.layer}.socket -M 0666 -P /run/mapserver-fastcgi/layer-#{new_resource.layer}.pid -- /usr/bin/multiwatch -f 2 --signal=TERM -- /usr/lib/cgi-bin/mapserv"
-    private_tmp true
-    private_devices true
-    private_network true
-    protect_system "full"
-    protect_home true
-    no_new_privileges true
-    restart "always"
-    pid_file "/run/mapserver-fastcgi/layer-#{new_resource.layer}.pid"
-  end
-
+  # Disable legacy service
   service "mapserv-fcgi-#{new_resource.layer}" do
-    provider Chef::Provider::Service::Systemd
-    action [:enable, :start]
-    supports :status => true, :restart => true, :reload => false
-    subscribes :restart, "template[/srv/imagery/mapserver/layer-#{new_resource.layer}.map]"
-    subscribes :restart, "systemd_service[mapserv-fcgi-#{new_resource.layer}]"
+    action [:stop, :disable]
+  end
+
+  # Remove legacy service
+  systemd_service "mapserv-fcgi-#{new_resource.layer}" do
+    action :delete
   end
 
   directory "/srv/imagery/nginx/#{new_resource.site}" do

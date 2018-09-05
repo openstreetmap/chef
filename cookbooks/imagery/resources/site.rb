@@ -91,6 +91,36 @@ action :create do
   base_domains = [new_resource.site] + Array(new_resource.aliases)
   tile_domains = base_domains.flat_map { |d| [d, "a.#{d}", "b.#{d}", "c.#{d}"] }
 
+  systemd_service "mapserv-fcgi-#{new_resource.site}" do
+    description "Map server for #{new_resource.site} layer"
+    environment "MS_MAP_PATTERN" => "^/srv/imagery/mapserver/",
+                "MS_DEBUGLEVEL" => "0",
+                "MS_ERRORFILE" => "stderr",
+                "GDAL_CACHEMAX" => "256"
+    limit_nofile 16384
+    memory_high "512M"
+    memory_max "1G"
+    user "imagery"
+    group "imagery"
+    exec_start_pre "/bin/rm -f /run/mapserver-fastcgi/layer-#{new_resource.site}.socket"
+    exec_start "/usr/bin/spawn-fcgi -n -b 128 -s /run/mapserver-fastcgi/layer-#{new_resource.site}.socket -M 0666 -P /run/mapserver-fastcgi/layer-#{new_resource.site}.pid -- /usr/bin/multiwatch -f 2 --signal=TERM -- /usr/lib/cgi-bin/mapserv"
+    private_tmp true
+    private_devices true
+    private_network true
+    protect_system "full"
+    protect_home true
+    no_new_privileges true
+    restart "always"
+    pid_file "/run/mapserver-fastcgi/layer-#{new_resource.site}.pid"
+  end
+
+  service "mapserv-fcgi-#{new_resource.site}" do
+    provider Chef::Provider::Service::Systemd
+    action [:enable, :start]
+    supports :status => true, :restart => true, :reload => false
+    subscribes :restart, "systemd_service[mapserv-fcgi-#{new_resource.site}]"
+  end
+
   ssl_certificate new_resource.site do
     domains tile_domains
   end
@@ -100,6 +130,20 @@ action :create do
     directory "/srv/imagery/#{new_resource.site}"
     restart_nginx false
     variables new_resource.to_hash
+  end
+end
+
+action :delete do
+  service "mapserv-fcgi-#{new_resource.site}" do
+    action [:stop, :disable]
+  end
+
+  systemd_service "mapserv-fcgi-#{new_resource.site}" do
+    action :delete
+  end
+
+  nginx_site new_resource.site do
+    action :delete
   end
 end
 
