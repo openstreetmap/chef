@@ -115,5 +115,5 @@ end
 def after_created
   notifies :create, "imagery_site[#{site}]"
   notifies :reload, "service[nginx]"
-  notifies :restart, "service[mapserv-fcgi-#{site}]"
+  # notifies :restart, "service[mapserv-fcgi-#{site}]"
 end
