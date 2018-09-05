@@ -69,6 +69,13 @@ template "/usr/local/bin/users-agreed" do
   mode 0o755
 end
 
+template "/usr/local/bin/users-deleted" do
+  source "users-deleted.erb"
+  owner "root"
+  group "root"
+  mode 0o755
+end
+
 remote_directory "/store/planet/replication" do
   source "replication-cgi"
   owner "root"
