@@ -61,7 +61,7 @@ action :create do
     group "root"
     mode 0o644
     variables new_resource.to_hash
-    notify :restart, "service[mapserv-fcgi-#{new_resource.site}]"
+    notifies :restart, "service[mapserv-fcgi-#{new_resource.site}]"
   end
 
   # Disable legacy service
