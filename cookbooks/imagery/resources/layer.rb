@@ -61,7 +61,6 @@ action :create do
     group "root"
     mode 0o644
     variables new_resource.to_hash
-    notifies :restart, "service[mapserv-fcgi-#{new_resource.site}]"
   end
 
   # Disable legacy service
@@ -116,4 +115,5 @@ end
 def after_created
   notifies :create, "imagery_site[#{site}]"
   notifies :reload, "service[nginx]"
+  notifies :restart, "service[mapserv-fcgi-#{site}]"
 end
