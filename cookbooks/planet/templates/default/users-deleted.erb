@@ -10,7 +10,7 @@ export PGPASSFILE=/etc/replication/users-agreed.conf
 echo "# user IDs of deleted users. " > $T/users_deleted
 psql -h <%= node[:web][:readonly_database_host] %> -U planetdiff -t -c "select id from users where status='deleted' order by id asc" openstreetmap >> $T/users_deleted
 
-if cmp -s "${T}/users_deleted "/store/planet/users_deleted.txt"; then
+if cmp -s "${T}/users_deleted" "/store/planet/users_deleted.txt"; then
   : # do nothing
 else
   cp $T/users_deleted /store/planet/users_deleted.txt
