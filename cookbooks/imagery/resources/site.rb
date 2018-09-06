@@ -103,7 +103,7 @@ action :create do
     user "imagery"
     group "imagery"
     exec_start_pre "/bin/rm -f /run/mapserver-fastcgi/layer-#{new_resource.site}.socket"
-    exec_start "/usr/bin/spawn-fcgi -n -b 128 -s /run/mapserver-fastcgi/layer-#{new_resource.site}.socket -M 0666 -P /run/mapserver-fastcgi/layer-#{new_resource.site}.pid -- /usr/bin/multiwatch -f 2 --signal=TERM -- /usr/lib/cgi-bin/mapserv"
+    exec_start "/usr/bin/spawn-fcgi -n -b 128 -s /run/mapserver-fastcgi/layer-#{new_resource.site}.socket -M 0666 -P /run/mapserver-fastcgi/layer-#{new_resource.site}.pid -- /usr/bin/multiwatch -f 8 --signal=TERM -- /usr/lib/cgi-bin/mapserv"
     private_tmp true
     private_devices true
     private_network true
