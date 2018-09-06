@@ -76,6 +76,16 @@ template "/usr/local/bin/users-deleted" do
   mode 0o755
 end
 
+remote_directory "/store/planet/users_deleted" do
+  source "users_deleted"
+  owner "planet"
+  group "planet"
+  mode 0o755
+  files_owner "root"
+  files_group "root"
+  files_mode 0o644
+end
+
 remote_directory "/store/planet/replication" do
   source "replication-cgi"
   owner "root"
