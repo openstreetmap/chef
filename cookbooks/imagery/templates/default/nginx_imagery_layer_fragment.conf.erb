@@ -8,20 +8,26 @@ location ~* "^/layer/<%= @layer %>/(\d+)/(\d+)/(\d+)\.(png|jpg|jpeg)$" {
   include fastcgi_params;
   fastcgi_param REQUEST_METHOD "GET";
   fastcgi_param HTTP_PROXY "";
-  fastcgi_read_timeout 300s;
+  fastcgi_read_timeout 60s;
 
   # Caching
   fastcgi_cache "fastcgi_cache_zone";
   fastcgi_cache_key "<%= @layer %><%= @revision %> $request_method $1 $2 $3";
-  fastcgi_keep_conn on;
+
+  # Free connection to socket for other requests
+  fastcgi_keep_conn off;
+
   fastcgi_cache_lock on;
-  fastcgi_cache_lock_timeout 60s;
+  fastcgi_cache_lock_timeout 30s;
   fastcgi_cache_valid 200 21d;
   fastcgi_cache_use_stale error timeout updating http_500 http_503;
 
-  fastcgi_ignore_client_abort on;
+  # Leaflet aborts connection still in flight to free up resources
+  fastcgi_ignore_client_abort off;
 
   fastcgi_catch_stderr "Image handling error";
+
+  fastcgi_next_upstream_tries 3;
 
   # Do not GZIP tiles
   gzip off;
