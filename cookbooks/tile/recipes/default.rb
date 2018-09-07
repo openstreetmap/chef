@@ -440,6 +440,7 @@ if node[:lsb][:release].to_f >= 18.04
   package %w[
     pyosmium
     python-pyproj
+    ruby
   ]
 
   remote_directory "/usr/local/bin" do
