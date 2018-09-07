@@ -2,6 +2,14 @@ name "kessie"
 description "Master role applied to kessie"
 
 default_attributes(
+  :sysctl => {
+    :swappiness => {
+      :comment => "Only swap in an emergency",
+      :parameters => {
+        "vm.swappiness" => "1"
+      }
+    }
+  },
   :munin => {
     :plugins => {
       :sensors_temp => {
