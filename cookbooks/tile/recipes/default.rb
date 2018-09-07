@@ -438,6 +438,7 @@ package %w[
 
 if node[:lsb][:release].to_f >= 18.04
   package %w[
+    ruby
     pyosmium
     python-pyproj
   ]
