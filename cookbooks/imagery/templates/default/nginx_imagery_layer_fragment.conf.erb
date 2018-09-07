@@ -1,9 +1,8 @@
 # DO NOT EDIT - This file is being maintained by Chef
-
 location ~* "^/layer/<%= @layer %>/(\d+)/(\d+)/(\d+)\.(png|jpg|jpeg)$" {
   # Override QUERY_STRING to force mapserver query parameters
   fastcgi_param QUERY_STRING "map=/srv/imagery/mapserver/layer-<%= @layer %>.map&mode=tile&layers=<%= @layer %>&tilemode=gmap&tile=$2+$3+$1";
-  fastcgi_pass "unix:/var/run/mapserver-fastcgi/layer-<%= @site %>.socket";
+  fastcgi_pass "<%= @site %>_fastcgi";
   fastcgi_buffers 8 64k;
   include fastcgi_params;
   fastcgi_param REQUEST_METHOD "GET";
@@ -27,6 +26,7 @@ location ~* "^/layer/<%= @layer %>/(\d+)/(\d+)/(\d+)\.(png|jpg|jpeg)$" {
 
   fastcgi_catch_stderr "Image handling error";
 
+  fastcgi_next_upstream error timeout invalid_header http_500 http_503;
   fastcgi_next_upstream_tries 3;
 
   # Do not GZIP tiles

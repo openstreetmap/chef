@@ -7,6 +7,11 @@ server {
     return 301 https://$host$request_uri;
 }
 
+upstream <%= @name %>_fastcgi {
+    server "unix:/var/run/mapserver-fastcgi/layer-<%= @name %>.socket";
+    server "unix:/var/run/mapserver-fastcgi/layer-<%= @name %>.socket";
+}
+
 server {
     listen [::]:443 ssl;
     listen *:443 ssl;
