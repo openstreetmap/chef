@@ -434,58 +434,26 @@ end
 package %w[
   osm2pgsql
   osmosis
+  ruby
+  pyosmium
+  python-pyproj
 ]
 
-if node[:lsb][:release].to_f >= 18.04
-  package %w[
-    ruby
-    pyosmium
-    python-pyproj
-  ]
+remote_directory "/usr/local/bin" do
+  source "bin"
+  owner "root"
+  group "root"
+  mode 0o755
+  files_owner "root"
+  files_group "root"
+  files_mode 0o755
+end
 
-  remote_directory "/usr/local/bin" do
-    source "bin"
-    owner "root"
-    group "root"
-    mode 0o755
-    files_owner "root"
-    files_group "root"
-    files_mode 0o755
-  end
-
-  template "/usr/local/bin/expire-tiles" do
-    source "expire-tiles.bionic.erb"
-    owner "root"
-    group "root"
-    mode 0o755
-  end
-else
-  package %w[
-    ruby
-    ruby-dev
-    libproj-dev
-    libxml2-dev
-  ]
-
-  gem_package "proj4rb"
-  gem_package "libxml-ruby"
-
-  remote_directory "/usr/local/lib/site_ruby" do
-    source "ruby"
-    owner "root"
-    group "root"
-    mode 0o755
-    files_owner "root"
-    files_group "root"
-    files_mode 0o644
-  end
-
-  template "/usr/local/bin/expire-tiles" do
-    source "expire-tiles.xenial.erb"
-    owner "root"
-    group "root"
-    mode 0o755
-  end
+template "/usr/local/bin/expire-tiles" do
+  source "expire-tiles.erb"
+  owner "root"
+  group "root"
+  mode 0o755
 end
 
 directory "/var/lib/replicate" do
