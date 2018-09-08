@@ -351,6 +351,7 @@ action :create do
 
   mediawiki_extension "UniversalLanguageSelector" do
     site new_resource.site
+    template "mw-ext-UniversalLanguageSelector.inc.php.erb"
     update_site false
   end
 
