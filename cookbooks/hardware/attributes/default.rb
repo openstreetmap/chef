@@ -15,7 +15,7 @@ if node[:dmi] && node[:dmi][:system]
     default[:apt][:sources] |= ["management-component-pack"]
 
     case node[:dmi][:system][:product_name]
-    when "ProLiant DL360 G6", "ProLiant DL360 G7"
+    when "ProLiant DL360 G6", "ProLiant DL360 G7", "ProLiant SE326M1R2"
       default[:hardware][:sensors][:"power_meter-*"][:power][:power1] = { :ignore => true }
     end
   end
