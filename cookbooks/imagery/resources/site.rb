@@ -55,6 +55,13 @@ action :create do
     variables :title => new_resource.title
   end
 
+  cookbook_file "/srv/#{new_resource.site}/robots.txt" do
+    source "robots.txt"
+    user "root"
+    group "root"
+    mode 0o644
+  end
+
   cookbook_file "/srv/#{new_resource.site}/imagery.css" do
     source "imagery.css"
     user "root"
