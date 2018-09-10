@@ -1,0 +1,313 @@
+#!/bin/bash
+#------------------------------------------------------------------------------
+#
+#  update-coastline
+#
+#  DO NOT EDIT - This file is being maintained by Chef
+#
+#------------------------------------------------------------------------------
+
+DATADIR=<%= @datadir %>
+PLANET=<%= @planet %>
+LOGDIR=<%= @logdir %>
+IMGDIR=<%= @imgdir %>
+SQLDIR=<%= @sqldir %>
+
+iso_date='+%Y-%m-%dT%H:%M:%S'
+
+export BIN="$( cd "$(dirname "$0")" ; pwd -P )"
+
+STARTTIME=`date $iso_date`
+STARTTIME_COMPACT=`date '+%Y%m%dT%H%M%S'`
+COASTLINES_CURRENT=$DATADIR/coastlines.pbf
+SIMPLIFY_SQL=$SQLDIR/simplify.sql
+DBFILE=$DATADIR/coastlines-debug.db
+
+#------------------------------------------------------------------------------
+
+exec >$LOGDIR/coastline.$STARTTIME.log 2>&1
+
+set -e
+set -x
+
+echo "Started update-coastline"
+date $iso_date
+
+#------------------------------------------------------------------------------
+#
+#  Filter relevant coastline data from planet
+#
+#------------------------------------------------------------------------------
+
+rm -f $DATADIR/coastlines-new.pbf
+
+$BIN/osmcoastline_filter \
+    --verbose \
+    -o $DATADIR/coastlines-new.pbf \
+    $PLANET
+
+mv $DATADIR/coastlines-new.pbf $COASTLINES_CURRENT
+
+date $iso_date
+
+
+#------------------------------------------------------------------------------
+#
+#  Extract coastline data with debug output
+#
+#------------------------------------------------------------------------------
+
+rm -f $DATADIR/segments.dat $DBFILE.new
+
+set +e
+$BIN/osmcoastline --verbose --overwrite -o $DBFILE.new \
+    --write-segments=$DATADIR/segments.dat --output-rings --max-points=0 \
+    $COASTLINES_CURRENT
+
+EXIT_CODE=$?
+set -e
+echo "osmcoastline exit code: $EXIT_CODE"
+
+if (( EXIT_CODE > 2 )); then
+    exit 1
+fi
+
+mv $DBFILE.new $DBFILE
+
+date $iso_date
+
+
+#------------------------------------------------------------------------------
+#
+#  Update files needed for error checking
+#
+#------------------------------------------------------------------------------
+
+OSMIDIR=$DATADIR/osmi
+
+rm -fr $OSMIDIR
+mkdir -p $OSMIDIR
+
+ogr2ogr -f "ESRI Shapefile" $OSMIDIR/error_points.shp $DBFILE error_points
+ogr2ogr -f "ESRI Shapefile" $OSMIDIR/error_lines.shp $DBFILE error_lines
+
+rm -f $DATADIR/coastline-ways.db
+
+$BIN/osmcoastline_ways $COASTLINES_CURRENT $DATADIR/coastline-ways.db
+
+ogr2ogr -f "ESRI Shapefile" -select name $OSMIDIR/ways.shp $DATADIR/coastline-ways.db ways
+
+sqlite3 $DBFILE 'SELECT timestamp FROM meta;' | cut -d: -f1-2 >$OSMIDIR/tstamp
+
+tar cCjf $DATADIR $DATADIR/osmi.tar.bz2 osmi
+
+date $iso_date
+
+
+#------------------------------------------------------------------------------
+#
+#  Create the different versions of the output
+#  * 4326 vs. 3857
+#  * split vs. complete
+#
+#------------------------------------------------------------------------------
+
+run_osmcoastline() {
+    local file=$1
+    local srs=$2
+    local maxpoints=$3
+    local overlap=$4
+    local options="$5 $6"
+
+    rm -f $DATADIR/$file.db.new
+
+    echo run_osmcoastline $file $srs $maxpoints $overlap $options
+
+    $BIN/osmcoastline --verbose --overwrite -o $DATADIR/$file.db.new \
+                      --no-index --srs=$srs --max-points=$maxpoints \
+                      --bbox-overlap=$overlap $options \
+                      $COASTLINES_CURRENT \
+                      && true
+
+    mv $DATADIR/$file.db.new $DATADIR/$file.db
+}
+
+run_osmcoastline coastlines-split-3857 3857 1000 50 --output-lines --output-polygons=both
+
+run_osmcoastline coastlines-complete-4326 4326 0 0
+
+run_osmcoastline coastlines-split-4326 4326 1000 0.0001 --output-lines --output-polygons=both
+
+run_osmcoastline coastlines-complete-3857 3857 0 0
+
+date $iso_date
+
+
+#------------------------------------------------------------------------------
+#
+#  Generate simplified version for low zoom levels
+#
+#------------------------------------------------------------------------------
+
+spatialite -batch -bail -echo $DATADIR/coastlines-complete-3857.db <$SIMPLIFY_SQL
+
+# invert simplified version to generate simplified water polygons
+cp $DATADIR/coastlines-complete-3857.db $DATADIR/coastlines-complete-3857.new.db
+(cd $DATADIR && $BIN/poly-grid coastlines-complete-3857.new.db simplified_land_polygons simplified_water_polygons -i)
+mv $DATADIR/coastlines-complete-3857.new.db $DATADIR/coastlines-complete-3857.db
+
+date $iso_date
+
+
+#------------------------------------------------------------------------------
+#
+#  Generate land and water polygons split on grid for easy reprojection
+#
+#------------------------------------------------------------------------------
+
+cp $DATADIR/coastlines-split-4326.db $DATADIR/coastlines-split-4326.new.db
+(cd $DATADIR && $BIN/poly-grid coastlines-split-4326.new.db land_polygons land_polygons_regular -n)
+(cd $DATADIR && $BIN/poly-grid coastlines-split-4326.new.db land_polygons water_polygons_regular -n -i)
+mv $DATADIR/coastlines-split-4326.new.db $DATADIR/coastlines-split-4326.db
+
+date $iso_date
+
+
+#------------------------------------------------------------------------------
+
+mkdir -p $DATADIR/unchecked
+
+mkshape() {
+    local proj=$1
+    local shapedir=$DATADIR/$2
+    local db=$3
+    local layer=$4
+    local layer_src=$5
+
+    echo "mkshape $proj $shapedir $db $layer $layer_src"
+
+    if [ -z "$layer_src" ]; then
+        layer_src=$layer
+    fi
+
+    rm -fr $shapedir
+    ogr2ogr -f 'ESRI Shapefile' $shapedir $DATADIR/$db $layer_src -nln "$layer"
+
+    gdalsrsinfo EPSG:$proj -o wkt >$shapedir/$layer.prj
+    echo "UTF-8" > $shapedir/$layer.cpg
+
+    local INFO=`ogrinfo -so $shapedir/$layer.shp $layer`
+
+    local EXTENT=`echo "$INFO" | grep '^Extent: '        | cut -d ':' -f 2-`
+    local GMTYPE=`echo "$INFO" | grep '^Geometry: '      | cut -d ':' -f 2- | tr -d ' '`
+    local FCOUNT=`echo "$INFO" | grep '^Feature Count: ' | cut -d ':' -f 2- | tr -d ' '`
+
+    local XMIN YMIN XMAX YMAX dummy
+
+    if [ "$proj" = "3857" ]; then
+        read XMIN YMIN dummy XMAX YMAX <<<`echo $EXTENT | tr -d '(,)'`
+
+        # this tests if the data extends beyond the 180 degree meridian
+        # and adds '+over' to the projection definition in that case
+        if [[ $XMIN < -20037509 ]]; then
+            sed -i -e 's/+no_defs"/+no_defs +over"/' $shapedir/$layer.prj
+        fi
+
+        local LON_MIN LON_MAX LAT_MIN LAT_MAX
+
+        read LON_MIN LAT_MIN <<<`echo "$XMIN $YMIN" | gdaltransform -s_srs 'EPSG:3857' -t_srs 'EPSG:4326' -output_xy`
+        read LON_MAX LAT_MAX <<<`echo "$XMAX $YMAX" | gdaltransform -s_srs 'EPSG:3857' -t_srs 'EPSG:4326' -output_xy`
+
+        XMIN=`echo "($XMIN+0.5)/1" | bc`
+        XMAX=`echo "($XMAX+0.5)/1" | bc`
+        YMIN=`echo "($YMIN+0.5)/1" | bc`
+        YMAX=`echo "($YMAX+0.5)/1" | bc`
+
+        local bbox=`printf '(%.3f, %.3f) - (%.3f, %.3f)' $LON_MIN $LAT_MIN $LON_MAX $LAT_MAX`
+        local LAYERS="\n\n$layer.shp:\n\n  $FCOUNT $GMTYPE features\n  Mercator projection\n  Extent: ($XMIN, $YMIN) - ($XMAX, $YMAX)\n  In geographic coordinates: $bbox"
+    else
+        read XMIN YMIN dummy XMAX YMAX <<<`echo $EXTENT | tr -d '(,)'`
+
+        local bbox=`printf '(%.3f, %.3f) - (%.3f, %.3f)' $XMIN $YMIN $XMAX $YMAX`
+        local LAYERS="\n\n$layer.shp:\n\n  $FCOUNT $GMTYPE features\n  WGS84 geographic coordinates\n  Extent: $bbox"
+    fi
+
+    local YEAR=`date '+%Y'`
+    local DATE=`osmium fileinfo -g header.option.osmosis_replication_timestamp $PLANET`
+
+    local CONTENT URL
+
+    if [ "$layer" = 'land_polygons' ]; then
+        if [[ $db = *split* ]]; then
+            CONTENT='coastline land polygons, split into smaller parts'
+        else
+            CONTENT='coastline land polygons'
+        fi
+        URL='https://planet.openstreetmap.org/data/land-polygons'
+    elif [ "$layer" = 'simplified_land_polygons' ]; then
+        CONTENT='coastline land polygons, simplified for rendering at low zooms'
+        URL='https://planet.openstreetmap.org/data/land-polygons'
+    elif [ "$layer" = 'simplified_water_polygons' ]; then
+        CONTENT='coastline water polygons, split and simplified for rendering at low zooms'
+        URL='https://planet.openstreetmap.org/data/water-polygons'
+    elif [ "$layer" = 'water_polygons' ]; then
+        CONTENT='coastline water polygons, split into smaller parts'
+        URL='https://planet.openstreetmap.org/data/water-polygons'
+    else
+        CONTENT='coastlines'
+        URL='https://planet.openstreetmap.org/data/coastlines'
+    fi
+
+    sed -e "s?@YEAR@?${YEAR}?g;s?@URL@?${URL}?g;s?@DATE@?${DATE}?g;s?@CONTENT@?${CONTENT}?g" $BIN/README.tmpl  \
+        | sed "/@LAYERS@/N;s?@LAYERS@?$LAYERS?" >$shapedir/README.txt
+
+    rm -f $shapedir.zip.new
+    zip --quiet $shapedir.zip.new $shapedir/*
+    mv $shapedir.zip.new $shapedir.zip
+    mv $shapedir.zip $DATADIR/unchecked
+}
+
+#------------------------------------------------------------------------------
+
+mkshape 4326 land-polygons-complete-4326             coastlines-complete-4326.db land_polygons
+mkshape 4326 land-polygons-split-4326                coastlines-split-4326.db    land_polygons
+mkshape 4326 water-polygons-split-4326               coastlines-split-4326.db    water_polygons
+
+mkshape 4326 land-polygons-split-regular-4326        coastlines-split-4326.db    land_polygons  land_polygons_regular
+mkshape 4326 water-polygons-split-regular-4326       coastlines-split-4326.db    water_polygons water_polygons_regular
+
+mkshape 3857 land-polygons-complete-3857             coastlines-complete-3857.db land_polygons
+mkshape 3857 simplified-land-polygons-complete-3857  coastlines-complete-3857.db simplified_land_polygons
+mkshape 3857 simplified-water-polygons-complete-3857 coastlines-complete-3857.db simplified_water_polygons
+mkshape 3857 land-polygons-split-3857                coastlines-split-3857.db    land_polygons
+mkshape 3857 water-polygons-split-3857               coastlines-split-3857.db    water_polygons
+
+mkshape 4326 coastlines-split-4326                   coastlines-split-4326.db    lines
+mkshape 3857 coastlines-split-3857                   coastlines-split-3857.db    lines
+
+date $iso_date
+
+#------------------------------------------------------------------------------
+#
+#  Check whether the rendered version of the coastline is similar enough
+#  to the last known good one. If yes, create hard links in the "checked"
+#  directory.
+#
+#------------------------------------------------------------------------------
+
+$BIN/compare-coastline-polygons $IMGDIR $DATADIR/coastlines-split-3857.db $STARTTIME_COMPACT
+
+mkdir -p $DATADIR/checked
+
+for zip in $DATADIR/unchecked/*.zip; do
+    file=`basename $zip`
+    ln -f $DATADIR/unchecked/$file $DATADIR/checked/$file
+done
+
+
+#------------------------------------------------------------------------------
+
+
+echo "Done."
+date $iso_date
+

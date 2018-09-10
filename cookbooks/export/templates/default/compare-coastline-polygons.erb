@@ -1,0 +1,89 @@
+#!/bin/bash
+#------------------------------------------------------------------------------
+#
+#  compare_coastline_polygons DIR DB STARTTIME_COMPACT
+#
+#  to reset remove symlink $DIR/mask-master.tiff
+#
+#  DO NOT EDIT - This file is being maintained by Chef
+#
+#------------------------------------------------------------------------------
+
+DIFF_MAXIMUM=0.0000015
+
+DIR="$1"
+DB="$2"
+STARTTIME_COMPACT="$3"
+
+# limit growth of differences file
+if [ -f $DIR/differences ]; then
+    tail -100 $DIR/differences >$DIR/differences.new
+    mv $DIR/differences.new $DIR/differences
+fi
+
+gdal_rasterize -q --config GDAL_CACHEMAX 1024 "$DB" -l land_polygons \
+    -te -20037508.342789244 -20037508.342789244 20037508.342789244 20037508.342789244 \
+    -init 0 -burn 255 -ts 8192 8192 -ot Byte -co COMPRESS=DEFLATE \
+    $DIR/mask-$STARTTIME_COMPACT.tiff
+
+#------------------------------------------------------------------------------
+
+# generate a "diff" image for human consumption
+rm -f $DIR/diff.tiff
+
+if [ -e $DIR/mask-master.tiff ]; then
+    gdal_calc.py -A $DIR/mask-master.tiff \
+                 -B $DIR/mask-$STARTTIME_COMPACT.tiff \
+                 --outfile=$DIR/diff.tiff --calc="(A!=B)*255"
+fi
+
+#------------------------------------------------------------------------------
+
+if [ ! -r "$DIR/mask-$STARTTIME_COMPACT.tiff" ]; then
+    echo "$STARTTIME_COMPACT: 0:0.0:0:0.0:0:0.0:0:0.0:0.0:0.0 ERROR" >>$DIR/differences
+    echo "stopping coastline processing due to raster mask generation error."
+    exit 1
+fi
+
+#------------------------------------------------------------------------------
+
+if [ ! -h $DIR/mask-master.tiff ]; then
+    ln -s $DIR/mask-$STARTTIME_COMPACT.tiff $DIR/mask-master.tiff
+    echo "$STARTTIME_COMPACT: 0:0.0:0:0.0:0:0.0:0:0.0:0.0:0.0 OK" >>$DIR/differences
+    exit 0
+fi
+
+#------------------------------------------------------------------------------
+
+DIFFERENCES=`$BIN/gdal_maskcompare_wm $DIR/mask-master.tiff $DIR/mask-$STARTTIME_COMPACT.tiff 20000 | grep 'short version:'`
+DIFF_RATING=`echo "$DIFFERENCES" | cut -d ':' -f 10`
+
+# check if something went wrong with maskcompare and assume error then
+if [ -z "$DIFF_RATING" ]; then
+    echo "$STARTTIME_COMPACT: 0:0.0:0:0.0:0:0.0:0:0.0:0.0:0.0 ERROR" >>$DIR/differences
+    echo "stopping coastline processing due to maskcompare error ($DIFFERENCES)."
+    exit 1
+fi
+
+#------------------------------------------------------------------------------
+
+if [[ $DIFF_RATING > $DIFF_MAXIMUM ]]; then
+    echo "$DIFFERENCES ERROR" | sed "s/short version/$STARTTIME_COMPACT/" >>$DIR/differences
+    echo "stopping coastline processing due to difference test failing ($DIFF_RATING > $DIFF_MAXIMUM)."
+    exit 1
+fi
+
+#------------------------------------------------------------------------------
+
+echo "$DIFFERENCES OK" | sed "s/short version/$STARTTIME_COMPACT/" >>$DIR/differences
+rm $DIR/mask-master.tiff
+ln -s mask-$STARTTIME_COMPACT.tiff $DIR/mask-master.tiff
+
+#------------------------------------------------------------------------------
+
+# Remove old mask files. We do this here at the end, so we are sure not to
+# delete any mask files still referenced by mask-master.tiff.
+find "$DIR" -mtime +28 -type f -name 'mask-*.tiff' -delete
+
+
+#------------------------------------------------------------------------------

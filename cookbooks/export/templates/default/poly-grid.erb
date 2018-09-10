@@ -1,0 +1,308 @@
+#!/bin/bash
+#--------------------------------------------------------------------------
+#
+#  poly_grid
+#
+#  DO NOT EDIT - This file is being maintained by Chef
+#
+# splits and optionally inverts a polygon file in web mercator (EPSG:3857)
+# projection or geographic coordinates (EPSG:4326) with overlapping tiling
+#
+# poly_grid.sh is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# poly_grid.sh is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with poly_grid.sh.  If not, see <http://www.gnu.org/licenses/>.
+#
+#--------------------------------------------------------------------------
+#
+# Dependencies:
+#
+#   spatialite
+#   ogr2ogr
+#   polysplit from https://github.com/geoloqi/polysplit.git
+#   (unless used with 'n'-option)
+#
+#--------------------------------------------------------------------------
+
+#set -x
+
+EXT_3857_XMIN=-20037508.342789244
+EXT_3857_XMAX=20037508.342789244
+EXT_3857_YMIN=-20037508.342789244
+EXT_3857_YMAX=20037508.342789244
+
+SQL_PARAMS="PRAGMA journal_mode = OFF;PRAGMA synchronous = OFF;PRAGMA temp_store = MEMORY;PRAGMA cache_size = 5000000;"
+
+#--------------------------------------------------------------------------
+
+# extend polygons periodically in east and west as well as north and south
+# in mercator (the latter assuming uniformity until the poles)
+poly_extend_internal()
+{
+	local DB
+	local LAYER
+	local SRID
+	local OVERLAP
+	local TOLERANCE
+	local EXT_XMIN
+	local EXT_XMAX
+	local EXT_YMIN
+	local EXT_YMAX
+	local LIMIT_XMIN
+	local LIMIT_XMAX
+	local XEXT_XMIN
+	local XEXT_XMAX
+	local XEXT_YMIN
+	local XEXT_YMAX
+	local YEXT_YMIN
+	local YEXT_YMAX
+
+	DB="$1"
+	LAYER="$2"
+	SRID="$3"
+
+	if [ "$SRID" = "3857" ] ; then
+		EXT_XMIN=$EXT_3857_XMIN
+		EXT_XMAX=$EXT_3857_XMAX
+		EXT_YMIN=$EXT_3857_YMIN
+		EXT_YMAX=$EXT_3857_YMAX
+		OVERLAP=5000
+		TOLERANCE=2
+	else
+		EXT_XMIN=-180.0
+		EXT_XMAX=180.0
+		EXT_YMIN=-90.0
+		EXT_YMAX=90.0
+		OVERLAP=0.05
+		TOLERANCE=0.00002
+	fi
+
+	LIMIT_XMIN=`echo "$EXT_XMIN + $OVERLAP" | bc -l`
+	LIMIT_XMAX=`echo "$EXT_XMAX - $OVERLAP" | bc -l`
+
+	echo ".schema $LAYER" | spatialite -batch -bail "$DB" | sed "s/$LAYER/${LAYER}_extend_1/g" | spatialite -batch -bail "$DB"
+	echo ".schema $LAYER" | spatialite -batch -bail "$DB" | sed "s/$LAYER/${LAYER}_extend_2/g" | spatialite -batch -bail "$DB"
+	echo ".schema $LAYER" | spatialite -batch -bail "$DB" | sed "s/$LAYER/${LAYER}_extended/g" | spatialite -batch -bail "$DB"
+
+	ATTRS=`echo "PRAGMA table_info($LAYER);" | spatialite -batch -bail "$DB" | grep -v "OGC_FID" | grep -v "GEOMETRY" | cut -d "|" -f 2 | sed 's?\(.*\)?\\\\"\1\\\\"?' | xargs | sed "s? ?, ?g"`
+
+	if [ ! -z "$ATTRS" ] ; then
+		ATTRS=", $ATTRS"
+	fi
+
+	echo "$SQL_PARAMS
+SELECT CreateSpatialIndex('$LAYER', 'GEOMETRY') WHERE (SELECT COUNT(*) FROM sqlite_master WHERE name = 'idx_${LAYER}_GEOMETRY') = 0;
+SELECT RecoverGeometryColumn('${LAYER}_extend_1', 'GEOMETRY', $SRID, 'POLYGON', 'XY');
+SELECT RecoverGeometryColumn('${LAYER}_extend_2', 'GEOMETRY', $SRID, 'POLYGON', 'XY');
+INSERT INTO ${LAYER}_extend_1 SELECT * FROM $LAYER WHERE OGC_FID IN (SELECT ROWID FROM SpatialIndex WHERE f_table_name = '$LAYER' AND search_frame = ST_GeomFromText('POLYGON(($EXT_XMIN $EXT_YMIN, $EXT_XMIN $EXT_YMAX, $LIMIT_XMIN $EXT_YMAX, $LIMIT_XMIN $EXT_YMIN, $EXT_XMIN $EXT_YMIN))',$SRID));
+INSERT INTO ${LAYER}_extend_2 SELECT * FROM $LAYER WHERE OGC_FID IN (SELECT ROWID FROM SpatialIndex WHERE f_table_name = '$LAYER' AND search_frame = ST_GeomFromText('POLYGON(($LIMIT_XMAX $EXT_YMIN, $LIMIT_XMAX $EXT_YMAX, $EXT_XMAX $EXT_YMAX, $EXT_XMAX $EXT_YMIN, $LIMIT_XMAX $EXT_YMIN))',$SRID));
+-- the '$TOLERANCE' here is to avoid degenerate edges due to lack of overlap in source data
+UPDATE ${LAYER}_extend_1 SET GEOMETRY = ST_Translate(GEOMETRY,2.0 * $EXT_XMAX - $TOLERANCE,0.0,0.0);
+UPDATE ${LAYER}_extend_2 SET GEOMETRY = ST_Translate(GEOMETRY,2.0 * $EXT_XMIN + $TOLERANCE,0.0,0.0);
+SELECT RecoverGeometryColumn('${LAYER}_extended', 'GEOMETRY', $SRID, 'POLYGON', 'XY');
+INSERT INTO ${LAYER}_extended (GEOMETRY $ATTRS) SELECT GEOMETRY $ATTRS FROM ${LAYER};
+INSERT INTO ${LAYER}_extended (GEOMETRY $ATTRS) SELECT GEOMETRY $ATTRS FROM ${LAYER}_extend_1;
+INSERT INTO ${LAYER}_extended (GEOMETRY $ATTRS) SELECT GEOMETRY $ATTRS FROM ${LAYER}_extend_2;
+SELECT DiscardGeometryColumn('${LAYER}_extend_1', 'GEOMETRY');DROP TABLE ${LAYER}_extend_1;
+SELECT DiscardGeometryColumn('${LAYER}_extend_2', 'GEOMETRY');DROP TABLE ${LAYER}_extend_2;
+SELECT CreateSpatialIndex('${LAYER}_extended', 'GEOMETRY');
+VACUUM;" | spatialite -batch -bail "$DB"
+
+
+	# poles
+	if [ "$SRID" = "3857" ] ; then
+
+		XEXT_XMIN=`echo "$EXT_XMIN - $OVERLAP" | bc -l`
+		XEXT_XMAX=`echo "$EXT_XMAX + $OVERLAP" | bc -l`
+		XEXT_YMIN=`echo "$EXT_YMIN - $OVERLAP" | bc -l`
+		XEXT_YMAX=`echo "$EXT_YMAX + $OVERLAP" | bc -l`
+
+		YEXT_YMIN=`echo "$EXT_YMIN + 100" | bc -l`
+		YEXT_YMAX=`echo "$EXT_YMAX - 100" | bc -l`
+
+		echo "$SQL_PARAMS
+INSERT INTO ${LAYER}_extended (GEOMETRY $ATTRS) SELECT ST_GeomFromText('POLYGON(($XEXT_XMIN $XEXT_YMIN, $XEXT_XMIN $YEXT_YMIN, $XEXT_XMAX $YEXT_YMIN, $XEXT_XMAX $XEXT_YMIN, $XEXT_XMIN $XEXT_YMIN))',$SRID) $ATTRS FROM $LAYER WHERE OGC_FID IN (SELECT ROWID FROM SpatialIndex WHERE f_table_name = '$LAYER' AND search_frame = ST_GeomFromText('POINT(0 $YEXT_YMIN)',$SRID) LIMIT 1);
+INSERT INTO ${LAYER}_extended (GEOMETRY $ATTRS) SELECT ST_GeomFromText('POLYGON(($XEXT_XMIN $YEXT_YMAX, $XEXT_XMIN $XEXT_YMAX, $XEXT_XMAX $XEXT_YMAX, $XEXT_XMAX $YEXT_YMAX, $XEXT_XMIN $YEXT_YMAX))',$SRID) $ATTRS FROM $LAYER WHERE OGC_FID IN (SELECT ROWID FROM SpatialIndex WHERE f_table_name = '$LAYER' AND search_frame = ST_GeomFromText('POINT(0 $YEXT_YMAX)',$SRID) LIMIT 1);" | spatialite -batch -bail "$DB"
+	fi
+
+}
+
+
+#--------------------------------------------------------------------------
+
+# expects an SQLite db as first parameter
+
+DB="$1"
+LAYER_IN="$2"
+LAYER_OUT="$3"
+OPTS="$4 $5"
+
+TMP_FILE="tmp_wm_poly_invert_`date +%s`"
+
+SSTART=`date +%s`
+
+
+echo "poly_grid.sh - grid converting polygons in mercator or geographic coordinates"
+echo "-----------------------------------------------------------------------------"
+echo "Copyright (C) 2015 Christoph Hormann"
+echo "This program comes with ABSOLUTELY NO WARRANTY;"
+echo "This is free software, and you are welcome to redistribute"
+echo "it under certain conditions; see COPYING for details."
+echo ""
+
+if [ -z "$DB" ] ; then
+	echo "Usage: poly_grid.sh <db> <layer_in> <layer_out> [-n] [-i]"
+	echo ""
+	echo "Options:"
+	echo "  -n: skip splitting original polygons"
+	echo "  -i: invert polygons"
+	echo ""
+	exit
+fi
+
+SRID=`echo "SELECT ST_SRID(GEOMETRY) FROM ${LAYER_IN} LIMIT 1;" | spatialite -batch -bail "$DB"`
+
+if [ "$SRID" != "3857" ] && [ "$SRID" != "4326" ] ; then
+	echo "Error: data is neither in web mercator nor in geographic coordinates"
+	exit
+fi
+
+if [ "$SRID" = "3857" ] ; then
+	OVERLAP=250
+	AREA_LIMIT=1
+	SPLIT_CNT=64
+else
+	OVERLAP=0.002
+	AREA_LIMIT=0.0000000001
+	SPLIT_CNT=360
+fi
+
+echo "Processing in EPSG:$SRID coordinate system."
+echo ""
+
+# split unless nosplit option
+if ! echo "$OPTS" | grep "n" > /dev/null ; then
+
+	HAS_SPLIT=`echo "SELECT COUNT(*) FROM sqlite_master WHERE name = '${LAYER_IN}_split';" | spatialite -batch -bail "$DB"`
+
+	if [ $HAS_SPLIT -ne 0 ] ; then
+		echo "split polygons already present..."
+	else
+		echo "splitting original polygons..."
+
+		rm -f $TMP_FILE.*
+
+		# polysplit is really bad at writing SQLite so we use shapefile
+		$BIN/polysplit -i "$LAYER_IN" "$DB" "$TMP_FILE.shp"
+
+		ogr2ogr --config OGR_SQLITE_SYNCHRONOUS OFF -f "SQLite" -gt 65535 -update -append -explodecollections -skipfailures -s_srs "EPSG:$SRID" -t_srs "EPSG:$SRID" "$DB" "$TMP_FILE.shp" -nln "${LAYER_IN}_split" -nlt "POLYGON"
+
+		rm -f $TMP_FILE.*
+
+	fi
+
+	LAYER_IN="${LAYER_IN}_split"
+fi
+
+SEND_SPLIT=`date +%s`
+
+HAS_EXTENDED=`echo "SELECT COUNT(*) FROM sqlite_master WHERE name = '${LAYER_IN}_extended';" | spatialite -batch -bail "$DB"`
+
+if [ $HAS_EXTENDED -ne 0 ] ; then
+	echo "extended polygons already present..."
+else
+	echo "extending polygons..."
+
+	poly_extend_internal "$DB" "${LAYER_IN}" "$SRID"
+fi
+
+LAYER_IN="${LAYER_IN}_extended"
+
+SEND_EXT=`date +%s`
+
+echo "generating tile grid..."
+
+rm -f $TMP_FILE.*
+
+HAS_GRID=`echo "SELECT COUNT(*) FROM sqlite_master WHERE name = 'grid';" | spatialite -batch -bail "$DB"`
+
+if [ $HAS_GRID -ne 0 ] ; then
+	echo "tile grid already present..."
+else
+	spatialite -batch -bail "$DB" < <%= @sqldir %>/create_grid_$SRID.sql
+
+	rm -f $TMP_FILE.*
+fi
+
+SEND_GRID=`date +%s`
+
+HAS_OUT=`echo "SELECT COUNT(*) FROM sqlite_master WHERE name = '$LAYER_OUT';" | spatialite -batch -bail "$DB"`
+
+if [ $HAS_OUT -eq 0 ] ; then
+	echo "$SQL_PARAMS
+CREATE TABLE $LAYER_OUT ( OGC_FID INTEGER PRIMARY KEY AUTOINCREMENT );
+SELECT AddGeometryColumn('$LAYER_OUT', 'GEOMETRY', $SRID, 'MULTIPOLYGON', 'XY');" | spatialite -batch -bail "$DB"
+else
+	echo "$SQL_PARAMS
+DELETE FROM $LAYER_OUT;
+SELECT DiscardGeometryColumn('$LAYER_OUT', 'GEOMETRY');
+SELECT RecoverGeometryColumn('$LAYER_OUT', 'GEOMETRY', $SRID, 'MULTIPOLYGON', 'XY');" | spatialite -batch -bail "$DB"
+fi
+
+if echo "$OPTS" | grep "i" > /dev/null ; then
+	echo "inverting tiles..."
+
+	echo "$SQL_PARAMS
+SELECT CreateSpatialIndex('$LAYER_IN', 'GEOMETRY') WHERE (SELECT COUNT(*) FROM sqlite_master WHERE name = 'idx_${LAYER_IN}_GEOMETRY') = 0;
+INSERT INTO $LAYER_OUT (GEOMETRY) SELECT CastToMultiPolygon(ST_Buffer(ST_Difference(grid.GEOMETRY, ST_Union(${LAYER_IN}.GEOMETRY)), 0.0)) FROM grid JOIN ${LAYER_IN} ON ${LAYER_IN}.OGC_FID IN (SELECT ROWID FROM SpatialIndex WHERE f_table_name = '${LAYER_IN}' AND search_frame = grid.GEOMETRY) GROUP BY grid.OGC_FID;
+INSERT INTO $LAYER_OUT (GEOMETRY) SELECT CastToMultiPolygon(grid.GEOMETRY) FROM grid WHERE (SELECT COUNT(*) FROM ${LAYER_IN} WHERE OGC_FID IN (SELECT ROWID FROM SpatialIndex WHERE f_table_name = '${LAYER_IN}' AND search_frame = grid.GEOMETRY)) = 0;
+DELETE FROM $LAYER_OUT WHERE GEOMETRY IS NULL;
+.elemgeo $LAYER_OUT GEOMETRY tmp_flat_$LAYER_OUT id_new id_old;
+DELETE FROM $LAYER_OUT;
+SELECT DiscardGeometryColumn('$LAYER_OUT', 'GEOMETRY');
+SELECT RecoverGeometryColumn('$LAYER_OUT', 'GEOMETRY', $SRID, 'POLYGON', 'XY');
+INSERT INTO $LAYER_OUT (GEOMETRY) SELECT GEOMETRY FROM tmp_flat_$LAYER_OUT
+    WHERE GEOMETRY IS NOT NULL AND ST_Area(GEOMETRY) >= $AREA_LIMIT;
+SELECT DiscardGeometryColumn('tmp_flat_$LAYER_OUT', 'GEOMETRY');
+DROP TABLE tmp_flat_$LAYER_OUT;
+VACUUM;" | spatialite -batch -bail "$DB"
+else
+	echo "clipping tiles..."
+
+	echo "$SQL_PARAMS
+SELECT CreateSpatialIndex('$LAYER_IN', 'GEOMETRY') WHERE (SELECT COUNT(*) FROM sqlite_master WHERE name = 'idx_${LAYER_IN}_GEOMETRY') = 0;
+INSERT INTO $LAYER_OUT (GEOMETRY) SELECT CastToMultiPolygon(ST_Buffer(ST_Intersection(grid.GEOMETRY, ST_Union(${LAYER_IN}.GEOMETRY)), 0.0)) FROM grid JOIN ${LAYER_IN} ON ${LAYER_IN}.OGC_FID IN (SELECT ROWID FROM SpatialIndex WHERE f_table_name = '${LAYER_IN}' AND search_frame = grid.GEOMETRY) GROUP BY grid.OGC_FID;
+DELETE FROM $LAYER_OUT WHERE GEOMETRY IS NULL;
+.elemgeo $LAYER_OUT GEOMETRY tmp_flat_$LAYER_OUT id_new id_old;
+DELETE FROM $LAYER_OUT;
+SELECT DiscardGeometryColumn('$LAYER_OUT', 'GEOMETRY');
+SELECT RecoverGeometryColumn('$LAYER_OUT', 'GEOMETRY', $SRID, 'POLYGON', 'XY');
+INSERT INTO $LAYER_OUT (GEOMETRY) SELECT GEOMETRY FROM tmp_flat_$LAYER_OUT
+    WHERE GEOMETRY IS NOT NULL AND ST_Area(GEOMETRY) >= $AREA_LIMIT;
+SELECT DiscardGeometryColumn('tmp_flat_$LAYER_OUT', 'GEOMETRY');
+DROP TABLE tmp_flat_$LAYER_OUT;
+VACUUM;" | spatialite -batch -bail "$DB"
+fi
+
+SEND=`date +%s`
+
+DURATION_SPLIT=$((SEND_SPLIT - SSTART))
+DURATION_EXT=$((SEND_EXT - SEND_SPLIT))
+DURATION_GRID=$((SEND_GRID - SEND_EXT))
+DURATION=$((SEND - SEND_GRID))
+
+echo ""
+echo "splitting time: ${DURATION_SPLIT} seconds"
+echo "extending time: ${DURATION_EXT} seconds"
+echo "grid generation time: ${DURATION_GRID} seconds"
+echo "processing time: ${DURATION} seconds"
+echo ""
+

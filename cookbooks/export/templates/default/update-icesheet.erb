@@ -1,0 +1,140 @@
+#!/bin/bash
+#------------------------------------------------------------------------------
+#
+#  update-icesheet
+#
+#  DO NOT EDIT - This file is being maintained by Chef
+#
+#------------------------------------------------------------------------------
+
+DATADIR=<%= @datadir %>
+PLANET=<%= @planet %>
+LOGDIR=<%= @logdir %>
+
+iso_date='+%Y-%m-%dT%H:%M:%S'
+
+BIN="$( cd "$(dirname "$0")" ; pwd -P )"
+
+STARTTIME=`date $iso_date`
+STATS=$DATADIR/icesheet-stats
+COASTLINE_SOURCE=$DATADIR/coastlines-split-3857.db
+
+#------------------------------------------------------------------------------
+
+exec >$LOGDIR/icesheet.$STARTTIME.log 2>&1
+
+set -e
+set -x
+
+echo "Started update-icesheet"
+date $iso_date
+
+#------------------------------------------------------------------------------
+
+if [ ! -r $COASTLINE_SOURCE ]; then
+    echo "ERROR: coastline database not found!"
+    exit 1
+fi
+
+
+#------------------------------------------------------------------------------
+#
+#  Extract antarctica from planet file
+#
+#------------------------------------------------------------------------------
+
+osmium extract $PLANET \
+               --bbox=-180,-90,180,-60 \
+               --fsync \
+               --overwrite \
+               --output=$DATADIR/osm_noice_antarctica.osm.pbf
+
+date $iso_date
+
+
+#------------------------------------------------------------------------------
+#
+#  Run icesheet processing
+#
+#------------------------------------------------------------------------------
+
+echo "Running icesheet_proc.sh"
+
+rm -f $DATADIR/antarctica_icesheet.db
+rm -rf $DATADIR/antarctica-icesheet-*
+
+(cd $DATADIR && $BIN/icesheet_proc.sh)
+
+NOICE_CNT=`grep '^noice features converted:' $LOGDIR/icesheet.$STARTTIME.log | cut -d ':' -f 2 | tr -d ' '`
+GLACIER_CNT=`grep '^glacier features converted:' $LOGDIR/icesheet.$STARTTIME.log | cut -d ':' -f 2 | tr -d ' '`
+
+test -z "$NOICE_CNT" && NOICE_CNT=0
+test -z "$GLACIER_CNT" && GLACIER_CNT=0
+
+echo "$STARTTIME $NOICE_CNT $GLACIER_CNT" >> $STATS
+
+date $iso_date
+
+
+#------------------------------------------------------------------------------
+#
+#  Create ZIP files
+#
+#------------------------------------------------------------------------------
+
+mkzip() {
+    local shapedir=$DATADIR/$1
+
+    local LAYERS
+
+    for SHP in `find $shapedir -name '*.shp'` ; do
+        local LN=`basename $SHP .shp`
+        local INFO=`ogrinfo -so $SHP $LN`
+
+        local EXTENT=`echo "$INFO" | grep '^Extent: '        | cut -d ':' -f 2-`
+        local GMTYPE=`echo "$INFO" | grep '^Geometry: '      | cut -d ':' -f 2- | tr -d ' '`
+        local FCOUNT=`echo "$INFO" | grep '^Feature Count: ' | cut -d ':' -f 2- | tr -d ' '`
+
+        local XMIN YMIN XMAX YMAX dummy
+        read XMIN YMIN dummy XMAX YMAX <<<`echo $EXTENT | tr -d '(,)'`
+
+        read LON_MIN LAT_MIN <<<`echo "$XMIN $YMIN" | gdaltransform -s_srs 'EPSG:3857' -t_srs 'EPSG:4326' -output_xy`
+        read LON_MAX LAT_MAX <<<`echo "$XMAX $YMAX" | gdaltransform -s_srs 'EPSG:3857' -t_srs 'EPSG:4326' -output_xy`
+
+        XMIN=`echo "($XMIN+0.5)/1" | bc`
+        XMAX=`echo "($XMAX+0.5)/1" | bc`
+        YMIN=`echo "($YMIN+0.5)/1" | bc`
+        YMAX=`echo "($YMAX+0.5)/1" | bc`
+
+        local bbox=`printf '(%.3f, %.3f) - (%.3f, %.3f)' $LON_MIN $LAT_MIN $LON_MAX $LAT_MAX`
+
+        LAYERS="$LAYERS\n\n$LN.shp:\n\n  $FCOUNT $GMTYPE features\n  Mercator projection\n  Extent: ($XMIN, $YMIN) - ($XMAX, $YMAX)\n  In geographic coordinates: $bbox"
+    done
+
+    local YEAR=`date '+%Y'`
+    local DATE=`osmium fileinfo -g header.option.osmosis_replication_timestamp $PLANET`
+
+    local CONTENT URL
+
+    if [[ $shapedir = *outline* ]]; then
+        CONTENT='Antarctic icesheet outlines'
+        URL='https://planet.openstreetmap.org/data/icesheet-outlines'
+    else
+        CONTENT='Antarctic icesheet polygons'
+        URL='https://planet.openstreetmap.org/data/icesheet-polygons'
+    fi
+
+    sed -e "s?@YEAR@?${YEAR}?g;s?@URL@?${URL}?g;s?@DATE@?${DATE}?g;s?@CONTENT@?${CONTENT}?g" $BIN/README.tmpl \
+        | sed "/@LAYERS@/N;s?@LAYERS@?$LAYERS?" >$shapedir/README.txt
+
+    rm -f $shapedir.zip.new
+    zip --quiet $shapedir.zip.new $shapedir/*
+    mv $shapedir.zip.new $shapedir.zip
+}
+
+mkzip antarctica-icesheet-outlines-3857
+mkzip antarctica-icesheet-polygons-3857
+
+echo "Done."
+date $iso_date
+
