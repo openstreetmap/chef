@@ -103,7 +103,7 @@ action :create do
     environment "MS_MAP_PATTERN" => "^/srv/imagery/mapserver/",
                 "MS_DEBUGLEVEL" => "0",
                 "MS_ERRORFILE" => "stderr",
-                "GDAL_CACHEMAX" => "128"
+                "GDAL_CACHEMAX" => "512"
     limit_nofile 16384
     memory_max "2G"
     user "imagery"
