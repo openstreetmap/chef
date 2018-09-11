@@ -1,7 +1,0 @@
-# DO NOT EDIT - This file is being maintained by Chef
-
-<% if node[:lsb][:release].to_f >= 16.04 -%>
-deb <%= @url %> xenial/current non-free
-<% else -%>
-deb <%= @url %> trusty/current non-free
-<% end -%>
