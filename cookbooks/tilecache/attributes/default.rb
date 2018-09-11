@@ -1,4 +1,3 @@
-
 default[:tilecache][:tile_parent] = "render.openstreetmap.org"
 default[:tilecache][:tile_siblings] = []
 

@@ -29,6 +29,7 @@ class Chef
 
         @repo_attrs ||= svn_info.lines.each_with_object({}) do |line, attrs|
           next unless line =~ SVN_INFO_PATTERN
+
           property = Regexp.last_match[1]
           value = Regexp.last_match[2]
           attrs[property] = value

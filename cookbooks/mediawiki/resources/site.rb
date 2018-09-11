@@ -39,7 +39,7 @@ property :site_readonly, :kind_of => [String, TrueClass, FalseClass], :default =
 property :admin_user, :kind_of => String, :default => "Admin"
 property :admin_password, :kind_of => String, :required => true
 property :private_accounts, :kind_of => [TrueClass, FalseClass], :default => false
-property :private, :kind_of => [TrueClass, FalseClass], :default => false
+property :private_site, :kind_of => [TrueClass, FalseClass], :default => false
 property :recaptcha_public_key, :kind_of => String
 property :recaptcha_private_key, :kind_of => String
 property :extra_file_extensions, :kind_of => [String, Array], :default => []
@@ -217,7 +217,7 @@ action :create do
     update_site false
   end
 
-  if new_resource.private_accounts || new_resource.private
+  if new_resource.private_accounts || new_resource.private_site
     mediawiki_extension "ConfirmEdit" do
       site new_resource.site
       update_site false
@@ -472,7 +472,7 @@ action :create do
     template "apache.erb"
     directory site_directory
     variables :aliases => Array(new_resource.aliases),
-              :private => new_resource.private
+              :private => new_resource.private_site
     reload_apache false
   end
 
@@ -563,7 +563,7 @@ action_class do
       :site_readonly => new_resource.site_readonly,
       :extra_file_extensions => new_resource.extra_file_extensions,
       :private_accounts => new_resource.private_accounts,
-      :private => new_resource.private
+      :private_site => new_resource.private_site
     }
   end
 end
