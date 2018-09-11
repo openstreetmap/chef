@@ -36,7 +36,7 @@ Dir.glob("/var/cache/chef/chef_*.deb").each do |deb|
 end
 
 remote_file "/var/cache/chef/#{chef_package}" do
-  source "https://packages.chef.io/files/stable/chef/#{chef_version}/ubuntu/16.04/#{chef_package}"
+  source "https://packages.chef.io/files/stable/chef/#{chef_version}/ubuntu/#{node[:lsb][:release]}/#{chef_package}"
   owner "root"
   group "root"
   mode 0o644
