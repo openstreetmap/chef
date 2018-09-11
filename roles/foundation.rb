@@ -8,7 +8,7 @@ default_attributes(
     :keepalive => false
   },
   :apt => {
-    :sources => ["passenger", "brightbox-ruby-ng"]
+    :sources => ["passenger"]
   },
   :elasticsearch => {
     :version => "5.x",
