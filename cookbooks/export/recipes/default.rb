@@ -143,13 +143,13 @@ execute "compile-polysplit" do
 end
 
 %w[
-    gdal-tools/gdal_maskcompare_wm
-    icesheet_proc/osmium_noice
-    icesheet_proc/icesheet_proc.sh
-    osmcoastline/build/src/osmcoastline
-    osmcoastline/build/src/osmcoastline_filter
-    osmcoastline/build/src/osmcoastline_ways
-    polysplit/polysplit
+  gdal-tools/gdal_maskcompare_wm
+  icesheet_proc/osmium_noice
+  icesheet_proc/icesheet_proc.sh
+  osmcoastline/build/src/osmcoastline
+  osmcoastline/build/src/osmcoastline_filter
+  osmcoastline/build/src/osmcoastline_ways
+  polysplit/polysplit
 ].each do |name|
   link "#{basedir}/bin/#{name.split('/')[-1]}" do
     to "../software/#{name}"
@@ -180,4 +180,3 @@ end
               :planet  => "#{cplanetdir}/planet/planet.pbf"
   end
 end
-
