@@ -20,11 +20,15 @@
 package "openssl"
 package "ssl-cert"
 
-%w[letsencrypt dhparam].each do |certificate|
-  cookbook_file "/etc/ssl/certs/#{certificate}.pem" do
-    owner "root"
-    group "root"
-    mode 0o444
-    backup false
-  end
+cookbook_file "/etc/ssl/certs/letsencrypt.pem" do
+  owner "root"
+  group "root"
+  mode 0o444
+  backup false
+end
+
+openssl_dhparam "/etc/ssl/certs/dhparam.pem" do
+  owner "root"
+  group "root"
+  mode 0o444
 end
