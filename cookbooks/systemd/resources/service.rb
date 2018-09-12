@@ -97,7 +97,7 @@ end
 action :delete do
   file "/etc/default/#{new_resource.service}" do
     action :delete
-    only_if { environment_file.is_a?(Hash) }
+    only_if { new_resource.environment_file.is_a?(Hash) }
   end
 
   file "/etc/systemd/system/#{new_resource.service}.service" do
