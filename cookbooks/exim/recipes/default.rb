@@ -33,23 +33,15 @@ group "ssl-cert" do
   append true
 end
 
-template "/tmp/exim.ssl.cnf" do
-  source "ssl.cnf.erb"
+openssl_x509_certificate "/etc/ssl/certs/exim.pem" do
+  key_file "/etc/ssl/private/exim.key"
   owner "root"
-  group "root"
-  mode 0o644
-  not_if do
-    File.exist?("/etc/ssl/certs/exim.pem") && File.exist?("/etc/ssl/private/exim.key")
-  end
-end
-
-execute "/etc/ssl/certs/exim.pem" do
-  command "openssl req -x509 -newkey rsa:2048 -keyout /etc/ssl/private/exim.key -out /etc/ssl/certs/exim.pem -days 3650 -nodes -config /tmp/exim.ssl.cnf"
-  user "root"
   group "ssl-cert"
-  not_if do
-    File.exist?("/etc/ssl/certs/exim.pem") && File.exist?("/etc/ssl/private/exim.key")
-  end
+  mode 0o640
+  org "OpenStreetMap"
+  email "postmaster@openstreetmap.org"
+  common_name node[:fqdn]
+  expire 3650
 end
 
 service "exim4" do

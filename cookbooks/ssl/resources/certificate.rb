@@ -53,25 +53,19 @@ action :create do
       force_unlink true
     end
   else
-    template "/tmp/#{new_resource.certificate}.ssl.cnf" do
-      cookbook "ssl"
-      source "ssl.cnf.erb"
-      owner "root"
-      group "root"
-      mode 0o644
-      variables :domains => Array(new_resource.domains)
-      not_if do
-        ::File.exist?("/etc/ssl/certs/#{new_resource.certificate}.pem") && ::File.exist?("/etc/ssl/private/#{new_resource.certificate}.key")
-      end
-    end
+    alt_names = new_resource.domains.collect { |domain| "DNS:#{domain}" }
 
-    execute "/etc/ssl/certs/#{new_resource.certificate}.pem" do
-      command "openssl req -x509 -newkey rsa:2048 -keyout /etc/ssl/private/#{new_resource.certificate}.key -out /etc/ssl/certs/#{new_resource.certificate}.pem -days 365 -nodes -config /tmp/#{new_resource.certificate}.ssl.cnf"
-      user "root"
+    openssl_x509_certificate "/etc/ssl/certs/#{new_resource.certificate}.pem" do
+      key_file "/etc/ssl/private/#{new_resource.certificate}.key"
+      owner "root"
       group "ssl-cert"
-      not_if do
-        ::File.exist?("/etc/ssl/certs/#{new_resource.certificate}.pem") && ::File.exist?("/etc/ssl/private/#{new_resource.certificate}.key")
-      end
+      mode 0o640
+      org "OpenStreetMap"
+      email "operations@osmfoundation.org"
+      common_name new_resource.domains.first
+      subject_alt_name alt_names
+      extensions "keyUsage" => { "values" => %w[digitalSignature keyEncipherment] },
+                 "extendedKeyUsage" => { "values" => %w[serverAuth clientAuth] }
     end
   end
 end
