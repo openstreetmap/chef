@@ -168,10 +168,10 @@ $wgResourceLoaderMaxQueryLength = -1;
 # End of automatically generated settings.
 # Add more configuration options below.
 
-#Only Allow Signed-in users to edit
+# Only Allow Signed-in users to edit
 $wgGroupPermissions['*']['edit'] = false;
 
-#Only allow autoconfirmed for a few actions
+# Only allow autoconfirmed for a few actions
 $wgGroupPermissions['user']['move'] = false;
 $wgGroupPermissions['user']['movefile'] = false;
 $wgGroupPermissions['user']['move-categorypages'] = false;
@@ -181,7 +181,7 @@ $wgGroupPermissions['autoconfirmed']['movefile'] = true;
 $wgGroupPermissions['autoconfirmed']['move-categorypages'] = true;
 $wgGroupPermissions['autoconfirmed']['upload'] = true;
 
-#Allow bureaucrat group access to oversight options
+# Allow bureaucrat group access to oversight options
 $wgGroupPermissions['bureaucrat']['hideuser'] = true;
 $wgGroupPermissions['bureaucrat']['deletelogentry'] = true;
 $wgGroupPermissions['bureaucrat']['deleterevision'] = true;
@@ -189,33 +189,33 @@ $wgGroupPermissions['bureaucrat']['suppressrevision'] = true;
 $wgGroupPermissions['bureaucrat']['suppressionlog'] = true;
 
 <% if @mediawiki[:private_accounts] -%>
-#Prevent new user registrations except by existing users
+# Prevent new user registrations except by existing users
 $wgGroupPermissions['*']['createaccount'] = false;
 $wgGroupPermissions['user']['createaccount'] = true;
 <% end -%>
 <% if @mediawiki[:private_site] -%>
 
-#Disable reading by anonymous users
+# Disable reading by anonymous users
 $wgGroupPermissions['*']['read'] = false;
 
-#Allow anonymous users to access the login page
+# Allow anonymous users to access the login page
 $wgWhitelistRead = array ("Special:Userlogin");
 
-#Prevent new user registrations except by sysops
+# Prevent new user registrations except by sysops
 $wgGroupPermissions['*']['createaccount'] = false;
 
-#Restrict access to the upload directory
+# Restrict access to the upload directory
 $wgUploadPath = "$wgScriptPath/img_auth.php";
 <% end -%>
 
-#Allow Subpages on Main Namespace
+# Allow Subpages on Main Namespace
 $wgNamespacesWithSubpages[NS_MAIN] = true;
 
-#DNS Blacklists to use
+# DNS Blacklists to use
 $wgEnableDnsBlacklist = true;
 $wgDnsBlacklistUrls = array( 'proxies.dnsbl.sorbs.net.', 'opm.tornevall.org.', 'xbl.spamhaus.org.', 'dnsbl-3.uceprotect.net.' );
 
-#Require validated email to edit
+# Require validated email to edit
 $wgEmailConfirmToEdit = true;
 
 # Extend autoblock period
@@ -224,16 +224,16 @@ $wgAutoblockExpiry = 7776000; // 90 days
 # Spam filter regex
 $wgSpamRegex = '/\b(gmail|dell|asus|eps(o|0)n|br(o|0)ther|can(o|0)n|hp|k(o|0)dak|lexmark|mcafee|bitdefender|n(o|0)rt(o|0)n( 360)?|avira|kaspersky|avg|avast|micr(o|0)s(o|0)ft|(o|0)utl(o|0)(o|0)k|printer|netgear( r(o|0)uter)?|quickb(o|0)(o|0)ks( payr(o|0)ll)?)( antivirus)?( helpline| cust(o|0)mer|( technical| tech)| cust(o|0)mer service)? (supp(o|0)rt number|ph(o|0)ne number|supp(o|0)rt ph(o|0)ne number|care number|helpdesk number)\b/i';
 
-#Autopromote users to autoconfirmed
+# Autopromote users to autoconfirmed
 $wgAutoConfirmAge = 345600; // 4 days
 $wgAutoConfirmCount = 10;
 
-#Disable Hit Counter for Performance
+# Disable Hit Counter for Performance
 $wgDisableCounters = TRUE;
-#Disable IP in Header to avoid cache issue
+# Disable IP in Header to avoid cache issue
 $wgShowIPinHeader = FALSE;
 
-#Job Runs by cron
+# Job Runs by cron
 $wgJobRunRate = 0;
 
 # Allow external images from a few sites
@@ -241,15 +241,15 @@ $wgAllowExternalImagesFrom = array( 'http://tile.openstreetmap.org/', 'http://sv
 
 $wgNoFollowDomainExceptions = array( 'www.openstreetmap.org', 'josm.openstreetmap.de', 'taginfo.openstreetmap.org', 'blog.openstreetmap.org', 'wiki.osmfoundation.org' );
 
-#FIXME - move to specific
+# FIXME - move to specific
 $wgForceUIMsgAsContentMsg = array( 'mainpage-url', 'portal-url', 'mapfeatures-url', 'helppage' );
 
-#FIXME - move to specific
+# FIXME - move to specific
 $wgAllowUserJs = TRUE;
 $wgAllowUserCss = TRUE;
 
-#FIXME - move to specific
-#DE
+# FIXME - move to specific
+# DE
 define('NS_LANG_DE', 200);
 $wgExtraNamespaces[NS_LANG_DE] = 'DE';
 $wgNamespacesWithSubpages[NS_LANG_DE] = TRUE;
@@ -258,7 +258,7 @@ define('NS_LANG_DE_TALK', 201);
 $wgExtraNamespaces[NS_LANG_DE_TALK] = 'DE_talk';
 $wgNamespacesWithSubpages[NS_LANG_DE_TALK] = TRUE;
 
-#FR
+# FR
 define('NS_LANG_FR', 202);
 $wgExtraNamespaces[NS_LANG_FR] = 'FR';
 $wgNamespacesWithSubpages[NS_LANG_FR] = TRUE;
@@ -267,7 +267,7 @@ define('NS_LANG_FR_TALK', 203);
 $wgExtraNamespaces[NS_LANG_FR_TALK] = 'FR_talk';
 $wgNamespacesWithSubpages[NS_LANG_FR_TALK] = TRUE;
 
-#ES
+# ES
 define('NS_LANG_ES', 204);
 $wgExtraNamespaces[NS_LANG_ES] = 'ES';
 $wgNamespacesWithSubpages[NS_LANG_ES] = TRUE;
@@ -276,7 +276,7 @@ define('NS_LANG_ES_TALK', 205);
 $wgExtraNamespaces[NS_LANG_ES_TALK] = 'ES_talk';
 $wgNamespacesWithSubpages[NS_LANG_ES_TALK] = TRUE;
 
-#IT
+# IT
 define('NS_LANG_IT', 206);
 $wgExtraNamespaces[NS_LANG_IT] = 'IT';
 $wgNamespacesWithSubpages[NS_LANG_IT] = TRUE;
@@ -285,7 +285,7 @@ define('NS_LANG_IT_TALK', 207);
 $wgExtraNamespaces[NS_LANG_IT_TALK] = 'IT_talk';
 $wgNamespacesWithSubpages[NS_LANG_IT_TALK] = TRUE;
 
-#NL
+# NL
 define('NS_LANG_NL', 208);
 $wgExtraNamespaces[NS_LANG_NL] = 'NL';
 $wgNamespacesWithSubpages[NS_LANG_NL] = TRUE;
@@ -294,7 +294,7 @@ define('NS_LANG_NL_TALK', 209);
 $wgExtraNamespaces[NS_LANG_NL_TALK] = 'NL_talk';
 $wgNamespacesWithSubpages[NS_LANG_NL_TALK] = TRUE;
 
-#RU
+# RU
 define('NS_LANG_RU', 210);
 $wgExtraNamespaces[NS_LANG_RU] = 'RU';
 $wgNamespacesWithSubpages[NS_LANG_RU] = TRUE;
@@ -303,7 +303,7 @@ define('NS_LANG_RU_TALK', 211);
 $wgExtraNamespaces[NS_LANG_RU_TALK] = 'RU_talk';
 $wgNamespacesWithSubpages[NS_LANG_RU_TALK] = TRUE;
 
-#JA
+# JA
 define('NS_LANG_JA', 212);
 $wgExtraNamespaces[NS_LANG_JA] = 'JA';
 $wgNamespacesWithSubpages[NS_LANG_JA] = TRUE;
