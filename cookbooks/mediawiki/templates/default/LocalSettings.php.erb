@@ -193,7 +193,7 @@ $wgGroupPermissions['bureaucrat']['suppressionlog'] = true;
 $wgGroupPermissions['*']['createaccount'] = false;
 $wgGroupPermissions['user']['createaccount'] = true;
 <% end -%>
-<% if @mediawiki[:private] -%>
+<% if @mediawiki[:private_site] -%>
 
 #Disable reading by anonymous users
 $wgGroupPermissions['*']['read'] = false;

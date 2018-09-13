@@ -80,7 +80,7 @@
     Options -ExecCGI -Includes -Indexes
     AllowOverride None
     AddType text/plain .html .htm .shtml
-<% if @private -%>
+<% if @private_site -%>
     Require all denied
 <% end -%>
   </Directory>

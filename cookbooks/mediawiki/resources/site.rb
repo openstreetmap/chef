@@ -472,7 +472,7 @@ action :create do
     template "apache.erb"
     directory site_directory
     variables :aliases => Array(new_resource.aliases),
-              :private => new_resource.private_site
+              :private_site => new_resource.private_site
     reload_apache false
   end
 
