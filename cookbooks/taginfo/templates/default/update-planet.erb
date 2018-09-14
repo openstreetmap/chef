@@ -9,15 +9,20 @@ LOGDIR="${PLANETDIR}/log"
 PLANETPREV="${PLANETDIR}/planet-previous.pbf"
 PLANETCURR="${PLANETDIR}/planet.pbf"
 PLANETNEW="${PLANETDIR}/planet-new.pbf"
+PLANETTMP="${PLANETDIR}/planet-tmp.pbf"
 
 # start logging
 
 exec > "${LOGDIR}/$(date +%Y%m%d-%H%M).log" 2>&1
 
-retval=1
+pyosmium-up-to-date -v -o $PLANETNEW $PLANETCURR
+retval=$?
+
 while [ $retval -eq 1 ]; do
-    pyosmium-up-to-date -v -o $PLANETNEW $PLANETCURR
+    mv "$PLANETNEW" "$PLANETTMP"
+    pyosmium-up-to-date -v -o $PLANETNEW $PLANETTMP
     retval=$?
+    rm "$PLANETTMP"
 done
 
 if [ $retval -ne 0 ]; then
