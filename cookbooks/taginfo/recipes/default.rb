@@ -62,10 +62,6 @@ apache_module "cache"
 apache_module "cache_disk"
 apache_module "headers"
 
-file "/etc/cron.d/taginfo" do
-  action :delete
-end
-
 directory "/var/log/taginfo" do
   owner "taginfo"
   group "taginfo"
@@ -160,20 +156,12 @@ node[:taginfo][:sites].each do |site|
     notifies :restart, "passenger_application[#{directory}/taginfo/web/public]"
   end
 
-  %w[taginfo/web/tmp bin data data/old download sources planet planet/log].each do |dir|
+  %w[taginfo/web/tmp bin data data/old download sources].each do |dir|
     directory "#{directory}/#{dir}" do
       owner "taginfo"
       group "taginfo"
       mode 0o755
     end
-  end
-
-  file "#{directory}/bin/update-planet" do
-    action :delete
-  end
-
-  file "#{directory}/bin/update-taginfo" do
-    action :delete
   end
 
   template "#{directory}/bin/update" do
