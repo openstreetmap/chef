@@ -1,6 +1,6 @@
 #
-# Cookbook Name:: cplanet
-# Recipe:: default
+# Cookbook Name:: planet
+# Recipe:: current
 #
 # Copyright 2018, OpenStreetMap Foundation
 #
