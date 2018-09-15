@@ -27,6 +27,14 @@ default_attributes(
   :passenger => {
     :max_pool_size => 50
   },
+  :planet => {
+    :current => {
+      :taginfo => {
+        :command => "/usr/local/bin/taginfo-update",
+        :user => "taginfo"
+      }
+    }
+  },
   :taginfo => {
     :sites => [
       {
@@ -42,5 +50,6 @@ default_attributes(
 )
 
 run_list(
+  "recipe[planet::current]",
   "recipe[taginfo]"
 )

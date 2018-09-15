@@ -62,21 +62,14 @@ apache_module "cache"
 apache_module "cache_disk"
 apache_module "headers"
 
-template "/etc/cron.d/taginfo" do
-  source "cron.erb"
-  owner "root"
-  group "root"
-  mode 0o644
+file "/etc/cron.d/taginfo" do
+  action :delete
 end
 
 directory "/var/log/taginfo" do
   owner "taginfo"
   group "taginfo"
   mode 0o755
-end
-
-file "/etc/logrotate.d/taginfo" do
-  action :delete
 end
 
 template "/etc/sudoers.d/taginfo" do
@@ -129,7 +122,7 @@ node[:taginfo][:sites].each do |site|
     settings["opensearch"]["contact"] = "webmaster@openstreetmap.org"
     settings["sources"]["download"] = ""
     settings["sources"]["create"] = "db languages projects wiki"
-    settings["sources"]["db"]["planetfile"] = "#{directory}/planet/planet.pbf"
+    settings["sources"]["db"]["planetfile"] = "/var/lib/planet/planet.pbf"
     settings["sources"]["db"]["bindir"] = "#{directory}/taginfo/tagstats"
     settings["tagstats"]["geodistribution"] = "DenseMmapArray"
 
@@ -175,28 +168,12 @@ node[:taginfo][:sites].each do |site|
     end
   end
 
-  remote_file "#{directory}/planet/planet.pbf" do
-    action :create_if_missing
-    source "https://planet.openstreetmap.org/pbf/planet-latest.osm.pbf"
-    owner "taginfo"
-    group "taginfo"
-    mode 0o644
+  file "#{directory}/bin/update-planet" do
+    action :delete
   end
 
-  template "#{directory}/bin/update-planet" do
-    source "update-planet.erb"
-    owner "taginfo"
-    group "taginfo"
-    mode 0o755
-    variables :directory => directory
-  end
-
-  template "#{directory}/bin/update-taginfo" do
-    source "update-taginfo.erb"
-    owner "taginfo"
-    group "taginfo"
-    mode 0o755
-    variables :directory => directory
+  file "#{directory}/bin/update-taginfo" do
+    action :delete
   end
 
   template "#{directory}/bin/update" do
@@ -219,4 +196,12 @@ node[:taginfo][:sites].each do |site|
     directory "#{directory}/taginfo/web/public"
     variables :aliases => site_aliases
   end
+end
+
+template "/usr/local/bin/taginfo-update" do
+  source "taginfo-update.erb"
+  owner "root"
+  group "root"
+  mode 0o755
+  variables :sites => node[:taginfo][:sites]
 end
