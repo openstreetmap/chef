@@ -50,6 +50,6 @@ default_attributes(
 )
 
 run_list(
-  "recipe[planet::current]",
+  "role[planet-current]",
   "recipe[taginfo]"
 )
