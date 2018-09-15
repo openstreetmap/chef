@@ -29,9 +29,11 @@ default_attributes(
   },
   :planet => {
     :current => {
-      :taginfo => {
-        :command => "/usr/local/bin/taginfo-update",
-        :user => "taginfo"
+      :jobs => {
+        :taginfo => {
+          :command => "/usr/local/bin/taginfo-update",
+          :user => "taginfo"
+        }
       }
     }
   },
