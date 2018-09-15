@@ -9,7 +9,7 @@ echo "Updating planet file..."
 runuser -u planet -- /usr/local/bin/planet-update-file
 
 echo "Running jobs..."
-<% node[:planet][:current][:jobs].each do |job| -%>
+<% node[:planet][:current][:jobs].each_value do |job| -%>
 
 echo "Running '<%= job[:command] %>' as user '<%= job[:user] %>'..."
 
