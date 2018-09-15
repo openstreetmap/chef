@@ -1,0 +1,19 @@
+#!/bin/sh
+
+# DO NOT EDIT - This file is being maintained by Chef
+
+exec > /var/log/planet-update.log 2>&1
+
+echo "Updating planet file..."
+
+runuser -u planet -- /usr/local/bin/planet-update-file
+
+echo "Running jobs..."
+<% node[:cplanet][:jobs].each do |job| -%>
+
+echo "Running '<%= job[:command] %>' as user '<%= job[:user] %>'..."
+
+runuser -u "<%= job[:user] %>" -- "<%= job[:command] %>"
+<% end -%>
+
+echo "Done."

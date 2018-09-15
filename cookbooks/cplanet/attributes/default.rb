@@ -1,0 +1,1 @@
+default[:cplanet][:jobs] = {}

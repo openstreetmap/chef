@@ -17,55 +17,48 @@
 # limitations under the License.
 #
 
-user = "cplanet"
-basedir = "/srv/cplanet"
-planet_source = "https://planet.openstreetmap.org/pbf/planet-latest.osm.pbf"
-
 package %w[
   pyosmium
 ]
 
-directory basedir do
+template "/usr/local/bin/planet-update" do
+  source "planet-update.erb"
   owner "root"
   group "root"
   mode 0o755
 end
 
-%w[bin jobs log].each do |dir|
-  directory "#{basedir}/#{dir}" do
-    owner "root"
-    group "root"
-    mode 0o755
-  end
-end
-
-directory "#{basedir}/planet" do
-  owner user
-  group user
+template "/usr/local/bin/planet-update-file" do
+  source "planet-update-file.erb"
+  owner "root"
+  group "root"
   mode 0o755
 end
 
-%w[update update-planet].each do |file|
-  template "#{basedir}/bin/#{file}" do
-    source "#{file}.erb"
-    owner "root"
-    group "root"
-    mode 0o755
-    variables :basedir => basedir, :user => user
-  end
+directory "/var/lib/planet" do
+  owner "planet"
+  group "planet"
+  mode 0o755
 end
 
-remote_file "#{basedir}/planet/planet.pbf" do
+remote_file "/var/lib/planet/planet.pbf" do
   action :create_if_missing
-  source planet_source
-  owner user
-  group user
+  source "https://planet.openstreetmap.org/pbf/planet-latest.osm.pbf"
+  owner "planet"
+  group "planet"
   mode 0o644
 end
 
-cron "update-planet" do
-  hour 1
-  minute 17
-  user "root"
-  command "#{basedir}/bin/update"
+template "/etc/cron.d/planet-update" do
+  source "planet-update.cron.erb"
+  owner "root"
+  group "root"
+  mode 0o644
+end
+
+template "/etc/logrotate.d/planet-update" do
+  source "planet-update.logrotate.erb"
+  owner "root"
+  group "root"
+  mode 0o644
 end

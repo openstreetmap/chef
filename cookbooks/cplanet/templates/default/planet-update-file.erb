@@ -4,18 +4,18 @@
 
 # setup
 
-PLANETDIR="<%= @basedir %>/planet"
+PLANETDIR="/var/lib/planet"
 PLANETPREV="${PLANETDIR}/planet-previous.pbf"
 PLANETCURR="${PLANETDIR}/planet.pbf"
 PLANETNEW="${PLANETDIR}/planet-new.pbf"
 PLANETTMP="${PLANETDIR}/planet-tmp.pbf"
 
-pyosmium-up-to-date -v -o $PLANETNEW $PLANETCURR
+pyosmium-up-to-date -v -o "$PLANETNEW" "$PLANETCURR"
 retval=$?
 
 while [ $retval -eq 1 ]; do
     mv "$PLANETNEW" "$PLANETTMP"
-    pyosmium-up-to-date -v -o $PLANETNEW $PLANETTMP
+    pyosmium-up-to-date -v -o "$PLANETNEW" "$PLANETTMP"
     retval=$?
     rm "$PLANETTMP"
 done
@@ -28,4 +28,3 @@ fi
 
 mv "$PLANETCURR" "$PLANETPREV"
 mv "$PLANETNEW" "$PLANETCURR"
-
