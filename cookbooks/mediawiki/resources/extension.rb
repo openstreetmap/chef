@@ -75,14 +75,11 @@ action :create do
       variables new_resource.variables
     end
   else
-    extension_script = "#{extension_directory}/#{new_resource.extension}.php"
-
     file "#{mediawiki_directory}/LocalSettings.d/Ext-#{new_resource.extension}.inc.php" do
       content "<?php wfLoadExtension( '#{new_resource.extension}' );\n"
       user node[:mediawiki][:user]
       group node[:mediawiki][:group]
       mode 0o664
-      only_if { ::File.exist?(extension_script) }
     end
   end
 
