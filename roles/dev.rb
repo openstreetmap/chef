@@ -120,6 +120,12 @@ default_attributes(
       :locale => {
         :repository => "git://github.com/tomhughes/openstreetmap-website.git",
         :revision => "locale"
+      },
+      :upload => {
+        :repository => "https://git.openstreetmap.org/public/rails.git",
+        :revision => "master",
+        :cgimap_repository => "git://github.com/zerebubuth/openstreetmap-cgimap.git",
+        :cgimap_revision => "feature/bulk_upload"
       }
     }
   },
