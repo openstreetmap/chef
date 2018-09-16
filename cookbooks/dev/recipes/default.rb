@@ -41,14 +41,8 @@ package %w[
   php-pear
   php-pgsql
   php-sqlite3
-]
-
-package %w[
   pngcrush
   pngquant
-]
-
-package %w[
   python
   python-argparse
   python-beautifulsoup
@@ -57,6 +51,25 @@ package %w[
   python-magic
   python-psycopg2
   python-gdal
+  g++
+  gcc
+  make
+  autoconf
+  automake
+  libtool
+  libfcgi-dev
+  libxml2-dev
+  libmemcached-dev
+  libboost-regex-dev
+  libboost-system-dev
+  libboost-program-options-dev
+  libboost-date-time-dev
+  libboost-filesystem-dev
+  libboost-locale-dev
+  libpqxx-dev
+  libcrypto++-dev
+  libyajl-dev
+  zlib1g-dev
 ]
 
 nodejs_package "svgo"
@@ -190,10 +203,29 @@ if node[:postgresql][:clusters][:"9.5/main"]
     mode 0o755
   end
 
+  systemd_service "cgimap@" do
+    description "OpenStreetMap API Server"
+    type "forking"
+    environment_file "/etc/default/cgimap-%i"
+    user "apis"
+    exec_start "/srv/%i.apis.dev.openstreetmap.org/cgimap/openstreetmap-cgimap --daemon --port $CGIMAP_PORT --instances 5"
+    exec_reload "/bin/kill -HUP $MAINPID"
+    private_tmp true
+    private_devices true
+    protect_system "full"
+    protect_home true
+    no_new_privileges true
+    restart "on-failure"
+  end
+
+  cgimap_port = 9000
+
   node[:dev][:rails].each do |name, details|
     database_name = details[:database] || "apis_#{name}"
     site_name = "#{name}.apis.dev.openstreetmap.org"
-    rails_directory = "/srv/#{name}.apis.dev.openstreetmap.org"
+    site_directory = "/srv/#{name}.apis.dev.openstreetmap.org"
+    rails_directory = "#{site_directory}/rails"
+    cgimap_directory = "#{site_directory}/cgimap"
 
     if details[:repository]
       site_aliases = details[:aliases] || []
@@ -210,6 +242,12 @@ if node[:postgresql][:clusters][:"9.5/main"]
         cluster "9.5/main"
         database database_name
         extension "btree_gist"
+      end
+
+      directory site_directory do
+        owner "apis"
+        group "apis"
+        mode 0o755
       end
 
       rails_port site_name do
@@ -236,6 +274,60 @@ if node[:postgresql][:clusters][:"9.5/main"]
         notifies :restart, "rails_port[#{site_name}]"
       end
 
+      if details[:cgimap_repository]
+        git cgimap_directory do
+          action :sync
+          repository details[:cgimap_repository]
+          revision details[:cgimap_revision]
+          user "apis"
+          group "apis"
+        end
+
+        execute "#{cgimap_directory}/autogen.sh" do
+          action :nothing
+          command "./autogen.sh"
+          cwd cgimap_directory
+          user "apis"
+          group "apis"
+          subscribes :run, "git[#{cgimap_directory}]", :immediate
+        end
+
+        execute "#{cgimap_directory}/configure" do
+          action :nothing
+          command "./configure --with-fcgi=/usr --with-boost-libdir=/usr/lib/x86_64-linux-gnu"
+          cwd cgimap_directory
+          user "apis"
+          group "apis"
+          subscribes :run, "execute[#{cgimap_directory}/autogen.sh]", :immediate
+        end
+
+        execute "#{cgimap_directory}/Makefile" do
+          action :nothing
+          command "make -j"
+          cwd cgimap_directory
+          user "apis"
+          group "apis"
+          subscribes :run, "execute[#{cgimap_directory}/configure]", :immediate
+          notifies :restart, "service[cgimap@#{name}]"
+        end
+
+        template "/etc/default/cgimap-#{name}" do
+          source "cgimap.environment.erb"
+          owner "root"
+          group "root"
+          mode 0o640
+          variables :cgimap_port => cgimap_port,
+                    :database_port => node[:postgresql][:clusters][:"9.5/main"][:port],
+                    :database_name => database_name,
+                    :rails_directory => rails_directory
+          notifies :restart, "service[cgimap@#{name}]"
+        end
+
+        service "cgimap@#{name}" do
+          action [:start, :enable]
+        end
+      end
+
       ssl_certificate site_name do
         domains [site_name] + site_aliases
         notifies :reload, "service[apache2]"
@@ -243,14 +335,28 @@ if node[:postgresql][:clusters][:"9.5/main"]
 
       apache_site site_name do
         template "apache.rails.erb"
-        variables :application_name => name, :aliases => site_aliases, :secret_key_base => secret_key_base
+        variables :application_name => name,
+                  :aliases => site_aliases,
+                  :secret_key_base => secret_key_base,
+                  :cgimap_enabled => details.key?(:cgimap_repository),
+                  :cgimap_port => cgimap_port
       end
+
+      cgimap_port += 1
     else
       apache_site site_name do
         action [:delete]
       end
 
-      directory rails_directory do
+      service "cgimap@#{name}" do
+        action [:stop, :disable]
+      end
+
+      file "/etc/default/cgimap-#{name}" do
+        action :delete
+      end
+
+      directory site_directory do
         action :delete
         recursive true
       end
