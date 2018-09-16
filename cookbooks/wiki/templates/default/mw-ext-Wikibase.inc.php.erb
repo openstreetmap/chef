@@ -1,0 +1,89 @@
+<?php
+# DO NOT EDIT - This file is being maintained by Chef
+
+$wgEnableWikibaseRepo = true;
+$wgEnableWikibaseClient = true;
+
+require_once "$IP/extensions/Wikibase/repo/Wikibase.php";
+require_once "$IP/extensions/Wikibase/client/WikibaseClient.php";
+// Include Wikibase.searchindex.php to include string and text values in the full text index:
+require_once "$IP/extensions/Wikibase/repo/config/Wikibase.searchindex.php";
+
+# Adapted from $IP/extensions/Wikibase/repo/config/Wikibase.example.php
+call_user_func( function() {
+    global $wgContentHandlerUseDB,
+        $wgDBname,
+        $wgExtraNamespaces,
+        $wgNamespacesToBeSearchedDefault,
+        $wgWBRepoSettings;
+
+    $wgContentHandlerUseDB = true;
+
+    $baseNs = 120;
+
+    // Define custom namespaces. Use these exact constant names.
+    define( 'WB_NS_ITEM', $baseNs );
+    define( 'WB_NS_ITEM_TALK', $baseNs + 1 );
+    define( 'WB_NS_PROPERTY', $baseNs + 2 );
+    define( 'WB_NS_PROPERTY_TALK', $baseNs + 3 );
+
+    // Register extra namespaces.
+    $wgExtraNamespaces[WB_NS_ITEM] = 'Item';
+    $wgExtraNamespaces[WB_NS_ITEM_TALK] = 'Item_talk';
+    $wgExtraNamespaces[WB_NS_PROPERTY] = 'Property';
+    $wgExtraNamespaces[WB_NS_PROPERTY_TALK] = 'Property_talk';
+
+    // Tell Wikibase which namespace to use for which kind of entity
+    $wgWBRepoSettings['entityNamespaces']['item'] = WB_NS_ITEM;
+    $wgWBRepoSettings['entityNamespaces']['property'] = WB_NS_PROPERTY;
+
+    // Make sure we use the same keys on repo and clients, so we can share cached objects.
+    $wgWBRepoSettings['sharedCacheKeyPrefix'] = $wgDBname . ':WBL/' . rawurlencode( WBL_VERSION );
+
+    // Tell MediaWiki to search the item namespace
+    // $wgNamespacesToBeSearchedDefault[WB_NS_ITEM] = true;
+
+    // the special group includes all the sites in the specialSiteLinkGroups,
+    // grouped together in a 'Pages linked to other sites' section.
+    $wgWBRepoSettings['siteLinkGroups'] = [ 'special' ];
+
+    // these are the site_group codes as listed in the sites table
+    $wgWBRepoSettings['specialSiteLinkGroups'] = ['osm'];
+} );
+
+// Adapted from "$IP/extensions/Wikibase/client/ExampleSettings.php";
+
+// The global site ID by which this wiki is known on the repo.
+// Defaults to $wgDBname.
+// $wgWBClientSettings['siteGlobalID'] = "osm";
+// $wgWBClientSettings['injectRecentChanges'] = true;
+// $wgWBClientSettings['showExternalRecentChanges'] = true;
+
+$wgWBClientSettings['namespaces'] = [ NS_MAIN ];
+
+// no edit rights for anonymous users
+$wgGroupPermissions['*']['item-term'] = false;
+$wgGroupPermissions['*']['item-merge'] = false;
+$wgGroupPermissions['*']['item-redirect'] = false;
+$wgGroupPermissions['*']['property-term'] = false;
+$wgGroupPermissions['*']['property-create'] = false;
+
+// Logged-in users can edit statements, but disable merge/redirect/creating props
+$wgGroupPermissions['user']['item-term'] = true;
+$wgGroupPermissions['user']['item-merge'] = false;
+$wgGroupPermissions['user']['item-redirect'] = false;
+$wgGroupPermissions['user']['property-term'] = true;
+$wgGroupPermissions['user']['property-create'] = false;
+
+// data-admin group should be the only one creating properties
+$wgGroupPermissions['data-admin']['item-redirect'] = true;
+$wgGroupPermissions['data-admin']['item-merge'] = true;
+$wgGroupPermissions['data-admin']['property-create'] = true;
+
+
+// ---- This should be set once formatUrl property is created
+// $wgWBRepoSettings['formatterUrlProperty'] = 'P3';
+
+// ---- This should be removed once all needed initial items and properties are set up
+$wgNamespaceProtection[WB_NS_ITEM] = [ 'create-wb-items' ];
+$wgGroupPermissions['data-admin']['create-wb-items'] = true;

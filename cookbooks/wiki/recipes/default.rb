@@ -71,6 +71,19 @@ mediawiki_extension "Scribunto" do
   template_cookbook "wiki"
 end
 
+mediawiki_extension "Wikibase" do
+  site "wiki.openstreetmap.org"
+  compose true
+  template "mw-ext-Wikibase.inc.php.erb"
+  template_cookbook "wiki"
+end
+
+mediawiki_extension "OsmWikibase" do
+  site "wiki.openstreetmap.org"
+  repository "git://github.com/nyurik/OsmWikibase.git"
+  reference "master"
+end
+
 cookbook_file "/srv/wiki.openstreetmap.org/osm_logo_wiki.png" do
   owner node[:mediawiki][:user]
   group node[:mediawiki][:group]
