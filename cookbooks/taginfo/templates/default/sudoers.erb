@@ -1,4 +1,7 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
+# Allow taginfo to set PASSENGER_INSTANCE_REGISTRY_DIR
+Defaults:taginfo env_keep=PASSENGER_INSTANCE_REGISTRY_DIR
+
 # Allow taginfo to restart the web app
 taginfo ALL=(root) NOPASSWD: /usr/bin/passenger-config restart-app *
