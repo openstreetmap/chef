@@ -64,8 +64,8 @@ action :create do
       email "operations@osmfoundation.org"
       common_name new_resource.domains.first
       subject_alt_name alt_names
-      extensions "keyUsage" => { "values" => %w[digitalSignature keyEncipherment] },
-                 "extendedKeyUsage" => { "values" => %w[serverAuth clientAuth] }
+      extensions "keyUsage" => { "values" => %w[digitalSignature keyEncipherment], "critical" => true },
+                 "extendedKeyUsage" => { "values" => %w[serverAuth clientAuth], "critical" => true }
     end
   end
 end
