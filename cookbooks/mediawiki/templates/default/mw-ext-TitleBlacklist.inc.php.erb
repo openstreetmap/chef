@@ -3,11 +3,11 @@
 wfLoadExtension( 'TitleBlacklist' );
 $wgTitleBlacklistSources = array(
   array(
-    'type' => TBLSRC_LOCALPAGE,
+    'type' => 'localpage',
     'src'  => 'MediaWiki:Titleblacklist',
   ),
   array(
-    'type' => TBLSRC_URL,
+    'type' => 'url',
     'src'  => 'https://meta.wikimedia.org/w/index.php?title=Title_blacklist&action=raw',
   ),
 );
