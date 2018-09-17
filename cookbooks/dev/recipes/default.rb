@@ -224,6 +224,7 @@ if node[:postgresql][:clusters][:"9.5/main"]
     database_name = details[:database] || "apis_#{name}"
     site_name = "#{name}.apis.dev.openstreetmap.org"
     site_directory = "/srv/#{name}.apis.dev.openstreetmap.org"
+    log_directory = "#{site_directory}/logs"
     rails_directory = "#{site_directory}/rails"
     cgimap_directory = "#{site_directory}/cgimap"
 
@@ -250,6 +251,12 @@ if node[:postgresql][:clusters][:"9.5/main"]
         mode 0o755
       end
 
+      directory log_directory do
+        owner "apis"
+        group "apis"
+        mode 0o755
+      end
+
       rails_port site_name do
         ruby node[:passenger][:ruby_version]
         directory rails_directory
@@ -260,6 +267,7 @@ if node[:postgresql][:clusters][:"9.5/main"]
         database_port node[:postgresql][:clusters][:"9.5/main"][:port]
         database_name database_name
         database_username "apis"
+        log_path "#{log_directory}/rails.log"
         memcache_servers ["127.0.0.1"]
         csp_enforce true
         run_migrations true
@@ -319,7 +327,7 @@ if node[:postgresql][:clusters][:"9.5/main"]
           variables :cgimap_port => cgimap_port,
                     :database_port => node[:postgresql][:clusters][:"9.5/main"][:port],
                     :database_name => database_name,
-                    :rails_directory => rails_directory
+                    :log_directory => log_directory
           notifies :restart, "service[cgimap@#{name}]"
         end
 
@@ -342,8 +350,22 @@ if node[:postgresql][:clusters][:"9.5/main"]
                   :cgimap_port => cgimap_port
       end
 
+      template "/etc/logrotate.d/apis-#{name}" do
+        source "logrotate.apis.erb"
+        owner "root"
+        group "root"
+        mode 0o644
+        variables :name => name,
+                  :log_directory => log_directory,
+                  :rails_directory => rails_directory
+      end
+
       cgimap_port += 1
     else
+      file "/etc/logrotate.d/apis-#{name}" do
+        action :delete
+      end
+
       apache_site site_name do
         action [:delete]
       end
