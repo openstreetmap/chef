@@ -83,7 +83,3 @@ $wgGroupPermissions['data-admin']['property-create'] = true;
 
 // See https://www.mediawiki.org/wiki/Wikibase/Installation/Advanced_configuration#Define_links_for_external_identifiers
 $wgWBRepoSettings['formatterUrlProperty'] = 'P8';
-
-// ---- This should be removed once all needed initial items and properties are set up
-$wgNamespaceProtection[WB_NS_ITEM] = [ 'create-wb-items' ];
-$wgGroupPermissions['data-admin']['create-wb-items'] = true;
