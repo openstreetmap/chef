@@ -6,14 +6,14 @@ exec > /var/log/planet-update.log 2>&1
 
 echo "Updating planet file..."
 
-runuser -u planet -- /usr/local/bin/planet-update-file
+/sbin/runuser -u planet -- /usr/local/bin/planet-update-file
 
 echo "Running jobs..."
 <% node[:planet][:current][:jobs].each_value do |job| -%>
 
 echo "Running '<%= job[:command] %>' as user '<%= job[:user] %>'..."
 
-runuser -u "<%= job[:user] %>" -- "<%= job[:command] %>"
+/sbin/runuser -u "<%= job[:user] %>" -- "<%= job[:command] %>"
 <% end -%>
 
 echo "Done."
