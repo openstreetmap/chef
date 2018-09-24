@@ -172,7 +172,9 @@ node[:taginfo][:sites].each do |site|
     variables :name => site_name, :directory => directory
   end
 
-  passenger_application "#{directory}/taginfo/web/public"
+  passenger_application "#{directory}/taginfo/web/public" do
+    action :nothing
+  end
 
   ssl_certificate site_name do
     domains [site_name] + site_aliases

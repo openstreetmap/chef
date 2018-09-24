@@ -346,6 +346,7 @@ action :create do
   end
 
   passenger_application rails_directory do
+    action :nothing
     only_if { ::File.exist?("/usr/bin/passenger-config") }
   end
 
