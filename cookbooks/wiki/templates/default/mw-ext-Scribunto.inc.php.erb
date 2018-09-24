@@ -6,9 +6,14 @@ wfLoadExtension('Scribunto');
 // Use standalone mode
 $wgScribuntoDefaultEngine = 'luastandalone';
 
+// Increase cpu limit (default=7) per https://www.mediawiki.org/wiki/Topic:S9y4s52ue722seam
+// Documented in https://www.mediawiki.org/wiki/Extension:Scribunto#LuaStandalone
+// Max running time in seconds
+$wgScribuntoEngineConf['luastandalone']['cpuLimit'] = 15;
+
 // Set path to lua interpreter
 $wgScribuntoEngineConf['luastandalone']['luaPath'] = '/usr/bin/lua';
-        
+
 // Enable syntax highlighting
 $wgScribuntoUseGeSHi = true;
 
