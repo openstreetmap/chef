@@ -21,6 +21,9 @@ default_action :nothing
 
 property :application, String, :name_attribute => true
 
+action :nothing do
+end
+
 action :restart do
   execute new_resource.application do
     action :run
