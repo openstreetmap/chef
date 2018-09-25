@@ -85,5 +85,5 @@ firewall_rule "accept-ssh" do
   source "net"
   dest "fw"
   proto "tcp:syn"
-  dest_ports "ssh"
+  dest_ports node[:openssh][:port]
 end
