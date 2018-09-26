@@ -83,3 +83,7 @@ $wgGroupPermissions['data-admin']['property-create'] = true;
 
 // See https://www.mediawiki.org/wiki/Wikibase/Installation/Advanced_configuration#Define_links_for_external_identifiers
 $wgWBRepoSettings['formatterUrlProperty'] = 'P8';
+
+// Disable Wikibase searchbox with this hack (hopefully Wikibase will implement support for it soon)
+// See https://phabricator.wikimedia.org/T205560
+$wgResourceModules['wikibase.ui.entitysearch']['scripts'] = [];
