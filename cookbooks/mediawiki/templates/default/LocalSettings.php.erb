@@ -320,6 +320,13 @@ $wgNamespacesToBeSearchedDefault[NS_LANG_NL] = TRUE;
 $wgNamespacesToBeSearchedDefault[NS_LANG_RU] = TRUE;
 $wgNamespacesToBeSearchedDefault[NS_LANG_JA] = TRUE;
 
+
+# Raise expensive lua (and other function) call limits to match WP
+# Docs:  https://www.mediawiki.org/wiki/Manual:$wgExpensiveParserFunctionLimit
+# Wikipedia's Config:  https://noc.wikimedia.org/conf/highlight.php?file=CommonSettings.php
+$wgExpensiveParserFunctionLimit = 500;
+
+
 <% if @mediawiki[:site_notice] -%>
 $wgSiteNotice = "<%= @mediawiki[:site_notice] %>";
 <% end -%>
