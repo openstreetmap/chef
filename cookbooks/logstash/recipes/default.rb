@@ -22,7 +22,7 @@ include_recipe "networking"
 keys = data_bag_item("logstash", "keys")
 
 package %w[
-  default-jre-headless
+  openjdk-8-jre-headless
   logstash
 ]
 
@@ -52,6 +52,14 @@ end
 
 file "/etc/logrotate.d/logstash" do
   mode 0o644
+end
+
+template "/etc/default/logstash" do
+  source "logstash.default.erb"
+  user "root"
+  group "root"
+  mode 0o644
+  notifies :restart, "service[logstash]"
 end
 
 service "logstash" do
