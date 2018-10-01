@@ -16,7 +16,8 @@ default_attributes(
           :disk => {
             :watermark => {
               :low => "95%",
-              :high => "98%"
+              :high => "98%",
+              :flood_stage => "99%"
             }
           }
         }

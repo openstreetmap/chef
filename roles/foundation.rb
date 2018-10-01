@@ -14,9 +14,6 @@ default_attributes(
     :version => "5.x",
     :cluster => {
       :name => "foundation"
-    },
-    :script => {
-      :disable_dynamic => false
     }
   },
   :memcached => {

@@ -21,9 +21,6 @@ default_attributes(
     :version => "5.x",
     :cluster => {
       :name => "wiki"
-    },
-    :script => {
-      :disable_dynamic => false
     }
   },
   :exim => {

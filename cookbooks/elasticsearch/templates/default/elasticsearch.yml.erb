@@ -3,8 +3,7 @@
 cluster.name: <%= node[:elasticsearch][:cluster][:name] %>
 cluster.routing.allocation.disk.watermark.low: <%= node[:elasticsearch][:cluster][:routing][:allocation][:disk][:watermark][:low] %>
 cluster.routing.allocation.disk.watermark.high: <%= node[:elasticsearch][:cluster][:routing][:allocation][:disk][:watermark][:high] %>
+cluster.routing.allocation.disk.watermark.flood_stage: <%= node[:elasticsearch][:cluster][:routing][:allocation][:disk][:watermark][:flood_stage] %>
 network.host: 127.0.0.1
 path.data: <%= node[:elasticsearch][:path][:data] %>
-<% if node[:elasticsearch][:script][:disable_dynamic] -%>
-script.disable_dynamic: <%= node[:elasticsearch][:script][:disable_dynamic] -%>
-<% end -%>
+path.logs: /var/log/elasticsearch
