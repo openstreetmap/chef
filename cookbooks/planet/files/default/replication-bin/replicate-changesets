@@ -137,6 +137,98 @@ def fdirsync(d)
 end
 
 ##
+# write the new data - changesets and state - to temporary files, and make
+# sure they're safe on disk.
+#
+def write_tmp_files!(changesets, state_file_name, state)
+  data_file = data_stem + ".osm.gz"
+  tmp_state = state_file_name + ".tmp"
+  tmp_data = data_file + ".tmp"
+
+  FileUtils.mkdir_p(File.dirname(data_file))
+  Zlib::GzipWriter.open(tmp_data) do |fh|
+    fh.write(changeset_dump(changesets))
+  end
+  File.open(tmp_state, "w") do |fh|
+    fh.write(YAML.dump(state))
+  end
+
+  # fsync the files in their old locations.
+  fsync(tmp_data)
+  fsync(tmp_state)
+
+  # sync the directory as well, to ensure that the file is reachable
+  # from the dirent and has been updated to account for any allocations.
+  fdirsync(File.dirname(tmp_data))
+  fdirsync(File.dirname(tmp_state))
+
+  # sanity check: the files we're moving into place
+  # should be non-empty.
+  raise "Temporary gzip file should exist, but doesn't." unless File.exist?(tmp_data)
+  raise "Temporary state file should exist, but doesn't." unless File.exist?(tmp_state)
+  raise "Temporary gzip file should be non-empty, but isn't." if File.zero?(tmp_data)
+  raise "Temporary state file should be non-empty, but isn't." if File.zero?(tmp_state)
+end
+
+##
+# move temporary files into their final place and rewrite the state file.
+#
+def move_tmp_files_into_place!(state_file_handle, state_file_name)
+  data_file = data_stem + ".osm.gz"
+  data_state_file = data_stem + ".state.txt"
+  tmp_state = state_file_name + ".tmp"
+  tmp_data = data_file + ".tmp"
+
+  FileUtils.mv(tmp_data, data_file)
+  FileUtils.cp(tmp_state, data_state_file)
+
+  # fsync the files in their new locations, in case the inodes have
+  # changed in the move / copy.
+  fsync(data_file)
+  fsync(data_state_file)
+
+  # sync the directory as well, to ensure that the file is reachable
+  # from the dirent and has been updated to account for any allocations.
+  fdirsync(File.dirname(data_file))
+  fdirsync(File.dirname(tmp_state))
+
+  # overwrite file in place, rather than copying it into place. this should
+  # mean that the flock we have on the inode doesn't go away. if this fails,
+  # then we're left with the tmp file, so we can recover from there.
+  state_file_handle.rewind
+  state_file_handle.write(File.read(tmp_state))
+  state_file_handle.flush
+  fsync(state_file_name)
+  fdirsync(File.dirname(state_file_name))
+
+  # finally, remove the tmp file.
+  FileUtils.rm(tmp_state)
+  fdirsync(File.dirname(tmp_state))
+end
+
+def read_state(fl, state_file_name)
+  state = nil
+
+  # first, try reading from the existing state file.
+  begin
+    state_data = fl.read
+    state = YAML.safe_load(state_data, [Time])
+    raise Exception, "Bad state file - not a Hash" unless @state.is_a?(Hash)
+  rescue StandardError
+    state = nil
+  end
+
+  # if that doesn't work, try the old tmp file.
+  if state.nil?
+    old_state_data = File.read(state_file_name + ".tmp")
+    @state = YAML.safe_load(old_state_data, [Time])
+    raise Exception, "Bad state file - not a Hash" unless @state.is_a?(Hash)
+  end
+
+  state
+end
+
+##
 # state and connections associated with getting changeset data
 # replicated to a file.
 class Replicator
@@ -203,90 +295,12 @@ class Replicator
     @config["data_dir"] + format("/%03d/%03d/%03d", sequence / 1000000, (sequence / 1000) % 1000, (sequence % 1000))
   end
 
-  def write_tmp_files!(changesets)
-    data_file = data_stem + ".osm.gz"
-    tmp_state = @config["state_file"] + ".tmp"
-    tmp_data = data_file + ".tmp"
-
-    FileUtils.mkdir_p(File.dirname(data_file))
-    Zlib::GzipWriter.open(tmp_data) do |fh|
-      fh.write(changeset_dump(changesets))
-    end
-    File.open(tmp_state, "w") do |fh|
-      fh.write(YAML.dump(@state))
-    end
-
-    # fsync the files in their old locations.
-    fsync(tmp_data)
-    fsync(tmp_state)
-
-    # sync the directory as well, to ensure that the file is reachable
-    # from the dirent and has been updated to account for any allocations.
-    fdirsync(File.dirname(tmp_data))
-    fdirsync(File.dirname(tmp_state))
-
-    # sanity check: the files we're moving into place
-    # should be non-empty.
-    raise "Temporary gzip file should exist, but doesn't." unless File.exist?(tmp_data)
-    raise "Temporary state file should exist, but doesn't." unless File.exist?(tmp_state)
-    raise "Temporary gzip file should be non-empty, but isn't." if File.zero?(tmp_data)
-    raise "Temporary state file should be non-empty, but isn't." if File.zero?(tmp_state)
-  end
-
-  def move_tmp_files_into_place!(state_file_handle)
-    data_file = data_stem + ".osm.gz"
-    data_state_file = data_stem + ".state.txt"
-    tmp_state = @config["state_file"] + ".tmp"
-    tmp_data = data_file + ".tmp"
-
-    FileUtils.mv(tmp_data, data_file)
-    FileUtils.cp(tmp_state, data_state_file)
-
-    # fsync the files in their new locations, in case the inodes have
-    # changed in the move / copy.
-    fsync(data_file)
-    fsync(data_state_file)
-
-    # sync the directory as well, to ensure that the file is reachable
-    # from the dirent and has been updated to account for any allocations.
-    fdirsync(File.dirname(data_file))
-    fdirsync(File.dirname(tmp_state))
-
-    # overwrite file in place, rather than copying it into place. this should
-    # mean that the flock we have on the inode doesn't go away. if this fails,
-    # then we're left with the tmp file, so we can recover from there.
-    state_file_handle.rewind
-    state_file_handle.write(File.read(tmp_state))
-    state_file_handle.flush
-    fsync(@config["state_file"])
-    fdirsync(File.dirname(@config["state_file"]))
-
-    # finally, remove the tmp file.
-    FileUtils.rm(tmp_state)
-    fdirsync(File.dirname(tmp_state))
-  end
-
   # saves new state (including the changeset dump xml)
   def save!
     File.open(@config["state_file"], File::RDWR) do |fl|
       fl.flock(File::LOCK_EX)
 
-      # first, try reading from the existing state file.
-      begin
-        state_data = fl.read
-        @state = YAML.safe_load(state_data, [Time])
-        raise Exception.new("Bad state file - not a Hash") unless @state.is_a?(Hash)
-
-      rescue
-        @state = nil
-      end
-
-      # if that doesn't work, try the old tmp file.
-      if @state.nil?
-        old_state_data = File.read(@config["state_file"] + ".tmp")
-        @state = YAML.safe_load(old_state_data, [Time])
-        raise Exception.new("Bad state file - not a Hash") unless @state.is_a?(Hash)
-      end
+      @state = read_state(fl, @config["state_file"])
 
       # initialise this stuff _after_ we've got the lock on the state file.
       @conn = PG::Connection.connect(@config["db"])
@@ -301,9 +315,9 @@ class Replicator
         @state["sequence"] = sequence
         @state["last_run"] = @now
 
-        write_tmp_files!(changesets)
+        write_tmp_files!(changesets, @config["state_file"], @state)
 
-        move_tmp_files_into_place!(fl)
+        move_tmp_files_into_place!(fl, @config["state_file"])
 
         fl.flock(File::LOCK_UN)
       rescue StandardError
