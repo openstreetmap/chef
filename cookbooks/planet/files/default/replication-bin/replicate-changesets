@@ -233,7 +233,7 @@ class Replicator
     raise "Temporary state file should be non-empty, but isn't." if File.zero?(tmp_state)
   end
 
-  def move_tmp_files_into_place!(state_file)
+  def move_tmp_files_into_place!(state_file_handle)
     data_file = data_stem + ".osm.gz"
     data_state_file = data_stem + ".state.txt"
     tmp_state = @config["state_file"] + ".tmp"
@@ -255,9 +255,9 @@ class Replicator
     # overwrite file in place, rather than copying it into place. this should
     # mean that the flock we have on the inode doesn't go away. if this fails,
     # then we're left with the tmp file, so we can recover from there.
-    fl.rewind
-    fl.write(File.read(tmp_state))
-    fl.flush
+    state_file_handle.rewind
+    state_file_handle.write(File.read(tmp_state))
+    state_file_handle.flush
     fsync(@config["state_file"])
     fdirsync(File.dirname(@config["state_file"]))
 
