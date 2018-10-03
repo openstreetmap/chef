@@ -8,15 +8,15 @@ default_attributes(
         :interface => "eth0",
         :role => :external,
         :family => :inet,
-        :address => "64.62.205.202",
-        :prefix => "26",
-        :gateway => "64.62.205.193"
+        :address => "71.19.155.177",
+        :prefix => "24",
+        :gateway => "71.19.155.10"
       },
       :external_ipv6 => {
         :interface => "eth0",
         :role => :external,
         :family => :inet6,
-        :address => "2001:470:1:41:a800:ff:fe3e:cdca",
+        :address => "2605:2700:0:17:a800:ff:fe3e:cdca",
         :prefix => "64",
         :gateway => "fe80::260:ddff:fe46:623d"
       }
