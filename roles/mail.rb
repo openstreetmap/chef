@@ -16,6 +16,10 @@ default_attributes(
       "osm.io"
     ],
     :daemon_smtp_ports => [25, 26],
+    :certificate_names => [
+      "mail.openstreetmap.org",
+      "a.mx.openstreetmap.org"
+    ],
     :smarthost_name => "mail.openstreetmap.org",
     :smarthost_via => false,
     :dns_blacklists => ["zen.spamhaus.org"],

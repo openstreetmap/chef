@@ -33,21 +33,35 @@ group "ssl-cert" do
   append true
 end
 
-openssl_x509_certificate "/etc/ssl/certs/exim.pem" do
-  key_file "/etc/ssl/private/exim.key"
-  owner "root"
-  group "ssl-cert"
-  mode 0o640
-  org "OpenStreetMap"
-  email "postmaster@openstreetmap.org"
-  common_name node[:fqdn]
-  expire 3650
+if node[:exim][:certificate_names]
+  include_recipe "apache"
+
+  apache_site node[:exim][:certificate_names].first do
+    template "apache.erb"
+    variables :aliases => node[:exim][:certificate_names].drop(1)
+  end
+
+  ssl_certificate node[:exim][:certificate_names].first do
+    domains node[:exim][:certificate_names]
+    notifies :restart, "service[exim4]"
+  end
+else
+  openssl_x509_certificate "/etc/ssl/certs/exim.pem" do
+    key_file "/etc/ssl/private/exim.key"
+    owner "root"
+    group "ssl-cert"
+    mode 0o640
+    org "OpenStreetMap"
+    email "postmaster@openstreetmap.org"
+    common_name node[:fqdn]
+    expire 3650
+    notifies :restart, "service[exim4]"
+  end
 end
 
 service "exim4" do
   action [:enable, :start]
   supports :status => true, :restart => true, :reload => true
-  subscribes :restart, "execute[/etc/ssl/certs/exim.pem]"
 end
 
 relay_to_domains = node[:exim][:relay_to_domains]

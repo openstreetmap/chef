@@ -156,8 +156,13 @@ tls_require_ciphers = <%= node[:ssl][:gnutls_ciphers] %>:%SERVER_PRECEDENCE
 # need the first setting, or in separate files, in which case you need both
 # options.
 
+<% if node[:exim][:certificate_names] -%>
+tls_certificate = /etc/ssl/certs/<%= node[:exim][:certificate_names].first %>.pem
+tls_privatekey = /etc/ssl/private/<%= node[:exim][:certificate_names].first %>.key
+<% else -%>
 tls_certificate = /etc/ssl/certs/exim.pem
 tls_privatekey = /etc/ssl/private/exim.key
+<% end -%>
 
 # In order to support roaming users who wish to send email from anywhere,
 # you may want to make Exim listen on other ports as well as port 25, in
