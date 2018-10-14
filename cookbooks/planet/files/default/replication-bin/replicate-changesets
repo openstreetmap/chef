@@ -199,23 +199,11 @@ def move_tmp_files_into_place!(state_file_name)
 end
 
 def read_state(state_file_name)
-  state = nil
-
-  # first, try reading from the existing state file.
-  begin
-    state_data = File.read(state_file_name)
-    state = YAML.safe_load(state_data, [Time])
-    raise Exception, "Bad state file - not a Hash" unless @state.is_a?(Hash)
-  rescue StandardError
-    state = nil
-  end
-
-  # if that doesn't work, try the old tmp file.
-  if state.nil?
-    old_state_data = File.read(state_file_name + ".tmp")
-    @state = YAML.safe_load(old_state_data, [Time])
-    raise Exception, "Bad state file - not a Hash" unless @state.is_a?(Hash)
-  end
+  # state file will either be new version or old version - in which case we'll
+  # just end up repeating a little work.
+  state_data = File.read(state_file_name)
+  state = YAML.safe_load(state_data, [Time])
+  raise Exception, "Bad state file - not a Hash" unless state.is_a?(Hash)
 
   state
 end
