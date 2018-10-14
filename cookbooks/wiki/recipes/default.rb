@@ -84,6 +84,15 @@ mediawiki_extension "OsmWikibase" do
   reference "master"
 end
 
+mediawiki_extension "Maps" do
+  site "wiki.openstreetmap.org"
+  repository "git://github.com/JeroenDeDauw/Maps.git"
+  tag "6.0.3"
+  template "mw-ext-Maps.inc.php.erb"
+  template_cookbook "wiki"
+  variables :thunderforest_key => passwords["thunderforest"]
+end
+
 cookbook_file "/srv/wiki.openstreetmap.org/osm_logo_wiki.png" do
   owner node[:mediawiki][:user]
   group node[:mediawiki][:group]

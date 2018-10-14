@@ -1,0 +1,89 @@
+<?php
+# DO NOT EDIT - This file is being maintained by Chef
+wfLoadExtension( 'Maps' );
+
+require_once __DIR__ . '/../extensions/Maps/Maps_Settings.php';
+
+// Limit available services to just leaflet
+$GLOBALS['egMapsAvailableServices'] = ['leaflet'];
+
+// Disable the Semantic MediaWiki integration
+$GLOBALS['egMapsDisableSmwIntegration'] = true;
+
+// Put pages with maps in a special category
+$GLOBALS['egMapsEnableCategory'] = true;
+
+// Limit available base layers for leaflet
+$GLOBALS['egMapsLeafletAvailableLayers']['OpenMapSurfer.Roads'] = false;
+$GLOBALS['egMapsLeafletAvailableLayers']['OpenMapSurfer.Grayscale'] = false;
+$GLOBALS['egMapsLeafletAvailableLayers']['Hydda.Full'] = false;
+$GLOBALS['egMapsLeafletAvailableLayers']['Hydda.Base'] = false;
+$GLOBALS['egMapsLeafletAvailableLayers']['MapBox'] = false;
+$GLOBALS['egMapsLeafletAvailableLayers']['Stamen.Toner'] = false;
+$GLOBALS['egMapsLeafletAvailableLayers']['Stamen.TonerBackground'] = false;
+$GLOBALS['egMapsLeafletAvailableLayers']['Stamen.TonerHybrid'] = false;
+$GLOBALS['egMapsLeafletAvailableLayers']['Stamen.TonerLines'] = false;
+$GLOBALS['egMapsLeafletAvailableLayers']['Stamen.TonerLabels'] = false;
+$GLOBALS['egMapsLeafletAvailableLayers']['Stamen.TonerLite'] = false;
+$GLOBALS['egMapsLeafletAvailableLayers']['Stamen.Watercolor'] = false;
+$GLOBALS['egMapsLeafletAvailableLayers']['Stamen.Terrain'] = false;
+$GLOBALS['egMapsLeafletAvailableLayers']['Stamen.TerrainBackground'] = false;
+$GLOBALS['egMapsLeafletAvailableLayers']['Stamen.TopOSMRelief'] = false;
+$GLOBALS['egMapsLeafletAvailableLayers']['Stamen.TopOSMFeatures'] = false;
+$GLOBALS['egMapsLeafletAvailableLayers']['Esri.WorldStreetMap'] = false;
+$GLOBALS['egMapsLeafletAvailableLayers']['Esri.DeLorme'] = false;
+$GLOBALS['egMapsLeafletAvailableLayers']['Esri.WorldTopoMap'] = false;
+$GLOBALS['egMapsLeafletAvailableLayers']['Esri.WorldImagery'] = false;
+$GLOBALS['egMapsLeafletAvailableLayers']['Esri.WorldTerrain'] = false;
+$GLOBALS['egMapsLeafletAvailableLayers']['Esri.WorldShadedRelief'] = false;
+$GLOBALS['egMapsLeafletAvailableLayers']['Esri.WorldPhysical'] = false;
+$GLOBALS['egMapsLeafletAvailableLayers']['Esri.OceanBasemap'] = false;
+$GLOBALS['egMapsLeafletAvailableLayers']['Esri.NatGeoWorldMap'] = false;
+$GLOBALS['egMapsLeafletAvailableLayers']['Esri.WorldGrayCanvas'] = false;
+$GLOBALS['egMapsLeafletAvailableLayers']['MapQuestOpen'] = false;
+$GLOBALS['egMapsLeafletAvailableLayers']['HERE'] = false;
+$GLOBALS['egMapsLeafletAvailableLayers']['FreeMapSK'] = false;
+$GLOBALS['egMapsLeafletAvailableLayers']['MtbMap'] = false;
+$GLOBALS['egMapsLeafletAvailableLayers']['CartoDB.Positron'] = false;
+$GLOBALS['egMapsLeafletAvailableLayers']['CartoDB.PositronNoLabels'] = false;
+$GLOBALS['egMapsLeafletAvailableLayers']['CartoDB.PositronOnlyLabels'] = false;
+$GLOBALS['egMapsLeafletAvailableLayers']['CartoDB.DarkMatter'] = false;
+$GLOBALS['egMapsLeafletAvailableLayers']['CartoDB.DarkMatterNoLabels'] = false;
+$GLOBALS['egMapsLeafletAvailableLayers']['CartoDB.DarkMatterOnlyLabels'] = false;
+$GLOBALS['egMapsLeafletAvailableLayers']['HikeBike.HikeBike'] = false;
+$GLOBALS['egMapsLeafletAvailableLayers']['HikeBike.HillShading'] = false;
+$GLOBALS['egMapsLeafletAvailableLayers']['BasemapAT.basemap'] = false;
+$GLOBALS['egMapsLeafletAvailableLayers']['BasemapAT.grau'] = false;
+$GLOBALS['egMapsLeafletAvailableLayers']['BasemapAT.overlay'] = false;
+$GLOBALS['egMapsLeafletAvailableLayers']['BasemapAT.highdpi'] = false;
+$GLOBALS['egMapsLeafletAvailableLayers']['BasemapAT.orthofoto'] = false;
+$GLOBALS['egMapsLeafletAvailableLayers']['NASAGIBS.ModisTerraTrueColorCR'] = false;
+$GLOBALS['egMapsLeafletAvailableLayers']['NASAGIBS.ModisTerraBands367CR'] = false;
+$GLOBALS['egMapsLeafletAvailableLayers']['NASAGIBS.ViirsEarthAtNight2012'] = false;
+$GLOBALS['egMapsLeafletAvailableLayers']['NLS'] = false;
+$GLOBALS['egMapsLeafletAvailableLayers']['GeoportailFrance'] = false;
+$GLOBALS['egMapsLeafletAvailableLayers']['GeoportailFrance.parcels'] = false;
+$GLOBALS['egMapsLeafletAvailableLayers']['GeoportailFrance.ignMaps'] = false;
+$GLOBALS['egMapsLeafletAvailableLayers']['GeoportailFrance.orthos'] = false;
+
+// Limit available overlay layers for leaflet
+$GLOBALS['egMapsLeafletAvailableOverlayLayers']['OpenMapSurfer.AdminBounds'] = false;
+$GLOBALS['egMapsLeafletAvailableOverlayLayers']['OpenWeatherMap.Clouds'] = false;
+$GLOBALS['egMapsLeafletAvailableOverlayLayers']['OpenWeatherMap.CloudsClassic'] = false;
+$GLOBALS['egMapsLeafletAvailableOverlayLayers']['OpenWeatherMap.Precipitation'] = false;
+$GLOBALS['egMapsLeafletAvailableOverlayLayers']['OpenWeatherMap.PrecipitationClassic'] = false;
+$GLOBALS['egMapsLeafletAvailableOverlayLayers']['OpenWeatherMap.Rain'] = false;
+$GLOBALS['egMapsLeafletAvailableOverlayLayers']['OpenWeatherMap.RainClassic'] = false;
+$GLOBALS['egMapsLeafletAvailableOverlayLayers']['OpenWeatherMap.Pressure'] = false;
+$GLOBALS['egMapsLeafletAvailableOverlayLayers']['OpenWeatherMap.PressureContour'] = false;
+$GLOBALS['egMapsLeafletAvailableOverlayLayers']['OpenWeatherMap.Wind'] = false;
+$GLOBALS['egMapsLeafletAvailableOverlayLayers']['OpenWeatherMap.Temperature'] = false;
+$GLOBALS['egMapsLeafletAvailableOverlayLayers']['OpenWeatherMap.Snow'] = false;
+$GLOBALS['egMapsLeafletAvailableOverlayLayers']['Hydda.RoadsAndLabels'] = false;
+$GLOBALS['egMapsLeafletAvailableOverlayLayers']['NASAGIBS.ModisTerraLSTDay'] = false;
+$GLOBALS['egMapsLeafletAvailableOverlayLayers']['NASAGIBS.ModisTerraSnowCover'] = false;
+$GLOBALS['egMapsLeafletAvailableOverlayLayers']['NASAGIBS.ModisTerraAOD'] = false;
+$GLOBALS['egMapsLeafletAvailableOverlayLayers']['NASAGIBS.ModisTerraChlorophyll'] = false;
+
+// Set API key for Thunderforest layers
+$GLOBALS['egMapsLeafletLayersApiKeys']['Thunderforest'] = '<%= @thunderforest_key %>';
