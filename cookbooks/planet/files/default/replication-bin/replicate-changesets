@@ -137,10 +137,32 @@ def fdirsync(d)
 end
 
 ##
+# creates an XML file containing the changeset information from the
+# list of changesets output by open_changesets.
+#
+def changeset_dump(changesets)
+  doc = XML::Document.new
+  doc.root = XML::Node.new("osm")
+  { "version" => "0.6",
+    "generator" => "replicate_changesets.rb",
+    "copyright" => "OpenStreetMap and contributors",
+    "attribution" => "https://www.openstreetmap.org/copyright",
+    "license" => "https://opendatacommons.org/licenses/odbl/1-0/" }
+    .each { |k, v| doc.root[k] = v }
+
+  builder = ChangesetBuilder.new(@now, @conn)
+  changesets.each do |cs|
+    doc.root << builder.changeset_xml(cs)
+  end
+
+  doc.to_s
+end
+
+##
 # write the new data - changesets and state - to temporary files, and make
 # sure they're safe on disk.
 #
-def write_tmp_files!(changesets, state_file_name, state)
+def write_tmp_files!(data_stem, changesets, state_file_name, state)
   data_file = data_stem + ".osm.gz"
   tmp_state = state_file_name + ".tmp"
   tmp_data = data_file + ".tmp"
@@ -173,7 +195,7 @@ end
 ##
 # move temporary files into their final place and rewrite the state file.
 #
-def move_tmp_files_into_place!(state_file_name)
+def move_tmp_files_into_place!(data_stem, state_file_name)
   data_file = data_stem + ".osm.gz"
   data_state_file = data_stem + ".state.txt"
   tmp_state = state_file_name + ".tmp"
@@ -247,26 +269,6 @@ class Replicator
     changesets.sort_by(&:id)
   end
 
-  # creates an XML file containing the changeset information from the
-  # list of changesets output by open_changesets.
-  def changeset_dump(changesets)
-    doc = XML::Document.new
-    doc.root = XML::Node.new("osm")
-    { "version" => "0.6",
-      "generator" => "replicate_changesets.rb",
-      "copyright" => "OpenStreetMap and contributors",
-      "attribution" => "https://www.openstreetmap.org/copyright",
-      "license" => "https://opendatacommons.org/licenses/odbl/1-0/" }
-      .each { |k, v| doc.root[k] = v }
-
-    builder = ChangesetBuilder.new(@now, @conn)
-    changesets.each do |cs|
-      doc.root << builder.changeset_xml(cs)
-    end
-
-    doc.to_s
-  end
-
   def sequence
     @state.key?("sequence") ? @state["sequence"] + 1 : 0
   end
@@ -298,9 +300,9 @@ class Replicator
         @state["sequence"] = sequence
         @state["last_run"] = @now
 
-        write_tmp_files!(changesets, state_file, @state)
+        write_tmp_files!(data_stem, changesets, state_file, @state)
 
-        move_tmp_files_into_place!(state_file)
+        move_tmp_files_into_place!(data_stem, state_file)
 
         fl.flock(File::LOCK_UN)
       rescue StandardError
