@@ -388,6 +388,7 @@ action :create do
 
   mediawiki_extension "CirrusSearch" do
     site new_resource.site
+    compose true
     template "mw-ext-CirrusSearch.inc.php.erb"
     update_site false
   end
