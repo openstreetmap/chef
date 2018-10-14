@@ -173,7 +173,7 @@ end
 ##
 # move temporary files into their final place and rewrite the state file.
 #
-def move_tmp_files_into_place!(state_file_handle, state_file_name)
+def move_tmp_files_into_place!(state_file_name)
   data_file = data_stem + ".osm.gz"
   data_state_file = data_stem + ".state.txt"
   tmp_state = state_file_name + ".tmp"
@@ -192,26 +192,18 @@ def move_tmp_files_into_place!(state_file_handle, state_file_name)
   fdirsync(File.dirname(data_file))
   fdirsync(File.dirname(tmp_state))
 
-  # overwrite file in place, rather than copying it into place. this should
-  # mean that the flock we have on the inode doesn't go away. if this fails,
-  # then we're left with the tmp file, so we can recover from there.
-  state_file_handle.rewind
-  state_file_handle.write(File.read(tmp_state))
-  state_file_handle.flush
+  # move temporary state file into place atomically
+  FileUtils.mv(tmp_state, state_file_name)
   fsync(state_file_name)
   fdirsync(File.dirname(state_file_name))
-
-  # finally, remove the tmp file.
-  FileUtils.rm(tmp_state)
-  fdirsync(File.dirname(tmp_state))
 end
 
-def read_state(fl, state_file_name)
+def read_state(state_file_name)
   state = nil
 
   # first, try reading from the existing state file.
   begin
-    state_data = fl.read
+    state_data = File.read(state_file_name)
     state = YAML.safe_load(state_data, [Time])
     raise Exception, "Bad state file - not a Hash" unless @state.is_a?(Hash)
   rescue StandardError
@@ -297,10 +289,13 @@ class Replicator
 
   # saves new state (including the changeset dump xml)
   def save!
-    File.open(@config["state_file"], File::RDWR) do |fl|
+    state_file = @config["state_file"]
+    lock_file = @config["lock_file"]
+
+    File.open(lock_file, File::RDWR | File::CREAT) do |fl|
       fl.flock(File::LOCK_EX)
 
-      @state = read_state(fl, @config["state_file"])
+      @state = read_state(state_file)
 
       # initialise this stuff _after_ we've got the lock on the state file.
       @conn = PG::Connection.connect(@config["db"])
@@ -315,9 +310,9 @@ class Replicator
         @state["sequence"] = sequence
         @state["last_run"] = @now
 
-        write_tmp_files!(changesets, @config["state_file"], @state)
+        write_tmp_files!(changesets, state_file, @state)
 
-        move_tmp_files_into_place!(fl, @config["state_file"])
+        move_tmp_files_into_place!(state_file)
 
         fl.flock(File::LOCK_UN)
       rescue StandardError
