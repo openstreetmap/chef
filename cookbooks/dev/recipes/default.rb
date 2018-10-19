@@ -302,7 +302,7 @@ if node[:postgresql][:clusters][:"9.5/main"]
 
         execute "#{cgimap_directory}/configure" do
           action :nothing
-          command "./configure --with-fcgi=/usr --with-boost-libdir=/usr/lib/x86_64-linux-gnu"
+          command "./configure --with-fcgi=/usr --with-boost-libdir=/usr/lib/x86_64-linux-gnu --enable-yajl"
           cwd cgimap_directory
           user "apis"
           group "apis"
