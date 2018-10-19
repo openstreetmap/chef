@@ -38,13 +38,13 @@
 
         # Pass supported calls to cgimap
         RewriteEngine on
-        RewriteRule ^/api/0\.6/map$ fcgi://127.0.0.1:<%= @cgimap_port %>$0 [P]
+        RewriteRule ^/api/0\.6/map(\.json)?$ fcgi://127.0.0.1:<%= @cgimap_port %>$0 [P]
         RewriteCond %{REQUEST_METHOD} ^(HEAD|GET)$
-        RewriteRule ^/api/0\.6/(node|way|relation|changeset)/[0-9]+$ fcgi://127.0.0.1:<%= @cgimap_port %>$0 [P]
-        RewriteRule ^/api/0\.6/(node|way|relation)/[0-9]+/history$ fcgi://127.0.0.1:<%= @cgimap_port %>$0 [P]
-        RewriteRule ^/api/0\.6/(way|relation)/[0-9]+/full$ fcgi://127.0.0.1:<%= @cgimap_port %>$0 [P]
-        RewriteRule ^/api/0\.6/(nodes|ways|relations)$ fcgi://127.0.0.1:<%= @cgimap_port %>$0 [P]
-        RewriteRule ^/api/0\.6/changeset/[0-9]+/(upload|download)$ fcgi://127.0.0.1:<%= @cgimap_port %>$0 [P]
+        RewriteRule ^/api/0\.6/(node|way|relation|changeset)/[0-9]+(\.json)?$ fcgi://127.0.0.1:<%= @cgimap_port %>$0 [P]
+        RewriteRule ^/api/0\.6/(node|way|relation)/[0-9]+/history(\.json)?$ fcgi://127.0.0.1:<%= @cgimap_port %>$0 [P]
+        RewriteRule ^/api/0\.6/(way|relation)/[0-9]+/full(\.json)?$ fcgi://127.0.0.1:<%= @cgimap_port %>$0 [P]
+        RewriteRule ^/api/0\.6/(nodes|ways|relations)(\.json)?$ fcgi://127.0.0.1:<%= @cgimap_port %>$0 [P]
+        RewriteRule ^/api/0\.6/changeset/[0-9]+/(upload|download)(\.json)?$ fcgi://127.0.0.1:<%= @cgimap_port %>$0 [P]
 <% end -%>
 </VirtualHost>
 
