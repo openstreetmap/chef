@@ -49,6 +49,11 @@ call_user_func( function() {
 
     // these are the site_group codes as listed in the sites table
     $wgWBRepoSettings['specialSiteLinkGroups'] = ['osm'];
+
+    // This option will start working in Wikibase v1.33 release. Noop until then.
+    // https://gerrit.wikimedia.org/r/#/c/mediawiki/extensions/Wikibase/+/469872/
+    $wgWBRepoSettings['enableEntitySearchUI'] = false;
+
 } );
 
 // Adapted from "$IP/extensions/Wikibase/client/ExampleSettings.php";
@@ -86,4 +91,5 @@ $wgWBRepoSettings['formatterUrlProperty'] = 'P8';
 
 // Disable Wikibase searchbox with this hack (hopefully Wikibase will implement support for it soon)
 // See https://phabricator.wikimedia.org/T205560
+// After upgrading to Wikibase 1.33, this line can be deleted. The 'enableEntitySearchUI' above will do the same thing.
 $wgResourceModules['wikibase.ui.entitysearch']['scripts'] = [];
