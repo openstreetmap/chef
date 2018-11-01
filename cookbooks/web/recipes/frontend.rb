@@ -47,3 +47,10 @@ template "/etc/logrotate.d/apache2" do
   group "root"
   mode 0o644
 end
+
+service "rails-jobs" do
+  action [:enable, :start]
+  supports :restart => true
+  subscribes :restart, "rails_port[www.openstreetmap.org]"
+  subscribes :restart, "systemd_service[rails-jobs]"
+end

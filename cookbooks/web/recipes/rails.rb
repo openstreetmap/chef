@@ -47,12 +47,13 @@ template "/etc/cron.hourly/passenger" do
   mode 0o755
 end
 
+ruby_version = node[:passenger][:ruby_version]
 rails_directory = "#{node[:web][:base_directory]}/rails"
 
 piwik = data_bag_item("web", "piwik")
 
 rails_port "www.openstreetmap.org" do
-  ruby node[:passenger][:ruby_version]
+  ruby ruby_version
   directory rails_directory
   user "rails"
   group "rails"
@@ -91,6 +92,20 @@ rails_port "www.openstreetmap.org" do
   thunderforest_key web_passwords["thunderforest_key"]
   totp_key web_passwords["totp_key"]
   csp_enforce true
+end
+
+systemd_service "rails-jobs" do
+  description "Rails job queue runner"
+  type "simple"
+  user "rails"
+  working_directory rails_directory
+  exec_start "/usr/local/bin/bundle#{ruby_version} exec rake jobs:work"
+  restart "on-failure"
+  private_tmp true
+  private_devices true
+  protect_system "full"
+  protect_home true
+  no_new_privileges true
 end
 
 package "libjson-xs-perl"

@@ -203,6 +203,22 @@ if node[:postgresql][:clusters][:"9.5/main"]
     mode 0o755
   end
 
+  ruby_version = node[:passenger][:ruby_version]
+
+  systemd_service "rails-jobs@" do
+    description "Rails job queue runner"
+    type "simple"
+    user "apis"
+    working_directory "/srv/%i.apis.dev.openstreetmap.org/rails"
+    exec_start "/usr/local/bin/bundle#{ruby_version} exec rake jobs:work"
+    restart "on-failure"
+    private_tmp true
+    private_devices true
+    protect_system "full"
+    protect_home true
+    no_new_privileges true
+  end
+
   systemd_service "cgimap@" do
     description "OpenStreetMap API Server"
     type "forking"
@@ -258,7 +274,7 @@ if node[:postgresql][:clusters][:"9.5/main"]
       end
 
       rails_port site_name do
-        ruby node[:passenger][:ruby_version]
+        ruby ruby_version
         directory rails_directory
         user "apis"
         group "apis"
@@ -280,6 +296,14 @@ if node[:postgresql][:clusters][:"9.5/main"]
         mode 0o644
         variables :site => site_name
         notifies :restart, "rails_port[#{site_name}]"
+      end
+
+      service "rails-jobs@#{name}" do
+        action [:enable, :start]
+        supports :restart => true
+        subscribes :restart, "rails_port[#{site_name}]"
+        subscribes :restart, "systemd_service[#{name}]"
+        only_if "fgrep -q delayed_job #{rails_directory}/Gemfile.lock"
       end
 
       if details[:cgimap_repository]
