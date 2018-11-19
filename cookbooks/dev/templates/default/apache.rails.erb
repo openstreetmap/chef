@@ -36,6 +36,9 @@
                 CGIPassAuth On
         </Location>
 
+        # Set a long timeout for proxying to cgimap
+        ProxyTimeout 3600
+
         # Pass supported calls to cgimap
         RewriteEngine on
         RewriteRule ^/api/0\.6/map(\.json)?$ fcgi://127.0.0.1:<%= @cgimap_port %>$0 [P]
