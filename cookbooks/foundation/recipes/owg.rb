@@ -23,6 +23,7 @@ include_recipe "git"
 package %w[
   ruby
   ruby-dev
+  zlib1g-dev
 ]
 
 gem_package "bundler"
