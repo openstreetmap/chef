@@ -33,6 +33,15 @@ default_attributes(
         :group => "www-data",
         :home_directory => "/opt/otrs"
       },
+      :otrs_membership => {
+        :comment => "membership@otrs.openstreetmap.org",
+        :domains => ["otrs.openstreetmap.org"],
+        :local_parts => ["membership"],
+        :command => "/opt/otrs/bin/otrs.PostMaster.pl -q 'Membership Working Group'",
+        :user => "otrs",
+        :group => "www-data",
+        :home_directory => "/opt/otrs"
+      },
       :otrs_support => {
         :comment => "support@otrs.openstreetmap.org",
         :domains => ["otrs.openstreetmap.org"],
