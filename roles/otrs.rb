@@ -28,7 +28,7 @@ default_attributes(
         :comment => "data@otrs.openstreetmap.org",
         :domains => ["otrs.openstreetmap.org"],
         :local_parts => ["data"],
-        :command => "/opt/otrs/bin/otrs.Console.pl Maint::PostMaster::Read --target-queue='Data Working Group'",
+        :command => "/opt/otrs/bin/otrs.Console.pl Maint::PostMaster::Read --target-queue 'Data Working Group'",
         :user => "otrs",
         :group => "www-data",
         :home_directory => "/opt/otrs"
@@ -37,7 +37,7 @@ default_attributes(
         :comment => "membership@otrs.openstreetmap.org",
         :domains => ["otrs.openstreetmap.org"],
         :local_parts => ["membership"],
-        :command => "/opt/otrs/bin/otrs.Console.pl Maint::PostMaster::Read --target-queue='Membership Working Group'",
+        :command => "/opt/otrs/bin/otrs.Console.pl Maint::PostMaster::Read --target-queue 'Membership Working Group'",
         :user => "otrs",
         :group => "www-data",
         :home_directory => "/opt/otrs"
@@ -46,7 +46,7 @@ default_attributes(
         :comment => "support@otrs.openstreetmap.org",
         :domains => ["otrs.openstreetmap.org"],
         :local_parts => ["support"],
-        :command => "/opt/otrs/bin/otrs.Console.pl Maint::PostMaster::Read --target-queue='Technical Support'",
+        :command => "/opt/otrs/bin/otrs.Console.pl Maint::PostMaster::Read --target-queue 'Technical Support'",
         :user => "otrs",
         :group => "www-data",
         :home_directory => "/opt/otrs"
