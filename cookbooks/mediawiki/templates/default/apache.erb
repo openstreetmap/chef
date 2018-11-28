@@ -52,6 +52,26 @@
   RedirectMatch 301 ^/api\.php$                   /w/api.php
   RedirectMatch 301 ^/opensearch_desc\.php$       /w/opensearch_desc.php
 
+  #Support Wikidata redirects based on Wikimedia's redirects:
+  # https://github.com/wikimedia/puppet/blob/production/modules/mediawiki/files/apache/sites/wikidata-uris.incl
+  RedirectMatch 301 ^/entity/statement/([QqPp]\d+).*$        /wiki/Special:EntityData/$1
+  RedirectMatch 301 ^/value/(.*)$                            /wiki/Special:ListDatatypes
+  RedirectMatch 301 ^/reference/(.*)$                        https://wikidata.org/wiki/Help:Sources
+  RedirectMatch 301 ^/prop/direct/(.*)$                      /wiki/Property:$1
+  RedirectMatch 301 ^/prop/direct-normalized/(.*)$           /wiki/Property:$1
+  RedirectMatch 301 ^/prop/novalue/(.*)$                     /wiki/Property:$1
+  RedirectMatch 301 ^/prop/statement/value/(.*)$             /wiki/Property:$1
+  RedirectMatch 301 ^/prop/statement/value-normalized/(.*)$  /wiki/Property:$1
+  RedirectMatch 301 ^/prop/qualifier/value/(.*)$             /wiki/Property:$1
+  RedirectMatch 301 ^/prop/qualifier/value-normalized/(.*)$  /wiki/Property:$1
+  RedirectMatch 301 ^/prop/reference/value/(.*)$             /wiki/Property:$1
+  RedirectMatch 301 ^/prop/reference/value-normalized/(.*)$  /wiki/Property:$1
+  RedirectMatch 301 ^/prop/statement/(.*)$                   /wiki/Property:$1
+  RedirectMatch 301 ^/prop/qualifier/(.*)$                   /wiki/Property:$1
+  RedirectMatch 301 ^/prop/reference/(.*)$                   /wiki/Property:$1
+  RedirectMatch 301 ^/prop/(.*)$                             /wiki/Property:$1
+  RedirectMatch 301 ^/entity/(.*)$                           /wiki/Special:EntityData/$1
+
   Alias /wiki <%= @directory %>/w/index.php
 
   #Support /pagename -> /wiki/pagename
