@@ -83,6 +83,10 @@
   RewriteCond %{REQUEST_URI} !^/images/
   RewriteCond %{REQUEST_URI} !^/api\.php$
   RewriteCond %{REQUEST_URI} !^/opensearch_desc\.php$
+  RewriteCond %{REQUEST_URI} !^/entity/
+  RewriteCond %{REQUEST_URI} !^/value/
+  RewriteCond %{REQUEST_URI} !^/reference/
+  RewriteCond %{REQUEST_URI} !^/prop/  
   RewriteCond %{REQUEST_URI} !^/server-status
   RewriteCond %{REQUEST_URI} !^/.well-known/
   RewriteCond %{LA-U:REQUEST_FILENAME} !-f
