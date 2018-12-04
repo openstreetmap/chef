@@ -32,6 +32,10 @@
 
   DocumentRoot <%= @directory %>
 
+  # Always set Access-Control-Allow-Origin so that simple CORS requests
+  # will always work and can be cached
+  Header set Access-Control-Allow-Origin "*"
+
   php_admin_value open_basedir <%= @directory %>/:/usr/share/php/:/dev/null:/tmp/
   #php_admin_value disable_functions "exec,shell_exec,system,passthru,popen,proc_open"
   php_value memory_limit 500M
@@ -86,7 +90,7 @@
   RewriteCond %{REQUEST_URI} !^/entity/
   RewriteCond %{REQUEST_URI} !^/value/
   RewriteCond %{REQUEST_URI} !^/reference/
-  RewriteCond %{REQUEST_URI} !^/prop/  
+  RewriteCond %{REQUEST_URI} !^/prop/
   RewriteCond %{REQUEST_URI} !^/server-status
   RewriteCond %{REQUEST_URI} !^/.well-known/
   RewriteCond %{LA-U:REQUEST_FILENAME} !-f
