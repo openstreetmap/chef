@@ -19,15 +19,13 @@ default_attributes(
         :interface => "eno1",
         :role => :external,
         :family => :inet,
-        :address => "140.211.15.29",
-        :prefix => "24",
-        :gateway => "140.211.15.1"
+        :address => "140.211.167.98"
       },
       :external_ipv6 => {
         :interface => "eno1",
         :role => :external,
         :family => :inet6,
-        :address => "2605:bc80:3010:700::8cd3:0f1d"
+        :address => "2605:bc80:3010:700::8cd3:a762"
       }
     }
   },

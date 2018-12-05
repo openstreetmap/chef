@@ -8,9 +8,7 @@ default_attributes(
         :interface => "em1",
         :role => :external,
         :family => :inet,
-        :address => "140.211.167.105",
-        :prefix => "28",
-        :gateway => "140.211.167.97"
+        :address => "140.211.167.105"
       },
       :external_ipv6 => {
         :interface => "em1",
