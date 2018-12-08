@@ -283,7 +283,7 @@ end
 
 gem_package "jekyll"
 
-%w[2016 2017 2018].each do |year|
+%w[2016 2017 2018 2019].each do |year|
   git "/srv/#{year}.stateofthemap.org" do
     action :sync
     repository "git://github.com/openstreetmap/stateofthemap-#{year}.git"
