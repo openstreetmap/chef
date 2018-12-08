@@ -2,12 +2,6 @@ name "ramoth"
 description "Master role applied to ramoth"
 
 default_attributes(
-  :apt => {
-    :sources => ["postgresql"]
-  },
-  :db => {
-    :cluster => "9.5/main"
-  },
   :devices => {
     :store_openstreetmap => {
       :comment => "RAID array mounted on /store/postgresql/openstreetmap",
@@ -55,29 +49,9 @@ default_attributes(
         }
       }
     }
-  },
-  :postgresql => {
-    :settings => {
-      :defaults => {
-        :shared_buffers => "64GB",
-        :work_mem => "64MB",
-        :maintenance_work_mem => "1GB",
-        :effective_cache_size => "180GB"
-      }
-    }
-  },
-  :sysctl => {
-    :postgres => {
-      :comment => "Increase shared memory for postgres",
-      :parameters => {
-        "kernel.shmmax" => 66 * 1024 * 1024 * 1024,
-        "kernel.shmall" => 66 * 1024 * 1024 * 1024 / 4096
-      }
-    }
   }
 )
 
 run_list(
-  "role[equinix]",
-  "role[db-slave]"
+  "role[equinix]"
 )
