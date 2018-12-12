@@ -434,6 +434,7 @@ end
 package %w[
   osm2pgsql
   ruby
+  osmium-tool
   pyosmium
   python-pyproj
 ]
@@ -571,6 +572,4 @@ munin_plugin "renderd_queue_time"
 munin_plugin "renderd_zoom"
 munin_plugin "renderd_zoom_time"
 
-munin_plugin "replication_delay" do
-  conf "munin.erb"
-end
+munin_plugin "replication_delay"

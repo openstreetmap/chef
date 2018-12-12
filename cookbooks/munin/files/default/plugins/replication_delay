@@ -1,31 +1,30 @@
-#!/bin/sh 
-# 
-# Plugin to monitor the age of the imported data in the rendering db 
-# 
-# Parameters:  
-# 
-#       config   (required) 
-#       autoconf (optional - used by munin-config) 
-# 
- 
-if [ "$1" = "config" ]; then 
- 
-        echo 'graph_title Data import lag' 
-        echo 'graph_args --base 1000 -l 0' 
-        echo 'graph_vlabel minutes' 
-        echo 'graph_category renderd' 
-        echo 'age.label DB import age' 
-        echo 'age.type GAUGE' 
-	echo 'age.cdef age,60,/'
-	echo 'age.warning :600'
-	echo 'age.critical :3600'
-        exit 0 
-fi 
+#!/bin/sh
+#
+# Plugin to monitor the age of the imported data in the rendering db
+#
+# Parameters:
+#
+#       config   (required)
+#       autoconf (optional - used by munin-config)
+#
 
-state=${state:-/home/jburgess/replicate/state.txt}
-tstamp=`sed -e '/^timestamp=/!d' -e 's/.*=//' -e 's/Z//' -e 's/T/Z/' -e 's/\\\\//' -e 's/\\\\//' -e q ${state}` 
-tstampsec=`date --date=$tstamp +%s` 
-nowsec=`date +%s` 
- 
- 
+if [ "$1" = "config" ]; then
+
+        echo 'graph_title Data import lag'
+        echo 'graph_args --base 1000 -l 0'
+        echo 'graph_vlabel minutes'
+        echo 'graph_category renderd'
+        echo 'age.label DB import age'
+        echo 'age.type GAUGE'
+        echo 'age.cdef age,60,/'
+        echo 'age.warning :600'
+        echo 'age.critical :3600'
+        exit 0
+fi
+
+latest_changes=$(ls /var/lib/replicate/changes-*.osc.gz | sort --version-sort | tail -1)
+tstamp=$(osmium fileinfo --extended --get=data.timestamp.last ${latest_changes})
+tstampsec=$(date --date=${tstamp} +%s)
+nowsec=$(date +%s)
+
 echo "age.value " `expr $nowsec - $tstampsec`
