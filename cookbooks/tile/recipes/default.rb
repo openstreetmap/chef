@@ -433,7 +433,6 @@ end
 
 package %w[
   osm2pgsql
-  osmosis
   ruby
   pyosmium
   python-pyproj
@@ -466,13 +465,6 @@ directory "/var/lib/replicate/expire-queue" do
   owner "tile"
   group "www-data"
   mode 0o775
-end
-
-template "/var/lib/replicate/configuration.txt" do
-  source "replicate.configuration.erb"
-  owner "tile"
-  group "tile"
-  mode 0o644
 end
 
 template "/usr/local/bin/replicate" do

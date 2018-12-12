@@ -9,7 +9,7 @@
 
 # Define exit handler
 function onexit {
-    [ -f state-prev.txt ] && mv state-prev.txt state.txt
+    [ -f sequence-prev.txt ] && mv sequence-prev.txt sequence.txt
 }
 
 # Send output to the log
@@ -21,78 +21,69 @@ cd /var/lib/replicate
 # Install exit handler
 trap onexit EXIT
 
-# Read in initial state
-. state.txt
-
 # Loop indefinitely
 while true
 do
     # Work out the name of the next file
-    file="changes-${sequenceNumber}.osc.gz"
+    file="changes-$(cat sequence.txt).osc.gz"
 
-    # Save state file so we can rollback if an error occurs
-    cp state.txt state-prev.txt
+    # Save sequence file so we can rollback if an error occurs
+    cp sequence.txt sequence-prev.txt
 
     # Fetch the next set of changes
-    osmosis --read-replication-interval --simc --write-xml-change file="${file}" compressionMethod="gzip"
+    pyosmium-get-changes --sequence-file=sequence.txt --outfile=${file}
+
+    # Save exit status
+    status=$?
 
     # Check for errors
-    if [ $? -eq 0 ]
+    if [ $status -eq 0 ]
     then
         # Enable exit on error
         set -e
 
-        # Remember the previous sequence number
-        prevSequenceNumber=$sequenceNumber
+        # Log the new data
+        echo "Fetched new data from $(cat sequence-prev.txt) to $(cat sequence.txt) into ${file}"
 
-        # Read in new state
-        . state.txt
-
-        # Did we get any new data?
-        if [ "${sequenceNumber}" == "${prevSequenceNumber}" ]
-        then
-            # Log the lack of data
-            echo "No new data available. Sleeping..."
-
-            # Remove file, it will just be an empty changeset
-            rm ${file}
-
-            # No need to rollback now
-            rm state-prev.txt
-
-            # Sleep for a short while
-            sleep 30
-        else
-            # Log the new data
-            echo "Fetched new data from ${prevSequenceNumber} to ${sequenceNumber} into ${file}"
-
-            # Apply the changes to the database
-            osm2pgsql --database gis --slim --append --number-processes=1 \
+        # Apply the changes to the database
+        osm2pgsql --database gis --slim --append --number-processes=1 \
 <% if node[:tile][:node_file] -%>
-                      --flat-nodes=<%= node[:tile][:node_file] %> \
+                  --flat-nodes=<%= node[:tile][:node_file] %> \
 <% end -%>
 <% if node[:tile][:styles][:default][:revision] >= "v4.0.0" -%>
-                      --multi-geometry --hstore \
-                      --style=/srv/tile.openstreetmap.org/styles/default/openstreetmap-carto.style \
-                      --tag-transform-script=/srv/tile.openstreetmap.org/styles/default/openstreetmap-carto.lua \
+                  --multi-geometry --hstore \
+                  --style=/srv/tile.openstreetmap.org/styles/default/openstreetmap-carto.style \
+                  --tag-transform-script=/srv/tile.openstreetmap.org/styles/default/openstreetmap-carto.lua \
 <% end -%>
-                      ${file}
+                  ${file}
 
-            # No need to rollback now
-            rm state-prev.txt
+        # No need to rollback now
+        rm sequence-prev.txt
 
-            # Queue these changes for expiry processing
-            ln ${file} expire-queue/$file
-        fi
+        # Queue these changes for expiry processing
+        ln ${file} expire-queue/$file
 
         # Delete old downloads
         find . -name 'changes-*.gz' -mmin +300 -exec rm -f {} \;
 
         # Disable exit on error
         set +e
+    elif [ $status -eq 3 ]
+    then
+        # Log the lack of data
+        echo "No new data available. Sleeping..."
+
+        # Remove file, it will just be an empty changeset
+        rm ${file}
+
+        # Sleep for a short while
+        sleep 30
     else
         # Log our failure to fetch changes
         echo "Failed to fetch changes - waiting a few minutes before retry"
+
+        # Remove any output that was produced
+        rm -f ${file}
 
         # Wait five minutes and have another go
         sleep 300
