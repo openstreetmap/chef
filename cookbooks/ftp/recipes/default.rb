@@ -17,7 +17,10 @@
 # limitations under the License.
 #
 
-package "vsftpd"
+package %w[
+  vsftpd
+  libpam-pwdfile
+]
 
 template "/etc/vsftpd.conf" do
   source "vsftpd.conf.erb"
@@ -26,10 +29,18 @@ template "/etc/vsftpd.conf" do
   mode 0o644
 end
 
+template "/etc/pam.d/vsftpd" do
+  source "pam-vsftpd.erb"
+  owner "root"
+  group "root"
+  mode 0o644
+end
+
 service "vsftpd" do
-  action [:enable] # Do not start the service as config may be broken from failed chef run
+  action [:enable, :start]
   supports :status => true, :restart => true, :reload => true
   subscribes :restart, "template[/etc/vsftpd.conf]"
+  subscribes :restart, "template[/etc/pam.d/vsftpd]"
 end
 
 firewall_rule "accept-ftp-tcp" do
