@@ -26,7 +26,8 @@ define :firewall_rule, :action => :accept do
     :dest_ports => params[:dest_ports] || "-",
     :source_ports => params[:source_ports] || "-",
     :rate_limit => params[:rate_limit] || "-",
-    :connection_limit => params[:connection_limit] || "-"
+    :connection_limit => params[:connection_limit] || "-",
+    :helper => params[:helper] || "-"
   ]
 
   if params[:family].nil?
