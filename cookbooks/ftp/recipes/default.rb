@@ -50,4 +50,5 @@ firewall_rule "accept-ftp-tcp" do
   proto "tcp"
   dest_ports "ftp"
   source_ports "-"
+  helper "ftp"
 end
