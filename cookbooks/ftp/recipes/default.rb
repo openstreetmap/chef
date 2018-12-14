@@ -33,7 +33,7 @@ service "vsftpd" do
 end
 
 firewall_rule "accept-ftp-tcp" do
-  action :helper
+  action :accept
   source "net"
   dest "fw"
   proto "tcp"
