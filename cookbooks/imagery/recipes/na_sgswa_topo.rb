@@ -22,7 +22,7 @@ include_recipe "imagery"
 imagery_site "namibia-topo.openstreetmap.org.za" do
   title "OpenStreetMap - Namibia / South West Africa - Topographic Series"
   aliases ["namibia-topo.osm.org.za"]
-  bbox [[-35.12, 16.23], [-22.1, 33.18]]
+  bbox [[-29.0003741, 11.7330477], [-16.9508650, 25.4983245]]
 end
 
 imagery_layer "na_sgswa_topo_50k" do
@@ -31,4 +31,9 @@ imagery_layer "na_sgswa_topo_50k" do
   projection "EPSG:4326"
   source "/data/imagery/na/topo-50k/namibia-50k-topo.vrt"
   copyright 'State Copyright &copy 1958 - 1991; Surveyor-General, Windhoek, SWA; CDSM: Chief Directorate Surveys & Mapping, Mowbray, RSA'
+  default_layer true
+  background_colour "0 0 0"
+  extension "jpeg"
+  default_layer true
+  max_zoom 16
 end

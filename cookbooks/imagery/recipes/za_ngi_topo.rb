@@ -31,6 +31,7 @@ imagery_layer "za_ngi_topo_250k" do
   projection "EPSG:3857"
   source "/data/imagery/za/ngi-topo-250k/ngi-topo-250k-combined.vrt"
   copyright 'State Copyright &copy; 1996&ndash;2010 <a href="http://www.ngi.gov.za/">Chief Directorate: National Geo-spatial Information</a>'
+  default_layer true
 end
 
 imagery_layer "za_ngi_topo_50k" do
