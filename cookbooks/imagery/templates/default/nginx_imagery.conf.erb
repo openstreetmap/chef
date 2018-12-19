@@ -11,6 +11,12 @@ upstream <%= @name %>_fastcgi {
     server "unix:/var/run/mapserver-fastcgi/layer-<%= @name %>.socket" max_fails=0;
     server "unix:/var/run/mapserver-fastcgi/layer-<%= @name %>.socket" max_fails=0;
     server "unix:/var/run/mapserver-fastcgi/layer-<%= @name %>.socket" max_fails=0;
+    server "unix:/var/run/mapserver-fastcgi/layer-<%= @name %>.socket" max_fails=0;
+    server "unix:/var/run/mapserver-fastcgi/layer-<%= @name %>.socket" max_fails=0;
+    server "unix:/var/run/mapserver-fastcgi/layer-<%= @name %>.socket" max_fails=0;
+    server "unix:/var/run/mapserver-fastcgi/layer-<%= @name %>.socket" max_fails=0;
+    server "unix:/var/run/mapserver-fastcgi/layer-<%= @name %>.socket" max_fails=0;
+    least_conn;
 }
 
 server {
