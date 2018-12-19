@@ -21,8 +21,8 @@ location ~* "^/layer/<%= @layer %>/(\d+)/(\d+)/(\d+)\.(png|jpg|jpeg)$" {
   fastcgi_cache_valid 200 21d;
   fastcgi_cache_use_stale error timeout updating http_500 http_503;
 
-  # Leaflet aborts connection still in flight to free up resources
-  fastcgi_ignore_client_abort off;
+  # Ignore client abort as it causes issues with the pipeline
+  fastcgi_ignore_client_abort on;
 
   fastcgi_catch_stderr "Image handling error";
 
