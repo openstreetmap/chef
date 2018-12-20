@@ -98,15 +98,6 @@ action :create do
   base_domains = [new_resource.site] + Array(new_resource.aliases)
   tile_domains = base_domains.flat_map { |d| [d, "a.#{d}", "b.#{d}", "c.#{d}"] }
 
-  service "mapserv-fcgi-#{new_resource.site}" do
-    provider Chef::Provider::Service::Systemd
-    action [:stop, :disable]
-  end
-
-  systemd_service "mapserv-fcgi-#{new_resource.site}" do
-    action :delete
-  end
-
   %w[0 1 2 3 4 5 6 7].each do |index|
     systemd_service "mapserv-fcgi-#{new_resource.site}-#{index}" do
       description "Map server for #{new_resource.site} layer"
