@@ -98,33 +98,44 @@ action :create do
   base_domains = [new_resource.site] + Array(new_resource.aliases)
   tile_domains = base_domains.flat_map { |d| [d, "a.#{d}", "b.#{d}", "c.#{d}"] }
 
-  systemd_service "mapserv-fcgi-#{new_resource.site}" do
-    description "Map server for #{new_resource.site} layer"
-    environment "MS_MAP_PATTERN" => "^/srv/imagery/mapserver/",
-                "MS_DEBUGLEVEL" => "0",
-                "MS_ERRORFILE" => "stderr",
-                "GDAL_CACHEMAX" => "512"
-    limit_nofile 16384
-    memory_max "2G"
-    user "imagery"
-    group "imagery"
-    exec_start_pre "/bin/rm -f /run/mapserver-fastcgi/layer-#{new_resource.site}.socket"
-    exec_start "/usr/bin/spawn-fcgi -n -b 8192 -s /run/mapserver-fastcgi/layer-#{new_resource.site}.socket -M 0666 -P /run/mapserver-fastcgi/layer-#{new_resource.site}.pid -- /usr/bin/multiwatch -f 8 --signal=TERM -- /usr/lib/cgi-bin/mapserv"
-    private_tmp true
-    private_devices true
-    private_network true
-    protect_system "full"
-    protect_home true
-    no_new_privileges true
-    restart "always"
-    pid_file "/run/mapserver-fastcgi/layer-#{new_resource.site}.pid"
-  end
-
   service "mapserv-fcgi-#{new_resource.site}" do
     provider Chef::Provider::Service::Systemd
-    action [:enable, :start]
-    supports :status => true, :restart => true, :reload => false
-    subscribes :restart, "systemd_service[mapserv-fcgi-#{new_resource.site}]"
+    action [:stop, :disable]
+  end
+
+  systemd_service "mapserv-fcgi-#{new_resource.site}" do
+    action :delete
+  end
+
+  %w[0 1 2 3 4 5 6 7].each do |index|
+    systemd_service "mapserv-fcgi-#{new_resource.site}-#{index}" do
+      description "Map server for #{new_resource.site} layer"
+      environment "MS_MAP_PATTERN" => "^/srv/imagery/mapserver/",
+                  "MS_DEBUGLEVEL" => "0",
+                  "MS_ERRORFILE" => "stderr",
+                  "GDAL_CACHEMAX" => "512"
+      limit_nofile 16384
+      memory_max "2G"
+      user "imagery"
+      group "imagery"
+      exec_start_pre "/bin/rm -f /run/mapserver-fastcgi/layer-#{new_resource.site}-#{index}.socket"
+      exec_start "/usr/bin/spawn-fcgi -n -b 8192 -s /run/mapserver-fastcgi/layer-#{new_resource.site}-#{index}.socket -M 0666 -P /run/mapserver-fastcgi/layer-#{new_resource.site}-#{index}.pid -- /usr/lib/cgi-bin/mapserv"
+      private_tmp true
+      private_devices true
+      private_network true
+      protect_system "full"
+      protect_home true
+      no_new_privileges true
+      restart "always"
+      pid_file "/run/mapserver-fastcgi/layer-#{new_resource.site}-#{index}.pid"
+    end
+
+    service "mapserv-fcgi-#{new_resource.site}-#{index}" do
+      provider Chef::Provider::Service::Systemd
+      action [:enable, :start]
+      supports :status => true, :restart => true, :reload => false
+      subscribes :restart, "systemd_service[mapserv-fcgi-#{new_resource.site}-#{index}]"
+    end
   end
 
   ssl_certificate new_resource.site do
@@ -141,6 +152,7 @@ end
 
 action :delete do
   service "mapserv-fcgi-#{new_resource.site}" do
+    provider Chef::Provider::Service::Systemd
     action [:stop, :disable]
   end
 

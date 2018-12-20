@@ -30,7 +30,7 @@ imagery_layer "na_sgswa_topo_50k" do
   title "Namibia Topo 50k"
   projection "EPSG:4326"
   source "/data/imagery/na/topo-50k/namibia-50k-topo.vrt"
-  copyright 'State Copyright &copy 1958 - 1991; Surveyor-General, Windhoek, SWA; CDSM: Chief Directorate Surveys & Mapping, Mowbray, RSA'
+  copyright "State Copyright &copy 1958 - 1991; Surveyor-General, Windhoek, SWA; CDSM: Chief Directorate Surveys & Mapping, Mowbray, RSA"
   default_layer true
   background_colour "0 0 0"
   extension "jpeg"
