@@ -316,7 +316,6 @@ end
 imagery_layer "gb_os_sv_diff_2010_04_2016_04" do
   site "os.openstreetmap.org"
   title "Changes April 2010 to April 2016"
-  default_layer true
   projection "EPSG:27700"
   source "/data/imagery/gb/os-sv/ossv-diff-2010-04-2016-04-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2016"
