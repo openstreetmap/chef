@@ -14,6 +14,9 @@ Type=<%= @type %>
 <% if @limit_nofile -%>
 LimitNOFILE=<%= @limit_nofile %>
 <% end -%>
+<% if @limit_as -%>
+LimitAS=<%= @limit_as %>
+<% end -%>
 <% if @memory_low -%>
 MemoryLow=<%= @memory_low %>
 <% end -%>
