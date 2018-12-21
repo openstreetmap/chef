@@ -106,7 +106,7 @@ action :create do
                   "MS_ERRORFILE" => "stderr",
                   "GDAL_CACHEMAX" => "512"
       limit_nofile 16384
-      limit_cpu: 60
+      limit_cpu 60
       memory_max "4G"
       user "imagery"
       group "imagery"
