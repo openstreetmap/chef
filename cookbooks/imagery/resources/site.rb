@@ -106,8 +106,8 @@ action :create do
                   "MS_ERRORFILE" => "stderr",
                   "GDAL_CACHEMAX" => "512"
       limit_nofile 16384
-      limit_as "1G"
-      memory_max "2G"
+      limit_cpu: 60
+      memory_max "4G"
       user "imagery"
       group "imagery"
       exec_start_pre "/bin/rm -f /run/mapserver-fastcgi/layer-#{new_resource.site}-#{index}.socket"
