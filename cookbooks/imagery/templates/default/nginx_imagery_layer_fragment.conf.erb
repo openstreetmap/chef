@@ -27,7 +27,7 @@ location ~* "^/layer/<%= @layer %>/(\d+)/(\d+)/(\d+)\.(png|jpg|jpeg)$" {
   fastcgi_catch_stderr "Image handling error";
 
   fastcgi_next_upstream error timeout invalid_header http_500 http_503;
-  fastcgi_next_upstream_tries 3;
+  fastcgi_next_upstream_tries 8;
 
   # Do not GZIP tiles
   gzip off;
