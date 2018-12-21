@@ -16,7 +16,9 @@ upstream <%= @name %>_fastcgi {
     server "unix:/var/run/mapserver-fastcgi/layer-<%= @name %>-5.socket" max_fails=0;
     server "unix:/var/run/mapserver-fastcgi/layer-<%= @name %>-6.socket" max_fails=0;
     server "unix:/var/run/mapserver-fastcgi/layer-<%= @name %>-7.socket" max_fails=0;
-    least_conn;
+
+    # Use default round-robin to distribute requests, rather than pick "fast" but maybe faulty.
+    # Do not use keepalive
 }
 
 server {
