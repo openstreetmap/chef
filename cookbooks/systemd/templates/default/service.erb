@@ -17,6 +17,9 @@ LimitNOFILE=<%= @limit_nofile %>
 <% if @limit_as -%>
 LimitAS=<%= @limit_as %>
 <% end -%>
+<% if @limit_cpu -%>
+LimitCPU=<%= @limit_cpu %>
+<% end -%>
 <% if @memory_low -%>
 MemoryLow=<%= @memory_low %>
 <% end -%>
