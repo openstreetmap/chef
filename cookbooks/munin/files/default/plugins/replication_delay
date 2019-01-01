@@ -22,8 +22,7 @@ if [ "$1" = "config" ]; then
         exit 0
 fi
 
-latest_changes=$(ls /var/lib/replicate/changes-*.osc.gz | sort --version-sort | tail -1)
-tstamp=$(osmium fileinfo --extended --get=data.timestamp.last ${latest_changes})
+tstamp=$(osmium fileinfo --extended --get=data.timestamp.last /var/lib/replicate/changes-latest.osc.gz)
 tstampsec=$(date --date=${tstamp} +%s)
 nowsec=$(date +%s)
 

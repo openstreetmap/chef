@@ -60,8 +60,17 @@ do
         # No need to rollback now
         rm sequence-prev.txt
 
+        # Get buffer count
+        buffers=$(osmium fileinfo --extended --get=data.buffers.count ${file})
+
+        # If this diff has content mark it as the latest diff
+        if [ $buffers -gt 0 ]
+        then
+            ln -f ${file} changes-latest.osc.gz
+        fi
+
         # Queue these changes for expiry processing
-        ln ${file} expire-queue/$file
+        ln ${file} expire-queue/${file}
 
         # Delete old downloads
         find . -name 'changes-*.gz' -mmin +300 -exec rm -f {} \;
