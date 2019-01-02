@@ -444,8 +444,8 @@ Ohai.plugin(:Hardware) do
           when "Online" then disk[:status] = "online"
           when "Hotspare" then disk[:status] = "hotspare"
           when "Failed" then disk[:status] = "failed"
-          when "Spun Up" then disk[:spun_down] = false
-          when "Spun down" then disk[:spun_down] = true
+          when "Spun Up" then disk[:state] = "spun_up"
+          when "Spun down" then disk[:state] = "spun_down"
           end
         end
       elsif disk && line =~ /^(\S.*\S)\s*:\s+(\S.*)$/
