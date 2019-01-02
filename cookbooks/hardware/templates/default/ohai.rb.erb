@@ -440,8 +440,10 @@ Ohai.plugin(:Hardware) do
       elsif disk && line =~ /^Firmware state:\s+(.*\S)\s*$/
         Regexp.last_match(1).split(/,\s*/).each do |state|
           case state
+          when "Unconfigured(bad)" then disk[:status] = "unconfigured"
           when "Online" then disk[:status] = "online"
           when "Hotspare" then disk[:status] = "hotspare"
+          when "Failed" then disk[:status] = "failed"
           when "Spun Up" then disk[:spun_down] = false
           when "Spun down" then disk[:spun_down] = true
           end
@@ -479,8 +481,10 @@ Ohai.plugin(:Hardware) do
       elsif disk && line =~ /^Firmware state:\s+(.*\S)\s*$/
         Regexp.last_match(1).split(/,\s*/).each do |state|
           case state
+          when "Unconfigured(bad)" then disk[:status] = "unconfigured"
           when "Online" then disk[:status] = "online"
           when "Hotspare" then disk[:status] = "hotspare"
+          when "Failed" then disk[:status] = "failed"
           when "Spun Up" then disk[:state] = "spun_up"
           when "Spun down" then disk[:state] = "spun_down"
           end
