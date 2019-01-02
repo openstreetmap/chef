@@ -24,8 +24,7 @@ default_attributes(
       "katie.openstreetmap.org",
       "konqi.openstreetmap.org",
       "nepomuk.openstreetmap.org",
-      "ridgeback.openstreetmap.org",
-      "trogdor.openstreetmap.org"
+      "ridgeback.openstreetmap.org"
     ]
   }
 )
