@@ -460,6 +460,7 @@ plugins = Dir.glob("/etc/munin/plugins/smart_*").map { |p| File.basename(p) } -
 plugins.each do |plugin|
   munin_plugin plugin do
     action :delete
+    conf "munin.smart.erb"
   end
 end
 
