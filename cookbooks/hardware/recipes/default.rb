@@ -351,7 +351,7 @@ if !intel_ssds.empty? || !intel_nvmes.empty?
 end
 
 disks = disks.map do |disk|
-  next if disk[:state] == "spun_down"
+  next if disk[:state] == "spun_down" || %w[unconfigured failed].any?(disk[:status])
 
   if disk[:smart_device]
     controller = node[:hardware][:disk][:controllers][disk[:controller]]
