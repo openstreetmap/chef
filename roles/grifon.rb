@@ -19,7 +19,7 @@ default_attributes(
       :inet6 => [
         {
           :action => "ACCEPT",
-          :source => "net:[2a00:5884::7]",
+          :source => "net:[2a00:5884::8]",
           :dest => "fw",
           :proto => "tcp",
           :dest_ports => "munin",
