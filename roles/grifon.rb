@@ -15,6 +15,20 @@ default_attributes(
     :allow => ["2a00:5884::8"]
   },
   :networking => {
+    :firewall => {
+      :inet6 => [
+        {
+          :action => "ACCEPT",
+          :source => "net:[2a00:5884::7]",
+          :dest => "fw",
+          :proto => "tcp",
+          :dest_ports => "munin",
+          :source_ports => "1024:",
+          :rate_limit => "-",
+          :connection_limit => "-"
+        }
+      ]
+    },
     :nameservers => ["2a00:5884::7", "8.8.8.8", "8.8.4.4"],
     :roles => {
       :external => {
