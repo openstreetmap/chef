@@ -15,7 +15,7 @@ default_attributes(
     :allow => ["2a00:5884::8"]
   },
   :networking => {
-    :nameservers => ["2a00:5884::7"],
+    :nameservers => ["2a00:5884::7", "8.8.8.8", "8.8.4.4"],
     :roles => {
       :external => {
         :zone => "grf"
