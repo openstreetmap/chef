@@ -2,6 +2,13 @@ name "grifon"
 description "Role applied to all servers at Grifon"
 
 default_attributes(
+  :accounts => {
+    :users => {
+      :alarig => { :status => :administrator },
+      :gizmo => { :status => :administrator },
+      :nemo => { :status => :administrator }
+    }
+  },
   :hosted_by => "Grifon",
   :location => "Paris, France",
   :munin => {
