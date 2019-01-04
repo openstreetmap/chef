@@ -10,6 +10,20 @@ default_attributes(
   :hosted_by => "iWay",
   :location => "Zurich, Switzerland",
   :networking => {
+    :firewall => {
+      :inet => [
+        {
+          :action => "ACCEPT",
+          :source => "net:212.25.24.64/28",
+          :dest => "fw",
+          :proto => "udp",
+          :dest_ports => "snmp",
+          :source_ports => "1024:",
+          :rate_limit => "-",
+          :connection_limit => "-"
+        }
+      ]
+    },
     :nameservers => ["2001:8e0:ffff:ac1::1", "8.8.8.8", "8.8.4.4"],
     :roles => {
       :external => {
