@@ -1,36 +1,36 @@
-name "noomoahk"
-description "Master role applied to noomoahk"
+name "norbert"
+description "Master role applied to norbert"
 
 default_attributes(
   :networking => {
     :interfaces => {
       :external_ipv4 => {
-        :interface => "ens3",
+        :interface => "ens18",
         :role => :external,
         :family => :inet,
-        :address => "91.224.148.166",
-        :prefix => "32",
-        :gateway => "89.234.156.230"
+        :address => "89.234.186.100",
+        :prefix => "27",
+        :gateway => "89.234.186.97"
       },
       :external_ipv6 => {
-        :interface => "ens3",
+        :interface => "ens18",
         :role => :external,
         :family => :inet6,
-        :address => "2a03:7220:8080:a600::1",
-        :prefix => "56",
-        :gateway => "fe80::1"
+        :address => "2a00:5884:821c::1",
+        :prefix => "48",
+        :gateway => "fe80::204:92:100:1"
       }
     }
   },
   :squid => {
-    :cache_mem => "3100 MB",
+    :cache_mem => "7500 MB",
     :cache_dir => "coss /store/squid/coss-01 80000 block-size=8192 max-size=262144 membufs=80"
   },
   :tilecache => {
     :tile_parent => "france.render.openstreetmap.org",
     :tile_siblings => [
+      "noomoahk.openstreetmap.org",
       "nepomuk.openstreetmap.org",
-      "norbert.openstreetmap.org",
       "ladon.openstreetmap.org",
       "culebre.openstreetmap.org"
     ]
@@ -38,6 +38,6 @@ default_attributes(
 )
 
 run_list(
-  "role[tetaneutral]",
+  "role[grifon]",
   "role[tilecache]"
 )

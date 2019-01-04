@@ -60,6 +60,8 @@ default_attributes(
   :tilecache => {
     :tile_parent => "france.render.openstreetmap.org",
     :tile_siblings => [
+      "noomoahk.openstreetmap.org",
+      "norbert.openstreetmap.org",
       "trogdor.openstreetmap.org",
       "katie.openstreetmap.org",
       "konqi.openstreetmap.org",
