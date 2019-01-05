@@ -10,7 +10,7 @@ default_attributes(
     }
   },
   :hosted_by => "Grifon",
-  :location => "Paris, France",
+  :location => "Rennes, France",
   :munin => {
     :allow => ["2a00:5884::8"]
   },
