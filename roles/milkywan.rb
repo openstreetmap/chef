@@ -24,7 +24,7 @@ default_attributes(
         }
       ]
     },
-    :nameservers => ["8.8.8.8", "2a0b:cbc0:42::42"],
+    :nameservers => ["130.117.11.11", "2a0b:cbc0:42::42"],
     :roles => {
       :external => {
         :zone => "osm"
