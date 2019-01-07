@@ -2,6 +2,7 @@ name "keizer"
 description "Master role applied to keizer"
 
 default_attributes(
+  :location => "Nuremberg, Germany",
   :networking => {
     :interfaces => {
       :external_ipv4 => {

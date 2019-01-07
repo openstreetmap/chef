@@ -13,6 +13,7 @@ default_attributes(
       }
     }
   },
+  :location => "Falkenstein, Germany",
   :networking => {
     :interfaces => {
       :external_ipv4 => {
