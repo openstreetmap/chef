@@ -10,6 +10,20 @@ default_attributes(
   :hosted_by => "MilkyWan",
   :location => "France",
   :networking => {
+    :firewall => {
+      :inet => [
+        {
+          :action => "ACCEPT",
+          :source => "net:212.25.24.64/28",
+          :dest => "fw",
+          :proto => "udp",
+          :dest_ports => "snmp",
+          :source_ports => "1024:",
+          :rate_limit => "-",
+          :connection_limit => "-"
+        }
+      ]
+    },
     :nameservers => ["8.8.8.8", "2a0b:cbc0:42::42"],
     :roles => {
       :external => {
