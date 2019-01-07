@@ -8,7 +8,7 @@ default_attributes(
     }
   },
   :hosted_by => "MilkyWan",
-  :location => "France",
+  :location => "Paris, France",
   :networking => {
     :firewall => {
       :inet => [
