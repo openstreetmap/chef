@@ -65,7 +65,6 @@ run_list(
   "role[trac]",
   "role[osqa]",
   "role[irc]",
-  "role[geodns]",
   "recipe[blogs]",
   "recipe[openvpn]"
 )
