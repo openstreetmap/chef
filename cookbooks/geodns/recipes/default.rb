@@ -38,10 +38,8 @@ template "/etc/gdnsd/zones/geo.openstreetmap.org" do
   notifies :restart, "service[gdnsd]"
 end
 
-if node[:lsb][:release].to_f >= 18.04
-  service "systemd-resolved" do
-    action [:disable, :stop]
-  end
+service "systemd-resolved" do
+  action [:disable, :stop]
 end
 
 service "gdnsd" do

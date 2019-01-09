@@ -23,7 +23,3 @@ package %w[
   g++
   make
 ]
-
-if node[:lsb][:release].to_f < 18.04
-  package "nodejs-legacy"
-end
