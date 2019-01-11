@@ -34,6 +34,16 @@ imagery_layer "na_sgswa_topo_50k" do
   default_layer true
   background_colour "0 0 0"
   extension "jpeg"
-  default_layer true
   max_zoom 16
+end
+
+imagery_layer "na_aerial" do
+  site "namibia-topo.openstreetmap.org.za"
+  title "Namibia Aerial Demo"
+  projection "namibia_aerial"
+  source "/data/imagery/na/aerial/aerial.vrt"
+  copyright "State Copyright"
+  background_colour "0 0 0"
+  extension "jpeg"
+  max_zoom 21
 end
