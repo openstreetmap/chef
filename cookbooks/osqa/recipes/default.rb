@@ -30,7 +30,7 @@ python_directory = "/opt/osqa-python"
 
 python_virtualenv python_directory
 
-python_package "django" do
+python_package "Django" do
   python_virtualenv python_directory
   version "1.6.11"
 end
@@ -40,7 +40,7 @@ python_package "html5lib" do
   version "0.999"
 end
 
-python_package "markdown" do
+python_package "Markdown" do
   python_virtualenv python_directory
   version "2.4"
 end
@@ -50,12 +50,12 @@ python_package "python-memcached" do
   version "1.53"
 end
 
-python_package "python_openid" do
+python_package "python-openid" do
   python_virtualenv python_directory
   version "2.2.5"
 end
 
-python_package "MySQL_python" do
+python_package "MySQL-python" do
   python_virtualenv python_directory
   version "1.2.3"
 end
