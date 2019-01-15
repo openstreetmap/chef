@@ -22,6 +22,7 @@ default_action :install
 property :package_name, :kind_of => String, :name_property => true
 property :version, :kind_of => String
 property :python_version, :kind_of => String
+property :python_virtualenv, :kind_of => String
 
 action :install do
   if new_resource.version.nil?
@@ -46,6 +47,10 @@ end
 
 action_class do
   def pip_command
-    "pip#{new_resource.python_version}"
+    if new_resource.python_virtualenv
+      "#{new_resource.python_virtualenv}/bin/pip"
+    else
+      "pip#{new_resource.python_version}"
+    end
   end
 end

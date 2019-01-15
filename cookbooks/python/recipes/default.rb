@@ -22,3 +22,5 @@ package "python-pip"
 
 package "python3"
 package "python3-pip"
+
+package "python-virtualenv"

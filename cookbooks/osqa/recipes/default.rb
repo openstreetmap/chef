@@ -22,16 +22,53 @@ include_recipe "apache"
 include_recipe "memcached"
 include_recipe "python"
 
-package "python-django"
-package "python-html5lib"
-package "python-markdown"
-package "python-memcache"
-package "python-openid"
-package "python-mysqldb"
-package "python-psycopg2"
-package "python-setuptools"
+package "python-dev"
+package "libmysqlclient-dev"
+package "libpq-dev"
 
-python_package "South"
+python_directory = "/opt/osqa-python"
+
+python_virtualenv python_directory
+
+python_package "django" do
+  python_virtualenv python_directory
+  version "1.6.11"
+end
+
+python_package "html5lib" do
+  python_virtualenv python_directory
+  version "0.999"
+end
+
+python_package "markdown" do
+  python_virtualenv python_directory
+  version "2.4"
+end
+
+python_package "python-memcached" do
+  python_virtualenv python_directory
+  version "1.53"
+end
+
+python_package "python_openid" do
+  python_virtualenv python_directory
+  version "2.2.5"
+end
+
+python_package "MySQL_python" do
+  python_virtualenv python_directory
+  version "1.2.3"
+end
+
+python_package "psycopg2" do
+  python_virtualenv python_directory
+  version "2.4.5"
+end
+
+python_package "South" do
+  python_virtualenv python_directory
+  version "0.7.6"
+end
 
 apache_module "rewrite"
 apache_module "wsgi"
