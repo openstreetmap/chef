@@ -94,7 +94,7 @@ node[:osqa][:sites].each do |site|
   apache_site site_name do
     template "apache.erb"
     directory directory
-    variables :user => site_user, :group => site_group, :aliases => site_aliases
+    variables :user => site_user, :group => site_group, :aliases => site_aliases, :python_home => python_directory
   end
 
   directory directory do

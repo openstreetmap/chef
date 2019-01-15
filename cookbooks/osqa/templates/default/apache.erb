@@ -1,6 +1,6 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
-WSGIDaemonProcess <%= @name %> user=<%= @user %> group=<%= @group %> processes=4 threads=4
+WSGIDaemonProcess <%= @name %> user=<%= @user %> group=<%= @group %> processes=4 threads=4 python-home=<%= @python_home %>
 
 <VirtualHost *:80>
   ServerName <%= @name %>
