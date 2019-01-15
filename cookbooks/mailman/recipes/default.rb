@@ -48,6 +48,7 @@ end
 
 apache_site "lists.openstreetmap.org" do
   template "apache.erb"
+  directory "/srv/lists.openstreetmap.org"
   variables :aliases => ["lists.osm.org"]
 end
 
