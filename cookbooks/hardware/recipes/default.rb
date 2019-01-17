@@ -333,7 +333,7 @@ if !intel_ssds.empty? || !intel_nvmes.empty?
   package "unzip"
 
   remote_file "#{Chef::Config[:file_cache_path]}/Intel_SSD_Data_Center_Tool_3.0.13_Linux.zip" do
-    source "https://downloadmirror.intel.com/27863/eng/Intel_SSD_Data_Center_Tool_3.0.13_Linux.zip"
+    source "https://downloadmirror.intel.com/28460/eng/Intel_SSD_Data_Center_Tool_3.0.17_Linux.zip"
   end
 
   execute "#{Chef::Config[:file_cache_path]}/Intel_SSD_Data_Center_Tool_3.0.13_Linux.zip" do
