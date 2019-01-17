@@ -118,10 +118,16 @@ log "squid-restart" do
 end
 
 munin_plugin "squid_cache"
-munin_plugin "squid_delay_pools"
-munin_plugin "squid_delay_pools_noreferer"
 munin_plugin "squid_times"
 munin_plugin "squid_icp"
 munin_plugin "squid_objectsize"
 munin_plugin "squid_requests"
 munin_plugin "squid_traffic"
+
+munin_plugin "squid_delay_pools" do
+  action :delete
+end
+
+munin_plugin "squid_delay_pools_noreferer" do
+  action :delete
+end
