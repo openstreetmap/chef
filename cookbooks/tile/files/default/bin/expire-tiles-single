@@ -52,7 +52,7 @@ class TileCollector(o.SimpleHandler):
                 self.done_nodes.add(n.ref)
                 try:
                     self.add_tile_from_node(self.node_cache.get(n.ref))
-                except o.NotFoundError:
+                except KeyError:
                     pass # no coordinate
 
 
