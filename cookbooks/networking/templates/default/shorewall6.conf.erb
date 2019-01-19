@@ -100,20 +100,12 @@ TC=
 #		D E F A U L T   A C T I O N S / M A C R O S
 ###############################################################################
 
-<%- if node[:lsb][:release].to_f <= 16.04 %>
-ACCEPT_DEFAULT="none"
-DROP_DEFAULT="Drop"
-NFQUEUE_DEFAULT="none"
-QUEUE_DEFAULT="none"
-REJECT_DEFAULT="Reject"
-<%- else %>
 ACCEPT_DEFAULT="none"
 BLACKLIST_DEFAULT="AllowICMPs,Broadcast(DROP),Multicast(DROP),dropNotSyn:$LOG_LEVEL,dropInvalid:$LOG_LEVEL,DropDNSrep:$LOG_LEVEL"
 DROP_DEFAULT="AllowICMPs,Broadcast(DROP),Multicast(DROP)"
 NFQUEUE_DEFAULT="none"
 QUEUE_DEFAULT="none"
 REJECT_DEFAULT="AllowICMPs,Broadcast(DROP),Multicast(DROP)"
-<%- end %>
 
 ###############################################################################
 #                        R S H / R C P  C O M M A N D S
@@ -136,11 +128,7 @@ AUTOCOMMENT=Yes
 
 AUTOHELPERS=Yes
 
-<%- if node[:lsb][:release].to_f <= 16.04 %>
-AUTOMAKE=No
-<%- else %>
 AUTOMAKE=Yes
-<%- end %>
 
 BALANCE_PROVIDERS=No
 
@@ -195,18 +183,10 @@ MANGLE_ENABLED=Yes
 MARK_IN_FORWARD_CHAIN=No
 
 MINIUPNPD=No
-<%- if node[:lsb][:release].to_f <= 16.04 %>
-
-MODULE_SUFFIX=ko
-<%- end %>
 
 MUTEX_TIMEOUT=60
 
-<%- if node[:lsb][:release].to_f <= 14.04 %>
-OPTIMIZE=1
-<%- else %>
 OPTIMIZE=All
-<%- end %>
 
 OPTIMIZE_ACCOUNTING=No
 
@@ -235,10 +215,8 @@ TRACK_PROVIDERS=Yes
 TRACK_RULES=No
 
 USE_DEFAULT_RT=Yes
-<%- if node[:lsb][:release].to_f >= 18.04 %>
 
 USE_NFLOG_SIZE=No
-<%- end %>
 
 USE_PHYSICAL_NAMES=No
 

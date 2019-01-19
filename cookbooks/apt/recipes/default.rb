@@ -23,10 +23,6 @@ package %w[
   update-notifier-common
 ]
 
-if node[:lsb][:release].to_f < 18.04
-  package "gnupg-curl"
-end
-
 file "/etc/motd.tail" do
   action :delete
 end
@@ -87,11 +83,7 @@ end
 apt_repository "management-component-pack" do
   action repository_actions["management-component-pack"]
   uri "https://downloads.linux.hpe.com/SDR/repo/mcp"
-  if node[:lsb][:release].to_f >= 16.04
-    distribution "xenial/current"
-  else
-    distribution "#{node[:lsb][:codename]}/current"
-  end
+  distribution "#{node[:lsb][:codename]}/current"
   components ["non-free"]
   key "C208ADDE26C2B797"
 end

@@ -1,10 +1,8 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
-<% if node[:lsb][:release].to_f >= 18.04 -%>
 # Enable HTTP/2 over TLS
 Protocols h2 http/1.1
 
-<% end -%>
 # Set the number of seconds before receives and sends time out
 Timeout <%= node[:apache][:timeout] %>
 

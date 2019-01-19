@@ -37,10 +37,6 @@ package %w[
   rsyslog
 ]
 
-if node[:lsb][:release].to_f < 18.04
-  package "sysv-rc-conf"
-end
-
 service "rsyslog" do
   action [:enable, :start]
   supports :status => true, :restart => true, :reload => true

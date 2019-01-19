@@ -5,10 +5,6 @@
   weekly
   compress
   postrotate
-<% if node[:lsb][:release].to_f >= 15.10 -%>
 	systemctl try-restart chef-client.service
-<% else -%>
-	restart chef-client > /dev/null
-<% end -%>
   endscript
 }

@@ -3,7 +3,5 @@
 ?FORMAT 3
 
 # ACTION	SOURCE	DEST	PROTO	DPORT	SPORT	USER	SWITCH
-<%- if node[:lsb][:release].to_f >= 16.04 %>
 NOTRACK:P	lo	-	-	-	-	-	-
 NOTRACK:O	-	lo	-	-	-	-	-
-<%- end %>

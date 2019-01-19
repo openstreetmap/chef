@@ -1,13 +1,6 @@
-default[:hardware][:modules] = if node[:lsb][:release].to_f >= 16.04
-                                 %w[lp]
-                               else
-                                 %w[loop lp rtc]
-                               end
-
+default[:hardware][:modules] = %w[lp]
 default[:hardware][:grub][:cmdline] = %w[nomodeset]
 default[:hardware][:sensors] = {}
-
-default[:hardware][:mcelog][:enabled] = node[:lsb][:release].to_f < 18.04
 
 if node[:dmi] && node[:dmi][:system]
   case node[:dmi][:system][:manufacturer]

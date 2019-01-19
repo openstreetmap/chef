@@ -107,27 +107,16 @@ directory "/var/log/chef" do
   mode 0o755
 end
 
-if node[:lsb][:release].to_f >= 15.10
-  systemd_service "chef-client" do
-    description "Chef client"
-    after "network.target"
-    exec_start "/usr/bin/chef-client -i 1800 -s 20"
-    restart "on-failure"
-  end
-else
-  template "/etc/init/chef-client.conf" do
-    source "chef-client.conf.erb"
-    owner "root"
-    group "root"
-    mode 0o644
-  end
+systemd_service "chef-client" do
+  description "Chef client"
+  after "network.target"
+  exec_start "/usr/bin/chef-client -i 1800 -s 20"
+  restart "on-failure"
 end
 
 service "chef-client" do
   action [:enable, :start]
-  if node[:lsb][:release].to_f >= 15.10
-    restart_command "systemctl kill --signal=TERM chef-client.service"
-  end
+  restart_command "systemctl kill --signal=TERM chef-client.service"
   supports :status => true, :restart => true, :reload => true
   subscribes :restart, "dpkg_package[chef]"
   subscribes :restart, "template[/etc/init/chef-client.conf]"

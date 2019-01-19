@@ -94,29 +94,8 @@ when "IBM"
 end
 
 units.sort.uniq.each do |unit|
-  if node[:lsb][:release].to_f >= 16.04
-    service "serial-getty@ttyS#{unit}" do
-      action [:enable, :start]
-    end
-  else
-    file "/etc/init/ttySttyS#{unit}.conf" do
-      action :delete
-    end
-
-    template "/etc/init/ttyS#{unit}.conf" do
-      source "tty.conf.erb"
-      owner "root"
-      group "root"
-      mode 0o644
-      variables :unit => unit
-    end
-
-    service "ttyS#{unit}" do
-      provider Chef::Provider::Service::Upstart
-      action [:enable, :start]
-      supports :status => true, :restart => true, :reload => false
-      subscribes :restart, "template[/etc/init/ttyS#{unit}.conf]"
-    end
+  service "serial-getty@ttyS#{unit}" do
+    action [:enable, :start]
   end
 end
 
@@ -196,24 +175,6 @@ package "lldpd"
 service "lldpd" do
   action [:start, :enable]
   supports :status => true, :restart => true, :reload => true
-end
-
-if node[:hardware][:mcelog][:enabled]
-  package "mcelog"
-
-  %w[bus cache dimm iomca page socket-memory unknown].each do |trigger|
-    template "/etc/mcelog/#{trigger}-error-trigger.local" do
-      source "mcelog-trigger.erb"
-      owner "root"
-      group "root"
-      mode 0o755
-    end
-  end
-
-  service "mcelog" do
-    action [:start, :enable]
-    supports :status => true, :restart => true, :reload => false
-  end
 end
 
 tools_packages = []
@@ -384,12 +345,6 @@ disks = disks.map do |disk|
   ]
 end
 
-smartd_service = if node[:lsb][:release].to_f >= 16.04
-                   "smartd"
-                 else
-                   "smartmontools"
-                 end
-
 disks = disks.compact
 
 if disks.count.positive?
@@ -417,7 +372,7 @@ if disks.count.positive?
     mode 0o644
   end
 
-  service smartd_service do
+  service "smartd" do
     action [:enable, :start]
     subscribes :reload, "template[/etc/smartd.conf]"
     subscribes :restart, "template[/etc/default/smartmontools]"
@@ -437,7 +392,7 @@ if disks.count.positive?
     end
   end
 else
-  service smartd_service do
+  service "smartd" do
     action [:stop, :disable]
   end
 end
