@@ -62,7 +62,7 @@ end
 
 python_package "psycopg2" do
   python_virtualenv python_directory
-  version "2.4.5"
+  version "2.7.6.1"
 end
 
 python_package "South" do
