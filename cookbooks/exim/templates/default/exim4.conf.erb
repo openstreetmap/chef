@@ -494,9 +494,8 @@ acl_check_data:
   # Deny if the message contains a virus. Before enabling this check, you
   # must install a virus scanner and set the av_scanner option above.
   #
-  deny    demime     = *
-          malware    = *
-          message    = This message contains a virus ($malware_name).
+  deny    malware    = *
+          message    = This message was detected as possible malware ($malware_name).
 
 <% end -%>
 <% if File.exist?("/var/run/spamd.pid") -%>
