@@ -55,7 +55,7 @@ end
 
 execute "/srv/blogs.openstreetmap.org" do
   action :nothing
-  command "/usr/local/bin/pluto build -t osm -o build"
+  command "bundle exec /usr/local/bin/pluto build -t osm -o build"
   cwd "/srv/blogs.openstreetmap.org"
   user "blogs"
   group "blogs"
