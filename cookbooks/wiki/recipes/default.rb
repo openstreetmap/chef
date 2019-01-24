@@ -84,6 +84,20 @@ mediawiki_extension "OsmWikibase" do
   reference "master"
 end
 
+mediawiki_extension "Echo" do
+  site "wiki.openstreetmap.org"
+  compose true
+  template "mw-ext-Echo.inc.php.erb"
+  template_cookbook "wiki"
+end
+
+mediawiki_extension "Thanks" do
+  site "wiki.openstreetmap.org"
+  compose true
+  template "mw-ext-Thanks.inc.php.erb"
+  template_cookbook "wiki"
+end
+
 cookbook_file "/srv/wiki.openstreetmap.org/osm_logo_wiki.png" do
   owner node[:mediawiki][:user]
   group node[:mediawiki][:group]
