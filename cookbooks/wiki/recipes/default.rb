@@ -96,6 +96,10 @@ mediawiki_extension "Thanks" do
   template_cookbook "wiki"
 end
 
+mediawiki_extension "Gadgets" do
+  site "wiki.openstreetmap.org"
+end
+
 cookbook_file "/srv/wiki.openstreetmap.org/osm_logo_wiki.png" do
   owner node[:mediawiki][:user]
   group node[:mediawiki][:group]
