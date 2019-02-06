@@ -272,6 +272,7 @@ action :create do
 
     line.gsub!(/^( *)require_terms_seen:.*$/, "\\1require_terms_seen: true")
     line.gsub!(/^( *)require_terms_agreed:.*$/, "\\1require_terms_agreed: true")
+    line.gsub!(/^( *)trace_use_job_queue:.*$/, "\\1trace_use_job_queue: false")
 
     line
   end
