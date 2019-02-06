@@ -18,9 +18,16 @@
 #
 
 package %w[
-  geoip-database-contrib
+  geoipupdate
   gdnsd
 ]
+
+execute "geoipdate" do
+  command "geoipupdate"
+  user "root"
+  group "root"
+  not_if { ::File.exist?("/var/lib/GeoIP/GeoLite2-Country.mmdb") }
+end
 
 template "/etc/gdnsd/config" do
   source "config.erb"
