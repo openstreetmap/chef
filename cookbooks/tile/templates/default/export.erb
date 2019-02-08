@@ -162,6 +162,7 @@ else:
         elif form.getvalue("format") == "svg":
           file = tempfile.NamedTemporaryFile(prefix = "export")
           surface = cairo.SVGSurface(file.name, map.width, map.height)
+          surface.restrict_to_version(cairo.SVG_VERSION_1_2)
           mapnik.render(map, surface)
           surface.finish()
           output_headers("image/svg+xml", "map.svg", file_size(file))
