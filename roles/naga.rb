@@ -11,6 +11,14 @@ default_attributes(
         :address => "185.216.27.232",
         :prefix => "24",
         :gateway => "185.216.27.253"
+      },
+      :external_ipv6 => {
+        :interface => "ens18",
+        :role => :external,
+        :family => :inet6,
+        :address => "2a07:abc4:5::27:244",
+        :prefix => "24",
+        :gateway => "fe80::20c:29ff:fe4d:941b"
       }
     }
   },
