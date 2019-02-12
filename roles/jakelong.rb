@@ -10,7 +10,7 @@ default_attributes(
         :family => :inet,
         :address => "71.19.155.177",
         :prefix => "24",
-        :gateway => "71.19.155.10"
+        :gateway => "71.19.155.1"
       },
       :external_ipv6 => {
         :interface => "eth0",
@@ -18,7 +18,7 @@ default_attributes(
         :family => :inet6,
         :address => "2605:2700:0:17:a800:ff:fe3e:cdca",
         :prefix => "64",
-        :gateway => "fe80::260:ddff:fe46:623d"
+        :gateway => "2605:2700:0:17::1"
       }
     }
   },
