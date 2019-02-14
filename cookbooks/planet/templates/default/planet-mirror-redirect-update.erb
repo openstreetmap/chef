@@ -10,7 +10,7 @@
 $_YEAR = date('Y');
 $_PLANET_FOLDER = '<%= node[:planet][:dump][:xml_directory] %>/'.$_YEAR.'/';
 $_PLANET_REGEX = "/^(planet|changesets)\-\d{6}(\-nolt)?\.osm\.(bz2|gz)$/";
-$_MIRROR = 'https://ftp.heanet.ie/mirrors/openstreetmap.org/planet/'.$_YEAR.'/';
+$_MIRROR = 'https://ftp5.gwdg.de/pub/misc/openstreetmap/planet.openstreetmap.org/planet/'.$_YEAR.'/';
 $_PLANET_HTACCESS = realpath('<%= node[:planet][:dump][:xml_directory] %>/..').'/.htaccess';
 
 function _MIRROR_FILE_SIZE($url) {
@@ -22,7 +22,7 @@ function _MIRROR_FILE_SIZE($url) {
 	$curl_result = curl_getinfo($ch);
 	if ($curl_result['http_code']!='200') return FALSE;
 	return ($curl_result['download_content_length']);
-}			
+}
 
 if (!is_writable($_PLANET_HTACCESS)) die('File '.$_PLANET_HTACCESS.' is not writable by current user.'."\n");
 
@@ -41,7 +41,7 @@ if (is_dir($_PLANET_FOLDER)) {
 							echo 'Adding: '.$file."\n";
 							fwrite($htaccess_handle,	'RewriteRule'."\t".
 											'^('.$file_slashed.')$'."\t".
-											'https://ftp.heanet.ie/mirrors/openstreetmap.org/$1'."\t".
+											'https://ftp5.gwdg.de/pub/misc/openstreetmap/planet.openstreetmap.org/$1'."\t".
 											'[R,L]'."\n");
 					}
 				}
