@@ -39,5 +39,5 @@
 <% unless @hosts_deny[name].empty? -%>
      hosts deny = <%= @hosts_deny[name].sort.join(",") %>
 <% end -%>
-     dont compress = *.gz *.tgz *.zip *.z *.rpm *.deb *.iso *.bz2 *.tbz *.7z
+     dont compress = *.gz *.tgz *.zip *.z *.rpm *.deb *.iso *.bz2 *.tbz *.7z *.xz *.pbf
 <% end -%>
