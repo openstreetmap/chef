@@ -21,9 +21,9 @@ package "nfs-common"
 
 node[:nfs].each do |mountpoint, details|
   mount_options = if details[:readonly]
-                    "ro,bg,soft,udp,rsize=8192,wsize=8192,nfsvers=3"
+                    "ro,bg,soft,tcp,rsize=8192,wsize=8192,nfsvers=4"
                   else
-                    "rw,bg,udp,rsize=8192,wsize=8192,nfsvers=3"
+                    "rw,bg,tcp,rsize=8192,wsize=8192,nfsvers=4"
                   end
 
   directory mountpoint do
