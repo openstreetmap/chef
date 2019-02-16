@@ -51,7 +51,10 @@ default_attributes(
     },
     :network_backlog => {
       :comment => "Increase maximum backlog for incoming network packets",
-      :parameters => { "net.core.netdev_max_backlog" => "2500" }
+      :parameters => {
+        "net.core.netdev_max_backlog" => "2500",
+        "net.core.netdev_budget" => "600"
+      }
     },
     :network_conntrack_established => {
       :comment => "Only track established connections for four hours",
