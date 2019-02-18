@@ -131,7 +131,6 @@ run_list(
   "role[web-storage]",
   "role[supybot]",
   "role[backup]",
-  "role[stats]",
   "role[planet]",
   "role[planetdump]",
   "role[logstash]",
