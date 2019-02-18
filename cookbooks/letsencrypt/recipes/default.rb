@@ -150,6 +150,21 @@ certificates.each do |name, details|
   end
 end
 
+Dir.each_child("/srv/acme.openstreetmap.org/requests") do |name|
+  next if certificates.include?(name)
+
+  file "/srv/acme.openstreetmap.org/requests/#{name}" do
+    action :delete
+  end
+
+  execute "certbot-delete-#{name}" do
+    command "/usr/bin/certbot delete --config-dir /srv/acme.openstreetmap.org/config --work-dir /srv/acme.openstreetmap.org/work --logs-dir /srv/acme.openstreetmap.org/logs --cert-name #{name}"
+    cwd "/srv/acme.openstreetmap.org"
+    user "letsencrypt"
+    group "letsencrypt"
+  end
+end
+
 template "/srv/acme.openstreetmap.org/bin/check-certificates" do
   source "check-certificates.erb"
   owner "root"
