@@ -98,6 +98,7 @@ end
 
 apt_repository "nginx" do
   action repository_actions["nginx"]
+  arch "amd64"
   uri "https://nginx.org/packages/ubuntu"
   components ["nginx"]
   key "ABF5BD827BD9BF62"
