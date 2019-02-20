@@ -15,7 +15,7 @@ while (my $path = <STDIN>)
 
     my $file = abs_path("/store/planet${path}");
 
-    if ($file && $file =~ m|/store/planet/| && -f $file)
+    if ($file && $file =~ m|^/store/planet/| && -f $file)
     {
         print "${file}\n";
     }
