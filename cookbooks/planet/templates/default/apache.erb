@@ -1,5 +1,5 @@
 # DO NOT EDIT - This file is being maintained by Chef
-   
+
 <VirtualHost *:443>
         ServerName planet.openstreetmap.org
         ServerAlias planet.osm.org
@@ -34,29 +34,36 @@
 
         Redirect /pbf-experimental/	/pbf/
 
-	<IfModule mod_headers.c>
-		Header set Access-Control-Allow-Origin "*"
-	</IfModule>
+        <IfModule mod_headers.c>
+                Header set Access-Control-Allow-Origin "*"
+        </IfModule>
 
         RewriteEngine on
         RewriteMap latestplanet prg:/usr/local/bin/apache-latest-planet-filename
 
         #Direct, no redirect for the following
-        RewriteCond	%{REMOTE_ADDR}  ^193\.63\.		[OR]
-        RewriteCond	%{REMOTE_ADDR}  ^127\.			[OR]
-        RewriteCond	%{REMOTE_ADDR}  ^10\.			[OR]
-        RewriteCond	%{REMOTE_ADDR}  ^193\.1\.219\.88	[OR]
-        RewriteCond	%{REMOTE_ADDR}  ^193\.1\.193\.64	[OR]
-        RewriteCond     %{REMOTE_ADDR}  ^146\.169\.             [OR]
-        RewriteCond     %{REMOTE_ADDR}  ^129\.31\.              [OR]
-        RewriteCond	%{REMOTE_ADDR}  ^193\.60\.              [OR]
-        RewriteCond     %{REMOTE_ADDR}  ^193\.61\.              [OR]
-        RewriteCond     %{REMOTE_ADDR}  ^193\.62\.              [OR]
-        RewriteCond     %{REMOTE_ADDR}  ^193\.63\.              [OR]
-        RewriteCond	%{QUERY_STRING} nomirror
+        RewriteCond %{REMOTE_ADDR}  ^127\.			     [OR]
+        RewriteCond %{REMOTE_ADDR}  ^10\.			       [OR]
+        RewriteCond %{REMOTE_ADDR}  ^193\.60\.       [OR]
+        RewriteCond %{REMOTE_ADDR}  ^193\.61\.       [OR]
+        RewriteCond %{REMOTE_ADDR}  ^193\.62\.       [OR]
+        RewriteCond %{REMOTE_ADDR}  ^193\.63\.       [OR]
+        RewriteCond %{QUERY_STRING} nomirror
         RewriteRule	.*      - [L]
 
-        RewriteRule     ^(/planet/planet\-latest\.osm\.bz2)$    ${latestplanet:$1}      [R,L]
+        RewriteRule ^(/planet/planet\-latest\.osm\.bz2)$                ${latestplanet:$1} [R,L]
+        RewriteRule ^(/planet/full\-history/history\-latest\.osm\.bz2)$ ${latestplanet:$1} [R,L]
+        RewriteRule ^(/planet/changesets\-latest\.osm\.bz2)$            ${latestplanet:$1} [R,L]
+        RewriteRule ^(/planet/discussions\-latest\.osm\.bz2)$           ${latestplanet:$1} [R,L]
+
+        RewriteRule ^(/pbf/planet\-latest\.osm\.pbf)$                   ${latestplanet:$1} [R,L]
+        RewriteRule ^(/pbf/full\-history/history\-latest\.osm\.pbf)$    ${latestplanet:$1} [R,L]
+
+        RewriteRule ^(/cc\-by\-sa/pbf/planet\-latest\.osm\.pbf)$        ${latestplanet:$1} [R,L]
+        RewriteRule ^(/cc\-by\-sa/planet\-latest\.osm\.bz2)$            ${latestplanet:$1} [R,L]
+        RewriteRule ^(/cc\-by\-sa/changesets\-latest\.osm\.bz2)$        ${latestplanet:$1} [R,L]
+        RewriteRule ^(/cc\-by\-sa/relations\-latest\.osm\.bz2)$         ${latestplanet:$1} [R,L]
+
 </VirtualHost>
 
 <VirtualHost *:80>
