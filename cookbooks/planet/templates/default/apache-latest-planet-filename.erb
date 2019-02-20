@@ -2,9 +2,25 @@
 
 # DO NOT EDIT - This file is being maintained by Chef
 
+use strict;
+use warnings;
+
+use Cwd qw(abs_path);
+
 $| = 1;
-while (<STDIN>) {
-	my $where = readlink("<%= node[:planet][:dump][:xml_directory] %>/planet-latest.osm.bz2");
-	s/planet\/planet\-latest\.osm\.bz2/planet\/$where/g;
-	print $_;
+
+while (my $path = <STDIN>)
+{
+    chomp $path;
+
+    my $file = abs_path("/store/planet${path}");
+
+    if ($file && $file =~ m|/store/planet/| && -f $file)
+    {
+        print "${file}\n";
+    }
+    else
+    {
+        print "NULL\n";
+    }
 }
