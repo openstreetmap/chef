@@ -91,6 +91,7 @@ template "/usr/local/bin/apache-latest-planet-filename" do
   owner "root"
   group "root"
   mode 0o755
+  notifies :restart, "service[apache2]"
 end
 
 apache_module "cgid"
