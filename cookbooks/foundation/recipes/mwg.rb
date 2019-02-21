@@ -25,8 +25,8 @@ mediawiki_site "mwg.osmfoundation.org" do
   sitename "OSMF Membership Working Group Wiki"
   metanamespace "OSMFMWG"
   directory "/srv/mwg.osmfoundation.org"
-  database_name "mwg-wiki"
-  database_user "mwg-wikiuser"
+  database_name "mwg_wiki"
+  database_user "mwg_wikiuser"
   database_password passwords["mwg"]["database"]
   admin_password passwords["mwg"]["admin"]
   logo "/Wiki.png"
