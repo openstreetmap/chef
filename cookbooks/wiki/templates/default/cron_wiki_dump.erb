@@ -1,3 +1,5 @@
 #!/bin/bash
 # DO NOT EDIT - This file is being maintained by Chef
 
+cd #{mediawiki_directory}/maintenance
+php dumpBackup.php --full > "#{wiki_dump_directory}/dump.xml"
