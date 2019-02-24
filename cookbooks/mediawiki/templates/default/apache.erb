@@ -87,6 +87,7 @@
   RewriteCond %{REQUEST_URI} !^/value/
   RewriteCond %{REQUEST_URI} !^/reference/
   RewriteCond %{REQUEST_URI} !^/prop/  
+  RewriteCond %{REQUEST_URI} !^/dump/  
   RewriteCond %{REQUEST_URI} !^/server-status
   RewriteCond %{REQUEST_URI} !^/.well-known/
   RewriteCond %{LA-U:REQUEST_FILENAME} !-f
@@ -142,6 +143,14 @@
     AllowOverride None
     AddType text/plain .html .htm .shtml
     php_admin_flag engine off
+  </Directory>
+
+  <Directory <%= @directory %>/dump/>
+    Options Indexes FollowSymLinks MultiViews
+    AllowOverride All
+    IndexIgnore .ht* . robots.txt HEADER.html HEADER.cgi logo.png style.css
+    IndexOptions FancyIndexing FoldersFirst NameWidth=* TrackModified
+    IndexOrderDefault Descending Date
   </Directory>
 
   <Directory ~ "\.svn">

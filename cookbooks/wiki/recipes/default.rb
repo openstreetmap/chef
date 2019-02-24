@@ -23,6 +23,8 @@ include_recipe "mediawiki"
 
 passwords = data_bag_item("wiki", "passwords")
 
+dump_directory = "/srv/wiki.openstreetmap.org/dump"
+
 package "lua5.1" # newer versions do not work with Scribuntu!
 
 apache_site "default" do
@@ -115,16 +117,10 @@ cookbook_file "/srv/wiki.openstreetmap.org/favicon.ico" do
   mode 0o644
 end
 
-directory "/srv/dump.wiki.openstreetmap.org" do
+directory dump_directory do
   owner node[:mediawiki][:user]
   group node[:mediawiki][:group]
   mode "0775"
-end
-
-apache_site "dump.wiki.openstreetmap.org" do
-  template "apache_wiki_dump.erb"
-  directory "/srv/dump.wiki.openstreetmap.org"
-  variables :aliases => "dump.wiki.osm.org"
 end
 
 template "/etc/cron.d/wiki-osm-org-dump" do
@@ -132,4 +128,5 @@ template "/etc/cron.d/wiki-osm-org-dump" do
   group "root"
   mode 0o644
   source "cron_wiki_dump.erb"
+  variables :dumppath => dump_directory
 end
