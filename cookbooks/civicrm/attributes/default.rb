@@ -12,6 +12,9 @@ default[:civicrm][:extensions][:emailapi][:name] = "org.civicoop.emailapi"
 default[:civicrm][:extensions][:emailapi][:repository] = "git://github.com/CiviCooP/org.civicoop.emailapi.git"
 default[:civicrm][:extensions][:emailapi][:revision] = "1.19"
 
+default[:civicrm][:extensions][:civiruleshttppost][:name] = "org.civicoop.civiruleshttppost"
+default[:civicrm][:extensions][:civiruleshttppost][:repository] = "git://github.com/CiviCooP/org.civicoop.civiruleshttppost.git"
+
 default[:civicrm][:extensions][:civirules][:name] = "org.civicoop.civirules"
 default[:civicrm][:extensions][:civirules][:repository] = "https://lab.civicrm.org/extensions/civirules.git"
 default[:civicrm][:extensions][:civirules][:revision] = "2.3"
@@ -26,4 +29,3 @@ default[:civicrm][:extensions][:mailchimp][:revision] = "v2.0.1"
 
 default[:civicrm][:extensions][:username][:name] = "org.openstreetmap.username"
 default[:civicrm][:extensions][:username][:repository] = "git://github.com/grischard/org.openstreetmap.username.git"
-default[:civicrm][:extensions][:username][:revision] = "1.3"
