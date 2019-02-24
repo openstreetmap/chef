@@ -22,4 +22,4 @@ default[:civicrm][:extensions][:mailchimp][:revision] = "v2.0.1"
 
 default[:civicrm][:extensions][:username][:name] = "org.openstreetmap.username"
 default[:civicrm][:extensions][:username][:repository] = "git://github.com/grischard/org.openstreetmap.username.git"
-default[:civicrm][:extensions][:username][:revision] = "1.0"
+default[:civicrm][:extensions][:username][:revision] = "1.1"
