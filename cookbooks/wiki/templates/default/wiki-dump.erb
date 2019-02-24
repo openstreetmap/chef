@@ -1,0 +1,3 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+0 2 * * * wiki cd <%= @directory %> && php w/maintenance/dumpBackup.php --full --quiet --output=gzip:dump/dump.xml.gz
