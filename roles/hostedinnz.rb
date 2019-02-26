@@ -2,6 +2,11 @@ name "hostedinnz"
 description "Role applied to all servers at HostedIn.NZ"
 
 default_attributes(
+  :accounts => {
+    :users => {
+      :asmith => { :status => :administrator }
+    }
+  },
   :hosted_by => "HostedIn.NZ",
   :location => "Wellington, New Zealand",
   :networking => {
