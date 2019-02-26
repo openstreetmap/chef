@@ -39,5 +39,6 @@ default_attributes(
 
 run_list(
   "role[iway]",
+  "role[geodns]",
   "role[tilecache]"
 )
