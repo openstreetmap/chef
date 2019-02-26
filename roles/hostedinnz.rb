@@ -18,6 +18,7 @@ default_attributes(
     }
   },
   :snmpd => {
+    :clients => ["103.106.66.28"],
     :community => "hostedinnz",
     :location => "Wellington"
   }
