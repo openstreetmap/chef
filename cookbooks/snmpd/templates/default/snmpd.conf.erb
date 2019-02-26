@@ -2,4 +2,6 @@
 
 rocommunity     <%= @communities[node[:snmpd][:community]] %>
 syslocation     <%= node[:snmpd][:location] %>
+<% if node[:snmpd][:contact] -%>
 syscontact      <%= node[:snmpd][:contact] %>
+<% end -%>

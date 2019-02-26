@@ -37,11 +37,23 @@ template "/etc/snmp/snmpd.conf" do
   notifies :restart, "service[snmpd]"
 end
 
-node[:snmpd][:clients].each do |address|
+if node[:snmpd][:clients]
+  node[:snmpd][:clients].each do |address|
+    firewall_rule "accept-snmp" do
+      action :accept
+      family "inet"
+      source "net:#{address}"
+      dest "fw"
+      proto "udp"
+      dest_ports "snmp"
+      source_ports "1024:"
+    end
+  end
+else
   firewall_rule "accept-snmp" do
     action :accept
     family "inet"
-    source "net:#{address}"
+    source "net"
     dest "fw"
     proto "udp"
     dest_ports "snmp"

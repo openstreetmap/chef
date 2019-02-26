@@ -11,6 +11,10 @@ default_attributes(
         :zone => "osm"
       }
     }
+  },
+  :snmpd => {
+    :community => "hostedinnz",
+    :location => "Wellington"
   }
 )
 
@@ -21,5 +25,6 @@ override_attributes(
 )
 
 run_list(
-  "role[nz]"
+  "role[nz]",
+  "recipe[snmpd]"
 )
