@@ -9,10 +9,10 @@ acl osmtileScrapers browser ^Apache\-HttpClient
 acl osmtileScrapers browser ^Go-http-client\/
 acl osmtileScrapers browser ^Opera\/10\.00
 acl osmtileScrapers browser ^shipxy01
-#acl osmtileScrapers browser ^OsmAnd #Victor + Email. Whitelist for 1 week
-#acl osmtileScrapers browser ^apemap #CGI143 + Email. Whitelist for 1 week
+# acl osmtileScrapers browser ^OsmAnd #Victor + Email. Whitelist for 1 week
+# acl osmtileScrapers browser ^apemap #CGI143 + Email. Whitelist for 1 week
 acl osmtileScrapers browser Firefox\/2\.0\.0\.11$
-#acl osmtileScrapers browser Firefox\/3\.5\.7$ #CGI285 + Email. Whitelist for 1 week
+acl osmtileScrapers browser Firefox\/3\.5\.7$
 acl osmtileScrapers browser Firefox\/3\.6$
 acl osmtileScrapers browser ^Mozilla\/5\.0$ #QLandkarte unwilling to set a real user-agent.
 acl osmtileScrapers browser ^Mozilla$ #Intentionally faked user-agent
@@ -25,10 +25,8 @@ acl osmtileScrapers browser MSIE.7\.0.*Windows.NT.5\.1.*2\.0\.50727.$
 acl osmtileScrapers browser MSIE.5.5
 acl osmtileScrapers browser ^LoadOSM\.exe$
 acl osmtileScrapers browser ^app_name$
-# TEMPORARY unblock of osmdroid-based apps which should be setting their unique
-# User-Agent, but aren't. Re-block on/near 2016-08-29.
-#acl osmtileScrapers browser ^osmdroid$ # app using osmdroid library not setting app-specific User-Agent
-#acl osmtileScrapers browser ^Mozilla/5\.0 \(Windows NT 5\.1\)$ # Faked User-Agent
+acl osmtileScrapers browser ^osmdroid$ # app using osmdroid library not setting app-specific User-Agent
+# acl osmtileScrapers browser ^Mozilla/5\.0 \(Windows NT 5\.1\)$ # Faked User-Agent
 acl osmtileScrapers browser Firefox\/3\.0
 acl osmtileScrapers browser Firefox\/4\.0
 acl osmtileScrapers browser Firefox\/5\.0
@@ -40,7 +38,7 @@ acl osmtileScrapers browser Firefox\/10\.0
 acl osmtileScrapers browser Firefox\/11\.0
 acl osmtileScrapers browser Firefox\/12\.0
 acl osmtileScrapers browser Firefox\/13\.0
-    
+
 acl is_fake_browser browser Firefox\/3\.0
 acl is_fake_browser browser Firefox\/4\.0
 acl is_fake_browser browser Firefox\/5\.0
@@ -106,24 +104,24 @@ acl tile_caches src <%= address %>
 <% end -%>
 
 <% if node[:squid][:version] == "2" -%>
-#Siblings
+# Siblings
 <% node[:tilecache][:tile_siblings].each do |sibling| -%>
 cache_peer <%= sibling %> sibling 3128 3130 weight=1500
 <% end -%>
 <% end -%>
 
-#Primary Parent
+# Primary Parent
 cache_peer <%= node[:tilecache][:tile_parent] %> parent 443 0 no-query originserver name=osmtileAccel login=PASS connect-timeout=120 no-digest weight=1000 ssl ssldomain=render.openstreetmap.org
 cache_peer_access osmtileAccel allow osmtile_sites
 
-#Backup Parents
+# Backup Parents
 <% @renders.each do |renders| -%>
 cache_peer <%= renders[:hostname] %>.render.openstreetmap.org parent 443 0 no-query originserver name=osmtileAccelBackup<%= renders[:hostname] %> login=PASS connect-timeout=60 no-digest weight=10 ssl ssldomain=render.openstreetmap.org
 cache_peer_access osmtileAccelBackup<%= renders[:hostname] %> allow osmtile_sites
 <% end -%>
 
-#----------------------------------
-#Create an unlimited pool for cache IP addresses
+# ----------------------------------
+# Create an unlimited pool for cache IP addresses
 acl pool_unlimited src 127.0.0.1
 <% @caches.each do |cache| -%>
 <% cache.ipaddresses(:family => :inet, :role => :external).sort.each do |address| -%>
