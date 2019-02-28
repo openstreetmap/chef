@@ -109,6 +109,7 @@ if node[:hardware][:grub][:kernel]
   package "linux-image-#{kernel_version}-generic"
   package "linux-image-extra-#{kernel_version}-generic"
   package "linux-headers-#{kernel_version}-generic"
+  package "linux-tools-#{kernel_version}-generic"
 
   boot_device = IO.popen(["df", "/boot"]).readlines.last.split.first
   boot_uuid = IO.popen(["blkid", "-o", "value", "-s", "UUID", boot_device]).readlines.first.chomp
