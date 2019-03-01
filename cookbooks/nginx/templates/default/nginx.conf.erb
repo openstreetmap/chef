@@ -18,6 +18,7 @@ http {
     default_type  application/octet-stream;
 
     server_names_hash_bucket_size 128;
+    map_hash_bucket_size 128;
 
 <% if node[:nginx][:access_log] -%>
     log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
@@ -29,7 +30,7 @@ http {
     access_log  off;
 <% end -%>
 
-    keepalive_timeout  65;
+    keepalive_timeout  30;
 
     server_tokens off;
 
