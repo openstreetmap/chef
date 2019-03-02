@@ -103,6 +103,8 @@ default_attributes(
       :master => {
         :repository => "https://git.openstreetmap.org/public/rails.git",
         :revision => "master",
+        :cgimap_repository => "git://github.com/zerebubuth/openstreetmap-cgimap.git",
+        :cgimap_revision => "master",
         :aliases => ["api06.dev.openstreetmap.org"]
       },
       :tomh => {
