@@ -3,7 +3,7 @@ description "Role applied to all servers at Catalyst"
 
 default_attributes(
   :hosted_by => "Catalyst",
-  :location => "New Zealand",
+  :location => "Hamilton, New Zealand",
   :networking => {
     :nameservers => ["202.78.244.85", "202.78.244.86", "202.78.244.87"],
     :roles => {
