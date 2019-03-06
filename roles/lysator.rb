@@ -2,6 +2,12 @@ name "lysator"
 description "Role applied to all servers at Lysator"
 
 default_attributes(
+  :accounts => {
+    :users => {
+      :aoh => { :status => :administrator },
+      :lysroot => { :status => :administrator }
+    }
+  },
   :hosted_by => "Lysator",
   :location => "Linköping, Sweden",
   :networking => {
