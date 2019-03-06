@@ -28,6 +28,12 @@ default_attributes(
         "net.netfilter.nf_conntrack_max" => "262142"
       }
     },
+    :network_local_port_range => {
+      :comment => "Increase available local port range",
+      :parameters => {
+        "net.ipv4.ip_local_port_range" => "4096 64000"
+      }
+    },
     :kernel_tfo_listen_enable => {
       :comment => "Enable TCP Fast Open for listening sockets",
       :parameters => {
