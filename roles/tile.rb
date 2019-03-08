@@ -71,7 +71,7 @@ default_attributes(
         :url => "https://planet.openstreetmap.org/historical-shapefiles/world_boundaries-spherical.tgz"
       },
       :simplified_land_polygons => {
-        :url => "http://data.openstreetmapdata.com/simplified-land-polygons-complete-3857.zip",
+        :url => "https://osmdata.openstreetmap.de/download/simplified-land-polygons-complete-3857.zip",
         :refresh => true
       },
       :admin_boundaries => {
@@ -79,15 +79,15 @@ default_attributes(
         :directory => "ne_110m_admin_0_boundary_lines_land"
       },
       :land_polygons => {
-        :url => "http://data.openstreetmapdata.com/land-polygons-split-3857.zip",
+        :url => "https://osmdata.openstreetmap.de/download/land-polygons-split-3857.zip",
         :refresh => true
       },
       :antarctica_icesheet_polygons => {
-        :url => "http://data.openstreetmapdata.com/antarctica-icesheet-polygons-3857.zip",
+        :url => "https://osmdata.openstreetmap.de/download/antarctica-icesheet-polygons-3857.zip",
         :refresh => true
       },
       :antarctica_icesheet_outlines => {
-        :url => "http://data.openstreetmapdata.com/antarctica-icesheet-outlines-3857.zip",
+        :url => "https://osmdata.openstreetmap.de/download/antarctica-icesheet-outlines-3857.zip",
         :refresh => true
       }
     },
