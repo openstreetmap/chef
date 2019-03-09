@@ -1,7 +1,7 @@
 <?php
 # DO NOT EDIT - This file is being maintained by Chef
 
-@define('CONST_Database_DSN', 'pgsql://@/<%= @dbname %>');
+@define('CONST_Database_DSN', 'pgsql:dbname=<%= @dbname %>');
 @define('CONST_Website_BaseURL', 'https://<%= @base_url %>/');
 
 <% if @flatnode_file -%>
