@@ -2,6 +2,11 @@ name "crm"
 description "Role applied to CRM server"
 
 default_attributes(
+  :accounts => {
+    :users => {
+      :stereo => { :status => :administrator }
+    }
+  },
   :exim => {
     :local_domains => ["join.osmfoundation.org"],
     :routes => {
