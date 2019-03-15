@@ -2,6 +2,11 @@ name "c3sl"
 description "Role applied to all servers at Centro de Computação Científica e Software Livre"
 
 default_attributes(
+  :accounts => {
+    :users => {
+      :c3sl => { :status => :administrator }
+    }
+  },
   :hosted_by => "Centro de Computação Científica e Software Livre, Universidade Federal do Paraná",
   :location => "Curitiba, Brazil",
   :networking => {
