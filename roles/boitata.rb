@@ -3,6 +3,12 @@ description "Master role applied to boitata"
 
 default_attributes(
   :networking => {
+    :firewall => {
+      :log => false,
+      :mark => false,
+      :raw => false,
+      :mangle => false
+    },
     :interfaces => {
       :external_ipv4 => {
         :interface => "ens3",

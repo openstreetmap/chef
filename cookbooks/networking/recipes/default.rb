@@ -185,6 +185,7 @@ template "/etc/shorewall/conntrack" do
   group "root"
   mode 0o644
   notifies :restart, "service[shorewall]"
+  only_if { node[:networking][:firewall][:raw] }
 end
 
 template "/etc/shorewall/policy" do
@@ -305,6 +306,7 @@ unless node.interfaces(:family => :inet6).empty?
     group "root"
     mode 0o644
     notifies :restart, "service[shorewall6]"
+    only_if { node[:networking][:firewall][:raw] }
   end
 
   template "/etc/shorewall6/policy" do

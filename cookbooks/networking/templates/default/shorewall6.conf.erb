@@ -28,7 +28,11 @@ FIREWALL=
 #			       L O G G I N G
 ###############################################################################
 
+<% if node[:networking][:firewall][:log] -%>
 LOG_LEVEL="info"
+<% else -%>
+LOG_LEVEL="none"
+<% end -%>
 
 BLACKLIST_LOG_LEVEL=
 
@@ -134,7 +138,11 @@ BALANCE_PROVIDERS=No
 
 BASIC_FILTERS=No
 
+<% if node[:networking][:firewall][:raw] -%>
 BLACKLIST="NEW,INVALID,UNTRACKED"
+<% else -%>
+BLACKLIST="NEW,INVALID"
+<% end -%>
 
 CLAMPMSS=No
 
@@ -156,7 +164,11 @@ EXPORTMODULES=Yes
 
 FASTACCEPT=No
 
+<% if node[:networking][:firewall][:mark] -%>
 FORWARD_CLEAR_MARK=Yes
+<% else -%>
+FORWARD_CLEAR_MARK=No
+<% end -%>
 
 HELPERS=
 
@@ -204,7 +216,11 @@ RESTORE_ROUTEMARKS=Yes
 
 SAVE_IPSETS=No
 
+<% if node[:networking][:firewall][:mangle] -%>
 TC_ENABLED=Shared
+<% else -%>
+TC_ENABLED=No
+<% end -%>
 
 TC_EXPERT=No
 
