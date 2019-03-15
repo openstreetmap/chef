@@ -160,7 +160,7 @@ munin_plugin "http_loadtime" do
 end
 
 node[:network][:interfaces].each do |ifname, ifattr|
-  if ifattr[:flags].include?("UP") && !ifattr[:flags].include?("LOOPBACK")
+  if ifattr[:flags]&.include?("UP") && !ifattr[:flags].include?("LOOPBACK")
     if node[:hardware] &&
        node[:hardware][:network] &&
        node[:hardware][:network][ifname][:device] =~ /^virtio/
