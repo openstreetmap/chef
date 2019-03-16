@@ -187,12 +187,19 @@ action :create do
               :database_params => database_params
   end
 
-  mediawiki_skin "MinervaNeue" do # ~FC005
+  # MobileFrontend extension is required by MinervaNeue skin
+  mediawiki_extension "MobileFrontend" do # ~FC005
+    site new_resource.site
+    template "mw-ext-MobileFrontend.inc.php.erb"
+  end
+
+  # MobileFrontend extension is required by MinervaNeue skin
+  mediawiki_skin "MinervaNeue" do
     site new_resource.site
     update_site false
   end
 
-  mediawiki_skin "CologneBlue" do # ~FC005
+  mediawiki_skin "CologneBlue" do
     site new_resource.site
     update_site false
   end

@@ -41,11 +41,6 @@ mediawiki_site "wiki.osmfoundation.org" do
   extra_file_extensions ["mp3"]
 end
 
-mediawiki_extension "MobileFrontend" do
-  action :delete
-  site "wiki.osmfoundation.org"
-end
-
 mediawiki_skin "osmf" do
   site "wiki.osmfoundation.org"
   repository "git://github.com/openstreetmap/mediawiki-skins-osmf.git"

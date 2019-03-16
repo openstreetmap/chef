@@ -38,11 +38,6 @@ mediawiki_site "dwg.osmfoundation.org" do
   recaptcha_private_key passwords["dwg"]["recaptcha"]
 end
 
-mediawiki_extension "MobileFrontend" do
-  site "dwg.osmfoundation.org"
-  template "mw-ext-MobileFrontend.inc.php.erb"
-end
-
 cookbook_file "/srv/dwg.osmfoundation.org/Wiki.png" do
   owner node[:mediawiki][:user]
   group node[:mediawiki][:group]
