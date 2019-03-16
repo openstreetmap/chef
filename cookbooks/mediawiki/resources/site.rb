@@ -187,11 +187,11 @@ action :create do
               :database_params => database_params
   end
 
-  mediawiki_skin "MinervaNeue" do
+  mediawiki_skin "MinervaNeue" do # ~FC005
     site new_resource.site
     update_site false
   end
-  
+
   mediawiki_skin "CologneBlue" do # ~FC005
     site new_resource.site
     update_site false
