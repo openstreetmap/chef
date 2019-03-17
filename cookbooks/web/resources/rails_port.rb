@@ -275,13 +275,20 @@ action :create do
     line
   end
 
-  file "#{rails_directory}/config/application.yml" do
-    action(lazy { File.exist?("#{rails_directory}/config/example.application.yml") ? :create : :delete })
+  file "create:#{rails_directory}/config/application.yml" do
+    path "#{rails_directory}/config/application.yml"
     owner new_resource.user
     group new_resource.group
     mode 0o664
     content application_yml
     notifies :run, "execute[#{rails_directory}/public/assets]"
+    only_if { File.exist?("#{rails_directory}/config/example.application.yml") }
+  end
+
+  file "delete:#{rails_directory}/config/application.yml" do
+    path "#{rails_directory}/config/application.yml"
+    action :delete
+    not_if { File.exist?("#{rails_directory}/config/example.application.yml") }
   end
 
   settings = new_resource.slice(
