@@ -290,7 +290,6 @@ action :create do
     "attachments_dir",
     "log_path",
     "logstash_path",
-    "memcache_servers",
     "potlatch2_key",
     "id_key",
     "oauth_key",
@@ -321,6 +320,10 @@ action :create do
     "geoip_database" => "/usr/share/GeoIP/GeoIPv6.dat",
     "trace_use_job_queue" => false
   )
+
+  if new_resource.memcache_servers
+    settings["memcache_servers"] = new_resource.memcache_servers.to_a
+  end
 
   if new_resource.gpx_dir
     settings["gpx_trace_dir"] = "#{new_resource.gpx_dir}/traces"
