@@ -283,7 +283,7 @@ action :create do
     not_if { ::File.exist?("#{rails_directory}/config/example.application.yml") }
   end
 
-  settings = new_resource.to_hash.slice(
+  settings = new_resource.to_hash.transform_keys(&:to_s).slice(
     "email_from",
     "status",
     "messages_domain",
