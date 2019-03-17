@@ -282,13 +282,13 @@ action :create do
     mode 0o664
     content application_yml
     notifies :run, "execute[#{rails_directory}/public/assets]"
-    only_if { File.exist?("#{rails_directory}/config/example.application.yml") }
+    only_if { ::File.exist?("#{rails_directory}/config/example.application.yml") }
   end
 
   file "delete:#{rails_directory}/config/application.yml" do
     path "#{rails_directory}/config/application.yml"
     action :delete
-    not_if { File.exist?("#{rails_directory}/config/example.application.yml") }
+    not_if { ::File.exist?("#{rails_directory}/config/example.application.yml") }
   end
 
   settings = new_resource.to_hash.slice(
@@ -341,7 +341,7 @@ action :create do
     mode 0o664
     content YAML.dump(settings)
     notifies :run, "execute[#{rails_directory}/public/assets]"
-    only_if { File.exist?("#{rails_directory}/config/settings.yml") }
+    only_if { ::File.exist?("#{rails_directory}/config/settings.yml") }
   end
 
   if new_resource.piwik_configuration
