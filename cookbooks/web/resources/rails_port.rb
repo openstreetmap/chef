@@ -244,14 +244,6 @@ action :create do
       line.gsub!(/^( *)#wikipedia_auth_secret:.*$/, "\\1wikipedia_auth_secret: \"#{new_resource.wikipedia_auth_secret}\"")
     end
 
-    if new_resource.mapquest_key
-      line.gsub!(/^( *)#mapquest_key:.*$/, "\\1mapquest_key: \"#{new_resource.mapquest_key}\"")
-    end
-
-    if new_resource.mapzen_valhalla_key
-      line.gsub!(/^( *)#mapzen_valhalla_key:.*$/, "\\1mapzen_valhalla_key: \"#{new_resource.mapzen_valhalla_key}\"")
-    end
-
     if new_resource.thunderforest_key
       line.gsub!(/^( *)#thunderforest_key:.*$/, "\\1thunderforest_key: \"#{new_resource.thunderforest_key}\"")
     end
