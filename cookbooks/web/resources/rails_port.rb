@@ -312,7 +312,7 @@ action :create do
     "csp_report_url"
   ).reject { |_k, v| v.nil? }.merge(
     "server_protocol" => "https",
-    "server" => new_resource.site,
+    "server_url" => new_resource.site,
     "publisher_url" => "https://plus.google.com/111953119785824514010",
     "support_email" => "support@openstreetmap.org",
     "email_return_path" => "bounces@openstreetmap.org",
