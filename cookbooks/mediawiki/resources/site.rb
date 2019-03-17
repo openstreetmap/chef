@@ -194,7 +194,7 @@ action :create do
   end
 
   # MobileFrontend extension is required by MinervaNeue skin
-  mediawiki_skin "MinervaNeue" do
+  mediawiki_skin "MinervaNeue" do # ~FC005
     site new_resource.site
     update_site false
   end
