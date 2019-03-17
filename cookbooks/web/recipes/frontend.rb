@@ -38,7 +38,8 @@ end
 
 apache_site "www.openstreetmap.org" do
   template "apache.frontend.erb"
-  variables :secret_key_base => web_passwords["secret_key_base"]
+  variables :status => node[:web][:status],
+            :secret_key_base => web_passwords["secret_key_base"]
 end
 
 template "/etc/logrotate.d/apache2" do

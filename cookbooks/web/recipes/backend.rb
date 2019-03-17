@@ -36,7 +36,8 @@ end
 
 apache_site "www.openstreetmap.org" do
   template "apache.backend.erb"
-  variables :secret_key_base => web_passwords["secret_key_base"]
+  variables :status => node[:web][:status],
+            :secret_key_base => web_passwords["secret_key_base"]
 end
 
 node.normal[:memcached][:ip_address] = node.internal_ipaddress

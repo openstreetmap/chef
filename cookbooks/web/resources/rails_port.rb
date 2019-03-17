@@ -61,8 +61,6 @@ property :github_auth_id, String
 property :github_auth_secret, String
 property :wikipedia_auth_id, String
 property :wikipedia_auth_secret, String
-property :mapquest_key, String
-property :mapzen_valhalla_key, String
 property :thunderforest_key, String
 property :totp_key, String
 property :csp_enforce, [TrueClass, FalseClass], :default => false
@@ -278,11 +276,65 @@ action :create do
   end
 
   file "#{rails_directory}/config/application.yml" do
+    action(lazy { File.exist?("#{rails_directory}/config/example.application.yml") ? :create : :delete })
     owner new_resource.user
     group new_resource.group
     mode 0o664
     content application_yml
     notifies :run, "execute[#{rails_directory}/public/assets]"
+  end
+
+  settings = new_resource.slice(
+    "email_from",
+    "status",
+    "messages_domain",
+    "attachments_dir",
+    "log_path",
+    "logstash_path",
+    "memcache_servers",
+    "potlatch2_key",
+    "id_key",
+    "oauth_key",
+    "nominatim_url",
+    "osrm_url",
+    "google_auth_id",
+    "google_auth_secret",
+    "google_openid_realm",
+    "facebook_auth_id",
+    "facebook_auth_secret",
+    "windowslive_auth_id",
+    "windowslive_auth_secret",
+    "github_auth_id",
+    "gihub_auth_secret",
+    "wikipedia_auth_id",
+    "wikipedia_auth_secret",
+    "thunderforest_key",
+    "totp_key",
+    "csp_enforce",
+    "csp_report_url"
+  ).merge(
+    "server_protocol" => "https",
+    "server" => new_resource.site,
+    "publisher_url" => "https://plus.google.com/111953119785824514010",
+    "support_email" => "support@openstreetmap.org",
+    "email_return_path" => "bounces@openstreetmap.org",
+    "geonames_username" => "openstreetmap",
+    "geoip_database" => "/usr/share/GeoIP/GeoIPv6.dat",
+    "trace_use_job_queue" => false
+  )
+
+  if new_resource.gpx_dir
+    settings["gpx_trace_dir"] = "#{new_resource.gpx_dir}/traces"
+    settings["gpx_image_dir"] = "#{new_resource.gpx_dir}/images"
+  end
+
+  file "#{rails_directory}/config/settings.local.yml" do
+    owner new_resource.user
+    group new_resource.group
+    mode 0o664
+    content YAML.dump(settings)
+    notifies :run, "execute[#{rails_directory}/public/assets]"
+    only_if { File.exist?("#{rails_directory}/config/settings.yml") }
   end
 
   if new_resource.piwik_configuration
