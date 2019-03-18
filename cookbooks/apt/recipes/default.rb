@@ -83,7 +83,7 @@ end
 apt_repository "management-component-pack" do
   action repository_actions["management-component-pack"]
   uri "https://downloads.linux.hpe.com/SDR/repo/mcp"
-  distribution "#{node[:lsb][:codename]}/current"
+  distribution "#{node[:lsb][:codename]}/current-gen9"
   components ["non-free"]
   key "C208ADDE26C2B797"
 end
