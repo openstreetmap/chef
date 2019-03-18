@@ -2,6 +2,11 @@ name "umu"
 description "Role applied to all servers at Umeå University"
 
 default_attributes(
+  :accounts => {
+    :users => {
+      :maswan => { :status => :administrator }
+    }
+  },
   :hosted_by => "Academic Computer Club, Umeå University",
   :location => "Umeå, Sweden",
   :networking => {
