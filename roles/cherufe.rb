@@ -24,6 +24,7 @@ default_attributes(
   :tilecache => {
     :tile_parent => "vinadelmar.render.openstreetmap.org",
     :tile_siblings => [
+      "boitata.openstreetmap.org",
       "ascalon.openstreetmap.org",
       "stormfly-02.openstreetmap.org",
       "jakelong.openstreetmap.org"
