@@ -37,9 +37,6 @@ iface <%= interface[:interface] %> <%= interface[:family] %> static
       pre-down /sbin/ip -f <%= interface[:family] %> route del <%= interface[:gateway] %> dev <%= interface[:interface] %>
 <% end -%>
 <% end -%>
-<% if interface[:mtu] -%>
-      mtu <%= interface[:mtu] %>
-<% end -%>
 <% if interface[:family] == "inet6" -%>
       autoconf 0
 <% end -%>

@@ -21,8 +21,19 @@
 # * node[:networking][:nameservers]
 
 require "ipaddr"
+require "yaml"
 
 network_packages = []
+
+netplan = {
+  "network" => {
+    "version" => 2,
+    "renderer" => "networkd",
+    "ethernets" => {},
+    "bonds" => {},
+    "vlans" => {}
+  }
+}
 
 node[:networking][:interfaces].each do |name, interface|
   if interface[:interface]
@@ -43,18 +54,105 @@ node[:networking][:interfaces].each do |name, interface|
 
     node.normal[:networking][:interfaces][name][:netmask] = (~IPAddr.new(interface[:address]).mask(0)).mask(prefix)
     node.normal[:networking][:interfaces][name][:network] = IPAddr.new(interface[:address]).mask(prefix)
+
+    if node[:networking][:netplan]
+      if interface[:interface] =~ /^(.*)\.(\d+)$/
+        deviceplan = netplan["network"]["vlans"][interface[:interface]] = {
+          "id" => Regexp.last_match(2).to_i,
+          "link" => Regexp.last_match(1),
+          "accept-ra" => false,
+          "addresses" => [],
+          "routes" => []
+        }
+      elsif interface[:bond]
+        deviceplan = netplan["network"]["bonds"][interface[:interface]] = {
+          "accept-ra" => false,
+          "addresses" => [],
+          "routes" => [],
+          "interfaces" => interface[:bond][:slaves],
+          "mode" => interface[:bond][:mode] || "active-backup",
+          "primary" => interface[:bond][:slaves].first,
+          "mii-monitor-interval" => interface[:bond][:miimon] || 100,
+          "down-delay" => interface[:bond][:downdelay] || 200,
+          "up-delay" => interface[:bond][:updelay] || 200
+        }
+
+        deviceplan["transmit-hash-policy"] = interface[:bond][:xmithashpolicy] if interface[:bond][:xmithashpolicy]
+        deviceplan["lacp-rate"] = interface[:bond][:lacprate] if interface[:bond][:lacprate]
+      else
+        deviceplan = netplan["network"]["ethernets"][interface[:interface]] = {
+          "accept-ra" => false,
+          "addresses" => [],
+          "routes" => []
+        }
+      end
+
+      deviceplan["addresses"].push("#{interface[:address]}/#{prefix}")
+
+      if interface[:gateway]
+        if interface[:family] == "inet"
+          default_route = "0.0.0.0/0"
+        elsif interface[:family] == "inet6"
+          default_route = "::/0"
+        end
+
+        deviceplan["routes"].push(
+          "to" => default_route,
+          "via" => interface[:gateway],
+          "metric" => interface[:metric],
+          "on-link" => true
+        )
+      end
+    end
   else
     node.rm(:networking, :interfaces, name)
   end
 end
 
-package network_packages
+if node[:networking][:netplan]
+  package "netplan.io"
 
-template "/etc/network/interfaces" do
-  source "interfaces.erb"
-  owner "root"
-  group "root"
-  mode 0o644
+  file "/etc/netplan/01-netcfg.yaml" do
+    action :delete
+  end
+
+  netplan["network"]["bonds"].each_value do |bond|
+    bond["interfaces"].each do |interface|
+      netplan["network"]["ethernets"][interface] ||= { "accept-ra" => false }
+    end
+  end
+
+  netplan["network"]["vlans"].each_value do |vlan|
+    netplan["network"]["ethernets"][vlan["link"]] ||= { "accept-ra" => false }
+  end
+
+  file "/etc/netplan/99-chef.yaml" do
+    owner "root"
+    group "root"
+    mode 0o644
+    content YAML.dump(netplan)
+  end
+
+  service "networking" do
+    action :disable
+  end
+
+  file "/etc/network/interfaces" do
+    action :delete
+  end
+
+  package "ifupdown" do
+    action :purge
+  end
+else
+  package network_packages
+
+  template "/etc/network/interfaces" do
+    source "interfaces.erb"
+    owner "root"
+    group "root"
+    mode 0o644
+  end
 end
 
 execute "hostname" do
