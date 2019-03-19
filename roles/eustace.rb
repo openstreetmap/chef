@@ -3,7 +3,6 @@ description "Master role applied to eustace"
 
 default_attributes(
   :networking => {
-    :netplan => true,
     :interfaces => {
       :internal_ipv4 => {
         :interface => "eth0.2801",
