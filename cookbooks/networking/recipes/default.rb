@@ -56,40 +56,44 @@ node[:networking][:interfaces].each do |name, interface|
     node.normal[:networking][:interfaces][name][:network] = IPAddr.new(interface[:address]).mask(prefix)
 
     if node[:networking][:netplan]
-      if interface[:interface] =~ /^(.*)\.(\d+)$/
-        deviceplan = netplan["network"]["vlans"][interface[:interface]] = {
-          "id" => Regexp.last_match(2).to_i,
-          "link" => Regexp.last_match(1),
-          "accept-ra" => false,
-          "addresses" => [],
-          "routes" => []
-        }
-      elsif interface[:bond]
-        deviceplan = netplan["network"]["bonds"][interface[:interface]] = {
-          "accept-ra" => false,
-          "addresses" => [],
-          "routes" => [],
-          "interfaces" => interface[:bond][:slaves].to_a,
-          "parameters" => {
-            "mode" => interface[:bond][:mode] || "active-backup",
-            "primary" => interface[:bond][:slaves].first,
-            "mii-monitor-interval" => interface[:bond][:miimon] || 100,
-            "down-delay" => interface[:bond][:downdelay] || 200,
-            "up-delay" => interface[:bond][:updelay] || 200
-          }
+      deviceplan = if interface[:interface] =~ /^(.*)\.(\d+)$/
+                     netplan["network"]["vlans"][interface[:interface]] ||= {
+                       "id" => Regexp.last_match(2).to_i,
+                       "link" => Regexp.last_match(1),
+                       "accept-ra" => false,
+                       "addresses" => [],
+                       "routes" => []
+                     }
+                   elsif interface[:interface] =~ /^bond\d+$/
+                     netplan["network"]["bonds"][interface[:interface]] ||= {
+                       "accept-ra" => false,
+                       "addresses" => [],
+                       "routes" => []
+                     }
+                   else
+                     netplan["network"]["ethernets"][interface[:interface]] ||= {
+                       "accept-ra" => false,
+                       "addresses" => [],
+                       "routes" => []
+                     }
+                   end
+
+      deviceplan["addresses"].push("#{interface[:address]}/#{prefix}")
+
+      if interface[:bond]
+        deviceplan["interfaces"] = interface[:bond][:slaves].to_a
+
+        deviceplan["parameters"] = {
+          "mode" => interface[:bond][:mode] || "active-backup",
+          "primary" => interface[:bond][:slaves].first,
+          "mii-monitor-interval" => interface[:bond][:miimon] || 100,
+          "down-delay" => interface[:bond][:downdelay] || 200,
+          "up-delay" => interface[:bond][:updelay] || 200
         }
 
         deviceplan["parameters"]["transmit-hash-policy"] = interface[:bond][:xmithashpolicy] if interface[:bond][:xmithashpolicy]
         deviceplan["parameters"]["lacp-rate"] = interface[:bond][:lacprate] if interface[:bond][:lacprate]
-      else
-        deviceplan = netplan["network"]["ethernets"][interface[:interface]] = {
-          "accept-ra" => false,
-          "addresses" => [],
-          "routes" => []
-        }
       end
-
-      deviceplan["addresses"].push("#{interface[:address]}/#{prefix}")
 
       if interface[:gateway]
         if interface[:family] == "inet"
