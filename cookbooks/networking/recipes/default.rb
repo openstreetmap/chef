@@ -69,7 +69,7 @@ node[:networking][:interfaces].each do |name, interface|
           "accept-ra" => false,
           "addresses" => [],
           "routes" => [],
-          "interfaces" => interface[:bond][:slaves],
+          "interfaces" => interface[:bond][:slaves].to_a,
           "mode" => interface[:bond][:mode] || "active-backup",
           "primary" => interface[:bond][:slaves].first,
           "mii-monitor-interval" => interface[:bond][:miimon] || 100,
