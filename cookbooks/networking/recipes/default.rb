@@ -108,6 +108,21 @@ node[:networking][:interfaces].each do |name, interface|
           "metric" => interface[:metric],
           "on-link" => true
         )
+
+        # This ordering relies on systemd-networkd adding routes
+        # in reverse order and will need moving before the previous
+        # route once that is fixed:
+        #
+        # https://github.com/systemd/systemd/issues/5430
+        # https://github.com/systemd/systemd/pull/10938
+        if interface[:family] == "inet6" &&
+           !interface[:network].include?(interface[:gateway]) &&
+           !IPAddr.new("fe80::/64").include?(interface[:gateway])
+          deviceplan["routes"].push(
+            "to" => interface[:gateway],
+            "scope" => "link"
+          )
+        end
       end
     end
   else
