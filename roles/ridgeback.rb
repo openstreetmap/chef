@@ -23,6 +23,7 @@ default_attributes(
     }
   },
   :networking => {
+    :netplan => true,
     :interfaces => {
       :external_ipv4 => {
         :interface => "eth0",
