@@ -123,7 +123,9 @@ if node[:networking][:netplan]
   end
 
   netplan["network"]["vlans"].each_value do |vlan|
-    netplan["network"]["ethernets"][vlan["link"]] ||= { "accept-ra" => false }
+    unless vlan["link"] =~ /^bond\d+$/
+      netplan["network"]["ethernets"][vlan["link"]] ||= { "accept-ra" => false }
+    end
   end
 
   file "/etc/netplan/99-chef.yaml" do
