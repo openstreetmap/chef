@@ -137,6 +137,10 @@ if node[:networking][:netplan]
     action :delete
   end
 
+  file "/etc/netplan/50-cloud-init.yaml" do
+    action :delete
+  end
+
   netplan["network"]["bonds"].each_value do |bond|
     bond["interfaces"].each do |interface|
       netplan["network"]["ethernets"][interface] ||= { "accept-ra" => false }
@@ -166,6 +170,14 @@ if node[:networking][:netplan]
 
   package "ifupdown" do
     action :purge
+  end
+
+  file "/etc/cloud/cloud.cfg.d/99-chef.cfg" do
+    owner "root"
+    group "root"
+    mode 0o644
+    content YAML.dump("network" => { "config" => "disabled" })
+    only_if { ::Dir.exist?("/etc/cloud/cloud.cfg.d") }
   end
 else
   package network_packages
