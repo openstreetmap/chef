@@ -70,15 +70,17 @@ node[:networking][:interfaces].each do |name, interface|
           "addresses" => [],
           "routes" => [],
           "interfaces" => interface[:bond][:slaves].to_a,
-          "mode" => interface[:bond][:mode] || "active-backup",
-          "primary" => interface[:bond][:slaves].first,
-          "mii-monitor-interval" => interface[:bond][:miimon] || 100,
-          "down-delay" => interface[:bond][:downdelay] || 200,
-          "up-delay" => interface[:bond][:updelay] || 200
+          "parameters" => {
+            "mode" => interface[:bond][:mode] || "active-backup",
+            "primary" => interface[:bond][:slaves].first,
+            "mii-monitor-interval" => interface[:bond][:miimon] || 100,
+            "down-delay" => interface[:bond][:downdelay] || 200,
+            "up-delay" => interface[:bond][:updelay] || 200
+          }
         }
 
-        deviceplan["transmit-hash-policy"] = interface[:bond][:xmithashpolicy] if interface[:bond][:xmithashpolicy]
-        deviceplan["lacp-rate"] = interface[:bond][:lacprate] if interface[:bond][:lacprate]
+        deviceplan["parameters"]["transmit-hash-policy"] = interface[:bond][:xmithashpolicy] if interface[:bond][:xmithashpolicy]
+        deviceplan["parameters"]["lacp-rate"] = interface[:bond][:lacprate] if interface[:bond][:lacprate]
       else
         deviceplan = netplan["network"]["ethernets"][interface[:interface]] = {
           "accept-ra" => false,
