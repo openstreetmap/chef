@@ -3,6 +3,7 @@ description "Master role applied to stormfly-01"
 
 default_attributes(
   :networking => {
+    :netplan => true,
     :interfaces => {
       :external_ipv4 => {
         :interface => "em1",

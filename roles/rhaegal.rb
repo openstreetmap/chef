@@ -25,6 +25,7 @@ default_attributes(
   },
   :location => "Zagreb, Croatia",
   :networking => {
+    :netplan => true,
     :interfaces => {
       :external_ipv4 => {
         :interface => "enp1s0f0",
