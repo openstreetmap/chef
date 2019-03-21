@@ -1,3 +1,7 @@
+options => {
+  listen => [ <%= node.ipaddresses(:role => :external).join(", ") %> ]
+}
+
 plugins => {
   geoip => {
     maps => {
