@@ -9,4 +9,4 @@ default[:networking][:firewall][:mangle] = true
 default[:networking][:interfaces] = {}
 default[:networking][:nameservers] = []
 default[:networking][:search] = []
-default[:networking][:resolved] = false
+default[:networking][:resolved] = true
