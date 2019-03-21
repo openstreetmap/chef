@@ -7,6 +7,7 @@ default_attributes(
     :last_address => "10.0.15.254"
   },
   :networking => {
+    :resolved => true,
     :interfaces => {
       :external_ipv4 => {
         :interface => "eth0.2800",
