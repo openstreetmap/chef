@@ -45,10 +45,6 @@ template "/etc/gdnsd/zones/geo.openstreetmap.org" do
   notifies :restart, "service[gdnsd]"
 end
 
-service "systemd-resolved" do
-  action [:disable, :stop]
-end
-
 service "gdnsd" do
   action [:enable, :start]
   supports :status => true, :restart => true, :reload => true
