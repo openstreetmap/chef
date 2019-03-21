@@ -3,7 +3,6 @@ description "Master role applied to tuatara"
 
 default_attributes(
   :networking => {
-    :netplan => true,
     :interfaces => {
       :external_ipv4 => {
         :interface => "eno1",

@@ -4,7 +4,6 @@ description "Master role applied to keizer"
 default_attributes(
   :location => "Nuremberg, Germany",
   :networking => {
-    :netplan => true,
     :interfaces => {
       :external_ipv4 => {
         :interface => "eth0",

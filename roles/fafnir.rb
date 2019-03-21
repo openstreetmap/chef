@@ -3,7 +3,6 @@ description "Master role applied to fafnir"
 
 default_attributes(
   :networking => {
-    :netplan => true,
     :interfaces => {
       :external_ipv4 => {
         :interface => "enp3s0f0",

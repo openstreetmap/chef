@@ -15,7 +15,6 @@ default_attributes(
   },
   :location => "Falkenstein, Germany",
   :networking => {
-    :netplan => true,
     :interfaces => {
       :external_ipv4 => {
         :interface => "eth0",

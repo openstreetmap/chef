@@ -3,7 +3,6 @@ description "Master role applied to chrysophylax"
 
 default_attributes(
   :networking => {
-    :netplan => true,
     :interfaces => {
       :external_ipv4 => {
         :interface => "ens160",
