@@ -173,11 +173,11 @@ if node[:networking][:netplan]
   end
 
   file "/etc/cloud/cloud.cfg.d/99-chef.cfg" do
-    owner "root"
-    group "root"
-    mode 0o644
-    content YAML.dump("network" => { "config" => "disabled" })
-    only_if { ::Dir.exist?("/etc/cloud/cloud.cfg.d") }
+    action :delete
+  end
+
+  package "cloud-init" do
+    action :purge
   end
 else
   package network_packages
