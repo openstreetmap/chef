@@ -3,6 +3,7 @@ description "Master role applied to nepomuk"
 
 default_attributes(
   :networking => {
+    :netplan => true,
     :firewall => {
       :inet => [
         {
