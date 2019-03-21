@@ -174,19 +174,52 @@ template "/etc/hosts" do
   mode 0o644
 end
 
-unless node[:networking][:nameservers].empty?
-  link "/etc/resolv.conf" do
-    action :delete
-    link_type :symbolic
-    to "/run/resolvconf/resolv.conf"
-    only_if { File.symlink?("/etc/resolv.conf") }
+if node[:networking][:resolved]
+  service "systemd-resolved" do
+    action [:enable, :start]
   end
 
-  template "/etc/resolv.conf" do
-    source "resolv.conf.erb"
+  directory "/etc/systemd/resolved.conf.d" do
+    owner "root"
+    group "root"
+    mode 0o755
+  end
+
+  template "/etc/systemd/resolved.conf.d/99-chef.conf" do
+    source "resolved.conf.erb"
     owner "root"
     group "root"
     mode 0o644
+    notifies :restart, "service[systemd-resolved]"
+  end
+
+  file "/etc/resolv.conf" do
+    action :delete
+    not_if { ::File.symlink?("/etc/resolv.conf") }
+  end
+
+  link "/etc/resolv.conf" do
+    to "../run/systemd/resolve/stub-resolv.conf"
+  end
+
+  package "resolvconf" do
+    action :purge
+  end
+else
+  unless node[:networking][:nameservers].empty?
+    link "/etc/resolv.conf" do
+      action :delete
+      link_type :symbolic
+      to "/run/resolvconf/resolv.conf"
+      only_if { File.symlink?("/etc/resolv.conf") }
+    end
+
+    template "/etc/resolv.conf" do
+      source "resolv.conf.erb"
+      owner "root"
+      group "root"
+      mode 0o644
+    end
   end
 end
 
