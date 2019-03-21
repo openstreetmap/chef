@@ -23,8 +23,6 @@
 require "ipaddr"
 require "yaml"
 
-network_packages = []
-
 netplan = {
   "network" => {
     "version" => 2,
@@ -37,9 +35,6 @@ netplan = {
 
 node[:networking][:interfaces].each do |name, interface|
   if interface[:interface]
-    network_packages |= ["vlan"] if interface[:interface] =~ /\.\d+$/
-    network_packages |= ["ifenslave"] if interface[:bond]
-
     if interface[:role] && (role = node[:networking][:roles][interface[:role]])
       if role[interface[:family]]
         node.normal[:networking][:interfaces][name][:prefix] = role[interface[:family]][:prefix]
@@ -55,74 +50,72 @@ node[:networking][:interfaces].each do |name, interface|
     node.normal[:networking][:interfaces][name][:netmask] = (~IPAddr.new(interface[:address]).mask(0)).mask(prefix)
     node.normal[:networking][:interfaces][name][:network] = IPAddr.new(interface[:address]).mask(prefix)
 
-    if node[:networking][:netplan]
-      deviceplan = if interface[:interface] =~ /^(.*)\.(\d+)$/
-                     netplan["network"]["vlans"][interface[:interface]] ||= {
-                       "id" => Regexp.last_match(2).to_i,
-                       "link" => Regexp.last_match(1),
-                       "accept-ra" => false,
-                       "addresses" => [],
-                       "routes" => []
-                     }
-                   elsif interface[:interface] =~ /^bond\d+$/
-                     netplan["network"]["bonds"][interface[:interface]] ||= {
-                       "accept-ra" => false,
-                       "addresses" => [],
-                       "routes" => []
-                     }
-                   else
-                     netplan["network"]["ethernets"][interface[:interface]] ||= {
-                       "accept-ra" => false,
-                       "addresses" => [],
-                       "routes" => []
-                     }
-                   end
+    deviceplan = if interface[:interface] =~ /^(.*)\.(\d+)$/
+                   netplan["network"]["vlans"][interface[:interface]] ||= {
+                     "id" => Regexp.last_match(2).to_i,
+                     "link" => Regexp.last_match(1),
+                     "accept-ra" => false,
+                     "addresses" => [],
+                     "routes" => []
+                   }
+                 elsif interface[:interface] =~ /^bond\d+$/
+                   netplan["network"]["bonds"][interface[:interface]] ||= {
+                     "accept-ra" => false,
+                     "addresses" => [],
+                     "routes" => []
+                   }
+                 else
+                   netplan["network"]["ethernets"][interface[:interface]] ||= {
+                     "accept-ra" => false,
+                     "addresses" => [],
+                     "routes" => []
+                   }
+                 end
 
-      deviceplan["addresses"].push("#{interface[:address]}/#{prefix}")
+    deviceplan["addresses"].push("#{interface[:address]}/#{prefix}")
 
-      if interface[:bond]
-        deviceplan["interfaces"] = interface[:bond][:slaves].to_a
+    if interface[:bond]
+      deviceplan["interfaces"] = interface[:bond][:slaves].to_a
 
-        deviceplan["parameters"] = {
-          "mode" => interface[:bond][:mode] || "active-backup",
-          "primary" => interface[:bond][:slaves].first,
-          "mii-monitor-interval" => interface[:bond][:miimon] || 100,
-          "down-delay" => interface[:bond][:downdelay] || 200,
-          "up-delay" => interface[:bond][:updelay] || 200
-        }
+      deviceplan["parameters"] = {
+        "mode" => interface[:bond][:mode] || "active-backup",
+        "primary" => interface[:bond][:slaves].first,
+        "mii-monitor-interval" => interface[:bond][:miimon] || 100,
+        "down-delay" => interface[:bond][:downdelay] || 200,
+        "up-delay" => interface[:bond][:updelay] || 200
+      }
 
-        deviceplan["parameters"]["transmit-hash-policy"] = interface[:bond][:xmithashpolicy] if interface[:bond][:xmithashpolicy]
-        deviceplan["parameters"]["lacp-rate"] = interface[:bond][:lacprate] if interface[:bond][:lacprate]
+      deviceplan["parameters"]["transmit-hash-policy"] = interface[:bond][:xmithashpolicy] if interface[:bond][:xmithashpolicy]
+      deviceplan["parameters"]["lacp-rate"] = interface[:bond][:lacprate] if interface[:bond][:lacprate]
+    end
+
+    if interface[:gateway]
+      if interface[:family] == "inet"
+        default_route = "0.0.0.0/0"
+      elsif interface[:family] == "inet6"
+        default_route = "::/0"
       end
 
-      if interface[:gateway]
-        if interface[:family] == "inet"
-          default_route = "0.0.0.0/0"
-        elsif interface[:family] == "inet6"
-          default_route = "::/0"
-        end
+      deviceplan["routes"].push(
+        "to" => default_route,
+        "via" => interface[:gateway],
+        "metric" => interface[:metric],
+        "on-link" => true
+      )
 
+      # This ordering relies on systemd-networkd adding routes
+      # in reverse order and will need moving before the previous
+      # route once that is fixed:
+      #
+      # https://github.com/systemd/systemd/issues/5430
+      # https://github.com/systemd/systemd/pull/10938
+      if interface[:family] == "inet6" &&
+         !interface[:network].include?(interface[:gateway]) &&
+         !IPAddr.new("fe80::/64").include?(interface[:gateway])
         deviceplan["routes"].push(
-          "to" => default_route,
-          "via" => interface[:gateway],
-          "metric" => interface[:metric],
-          "on-link" => true
+          "to" => interface[:gateway],
+          "scope" => "link"
         )
-
-        # This ordering relies on systemd-networkd adding routes
-        # in reverse order and will need moving before the previous
-        # route once that is fixed:
-        #
-        # https://github.com/systemd/systemd/issues/5430
-        # https://github.com/systemd/systemd/pull/10938
-        if interface[:family] == "inet6" &&
-           !interface[:network].include?(interface[:gateway]) &&
-           !IPAddr.new("fe80::/64").include?(interface[:gateway])
-          deviceplan["routes"].push(
-            "to" => interface[:gateway],
-            "scope" => "link"
-          )
-        end
       end
     end
   else
@@ -130,64 +123,35 @@ node[:networking][:interfaces].each do |name, interface|
   end
 end
 
-if node[:networking][:netplan]
-  package "netplan.io"
-
-  file "/etc/netplan/01-netcfg.yaml" do
-    action :delete
+netplan["network"]["bonds"].each_value do |bond|
+  bond["interfaces"].each do |interface|
+    netplan["network"]["ethernets"][interface] ||= { "accept-ra" => false }
   end
+end
 
-  file "/etc/netplan/50-cloud-init.yaml" do
-    action :delete
+netplan["network"]["vlans"].each_value do |vlan|
+  unless vlan["link"] =~ /^bond\d+$/
+    netplan["network"]["ethernets"][vlan["link"]] ||= { "accept-ra" => false }
   end
+end
 
-  netplan["network"]["bonds"].each_value do |bond|
-    bond["interfaces"].each do |interface|
-      netplan["network"]["ethernets"][interface] ||= { "accept-ra" => false }
-    end
-  end
+file "/etc/netplan/01-netcfg.yaml" do
+  action :delete
+end
 
-  netplan["network"]["vlans"].each_value do |vlan|
-    unless vlan["link"] =~ /^bond\d+$/
-      netplan["network"]["ethernets"][vlan["link"]] ||= { "accept-ra" => false }
-    end
-  end
+file "/etc/netplan/50-cloud-init.yaml" do
+  action :delete
+end
 
-  file "/etc/netplan/99-chef.yaml" do
-    owner "root"
-    group "root"
-    mode 0o644
-    content YAML.dump(netplan)
-  end
+file "/etc/netplan/99-chef.yaml" do
+  owner "root"
+  group "root"
+  mode 0o644
+  content YAML.dump(netplan)
+end
 
-  service "networking" do
-    action :disable
-  end
-
-  file "/etc/network/interfaces" do
-    action :delete
-  end
-
-  package "ifupdown" do
-    action :purge
-  end
-
-  file "/etc/cloud/cloud.cfg.d/99-chef.cfg" do
-    action :delete
-  end
-
-  package "cloud-init" do
-    action :purge
-  end
-else
-  package network_packages
-
-  template "/etc/network/interfaces" do
-    source "interfaces.erb"
-    owner "root"
-    group "root"
-    mode 0o644
-  end
+package "cloud-init" do
+  action :purge
 end
 
 execute "hostname" do
