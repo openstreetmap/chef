@@ -1,3 +1,4 @@
 [Resolve]
 DNS=<%= node[:networking][:nameservers].join(" ") %>
 Domains=<%= node[:networking][:search].join(" ") %>
+DNSSEC=allow-downgrade
