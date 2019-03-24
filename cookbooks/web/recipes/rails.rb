@@ -93,10 +93,6 @@ rails_port "www.openstreetmap.org" do
   csp_enforce true
 end
 
-systemd_service "rails-jobs" do
-  action :delete
-end
-
 systemd_service "rails-jobs@" do
   description "Rails job queue runner"
   type "simple"

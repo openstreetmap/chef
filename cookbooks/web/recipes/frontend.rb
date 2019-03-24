@@ -49,10 +49,6 @@ template "/etc/logrotate.d/apache2" do
   mode 0o644
 end
 
-service "rails-jobs" do
-  action [:stop, :disable]
-end
-
 service "rails-jobs@mailers" do
   action [:enable, :start]
   supports :restart => true
