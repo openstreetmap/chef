@@ -50,6 +50,10 @@ template "/etc/logrotate.d/apache2" do
 end
 
 service "rails-jobs" do
+  action [:stop, :disable]
+end
+
+service "rails-jobs@mailers" do
   action [:enable, :start]
   supports :restart => true
   subscribes :restart, "rails_port[www.openstreetmap.org]"

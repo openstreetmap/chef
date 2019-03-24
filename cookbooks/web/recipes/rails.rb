@@ -94,8 +94,13 @@ rails_port "www.openstreetmap.org" do
 end
 
 systemd_service "rails-jobs" do
+  action :delete
+end
+
+systemd_service "rails-jobs@" do
   description "Rails job queue runner"
   type "simple"
+  environment "QUEUE" => "%I"
   user "rails"
   working_directory rails_directory
   exec_start "/usr/local/bin/bundle#{ruby_version} exec rake jobs:work"
