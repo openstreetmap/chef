@@ -66,6 +66,7 @@ property :totp_key, String
 property :csp_enforce, [TrueClass, FalseClass], :default => false
 property :csp_report_url, String
 property :piwik_configuration, Hash
+property :trace_use_job_queue, [TrueClass, FalseClass], :default => false
 
 action :create do
   package %W[
@@ -309,7 +310,8 @@ action :create do
     "thunderforest_key",
     "totp_key",
     "csp_enforce",
-    "csp_report_url"
+    "csp_report_url",
+    "trace_use_job_queue"
   ).reject { |_k, v| v.nil? }.merge(
     "server_protocol" => "https",
     "server_url" => new_resource.site,
@@ -317,8 +319,7 @@ action :create do
     "support_email" => "support@openstreetmap.org",
     "email_return_path" => "bounces@openstreetmap.org",
     "geonames_username" => "openstreetmap",
-    "geoip_database" => "/usr/share/GeoIP/GeoIPv6.dat",
-    "trace_use_job_queue" => false
+    "geoip_database" => "/usr/share/GeoIP/GeoIPv6.dat"
   )
 
   if new_resource.memcache_servers

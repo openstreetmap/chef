@@ -243,6 +243,7 @@ if node[:postgresql][:clusters][:"9.5/main"]
     log_directory = "#{site_directory}/logs"
     rails_directory = "#{site_directory}/rails"
     cgimap_directory = "#{site_directory}/cgimap"
+    gpx_directory = "#{site_directory}/gpx"
 
     if details[:repository]
       site_aliases = details[:aliases] || []
@@ -273,6 +274,24 @@ if node[:postgresql][:clusters][:"9.5/main"]
         mode 0o755
       end
 
+      directory gpx_directory do
+        owner "apis"
+        group "apis"
+        mode 0o755
+      end
+
+      directory "#{gpx_directory}/traces" do
+        owner "apis"
+        group "apis"
+        mode 0o755
+      end
+
+      directory "#{gpx_directory}/images" do
+        owner "apis"
+        group "apis"
+        mode 0o755
+      end
+
       rails_port site_name do
         ruby ruby_version
         directory rails_directory
@@ -283,10 +302,12 @@ if node[:postgresql][:clusters][:"9.5/main"]
         database_port node[:postgresql][:clusters][:"9.5/main"][:port]
         database_name database_name
         database_username "apis"
+        gpx_dir gpx_directory
         log_path "#{log_directory}/rails.log"
         memcache_servers ["127.0.0.1"]
         csp_enforce true
         run_migrations true
+        trace_use_job_queue true
       end
 
       template "#{rails_directory}/config/initializers/setup.rb" do
