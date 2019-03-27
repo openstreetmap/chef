@@ -30,5 +30,6 @@ default_attributes(
 )
 
 run_list(
-  "role[equinix]"
+  "role[equinix]",
+  "role[hp-g9]"
 )
