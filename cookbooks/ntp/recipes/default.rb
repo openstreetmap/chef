@@ -17,11 +17,30 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require "socket"
+service "ntp" do
+  action [:stop, :disable]
+end
+
+package "ntp" do
+  action :purge
+end
+
+package "ntpdate" do
+  action :purge
+end
+
+if File.directory?("/etc/munin/plugins")
+  Dir.new("/etc/munin/plugins").each do |plugin|
+    next unless plugin.match?(/^ntp_/)
+
+    munin_plugin plugin do
+      action :delete
+    end
+  end
+end
 
 package %w[
-  ntp
-  ntpdate
+  chrony
   tzdata
 ]
 
@@ -33,38 +52,22 @@ execute "dpkg-reconfigure-tzdata" do
 end
 
 link "/etc/localtime" do
-  to "/usr/share/zoneinfo/#{node[:tz]}"
+  to "/usr/share/zoneinfo/#{node[:ntp][:tz]}"
   owner "root"
   group "root"
   notifies :run, "execute[dpkg-reconfigure-tzdata]", :immediately
 end
 
-service "ntp" do
-  action [:enable, :start]
-  supports :status => true, :restart => true
-end
-
-template "/etc/ntp.conf" do
-  source "ntp.conf.erb"
+template "/etc/chrony/chrony.conf" do
+  source "chrony.conf.erb"
   owner "root"
   group "root"
   mode 0o644
-  notifies :restart, "service[ntp]"
+  notifies :restart, "service[chrony]"
 end
 
-munin_plugins = %w[ntp_kernel_err ntp_kernel_pll_freq ntp_kernel_pll_off ntp_offset]
-
-munin_plugin "ntp_kernel_err"
-munin_plugin "ntp_kernel_pll_freq"
-munin_plugin "ntp_kernel_pll_off"
-munin_plugin "ntp_offset"
-
-if File.directory?("/etc/munin/plugins")
-  Dir.new("/etc/munin/plugins").each do |plugin|
-    next unless plugin.match(/^ntp_/) && !munin_plugins.include?(plugin)
-
-    munin_plugin plugin do
-      action :delete
-    end
-  end
+service "chrony" do
+  action [:enable, :start]
 end
+
+munin_plugin "chrony"

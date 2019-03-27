@@ -15,8 +15,8 @@ default_attributes(
   },
   :munin => {
     :plugins => {
-      :ntp_offset => {
-        :offset => { :warning => "100", :critical => "250" }
+      :chrony => {
+        :systime => { :warning => "100", :critical => "250" }
       }
     }
   },
