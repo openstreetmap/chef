@@ -20,6 +20,7 @@
 package %w[
   apt
   apt-transport-https
+  gnupg
   update-notifier-common
 ]
 
