@@ -50,6 +50,8 @@ node[:networking][:interfaces].each do |name, interface|
     node.normal[:networking][:interfaces][name][:netmask] = (~IPAddr.new(interface[:address]).mask(0)).mask(prefix)
     node.normal[:networking][:interfaces][name][:network] = IPAddr.new(interface[:address]).mask(prefix)
 
+    interface = node[:networking][:interfaces][name]
+
     deviceplan = if interface[:interface] =~ /^(.*)\.(\d+)$/
                    netplan["network"]["vlans"][interface[:interface]] ||= {
                      "id" => Regexp.last_match(2).to_i,
