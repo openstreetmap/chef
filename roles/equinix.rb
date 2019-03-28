@@ -27,7 +27,8 @@ default_attributes(
   :web => {
     :backends => %w[rails1 rails2 rails3],
     :fileserver => "ironbelly",
-    :readonly_database_host => "karm.ams.openstreetmap.org"
+    :readonly_database_host => "karm.ams.openstreetmap.org",
+    :primary_cluster => true
   }
 )
 
