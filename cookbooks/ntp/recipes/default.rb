@@ -17,28 +17,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-service "ntp" do
-  action [:stop, :disable]
-end
-
-package "ntp" do
-  action :purge
-end
-
-package "ntpdate" do
-  action :purge
-end
-
-if File.directory?("/etc/munin/plugins")
-  Dir.new("/etc/munin/plugins").each do |plugin|
-    next unless plugin.match?(/^ntp_/)
-
-    munin_plugin plugin do
-      action :delete
-    end
-  end
-end
-
 package %w[
   chrony
   tzdata
