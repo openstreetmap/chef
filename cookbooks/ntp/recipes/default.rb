@@ -44,6 +44,10 @@ template "/etc/chrony/chrony.conf" do
   notifies :restart, "service[chrony]"
 end
 
+service "systemd-timesyncd" do
+  action [:stop, :disable]
+end
+
 service "chrony" do
   action [:enable, :start]
 end
