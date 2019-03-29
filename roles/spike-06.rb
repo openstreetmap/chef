@@ -32,5 +32,7 @@ default_attributes(
 run_list(
   "role[equinix]",
   "role[hp-g9]",
-  "role[web-frontend]"
+  "role[web-frontend]",
+  "role[web-statistics]",
+  "role[web-cleanup]"
 )
