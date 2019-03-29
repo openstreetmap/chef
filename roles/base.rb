@@ -74,15 +74,6 @@ default_attributes(
         "net.core.default_qdisc" => "pfifo_fast"
       }
     }
-  },
-  :sysfs => {
-    :cpufreq_ondemand => {
-      :comment => "Tune the ondemand CPU frequency governor",
-      :parameters => {
-        "devices/system/cpu/cpufreq/ondemand/up_threshold" => "25",
-        "devices/system/cpu/cpufreq/ondemand/sampling_down_factor" => "100"
-      }
-    }
   }
 )
 
