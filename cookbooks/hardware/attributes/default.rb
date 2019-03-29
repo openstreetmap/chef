@@ -38,7 +38,8 @@ elsif node[:kernel][:modules].include?("i6300esb")
   default[:hardware][:watchdog] = "none"
 end
 
-if File.read("/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor").chomp == "ondemand"
+if File.exist?("sys/devices/system/cpu/cpu0/cpufreq/scaling_governor") &&
+   File.read("/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor").chomp == "ondemand"
   default[:sysfs][:cpufreq_ondemand][:comment] = "Tune the ondemand CPU frequency governor"
   default[:sysfs][:cpufreq_ondemand][:parameters][:"devices/system/cpu/cpufreq/ondemand/up_threshold"] = "25"
   default[:sysfs][:cpufreq_ondemand][:parameters][:"devices/system/cpu/cpufreq/ondemand/sampling_down_factor"] = "100"
