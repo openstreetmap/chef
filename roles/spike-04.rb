@@ -40,7 +40,7 @@ default_attributes(
 
 run_list(
   "role[bytemark]",
-  "role[web-frontend]",
+  "role[web-frontend]"
   # "role[web-gpximport]",
   # "role[web-statistics]",
   # "role[web-cleanup]"
