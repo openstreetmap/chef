@@ -26,15 +26,6 @@ default_attributes(
         :address => "2001:41c9:2:d6::22"
       }
     }
-  },
-  :sysctl => {
-    :ipv6_autoconf => {
-      :comment => "Disable IPv6 auto-configuration on internal interface",
-      :parameters => {
-        "net.ipv6.conf.bond0.autoconf" => "0",
-        "net.ipv6.conf.bond0.accept_ra" => "0"
-      }
-    }
   }
 )
 

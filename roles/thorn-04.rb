@@ -14,15 +14,6 @@ default_attributes(
         }
       }
     }
-  },
-  :sysctl => {
-    :ipv6_autoconf => {
-      :comment => "Disable IPv6 auto-configuration on internal interface",
-      :parameters => {
-        "net.ipv6.conf.bond0.autoconf" => "0",
-        "net.ipv6.conf.bond0.accept_ra" => "0"
-      }
-    }
   }
 )
 
