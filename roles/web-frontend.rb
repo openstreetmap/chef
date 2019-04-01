@@ -26,7 +26,6 @@ default_attributes(
   },
   :exim => {
     :local_domains => ["messages.openstreetmap.org"],
-    :trusted_users => ["rails"],
     :routes => {
       :messages => {
         :comment => "messages.openstreetmap.org",

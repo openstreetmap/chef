@@ -10,6 +10,9 @@ default_attributes(
       }
     }
   },
+  :exim => {
+    :trusted_users => ["rails"]
+  },
   :passenger => {
     :pool_idle_time => 3600
   },
