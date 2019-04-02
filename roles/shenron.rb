@@ -9,9 +9,6 @@ default_attributes(
       :max_spare_threads => 150
     }
   },
-  :apt => {
-    :sources => ["brightbox-ruby-ng"]
-  },
   :hardware => {
     :mcelog => {
       :enabled => false
