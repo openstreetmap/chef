@@ -247,6 +247,26 @@ else
   end
 end
 
+if status_packages.include?("cciss-vol-status")
+  template "/usr/local/bin/cciss-vol-statusd" do
+    source "cciss-vol-statusd.erb"
+    owner "root"
+    group "root"
+    mode 0o755
+    notifies :restart, "service[cciss-vol-statusd]"
+  end
+
+  systemd_service "cciss-vol-statusd" do
+    description "Check cciss_vol_status values in the background"
+    exec_start "/usr/local/bin/cciss-vol-statusd"
+    private_tmp true
+    protect_system "full"
+    protect_home true
+    no_new_privileges true
+    notifies :restart, "service[cciss-vol-statusd]"
+  end
+end
+
 ["cciss-vol-status", "mpt-status", "sas2ircu-status", "megaraid-status", "megaclisas-status", "aacraid-status"].each do |status_package|
   if status_packages.include?(status_package)
     package status_package
