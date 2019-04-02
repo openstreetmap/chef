@@ -304,7 +304,7 @@ action :create do
     "windowslive_auth_id",
     "windowslive_auth_secret",
     "github_auth_id",
-    "gihub_auth_secret",
+    "github_auth_secret",
     "wikipedia_auth_id",
     "wikipedia_auth_secret",
     "thunderforest_key",
