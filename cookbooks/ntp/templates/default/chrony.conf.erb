@@ -30,8 +30,6 @@ rtcsync
 # one second, but only in the first three clock updates.
 makestep 1 3
 
-# Enable leap second smearing
-# Using recommended options
+# Enable leap second slew
 leapsecmode slew
 maxslewrate 1000
-smoothtime 400 0.001 leaponly
