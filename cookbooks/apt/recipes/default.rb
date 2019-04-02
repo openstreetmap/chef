@@ -28,6 +28,13 @@ file "/etc/motd.tail" do
   action :delete
 end
 
+template "/etc/apt/preferences.d/99-chef" do
+  source "preferences.erb"
+  owner "root"
+  group "root"
+  mode 0o644
+end
+
 apt_update "/etc/apt/sources.list" do
   action :nothing
 end
