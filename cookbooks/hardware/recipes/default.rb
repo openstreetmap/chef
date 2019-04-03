@@ -353,6 +353,9 @@ disks = disks.map do |disk|
         munin = "#{device}-#{Regexp.last_match(1)}:#{Regexp.last_match(2)}"
       end
     end
+  elsif disk[:device] =~ %r{^/dev/(nvme\d+)n\d+$}
+    device = Regexp.last_match(1)
+    munin = device
   elsif disk[:device]
     device = disk[:device].sub("/dev/", "")
     munin = device
@@ -368,7 +371,7 @@ disks = disks.map do |disk|
   ]
 end
 
-disks = disks.compact
+disks = disks.compact.uniq
 
 if disks.count.positive?
   package "smartmontools"
