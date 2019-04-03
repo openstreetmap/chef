@@ -52,3 +52,6 @@ ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{ID_BUS}=="ata", ENV
 ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{ID_BUS}=="ata", ENV{ID_MODEL}=="ST31000340NS", RUN+="/usr/sbin/smartctl -q errorsonly -l scterc,100,100 $env{DEVNAME}"
 ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{ID_BUS}=="ata", ENV{ID_MODEL}=="HGST_HTS725050A7E630", RUN+="/usr/sbin/smartctl -q errorsonly -l scterc,100,100 $env{DEVNAME}"
 ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{ID_BUS}=="ata", ENV{ID_MODEL}=="HGST_HTE721010A9E630", RUN+="/usr/sbin/smartctl -q errorsonly -l scterc,100,100 $env{DEVNAME}"
+
+# Enable request merging for NVME devices
+ACTION=="add", SUBSYSTEM=="block", DRIVERS=="nvme", ATTR{queue/nomerges}="1"

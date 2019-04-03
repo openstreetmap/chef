@@ -41,21 +41,6 @@ default_attributes(
         "kernel.shmall" => 66 * 1024 * 1024 * 1024 / 4096
       }
     }
-  },
-  :sysfs => {
-    :md_tune => {
-      :comment => "Enable request merging for NVMe devices",
-      :parameters => {
-        "block/nvme0n1/queue/nomerges" => "1",
-        "block/nvme1n1/queue/nomerges" => "1",
-        "block/nvme2n1/queue/nomerges" => "1",
-        "block/nvme3n1/queue/nomerges" => "1",
-        "block/nvme4n1/queue/nomerges" => "1",
-        "block/nvme5n1/queue/nomerges" => "1",
-        "block/nvme6n1/queue/nomerges" => "1",
-        "block/nvme7n1/queue/nomerges" => "1"
-      }
-    }
   }
 )
 

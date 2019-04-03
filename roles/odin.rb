@@ -49,15 +49,6 @@ default_attributes(
       }
     }
   },
-  :sysfs => {
-    :md_tune => {
-      :comment => "Enable request merging for NVMe devices",
-      :parameters => {
-        "block/nvme0n1/queue/nomerges" => "1",
-        "block/nvme1n1/queue/nomerges" => "1"
-      }
-    }
-  },
   :tile => {
     :database => {
       :cluster => "10/main",
