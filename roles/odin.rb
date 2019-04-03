@@ -26,6 +26,15 @@ default_attributes(
         :address => "2001:978:2:2C::172:F"
       }
     }
+  },
+  :sysfs => {
+    :md_tune => {
+      :comment => "Enable request merging for NVMe devices",
+      :parameters => {
+        "block/nvme0n1/queue/nomerges" => "1",
+        "block/nvme1n1/queue/nomerges" => "1"
+      }
+    }
   }
 )
 
