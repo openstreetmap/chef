@@ -1,0 +1,51 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+[Unit]
+Description=<%= @description %>
+<% if @after -%>
+After=<%= Array(@after).join(" ") %>
+<% end -%>
+<% if @wants -%>
+Wants=<%= Array(@wants).join(" ") %>
+<% end -%>
+
+[Timer]
+<% if @on_active_sec -%>
+OnActiveSec=<%= @on_active_sec %>
+<% end -%>
+<% if @on_boot_sec -%>
+OnBootSec=<%= @on_boot_sec %>
+<% end -%>
+<% if @on_startup_sec -%>
+OnStartupSec=<%= @on_startup_sec %>
+<% end -%>
+<% if @on_unit_active_sec -%>
+OnUnitActiveSec=<%= @on_unit_active_sec %>
+<% end -%>
+<% if @on_unit_inactive_sec -%>
+OnUnitInactiveSec=<%= @on_unit_inactive_sec %>
+<% end -%>
+<% if @on_calendar -%>
+OnCalendar=<%= @on_calendar %>
+<% end -%>
+<% if @accuracy_sec -%>
+AccuracySec=<%= @accuracy_sec %>
+<% end -%>
+<% if @randomized_delay_sec -%>
+RandomizedDelaySec=<%= @randomized_delay_sec %>
+<% end -%>
+<% if @unit -%>
+Unit=<%= @unit %>
+<% end -%>
+<% if @persistent -%>
+Persistent=<%= @persistent %>
+<% end -%>
+<% if @wake_system -%>
+WakeSystem=<%= @wake_system %>
+<% end -%>
+<% if @remain_after_elapse -%>
+RemainAfterElapse=<%= @remain_after_elapse %>
+<% end -%>
+
+[Install]
+WantedBy=multi-user.target
