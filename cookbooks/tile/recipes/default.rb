@@ -532,11 +532,29 @@ template "/usr/local/bin/render-lowzoom" do
   mode 0o755
 end
 
-template "/etc/cron.d/render-lowzoom" do
-  source "render-lowzoom.cron.erb"
-  owner "root"
-  group "root"
-  mode 0o644
+systemd_service "render-lowzoom" do
+  description "Render low zoom tiles"
+  user "tile"
+  exec_start "/usr/local/bin/render-lowzoom"
+  private_tmp true
+  private_devices true
+  private_network true
+  protect_system "full"
+  protect_home true
+  no_new_privileges true
+end
+
+systemd_timer "render-lowzoom" do
+  description "Render low zoom tiles"
+  on_calendar "Sun *-*~07/1 01:00:00"
+end
+
+service "render-lowzoom.timer" do
+  action [:enable, :start]
+end
+
+file "/etc/cron.d/render-lowzoom" do
+  action :delete
 end
 
 package "liblockfile-simple-perl"
