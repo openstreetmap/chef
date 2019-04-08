@@ -7,11 +7,11 @@ max-lease-time 7200;
 subnet <%= interface[:network] %> netmask <%= interface[:netmask] %> {
   authoritative;
   range dynamic-bootp <%= node[:dhcpd][:first_address] %> <%= node[:dhcpd][:last_address] %>;
-#  option broadcast-address <%= interface[:broadcast] %>;
+  # option broadcast-address <%= interface[:broadcast] %>;
   option routers <%= interface[:gateway] %>;
   option domain-name "<%= @domain %>";
   option domain-name-servers <%= interface[:gateway] %>;
-  option ntp-servers <%= node[:ntp][:servers].join(", ") %>;
+  option ntp-servers <%= node[:ntp][:servers].first %>;
 }
 <% end -%>
 
