@@ -5,6 +5,7 @@ max-lease-time 7200;
 <% node.interfaces(:role => :internal).each do |interface| -%>
 
 subnet <%= interface[:network] %> netmask <%= interface[:netmask] %> {
+  authoritative;
   range dynamic-bootp <%= node[:dhcpd][:first_address] %> <%= node[:dhcpd][:last_address] %>;
 #  option broadcast-address <%= interface[:broadcast] %>;
   option routers <%= interface[:gateway] %>;
