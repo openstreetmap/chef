@@ -25,7 +25,9 @@ PathModified=<%= path %>
 <% Array(@directory_not_empty).each do |path| -%>
 DirectoryNotEmpty=<%= path %>
 <% end -%>
+<% if @unit -%>
 Unit=<%= @unit %>
+<% end -%>
 <% if @make_directory -%>
 MakeDirectory=<%= @make_directory %>
 <% end -%>
