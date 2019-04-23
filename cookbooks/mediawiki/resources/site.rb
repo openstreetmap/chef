@@ -262,6 +262,7 @@ action :create do
 
   mediawiki_extension "Interwiki" do
     site new_resource.site
+    template "mw-ext-Interwiki.inc.php.erb"
     update_site false
   end
 
