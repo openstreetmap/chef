@@ -17,8 +17,8 @@ begin
   ssl.sync_close = true
   ssl.hostname = domains.first
   ssl.connect
-rescue StandardError => error
-  puts "Error connecting to #{host}: #{error.message}"
+rescue StandardError => e
+  puts "Error connecting to #{host}: #{e.message}"
 end
 
 if ssl
@@ -30,7 +30,7 @@ if ssl
     puts "Certificate #{domains.first} on #{host} expires at #{certificate.not_after}"
   end
 
-  subject_alt_name = certificate.extensions.find { |e| e.oid == "subjectAltName" }
+  subject_alt_name = certificate.extensions.find { |ext| ext.oid == "subjectAltName" }
 
   if subject_alt_name.nil?
     puts "Certificate #{domains.first} on #{host} has no subjectAltName"
