@@ -47,7 +47,7 @@ mediawiki_site "wiki.openstreetmap.org" do
   email_sender "wiki@noreply.openstreetmap.org"
   email_sender_name "OpenStreetMap Wiki"
 
-  metanamespace "OpenStreetMap"
+  metanamespace "Wiki"
 
   recaptcha_public_key "6LdFIQATAAAAAMwtHeI8KDgPqvRbXeNYSq1gujKz"
   recaptcha_private_key passwords["recaptcha"]
