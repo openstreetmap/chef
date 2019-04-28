@@ -33,10 +33,10 @@ fi
 
 cat <<EOF >/etc/nginx/conf.d/tile_qos_rates.map
 default 8192; # Default Rate (No QoS cookie)
-"${QOS_TOKEN_STALE}" 24576; # Stale
-"${QOS_TOKEN_DEFAULT}" 24576; # Default
-"${QOS_TOKEN_OSM_STALE}" 32768; # Exclusive Stale
-"${QOS_TOKEN_OSM}" 32768; # Exclusive
+"${QOS_TOKEN_STALE}" 49152; # Stale
+"${QOS_TOKEN_DEFAULT}" 49152; # Default
+"${QOS_TOKEN_OSM_STALE}" 65536; # Exclusive Stale
+"${QOS_TOKEN_OSM}" 65536; # Exclusive
 EOF
 
 cat <<EOF >/etc/nginx/conf.d/tile_qos_cookies.map
