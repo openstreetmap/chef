@@ -25,7 +25,7 @@ default_attributes(
     :network_conntrack_max => {
       :comment => "Increase max number of connections tracked",
       :parameters => {
-        "net.netfilter.nf_conntrack_max" => "262142"
+        "net.netfilter.nf_conntrack_max" => "524288"
       }
     },
     :network_local_port_range => {

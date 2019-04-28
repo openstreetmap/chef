@@ -51,7 +51,7 @@ server {
       proxy_http_version 1.1;
       proxy_set_header Connection '';
 
-      proxy_connect_timeout 5s;
+      proxy_connect_timeout 10s;
 
       # Preserve host header.
       proxy_set_header Host $host;
@@ -79,7 +79,7 @@ server {
 
       # Allow Higher Traffic Rate from Approved User-Agents which do not support cookies (uses nginx Map)
       if ($approved_scraper) {
-        set $limit_rate 32768;
+        set $limit_rate 65536;
       }
 
       # Strip any ?query parameters from urls
