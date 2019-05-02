@@ -7,6 +7,8 @@ OpenStreetMap Foundation's Operations Working Group. We use
 [Chef](https://www.chef.io/) to automated the configuration of all of our
 servers.
 
+[OSMF Operations Working Group](https://operations.osmfoundation.org/)
+
 # Roles
 
 We make extensive use of roles to configure the servers. In general we have:
@@ -20,7 +22,7 @@ All our servers are [named after dragons](https://wiki.openstreetmap.org/wiki/Se
 
 Covers anything specific to a certain piece of hardware, like a motherboard, that could apply to multiple machines.
 
-## Location-specific roles (e.g. [ams.rb](roles/ams.rb))
+## Location-specific roles (e.g. [equinix.rb](roles/equinix.rb))
 
 These form a hierarchy of datacentres, organisations, and countries where our servers are located.
 
