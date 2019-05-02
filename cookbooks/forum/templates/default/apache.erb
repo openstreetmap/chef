@@ -13,8 +13,21 @@
 </VirtualHost>
 
 <VirtualHost *:443>
-	ServerName forum.openstreetmap.org
 	ServerAlias forum.osm.org
+	ServerAdmin webmaster@openstreetmap.org
+
+	SSLEngine on
+	SSLCertificateFile /etc/ssl/certs/forum.openstreetmap.org.pem
+	SSLCertificateKeyFile /etc/ssl/private/forum.openstreetmap.org.key
+
+	CustomLog /var/log/apache2/forum.openstreetmap.org-access.log combined
+	ErrorLog /var/log/apache2/forum.openstreetmap.org-error.log
+
+	RedirectPermanent / https://forum.openstreetmap.org/
+</VirtualHost>
+
+<VirtualHost *:443>
+	ServerName forum.openstreetmap.org
 	ServerAdmin webmaster@openstreetmap.org
 
 	SSLEngine on
