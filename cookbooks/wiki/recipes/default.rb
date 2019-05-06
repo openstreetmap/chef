@@ -60,6 +60,10 @@ mediawiki_extension "CodeEditor" do
   site "wiki.openstreetmap.org"
 end
 
+mediawiki_extension "CodeMirror" do
+  site "wiki.openstreetmap.org"
+end
+
 mediawiki_extension "Scribunto" do
   site "wiki.openstreetmap.org"
   template "mw-ext-Scribunto.inc.php.erb"
