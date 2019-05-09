@@ -8,9 +8,9 @@ default_attributes(
         :interface => "eno1",
         :role => :external,
         :family => :inet,
-        :address => "103.106.66.202",
-        :prefix => "24",
-        :gateway => "103.106.66.254"
+        :address => "114.23.141.203",
+        :prefix => "29",
+        :gateway => "114.23.141.201"
       }
     }
   },
