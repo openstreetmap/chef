@@ -17,7 +17,11 @@ OpenStreetMap::Application.config.after_initialize do
       id.save!
     end
 
-    ID_KEY = id.key
+    if Kernel.const_defined?("Settings")
+      Settings.id_key = id.key
+    else
+      ID_KEY = id.key
+    end
 
     unless potlatch = webmaster.client_applications.find_by_name("Potlatch 2")
       potlatch = webmaster.client_applications.new
@@ -27,7 +31,11 @@ OpenStreetMap::Application.config.after_initialize do
       potlatch.save!
     end
 
-    POTLATCH2_KEY = potlatch.key
+    if Kernel.const_defined?("Settings")
+      Settings.potlatch2_key = potlatch.key
+    else
+      POTLATCH2_KEY = potlatch.key
+    end
 
     unless website = webmaster.client_applications.find_by_name("Web Site")
       website = webmaster.client_applications.new
@@ -37,6 +45,10 @@ OpenStreetMap::Application.config.after_initialize do
       website.save!
     end
 
-    OAUTH_KEY = website.key
+    if Kernel.const_defined?("Settings")
+      Settings.oauth_key = website.key
+    else
+      OAUTH_KEY = website.key
+    end
   end
 end
