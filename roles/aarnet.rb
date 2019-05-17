@@ -2,6 +2,12 @@ name "aarnet"
 description "Role applied to all servers at AARNet"
 
 default_attributes(
+  :accounts => {
+    :users => {
+      :chm => { :status => :administrator },
+      :bclifford => { :status => :administrator }
+    }
+  },
   :hosted_by => "AARNet"
 )
 
