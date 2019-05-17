@@ -11,8 +11,8 @@ default_attributes(
         :family => :inet,
         :address => "138.44.68.106",
         :prefix => "30",
-        :gateway => "138.44.68.106",
-        :mtu => 9000,
+        :gateway => "138.44.68.105",
+        :mtu => 1500,
         :bond => {
           :slaves => %w[ens14f0 ens14f1]
         }
