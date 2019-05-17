@@ -76,6 +76,10 @@ node[:networking][:interfaces].each do |name, interface|
 
     deviceplan["addresses"].push("#{interface[:address]}/#{prefix}")
 
+    if interface[:mtu]
+      deviceplan["mtu"] = interface[:mtu]
+    end
+
     if interface[:bond]
       deviceplan["interfaces"] = interface[:bond][:slaves].to_a
 
