@@ -25,10 +25,10 @@ contacts admins
 
 # Ignore uncontactable hosts for twelve hours
 unknown_limit 144
-<% @clients.sort { |a,b| a[:hostname] <=> b[:hostname] }.each do |client| -%>
+<% @clients.sort { |a,b| a.name <=> b.name }.each do |client| -%>
 
-# Configure monitoring for <%= client[:fqdn] %>
-[<%= client[:hostname] %>.openstreetmap.org]
+# Configure monitoring for <%= client.name %>
+[<%= client.name %>]
 <% if Time.now - Time.at(client[:ohai_time]) > @expiry_time -%>
     update no
 <% end -%>

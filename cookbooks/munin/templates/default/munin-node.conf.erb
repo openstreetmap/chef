@@ -23,7 +23,7 @@ ignore_file \.rpm(save|new)$
 ignore_file \.pod$
 
 # Set the hostname
-host_name <%= node[:hostname] -%>.openstreetmap.org
+host_name <%= node.name %>
 
 # List on port 4949 on all interfaces
 host *
