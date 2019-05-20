@@ -17,6 +17,10 @@ log_level :info
 
 log_location "/var/log/chef/client.log"
 
+# Set the node name
+
+node_name "<%= node.name %>"
+
 # Verify SSL certificates
 
 ssl_verify_mode :verify_peer
