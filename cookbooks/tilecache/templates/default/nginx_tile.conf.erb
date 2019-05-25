@@ -36,9 +36,14 @@ map $http_user_agent $approved_scraper {
 map $http_user_agent $denied_scraper {
   default '';          # Not denied
   '~^Python\-urllib\/' 'Python';
+  '~^python\-requests\/' 'Python';
   '~^R$'               'R';
   '~^Java\/'           'Java';
   '~^tiles$'           'Unknown';
+  '~^Dalvik\/'         'Dalvik';
+  '~^runtastic'        'runtastic';
+  'Mozilla/4.0'        'Unknown';
+  'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)' 'Unknown';
 }
 
 map $http_referer $denied_referer {
