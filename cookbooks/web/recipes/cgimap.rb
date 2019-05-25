@@ -46,6 +46,7 @@ systemd_service "cgimap" do
                    "CGIMAP_USERNAME" => "cgimap",
                    "CGIMAP_PASSWORD" => db_passwords["cgimap"],
                    "CGIMAP_OAUTH_HOST" => node[:web][:database_host],
+                   "CGIMAP_UPDATE_HOST" => node[:web][:database_host],
                    "CGIMAP_PIDFILE" => "#{node[:web][:pid_directory]}/cgimap.pid",
                    "CGIMAP_LOGFILE" => "#{node[:web][:log_directory]}/cgimap.log",
                    "CGIMAP_MEMCACHE" => memcached_servers.join(","),
