@@ -28,7 +28,7 @@ end
 
 if node[:web][:readonly_database_host]
   database_host = node[:web][:readonly_database_host]
-  database_readonly = node[:web][:readonly_database_host] != node[:web][:database_host]
+  database_readonly = true
 else
   database_host = node[:web][:database_host]
   database_readonly = node[:web][:status] == "database_readonly"
