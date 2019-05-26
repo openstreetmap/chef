@@ -137,6 +137,10 @@ $wgShellLocale = "en_US.utf8";
 # Site language code, should be one of the list in ./languages/Names.php
 $wgLanguageCode = "en";
 
+// enable setting the page content language by users
+$wgPageLanguageUseDB = true;
+$wgGroupPermissions['user']['pagelang'] = true;
+
 $wgSecretKey = '<%= @node[:mediawiki][:sites][@name][:wgSecretKey] %>';
 
 # Site upgrade key. Must be set to a string (default provided) to turn on the
