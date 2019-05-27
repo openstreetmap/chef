@@ -9,13 +9,14 @@ acl osmtileScrapers browser ^Apache\-HttpClient
 acl osmtileScrapers browser ^Go-http-client\/
 acl osmtileScrapers browser ^Opera\/10\.00
 acl osmtileScrapers browser ^shipxy01
-# acl osmtileScrapers browser ^OsmAnd #Victor + Email. Whitelist for 1 week
-# acl osmtileScrapers browser ^apemap #CGI143 + Email. Whitelist for 1 week
+# acl osmtileScrapers browser ^OsmAnd # Victor + Email. Whitelist for 1 week
+# acl osmtileScrapers browser ^apemap # CGI143 + Email. Whitelist for 1 week
 acl osmtileScrapers browser Firefox\/2\.0\.0\.11$
 acl osmtileScrapers browser Firefox\/3\.5\.7$
 acl osmtileScrapers browser Firefox\/3\.6$
-acl osmtileScrapers browser ^Mozilla\/5\.0$ #QLandkarte unwilling to set a real user-agent.
-acl osmtileScrapers browser ^Mozilla$ #Intentionally faked user-agent
+acl osmtileScrapers browser ^Mozilla\/4\.0$
+acl osmtileScrapers browser ^Mozilla\/5\.0$ # QLandkarte unwilling to set a real user-agent.
+acl osmtileScrapers browser ^Mozilla$ # Intentionally faked user-agent
 acl osmtileScrapers browser ^User\-Agent
 acl osmtileScrapers browser Firefox\/0\.8$
 acl osmtileScrapers browser Firefox\/1\.0$
@@ -38,6 +39,13 @@ acl osmtileScrapers browser Firefox\/10\.0
 acl osmtileScrapers browser Firefox\/11\.0
 acl osmtileScrapers browser Firefox\/12\.0
 acl osmtileScrapers browser Firefox\/13\.0
+acl osmtileScrapers browser ^Python\-urllib\/
+acl osmtileScrapers browser ^python\-requests\/
+acl osmtileScrapers browser ^R$
+acl osmtileScrapers browser ^Java\/
+acl osmtileScrapers browser ^tiles$
+acl osmtileScrapers browser ^Dalvik\/
+acl osmtileScrapers browser ^runtastic
 
 acl is_fake_browser browser Firefox\/3\.0
 acl is_fake_browser browser Firefox\/4\.0
@@ -59,6 +67,12 @@ acl osmtileOverusers referer_regex ^https?://fastpokemap\.com/
 acl osmtileOverusers referer_regex ^https?://[^.]*\.fastpokemap\.com/
 acl osmtileOverusers referer_regex ^https?://pkget\.com/
 acl osmtileOverusers referer_regex ^https?://[^.]*\.pkget\.com/
+
+# Faked OSM referers
+acl osmtileOverusers referer_regex ^http://www\.openstreetmap\.org/?$
+acl osmtileOverusers referer_regex ^http://openstreetmap\.org/?$
+acl osmtileOverusers referer_regex ^http://www\.osm\.org/?$
+acl osmtileOverusers referer_regex ^http://osm\.org/?$
 
 http_access deny osmtile_sites osmtileOverusers
 
