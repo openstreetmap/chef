@@ -7,7 +7,7 @@ upstream tile_cache_backend {
   # Balancer: round-robin
 <% @caches.each do |cache| -%>
 <% if cache[:hostname] != node[:hostname] -%>
-<% if node[:tilecache][:tile_siblings].include? cache[:hostname] -%>
+<% if node[:tilecache][:tile_siblings].include? cache[:fqdn] -%>
 <% cache.ipaddresses(:family => :inet, :role => :external).sort.each do |address| -%>
   server <%= address %> backup; # Server <%= cache[:hostname] %>
 <% end -%>
