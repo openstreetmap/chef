@@ -68,6 +68,7 @@
   RewriteRule ^/api/0\.6/(way|relation)/[0-9]+/full$ fcgi://127.0.0.1:8000$0 [P]
   RewriteRule ^/api/0\.6/(nodes|ways|relations)$ fcgi://127.0.0.1:8000$0 [P]
   RewriteRule ^/api/0\.6/changeset/[0-9]+/download$ fcgi://127.0.0.1:8000$0 [P]
+  RewriteRule ^/api/0\.6/changeset/[0-9]+/upload$ fcgi://127.0.0.1:8000$0 [P]
 </VirtualHost>
 
 <Directory <%= node[:web][:base_directory] %>/rails/public>
