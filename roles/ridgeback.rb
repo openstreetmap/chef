@@ -55,7 +55,6 @@ default_attributes(
       "trogdor.openstreetmap.org",
       "katie.openstreetmap.org",
       "konqi.openstreetmap.org",
-      "nepomuk.openstreetmap.org",
       "gorynych.openstreetmap.org",
       "simurgh.openstreetmap.org"
     ]

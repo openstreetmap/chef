@@ -46,7 +46,6 @@ default_attributes(
     :tile_siblings => [
       "stormfly-02.openstreetmap.org",
       "ascalon.openstreetmap.org",
-      "nepomuk.openstreetmap.org",
       "katie.openstreetmap.org",
       "konqi.openstreetmap.org"
     ]

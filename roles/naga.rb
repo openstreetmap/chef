@@ -30,7 +30,6 @@ default_attributes(
     :tile_parent => "france.render.openstreetmap.org",
     :tile_siblings => [
       "noomoahk.openstreetmap.org",
-      "nepomuk.openstreetmap.org",
       "norbert.openstreetmap.org",
       "ladon.openstreetmap.org",
       "culebre.openstreetmap.org"

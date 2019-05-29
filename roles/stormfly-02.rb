@@ -27,7 +27,6 @@ default_attributes(
     :tile_siblings => [
       "ascalon.openstreetmap.org",
       "jakelong.openstreetmap.org",
-      "nepomuk.openstreetmap.org",
       "lurien.openstreetmap.org"
     ]
   }

@@ -31,7 +31,6 @@ default_attributes(
     :tile_siblings => [
       "katie.openstreetmap.org",
       "trogdor.openstreetmap.org",
-      "nepomuk.openstreetmap.org",
       "ridgeback.openstreetmap.org",
       "gorynych.openstreetmap.org",
       "simurgh.openstreetmap.org"

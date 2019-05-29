@@ -30,7 +30,6 @@ default_attributes(
     :tile_parent => "zurich.render.openstreetmap.org",
     :tile_siblings => [
       "noomoahk.openstreetmap.org",
-      "nepomuk.openstreetmap.org",
       "ladon.openstreetmap.org",
       "culebre.openstreetmap.org"
     ]

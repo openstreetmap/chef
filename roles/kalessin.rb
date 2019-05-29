@@ -29,12 +29,9 @@ default_attributes(
   :tilecache => {
     :tile_parent => "germany.render.openstreetmap.org",
     :tile_siblings => [
+      "katie.openstreetmap.org",
       "konqi.openstreetmap.org",
-      "trogdor.openstreetmap.org",
-      "nepomuk.openstreetmap.org",
-      "ridgeback.openstreetmap.org",
-      "gorynych.openstreetmap.org",
-      "simurgh.openstreetmap.org"
+      "keizer.openstreetmap.org"
     ]
   }
 )
