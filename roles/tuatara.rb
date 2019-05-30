@@ -22,9 +22,7 @@ default_attributes(
     :tile_parent => "wellington.render.openstreetmap.org",
     :tile_siblings => [
       "waima.openstreetmap.org",
-      "longma.openstreetmap.org",
-      "storfly-02.openstreetmap.org",
-      "jakelong.openstreetmap.org"
+      "longma.openstreetmap.org"
     ]
   }
 )

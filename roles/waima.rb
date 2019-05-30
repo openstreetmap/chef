@@ -23,9 +23,7 @@ default_attributes(
     :tile_parent => "hamilton.render.openstreetmap.org",
     :tile_siblings => [
       "tuatara.openstreetmap.org",
-      "longma.openstreetmap.org",
-      "storfly-02.openstreetmap.org",
-      "jakelong.openstreetmap.org"
+      "longma.openstreetmap.org"
     ]
   }
 )
