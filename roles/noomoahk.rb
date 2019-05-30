@@ -29,7 +29,7 @@ default_attributes(
   :tilecache => {
     :tile_parent => "france.render.openstreetmap.org",
     :tile_siblings => [
-      "necrosan.openstreetmap.org",
+      # "necrosan.openstreetmap.org", # IO Overloaded
       "nepomuk.openstreetmap.org",
       # "noomoahk.openstreetmap.org",
       "norbert.openstreetmap.org",
