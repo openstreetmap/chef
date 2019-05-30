@@ -31,7 +31,6 @@ default_attributes(
       "trogdor.openstreetmap.org",
       "katie.openstreetmap.org",
       "konqi.openstreetmap.org",
-      "ridgeback.openstreetmap.org",
       "gorynych.openstreetmap.org"
     ]
   }
