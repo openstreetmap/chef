@@ -46,6 +46,7 @@ map $http_user_agent $approved_scraper {
 
 map $http_user_agent $denied_scraper {
   default                0; # Not denied
+  ''                     1; # No User-Agent Set
   '~^Python\-urllib\/'   1; # Library Default
   '~^python\-requests\/' 1; # Library Default
   '~^node\-fetch\/'      1; # Library Default
