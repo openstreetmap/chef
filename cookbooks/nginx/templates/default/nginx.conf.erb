@@ -44,12 +44,6 @@ http {
     resolver <%= @resolvers.join(" ") %>;
     resolver_timeout 5s;
 
-    ssl_session_tickets on;
-    ssl_session_timeout 1h;
-    ssl_session_ticket_key /var/run/nginx-ephemeral/nginx_session_ticket_curr;
-    ssl_session_ticket_key /var/run/nginx-ephemeral/nginx_session_ticket_prev;
-    ssl_session_ticket_key /var/run/nginx-ephemeral/nginx_session_ticket_next;
-
     <% if node['nginx']['cache']['fastcgi']['enable'] -%>
     fastcgi_cache_path /var/cache/nginx/fastcgi-cache levels=1:2 keys_zone=<%= node['nginx']['cache']['fastcgi']['keys_zone'] %> inactive=<%= node['nginx']['cache']['fastcgi']['inactive'] %> max_size=<%= node['nginx']['cache']['fastcgi']['max_size'] %>;
     <% end -%>
