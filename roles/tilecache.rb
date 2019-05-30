@@ -12,6 +12,9 @@ default_attributes(
   :apt => {
     :sources => ["nginx"]
   },
+  :networking => {
+    :tcp_fastopen_key => "tile"
+  },
   :nginx => {
     :access_log => false
   },
