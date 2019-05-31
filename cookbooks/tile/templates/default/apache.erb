@@ -2,7 +2,7 @@
 
 <VirtualHost *:443>
   # Basic server configuration
-  ServerName <%= node[:fqdn] %>
+  ServerName <%= node.name %>
   ServerAlias tile.openstreetmap.org
   ServerAlias render.openstreetmap.org
   ServerAdmin webmaster@openstreetmap.org
@@ -12,8 +12,8 @@
   #
   SSLEngine on
   SSLProxyEngine on
-  SSLCertificateFile /etc/ssl/certs/<%= node[:fqdn] %>.pem
-  SSLCertificateKeyFile /etc/ssl/private/<%= node[:fqdn] %>.key
+  SSLCertificateFile /etc/ssl/certs/<%= node.name %>.pem
+  SSLCertificateKeyFile /etc/ssl/private/<%= node.name %>.key
 
   # Configure location of static files and CGI scripts
   DocumentRoot /srv/tile.openstreetmap.org/html
@@ -38,7 +38,7 @@
   Header set Access-Control-Allow-Origin "*"
 
   # Add diagnostics header to identify render server
-  Header set X-TileRender "<%= node[:hostname] %>"
+  Header set X-TileRender "<%= node.name %>"
 
   # Remove Proxy request header to mitigate https://httpoxy.org/
   RequestHeader unset Proxy early
@@ -62,7 +62,7 @@
 
 <VirtualHost *:80>
   # Basic server configuration
-  ServerName <%= node[:fqdn] %>
+  ServerName <%= node.name %>
   ServerAlias tile.openstreetmap.org
   ServerAlias render.openstreetmap.org
   ServerAdmin webmaster@openstreetmap.org
@@ -86,7 +86,7 @@
   Header set Access-Control-Allow-Origin "*"
 
   # Add diagnostics header to identify render server
-  Header set X-TileRender "<%= node[:hostname] %>"
+  Header set X-TileRender "<%= node.name %>"
 
   # Remove Proxy request header to mitigate https://httpoxy.org/
   RequestHeader unset Proxy early
