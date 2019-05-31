@@ -86,7 +86,7 @@ map $http_user_agent $limit_http_pragma {
 }
 
 server {
-    listen       443 ssl fastopen=2048 http2 default_server;
+    listen       443 ssl deferred backlog=16384 reuseport fastopen=2048 http2 default_server;
     server_name  localhost;
 
     proxy_buffers 8 64k;
