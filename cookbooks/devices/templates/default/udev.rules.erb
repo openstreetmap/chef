@@ -55,3 +55,6 @@ ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{ID_BUS}=="ata", ENV
 
 # Enable request merging for NVME devices
 ACTION=="add", SUBSYSTEM=="block", DRIVERS=="nvme", ATTR{queue/nomerges}="1"
+
+# Increase readahead on virtio block devices
+ACTION=="add", SUBSYSTEM=="block", DRIVERS=="virtio_blk", ATTR{queue/read_ahead_kb}="512"
