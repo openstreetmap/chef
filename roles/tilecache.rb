@@ -48,6 +48,13 @@ default_attributes(
       :parameters => {
         "vm.swappiness" => "30"
       }
+    },
+    :sched_wakeup => {
+      :comment => "Tune scheduler",
+      :parameters => {
+        "kernel.sched_min_granularity_ns" => "10000000",
+        "kernel.sched_wakeup_granularity_ns" => "15000000"
+      }
     }
   }
 )
