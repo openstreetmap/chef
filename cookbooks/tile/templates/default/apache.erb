@@ -37,6 +37,9 @@
   # will always work and can be cached
   Header set Access-Control-Allow-Origin "*"
 
+  # Add diagnostics header to identify render server
+  Header set X-TileRender "<%= node[:hostname] %>"
+
   # Remove Proxy request header to mitigate https://httpoxy.org/
   RequestHeader unset Proxy early
 
@@ -81,6 +84,9 @@
   # Always set Access-Control-Allow-Origin so that simple CORS requests
   # will always work and can be cached
   Header set Access-Control-Allow-Origin "*"
+
+  # Add diagnostics header to identify render server
+  Header set X-TileRender "<%= node[:hostname] %>"
 
   # Remove Proxy request header to mitigate https://httpoxy.org/
   RequestHeader unset Proxy early
