@@ -31,3 +31,7 @@ default[:civicrm][:extensions][:mailchimp][:revision] = "v2.0.1"
 default[:civicrm][:extensions][:username][:name] = "org.openstreetmap.username"
 default[:civicrm][:extensions][:username][:repository] = "git://github.com/grischard/org.openstreetmap.username.git"
 default[:civicrm][:extensions][:username][:revision] = "master"
+
+default[:civicrm][:extensions][:donotsendreportemail][:name] = "org.civicrm.donotsendreportemail"
+default[:civicrm][:extensions][:donotsendreportemail][:repository] = "git://github.com/pradpnayak/org.civicrm.donotsendreportemail.git"
+default[:civicrm][:extensions][:donotsendreportemail][:revision] = "master"
