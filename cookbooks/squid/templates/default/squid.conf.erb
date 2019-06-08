@@ -25,7 +25,9 @@ cache_effective_user proxy
 cache_effective_group proxy
 
 #FIXME - configurable
-cache_dir <%= node[:squid][:cache_dir] %>
+<% Array(node[:squid][:cache_dir]).each do |cache_dir| -%>
+cache_dir <%= cache_dir %>
+<% end -%>
 <% if node[:squid][:version] == "2" -%>
 cache_swap_log /var/spool/squid/%s
 <% end -%>
