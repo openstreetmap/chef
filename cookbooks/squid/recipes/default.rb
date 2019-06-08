@@ -62,17 +62,20 @@ directory "/etc/squid/squid.conf.d" do
   mode 0o755
 end
 
-if node[:squid][:cache_dir] =~ /^coss (\S+) /
-  cache_dir = File.dirname(Regexp.last_match(1))
-elsif node[:squid][:cache_dir] =~ /^\S+ (\S+) /
-  cache_dir = Regexp.last_match(1)
-end
+Array(node[:squid][:cache_dir]).each do |cache_dir|
+  if cache_dir =~ /^coss (\S+) /
+    cache_dir = File.dirname(Regexp.last_match(1))
+  elsif cache_dir =~ /^\S+ (\S+) /
+    cache_dir = Regexp.last_match(1)
+  end
 
-directory cache_dir do
-  owner "proxy"
-  group "proxy"
-  mode 0o750
-  recursive true
+  directory cache_dir do
+    owner "proxy"
+    group "proxy"
+    mode 0o750
+    recursive true
+    notifies :restart, "service[squid]"
+  end
 end
 
 systemd_tmpfile "/var/run/squid" do
@@ -102,7 +105,6 @@ end
 service "squid" do
   action [:enable, :start]
   subscribes :restart, "systemd_service[squid]"
-  subscribes :restart, "directory[#{cache_dir}]"
   subscribes :reload, "template[/etc/squid/squid.conf]"
   subscribes :reload, "template[/etc/resolv.conf]"
 end
