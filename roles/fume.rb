@@ -15,13 +15,13 @@ default_attributes(
     }
   },
   :squid => {
-    :version => 3,
+    :version => 4,
     :cache_mem => "4096 MB",
     :cache_dir => [
-      "rock /store/squid/rock-4096 50000 swap-timeout=300 max-swap-rate=50 slot-size=4096 max-size=3996",
-      "rock /store/squid/rock-8192 15000 swap-timeout=300 max-swap-rate=50 slot-size=8192 max-size=8092",
-      "rock /store/squid/rock-16384 25000 swap-timeout=300 max-swap-rate=50 slot-size=16384 max-size=16284",
-      "rock /store/squid/rock-32768 35000 swap-timeout=300 max-swap-rate=50 slot-size=32768 max-size=262144"
+      "rock /store/squid/rock-4096 50000 slot-size=4096 max-size=3996",
+      "rock /store/squid/rock-8192 15000 slot-size=8192 max-size=8092",
+      "rock /store/squid/rock-16384 25000 slot-size=16384 max-size=16284",
+      "rock /store/squid/rock-32768 35000 slot-size=32768 max-size=262144"
     ]
   },
   :tilecache => {
