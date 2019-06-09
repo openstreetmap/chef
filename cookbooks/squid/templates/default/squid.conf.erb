@@ -1,5 +1,8 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
+#configure host name
+visible_hostname <%= node.name %>
+
 #FIXME - configurable
 cache_mem  <%= node[:squid][:cache_mem] %>
 
