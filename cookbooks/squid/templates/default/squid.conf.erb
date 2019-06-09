@@ -12,7 +12,7 @@ icp_port 3130
 log_icp_queries off
 
 #FIXME - configurable
-<% if node[:squid][:version] == "2" -%>
+<% if node[:squid][:version] < 3 -%>
 http_port 80 accel defaultsite=tile.openstreetmap.org tcpkeepalive=60,10,6 http11
 <% else -%>
 http_port 80 accel no-vhost defaultsite=tile.openstreetmap.org tcpkeepalive=60,10,6
@@ -28,7 +28,7 @@ cache_effective_group proxy
 <% Array(node[:squid][:cache_dir]).each do |cache_dir| -%>
 cache_dir <%= cache_dir %>
 <% end -%>
-<% if node[:squid][:version] == "2" -%>
+<% if node[:squid][:version] < 3 -%>
 cache_swap_log /var/spool/squid/%s
 <% end -%>
 
@@ -50,7 +50,7 @@ persistent_request_timeout 1 minutes
 
 negative_ttl 15 seconds
 half_closed_clients off
-<% if node[:squid][:version] == "2" -%>
+<% if node[:squid][:version] < 3 -%>
 pipeline_prefetch on
 <% else -%>
 pipeline_prefetch 1
@@ -62,13 +62,13 @@ connect_timeout 20 seconds
 client_lifetime 1 hours
 
 collapsed_forwarding on
-<% if node[:squid][:version] == "2" -%>
+<% if node[:squid][:version] < 3 -%>
 refresh_stale_hit 300 seconds
 <% end -%>
 
 #Recommended minimum configuration:
 #----------------------------------
-<% if node[:squid][:version] == "2" -%>
+<% if node[:squid][:version] < 3 -%>
 acl all src all
 acl manager proto cache_object
 acl localhost src 127.0.0.1/32
@@ -103,7 +103,7 @@ http_access deny purge
 forwarded_for on
 follow_x_forwarded_for allow localhost
 
-<% if node[:squid][:version] == "2" -%>
+<% if node[:squid][:version] < 3 -%>
 logformat openstreetmap %ts.%03tu %tr %>a %Ss/%03Hs %<st %rm %rp %Sh/%<A %mt "%{Referer}>h" "%{User-Agent}>h"
 access_log <%= node[:squid][:access_log] %>
 <% else -%>
@@ -115,7 +115,7 @@ cache_store_log none
 buffered_logs on
 client_db off
 strip_query_terms off
-<% if node[:squid][:version] == "3" -%>
+<% if node[:squid][:version] > 2 -%>
 # Work around bug in squid 3 that causes log_fqdn to be
 # turned on by some of the (unused by us) default formats:
 # http://lists.squid-cache.org/pipermail/squid-users/2016-February/thread.html#8999

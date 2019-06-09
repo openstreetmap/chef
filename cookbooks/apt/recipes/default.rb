@@ -88,6 +88,11 @@ apt_repository "squid3" do
   uri "ppa:osmadmins/squid3"
 end
 
+apt_repository "squid4" do
+  action repository_actions["squid4"]
+  uri "ppa:osmadmins/squid4"
+end
+
 apt_repository "management-component-pack" do
   action repository_actions["management-component-pack"]
   uri "https://downloads.linux.hpe.com/SDR/repo/mcp"

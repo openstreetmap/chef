@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-if node[:squid][:version] == "3"
+if node[:squid][:version] >= 3
   apt_package "squid" do
     action :unlock
   end
