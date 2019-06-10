@@ -86,6 +86,7 @@ action :create do
     libxslt1-dev
     libmemcached-dev
     libffi-dev
+    libgd-dev
   ]
 
   package %w[
