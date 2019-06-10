@@ -1,5 +1,5 @@
-acl osmtile_thishost dstdomain <%= node[:fqdn] %>
-acl osmtile_sites dstdomain <%= node[:fqdn] %> a.tile.openstreetmap.org b.tile.openstreetmap.org c.tile.openstreetmap.org tile.openstreetmap.org a.tile.osm.org b.tile.osm.org c.tile.osm.org tile.osm.org
+acl osmtile_thishost dstdomain <%= node.name %>
+acl osmtile_sites dstdomain <%= node.name %> a.tile.openstreetmap.org b.tile.openstreetmap.org c.tile.openstreetmap.org tile.openstreetmap.org a.tile.osm.org b.tile.osm.org c.tile.osm.org tile.osm.org
 acl osmtiles_png urlpath_regex .png$
 
 acl osmtileScrapers browser ^$
@@ -128,7 +128,7 @@ cache_peer <%= sibling %> sibling 3128 3130 weight=1500
 <% if node[:squid][:version] < 4 -%>
 cache_peer <%= node[:tilecache][:tile_parent] %> parent 443 0 no-query originserver name=osmtileAccel login=PASS connect-timeout=120 no-digest weight=1000 ssl ssldomain=render.openstreetmap.org
 <% else -%>
-cache_peer <%= node[:tilecache][:tile_parent] %> parent 443 0 no-query originserver name=osmtileAccel login=PASS connect-timeout=120 no-digest weight=1000 tls ssldomain=render.openstreetmap.org
+cache_peer <%= node[:tilecache][:tile_parent] %> parent 443 0 no-query originserver name=osmtileAccel login=PASS connect-timeout=120 no-digest weight=1000 tls tlsdomain=render.openstreetmap.org
 <% end -%>
 cache_peer_access osmtileAccel allow osmtile_sites
 
@@ -137,7 +137,7 @@ cache_peer_access osmtileAccel allow osmtile_sites
 <% if node[:squid][:version] < 4 -%>
 cache_peer <%= renders[:hostname] %>.render.openstreetmap.org parent 443 0 no-query originserver name=osmtileAccelBackup<%= renders[:hostname] %> login=PASS connect-timeout=60 no-digest weight=10 ssl ssldomain=render.openstreetmap.org
 <% else -%>
-cache_peer <%= renders[:hostname] %>.render.openstreetmap.org parent 443 0 no-query originserver name=osmtileAccelBackup<%= renders[:hostname] %> login=PASS connect-timeout=60 no-digest weight=10 tls ssldomain=render.openstreetmap.org
+cache_peer <%= renders[:hostname] %>.render.openstreetmap.org parent 443 0 no-query originserver name=osmtileAccelBackup<%= renders[:hostname] %> login=PASS connect-timeout=60 no-digest weight=10 tls tlsdomain=render.openstreetmap.org
 <% end -%>
 cache_peer_access osmtileAccelBackup<%= renders[:hostname] %> allow osmtile_sites
 <% end -%>
