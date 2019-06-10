@@ -91,6 +91,7 @@ rails_port "www.openstreetmap.org" do
   thunderforest_key web_passwords["thunderforest_key"]
   totp_key web_passwords["totp_key"]
   csp_enforce true
+  trace_use_job_queue true
 end
 
 systemd_service "rails-jobs@" do
