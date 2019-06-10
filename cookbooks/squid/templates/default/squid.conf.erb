@@ -64,7 +64,9 @@ request_timeout 90 seconds
 connect_timeout 20 seconds
 client_lifetime 1 hours
 
+<% if node[:squid][:version] < 4 -%>
 collapsed_forwarding on
+<% end -%>
 <% if node[:squid][:version] < 3 -%>
 refresh_stale_hit 300 seconds
 <% end -%>
