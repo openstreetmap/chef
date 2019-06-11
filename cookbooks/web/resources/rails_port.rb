@@ -87,6 +87,8 @@ action :create do
     libmemcached-dev
     libffi-dev
     libgd-dev
+    libarchive-dev
+    libbz2-dev
   ]
 
   package %w[
