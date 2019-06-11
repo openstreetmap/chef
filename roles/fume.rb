@@ -2,6 +2,9 @@ name "fume"
 description "Master role applied to fume"
 
 default_attributes(
+  :hardware => {
+    :shm_size => "6g"
+  },
   :networking => {
     :interfaces => {
       :external_ipv4 => {

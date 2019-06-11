@@ -535,3 +535,12 @@ unless Dir.glob("/sys/class/hwmon/hwmon*").empty?
     notifies :run, "execute[/etc/sensors.d/chef.conf]"
   end
 end
+
+if node[:hardware][:shm_size]
+  mount "/dev/shm" do
+    action [:mount, :enable]
+    device "tmpfs"
+    fstype "tmpfs"
+    options "rw,nosuid,nodev,size=#{node[:hardware][:shm_size]}"
+  end
+end
