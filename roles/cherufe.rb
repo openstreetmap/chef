@@ -34,6 +34,5 @@ default_attributes(
 
 run_list(
   "role[altavoz]",
-  "role[geodns]",
   "role[tilecache]"
 )
