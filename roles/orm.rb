@@ -2,9 +2,6 @@ name "orm"
 description "Master role applied to orm"
 
 default_attributes(
-  :apt => {
-    :sources => ["postgresql"]
-  },
   :devices => {
     :ssd_samsung => {
       :comment => "Tune scheduler for SSD",
@@ -54,37 +51,12 @@ default_attributes(
       }
     }
   },
-  :postgresql => {
-    :versions => ["10"],
-    :settings => {
-      :defaults => {
-        :shared_buffers => "8GB",
-        :maintenance_work_mem => "7144MB",
-        :effective_cache_size => "16GB"
-      }
-    }
-  },
   :sysctl => {
     :postgres => {
       :comment => "Increase shared memory for postgres",
       :parameters => {
         "kernel.shmmax" => 9 * 1024 * 1024 * 1024,
         "kernel.shmall" => 9 * 1024 * 1024 * 1024 / 4096
-      }
-    }
-  },
-  :tile => {
-    :database => {
-      :cluster => "10/main",
-      :postgis => "2.4"
-    },
-    :node_file => "/store/database/nodes",
-    :styles => {
-      :default => {
-        :tile_directories => [
-          { :name => "/store/tiles/default-low", :min_zoom => 0, :max_zoom => 17 },
-          { :name => "/store/tiles/default-high", :min_zoom => 18, :max_zoom => 19 }
-        ]
       }
     }
   }
@@ -98,6 +70,5 @@ override_attributes(
 
 run_list(
   "role[equinix]",
-  "role[tyan-s7010]",
-  "role[tile]"
+  "role[tyan-s7010]"
 )
