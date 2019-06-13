@@ -56,6 +56,29 @@ service "gdnsd" do
   supports :status => true, :restart => true, :reload => true
 end
 
+systemd_service "gdnsd-reload" do
+  description "Reload gdnsd configuration"
+  type "simple"
+  user "root"
+  exec_start "/bin/systemctl reload-or-restart gdnsd"
+  standard_output "null"
+  private_tmp true
+  private_devices true
+  protect_system "full"
+  protect_home true
+  no_new_privileges true
+end
+
+systemd_path "gdnsd-reload" do
+  description "Reload gdnsd configuration"
+  path_changed "/etc/gdnsd/config.d"
+end
+
+service "gdnsd-reload.path" do
+  action [:enable, :start]
+  subscribes :restart, "systemd_path[gdnsd-reload]"
+end
+
 firewall_rule "accept-dns-udp" do
   action :accept
   source "net"
