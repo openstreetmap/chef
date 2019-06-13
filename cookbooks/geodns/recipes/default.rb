@@ -29,6 +29,12 @@ execute "geoipdate" do
   not_if { ::File.exist?("/var/lib/GeoIP/GeoLite2-Country.mmdb") }
 end
 
+directory "/etc/gdnsd/config.d" do
+  owner "nobody"
+  group "nogroup"
+  mode 0o755
+end
+
 template "/etc/gdnsd/config" do
   source "config.erb"
   owner "root"

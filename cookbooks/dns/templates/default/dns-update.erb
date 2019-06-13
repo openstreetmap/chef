@@ -4,11 +4,12 @@
 
 umask 0002
 
-export RSYNC_PASSWORD=<%= @passwords["rsync"] %>
-export PINGDOM_USERNAME=pingdom@openstreetmap.org
-export PINGDOM_PASSWORD=<%= @passwords["pingdom"] %>
-export STATUSCAKE_USERNAME=OpenStreetMap
-export STATUSCAKE_APIKEY=<%= @passwords["statuscake"] %>
+export RSYNC_PASSWORD="<%= @passwords["rsync"] %>"
+export GEODNS_SERVERS="<%= @geoservers.join(" ") %>"
+export PINGDOM_USERNAME="pingdom@openstreetmap.org"
+export PINGDOM_PASSWORD="<%= @passwords["pingdom"] %>"
+export STATUSCAKE_USERNAME="OpenStreetMap"
+export STATUSCAKE_APIKEY="<%= @passwords["statuscake"] %>"
 
 cd /var/lib/dns
 
@@ -19,4 +20,4 @@ fi
 
 git pull -q
 
-make update
+make --jobs update

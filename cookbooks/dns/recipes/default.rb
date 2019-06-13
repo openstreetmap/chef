@@ -20,10 +20,14 @@
 include_recipe "git"
 include_recipe "apache"
 
+geoservers = search(:node, "roles:geodns").collect(&:name).sort
+
 passwords = data_bag_item("dns", "passwords")
 
 package %w[
   make
+  parallel
+  rsync
   perl
   libxml-treebuilder-perl
   libxml-writer-perl
@@ -88,7 +92,7 @@ template "/usr/local/bin/dns-update" do
   owner "root"
   group "git"
   mode 0o750
-  variables :passwords => passwords
+  variables :passwords => passwords, :geoservers => geoservers
 end
 
 execute "dns-update" do
@@ -117,7 +121,7 @@ template "/usr/local/bin/dns-check" do
   owner "root"
   group "git"
   mode 0o750
-  variables :passwords => passwords
+  variables :passwords => passwords, :geoservers => geoservers
 end
 
 template "/etc/cron.d/dns" do
