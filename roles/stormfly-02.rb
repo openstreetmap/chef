@@ -25,6 +25,7 @@ default_attributes(
   :tilecache => {
     :tile_parent => "corvallis.render.openstreetmap.org",
     :tile_siblings => [
+      "azure.openstreetmap.org",
       "ascalon.openstreetmap.org",
       "jakelong.openstreetmap.org",
       "lurien.openstreetmap.org"

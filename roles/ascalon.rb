@@ -22,6 +22,7 @@ default_attributes(
     :tile_parent => "montreal.render.openstreetmap.org",
     :tile_siblings => [
       "stormfly-02.openstreetmap.org",
+      "azure.openstreetmap.org",
       "jakelong.openstreetmap.org"
     ]
   }
