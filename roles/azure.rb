@@ -31,7 +31,7 @@ default_attributes(
     :cache_dir => "coss /store/squid/coss-01 128000 block-size=8192 max-size=262144 membufs=80"
   },
   :tilecache => {
-    :tile_parent => "pittsburgh.render.openstreetmap.org",
+    :tile_parent => "usa.render.openstreetmap.org",
     :tile_siblings => [
       "stormfly-02.openstreetmap.org",
       "ascalon.openstreetmap.org",
