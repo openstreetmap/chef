@@ -2,6 +2,11 @@ name "teraswitch"
 description "Role applied to all servers at TeraSwitch Networks"
 
 default_attributes(
+  :accounts => {
+    :users => {
+      :sysadmin => { :status => :administrator }
+    }
+  },
   :hosted_by => "TeraSwitch Networks",
   :location => "Pittsburgh, Pennsylvania",
   :networking => {
