@@ -430,6 +430,13 @@ action :create do
     update_site false
   end
 
+  mediawiki_extension "MultiMaps" do
+    site new_resource.site
+    template "mw-ext-MultiMaps.inc.php.erb"
+    reference "master"
+    update_site false
+  end
+
   mediawiki_extension "Mantle" do
     site new_resource.site
     update_site false

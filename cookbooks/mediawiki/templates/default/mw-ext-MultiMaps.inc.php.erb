@@ -1,0 +1,17 @@
+<?php
+# DO NOT EDIT - This file is being maintained by Chef
+
+require_once "$IP/extensions/MultiMaps/MultiMaps.php";
+
+# Array of String. Array containing all the mapping services that will be made available to the user.
+# First value - default service, which will be used if the service is not in the parameters
+# Values may be a valid name of class based on class BaseMapService or some string and an array if they 
+# denote different tiles within a BaseMapService
+$egMultiMaps_MapServices = [
+  'Leaflet',
+  'transport' => [
+    'service' => 'Leaflet',
+    'attribution' => '&copy; <a href="https://osm.org/copyright">OpenStreetMap contributors</a>. Tiles courtesy of <a href="https://www.thunderforest.com/" target="_blank">Andy Allan</a>',
+    'source' => 'https://tile.thunderforest.com/transport/{z}/{x}/{y}.png',
+  ],
+];
