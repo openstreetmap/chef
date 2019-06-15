@@ -99,6 +99,13 @@ mediawiki_extension "TimedMediaHandler" do
   site "wiki.openstreetmap.org"
 end
 
+mediawiki_extension "MultiMaps" do
+  site "wiki.openstreetmap.org"
+  template "mw-ext-MultiMaps.inc.php.erb"
+  template_cookbook "wiki"
+  variables :thunderforest_key => passwords["thunderforest"]
+end
+
 cookbook_file "/srv/wiki.openstreetmap.org/osm_logo_wiki.png" do
   owner node[:mediawiki][:user]
   group node[:mediawiki][:group]
