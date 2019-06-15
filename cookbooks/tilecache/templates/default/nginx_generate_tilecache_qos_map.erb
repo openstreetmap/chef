@@ -40,7 +40,7 @@ default 8192; # Default Rate (No QoS cookie)
 EOF
 
 cat <<EOF >/etc/nginx/conf.d/tile_qos_cookies.map
-default 'qos_token=${QOS_TOKEN_DEFAULT}; Max-Age=${VALID_TOKEN}; Domain=openstreetmap.org; Path=/'; # Cookie Domain per RFC6265
+default '_osm_totp_token=${QOS_TOKEN_DEFAULT}; Max-Age=${VALID_TOKEN}; Domain=openstreetmap.org; Path=/'; # Cookie Domain per RFC6265
 "${QOS_TOKEN_DEFAULT}" ''; # Do not Set-Cookie. # Default
 "${QOS_TOKEN_OSM_STALE}" ''; # Do not Set-Cookie. # Exclusive Stale
 "${QOS_TOKEN_OSM}" ''; # Do not Set-Cookie. # Exclusive

@@ -29,12 +29,12 @@ geo $tile_cache {
 }
 
 # Rates table based on current cookie value
-map $cookie_qos_token $limit_rate_qos {
+map $cookie__osm_totp_token $limit_rate_qos {
   include /etc/nginx/conf.d/tile_qos_rates.map;
 }
 
 # Set-Cookie table based on current cookie value
-map $cookie_qos_token $cookie_qos_token_set {
+map $cookie__osm_totp_token $cookie_qos_token_set {
   include /etc/nginx/conf.d/tile_qos_cookies.map;
 }
 
