@@ -120,31 +120,8 @@
   <Location /images/>
     ExpiresDefault "access plus 10 years"
   </Location>
-  <Location /javascripts/>
-    ExpiresDefault "access plus 10 years"
-  </Location>
   <Location /openlayers/>
     ExpiresDefault "access plus 7 days"
-  </Location>
-  <Location /stylesheets/>
-    ExpiresDefault "access plus 10 years"
-  </Location>
-
-  #
-  # Set expiry for Potlatch 1
-  #
-  <Location /potlatch/>
-    ExpiresDefault "access plus 7 days"
-  </Location>
-
-  #
-  # Set expiry for Potlatch 2
-  #
-  <Location /potlatch2/>
-    ExpiresByType application/x-shockwave-flash "access plus 1 day"
-    ExpiresByType application/xml "access plus 1 day"
-    ExpiresByType text/css "access plus 1 day"
-    ExpiresByType image/png "access plus 7 days"
   </Location>
 
   #
