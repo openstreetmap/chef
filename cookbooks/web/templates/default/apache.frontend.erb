@@ -95,7 +95,6 @@
   # Set expiry for assets
   #
   <Location /assets/>
-    Header unset Last-Modified
     Header unset ETag
     FileETag None
 
@@ -106,7 +105,6 @@
   # Set expiry for attachments
   #
   <Location /attachments/>
-    Header unset Last-Modified
     Header unset ETag
     FileETag None
 
