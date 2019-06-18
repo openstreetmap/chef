@@ -291,14 +291,16 @@
 
   RewriteCond "%{HTTP:Accept-encoding}" "gzip"
   RewriteCond "%{REQUEST_FILENAME}\.gz" -s
-  RewriteRule "^(.*)\.(css|js|json|svg)$" "$1\.$2\.gz" [QSA]
+  RewriteRule "^(.*)\.(css|ico|js|json|svg|xml)$" "$1\.$2\.gz" [QSA]
 
   RewriteRule "\.css\.gz$" "-" [T=text/css,E=no-gzip:1]
+  RewriteRule "\.ico\.gz$"  "-" [T=image/vnd.microsoft.icon,E=no-gzip:1]
   RewriteRule "\.js\.gz$"  "-" [T=text/javascript,E=no-gzip:1]
   RewriteRule "\.json\.gz$"  "-" [T=application/json,E=no-gzip:1]
   RewriteRule "\.svg\.gz$"  "-" [T=image/svg+xml,E=no-gzip:1]
+  RewriteRule "\.xml\.gz$"  "-" [T=application/xml,E=no-gzip:1]
 
-  <FilesMatch "(\.js\.gz|\.json\.gz|\.css\.gz|\.svg\.gz)$">
+  <FilesMatch "\.(css|ico|js|json|svg|xml)\.gz$">
     Header append Content-Encoding gzip
     Header append Vary Accept-Encoding
   </FilesMatch>
