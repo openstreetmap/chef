@@ -31,4 +31,23 @@
 
 <Directory /srv/piwik.openstreetmap.org>
 	Require all granted
+
+	ExpiresActive On
+	RewriteEngine on
+
+	RewriteCond "%{HTTP:Accept-encoding}" "gzip"
+	RewriteCond "%{REQUEST_FILENAME}\.gz" -s
+	RewriteRule "^(.*)\.js" "$1\.js\.gz" [QSA]
+
+	RewriteRule "\.js\.gz$"  "-" [T=text/javascript,E=no-gzip:1]
+
+	<FilesMatch "\.js\.gz$">
+		Header append Content-Encoding gzip
+		Header append Vary Accept-Encoding
+	</FilesMatch>
+
+	<FilesMatch "(\.js|\.js\.gz)$">
+		ExpiresDefault "access plus 1 week"
+		Header set Cache-Control "max-age=604800"
+	</FilesMatch>
 </Directory>

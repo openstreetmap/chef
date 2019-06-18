@@ -33,7 +33,9 @@ package "php-apcu"
 
 package "geoipupdate"
 
+apache_module "expires"
 apache_module "php7.2"
+apache_module "rewrite"
 
 version = node[:piwik][:version]
 
@@ -54,6 +56,14 @@ execute "unzip-piwik-#{version}" do
   user "root"
   group "root"
   not_if { File.exist?("/opt/piwik-#{version}/piwik") }
+end
+
+execute "/opt/piwik-#{version}/piwik/piwik.js" do
+  command "gzip -k -9 /opt/piwik-#{version}/piwik/piwik.js"
+  cwd "/opt/piwik-#{version}"
+  user "root"
+  group "root"
+  not_if { File.exist?("/opt/piwik-#{version}/piwik/piwik.js.gz") }
 end
 
 directory "/opt/piwik-#{version}/piwik/config" do
