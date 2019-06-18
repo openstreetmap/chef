@@ -95,10 +95,11 @@
   # Set expiry for assets
   #
   <Location /assets/>
-    Header unset ETag
-    FileETag None
+    Header unset Last-Modified
+    FileETag Size
 
     ExpiresDefault "access plus 1 year"
+    Header set Cache-Control "immutable, max-age=31536000"
   </Location>
 
   #
