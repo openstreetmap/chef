@@ -291,7 +291,7 @@
 
   RewriteCond "%{HTTP:Accept-encoding}" "gzip"
   RewriteCond "%{REQUEST_FILENAME}\.gz" -s
-  RewriteRule "^(.*)\.(css|js|svg)" "$1\.$2\.gz" [QSA]
+  RewriteRule "^(.*)\.(css|js|svg)$" "$1\.$2\.gz" [QSA]
 
   RewriteRule "\.css\.gz$" "-" [T=text/css,E=no-gzip:1]
   RewriteRule "\.js\.gz$"  "-" [T=text/javascript,E=no-gzip:1]
