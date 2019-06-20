@@ -67,6 +67,7 @@ property :csp_enforce, [TrueClass, FalseClass], :default => false
 property :csp_report_url, String
 property :piwik_configuration, Hash
 property :trace_use_job_queue, [TrueClass, FalseClass], :default => false
+property :diary_feed_delay, Integer
 
 action :create do
   package %W[
@@ -314,7 +315,8 @@ action :create do
     "totp_key",
     "csp_enforce",
     "csp_report_url",
-    "trace_use_job_queue"
+    "trace_use_job_queue",
+    "diary_feed_delay"
   ).reject { |_k, v| v.nil? }.merge(
     "server_protocol" => "https",
     "server_url" => new_resource.site,
