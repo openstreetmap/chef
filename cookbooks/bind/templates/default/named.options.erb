@@ -2,11 +2,17 @@
 
 acl "osm" {
 	127.0.0.1/32;
+<% node.interfaces(:family => :inet).each do |interface| -%>
+        <%= interface[:network] %>/<%= interface[:prefix] %>;
+<% end -%>
 <% @ipv4_clients.sort.each do |address| -%>
 	<%= address %>/32;
 <% end -%>
 
 	::1/128;
+<% node.interfaces(:family => :inet6).each do |interface| -%>
+        <%= interface[:network] %>/<%= interface[:prefix] %>;
+<% end -%>
 <% @ipv6_clients.sort.each do |address| -%>
 	<%= address %>/128;
 <% end -%>
