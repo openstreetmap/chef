@@ -50,7 +50,8 @@ override_attributes(
         :prefix => "64",
         :gateway => "fe80::1"
       }
-    }
+    },
+    :nameservers => ["89.16.162.20", "2001:41c9:2:d6::20"]
   }
 )
 
