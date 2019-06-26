@@ -2,6 +2,9 @@ name "ridley"
 description "Master role applied to ridley"
 
 default_attributes(
+  :bind => {
+    :clients => "ucl"
+  },
   :dhcpd => {
     :first_address => "10.0.15.1",
     :last_address => "10.0.15.254"

@@ -5,6 +5,9 @@ default_attributes(
   :apt => {
     :sources => ["ubuntugis-unstable"]
   },
+  :bind => {
+    :clients => "equinix"
+  },
   :dhcpd => {
     :first_address => "10.0.63.1",
     :last_address => "10.0.63.254"

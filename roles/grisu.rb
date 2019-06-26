@@ -2,6 +2,9 @@ name "grisu"
 description "Master role applied to grisu"
 
 default_attributes(
+  :bind => {
+    :clients => "bytemark"
+  },
   :networking => {
     :interfaces => {
       :internal_ipv4 => {
