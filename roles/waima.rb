@@ -23,6 +23,7 @@ default_attributes(
     :tile_parent => "hamilton.render.openstreetmap.org",
     :tile_siblings => [
       "tuatara.openstreetmap.org",
+      "balerion.openstreetmap.org",
       "longma.openstreetmap.org"
     ]
   }

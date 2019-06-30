@@ -22,6 +22,7 @@ default_attributes(
     :tile_parent => "wellington.render.openstreetmap.org",
     :tile_siblings => [
       "waima.openstreetmap.org",
+      "balerion.openstreetmap.org",
       "longma.openstreetmap.org"
     ]
   }

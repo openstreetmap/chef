@@ -8,7 +8,11 @@ default_attributes(
       :bclifford => { :status => :administrator }
     }
   },
-  :hosted_by => "AARNet"
+  :hosted_by => "AARNet",
+  :location => "Carlton, Victoria, Australia",
+  :networking => {
+    :nameservers => ["202.158.207.1", "202.158.207.2"]
+  }
 )
 
 override_attributes(

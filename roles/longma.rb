@@ -32,7 +32,12 @@ default_attributes(
     :cache_dir => "coss /store/squid/coss-01 128000 block-size=8192 max-size=262144 membufs=80"
   },
   :tilecache => {
-    :tile_parent => "hsinchu.render.openstreetmap.org"
+    :tile_parent => "hsinchu.render.openstreetmap.org",
+    :tile_siblings => [
+      "balerion.openstreetmap.org",
+      "waima.openstreetmap.org",
+      "tuatara.openstreetmap.org"
+    ]
   }
 )
 

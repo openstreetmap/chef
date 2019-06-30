@@ -5,7 +5,6 @@ default_attributes(
   :apt => {
     :sources => ["postgresql"]
   },
-  :location => "Carlton, Victoria, Australia",
   :networking => {
     :interfaces => {
       :external_ipv4 => {
@@ -19,11 +18,7 @@ default_attributes(
           :slaves => %w[ens14f0 ens14f1]
         }
       }
-    },
-    :nameservers => [
-      "202.158.207.1",
-      "202.158.207.2"
-    ]
+    }
   },
   :postgresql => {
     :versions => ["10"],
