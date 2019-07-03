@@ -106,21 +106,6 @@ template "/etc/cron.daily/munin-backup" do
   mode 0o755
 end
 
-# simple shell script to dump RRD data to a file
-cookbook_file "/usr/local/bin/rrddump" do
-  source "rrddump.sh"
-  owner "root"
-  group "root"
-  mode 0o755
-end
-
-template "/etc/cron.d/rrddump" do
-  source "rrddump.cron.erb"
-  owner "root"
-  group "root"
-  mode 0o755
-end
-
 munin_plugin "munin_stats"
 munin_plugin "munin_update"
 munin_plugin "munin_rrdcached"
