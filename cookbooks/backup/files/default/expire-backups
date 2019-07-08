@@ -18,6 +18,15 @@ my $dir = shift;
 my $prefix = shift;
 my @dates;
 
+if ($prefix)
+{
+    $prefix = "${prefix}-";
+}
+else
+{
+    $prefix = "(?:.*-)?";
+}
+
 for my $day (0 .. $days - 1)
 {
     push(@dates, sprintf("%04d-%02d-%02d", Subtract_Delta_Days(Today(), $day)));
@@ -34,8 +43,8 @@ for my $month (0 .. $months - 1)
 }
 
 my $dates = join("|", @dates);
-my $match = qr/^${prefix}-\d{4}-\d{2}-\d{2}\./;
-my $keep = qr/^${prefix}-(?:${dates})\./;
+my $match = qr/^${prefix}\d{4}-\d{2}-\d{2}\./;
+my $keep = qr/^${prefix}(?:${dates})\./;
 
 opendir(DIR, "$dir") || die "Can't open ${dir}: $!";
 
