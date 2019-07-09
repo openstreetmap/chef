@@ -58,6 +58,42 @@ git "/srv/forum.openstreetmap.org/html/" do
   notifies :reload, "service[apache2]"
 end
 
+remote_file "/var/cache/chef/midnight-flat-responsive_v1.0.zip" do
+  action :create_if_missing
+  source "https://fluxbb.org/resources/styles/midnight-flat-responsive/releases/1.0/midnight-flat-responsive_v1.0.zip"
+  owner "root"
+  group "root"
+  mode 0o644
+  backup false
+end
+
+execute "/var/cache/chef/midnight-flat-responsive_v1.0.zip" do
+  action :nothing
+  command "unzip -qq /var/cache/chef/midnight-flat-responsive_v1.0.zip Midnight.css Midnight/*"
+  cwd "/srv/forum.openstreetmap.org/html/style"
+  user "forum"
+  group "forum"
+  subscribes :run, "remote_file[/var/cache/chef/midnight-flat-responsive_v1.0.zip]", :immediately
+end
+
+remote_file "/var/cache/chef/victory-responsive-fluxbb-style_v1.0.2.zip" do
+  action :create_if_missing
+  source "https://fluxbb.org/resources/styles/victory-responsive-fluxbb-style/releases/1.0.2/victory-responsive-fluxbb-style_v1.0.2.zip"
+  owner "root"
+  group "root"
+  mode 0o644
+  backup false
+end
+
+execute "/var/cache/chef/victory-responsive-fluxbb-style_v1.0.2.zip" do
+  action :nothing
+  command "unzip -qq /var/cache/chef/victory-responsive-fluxbb-style_v1.0.2.zip Victory.css Victory/*"
+  cwd "/srv/forum.openstreetmap.org/html/style"
+  user "forum"
+  group "forum"
+  subscribes :run, "remote_file[/var/cache/chef/victory-responsive-fluxbb-style_v1.0.2.zip]", :immediately
+end
+
 directory "/srv/forum.openstreetmap.org/html/cache/" do
   owner "www-data"
   group "www-data"
