@@ -68,6 +68,9 @@ property :csp_report_url, String
 property :piwik_configuration, Hash
 property :trace_use_job_queue, [TrueClass, FalseClass], :default => false
 property :diary_feed_delay, Integer
+property :storage_configuration, Hash
+property :storage_service, String, :default => "local"
+property :storage_url, String
 
 action :create do
   package %W[
@@ -316,7 +319,9 @@ action :create do
     "csp_enforce",
     "csp_report_url",
     "trace_use_job_queue",
-    "diary_feed_delay"
+    "diary_feed_delay",
+    "storage_service",
+    "storage_url"
   ).reject { |_k, v| v.nil? }.merge(
     "server_protocol" => "https",
     "server_url" => new_resource.site,
@@ -343,6 +348,21 @@ action :create do
     content YAML.dump(settings)
     notifies :run, "execute[#{rails_directory}/public/assets]"
     only_if { ::File.exist?("#{rails_directory}/config/settings.yml") }
+  end
+
+  storage_configuration = new_resource.storage_configuration || {
+    "local" => {
+      "service" => "Disk",
+      "root" => "#{rails_directory}/storage"
+    }
+  }
+
+  file "#{rails_directory}/config/storage.yml" do
+    owner new_resource.user
+    group new_resource.group
+    mode 0o664
+    content YAML.dump(storage_configuration)
+    notifies :run, "execute[#{rails_directory}/public/assets]"
   end
 
   if new_resource.piwik_configuration

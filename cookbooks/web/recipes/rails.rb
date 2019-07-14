@@ -52,6 +52,21 @@ rails_directory = "#{node[:web][:base_directory]}/rails"
 
 piwik = data_bag_item("web", "piwik")
 
+storage = {
+  "aws" => {
+    "service" => "S3",
+    "access_key_id" => "AKIASQUXHPE7AMJQRFOS",
+    "secret_access_key" => web_passwords["aws_key"],
+    "region" => "eu-west-1",
+    "bucket" => "openstreetmap-user-avatars",
+    "use_dualstack_endpoint" => true,
+    "upload" => {
+      "acl" => "public-read",
+      "cache_control" => "public, max-age=31536000, immutable"
+    }
+  }
+}
+
 rails_port "www.openstreetmap.org" do
   ruby ruby_version
   directory rails_directory
@@ -93,6 +108,9 @@ rails_port "www.openstreetmap.org" do
   csp_enforce true
   trace_use_job_queue true
   diary_feed_delay 12
+  storage_configuration storage
+  storage_service "aws"
+  storage_url "https://openstreetmap-user-avatars.s3.dualstack.eu-west-1.amazonaws.com"
 end
 
 systemd_service "rails-jobs@" do
