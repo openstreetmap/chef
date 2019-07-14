@@ -68,7 +68,7 @@ property :csp_report_url, String
 property :piwik_configuration, Hash
 property :trace_use_job_queue, [TrueClass, FalseClass], :default => false
 property :diary_feed_delay, Integer
-property :storage_configuration, Hash
+property :storage_configuration, Hash, :default => {}
 property :storage_service, String, :default => "local"
 property :storage_url, String
 
@@ -350,12 +350,12 @@ action :create do
     only_if { ::File.exist?("#{rails_directory}/config/settings.yml") }
   end
 
-  storage_configuration = new_resource.storage_configuration || {
+  storage_configuration = new_resource.storage_configuration.merge(
     "local" => {
       "service" => "Disk",
       "root" => "#{rails_directory}/storage"
     }
-  }
+  )
 
   file "#{rails_directory}/config/storage.yml" do
     owner new_resource.user
