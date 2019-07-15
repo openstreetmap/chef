@@ -80,6 +80,7 @@ config = edit_file "/opt/otrs-#{version}/Kernel/Config.pm.dist" do |line|
   line.gsub!(/^( *\$Self->{DatabaseDSN} = "DBI:mysql:)/, "#\\1")
   line.gsub!(/^#( *\$Self->{DatabaseDSN} = "DBI:Pg:.*;host=)/, "\\1")
   line.gsub!(/^( *)# (\$Self->{CheckMXRecord} = 0)/, "\\1\\2")
+  line.gsub!(/^( *)# \$Self->{SessionUseCookie} = 0/, "\\1$Self->{SessionCheckRemoteIP} = 0")
 
   line
 end
