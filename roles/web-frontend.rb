@@ -37,7 +37,10 @@ default_attributes(
         :user => "rails",
         :group => "rails",
         :home_directory => "/srv/www.openstreetmap.org/rails",
-        :path => "/bin:/usr/bin:/usr/local/bin"
+        :path => "/bin:/usr/bin:/usr/local/bin",
+        :environment => {
+          "RAILS_ENV" => "production"
+        }
       }
     }
   }
