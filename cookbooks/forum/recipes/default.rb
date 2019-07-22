@@ -58,24 +58,6 @@ git "/srv/forum.openstreetmap.org/html/" do
   notifies :reload, "service[apache2]"
 end
 
-file "/srv/forum.openstreetmap.org/html/style/Midnight.css" do
-  action :delete
-end
-
-directory "/srv/forum.openstreetmap.org/html/style/Midnight" do
-  action :delete
-  recursive true
-end
-
-file "/srv/forum.openstreetmap.org/html/style/Victory.css" do
-  action :delete
-end
-
-directory "/srv/forum.openstreetmap.org/html/style/Victory" do
-  action :delete
-  recursive true
-end
-
 remote_file "/var/cache/chef/air3_v0.6.zip" do
   action :create_if_missing
   source "https://fluxbb.org/resources/styles/air3/releases/0.6/air3_v0.6.zip"
