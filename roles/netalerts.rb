@@ -4,6 +4,7 @@ description "Role applied to all servers at NetAlerts"
 default_attributes(
   :hosted_by => "NetAlerts",
   :location => "Montréal, Canada",
+  :timezone => "America/Montreal",
   :networking => {
     :nameservers => [
       "209.172.41.202",

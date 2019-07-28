@@ -4,6 +4,7 @@ description "Role applied to all servers at prgmr.com"
 default_attributes(
   :hosted_by => "prgmr.com",
   :location => "San Francisco, California",
+  :timezone => "PST8PDT",
   :networking => {
     :nameservers => ["8.8.4.4", "65.19.174.2", "65.19.175.2"],
     :roles => {

@@ -10,6 +10,7 @@ default_attributes(
   },
   :hosted_by => "AARNet",
   :location => "Carlton, Victoria, Australia",
+  :timezone => "Australia/Melbourne",
   :networking => {
     :nameservers => ["202.158.207.1", "202.158.207.2"]
   }

@@ -9,6 +9,7 @@ default_attributes(
   },
   :hosted_by => "TeraSwitch Networks",
   :location => "Pittsburgh, Pennsylvania",
+  :timezone => "EST5EDT",
   :networking => {
     :nameservers => [
       "1.1.1.1",

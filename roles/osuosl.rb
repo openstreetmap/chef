@@ -9,6 +9,7 @@ default_attributes(
   },
   :hosted_by => "OSUOSL",
   :location => "Corvallis, Oregon",
+  :timezone => "PST8PDT",
   :networking => {
     :nameservers => ["8.8.8.8", "8.8.4.4"],
     :roles => {

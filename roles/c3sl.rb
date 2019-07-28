@@ -9,6 +9,7 @@ default_attributes(
   },
   :hosted_by => "Centro de Computação Científica e Software Livre, Universidade Federal do Paraná",
   :location => "Curitiba, Brazil",
+  :timezone => "America/Sao_Paulo",
   :networking => {
     :nameservers => ["200.17.202.3", "200.236.31.1"],
     :roles => {
