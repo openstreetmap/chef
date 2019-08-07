@@ -42,13 +42,8 @@ service "rsyslog" do
   supports :status => true, :restart => true, :reload => true
 end
 
-# Remove unused base package
-package "mlocate" do
-  action :purge
-end
-
-# Remove ubuntu "desktop" vestigal package
-package "whoopsie" do
+# Remove some unused and unwanted packages
+package %w[mlocate nano whoopsie] do
   action :purge
 end
 
