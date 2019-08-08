@@ -20,12 +20,11 @@
 default_action :create
 
 property :service, String, :name_property => true
-property :description, String, :required => true
+property :dropin, String
+property :description, String
 property :after, [String, Array]
 property :wants, [String, Array]
-property :type, String,
-         :default => "simple",
-         :is => %w[simple forking oneshot dbus notify idle]
+property :type, String, :is => %w[simple forking oneshot dbus notify idle]
 property :limit_nofile, Integer
 property :limit_as, [Integer, String]
 property :limit_cpu, [Integer, String]
@@ -38,7 +37,7 @@ property :user, String
 property :group, String
 property :working_directory, String
 property :exec_start_pre, String
-property :exec_start, String, :required => true
+property :exec_start, String
 property :exec_start_post, String
 property :exec_stop, String
 property :exec_reload, String
@@ -65,6 +64,10 @@ property :pid_file, String
 action :create do
   service_variables = new_resource.to_hash
 
+  unless new_resource.dropin
+    service_variables[:type] ||= "simple"
+  end
+
   if new_resource.environment_file.is_a?(Hash)
     template "/etc/default/#{new_resource.service}" do
       cookbook "systemd"
@@ -78,21 +81,29 @@ action :create do
     service_variables[:environment_file] = "/etc/default/#{new_resource.service}"
   end
 
-  template "/etc/systemd/system/#{new_resource.service}.service" do
+  if new_resource.dropin
+    directory dropin_directory do
+      owner "root"
+      group "root"
+      mode 0o755
+    end
+  end
+
+  template config_name do
     cookbook "systemd"
     source "service.erb"
     owner "root"
     group "root"
     mode 0o644
     variables service_variables
+    notifies :run, "execute[systemctl-reload]"
   end
 
-  execute "systemctl-reload-#{new_resource.service}.service" do
+  execute "systemctl-reload" do
     action :nothing
     command "systemctl daemon-reload"
     user "root"
     group "root"
-    subscribes :run, "template[/etc/systemd/system/#{new_resource.service}.service]"
   end
 end
 
@@ -102,15 +113,29 @@ action :delete do
     only_if { new_resource.environment_file.is_a?(Hash) }
   end
 
-  file "/etc/systemd/system/#{new_resource.service}.service" do
+  file config_name do
     action :delete
+    notifies :run, "execute[systemctl-reload]"
   end
 
-  execute "systemctl-reload-#{new_resource.service}.service" do
+  execute "systemctl-reload" do
     action :nothing
     command "systemctl daemon-reload"
     user "root"
     group "root"
-    subscribes :run, "file[/etc/systemd/system/#{new_resource.service}.service]"
+  end
+end
+
+action_class do
+  def dropin_directory
+    "/etc/systemd/system/#{new_resource.service}.service.d"
+  end
+
+  def config_name
+    if new_resource.dropin
+      "#{dropin_directory}/#{new_resource.dropin}.conf"
+    else
+      "/etc/systemd/system/#{new_resource.service}.service"
+    end
   end
 end

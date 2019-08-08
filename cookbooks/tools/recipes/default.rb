@@ -53,19 +53,16 @@ file "/etc/init.d/screen-cleanup" do
   action :delete
 end
 
-# Create drop in directory for cron service
-directory "/etc/systemd/system/cron.service.d" do
-  owner "root"
-  group "root"
-  mode 0o755
+# Cleanup unused file
+file "/etc/systemd/system/cron.service.d/chef.conf" do
+  action :delete
 end
 
 # Configure cron to run in the local timezone of the machine
-template "/etc/systemd/system/cron.service.d/chef.conf" do
-  source "cron.service.erb"
-  owner "root"
-  group "root"
-  mode 0o644
+systemd_service "cron-timezone" do
+  service "cron"
+  dropin "timezone"
+  environment "TZ" => node[:timezone]
   notifies :restart, "service[cron]"
   only_if { node[:timezone] }
 end

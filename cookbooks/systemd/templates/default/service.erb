@@ -1,7 +1,9 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
 [Unit]
+<% if @description -%>
 Description=<%= @description %>
+<% end -%>
 <% if @after -%>
 After=<%= Array(@after).join(" ") %>
 <% end -%>
@@ -10,7 +12,9 @@ Wants=<%= Array(@wants).join(" ") %>
 <% end -%>
 
 [Service]
+<% if @type -%>
 Type=<%= @type %>
+<% end -%>
 <% if @limit_nofile -%>
 LimitNOFILE=<%= @limit_nofile %>
 <% end -%>
@@ -47,7 +51,9 @@ WorkingDirectory=<%= @working_directory %>
 <% if @exec_start_pre -%>
 ExecStartPre=<%= @exec_start_pre %>
 <% end -%>
+<% if @exec_start -%>
 ExecStart=<%= @exec_start %>
+<% end -%>
 <% if @exec_start_post -%>
 ExecStartPost=<%= @exec_start_post %>
 <% end -%>
@@ -102,6 +108,8 @@ TimeoutSec=<%= @timeout_sec %>
 <% if @pid_file -%>
 PIDFile=<%= @pid_file %>
 <% end -%>
+<% unless @dropin -%>
 
 [Install]
 WantedBy=multi-user.target
+<% end -%>
