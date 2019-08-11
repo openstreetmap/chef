@@ -8,13 +8,13 @@ default_attributes(
   :networking => {
     :interfaces => {
       :internal_ipv4 => {
-        :interface => "eth0.2801",
+        :interface => "eno1.2801",
         :role => :internal,
         :family => :inet,
         :address => "10.0.0.15"
       },
       :external_ipv4 => {
-        :interface => "eth0.2800",
+        :interface => "eno1.2800",
         :role => :external,
         :family => :inet,
         :address => "193.60.236.22"
