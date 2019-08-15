@@ -197,26 +197,31 @@ action :create do
   mediawiki_skin "MinervaNeue" do # ~FC005
     site new_resource.site
     update_site false
+    legacy false
   end
 
   mediawiki_skin "CologneBlue" do
     site new_resource.site
     update_site false
+    legacy false
   end
 
   mediawiki_skin "Modern" do
     site new_resource.site
     update_site false
+    legacy false
   end
 
   mediawiki_skin "MonoBook" do
     site new_resource.site
     update_site false
+    legacy false
   end
 
   mediawiki_skin "Vector" do
     site new_resource.site
     update_site false
+    legacy false
   end
 
   mediawiki_extension "Cite" do
