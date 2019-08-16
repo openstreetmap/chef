@@ -52,7 +52,7 @@ default_attributes(
     :squid_swappiness => {
       :comment => "Prefer not to swapout to free memory",
       :parameters => {
-        "vm.swappiness" => "30"
+        "vm.swappiness" => "1"
       }
     },
     :sched_wakeup => {
