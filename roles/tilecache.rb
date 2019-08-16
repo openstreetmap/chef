@@ -19,6 +19,12 @@ default_attributes(
     :access_log => false
   },
   :sysctl => {
+    :sockets => {
+      :comment => "Increase size of connection queue",
+      :parameters => {
+        "net.core.somaxconn" => 10000
+      }
+    },
     :network_conntrack_time_wait => {
       :comment => "Only track completed connections for 30 seconds",
       :parameters => {
