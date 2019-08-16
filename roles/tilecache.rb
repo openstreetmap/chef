@@ -40,7 +40,7 @@ default_attributes(
     :network_local_port_range => {
       :comment => "Increase available local port range",
       :parameters => {
-        "net.ipv4.ip_local_port_range" => "4096 64000"
+        "net.ipv4.ip_local_port_range" => "1024 65000"
       }
     },
     :kernel_tfo_listen_enable => {
