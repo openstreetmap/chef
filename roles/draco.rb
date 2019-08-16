@@ -17,15 +17,6 @@ default_attributes(
         :address => "193.60.236.12"
       }
     }
-  },
-  :sysctl => {
-    :tune_cpu_scheduler => {
-      :comment => "Tune CPU scheduler for server scheduling",
-      :parameters => {
-        "kernel.sched_migration_cost_ns" => 50000000,
-        "kernel.sched_autogroup_enabled" => 0
-      }
-    }
   }
 )
 
