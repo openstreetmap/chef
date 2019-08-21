@@ -36,6 +36,7 @@ mediawiki_site "mwg.osmfoundation.org" do
   private_site true
   recaptcha_public_key "6LflIQATAAAAAMXyDWpba-FgipVzE-aGF4HIR59N"
   recaptcha_private_key passwords["mwg"]["recaptcha"]
+  version "1.33"
 end
 
 cookbook_file "/srv/mwg.osmfoundation.org/Wiki.png" do
