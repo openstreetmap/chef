@@ -69,7 +69,7 @@ end
 
 execute "/var/cache/chef/air3_v0.8.zip" do
   action :nothing
-  command "unzip -qq /var/cache/chef/air3_v0.8.zip Air3.css Air3/*"
+  command "unzip -o -qq /var/cache/chef/air3_v0.8.zip Air3.css Air3/*"
   cwd "/srv/forum.openstreetmap.org/html/style"
   user "forum"
   group "forum"
