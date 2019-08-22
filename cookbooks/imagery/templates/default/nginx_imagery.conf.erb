@@ -31,6 +31,10 @@ server {
     add_header Strict-Transport-Security "<%= node[:ssl][:strict_transport_security] %>" always;
 <% end -%>
 
+    # Requests sent within early data are subject to replay attacks.
+    # See: http://nginx.org/en/docs/http/ngx_http_ssl_module.html#ssl_early_data
+    ssl_early_data on;
+
     root "/srv/<%= @name %>";
 
     gzip on;

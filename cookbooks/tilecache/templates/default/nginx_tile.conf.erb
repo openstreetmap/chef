@@ -93,6 +93,10 @@ server {
     ssl_certificate      /etc/ssl/certs/tile.openstreetmap.org.pem;
     ssl_certificate_key  /etc/ssl/private/tile.openstreetmap.org.key;
 
+    # Requests sent within early data are subject to replay attacks.
+    # See: http://nginx.org/en/docs/http/ngx_http_ssl_module.html#ssl_early_data
+    ssl_early_data on;
+
     # Immediately 404 layers we do not support
 <% for i in 20..99 do %>
     location /<%= i %>/ {
