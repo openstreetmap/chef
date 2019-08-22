@@ -93,7 +93,7 @@ directory "/store/planetdump" do
   mode 0o755
 end
 
-["planetdump", "planet-mirror-redirect-update"].each do |program|
+%w[planetdump planet-mirror-redirect-update].each do |program|
   template "/usr/local/bin/#{program}" do
     source "#{program}.erb"
     owner "root"

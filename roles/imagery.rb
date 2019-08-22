@@ -12,7 +12,7 @@ default_attributes(
     }
   },
   :apt => {
-    :sources => ["nginx", "ubuntugis-unstable"]
+    :sources => %w[nginx ubuntugis-unstable]
   },
   :sysctl => {
     :sockets => {

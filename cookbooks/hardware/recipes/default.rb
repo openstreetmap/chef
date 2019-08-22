@@ -267,7 +267,7 @@ if status_packages.include?("cciss-vol-status")
   end
 end
 
-["cciss-vol-status", "mpt-status", "sas2ircu-status", "megaraid-status", "megaclisas-status", "aacraid-status"].each do |status_package|
+%w[cciss-vol-status mpt-status sas2ircu-status megaraid-status megaclisas-status aacraid-status].each do |status_package|
   if status_packages.include?(status_package)
     package status_package
 
