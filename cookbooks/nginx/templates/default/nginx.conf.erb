@@ -40,6 +40,11 @@ http {
     ssl_session_cache shared:SSL:50m;
     ssl_session_timeout 30m;
     ssl_stapling on;
+
+    # Validate the stapling response is signed by a trusted certificate
+    ssl_stapling_verify on;
+    ssl_trusted_certificate /etc/ssl/certs/ca-certificates.crt;
+
     ssl_dhparam /etc/ssl/certs/dhparam.pem;
     resolver <%= @resolvers.join(" ") %>;
     resolver_timeout 5s;
