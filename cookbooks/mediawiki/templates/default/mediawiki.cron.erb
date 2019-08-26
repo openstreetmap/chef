@@ -1,9 +1,11 @@
 # Generate sitemap.xml daily
-10 1 * * * <%= @user %> /usr/bin/nice /usr/bin/php -d memory_limit=1024M -d error_reporting=22517 <%= @directory %>/w/maintenance/generateSitemap.php --server="https://<%= @name %>" --urlpath="https://<%= @name %>/" --fspath="<%= @directory %>" --quiet --skip-redirects
+30 0 * * * <%= @user %> /usr/bin/nice /usr/bin/php -d memory_limit=1024M -d error_reporting=22517 <%= @directory %>/w/maintenance/generateSitemap.php --server="https://<%= @name %>" --urlpath="https://<%= @name %>/" --fspath="<%= @directory %>" --quiet --skip-redirects
 # Run mediawiki jobs
 */3 * * * * <%= @user %> /usr/bin/nice /usr/bin/php -d memory_limit=1024M -d error_reporting=22517 <%= @directory %>/w/maintenance/runJobs.php --server="https://<%= @name %>" --maxtime=160 --memory-limit=1024M --procs=8 --quiet
 # Run mediawiki email jobs
 * * * * * <%= @user %> /usr/bin/nice /usr/bin/php -d memory_limit=1024M -d error_reporting=22517 <%= @directory %>/w/maintenance/runJobs.php --server="https://<%= @name %>" --maxtime=30 --type=enotifNotify --memory-limit=1024M --procs=4 --quiet
+# Run mediawiki refresh links table weekly
+5 0 * * 0 <%= @user %> /usr/bin/nice /usr/bin/php -d memory_limit=1024M -d error_reporting=22517 <%= @directory %>/w/maintenance/refreshLinks.php --server="https://<%= @name %>" --memory-limit=1024M --quiet
 
 # Clean up imagemagic garbage
 10 2 * * * <%= @user %> /usr/bin/find /tmp/ -maxdepth 1 -type f -user www-data -mmin +90 -name 'gs_*' -delete
