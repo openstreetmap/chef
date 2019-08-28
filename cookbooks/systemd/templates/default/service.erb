@@ -93,6 +93,9 @@ ProtectSystem=<%= @protect_system %>
 <% if @protect_home -%>
 ProtectHome=<%= @protect_home %>
 <% end -%>
+<% if @restrict_address_families -%>
+RestrictAddressFamilies=<%= Array(@restrict_address_families).join(" ") %>
+<% end -%>
 <% if @no_new_privileges -%>
 NoNewPrivileges=<%= @no_new_privileges %>
 <% end -%>

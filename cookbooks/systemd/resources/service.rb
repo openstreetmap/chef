@@ -57,6 +57,7 @@ property :private_devices, [TrueClass, FalseClass]
 property :private_network, [TrueClass, FalseClass]
 property :protect_system, [TrueClass, FalseClass, String]
 property :protect_home, [TrueClass, FalseClass, String]
+property :restrict_address_families, [String, Array]
 property :no_new_privileges, [TrueClass, FalseClass]
 property :timeout_sec, Integer
 property :pid_file, String

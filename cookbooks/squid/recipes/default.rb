@@ -85,6 +85,10 @@ systemd_tmpfile "/var/run/squid" do
   mode "0755"
 end
 
+address_families = %w[AF_UNIX AF_INET]
+
+address_families << "AF_INET6" unless node.interfaces(:family => :inet6).empty?
+
 systemd_service "squid" do
   description "Squid caching proxy"
   after ["network.target", "nss-lookup.target"]
@@ -98,6 +102,7 @@ systemd_service "squid" do
   private_devices true
   protect_system "full"
   protect_home true
+  restrict_address_families address_families
   restart "on-failure"
   timeout_sec 0
 end
