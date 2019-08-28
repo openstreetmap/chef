@@ -72,7 +72,6 @@ end
 
 mediawiki_extension "Wikibase" do
   site "wiki.openstreetmap.org"
-  compose true
   template "mw-ext-Wikibase.inc.php.erb"
   template_cookbook "wiki"
 end

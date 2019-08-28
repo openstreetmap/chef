@@ -105,23 +105,31 @@ action :create do
 
   mediawiki_reference = "REL#{new_resource.version}".tr(".", "_")
 
-  git "#{mediawiki_directory}/vendor" do
-    action :nothing
-    repository "https://gerrit.wikimedia.org/r/p/mediawiki/vendor.git"
-    revision mediawiki_reference
-    user node[:mediawiki][:user]
-    group node[:mediawiki][:group]
-  end
-
   git mediawiki_directory do
     action :sync
     repository "https://gerrit.wikimedia.org/r/p/mediawiki/core.git"
     revision mediawiki_reference
     user node[:mediawiki][:user]
     group node[:mediawiki][:group]
-    notifies :sync, "git[#{mediawiki_directory}/vendor]", :immediately
+    notifies :run, "execute[#{mediawiki_directory}/composer.json]", :immediately
     notifies :run, "execute[#{mediawiki_directory}/maintenance/install.php]", :immediately
     notifies :run, "execute[#{mediawiki_directory}/maintenance/update.php]"
+  end
+
+  execute "#{mediawiki_directory}/composer.json" do
+    action :nothing
+    command "composer update --no-dev"
+    cwd mediawiki_directory
+    user node[:mediawiki][:user]
+    group node[:mediawiki][:group]
+  end
+
+  template "#{mediawiki_directory}/composer.local.json" do
+    cookbook "mediawiki"
+    source "composer.local.json.erb"
+    owner node[:mediawiki][:user]
+    group node[:mediawiki][:group]
+    mode 0o664
   end
 
   # Safety catch if git doesn't update but install.php hasn't run
@@ -376,14 +384,12 @@ action :create do
   mediawiki_extension "AntiSpoof" do
     site new_resource.site
     template "mw-ext-AntiSpoof.inc.php.erb"
-    compose true
     update_site false
   end
 
   mediawiki_extension "AbuseFilter" do
     site new_resource.site
     template "mw-ext-AbuseFilter.inc.php.erb"
-    compose true
     update_site false
   end
 
@@ -400,13 +406,11 @@ action :create do
 
   mediawiki_extension "Elastica" do
     site new_resource.site
-    compose true
     update_site false
   end
 
   mediawiki_extension "CirrusSearch" do
     site new_resource.site
-    compose true
     template "mw-ext-CirrusSearch.inc.php.erb"
     update_site false
   end

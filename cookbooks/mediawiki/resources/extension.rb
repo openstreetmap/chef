@@ -29,7 +29,6 @@ property :version, :kind_of => String
 property :repository, :kind_of => String
 property :tag, :kind_of => String
 property :reference, :kind_of => String
-property :compose, :kind_of => [TrueClass, FalseClass], :default => false
 property :update_site, :kind_of => [TrueClass, FalseClass], :default => true
 
 action :create do
@@ -83,15 +82,14 @@ action :create do
     end
   end
 
-  if new_resource.compose # ~FC023
-    execute "composer-#{new_resource.extension}" do
-      action :nothing
-      command "composer install --no-dev"
-      cwd extension_directory
-      user node[:mediawiki][:user]
-      group node[:mediawiki][:group]
-      subscribes :run, "git[#{extension_directory}]"
-    end
+  execute "#{extension_directory}/composer.json" do
+    action :nothing
+    command "composer update --no-dev"
+    cwd mediawiki_directory
+    user node[:mediawiki][:user]
+    group node[:mediawiki][:group]
+    only_if { ::File.exist?("#{extension_directory}/composer.json") }
+    subscribes :run, "git[#{extension_directory}]"
   end
 end
 
