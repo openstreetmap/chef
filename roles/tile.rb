@@ -74,12 +74,20 @@ default_attributes(
         :url => "https://osmdata.openstreetmap.de/download/simplified-land-polygons-complete-3857.zip",
         :refresh => true
       },
+      :simplified_water_polygons => {
+        :url => "https://osmdata.openstreetmap.de/download/simplified-water-polygons-split-3857.zip",
+        :refresh => true
+      },
       :admin_boundaries => {
         :url => "http://www.naturalearthdata.com/http//www.naturalearthdata.com/download/110m/cultural/ne_110m_admin_0_boundary_lines_land.zip",
         :directory => "ne_110m_admin_0_boundary_lines_land"
       },
       :land_polygons => {
         :url => "https://osmdata.openstreetmap.de/download/land-polygons-split-3857.zip",
+        :refresh => true
+      },
+      :water_polygons => {
+        :url => "https://osmdata.openstreetmap.de/download/water-polygons-split-3857.zip",
         :refresh => true
       },
       :antarctica_icesheet_polygons => {
