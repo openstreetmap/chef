@@ -67,9 +67,6 @@ default_attributes(
   },
   :tile => {
     :data => {
-      :world_boundaries => {
-        :url => "https://planet.openstreetmap.org/historical-shapefiles/world_boundaries-spherical.tgz"
-      },
       :simplified_land_polygons => {
         :url => "https://osmdata.openstreetmap.de/download/simplified-land-polygons-complete-3857.zip",
         :refresh => true
