@@ -4,6 +4,8 @@
   ServerName <%= @name %>
   ServerAdmin webmaster@openstreetmap.org
 
+  Protocols http/1.1
+
   SSLEngine on
   SSLCertificateFile /etc/ssl/certs/<%= @name %>.pem
   SSLCertificateKeyFile /etc/ssl/private/<%= @name %>.key
