@@ -165,8 +165,6 @@ action :create do
     line.gsub!(/^( *)server_protocol:.*$/, "\\1server_protocol: \"https\"")
     line.gsub!(/^( *)server_url:.*$/, "\\1server_url: \"#{new_resource.site}\"")
 
-    line.gsub!(/^( *)#publisher_url:.*$/, "\\1publisher_url: \"https://plus.google.com/111953119785824514010\"")
-
     line.gsub!(/^( *)support_email:.*$/, "\\1support_email: \"support@openstreetmap.org\"")
 
     if new_resource.email_from
@@ -325,7 +323,6 @@ action :create do
   ).reject { |_k, v| v.nil? }.merge(
     "server_protocol" => "https",
     "server_url" => new_resource.site,
-    "publisher_url" => "https://plus.google.com/111953119785824514010",
     "support_email" => "support@openstreetmap.org",
     "email_return_path" => "bounces@openstreetmap.org",
     "geonames_username" => "openstreetmap",
