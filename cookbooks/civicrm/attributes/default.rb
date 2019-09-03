@@ -34,4 +34,4 @@ default[:civicrm][:extensions][:username][:revision] = "master"
 
 default[:civicrm][:extensions][:donotsendreportemail][:name] = "org.civicrm.donotsendreportemail"
 default[:civicrm][:extensions][:donotsendreportemail][:repository] = "git://github.com/pradpnayak/org.civicrm.donotsendreportemail.git"
-default[:civicrm][:extensions][:donotsendreportemail][:revision] = "master"
+default[:civicrm][:extensions][:donotsendreportemail][:revision] = "3b31c2e0c62183872c7ecd244395fb8dcfbd5dbb"
