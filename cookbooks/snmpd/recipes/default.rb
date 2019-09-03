@@ -32,13 +32,13 @@ template "/etc/snmp/snmpd.conf" do
   source "snmpd.conf.erb"
   owner "root"
   group "root"
-  mode 0o600
+  mode "600"
   variables :communities => communities
   notifies :restart, "service[snmpd]"
 end
 
-if node[:snmpd][:clients]
-  node[:snmpd][:clients].each do |address|
+if node["snmpd"]["clients"]
+  node["snmpd"]["clients"].each do |address|
     firewall_rule "accept-snmp" do
       action :accept
       family "inet"

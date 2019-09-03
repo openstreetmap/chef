@@ -35,7 +35,7 @@ package %w[
 directory "/srv/gps-tile.openstreetmap.org" do
   owner "gpstile"
   group "gpstile"
-  mode 0o755
+  mode "755"
 end
 
 git "/srv/gps-tile.openstreetmap.org/import" do
@@ -105,7 +105,7 @@ remote_directory "/srv/gps-tile.openstreetmap.org/html" do
   source "html"
   owner "gpstile"
   group "gpstile"
-  mode 0o755
+  mode "755"
   files_owner "gpstile"
   files_group "gpstile"
   files_mode 0o644

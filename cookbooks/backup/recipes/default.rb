@@ -25,18 +25,18 @@ package %w[
 directory "/store/backup" do
   owner "osmbackup"
   group "osmbackup"
-  mode 0o2755
+  mode "2755"
 end
 
 cookbook_file "/usr/local/bin/expire-backups" do
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end
 
 template "/etc/cron.daily/expire-backups" do
   source "expire.cron.erb"
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end

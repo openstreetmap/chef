@@ -37,7 +37,7 @@ git "/srv/operations.osmfoundation.org" do
 end
 
 directory "/srv/operations.osmfoundation.org/_site" do
-  mode 0o755
+  mode "755"
   owner "nobody"
   group "nogroup"
 end

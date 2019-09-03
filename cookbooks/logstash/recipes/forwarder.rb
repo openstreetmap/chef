@@ -25,15 +25,15 @@ cookbook_file "/etc/filebeat/filebeat.crt" do
   source "beats.crt"
   user "root"
   group "root"
-  mode 0o600
+  mode "600"
   notifies :restart, "service[filebeat]"
 end
 
 file "/etc/filebeat/filebeat.yml" do
-  content YAML.dump(node[:logstash][:forwarder].to_hash)
+  content YAML.dump(node["logstash"]["forwarder"].to_hash)
   user "root"
   group "root"
-  mode 0o600
+  mode "600"
   notifies :restart, "service[filebeat]"
 end
 

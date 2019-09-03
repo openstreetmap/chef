@@ -36,11 +36,11 @@ end
 
 apache_site "www.openstreetmap.org" do
   template "apache.backend.erb"
-  variables :status => node[:web][:status],
+  variables :status => node["web"]["status"],
             :secret_key_base => web_passwords["secret_key_base"]
 end
 
-node.normal[:memcached][:ip_address] = node.internal_ipaddress
+node.normal["memcached"][:ip_address] = node.internal_ipaddress
 
 service "rails-jobs@storage" do
   action [:enable, :start]
@@ -49,7 +49,7 @@ service "rails-jobs@storage" do
   subscribes :restart, "systemd_service[rails-jobs]"
 end
 
-if node[:web][:primary_cluster]
+if node["web"]["primary_cluster"]
   service "rails-jobs@traces" do
     action [:enable, :start]
     supports :restart => true

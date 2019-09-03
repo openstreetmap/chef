@@ -74,7 +74,7 @@ template "/etc/mediawiki/parsoid/config.yaml" do
   source "parsoid-config.yaml.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
 end
 
 service "parsoid" do

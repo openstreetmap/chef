@@ -19,7 +19,7 @@
 
 package "nfs-common"
 
-node[:nfs].each do |mountpoint, details|
+node["nfs"].each do |mountpoint, details|
   mount_options = if details[:readonly]
                     "ro,bg,soft,tcp,rsize=8192,wsize=8192,nfsvers=4"
                   else
@@ -29,7 +29,7 @@ node[:nfs].each do |mountpoint, details|
   directory mountpoint do
     owner "root"
     group "root"
-    mode 0o755
+    mode "755"
     recursive true
     not_if { File.exist?(mountpoint) }
   end

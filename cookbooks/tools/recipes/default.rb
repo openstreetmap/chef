@@ -62,9 +62,9 @@ end
 systemd_service "cron-timezone" do
   service "cron"
   dropin "timezone"
-  environment "TZ" => node[:timezone]
+  environment "TZ" => node["timezone"]
   notifies :restart, "service[cron]"
-  only_if { node[:timezone] }
+  only_if { node["timezone"] }
 end
 
 # Make sure cron is running

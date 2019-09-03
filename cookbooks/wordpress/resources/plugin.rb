@@ -32,11 +32,11 @@ action :create do
     remote_directory plugin_directory do
       cookbook "wordpress"
       source new_resource.source
-      owner node[:wordpress][:user]
-      group node[:wordpress][:group]
-      mode 0o755
-      files_owner node[:wordpress][:user]
-      files_group node[:wordpress][:group]
+      owner node["wordpress"]["user"]
+      group node["wordpress"]["group"]
+      mode "755"
+      files_owner node["wordpress"]["user"]
+      files_group node["wordpress"]["group"]
       files_mode 0o755
     end
   else
@@ -47,15 +47,15 @@ action :create do
         action :sync
         repository plugin_repository
         revision new_resource.revision
-        user node[:wordpress][:user]
-        group node[:wordpress][:group]
+        user node["wordpress"]["user"]
+        group node["wordpress"]["group"]
       end
     else
       subversion plugin_directory do
         action :sync
         repository plugin_repository
-        user node[:wordpress][:user]
-        group node[:wordpress][:group]
+        user node["wordpress"]["user"]
+        group node["wordpress"]["group"]
         ignore_failure plugin_repository.start_with?("https://plugins.svn.wordpress.org/")
       end
     end
@@ -71,7 +71,7 @@ end
 
 action_class do
   def site_directory
-    node[:wordpress][:sites][new_resource.site][:directory]
+    node["wordpress"]["sites"][new_resource.site]["directory"]
   end
 
   def plugin_directory

@@ -23,7 +23,7 @@ property :certificate, String, :name_property => true
 property :domains, [String, Array], :required => true
 
 action :create do
-  node.default[:letsencrypt][:certificates][new_resource.certificate] = {
+  node.default["letsencrypt"]["certificates"][new_resource.certificate] = {
     :domains => Array(new_resource.domains)
   }
 
@@ -36,7 +36,7 @@ action :create do
     file "/etc/ssl/certs/#{new_resource.certificate}.pem" do
       owner "root"
       group "root"
-      mode 0o444
+      mode "444"
       content certificate
       backup false
       manage_symlink_source false
@@ -46,7 +46,7 @@ action :create do
     file "/etc/ssl/private/#{new_resource.certificate}.key" do
       owner "root"
       group "ssl-cert"
-      mode 0o440
+      mode "440"
       content key
       backup false
       manage_symlink_source false
@@ -59,7 +59,7 @@ action :create do
       key_file "/etc/ssl/private/#{new_resource.certificate}.key"
       owner "root"
       group "ssl-cert"
-      mode 0o640
+      mode "640"
       org "OpenStreetMap"
       email "operations@osmfoundation.org"
       common_name new_resource.domains.first

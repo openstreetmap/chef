@@ -26,15 +26,15 @@ package "openstreetmap-cgimap-bin" do
   action :upgrade
 end
 
-if node[:web][:readonly_database_host]
-  database_host = node[:web][:readonly_database_host]
+if node["web"]["readonly_database_host"]
+  database_host = node["web"]["readonly_database_host"]
   database_readonly = true
 else
-  database_host = node[:web][:database_host]
-  database_readonly = node[:web][:status] == "database_readonly"
+  database_host = node["web"]["database_host"]
+  database_readonly = node["web"]["status"] == "database_readonly"
 end
 
-memcached_servers = node[:web][:memcached_servers] || []
+memcached_servers = node["web"]["memcached_servers"] || []
 
 switches = database_readonly ? " --readonly" : ""
 
@@ -45,10 +45,10 @@ systemd_service "cgimap" do
                    "CGIMAP_DBNAME" => "openstreetmap",
                    "CGIMAP_USERNAME" => "cgimap",
                    "CGIMAP_PASSWORD" => db_passwords["cgimap"],
-                   "CGIMAP_OAUTH_HOST" => node[:web][:database_host],
-                   "CGIMAP_UPDATE_HOST" => node[:web][:database_host],
-                   "CGIMAP_PIDFILE" => "#{node[:web][:pid_directory]}/cgimap.pid",
-                   "CGIMAP_LOGFILE" => "#{node[:web][:log_directory]}/cgimap.log",
+                   "CGIMAP_OAUTH_HOST" => node["web"]["database_host"],
+                   "CGIMAP_UPDATE_HOST" => node["web"]["database_host"],
+                   "CGIMAP_PIDFILE" => "#{node['web']['pid_directory']}/cgimap.pid",
+                   "CGIMAP_LOGFILE" => "#{node['web']['log_directory']}/cgimap.log",
                    "CGIMAP_MEMCACHE" => memcached_servers.join(","),
                    "CGIMAP_RATELIMIT" => "204800",
                    "CGIMAP_MAXDEBT" => "250"
@@ -61,10 +61,10 @@ systemd_service "cgimap" do
   protect_home true
   no_new_privileges true
   restart "on-failure"
-  pid_file "#{node[:web][:pid_directory]}/cgimap.pid"
+  pid_file "#{node['web']['pid_directory']}/cgimap.pid"
 end
 
-if %w[database_offline api_offline].include?(node[:web][:status])
+if %w[database_offline api_offline].include?(node["web"]["status"])
   service "cgimap" do
     action :stop
   end

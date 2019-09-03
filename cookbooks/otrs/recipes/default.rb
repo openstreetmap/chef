@@ -40,14 +40,14 @@ package "libtemplate-perl"
 
 apache_module "headers"
 
-version = node[:otrs][:version]
-user = node[:otrs][:user]
-database_cluster = node[:otrs][:database_cluster]
-database_name = node[:otrs][:database_name]
-database_user = node[:otrs][:database_user]
-database_password = passwords[node[:otrs][:database_password]]
-site = node[:otrs][:site]
-site_aliases = node[:otrs][:site_aliases] || []
+version = node["otrs"]["version"]
+user = node["otrs"]["user"]
+database_cluster = node["otrs"]["database_cluster"]
+database_name = node["otrs"]["database_name"]
+database_user = node["otrs"]["database_user"]
+database_password = passwords[node["otrs"]["database_password"]]
+site = node["otrs"]["site"]
+site_aliases = node["otrs"]["site_aliases"] || []
 
 postgresql_user database_user do
   cluster database_cluster
@@ -88,7 +88,7 @@ end
 file "/opt/otrs-#{version}/Kernel/Config.pm" do
   owner user
   group "www-data"
-  mode 0o664
+  mode "664"
   content config
 end
 
@@ -125,7 +125,7 @@ Dir.glob("/opt/otrs/var/cron/*.dist") do |distname|
   file name do
     owner "otrs"
     group "www-data"
-    mode 0o664
+    mode "664"
     content IO.read(distname)
     notifies :run, "execute[/opt/otrs/bin/Cron.sh]"
   end
@@ -145,12 +145,12 @@ template "/etc/sudoers.d/otrs" do
   source "sudoers.erb"
   owner "root"
   group "root"
-  mode 0o440
+  mode "440"
 end
 
 template "/etc/cron.daily/otrs-backup" do
   source "backup.cron.erb"
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end

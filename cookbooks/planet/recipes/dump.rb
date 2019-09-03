@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-node.default[:incron][:planetdump] = {
+node.default["incron"][:planetdump] = {
   :user => "www-data",
   :path => "/store/backup",
   :events => %w[IN_CREATE IN_MOVED_TO],
@@ -49,7 +49,7 @@ package "php-curl"
 directory "/opt/planet-dump-ng" do
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end
 
 git "/opt/planet-dump-ng" do
@@ -90,7 +90,7 @@ end
 directory "/store/planetdump" do
   owner "www-data"
   group "www-data"
-  mode 0o755
+  mode "755"
 end
 
 %w[planetdump planet-mirror-redirect-update].each do |program|
@@ -98,7 +98,7 @@ end
     source "#{program}.erb"
     owner "root"
     group "root"
-    mode 0o755
+    mode "755"
   end
 end
 
@@ -106,5 +106,5 @@ template "/etc/cron.d/planet-dump-mirror" do
   source "planet-dump-mirror-cron.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
 end

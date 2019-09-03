@@ -121,7 +121,7 @@ action :create do
   declare_resource :directory, rails_directory do
     owner new_resource.user
     group new_resource.group
-    mode 0o2775
+    mode "2775"
   end
 
   git rails_directory do
@@ -152,7 +152,7 @@ action :create do
     source "database.yml.erb"
     owner new_resource.user
     group new_resource.group
-    mode 0o664
+    mode "664"
     variables :host => new_resource.database_host,
               :port => new_resource.database_port,
               :name => new_resource.database_name,
@@ -277,7 +277,7 @@ action :create do
     path "#{rails_directory}/config/application.yml"
     owner new_resource.user
     group new_resource.group
-    mode 0o664
+    mode "664"
     content application_yml
     notifies :run, "execute[#{rails_directory}/public/assets]"
     only_if { ::File.exist?("#{rails_directory}/config/example.application.yml") }
@@ -341,7 +341,7 @@ action :create do
   file "#{rails_directory}/config/settings.local.yml" do
     owner new_resource.user
     group new_resource.group
-    mode 0o664
+    mode "664"
     content YAML.dump(settings)
     notifies :run, "execute[#{rails_directory}/public/assets]"
     only_if { ::File.exist?("#{rails_directory}/config/settings.yml") }
@@ -357,7 +357,7 @@ action :create do
   file "#{rails_directory}/config/storage.yml" do
     owner new_resource.user
     group new_resource.group
-    mode 0o664
+    mode "664"
     content YAML.dump(storage_configuration)
     notifies :run, "execute[#{rails_directory}/public/assets]"
   end
@@ -366,7 +366,7 @@ action :create do
     file "#{rails_directory}/config/piwik.yml" do
       owner new_resource.user
       group new_resource.group
-      mode 0o664
+      mode "664"
       content YAML.dump(new_resource.piwik_configuration)
       notifies :run, "execute[#{rails_directory}/public/assets]"
     end
@@ -433,7 +433,7 @@ action :create do
     source "rails.cron.erb"
     owner "root"
     group "root"
-    mode 0o755
+    mode "755"
     variables :directory => rails_directory
   end
 end

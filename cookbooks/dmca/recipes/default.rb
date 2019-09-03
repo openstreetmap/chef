@@ -24,14 +24,14 @@ apache_module "php7.2"
 directory "/srv/dmca.openstreetmap.org" do
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end
 
 remote_directory "/srv/dmca.openstreetmap.org/html" do
   source "html"
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
   files_owner "root"
   files_group "root"
   files_mode 0o644

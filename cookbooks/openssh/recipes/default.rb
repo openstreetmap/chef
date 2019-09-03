@@ -64,14 +64,14 @@ end
 
 template "/etc/ssh/ssh_config" do
   source "ssh_config.erb"
-  mode 0o644
+  mode "644"
   owner "root"
   group "root"
 end
 
 template "/etc/ssh/ssh_known_hosts" do
   source "ssh_known_hosts.erb"
-  mode 0o444
+  mode "444"
   owner "root"
   group "root"
   backup false
@@ -85,5 +85,5 @@ firewall_rule "accept-ssh" do
   source "net"
   dest "fw"
   proto "tcp:syn"
-  dest_ports node[:openssh][:port]
+  dest_ports node["openssh"]["port"]
 end

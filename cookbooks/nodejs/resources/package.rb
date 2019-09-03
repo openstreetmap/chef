@@ -17,7 +17,6 @@
 # limitations under the License.
 #
 
-require "chef/mixin/shell_out"
 require "json"
 
 default_action :install
@@ -61,8 +60,6 @@ action :remove do
 end
 
 action_class do
-  include Chef::Mixin::ShellOut
-
   def current_version
     @current_version ||= JSON.parse(shell_out("npm list --global --json").stdout)
                              .dig("dependencies", new_resource.package, "version")

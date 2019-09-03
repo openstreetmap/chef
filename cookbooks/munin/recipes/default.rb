@@ -44,7 +44,7 @@ template "/etc/munin/munin-node.conf" do
   source "munin-node.conf.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   variables :servers => servers
   notifies :restart, "service[munin-node]"
 end
@@ -53,7 +53,7 @@ remote_directory "/usr/local/share/munin/plugins" do
   source "plugins"
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
   files_owner "root"
   files_group "root"
   files_mode 0o755
@@ -64,7 +64,7 @@ remote_directory "/etc/munin/plugin-conf.d" do
   source "plugin-conf.d"
   owner "root"
   group "munin"
-  mode 0o750
+  mode "750"
   files_owner "root"
   files_group "root"
   files_mode 0o644
@@ -106,7 +106,7 @@ munin_plugin "diskstats"
 munin_plugin "entropy"
 munin_plugin "forks"
 
-if node[:kernel][:modules].include?("nf_conntrack")
+if node["kernel"]["modules"].include?("nf_conntrack")
   package "conntrack"
 
   munin_plugin "fw_conntrack"
@@ -159,11 +159,11 @@ munin_plugin "http_loadtime" do
   action :delete
 end
 
-node[:network][:interfaces].each do |ifname, ifattr|
+node["network"]["interfaces"].each do |ifname, ifattr|
   if ifattr[:flags]&.include?("UP") && !ifattr[:flags].include?("LOOPBACK")
-    if node[:hardware] &&
-       node[:hardware][:network] &&
-       node[:hardware][:network][ifname][:device] =~ /^virtio/
+    if node["hardware"] &&
+       node["hardware"]["network"] &&
+       node["hardware"]["network"][ifname]["device"] =~ /^virtio/
       munin_plugin_conf "if_#{ifname}" do
         template "if.erb"
         variables :ifname => ifname
@@ -235,7 +235,7 @@ munin_plugin "load"
 munin_plugin "memory"
 munin_plugin "netstat"
 
-if node[:kernel][:modules].include?("nfsv3")
+if node["kernel"]["modules"].include?("nfsv3")
   munin_plugin "nfs_client"
 else
   munin_plugin "nfs_client" do
@@ -243,7 +243,7 @@ else
   end
 end
 
-if node[:kernel][:modules].include?("nfsv4")
+if node["kernel"]["modules"].include?("nfsv4")
   munin_plugin "nfs4_client"
 else
   munin_plugin "nfs4_client" do
@@ -251,7 +251,7 @@ else
   end
 end
 
-if node[:kernel][:modules].include?("nfsd")
+if node["kernel"]["modules"].include?("nfsd")
   munin_plugin "nfsd"
   munin_plugin "nfsd4"
 else

@@ -36,7 +36,7 @@ action :create do
 
   node.normal_unless[:wordpress][:sites][new_resource.site] = {}
 
-  node.normal[:wordpress][:sites][new_resource.site][:directory] = site_directory
+  node.normal["wordpress"]["sites"][new_resource.site][:directory] = site_directory
 
   node.normal_unless[:wordpress][:sites][new_resource.site][:auth_key] = SecureRandom.base64(48)
   node.normal_unless[:wordpress][:sites][new_resource.site][:secure_auth_key] = SecureRandom.base64(48)
@@ -56,16 +56,16 @@ action :create do
   end
 
   declare_resource :directory, site_directory do
-    owner node[:wordpress][:user]
-    group node[:wordpress][:group]
-    mode 0o755
+    owner node["wordpress"]["user"]
+    group node["wordpress"]["group"]
+    mode "755"
   end
 
   subversion site_directory do
     action :sync
     repository "https://core.svn.wordpress.org/tags/#{version}"
-    user node[:wordpress][:user]
-    group node[:wordpress][:group]
+    user node["wordpress"]["user"]
+    group node["wordpress"]["group"]
     ignore_failure true
   end
 
@@ -75,14 +75,14 @@ action :create do
     line.gsub!(/password_here/, new_resource.database_password)
     line.gsub!(/wp_/, new_resource.database_prefix)
 
-    line.gsub!(/('AUTH_KEY', *)'put your unique phrase here'/, "\\1'#{node[:wordpress][:sites][new_resource.site][:auth_key]}'")
-    line.gsub!(/('SECURE_AUTH_KEY', *)'put your unique phrase here'/, "\\1'#{node[:wordpress][:sites][new_resource.site][:secure_auth_key]}'")
-    line.gsub!(/('LOGGED_IN_KEY', *)'put your unique phrase here'/, "\\1'#{node[:wordpress][:sites][new_resource.site][:logged_in_key]}'")
-    line.gsub!(/('NONCE_KEY', *)'put your unique phrase here'/, "\\1'#{node[:wordpress][:sites][new_resource.site][:nonce_key]}'")
-    line.gsub!(/('AUTH_SALT', *)'put your unique phrase here'/, "\\1'#{node[:wordpress][:sites][new_resource.site][:auth_salt]}'")
-    line.gsub!(/('SECURE_AUTH_SALT', *)'put your unique phrase here'/, "\\1'#{node[:wordpress][:sites][new_resource.site][:secure_auth_salt]}'")
-    line.gsub!(/('LOGGED_IN_SALT', *)'put your unique phrase here'/, "\\1'#{node[:wordpress][:sites][new_resource.site][:logged_in_salt]}'")
-    line.gsub!(/('NONCE_SALT', *)'put your unique phrase here'/, "\\1'#{node[:wordpress][:sites][new_resource.site][:nonce_salt]}'")
+    line.gsub!(/('AUTH_KEY', *)'put your unique phrase here'/, "\\1'#{node['wordpress']['sites'][new_resource.site]['auth_key']}'")
+    line.gsub!(/('SECURE_AUTH_KEY', *)'put your unique phrase here'/, "\\1'#{node['wordpress']['sites'][new_resource.site]['secure_auth_key']}'")
+    line.gsub!(/('LOGGED_IN_KEY', *)'put your unique phrase here'/, "\\1'#{node['wordpress']['sites'][new_resource.site]['logged_in_key']}'")
+    line.gsub!(/('NONCE_KEY', *)'put your unique phrase here'/, "\\1'#{node['wordpress']['sites'][new_resource.site]['nonce_key']}'")
+    line.gsub!(/('AUTH_SALT', *)'put your unique phrase here'/, "\\1'#{node['wordpress']['sites'][new_resource.site]['auth_salt']}'")
+    line.gsub!(/('SECURE_AUTH_SALT', *)'put your unique phrase here'/, "\\1'#{node['wordpress']['sites'][new_resource.site]['secure_auth_salt']}'")
+    line.gsub!(/('LOGGED_IN_SALT', *)'put your unique phrase here'/, "\\1'#{node['wordpress']['sites'][new_resource.site]['logged_in_salt']}'")
+    line.gsub!(/('NONCE_SALT', *)'put your unique phrase here'/, "\\1'#{node['wordpress']['sites'][new_resource.site]['nonce_salt']}'")
 
     if line =~ /define\('WP_DEBUG'/
       line += "\n"
@@ -98,16 +98,16 @@ action :create do
   end
 
   file "#{site_directory}/wp-config.php" do
-    owner node[:wordpress][:user]
-    group node[:wordpress][:group]
-    mode 0o644
+    owner node["wordpress"]["user"]
+    group node["wordpress"]["group"]
+    mode "644"
     content wp_config
   end
 
   declare_resource :directory, "#{site_directory}/wp-content/uploads" do
     owner "www-data"
     group "www-data"
-    mode 0o755
+    mode "755"
   end
 
   file "#{site_directory}/sitemap.xml" do
@@ -120,9 +120,9 @@ action :create do
 
   cookbook_file "#{site_directory}/googlefac54c35e800caab.html" do
     cookbook "wordpress"
-    owner node[:wordpress][:user]
-    group node[:wordpress][:group]
-    mode 0o644
+    owner node["wordpress"]["user"]
+    group node["wordpress"]["group"]
+    mode "644"
     backup false
   end
 

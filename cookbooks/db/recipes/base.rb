@@ -25,13 +25,13 @@ passwords = data_bag_item("db", "passwords")
 wal_secrets = data_bag_item("db", "wal-secrets")
 
 postgresql_munin "openstreetmap" do
-  cluster node[:db][:cluster]
+  cluster node["db"]["cluster"]
   database "openstreetmap"
 end
 
 directory "/srv/www.openstreetmap.org" do
   group "rails"
-  mode 0o2775
+  mode "2775"
 end
 
 rails_port "www.openstreetmap.org" do
@@ -48,14 +48,14 @@ rails_port "www.openstreetmap.org" do
   gpx_dir "/store/rails/gpx"
 end
 
-db_version = node[:db][:cluster].split("/").first
+db_version = node["db"]["cluster"].split("/").first
 pg_config = "/usr/lib/postgresql/#{db_version}/bin/pg_config"
 function_directory = "/srv/www.openstreetmap.org/rails/db/functions/#{db_version}"
 
 directory function_directory do
   owner "rails"
   group "rails"
-  mode 0o755
+  mode "755"
 end
 
 execute function_directory do
@@ -88,6 +88,6 @@ template "/usr/local/bin/openstreetmap-wal-e" do
   source "wal-e.erb"
   owner "root"
   group "postgres"
-  mode 0o750
+  mode "750"
   variables :s3_key => wal_secrets["s3_key"]
 end

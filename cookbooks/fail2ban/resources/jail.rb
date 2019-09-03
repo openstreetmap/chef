@@ -33,7 +33,7 @@ action :create do
     source "jail.erb"
     owner "root"
     group "root"
-    mode 0o644
+    mode "644"
     variables :name => new_resource.jail,
               :filter => new_resource.filter,
               :logpath => new_resource.logpath,

@@ -26,14 +26,14 @@ package "python-git"
 directory "/etc/supybot" do
   owner "supybot"
   group "supybot"
-  mode 0o755
+  mode "755"
 end
 
 template "/etc/supybot/supybot.conf" do
   source "supybot.conf.erb"
   owner "supybot"
   group "supybot"
-  mode 0o644
+  mode "644"
   variables :passwords => passwords
 end
 
@@ -41,78 +41,78 @@ template "/etc/supybot/channels.conf" do
   source "channels.conf.erb"
   owner "supybot"
   group "supybot"
-  mode 0o644
+  mode "644"
 end
 
 template "/etc/supybot/git.conf" do
   source "git.conf.erb"
   owner "supybot"
   group "supybot"
-  mode 0o644
+  mode "644"
 end
 
 template "/etc/supybot/ignores.conf" do
   source "ignores.conf.erb"
   owner "supybot"
   group "supybot"
-  mode 0o644
+  mode "644"
 end
 
 template "/etc/supybot/userdata.conf" do
   source "userdata.conf.erb"
   owner "supybot"
   group "supybot"
-  mode 0o644
+  mode "644"
 end
 
 template "/etc/supybot/users.conf" do
   source "users.conf.erb"
   owner "supybot"
   group "supybot"
-  mode 0o644
+  mode "644"
   variables :passwords => users
 end
 
 directory "/var/lib/supybot" do
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end
 
 directory "/var/lib/supybot/data" do
   owner "supybot"
   group "supybot"
-  mode 0o755
+  mode "755"
 end
 
 directory "/var/lib/supybot/backup" do
   owner "supybot"
   group "supybot"
-  mode 0o755
+  mode "755"
 end
 
 directory "/var/lib/supybot/git" do
   owner "supybot"
   group "supybot"
-  mode 0o755
+  mode "755"
 end
 
 directory "/var/log/supybot" do
   owner "supybot"
   group "supybot"
-  mode 0o755
+  mode "755"
 end
 
 directory "/usr/local/lib/supybot" do
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end
 
 directory "/usr/local/lib/supybot/plugins" do
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end
 
 git "/usr/local/lib/supybot/plugins/Git" do

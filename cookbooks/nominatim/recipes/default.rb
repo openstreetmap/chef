@@ -23,79 +23,79 @@ email_errors = data_bag_item("accounts", "lonvia")["email"]
 directory basedir do
   owner "nominatim"
   group "nominatim"
-  mode 0o755
+  mode "755"
   recursive true
 end
 
-directory node[:nominatim][:logdir] do
+directory node["nominatim"]["logdir"] do
   owner "nominatim"
   group "nominatim"
-  mode 0o755
+  mode "755"
   recursive true
 end
 
-file "#{node[:nominatim][:logdir]}/query.log" do
+file "#{node['nominatim']['logdir']}/query.log" do
   action :create_if_missing
   owner "www-data"
   group "adm"
-  mode 0o664
+  mode "664"
 end
 
-file "#{node[:nominatim][:logdir]}/update.log" do
+file "#{node['nominatim']['logdir']}/update.log" do
   action :create_if_missing
   owner "nominatim"
   group "adm"
-  mode 0o664
+  mode "664"
 end
 
 ## Postgresql
 
 include_recipe "postgresql"
 
-postgresql_version = node[:nominatim][:dbcluster].split("/").first
-postgis_version = node[:nominatim][:postgis]
+postgresql_version = node["nominatim"]["dbcluster"].split("/").first
+postgis_version = node["nominatim"]["postgis"]
 
 package "postgis"
 package "postgresql-#{postgresql_version}-postgis-#{postgis_version}"
 
-node[:nominatim][:dbadmins].each do |user|
+node["nominatim"]["dbadmins"].each do |user|
   postgresql_user user do
-    cluster node[:nominatim][:dbcluster]
+    cluster node["nominatim"]["dbcluster"]
     superuser true
-    only_if { node[:nominatim][:state] != "slave" }
+    only_if { node["nominatim"]["state"] != "slave" }
   end
 end
 
 postgresql_user "nominatim" do
-  cluster node[:nominatim][:dbcluster]
+  cluster node["nominatim"]["dbcluster"]
   superuser true
-  only_if { node[:nominatim][:state] != "slave" }
+  only_if { node["nominatim"]["state"] != "slave" }
 end
 
 postgresql_user "www-data" do
-  cluster node[:nominatim][:dbcluster]
-  only_if { node[:nominatim][:state] != "slave" }
+  cluster node["nominatim"]["dbcluster"]
+  only_if { node["nominatim"]["state"] != "slave" }
 end
 
 postgresql_munin "nominatim" do
-  cluster node[:nominatim][:dbcluster]
-  database node[:nominatim][:dbname]
+  cluster node["nominatim"]["dbcluster"]
+  database node["nominatim"]["dbname"]
 end
 
 directory "#{basedir}/tablespaces" do
   owner "postgres"
   group "postgres"
-  mode 0o700
+  mode "700"
 end
 
 # Note: tablespaces must be exactly in the same location on each
 #       Nominatim instance when replication is in use. Therefore
 #       use symlinks to canonical directory locations.
-node[:nominatim][:tablespaces].each do |name, location|
+node["nominatim"]["tablespaces"].each do |name, location|
   directory location do
     owner "postgres"
     group "postgres"
-    mode 0o700
+    mode "700"
     recursive true
   end
 
@@ -104,30 +104,30 @@ node[:nominatim][:tablespaces].each do |name, location|
   end
 
   postgresql_tablespace name do
-    cluster node[:nominatim][:dbcluster]
+    cluster node["nominatim"]["dbcluster"]
     location "#{basedir}/tablespaces/#{name}"
   end
 end
 
-if node[:nominatim][:state] == "master" # ~FC023
+if node["nominatim"]["state"] == "master" # ~FC023
   postgresql_user "replication" do
-    cluster node[:nominatim][:dbcluster]
+    cluster node["nominatim"]["dbcluster"]
     password data_bag_item("nominatim", "passwords")["replication"]
     replication true
   end
 
-  directory node[:rsyncd][:modules][:archive][:path] do
+  directory node["rsyncd"]["modules"]["archive"]["path"] do
     owner "postgres"
     group "postgres"
-    mode 0o700
+    mode "700"
   end
 
   template "/usr/local/bin/clean-db-nominatim" do
     source "clean-db-nominatim.erb"
     owner "root"
     group "root"
-    mode 0o755
-    variables :archive_dir => node[:rsyncd][:modules][:archive][:path],
+    mode "755"
+    variables :archive_dir => node["rsyncd"]["modules"]["archive"]["path"],
               :update_stop_file => "#{basedir}/status/updates_disabled",
               :streaming_clients => search(:node, "nominatim_state:slave").map { |slave| slave[:fqdn] }.join(" ")
   end
@@ -160,7 +160,7 @@ build_directory = "#{basedir}/bin"
 directory build_directory do
   owner "nominatim"
   group "nominatim"
-  mode 0o755
+  mode "755"
   recursive true
 end
 
@@ -170,13 +170,13 @@ end
 # exception for slaves: they get DB function updates from the master, so
 # only the source code needs to be updated, which chef may do.
 git source_directory do
-  action node[:nominatim][:state] == "slave" ? :sync : :checkout
-  repository node[:nominatim][:repository]
-  revision node[:nominatim][:revision]
+  action node["nominatim"]["state"] == "slave" ? :sync : :checkout
+  repository node["nominatim"]["repository"]
+  revision node["nominatim"]["revision"]
   enable_submodules true
   user "nominatim"
   group "nominatim"
-  not_if { node[:nominatim][:state] != "slave" && File.exist?("#{source_directory}/README.md") }
+  not_if { node["nominatim"]["state"] != "slave" && File.exist?("#{source_directory}/README.md") }
   notifies :run, "execute[compile_nominatim]", :immediately
 end
 
@@ -191,25 +191,25 @@ template "#{source_directory}/.git/hooks/post-merge" do
   source "git-post-merge-hook.erb"
   owner "nominatim"
   group "nominatim"
-  mode 0o755
+  mode "755"
   variables :srcdir => source_directory,
             :builddir => build_directory,
-            :dbname => node[:nominatim][:dbname]
+            :dbname => node["nominatim"]["dbname"]
 end
 
 template "#{build_directory}/settings/local.php" do
   source "settings.erb"
   owner "nominatim"
   group "nominatim"
-  mode 0o664
-  variables :base_url => node[:nominatim][:state] == "off" ? node[:fqdn] : "nominatim.openstreetmap.org",
-            :dbname => node[:nominatim][:dbname],
-            :flatnode_file => node[:nominatim][:flatnode_file],
-            :log_file => "#{node[:nominatim][:logdir]}/query.log"
+  mode "664"
+  variables :base_url => node["nominatim"]["state"] == "off" ? node["fqdn"] : "nominatim.openstreetmap.org",
+            :dbname => node["nominatim"]["dbname"],
+            :flatnode_file => node["nominatim"]["flatnode_file"],
+            :log_file => "#{node['nominatim']['logdir']}/query.log"
 end
 
-if node[:nominatim][:flatnode_file] # ~FC023
-  directory File.dirname(node[:nominatim][:flatnode_file]) do
+if node["nominatim"]["flatnode_file"] # ~FC023
+  directory File.dirname(node["nominatim"]["flatnode_file"]) do
     recursive true
   end
 end
@@ -218,7 +218,7 @@ template "/etc/logrotate.d/nominatim" do
   source "logrotate.nominatim.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
 end
 
 external_data = [
@@ -233,7 +233,7 @@ external_data.each do |fname|
     source "https://www.nominatim.org/data/#{fname}"
     owner "nominatim"
     group "nominatim"
-    mode 0o644
+    mode "644"
   end
 end
 
@@ -242,11 +242,11 @@ remote_file "#{source_directory}/data/country_osm_grid.sql.gz" do
   source "https://www.nominatim.org/data/country_grid.sql.gz"
   owner "nominatim"
   group "nominatim"
-  mode 0o644
+  mode "644"
 end
 
 template "/etc/cron.d/nominatim" do
-  action node[:nominatim][:state] == "off" ? :delete : :create
+  action node["nominatim"]["state"] == "off" ? :delete : :create
   source "nominatim.cron.erb"
   owner "root"
   group "root"
@@ -260,11 +260,11 @@ template "#{source_directory}/utils/nominatim-update" do
   source "updater.erb"
   user "nominatim"
   group "nominatim"
-  mode 0o755
+  mode "755"
   variables :bindir => build_directory,
             :srcdir => source_directory,
-            :logfile => "#{node[:nominatim][:logdir]}/update.log",
-            :branch => node[:nominatim][:revision],
+            :logfile => "#{node['nominatim']['logdir']}/update.log",
+            :branch => node["nominatim"]["revision"],
             :update_stop_file => "#{basedir}/status/updates_disabled",
             :update_maintenance_trigger => "#{basedir}/status/update_maintenance"
 end
@@ -273,7 +273,7 @@ template "/etc/init.d/nominatim-update" do
   source "updater.init.erb"
   user "nominatim"
   group "nominatim"
-  mode 0o755
+  mode "755"
   variables :source_directory => source_directory
 end
 
@@ -282,8 +282,8 @@ end
     source "#{fname}.erb"
     owner "root"
     group "root"
-    mode 0o755
-    variables :db => node[:nominatim][:dbname]
+    mode "755"
+    variables :db => node["nominatim"]["dbname"]
   end
 end
 
@@ -294,21 +294,21 @@ template "#{build_directory}/settings/ip_blocks.conf" do
   source "ipblocks.erb"
   owner "nominatim"
   group "nominatim"
-  mode 0o664
+  mode "664"
 end
 
 file "#{build_directory}/settings/apache_blocks.conf" do
   action :create_if_missing
   owner "nominatim"
   group "nominatim"
-  mode 0o664
+  mode "664"
 end
 
 file "#{build_directory}/settings/ip_blocks.map" do
   action :create_if_missing
   owner "nominatim"
   group "nominatim"
-  mode 0o664
+  mode "664"
 end
 
 include_recipe "apache"
@@ -329,12 +329,12 @@ service "php7.2-fpm" do
   supports :status => true, :restart => true, :reload => true
 end
 
-node[:nominatim][:fpm_pools].each do |name, data|
+node["nominatim"]["fpm_pools"].each do |name, data|
   template "/etc/php/7.2/fpm/pool.d/#{name}.conf" do
     source "fpm.conf.erb"
     owner "root"
     group "root"
-    mode 0o644
+    mode "644"
     variables data.merge(:name => name)
     notifies :reload, "service[php7.2-fpm]"
   end
@@ -353,8 +353,8 @@ end
 apache_site "nominatim.openstreetmap.org" do
   template "apache.erb"
   directory build_directory
-  variables :pools => node[:nominatim][:fpm_pools]
-  only_if { node[:nominatim][:state] != "off" }
+  variables :pools => node["nominatim"]["fpm_pools"]
+  only_if { node["nominatim"]["state"] != "off" }
 end
 
 apache_site "default" do
@@ -365,15 +365,15 @@ template "/etc/logrotate.d/apache2" do
   source "logrotate.apache.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
 end
 
 include_recipe "fail2ban"
 
 munin_plugin_conf "nominatim" do
   template "munin.erb"
-  variables :db => node[:nominatim][:dbname],
-            :querylog => "#{node[:nominatim][:logdir]}/query.log"
+  variables :db => node["nominatim"]["dbname"],
+            :querylog => "#{node['nominatim']['logdir']}/query.log"
 end
 
 munin_plugin "nominatim_importlag" do
@@ -395,5 +395,5 @@ end
 directory "#{basedir}/status" do
   owner "nominatim"
   group "postgres"
-  mode 0o775
+  mode "775"
 end

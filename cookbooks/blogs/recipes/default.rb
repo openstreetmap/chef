@@ -33,7 +33,7 @@ gem_package "bundler"
 directory "/srv/blogs.openstreetmap.org" do
   owner "blogs"
   group "blogs"
-  mode 0o755
+  mode "755"
 end
 
 git "/srv/blogs.openstreetmap.org" do

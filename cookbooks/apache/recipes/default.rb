@@ -25,14 +25,14 @@ package %w[
 ]
 
 %w[event itk prefork worker].each do |mpm|
-  next if mpm == node[:apache][:mpm]
+  next if mpm == node["apache"]["mpm"]
 
   apache_module "mpm_#{mpm}" do
     action [:disable]
   end
 end
 
-apache_module "mpm_#{node[:apache][:mpm]}" do
+apache_module "mpm_#{node['apache']['mpm']}" do
   action [:enable]
 end
 
@@ -49,7 +49,7 @@ template "/etc/apache2/ports.conf" do
   source "ports.conf.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
 end
 
 service "apache2" do
@@ -71,7 +71,7 @@ apache_module "deflate" do
   conf "deflate.conf.erb"
 end
 
-if node[:apache][:reqtimeout]
+if node["apache"]["reqtimeout"]
   apache_module "reqtimeout" do
     action [:enable]
   end

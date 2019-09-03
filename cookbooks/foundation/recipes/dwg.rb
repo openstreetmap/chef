@@ -39,7 +39,7 @@ mediawiki_site "dwg.osmfoundation.org" do
 end
 
 cookbook_file "/srv/dwg.osmfoundation.org/Wiki.png" do
-  owner node[:mediawiki][:user]
-  group node[:mediawiki][:group]
-  mode 0o644
+  owner node["mediawiki"]["user"]
+  group node["mediawiki"]["group"]
+  mode "644"
 end

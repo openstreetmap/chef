@@ -24,7 +24,7 @@ property :cluster, :kind_of => String, :required => true
 property :database, :kind_of => String, :required => true
 
 action :create do
-  cluster = node[:postgresql][:clusters] && node[:postgresql][:clusters][new_resource.cluster]
+  cluster = node["postgresql"]["clusters"] && node["postgresql"]["clusters"][new_resource.cluster]
   database = new_resource.database
 
   if cluster

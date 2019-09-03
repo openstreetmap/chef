@@ -25,19 +25,19 @@ service "openvpn" do
   ignore_failure true
 end
 
-node[:openvpn][:tunnels].each do |name, details|
+node["openvpn"]["tunnels"].each do |name, details|
   peer = search(:node, "fqdn:#{details[:peer][:host]}").first
 
   if peer
     if peer[:openvpn] && !details[:peer][:address]
-      node.default[:openvpn][:tunnels][name][:peer][:address] = peer[:openvpn][:address]
+      node.default["openvpn"]["tunnels"][name]["peer"][:address] = peer[:openvpn][:address]
     end
 
-    node.default[:openvpn][:tunnels][name][:peer][:networks] = peer.interfaces(:role => :internal).collect do |interface|
+    node.default["openvpn"]["tunnels"][name]["peer"][:networks] = peer.interfaces(:role => :internal).collect do |interface|
       { :address => interface[:network], :netmask => interface[:netmask] }
     end
   else
-    node.default[:openvpn][:tunnels][name][:peer][:networks] = []
+    node.default["openvpn"]["tunnels"][name]["peer"][:networks] = []
   end
 
   if details[:mode] == "client"
@@ -49,28 +49,28 @@ node[:openvpn][:tunnels].each do |name, details|
     end
 
     if File.exist?("/etc/openvpn/#{name}.key")
-      node.normal[:openvpn][:keys][name] = IO.read("/etc/openvpn/#{name}.key")
+      node.normal["openvpn"]["keys"][name] = IO.read("/etc/openvpn/#{name}.key")
     end
   elsif peer && peer[:openvpn]
     file "/etc/openvpn/#{name}.key" do
       owner "root"
       group "root"
-      mode 0o600
+      mode "600"
       content peer[:openvpn][:keys][name]
     end
   end
 
-  if node[:openvpn][:tunnels][name][:peer][:address]
+  if node["openvpn"]["tunnels"][name]["peer"]["address"]
     template "/etc/openvpn/#{name}.conf" do
       source "tunnel.conf.erb"
       owner "root"
       group "root"
-      mode 0o644
+      mode "644"
       variables :name => name,
-                :address => node[:openvpn][:address],
-                :port => node[:openvpn][:tunnels][name][:port],
-                :mode => node[:openvpn][:tunnels][name][:mode],
-                :peer => node[:openvpn][:tunnels][name][:peer]
+                :address => node["openvpn"]["address"],
+                :port => node["openvpn"]["tunnels"][name]["port"],
+                :mode => node["openvpn"]["tunnels"][name]["mode"],
+                :peer => node["openvpn"]["tunnels"][name]["peer"]
       notifies :restart, "service[openvpn]"
     end
   else

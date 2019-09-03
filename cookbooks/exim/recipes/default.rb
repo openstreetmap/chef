@@ -33,16 +33,16 @@ group "ssl-cert" do
   append true
 end
 
-if node[:exim][:certificate_names]
+if node["exim"]["certificate_names"]
   include_recipe "apache"
 
-  apache_site node[:exim][:certificate_names].first do
+  apache_site node["exim"]["certificate_names"].first do
     template "apache.erb"
-    variables :aliases => node[:exim][:certificate_names].drop(1)
+    variables :aliases => node["exim"]["certificate_names"].drop(1)
   end
 
-  ssl_certificate node[:exim][:certificate_names].first do
-    domains node[:exim][:certificate_names]
+  ssl_certificate node["exim"]["certificate_names"].first do
+    domains node["exim"]["certificate_names"]
     notifies :restart, "service[exim4]"
   end
 else
@@ -50,10 +50,10 @@ else
     key_file "/etc/ssl/private/exim.key"
     owner "root"
     group "ssl-cert"
-    mode 0o640
+    mode "640"
     org "OpenStreetMap"
     email "postmaster@openstreetmap.org"
-    common_name node[:fqdn]
+    common_name node["fqdn"]
     expire 3650
     notifies :restart, "service[exim4]"
   end
@@ -64,16 +64,16 @@ service "exim4" do
   supports :status => true, :restart => true, :reload => true
 end
 
-relay_to_domains = node[:exim][:relay_to_domains]
+relay_to_domains = node["exim"]["relay_to_domains"]
 
-node[:exim][:routes].each_value do |route|
+node["exim"]["routes"].each_value do |route|
   relay_to_domains |= route[:domains] if route[:host]
 end
 
-relay_from_hosts = node[:exim][:relay_from_hosts]
+relay_from_hosts = node["exim"]["relay_from_hosts"]
 
-if node[:exim][:smarthost_name]
-  search(:node, "exim_smarthost_via:#{node[:exim][:smarthost_name]}\\:*").each do |host|
+if node["exim"]["smarthost_name"]
+  search(:node, "exim_smarthost_via:#{node['exim']['smarthost_name']}\\:*").each do |host|
     relay_from_hosts |= host.ipaddresses(:role => :external)
   end
 end
@@ -81,14 +81,14 @@ end
 file "/etc/exim4/blocked-senders" do
   owner "root"
   group "Debian-exim"
-  mode 0o644
+  mode "644"
 end
 
 template "/etc/exim4/exim4.conf" do
   source "exim4.conf.erb"
   owner "root"
   group "Debian-exim"
-  mode 0o644
+  mode "644"
   variables :relay_to_domains => relay_to_domains.sort,
             :relay_from_hosts => relay_from_hosts.sort
   notifies :restart, "service[exim4]"
@@ -96,18 +96,18 @@ end
 
 search(:accounts, "*:*").each do |account|
   name = account["id"]
-  details = node[:accounts][:users][name] || {}
+  details = node["accounts"]["users"][name] || {}
 
   if details[:status] && account["email"]
-    node.default[:exim][:aliases][name] = account["email"]
+    node.default["exim"]["aliases"][name] = account["email"]
   end
 end
 
-if node[:exim][:private_aliases]
+if node["exim"]["private_aliases"]
   aliases = data_bag_item("exim", "aliases")
 
-  aliases[node[:exim][:private_aliases]].each do |name, address|
-    node.default[:exim][:aliases][name] = address
+  aliases[node["exim"]["private_aliases"]].each do |name, address|
+    node.default["exim"]["aliases"][name] = address
   end
 end
 
@@ -115,14 +115,14 @@ template "/etc/aliases" do
   source "aliases.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
 end
 
 remote_directory "/etc/exim4/noreply" do
   source "noreply"
   owner "root"
   group "Debian-exim"
-  mode 0o755
+  mode "755"
   files_owner "root"
   files_group "Debian-exim"
   files_mode 0o755
@@ -132,8 +132,8 @@ end
 munin_plugin "exim_mailqueue"
 munin_plugin "exim_mailstats"
 
-if node[:exim][:smarthost_name]
-  node[:exim][:daemon_smtp_ports].each do |port|
+if node["exim"]["smarthost_name"]
+  node["exim"]["daemon_smtp_ports"].each do |port|
     firewall_rule "accept-inbound-smtp-#{port}" do
       action :accept
       source "net"
@@ -144,7 +144,7 @@ if node[:exim][:smarthost_name]
     end
   end
 else
-  node[:exim][:daemon_smtp_ports].each do |port|
+  node["exim"]["daemon_smtp_ports"].each do |port|
     firewall_rule "accept-inbound-smtp-#{port}" do
       action :accept
       source "bm:mail.openstreetmap.org"
@@ -156,7 +156,7 @@ else
   end
 end
 
-if node[:exim][:smarthost_via] # ~FC023
+if node["exim"]["smarthost_via"] # ~FC023
   firewall_rule "deny-outbound-smtp" do
     action :reject
     source "fw"

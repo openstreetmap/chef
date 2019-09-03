@@ -45,7 +45,7 @@ end
 directory "/srv/forum.openstreetmap.org" do
   owner "forum"
   group "forum"
-  mode 0o755
+  mode "755"
 end
 
 git "/srv/forum.openstreetmap.org/html/" do
@@ -63,7 +63,7 @@ remote_file "/var/cache/chef/air3_v0.8.zip" do
   source "https://fluxbb.org/resources/styles/air3/releases/0.8/air3_v0.8.zip"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   backup false
 end
 
@@ -79,20 +79,20 @@ end
 directory "/srv/forum.openstreetmap.org/html/cache/" do
   owner "www-data"
   group "www-data"
-  mode 0o755
+  mode "755"
 end
 
 directory "/srv/forum.openstreetmap.org/html/img/avatars/" do
   owner "www-data"
   group "www-data"
-  mode 0o755
+  mode "755"
 end
 
 template "/srv/forum.openstreetmap.org/html/config.php" do
   source "config.php.erb"
   owner "forum"
   group "www-data"
-  mode 0o440
+  mode "440"
   variables :passwords => passwords
 end
 
@@ -108,6 +108,6 @@ template "/etc/cron.daily/forum-backup" do
   source "backup.cron.erb"
   owner "root"
   group "root"
-  mode 0o750
+  mode "750"
   variables :passwords => passwords
 end

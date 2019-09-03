@@ -25,7 +25,7 @@ action :restart do
   execute new_resource.application do
     action :run
     command "passenger-config restart-app --ignore-app-not-running --ignore-passenger-not-running #{new_resource.application}"
-    environment "PASSENGER_INSTANCE_REGISTRY_DIR" => node[:passenger][:instance_registry_dir]
+    environment "PASSENGER_INSTANCE_REGISTRY_DIR" => node["passenger"]["instance_registry_dir"]
     user "root"
     group "root"
   end

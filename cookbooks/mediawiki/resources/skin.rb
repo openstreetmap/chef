@@ -35,11 +35,11 @@ action :create do
     remote_directory skin_directory do
       cookbook "mediawiki"
       source new_resource.source
-      owner node[:mediawiki][:user]
-      group node[:mediawiki][:group]
-      mode 0o755
-      files_owner node[:mediawiki][:user]
-      files_group node[:mediawiki][:group]
+      owner node["mediawiki"]["user"]
+      group node["mediawiki"]["group"]
+      mode "755"
+      files_owner node["mediawiki"]["user"]
+      files_group node["mediawiki"]["group"]
       files_mode 0o755
     end
   else
@@ -51,8 +51,8 @@ action :create do
       repository skin_repository
       revision skin_revision
       enable_submodules true
-      user node[:mediawiki][:user]
-      group node[:mediawiki][:group]
+      user node["mediawiki"]["user"]
+      group node["mediawiki"]["group"]
       ignore_failure skin_repository.start_with?("git://github.com/wikimedia/mediawiki-skins")
     end
   end
@@ -61,9 +61,9 @@ action :create do
     declare_resource :template, "#{mediawiki_directory}/LocalSettings.d/Skin-#{new_resource.skin}.inc.php" do
       cookbook "mediawiki"
       source new_resource.template
-      user node[:mediawiki][:user]
-      group node[:mediawiki][:group]
-      mode 0o664
+      user node["mediawiki"]["user"]
+      group node["mediawiki"]["group"]
+      mode "664"
       variables new_resource.variables
     end
   else
@@ -77,9 +77,9 @@ action :create do
 
     file "#{mediawiki_directory}/LocalSettings.d/Skin-#{new_resource.skin}.inc.php" do
       content file_content
-      user node[:mediawiki][:user]
-      group node[:mediawiki][:group]
-      mode 0o664
+      user node["mediawiki"]["user"]
+      group node["mediawiki"]["group"]
+      mode "664"
       only_if { ::File.exist?(skin_file) }
     end
   end
@@ -98,7 +98,7 @@ end
 
 action_class do
   def site_directory
-    node[:mediawiki][:sites][new_resource.site][:directory]
+    node["mediawiki"]["sites"][new_resource.site]["directory"]
   end
 
   def mediawiki_directory
@@ -110,7 +110,7 @@ action_class do
   end
 
   def skin_version
-    new_resource.version || node[:mediawiki][:sites][new_resource.site][:version]
+    new_resource.version || node["mediawiki"]["sites"][new_resource.site]["version"]
   end
 
   def default_repository
@@ -122,7 +122,7 @@ def after_created
   if update_site
     notifies :update, "mediawiki_site[#{site}]"
   else
-    site_directory = node[:mediawiki][:sites][site][:directory]
+    site_directory = node["mediawiki"]["sites"][site]["directory"]
 
     notifies :create, "template[#{site_directory}/w/LocalSettings.php]"
     notifies :run, "execute[#{site_directory}/w/maintenance/update.php]"

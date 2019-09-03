@@ -23,7 +23,7 @@ include_recipe "apache"
 
 apache_module "proxy_http"
 
-version = node[:kibana][:version]
+version = node["kibana"]["version"]
 
 remote_file "#{Chef::Config[:file_cache_path]}/kibana-#{version}.tar.gz" do
   source "https://download.elastic.co/kibana/kibana/kibana-4.1.1-linux-x64.tar.gz"
@@ -33,7 +33,7 @@ end
 directory "/opt/kibana-#{version}" do
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end
 
 execute "unzip-kibana-#{version}" do
@@ -47,19 +47,19 @@ end
 directory "/etc/kibana" do
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end
 
 directory "/var/run/kibana" do
   owner "kibana"
   group "kibana"
-  mode 0o755
+  mode "755"
 end
 
 directory "/var/log/kibana" do
   owner "kibana"
   group "kibana"
-  mode 0o755
+  mode "755"
 end
 
 systemd_service "kibana@" do
@@ -75,7 +75,7 @@ systemd_service "kibana@" do
   restart "on-failure"
 end
 
-node[:kibana][:sites].each do |name, details|
+node["kibana"]["sites"].each do |name, details|
   file "/etc/kibana/#{name}.yml" do
     content YAML.dump(YAML.safe_load(File.read("/opt/kibana-#{version}/config/kibana.yml")).merge(
                         "port" => details[:port],
@@ -86,7 +86,7 @@ node[:kibana][:sites].each do |name, details|
                       ))
     owner "root"
     group "root"
-    mode 0o644
+    mode "644"
     notifies :restart, "service[kibana@#{name}]"
   end
 

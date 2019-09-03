@@ -27,7 +27,7 @@ package "python-lxml"
 directory "/opt/planet-notes-dump" do
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end
 
 git "/opt/planet-notes-dump" do
@@ -41,7 +41,7 @@ template "/usr/local/bin/planet-notes-dump" do
   source "planet-notes-dump.erb"
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
   variables :password => db_passwords["planetdump"]
 end
 
@@ -49,5 +49,5 @@ template "/etc/cron.d/planet-notes-dump" do
   source "planet-notes-dump.cron.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
 end

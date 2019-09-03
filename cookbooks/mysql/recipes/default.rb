@@ -29,7 +29,7 @@ template "/etc/mysql/mysql.conf.d/zzz-chef.cnf" do
   source "my.cnf.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   notifies :restart, "service[mysql]"
 end
 

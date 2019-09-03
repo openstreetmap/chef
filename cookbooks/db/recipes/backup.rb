@@ -21,12 +21,12 @@ template "/usr/local/bin/backup-db" do
   source "backup-db.erb"
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end
 
 template "/etc/cron.d/backup-db" do
   source "backup.cron.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
 end

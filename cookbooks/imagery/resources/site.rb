@@ -30,20 +30,20 @@ action :create do
   directory "/srv/#{new_resource.site}" do
     user "root"
     group "root"
-    mode 0o755
+    mode "755"
   end
 
   directory "/srv/imagery/layers/#{new_resource.site}" do
     user "root"
     group "root"
-    mode 0o755
+    mode "755"
     recursive true
   end
 
   directory "/srv/imagery/overlays/#{new_resource.site}" do
     user "root"
     group "root"
-    mode 0o755
+    mode "755"
     recursive true
   end
 
@@ -51,7 +51,7 @@ action :create do
     source "index.html.erb"
     user "root"
     group "root"
-    mode 0o644
+    mode "644"
     variables :title => new_resource.title
   end
 
@@ -59,28 +59,28 @@ action :create do
     source "robots.txt"
     user "root"
     group "root"
-    mode 0o644
+    mode "644"
   end
 
   cookbook_file "/srv/#{new_resource.site}/imagery.css" do
     source "imagery.css"
     user "root"
     group "root"
-    mode 0o644
+    mode "644"
   end
 
   cookbook_file "/srv/#{new_resource.site}/clientaccesspolicy.xml" do
     source "clientaccesspolicy.xml"
     user "root"
     group "root"
-    mode 0o644
+    mode "644"
   end
 
   cookbook_file "/srv/#{new_resource.site}/crossdomain.xml" do
     source "crossdomain.xml"
     user "root"
     group "root"
-    mode 0o644
+    mode "644"
   end
 
   layers = Dir.glob("/srv/imagery/layers/#{new_resource.site}/*.yml").collect do |path|
@@ -91,7 +91,7 @@ action :create do
     source "imagery.js.erb"
     user "root"
     group "root"
-    mode 0o644
+    mode "644"
     variables :bbox => new_resource.bbox, :layers => layers
   end
 

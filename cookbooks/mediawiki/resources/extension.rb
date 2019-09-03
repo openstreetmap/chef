@@ -36,11 +36,11 @@ action :create do
     remote_directory extension_directory do
       cookbook "mediawiki"
       source new_resource.source
-      owner node[:mediawiki][:user]
-      group node[:mediawiki][:group]
-      mode 0o755
-      files_owner node[:mediawiki][:user]
-      files_group node[:mediawiki][:group]
+      owner node["mediawiki"]["user"]
+      group node["mediawiki"]["group"]
+      mode "755"
+      files_owner node["mediawiki"]["user"]
+      files_group node["mediawiki"]["group"]
       files_mode 0o755
     end
   else
@@ -58,8 +58,8 @@ action :create do
       repository extension_repository
       reference extension_reference
       enable_submodules true
-      user node[:mediawiki][:user]
-      group node[:mediawiki][:group]
+      user node["mediawiki"]["user"]
+      group node["mediawiki"]["group"]
       ignore_failure extension_repository.start_with?("git://github.com/wikimedia/mediawiki-extensions")
     end
   end
@@ -68,17 +68,17 @@ action :create do
     declare_resource :template, "#{mediawiki_directory}/LocalSettings.d/Ext-#{new_resource.extension}.inc.php" do
       cookbook new_resource.template_cookbook
       source new_resource.template
-      user node[:mediawiki][:user]
-      group node[:mediawiki][:group]
-      mode 0o664
+      user node["mediawiki"]["user"]
+      group node["mediawiki"]["group"]
+      mode "664"
       variables new_resource.variables
     end
   else
     file "#{mediawiki_directory}/LocalSettings.d/Ext-#{new_resource.extension}.inc.php" do
       content "<?php wfLoadExtension( '#{new_resource.extension}' );\n"
-      user node[:mediawiki][:user]
-      group node[:mediawiki][:group]
-      mode 0o664
+      user node["mediawiki"]["user"]
+      group node["mediawiki"]["group"]
+      mode "664"
     end
   end
 
@@ -86,8 +86,8 @@ action :create do
     action :nothing
     command "composer update --no-dev"
     cwd mediawiki_directory
-    user node[:mediawiki][:user]
-    group node[:mediawiki][:group]
+    user node["mediawiki"]["user"]
+    group node["mediawiki"]["group"]
     only_if { ::File.exist?("#{extension_directory}/composer.json") }
     subscribes :run, "git[#{extension_directory}]"
   end
@@ -106,7 +106,7 @@ end
 
 action_class do
   def site_directory
-    node[:mediawiki][:sites][new_resource.site][:directory]
+    node["mediawiki"]["sites"][new_resource.site]["directory"]
   end
 
   def mediawiki_directory
@@ -118,7 +118,7 @@ action_class do
   end
 
   def extension_version
-    new_resource.version || node[:mediawiki][:sites][new_resource.site][:version]
+    new_resource.version || node["mediawiki"]["sites"][new_resource.site]["version"]
   end
 
   def default_repository
@@ -130,7 +130,7 @@ def after_created
   if update_site
     notifies :update, "mediawiki_site[#{site}]"
   else
-    site_directory = node[:mediawiki][:sites][site][:directory]
+    site_directory = node["mediawiki"]["sites"][site]["directory"]
 
     notifies :create, "template[#{site_directory}/w/LocalSettings.php]"
     notifies :run, "execute[#{site_directory}/w/maintenance/update.php]"

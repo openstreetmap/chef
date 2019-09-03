@@ -22,8 +22,8 @@ include_recipe "chef"
 package "unzip"
 package "default-jre"
 
-osmosis_package = "osmosis-#{node[:osmosis][:version]}.zip"
-osmosis_directory = "/opt/osmosis-#{node[:osmosis][:version]}"
+osmosis_package = "osmosis-#{node['osmosis']['version']}.zip"
+osmosis_directory = "/opt/osmosis-#{node['osmosis']['version']}"
 
 Dir.glob("/var/cache/chef/osmosis-*.zip").each do |zip|
   next if zip == "/var/cache/chef/#{osmosis_package}"
@@ -37,7 +37,7 @@ end
 directory osmosis_directory do
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end
 
 execute "/var/cache/chef/#{osmosis_package}" do
@@ -53,7 +53,7 @@ remote_file "/var/cache/chef/#{osmosis_package}" do
   source "https://bretth.dev.openstreetmap.org/osmosis-build/#{osmosis_package}"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   backup false
   notifies :run, "execute[/var/cache/chef/#{osmosis_package}]"
 end

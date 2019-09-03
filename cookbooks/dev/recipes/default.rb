@@ -96,7 +96,7 @@ template "/etc/php/7.2/fpm/pool.d/default.conf" do
   source "fpm-default.conf.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   notifies :reload, "service[php7.2-fpm]"
 end
 
@@ -108,14 +108,14 @@ end
 directory "/srv/dev.openstreetmap.org" do
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end
 
 template "/srv/dev.openstreetmap.org/index.html" do
   source "dev.html.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
 end
 
 ssl_certificate "dev.openstreetmap.org" do
@@ -133,7 +133,7 @@ template "/etc/phppgadmin/config.inc.php" do
   source "phppgadmin.conf.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
 end
 
 file "/etc/apache2/conf.d/phppgadmin" do
@@ -151,11 +151,11 @@ end
 
 search(:accounts, "*:*").each do |account|
   name = account["id"]
-  details = node[:accounts][:users][name] || {}
+  details = node["accounts"]["users"][name] || {}
 
   next unless %w[user administrator].include?(details[:status])
 
-  user_home = details[:home] || account["home"] || "#{node[:accounts][:home]}/#{name}"
+  user_home = details[:home] || account["home"] || "#{node['accounts']['home']}/#{name}"
 
   next unless File.directory?("#{user_home}/public_html")
 
@@ -165,7 +165,7 @@ search(:accounts, "*:*").each do |account|
     source "fpm.conf.erb"
     owner "root"
     group "root"
-    mode 0o644
+    mode "644"
     variables :user => name, :port => port
     notifies :reload, "service[php7.2-fpm]"
   end
@@ -185,12 +185,12 @@ search(:accounts, "*:*").each do |account|
     source "sudoers.user.erb"
     owner "root"
     group "root"
-    mode 0o440
+    mode "440"
     variables :user => name
   end
 end
 
-if node[:postgresql][:clusters][:"9.5/main"]
+if node["postgresql"]["clusters"]["9.5/main"]
   postgresql_user "apis" do
     cluster "9.5/main"
   end
@@ -200,10 +200,10 @@ if node[:postgresql][:clusters][:"9.5/main"]
     source "cleanup-assets.erb"
     owner "root"
     group "root"
-    mode 0o755
+    mode "755"
   end
 
-  ruby_version = node[:passenger][:ruby_version]
+  ruby_version = node["passenger"]["ruby_version"]
 
   systemd_service "rails-jobs@" do
     description "Rails job queue runner"
@@ -236,7 +236,7 @@ if node[:postgresql][:clusters][:"9.5/main"]
 
   cgimap_port = 9000
 
-  node[:dev][:rails].each do |name, details|
+  node["dev"]["rails"].each do |name, details|
     database_name = details[:database] || "apis_#{name}"
     site_name = "#{name}.apis.dev.openstreetmap.org"
     site_directory = "/srv/#{name}.apis.dev.openstreetmap.org"
@@ -249,7 +249,7 @@ if node[:postgresql][:clusters][:"9.5/main"]
       site_aliases = details[:aliases] || []
       secret_key_base = details[:secret_key_base] || SecureRandom.base64(96)
 
-      node.normal[:dev][:rails][name][:secret_key_base] = secret_key_base
+      node.normal["dev"]["rails"][name][:secret_key_base] = secret_key_base
 
       postgresql_database database_name do
         cluster "9.5/main"
@@ -265,31 +265,31 @@ if node[:postgresql][:clusters][:"9.5/main"]
       directory site_directory do
         owner "apis"
         group "apis"
-        mode 0o755
+        mode "755"
       end
 
       directory log_directory do
         owner "apis"
         group "apis"
-        mode 0o755
+        mode "755"
       end
 
       directory gpx_directory do
         owner "apis"
         group "apis"
-        mode 0o755
+        mode "755"
       end
 
       directory "#{gpx_directory}/traces" do
         owner "apis"
         group "apis"
-        mode 0o755
+        mode "755"
       end
 
       directory "#{gpx_directory}/images" do
         owner "apis"
         group "apis"
-        mode 0o755
+        mode "755"
       end
 
       rails_port site_name do
@@ -299,7 +299,7 @@ if node[:postgresql][:clusters][:"9.5/main"]
         group "apis"
         repository details[:repository]
         revision details[:revision]
-        database_port node[:postgresql][:clusters][:"9.5/main"][:port]
+        database_port node["postgresql"]["clusters"]["9.5/main"]["port"]
         database_name database_name
         database_username "apis"
         gpx_dir gpx_directory
@@ -314,7 +314,7 @@ if node[:postgresql][:clusters][:"9.5/main"]
         source "rails.setup.rb.erb"
         owner "apis"
         group "apis"
-        mode 0o644
+        mode "644"
         variables :site => site_name
         notifies :restart, "rails_port[#{site_name}]"
       end
@@ -368,9 +368,9 @@ if node[:postgresql][:clusters][:"9.5/main"]
           source "cgimap.environment.erb"
           owner "root"
           group "root"
-          mode 0o640
+          mode "640"
           variables :cgimap_port => cgimap_port,
-                    :database_port => node[:postgresql][:clusters][:"9.5/main"][:port],
+                    :database_port => node["postgresql"]["clusters"]["9.5/main"]["port"],
                     :database_name => database_name,
                     :log_directory => log_directory
           notifies :restart, "service[cgimap@#{name}]"
@@ -399,7 +399,7 @@ if node[:postgresql][:clusters][:"9.5/main"]
         source "logrotate.apis.erb"
         owner "root"
         group "root"
-        mode 0o644
+        mode "644"
         variables :name => name,
                   :log_directory => log_directory,
                   :rails_directory => rails_directory
@@ -437,21 +437,21 @@ if node[:postgresql][:clusters][:"9.5/main"]
         cluster "9.5/main"
       end
 
-      node.normal[:dev][:rails].delete(name)
+      node.normal["dev"]["rails"].delete(name)
     end
   end
 
   directory "/srv/apis.dev.openstreetmap.org" do
     owner "apis"
     group "apis"
-    mode 0o755
+    mode "755"
   end
 
   template "/srv/apis.dev.openstreetmap.org/index.html" do
     source "apis.html.erb"
     owner "apis"
     group "apis"
-    mode 0o644
+    mode "644"
   end
 
   ssl_certificate "apis.dev.openstreetmap.org" do
@@ -463,7 +463,7 @@ if node[:postgresql][:clusters][:"9.5/main"]
     template "apache.apis.erb"
   end
 
-  node[:postgresql][:clusters].each_key do |name|
+  node["postgresql"]["clusters"].each_key do |name|
     postgresql_munin name do
       cluster name
       database "ALL"
@@ -474,14 +474,14 @@ end
 directory "/srv/ooc.openstreetmap.org" do
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end
 
 remote_directory "/srv/ooc.openstreetmap.org/html" do
   source "ooc"
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
   files_owner "root"
   files_group "root"
   files_mode 0o644

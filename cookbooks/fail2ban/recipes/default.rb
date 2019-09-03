@@ -23,7 +23,7 @@ template "/etc/fail2ban/jail.d/00-default.conf" do
   source "jail.default.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   notifies :reload, "service[fail2ban]"
 end
 

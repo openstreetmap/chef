@@ -27,7 +27,7 @@ template "/etc/clamav-unofficial-sigs.conf.d/50-chef.conf" do
   source "clamav-unofficial-sigs.conf.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
 end
 
 service "clamav-daemon" do

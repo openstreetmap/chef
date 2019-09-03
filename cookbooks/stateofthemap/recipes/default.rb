@@ -44,7 +44,7 @@ end
 directory "/srv/2007.stateofthemap.org" do
   owner "wordpress"
   group "wordpress"
-  mode 0o755
+  mode "755"
 end
 
 wordpress_site "2007.stateofthemap.org" do
@@ -71,7 +71,7 @@ end
 directory "/srv/2008.stateofthemap.org" do
   owner "wordpress"
   group "wordpress"
-  mode 0o755
+  mode "755"
 end
 
 wordpress_site "2008.stateofthemap.org" do
@@ -98,7 +98,7 @@ end
 directory "/srv/2009.stateofthemap.org" do
   owner "wordpress"
   group "wordpress"
-  mode 0o755
+  mode "755"
 end
 
 git "/srv/2009.stateofthemap.org" do
@@ -135,7 +135,7 @@ end
 directory "/srv/2010.stateofthemap.org" do
   owner "wordpress"
   group "wordpress"
-  mode 0o755
+  mode "755"
 end
 
 git "/srv/2010.stateofthemap.org" do
@@ -176,7 +176,7 @@ end
 directory "/srv/2011.stateofthemap.org" do
   owner "wordpress"
   group "wordpress"
-  mode 0o755
+  mode "755"
 end
 
 git "/srv/2011.stateofthemap.org" do
@@ -217,7 +217,7 @@ end
 directory "/srv/2012.stateofthemap.org" do
   owner "wordpress"
   group "wordpress"
-  mode 0o755
+  mode "755"
 end
 
 git "/srv/2012.stateofthemap.org" do
@@ -293,7 +293,7 @@ gem_package "jekyll"
   end
 
   directory "/srv/#{year}.stateofthemap.org/_site" do
-    mode 0o755
+    mode "755"
     owner "nobody"
     group "nogroup"
   end
@@ -322,6 +322,6 @@ template "/etc/cron.daily/sotm-backup" do
   source "backup.cron.erb"
   owner "root"
   group "root"
-  mode 0o750
+  mode "750"
   variables :passwords => passwords
 end

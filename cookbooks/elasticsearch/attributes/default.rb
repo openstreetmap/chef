@@ -4,4 +4,4 @@ default[:elasticsearch][:cluster][:routing][:allocation][:disk][:watermark][:hig
 default[:elasticsearch][:cluster][:routing][:allocation][:disk][:watermark][:flood_stage] = "95%"
 default[:elasticsearch][:path][:data] = "/var/lib/elasticsearch"
 
-default[:apt][:sources] |= ["elasticsearch#{node[:elasticsearch][:version]}"]
+default[:apt][:sources] |= ["elasticsearch#{node['elasticsearch']['version']}"]

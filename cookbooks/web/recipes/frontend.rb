@@ -38,7 +38,7 @@ end
 
 apache_site "www.openstreetmap.org" do
   template "apache.frontend.erb"
-  variables :status => node[:web][:status],
+  variables :status => node["web"]["status"],
             :secret_key_base => web_passwords["secret_key_base"]
 end
 
@@ -46,7 +46,7 @@ template "/etc/logrotate.d/apache2" do
   source "logrotate.apache.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
 end
 
 service "rails-jobs@mailers" do

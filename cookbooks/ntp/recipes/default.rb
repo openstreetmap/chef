@@ -30,7 +30,7 @@ execute "dpkg-reconfigure-tzdata" do
 end
 
 link "/etc/localtime" do
-  to "/usr/share/zoneinfo/#{node[:ntp][:tz]}"
+  to "/usr/share/zoneinfo/#{node['ntp']['tz']}"
   owner "root"
   group "root"
   notifies :run, "execute[dpkg-reconfigure-tzdata]", :immediately
@@ -40,7 +40,7 @@ template "/etc/chrony/chrony.conf" do
   source "chrony.conf.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   notifies :restart, "service[chrony]"
 end
 

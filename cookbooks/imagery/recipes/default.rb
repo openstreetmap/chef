@@ -51,21 +51,21 @@ package %w[
 directory "/srv/imagery/mapserver" do
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
   recursive true
 end
 
 directory "/srv/imagery/common" do
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
   recursive true
 end
 
 directory "/srv/imagery/common/ostn02-ntv2-data" do
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end
 
 remote_file "#{Chef::Config[:file_cache_path]}/ostn02-ntv2-data.zip" do

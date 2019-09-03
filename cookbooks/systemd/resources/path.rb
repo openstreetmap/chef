@@ -40,7 +40,7 @@ action :create do
     source "path.erb"
     owner "root"
     group "root"
-    mode 0o644
+    mode "644"
     variables path_variables
   end
 
