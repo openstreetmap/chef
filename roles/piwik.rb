@@ -5,6 +5,7 @@ default_attributes(
   :apache => {
     :mpm => "prefork",
     :prefork => {
+      :server_limit => 450,
       :max_request_workers => 450
     }
   },
