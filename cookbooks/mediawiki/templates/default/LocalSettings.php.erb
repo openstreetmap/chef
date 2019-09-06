@@ -113,9 +113,9 @@ $wgSVGMaxSize = 2000;
 
 # InstantCommons allows wiki to use images from https://commons.wikimedia.org
 <% if @mediawiki[:commons] -%>
-$wgUseInstantCommons  = true;
+	$wgUseInstantCommons  = true;
 <% else -%>
-$wgUseInstantCommons  = false;
+	$wgUseInstantCommons  = false;
 <% end -%>
 
 ## If you use ImageMagick (or any other shell command) on a
@@ -194,20 +194,24 @@ $wgGroupPermissions['bureaucrat']['suppressrevision'] = true;
 $wgGroupPermissions['bureaucrat']['suppressionlog'] = true;
 
 <% if @mediawiki[:private_accounts] -%>
-# Prevent new user registrations except by existing users
-$wgGroupPermissions['*']['createaccount'] = false;
-$wgGroupPermissions['user']['createaccount'] = true;
+	# Prevent new user registrations except by existing users
+	$wgGroupPermissions['*']['createaccount'] = false;
+	$wgGroupPermissions['user']['createaccount'] = true;
 <% end -%>
+
 <% if @mediawiki[:private_site] -%>
+	# Disable reading by anonymous users
+	$wgGroupPermissions['*']['read'] = false;
 
-# Disable reading by anonymous users
-$wgGroupPermissions['*']['read'] = false;
+	# Allow anonymous users to access the login page
+	$wgWhitelistRead = array ("Special:Userlogin");
 
-# Allow anonymous users to access the login page
-$wgWhitelistRead = array ("Special:Userlogin");
+	# Prevent new user registrations except by sysops
+	$wgGroupPermissions['*']['createaccount'] = false;
 
-# Prevent new user registrations except by sysops
-$wgGroupPermissions['*']['createaccount'] = false;
+	# Restrict access to the upload directory
+	$wgUploadPath = "$wgScriptPath/img_auth.php";
+<% end -%>
 
 # Since 1.32 MW introduced interface-admin group to separate all UI-related rights. This makes sense for bigger sites,
 # but for OSM it makes more sense to keep group structure simple.  Give all interface-admin rights to sysops.
@@ -219,10 +223,6 @@ unset( $wgAddGroups['interface-admin'] );
 unset( $wgRemoveGroups['interface-admin'] );
 unset( $wgGroupsAddToSelf['interface-admin'] );
 unset( $wgGroupsRemoveFromSelf['interface-admin'] );
-
-# Restrict access to the upload directory
-$wgUploadPath = "$wgScriptPath/img_auth.php";
-<% end -%>
 
 # Allow Subpages on Main Namespace
 $wgNamespacesWithSubpages[NS_MAIN] = true;
@@ -347,10 +347,10 @@ $wgExpensiveParserFunctionLimit = 500;
 
 
 <% if @mediawiki[:site_notice] -%>
-$wgSiteNotice = "<%= @mediawiki[:site_notice] %>";
+	$wgSiteNotice = "<%= @mediawiki[:site_notice] %>";
 <% end -%>
 <% if @mediawiki[:site_readonly] -%>
-$wgReadOnly = "<%= @mediawiki[:site_readonly] %>";
+	$wgReadOnly = "<%= @mediawiki[:site_readonly] %>";
 <% end -%>
 
 <% Dir.glob("#{@directory}/LocalSettings.d/*.php") do |file| -%>
