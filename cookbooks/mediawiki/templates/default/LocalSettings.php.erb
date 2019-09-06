@@ -209,6 +209,10 @@ $wgWhitelistRead = array ("Special:Userlogin");
 # Prevent new user registrations except by sysops
 $wgGroupPermissions['*']['createaccount'] = false;
 
+# Since 1.32 MW introduced interface-admin group to separate all UI-related rights. This makes sense for bigger sites,
+# but for OSM it makes more sense to keep group structure simple.  Give all interface-admin rights to sysops.
+$wgGroupPermissions['sysop'] = array_merge($wgGroupPermissions['sysop'], $wgGroupPermissions['interface-admin']);
+
 # Restrict access to the upload directory
 $wgUploadPath = "$wgScriptPath/img_auth.php";
 <% end -%>
