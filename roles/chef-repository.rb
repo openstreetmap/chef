@@ -6,31 +6,31 @@ default_attributes(
     :users => {
       :jochen => {
         :status => :user,
-        :shell => "/usr/bin/git-shell"
+        :shell => "/usr/bin/git-shell",
       },
       :lonvia => {
         :status => :user,
-        :shell => "/usr/bin/git-shell"
+        :shell => "/usr/bin/git-shell",
       },
       :stereo => {
         :status => :user,
-        :shell => "/usr/bin/git-shell"
+        :shell => "/usr/bin/git-shell",
       },
       :yellowbkpk => {
         :status => :user,
-        :shell => "/usr/bin/git-shell"
+        :shell => "/usr/bin/git-shell",
       },
       :chefrepo => {
         :status => :role,
         :members => [
           :tomh, :grant, :matt, :jburgess, :lonvia, :yellowbkpk, :bretth, :jochen, :stereo
-        ]
-      }
-    }
+        ],
+      },
+    },
   },
   :chef => {
     :public_repository => "/var/lib/git/public/chef.git",
-    :private_repository => "/var/lib/git/private/chef.git"
+    :private_repository => "/var/lib/git/private/chef.git",
   }
 )
 

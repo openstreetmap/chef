@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: mediawiki
+# Cookbook:: mediawiki
 # Resource:: mediawiki_site
 #
-# Copyright 2015, OpenStreetMap Foundation
+# Copyright:: 2015, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@
 
 default_action :create
 
-property :site, :kind_of => String, :name_attribute => true
+property :site, :kind_of => String, :name_property => true
 property :aliases, :kind_of => [String, Array]
 property :directory, :kind_of => String
 property :version, :kind_of => String, :default => "1.33"
@@ -48,8 +48,8 @@ property :reload_apache, :kind_of => [TrueClass, FalseClass], :default => true
 action :create do
   node.normal_unless[:mediawiki][:sites][new_resource.site] = {}
 
-  node.normal[:mediawiki][:sites][new_resource.site][:directory] = site_directory
-  node.normal[:mediawiki][:sites][new_resource.site][:version] = new_resource.version
+  node.normal["mediawiki"]["sites"][new_resource.site][:directory] = site_directory
+  node.normal["mediawiki"]["sites"][new_resource.site][:version] = new_resource.version
 
   node.normal_unless[:mediawiki][:sites][new_resource.site][:wgSecretKey] = SecureRandom.base64(48)
 
@@ -75,8 +75,8 @@ action :create do
     # Use metanamespace as Site Name to ensure correct set namespace
     command "php maintenance/install.php --server '#{name}' --dbtype 'mysql' --dbname '#{new_resource.database_name}' --dbuser '#{new_resource.database_user}' --dbpass '#{new_resource.database_password}' --dbserver 'localhost' --scriptpath /w --pass '#{new_resource.admin_password}' '#{new_resource.metanamespace}' '#{new_resource.admin_user}'"
     cwd mediawiki_directory
-    user node[:mediawiki][:user]
-    group node[:mediawiki][:group]
+    user node["mediawiki"]["user"]
+    group node["mediawiki"]["group"]
     not_if do
       ::File.exist?("#{mediawiki_directory}/LocalSettings-install.php")
     end
@@ -87,20 +87,20 @@ action :create do
     action :nothing
     command "php maintenance/update.php --quick"
     cwd mediawiki_directory
-    user node[:mediawiki][:user]
-    group node[:mediawiki][:group]
+    user node["mediawiki"]["user"]
+    group node["mediawiki"]["group"]
   end
 
   declare_resource :directory, site_directory do
-    owner node[:mediawiki][:user]
-    group node[:mediawiki][:group]
-    mode 0o775
+    owner node["mediawiki"]["user"]
+    group node["mediawiki"]["group"]
+    mode "775"
   end
 
   declare_resource :directory, mediawiki_directory do
-    owner node[:mediawiki][:user]
-    group node[:mediawiki][:group]
-    mode 0o775
+    owner node["mediawiki"]["user"]
+    group node["mediawiki"]["group"]
+    mode "775"
   end
 
   mediawiki_reference = "REL#{new_resource.version}".tr(".", "_")
@@ -109,8 +109,8 @@ action :create do
     action :sync
     repository "https://gerrit.wikimedia.org/r/p/mediawiki/core.git"
     revision mediawiki_reference
-    user node[:mediawiki][:user]
-    group node[:mediawiki][:group]
+    user node["mediawiki"]["user"]
+    group node["mediawiki"]["group"]
     notifies :run, "execute[#{mediawiki_directory}/composer.json]", :immediately
     notifies :run, "execute[#{mediawiki_directory}/maintenance/install.php]", :immediately
     notifies :run, "execute[#{mediawiki_directory}/maintenance/update.php]"
@@ -120,16 +120,16 @@ action :create do
     action :nothing
     command "composer update --no-dev"
     cwd mediawiki_directory
-    user node[:mediawiki][:user]
-    group node[:mediawiki][:group]
+    user node["mediawiki"]["user"]
+    group node["mediawiki"]["group"]
   end
 
   template "#{mediawiki_directory}/composer.local.json" do
     cookbook "mediawiki"
     source "composer.local.json.erb"
-    owner node[:mediawiki][:user]
-    group node[:mediawiki][:group]
-    mode 0o664
+    owner node["mediawiki"]["user"]
+    group node["mediawiki"]["group"]
+    mode "664"
   end
 
   # Safety catch if git doesn't update but install.php hasn't run
@@ -145,28 +145,28 @@ action :create do
 
   declare_resource :directory, "#{mediawiki_directory}/images" do
     owner "www-data"
-    group node[:mediawiki][:group]
-    mode 0o775
+    group node["mediawiki"]["group"]
+    mode "775"
   end
 
   declare_resource :directory, "#{mediawiki_directory}/cache" do
     owner "www-data"
-    group node[:mediawiki][:group]
-    mode 0o775
+    group node["mediawiki"]["group"]
+    mode "775"
   end
 
   declare_resource :directory, "#{mediawiki_directory}/LocalSettings.d" do
-    user node[:mediawiki][:user]
-    group node[:mediawiki][:group]
-    mode 0o775
+    user node["mediawiki"]["user"]
+    group node["mediawiki"]["group"]
+    mode "775"
   end
 
   template "#{mediawiki_directory}/LocalSettings.php" do
     cookbook "mediawiki"
     source "LocalSettings.php.erb"
-    owner node[:mediawiki][:user]
-    group node[:mediawiki][:group]
-    mode 0o664
+    owner node["mediawiki"]["user"]
+    group node["mediawiki"]["group"]
+    mode "664"
     variables :name => new_resource.site,
               :directory => mediawiki_directory,
               :database_params => database_params,
@@ -179,9 +179,9 @@ action :create do
     source "mediawiki.cron.erb"
     owner "root"
     group "root"
-    mode 0o644
+    mode "644"
     variables :name => new_resource.site, :directory => site_directory,
-              :user => node[:mediawiki][:user]
+              :user => node["mediawiki"]["user"]
   end
 
   template "/etc/cron.daily/mediawiki-#{cron_name}-backup" do
@@ -189,7 +189,7 @@ action :create do
     source "mediawiki-backup.cron.erb"
     owner "root"
     group "root"
-    mode 0o700
+    mode "700"
     variables :name => new_resource.site,
               :directory => site_directory,
               :database_params => database_params
@@ -464,25 +464,25 @@ action :create do
 
   cookbook_file "#{site_directory}/cc-wiki.png" do
     cookbook "mediawiki"
-    owner node[:mediawiki][:user]
-    group node[:mediawiki][:group]
-    mode 0o644
+    owner node["mediawiki"]["user"]
+    group node["mediawiki"]["group"]
+    mode "644"
     backup false
   end
 
   cookbook_file "#{site_directory}/googled06a989d1ccc8364.html" do
     cookbook "mediawiki"
-    owner node[:mediawiki][:user]
-    group node[:mediawiki][:group]
-    mode 0o644
+    owner node["mediawiki"]["user"]
+    group node["mediawiki"]["group"]
+    mode "644"
     backup false
   end
 
   cookbook_file "#{site_directory}/googlefac54c35e800caab.html" do
     cookbook "mediawiki"
-    owner node[:mediawiki][:user]
-    group node[:mediawiki][:group]
-    mode 0o644
+    owner node["mediawiki"]["user"]
+    group node["mediawiki"]["group"]
+    mode "644"
     backup false
   end
 
@@ -504,8 +504,8 @@ action :create do
     action :nothing
     command "php extensions/CirrusSearch/maintenance/updateSearchIndexConfig.php"
     cwd mediawiki_directory
-    user node[:mediawiki][:user]
-    group node[:mediawiki][:group]
+    user node["mediawiki"]["user"]
+    group node["mediawiki"]["group"]
   end
 end
 
@@ -515,9 +515,9 @@ action :update do
   template "#{mediawiki_directory}/LocalSettings.php" do
     cookbook "mediawiki"
     source "LocalSettings.php.erb"
-    owner node[:mediawiki][:user]
-    group node[:mediawiki][:group]
-    mode 0o664
+    owner node["mediawiki"]["user"]
+    group node["mediawiki"]["group"]
+    mode "664"
     variables :name => new_resource.site,
               :directory => mediawiki_directory,
               :database_params => database_params,
@@ -529,8 +529,8 @@ action :update do
     action :run
     command "php maintenance/update.php --quick"
     cwd mediawiki_directory
-    user node[:mediawiki][:user]
-    group node[:mediawiki][:group]
+    user node["mediawiki"]["user"]
+    group node["mediawiki"]["group"]
   end
 end
 
@@ -568,7 +568,7 @@ action_class do
       :host => "localhost",
       :name => new_resource.database_name,
       :username => new_resource.database_user,
-      :password => new_resource.database_password
+      :password => new_resource.database_password,
     }
   end
 
@@ -586,7 +586,7 @@ action_class do
       :site_readonly => new_resource.site_readonly,
       :extra_file_extensions => new_resource.extra_file_extensions,
       :private_accounts => new_resource.private_accounts,
-      :private_site => new_resource.private_site
+      :private_site => new_resource.private_site,
     }
   end
 end

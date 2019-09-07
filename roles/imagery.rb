@@ -7,33 +7,33 @@ default_attributes(
       :htonl => { :status => :user },
       :imagery => {
         :status => :role,
-        :members => [:grant, :tomh, :htonl]
-      }
-    }
+        :members => [:grant, :tomh, :htonl],
+      },
+    },
   },
   :apt => {
-    :sources => %w[nginx ubuntugis-unstable]
+    :sources => %w(nginx ubuntugis-unstable),
   },
   :sysctl => {
     :sockets => {
       :comment => "Increase size of connection queue",
       :parameters => {
-        "net.core.somaxconn" => 10000
-      }
+        "net.core.somaxconn" => 10000,
+      },
     },
     :kernel_scheduler_tune => {
       :comment => "Tune kernel scheduler preempt",
       :parameters => {
         "kernel.sched_min_granularity_ns" => 10000000,
-        "kernel.sched_wakeup_granularity_ns" => 15000000
-      }
+        "kernel.sched_wakeup_granularity_ns" => 15000000,
+      },
     },
     :kernel_tfo_listen_enable => {
       :comment => "Enable TCP Fast Open for listening sockets",
       :parameters => {
-        "net.ipv4.tcp_fastopen" => 3
-      }
-    }
+        "net.ipv4.tcp_fastopen" => 3,
+      },
+    },
   },
   :nginx => {
     :cache => {
@@ -41,9 +41,9 @@ default_attributes(
         :enable => true,
         :keys_zone => "fastcgi_cache_zone:256M",
         :inactive => "45d",
-        :max_size => "51200M"
-      }
-    }
+        :max_size => "51200M",
+      },
+    },
   }
 )
 

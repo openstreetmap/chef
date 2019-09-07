@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: nodejs
+# Cookbook:: nodejs
 # Resource:: package
 #
-# Copyright 2013, OpenStreetMap Foundation
+# Copyright:: 2013, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,12 +17,11 @@
 # limitations under the License.
 #
 
-require "chef/mixin/shell_out"
 require "json"
 
 default_action :install
 
-property :package, :kind_of => String, :name_attribute => true
+property :package, :kind_of => String, :name_property => true
 property :version, :kind_of => String
 
 action :install do
@@ -61,8 +60,6 @@ action :remove do
 end
 
 action_class do
-  include Chef::Mixin::ShellOut
-
   def current_version
     @current_version ||= JSON.parse(shell_out("npm list --global --json").stdout)
                              .dig("dependencies", new_resource.package, "version")

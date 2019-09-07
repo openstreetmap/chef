@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: backup
+# Cookbook:: backup
 # Recipe:: default
 #
-# Copyright 2013, OpenStreetMap Foundation
+# Copyright:: 2013, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,26 +17,26 @@
 # limitations under the License.
 #
 
-package %w[
+package %w(
   perl
   libdate-calc-perl
-]
+)
 
 directory "/store/backup" do
   owner "osmbackup"
   group "osmbackup"
-  mode 0o2755
+  mode "2755"
 end
 
 cookbook_file "/usr/local/bin/expire-backups" do
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end
 
 template "/etc/cron.daily/expire-backups" do
   source "expire.cron.erb"
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end

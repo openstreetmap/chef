@@ -10,22 +10,22 @@ default_attributes(
       :threads_per_child => 50,
       :min_spare_threads => 50,
       :max_spare_threads => 450,
-      :async_request_worker_factor => 4
-    }
+      :async_request_worker_factor => 4,
+    },
   },
   :logstash => {
     :forwarder => {
       "filebeat.prospectors" => [
         { "input_type" => "log", "paths" => ["/var/log/apache2/access.log"], "fields" => { "type" => "apache" } },
-        { "input_type" => "log", "paths" => ["/var/log/web/rails-logstash.log"], "fields" => { "type" => "rails" } }
-      ]
-    }
+        { "input_type" => "log", "paths" => ["/var/log/web/rails-logstash.log"], "fields" => { "type" => "rails" } },
+      ],
+    },
   },
   :networking => {
-    :tcp_fastopen_key => "www"
+    :tcp_fastopen_key => "www",
   },
   :passenger => {
-    :max_pool_size => 50
+    :max_pool_size => 50,
   },
   :exim => {
     :local_domains => ["messages.openstreetmap.org"],
@@ -39,10 +39,10 @@ default_attributes(
         :home_directory => "/srv/www.openstreetmap.org/rails",
         :path => "/bin:/usr/bin:/usr/local/bin",
         :environment => {
-          "RAILS_ENV" => "production"
-        }
-      }
-    }
+          "RAILS_ENV" => "production",
+        },
+      },
+    },
   }
 )
 

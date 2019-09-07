@@ -13,12 +13,12 @@ default_attributes(
       "openstreetmap.io",
       "openstreetmap.pro",
       "openstreetmaps.org",
-      "osm.io"
+      "osm.io",
     ],
     :daemon_smtp_ports => [25, 26],
     :certificate_names => [
       "mail.openstreetmap.org",
-      "a.mx.openstreetmap.org"
+      "a.mx.openstreetmap.org",
     ],
     :smarthost_name => "mail.openstreetmap.org",
     :smarthost_via => false,
@@ -27,23 +27,23 @@ default_attributes(
       :messages => {
         :comment => "messages.openstreetmap.org",
         :domains => ["messages.openstreetmap.org"],
-        :host => ["spike-06.openstreetmap.org", "spike-07.openstreetmap.org", "spike-08.openstreetmap.org"]
+        :host => ["spike-06.openstreetmap.org", "spike-07.openstreetmap.org", "spike-08.openstreetmap.org"],
       },
       :otrs => {
         :comment => "otrs.openstreetmap.org",
         :domains => ["otrs.openstreetmap.org"],
-        :host => "ridley.ucl.openstreetmap.org"
+        :host => "ridley.ucl.openstreetmap.org",
       },
       :tickets => {
         :comment => "tickets.openstreetmap.org",
         :domains => ["tickets.openstreetmap.org"],
-        :host => "ridley.ucl.openstreetmap.org"
+        :host => "ridley.ucl.openstreetmap.org",
       },
       :join => {
         :comment => "join.osmfoundation.org",
         :domains => ["join.osmfoundation.org"],
-        :host => "ridley.ucl.openstreetmap.org"
-      }
+        :host => "ridley.ucl.openstreetmap.org",
+      },
     },
     :aliases => {
       "abuse" => "root",
@@ -68,19 +68,19 @@ default_attributes(
       "support" => "support@otrs.openstreetmap.org",
       "memorial" => "communication@osmfoundation.org",
       "legal" => "legal@osmfoundation.org",
-      "dmca" => "dmca@osmfoundation.org"
+      "dmca" => "dmca@osmfoundation.org",
     },
-    :private_aliases => "mail"
+    :private_aliases => "mail",
   },
   :munin => {
     :plugins => {
       :exim_mailqueue => {
         :mails => {
           :warning => 500,
-          :critical => 1000
-        }
-      }
-    }
+          :critical => 1000,
+        },
+      },
+    },
   }
 )
 

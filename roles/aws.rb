@@ -10,22 +10,22 @@ default_attributes(
       :internal => {
         :inet => {
           :prefix => "20",
-          :gateway => "172.31.0.1"
-        }
+          :gateway => "172.31.0.1",
+        },
       },
       :external => {
         :zone => "aws",
         :inet => {
-          :prefix => "32"
-        }
-      }
-    }
+          :prefix => "32",
+        },
+      },
+    },
   }
 )
 
 override_attributes(
   :ntp => {
-    :servers => ["0.ie.pool.ntp.org", "1.ie.pool.ntp.org", "europe.pool.ntp.org"]
+    :servers => ["0.ie.pool.ntp.org", "1.ie.pool.ntp.org", "europe.pool.ntp.org"],
   }
 )
 

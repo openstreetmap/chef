@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: nginx
+# Cookbook:: nginx
 # Resource:: nginx_site
 #
-# Copyright 2015, OpenStreetMap Foundation
+# Copyright:: 2015, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@
 
 default_action :create
 
-property :site, :kind_of => String, :name_attribute => true
+property :site, :kind_of => String, :name_property => true
 property :directory, :kind_of => String
 property :cookbook, :kind_of => String
 property :template, :kind_of => String, :required => true
@@ -32,7 +32,7 @@ action :create do
     source new_resource.template
     owner "root"
     group "root"
-    mode 0o644
+    mode "644"
     variables new_resource.variables.merge(:name => new_resource.site, :directory => directory)
   end
 end

@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: accounts
+# Cookbook:: accounts
 # Recipe:: default
 #
-# Copyright 2010, OpenStreetMap Foundation
+# Copyright:: 2010, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,12 +23,12 @@ administrators = []
 
 search(:accounts, "*:*").each do |account|
   name = account["id"]
-  details = node[:accounts][:users][name] || {}
+  details = node["accounts"]["users"][name] || {}
 
   if details[:status]
     group_members = details[:members] || account["members"] || []
-    user_home = details[:home] || account["home"] || "#{node[:accounts][:home]}/#{name}"
-    manage_user_home = details.fetch(:manage_home, account.fetch("manage_home", node[:accounts][:manage_home]))
+    user_home = details[:home] || account["home"] || "#{node['accounts']['home']}/#{name}"
+    manage_user_home = details.fetch(:manage_home, account.fetch("manage_home", node["accounts"]["manage_home"]))
 
     group_members = group_members.collect(&:to_s).sort
 
@@ -36,12 +36,12 @@ search(:accounts, "*:*").each do |account|
     when "role"
       user_shell = "/usr/sbin/nologin"
     when "user", "administrator"
-      user_shell = details[:shell] || account["shell"] || node[:accounts][:shell]
+      user_shell = details[:shell] || account["shell"] || node["accounts"]["shell"]
     end
 
     group name.to_s do
       gid account["uid"].to_i
-      members group_members & node[:etc][:passwd].keys
+      members group_members & node["etc"]["passwd"].keys
     end
 
     user name.to_s do
@@ -58,7 +58,7 @@ search(:accounts, "*:*").each do |account|
       source name.to_s
       owner name.to_s
       group name.to_s
-      mode 0o755
+      mode "755"
       files_owner name.to_s
       files_group name.to_s
       files_mode 0o644
@@ -85,7 +85,7 @@ search(:accounts, "*:*").each do |account|
   end
 end
 
-node[:accounts][:groups].each do |name, details|
+node["accounts"]["groups"].each do |name, details|
   group name do
     action :modify
     members details[:members]

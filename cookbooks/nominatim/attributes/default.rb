@@ -12,18 +12,18 @@ default[:nominatim][:fpm_pools] = {
   :www => {
     :port => "8000",
     :pm => "dynamic",
-    :max_children => "60"
+    :max_children => "60",
   },
   :bulk => {
     :port => "8001",
     :pm => "static",
-    :max_children => "10"
+    :max_children => "10",
   },
   :details => {
     :port => "8002",
     :pm => "static",
-    :max_children => "2"
-  }
+    :max_children => "2",
+  },
 }
 
 default[:nominatim][:redirects] = {}

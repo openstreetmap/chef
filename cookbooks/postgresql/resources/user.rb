@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: postgresql
+# Cookbook:: postgresql
 # Resource:: postgresql_user
 #
-# Copyright 2012, OpenStreetMap Foundation
+# Copyright:: 2012, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ require "shellwords"
 
 default_action :create
 
-property :user, :kind_of => String, :name_attribute => true
+property :user, :kind_of => String, :name_property => true
 property :cluster, :kind_of => String, :required => true
 property :password, :kind_of => String
 property :superuser, :default => false

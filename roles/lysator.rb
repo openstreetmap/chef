@@ -5,8 +5,8 @@ default_attributes(
   :accounts => {
     :users => {
       :aoh => { :status => :administrator },
-      :lysroot => { :status => :administrator }
-    }
+      :lysroot => { :status => :administrator },
+    },
   },
   :hosted_by => "Lysator",
   :location => "Linköping, Sweden",
@@ -14,15 +14,15 @@ default_attributes(
     :nameservers => ["130.236.254.225", "2001:6b0:17:f0a0::e1"],
     :roles => {
       :external => {
-        :zone => "osm"
-      }
-    }
+        :zone => "osm",
+      },
+    },
   }
 )
 
 override_attributes(
   :ntp => {
-    :servers => ["0.se.pool.ntp.org", "1.se.pool.ntp.org", "europe.pool.ntp.org"]
+    :servers => ["0.se.pool.ntp.org", "1.se.pool.ntp.org", "europe.pool.ntp.org"],
   }
 )
 

@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: systemd
+# Cookbook:: systemd
 # Resource:: systemd_tmpfile
 #
-# Copyright 2016, OpenStreetMap Foundation
+# Copyright:: 2016, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@ action :create do
     source "tmpfile.erb"
     owner "root"
     group "root"
-    mode 0o644
+    mode "644"
     variables new_resource.to_hash
   end
 

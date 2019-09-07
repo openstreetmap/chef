@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: taginfo
+# Cookbook:: taginfo
 # Recipe:: default
 #
-# Copyright 2014, OpenStreetMap Foundation
+# Copyright:: 2014, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ include_recipe "apache"
 include_recipe "passenger"
 include_recipe "git"
 
-package %w[
+package %w(
   libsqlite3-dev
   zlib1g-dev
   libbz2-dev
@@ -38,17 +38,17 @@ package %w[
   cmake
   make
   g++
-]
+)
 
-package %w[
+package %w(
   sqlite3
   osmium-tool
   pyosmium
   curl
   pbzip2
-]
+)
 
-ruby_version = node[:passenger][:ruby_version]
+ruby_version = node["passenger"]["ruby_version"]
 
 package "ruby#{ruby_version}"
 
@@ -65,17 +65,17 @@ apache_module "headers"
 directory "/var/log/taginfo" do
   owner "taginfo"
   group "taginfo"
-  mode 0o755
+  mode "755"
 end
 
 template "/etc/sudoers.d/taginfo" do
   source "sudoers.erb"
   owner "root"
   group "root"
-  mode 0o440
+  mode "440"
 end
 
-node[:taginfo][:sites].each do |site|
+node["taginfo"]["sites"].each do |site|
   site_name = site[:name]
   site_aliases = Array(site[:aliases])
   directory = site[:directory] || "/srv/#{site_name}"
@@ -87,13 +87,13 @@ node[:taginfo][:sites].each do |site|
   directory "/var/log/taginfo/#{site_name}" do
     owner "taginfo"
     group "taginfo"
-    mode 0o755
+    mode "755"
   end
 
   directory directory do
     owner "taginfo"
     group "taginfo"
-    mode 0o755
+    mode "755"
   end
 
   git "#{directory}/taginfo" do
@@ -128,7 +128,7 @@ node[:taginfo][:sites].each do |site|
   file "#{directory}/taginfo-config.json" do
     owner "taginfo"
     group "taginfo"
-    mode 0o644
+    mode "644"
     content settings
     notifies :restart, "service[apache2]"
   end
@@ -156,11 +156,11 @@ node[:taginfo][:sites].each do |site|
     notifies :restart, "passenger_application[#{directory}/taginfo/web/public]"
   end
 
-  %w[taginfo/web/tmp bin data data/old download sources].each do |dir|
+  %w(taginfo/web/tmp bin data data/old download sources).each do |dir|
     directory "#{directory}/#{dir}" do
       owner "taginfo"
       group "taginfo"
-      mode 0o755
+      mode "755"
     end
   end
 
@@ -168,7 +168,7 @@ node[:taginfo][:sites].each do |site|
     source "update.erb"
     owner "taginfo"
     group "taginfo"
-    mode 0o755
+    mode "755"
     variables :name => site_name, :directory => directory
   end
 
@@ -192,6 +192,6 @@ template "/usr/local/bin/taginfo-update" do
   source "taginfo-update.erb"
   owner "root"
   group "root"
-  mode 0o755
-  variables :sites => node[:taginfo][:sites]
+  mode "755"
+  variables :sites => node["taginfo"]["sites"]
 end

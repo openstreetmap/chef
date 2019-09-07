@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: fail2ban
+# Cookbook:: fail2ban
 # Resource:: fail2ban_jail
 #
-# Copyright 2015, OpenStreetMap Foundation
+# Copyright:: 2015, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@
 
 default_action :create
 
-property :jail, :kind_of => String, :name_attribute => true
+property :jail, :kind_of => String, :name_property => true
 property :filter, :kind_of => String
 property :logpath, :kind_of => String
 property :protocol, :kind_of => String
@@ -33,7 +33,7 @@ action :create do
     source "jail.erb"
     owner "root"
     group "root"
-    mode 0o644
+    mode "644"
     variables :name => new_resource.jail,
               :filter => new_resource.filter,
               :logpath => new_resource.logpath,

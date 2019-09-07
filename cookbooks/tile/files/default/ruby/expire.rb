@@ -162,10 +162,10 @@ module Expire
     def initialize(filename)
       @cache = File.new(filename, "r")
 
-      throw "Unexpected format" unless @cache.sysread(4).unpack("l").first == 1
-      throw "Unexpected ID size" unless @cache.sysread(4).unpack("l").first == 8
+      throw "Unexpected format" unless @cache.sysread(4).unpack1("l") == 1
+      throw "Unexpected ID size" unless @cache.sysread(4).unpack1("l") == 8
 
-      @max_id = @cache.sysread(8).unpack("q").first
+      @max_id = @cache.sysread(8).unpack1("q")
     end
 
     # close the cache

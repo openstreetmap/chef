@@ -15,8 +15,8 @@ default_attributes(
           :mode => "802.3ad",
           :miimon => "100",
           :xmithashpolicy => "layer3+4",
-          :slaves => %w[eth0 eth1]
-        }
+          :slaves => %w(eth0 eth1),
+        },
       },
       :external_ipv6 => {
         :interface => "bond0",
@@ -24,13 +24,13 @@ default_attributes(
         :family => :inet6,
         :address => "2001:648:2ffe:4::116",
         :prefix => "64",
-        :gateway => "2001:648:2ffe:4::1"
-      }
-    }
+        :gateway => "2001:648:2ffe:4::1",
+      },
+    },
   },
   :squid => {
     :cache_mem => "6100 MB",
-    :cache_dir => "coss /store/squid/coss-01 80000 block-size=8192 max-size=262144 membufs=80"
+    :cache_dir => "coss /store/squid/coss-01 80000 block-size=8192 max-size=262144 membufs=80",
   },
   :tilecache => {
     :tile_parent => "athens.render.openstreetmap.org",
@@ -39,8 +39,8 @@ default_attributes(
       "katie.openstreetmap.org",
       "konqi.openstreetmap.org",
       "ridgeback.openstreetmap.org",
-      "gorynych.openstreetmap.org"
-    ]
+      "gorynych.openstreetmap.org",
+    ],
   }
 )
 

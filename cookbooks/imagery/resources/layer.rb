@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: imagery
+# Cookbook:: imagery
 # Resource:: imagery_layer
 #
-# Copyright 2016, OpenStreetMap Foundation
+# Copyright:: 2016, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ action :create do
   file "/srv/imagery/layers/#{new_resource.site}/#{new_resource.layer}.yml" do
     owner "root"
     group "root"
-    mode 0o644
+    mode "644"
     content YAML.dump(:name => new_resource.layer,
                       :title => new_resource.title || new_resource.layer,
                       :url => "//{s}.#{new_resource.site}/layer/#{new_resource.layer}/{z}/{x}/{y}.png",
@@ -59,7 +59,7 @@ action :create do
     source "mapserver.map.erb"
     owner "root"
     group "root"
-    mode 0o644
+    mode "644"
     variables new_resource.to_hash
   end
 
@@ -76,7 +76,7 @@ action :create do
   directory "/srv/imagery/nginx/#{new_resource.site}" do
     owner "root"
     group "root"
-    mode 0o755
+    mode "755"
     recursive true
   end
 
@@ -85,7 +85,7 @@ action :create do
     source "nginx_imagery_layer_fragment.conf.erb"
     owner "root"
     group "root"
-    mode 0o644
+    mode "644"
     variables new_resource.to_hash
   end
 end

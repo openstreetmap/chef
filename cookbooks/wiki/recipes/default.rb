@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: wiki.openstreetmap.org
+# Cookbook:: wiki.openstreetmap.org
 # Recipe:: default
 #
-# Copyright 2013, OpenStreetMap Foundation
+# Copyright:: 2013, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -106,34 +106,34 @@ mediawiki_extension "MultiMaps" do
 end
 
 cookbook_file "/srv/wiki.openstreetmap.org/osm_logo_wiki.png" do
-  owner node[:mediawiki][:user]
-  group node[:mediawiki][:group]
-  mode 0o644
+  owner node["mediawiki"]["user"]
+  group node["mediawiki"]["group"]
+  mode "644"
 end
 
 template "/srv/wiki.openstreetmap.org/robots.txt" do
-  owner node[:mediawiki][:user]
-  group node[:mediawiki][:group]
-  mode 0o644
+  owner node["mediawiki"]["user"]
+  group node["mediawiki"]["group"]
+  mode "644"
   source "robots.txt.erb"
 end
 
 cookbook_file "/srv/wiki.openstreetmap.org/favicon.ico" do
-  owner node[:mediawiki][:user]
-  group node[:mediawiki][:group]
-  mode 0o644
+  owner node["mediawiki"]["user"]
+  group node["mediawiki"]["group"]
+  mode "644"
 end
 
 directory "/srv/wiki.openstreetmap.org/dump" do
-  owner node[:mediawiki][:user]
-  group node[:mediawiki][:group]
+  owner node["mediawiki"]["user"]
+  group node["mediawiki"]["group"]
   mode "0775"
 end
 
 template "/etc/cron.d/wiki-dump" do
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   source "wiki-dump.erb"
   variables :directory => "/srv/wiki.openstreetmap.org"
 end

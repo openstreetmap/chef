@@ -5,9 +5,9 @@ default_attributes(
   :munin => {
     :plugins => {
       :munin_update => {
-        :contacts => "null"
-      }
-    }
+        :contacts => "null",
+      },
+    },
   }
 )
 

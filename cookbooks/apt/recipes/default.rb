@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: apt
+# Cookbook:: apt
 # Recipe:: default
 #
-# Copyright 2010, Tom Hughes
+# Copyright:: 2010, Tom Hughes
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,12 +17,12 @@
 # limitations under the License.
 #
 
-package %w[
+package %w(
   apt
   apt-transport-https
   gnupg
   update-notifier-common
-]
+)
 
 file "/etc/motd.tail" do
   action :delete
@@ -32,15 +32,15 @@ template "/etc/apt/preferences.d/99-chef" do
   source "preferences.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
 end
 
 apt_update "/etc/apt/sources.list" do
   action :nothing
 end
 
-archive_host = if node[:country]
-                 "#{node[:country]}.archive.ubuntu.com"
+archive_host = if node["country"]
+                 "#{node['country']}.archive.ubuntu.com"
                else
                  "archive.ubuntu.com"
                end
@@ -49,13 +49,13 @@ template "/etc/apt/sources.list" do
   source "sources.list.erb"
   owner "root"
   group "root"
-  mode 0o644
-  variables :archive_host => archive_host, :codename => node[:lsb][:codename]
+  mode "644"
+  variables :archive_host => archive_host, :codename => node["lsb"]["codename"]
   notifies :update, "apt_update[/etc/apt/sources.list]", :immediately
 end
 
 repository_actions = Hash.new do |_, repository|
-  node[:apt][:sources].include?(repository) ? :add : :remove
+  node["apt"]["sources"].include?(repository) ? :add : :remove
 end
 
 apt_repository "brightbox-ruby-ng" do
@@ -96,7 +96,7 @@ end
 apt_repository "management-component-pack" do
   action repository_actions["management-component-pack"]
   uri "https://downloads.linux.hpe.com/SDR/repo/mcp"
-  distribution "#{node[:lsb][:codename]}/current-gen9"
+  distribution "#{node['lsb']['codename']}/current-gen9"
   components ["non-free"]
   key "C208ADDE26C2B797"
 end
@@ -143,7 +143,7 @@ end
 apt_repository "postgresql" do
   action repository_actions["postgresql"]
   uri "https://apt.postgresql.org/pub/repos/apt"
-  distribution "#{node[:lsb][:codename]}-pgdg"
+  distribution "#{node['lsb']['codename']}-pgdg"
   components ["main"]
   key "7FCC7D46ACCC4CF8"
 end
@@ -159,7 +159,7 @@ end
 package "unattended-upgrades"
 
 if Dir.exist?("/usr/share/unattended-upgrades")
-  auto_upgrades = if node[:apt][:unattended_upgrades][:enable]
+  auto_upgrades = if node["apt"]["unattended_upgrades"]["enable"]
                     IO.read("/usr/share/unattended-upgrades/20auto-upgrades")
                   else
                     IO.read("/usr/share/unattended-upgrades/20auto-upgrades-disabled")
@@ -168,7 +168,7 @@ if Dir.exist?("/usr/share/unattended-upgrades")
   file "/etc/apt/apt.conf.d/20auto-upgrades" do
     user "root"
     group "root"
-    mode 0o644
+    mode "644"
     content auto_upgrades
   end
 end
@@ -177,5 +177,5 @@ template "/etc/apt/apt.conf.d/60chef" do
   source "apt.conf.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
 end

@@ -7,9 +7,9 @@ default_attributes(
       :bretth => { :status => :user },
       :planet => {
         :status => :administrator,
-        :members => [:bretth]
-      }
-    }
+        :members => [:bretth],
+      },
+    },
   },
   :rsyncd => {
     :modules => {
@@ -27,14 +27,14 @@ default_attributes(
         :ignore_errors => true,
         :ignore_nonreadable => true,
         :timeout => 3600,
-        :refuse_options => ["checksum"]
-      }
-    }
+        :refuse_options => ["checksum"],
+      },
+    },
   },
   :networking => {
     :firewall => {
-      :http_connection_limit => 10
-    }
+      :http_connection_limit => 10,
+    },
   },
   :apache => {
     :mpm => "worker",
@@ -44,8 +44,8 @@ default_attributes(
       :max_request_workers => 1000,
       :threads_per_child => 50,
       :min_spare_threads => 75,
-      :max_spare_threads => 525
-    }
+      :max_spare_threads => 525,
+    },
   }
 )
 

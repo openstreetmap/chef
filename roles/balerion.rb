@@ -12,22 +12,22 @@ default_attributes(
         :prefix => "30",
         :gateway => "138.44.68.133",
         :bond => {
-          :slaves => %w[ens14f0 ens14f1]
-        }
-      }
-    }
+          :slaves => %w(ens14f0 ens14f1),
+        },
+      },
+    },
   },
   :squid => {
     :cache_mem => "32000 MB",
-    :cache_dir => "coss /store/squid/coss-01 128000 block-size=8192 max-size=262144 membufs=80"
+    :cache_dir => "coss /store/squid/coss-01 128000 block-size=8192 max-size=262144 membufs=80",
   },
   :tilecache => {
     :tile_parent => "melbourne.render.openstreetmap.org",
     :tile_siblings => [
       "waima.openstreetmap.org",
       "tuatara.openstreetmap.org",
-      "longma.openstreetmap.org"
-    ]
+      "longma.openstreetmap.org",
+    ],
   }
 )
 

@@ -10,7 +10,7 @@ default_attributes(
         :family => :inet,
         :address => "31.130.201.40",
         :prefix => "27",
-        :gateway => "31.130.201.33"
+        :gateway => "31.130.201.33",
       },
       :external_ipv6 => {
         :interface => "enp4s0",
@@ -18,13 +18,13 @@ default_attributes(
         :family => :inet6,
         :address => "2001:67c:2268:1005:21e:8cff:fe8c:8d3b",
         :prefix => "64",
-        :gateway => "fe80::20c:42ff:feb2:8ff8"
-      }
-    }
+        :gateway => "fe80::20c:42ff:feb2:8ff8",
+      },
+    },
   },
   :squid => {
     :cache_mem => "4096 MB",
-    :cache_dir => "coss /store/squid/coss-01 80000 block-size=8192 max-size=262144 membufs=80"
+    :cache_dir => "coss /store/squid/coss-01 80000 block-size=8192 max-size=262144 membufs=80",
   },
   :tilecache => {
     :tile_parent => "minsk.render.openstreetmap.org",
@@ -33,8 +33,8 @@ default_attributes(
       "katie.openstreetmap.org",
       "konqi.openstreetmap.org",
       "ridgeback.openstreetmap.org",
-      "gorynych.openstreetmap.org"
-    ]
+      "gorynych.openstreetmap.org",
+    ],
   }
 )
 

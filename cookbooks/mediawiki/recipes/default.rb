@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: mediawiki
+# Cookbook:: mediawiki
 # Recipe:: default
 #
-# Copyright 2013, OpenStreetMap Foundation
+# Copyright:: 2013, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ include_recipe "mysql"
 include_recipe "git"
 
 # Mediawiki Base Requirements
-package %w[
+package %w(
   php
   php-cli
   php-curl
@@ -34,34 +34,34 @@ package %w[
   php-xml
   php-zip
   composer
-]
+)
 
 # Mediawiki enhanced difference engine
 package "php-wikidiff2"
 
 # Mediawiki Image + SVG support
-package %w[
+package %w(
   imagemagick
   librsvg2-bin
-]
+)
 
 # Mediawiki PDF support via Extension:PdfHandler
-package %w[
+package %w(
   ghostscript
   poppler-utils
-]
+)
 
 # Mediawiki backup
-package %w[
+package %w(
   xz-utils
   liblz4-tool
-]
+)
 
 # Mediawiki packages for VisualEditor support
-package %w[
+package %w(
   curl
   parsoid
-]
+)
 
 # Mediawiki packages for SyntaxHighight support
 package "python-pygments"
@@ -74,7 +74,7 @@ template "/etc/mediawiki/parsoid/config.yaml" do
   source "parsoid-config.yaml.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
 end
 
 service "parsoid" do

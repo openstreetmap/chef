@@ -6,25 +6,25 @@ default_attributes(
     :users => {
       :bretth => {
         :status => :user,
-        :shell => "/usr/bin/git-shell"
+        :shell => "/usr/bin/git-shell",
       },
       :lonvia => {
         :status => :user,
-        :shell => "/usr/bin/git-shell"
+        :shell => "/usr/bin/git-shell",
       },
       :yellowbkpk => {
         :status => :user,
-        :shell => "/usr/bin/git-shell"
+        :shell => "/usr/bin/git-shell",
       },
       :git => {
         :status => :role,
-        :members => [:tomh, :grant, :matt, :lonvia, :yellowbkpk]
-      }
-    }
+        :members => [:tomh, :grant, :matt, :lonvia, :yellowbkpk],
+      },
+    },
   },
   :git => {
     :host => "git.openstreetmap.org",
-    :aliases => ["git.osm.org"]
+    :aliases => ["git.osm.org"],
   }
 )
 

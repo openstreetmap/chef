@@ -97,7 +97,7 @@ module OpenStreetMap
     def mysql_databases
       @mysql_databases ||= query("SHOW databases").each_with_object({}) do |database, databases|
         databases[database[:database]] = {
-          :permissions => {}
+          :permissions => {},
         }
       end
 

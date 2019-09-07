@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: geodns
+# Cookbook:: geodns
 # Recipe:: default
 #
-# Copyright 2011, OpenStreetMap Foundation
+# Copyright:: 2011, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,10 +17,10 @@
 # limitations under the License.
 #
 
-package %w[
+package %w(
   geoipupdate
   gdnsd
-]
+)
 
 execute "geoipdate" do
   command "geoipupdate"
@@ -32,14 +32,14 @@ end
 directory "/etc/gdnsd/config.d" do
   owner "nobody"
   group "nogroup"
-  mode 0o755
+  mode "755"
 end
 
 template "/etc/gdnsd/config" do
   source "config.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   notifies :restart, "service[gdnsd]"
 end
 
@@ -47,7 +47,7 @@ template "/etc/gdnsd/zones/geo.openstreetmap.org" do
   source "geo.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   notifies :restart, "service[gdnsd]"
 end
 

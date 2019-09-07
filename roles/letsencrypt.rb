@@ -5,9 +5,9 @@ default_attributes(
   :accounts => {
     :users => {
       :letsencrypt => {
-        :status => :role
-      }
-    }
+        :status => :role,
+      },
+    },
   }
 )
 

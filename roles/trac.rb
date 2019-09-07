@@ -4,8 +4,8 @@ description "Role applied to all trac servers"
 default_attributes(
   :accounts => {
     :users => {
-      :trac => { :status => :role }
-    }
+      :trac => { :status => :role },
+    },
   }
 )
 run_list(

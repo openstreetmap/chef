@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: nfs
+# Cookbook:: nfs
 # Recipe:: server
 #
-# Copyright 2010, OpenStreetMap Foundation
+# Copyright:: 2010, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@ search(:node, "*:*") do |client|
   next unless client[:nfs]
 
   client[:nfs].each_value do |mount|
-    next unless mount[:host] == node[:hostname]
+    next unless mount[:host] == node["hostname"]
 
     client.ipaddresses do |address|
       exports[mount[:path]] ||= {}
@@ -56,7 +56,7 @@ template "/etc/exports" do
   source "exports.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   variables :exports => exports
   notifies :run, "execute[exportfs]"
 end

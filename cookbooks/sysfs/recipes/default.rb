@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: sysfs
+# Cookbook:: sysfs
 # Recipe:: default
 #
-# Copyright 2013, Tom Hughes
+# Copyright:: 2013, Tom Hughes
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,8 +17,8 @@
 # limitations under the License.
 #
 
-if node[:virtualization][:role] == "guest" &&
-   node[:virtualization][:system] == "lxd"
+if node["virtualization"]["role"] == "guest" &&
+   node["virtualization"]["system"] == "lxd"
   package "sysfsutils" do
     action :purge
   end
@@ -34,11 +34,11 @@ else
     source "sysfs.conf.erb"
     owner "root"
     group "root"
-    mode 0o644
+    mode "644"
     notifies :restart, "service[sysfsutils]"
   end
 
-  node[:sysfs].each_value do |group|
+  node["sysfs"].each_value do |group|
     group[:parameters].each do |key, value|
       sysfs_file = "/sys/#{key}"
 

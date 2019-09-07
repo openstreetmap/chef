@@ -9,7 +9,7 @@ directory = ARGV.shift
 bag = {
   :id => domain,
   :key => File.read(File.join(directory, "privkey.pem")),
-  :certificate => File.read(File.join(directory, "fullchain.pem"))
+  :certificate => File.read(File.join(directory, "fullchain.pem")),
 }
 
 file = Tempfile.new(["letsencrypt", ".json"])

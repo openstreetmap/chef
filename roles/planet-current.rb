@@ -5,9 +5,9 @@ default_attributes(
   :accounts => {
     :users => {
       :planet => {
-        :status => :role
-      }
-    }
+        :status => :role,
+      },
+    },
   }
 )
 

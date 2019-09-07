@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: planet
+# Cookbook:: planet
 # Recipe:: dump
 #
-# Copyright 2013, OpenStreetMap Foundation
+# Copyright:: 2013, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@ remote_directory "/opt/flush" do
   source "flush"
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
   files_owner "root"
   files_group "root"
   files_mode 0o755
@@ -56,7 +56,7 @@ remote_directory "/usr/local/bin" do
   source "replication-bin"
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
   files_owner "root"
   files_group "root"
   files_mode 0o755
@@ -66,21 +66,21 @@ template "/usr/local/bin/users-agreed" do
   source "users-agreed.erb"
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end
 
 template "/usr/local/bin/users-deleted" do
   source "users-deleted.erb"
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end
 
 remote_directory "/store/planet/users_deleted" do
   source "users_deleted"
   owner "planet"
   group "planet"
-  mode 0o755
+  mode "755"
   files_owner "root"
   files_group "root"
   files_mode 0o644
@@ -90,7 +90,7 @@ remote_directory "/store/planet/replication" do
   source "replication-cgi"
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
   files_owner "root"
   files_group "root"
   files_mode 0o755
@@ -99,38 +99,38 @@ end
 directory "/store/planet/replication/changesets" do
   owner "planet"
   group "planet"
-  mode 0o755
+  mode "755"
 end
 
 directory "/store/planet/replication/day" do
   owner "planet"
   group "planet"
-  mode 0o755
+  mode "755"
 end
 
 directory "/store/planet/replication/hour" do
   owner "planet"
   group "planet"
-  mode 0o755
+  mode "755"
 end
 
 directory "/store/planet/replication/minute" do
   owner "planet"
   group "planet"
-  mode 0o755
+  mode "755"
 end
 
 directory "/etc/replication" do
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end
 
 template "/etc/replication/auth.conf" do
   source "replication.auth.erb"
   user "root"
   group "planet"
-  mode 0o640
+  mode "640"
   variables :password => db_passwords["planetdiff"]
 end
 
@@ -138,7 +138,7 @@ template "/etc/replication/changesets.conf" do
   source "changesets.conf.erb"
   user "root"
   group "planet"
-  mode 0o640
+  mode "640"
   variables :password => db_passwords["planetdiff"]
 end
 
@@ -146,27 +146,27 @@ template "/etc/replication/users-agreed.conf" do
   source "users-agreed.conf.erb"
   user "planet"
   group "planet"
-  mode 0o600
+  mode "600"
   variables :password => db_passwords["planetdiff"]
 end
 
 directory "/var/lib/replication" do
   owner "planet"
   group "planet"
-  mode 0o755
+  mode "755"
 end
 
 directory "/var/lib/replication/hour" do
   owner "planet"
   group "planet"
-  mode 0o755
+  mode "755"
 end
 
 template "/var/lib/replication/hour/configuration.txt" do
   source "replication.config.erb"
   owner "planet"
   group "planet"
-  mode 0o644
+  mode "644"
   variables :base => "minute", :interval => 3600
 end
 
@@ -177,14 +177,14 @@ end
 directory "/var/lib/replication/day" do
   owner "planet"
   group "planet"
-  mode 0o755
+  mode "755"
 end
 
 template "/var/lib/replication/day/configuration.txt" do
   source "replication.config.erb"
   owner "planet"
   group "planet"
-  mode 0o644
+  mode "644"
   variables :base => "hour", :interval => 86400
 end
 
@@ -192,12 +192,12 @@ link "/var/lib/replication/day/data" do
   to "/store/planet/replication/day"
 end
 
-if node[:planet][:replication] == "enabled"
+if node["planet"]["replication"] == "enabled"
   template "/etc/cron.d/replication" do
     source "replication.cron.erb"
     owner "root"
     group "root"
-    mode 0o644
+    mode "644"
   end
 else
   file "/etc/cron.d/replication" do

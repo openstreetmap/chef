@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: clamav
+# Cookbook:: clamav
 # Recipe:: default
 #
-# Copyright 2011, OpenStreetMap Foundation
+# Copyright:: 2011, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,17 +17,17 @@
 # limitations under the License.
 #
 
-package %w[
+package %w(
   clamav-daemon
   clamav-freshclam
   clamav-unofficial-sigs
-]
+)
 
 template "/etc/clamav-unofficial-sigs.conf.d/50-chef.conf" do
   source "clamav-unofficial-sigs.conf.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
 end
 
 service "clamav-daemon" do

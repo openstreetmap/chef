@@ -69,21 +69,21 @@ default_attributes(
       :gregrs => { :status => :user },
       :ooc => {
         :status => :role,
-        :members => [:tomh, :blackadder, :timsc, :ollie]
+        :members => [:tomh, :blackadder, :timsc, :ollie],
       },
       :apis => {
         :status => :role,
-        :members => [:tomh]
+        :members => [:tomh],
       },
       :os => {
         :status => :role,
-        :members => [:tomh, :grant, :ollie]
+        :members => [:tomh, :grant, :ollie],
       },
       :gpsmid => {
         :status => :role,
-        :members => [:apmon, :maba]
-      }
-    }
+        :members => [:apmon, :maba],
+      },
+    },
   },
   :apache => {
     :mpm => "event",
@@ -92,11 +92,11 @@ default_attributes(
       :server_limit => 32,
       :max_request_workers => 800,
       :threads_per_child => 50,
-      :max_connections_per_child => 10000
-    }
+      :max_connections_per_child => 10000,
+    },
   },
   :apt => {
-    :sources => ["postgresql"]
+    :sources => ["postgresql"],
   },
   :dev => {
     :rails => {
@@ -105,27 +105,27 @@ default_attributes(
         :revision => "master",
         :cgimap_repository => "git://github.com/zerebubuth/openstreetmap-cgimap.git",
         :cgimap_revision => "master",
-        :aliases => ["api06.dev.openstreetmap.org"]
+        :aliases => ["api06.dev.openstreetmap.org"],
       },
       :tomh => {
         :repository => "git://github.com/tomhughes/openstreetmap-website.git",
-        :revision => "next"
+        :revision => "next",
       },
       :comments => {
         :repository => "git://github.com/ukasiu/openstreetmap-website.git",
-        :revision => "comments_list"
+        :revision => "comments_list",
       },
       :locale => {
         :repository => "git://github.com/tomhughes/openstreetmap-website.git",
-        :revision => "locale"
+        :revision => "locale",
       },
       :upload => {
         :repository => "https://git.openstreetmap.org/public/rails.git",
         :revision => "master",
         :cgimap_repository => "git://github.com/zerebubuth/openstreetmap-cgimap.git",
-        :cgimap_revision => "feature/bulk_upload"
-      }
-    }
+        :cgimap_revision => "feature/bulk_upload",
+      },
+    },
   },
   :postgresql => {
     :versions => ["9.1", "9.5"],
@@ -135,24 +135,24 @@ default_attributes(
         :work_mem => "32MB",
         :maintenance_work_mem => "64MB",
         :max_stack_depth => "4MB",
-        :effective_cache_size => "4GB"
+        :effective_cache_size => "4GB",
       },
       "9.1" => {
-        :port => "5433"
+        :port => "5433",
       },
       "9.5" => {
-        :port => "5432"
-      }
-    }
+        :port => "5432",
+      },
+    },
   },
   :sysctl => {
     :postgres => {
       :comment => "Increase shared memory for postgres",
       :parameters => {
         "kernel.shmall" => "4194304",
-        "kernel.shmmax" => "17179869184"
-      }
-    }
+        "kernel.shmmax" => "17179869184",
+      },
+    },
   }
 )
 

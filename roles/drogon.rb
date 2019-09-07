@@ -4,8 +4,8 @@ description "Master role applied to drogon"
 default_attributes(
   :accounts => {
     :users => {
-      :zelja => { :status => :administrator }
-    }
+      :zelja => { :status => :administrator },
+    },
   },
   :location => "Osijek, Croatia",
   :networking => {
@@ -16,7 +16,7 @@ default_attributes(
         :family => :inet,
         :address => "161.53.30.107",
         :prefix => "27",
-        :gateway => "161.53.30.97"
+        :gateway => "161.53.30.97",
       },
       :external_ipv6 => {
         :interface => "eth0",
@@ -24,23 +24,23 @@ default_attributes(
         :family => :inet6,
         :address => "2001:b68:c0ff:0:221:5eff:fe40:c7c4",
         :prefix => "64",
-        :gateway => "fe80::161:53:30:97"
-      }
+        :gateway => "fe80::161:53:30:97",
+      },
     },
     :nameservers => [
       "161.53.30.100",
-      "8.8.8.8"
-    ]
+      "8.8.8.8",
+    ],
   },
   :squid => {
     :cache_mem => "20000 MB",
-    :cache_dir => "coss /store/squid/coss-01 128000 block-size=8192 max-size=262144 membufs=80"
+    :cache_dir => "coss /store/squid/coss-01 128000 block-size=8192 max-size=262144 membufs=80",
   },
   :tilecache => {
     :tile_parent => "osijek.render.openstreetmap.org",
     :tile_siblings => [
-      "viserion.openstreetmap.org"
-    ]
+      "viserion.openstreetmap.org",
+    ],
   }
 )
 

@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: incron
+# Cookbook:: incron
 # Recipe:: default
 #
-# Copyright 2014, OpenStreetMap Foundation
+# Copyright:: 2014, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ end
 
 incrontabs = {}
 
-node[:incron].each_value do |details|
+node["incron"].each_value do |details|
   user = details[:user]
   path = details[:path]
   mask = details[:events].join(",")
@@ -41,7 +41,7 @@ incrontabs.each do |user, lines|
   file "/var/spool/incron/#{user}" do
     owner user
     group "incron"
-    mode 0o600
+    mode "600"
     content lines.join("\n")
   end
 end

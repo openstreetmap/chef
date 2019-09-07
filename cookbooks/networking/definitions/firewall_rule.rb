@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: networking
+# Cookbook:: networking
 # Definition:: firewall_rule
 #
-# Copyright 2011, OpenStreetMap Foundation
+# Copyright:: 2011, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -31,12 +31,12 @@ define :firewall_rule, :action => :accept do
   ]
 
   if params[:family].nil?
-    node.default[:networking][:firewall][:inet] << rule
-    node.default[:networking][:firewall][:inet6] << rule
+    node.default["networking"]["firewall"]["inet"] << rule
+    node.default["networking"]["firewall"]["inet6"] << rule
   elsif params[:family].to_s == "inet"
-    node.default[:networking][:firewall][:inet] << rule
+    node.default["networking"]["firewall"]["inet"] << rule
   elsif params[:family].to_s == "inet6"
-    node.default[:networking][:firewall][:inet6] << rule
+    node.default["networking"]["firewall"]["inet6"] << rule
   else
     log "Unsupported network family" do
       level :error

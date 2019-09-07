@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: postgresql
+# Cookbook:: postgresql
 # Resource:: postgresql_tablespace
 #
-# Copyright 2016, OpenStreetMap Foundation
+# Copyright:: 2016, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@
 
 default_action :create
 
-property :tablespace, :kind_of => String, :name_attribute => true
+property :tablespace, :kind_of => String, :name_property => true
 property :cluster, :kind_of => String, :required => true
 property :location, :kind_of => String, :required => true
 

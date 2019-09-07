@@ -5,27 +5,27 @@ default_attributes(
   :accounts => {
     :users => {
       :redfox => { :status => :administrator },
-      :jpcw => { :status => :administrator }
-    }
+      :jpcw => { :status => :administrator },
+    },
   },
   :hosted_by => "Université de Pau et des Pays de l'Adour",
   :location => "Pau, France",
   :munin => {
-    :allow => ["10.64.1.11"]
+    :allow => ["10.64.1.11"],
   },
   :networking => {
     :nameservers => ["10.64.1.42", "194.167.156.13", "10.64.1.3"],
     :roles => {
       :external => {
-        :zone => "pa"
-      }
-    }
+        :zone => "pa",
+      },
+    },
   }
 )
 
 override_attributes(
   :ntp => {
-    :servers => ["cannelle.paulla.asso.fr"]
+    :servers => ["cannelle.paulla.asso.fr"],
   }
 )
 

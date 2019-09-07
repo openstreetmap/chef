@@ -6,9 +6,9 @@ default_attributes(
     :swappiness => {
       :comment => "Only swap in an emergency",
       :parameters => {
-        "vm.swappiness" => "1"
-      }
-    }
+        "vm.swappiness" => "1",
+      },
+    },
   },
   :munin => {
     :plugins => {
@@ -16,9 +16,9 @@ default_attributes(
         :temp6 => { :warning => "71.0", :critical => "76.0" },
         :temp7 => { :warning => "71.0", :critical => "76.0" },
         :temp8 => { :warning => "71.0", :critical => "76.0" },
-        :temp9 => { :warning => "71.0", :critical => "76.0" }
-      }
-    }
+        :temp9 => { :warning => "71.0", :critical => "76.0" },
+      },
+    },
   },
   :networking => {
     :interfaces => {
@@ -27,16 +27,16 @@ default_attributes(
         :role => :external,
         :family => :inet,
         :address => "178.250.74.36",
-        :hwaddress => "d8:d3:85:5d:87:5e"
+        :hwaddress => "d8:d3:85:5d:87:5e",
       },
       :external_ipv6 => {
         :interface => "em1",
         :role => :external,
         :family => :inet6,
         :address => "2a02:1658:4:0:dad3:85ff:fe5d:875e",
-        :hwaddress => "d8:d3:85:5d:87:5e"
-      }
-    }
+        :hwaddress => "d8:d3:85:5d:87:5e",
+      },
+    },
   }
 )
 

@@ -7,9 +7,9 @@ default_attributes(
       {
         :pattern => "www-data@openstreetmap.org",
         :replacement => "forum@noreply.openstreetmap.org",
-        :flags => "F"
-      }
-    ]
+        :flags => "F",
+      },
+    ],
   },
   :networking => {
     :interfaces => {
@@ -17,15 +17,15 @@ default_attributes(
         :interface => "enp2s0f0.2801",
         :role => :internal,
         :family => :inet,
-        :address => "10.0.0.17"
+        :address => "10.0.0.17",
       },
       :external_ipv4 => {
         :interface => "enp2s0f0.2800",
         :role => :external,
         :family => :inet,
-        :address => "193.60.236.11"
-      }
-    }
+        :address => "193.60.236.11",
+      },
+    },
   }
 )
 

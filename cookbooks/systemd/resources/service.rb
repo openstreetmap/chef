@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: systemd
+# Cookbook:: systemd
 # Resource:: systemd_service
 #
-# Copyright 2016, OpenStreetMap Foundation
+# Copyright:: 2016, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ property :dropin, String
 property :description, String
 property :after, [String, Array]
 property :wants, [String, Array]
-property :type, String, :is => %w[simple forking oneshot dbus notify idle]
+property :type, String, :is => %w(simple forking oneshot dbus notify idle)
 property :limit_nofile, Integer
 property :limit_as, [Integer, String]
 property :limit_cpu, [Integer, String]
@@ -44,14 +44,14 @@ property :exec_reload, String
 property :runtime_directory, String
 property :runtime_directory_mode, Integer
 property :standard_input, String,
-         :is => %w[null tty tty-force tty-fail socket]
+         :is => %w(null tty tty-force tty-fail socket)
 property :standard_output, String,
-         :is => %w[inherit null tty journal syslog kmsg journal+console syslog+console kmsg+console socket]
+         :is => %w(inherit null tty journal syslog kmsg journal+console syslog+console kmsg+console socket)
 property :standard_error, String,
-         :is => %w[inherit null tty journal syslog kmsg journal+console syslog+console kmsg+console socket]
+         :is => %w(inherit null tty journal syslog kmsg journal+console syslog+console kmsg+console socket)
 property :success_exit_status, [Integer, String, Array]
 property :restart, String,
-         :is => %w[on-success on-failure on-abnormal on-watchdog on-abort always]
+         :is => %w(on-success on-failure on-abnormal on-watchdog on-abort always)
 property :private_tmp, [TrueClass, FalseClass]
 property :private_devices, [TrueClass, FalseClass]
 property :private_network, [TrueClass, FalseClass]
@@ -75,7 +75,7 @@ action :create do
       source "environment.erb"
       owner "root"
       group "root"
-      mode 0o640
+      mode "640"
       variables :environment => new_resource.environment_file
     end
 
@@ -86,7 +86,7 @@ action :create do
     directory dropin_directory do
       owner "root"
       group "root"
-      mode 0o755
+      mode "755"
     end
   end
 
@@ -95,7 +95,7 @@ action :create do
     source "service.erb"
     owner "root"
     group "root"
-    mode 0o644
+    mode "644"
     variables service_variables
     notifies :run, "execute[systemctl-reload]"
   end

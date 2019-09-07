@@ -9,19 +9,19 @@ default_attributes(
       "185.73.44.3",
       "2001:ba8:0:2c02::",
       "2001:ba8:0:2c03::",
-      "2001:ba8:0:2c04::"
+      "2001:ba8:0:2c04::",
     ],
     :roles => {
       :external => {
-        :zone => "jn"
-      }
-    }
+        :zone => "jn",
+      },
+    },
   }
 )
 
 override_attributes(
   :ntp => {
-    :servers => ["0.uk.pool.ntp.org", "1.uk.pool.ntp.org", "europe.pool.ntp.org"]
+    :servers => ["0.uk.pool.ntp.org", "1.uk.pool.ntp.org", "europe.pool.ntp.org"],
   }
 )
 

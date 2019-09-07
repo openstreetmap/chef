@@ -4,18 +4,18 @@ description "Role applied to all logstash servers"
 default_attributes(
   :elasticsearch => {
     :cluster => {
-      :name => "logstash"
+      :name => "logstash",
     },
-    :version => "6.x"
+    :version => "6.x",
   },
   :kibana => {
     :sites => {
       :logstash => {
         :site => "logstash.openstreetmap.org",
         :port => 5601,
-        :elasticsearch_url => "http://127.0.0.1:9200/"
-      }
-    }
+        :elasticsearch_url => "http://127.0.0.1:9200/",
+      },
+    },
   }
 )
 

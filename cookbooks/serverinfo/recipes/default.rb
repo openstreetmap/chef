@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: serverinfo
+# Cookbook:: serverinfo
 # Recipe:: default
 #
-# Copyright 2015, OpenStreetMap Foundation
+# Copyright:: 2015, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ roles = { :rows => search(:role, "*:*") }
 
 file "/srv/hardware.openstreetmap.org/_data/nodes.json" do
   content nodes.to_json
-  mode 0o644
+  mode "644"
   owner "root"
   group "root"
   notifies :run, "execute[/srv/hardware.openstreetmap.org]"
@@ -46,14 +46,14 @@ end
 
 file "/srv/hardware.openstreetmap.org/_data/roles.json" do
   content roles.to_json
-  mode 0o644
+  mode "644"
   owner "root"
   group "root"
   notifies :run, "execute[/srv/hardware.openstreetmap.org]"
 end
 
 directory "/srv/hardware.openstreetmap.org/_site" do
-  mode 0o755
+  mode "755"
   owner "nobody"
   group "nogroup"
 end

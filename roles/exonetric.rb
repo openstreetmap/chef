@@ -4,8 +4,8 @@ description "Role applied to all servers at Exonetric"
 default_attributes(
   :accounts => {
     :users => {
-      :hatter => { :status => :administrator }
-    }
+      :hatter => { :status => :administrator },
+    },
   },
   :hosted_by => "Exonetric",
   :location => "London, England",
@@ -16,14 +16,14 @@ default_attributes(
         :zone => "ex",
         :inet => {
           :prefix => "28",
-          :gateway => "178.250.74.33"
+          :gateway => "178.250.74.33",
         },
         :inet6 => {
           :prefix => "64",
-          :gateway => "2a02:1658:4:0::1"
-        }
-      }
-    }
+          :gateway => "2a02:1658:4:0::1",
+        },
+      },
+    },
   }
 )
 

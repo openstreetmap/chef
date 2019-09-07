@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: foundation
+# Cookbook:: foundation
 # Recipe:: board
 #
-# Copyright 2014, OpenStreetMap Foundation
+# Copyright:: 2014, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -39,7 +39,7 @@ mediawiki_site "board.osmfoundation.org" do
 end
 
 cookbook_file "/srv/board.osmfoundation.org/Wiki.png" do
-  owner node[:mediawiki][:user]
-  group node[:mediawiki][:group]
-  mode 0o644
+  owner node["mediawiki"]["user"]
+  group node["mediawiki"]["group"]
+  mode "644"
 end

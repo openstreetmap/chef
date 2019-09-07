@@ -4,8 +4,8 @@ description "Role applied to all wiki servers"
 default_attributes(
   :accounts => {
     :users => {
-      :wiki => { :status => :role }
-    }
+      :wiki => { :status => :role },
+    },
   },
   :apache => {
     :mpm => "prefork",
@@ -14,33 +14,33 @@ default_attributes(
       :server_limit => 32,
       :max_request_workers => 800,
       :threads_per_child => 50,
-      :max_connections_per_child => 10000
-    }
+      :max_connections_per_child => 10000,
+    },
   },
   :elasticsearch => {
     :version => "5.x",
     :cluster => {
-      :name => "wiki"
-    }
+      :name => "wiki",
+    },
   },
   :exim => {
     :trusted_users => ["www-data"],
     :aliases => {
-      :root => "grant"
+      :root => "grant",
     },
     :rewrites => [
       {
         :pattern => "www-data@openstreetmap.org",
         :replacement => "wiki@noreply.openstreetmap.org",
-        :flags => "F"
-      }
-    ]
+        :flags => "F",
+      },
+    ],
   },
   :memcached => {
     :memory_limit => 1024,
     :connection_limit => 8192,
     :chunk_growth_factor => 1.05,
-    :min_item_size => 5
+    :min_item_size => 5,
   },
   :mysql => {
     :settings => {
@@ -51,9 +51,9 @@ default_attributes(
         :query_cache_size => "256M",
         :query_cache_type => "1",
         :sort_buffer_size => "8M",
-        :tmp_table_size => "128M"
-      }
-    }
+        :tmp_table_size => "128M",
+      },
+    },
   }
 )
 

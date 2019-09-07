@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: gps-tile
+# Cookbook:: gps-tile
 # Recipe:: default
 #
-# Copyright 2013, OpenStreetMap Foundation
+# Copyright:: 2013, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@
 
 include_recipe "apache"
 
-package %w[
+package %w(
   make
   build-essential
   pkg-config
@@ -30,12 +30,12 @@ package %w[
   libpng-dev
   pngquant
   libcache-memcached-perl
-]
+)
 
 directory "/srv/gps-tile.openstreetmap.org" do
   owner "gpstile"
   group "gpstile"
-  mode 0o755
+  mode "755"
 end
 
 git "/srv/gps-tile.openstreetmap.org/import" do
@@ -105,7 +105,7 @@ remote_directory "/srv/gps-tile.openstreetmap.org/html" do
   source "html"
   owner "gpstile"
   group "gpstile"
-  mode 0o755
+  mode "755"
   files_owner "gpstile"
   files_group "gpstile"
   files_mode 0o644

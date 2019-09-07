@@ -5,7 +5,7 @@ default_attributes(
   :git => {
     :private_user => "chefrepo",
     :private_group => "chefrepo",
-    :private_nodes => "fqdn:*"
+    :private_nodes => "fqdn:*",
   },
   :networking => {
     :interfaces => {
@@ -13,15 +13,15 @@ default_attributes(
         :interface => "enp3s0f0.2801",
         :role => :internal,
         :family => :inet,
-        :address => "10.0.0.12"
+        :address => "10.0.0.12",
       },
       :external_ipv4 => {
         :interface => "enp3s0f0.2800",
         :role => :external,
         :family => :inet,
-        :address => "193.60.236.20"
-      }
-    }
+        :address => "193.60.236.20",
+      },
+    },
   }
 )
 

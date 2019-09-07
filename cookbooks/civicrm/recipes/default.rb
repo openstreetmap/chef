@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: civicrm
+# Cookbook:: civicrm
 # Recipe:: default
 #
-# Copyright 2011, OpenStreetMap Foundation
+# Copyright:: 2011, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -60,13 +60,13 @@ wordpress_plugin "contact-form-7" do
   site "join.osmfoundation.org"
 end
 
-civicrm_version = node[:civicrm][:version]
+civicrm_version = node["civicrm"]["version"]
 civicrm_directory = "/srv/join.osmfoundation.org/wp-content/plugins/civicrm"
 
 directory "/opt/civicrm-#{civicrm_version}" do
   owner "wordpress"
   group "wordpress"
-  mode 0o755
+  mode "755"
 end
 
 remote_file "/var/cache/chef/civicrm-#{civicrm_version}-wordpress.zip" do
@@ -74,7 +74,7 @@ remote_file "/var/cache/chef/civicrm-#{civicrm_version}-wordpress.zip" do
   source "https://download.civicrm.org/civicrm-#{civicrm_version}-wordpress.zip"
   owner "wordpress"
   group "wordpress"
-  mode 0o644
+  mode "644"
   backup false
 end
 
@@ -83,7 +83,7 @@ remote_file "/var/cache/chef/civicrm-#{civicrm_version}-l10n.tar.gz" do
   source "https://download.civicrm.org/civicrm-#{civicrm_version}-l10n.tar.gz"
   owner "wordpress"
   group "wordpress"
-  mode 0o644
+  mode "644"
   backup false
 end
 
@@ -117,7 +117,7 @@ end
 directory "/srv/join.osmfoundation.org/wp-content/plugins/files" do
   owner "www-data"
   group "www-data"
-  mode 0o755
+  mode "755"
 end
 
 extensions_directory = "/srv/join.osmfoundation.org/wp-content/plugins/civicrm-extensions"
@@ -125,10 +125,10 @@ extensions_directory = "/srv/join.osmfoundation.org/wp-content/plugins/civicrm-e
 directory extensions_directory do
   owner "wordpress"
   group "wordpress"
-  mode 0o755
+  mode "755"
 end
 
-node[:civicrm][:extensions].each_value do |details|
+node["civicrm"]["extensions"].each_value do |details|
   git "#{extensions_directory}/#{details[:name]}" do
     action :sync
     repository details[:repository]
@@ -152,7 +152,7 @@ settings = edit_file "#{civicrm_directory}/civicrm/templates/CRM/common/civicrm.
   line.gsub!(/%%templateCompileDir%%/, "/srv/join.osmfoundation.org/wp-content/plugins/files/civicrm/templates_c/")
   line.gsub!(/%%baseURL%%/, "http://join.osmfoundation.org/")
   line.gsub!(/%%siteKey%%/, site_key)
-  line.gsub!(%r{// *(.*'ext_repo_url'.*)$}, "\\1")
+  line.gsub!(%r{// *(.*'ext_repo_url'.*)$}, '\\1')
   line.gsub!(%r{// *define\('CIVICRM_CMSDIR', '/path/to/install/root/'\);}, "define('CIVICRM_CMSDIR', '/srv/join.osmfoundation.org');")
 
   line
@@ -161,7 +161,7 @@ end
 file "#{civicrm_directory}/civicrm.settings.php" do
   owner "wordpress"
   group "wordpress"
-  mode 0o644
+  mode "644"
   content settings
 end
 
@@ -169,7 +169,7 @@ template "/etc/cron.d/osmf-crm" do
   source "cron.erb"
   owner "root"
   group "root"
-  mode 0o600
+  mode "600"
   variables :directory => civicrm_directory, :passwords => passwords
 end
 
@@ -177,6 +177,6 @@ template "/etc/cron.daily/osmf-crm-backup" do
   source "backup.cron.erb"
   owner "root"
   group "root"
-  mode 0o750
+  mode "750"
   variables :passwords => passwords
 end

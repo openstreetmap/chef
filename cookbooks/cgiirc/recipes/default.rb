@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: cgiirc
+# Cookbook:: cgiirc
 # Recipe:: default
 #
-# Copyright 2011, OpenStreetMap Foundation
+# Copyright:: 2011, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -27,14 +27,14 @@ template "/etc/cgiirc/cgiirc.config" do
   source "cgiirc.config.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
 end
 
 template "/etc/cgiirc/ipaccess" do
   source "ipaccess.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   variables :blocks => blocks["addresses"]
 end
 

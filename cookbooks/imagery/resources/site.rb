@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: imagery
+# Cookbook:: imagery
 # Resource:: imagery_site
 #
-# Copyright 2016, OpenStreetMap Foundation
+# Copyright:: 2016, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -30,20 +30,20 @@ action :create do
   directory "/srv/#{new_resource.site}" do
     user "root"
     group "root"
-    mode 0o755
+    mode "755"
   end
 
   directory "/srv/imagery/layers/#{new_resource.site}" do
     user "root"
     group "root"
-    mode 0o755
+    mode "755"
     recursive true
   end
 
   directory "/srv/imagery/overlays/#{new_resource.site}" do
     user "root"
     group "root"
-    mode 0o755
+    mode "755"
     recursive true
   end
 
@@ -51,7 +51,7 @@ action :create do
     source "index.html.erb"
     user "root"
     group "root"
-    mode 0o644
+    mode "644"
     variables :title => new_resource.title
   end
 
@@ -59,28 +59,28 @@ action :create do
     source "robots.txt"
     user "root"
     group "root"
-    mode 0o644
+    mode "644"
   end
 
   cookbook_file "/srv/#{new_resource.site}/imagery.css" do
     source "imagery.css"
     user "root"
     group "root"
-    mode 0o644
+    mode "644"
   end
 
   cookbook_file "/srv/#{new_resource.site}/clientaccesspolicy.xml" do
     source "clientaccesspolicy.xml"
     user "root"
     group "root"
-    mode 0o644
+    mode "644"
   end
 
   cookbook_file "/srv/#{new_resource.site}/crossdomain.xml" do
     source "crossdomain.xml"
     user "root"
     group "root"
-    mode 0o644
+    mode "644"
   end
 
   layers = Dir.glob("/srv/imagery/layers/#{new_resource.site}/*.yml").collect do |path|
@@ -91,14 +91,14 @@ action :create do
     source "imagery.js.erb"
     user "root"
     group "root"
-    mode 0o644
+    mode "644"
     variables :bbox => new_resource.bbox, :layers => layers
   end
 
   base_domains = [new_resource.site] + Array(new_resource.aliases)
   tile_domains = base_domains.flat_map { |d| [d, "a.#{d}", "b.#{d}", "c.#{d}"] }
 
-  %w[0 1 2 3 4 5 6 7].each do |index|
+  %w(0 1 2 3 4 5 6 7).each do |index|
     systemd_service "mapserv-fcgi-#{new_resource.site}-#{index}" do
       description "Map server for #{new_resource.site} layer"
       environment "MS_MAP_PATTERN" => "^/srv/imagery/mapserver/",

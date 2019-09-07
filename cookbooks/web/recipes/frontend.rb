@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: web
+# Cookbook:: web
 # Recipe:: frontend
 #
-# Copyright 2011, OpenStreetMap Foundation
+# Copyright:: 2011, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ end
 
 apache_site "www.openstreetmap.org" do
   template "apache.frontend.erb"
-  variables :status => node[:web][:status],
+  variables :status => node["web"]["status"],
             :secret_key_base => web_passwords["secret_key_base"]
 end
 
@@ -46,7 +46,7 @@ template "/etc/logrotate.d/apache2" do
   source "logrotate.apache.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
 end
 
 service "rails-jobs@mailers" do

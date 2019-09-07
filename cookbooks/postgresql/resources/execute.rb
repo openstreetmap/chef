@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: postgresql
+# Cookbook:: postgresql
 # Resource:: postgresql_execute
 #
-# Copyright 2012, OpenStreetMap Foundation
+# Copyright:: 2012, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@
 
 default_action :run
 
-property :command, :kind_of => String, :name_attribute => true
+property :command, :kind_of => String, :name_property => true
 property :cluster, :kind_of => String, :required => true
 property :database, :kind_of => String, :required => true
 property :user, :default => "postgres"

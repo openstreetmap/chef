@@ -9,9 +9,9 @@ default_attributes(
         :idris => { :warning => ":", :critical => ":" },
         :norbert => { :warning => ":", :critical => ":" },
         :smaug => { :warning => ":", :critical => ":" },
-        :zark => { :warning => ":", :critical => ":" }
-      }
-    }
+        :zark => { :warning => ":", :critical => ":" },
+      },
+    },
   }
 )
 

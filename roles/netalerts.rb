@@ -8,19 +8,19 @@ default_attributes(
   :networking => {
     :nameservers => [
       "209.172.41.202",
-      "209.172.41.200"
+      "209.172.41.200",
     ],
     :roles => {
       :external => {
-        :zone => "na"
-      }
-    }
+        :zone => "na",
+      },
+    },
   }
 )
 
 override_attributes(
   :ntp => {
-    :servers => ["0.ca.pool.ntp.org", "1.ca.pool.ntp.org", "america.pool.ntp.org"]
+    :servers => ["0.ca.pool.ntp.org", "1.ca.pool.ntp.org", "america.pool.ntp.org"],
   }
 )
 

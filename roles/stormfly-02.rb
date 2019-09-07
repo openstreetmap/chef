@@ -8,19 +8,19 @@ default_attributes(
         :interface => "em1",
         :role => :external,
         :family => :inet,
-        :address => "140.211.167.105"
+        :address => "140.211.167.105",
       },
       :external_ipv6 => {
         :interface => "em1",
         :role => :external,
         :family => :inet6,
-        :address => "2605:bc80:3010:700::8cde:a769"
-      }
-    }
+        :address => "2605:bc80:3010:700::8cde:a769",
+      },
+    },
   },
   :squid => {
     :cache_mem => "21000 MB",
-    :cache_dir => "coss /store/squid/coss-01 128000 block-size=8192 max-size=262144 membufs=80"
+    :cache_dir => "coss /store/squid/coss-01 128000 block-size=8192 max-size=262144 membufs=80",
   },
   :tilecache => {
     :tile_parent => "usa.render.openstreetmap.org",
@@ -28,8 +28,8 @@ default_attributes(
       "azure.openstreetmap.org",
       "ascalon.openstreetmap.org",
       "jakelong.openstreetmap.org",
-      "lurien.openstreetmap.org"
-    ]
+      "lurien.openstreetmap.org",
+    ],
   }
 )
 

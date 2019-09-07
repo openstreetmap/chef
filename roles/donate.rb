@@ -6,9 +6,9 @@ default_attributes(
     :users => {
       :donate => {
         :status => :role,
-        :members => [:grant, :tomh, :matt]
-      }
-    }
+        :members => [:grant, :tomh, :matt],
+      },
+    },
   }
 )
 

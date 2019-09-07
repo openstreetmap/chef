@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: passenger
+# Cookbook:: passenger
 # Resource:: application
 #
-# Copyright 2018, OpenStreetMap Foundation
+# Copyright:: 2018, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,13 +19,13 @@
 
 default_action :restart
 
-property :application, String, :name_attribute => true
+property :application, String, :name_property => true
 
 action :restart do
   execute new_resource.application do
     action :run
     command "passenger-config restart-app --ignore-app-not-running --ignore-passenger-not-running #{new_resource.application}"
-    environment "PASSENGER_INSTANCE_REGISTRY_DIR" => node[:passenger][:instance_registry_dir]
+    environment "PASSENGER_INSTANCE_REGISTRY_DIR" => node["passenger"]["instance_registry_dir"]
     user "root"
     group "root"
   end

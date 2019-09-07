@@ -5,22 +5,22 @@ default_attributes(
   :apache => {
     :mpm => "worker",
     :worker => {
-      :max_connections_per_child => 10000
-    }
+      :max_connections_per_child => 10000,
+    },
   },
   :logstash => {
     :forwarder => {
       "filebeat.prospectors" => [
         { "input_type" => "log", "paths" => ["/var/log/apache2/access.log"], "fields" => { "type" => "apache" } },
-        { "input_type" => "log", "paths" => ["/var/log/web/rails-logstash.log"], "fields" => { "type" => "rails" } }
-      ]
-    }
+        { "input_type" => "log", "paths" => ["/var/log/web/rails-logstash.log"], "fields" => { "type" => "rails" } },
+      ],
+    },
   },
   :memcached => {
-    :memory_limit => 4096
+    :memory_limit => 4096,
   },
   :passenger => {
-    :max_pool_size => 12
+    :max_pool_size => 12,
   }
 )
 

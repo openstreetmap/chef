@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: squid
+# Cookbook:: squid
 # Recipe:: default
 #
-# Copyright 2011, OpenStreetMap Foundation
+# Copyright:: 2011, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-if node[:squid][:version] >= 3
+if node["squid"]["version"] >= 3
   apt_package "squid" do
     action :unlock
   end
@@ -53,16 +53,16 @@ template "/etc/squid/squid.conf" do
   source "squid.conf.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
 end
 
 directory "/etc/squid/squid.conf.d" do
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end
 
-Array(node[:squid][:cache_dir]).each do |cache_dir|
+Array(node["squid"]["cache_dir"]).each do |cache_dir|
   if cache_dir =~ /^coss (\S+) /
     cache_dir = File.dirname(Regexp.last_match(1))
   elsif cache_dir =~ /^\S+ (\S+) /
@@ -72,7 +72,7 @@ Array(node[:squid][:cache_dir]).each do |cache_dir|
   directory cache_dir do
     owner "proxy"
     group "proxy"
-    mode 0o750
+    mode "750"
     recursive true
     notifies :restart, "service[squid]"
   end
@@ -85,7 +85,7 @@ systemd_tmpfile "/var/run/squid" do
   mode "0755"
 end
 
-address_families = %w[AF_UNIX AF_INET]
+address_families = %w(AF_UNIX AF_INET)
 
 address_families << "AF_INET6" unless node.interfaces(:family => :inet6).empty?
 

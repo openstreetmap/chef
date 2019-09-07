@@ -6,9 +6,9 @@ default_attributes(
     :users => {
       :tile => {
         :status => :role,
-        :members => [:jburgess, :tomh]
-      }
-    }
+        :members => [:jburgess, :tomh],
+      },
+    },
   },
   :apache => {
     :mpm => "event",
@@ -20,17 +20,17 @@ default_attributes(
       :min_spare_threads => 300,
       :max_spare_threads => 1200,
       :max_connections_per_child => 0,
-      :async_request_worker_factor => 4
-    }
+      :async_request_worker_factor => 4,
+    },
   },
   :munin => {
     :plugins => {
       :renderd_processed => {
         :graph_order => "reqPrio req reqLow dirty reqBulk dropped",
         :reqPrio => { :draw => "AREA" },
-        :req => { :draw => "STACK" }
-      }
-    }
+        :req => { :draw => "STACK" },
+      },
+    },
   },
   :postgresql => {
     :settings => {
@@ -46,63 +46,63 @@ default_attributes(
         :random_page_cost => "1.1",
         :track_activity_query_size => "16384",
         :autovacuum_vacuum_scale_factor => "0.05",
-        :autovacuum_analyze_scale_factor => "0.02"
-      }
-    }
+        :autovacuum_analyze_scale_factor => "0.02",
+      },
+    },
   },
   :sysctl => {
     :sockets => {
       :comment => "Increase size of connection queue",
       :parameters => {
-        "net.core.somaxconn" => 10000
-      }
+        "net.core.somaxconn" => 10000,
+      },
     },
     :kernel_scheduler_tune => {
       :comment => "Tune kernel scheduler preempt",
       :parameters => {
         "kernel.sched_min_granularity_ns" => 10000000,
-        "kernel.sched_wakeup_granularity_ns" => 15000000
-      }
-    }
+        "kernel.sched_wakeup_granularity_ns" => 15000000,
+      },
+    },
   },
   :tile => {
     :data => {
       :simplified_land_polygons => {
         :url => "https://osmdata.openstreetmap.de/download/simplified-land-polygons-complete-3857.zip",
-        :refresh => true
+        :refresh => true,
       },
       :simplified_water_polygons => {
         :url => "https://osmdata.openstreetmap.de/download/simplified-water-polygons-split-3857.zip",
-        :refresh => true
+        :refresh => true,
       },
       :admin_boundaries => {
         :url => "http://www.naturalearthdata.com/http//www.naturalearthdata.com/download/110m/cultural/ne_110m_admin_0_boundary_lines_land.zip",
-        :directory => "ne_110m_admin_0_boundary_lines_land"
+        :directory => "ne_110m_admin_0_boundary_lines_land",
       },
       :land_polygons => {
         :url => "https://osmdata.openstreetmap.de/download/land-polygons-split-3857.zip",
-        :refresh => true
+        :refresh => true,
       },
       :water_polygons => {
         :url => "https://osmdata.openstreetmap.de/download/water-polygons-split-3857.zip",
-        :refresh => true
+        :refresh => true,
       },
       :antarctica_icesheet_polygons => {
         :url => "https://osmdata.openstreetmap.de/download/antarctica-icesheet-polygons-3857.zip",
-        :refresh => true
+        :refresh => true,
       },
       :antarctica_icesheet_outlines => {
         :url => "https://osmdata.openstreetmap.de/download/antarctica-icesheet-outlines-3857.zip",
-        :refresh => true
-      }
+        :refresh => true,
+      },
     },
     :styles => {
       :default => {
         :repository => "git://github.com/gravitystorm/openstreetmap-carto.git",
         :revision => "v4.22.0",
-        :max_zoom => 19
-      }
-    }
+        :max_zoom => 19,
+      },
+    },
   }
 )
 

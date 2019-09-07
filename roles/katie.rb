@@ -9,9 +9,9 @@ default_attributes(
       :bus => "ata",
       :serial => "TOSHIBA_DT01ACA300_*",
       :attrs => {
-        "queue/scheduler" => "deadline"
-      }
-    }
+        "queue/scheduler" => "deadline",
+      },
+    },
   },
   :location => "Falkenstein, Germany",
   :networking => {
@@ -22,7 +22,7 @@ default_attributes(
         :family => :inet,
         :address => "144.76.70.77",
         :prefix => "27",
-        :gateway => "144.76.70.65"
+        :gateway => "144.76.70.65",
       },
       :external_ipv6 => {
         :interface => "eth0",
@@ -30,21 +30,21 @@ default_attributes(
         :family => :inet6,
         :address => "2a01:4f8:191:834c::2",
         :prefix => "64",
-        :gateway => "fe80::1"
-      }
-    }
+        :gateway => "fe80::1",
+      },
+    },
   },
   :squid => {
     :cache_mem => "12500 MB",
-    :cache_dir => "coss /store/squid/coss-01 128000 block-size=8192 max-size=262144 membufs=80"
+    :cache_dir => "coss /store/squid/coss-01 128000 block-size=8192 max-size=262144 membufs=80",
   },
   :tilecache => {
     :tile_parent => "germany.render.openstreetmap.org",
     :tile_siblings => [
       "kalessin.openstreetmap.org",
       "konqi.openstreetmap.org",
-      "keizer.openstreetmap.org"
-    ]
+      "keizer.openstreetmap.org",
+    ],
   }
 )
 

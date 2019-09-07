@@ -1,7 +1,5 @@
 inherit_from: .rubocop_todo.yml
 
-require: rubocop-performance
-
 AllCops:
   TargetRubyVersion: 2.3
 
@@ -15,19 +13,8 @@ Layout/ExtraSpacing:
 Layout/IndentHeredoc:
   EnforcedStyle: squiggly
 
-Naming/FileName:
-  Exclude:
-    - 'cookbooks/trac/files/default/trac-authenticate'
-    - 'cookbooks/planet/files/default/replication-bin/replicate-changesets'
-    - 'cookbooks/*/templates/*/*.erb'
-    - 'hooks/*'
-    - 'roles/*.rb'
-
 Naming/UncommunicativeMethodParamName:
   Enabled: false
-
-Style/FrozenStringLiteralComment:
-  EnforcedStyle: never
 
 Style/HashSyntax:
   EnforcedStyle: hash_rockets

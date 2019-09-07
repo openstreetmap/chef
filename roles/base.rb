@@ -7,37 +7,37 @@ default_attributes(
       :grant => { :status => :administrator },
       :tomh => { :status => :administrator },
       :matt => { :status => :administrator },
-      :jburgess => { :status => :administrator }
-    }
+      :jburgess => { :status => :administrator },
+    },
   },
   :apt => {
-    :sources => ["openstreetmap"]
+    :sources => ["openstreetmap"],
   },
   :munin => {
     :plugins => {
       :chrony => {
-        :systime => { :warning => "100", :critical => "250" }
-      }
-    }
+        :systime => { :warning => "100", :critical => "250" },
+      },
+    },
   },
   :networking => {
     :roles => {
       :internal => { :metric => 200, :zone => "loc" },
-      :external => { :metric => 100 }
+      :external => { :metric => 100 },
     },
-    :search => ["openstreetmap.org"]
+    :search => ["openstreetmap.org"],
   },
   :sysctl => {
     :panic => {
       :comment => "Reboot automatically after a panic",
-      :parameters => { "kernel.panic" => "60" }
+      :parameters => { "kernel.panic" => "60" },
     },
     :blackhole => {
       :comment => "Do TCP level MTU probing if we seem to have an ICMP blackhole",
       :parameters => {
         "net.ipv4.tcp_mtu_probing" => "1",
-        "net.ipv4.tcp_base_mss" => "1024"
-      }
+        "net.ipv4.tcp_base_mss" => "1024",
+      },
     },
     :network_buffers => {
       :comment => "Tune network buffers",
@@ -46,41 +46,41 @@ default_attributes(
         "net.core.wmem_max" => "16777216",
         "net.ipv4.tcp_rmem" => "4096\t87380\t16777216",
         "net.ipv4.tcp_wmem" => "4096\t65536\t16777216",
-        "net.ipv4.udp_mem" => "3145728\t4194304\t16777216"
-      }
+        "net.ipv4.udp_mem" => "3145728\t4194304\t16777216",
+      },
     },
     :network_backlog => {
       :comment => "Increase maximum backlog for incoming network packets",
       :parameters => {
         "net.core.netdev_max_backlog" => "2500",
-        "net.core.netdev_budget" => "600"
-      }
+        "net.core.netdev_budget" => "600",
+      },
     },
     :network_conntrack_established => {
       :comment => "Only track established connections for four hours",
       :parameters => {
-        "net.netfilter.nf_conntrack_tcp_timeout_established" => "14400"
-      }
+        "net.netfilter.nf_conntrack_tcp_timeout_established" => "14400",
+      },
     },
     :tcp_syncookies => {
       :comment => "Turn on syncookies to protect against SYN floods",
       :parameters => {
-        "net.ipv4.tcp_syncookies" => "1"
-      }
+        "net.ipv4.tcp_syncookies" => "1",
+      },
     },
     :default_qdisc => {
       :comment => "Use pfifo_fast as the default queuing discipline",
       :parameters => {
-        "net.core.default_qdisc" => "pfifo_fast"
-      }
+        "net.core.default_qdisc" => "pfifo_fast",
+      },
     },
     :tune_cpu_scheduler => {
       :comment => "Tune CPU scheduler for server scheduling",
       :parameters => {
         "kernel.sched_migration_cost_ns" => 50000000,
-        "kernel.sched_autogroup_enabled" => 0
-      }
-    }
+        "kernel.sched_autogroup_enabled" => 0,
+      },
+    },
   }
 )
 

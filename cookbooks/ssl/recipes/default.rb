@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: ssl
+# Cookbook:: ssl
 # Recipe:: default
 #
-# Copyright 2011, OpenStreetMap Foundation
+# Copyright:: 2011, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,12 +23,12 @@ package "ssl-cert"
 cookbook_file "/etc/ssl/certs/letsencrypt.pem" do
   owner "root"
   group "root"
-  mode 0o444
+  mode "444"
   backup false
 end
 
 openssl_dhparam "/etc/ssl/certs/dhparam.pem" do
   owner "root"
   group "root"
-  mode 0o444
+  mode "444"
 end

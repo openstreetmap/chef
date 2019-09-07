@@ -1,9 +1,9 @@
 #
-# Cookbook Name:: openssh
+# Cookbook:: openssh
 # Recipe:: default
 #
-# Copyright 2010, OpenStreetMap Foundation.
-# Copyright 2008-2009, Opscode, Inc.
+# Copyright:: 2010, OpenStreetMap Foundation.
+# Copyright:: 2008-2009, Opscode, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -41,8 +41,8 @@ hosts = search(:node, "networking:interfaces").sort_by { |n| n[:hostname] }.coll
   end
 
   keys = {
-    "ssh-rsa" => node[:keys][:ssh][:host_rsa_public],        # ~FC039
-    "ssh-dss" => node[:keys][:ssh][:host_dsa_public]         # ~FC039
+    "ssh-rsa" => node[:keys][:ssh][:host_rsa_public], # ~FC039
+    "ssh-dss" => node[:keys][:ssh][:host_dsa_public], # ~FC039
   }
 
   if node[:keys][:ssh][:host_ecdsa_public]                   # ~FC039
@@ -64,14 +64,14 @@ end
 
 template "/etc/ssh/ssh_config" do
   source "ssh_config.erb"
-  mode 0o644
+  mode "644"
   owner "root"
   group "root"
 end
 
 template "/etc/ssh/ssh_known_hosts" do
   source "ssh_known_hosts.erb"
-  mode 0o444
+  mode "444"
   owner "root"
   group "root"
   backup false
@@ -85,5 +85,5 @@ firewall_rule "accept-ssh" do
   source "net"
   dest "fw"
   proto "tcp:syn"
-  dest_ports node[:openssh][:port]
+  dest_ports node["openssh"]["port"]
 end

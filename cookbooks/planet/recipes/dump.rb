@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: planet
+# Cookbook:: planet
 # Recipe:: dump
 #
-# Copyright 2013, OpenStreetMap Foundation
+# Copyright:: 2013, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,11 +17,11 @@
 # limitations under the License.
 #
 
-node.default[:incron][:planetdump] = {
+node.default["incron"][:planetdump] = {
   :user => "www-data",
   :path => "/store/backup",
-  :events => %w[IN_CREATE IN_MOVED_TO],
-  :command => "/usr/local/bin/planetdump $#"
+  :events => %w(IN_CREATE IN_MOVED_TO),
+  :command => "/usr/local/bin/planetdump $#",
 }
 
 include_recipe "git"
@@ -49,7 +49,7 @@ package "php-curl"
 directory "/opt/planet-dump-ng" do
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end
 
 git "/opt/planet-dump-ng" do
@@ -90,15 +90,15 @@ end
 directory "/store/planetdump" do
   owner "www-data"
   group "www-data"
-  mode 0o755
+  mode "755"
 end
 
-%w[planetdump planet-mirror-redirect-update].each do |program|
+%w(planetdump planet-mirror-redirect-update).each do |program|
   template "/usr/local/bin/#{program}" do
     source "#{program}.erb"
     owner "root"
     group "root"
-    mode 0o755
+    mode "755"
   end
 end
 
@@ -106,5 +106,5 @@ template "/etc/cron.d/planet-dump-mirror" do
   source "planet-dump-mirror-cron.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
 end

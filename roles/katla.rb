@@ -3,10 +3,10 @@ description "Master role applied to katla"
 
 default_attributes(
   :apt => {
-    :sources => ["postgresql"]
+    :sources => ["postgresql"],
   },
   :db => {
-    :cluster => "9.5/main"
+    :cluster => "9.5/main",
   },
   :devices => {
     :store_slow => {
@@ -17,8 +17,8 @@ default_attributes(
       :attrs => {
         "queue/scheduler" => "deadline",
         "queue/nr_requests" => "975",
-        "queue/rq_affinity" => "2"
-      }
+        "queue/rq_affinity" => "2",
+      },
     },
     :store_fast => {
       :comment => "RAID array mounted on /store/arrays/fast",
@@ -28,8 +28,8 @@ default_attributes(
       :attrs => {
         "queue/scheduler" => "deadline",
         "queue/nr_requests" => "975",
-        "queue/rq_affinity" => "2"
-      }
+        "queue/rq_affinity" => "2",
+      },
     },
     :store_ssd_1 => {
       :comment => "First disk of RAID array mounted on /store/arrays/ssd",
@@ -37,8 +37,8 @@ default_attributes(
       :bus => "ata",
       :serial => "INTEL_SSDSC2BA400G3_BTTV3141041E400HGN",
       :attrs => {
-        "queue/scheduler" => "noop"
-      }
+        "queue/scheduler" => "noop",
+      },
     },
     :store_ssd_2 => {
       :comment => "Second disk of RAID array mounted on /store/arrays/ssd",
@@ -46,9 +46,9 @@ default_attributes(
       :bus => "ata",
       :serial => "INTEL_SSDSC2BA400G3_BTTV3141044Q400HGN",
       :attrs => {
-        "queue/scheduler" => "noop"
-      }
-    }
+        "queue/scheduler" => "noop",
+      },
+    },
   },
   :networking => {
     :interfaces => {
@@ -58,10 +58,10 @@ default_attributes(
         :family => :inet,
         :address => "10.0.32.40",
         :bond => {
-          :slaves => %w[eth0 eth1]
-        }
-      }
-    }
+          :slaves => %w(eth0 eth1),
+        },
+      },
+    },
   },
   :postgresql => {
     :settings => {
@@ -69,18 +69,18 @@ default_attributes(
         :shared_buffers => "64GB",
         :work_mem => "64MB",
         :maintenance_work_mem => "1GB",
-        :effective_cache_size => "180GB"
-      }
-    }
+        :effective_cache_size => "180GB",
+      },
+    },
   },
   :sysctl => {
     :postgres => {
       :comment => "Increase shared memory for postgres",
       :parameters => {
         "kernel.shmmax" => 66 * 1024 * 1024 * 1024,
-        "kernel.shmall" => 66 * 1024 * 1024 * 1024 / 4096
-      }
-    }
+        "kernel.shmall" => 66 * 1024 * 1024 * 1024 / 4096,
+      },
+    },
   }
 )
 

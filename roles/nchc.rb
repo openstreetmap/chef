@@ -5,8 +5,8 @@ default_attributes(
   :accounts => {
     :users => {
       :steven => { :status => :administrator },
-      :ceasar => { :status => :administrator }
-    }
+      :ceasar => { :status => :administrator },
+    },
   },
   :hosted_by => "NCHC",
   :location => "Hsinchu, Taiwan",
@@ -14,15 +14,15 @@ default_attributes(
     :nameservers => ["140.110.16.1", "140.110.4.1"],
     :roles => {
       :external => {
-        :zone => "nc"
-      }
-    }
+        :zone => "nc",
+      },
+    },
   }
 )
 
 override_attributes(
   :ntp => {
-    :servers => ["0.tw.pool.ntp.org", "1.tw.pool.ntp.org", "europe.pool.ntp.org"]
+    :servers => ["0.tw.pool.ntp.org", "1.tw.pool.ntp.org", "europe.pool.ntp.org"],
   }
 )
 

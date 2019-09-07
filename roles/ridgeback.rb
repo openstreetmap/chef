@@ -8,19 +8,19 @@ default_attributes(
         :Fan4 => { :graph => "no", :warning => "0:" },
         :Fan5 => { :graph => "no", :warning => "0:" },
         :Fan6 => { :graph => "no", :warning => "0:" },
-        :Fan7CPU1 => { :graph => "no", :warning => "0:" }
+        :Fan7CPU1 => { :graph => "no", :warning => "0:" },
       },
       :smart_sda => {
         :smartctl_exit_status => {
-          :warning => 8
-        }
+          :warning => 8,
+        },
       },
       :smart_sdb => {
         :smartctl_exit_status => {
-          :warning => 8
-        }
-      }
-    }
+          :warning => 8,
+        },
+      },
+    },
   },
   :networking => {
     :interfaces => {
@@ -30,9 +30,9 @@ default_attributes(
         :family => :inet,
         :address => "31.169.50.10",
         :prefix => "30",
-        :gateway => "31.169.50.9"
-      }
-    }
+        :gateway => "31.169.50.9",
+      },
+    },
   },
   :sysfs => {
     :md_tune => {
@@ -41,13 +41,13 @@ default_attributes(
         "block/md0/md/sync_speed_min" => "1",
         "block/md0/md/sync_speed_max" => "100000",
         "block/md1/md/sync_speed_min" => "1",
-        "block/md1/md/sync_speed_max" => "100000"
-      }
-    }
+        "block/md1/md/sync_speed_max" => "100000",
+      },
+    },
   },
   :squid => {
     :cache_mem => "5500 MB",
-    :cache_dir => "coss /store/squid/coss-01 128000 block-size=8192 max-size=262144 membufs=80"
+    :cache_dir => "coss /store/squid/coss-01 128000 block-size=8192 max-size=262144 membufs=80",
   },
   :tilecache => {
     :tile_parent => "oslo.render.openstreetmap.org",
@@ -56,8 +56,8 @@ default_attributes(
       "katie.openstreetmap.org",
       "konqi.openstreetmap.org",
       "gorynych.openstreetmap.org",
-      "simurgh.openstreetmap.org"
-    ]
+      "simurgh.openstreetmap.org",
+    ],
   }
 )
 

@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: imagery
+# Cookbook:: imagery
 # Recipe:: default
 #
-# Copyright 2016, OpenStreetMap Foundation
+# Copyright:: 2016, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,51 +21,51 @@ include_recipe "nginx"
 include_recipe "git"
 
 # Imagery gdal Requirements
-package %w[
+package %w(
   gdal-bin
   python-gdal
-]
+)
 
 # Imagery MapServer + Mapcache Requirements
-package %w[
+package %w(
   cgi-mapserver
   mapcache-cgi
   mapcache-tools
-]
+)
 
 # Mapserver via Nginx requires as fastcgi spawner
-package %w[
+package %w(
   spawn-fcgi
   multiwatch
-]
+)
 
 # Imagery processing Requirements
 package "imagemagick"
 
 # Imagery misc compression
-package %w[
+package %w(
   xz-utils
   unzip
-]
+)
 
 directory "/srv/imagery/mapserver" do
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
   recursive true
 end
 
 directory "/srv/imagery/common" do
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
   recursive true
 end
 
 directory "/srv/imagery/common/ostn02-ntv2-data" do
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end
 
 remote_file "#{Chef::Config[:file_cache_path]}/ostn02-ntv2-data.zip" do

@@ -11,21 +11,21 @@ default_attributes(
         :address => "192.168.1.4",
         :prefix => "24",
         :gateway => "192.168.1.1",
-        :public_address => "103.197.61.160"
-      }
-    }
+        :public_address => "103.197.61.160",
+      },
+    },
   },
   :squid => {
     :cache_mem => "7500 MB",
-    :cache_dir => "coss /store/squid/coss-01 128000 block-size=8192 max-size=262144 membufs=80"
+    :cache_dir => "coss /store/squid/coss-01 128000 block-size=8192 max-size=262144 membufs=80",
   },
   :tilecache => {
     :tile_parent => "hamilton.render.openstreetmap.org",
     :tile_siblings => [
       "tuatara.openstreetmap.org",
       "balerion.openstreetmap.org",
-      "longma.openstreetmap.org"
-    ]
+      "longma.openstreetmap.org",
+    ],
   }
 )
 

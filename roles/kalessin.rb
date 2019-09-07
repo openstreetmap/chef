@@ -10,7 +10,7 @@ default_attributes(
         :family => :inet,
         :address => "185.66.195.245",
         :prefix => "28",
-        :gateway => "185.66.195.241"
+        :gateway => "185.66.195.241",
       },
       :external_ipv6 => {
         :interface => "ens3",
@@ -18,21 +18,21 @@ default_attributes(
         :family => :inet6,
         :address => "2a03:2260:2000:1::5",
         :prefix => "64",
-        :gateway => "2a03:2260:2000:1::1"
-      }
-    }
+        :gateway => "2a03:2260:2000:1::1",
+      },
+    },
   },
   :squid => {
     :cache_mem => "12500 MB",
-    :cache_dir => "coss /store/squid/coss-01 128000 block-size=8192 max-size=262144 membufs=80"
+    :cache_dir => "coss /store/squid/coss-01 128000 block-size=8192 max-size=262144 membufs=80",
   },
   :tilecache => {
     :tile_parent => "germany.render.openstreetmap.org",
     :tile_siblings => [
       "katie.openstreetmap.org",
       "konqi.openstreetmap.org",
-      "keizer.openstreetmap.org"
-    ]
+      "keizer.openstreetmap.org",
+    ],
   }
 )
 

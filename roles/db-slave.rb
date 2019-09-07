@@ -13,11 +13,11 @@ default_attributes(
           :host => "karm.ams.openstreetmap.org",
           :port => "5432",
           :user => "replication",
-          :passwords => { :bag => "db", :item => "passwords" }
+          :passwords => { :bag => "db", :item => "passwords" },
         },
-        :restore_command => "/usr/local/bin/openstreetmap-wal-e --terse wal-fetch %f %p"
-      }
-    }
+        :restore_command => "/usr/local/bin/openstreetmap-wal-e --terse wal-fetch %f %p",
+      },
+    },
   }
 )
 

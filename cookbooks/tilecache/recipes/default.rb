@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: tilecache
+# Cookbook:: tilecache
 # Recipe:: default
 #
-# Copyright 2011, OpenStreetMap Foundation
+# Copyright:: 2011, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -27,10 +27,10 @@ package "apache2" do
   action :remove
 end
 
-package %w[
+package %w(
   xz-utils
   openssl
-]
+)
 
 # oathtool for QoS token
 package "oathtool"
@@ -83,7 +83,7 @@ template "/etc/logrotate.d/squid" do
   source "logrotate.squid.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
 end
 
 nginx_site "default" do
@@ -94,7 +94,7 @@ template "/usr/local/bin/nginx_generate_tilecache_qos_map" do
   source "nginx_generate_tilecache_qos_map.erb"
   owner "root"
   group "root"
-  mode 0o750
+  mode "750"
   variables :totp_key => web_passwords["totp_key"]
 end
 
@@ -102,7 +102,7 @@ template "/etc/cron.d/tilecache" do
   source "cron.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
 end
 
 execute "execute_nginx_generate_tilecache_qos_map" do
@@ -132,7 +132,7 @@ template "/etc/logrotate.d/nginx" do
   source "logrotate.nginx.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
 end
 
 tilerenders.each do |render|

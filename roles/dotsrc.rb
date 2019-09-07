@@ -8,19 +8,19 @@ default_attributes(
     :nameservers => [
       "130.226.1.2",
       "130.226.255.53",
-      "2001:878:0:100::2"
+      "2001:878:0:100::2",
     ],
     :roles => {
       :external => {
-        :zone => "ds"
-      }
-    }
+        :zone => "ds",
+      },
+    },
   }
 )
 
 override_attributes(
   :ntp => {
-    :servers => ["0.dk.pool.ntp.org", "1.dk.pool.ntp.org", "europe.pool.ntp.org"]
+    :servers => ["0.dk.pool.ntp.org", "1.dk.pool.ntp.org", "europe.pool.ntp.org"],
   }
 )
 

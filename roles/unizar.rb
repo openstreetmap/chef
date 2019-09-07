@@ -4,8 +4,8 @@ description "Role applied to all servers at University of Zaragoza"
 default_attributes(
   :accounts => {
     :users => {
-      :osluz => { :status => :administrator }
-    }
+      :osluz => { :status => :administrator },
+    },
   },
   :hosted_by => "University of Zaragoza",
   :location => "Zaragoza, Spain",
@@ -13,15 +13,15 @@ default_attributes(
     :nameservers => ["155.210.12.9", "155.210.3.12"],
     :roles => {
       :external => {
-        :zone => "uz"
-      }
-    }
+        :zone => "uz",
+      },
+    },
   }
 )
 
 override_attributes(
   :ntp => {
-    :servers => ["0.es.pool.ntp.org", "1.es.pool.ntp.org", "europe.pool.ntp.org"]
+    :servers => ["0.es.pool.ntp.org", "1.es.pool.ntp.org", "europe.pool.ntp.org"],
   }
 )
 

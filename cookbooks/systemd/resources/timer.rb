@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: systemd
+# Cookbook:: systemd
 # Resource:: systemd_timer
 #
-# Copyright 2019, OpenStreetMap Foundation
+# Copyright:: 2019, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ action :create do
     source "timer.erb"
     owner "root"
     group "root"
-    mode 0o644
+    mode "644"
     variables timer_variables
   end
 

@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: web
+# Cookbook:: web
 # Resource:: rails_port
 #
-# Copyright 2012, OpenStreetMap Foundation
+# Copyright:: 2012, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ resource_name :rails_port
 
 default_action :create
 
-property :site, String, :name_attribute => true
+property :site, String, :name_property => true
 property :ruby, String, :default => "2.3"
 property :directory, String
 property :user, String
@@ -73,15 +73,15 @@ property :storage_service, String, :default => "local"
 property :storage_url, String
 
 action :create do
-  package %W[
+  package %W(
     ruby#{new_resource.ruby}
     ruby#{new_resource.ruby}-dev
     imagemagick
     nodejs
     geoip-database
-  ]
+  )
 
-  package %w[
+  package %w(
     g++
     pkg-config
     libpq-dev
@@ -93,9 +93,9 @@ action :create do
     libgd-dev
     libarchive-dev
     libbz2-dev
-  ]
+  )
 
-  package %w[
+  package %w(
     pngcrush
     advancecomp
     optipng
@@ -104,7 +104,7 @@ action :create do
     jpegoptim
     gifsicle
     libjpeg-turbo-progs
-  ]
+  )
 
   gem_package "bundler#{new_resource.ruby}" do
     package_name "bundler"
@@ -121,7 +121,7 @@ action :create do
   declare_resource :directory, rails_directory do
     owner new_resource.user
     group new_resource.group
-    mode 0o2775
+    mode "2775"
   end
 
   git rails_directory do
@@ -152,7 +152,7 @@ action :create do
     source "database.yml.erb"
     owner new_resource.user
     group new_resource.group
-    mode 0o664
+    mode "664"
     variables :host => new_resource.database_host,
               :port => new_resource.database_port,
               :name => new_resource.database_name,
@@ -162,16 +162,16 @@ action :create do
   end
 
   application_yml = edit_file "#{rails_directory}/config/example.application.yml" do |line|
-    line.gsub!(/^( *)server_protocol:.*$/, "\\1server_protocol: \"https\"")
+    line.gsub!(/^( *)server_protocol:.*$/, '\\1server_protocol: "https"')
     line.gsub!(/^( *)server_url:.*$/, "\\1server_url: \"#{new_resource.site}\"")
 
-    line.gsub!(/^( *)support_email:.*$/, "\\1support_email: \"support@openstreetmap.org\"")
+    line.gsub!(/^( *)support_email:.*$/, '\\1support_email: "support@openstreetmap.org"')
 
     if new_resource.email_from
       line.gsub!(/^( *)email_from:.*$/, "\\1email_from: \"#{new_resource.email_from}\"")
     end
 
-    line.gsub!(/^( *)email_return_path:.*$/, "\\1email_return_path: \"bounces@openstreetmap.org\"")
+    line.gsub!(/^( *)email_return_path:.*$/, '\\1email_return_path: "bounces@openstreetmap.org"')
 
     line.gsub!(/^( *)status:.*$/, "\\1status: :#{new_resource.status}")
 
@@ -179,9 +179,9 @@ action :create do
       line.gsub!(/^( *)#messages_domain:.*$/, "\\1messages_domain: \"#{new_resource.messages_domain}\"")
     end
 
-    line.gsub!(/^( *)#geonames_username:.*$/, "\\1geonames_username: \"openstreetmap\"")
+    line.gsub!(/^( *)#geonames_username:.*$/, '\\1geonames_username: "openstreetmap"')
 
-    line.gsub!(/^( *)#geoip_database:.*$/, "\\1geoip_database: \"/usr/share/GeoIP/GeoIPv6.dat\"")
+    line.gsub!(/^( *)#geoip_database:.*$/, '\\1geoip_database: "/usr/share/GeoIP/GeoIPv6.dat"')
 
     if new_resource.gpx_dir
       line.gsub!(/^( *)gpx_trace_dir:.*$/, "\\1gpx_trace_dir: \"#{new_resource.gpx_dir}/traces\"")
@@ -266,9 +266,9 @@ action :create do
       line.gsub!(/^( *)#csp_report_url:.*$/, "\\1csp_report_url: \"#{new_resource.csp_report_url}\"")
     end
 
-    line.gsub!(/^( *)require_terms_seen:.*$/, "\\1require_terms_seen: true")
-    line.gsub!(/^( *)require_terms_agreed:.*$/, "\\1require_terms_agreed: true")
-    line.gsub!(/^( *)trace_use_job_queue:.*$/, "\\1trace_use_job_queue: false")
+    line.gsub!(/^( *)require_terms_seen:.*$/, '\\1require_terms_seen: true')
+    line.gsub!(/^( *)require_terms_agreed:.*$/, '\\1require_terms_agreed: true')
+    line.gsub!(/^( *)trace_use_job_queue:.*$/, '\\1trace_use_job_queue: false')
 
     line
   end
@@ -277,7 +277,7 @@ action :create do
     path "#{rails_directory}/config/application.yml"
     owner new_resource.user
     group new_resource.group
-    mode 0o664
+    mode "664"
     content application_yml
     notifies :run, "execute[#{rails_directory}/public/assets]"
     only_if { ::File.exist?("#{rails_directory}/config/example.application.yml") }
@@ -341,7 +341,7 @@ action :create do
   file "#{rails_directory}/config/settings.local.yml" do
     owner new_resource.user
     group new_resource.group
-    mode 0o664
+    mode "664"
     content YAML.dump(settings)
     notifies :run, "execute[#{rails_directory}/public/assets]"
     only_if { ::File.exist?("#{rails_directory}/config/settings.yml") }
@@ -350,14 +350,14 @@ action :create do
   storage_configuration = new_resource.storage_configuration.merge(
     "local" => {
       "service" => "Disk",
-      "root" => "#{rails_directory}/storage"
+      "root" => "#{rails_directory}/storage",
     }
   )
 
   file "#{rails_directory}/config/storage.yml" do
     owner new_resource.user
     group new_resource.group
-    mode 0o664
+    mode "664"
     content YAML.dump(storage_configuration)
     notifies :run, "execute[#{rails_directory}/public/assets]"
   end
@@ -366,7 +366,7 @@ action :create do
     file "#{rails_directory}/config/piwik.yml" do
       owner new_resource.user
       group new_resource.group
-      mode 0o664
+      mode "664"
       content YAML.dump(new_resource.piwik_configuration)
       notifies :run, "execute[#{rails_directory}/public/assets]"
     end
@@ -433,7 +433,7 @@ action :create do
     source "rails.cron.erb"
     owner "root"
     group "root"
-    mode 0o755
+    mode "755"
     variables :directory => rails_directory
   end
 end

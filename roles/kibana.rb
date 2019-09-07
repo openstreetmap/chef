@@ -4,8 +4,8 @@ description "Role applied to all kibana servers"
 default_attributes(
   :accounts => {
     :users => {
-      :kibana => { :status => :role }
-    }
+      :kibana => { :status => :role },
+    },
   }
 )
 

@@ -6,19 +6,19 @@ default_attributes(
     :users => {
       :rails => {
         :status => :role,
-        :members => [:tomh, :grant]
-      }
-    }
+        :members => [:tomh, :grant],
+      },
+    },
   },
   :exim => {
-    :trusted_users => ["rails"]
+    :trusted_users => ["rails"],
   },
   :passenger => {
-    :pool_idle_time => 3600
+    :pool_idle_time => 3600,
   },
   :web => {
     :status => "online",
-    :memcached_servers => %w[rails1.ams rails2.ams rails3.ams]
+    :memcached_servers => %w(rails1.ams rails2.ams rails3.ams),
   }
 )
 

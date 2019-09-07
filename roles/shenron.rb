@@ -6,16 +6,16 @@ default_attributes(
     :mpm => "event",
     :event => {
       :min_spare_threads => 50,
-      :max_spare_threads => 150
-    }
+      :max_spare_threads => 150,
+    },
   },
   :hardware => {
     :mcelog => {
-      :enabled => false
+      :enabled => false,
     },
     :modules => [
-      "it87"
-    ]
+      "it87",
+    ],
   },
   :openvpn => {
     :address => "10.0.16.3",
@@ -24,10 +24,10 @@ default_attributes(
         :port => "1194",
         :mode => "server",
         :peer => {
-          :host => "ridley.openstreetmap.org"
-        }
-      }
-    }
+          :host => "ridley.openstreetmap.org",
+        },
+      },
+    },
   }
 )
 
@@ -40,7 +40,7 @@ override_attributes(
         :family => :inet,
         :address => "212.110.172.32",
         :prefix => "26",
-        :gateway => "212.110.172.1"
+        :gateway => "212.110.172.1",
       },
       :external_ipv6 => {
         :interface => "eth0",
@@ -48,10 +48,10 @@ override_attributes(
         :family => :inet6,
         :address => "2001:41c9:1:400::32",
         :prefix => "64",
-        :gateway => "fe80::1"
-      }
+        :gateway => "fe80::1",
+      },
     },
-    :nameservers => ["89.16.162.20", "2001:41c9:2:d6::20"]
+    :nameservers => ["89.16.162.20", "2001:41c9:2:d6::20"],
   }
 )
 

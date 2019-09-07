@@ -4,8 +4,8 @@ description "Base role applied to all web/api storage servers"
 default_attributes(
   :accounts => {
     :users => {
-      :rails => { :status => :role }
-    }
+      :rails => { :status => :role },
+    },
   }
 )
 

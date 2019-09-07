@@ -10,7 +10,7 @@ default_attributes(
         :family => :inet,
         :address => "130.239.18.114",
         :prefix => "27",
-        :gateway => "130.239.18.97"
+        :gateway => "130.239.18.97",
       },
       :external_ipv6 => {
         :interface => "enp3s0f0",
@@ -18,13 +18,13 @@ default_attributes(
         :family => :inet6,
         :address => "2001:6b0:e:2a18::114",
         :prefix => "64",
-        :gateway => "fe80::5a97:bdff:fe79:dbc0"
-      }
-    }
+        :gateway => "fe80::5a97:bdff:fe79:dbc0",
+      },
+    },
   },
   :squid => {
     :cache_mem => "28000 MB",
-    :cache_dir => "coss /store/squid/coss-01 128000 block-size=8192 max-size=262144 membufs=80"
+    :cache_dir => "coss /store/squid/coss-01 128000 block-size=8192 max-size=262144 membufs=80",
   },
   :tilecache => {
     :tile_parent => "sweden.render.openstreetmap.org",
@@ -32,8 +32,8 @@ default_attributes(
       "nidhogg.openstreetmap.org",
       "ridgeback.openstreetmap.org",
       "rimfaxe.openstreetmap.org",
-      "trogdor.openstreetmap.org"
-    ]
+      "trogdor.openstreetmap.org",
+    ],
   }
 )
 

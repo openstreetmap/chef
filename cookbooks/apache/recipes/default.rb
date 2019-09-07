@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: apache
+# Cookbook:: apache
 # Recipe:: default
 #
-# Copyright 2011, OpenStreetMap Foundation
+# Copyright:: 2011, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,20 +19,20 @@
 
 include_recipe "ssl"
 
-package %w[
+package %w(
   apache2
   libwww-perl
-]
+)
 
-%w[event itk prefork worker].each do |mpm|
-  next if mpm == node[:apache][:mpm]
+%w(event itk prefork worker).each do |mpm|
+  next if mpm == node["apache"]["mpm"]
 
   apache_module "mpm_#{mpm}" do
     action [:disable]
   end
 end
 
-apache_module "mpm_#{node[:apache][:mpm]}" do
+apache_module "mpm_#{node['apache']['mpm']}" do
   action [:enable]
 end
 
@@ -49,7 +49,7 @@ template "/etc/apache2/ports.conf" do
   source "ports.conf.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
 end
 
 service "apache2" do
@@ -71,7 +71,7 @@ apache_module "deflate" do
   conf "deflate.conf.erb"
 end
 
-if node[:apache][:reqtimeout]
+if node["apache"]["reqtimeout"]
   apache_module "reqtimeout" do
     action [:enable]
   end

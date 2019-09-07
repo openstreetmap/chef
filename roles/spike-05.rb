@@ -10,22 +10,22 @@ default_attributes(
         :family => :inet,
         :address => "10.0.32.22",
         :bond => {
-          :slaves => %w[em1 em2]
-        }
+          :slaves => %w(em1 em2),
+        },
       },
       :external_ipv4 => {
         :interface => "bond0.214",
         :role => :external,
         :family => :inet,
-        :address => "89.16.162.22"
+        :address => "89.16.162.22",
       },
       :external_ipv6 => {
         :interface => "bond0.214",
         :role => :external,
         :family => :inet6,
-        :address => "2001:41c9:2:d6::22"
-      }
-    }
+        :address => "2001:41c9:2:d6::22",
+      },
+    },
   }
 )
 

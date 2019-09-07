@@ -4,8 +4,8 @@ description "Role applied to all servers at DataHata"
 default_attributes(
   :accounts => {
     :users => {
-      :kom => { :status => :administrator }
-    }
+      :kom => { :status => :administrator },
+    },
   },
   :hosted_by => "DataHata",
   :location => "Minsk, Belarus",
@@ -13,19 +13,19 @@ default_attributes(
     :nameservers => [
       "31.130.200.2",
       "8.8.8.8",
-      "8.8.4.4"
+      "8.8.4.4",
     ],
     :roles => {
       :external => {
-        :zone => "dh"
-      }
-    }
+        :zone => "dh",
+      },
+    },
   }
 )
 
 override_attributes(
   :ntp => {
-    :servers => ["0.by.pool.ntp.org", "1.by.pool.ntp.org", "europe.pool.ntp.org"]
+    :servers => ["0.by.pool.ntp.org", "1.by.pool.ntp.org", "europe.pool.ntp.org"],
   }
 )
 

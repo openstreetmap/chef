@@ -10,10 +10,10 @@ default_attributes(
         :family => :inet,
         :address => "10.0.48.51",
         :bond => {
-          :slaves => %w[eth0 eth1]
-        }
-      }
-    }
+          :slaves => %w(eth0 eth1),
+        },
+      },
+    },
   }
 )
 

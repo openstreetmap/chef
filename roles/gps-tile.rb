@@ -7,9 +7,9 @@ default_attributes(
       :enf => { :status => :administrator },
       :gpstile => {
         :status => :role,
-        :members => [:enf, :tomh]
-      }
-    }
+        :members => [:enf, :tomh],
+      },
+    },
   },
   :apache => {
     :mpm => "event",
@@ -19,8 +19,8 @@ default_attributes(
       :threads_per_child => 50,
       :min_spare_threads => 50,
       :max_spare_threads => 450,
-      :async_request_worker_factor => 4
-    }
+      :async_request_worker_factor => 4,
+    },
   }
 )
 

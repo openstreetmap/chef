@@ -4,8 +4,8 @@ description "Role applied to CRM server"
 default_attributes(
   :accounts => {
     :users => {
-      :stereo => { :status => :administrator }
-    }
+      :stereo => { :status => :administrator },
+    },
   },
   :exim => {
     :local_domains => ["join.osmfoundation.org"],
@@ -16,7 +16,7 @@ default_attributes(
         :local_parts => ["return"],
         :maildir => "/var/mail/crm-return",
         :user => "www-data",
-        :group => "mail"
+        :group => "mail",
       },
       :join_mail => {
         :comment => "mail@join.osmfoundation.org",
@@ -24,19 +24,19 @@ default_attributes(
         :local_parts => ["mail"],
         :maildir => "/var/mail/crm-mail",
         :user => "www-data",
-        :group => "mail"
-      }
+        :group => "mail",
+      },
     },
-    :trusted_users => ["www-data"]
+    :trusted_users => ["www-data"],
   },
   :mysql => {
     :settings => {
       :mysqld => {
         :innodb_strict_mode => true,
         :innodb_file_per_table => true,
-        :innodb_file_format => "Barracuda"
-      }
-    }
+        :innodb_file_format => "Barracuda",
+      },
+    },
   }
 )
 

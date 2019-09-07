@@ -8,8 +8,8 @@ default_attributes(
         :temp11 => { :warning => 85, :critical => 100 },
         :temp12 => { :warning => 85, :critical => 100 },
         :temp19 => { :warning => 85, :critical => 100 },
-        :temp20 => { :warning => 85, :critical => 100 }
-      }
-    }
+        :temp20 => { :warning => 85, :critical => 100 },
+      },
+    },
   }
 )

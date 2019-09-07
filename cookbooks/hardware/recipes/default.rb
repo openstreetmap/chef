@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: hardware
+# Cookbook:: hardware
 # Recipe:: default
 #
-# Copyright 2012, OpenStreetMap Foundation
+# Copyright:: 2012, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -24,21 +24,21 @@ ohai_plugin "hardware" do
   template "ohai.rb.erb"
 end
 
-case node[:cpu][:"0"][:vendor_id]
+case node["cpu"]["0"]["vendor_id"]
 when "GenuineIntel"
   package "intel-microcode"
 when "AuthenticAMD"
   package "amd64-microcode"
 end
 
-if node[:dmi] && node[:dmi][:system]
-  case node[:dmi][:system][:manufacturer]
+if node["dmi"] && node["dmi"]["system"]
+  case node["dmi"]["system"]["manufacturer"]
   when "empty"
-    manufacturer = node[:dmi][:base_board][:manufacturer]
-    product = node[:dmi][:base_board][:product_name]
+    manufacturer = node["dmi"]["base_board"]["manufacturer"]
+    product = node["dmi"]["base_board"]["product_name"]
   else
-    manufacturer = node[:dmi][:system][:manufacturer]
-    product = node[:dmi][:system][:product_name]
+    manufacturer = node["dmi"]["system"]["manufacturer"]
+    product = node["dmi"]["system"]["product_name"]
   end
 else
   manufacturer = "Unknown"
@@ -47,7 +47,7 @@ end
 
 units = []
 
-if node[:roles].include?("bytemark") || node[:roles].include?("exonetric")
+if node["roles"].include?("bytemark") || node["roles"].include?("exonetric")
   units << "0"
 end
 
@@ -103,8 +103,8 @@ end
 # work (e.g: https://github.com/openstreetmap/operations/issues/45) then
 # ensure that we have the package installed. the grub template will
 # make sure that this is the default on boot.
-if node[:hardware][:grub][:kernel]
-  kernel_version = node[:hardware][:grub][:kernel]
+if node["hardware"]["grub"]["kernel"]
+  kernel_version = node["hardware"]["grub"]["kernel"]
 
   package "linux-image-#{kernel_version}-generic"
   package "linux-image-extra-#{kernel_version}-generic"
@@ -128,7 +128,7 @@ if File.exist?("/etc/default/grub")
     source "grub.erb"
     owner "root"
     group "root"
-    mode 0o644
+    mode "644"
     variables :units => units, :entry => grub_entry
     notifies :run, "execute[update-grub]"
   end
@@ -145,7 +145,7 @@ template "/etc/initramfs-tools/conf.d/mdadm" do
   source "initramfs-mdadm.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   notifies :run, "execute[update-initramfs]"
 end
 
@@ -154,7 +154,7 @@ service "haveged" do
   action [:enable, :start]
 end
 
-package "ipmitool" if node[:kernel][:modules].include?("ipmi_si")
+package "ipmitool" if node["kernel"]["modules"].include?("ipmi_si")
 
 package "irqbalance"
 
@@ -162,7 +162,7 @@ template "/etc/default/irqbalance" do
   source "irqbalance.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
 end
 
 service "irqbalance" do
@@ -181,7 +181,7 @@ end
 tools_packages = []
 status_packages = {}
 
-node[:kernel][:modules].each_key do |modname|
+node["kernel"]["modules"].each_key do |modname|
   case modname
   when "cciss"
     tools_packages << "ssacli"
@@ -209,7 +209,7 @@ node[:kernel][:modules].each_key do |modname|
   end
 end
 
-node[:block_device].each do |name, attributes|
+node["block_device"].each do |name, attributes|
   next unless attributes[:vendor] == "HP" && attributes[:model] == "LOGICAL VOLUME"
 
   if name =~ /^cciss!(c[0-9]+)d[0-9]+$/
@@ -221,7 +221,7 @@ node[:block_device].each do |name, attributes|
   end
 end
 
-%w[ssacli lsiutil sas2ircu megactl megacli arcconf].each do |tools_package|
+%w(ssacli lsiutil sas2ircu megactl megacli arcconf).each do |tools_package|
   if tools_packages.include?(tools_package)
     package tools_package
   else
@@ -252,7 +252,7 @@ if status_packages.include?("cciss-vol-status")
     source "cciss-vol-statusd.erb"
     owner "root"
     group "root"
-    mode 0o755
+    mode "755"
     notifies :restart, "service[cciss-vol-statusd]"
   end
 
@@ -267,7 +267,7 @@ if status_packages.include?("cciss-vol-status")
   end
 end
 
-%w[cciss-vol-status mpt-status sas2ircu-status megaraid-status megaclisas-status aacraid-status].each do |status_package|
+%w(cciss-vol-status mpt-status sas2ircu-status megaraid-status megaclisas-status aacraid-status).each do |status_package|
   if status_packages.include?(status_package)
     package status_package
 
@@ -275,7 +275,7 @@ end
       source "raid.default.erb"
       owner "root"
       group "root"
-      mode 0o644
+      mode "644"
       variables :devices => status_packages[status_package]
     end
 
@@ -295,16 +295,16 @@ end
   end
 end
 
-disks = if node[:hardware][:disk]
-          node[:hardware][:disk][:disks]
+disks = if node["hardware"]["disk"]
+          node["hardware"]["disk"]["disks"]
         else
           []
         end
 
 intel_ssds = disks.select { |d| d[:vendor] == "INTEL" && d[:model] =~ /^SSD/ }
 
-nvmes = if node[:hardware][:pci]
-          node[:hardware][:pci].values.select { |pci| pci[:driver] == "nvme" }
+nvmes = if node["hardware"]["pci"]
+          node["hardware"]["pci"].values.select { |pci| pci[:driver] == "nvme" }
         else
           []
         end
@@ -335,17 +335,17 @@ if !intel_ssds.empty? || !intel_nvmes.empty?
 end
 
 disks = disks.map do |disk|
-  next if disk[:state] == "spun_down" || %w[unconfigured failed].any?(disk[:status])
+  next if disk[:state] == "spun_down" || %w(unconfigured failed).any?(disk[:status])
 
   if disk[:smart_device]
-    controller = node[:hardware][:disk][:controllers][disk[:controller]]
+    controller = node["hardware"]["disk"]["controllers"][disk[:controller]]
 
     if controller && controller[:device]
       device = controller[:device].sub("/dev/", "")
       smart = disk[:smart_device]
 
       if device.start_with?("cciss/") && smart =~ /^cciss,(\d+)$/
-        array = node[:hardware][:disk][:arrays][disk[:arrays].first]
+        array = node["hardware"]["disk"]["arrays"][disk[:arrays].first]
         munin = "cciss-3#{array[:wwn]}-#{Regexp.last_match(1)}"
       elsif smart =~ /^.*,(\d+)$/
         munin = "#{device}-#{Regexp.last_match(1)}"
@@ -380,14 +380,14 @@ if disks.count.positive?
     source "smartd-mailer.erb"
     owner "root"
     group "root"
-    mode 0o755
+    mode "755"
   end
 
   template "/etc/smartd.conf" do
     source "smartd.conf.erb"
     owner "root"
     group "root"
-    mode 0o644
+    mode "644"
     variables :disks => disks
   end
 
@@ -395,7 +395,7 @@ if disks.count.positive?
     source "smartmontools.erb"
     owner "root"
     group "root"
-    mode 0o644
+    mode "644"
   end
 
   service "smartd" do
@@ -455,7 +455,7 @@ if File.exist?("/etc/mdadm/mdadm.conf")
   file "/etc/mdadm/mdadm.conf" do
     owner "root"
     group "root"
-    mode 0o644
+    mode "644"
     content mdadm_conf
   end
 
@@ -469,7 +469,7 @@ template "/etc/modules" do
   source "modules.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
 end
 
 service "kmod" do
@@ -477,15 +477,15 @@ service "kmod" do
   subscribes :start, "template[/etc/modules]"
 end
 
-if node[:hardware][:watchdog]
+if node["hardware"]["watchdog"]
   package "watchdog"
 
   template "/etc/default/watchdog" do
     source "watchdog.erb"
     owner "root"
     group "root"
-    mode 0o644
-    variables :module => node[:hardware][:watchdog]
+    mode "644"
+    variables :module => node["hardware"]["watchdog"]
   end
 
   service "watchdog" do
@@ -511,12 +511,12 @@ unless Dir.glob("/sys/class/hwmon/hwmon*").empty?
             end
 
     if temps.first == 1
-      node.default[:hardware][:sensors][chip][:temps][:temp1][:label] = "CPU #{cpu}"
+      node.default["hardware"]["sensors"][chip]["temps"]["temp1"][:label] = "CPU #{cpu}"
       temps.shift
     end
 
     temps.each_with_index do |temp, index|
-      node.default[:hardware][:sensors][chip][:temps]["temp#{temp}"][:label] = "CPU #{cpu} Core #{index}"
+      node.default["hardware"]["sensors"][chip]["temps"]["temp#{temp}"][:label] = "CPU #{cpu} Core #{index}"
     end
   end
 
@@ -531,16 +531,16 @@ unless Dir.glob("/sys/class/hwmon/hwmon*").empty?
     source "sensors.conf.erb"
     owner "root"
     group "root"
-    mode 0o644
+    mode "644"
     notifies :run, "execute[/etc/sensors.d/chef.conf]"
   end
 end
 
-if node[:hardware][:shm_size]
+if node["hardware"]["shm_size"]
   mount "/dev/shm" do
     action [:mount, :enable]
     device "tmpfs"
     fstype "tmpfs"
-    options "rw,nosuid,nodev,size=#{node[:hardware][:shm_size]}"
+    options "rw,nosuid,nodev,size=#{node['hardware']['shm_size']}"
   end
 end

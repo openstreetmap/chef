@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: web
+# Cookbook:: web
 # Recipe:: rails
 #
-# Copyright 2011, OpenStreetMap Foundation
+# Copyright:: 2011, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -44,11 +44,11 @@ template "/etc/cron.hourly/passenger" do
   source "passenger.cron.erb"
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end
 
-ruby_version = node[:passenger][:ruby_version]
-rails_directory = "#{node[:web][:base_directory]}/rails"
+ruby_version = node["passenger"]["ruby_version"]
+rails_directory = "#{node['web']['base_directory']}/rails"
 
 piwik = data_bag_item("web", "piwik")
 
@@ -62,9 +62,9 @@ storage = {
     "use_dualstack_endpoint" => true,
     "upload" => {
       "acl" => "public-read",
-      "cache_control" => "public, max-age=31536000, immutable"
-    }
-  }
+      "cache_control" => "public, max-age=31536000, immutable",
+    },
+  },
 }
 
 rails_port "www.openstreetmap.org" do
@@ -74,18 +74,18 @@ rails_port "www.openstreetmap.org" do
   group "rails"
   repository "https://git.openstreetmap.org/public/rails.git"
   revision "live"
-  database_host node[:web][:database_host]
+  database_host node["web"]["database_host"]
   database_name "openstreetmap"
   database_username "rails"
   database_password db_passwords["rails"]
   email_from "OpenStreetMap <web@noreply.openstreetmap.org>"
-  status node[:web][:status]
+  status node["web"]["status"]
   messages_domain "messages.openstreetmap.org"
   gpx_dir "/store/rails/gpx"
   attachments_dir "/store/rails/attachments"
-  log_path "#{node[:web][:log_directory]}/rails.log"
-  logstash_path "#{node[:web][:log_directory]}/rails-logstash.log"
-  memcache_servers node[:web][:memcached_servers]
+  log_path "#{node['web']['log_directory']}/rails.log"
+  logstash_path "#{node['web']['log_directory']}/rails-logstash.log"
+  memcache_servers node["web"]["memcached_servers"]
   potlatch2_key web_passwords["potlatch2_key"]
   id_key web_passwords["id_key"]
   oauth_key web_passwords["oauth_key"]
@@ -134,7 +134,7 @@ template "/usr/local/bin/cleanup-rails-assets" do
   source "cleanup-assets.erb"
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end
 
 gem_package "apachelogregex"
@@ -144,7 +144,7 @@ template "/usr/local/bin/api-statistics" do
   source "api-statistics.erb"
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end
 
 systemd_service "api-statistics" do
@@ -173,10 +173,10 @@ gem_package "hpricot"
 munin_plugin "api_calls_status"
 munin_plugin "api_calls_num"
 
-munin_plugin "api_calls_#{node[:hostname]}" do
+munin_plugin "api_calls_#{node['hostname']}" do
   target "api_calls_"
 end
 
-munin_plugin "api_waits_#{node[:hostname]}" do
+munin_plugin "api_waits_#{node['hostname']}" do
   target "api_waits_"
 end

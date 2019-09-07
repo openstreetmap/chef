@@ -1,9 +1,9 @@
 #
-# Cookbook Name:: networking
+# Cookbook:: networking
 # Recipe:: default
 #
-# Copyright 2010, OpenStreetMap Foundation.
-# Copyright 2009, Opscode, Inc.
+# Copyright:: 2010, OpenStreetMap Foundation.
+# Copyright:: 2009, Opscode, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -29,28 +29,28 @@ netplan = {
     "renderer" => "networkd",
     "ethernets" => {},
     "bonds" => {},
-    "vlans" => {}
-  }
+    "vlans" => {},
+  },
 }
 
-node[:networking][:interfaces].each do |name, interface|
+node["networking"]["interfaces"].each do |name, interface|
   if interface[:interface]
-    if interface[:role] && (role = node[:networking][:roles][interface[:role]])
+    if interface[:role] && (role = node["networking"]["roles"][interface[:role]])
       if role[interface[:family]]
-        node.normal[:networking][:interfaces][name][:prefix] = role[interface[:family]][:prefix]
-        node.normal[:networking][:interfaces][name][:gateway] = role[interface[:family]][:gateway]
+        node.normal["networking"]["interfaces"][name][:prefix] = role[interface[:family]][:prefix]
+        node.normal["networking"]["interfaces"][name][:gateway] = role[interface[:family]][:gateway]
       end
 
-      node.normal[:networking][:interfaces][name][:metric] = role[:metric]
-      node.normal[:networking][:interfaces][name][:zone] = role[:zone]
+      node.normal["networking"]["interfaces"][name][:metric] = role[:metric]
+      node.normal["networking"]["interfaces"][name][:zone] = role[:zone]
     end
 
-    prefix = node[:networking][:interfaces][name][:prefix]
+    prefix = node["networking"]["interfaces"][name]["prefix"]
 
-    node.normal[:networking][:interfaces][name][:netmask] = (~IPAddr.new(interface[:address]).mask(0)).mask(prefix)
-    node.normal[:networking][:interfaces][name][:network] = IPAddr.new(interface[:address]).mask(prefix)
+    node.normal["networking"]["interfaces"][name][:netmask] = (~IPAddr.new(interface[:address]).mask(0)).mask(prefix)
+    node.normal["networking"]["interfaces"][name][:network] = IPAddr.new(interface[:address]).mask(prefix)
 
-    interface = node[:networking][:interfaces][name]
+    interface = node["networking"]["interfaces"][name]
 
     deviceplan = if interface[:interface] =~ /^(.*)\.(\d+)$/
                    netplan["network"]["vlans"][interface[:interface]] ||= {
@@ -58,19 +58,19 @@ node[:networking][:interfaces].each do |name, interface|
                      "link" => Regexp.last_match(1),
                      "accept-ra" => false,
                      "addresses" => [],
-                     "routes" => []
+                     "routes" => [],
                    }
                  elsif interface[:interface] =~ /^bond\d+$/
                    netplan["network"]["bonds"][interface[:interface]] ||= {
                      "accept-ra" => false,
                      "addresses" => [],
-                     "routes" => []
+                     "routes" => [],
                    }
                  else
                    netplan["network"]["ethernets"][interface[:interface]] ||= {
                      "accept-ra" => false,
                      "addresses" => [],
-                     "routes" => []
+                     "routes" => [],
                    }
                  end
 
@@ -88,7 +88,7 @@ node[:networking][:interfaces].each do |name, interface|
         "primary" => interface[:bond][:slaves].first,
         "mii-monitor-interval" => interface[:bond][:miimon] || 100,
         "down-delay" => interface[:bond][:downdelay] || 200,
-        "up-delay" => interface[:bond][:updelay] || 200
+        "up-delay" => interface[:bond][:updelay] || 200,
       }
 
       deviceplan["parameters"]["transmit-hash-policy"] = interface[:bond][:xmithashpolicy] if interface[:bond][:xmithashpolicy]
@@ -152,7 +152,7 @@ end
 file "/etc/netplan/99-chef.yaml" do
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   content YAML.dump(netplan)
 end
 
@@ -169,7 +169,7 @@ template "/etc/hostname" do
   source "hostname.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   notifies :run, "execute[hostname]"
 end
 
@@ -177,7 +177,7 @@ template "/etc/hosts" do
   source "hosts.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
 end
 
 service "systemd-resolved" do
@@ -187,25 +187,25 @@ end
 directory "/etc/systemd/resolved.conf.d" do
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end
 
 template "/etc/systemd/resolved.conf.d/99-chef.conf" do
   source "resolved.conf.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   notifies :restart, "service[systemd-resolved]"
 end
 
-if node[:networking][:tcp_fastopen_key]
+if node["networking"]["tcp_fastopen_key"]
   fastopen_keys = data_bag_item("networking", "fastopen")
 
-  node.normal[:sysctl][:tcp_fastopen] = {
+  node.normal["sysctl"][:tcp_fastopen] = {
     :comment => "Set shared key for TCP fast open",
     :parameters => {
-      "net.ipv4.tcp_fastopen_key" => fastopen_keys[node[:networking][:tcp_fastopen_key]]
-    }
+      "net.ipv4.tcp_fastopen_key" => fastopen_keys[node["networking"]["tcp_fastopen_key"]],
+    },
   }
 end
 
@@ -240,7 +240,7 @@ end
 zones = {}
 
 search(:node, "networking:interfaces").collect do |n|
-  next if n[:fqdn] == node[:fqdn]
+  next if n[:fqdn] == node["fqdn"]
 
   n.interfaces.each do |interface|
     next unless interface[:role] == "external" && interface[:zone]
@@ -257,7 +257,7 @@ template "/etc/default/shorewall" do
   source "shorewall-default.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   notifies :restart, "service[shorewall]"
 end
 
@@ -265,7 +265,7 @@ template "/etc/shorewall/shorewall.conf" do
   source "shorewall.conf.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   notifies :restart, "service[shorewall]"
 end
 
@@ -273,7 +273,7 @@ template "/etc/shorewall/zones" do
   source "shorewall-zones.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   variables :type => "ipv4"
   notifies :restart, "service[shorewall]"
 end
@@ -282,7 +282,7 @@ template "/etc/shorewall/interfaces" do
   source "shorewall-interfaces.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   notifies :restart, "service[shorewall]"
 end
 
@@ -290,7 +290,7 @@ template "/etc/shorewall/hosts" do
   source "shorewall-hosts.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   variables :zones => zones
   notifies :restart, "service[shorewall]"
 end
@@ -299,16 +299,16 @@ template "/etc/shorewall/conntrack" do
   source "shorewall-conntrack.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   notifies :restart, "service[shorewall]"
-  only_if { node[:networking][:firewall][:raw] }
+  only_if { node["networking"]["firewall"]["raw"] }
 end
 
 template "/etc/shorewall/policy" do
   source "shorewall-policy.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   notifies :restart, "service[shorewall]"
 end
 
@@ -316,7 +316,7 @@ template "/etc/shorewall/rules" do
   source "shorewall-rules.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   variables :family => "inet"
   notifies :restart, "service[shorewall]"
 end
@@ -331,7 +331,7 @@ template "/etc/logrotate.d/shorewall" do
   source "logrotate.shorewall.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   variables :name => "shorewall"
 end
 
@@ -345,7 +345,7 @@ firewall_rule "limit-icmp-echo" do
   rate_limit "s:1/sec:5"
 end
 
-%w[ucl ams bm].each do |zone|
+%w(ucl ams bm).each do |zone|
   firewall_rule "accept-openvpn-#{zone}" do
     action :accept
     source zone
@@ -356,12 +356,12 @@ end
   end
 end
 
-if node[:roles].include?("gateway")
+if node["roles"].include?("gateway")
   template "/etc/shorewall/masq" do
     source "shorewall-masq.erb"
     owner "root"
     group "root"
-    mode 0o644
+    mode "644"
     notifies :restart, "service[shorewall]"
   end
 else
@@ -378,7 +378,7 @@ unless node.interfaces(:family => :inet6).empty?
     source "shorewall-default.erb"
     owner "root"
     group "root"
-    mode 0o644
+    mode "644"
     notifies :restart, "service[shorewall6]"
   end
 
@@ -386,7 +386,7 @@ unless node.interfaces(:family => :inet6).empty?
     source "shorewall6.conf.erb"
     owner "root"
     group "root"
-    mode 0o644
+    mode "644"
     notifies :restart, "service[shorewall6]"
   end
 
@@ -394,7 +394,7 @@ unless node.interfaces(:family => :inet6).empty?
     source "shorewall-zones.erb"
     owner "root"
     group "root"
-    mode 0o644
+    mode "644"
     variables :type => "ipv6"
     notifies :restart, "service[shorewall6]"
   end
@@ -403,7 +403,7 @@ unless node.interfaces(:family => :inet6).empty?
     source "shorewall6-interfaces.erb"
     owner "root"
     group "root"
-    mode 0o644
+    mode "644"
     notifies :restart, "service[shorewall6]"
   end
 
@@ -411,7 +411,7 @@ unless node.interfaces(:family => :inet6).empty?
     source "shorewall6-hosts.erb"
     owner "root"
     group "root"
-    mode 0o644
+    mode "644"
     variables :zones => zones
     notifies :restart, "service[shorewall6]"
   end
@@ -420,16 +420,16 @@ unless node.interfaces(:family => :inet6).empty?
     source "shorewall-conntrack.erb"
     owner "root"
     group "root"
-    mode 0o644
+    mode "644"
     notifies :restart, "service[shorewall6]"
-    only_if { node[:networking][:firewall][:raw] }
+    only_if { node["networking"]["firewall"]["raw"] }
   end
 
   template "/etc/shorewall6/policy" do
     source "shorewall-policy.erb"
     owner "root"
     group "root"
-    mode 0o644
+    mode "644"
     notifies :restart, "service[shorewall6]"
   end
 
@@ -437,7 +437,7 @@ unless node.interfaces(:family => :inet6).empty?
     source "shorewall-rules.erb"
     owner "root"
     group "root"
-    mode 0o644
+    mode "644"
     variables :family => "inet6"
     notifies :restart, "service[shorewall6]"
   end
@@ -452,7 +452,7 @@ unless node.interfaces(:family => :inet6).empty?
     source "logrotate.shorewall.erb"
     owner "root"
     group "root"
-    mode 0o644
+    mode "644"
     variables :name => "shorewall6"
   end
 
@@ -473,8 +473,8 @@ firewall_rule "accept-http" do
   dest "fw"
   proto "tcp:syn"
   dest_ports "http"
-  rate_limit node[:networking][:firewall][:http_rate_limit]
-  connection_limit node[:networking][:firewall][:http_connection_limit]
+  rate_limit node["networking"]["firewall"]["http_rate_limit"]
+  connection_limit node["networking"]["firewall"]["http_connection_limit"]
 end
 
 firewall_rule "accept-https" do
@@ -483,6 +483,6 @@ firewall_rule "accept-https" do
   dest "fw"
   proto "tcp:syn"
   dest_ports "https"
-  rate_limit node[:networking][:firewall][:http_rate_limit]
-  connection_limit node[:networking][:firewall][:http_connection_limit]
+  rate_limit node["networking"]["firewall"]["http_rate_limit"]
+  connection_limit node["networking"]["firewall"]["http_connection_limit"]
 end

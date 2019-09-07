@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: ohai
+# Cookbook:: ohai
 # Resource:: ohai_plugin
 #
-# Copyright 2015, OpenStreetMap Foundation
+# Copyright:: 2015, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@
 
 default_action :create
 
-property :plugin, :kind_of => String, :name_attribute => true
+property :plugin, :kind_of => String, :name_property => true
 property :template, :kind_of => String, :required => true
 
 action :create do
@@ -31,7 +31,7 @@ action :create do
     source new_resource.template
     owner "root"
     group "root"
-    mode 0o644
+    mode "644"
     notifies :reload, "ohai[#{new_resource.plugin}]"
   end
 end

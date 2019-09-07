@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: wordpress
+# Cookbook:: wordpress
 # Resource:: wordpress_theme
 #
-# Copyright 2015, OpenStreetMap Foundation
+# Copyright:: 2015, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@
 
 default_action :create
 
-property :theme, :kind_of => String, :name_attribute => true
+property :theme, :kind_of => String, :name_property => true
 property :site, :kind_of => String, :required => true
 property :source, :kind_of => String
 property :version, :kind_of => String
@@ -32,11 +32,11 @@ action :create do
     remote_directory theme_directory do
       cookbook "wordpress"
       source new_resource.source
-      owner node[:wordpress][:user]
-      group node[:wordpress][:group]
-      mode 0o755
-      files_owner node[:wordpress][:user]
-      files_group node[:wordpress][:group]
+      owner node["wordpress"]["user"]
+      group node["wordpress"]["group"]
+      mode "755"
+      files_owner node["wordpress"]["user"]
+      files_group node["wordpress"]["group"]
       files_mode 0o644
     end
   else
@@ -47,15 +47,15 @@ action :create do
         action :sync
         repository theme_repository
         revision new_resource.revision
-        user node[:wordpress][:user]
-        group node[:wordpress][:group]
+        user node["wordpress"]["user"]
+        group node["wordpress"]["group"]
       end
     else
       subversion theme_directory do
         action :sync
         repository theme_repository
-        user node[:wordpress][:user]
-        group node[:wordpress][:group]
+        user node["wordpress"]["user"]
+        group node["wordpress"]["group"]
         ignore_failure theme_repository.start_with?("https://themes.svn.wordpress.org/")
       end
     end
@@ -71,7 +71,7 @@ end
 
 action_class do
   def site_directory
-    node[:wordpress][:sites][new_resource.site][:directory]
+    node["wordpress"]["sites"][new_resource.site]["directory"]
   end
 
   def theme_directory

@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: tools
+# Cookbook:: tools
 # Recipe:: default
 #
-# Copyright 2011, OpenStreetMap Foundation
+# Copyright:: 2011, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-package %w[
+package %w(
   bash-completion
   dmidecode
   ethtool
@@ -36,7 +36,7 @@ package %w[
   lvm2
   rsyslog
   cron
-]
+)
 
 service "rsyslog" do
   action [:enable, :start]
@@ -44,7 +44,7 @@ service "rsyslog" do
 end
 
 # Remove some unused and unwanted packages
-package %w[mlocate nano whoopsie] do
+package %w(mlocate nano whoopsie) do
   action :purge
 end
 
@@ -62,9 +62,9 @@ end
 systemd_service "cron-timezone" do
   service "cron"
   dropin "timezone"
-  environment "TZ" => node[:timezone]
+  environment "TZ" => node["timezone"]
   notifies :restart, "service[cron]"
-  only_if { node[:timezone] }
+  only_if { node["timezone"] }
 end
 
 # Make sure cron is running

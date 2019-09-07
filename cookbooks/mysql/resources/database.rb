@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: mysql
+# Cookbook:: mysql
 # Resource:: mysql_database
 #
-# Copyright 2013, OpenStreetMap Foundation
+# Copyright:: 2013, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@
 
 default_action :create
 
-property :database, :kind_of => String, :name_attribute => true
+property :database, :kind_of => String, :name_property => true
 property :permissions, :kind_of => Hash, :default => {}
 
 action :create do

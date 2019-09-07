@@ -32,8 +32,8 @@ default_attributes(
         :Temp25 => { :warning => ":", :label => "Peripheral Bay 7" },
         :Temp26 => { :warning => ":", :label => "Peripheral Bay 8" },
         :Temp27 => { :warning => ":", :label => "Drive Backplane" },
-        :Temp28 => { :warning => ":", :label => "System Board" }
-      }
-    }
+        :Temp28 => { :warning => ":", :label => "System Board" },
+      },
+    },
   }
 )

@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: git
+# Cookbook:: git
 # Recipe:: web
 #
-# Copyright 2013, OpenStreetMap Foundation
+# Copyright:: 2013, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,40 +23,40 @@ package "gitweb"
 
 apache_module "rewrite"
 
-git_site = node[:git][:host]
+git_site = node["git"]["host"]
 
 template "/etc/gitweb.conf" do
   source "gitweb.conf.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
 end
 
 directory "/srv/#{git_site}" do
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end
 
 template "/srv/#{git_site}/robots.txt" do
   source "robots.txt.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
 end
 
 ssl_certificate git_site do
-  domains [git_site] + Array(node[:git][:aliases])
+  domains [git_site] + Array(node["git"]["aliases"])
   notifies :reload, "service[apache2]"
 end
 
-private_allowed = search(:node, node[:git][:private_nodes]).collect do |n|
+private_allowed = search(:node, node["git"]["private_nodes"]).collect do |n|
   n.ipaddresses(:role => :external)
 end.flatten
 
 apache_site git_site do
   template "apache.erb"
   directory "/srv/#{git_site}"
-  variables :aliases => Array(node[:git][:aliases]),
+  variables :aliases => Array(node["git"]["aliases"]),
             :private_allowed => private_allowed
 end

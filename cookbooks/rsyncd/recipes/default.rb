@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: rsyncd
+# Cookbook:: rsyncd
 # Recipe:: default
 #
-# Copyright 2011, OpenStreetMap Foundation
+# Copyright:: 2011, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ include_recipe "networking"
 hosts_allow = {}
 hosts_deny = {}
 
-node[:rsyncd][:modules].each do |name, details|
+node["rsyncd"]["modules"].each do |name, details|
   hosts_allow[name] = details[:hosts_allow] || []
 
   if details[:nodes_allow]
@@ -51,7 +51,7 @@ template "/etc/default/rsync" do
   source "rsync.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   notifies :restart, "service[rsync]"
 end
 
@@ -59,7 +59,7 @@ template "/etc/rsyncd.conf" do
   source "rsyncd.conf.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   variables :hosts_allow => hosts_allow, :hosts_deny => hosts_deny
 end
 

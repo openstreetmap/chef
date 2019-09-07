@@ -4,8 +4,8 @@ description "Role applied to all servers at MilkyWan"
 default_attributes(
   :accounts => {
     :users => {
-      :milkywan => { :status => :administrator }
-    }
+      :milkywan => { :status => :administrator },
+    },
   },
   :hosted_by => "MilkyWan",
   :location => "Paris, France",
@@ -20,22 +20,22 @@ default_attributes(
           :dest_ports => "snmp",
           :source_ports => "1024:",
           :rate_limit => "-",
-          :connection_limit => "-"
-        }
-      ]
+          :connection_limit => "-",
+        },
+      ],
     },
     :nameservers => ["130.117.11.11", "2a0b:cbc0:42::42"],
     :roles => {
       :external => {
-        :zone => "osm"
-      }
-    }
+        :zone => "osm",
+      },
+    },
   }
 )
 
 override_attributes(
   :ntp => {
-    :servers => ["0.fr.pool.ntp.org", "1.fr.pool.ntp.org", "europe.pool.ntp.org"]
+    :servers => ["0.fr.pool.ntp.org", "1.fr.pool.ntp.org", "europe.pool.ntp.org"],
   }
 )
 

@@ -25,7 +25,7 @@ CALL_TYPES = {
   :full => "Full element fetches",
   :trkpts => "GPX trackpoints calls",
   :web => "Web site traffic",
-  :other => "Other API calls"
+  :other => "Other API calls",
 }.freeze
 
 def categorise_uri(line)

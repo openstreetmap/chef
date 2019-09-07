@@ -10,8 +10,8 @@ default_attributes(
       :serial => "20004d927fffff800",
       :attrs => {
         "queue/scheduler" => "deadline",
-        "queue/nr_requests" => "512"
-      }
+        "queue/nr_requests" => "512",
+      },
     },
     :homedsk => {
       :comment => "First home disk",
@@ -20,9 +20,9 @@ default_attributes(
       :serial => "20004d927fffff801",
       :attrs => {
         "queue/scheduler" => "deadline",
-        "queue/nr_requests" => "512"
-      }
-    }
+        "queue/nr_requests" => "512",
+      },
+    },
   },
   :networking => {
     :interfaces => {
@@ -30,15 +30,15 @@ default_attributes(
         :interface => "eth0.2801",
         :role => :internal,
         :family => :inet,
-        :address => "10.0.0.14"
+        :address => "10.0.0.14",
       },
       :external_ipv4 => {
         :interface => "eth0.2800",
         :role => :external,
         :family => :inet,
-        :address => "193.60.236.13"
-      }
-    }
+        :address => "193.60.236.13",
+      },
+    },
   }
 )
 

@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: sysctl
+# Cookbook:: sysctl
 # Recipe:: default
 #
-# Copyright 2010, Tom Hughes
+# Copyright:: 2010, Tom Hughes
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,8 +17,8 @@
 # limitations under the License.
 #
 
-if node[:virtualization][:role] == "guest" &&
-   node[:virtualization][:system] == "lxd"
+if node["virtualization"]["role"] == "guest" &&
+   node["virtualization"]["system"] == "lxd"
   file "/etc/sysctl.d/60-chef.conf" do
     action :delete
   end
@@ -28,7 +28,7 @@ else
   directory "/etc/sysctl.d" do
     owner "root"
     group "root"
-    mode 0o755
+    mode "755"
   end
 
   execute "sysctl" do
@@ -40,11 +40,11 @@ else
     source "chef.conf.erb"
     owner "root"
     group "root"
-    mode 0o644
+    mode "644"
     notifies :run, "execute[sysctl]"
   end
 
-  node[:sysctl].each_value do |group|
+  node["sysctl"].each_value do |group|
     group[:parameters].each do |key, value|
       sysctl_file = "/proc/sys/#{key.tr('.', '/')}"
 

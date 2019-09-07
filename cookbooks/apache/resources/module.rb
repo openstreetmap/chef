@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: apache
+# Cookbook:: apache
 # Resource:: apache_module
 #
-# Copyright 2013, OpenStreetMap Foundation
+# Copyright:: 2013, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@
 
 default_action [:install, :enable]
 
-property :module, :kind_of => String, :name_attribute => true
+property :module, :kind_of => String, :name_property => true
 property :package, :kind_of => String
 property :conf, :kind_of => String
 property :variables, :kind_of => Hash, :default => {}
@@ -33,7 +33,7 @@ action :install do
       source new_resource.conf
       owner "root"
       group "root"
-      mode 0o644
+      mode "644"
       variables new_resource.variables
     end
   end

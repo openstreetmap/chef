@@ -12,10 +12,10 @@ default_attributes(
         :list => false,
         :transfer_logging => false,
         :hosts_allow => [
-          "193.60.236.20" # sarel
-        ]
-      }
-    }
+          "193.60.236.20", # sarel
+        ],
+      },
+    },
   }
 )
 

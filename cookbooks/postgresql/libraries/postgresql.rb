@@ -73,7 +73,7 @@ module OpenStreetMap
           :superuser => user[:usesuper] == "t",
           :createdb => user[:usercreatedb] == "t",
           :createrole => user[:usecatupd] == "t",
-          :replication => user[:userepl] == "t"
+          :replication => user[:userepl] == "t",
         }
       end
     end
@@ -84,7 +84,7 @@ module OpenStreetMap
           :owner => database[:usename],
           :encoding => database[:encoding],
           :collate => database[:datcollate],
-          :ctype => database[:datctype]
+          :ctype => database[:datctype],
         }
       end
     end
@@ -93,7 +93,7 @@ module OpenStreetMap
       @extensions ||= {}
       @extensions[database] ||= query("SELECT extname, extversion FROM pg_extension", :database => database).each_with_object({}) do |extension, extensions|
         extensions[extension[:extname]] = {
-          :version => extension[:extversion]
+          :version => extension[:extversion],
         }
       end
     end
@@ -101,7 +101,7 @@ module OpenStreetMap
     def tablespaces
       @tablespaces ||= query("SELECT spcname, usename FROM pg_tablespace AS t INNER JOIN pg_user AS u ON t.spcowner = u.usesysid").each_with_object({}) do |tablespace, tablespaces|
         tablespaces[tablespace[:spcname]] = {
-          :owner => tablespace[:usename]
+          :owner => tablespace[:usename],
         }
       end
     end
@@ -113,7 +113,7 @@ module OpenStreetMap
 
         tables[name] = {
           :owner => table[:usename],
-          :permissions => parse_acl(table[:relacl] || "{}")
+          :permissions => parse_acl(table[:relacl] || "{}"),
         }
       end
     end
@@ -121,11 +121,11 @@ module OpenStreetMap
     private
 
     def parse_acl(acl)
-      acl.sub(/^\{(.*)\}$/, "\\1").split(",").each_with_object({}) do |entry, permissions|
+      acl.sub(/^\{(.*)\}$/, '\\1').split(",").each_with_object({}) do |entry, permissions|
         entry = entry.sub(/^"(.*)"$/) { Regexp.last_match[1].gsub(/\\"/, '"') }.sub(%r{/.*$}, "")
         user, privileges = entry.split("=")
 
-        user = user.sub(/^"(.*)"$/, "\\1")
+        user = user.sub(/^"(.*)"$/, '\\1')
         user = "public" if user == ""
 
         permissions[user] = {

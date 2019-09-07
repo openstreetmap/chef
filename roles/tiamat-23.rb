@@ -8,15 +8,15 @@ default_attributes(
         :interface => "enp1s0.2801",
         :role => :internal,
         :family => :inet,
-        :address => "10.0.0.51"
+        :address => "10.0.0.51",
       },
       :external_ipv4 => {
         :interface => "enp1s0.2800",
         :role => :external,
         :family => :inet,
-        :address => "193.60.236.51"
-      }
-    }
+        :address => "193.60.236.51",
+      },
+    },
   }
 )
 

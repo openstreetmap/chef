@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: tile
+# Cookbook:: tile
 # Recipe:: default
 #
-# Copyright 2013, OpenStreetMap Foundation
+# Copyright:: 2013, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -38,8 +38,8 @@ apache_module "tile" do
   conf "tile.conf.erb"
 end
 
-ssl_certificate node[:fqdn] do
-  domains [node[:fqdn], "tile.openstreetmap.org", "render.openstreetmap.org"]
+ssl_certificate node["fqdn"] do
+  domains [node["fqdn"], "tile.openstreetmap.org", "render.openstreetmap.org"]
   notifies :reload, "service[apache2]"
 end
 
@@ -58,13 +58,13 @@ template "/etc/logrotate.d/apache2" do
   source "logrotate.apache.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
 end
 
 directory "/srv/tile.openstreetmap.org" do
   owner "tile"
   group "tile"
-  mode 0o755
+  mode "755"
 end
 
 package "renderd"
@@ -94,14 +94,14 @@ end
 directory "/srv/tile.openstreetmap.org/tiles" do
   owner "tile"
   group "tile"
-  mode 0o755
+  mode "755"
 end
 
 template "/etc/renderd.conf" do
   source "renderd.conf.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   notifies :reload, "service[apache2]"
   notifies :restart, "service[renderd]"
 end
@@ -110,7 +110,7 @@ remote_directory "/srv/tile.openstreetmap.org/html" do
   source "html"
   owner "tile"
   group "tile"
-  mode 0o755
+  mode "755"
   files_owner "tile"
   files_group "tile"
   files_mode 0o644
@@ -120,24 +120,24 @@ template "/srv/tile.openstreetmap.org/html/index.html" do
   source "index.html.erb"
   owner "tile"
   group "tile"
-  mode 0o644
+  mode "644"
 end
 
-package %w[
+package %w(
   python-cairo
   python-mapnik
   python-setuptools
-]
+)
 
 python_package "pyotp"
 
-package %w[
+package %w(
   fonts-noto-cjk
   fonts-noto-hinted
   fonts-noto-unhinted
   fonts-hanazono
   ttf-unifont
-]
+)
 
 ["NotoSansArabicUI-Regular.ttf", "NotoSansArabicUI-Bold.ttf"].each do |font|
   remote_file "/usr/share/fonts/truetype/noto/#{font}" do
@@ -145,21 +145,21 @@ package %w[
     source "https://github.com/googlei18n/noto-fonts/raw/master/hinted/#{font}"
     owner "root"
     group "root"
-    mode 0o644
+    mode "644"
   end
 end
 
 directory "/srv/tile.openstreetmap.org/cgi-bin" do
   owner "tile"
   group "tile"
-  mode 0o755
+  mode "755"
 end
 
 template "/srv/tile.openstreetmap.org/cgi-bin/export" do
   source "export.erb"
   owner "tile"
   group "tile"
-  mode 0o755
+  mode "755"
   variables :blocks => blocks, :totp_key => web_passwords["totp_key"]
 end
 
@@ -167,25 +167,25 @@ template "/srv/tile.openstreetmap.org/cgi-bin/debug" do
   source "debug.erb"
   owner "tile"
   group "tile"
-  mode 0o755
+  mode "755"
 end
 
 template "/etc/cron.hourly/export" do
   source "export.cron.erb"
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end
 
 directory "/srv/tile.openstreetmap.org/data" do
   owner "tile"
   group "tile"
-  mode 0o755
+  mode "755"
 end
 
 package "mapnik-utils"
 
-node[:tile][:data].each_value do |data|
+node["tile"]["data"].each_value do |data|
   url = data[:url]
   file = "/srv/tile.openstreetmap.org/data/#{File.basename(url)}"
 
@@ -195,7 +195,7 @@ node[:tile][:data].each_value do |data|
     directory directory do
       owner "tile"
       group "tile"
-      mode 0o755
+      mode "755"
     end
   else
     directory = "/srv/tile.openstreetmap.org/data"
@@ -250,7 +250,7 @@ node[:tile][:data].each_value do |data|
     source url
     owner "tile"
     group "tile"
-    mode 0o644
+    mode "644"
     backup false
     notifies :run, "execute[#{file}]", :immediately
     notifies :restart, "service[renderd]"
@@ -276,10 +276,10 @@ end
 directory "/srv/tile.openstreetmap.org/styles" do
   owner "tile"
   group "tile"
-  mode 0o755
+  mode "755"
 end
 
-node[:tile][:styles].each do |name, details|
+node["tile"]["styles"].each do |name, details|
   style_directory = "/srv/tile.openstreetmap.org/styles/#{name}"
   tile_directory = "/srv/tile.openstreetmap.org/tiles/#{name}"
 
@@ -287,7 +287,7 @@ node[:tile][:styles].each do |name, details|
     source "update-lowzoom.erb"
     owner "root"
     group "root"
-    mode 0o755
+    mode "755"
     variables :style => name
   end
 
@@ -299,21 +299,21 @@ node[:tile][:styles].each do |name, details|
   directory tile_directory do
     owner "tile"
     group "tile"
-    mode 0o755
+    mode "755"
   end
 
   details[:tile_directories].each do |directory|
     directory directory[:name] do
       owner "www-data"
       group "www-data"
-      mode 0o755
+      mode "755"
     end
 
     directory[:min_zoom].upto(directory[:max_zoom]) do |zoom|
       directory "#{directory[:name]}/#{zoom}" do
         owner "www-data"
         group "www-data"
-        mode 0o755
+        mode "755"
       end
 
       link "#{tile_directory}/#{zoom}" do
@@ -328,7 +328,7 @@ node[:tile][:styles].each do |name, details|
     action :create_if_missing
     owner "tile"
     group "tile"
-    mode 0o444
+    mode "444"
   end
 
   git style_directory do
@@ -357,57 +357,57 @@ node[:tile][:styles].each do |name, details|
   end
 end
 
-postgresql_version = node[:tile][:database][:cluster].split("/").first
-postgis_version = node[:tile][:database][:postgis]
+postgresql_version = node["tile"]["database"]["cluster"].split("/").first
+postgis_version = node["tile"]["database"]["postgis"]
 
 package "postgis"
 package "postgresql-#{postgresql_version}-postgis-#{postgis_version}"
 
 postgresql_user "jburgess" do
-  cluster node[:tile][:database][:cluster]
+  cluster node["tile"]["database"]["cluster"]
   superuser true
 end
 
 postgresql_user "tomh" do
-  cluster node[:tile][:database][:cluster]
+  cluster node["tile"]["database"]["cluster"]
   superuser true
 end
 
 postgresql_user "tile" do
-  cluster node[:tile][:database][:cluster]
+  cluster node["tile"]["database"]["cluster"]
 end
 
 postgresql_user "www-data" do
-  cluster node[:tile][:database][:cluster]
+  cluster node["tile"]["database"]["cluster"]
 end
 
 postgresql_database "gis" do
-  cluster node[:tile][:database][:cluster]
+  cluster node["tile"]["database"]["cluster"]
   owner "tile"
 end
 
 postgresql_extension "postgis" do
-  cluster node[:tile][:database][:cluster]
+  cluster node["tile"]["database"]["cluster"]
   database "gis"
 end
 
 postgresql_extension "hstore" do
-  cluster node[:tile][:database][:cluster]
+  cluster node["tile"]["database"]["cluster"]
   database "gis"
 end
 
-%w[geography_columns planet_osm_nodes planet_osm_rels planet_osm_ways raster_columns raster_overviews spatial_ref_sys].each do |table|
+%w(geography_columns planet_osm_nodes planet_osm_rels planet_osm_ways raster_columns raster_overviews spatial_ref_sys).each do |table|
   postgresql_table table do
-    cluster node[:tile][:database][:cluster]
+    cluster node["tile"]["database"]["cluster"]
     database "gis"
     owner "tile"
     permissions "tile" => :all
   end
 end
 
-%w[geometry_columns planet_osm_line planet_osm_point planet_osm_polygon planet_osm_roads].each do |table|
+%w(geometry_columns planet_osm_line planet_osm_point planet_osm_polygon planet_osm_roads).each do |table|
   postgresql_table table do
-    cluster node[:tile][:database][:cluster]
+    cluster node["tile"]["database"]["cluster"]
     database "gis"
     owner "tile"
     permissions "tile" => :all, "www-data" => :select
@@ -415,35 +415,35 @@ end
 end
 
 postgresql_munin "gis" do
-  cluster node[:tile][:database][:cluster]
+  cluster node["tile"]["database"]["cluster"]
   database "gis"
 end
 
-file node[:tile][:node_file] do
+file node["tile"]["node_file"] do
   owner "tile"
   group "www-data"
-  mode 0o660
+  mode "660"
 end
 
 directory "/var/log/tile" do
   owner "tile"
   group "tile"
-  mode 0o755
+  mode "755"
 end
 
-package %w[
+package %w(
   osm2pgsql
   ruby
   osmium-tool
   pyosmium
   python-pyproj
-]
+)
 
 remote_directory "/usr/local/bin" do
   source "bin"
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
   files_owner "root"
   files_group "root"
   files_mode 0o755
@@ -453,26 +453,26 @@ template "/usr/local/bin/expire-tiles" do
   source "expire-tiles.erb"
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end
 
 directory "/var/lib/replicate" do
   owner "tile"
   group "tile"
-  mode 0o755
+  mode "755"
 end
 
 directory "/var/lib/replicate/expire-queue" do
   owner "tile"
   group "www-data"
-  mode 0o775
+  mode "775"
 end
 
 template "/usr/local/bin/replicate" do
   source "replicate.erb"
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end
 
 systemd_service "expire-tiles" do
@@ -522,14 +522,14 @@ template "/etc/logrotate.d/replicate" do
   source "replicate.logrotate.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
 end
 
 template "/usr/local/bin/render-lowzoom" do
   source "render-lowzoom.erb"
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end
 
 systemd_service "render-lowzoom" do
@@ -564,10 +564,10 @@ template "/usr/local/bin/cleanup-tiles" do
   source "cleanup-tiles.erb"
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end
 
-tile_directories = node[:tile][:styles].collect do |_, style|
+tile_directories = node["tile"]["styles"].collect do |_, style|
   style[:tile_directories].collect { |directory| directory[:name] }
 end.flatten.sort.uniq
 
@@ -575,7 +575,7 @@ template "/etc/cron.d/cleanup-tiles" do
   source "cleanup-tiles.cron.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   variables :directories => tile_directories
 end
 

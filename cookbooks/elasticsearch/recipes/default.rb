@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: elasticsearch
+# Cookbook:: elasticsearch
 # Recipe:: default
 #
-# Copyright 2014, OpenStreetMap Foundation
+# Copyright:: 2014, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,16 +17,16 @@
 # limitations under the License.
 #
 
-package %w[
+package %w(
   default-jre-headless
   elasticsearch
-]
+)
 
 template "/etc/elasticsearch/elasticsearch.yml" do
   source "elasticsearch.yml.erb"
   user "root"
   group "root"
-  mode 0o644
+  mode "644"
   notifies :restart, "service[elasticsearch]"
 end
 

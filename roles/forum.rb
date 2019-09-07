@@ -5,13 +5,13 @@ default_attributes(
   :accounts => {
     :users => {
       :lambertus => {
-        :status => :administrator
+        :status => :administrator,
       },
       :forum => {
         :status => :role,
-        :members => [:lambertus, :grant]
-      }
-    }
+        :members => [:lambertus, :grant],
+      },
+    },
   },
   :apache => {
     :mpm => "prefork",
@@ -21,8 +21,8 @@ default_attributes(
       :start_servers => 20,
       :min_spare_servers => 20,
       :max_spare_servers => 50,
-      :max_request_workers => 256
-    }
+      :max_request_workers => 256,
+    },
   }
 )
 

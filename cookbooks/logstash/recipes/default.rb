@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: logstash
+# Cookbook:: logstash
 # Recipe:: default
 #
-# Copyright 2015, OpenStreetMap Foundation
+# Copyright:: 2015, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,16 +21,16 @@ include_recipe "networking"
 
 keys = data_bag_item("logstash", "keys")
 
-package %w[
+package %w(
   openjdk-8-jre-headless
   logstash
-]
+)
 
 cookbook_file "/var/lib/logstash/beats.crt" do
   source "beats.crt"
   user "root"
   group "logstash"
-  mode 0o644
+  mode "644"
   notifies :restart, "service[logstash]"
 end
 
@@ -38,7 +38,7 @@ file "/var/lib/logstash/beats.key" do
   content keys["beats"].join("\n")
   user "root"
   group "logstash"
-  mode 0o640
+  mode "640"
   notifies :restart, "service[logstash]"
 end
 
@@ -46,19 +46,19 @@ template "/etc/logstash/conf.d/chef.conf" do
   source "logstash.conf.erb"
   user "root"
   group "root"
-  mode 0o644
+  mode "644"
   notifies :reload, "service[logstash]"
 end
 
 file "/etc/logrotate.d/logstash" do
-  mode 0o644
+  mode "644"
 end
 
 template "/etc/default/logstash" do
   source "logstash.default.erb"
   user "root"
   group "root"
-  mode 0o644
+  mode "644"
   notifies :restart, "service[logstash]"
 end
 
@@ -71,10 +71,10 @@ template "/etc/cron.daily/expire-logstash" do
   source "expire.erb"
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end
 
-forwarders = search(:node, "recipes:logstash\\:\\:forwarder") # ~FC010
+forwarders = search(:node, 'recipes:logstash\\:\\:forwarder') # ~FC010
 
 forwarders.sort_by { |n| n[:fqdn] }.each do |forwarder|
   forwarder.interfaces(:role => :external) do |interface|

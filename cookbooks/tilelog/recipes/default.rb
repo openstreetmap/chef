@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: tilelog
+# Cookbook:: tilelog
 # Recipe:: default
 #
-# Copyright 2014, OpenStreetMap Foundation
+# Copyright:: 2014, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@
 
 include_recipe "tools"
 
-package %w[
+package %w(
   gcc
   make
   autoconf
@@ -27,11 +27,11 @@ package %w[
   libboost-filesystem-dev
   libboost-system-dev
   libboost-program-options-dev
-]
+)
 
-tilelog_source_directory = node[:tilelog][:source_directory]
-tilelog_input_directory = node[:tilelog][:input_directory]
-tilelog_output_directory = node[:tilelog][:output_directory]
+tilelog_source_directory = node["tilelog"]["source_directory"]
+tilelog_input_directory = node["tilelog"]["input_directory"]
+tilelog_output_directory = node["tilelog"]["output_directory"]
 
 # resources for building the tile analysis binary
 git tilelog_source_directory do
@@ -74,7 +74,7 @@ template "/usr/local/bin/tilelog" do
   source "tilelog.erb"
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
   variables :analyze_bin => "#{tilelog_source_directory}/openstreetmap-tile-analyze",
             :input_dir => tilelog_input_directory,
             :output_dir => tilelog_output_directory
@@ -84,7 +84,7 @@ template "/etc/cron.d/tilelog" do
   source "tilelog.cron.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
 end
 
 # resources related to the output of the analysis and where it
@@ -92,5 +92,5 @@ end
 directory tilelog_output_directory do
   user "www-data"
   group "www-data"
-  mode 0o755
+  mode "755"
 end

@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: donate
+# Cookbook:: donate
 # Recipe:: default
 #
-# Copyright 2016, OpenStreetMap Foundation
+# Copyright:: 2016, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,13 +21,13 @@ include_recipe "apache"
 include_recipe "mysql"
 include_recipe "git"
 
-package %w[
+package %w(
   php
   php-cli
   php-curl
   php-mysql
   php-gd
-]
+)
 
 apache_module "php7.2"
 
@@ -48,7 +48,7 @@ end
 directory "/srv/donate.openstreetmap.org" do
   owner "donate"
   group "donate"
-  mode 0o755
+  mode "755"
 end
 
 git "/srv/donate.openstreetmap.org" do
@@ -61,14 +61,14 @@ end
 directory "/srv/donate.openstreetmap.org/data" do
   owner "donate"
   group "donate"
-  mode 0o755
+  mode "755"
 end
 
 template "/srv/donate.openstreetmap.org/scripts/db-connect.inc.php" do
   source "db-connect.inc.php.erb"
   owner "root"
   group "donate"
-  mode 0o644
+  mode "644"
   variables :passwords => passwords
 end
 
@@ -86,7 +86,7 @@ template "/etc/cron.d/osmf-donate" do
   source "cron.erb"
   owner "root"
   group "root"
-  mode 0o600
+  mode "600"
   variables :passwords => passwords
 end
 
@@ -94,6 +94,6 @@ template "/etc/cron.daily/osmf-donate-backup" do
   source "backup.cron.erb"
   owner "root"
   group "root"
-  mode 0o750
+  mode "750"
   variables :passwords => passwords
 end

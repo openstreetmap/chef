@@ -23,7 +23,7 @@ HTTP_STATUSES = {
   "500" => "Internal Server Error",
   "502" => "Bad Gateway",
   "503" => "Service Unavailable",
-  "509" => "Bandwidth Limit Exceeded"
+  "509" => "Bandwidth Limit Exceeded",
 }.freeze
 
 if ARGV[0] == "config"

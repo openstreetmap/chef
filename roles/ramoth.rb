@@ -10,8 +10,8 @@ default_attributes(
       :serial => "3600605b00599aa401c02b4f53bf5c805",
       :attrs => {
         "queue/scheduler" => "deadline",
-        "queue/nr_requests" => "975"
-      }
+        "queue/nr_requests" => "975",
+      },
     },
     :store_system => {
       :comment => "RAID array mounted on /store/postgresql/system",
@@ -20,22 +20,22 @@ default_attributes(
       :serial => "3600605b0039483a017092ff8fa5a6332",
       :attrs => {
         "queue/scheduler" => "deadline",
-        "queue/nr_requests" => "975"
-      }
-    }
+        "queue/nr_requests" => "975",
+      },
+    },
   },
   :hardware => {
-    :watchdog => "w83627hf_wdt"
+    :watchdog => "w83627hf_wdt",
   },
   :munin => {
     :plugins => {
       :smart_sg0_33 => {
-        :smartctl_exit_status => { :warning => ":8" }
+        :smartctl_exit_status => { :warning => ":8" },
       },
       :smart_sg0_34 => {
-        :smartctl_exit_status => { :warning => ":8" }
-      }
-    }
+        :smartctl_exit_status => { :warning => ":8" },
+      },
+    },
   },
   :networking => {
     :interfaces => {
@@ -45,10 +45,10 @@ default_attributes(
         :family => :inet,
         :address => "10.0.48.5",
         :bond => {
-          :slaves => %w[enp7s0f0 enp7s0f1]
-        }
-      }
-    }
+          :slaves => %w(enp7s0f0 enp7s0f1),
+        },
+      },
+    },
   }
 )
 

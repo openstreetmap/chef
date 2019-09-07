@@ -4,8 +4,8 @@ description "Role applied to backup.openstreetmap.org"
 default_attributes(
   :accounts => {
     :users => {
-      :osmbackup => { :status => :role }
-    }
+      :osmbackup => { :status => :role },
+    },
   },
   :rsyncd => {
     :modules => {
@@ -33,10 +33,10 @@ default_attributes(
           "2605:bc80:3010:700::8cde:a768",       # osuosl
           "2605:bc80:3010:700::8cde:a769",       # osuosl
           "127.0.0.0/8",                         # localhost
-          "::1"                                  # localhost
-        ]
-      }
-    }
+          "::1", # localhost
+        ],
+      },
+    },
   }
 )
 

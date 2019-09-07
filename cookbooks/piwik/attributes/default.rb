@@ -1,5 +1,5 @@
 default[:piwik][:version] = "3.11.0"
-default[:piwik][:plugins] = %w[
+default[:piwik][:plugins] = %w(
   Actions Annotations API BulkTracking Contents CoreAdminHome CoreConsole
   CoreHome CorePluginsAdmin CoreUpdater CoreVisualizations CustomPiwikJs
   CustomVariables Dashboard DevicePlugins DevicesDetection Diagnostics Ecommerce
@@ -10,4 +10,4 @@ default[:piwik][:plugins] = %w[
   Transitions UserCountry UserCountryMap UserId UserLanguage UsersManager
   VisitFrequency VisitorInterest VisitsSummary VisitTime WebsiteMeasurable
   Widgetize
-]
+)

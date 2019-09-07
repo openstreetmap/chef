@@ -6,13 +6,13 @@ default_attributes(
     :users => {
       :alarig => { :status => :administrator },
       :gizmo => { :status => :administrator },
-      :nemo => { :status => :administrator }
-    }
+      :nemo => { :status => :administrator },
+    },
   },
   :hosted_by => "Grifon",
   :location => "Rennes, France",
   :munin => {
-    :allow => ["2a00:5884::8"]
+    :allow => ["2a00:5884::8"],
   },
   :networking => {
     :firewall => {
@@ -25,22 +25,22 @@ default_attributes(
           :dest_ports => "munin",
           :source_ports => "1024:",
           :rate_limit => "-",
-          :connection_limit => "-"
-        }
-      ]
+          :connection_limit => "-",
+        },
+      ],
     },
     :nameservers => ["2a00:5884::7", "8.8.8.8", "8.8.4.4"],
     :roles => {
       :external => {
-        :zone => "grf"
-      }
-    }
+        :zone => "grf",
+      },
+    },
   }
 )
 
 override_attributes(
   :ntp => {
-    :servers => ["0.fr.pool.ntp.org", "1.fr.pool.ntp.org", "europe.pool.ntp.org"]
+    :servers => ["0.fr.pool.ntp.org", "1.fr.pool.ntp.org", "europe.pool.ntp.org"],
   }
 )
 

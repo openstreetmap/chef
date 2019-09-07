@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: dhcpd
+# Cookbook:: dhcpd
 # Recipe:: default
 #
-# Copyright 2011, OpenStreetMap Foundation
+# Copyright:: 2011, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,13 +21,13 @@ include_recipe "networking"
 
 package "isc-dhcp-server"
 
-domain = "#{node[:networking][:roles][:external][:zone]}.openstreetmap.org"
+domain = "#{node['networking']['roles']['external']['zone']}.openstreetmap.org"
 
 template "/etc/dhcp/dhcpd.conf" do
   source "dhcpd.conf.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   variables :domain => domain
 end
 

@@ -3,14 +3,14 @@ description "Master role applied to ironbelly"
 
 default_attributes(
   :apt => {
-    :sources => ["ubuntugis-unstable"]
+    :sources => ["ubuntugis-unstable"],
   },
   :bind => {
-    :clients => "equinix"
+    :clients => "equinix",
   },
   :dhcpd => {
     :first_address => "10.0.63.1",
-    :last_address => "10.0.63.254"
+    :last_address => "10.0.63.254",
   },
   :elasticsearch => {
     :cluster => {
@@ -20,15 +20,15 @@ default_attributes(
             :watermark => {
               :low => "95%",
               :high => "98%",
-              :flood_stage => "99%"
-            }
-          }
-        }
-      }
+              :flood_stage => "99%",
+            },
+          },
+        },
+      },
     },
     :path => {
-      :data => "/store/elasticsearch"
-    }
+      :data => "/store/elasticsearch",
+    },
   },
   :networking => {
     :interfaces => {
@@ -38,22 +38,22 @@ default_attributes(
         :family => :inet,
         :address => "10.0.48.10",
         :bond => {
-          :slaves => %w[eth0 eth1]
-        }
+          :slaves => %w(eth0 eth1),
+        },
       },
       :external_ipv4 => {
         :interface => "bond0.2",
         :role => :external,
         :family => :inet,
-        :address => "130.117.76.10"
+        :address => "130.117.76.10",
       },
       :external_ipv6 => {
         :interface => "bond0.2",
         :role => :external,
         :family => :inet6,
-        :address => "2001:978:2:2C::172:A"
-      }
-    }
+        :address => "2001:978:2:2C::172:A",
+      },
+    },
   },
   :openvpn => {
     :address => "10.0.16.2",
@@ -62,28 +62,28 @@ default_attributes(
         :port => "1194",
         :mode => "server",
         :peer => {
-          :host => "ridley.openstreetmap.org"
-        }
+          :host => "ridley.openstreetmap.org",
+        },
       },
       :aws2ic => {
         :port => "1195",
         :mode => "server",
         :peer => {
-          :host => "fafnir.openstreetmap.org"
-        }
+          :host => "fafnir.openstreetmap.org",
+        },
       },
       :ic2bm => {
         :port => "1196",
         :mode => "client",
         :peer => {
           :host => "grisu.openstreetmap.org",
-          :port => "1194"
-        }
-      }
-    }
+          :port => "1194",
+        },
+      },
+    },
   },
   :planet => {
-    :replication => "enabled"
+    :replication => "enabled",
   },
   :rsyncd => {
     :modules => {
@@ -99,8 +99,8 @@ default_attributes(
         :hosts_allow => [
           "212.110.172.32",                      # shenron
           "2001:41c9:1:400::32",                 # shenron
-          "212.159.112.221"                      # grant
-        ]
+          "212.159.112.221", # grant
+        ],
       },
       :logs => {
         :comment => "Log files",
@@ -120,11 +120,11 @@ default_attributes(
           "89.16.162.16/28",          # bytemark external
           "2001:41c9:2:d6::/64",      # bytemark external
           "127.0.0.0/8",              # localhost
-          "::1"                       # localhost
+          "::1", # localhost
         ],
-        :nodes_allow => "roles:tilecache"
-      }
-    }
+        :nodes_allow => "roles:tilecache",
+      },
+    },
   }
 )
 

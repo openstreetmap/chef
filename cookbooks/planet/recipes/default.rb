@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: planet
+# Cookbook:: planet
 # Recipe:: default
 #
-# Copyright 2011, OpenStreetMap Foundation
+# Copyright:: 2011, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -45,17 +45,17 @@ remote_directory "/store/planet#cgi" do
   source "cgi"
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
   files_owner "root"
   files_group "root"
   files_mode 0o755
 end
 
-remote_directory node[:planet][:dump][:xml_history_directory] do
+remote_directory node["planet"]["dump"]["xml_history_directory"] do
   source "history_cgi"
   owner "www-data"
   group "planet"
-  mode 0o775
+  mode "775"
   files_owner "root"
   files_group "root"
   files_mode 0o755
@@ -65,7 +65,7 @@ remote_directory "/store/planet/cc-by-sa/full-experimental" do
   source "ccbysa_history_cgi"
   owner "www-data"
   group "planet"
-  mode 0o775
+  mode "775"
   files_owner "root"
   files_group "root"
   files_mode 0o755
@@ -73,24 +73,24 @@ end
 
 [:xml_directory, :xml_history_directory,
  :pbf_directory, :pbf_history_directory].each do |dir|
-  directory node[:planet][:dump][dir] do
+  directory node["planet"]["dump"][dir] do
     owner "www-data"
     group "planet"
-    mode 0o775
+    mode "775"
   end
 end
 
 directory "/store/planet/notes" do
   owner "www-data"
   group "planet"
-  mode 0o775
+  mode "775"
 end
 
 template "/usr/local/bin/apache-latest-planet-filename" do
   source "apache-latest-planet-filename.erb"
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
   notifies :restart, "service[apache2]"
 end
 
@@ -111,7 +111,7 @@ template "/etc/logrotate.d/apache2" do
   source "logrotate.apache.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
 end
 
 munin_plugin "planet_age"
@@ -120,12 +120,12 @@ template "/usr/local/bin/old-planet-file-cleanup" do
   source "old-planet-file-cleanup.erb"
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end
 
 template "/etc/cron.d/old-planet-file-cleanup" do
   source "old-planet-file-cleanup.cron.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
 end

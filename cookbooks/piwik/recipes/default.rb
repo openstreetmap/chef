@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: piwik
+# Cookbook:: piwik
 # Recipe:: default
 #
-# Copyright 2011, OpenStreetMap Foundation
+# Copyright:: 2011, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@ apache_module "expires"
 apache_module "php7.2"
 apache_module "rewrite"
 
-version = node[:piwik][:version]
+version = node["piwik"]["version"]
 
 directory "/opt/piwik-#{version}" do
   owner "root"
@@ -79,7 +79,7 @@ template "/opt/piwik-#{version}/piwik/config/config.ini.php" do
   mode "0644"
   variables :passwords => passwords,
             :directory => "/opt/piwik-#{version}/piwik",
-            :plugins => node[:piwik][:plugins]
+            :plugins => node["piwik"]["plugins"]
 end
 
 directory "/opt/piwik-#{version}/piwik/tmp" do

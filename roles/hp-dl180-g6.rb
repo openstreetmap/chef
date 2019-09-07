@@ -8,10 +8,10 @@ default_attributes(
         :fan1 => { :warning => "90", :critical => "100" },
         :fan2 => { :warning => "90", :critical => "100" },
         :fan3 => { :warning => "90", :critical => "100" },
-        :fan4 => { :warning => "90", :critical => "100" }
+        :fan4 => { :warning => "90", :critical => "100" },
       },
       :hpasmcli2_temp => {
-        :temp3 => { :warning => "80.0", :critical => "85" }
+        :temp3 => { :warning => "80.0", :critical => "85" },
       },
       :ipmi_temp => {
         :Temp1 => { :label => "Air Inlet" },
@@ -37,8 +37,8 @@ default_attributes(
         :Temp28 => { :warning => ":", :label => "Drive Backplane 3" },
         :Temp29 => { :warning => ":", :label => "Drive Backplane 4" },
         :Temp30 => { :warning => ":", :label => "Drive Backplane 5" },
-        :Temp31 => { :warning => ":", :label => "Drive Backplane 6" }
-      }
-    }
+        :Temp31 => { :warning => ":", :label => "Drive Backplane 6" },
+      },
+    },
   }
 )

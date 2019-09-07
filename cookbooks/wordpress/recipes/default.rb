@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: wordpress
+# Cookbook:: wordpress
 # Recipe:: default
 #
-# Copyright 2013, OpenStreetMap Foundation
+# Copyright:: 2013, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,11 +20,11 @@
 include_recipe "apache"
 include_recipe "mysql"
 
-package %w[
+package %w(
   subversion
   php
   php-mysql
-]
+)
 
 apache_module "php7.2"
 apache_module "rewrite"

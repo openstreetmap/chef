@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: web
+# Cookbook:: web
 # Recipe:: base
 #
-# Copyright 2011, OpenStreetMap Foundation
+# Copyright:: 2011, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,34 +17,34 @@
 # limitations under the License.
 #
 
-node.default[:nfs]["/store/rails"] = {
-  :host => node[:web][:fileserver],
-  :path => "/store/rails"
+node.default["nfs"]["/store/rails"] = {
+  :host => node["web"]["fileserver"],
+  :path => "/store/rails",
 }
 
 include_recipe "nfs"
 
-directory node[:web][:base_directory] do
+directory node["web"]["base_directory"] do
   group "rails"
-  mode 0o2775
+  mode "2775"
 end
 
-systemd_tmpfile node[:web][:pid_directory] do
+systemd_tmpfile node["web"]["pid_directory"] do
   type "d"
   owner "rails"
   group "rails"
   mode "0755"
 end
 
-directory node[:web][:log_directory] do
+directory node["web"]["log_directory"] do
   owner "rails"
   group "rails"
-  mode 0o775
+  mode "775"
 end
 
 template "/etc/logrotate.d/web" do
   source "logrotate.web.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
 end

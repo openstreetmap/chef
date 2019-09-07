@@ -7,7 +7,7 @@ files = [
     :title => "Planet Dump",
     :frequency => 7 * 24 * 60 * 60,
     :warning => 1.05,
-    :critical => 1.1
+    :critical => 1.1,
   },
   {
     :label => "day",
@@ -15,7 +15,7 @@ files = [
     :title => "Daily Replication",
     :frequency => 24 * 60 * 60,
     :warning => 1.05,
-    :critical => 1.1
+    :critical => 1.1,
   },
   {
     :label => "hour",
@@ -23,7 +23,7 @@ files = [
     :title => "Hourly Replication",
     :frequency => 60 * 60,
     :warning => 1.05,
-    :critical => 1.1
+    :critical => 1.1,
   },
   {
     :label => "minute",
@@ -31,8 +31,8 @@ files = [
     :title => "Minutely Replication",
     :frequency => 60,
     :warning => 5,
-    :critical => 10
-  }
+    :critical => 10,
+  },
 ]
 
 if ARGV[0] == "config"

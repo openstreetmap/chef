@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: postgresql
+# Cookbook:: postgresql
 # Resource:: postgresql_munin
 #
-# Copyright 2015, OpenStreetMap Foundation
+# Copyright:: 2015, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,16 +19,16 @@
 
 default_action :create
 
-property :munin, :kind_of => String, :name_attribute => true
+property :munin, :kind_of => String, :name_property => true
 property :cluster, :kind_of => String, :required => true
 property :database, :kind_of => String, :required => true
 
 action :create do
-  cluster = node[:postgresql][:clusters] && node[:postgresql][:clusters][new_resource.cluster]
+  cluster = node["postgresql"]["clusters"] && node["postgresql"]["clusters"][new_resource.cluster]
   database = new_resource.database
 
   if cluster
-    %w[cache connections locks querylength scans size transactions tuples].each do |plugin|
+    %w(cache connections locks querylength scans size transactions tuples).each do |plugin|
       munin_plugin "postgres_#{plugin}_#{database}:#{suffix}" do
         target "postgres_#{plugin}_"
         conf "munin.erb"
@@ -45,7 +45,7 @@ end
 action :delete do
   database = new_resource.database
 
-  %w[cache connections locks querylength scans size transactions tuples].each do |plugin|
+  %w(cache connections locks querylength scans size transactions tuples).each do |plugin|
     munin_plugin "postgres_#{plugin}_#{database}:#{suffix}" do
       action :delete
       restart_munin false

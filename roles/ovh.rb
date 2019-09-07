@@ -6,19 +6,19 @@ default_attributes(
   :location => "Roubaix, France",
   :networking => {
     :nameservers => [
-      "213.186.33.99"
+      "213.186.33.99",
     ],
     :roles => {
       :external => {
-        :zone => "ovh"
-      }
-    }
+        :zone => "ovh",
+      },
+    },
   }
 )
 
 override_attributes(
   :ntp => {
-    :servers => ["0.fr.pool.ntp.org", "1.fr.pool.ntp.org", "europe.pool.ntp.org"]
+    :servers => ["0.fr.pool.ntp.org", "1.fr.pool.ntp.org", "europe.pool.ntp.org"],
   }
 )
 

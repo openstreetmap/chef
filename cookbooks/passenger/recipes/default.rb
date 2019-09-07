@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: passenger
+# Cookbook:: passenger
 # Recipe:: default
 #
-# Copyright 2014, OpenStreetMap Foundation
+# Copyright:: 2014, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,23 +19,23 @@
 
 include_recipe "apache"
 
-package "ruby#{node[:passenger][:ruby_version]}"
-package "ruby#{node[:passenger][:ruby_version]}-dev"
+package "ruby#{node['passenger']['ruby_version']}"
+package "ruby#{node['passenger']['ruby_version']}-dev"
 
-if node[:passenger][:ruby_version].to_f < 1.9
-  package "rubygems#{node[:passenger][:ruby_version]}"
-  package "irb#{node[:passenger][:ruby_version]}"
+if node["passenger"]["ruby_version"].to_f < 1.9
+  package "rubygems#{node['passenger']['ruby_version']}"
+  package "irb#{node['passenger']['ruby_version']}"
 end
 
 template "/usr/local/bin/passenger-ruby" do
   source "ruby.erb"
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
   notifies :reload, "service[apache2]"
 end
 
-systemd_tmpfile node[:passenger][:instance_registry_dir] do
+systemd_tmpfile node["passenger"]["instance_registry_dir"] do
   type "d"
   owner "root"
   group "root"

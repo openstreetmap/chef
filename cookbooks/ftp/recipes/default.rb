@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: FTP
+# Cookbook:: FTP
 # Recipe:: default
 #
-# Copyright 2018, OpenStreetMap Foundation
+# Copyright:: 2018, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,23 +17,23 @@
 # limitations under the License.
 #
 
-package %w[
+package %w(
   vsftpd
   libpam-pwdfile
-]
+)
 
 template "/etc/vsftpd.conf" do
   source "vsftpd.conf.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
 end
 
 template "/etc/pam.d/vsftpd" do
   source "pam-vsftpd.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
 end
 
 service "vsftpd" do

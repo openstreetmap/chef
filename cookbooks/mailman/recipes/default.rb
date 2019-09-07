@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: mailman
+# Cookbook:: mailman
 # Recipe:: default
 #
-# Copyright 2011, OpenStreetMap Foundation
+# Copyright:: 2011, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ template "/etc/mailman/mm_cfg.py" do
   source "mm_cfg.py.erb"
   user "root"
   group "root"
-  mode 0o644
+  mode "644"
   notifies :restart, "service[mailman]"
 end
 
@@ -56,5 +56,5 @@ template "/etc/cron.daily/lists-backup" do
   source "backup.cron.erb"
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end

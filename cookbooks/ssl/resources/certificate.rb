@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: ssl
+# Cookbook:: ssl
 # Resource:: ssl_certificate
 #
-# Copyright 2017, OpenStreetMap Foundation
+# Copyright:: 2017, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,8 +23,8 @@ property :certificate, String, :name_property => true
 property :domains, [String, Array], :required => true
 
 action :create do
-  node.default[:letsencrypt][:certificates][new_resource.certificate] = {
-    :domains => Array(new_resource.domains)
+  node.default["letsencrypt"]["certificates"][new_resource.certificate] = {
+    :domains => Array(new_resource.domains),
   }
 
   if letsencrypt
@@ -36,7 +36,7 @@ action :create do
     file "/etc/ssl/certs/#{new_resource.certificate}.pem" do
       owner "root"
       group "root"
-      mode 0o444
+      mode "444"
       content certificate
       backup false
       manage_symlink_source false
@@ -46,7 +46,7 @@ action :create do
     file "/etc/ssl/private/#{new_resource.certificate}.key" do
       owner "root"
       group "ssl-cert"
-      mode 0o440
+      mode "440"
       content key
       backup false
       manage_symlink_source false
@@ -59,13 +59,13 @@ action :create do
       key_file "/etc/ssl/private/#{new_resource.certificate}.key"
       owner "root"
       group "ssl-cert"
-      mode 0o640
+      mode "640"
       org "OpenStreetMap"
       email "operations@osmfoundation.org"
       common_name new_resource.domains.first
       subject_alt_name alt_names
-      extensions "keyUsage" => { "values" => %w[digitalSignature keyEncipherment], "critical" => true },
-                 "extendedKeyUsage" => { "values" => %w[serverAuth clientAuth], "critical" => true }
+      extensions "keyUsage" => { "values" => %w(digitalSignature keyEncipherment), "critical" => true },
+                 "extendedKeyUsage" => { "values" => %w(serverAuth clientAuth), "critical" => true }
     end
   end
 end

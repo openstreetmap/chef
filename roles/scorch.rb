@@ -3,7 +3,7 @@ description "Master role applied to scorch"
 
 default_attributes(
   :apt => {
-    :sources => ["postgresql"]
+    :sources => ["postgresql"],
   },
   :devices => {
     :ssd_system => {
@@ -14,14 +14,14 @@ default_attributes(
       :attrs => {
         "queue/scheduler" => "noop",
         "queue/nr_requests" => "256",
-        "queue/read_ahead_kb" => "2048"
-      }
-    }
+        "queue/read_ahead_kb" => "2048",
+      },
+    },
   },
   :hardware => {
     :mcelog => {
-      :enabled => false
-    }
+      :enabled => false,
+    },
   },
   :networking => {
     :interfaces => {
@@ -31,7 +31,7 @@ default_attributes(
         :family => :inet,
         :address => "176.31.235.79",
         :prefix => "24",
-        :gateway => "176.31.235.254"
+        :gateway => "176.31.235.254",
       },
       :external_ipv6 => {
         :interface => "eth0",
@@ -39,9 +39,9 @@ default_attributes(
         :family => :inet6,
         :address => "2001:41d0:2:fc4f::1",
         :prefix => "64",
-        :gateway => "2001:41d0:2:fcff:ff:ff:ff:ff"
-      }
-    }
+        :gateway => "2001:41d0:2:fcff:ff:ff:ff:ff",
+      },
+    },
   },
   :postgresql => {
     :versions => ["10"],
@@ -49,32 +49,32 @@ default_attributes(
       :defaults => {
         :shared_buffers => "8GB",
         :maintenance_work_mem => "7144MB",
-        :effective_cache_size => "16GB"
-      }
-    }
+        :effective_cache_size => "16GB",
+      },
+    },
   },
   :sysctl => {
     :postgres => {
       :comment => "Increase shared memory for postgres",
       :parameters => {
         "kernel.shmmax" => 9 * 1024 * 1024 * 1024,
-        "kernel.shmall" => 9 * 1024 * 1024 * 1024 / 4096
-      }
-    }
+        "kernel.shmall" => 9 * 1024 * 1024 * 1024 / 4096,
+      },
+    },
   },
   :tile => {
     :database => {
       :cluster => "10/main",
-      :postgis => "2.4"
+      :postgis => "2.4",
     },
     :node_file => "/store/database/nodes",
     :styles => {
       :default => {
         :tile_directories => [
-          { :name => "/store/tiles/default", :min_zoom => 0, :max_zoom => 19 }
-        ]
-      }
-    }
+          { :name => "/store/tiles/default", :min_zoom => 0, :max_zoom => 19 },
+        ],
+      },
+    },
   }
 )
 

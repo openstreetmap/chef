@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: web
+# Cookbook:: web
 # Recipe:: backend
 #
-# Copyright 2011, OpenStreetMap Foundation
+# Copyright:: 2011, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -36,11 +36,11 @@ end
 
 apache_site "www.openstreetmap.org" do
   template "apache.backend.erb"
-  variables :status => node[:web][:status],
+  variables :status => node["web"]["status"],
             :secret_key_base => web_passwords["secret_key_base"]
 end
 
-node.normal[:memcached][:ip_address] = node.internal_ipaddress
+node.normal["memcached"][:ip_address] = node.internal_ipaddress
 
 service "rails-jobs@storage" do
   action [:enable, :start]
@@ -49,7 +49,7 @@ service "rails-jobs@storage" do
   subscribes :restart, "systemd_service[rails-jobs]"
 end
 
-if node[:web][:primary_cluster]
+if node["web"]["primary_cluster"]
   service "rails-jobs@traces" do
     action [:enable, :start]
     supports :restart => true

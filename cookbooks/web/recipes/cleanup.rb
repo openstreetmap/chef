@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: web
+# Cookbook:: web
 # Recipe:: cleanup
 #
-# Copyright 2013, OpenStreetMap Foundation
+# Copyright:: 2013, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,13 +19,13 @@
 
 include_recipe "web::base"
 
-ruby = "ruby#{node[:passenger][:ruby_version]}"
-rails_directory = "#{node[:web][:base_directory]}/rails"
+ruby = "ruby#{node['passenger']['ruby_version']}"
+rails_directory = "#{node['web']['base_directory']}/rails"
 
 template "/etc/cron.daily/web-cleanup" do
   source "cleanup.cron.erb"
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
   variables :ruby => ruby, :directory => rails_directory
 end

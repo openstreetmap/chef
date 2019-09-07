@@ -4,22 +4,22 @@ description "Role applied to all servers at CARNet"
 default_attributes(
   :accounts => {
     :users => {
-      :hbogner => { :status => :administrator }
-    }
+      :hbogner => { :status => :administrator },
+    },
   },
   :hosted_by => "CARNet",
   :networking => {
     :roles => {
       :external => {
-        :zone => "cnt"
-      }
-    }
+        :zone => "cnt",
+      },
+    },
   }
 )
 
 override_attributes(
   :ntp => {
-    :servers => ["0.hr.pool.ntp.org", "1.hr.pool.ntp.org", "europe.pool.ntp.org"]
+    :servers => ["0.hr.pool.ntp.org", "1.hr.pool.ntp.org", "europe.pool.ntp.org"],
   }
 )
 

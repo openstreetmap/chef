@@ -6,17 +6,17 @@ default_attributes(
     :mpm => "prefork",
     :prefork => {
       :server_limit => 450,
-      :max_request_workers => 450
-    }
+      :max_request_workers => 450,
+    },
   },
   :mysql => {
     :settings => {
       :mysqld => {
         :innodb_buffer_pool_instances => "8",
         :innodb_buffer_pool_size => "16GB",
-        :innodb_flush_log_at_trx_commit => "2"
-      }
-    }
+        :innodb_flush_log_at_trx_commit => "2",
+      },
+    },
   }
 )
 

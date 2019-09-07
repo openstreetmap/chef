@@ -10,7 +10,7 @@ default_attributes(
         :family => :inet,
         :address => "91.224.148.166",
         :prefix => "32",
-        :gateway => "89.234.156.230"
+        :gateway => "89.234.156.230",
       },
       :external_ipv6 => {
         :interface => "ens3",
@@ -18,13 +18,13 @@ default_attributes(
         :family => :inet6,
         :address => "2a03:7220:8080:a600::1",
         :prefix => "56",
-        :gateway => "fe80::1"
-      }
-    }
+        :gateway => "fe80::1",
+      },
+    },
   },
   :squid => {
     :cache_mem => "3100 MB",
-    :cache_dir => "coss /store/squid/coss-01 80000 block-size=8192 max-size=262144 membufs=80"
+    :cache_dir => "coss /store/squid/coss-01 80000 block-size=8192 max-size=262144 membufs=80",
   },
   :tilecache => {
     :tile_parent => "france.render.openstreetmap.org",
@@ -35,8 +35,8 @@ default_attributes(
       "norbert.openstreetmap.org",
       "ladon.openstreetmap.org",
       "culebre.openstreetmap.org",
-      "gorynych.openstreetmap.org"
-    ]
+      "gorynych.openstreetmap.org",
+    ],
   }
 )
 

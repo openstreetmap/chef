@@ -6,37 +6,37 @@ default_attributes(
     :users => {
       :rails => {
         :status => :role,
-        :members => [:tomh, :grant]
-      }
-    }
+        :members => [:tomh, :grant],
+      },
+    },
   },
   :apt => {
     :unattended_upgrades => {
-      :enable => false
-    }
+      :enable => false,
+    },
   },
   :munin => {
     :plugins => {
       :postgres_connections_openstreetmap => {
         :waiting => {
           :warning => 10,
-          :critical => 20
-        }
+          :critical => 20,
+        },
       },
       :postgres_locks_openstreetmap => {
         :accesssharelock => {
           :warning => 900,
-          :critical => 1000
+          :critical => 1000,
         },
         :rowexclusivelock => {
           :warning => 250,
-          :critical => 300
-        }
-      }
-    }
+          :critical => 300,
+        },
+      },
+    },
   },
   :nfs => {
-    "/store/rails" => { :host => "ironbelly", :path => "/store/rails" }
+    "/store/rails" => { :host => "ironbelly", :path => "/store/rails" },
   },
   :postgresql => {
     :versions => ["9.5"],
@@ -53,18 +53,18 @@ default_attributes(
         :late_authentication_rules => [
           { :address => "10.0.16.0/20" },
           { :address => "10.0.32.0/20" },
-          { :address => "10.0.48.0/20" }
-        ]
-      }
-    }
+          { :address => "10.0.48.0/20" },
+        ],
+      },
+    },
   },
   :sysctl => {
     :swappiness => {
       :comment => "Only swap in an emergency",
       :parameters => {
-        "vm.swappiness" => 0
-      }
-    }
+        "vm.swappiness" => 0,
+      },
+    },
   }
 )
 

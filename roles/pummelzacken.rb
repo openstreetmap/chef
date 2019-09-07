@@ -8,15 +8,15 @@ default_attributes(
         :interface => "em1.2801",
         :role => :internal,
         :family => :inet,
-        :address => "10.0.0.20"
+        :address => "10.0.0.20",
       },
       :external_ipv4 => {
         :interface => "em1.2800",
         :role => :external,
         :family => :inet,
-        :address => "193.60.236.18"
-      }
-    }
+        :address => "193.60.236.18",
+      },
+    },
   },
   :postgresql => {
     :versions => ["10"],
@@ -27,13 +27,13 @@ default_attributes(
         :maintenance_work_mem => "10GB",
         :random_page_cost => "1.5",
         :effective_cache_size => "60GB",
-        :fsync => "on"
-      }
-    }
+        :fsync => "on",
+      },
+    },
   },
   :nominatim => {
     :state => "standalone",
-    :dbadmins => %w[lonvia tomh],
+    :dbadmins => %w(lonvia tomh),
     :dbcluster => "10/main",
     :postgis => "2.4",
     :enable_backup => true,
@@ -48,13 +48,13 @@ default_attributes(
       "dsearch" => "/ssd/tablespaces/dsearch",
       "isearch" => "/ssd/tablespaces/isearch",
       "daux" => "/data/tablespaces/daux",
-      "iaux" => "/data/tablespaces/iaux"
+      "iaux" => "/data/tablespaces/iaux",
     },
     :fpm_pools => {
       :www => {
-        :max_children => "40"
-      }
-    }
+        :max_children => "40",
+      },
+    },
   }
 )
 

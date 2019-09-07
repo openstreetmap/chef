@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: osqa
+# Cookbook:: osqa
 # Recipe:: default
 #
-# Copyright 2011, OpenStreetMap Foundation
+# Copyright:: 2011, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -73,17 +73,17 @@ end
 apache_module "rewrite"
 apache_module "wsgi"
 
-node[:osqa][:sites].each do |site|
+node["osqa"]["sites"].each do |site|
   site_name = site[:name]
   site_aliases = site[:aliases] || []
   directory = site[:directory] || "/srv/#{site_name}"
-  site_user = site[:user] || node[:osqa][:user]
+  site_user = site[:user] || node["osqa"]["user"]
   site_user = Etc.getpwuid(site_user).name if site_user.is_a?(Integer)
-  site_group = site[:group] || node[:osqa][:group] || Etc.getpwnam(site_user).gid
+  site_group = site[:group] || node["osqa"]["group"] || Etc.getpwnam(site_user).gid
   site_group = Etc.getgrgid(site_group).name if site_group.is_a?(Integer)
-  database_name = site[:database_name] || node[:osqa][:database_name]
-  database_user = site[:database_user] || node[:osqa][:database_user]
-  database_password = site[:database_user] || node[:osqa][:database_password]
+  database_name = site[:database_name] || node["osqa"]["database_name"]
+  database_user = site[:database_user] || node["osqa"]["database_user"]
+  database_password = site[:database_user] || node["osqa"]["database_password"]
   backup_name = site[:backup]
 
   ssl_certificate site_name do
@@ -100,7 +100,7 @@ node[:osqa][:sites].each do |site|
   directory directory do
     owner site_user
     group site_group
-    mode 0o755
+    mode "755"
   end
 
   execute "osqa-migrate" do
@@ -124,14 +124,14 @@ node[:osqa][:sites].each do |site|
   directory "#{directory}/upfiles" do
     user site_user
     group site_group
-    mode 0o755
+    mode "755"
   end
 
   template "#{directory}/osqa/osqa.wsgi" do
     source "osqa.wsgi.erb"
     owner site_user
     group site_group
-    mode 0o644
+    mode "644"
     variables :directory => directory
     notifies :reload, "service[apache2]"
   end
@@ -153,7 +153,7 @@ node[:osqa][:sites].each do |site|
   file "#{directory}/osqa/settings_local.py" do
     owner site_user
     group site_group
-    mode 0o644
+    mode "644"
     content settings
     notifies :reload, "service[apache2]"
   end
@@ -162,7 +162,7 @@ node[:osqa][:sites].each do |site|
     source "backup.cron.erb"
     owner "root"
     group "root"
-    mode 0o755
+    mode "755"
     variables :name => backup_name, :directory => directory, :user => site_user, :database => database_name
   end
 end

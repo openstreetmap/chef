@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: otrs
+# Cookbook:: otrs
 # Recipe:: default
 #
-# Copyright 2012, OpenStreetMap Foundation
+# Copyright:: 2012, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -40,14 +40,14 @@ package "libtemplate-perl"
 
 apache_module "headers"
 
-version = node[:otrs][:version]
-user = node[:otrs][:user]
-database_cluster = node[:otrs][:database_cluster]
-database_name = node[:otrs][:database_name]
-database_user = node[:otrs][:database_user]
-database_password = passwords[node[:otrs][:database_password]]
-site = node[:otrs][:site]
-site_aliases = node[:otrs][:site_aliases] || []
+version = node["otrs"]["version"]
+user = node["otrs"]["user"]
+database_cluster = node["otrs"]["database_cluster"]
+database_name = node["otrs"]["database_name"]
+database_user = node["otrs"]["database_user"]
+database_password = passwords[node["otrs"]["database_password"]]
+site = node["otrs"]["site"]
+site_aliases = node["otrs"]["site_aliases"] || []
 
 postgresql_user database_user do
   cluster database_cluster
@@ -77,10 +77,10 @@ config = edit_file "/opt/otrs-#{version}/Kernel/Config.pm.dist" do |line|
   line.gsub!(/^( *)\$Self->{DatabaseUser} = 'otrs'/, "\\1$Self->{DatabaseUser} = '#{database_user}'")
   line.gsub!(/^( *)\$Self->{DatabasePw} = 'some-pass'/, "\\1$Self->{DatabasePw} = '#{database_password}'")
   line.gsub!(/^( *)\$Self->{Database} = 'otrs'/, "\\1$Self->{Database} = '#{database_name}'")
-  line.gsub!(/^( *\$Self->{DatabaseDSN} = "DBI:mysql:)/, "#\\1")
-  line.gsub!(/^#( *\$Self->{DatabaseDSN} = "DBI:Pg:.*;host=)/, "\\1")
-  line.gsub!(/^( *)# (\$Self->{CheckMXRecord} = 0)/, "\\1\\2")
-  line.gsub!(/^( *)# \$Self->{SessionUseCookie} = 0/, "\\1$Self->{SessionCheckRemoteIP} = 0")
+  line.gsub!(/^( *\$Self->{DatabaseDSN} = "DBI:mysql:)/, '#\\1')
+  line.gsub!(/^#( *\$Self->{DatabaseDSN} = "DBI:Pg:.*;host=)/, '\\1')
+  line.gsub!(/^( *)# (\$Self->{CheckMXRecord} = 0)/, '\\1\\2')
+  line.gsub!(/^( *)# \$Self->{SessionUseCookie} = 0/, '\\1$Self->{SessionCheckRemoteIP} = 0')
 
   line
 end
@@ -88,7 +88,7 @@ end
 file "/opt/otrs-#{version}/Kernel/Config.pm" do
   owner user
   group "www-data"
-  mode 0o664
+  mode "664"
   content config
 end
 
@@ -125,7 +125,7 @@ Dir.glob("/opt/otrs/var/cron/*.dist") do |distname|
   file name do
     owner "otrs"
     group "www-data"
-    mode 0o664
+    mode "664"
     content IO.read(distname)
     notifies :run, "execute[/opt/otrs/bin/Cron.sh]"
   end
@@ -145,12 +145,12 @@ template "/etc/sudoers.d/otrs" do
   source "sudoers.erb"
   owner "root"
   group "root"
-  mode 0o440
+  mode "440"
 end
 
 template "/etc/cron.daily/otrs-backup" do
   source "backup.cron.erb"
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end

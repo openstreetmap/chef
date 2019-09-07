@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: munin
+# Cookbook:: munin
 # Recipe:: server
 #
-# Copyright 2010, OpenStreetMap Foundation
+# Copyright:: 2010, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -27,13 +27,13 @@ template "/etc/default/rrdcached" do
   source "rrdcached.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
 end
 
 directory "/var/lib/munin/rrdcached" do
   owner "munin"
   group "munin"
-  mode 0o755
+  mode "755"
 end
 
 service "rrdcached" do
@@ -45,9 +45,9 @@ munin_plugin "rrdcached"
 
 expiry_time = 14 * 86400
 
-clients = search(:node, "recipes:munin\\:\\:default").sort_by(&:name) # ~FC010
-frontends = search(:node, "recipes:web\\:\\:frontend").reject { |n| Time.now - Time.at(n[:ohai_time]) > expiry_time }.map(&:name).sort # ~FC010
-backends = search(:node, "recipes:web\\:\\:backend").reject { |n| Time.now - Time.at(n[:ohai_time]) > expiry_time }.map(&:name).sort # ~FC010
+clients = search(:node, 'recipes:munin\\:\\:default').sort_by(&:name) # ~FC010
+frontends = search(:node, 'recipes:web\\:\\:frontend').reject { |n| Time.now - Time.at(n[:ohai_time]) > expiry_time }.map(&:name).sort # ~FC010
+backends = search(:node, 'recipes:web\\:\\:backend').reject { |n| Time.now - Time.at(n[:ohai_time]) > expiry_time }.map(&:name).sort # ~FC010
 tilecaches = search(:node, "roles:tilecache").reject { |n| Time.now - Time.at(n[:ohai_time]) > expiry_time }.sort_by(&:name).map do |n|
   { :name => n.name.split(".").first, :interface => n.interfaces(:role => :external).first[:interface].tr(".", "_") }
 end
@@ -62,7 +62,7 @@ template "/etc/munin/munin.conf" do
   source "munin.conf.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   variables :expiry_time => expiry_time, :clients => clients,
             :frontends => frontends, :backends => backends,
             :tilecaches => tilecaches, :renderers => renderers,
@@ -77,7 +77,7 @@ remote_directory "/srv/munin.openstreetmap.org" do
   source "www"
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
   files_owner "root"
   files_group "root"
   files_mode 0o644
@@ -87,7 +87,7 @@ end
 directory "/srv/munin.openstreetmap.org/dumps" do
   owner "www-data"
   group "www-data"
-  mode 0o755
+  mode "755"
 end
 
 ssl_certificate "munin.openstreetmap.org" do
@@ -103,7 +103,7 @@ template "/etc/cron.daily/munin-backup" do
   source "backup.cron.erb"
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end
 
 munin_plugin "munin_stats"

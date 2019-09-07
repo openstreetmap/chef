@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: blogs
+# Cookbook:: blogs
 # Recipe:: default
 #
-# Copyright 2016, OpenStreetMap Foundation
+# Copyright:: 2016, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,20 +20,20 @@
 include_recipe "apache"
 include_recipe "git"
 
-package %w[
+package %w(
   ruby
   ruby-dev
   make
   gcc
   libsqlite3-dev
-]
+)
 
 gem_package "bundler"
 
 directory "/srv/blogs.openstreetmap.org" do
   owner "blogs"
   group "blogs"
-  mode 0o755
+  mode "755"
 end
 
 git "/srv/blogs.openstreetmap.org" do

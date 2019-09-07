@@ -4,8 +4,8 @@ description "Role applied to all servers at OSUOSL"
 default_attributes(
   :accounts => {
     :users => {
-      :osuadmin => { :status => :administrator }
-    }
+      :osuadmin => { :status => :administrator },
+    },
   },
   :hosted_by => "OSUOSL",
   :location => "Corvallis, Oregon",
@@ -17,20 +17,20 @@ default_attributes(
         :zone => "ool",
         :inet => {
           :prefix => "28",
-          :gateway => "140.211.167.97"
+          :gateway => "140.211.167.97",
         },
         :inet6 => {
           :prefix => "64",
-          :gateway => "2605:bc80:3010:700::1"
-        }
-      }
-    }
+          :gateway => "2605:bc80:3010:700::1",
+        },
+      },
+    },
   }
 )
 
 override_attributes(
   :ntp => {
-    :servers => ["ntp.osuosl.org"]
+    :servers => ["ntp.osuosl.org"],
   }
 )
 

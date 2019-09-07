@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: devices
+# Cookbook:: devices
 # Recipe:: default
 #
-# Copyright 2012, OpenStreetMap Foundation
+# Copyright:: 2012, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
 cookbook_file "/usr/local/bin/fixeep-82574_83.sh" do
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end
 
 execute "udevadm-trigger" do
@@ -32,6 +32,6 @@ template "/etc/udev/rules.d/99-chef.rules" do
   source "udev.rules.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   notifies :run, "execute[udevadm-trigger]"
 end

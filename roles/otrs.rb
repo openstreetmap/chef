@@ -4,13 +4,13 @@ description "Role applied to all OTRS servers"
 default_attributes(
   :accounts => {
     :users => {
-      :otrs => { :status => :role }
+      :otrs => { :status => :role },
     },
     :groups => {
       :"www-data" => {
-        :members => [:otrs]
-      }
-    }
+        :members => [:otrs],
+      },
+    },
   },
   :exim => {
     :local_domains => ["otrs.openstreetmap.org"],
@@ -22,7 +22,7 @@ default_attributes(
         :command => "/opt/otrs/bin/otrs.Console.pl Maint::PostMaster::Read",
         :user => "otrs",
         :group => "www-data",
-        :home_directory => "/opt/otrs"
+        :home_directory => "/opt/otrs",
       },
       :otrs_data => {
         :comment => "data@otrs.openstreetmap.org",
@@ -31,7 +31,7 @@ default_attributes(
         :command => "/opt/otrs/bin/otrs.Console.pl Maint::PostMaster::Read --target-queue 'Data Working Group'",
         :user => "otrs",
         :group => "www-data",
-        :home_directory => "/opt/otrs"
+        :home_directory => "/opt/otrs",
       },
       :otrs_membership => {
         :comment => "membership@otrs.openstreetmap.org",
@@ -40,7 +40,7 @@ default_attributes(
         :command => "/opt/otrs/bin/otrs.Console.pl Maint::PostMaster::Read --target-queue 'Membership Working Group'",
         :user => "otrs",
         :group => "www-data",
-        :home_directory => "/opt/otrs"
+        :home_directory => "/opt/otrs",
       },
       :otrs_support => {
         :comment => "support@otrs.openstreetmap.org",
@@ -49,9 +49,9 @@ default_attributes(
         :command => "/opt/otrs/bin/otrs.Console.pl Maint::PostMaster::Read --target-queue 'Technical Support'",
         :user => "otrs",
         :group => "www-data",
-        :home_directory => "/opt/otrs"
-      }
-    }
+        :home_directory => "/opt/otrs",
+      },
+    },
   },
   :otrs => {
     :site => "otrs.openstreetmap.org",
@@ -59,10 +59,10 @@ default_attributes(
     :database_cluster => "10/main",
     :database_name => "otrs",
     :database_user => "otrs",
-    :database_password => "otrs"
+    :database_password => "otrs",
   },
   :postgresql => {
-    :versions => ["10"]
+    :versions => ["10"],
   }
 )
 

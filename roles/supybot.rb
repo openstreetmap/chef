@@ -4,8 +4,8 @@ description "Role applied to all supybot servers"
 default_attributes(
   :accounts => {
     :users => {
-      :supybot => { :status => :role }
-    }
+      :supybot => { :status => :role },
+    },
   }
 )
 

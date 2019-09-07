@@ -1,9 +1,9 @@
 #
-# Cookbook Name:: ntp
+# Cookbook:: ntp
 # Recipe:: default
 #
-# Copyright 2010, OpenStreetMap Foundation.
-# Copyright 2009, Opscode, Inc
+# Copyright:: 2010, OpenStreetMap Foundation.
+# Copyright:: 2009, Opscode, Inc
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,10 +17,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-package %w[
+package %w(
   chrony
   tzdata
-]
+)
 
 execute "dpkg-reconfigure-tzdata" do
   action :nothing
@@ -30,7 +30,7 @@ execute "dpkg-reconfigure-tzdata" do
 end
 
 link "/etc/localtime" do
-  to "/usr/share/zoneinfo/#{node[:ntp][:tz]}"
+  to "/usr/share/zoneinfo/#{node['ntp']['tz']}"
   owner "root"
   group "root"
   notifies :run, "execute[dpkg-reconfigure-tzdata]", :immediately
@@ -40,7 +40,7 @@ template "/etc/chrony/chrony.conf" do
   source "chrony.conf.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   notifies :restart, "service[chrony]"
 end
 

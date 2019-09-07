@@ -3,10 +3,10 @@ description "Master role applied to karm"
 
 default_attributes(
   :apt => {
-    :sources => ["postgresql"]
+    :sources => ["postgresql"],
   },
   :db => {
-    :cluster => "9.5/main"
+    :cluster => "9.5/main",
   },
   :networking => {
     :interfaces => {
@@ -16,10 +16,10 @@ default_attributes(
         :family => :inet,
         :address => "10.0.48.50",
         :bond => {
-          :slaves => %w[enp1s0f0 enp1s0f1]
-        }
-      }
-    }
+          :slaves => %w(enp1s0f0 enp1s0f1),
+        },
+      },
+    },
   },
   :postgresql => {
     :settings => {
@@ -29,18 +29,18 @@ default_attributes(
         :maintenance_work_mem => "1GB",
         :effective_cache_size => "180GB",
         :effective_io_concurrency => "256",
-        :random_page_cost => "1.1"
-      }
-    }
+        :random_page_cost => "1.1",
+      },
+    },
   },
   :sysctl => {
     :postgres => {
       :comment => "Increase shared memory for postgres",
       :parameters => {
         "kernel.shmmax" => 66 * 1024 * 1024 * 1024,
-        "kernel.shmall" => 66 * 1024 * 1024 * 1024 / 4096
-      }
-    }
+        "kernel.shmall" => 66 * 1024 * 1024 * 1024 / 4096,
+      },
+    },
   }
 )
 
