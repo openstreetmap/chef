@@ -204,6 +204,11 @@ unset( $wgRemoveGroups['interface-admin'] );
 unset( $wgGroupsAddToSelf['interface-admin'] );
 unset( $wgGroupsRemoveFromSelf['interface-admin'] );
 
+# The v1.32+ gadget system also requires two additional rights
+# See https://www.mediawiki.org/wiki/Extension:Gadgets
+$wgGroupPermissions['sysop']['gadgets-edit'] = true;
+$wgGroupPermissions['sysop']['gadgets-definition-edit'] = true;
+
 <% if @mediawiki[:private_accounts] -%>
 # Prevent new user registrations except by existing users
 $wgGroupPermissions['*']['createaccount'] = false;
