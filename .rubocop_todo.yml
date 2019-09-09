@@ -25,13 +25,6 @@ ChefCorrectness/NodeNormalUnless:
     - 'cookbooks/mediawiki/resources/site.rb'
     - 'cookbooks/wordpress/resources/site.rb'
 
-# Offense count: 78
-# Cop supports --auto-correct.
-# Configuration parameters: Include.
-# Include: **/metadata.rb
-ChefDeprecations/LongDescriptionMetadata:
-  Enabled: false
-
 # Offense count: 2
 # Cop supports --auto-correct.
 # Configuration parameters: Include.
