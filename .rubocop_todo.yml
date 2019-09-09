@@ -25,14 +25,6 @@ ChefCorrectness/NodeNormalUnless:
     - 'cookbooks/mediawiki/resources/site.rb'
     - 'cookbooks/wordpress/resources/site.rb'
 
-# Offense count: 2
-# Cop supports --auto-correct.
-# Configuration parameters: Include.
-# Include: **/resources/*.rb, **/providers/*.rb
-ChefModernize/IncludingMixinShelloutInResources:
-  Exclude:
-    - 'cookbooks/nodejs/resources/package.rb'
-
 # Offense count: 947
 # Cop supports --auto-correct.
 # Configuration parameters: .
