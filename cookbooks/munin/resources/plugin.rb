@@ -37,7 +37,7 @@ action :create do
     to target_path
   end
 
-  if new_resource.conf # ~FC023
+  if new_resource.conf
     munin_plugin_conf new_resource.plugin do
       cookbook new_resource.conf_cookbook
       template new_resource.conf
@@ -52,7 +52,7 @@ action :delete do
     action :delete
   end
 
-  if new_resource.conf # ~FC023
+  if new_resource.conf
     munin_plugin_conf new_resource.plugin do
       action :delete
       restart_munin false

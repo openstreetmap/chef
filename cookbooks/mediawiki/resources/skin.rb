@@ -57,7 +57,7 @@ action :create do
     end
   end
 
-  if new_resource.template # ~FC023
+  if new_resource.template
     declare_resource :template, "#{mediawiki_directory}/LocalSettings.d/Skin-#{new_resource.skin}.inc.php" do
       cookbook "mediawiki"
       source new_resource.template

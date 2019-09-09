@@ -109,7 +109,7 @@ node[:nominatim][:tablespaces].each do |name, location|
   end
 end
 
-if node[:nominatim][:state] == "master" # ~FC023
+if node[:nominatim][:state] == "master"
   postgresql_user "replication" do
     cluster node[:nominatim][:dbcluster]
     password data_bag_item("nominatim", "passwords")["replication"]
@@ -208,7 +208,7 @@ template "#{build_directory}/settings/local.php" do
             :log_file => "#{node[:nominatim][:logdir]}/query.log"
 end
 
-if node[:nominatim][:flatnode_file] # ~FC023
+if node[:nominatim][:flatnode_file]
   directory File.dirname(node[:nominatim][:flatnode_file]) do
     recursive true
   end

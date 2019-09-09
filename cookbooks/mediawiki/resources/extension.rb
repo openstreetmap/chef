@@ -64,7 +64,7 @@ action :create do
     end
   end
 
-  if new_resource.template # ~FC023
+  if new_resource.template
     declare_resource :template, "#{mediawiki_directory}/LocalSettings.d/Ext-#{new_resource.extension}.inc.php" do
       cookbook new_resource.template_cookbook
       source new_resource.template

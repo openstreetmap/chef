@@ -28,7 +28,7 @@ property :restart_apache, :kind_of => [TrueClass, FalseClass], :default => true
 action :install do
   declare_resource :package, package_name unless installed?
 
-  if new_resource.conf # ~FC023
+  if new_resource.conf
     template available_name("conf") do
       source new_resource.conf
       owner "root"

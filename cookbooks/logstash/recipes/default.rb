@@ -74,7 +74,7 @@ template "/etc/cron.daily/expire-logstash" do
   mode 0o755
 end
 
-forwarders = search(:node, "recipes:logstash\\:\\:forwarder") # ~FC010
+forwarders = search(:node, "recipes:logstash\\:\\:forwarder")
 
 forwarders.sort_by { |n| n[:fqdn] }.each do |forwarder|
   forwarder.interfaces(:role => :external) do |interface|
@@ -100,7 +100,7 @@ forwarders.sort_by { |n| n[:fqdn] }.each do |forwarder|
   end
 end
 
-gateways = search(:node, "roles:gateway") # ~FC010
+gateways = search(:node, "roles:gateway")
 
 gateways.sort_by { |n| n[:fqdn] }.each do |gateway|
   gateway.interfaces(:role => :external) do |interface|

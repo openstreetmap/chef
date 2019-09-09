@@ -24,7 +24,7 @@ service "munin-node" do
   supports :status => true, :restart => true, :reload => true
 end
 
-servers = search(:node, "recipes:munin\\:\\:server") # ~FC010
+servers = search(:node, "recipes:munin\\:\\:server")
 
 servers.each do |server|
   server.interfaces(:role => :external) do |interface|
@@ -147,7 +147,7 @@ else
   end
 end
 
-munin_plugin "hpasmcli_temp" do # ~FC005
+munin_plugin "hpasmcli_temp" do
   action :delete
 end
 

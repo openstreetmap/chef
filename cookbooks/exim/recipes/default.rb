@@ -156,7 +156,7 @@ else
   end
 end
 
-if node[:exim][:smarthost_via] # ~FC023
+if node[:exim][:smarthost_via]
   firewall_rule "deny-outbound-smtp" do
     action :reject
     source "fw"

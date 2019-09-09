@@ -196,13 +196,13 @@ action :create do
   end
 
   # MobileFrontend extension is required by MinervaNeue skin
-  mediawiki_extension "MobileFrontend" do # ~FC005
+  mediawiki_extension "MobileFrontend" do
     site new_resource.site
     template "mw-ext-MobileFrontend.inc.php.erb"
   end
 
   # MobileFrontend extension is required by MinervaNeue skin
-  mediawiki_skin "MinervaNeue" do # ~FC005
+  mediawiki_skin "MinervaNeue" do
     site new_resource.site
     update_site false
     legacy false
