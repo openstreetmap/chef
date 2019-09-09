@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: systemd
+# Cookbook:: systemd
 # Resource:: systemd_service
 #
-# Copyright 2016, OpenStreetMap Foundation
+# Copyright:: 2016, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.

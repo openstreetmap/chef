@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: postgresql
+# Cookbook:: postgresql
 # Resource:: postgresql_munin
 #
-# Copyright 2015, OpenStreetMap Foundation
+# Copyright:: 2015, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.

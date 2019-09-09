@@ -40,11 +40,6 @@ ChefModernize/IncludingMixinShelloutInResources:
 ChefStyle/AttributeKeys:
   EnforcedStyle: symbols
 
-# Offense count: 297
-# Cop supports --auto-correct.
-ChefStyle/CommentFormat:
-  Enabled: false
-
 # Offense count: 466
 # Cop supports --auto-correct.
 ChefStyle/FileMode:
