@@ -1,8 +1,6 @@
 source "https://rubygems.org"
 
-gem "foodcritic"
+gem "cookstyle"
 gem "kitchen-vagrant"
-gem "rubocop"
-gem "rubocop-performance"
 gem "serverspec"
 gem "test-kitchen"
