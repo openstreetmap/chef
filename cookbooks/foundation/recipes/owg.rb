@@ -26,7 +26,7 @@ package %w[
   zlib1g-dev
 ]
 
-gem_package 'bundler' do
+gem_package "bundler" do
   version "1.17.3"
 end
 
