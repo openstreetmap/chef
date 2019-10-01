@@ -281,8 +281,16 @@ end
   end
 end
 
+package %w[
+  ruby
+  ruby-dev
+  zlib1g-dev
+]
+
 gem_package "jekyll"
-gem_package "bundler"
+gem_package 'bundler' do
+  version "1.17.3"
+end
 
 %w[2016 2017 2018 2019 2020].each do |year|
   git "/srv/#{year}.stateofthemap.org" do
