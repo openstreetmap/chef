@@ -282,6 +282,7 @@ end
 end
 
 gem_package "jekyll"
+gem_package "bundler"
 
 %w[2016 2017 2018 2019 2020].each do |year|
   git "/srv/#{year}.stateofthemap.org" do
