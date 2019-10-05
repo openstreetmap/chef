@@ -46,7 +46,7 @@ end
 
 execute "/srv/operations.osmfoundation.org/Gemfile" do
   action :nothing
-  command "bundle install"
+  command "bundle install --deployment --jobs 4 --retry 3"
   cwd "/srv/operations.osmfoundation.org"
   user "root"
   group "root"
