@@ -5,5 +5,5 @@ license           "Apache-2.0"
 description       "Configures networking"
 
 version           "1.0.0"
-recipe            "networking", "Configures networking via attributes"
+
 supports          "ubuntu"
