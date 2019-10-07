@@ -32,11 +32,7 @@ default_attributes(
   },
   :tilecache => {
     :tile_parent => "usa.render.openstreetmap.org",
-    :tile_siblings => [
-      "stormfly-02.openstreetmap.org",
-      "ascalon.openstreetmap.org",
-      "jakelong.openstreetmap.org"
-    ]
+    :tile_siblings => []
   }
 )
 
