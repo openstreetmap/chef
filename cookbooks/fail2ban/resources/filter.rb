@@ -52,5 +52,5 @@ action :delete do
 end
 
 def after_created
-  notifies :reload, "service[fail2ban]"
+  notifies :restart, "service[fail2ban]"
 end

@@ -24,12 +24,11 @@ template "/etc/fail2ban/jail.d/00-default.conf" do
   owner "root"
   group "root"
   mode 0o644
-  notifies :reload, "service[fail2ban]"
+  notifies :restart, "service[fail2ban]"
 end
 
 service "fail2ban" do
   action [:enable, :start]
-  supports :status => true, :reload => true, :restart => true
 end
 
 munin_plugin "fail2ban"
