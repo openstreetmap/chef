@@ -22,6 +22,7 @@ require "ipaddr"
 include_recipe "ssl"
 include_recipe "squid"
 include_recipe "nginx"
+include_recipe "fail2ban"
 
 package "apache2" do
   action :remove
@@ -133,6 +134,10 @@ template "/etc/logrotate.d/nginx" do
   owner "root"
   group "root"
   mode 0o644
+end
+
+fail2ban_jail "squid" do
+  maxretry 1000
 end
 
 tilerenders.each do |render|
