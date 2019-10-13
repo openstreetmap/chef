@@ -287,7 +287,6 @@ package %w[
   zlib1g-dev
 ]
 
-gem_package "jekyll"
 gem_package "bundler" do
   version "1.17.3"
 end
@@ -298,7 +297,7 @@ end
     repository "git://github.com/openstreetmap/stateofthemap-#{year}.git"
     user "root"
     group "root"
-    notifies :run, "execute[/srv/#{year}.stateofthemap.org]"
+    notifies :run, "execute[/srv/#{year}.stateofthemap.org/Gemfile]"
   end
 
   directory "/srv/#{year}.stateofthemap.org/_site" do
@@ -307,9 +306,20 @@ end
     group "nogroup"
   end
 
+  execute "/srv/#{year}.stateofthemap.org/Gemfile" do
+    action :nothing
+    command "bundle install --deployment --jobs 4 --retry 3"
+    cwd "/srv/#{year}.stateofthemap.org"
+    user "root"
+    group "root"
+    notifies :run, "execute[/srv/#{year}.stateofthemap.org]"
+    # Workaround until 2019 until merged https://github.com/openstreetmap/stateofthemap-2019/pull/46
+    only_if { ::File.exist?("/srv/#{year}.stateofthemap.org/Gemfile") }
+  end
+
   execute "/srv/#{year}.stateofthemap.org" do
     action :nothing
-    command "jekyll build --trace"
+    command "bundle exec jekyll build --trace --baseurl=https://#{year}.stateofthemap.org"
     cwd "/srv/#{year}.stateofthemap.org"
     user "nobody"
     group "nogroup"
