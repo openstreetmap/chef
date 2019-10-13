@@ -46,7 +46,11 @@ cache_replacement_policy heap LFUDA
 memory_replacement_policy heap GDSF
 
 server_persistent_connections on
+<% if node[:squid][:version] < 3 -%>
 persistent_request_timeout 1 minutes
+<% else -%>
+client_idle_pconn_timeout 1 minutes
+<% end -%>
 
 negative_ttl 15 seconds
 half_closed_clients off
