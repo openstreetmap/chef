@@ -306,9 +306,17 @@ end
     group "nogroup"
   end
 
+  # Workaround https://github.com/jekyll/jekyll/issues/7804
+  # by creating a .jekyll-cache folder
+  directory "/srv/#{year}.stateofthemap.org/.jekyll-cache" do
+    mode 0o755
+    owner "nobody"
+    group "nogroup"
+  end
+
   execute "/srv/#{year}.stateofthemap.org/Gemfile" do
     action :nothing
-    command "bundle install --deployment --jobs 4 --retry 3"
+    command "bundle install --deployment"
     cwd "/srv/#{year}.stateofthemap.org"
     user "root"
     group "root"

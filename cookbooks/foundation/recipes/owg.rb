@@ -44,9 +44,17 @@ directory "/srv/operations.osmfoundation.org/_site" do
   group "nogroup"
 end
 
+# Workaround https://github.com/jekyll/jekyll/issues/7804
+# by creating a .jekyll-cache folder
+directory "/srv/operations.osmfoundation.org/.jekyll-cache" do
+  mode 0o755
+  owner "nobody"
+  group "nogroup"
+end
+
 execute "/srv/operations.osmfoundation.org/Gemfile" do
   action :nothing
-  command "bundle install --deployment --jobs 4 --retry 3"
+  command "bundle install --deployment"
   cwd "/srv/operations.osmfoundation.org"
   user "root"
   group "root"
