@@ -51,6 +51,9 @@ persistent_request_timeout 1 minutes
 <% else -%>
 client_idle_pconn_timeout 1 minutes
 <% end -%>
+<% if node[:squid][:version] > 3 -%>
+pconn_lifetime 5 minutes
+<% end -%>
 
 negative_ttl 15 seconds
 half_closed_clients off
