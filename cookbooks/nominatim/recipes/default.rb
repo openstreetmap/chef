@@ -151,6 +151,7 @@ package %w[
   libpq-dev
   libgeos++-dev
   libproj-dev
+  python3-pyosmium
   pyosmium
 ]
 
