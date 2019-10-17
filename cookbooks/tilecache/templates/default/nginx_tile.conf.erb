@@ -15,7 +15,8 @@ upstream tile_cache_backend {
 <% end -%>
 <% end -%>
 
-  keepalive 256;
+  keepalive 1024;
+  keepalive_requests 1024;
 }
 
 # Geo Map of tile caches
