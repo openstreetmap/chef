@@ -5,6 +5,10 @@ visible_hostname <%= node.name %>
 
 #FIXME - configurable
 cache_mem  <%= node[:squid][:cache_mem] %>
+<% if node[:squid][:version] > 2 -%>
+
+workers <%= node[:cpu][:total] %>
+<% end -%>
 
 max_filedescriptors 98304
 
