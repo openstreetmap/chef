@@ -8,6 +8,8 @@ cache_mem  <%= node[:squid][:cache_mem] %>
 <% if node[:squid][:version] > 2 -%>
 
 workers <%= node[:cpu][:total] %>
+
+error_log_languages off
 <% end -%>
 
 max_filedescriptors 98304
