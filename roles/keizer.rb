@@ -31,7 +31,6 @@ default_attributes(
     :tile_parent => "germany.render.openstreetmap.org",
     :tile_siblings => [
       "katie.openstreetmap.org",
-      "kalessin.openstreetmap.org",
       "konqi.openstreetmap.org"
     ]
   }

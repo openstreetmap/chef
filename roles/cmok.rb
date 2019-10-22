@@ -29,7 +29,6 @@ default_attributes(
   :tilecache => {
     :tile_parent => "minsk.render.openstreetmap.org",
     :tile_siblings => [
-      "vipertooth.openstreetmap.org",
       "katie.openstreetmap.org",
       "konqi.openstreetmap.org",
       "ridgeback.openstreetmap.org",

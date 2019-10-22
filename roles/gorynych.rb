@@ -49,7 +49,6 @@ default_attributes(
     :tile_parent => "moscow.render.openstreetmap.org",
     :tile_siblings => [
       "noomoahk.openstreetmap.org",
-      "vipertooth.openstreetmap.org",
       "cmok.openstreetmap.org"
     ]
   }

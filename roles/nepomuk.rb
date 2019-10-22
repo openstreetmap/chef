@@ -65,7 +65,6 @@ default_attributes(
       "noomoahk.openstreetmap.org",
       "norbert.openstreetmap.org",
       "ladon.openstreetmap.org",
-      "culebre.openstreetmap.org",
       "gorynych.openstreetmap.org"
     ]
   }
