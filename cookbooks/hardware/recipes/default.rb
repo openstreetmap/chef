@@ -301,38 +301,38 @@ disks = if node[:hardware][:disk]
           []
         end
 
-intel_ssds = disks.select { |d| d[:vendor] == "INTEL" && d[:model] =~ /^SSD/ }
-
-nvmes = if node[:hardware][:pci]
-          node[:hardware][:pci].values.select { |pci| pci[:driver] == "nvme" }
-        else
-          []
-        end
-
-intel_nvmes = nvmes.select { |pci| pci[:vendor_name] == "Intel Corporation" }
-
-if !intel_ssds.empty? || !intel_nvmes.empty?
-  package "unzip"
-
-  intel_ssd_tool_version = "3.0.21"
-
-  remote_file "#{Chef::Config[:file_cache_path]}/Intel_SSD_Data_Center_Tool_#{intel_ssd_tool_version}_Linux.zip" do
-    source "https://downloadmirror.intel.com/29115/eng/Intel_SSD_Data_Center_Tool_#{intel_ssd_tool_version}_Linux.zip"
-  end
-
-  execute "#{Chef::Config[:file_cache_path]}/Intel_SSD_Data_Center_Tool_#{intel_ssd_tool_version}_Linux.zip" do
-    command "unzip Intel_SSD_Data_Center_Tool_#{intel_ssd_tool_version}_Linux.zip isdct_#{intel_ssd_tool_version}-1_amd64.deb"
-    cwd Chef::Config[:file_cache_path]
-    user "root"
-    group "root"
-    not_if { File.exist?("#{Chef::Config[:file_cache_path]}/isdct_#{intel_ssd_tool_version}-1_amd64.deb") }
-  end
-
-  dpkg_package "isdct" do
-    version "#{intel_ssd_tool_version}-1"
-    source "#{Chef::Config[:file_cache_path]}/isdct_#{intel_ssd_tool_version}-1_amd64.deb"
-  end
-end
+# intel_ssds = disks.select { |d| d[:vendor] == "INTEL" && d[:model] =~ /^SSD/ }
+#
+# nvmes = if node[:hardware][:pci]
+#           node[:hardware][:pci].values.select { |pci| pci[:driver] == "nvme" }
+#         else
+#           []
+#         end
+#
+# intel_nvmes = nvmes.select { |pci| pci[:vendor_name] == "Intel Corporation" }
+#
+# if !intel_ssds.empty? || !intel_nvmes.empty?
+#   package "unzip"
+#
+#   intel_ssd_tool_version = "3.0.21"
+#
+#   remote_file "#{Chef::Config[:file_cache_path]}/Intel_SSD_Data_Center_Tool_#{intel_ssd_tool_version}_Linux.zip" do
+#     source "https://downloadmirror.intel.com/29115/eng/Intel_SSD_Data_Center_Tool_#{intel_ssd_tool_version}_Linux.zip"
+#   end
+#
+#   execute "#{Chef::Config[:file_cache_path]}/Intel_SSD_Data_Center_Tool_#{intel_ssd_tool_version}_Linux.zip" do
+#     command "unzip Intel_SSD_Data_Center_Tool_#{intel_ssd_tool_version}_Linux.zip isdct_#{intel_ssd_tool_version}-1_amd64.deb"
+#     cwd Chef::Config[:file_cache_path]
+#     user "root"
+#     group "root"
+#     not_if { File.exist?("#{Chef::Config[:file_cache_path]}/isdct_#{intel_ssd_tool_version}-1_amd64.deb") }
+#   end
+#
+#   dpkg_package "isdct" do
+#     version "#{intel_ssd_tool_version}-1"
+#     source "#{Chef::Config[:file_cache_path]}/isdct_#{intel_ssd_tool_version}-1_amd64.deb"
+#   end
+# end
 
 disks = disks.map do |disk|
   next if disk[:state] == "spun_down" || %w[unconfigured failed].any?(disk[:status])
