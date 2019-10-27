@@ -3,3 +3,10 @@
 require_once($IP .'/extensions/CirrusSearch/CirrusSearch.php');
 $wgDisableSearchUpdate = false;
 $wgSearchType = 'CirrusSearch';
+
+<% if @mediawiki[:site] === "wiki.openstreetmap.org" %>
+# setting the search weight of the main wiki's proposal namespace lower then general talk pages (0.2), but
+# higher then wiki project namespace (0.1)
+# Documentation at https://phabricator.wikimedia.org/source/extension-cirrussearch/browse/master/docs/settings.txt$693
+$wgCirrusSearchNamespaceWeights = array_merge ( $wgCirrusSearchNamespaceWeights, array ( NS_PROPOSAL => 0.15 ));
+<% end -%>
