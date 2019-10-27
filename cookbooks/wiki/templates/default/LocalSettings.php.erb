@@ -1,0 +1,78 @@
+<?php
+# DO NOT EDIT - This file is being maintained by Chef
+
+# Protect against web entry
+if ( !defined( 'MEDIAWIKI' ) ) {
+	exit;
+}
+
+# DE
+define('NS_LANG_DE', 200);
+$wgExtraNamespaces[NS_LANG_DE] = 'DE';
+$wgNamespacesWithSubpages[NS_LANG_DE] = TRUE;
+$wgContentNamespaces[] = NS_LANG_DE;
+define('NS_LANG_DE_TALK', 201);
+$wgExtraNamespaces[NS_LANG_DE_TALK] = 'DE_talk';
+$wgNamespacesWithSubpages[NS_LANG_DE_TALK] = TRUE;
+
+# FR
+define('NS_LANG_FR', 202);
+$wgExtraNamespaces[NS_LANG_FR] = 'FR';
+$wgNamespacesWithSubpages[NS_LANG_FR] = TRUE;
+$wgContentNamespaces[] = NS_LANG_FR;
+define('NS_LANG_FR_TALK', 203);
+$wgExtraNamespaces[NS_LANG_FR_TALK] = 'FR_talk';
+$wgNamespacesWithSubpages[NS_LANG_FR_TALK] = TRUE;
+
+# ES
+define('NS_LANG_ES', 204);
+$wgExtraNamespaces[NS_LANG_ES] = 'ES';
+$wgNamespacesWithSubpages[NS_LANG_ES] = TRUE;
+$wgContentNamespaces[] = NS_LANG_ES;
+define('NS_LANG_ES_TALK', 205);
+$wgExtraNamespaces[NS_LANG_ES_TALK] = 'ES_talk';
+$wgNamespacesWithSubpages[NS_LANG_ES_TALK] = TRUE;
+
+# IT
+define('NS_LANG_IT', 206);
+$wgExtraNamespaces[NS_LANG_IT] = 'IT';
+$wgNamespacesWithSubpages[NS_LANG_IT] = TRUE;
+$wgContentNamespaces[] = NS_LANG_IT;
+define('NS_LANG_IT_TALK', 207);
+$wgExtraNamespaces[NS_LANG_IT_TALK] = 'IT_talk';
+$wgNamespacesWithSubpages[NS_LANG_IT_TALK] = TRUE;
+
+# NL
+define('NS_LANG_NL', 208);
+$wgExtraNamespaces[NS_LANG_NL] = 'NL';
+$wgNamespacesWithSubpages[NS_LANG_NL] = TRUE;
+$wgContentNamespaces[] = NS_LANG_NL;
+define('NS_LANG_NL_TALK', 209);
+$wgExtraNamespaces[NS_LANG_NL_TALK] = 'NL_talk';
+$wgNamespacesWithSubpages[NS_LANG_NL_TALK] = TRUE;
+
+# RU
+define('NS_LANG_RU', 210);
+$wgExtraNamespaces[NS_LANG_RU] = 'RU';
+$wgNamespacesWithSubpages[NS_LANG_RU] = TRUE;
+$wgContentNamespaces[] = NS_LANG_RU;
+define('NS_LANG_RU_TALK', 211);
+$wgExtraNamespaces[NS_LANG_RU_TALK] = 'RU_talk';
+$wgNamespacesWithSubpages[NS_LANG_RU_TALK] = TRUE;
+
+# JA
+define('NS_LANG_JA', 212);
+$wgExtraNamespaces[NS_LANG_JA] = 'JA';
+$wgNamespacesWithSubpages[NS_LANG_JA] = TRUE;
+$wgContentNamespaces[] = NS_LANG_JA;
+define('NS_LANG_JA_TALK', 213);
+$wgExtraNamespaces[NS_LANG_JA_TALK] = 'JA_talk';
+$wgNamespacesWithSubpages[NS_LANG_JA_TALK] = TRUE;
+
+$wgNamespacesToBeSearchedDefault[NS_LANG_DE] = TRUE;
+$wgNamespacesToBeSearchedDefault[NS_LANG_FR] = TRUE;
+$wgNamespacesToBeSearchedDefault[NS_LANG_ES] = TRUE;
+$wgNamespacesToBeSearchedDefault[NS_LANG_IT] = TRUE;
+$wgNamespacesToBeSearchedDefault[NS_LANG_NL] = TRUE;
+$wgNamespacesToBeSearchedDefault[NS_LANG_RU] = TRUE;
+$wgNamespacesToBeSearchedDefault[NS_LANG_JA] = TRUE;
