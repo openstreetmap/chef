@@ -69,6 +69,17 @@ define('NS_LANG_JA_TALK', 213);
 $wgExtraNamespaces[NS_LANG_JA_TALK] = 'JA_talk';
 $wgNamespacesWithSubpages[NS_LANG_JA_TALK] = TRUE;
 
+# Proposal
+# namespace features a specific search weight defined at 
+# cookbooks/mediawiki/templates/default/mw-ext-CirrusSearch.inc.php.erb
+define('NS_PROPOSAL', 3000);
+$wgExtraNamespaces[NS_PROPOSAL] = 'Proposal';
+$wgNamespacesWithSubpages[NS_PROPOSAL] = TRUE;
+$wgContentNamespaces[] = NS_PROPOSAL;
+define('NS_PROPOSAL_TALK', 3001);
+$wgExtraNamespaces[NS_PROPOSAL_TALK] = 'Proposal talk';
+$wgNamespacesWithSubpages[NS_PROPOSAL_TALK] = TRUE;
+
 $wgNamespacesToBeSearchedDefault[NS_LANG_DE] = TRUE;
 $wgNamespacesToBeSearchedDefault[NS_LANG_FR] = TRUE;
 $wgNamespacesToBeSearchedDefault[NS_LANG_ES] = TRUE;
@@ -76,3 +87,4 @@ $wgNamespacesToBeSearchedDefault[NS_LANG_IT] = TRUE;
 $wgNamespacesToBeSearchedDefault[NS_LANG_NL] = TRUE;
 $wgNamespacesToBeSearchedDefault[NS_LANG_RU] = TRUE;
 $wgNamespacesToBeSearchedDefault[NS_LANG_JA] = TRUE;
+$wgNamespacesToBeSearchedDefault[NS_PROPOSAL] = TRUE;
