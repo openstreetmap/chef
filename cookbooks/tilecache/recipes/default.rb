@@ -52,6 +52,7 @@ tilecaches.each do |cache|
       dest_ports "3128"
       source_ports "1024:"
     end
+
     firewall_rule "accept-squid-icp" do
       action :accept
       family "inet"
@@ -61,6 +62,7 @@ tilecaches.each do |cache|
       dest_ports "3130"
       source_ports "3130"
     end
+
     firewall_rule "accept-squid-icp-reply" do
       action :accept
       family "inet"
@@ -69,6 +71,26 @@ tilecaches.each do |cache|
       proto "udp"
       dest_ports "3130"
       source_ports "3130"
+    end
+
+    firewall_rule "accept-squid-htcp" do
+      action :accept
+      family "inet"
+      source "net:#{address}"
+      dest "fw"
+      proto "udp"
+      dest_ports "4827"
+      source_ports "4827"
+    end
+
+    firewall_rule "accept-squid-htcp-reply" do
+      action :accept
+      family "inet"
+      source "fw"
+      dest "net:#{address}"
+      proto "udp"
+      dest_ports "4827"
+      source_ports "4827"
     end
   end
 end
