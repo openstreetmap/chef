@@ -119,7 +119,7 @@ acl tile_caches src <%= address %>
 
 # Siblings
 <% node[:tilecache][:tile_siblings].each do |sibling| -%>
-cache_peer <%= sibling %> sibling 3128 3130 weight=1500
+cache_peer <%= sibling %> sibling 3128 4827 htcp weight=1500
 <% end -%>
 
 # Primary Parent
