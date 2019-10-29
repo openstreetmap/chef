@@ -16,6 +16,8 @@ max_filedescriptors 98304
 
 #used by squidclient / munin
 http_port 3128
+#HTCP
+htcp_port 4827
 #ICP
 icp_port 3130
 log_icp_queries off
@@ -152,6 +154,7 @@ logfile_rotate 0
 #MUST BE LAST ACL
 #--------------
 http_access deny all
+htcp_access deny all
 icp_access deny all
 #--------------
 
