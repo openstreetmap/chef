@@ -154,9 +154,11 @@ acl pool_unlimited src 212.98.173.54
 
 #Allow tile_caches HTCP access
 htcp_access allow tile_caches
+<% if node[:squid][:version] < 4 -%>
 
 #Allow tile_caches ICP access
 icp_access allow tile_caches
+<% end %>
 
 <% (0..127).each do |i| -%>
 acl pool_<%= sprintf("%03d", 2*i) %> src <%= 2*i %>.0.0.0/7
