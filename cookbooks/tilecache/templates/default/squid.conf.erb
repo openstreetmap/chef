@@ -151,10 +151,10 @@ acl pool_unlimited src <%= address %>
 
 # Juno Minsk office - me@komzpa.net
 acl pool_unlimited src 212.98.173.54
+<% if node[:squid][:version] < 4 -%>
 
 #Allow tile_caches HTCP access
 htcp_access allow tile_caches
-<% if node[:squid][:version] < 4 -%>
 
 #Allow tile_caches ICP access
 icp_access allow tile_caches
