@@ -164,7 +164,14 @@ server {
       return 404;
     }
 
+<% for i in 0..13 do %>
+<% if i == 0 -%>
+    # Default Fallback Location Handler (lowest)
     location / {
+<% elsif -%>
+    # Dedicated zoom handler for caching
+    location /<%= i %>/ {
+<% end %>
       proxy_pass http://tile_cache_backend;
       proxy_set_header X-Forwarded-For $remote_addr;
       proxy_http_version 1.1;
@@ -182,6 +189,19 @@ server {
       # Do not allow setting cookies from backends due to caching.
       proxy_ignore_headers Set-Cookie;
       proxy_hide_header Set-Cookie;
+
+<% if i != 0 -%>
+      # Caching
+      proxy_cache "proxy_cache_zone";
+      proxy_cache_lock on;
+      proxy_cache_valid 200 1d;
+      proxy_cache_valid 404 15m;
+      # Serve stale cache on errors or if updating
+      proxy_cache_use_stale error timeout updating http_500 http_503 http_504;
+      # If in cache as stale, serve stale and update in background
+      proxy_cache_background_update on;
+      proxy_cache_min_uses 8;
+<% end -%>
 
       # Set a QoS cookie if none presented (uses nginx Map)
       add_header Set-Cookie $cookie_qos_token_set;
@@ -217,4 +237,5 @@ server {
       proxy_set_header Cache-Control $limit_http_cache_control;
       proxy_set_header Pragma $limit_http_pragma;
     }
+<% end %>
 }

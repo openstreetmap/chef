@@ -51,10 +51,10 @@ http {
     resolver_timeout 5s;
 
     <% if node['nginx']['cache']['fastcgi']['enable'] -%>
-    fastcgi_cache_path /var/cache/nginx/fastcgi-cache levels=1:2 keys_zone=<%= node['nginx']['cache']['fastcgi']['keys_zone'] %> inactive=<%= node['nginx']['cache']['fastcgi']['inactive'] %> max_size=<%= node['nginx']['cache']['fastcgi']['max_size'] %>;
+    fastcgi_cache_path /var/cache/nginx/fastcgi-cache levels=1:2 use_temp_path=off keys_zone=<%= node['nginx']['cache']['fastcgi']['keys_zone'] %> inactive=<%= node['nginx']['cache']['fastcgi']['inactive'] %> max_size=<%= node['nginx']['cache']['fastcgi']['max_size'] %>;
     <% end -%>
     <% if node['nginx']['cache']['proxy']['enable'] -%>
-    proxy_cache_path /var/cache/nginx/proxy-cache levels=1:2 keys_zone=<%= node['nginx']['cache']['proxy']['keys_zone'] %> inactive=<%= node['nginx']['cache']['proxy']['inactive'] %> max_size=<%= node['nginx']['cache']['proxy']['max_size'] %>;
+    proxy_cache_path /var/cache/nginx/proxy-cache levels=1:2 use_temp_path=off keys_zone=<%= node['nginx']['cache']['proxy']['keys_zone'] %> inactive=<%= node['nginx']['cache']['proxy']['inactive'] %> max_size=<%= node['nginx']['cache']['proxy']['max_size'] %>;
     <% end -%>
 
     include /etc/nginx/conf.d/*.conf;
