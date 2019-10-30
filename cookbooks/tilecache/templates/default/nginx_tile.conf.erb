@@ -201,6 +201,8 @@ server {
       # If in cache as stale, serve stale and update in background
       proxy_cache_background_update on;
       proxy_cache_min_uses 8;
+
+      add_header X-Nginx-Cache-Status $upstream_cache_status;
 <% end -%>
 
       # Set a QoS cookie if none presented (uses nginx Map)
