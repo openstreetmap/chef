@@ -55,5 +55,7 @@ munin_plugin_conf "nginx" do
   template "munin.erb"
 end
 
+package "libwww-perl"
+
 munin_plugin "nginx_request"
 munin_plugin "nginx_status"
