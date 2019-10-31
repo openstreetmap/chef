@@ -18,8 +18,8 @@ default_attributes(
     :keepalive => false,
     :reqtimeout => true,
     :event => {
-      :server_limit => 32,
-      :max_request_workers => 1600,
+      :server_limit => 46,
+      :max_request_workers => 2400,
       :threads_per_child => 50,
       :min_spare_threads => 125,
       :max_spare_threads => 925
