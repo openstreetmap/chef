@@ -50,3 +50,10 @@ service "nginx" do
   supports :status => true, :restart => true, :reload => true
   subscribes :restart, "template[/etc/nginx/nginx.conf]"
 end
+
+munin_plugin_conf "nginx" do
+  template "munin.erb"
+end
+
+munin_plugin "nginx_request"
+munin_plugin "nginx_status"
