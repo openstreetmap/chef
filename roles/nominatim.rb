@@ -30,7 +30,7 @@ default_attributes(
   },
   :networking => {
     :firewall => {
-      :http_rate_limit => "s:7/sec:15"
+      :http_rate_limit => "s:2/sec:15"
     }
   },
   :postgresql => {
