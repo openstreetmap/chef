@@ -28,6 +28,11 @@ default_attributes(
   :apt => {
     :sources => ["postgresql"]
   },
+  :networking => {
+    :firewall => {
+      :http_rate_limit => "s:7/sec:15"
+    }
+  },
   :postgresql => {
     :settings => {
       :defaults => {
