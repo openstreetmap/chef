@@ -360,7 +360,6 @@ end
 postgresql_version = node[:tile][:database][:cluster].split("/").first
 postgis_version = node[:tile][:database][:postgis]
 
-package "postgis"
 package "postgresql-#{postgresql_version}-postgis-#{postgis_version}"
 
 postgresql_user "jburgess" do

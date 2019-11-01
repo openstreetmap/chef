@@ -55,7 +55,6 @@ include_recipe "postgresql"
 postgresql_version = node[:nominatim][:dbcluster].split("/").first
 postgis_version = node[:nominatim][:postgis]
 
-package "postgis"
 package "postgresql-#{postgresql_version}-postgis-#{postgis_version}"
 
 node[:nominatim][:dbadmins].each do |user|
