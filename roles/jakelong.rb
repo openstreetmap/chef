@@ -26,6 +26,13 @@ default_attributes(
     :cache_mem => "1024 MB",
     :cache_dir => "coss /store/squid/coss-01 24000 block-size=8192 max-size=262144 membufs=30"
   },
+  :nginx => {
+    :cache => {
+      :proxy => {
+        :max_size => "2048M"
+      }
+    }
+  },
   :sysctl => {
     :kvm => {
       :comment => "Tuning for KVM guest",

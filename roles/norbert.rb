@@ -26,6 +26,13 @@ default_attributes(
     :cache_mem => "7500 MB",
     :cache_dir => "coss /store/squid/coss-01 80000 block-size=8192 max-size=262144 membufs=80"
   },
+  :nginx => {
+    :cache => {
+      :proxy => {
+        :max_size => "2048M"
+      }
+    }
+  },
   :tilecache => {
     :tile_parent => "france.render.openstreetmap.org",
     :tile_siblings => [

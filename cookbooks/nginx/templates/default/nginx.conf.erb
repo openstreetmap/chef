@@ -25,12 +25,12 @@ http {
                       '$status $body_bytes_sent "$http_referer" '
                       '"$http_user_agent" "$http_x_forwarded_for"';
 
-    access_log  <%= node[:nginx][:access_log] %>  main  buffer=32k flush=1m;
+    access_log  <%= node[:nginx][:access_log] %>  main flush=1m;
 <% else -%>
     access_log  off;
 <% end -%>
 
-    keepalive_timeout  30;
+    keepalive_timeout 20 20;
 
     server_tokens off;
 
