@@ -45,6 +45,20 @@ directory "/var/cache/nginx/proxy-cache" do
   only_if { node[:nginx][:cache][:proxy][:enable] }
 end
 
+# Temporary Cleanup to remove old levels=1:2 cache after migration to 2:2:2
+execute "nginx-remove-old-fastcgi-cache" do
+  command "/usr/bin/find /var/cache/nginx/fastcgi-cache/ -mindepth 3 -maxdepth 3 -type f -delete"
+  ignore_failure true
+  only_if { node[:nginx][:cache][:fastcgi][:enable] }
+end
+
+# Temporary Cleanup to remove old levels=1:2 cache after migration to 2:2:2
+execute "nginx-remove-old-proxy-cache" do
+  command "/usr/bin/find /var/cache/nginx/proxy-cache/ -mindepth 3 -maxdepth 3 -type f -delete"
+  ignore_failure true
+  only_if { node[:nginx][:cache][:proxy][:enable] }
+end
+
 service "nginx" do
   action [:enable] # Do not start the service as config may be broken from failed chef run
   supports :status => true, :restart => true, :reload => true
