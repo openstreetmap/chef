@@ -2,7 +2,7 @@
 
 <VirtualHost *:80>
         ServerName <%= @year %>.stateofthemap.org
-        ServerAlias <%= @year %>.stateofthemap.com
+        ServerAlias <%= @year %>.stateofthemap.com <%= @year %>.sotm.org
         ServerAdmin webmaster@openstreetmap.org
 
         CustomLog /var/log/apache2/<%= @year %>.stateofthemap.org-access.log combined
@@ -14,6 +14,7 @@
 
 <VirtualHost *:443>
         ServerName <%= @year %>.stateofthemap.com
+        ServerAlias <%= @year %>.sotm.org
         ServerAdmin webmaster@openstreetmap.org
 
         CustomLog /var/log/apache2/<%= @year %>.stateofthemap.org-access.log combined

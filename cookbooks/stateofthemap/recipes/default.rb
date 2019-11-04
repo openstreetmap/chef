@@ -270,7 +270,7 @@ end
   end
 
   ssl_certificate "#{year}.stateofthemap.org" do
-    domains ["#{year}.stateofthemap.org", "#{year}.stateofthemap.com"]
+    domains ["#{year}.stateofthemap.org", "#{year}.stateofthemap.com", "#{year}.sotm.org"]
     notifies :reload, "service[apache2]"
   end
 
@@ -333,7 +333,7 @@ end
   end
 
   ssl_certificate "#{year}.stateofthemap.org" do
-    domains ["#{year}.stateofthemap.org", "#{year}.stateofthemap.com"]
+    domains ["#{year}.stateofthemap.org", "#{year}.stateofthemap.com", "#{year}.sotm.org"]
     notifies :reload, "service[apache2]"
   end
 
