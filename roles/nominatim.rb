@@ -14,7 +14,7 @@ default_attributes(
   },
   :apache => {
     :mpm => "event",
-    :timeout => 60,
+    :timeout => 30,
     :keepalive => false,
     :reqtimeout => true,
     :event => {
@@ -22,7 +22,8 @@ default_attributes(
       :max_request_workers => 2400,
       :threads_per_child => 50,
       :min_spare_threads => 125,
-      :max_spare_threads => 925
+      :max_spare_threads => 925,
+      :async_request_worker_factor => 4
     }
   },
   :apt => {
