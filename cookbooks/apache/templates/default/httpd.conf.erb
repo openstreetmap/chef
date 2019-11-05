@@ -50,6 +50,9 @@ MaxConnectionsPerChild <%= node[:apache][:event][:max_connections_per_child] %>
 <% if node[:apache][:event][:async_request_worker_factor] -%>
 AsyncRequestWorkerFactor <%= node[:apache][:event][:async_request_worker_factor] %>
 <% end -%>
+<% if node[:apache][:event][:listen_cores_buckets_ratio] -%>
+ListenCoresBucketsRatio <%= node[:apache][:event][:listen_cores_buckets_ratio] %>
+<% end -%>
 <% end -%>
 
 # Default to UTF-8

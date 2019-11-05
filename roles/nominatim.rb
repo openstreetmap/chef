@@ -23,7 +23,8 @@ default_attributes(
       :threads_per_child => 50,
       :min_spare_threads => 125,
       :max_spare_threads => 925,
-      :async_request_worker_factor => 4
+      :async_request_worker_factor => 4,
+      :listen_cores_buckets_ratio => 6
     }
   },
   :apt => {
