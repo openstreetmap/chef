@@ -340,6 +340,13 @@ node[:nominatim][:fpm_pools].each do |name, data|
   end
 end
 
+systemd_service "apache-nominatim" do
+  service "apache2"
+  dropin "nominatim"
+  tasks_max 12000
+  notifies :restart, "service[apache2]"
+end
+
 ssl_certificate "nominatim.openstreetmap.org" do
   domains ["nominatim.openstreetmap.org",
            "nominatim.osm.org",

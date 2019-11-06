@@ -59,6 +59,7 @@ property :protect_system, [TrueClass, FalseClass, String]
 property :protect_home, [TrueClass, FalseClass, String]
 property :restrict_address_families, [String, Array]
 property :no_new_privileges, [TrueClass, FalseClass]
+property :tasks_max, Integer
 property :timeout_sec, Integer
 property :pid_file, String
 

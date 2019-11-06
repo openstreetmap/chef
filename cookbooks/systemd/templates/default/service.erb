@@ -99,6 +99,9 @@ RestrictAddressFamilies=<%= Array(@restrict_address_families).join(" ") %>
 <% if @no_new_privileges -%>
 NoNewPrivileges=<%= @no_new_privileges %>
 <% end -%>
+<% if @tasks_max -%>
+TasksMax=<%= @tasks_max %>
+<% end -%>
 <% if @success_exit_status -%>
 SuccessExitStatus=<%= Array(@success_exit_status).join(" ") %>
 <% end -%>
