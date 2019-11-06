@@ -20,7 +20,8 @@ default_attributes(
       :min_spare_threads => 300,
       :max_spare_threads => 1200,
       :max_connections_per_child => 0,
-      :async_request_worker_factor => 4
+      :async_request_worker_factor => 4,
+      :listen_cores_buckets_ratio => 6
     }
   },
   :munin => {
