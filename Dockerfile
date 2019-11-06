@@ -1,3 +1,5 @@
+# Basic Dockerfile to run cookstyle linting
+# run: docker build -t test .
 FROM ruby:2.6
 
 WORKDIR /app
