@@ -31,17 +31,19 @@ template "/etc/nginx/nginx.conf" do
   variables :resolvers => resolvers
 end
 
-directory "/var/cache/nginx/fastcgi-cache" do
+directory node[:nginx][:cache][:fastcgi][:directory] do
   owner "www-data"
   group "root"
   mode 0o755
+  recursive true
   only_if { node[:nginx][:cache][:fastcgi][:enable] }
 end
 
-directory "/var/cache/nginx/proxy-cache" do
+directory node[:nginx][:cache][:proxy][:directory] do
   owner "www-data"
   group "root"
   mode 0o755
+  recursive true
   only_if { node[:nginx][:cache][:proxy][:enable] }
 end
 
