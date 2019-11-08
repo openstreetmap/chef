@@ -2,6 +2,9 @@ name "jakelong"
 description "Master role applied to jakelong"
 
 default_attributes(
+  :hardware => {
+    :shm_size => "3g"
+  },
   :networking => {
     :interfaces => {
       :external_ipv4 => {
@@ -23,8 +26,14 @@ default_attributes(
     }
   },
   :squid => {
+    :version => 4,
     :cache_mem => "1024 MB",
-    :cache_dir => "coss /store/squid/coss-01 24000 block-size=8192 max-size=262144 membufs=30"
+    :cache_dir => [
+      "rock /store/squid/rock-4096 3840 swap-timeout=200 slot-size=4096 max-size=3996",
+      "rock /store/squid/rock-8192 4800 swap-timeout=200 slot-size=8192 min-size=3997 max-size=8092",
+      "rock /store/squid/rock-16384 6720 swap-timeout=200 slot-size=16384 min-size=8093 max-size=16284",
+      "rock /store/squid/rock-32768 8640 swap-timeout=200 slot-size=32768 min-size=16285 max-size=262144"
+    ]
   },
   :nginx => {
     :cache => {
