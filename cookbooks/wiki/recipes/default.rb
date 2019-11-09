@@ -17,8 +17,6 @@
 # limitations under the License.
 #
 
-# include_recipe "squid"
-
 include_recipe "mediawiki"
 
 passwords = data_bag_item("wiki", "passwords")
