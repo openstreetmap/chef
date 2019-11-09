@@ -46,10 +46,7 @@ default_attributes(
     ]
   },
   :tilecache => {
-    :tile_parent => "osijek.render.openstreetmap.org",
-    :tile_siblings => [
-      "viserion.openstreetmap.org"
-    ]
+    :tile_parent => "osijek.render.openstreetmap.org"
   }
 )
 

@@ -36,12 +36,7 @@ default_attributes(
     ]
   },
   :tilecache => {
-    :tile_parent => "zurich.render.openstreetmap.org",
-    :tile_siblings => [
-      "noomoahk.openstreetmap.org",
-      "ladon.openstreetmap.org",
-      "culebre.openstreetmap.org"
-    ]
+    :tile_parent => "zurich.render.openstreetmap.org"
   }
 )
 

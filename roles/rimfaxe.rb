@@ -36,13 +36,7 @@ default_attributes(
     ]
   },
   :tilecache => {
-    :tile_parent => "aalborg.render.openstreetmap.org",
-    :tile_siblings => [
-      "katie.openstreetmap.org",
-      "konqi.openstreetmap.org",
-      "ridgeback.openstreetmap.org",
-      "gorynych.openstreetmap.org"
-    ]
+    :tile_parent => "aalborg.render.openstreetmap.org"
   }
 )
 

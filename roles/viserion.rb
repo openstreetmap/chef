@@ -51,10 +51,7 @@ default_attributes(
     ]
   },
   :tilecache => {
-    :tile_parent => "pula.render.openstreetmap.org",
-    :tile_siblings => [
-      "drogon.openstreetmap.org"
-    ]
+    :tile_parent => "pula.render.openstreetmap.org"
   }
 )
 

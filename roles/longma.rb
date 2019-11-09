@@ -48,12 +48,7 @@ default_attributes(
     }
   },
   :tilecache => {
-    :tile_parent => "hsinchu.render.openstreetmap.org",
-    :tile_siblings => [
-      "balerion.openstreetmap.org",
-      "waima.openstreetmap.org",
-      "tuatara.openstreetmap.org"
-    ]
+    :tile_parent => "hsinchu.render.openstreetmap.org"
   }
 )
 

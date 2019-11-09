@@ -42,14 +42,7 @@ default_attributes(
     ]
   },
   :tilecache => {
-    :tile_parent => "athens.render.openstreetmap.org",
-    :tile_siblings => [
-      "trogdor.openstreetmap.org",
-      "katie.openstreetmap.org",
-      "konqi.openstreetmap.org",
-      "ridgeback.openstreetmap.org",
-      "gorynych.openstreetmap.org"
-    ]
+    :tile_parent => "athens.render.openstreetmap.org"
   }
 )
 

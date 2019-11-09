@@ -36,13 +36,7 @@ default_attributes(
     ]
   },
   :tilecache => {
-    :tile_parent => "curitiba.render.openstreetmap.org",
-    :tile_siblings => [
-      "cherufe.openstreetmap.org",
-      "ascalon.openstreetmap.org",
-      "stormfly-02.openstreetmap.org",
-      "jakelong.openstreetmap.org"
-    ]
+    :tile_parent => "curitiba.render.openstreetmap.org"
   }
 )
 

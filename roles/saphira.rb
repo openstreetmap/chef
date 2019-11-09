@@ -43,15 +43,7 @@ default_attributes(
     }
   },
   :tilecache => {
-    :tile_parent => "london.render.openstreetmap.org",
-    :tile_siblings => [
-      "toothless.openstreetmap.org",
-      "trogdor.openstreetmap.org",
-      "katie.openstreetmap.org",
-      "konqi.openstreetmap.org",
-      "ridgeback.openstreetmap.org",
-      "gorynych.openstreetmap.org"
-    ]
+    :tile_parent => "london.render.openstreetmap.org"
   }
 )
 

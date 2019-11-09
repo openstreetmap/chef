@@ -48,11 +48,7 @@ default_attributes(
     ]
   },
   :tilecache => {
-    :tile_parent => "germany.render.openstreetmap.org",
-    :tile_siblings => [
-      "konqi.openstreetmap.org",
-      "keizer.openstreetmap.org"
-    ]
+    :tile_parent => "germany.render.openstreetmap.org"
   }
 )
 

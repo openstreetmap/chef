@@ -36,13 +36,7 @@ default_attributes(
     ]
   },
   :tilecache => {
-    :tile_parent => "sweden.render.openstreetmap.org",
-    :tile_siblings => [
-      "fafnir.openstreetmap.org",
-      "ridgeback.openstreetmap.org",
-      "rimfaxe.openstreetmap.org",
-      "trogdor.openstreetmap.org"
-    ]
+    :tile_parent => "sweden.render.openstreetmap.org"
   }
 )
 

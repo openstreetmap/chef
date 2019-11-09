@@ -59,14 +59,7 @@ default_attributes(
     ]
   },
   :tilecache => {
-    :tile_parent => "oslo.render.openstreetmap.org",
-    :tile_siblings => [
-      "trogdor.openstreetmap.org",
-      "katie.openstreetmap.org",
-      "konqi.openstreetmap.org",
-      "gorynych.openstreetmap.org",
-      "simurgh.openstreetmap.org"
-    ]
+    :tile_parent => "oslo.render.openstreetmap.org"
   }
 )
 

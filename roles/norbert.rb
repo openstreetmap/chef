@@ -43,11 +43,7 @@ default_attributes(
     }
   },
   :tilecache => {
-    :tile_parent => "france.render.openstreetmap.org",
-    :tile_siblings => [
-      "noomoahk.openstreetmap.org",
-      "ladon.openstreetmap.org"
-    ]
+    :tile_parent => "france.render.openstreetmap.org"
   }
 )
 

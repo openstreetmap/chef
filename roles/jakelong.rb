@@ -58,13 +58,7 @@ default_attributes(
     }
   },
   :tilecache => {
-    :tile_parent => "sanfrancisco.render.openstreetmap.org",
-    :tile_siblings => [
-      "stormfly-02.openstreetmap.org",
-      "ascalon.openstreetmap.org",
-      "katie.openstreetmap.org",
-      "konqi.openstreetmap.org"
-    ]
+    :tile_parent => "sanfrancisco.render.openstreetmap.org"
   }
 )
 

@@ -31,12 +31,7 @@ default_attributes(
     ]
   },
   :tilecache => {
-    :tile_parent => "melbourne.render.openstreetmap.org",
-    :tile_siblings => [
-      "waima.openstreetmap.org",
-      "tuatara.openstreetmap.org",
-      "longma.openstreetmap.org"
-    ]
+    :tile_parent => "melbourne.render.openstreetmap.org"
   }
 )
 

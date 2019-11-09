@@ -35,12 +35,7 @@ default_attributes(
     }
   },
   :tilecache => {
-    :tile_parent => "baku.render.openstreetmap.org",
-    :tile_siblings => [
-      "katie.openstreetmap.org",
-      "konqi.openstreetmap.org",
-      "ridgeback.openstreetmap.org"
-    ]
+    :tile_parent => "baku.render.openstreetmap.org"
   }
 )
 

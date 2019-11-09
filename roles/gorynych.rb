@@ -55,11 +55,7 @@ default_attributes(
     ]
   },
   :tilecache => {
-    :tile_parent => "moscow.render.openstreetmap.org",
-    :tile_siblings => [
-      "noomoahk.openstreetmap.org",
-      "cmok.openstreetmap.org"
-    ]
+    :tile_parent => "moscow.render.openstreetmap.org"
   }
 )
 

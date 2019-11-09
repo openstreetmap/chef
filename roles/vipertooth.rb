@@ -37,13 +37,7 @@ default_attributes(
     ]
   },
   :tilecache => {
-    :tile_parent => "kiev.render.openstreetmap.org",
-    :tile_siblings => [
-      "cmok.openstreetmap.org",
-      "sarkany.openstreetmap.org",
-      "kalessin.openstreetmap.org",
-      "konqi.openstreetmap.org"
-    ]
+    :tile_parent => "kiev.render.openstreetmap.org"
   }
 )
 
