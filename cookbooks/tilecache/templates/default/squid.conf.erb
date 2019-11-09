@@ -126,7 +126,7 @@ cache_peer <%= sibling %> sibling 3128 4827 htcp weight=1500
 <% if node[:squid][:version] < 4 -%>
 cache_peer <%= node[:tilecache][:tile_parent] %> parent 443 0 no-query originserver name=osmtileAccel login=PASS connect-timeout=120 no-digest weight=1000 ssl ssldomain=render.openstreetmap.org
 <% else -%>
-cache_peer <%= node[:tilecache][:tile_parent] %> parent 443 0 no-query originserver name=osmtileAccel login=PASS connect-timeout=120 no-digest weight=1000 tls tlsdomain=render.openstreetmap.org
+cache_peer <%= node[:tilecache][:tile_parent] %> parent 443 0 no-query originserver name=osmtileAccel login=PASS connect-timeout=120 no-digest weight=1000 tls tlsdomain=render.openstreetmap.org standby=32
 <% end -%>
 cache_peer_access osmtileAccel allow osmtile_sites
 
