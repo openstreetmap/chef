@@ -124,6 +124,14 @@ log "squid-restart" do
   end
 end
 
+log "squid-restart-shm" do
+  message "Restarting squid due to remounted /dev/shm"
+  notifies :restart, "service[squid]"
+  not_if do
+    File.exist?("/dev/shm/squid-squid-page-pool.shm")
+  end
+end
+
 munin_plugin "squid_cache"
 munin_plugin "squid_times"
 munin_plugin "squid_icp"
