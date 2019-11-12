@@ -3,7 +3,7 @@ description "Master role applied to stormfly-02"
 
 default_attributes(
   :hardware => {
-    :shm_size => "36g"
+    :shm_size => "38g"
   },
   :networking => {
     :interfaces => {

@@ -3,7 +3,7 @@ description "Master role applied to cherufe"
 
 default_attributes(
   :hardware => {
-    :shm_size => "10g"
+    :shm_size => "12g"
   },
   :networking => {
     :interfaces => {

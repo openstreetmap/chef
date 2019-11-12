@@ -538,7 +538,7 @@ end
 
 if node[:hardware][:shm_size]
   mount "/dev/shm" do
-    action [:mount, :enable]
+    action [:mount, :remount, :enable]
     device "tmpfs"
     fstype "tmpfs"
     options "rw,nosuid,nodev,size=#{node[:hardware][:shm_size]}"

@@ -8,7 +8,7 @@ default_attributes(
     }
   },
   :hardware => {
-    :shm_size => "18g"
+    :shm_size => "20g"
   },
   :networking => {
     :interfaces => {
