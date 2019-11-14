@@ -537,10 +537,18 @@ unless Dir.glob("/sys/class/hwmon/hwmon*").empty?
 end
 
 if node[:hardware][:shm_size]
+  execute "remount-dev-shm" do
+    action :nothing
+    command "/bin/mount -o remount /dev/shm"
+    user "root"
+    group "root"
+  end
+
   mount "/dev/shm" do
-    action [:mount, :enable]
+    action :enable
     device "tmpfs"
     fstype "tmpfs"
     options "rw,nosuid,nodev,size=#{node[:hardware][:shm_size]}"
+    notifies :run, "execute[remount-dev-shm]"
   end
 end
