@@ -62,6 +62,9 @@ property :no_new_privileges, [TrueClass, FalseClass]
 property :tasks_max, Integer
 property :timeout_sec, Integer
 property :pid_file, String
+property :nice, Integer
+property :io_scheduling_class, [Integer, String]
+property :io_scheduling_priority, Integer
 
 action :create do
   service_variables = new_resource.to_hash

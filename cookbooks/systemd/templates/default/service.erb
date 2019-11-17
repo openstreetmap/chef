@@ -114,6 +114,15 @@ TimeoutSec=<%= @timeout_sec %>
 <% if @pid_file -%>
 PIDFile=<%= @pid_file %>
 <% end -%>
+<% if @nice -%>
+Nice=<%= @nice %>
+<% end -%>
+<% if @io_scheduling_class -%>
+IOSchedulingClass=<%= @io_scheduling_class %>
+<% end -%>
+<% if @io_scheduling_priority -%>
+IOSchedulingPriority=<%= @io_scheduling_priority %>
+<% end -%>
 <% unless @dropin -%>
 
 [Install]
