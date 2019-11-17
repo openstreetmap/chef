@@ -1,0 +1,9 @@
+[user]
+	email = git@firefishy.com
+	name = Grant Slater
+[push]
+	default = simple
+[core]
+	editor = vim
+[diff]
+	algorithm = histogram
