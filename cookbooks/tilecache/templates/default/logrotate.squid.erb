@@ -4,6 +4,7 @@
   daily
   compress
   compresscmd /usr/bin/xz
+  compressoptions --threads=<% [ node[:cpu][:total] / 2, 1 ].max.ceil %>
   uncompresscmd /usr/bin/unxz
   compressext .xz
   rotate 2
