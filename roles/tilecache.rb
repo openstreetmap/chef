@@ -49,6 +49,12 @@ default_attributes(
         "net.ipv4.ip_local_port_range" => "1024\t65000"
       }
     },
+    :network_tcp_timewait_reuse => {
+      :comment => "Allow tcp timewait reuse",
+      :parameters => {
+        "net.ipv4.tcp_tw_reuse" => 1
+      }
+    },
     :kernel_tfo_listen_enable => {
       :comment => "Enable TCP Fast Open for listening sockets",
       :parameters => {
