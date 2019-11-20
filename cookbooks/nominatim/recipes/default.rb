@@ -222,8 +222,7 @@ template "/etc/logrotate.d/nominatim" do
 end
 
 external_data = [
-  "wikipedia_article.sql.bin",
-  "wikipedia_redirect.sql.bin",
+  "wikimedia-importance.sql.gz",
   "gb_postcode_data.sql.gz"
 ]
 
