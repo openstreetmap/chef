@@ -1,0 +1,28 @@
+name: Coookstyle
+on:
+  - push
+  - pull_request
+jobs:
+  cookstyle:
+    name: Cookstyle
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v1
+      with:
+        fetch-depth: 1
+    - name: Setup ruby
+      uses: actions/setup-ruby@v1
+    - name: Cache gems
+      uses: actions/cache@v1
+      with:
+        path: vendor/bundle
+        key: bundle-${{ runner.OS }}-${{ hashFiles('Gemfile.lock') }}
+        restore-keys: |
+          bundle-${{ runner.OS }}-
+    - name: Install gems
+      run: |
+        gem install bundler --version "~> 1.17"
+        bundle install --jobs 4 --retry 3 --deployment
+    - name: Run cookstyle
+      run: bundle exec cookstyle --format fuubar

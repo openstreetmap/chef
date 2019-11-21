@@ -1,0 +1,99 @@
+name: Test Kitchen
+on:
+  - push
+  - pull_request
+jobs:
+  kitchen:
+    name: Test Kitchen
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        suite:
+          - accounts
+          - apache
+          - apt
+          - bind
+          - blog
+          - blogs
+          - civicrm
+          - clamav
+          - devices
+          - dhcpd
+          - dmca
+          - donate
+          - exim
+          - fail2ban
+          - forum
+          - ftp
+          - geodns
+          - geoipupdate
+          - gps-tile
+          - hardware
+          - incron
+          - letsencrypt
+          - mailman
+          - memcached
+          - munin
+          - munin-plugins
+          - munin-server
+          - mysql
+          - networking
+          - nginx
+          - nodejs
+          - ntp
+          - openssh
+          - osmosis
+          - osqa
+          - otrs
+          - passenger
+          - piwik
+          - planet
+          - planet-dump
+          - planet-notes
+          - planet-replication
+          - postgresql
+          - python
+          - rsyncd
+          - serverinfo
+          - spamassassin
+          - squid
+          - stateofthemap
+          - subversion
+          - supybot
+          - switch2osm
+          - taginfo
+          - tile
+          - tilecache
+          - tools
+          - trac
+          - web-backend
+          - web-cgimap
+          - web-frontend
+          - web-rails
+        os:
+          - ubuntu-1804
+      fail-fast: false
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v1
+      with:
+        fetch-depth: 1
+    - name: Setup ruby
+      uses: actions/setup-ruby@v1
+    - name: Cache gems
+      uses: actions/cache@v1
+      with:
+        path: vendor/bundle
+        key: bundle-${{ runner.OS }}-${{ hashFiles('Gemfile.lock') }}
+        restore-keys: |
+          bundle-${{ runner.OS }}-
+    - name: Disable apparmor for mysqld
+      run: |
+        sudo apt-get install apparmor-utils
+        sudo aa-disable /usr/sbin/mysqld
+    - name: Install gems
+      run: |
+        gem install bundler --version "~> 1.17"
+        bundle install --jobs 4 --retry 3 --deployment
+    - name: Run kitchen test ${{ matrix.suite }}-${{ matrix.os }}
+      run: bundle exec kitchen test ${{ matrix.suite }}-${{ matrix.os }}

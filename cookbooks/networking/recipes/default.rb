@@ -195,6 +195,7 @@ template "/etc/hosts" do
   owner "root"
   group "root"
   mode 0o644
+  not_if { ENV["TEST_KITCHEN"] }
 end
 
 service "systemd-resolved" do
