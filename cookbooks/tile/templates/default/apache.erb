@@ -40,6 +40,9 @@
   # Add diagnostics header to identify render server
   Header set X-TileRender "<%= node.name %>"
 
+  # Tell clients to use stale tiles if necessary
+  Header append Cache-Control "stale-while-revalidate=604800, stale-if-error=604800" "expr=%{CONTENT_TYPE} == 'image/png'"
+
   # Remove Proxy request header to mitigate https://httpoxy.org/
   RequestHeader unset Proxy early
 
