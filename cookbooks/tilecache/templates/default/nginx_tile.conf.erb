@@ -194,10 +194,11 @@ server {
       proxy_set_header Accept-Charset '';
       # Do not send origin, we allow all.
       proxy_set_header origin '';
-      # Do not pass invalid header to backend.
+      # Do not pass invalid headers to backend.
       proxy_set_header X-Forwarded-Host '';
       proxy_set_header X-Host '';
       proxy_set_header Authorization '';
+      proxy_set_header Proxy-Authorization '';
 
       # Drop partial requests
       proxy_set_header range '';
