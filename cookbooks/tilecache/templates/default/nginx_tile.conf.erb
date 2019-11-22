@@ -73,18 +73,23 @@ map $http_referer $denied_referer {
   'http://osm.org'                 1; # Faked
 }
 
+map $http_referer $osm_referer {
+  default                                 '';    # False
+  '~^https:\/\/www\.openstreetmap\.org\/' 'osm'; # True
+}
+
 # Limit Cache-Control header to only approved User-Agents
-map $http_user_agent $limit_http_cache_control {
-  default '';                              # Unset Header
-  '~^Mozilla\/5\.0\ QGIS\/' '';            # Unset Header
-  '~^Mozilla\/5\.0\ ' $http_cache_control; # Pass Header
+map $osm_referer$http_user_agent $limit_http_cache_control {
+  default '';                                # Unset Header
+  '~^osmMozilla\/5\.0\ QGIS\/' '';            # Unset Header
+  '~^osmMozilla\/5\.0\ ' $http_cache_control; # Pass Header
 }
 
 # Limit Pragma header to only approved User-Agents
-map $http_user_agent $limit_http_pragma {
-  default '';                       # Unset Header
-  '~^Mozilla\/5\.0\ QGIS\/' '';     # Unset Header
-  '~^Mozilla\/5\.0\ ' $http_pragma; # Pass Header
+map $osm_referer$http_user_agent $limit_http_pragma {
+  default '';                          # Unset Header
+  '~^osmMozilla\/5\.0\ QGIS\/' '';     # Unset Header
+  '~^osmMozilla\/5\.0\ ' $http_pragma; # Pass Header
 }
 
 server {
