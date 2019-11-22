@@ -73,11 +73,6 @@ map $http_referer $denied_referer {
   'http://osm.org'                 1; # Faked
 }
 
-map $http_referer $osm_referer {
-  default                                 0;     # False
-  '~^https:\/\/www\.openstreetmap\.org\/' 'osm'; # True
-}
-
 # Limit Cache-Control header to only approved User-Agents
 map $http_user_agent $limit_http_cache_control {
   default '';                              # Unset Header
@@ -254,20 +249,12 @@ server {
         return 418;
       }
 
-      # Only allow cache purges if from OpenStreetMap referer
-      if ($osm_referer) {
-        # Allow cache purging headers only from select User-Agents (uses nginx Map)
-        proxy_set_header Cache-Control $limit_http_cache_control;
-        proxy_set_header Pragma $limit_http_pragma;
-      }
-      # nginx has no if else logic
-      if ($osm_referer != 'osm') {
-        proxy_set_header Cache-Control '';
-        proxy_set_header Pragma '';
-      }
-
       # Strip any ?query parameters from urls
       set $args '';
+
+      # Allow cache purging headers only from select User-Agents (uses nginx Map)
+      proxy_set_header Cache-Control $limit_http_cache_control;
+      proxy_set_header Pragma $limit_http_pragma;
     }
 <% end %>
 }
