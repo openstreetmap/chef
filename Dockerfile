@@ -1,17 +1,24 @@
 # Basic Dockerfile to run cookstyle linting
 # run: docker build -t test .
-FROM ruby:2.6
+FROM ruby:2.6-alpine as build
 
+# Add Gem build requirements
+RUN apk add --no-cache build-base
+
+# Create app directory
 WORKDIR /app
 
-RUN apt-get update \
-	&& apt-get install -y --no-install-recommends libssl-dev
+# Add Gemfile and Gemfile.lock
+ADD Gemfile* ./
 
-ADD Gemfile* /app/
-RUN gem install bundler --no-document \
+# Install Gems
+RUN gem install bundler \
     && bundle config build.nokogiri --use-system-libraries \
-    && bundle install --jobs $(nproc) --retry 5
+    && bundle config --global jobs $(nproc) \
+    && bundle install
 
-ADD . /app/
+# Add repo
+ADD . .
 
+# Run linting
 RUN bundle exec cookstyle -f fuubar
