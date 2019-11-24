@@ -105,6 +105,11 @@ server {
     # See: http://nginx.org/en/docs/http/ngx_http_ssl_module.html#ssl_early_data
     ssl_early_data on;
 
+    # Only allow GET / HEAD / OPTIONS (CORS) requests
+    limit_except GET HEAD OPTIONS {
+      deny all;
+    }
+
     # Immediately 404 layers we do not support
 <% for i in 20..99 do %>
     location /<%= i %>/ {
