@@ -1,9 +1,8 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
-#configure host name
+# configure host name
 visible_hostname <%= node.name %>
 
-#FIXME - configurable
 cache_mem  <%= node[:squid][:cache_mem] %>
 <% if node[:squid][:version] > 2 -%>
 
@@ -14,15 +13,24 @@ error_log_languages off
 
 max_filedescriptors 98304
 
-#used by squidclient / munin
+<% if node[:squid][:version] > 3 -%>
+# Use RFC6891 recommended max size
+dns_packet_max 4096
+# Use low initial retry interval (backoff start)
+dns_retransmit_interval 2 seconds
+# Set low timeout
+dns_timeout 15 seconds
+<% end -%>
+
+# used by squidclient / munin
 http_port 3128
-#HTCP
+# HTCP
 htcp_port 4827
-#ICP
+# ICP
 icp_port 3130
 log_icp_queries off
 
-#FIXME - configurable
+# FIXME - configurable
 <% if node[:squid][:version] < 3 -%>
 http_port 80 accel defaultsite=tile.openstreetmap.org tcpkeepalive=60,10,6 http11
 <% else -%>
@@ -32,10 +40,10 @@ http_port 80 accel no-vhost defaultsite=tile.openstreetmap.org tcpkeepalive=60,1
 cache_effective_user proxy
 cache_effective_group proxy
 
-#FIXME - configurable
 <% Array(node[:squid][:cache_dir]).each do |cache_dir| -%>
 cache_dir <%= cache_dir %>
 <% end -%>
+
 <% if node[:squid][:version] < 3 -%>
 cache_swap_log /var/spool/squid/%s
 <% end -%>
@@ -47,7 +55,7 @@ quick_abort_max 0 KB
 
 read_ahead_gap 64 KB
 
-maximum_object_size 1048576 bytes
+maximum_object_size 256 KB
 maximum_object_size_in_memory 64 KB
 
 cache_replacement_policy heap LFUDA
@@ -64,11 +72,8 @@ pconn_lifetime 5 minutes
 <% end -%>
 
 negative_ttl 15 seconds
-half_closed_clients off
 <% if node[:squid][:version] < 3 -%>
 pipeline_prefetch on
-<% else -%>
-pipeline_prefetch 1
 <% end -%>
 
 read_timeout 90 seconds
@@ -76,15 +81,12 @@ request_timeout 90 seconds
 connect_timeout 20 seconds
 client_lifetime 1 hours
 
-<% if node[:squid][:version] < 4 -%>
-collapsed_forwarding on
-<% end -%>
 <% if node[:squid][:version] < 3 -%>
 refresh_stale_hit 300 seconds
 <% end -%>
 
-#Recommended minimum configuration:
-#----------------------------------
+# Recommended minimum configuration:
+# ----------------------------------
 <% if node[:squid][:version] < 3 -%>
 acl all src all
 acl manager proto cache_object
@@ -110,7 +112,7 @@ http_access allow manager
 http_access deny manager
 http_access deny !Safe_ports
 http_access deny CONNECT !SSL_ports
-#----------------------------------
+# ----------------------------------
 
 acl purge_hosts src 127.0.0.0/8
 acl PURGE method purge
@@ -144,17 +146,16 @@ digest_generation on
 
 refresh_pattern .		0	50%	8640
 
-#ZERO required for logrotate to work properly
+# ZERO required for logrotate to work properly
 logfile_rotate 0
 
 <% Dir.glob("/etc/squid/squid.conf.d/*.conf") do |file| -%>
 <%= File.read(file) %>
 <% end -%>
 
-#MUST BE LAST ACL
-#--------------
+# MUST BE LAST ACL
+# --------------
 http_access deny all
 htcp_access deny all
 icp_access deny all
-#--------------
-
+# --------------
