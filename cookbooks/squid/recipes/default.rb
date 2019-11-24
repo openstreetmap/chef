@@ -85,9 +85,7 @@ systemd_tmpfile "/var/run/squid" do
   mode "0755"
 end
 
-address_families = %w[AF_UNIX AF_INET]
-
-# address_families << "AF_INET6" unless node.interfaces(:family => :inet6).empty?
+address_families = %w[AF_UNIX AF_INET AF_INET6]
 
 systemd_service "squid" do
   description "Squid caching proxy"
