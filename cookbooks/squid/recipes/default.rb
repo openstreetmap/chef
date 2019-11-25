@@ -116,7 +116,7 @@ log "squid-restart" do
   message "Restarting squid due to counter wraparound"
   notifies :restart, "service[squid]"
   only_if do
-    IO.popen(["squidclient", "--host=127.0.0.1", "--port=80", "mgr:counters"]) do |io|
+    IO.popen(["squidclient", "--host=127.0.0.1", "--port=3128", "mgr:counters"]) do |io|
       io.each.grep(/^[a-z][a-z_.]+ = -[0-9]+$/).count.positive?
     end
   end
