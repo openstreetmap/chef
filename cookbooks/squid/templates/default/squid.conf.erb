@@ -31,7 +31,6 @@ htcp_port 4827
 icp_port 3130
 log_icp_queries off
 
-# FIXME - configurable
 <% if node[:squid][:version] < 3 -%>
 http_port 80 accel defaultsite=tile.openstreetmap.org tcpkeepalive=60,10,6 http11
 <% else -%>
@@ -132,7 +131,7 @@ access_log daemon:<%= node[:squid][:access_log] %>
 <% end -%>
 cache_log /var/log/squid/cache.log
 cache_store_log none
-buffered_logs on
+
 client_db off
 strip_query_terms off
 <% if node[:squid][:version] > 2 -%>
@@ -145,7 +144,8 @@ store_id_extras "%>a %un %>rm myip=%la myport=%lp"
 
 digest_generation on
 
-refresh_pattern .		0	50%	8640
+refresh_pattern .		0	50%	20160
+refresh_pattern -i tile.openstreetmap.org 60 80% 20160 reload-into-ims
 
 # ZERO required for logrotate to work properly
 logfile_rotate 0
