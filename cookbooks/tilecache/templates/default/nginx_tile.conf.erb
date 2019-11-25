@@ -1,18 +1,15 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
 upstream tile_cache_backend {
-  server 127.0.0.1;
-  server 127.0.0.2;
-  server 127.0.0.3;
+  server 127.0.0.1:80;
+  server 127.0.0.2:80;
 
   # Add the other caches to relieve pressure if local squid failing
   # Balancer: round-robin
 <% @caches.each do |cache| -%>
 <% if cache[:hostname] != node[:hostname] -%>
-<% if node[:tilecache][:tile_siblings].include? cache[:fqdn] -%>
 <% cache.ipaddresses(:family => :inet, :role => :external).sort.each do |address| -%>
-  server <%= address %> backup; # Server <%= cache[:hostname] %>
-<% end -%>
+  server <%= address %>:80 backup; # Server <%= cache[:hostname] %>
 <% end -%>
 <% end -%>
 <% end -%>
