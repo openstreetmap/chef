@@ -15,7 +15,7 @@ max_filedescriptors 98304
 
 <% if node[:squid][:version] > 3 -%>
 # Use RFC6891 recommended max size
-dns_packet_max 4096
+dns_packet_max 4096 bytes
 # Use low initial retry interval (backoff start)
 dns_retransmit_interval 2 seconds
 # Set low timeout
