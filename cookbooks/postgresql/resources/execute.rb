@@ -25,9 +25,6 @@ property :database, :kind_of => String, :required => true
 property :user, :default => "postgres"
 property :group, :default => "postgres"
 
-action :nothing do
-end
-
 action :run do
   options = { :database => new_resource.database, :user => new_resource.user, :group => new_resource.group }
 
