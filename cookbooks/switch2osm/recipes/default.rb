@@ -62,7 +62,7 @@ end
 
 execute "/srv/switch2osm.org" do
   action :nothing
-  command "bundle exec jekyll build --trace --baseurl=https://switch2osm.org"
+  command "bundle exec jekyll build --trace --config _config.yml,_config_osm.yml"
   cwd "/srv/switch2osm.org"
   user "nobody"
   group "nogroup"
