@@ -16,72 +16,65 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+include_recipe "apache"
+include_recipe "git"
 
-include_recipe "wordpress"
+package %w[
+  ruby
+  ruby-dev
+  zlib1g-dev
+]
 
-passwords = data_bag_item("switch2osm", "passwords")
-
-wordpress_site "switch2osm.org" do
-  aliases ["www.switch2osm.org", "switch2osm.com", "www.switch2osm.com"]
-  directory "/srv/switch2osm.org"
-  database_name "switch2osm-blog"
-  database_user "switch2osm-user"
-  database_password passwords["switch2osm-user"]
+gem_package "bundler" do
+  version "1.17.3"
 end
 
-wordpress_theme "switch2osm.org-picolight" do
-  theme "picolight"
-  site "switch2osm.org"
-  repository "git://github.com/Firefishy/picolight-s2o.git"
-  revision "master"
-end
-
-wordpress_plugin "switch2osm.org-sitepress-multilingual-cms" do
-  plugin "sitepress-multilingual-cms"
-  site "switch2osm.org"
-  repository "https://git.openstreetmap.org/private/sitepress-multilingual-cms.git"
-end
-
-wordpress_plugin "switch2osm.org-wpml-cms-nav" do
-  plugin "wpml-cms-nav"
-  site "switch2osm.org"
-  repository "https://git.openstreetmap.org/private/wpml-cms-nav.git"
-end
-
-wordpress_plugin "switch2osm.org-wpml-sticky-links" do
-  plugin "wpml-sticky-links"
-  site "switch2osm.org"
-  repository "https://git.openstreetmap.org/private/wpml-sticky-links.git"
-end
-
-wordpress_plugin "switch2osm.org-wpml-string-translation" do
-  plugin "wpml-string-translation"
-  site "switch2osm.org"
-  repository "https://git.openstreetmap.org/private/wpml-string-translation.git"
-end
-
-wordpress_plugin "switch2osm.org-wpml-translation-analytics" do
-  plugin "wpml-translation-analytics"
-  site "switch2osm.org"
-  repository "https://git.openstreetmap.org/private/wpml-translation-analytics.git"
-end
-
-wordpress_plugin "switch2osm.org-wpml-translation-management" do
-  plugin "wpml-translation-management"
-  site "switch2osm.org"
-  repository "https://git.openstreetmap.org/private/wpml-translation-management.git"
-end
-
-wordpress_plugin "switch2osm.org-wpml-xliff" do
-  plugin "wpml-xliff"
-  site "switch2osm.org"
-  repository "https://git.openstreetmap.org/private/wpml-xliff.git"
-end
-
-template "/etc/cron.daily/switch2osm-backup" do
-  source "backup.cron.erb"
-  owner "root"
+git "/srv/switch2osm.org" do
+  action :sync
+  repository "https://github.com/switch2osm/switch2osm.github.io.git"
+  user "root"
   group "root"
-  mode 0o750
-  variables :passwords => passwords
+  notifies :run, "execute[/srv/switch2osm.org/Gemfile]"
+end
+
+directory "/srv/switch2osm.org/_site" do
+  mode 0o755
+  owner "nobody"
+  group "nogroup"
+end
+
+# Workaround https://github.com/jekyll/jekyll/issues/7804
+# by creating a .jekyll-cache folder
+directory "/srv/switch2osm.org/.jekyll-cache" do
+  mode 0o755
+  owner "nobody"
+  group "nogroup"
+end
+
+execute "/srv/switch2osm.org/Gemfile" do
+  action :nothing
+  command "bundle install --deployment"
+  cwd "/srv/switch2osm.org"
+  user "root"
+  group "root"
+  notifies :run, "execute[/srv/switch2osm.org]"
+end
+
+execute "/srv/switch2osm.org" do
+  action :nothing
+  command "bundle exec jekyll build --trace --baseurl=https://switch2osm.org"
+  cwd "/srv/switch2osm.org"
+  user "nobody"
+  group "nogroup"
+end
+
+ssl_certificate "switch2osm.org" do
+  domains ["switch2osm.org",
+           "www.switch2osm.org", "switch2osm.com", "www.switch2osm.com"]
+  notifies :reload, "service[apache2]"
+end
+
+apache_site "switch2osm.org" do
+  template "apache.erb"
+  directory "/srv/switch2osm.org/_site"
 end
