@@ -60,6 +60,14 @@ execute "/srv/switch2osm.org/Gemfile" do
   notifies :run, "execute[/srv/switch2osm.org]"
 end
 
+# Temporary workaround until merged: https://github.com/switch2osm/switch2osm.github.io/pull/68
+file "/srv/switch2osm.org/_config_osm.yml" do
+  mode 0o644
+  user "root"
+  group "root"
+  content "url: https://switch2osm.org"
+end
+
 execute "/srv/switch2osm.org" do
   action :nothing
   command "bundle exec jekyll build --trace --config _config.yml,_config_osm.yml"
