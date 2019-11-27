@@ -7,8 +7,8 @@ ACTION=="add", SUBSYSTEM=="block", ENV{ID_VENDOR}=="HP", ENV{ID_MODEL}=="LOGICAL
 ACTION=="add", SUBSYSTEM=="block", ENV{ID_VENDOR}=="HP", ENV{ID_MODEL}=="LOGICAL_VOLUME", ATTR{queue/rq_affinity}="2"
 
 # VMware Virtual disk configuration
-ACTION=="add", SUBSYSTEM=="block", ENV{ID_VENDOR}=="VMware", ENV{ID_MODEL}=="Virtual disk", ATTR{queue/read_ahead_kb}="4096"
-ACTION=="add", SUBSYSTEM=="block", ENV{ID_VENDOR}=="VMware", ENV{ID_MODEL}=="Virtual disk", ATTR{queue/scheduler}="noop"
+ACTION=="add", SUBSYSTEM=="block", ENV{ID_VENDOR}=="VMware", ENV{ID_MODEL}=="Virtual_disk", ATTR{queue/read_ahead_kb}="4096"
+ACTION=="add", SUBSYSTEM=="block", ENV{ID_VENDOR}=="VMware", ENV{ID_MODEL}=="Virtual_disk", ATTR{queue/scheduler}="noop"
 
 <% node[:devices].each do |name,device| -%>
 
