@@ -63,4 +63,4 @@ ACTION=="add", SUBSYSTEM=="block", DRIVERS=="nvme", ATTR{queue/nomerges}="1"
 
 # Increase readahead on virtio block devices
 ACTION=="add", SUBSYSTEM=="block", DRIVERS=="virtio_blk", ATTR{queue/read_ahead_kb}="4096"
-ACTION=="add", SUBSYSTEM=="block", DRIVERS=="virtio_blk", ATTR{queue/scheduler}="noop"
+# Note virtio sets scheduler to none automatically
