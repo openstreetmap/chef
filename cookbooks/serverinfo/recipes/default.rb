@@ -65,24 +65,24 @@ end
 
 # Workaround https://github.com/jekyll/jekyll/issues/7804
 # by creating a .jekyll-cache folder
-directory "/srv/hardware.osmfoundation.org/.jekyll-cache" do
+directory "/srv/hardware.openstreetmap.org/.jekyll-cache" do
   mode 0o755
   owner "nobody"
   group "nogroup"
 end
 
-execute "/srv/hardware.osmfoundation.org/Gemfile" do
+execute "/srv/hardware.openstreetmap.org/Gemfile" do
   action :nothing
   command "bundle install --deployment"
-  cwd "/srv/hardware.osmfoundation.org"
+  cwd "/srv/hardware.openstreetmap.org"
   user "root"
   group "root"
-  notifies :run, "execute[/srv/hardware.osmfoundation.org]"
+  notifies :run, "execute[/srv/hardware.openstreetmap.org]"
 end
 
 execute "/srv/hardware.openstreetmap.org" do
   action :nothing
-  command "bundle exec jekyll build --trace --baseurl=https://hardware.osmfoundation.org"
+  command "bundle exec jekyll build --trace --baseurl=https://hardware.openstreetmap.org"
   cwd "/srv/hardware.openstreetmap.org"
   user "nobody"
   group "nogroup"
