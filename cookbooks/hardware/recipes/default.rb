@@ -98,6 +98,12 @@ when "VMware, Inc."
     action [:enable, :start]
     supports :status => true, :restart => true
   end
+
+  # May need additional work per:
+  # https://github.com/vmware/open-vm-tools/issues/302
+  execute "vmware-toolbox-cmd-timesync-disable" do
+    command "/usr/bin/vmware-toolbox-cmd timesync disable"
+  end
 end
 
 units.sort.uniq.each do |unit|
