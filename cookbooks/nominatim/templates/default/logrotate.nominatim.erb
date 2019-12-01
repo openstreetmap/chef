@@ -3,7 +3,7 @@
 <%= node[:nominatim][:logdir] %>/update.log {
   weekly
   missingok
-  rotate 5
+  rotate 30
   compress
   delaycompress
   notifempty
