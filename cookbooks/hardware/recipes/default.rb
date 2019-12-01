@@ -97,7 +97,7 @@ when "VMware, Inc."
   # Remove timeSync plugin completely
   # https://github.com/vmware/open-vm-tools/issues/302
   file "/usr/lib/open-vm-tools/plugins/vmsvc/libtimeSync.so" do
-    state :absent
+    action :delete
     notifies :restart, "service[open-vm-tools]"
   end
 
