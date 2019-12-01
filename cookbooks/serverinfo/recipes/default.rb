@@ -20,17 +20,22 @@
 include_recipe "apache"
 include_recipe "git"
 
-package "ruby"
-package "ruby-dev"
+package %w[
+  ruby
+  ruby-dev
+  zlib1g-dev
+]
 
-gem_package "jekyll"
+gem_package "bundler" do
+  version "1.17.3"
+end
 
 git "/srv/hardware.openstreetmap.org" do
   action :sync
   repository "git://github.com/gravitystorm/osmf-server-info.git"
   user "root"
   group "root"
-  notifies :run, "execute[/srv/hardware.openstreetmap.org]"
+  notifies :run, "execute[/srv/hardware.openstreetmap.org/Gemfile]"
 end
 
 nodes = { :rows => search(:node, "*:*") }
@@ -58,9 +63,26 @@ directory "/srv/hardware.openstreetmap.org/_site" do
   group "nogroup"
 end
 
+# Workaround https://github.com/jekyll/jekyll/issues/7804
+# by creating a .jekyll-cache folder
+directory "/srv/hardware.osmfoundation.org/.jekyll-cache" do
+  mode 0o755
+  owner "nobody"
+  group "nogroup"
+end
+
+execute "/srv/hardware.osmfoundation.org/Gemfile" do
+  action :nothing
+  command "bundle install --deployment"
+  cwd "/srv/hardware.osmfoundation.org"
+  user "root"
+  group "root"
+  notifies :run, "execute[/srv/hardware.osmfoundation.org]"
+end
+
 execute "/srv/hardware.openstreetmap.org" do
   action :nothing
-  command "jekyll build --trace"
+  command "bundle exec jekyll build --trace --baseurl=https://hardware.osmfoundation.org"
   cwd "/srv/hardware.openstreetmap.org"
   user "nobody"
   group "nogroup"
