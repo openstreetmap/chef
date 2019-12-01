@@ -91,6 +91,13 @@ when "Supermicro"
   end
 when "IBM"
   units << "0"
+when "VMware, Inc."
+  package "open-vm-tools"
+
+  service "open-vm-tools" do
+    action [:enable, :start]
+    supports :status => true, :restart => true
+  end
 end
 
 units.sort.uniq.each do |unit|
