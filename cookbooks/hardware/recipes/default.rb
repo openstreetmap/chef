@@ -94,15 +94,22 @@ when "IBM"
 when "VMware, Inc."
   package "open-vm-tools"
 
+  # Remove timeSync plugin completely
+  # https://github.com/vmware/open-vm-tools/issues/302
+  file "/usr/lib/open-vm-tools/plugins/vmsvc/libtimeSync.so" do
+    state :absent
+    notifies :restart, "service[open-vm-tools]"
+  end
+
+  # Attempt to tell Host we are not interested in timeSync
+  execute "vmware-toolbox-cmd-timesync-disable" do
+    command "/usr/bin/vmware-toolbox-cmd timesync disable"
+    ignore_failure true
+  end
+
   service "open-vm-tools" do
     action [:enable, :start]
     supports :status => true, :restart => true
-  end
-
-  # May need additional work per:
-  # https://github.com/vmware/open-vm-tools/issues/302
-  execute "vmware-toolbox-cmd-timesync-disable" do
-    command "/usr/bin/vmware-toolbox-cmd timesync disable"
   end
 end
 
