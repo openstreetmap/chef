@@ -29,6 +29,8 @@ rtcsync
 <% if node[:virtualization][:role] == "guest" -%>
 # Allow anytime step on VM guests
 makestep 1 -1
+# Allow 1h changes and do not exit
+maxchange 3600 1 -1
 <% else -%>
 # Step the system clock instead of slewing it if the adjustment is larger than
 # one second, but only in the first three clock updates.
