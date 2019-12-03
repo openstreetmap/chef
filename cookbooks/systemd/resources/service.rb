@@ -65,6 +65,8 @@ property :pid_file, String
 property :nice, Integer
 property :io_scheduling_class, [Integer, String]
 property :io_scheduling_priority, Integer
+property :kill_mode, String,
+         :is => %w[control-group process mixed none]
 
 action :create do
   service_variables = new_resource.to_hash
