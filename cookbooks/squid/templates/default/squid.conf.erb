@@ -9,6 +9,9 @@ cache_mem  <%= node[:squid][:cache_mem] %>
 workers <%= [ node[:cpu][:total] - 2, 1 ].max.ceil %>
 cpu_affinity_map process_numbers=<%= (1..[ node[:cpu][:total] - 2, 1 ].max.ceil).to_a.join(',') %> cores=<%=(1..[ node[:cpu][:total] - 2, 1 ].max.ceil).to_a.join(',') %>
 
+# Set short clean shutdown interval
+shutdown_lifetime 10 seconds
+
 error_log_languages off
 <% end -%>
 
