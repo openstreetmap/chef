@@ -92,17 +92,17 @@ systemd_service "squid" do
   after ["network.target", "nss-lookup.target"]
   type "forking"
   limit_nofile 98304
-  exec_start_pre "/usr/sbin/squid -N -z"
-  exec_start "/usr/sbin/squid -Y"
-  exec_reload "/usr/sbin/squid -k reconfigure"
-  exec_stop "/usr/sbin/squid -k shutdown"
+  exec_start_pre "/usr/sbin/squid --foreground -z"
+  exec_start "/usr/sbin/squid -YC"
+  exec_reload "/bin/kill -HUP $MAINPID"
+  pid_file "/var/run/squid.pid"
   private_tmp true
   private_devices true
   protect_system "full"
   protect_home true
   restrict_address_families address_families
-  restart "on-failure"
-  timeout_sec 0
+  restart "always"
+  kill_mode "mixed"
 end
 
 service "squid" do
