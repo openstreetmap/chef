@@ -94,6 +94,7 @@ server {
     server_name  localhost;
 
     proxy_buffers 8 64k;
+    proxy_busy_buffers_size 64k;
 
     ssl_certificate      /etc/ssl/certs/tile.openstreetmap.org.pem;
     ssl_certificate_key  /etc/ssl/private/tile.openstreetmap.org.key;
