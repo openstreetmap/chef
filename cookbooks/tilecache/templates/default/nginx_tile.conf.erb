@@ -1,8 +1,8 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
 upstream tile_cache_backend {
-  server 127.0.0.1:80;
-  server 127.0.0.2:80;
+  server 127.0.0.1:8080;
+  server 127.0.0.2:8080;
 
   # Add the other caches to relieve pressure if local squid failing
   # Balancer: round-robin
