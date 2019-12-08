@@ -43,7 +43,8 @@ default_attributes(
   :nginx => {
     :cache => {
       :proxy => {
-        :directory => "/store.new-san/nginx-cache/proxy-cache"
+        :directory => "/store.new-san/nginx-cache/proxy-cache",
+        :max_size => "65536M"
       }
     }
   },

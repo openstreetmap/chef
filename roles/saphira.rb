@@ -38,7 +38,7 @@ default_attributes(
   :nginx => {
     :cache => {
       :proxy => {
-        :max_size => "4096M"
+        :max_size => "16384M"
       }
     }
   },
