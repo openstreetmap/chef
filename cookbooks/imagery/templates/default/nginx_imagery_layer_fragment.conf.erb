@@ -21,7 +21,7 @@ location ~* "^/layer/<%= @layer %>/(\d+)/(\d+)/(\d+)\.(png|jpg|jpeg)$" {
   fastcgi_cache_valid 200 21d;
 
   # Serve stale cache on errors or if updating
-  fastcgi_cache_use_stale error timeout updating http_500 http_503 http_504;
+  fastcgi_cache_use_stale error timeout updating http_500 http_503;
   # If in cache as stale, serve stale and update in background
   fastcgi_cache_background_update on;
   # Enable revalidation using If-Modified-Since and If-None-Match for stale items
@@ -40,6 +40,8 @@ location ~* "^/layer/<%= @layer %>/(\d+)/(\d+)/(\d+)\.(png|jpg|jpeg)$" {
 
   # Add HTTP Cache-Control + Expires Headers
   expires 7d;
+  add_header Cache-Control "stale-while-revalidate=604800, stale-if-error=604800";
+  add_header x-cache-status $upstream_cache_status;
 
   # Allow CORS requests
   add_header 'Access-Control-Allow-Origin' '*';
