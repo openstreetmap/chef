@@ -4,6 +4,7 @@ location ~* "^/layer/<%= @layer %>/(\d+)/(\d+)/(\d+)\.(png|jpg|jpeg)$" {
   fastcgi_param QUERY_STRING "map=/srv/imagery/mapserver/layer-<%= @layer %>.map&mode=tile&layers=<%= @layer %>&tilemode=gmap&tile=$2+$3+$1";
   fastcgi_pass "<%= @site %>_fastcgi";
   fastcgi_buffers 8 64k;
+  fastcgi_busy_buffers_size 64k;
   include fastcgi_params;
   fastcgi_param REQUEST_METHOD "GET";
   fastcgi_param HTTP_PROXY "";
@@ -17,9 +18,14 @@ location ~* "^/layer/<%= @layer %>/(\d+)/(\d+)/(\d+)\.(png|jpg|jpeg)$" {
   fastcgi_keep_conn off;
 
   fastcgi_cache_lock on;
-  fastcgi_cache_lock_timeout 30s;
   fastcgi_cache_valid 200 21d;
-  fastcgi_cache_use_stale error timeout updating http_500 http_503;
+
+  # Serve stale cache on errors or if updating
+  fastcgi_cache_use_stale error timeout updating http_500 http_503 http_504;
+  # If in cache as stale, serve stale and update in background
+  fastcgi_cache_background_update on;
+  # Enable revalidation using If-Modified-Since and If-None-Match for stale items
+  fastcgi_cache_revalidate on;
 
   # Ignore client abort as it causes issues with the pipeline
   fastcgi_ignore_client_abort on;
