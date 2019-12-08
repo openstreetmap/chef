@@ -17,6 +17,9 @@
    DocumentRoot <%= @directory %>
 
    ErrorDocument 404 /404.html
+
+   ExpiresActive On
+   ExpiresDefault "access plus 10 minutes"
 </VirtualHost>
 
 <VirtualHost *:80>
