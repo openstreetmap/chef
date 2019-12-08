@@ -287,6 +287,9 @@ package %w[
   zlib1g-dev
 ]
 
+apache_module "expires"
+apache_module "rewrite"
+
 gem_package "bundler" do
   version "1.17.3"
 end

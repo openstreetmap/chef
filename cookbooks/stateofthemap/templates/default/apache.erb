@@ -46,6 +46,11 @@
         SSLCertificateKeyFile /etc/ssl/private/stateofthemap.org.key
 
         DocumentRoot /srv/stateofthemap.org/html
+
+        ErrorDocument 404 /404.html
+
+        ExpiresActive On
+        ExpiresDefault "access plus 12 hours"
 </VirtualHost>
 
 <Directory /srv/stateofthemap.org/html>

@@ -39,6 +39,11 @@
         SSLCertificateKeyFile /etc/ssl/private/<%= @year %>.stateofthemap.org.key
 
         DocumentRoot /srv/<%= @year %>.stateofthemap.org
+
+        ErrorDocument 404 /404.html
+
+        ExpiresActive On
+        ExpiresDefault "access plus 7 days"
 </VirtualHost>
 
 <Directory /srv/<%= @year %>.stateofthemap.org>
