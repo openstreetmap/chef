@@ -46,7 +46,7 @@ default_attributes(
     :network_local_port_range => {
       :comment => "Increase available local port range",
       :parameters => {
-        "net.ipv4.ip_local_port_range" => "1024\t65000"
+        "net.ipv4.ip_local_port_range" => "1024\t65535"
       }
     },
     :network_tcp_timewait_reuse => {
