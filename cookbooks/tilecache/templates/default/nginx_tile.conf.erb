@@ -225,9 +225,11 @@ server {
       proxy_cache_use_stale error timeout updating http_500 http_503 http_504;
       # If in cache as stale, serve stale and update in background
       proxy_cache_background_update on;
+      # Enable revalidation using If-Modified-Since and If-None-Match for stale items
+      proxy_cache_revalidate on;
       proxy_cache_min_uses 8;
 
-      add_header X-Nginx-Cache-Status $upstream_cache_status;
+      add_header x-cache-status $upstream_cache_status;
 <% end -%>
 
       # Set a QoS cookie if none presented (uses nginx Map)
