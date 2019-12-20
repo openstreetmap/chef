@@ -73,6 +73,13 @@ default_attributes(
         "kernel.sched_min_granularity_ns" => "10000000",
         "kernel.sched_wakeup_granularity_ns" => "15000000"
       }
+    },
+    :no_tcp_slow_start => {
+      :comment => "Ensure TCP slow start is disabled",
+      :parameters => {
+          "net.ipv4.tcp_slow_start_after_idle" => "0",
+          "net.ipv4.tcp_no_metrics_save" => "0"
+      }
     }
   }
 )
