@@ -1,59 +1,59 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
 <VirtualHost *:443>
-	ServerName munin.openstreetmap.org
-	ServerAlias munin.osm.org
-	ServerAdmin webmaster@openstreetmap.org
+  ServerName munin.openstreetmap.org
+  ServerAlias munin.osm.org
+  ServerAdmin webmaster@openstreetmap.org
 
-	CustomLog /var/log/apache2/munin.openstreetmap.org-access.log combined
-	ErrorLog /var/log/apache2/munin.openstreetmap.org-error.log
+  CustomLog /var/log/apache2/munin.openstreetmap.org-access.log combined
+  ErrorLog /var/log/apache2/munin.openstreetmap.org-error.log
 
-	SSLEngine on
-	SSLCertificateFile /etc/ssl/certs/munin.openstreetmap.org.pem
-	SSLCertificateKeyFile /etc/ssl/private/munin.openstreetmap.org.key
+  SSLEngine on
+  SSLCertificateFile /etc/ssl/certs/munin.openstreetmap.org.pem
+  SSLCertificateKeyFile /etc/ssl/private/munin.openstreetmap.org.key
 
-        SetEnv RRDCACHED_ADDRESS /var/run/rrdcached.sock
+  SetEnv RRDCACHED_ADDRESS /var/run/rrdcached.sock
 
-	DocumentRoot /srv/munin.openstreetmap.org
-	Alias /static/favicon.ico /srv/munin.openstreetmap.org/favicon.ico
-	Alias /static/ /etc/munin/static/
-	ScriptAlias /munin-cgi/ /usr/lib/munin/cgi/
+  DocumentRoot /srv/munin.openstreetmap.org
+  Alias /static/favicon.ico /srv/munin.openstreetmap.org/favicon.ico
+  Alias /static/ /etc/munin/static/
+  ScriptAlias /munin-cgi/ /usr/lib/munin/cgi/
 
-	# Remove Proxy request header to mitigate https://httpoxy.org/
-	RequestHeader unset Proxy early
+  # Remove Proxy request header to mitigate https://httpoxy.org/
+  RequestHeader unset Proxy early
 
-	RewriteEngine on
-	RewriteCond %{REQUEST_URI} !^/static/
-	RewriteCond %{REQUEST_URI} !^/dumps/
-	RewriteRule ^(/.*\.html)?$ /munin-cgi/munin-cgi-html/$1 [PT]
+  RewriteEngine on
+  RewriteCond %{REQUEST_URI} !^/static/
+  RewriteCond %{REQUEST_URI} !^/dumps/
+  RewriteRule ^(/.*\.html)?$ /munin-cgi/munin-cgi-html/$1 [PT]
 </VirtualHost>
 
 <VirtualHost *:80>
-	ServerName munin.openstreetmap.org
-	ServerAlias munin.osm.org
-	ServerAdmin webmaster@openstreetmap.org
+  ServerName munin.openstreetmap.org
+  ServerAlias munin.osm.org
+  ServerAdmin webmaster@openstreetmap.org
 
-	CustomLog /var/log/apache2/munin.openstreetmap.org-access.log combined
-	ErrorLog /var/log/apache2/munin.openstreetmap.org-error.log
+  CustomLog /var/log/apache2/munin.openstreetmap.org-access.log combined
+  ErrorLog /var/log/apache2/munin.openstreetmap.org-error.log
 
-	RedirectPermanent /.well-known/acme-challenge/ http://acme.openstreetmap.org/.well-known/acme-challenge/
-	RedirectPermanent / https://munin.openstreetmap.org/
+  RedirectPermanent /.well-known/acme-challenge/ http://acme.openstreetmap.org/.well-known/acme-challenge/
+  RedirectPermanent / https://munin.openstreetmap.org/
 </VirtualHost>
 
 <Directory /srv/munin.openstreetmap.org>
-	Require all granted
+  Require all granted
 </Directory>
 
 <Directory /srv/munin.openstreetmap.org/dumps>
-	Options +Indexes
+  Options +Indexes
 </Directory>
 
 <Directory /etc/munin/static>
-	Require all granted
+  Require all granted
 </Directory>
 
 <Directory /usr/lib/munin/cgi>
-	Options +ExecCGI
-	SetHandler fcgid-script
-	Require all granted
+  Options +ExecCGI
+  SetHandler fcgid-script
+  Require all granted
 </Directory>
