@@ -64,6 +64,13 @@ default_attributes(
         "kernel.sched_min_granularity_ns" => 10000000,
         "kernel.sched_wakeup_granularity_ns" => 15000000
       }
+    },
+    :tcp_use_bbr => {
+      :comment => "Use TCP BBR Congestion Control",
+      :parameters => {
+        "net.core.default_qdisc" => "fq",
+        "net.ipv4.tcp_congestion_control" => "bbr"
+      }
     }
   },
   :tile => {
