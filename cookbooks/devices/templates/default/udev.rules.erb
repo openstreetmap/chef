@@ -10,6 +10,11 @@ ACTION=="add", SUBSYSTEM=="block", ENV{ID_VENDOR}=="HP", ENV{ID_MODEL}=="LOGICAL
 ACTION=="add", SUBSYSTEM=="block", ENV{ID_VENDOR}=="VMware", ENV{ID_MODEL}=="Virtual_disk", ATTR{queue/read_ahead_kb}="4096"
 ACTION=="add", SUBSYSTEM=="block", ENV{ID_VENDOR}=="VMware", ENV{ID_MODEL}=="Virtual_disk", ATTR{queue/scheduler}="noop"
 
+# Dell PERC H710 tune
+ACTION=="add", SUBSYSTEM=="block", ENV{ID_VENDOR}=="DELL", ENV{ID_MODEL}=="PERC_H710", ATTR{queue/read_ahead_kb}="4096"
+ACTION=="add", SUBSYSTEM=="block", ENV{ID_VENDOR}=="DELL", ENV{ID_MODEL}=="PERC_H710", ATTR{queue/scheduler}="deadline"
+ACTION=="add", SUBSYSTEM=="block", ENV{ID_VENDOR}=="DELL", ENV{ID_MODEL}=="PERC_H710", ATTR{queue/nr_requests}="512"
+
 <% node[:devices].each do |name,device| -%>
 
 # <%= device[:comment] %>
