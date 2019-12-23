@@ -69,9 +69,9 @@ default_attributes(
       }
     },
     :default_qdisc => {
-      :comment => "Use pfifo_fast as the default queuing discipline",
+      :comment => "Use fq as the default queuing discipline",
       :parameters => {
-        "net.core.default_qdisc" => "pfifo_fast"
+        "net.core.default_qdisc" => "fq"
       }
     },
     :tune_cpu_scheduler => {
