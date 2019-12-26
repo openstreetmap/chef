@@ -22,7 +22,7 @@ default[:civicrm][:extensions][:civirules][:revision] = "2.11"
 
 default[:civicrm][:extensions][:mailchimp][:name] = "uk.co.vedaconsulting.mailchimp"
 default[:civicrm][:extensions][:mailchimp][:repository] = "git://github.com/veda-consulting/uk.co.vedaconsulting.mailchimp.git"
-default[:civicrm][:extensions][:mailchimp][:revision] = "v2.0.1"
+default[:civicrm][:extensions][:mailchimp][:revision] = "25798ffe209650f12162a0cdc3c7ee9203d950f2"
 
 default[:civicrm][:extensions][:username][:name] = "org.openstreetmap.username"
 default[:civicrm][:extensions][:username][:repository] = "git://github.com/grischard/org.openstreetmap.username.git"
