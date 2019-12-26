@@ -1,4 +1,4 @@
-default[:civicrm][:version] = "5.14.0"
+default[:civicrm][:version] = "5.20.2"
 
 default[:civicrm][:extensions][:cividiscount][:name] = "org.civicrm.module.cividiscount"
 default[:civicrm][:extensions][:cividiscount][:repository] = "git://github.com/dlobo/org.civicrm.module.cividiscount.git"
@@ -18,11 +18,7 @@ default[:civicrm][:extensions][:civiruleshttppost][:revision] = "e2c7de5f0fee319
 
 default[:civicrm][:extensions][:civirules][:name] = "org.civicoop.civirules"
 default[:civicrm][:extensions][:civirules][:repository] = "https://lab.civicrm.org/extensions/civirules.git"
-default[:civicrm][:extensions][:civirules][:revision] = "2.7"
-
-default[:civicrm][:extensions][:stripe][:name] = "com.drastikbydesign.stripe"
-default[:civicrm][:extensions][:stripe][:repository] = "git://github.com/drastik/com.drastikbydesign.stripe.git"
-default[:civicrm][:extensions][:stripe][:revision] = "4.7.3"
+default[:civicrm][:extensions][:civirules][:revision] = "2.11"
 
 default[:civicrm][:extensions][:mailchimp][:name] = "uk.co.vedaconsulting.mailchimp"
 default[:civicrm][:extensions][:mailchimp][:repository] = "git://github.com/veda-consulting/uk.co.vedaconsulting.mailchimp.git"
