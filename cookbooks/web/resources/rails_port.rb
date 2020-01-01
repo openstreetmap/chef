@@ -182,6 +182,7 @@ action :create do
     line.gsub!(/^( *)#geonames_username:.*$/, "\\1geonames_username: \"openstreetmap\"")
 
     line.gsub!(/^( *)#geoip_database:.*$/, "\\1geoip_database: \"/usr/share/GeoIP/GeoIPv6.dat\"")
+    line.gsub!(/^( *)#maxmind_database:.*$/, "\\1maxmind_database: \"/usr/share/GeoIP/GeoLite2-Country.mmdb\"")
 
     if new_resource.gpx_dir
       line.gsub!(/^( *)gpx_trace_dir:.*$/, "\\1gpx_trace_dir: \"#{new_resource.gpx_dir}/traces\"")
