@@ -21,9 +21,7 @@ include_recipe "apt"
 
 license_keys = data_bag_item("geoipupdate", "license-keys")
 
-package "geoipupdate" do
-  action [:install, :upgrade]
-end
+package "geoipupdate"
 
 template "/etc/GeoIP.conf" do
   source "GeoIP.conf.erb"
