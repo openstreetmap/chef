@@ -1,0 +1,5 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+AccountID <%= node[:geoipupdate][:account] %>
+LicenseKey <%= @license_keys[node[:geoipupdate][:account]] %>
+EditionIDs <%= Array(node[:geoipupdate][:editions]).join(" ") %>

@@ -17,17 +17,11 @@
 # limitations under the License.
 #
 
+include_recipe "geoipupdate"
+
 package %w[
-  geoipupdate
   gdnsd
 ]
-
-execute "geoipdate" do
-  command "geoipupdate"
-  user "root"
-  group "root"
-  not_if { ::File.exist?("/var/lib/GeoIP/GeoLite2-Country.mmdb") }
-end
 
 directory "/etc/gdnsd/config.d" do
   owner "nobody"

@@ -73,6 +73,11 @@ apt_repository "ubuntugis-unstable" do
   uri "ppa:ubuntugis/ubuntugis-unstable"
 end
 
+apt_repository "maxmind" do
+  action repository_actions["maxmind"]
+  uri "ppa:maxmind/ppa"
+end
+
 apt_repository "openstreetmap" do
   action repository_actions["openstreetmap"]
   uri "ppa:osmadmins/ppa"

@@ -18,6 +18,7 @@
 #
 
 include_recipe "apache"
+include_recipe "geoipupdate"
 include_recipe "mysql"
 
 passwords = data_bag_item("piwik", "passwords")
@@ -30,8 +31,6 @@ package "php-mysql"
 package "php-gd"
 package "php-xml"
 package "php-apcu"
-
-package "geoipupdate"
 
 apache_module "expires"
 apache_module "php7.2"
@@ -89,15 +88,15 @@ directory "/opt/piwik-#{version}/piwik/tmp" do
 end
 
 link "/opt/piwik-#{version}/piwik/misc/GeoLite2-ASN.mmdb" do
-  to "/var/lib/GeoIP/GeoLite2-ASN.mmdb"
+  to "/usr/share/GeoIP/GeoLite2-ASN.mmdb"
 end
 
 link "/opt/piwik-#{version}/piwik/misc/GeoLite2-City.mmdb" do
-  to "/var/lib/GeoIP/GeoLite2-City.mmdb"
+  to "/usr/share/GeoIP/GeoLite2-City.mmdb"
 end
 
 link "/opt/piwik-#{version}/piwik/misc/GeoLite2-Country.mmdb" do
-  to "/var/lib/GeoIP/GeoLite2-Country.mmdb"
+  to "/usr/share/GeoIP/GeoLite2-Country.mmdb"
 end
 
 link "/srv/piwik.openstreetmap.org" do
