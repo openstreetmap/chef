@@ -100,6 +100,25 @@ squid_fragment "tilecache" do
   variables :caches => tilecaches, :renders => tilerenders
 end
 
+if node[:packages][:squid][:version].to_f < 4.9
+  Array(node[:squid][:cache_dir]).each do |cache_dir|
+    if cache_dir =~ /^coss (\S+) /
+      cache_dir = File.dirname(Regexp.last_match(1))
+    elsif cache_dir =~ /^\S+ (\S+) /
+      cache_dir = Regexp.last_match(1)
+    end
+
+    file "#{cache_dir}/rock" do
+      action :delete
+      backup false
+    end
+  end
+
+  package "squid" do
+    action :upgrade
+  end
+end
+
 package "rsync"
 
 template "/etc/logrotate.d/squid" do
