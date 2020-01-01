@@ -22,6 +22,7 @@ require "securerandom"
 
 include_recipe "apache"
 include_recipe "passenger"
+include_recipe "geoipupdate"
 include_recipe "git"
 include_recipe "memcached"
 include_recipe "mysql"

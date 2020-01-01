@@ -22,6 +22,7 @@ include_recipe "web::base"
 
 include_recipe "apache"
 include_recipe "passenger"
+include_recipe "geoipupdate"
 include_recipe "git"
 include_recipe "nodejs"
 
