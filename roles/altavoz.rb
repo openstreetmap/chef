@@ -19,7 +19,7 @@ default_attributes(
 
 override_attributes(
   :ntp => {
-    :servers => ["0.cl.pool.ntp.org", "1.cl.pool.ntp.org", "america.pool.ntp.org"]
+    :servers => ["0.cl.pool.ntp.org", "1.cl.pool.ntp.org", "south-america.pool.ntp.org"]
   }
 )
 
