@@ -3,7 +3,7 @@ description "Master role applied to boitata"
 
 default_attributes(
   :hardware => {
-    :shm_size => "11g"
+    :shm_size => "14g"
   },
   :networking => {
     :interfaces => {
