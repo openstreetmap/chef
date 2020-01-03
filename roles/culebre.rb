@@ -3,7 +3,7 @@ description "Master role applied to culebre"
 
 default_attributes(
   :hardware => {
-    :shm_size => "18g"
+    :shm_size => "14g"
   },
   :networking => {
     :interfaces => {
