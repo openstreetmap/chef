@@ -4,6 +4,13 @@
 <% node[:ntp][:servers].each do |server| -%>
 pool <%= server %> iburst
 <% end -%>
+# Add additional non-pool NTP servers
+# pool.ntp.org can sometimes be aggressive with KoD
+pool time.cloudflare.com iburst maxsources 2
+pool time.google.com iburst maxsources 2
+
+# Run an initial NTP sync on daemon startup
+initstepslew 30 time.cloudflare.com time.google.com <%= node[:ntp][:servers].join(" ") %>
 
 # This directive specify the location of the file containing ID/key pairs for
 # NTP authentication.
@@ -29,8 +36,6 @@ rtcsync
 <% if node[:virtualization][:role] == "guest" -%>
 # Allow anytime step on VM guests
 makestep 1 -1
-# Allow 1h changes and do not exit
-maxchange 3600 1 -1
 <% else -%>
 # Step the system clock instead of slewing it if the adjustment is larger than
 # one second, but only in the first three clock updates.
