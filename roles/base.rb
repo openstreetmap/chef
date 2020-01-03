@@ -69,9 +69,10 @@ default_attributes(
       }
     },
     :default_qdisc => {
-      :comment => "Use fq as the default queuing discipline",
+      :comment => "Use fq as the default queuing discipline and bbr for congestion control",
       :parameters => {
-        "net.core.default_qdisc" => "fq"
+        "net.core.default_qdisc" => "fq",
+        "net.ipv4.tcp_congestion_control" => "bbr"
       }
     },
     :tune_cpu_scheduler => {

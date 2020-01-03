@@ -73,20 +73,6 @@ default_attributes(
         "kernel.sched_min_granularity_ns" => "10000000",
         "kernel.sched_wakeup_granularity_ns" => "15000000"
       }
-    },
-    :no_tcp_slow_start => {
-      :comment => "REMOVE ME: Temporary Reset TCP slow start back to kernel default",
-      :parameters => {
-          "net.ipv4.tcp_slow_start_after_idle" => "1",
-          "net.ipv4.tcp_no_metrics_save" => "0"
-      }
-    },
-    :tcp_use_bbr => {
-      :comment => "Use TCP BBR Congestion Control",
-      :parameters => {
-        "net.core.default_qdisc" => "fq",
-        "net.ipv4.tcp_congestion_control" => "bbr"
-      }
     }
   }
 )
