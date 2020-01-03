@@ -48,6 +48,13 @@ service "systemd-timesyncd" do
   action [:stop, :disable]
 end
 
+systemd_service "chrony-restart" do
+  service "chrony"
+  dropin "restart"
+  restart "on-failure"
+  notifies :restart, "service[chrony]"
+end
+
 service "chrony" do
   action [:enable, :start]
 end
