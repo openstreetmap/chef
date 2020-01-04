@@ -90,7 +90,12 @@ map $osm_referer$http_user_agent $limit_http_pragma {
 }
 
 server {
+    # IPv4
+    listen       80 deferred backlog=16384 reuseport fastopen=2048 default_server;
     listen       443 ssl deferred backlog=16384 reuseport fastopen=2048 http2 default_server;
+    # IPv6
+    # listen       [::]:80 deferred backlog=16384 reuseport fastopen=2048 default_server;
+    # listen       [::]:443 ssl deferred backlog=16384 reuseport fastopen=2048 http2 default_server;
     server_name  localhost;
 
     proxy_buffers 8 64k;

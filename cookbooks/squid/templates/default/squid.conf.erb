@@ -37,7 +37,7 @@ log_icp_queries off
 <% if node[:squid][:version] < 3 -%>
 http_port 80 accel defaultsite=tile.openstreetmap.org tcpkeepalive=60,10,6 http11
 <% else -%>
-http_port 80 accel no-vhost defaultsite=tile.openstreetmap.org tcpkeepalive=60,10,6
+# http_port 80 accel no-vhost defaultsite=tile.openstreetmap.org tcpkeepalive=60,10,6
 http_port 8080 accel no-vhost defaultsite=tile.openstreetmap.org tcpkeepalive=60,10,6
 <% end -%>
 
