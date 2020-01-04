@@ -50,7 +50,7 @@ end
 service "nginx" do
   action [:enable] # Do not start the service as config may be broken from failed chef run
   supports :status => true, :restart => true, :reload => true
-  subscribes :restart, "template[/etc/nginx/nginx.conf]", :immediately
+  subscribes :restart, "template[/etc/nginx/nginx.conf]"
 end
 
 munin_plugin_conf "nginx" do
