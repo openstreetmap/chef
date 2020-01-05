@@ -19,7 +19,7 @@
 
 default_action :create
 
-property :plugin, :kind_of => String, :name_attribute => true
+property :plugin, :kind_of => String, :name_property => true
 property :template, :kind_of => String, :required => true
 
 action :create do

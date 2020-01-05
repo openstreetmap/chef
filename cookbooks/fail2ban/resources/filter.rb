@@ -19,7 +19,7 @@
 
 default_action :create
 
-property :filter, :kind_of => String, :name_attribute => true
+property :filter, :kind_of => String, :name_property => true
 property :source, :kind_of => String
 property :failregex, :kind_of => [String, Array]
 property :ignoreregex, :kind_of => [String, Array]

@@ -29,7 +29,7 @@ property :path_changed, [String, Array]
 property :path_modified, [String, Array]
 property :directory_not_empty, [String, Array]
 property :unit, String
-property :make_directory, [TrueClass, FalseClass]
+property :make_directory, [true, false]
 property :directory_mode, Integer
 
 action :create do

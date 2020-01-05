@@ -19,7 +19,7 @@
 
 default_action :create
 
-property :tablespace, :kind_of => String, :name_attribute => true
+property :tablespace, :kind_of => String, :name_property => true
 property :cluster, :kind_of => String, :required => true
 property :location, :kind_of => String, :required => true
 

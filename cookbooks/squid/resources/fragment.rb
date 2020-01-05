@@ -19,7 +19,7 @@
 
 default_action :create
 
-property :fragment, :kind_of => String, :name_attribute => true
+property :fragment, :kind_of => String, :name_property => true
 property :template, :kind_of => String, :required => true
 property :variables, :kind_of => Hash, :default => {}
 

@@ -19,7 +19,7 @@
 
 default_action :create
 
-property :user, :kind_of => String, :name_attribute => true
+property :user, :kind_of => String, :name_property => true
 property :password, :kind_of => String
 
 OpenStreetMap::MySQL::USER_PRIVILEGES.each do |privilege|

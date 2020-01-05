@@ -19,7 +19,7 @@
 
 default_action :create
 
-property :database, :kind_of => String, :name_attribute => true
+property :database, :kind_of => String, :name_property => true
 property :cluster, :kind_of => String, :required => true
 property :owner, :kind_of => String, :required => true
 property :encoding, :kind_of => String, :default => "UTF8"

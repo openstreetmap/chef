@@ -19,7 +19,7 @@
 
 default_action :run
 
-property :command, :kind_of => String, :name_attribute => true
+property :command, :kind_of => String, :name_property => true
 property :cluster, :kind_of => String, :required => true
 property :database, :kind_of => String, :required => true
 property :user, :default => "postgres"

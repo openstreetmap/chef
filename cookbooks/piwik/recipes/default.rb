@@ -46,7 +46,7 @@ end
 
 remote_file "#{Chef::Config[:file_cache_path]}/piwik-#{version}.zip" do
   source "https://builds.matomo.org/piwik-#{version}.zip"
-  not_if { File.exist?("/opt/piwik-#{version}/piwik") }
+  not_if { ::File.exist?("/opt/piwik-#{version}/piwik") }
 end
 
 execute "unzip-piwik-#{version}" do
@@ -54,7 +54,7 @@ execute "unzip-piwik-#{version}" do
   cwd "/opt/piwik-#{version}"
   user "root"
   group "root"
-  not_if { File.exist?("/opt/piwik-#{version}/piwik") }
+  not_if { ::File.exist?("/opt/piwik-#{version}/piwik") }
 end
 
 execute "/opt/piwik-#{version}/piwik/piwik.js" do
@@ -62,7 +62,7 @@ execute "/opt/piwik-#{version}/piwik/piwik.js" do
   cwd "/opt/piwik-#{version}"
   user "root"
   group "root"
-  not_if { File.exist?("/opt/piwik-#{version}/piwik/piwik.js.gz") }
+  not_if { ::File.exist?("/opt/piwik-#{version}/piwik/piwik.js.gz") }
 end
 
 directory "/opt/piwik-#{version}/piwik/config" do

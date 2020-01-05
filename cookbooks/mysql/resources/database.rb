@@ -19,7 +19,7 @@
 
 default_action :create
 
-property :database, :kind_of => String, :name_attribute => true
+property :database, :kind_of => String, :name_property => true
 property :permissions, :kind_of => Hash, :default => {}
 
 action :create do

@@ -62,7 +62,7 @@ execute "trac-deploy-#{site_name}" do
   command "trac-admin /var/lib/trac deploy #{site_directory}"
   user "root"
   group "root"
-  not_if { File.exist?(site_directory) }
+  not_if { ::File.exist?(site_directory) }
 end
 
 cookbook_file "/usr/local/bin/trac-authenticate" do

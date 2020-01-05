@@ -61,7 +61,7 @@ end
 
 remote_file "#{Chef::Config[:file_cache_path]}/otrs-#{version}.tar.bz2" do
   source "https://ftp.otrs.org/pub/otrs/otrs-#{version}.tar.bz2"
-  not_if { File.exist?("/opt/otrs-#{version}") }
+  not_if { ::File.exist?("/opt/otrs-#{version}") }
 end
 
 execute "untar-otrs-#{version}" do
@@ -69,7 +69,7 @@ execute "untar-otrs-#{version}" do
   cwd "/opt"
   user "root"
   group "root"
-  not_if { File.exist?("/opt/otrs-#{version}") }
+  not_if { ::File.exist?("/opt/otrs-#{version}") }
 end
 
 config = edit_file "/opt/otrs-#{version}/Kernel/Config.pm.dist" do |line|
@@ -109,7 +109,7 @@ execute "/opt/otrs/bin/otrs.RebuildConfig.pl" do
   command "/opt/otrs/bin/otrs.RebuildConfig.pl"
   user "root"
   group "root"
-  not_if { File.exist?("/opt/otrs/Kernel/Config/Files/ZZZAAuto.pm") }
+  not_if { ::File.exist?("/opt/otrs/Kernel/Config/Files/ZZZAAuto.pm") }
 end
 
 execute "/opt/otrs/bin/Cron.sh" do

@@ -70,7 +70,7 @@ end
 
 remote_file "#{Chef::Config[:file_cache_path]}/ostn02-ntv2-data.zip" do
   source "https://www.ordnancesurvey.co.uk/docs/gps/ostn02-ntv2-data.zip"
-  not_if { File.exist?("/srv/imagery/common/ostn02-ntv2-data/OSTN02_NTv2.gsb") }
+  not_if { ::File.exist?("/srv/imagery/common/ostn02-ntv2-data/OSTN02_NTv2.gsb") }
 end
 
 execute "unzip-ostn02-ntv2-data" do
@@ -78,7 +78,7 @@ execute "unzip-ostn02-ntv2-data" do
   cwd "/srv/imagery/common/ostn02-ntv2-data"
   user "root"
   group "root"
-  not_if { File.exist?("/srv/imagery/common/ostn02-ntv2-data/OSTN02_NTv2.gsb") }
+  not_if { ::File.exist?("/srv/imagery/common/ostn02-ntv2-data/OSTN02_NTv2.gsb") }
 end
 
 nginx_site "default" do

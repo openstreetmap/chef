@@ -19,7 +19,7 @@
 
 default_action :create
 
-property :jail, :kind_of => String, :name_attribute => true
+property :jail, :kind_of => String, :name_property => true
 property :filter, :kind_of => String
 property :logpath, :kind_of => String
 property :protocol, :kind_of => String

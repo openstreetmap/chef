@@ -41,7 +41,7 @@ git "/srv/blogs.openstreetmap.org" do
   repository "git://github.com/gravitystorm/blogs.osm.org.git"
   user "blogs"
   group "blogs"
-  notifies :run, "execute[/srv/blogs.openstreetmap.org/Gemfile]", :immediate
+  notifies :run, "execute[/srv/blogs.openstreetmap.org/Gemfile]", :immediately
 end
 
 execute "/srv/blogs.openstreetmap.org/Gemfile" do
@@ -50,7 +50,7 @@ execute "/srv/blogs.openstreetmap.org/Gemfile" do
   cwd "/srv/blogs.openstreetmap.org"
   user "root"
   group "root"
-  notifies :run, "execute[/srv/blogs.openstreetmap.org]", :immediate
+  notifies :run, "execute[/srv/blogs.openstreetmap.org]", :immediately
 end
 
 execute "/srv/blogs.openstreetmap.org" do

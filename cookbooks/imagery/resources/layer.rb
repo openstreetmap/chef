@@ -24,7 +24,7 @@ default_action :create
 property :layer, String, :name_property => true
 property :site, String, :required => true
 property :source, String, :required => true
-property :root_layer, [TrueClass, FalseClass], :default => false
+property :root_layer, [true, false], :default => false
 property :title, String
 property :copyright, String, :default => "Copyright"
 property :projection, String, :default => "EPSG:3857"
@@ -37,8 +37,8 @@ property :extension, String, :default => "png"
 property :max_zoom, Integer, :default => 18
 property :url_aliases, [String, Array], :default => []
 property :revision, Integer, :default => 0
-property :overlay, [TrueClass, FalseClass], :default => false
-property :default_layer, [TrueClass, FalseClass], :default => false
+property :overlay, [true, false], :default => false
+property :default_layer, [true, false], :default => false
 
 action :create do
   file "/srv/imagery/layers/#{new_resource.site}/#{new_resource.layer}.yml" do

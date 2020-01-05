@@ -19,7 +19,7 @@
 
 default_action [:install, :enable]
 
-property :module, :kind_of => String, :name_attribute => true
+property :module, :kind_of => String, :name_property => true
 property :package, :kind_of => String
 property :conf, :kind_of => String
 property :variables, :kind_of => Hash, :default => {}

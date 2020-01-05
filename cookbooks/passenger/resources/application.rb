@@ -19,7 +19,7 @@
 
 default_action :restart
 
-property :application, String, :name_attribute => true
+property :application, String, :name_property => true
 
 action :restart do
   execute new_resource.application do

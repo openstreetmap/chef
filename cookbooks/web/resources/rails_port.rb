@@ -23,14 +23,14 @@ resource_name :rails_port
 
 default_action :create
 
-property :site, String, :name_attribute => true
+property :site, String, :name_property => true
 property :ruby, String, :default => "2.3"
 property :directory, String
 property :user, String
 property :group, String
 property :repository, String, :default => "https://git.openstreetmap.org/public/rails.git"
 property :revision, String, :default => "live"
-property :run_migrations, [TrueClass, FalseClass], :default => false
+property :run_migrations, [true, false], :default => false
 property :email_from, String, :default => "OpenStreetMap <support@openstreetmap.org>"
 property :status, String, :default => "online"
 property :database_host, String
@@ -63,10 +63,10 @@ property :wikipedia_auth_id, String
 property :wikipedia_auth_secret, String
 property :thunderforest_key, String
 property :totp_key, String
-property :csp_enforce, [TrueClass, FalseClass], :default => false
+property :csp_enforce, [true, false], :default => false
 property :csp_report_url, String
 property :piwik_configuration, Hash
-property :trace_use_job_queue, [TrueClass, FalseClass], :default => false
+property :trace_use_job_queue, [true, false], :default => false
 property :diary_feed_delay, Integer
 property :storage_configuration, Hash, :default => {}
 property :storage_service, String, :default => "local"

@@ -21,7 +21,7 @@ require "json"
 
 default_action :install
 
-property :package, :kind_of => String, :name_attribute => true
+property :package, :kind_of => String, :name_property => true
 property :version, :kind_of => String
 
 action :install do

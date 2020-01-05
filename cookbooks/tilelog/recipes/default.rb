@@ -40,7 +40,7 @@ git tilelog_source_directory do
   revision "live"
   user "root"
   group "root"
-  notifies :run, "execute[tilelog-autogen]", :immediate
+  notifies :run, "execute[tilelog-autogen]", :immediately
 end
 
 execute "tilelog-autogen" do
@@ -49,7 +49,7 @@ execute "tilelog-autogen" do
   cwd tilelog_source_directory
   user "root"
   group "root"
-  notifies :run, "execute[tilelog-configure]", :immediate
+  notifies :run, "execute[tilelog-configure]", :immediately
 end
 
 execute "tilelog-configure" do
@@ -58,7 +58,7 @@ execute "tilelog-configure" do
   cwd tilelog_source_directory
   user "root"
   group "root"
-  notifies :run, "execute[tilelog-build]", :immediate
+  notifies :run, "execute[tilelog-build]", :immediately
 end
 
 execute "tilelog-build" do

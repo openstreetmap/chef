@@ -19,7 +19,7 @@
 
 default_action :create
 
-property :site, :kind_of => String, :name_attribute => true
+property :site, :kind_of => String, :name_property => true
 property :directory, :kind_of => String
 property :cookbook, :kind_of => String
 property :template, :kind_of => String, :required => true

@@ -52,13 +52,13 @@ property :standard_error, String,
 property :success_exit_status, [Integer, String, Array]
 property :restart, String,
          :is => %w[on-success on-failure on-abnormal on-watchdog on-abort always]
-property :private_tmp, [TrueClass, FalseClass]
-property :private_devices, [TrueClass, FalseClass]
-property :private_network, [TrueClass, FalseClass]
+property :private_tmp, [true, false]
+property :private_devices, [true, false]
+property :private_network, [true, false]
 property :protect_system, [TrueClass, FalseClass, String]
 property :protect_home, [TrueClass, FalseClass, String]
 property :restrict_address_families, [String, Array]
-property :no_new_privileges, [TrueClass, FalseClass]
+property :no_new_privileges, [true, false]
 property :tasks_max, Integer
 property :timeout_sec, Integer
 property :pid_file, String

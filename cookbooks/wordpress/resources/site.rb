@@ -20,7 +20,7 @@ require "securerandom"
 
 default_action :create
 
-property :site, :kind_of => String, :name_attribute => true
+property :site, :kind_of => String, :name_property => true
 property :aliases, :kind_of => [String, Array]
 property :directory, :kind_of => String
 property :version, :kind_of => String

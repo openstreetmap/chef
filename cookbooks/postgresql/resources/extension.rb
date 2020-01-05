@@ -19,7 +19,7 @@
 
 default_action :create
 
-property :extension, :kind_of => String, :name_attribute => true
+property :extension, :kind_of => String, :name_property => true
 property :cluster, :kind_of => String, :required => true
 property :database, :kind_of => String, :required => true
 

@@ -21,7 +21,7 @@ require "shellwords"
 
 default_action :create
 
-property :user, :kind_of => String, :name_attribute => true
+property :user, :kind_of => String, :name_property => true
 property :cluster, :kind_of => String, :required => true
 property :password, :kind_of => String
 property :superuser, :default => false

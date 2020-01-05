@@ -32,9 +32,9 @@ property :on_calendar, String
 property :accuracy_sec, [Integer, String]
 property :randomized_delay_sec, [Integer, String]
 property :unit, String
-property :persistent, [TrueClass, FalseClass]
-property :wake_system, [TrueClass, FalseClass]
-property :remain_after_elapse, [TrueClass, FalseClass]
+property :persistent, [true, false]
+property :wake_system, [true, false]
+property :remain_after_elapse, [true, false]
 
 action :create do
   timer_variables = new_resource.to_hash

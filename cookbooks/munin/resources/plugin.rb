@@ -19,7 +19,7 @@
 
 default_action :create
 
-property :plugin, :kind_of => String, :name_attribute => true
+property :plugin, :kind_of => String, :name_property => true
 property :target, :kind_of => String
 property :conf, :kind_of => String
 property :conf_cookbook, :kind_of => String
