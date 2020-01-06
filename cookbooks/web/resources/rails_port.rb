@@ -327,7 +327,8 @@ action :create do
     "support_email" => "support@openstreetmap.org",
     "email_return_path" => "bounces@openstreetmap.org",
     "geonames_username" => "openstreetmap",
-    "geoip_database" => "/usr/share/GeoIP/GeoIPv6.dat"
+    "geoip_database" => "/usr/share/GeoIP/GeoIPv6.dat",
+    "maxmind_database" => "/usr/share/GeoIP/GeoLite2-Country.mmdb"
   )
 
   if new_resource.memcache_servers
