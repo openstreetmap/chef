@@ -1,19 +1,15 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
 # HP Smart Array configuration
-ACTION=="add", SUBSYSTEM=="block", ENV{ID_VENDOR}=="HP", ENV{ID_MODEL}=="LOGICAL_VOLUME", ATTR{queue/scheduler}="noop"
-ACTION=="add", SUBSYSTEM=="block", ENV{ID_VENDOR}=="HP", ENV{ID_MODEL}=="LOGICAL_VOLUME", ATTR{queue/nr_requests}="512"
-ACTION=="add", SUBSYSTEM=="block", ENV{ID_VENDOR}=="HP", ENV{ID_MODEL}=="LOGICAL_VOLUME", ATTR{queue/read_ahead_kb}="4096"
-ACTION=="add", SUBSYSTEM=="block", ENV{ID_VENDOR}=="HP", ENV{ID_MODEL}=="LOGICAL_VOLUME", ATTR{queue/rq_affinity}="2"
-
-# VMware Virtual disk configuration
-ACTION=="add", SUBSYSTEM=="block", ENV{ID_VENDOR}=="VMware", ENV{ID_MODEL}=="Virtual_disk", ATTR{queue/read_ahead_kb}="4096"
-ACTION=="add", SUBSYSTEM=="block", ENV{ID_VENDOR}=="VMware", ENV{ID_MODEL}=="Virtual_disk", ATTR{queue/scheduler}="noop"
+ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{ID_VENDOR}=="HP", ENV{ID_MODEL}=="LOGICAL_VOLUME", ATTR{queue/scheduler}="noop"
+ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{ID_VENDOR}=="HP", ENV{ID_MODEL}=="LOGICAL_VOLUME", ATTR{queue/nr_requests}="512"
+ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{ID_VENDOR}=="HP", ENV{ID_MODEL}=="LOGICAL_VOLUME", ATTR{queue/read_ahead_kb}="4096"
+ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{ID_VENDOR}=="HP", ENV{ID_MODEL}=="LOGICAL_VOLUME", ATTR{queue/rq_affinity}="2"
 
 # Dell PERC H710 tune
-ACTION=="add", SUBSYSTEM=="block", ENV{ID_VENDOR}=="DELL", ENV{ID_MODEL}=="PERC_H710", ATTR{queue/read_ahead_kb}="4096"
-ACTION=="add", SUBSYSTEM=="block", ENV{ID_VENDOR}=="DELL", ENV{ID_MODEL}=="PERC_H710", ATTR{queue/scheduler}="deadline"
-ACTION=="add", SUBSYSTEM=="block", ENV{ID_VENDOR}=="DELL", ENV{ID_MODEL}=="PERC_H710", ATTR{queue/nr_requests}="512"
+ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{ID_VENDOR}=="DELL", ENV{ID_MODEL}=="PERC_H710", ATTR{queue/read_ahead_kb}="4096"
+ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{ID_VENDOR}=="DELL", ENV{ID_MODEL}=="PERC_H710", ATTR{queue/scheduler}="deadline"
+ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{ID_VENDOR}=="DELL", ENV{ID_MODEL}=="PERC_H710", ATTR{queue/nr_requests}="512"
 
 <% node[:devices].each do |name,device| -%>
 
@@ -64,11 +60,42 @@ ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{ID_BUS}=="ata", ENV
 ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{ID_BUS}=="ata", ENV{ID_MODEL}=="HGST_HTE721010A9E630", RUN+="/usr/sbin/smartctl -q errorsonly -l scterc,100,100 $env{DEVNAME}"
 
 # Add SSD optimisation
+ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{ID_BUS}=="ata", ENV{ID_MODEL}=="OCZ-VERTEX3", ATTR{queue/read_ahead_kb}="4096"
 ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{ID_BUS}=="ata", ENV{ID_MODEL}=="OCZ-VERTEX3", ATTR{queue/scheduler}="noop"
+
+ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{ID_BUS}=="ata", ENV{ID_MODEL}=="Samsung_SSD_840_PRO_*", ATTR{queue/read_ahead_kb}="4096"
+ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{ID_BUS}=="ata", ENV{ID_MODEL}=="Samsung_SSD_840_PRO_*", ATTR{queue/scheduler}="noop"
+ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{ID_BUS}=="ata", ENV{ID_MODEL}=="Samsung_SSD_840_PRO_*", ATTR{queue/read_ahead_kb}="256"
+
+ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{ID_BUS}=="ata", ENV{ID_MODEL}=="Samsung_SSD_850_PRO_*", ATTR{queue/read_ahead_kb}="4096"
+ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{ID_BUS}=="ata", ENV{ID_MODEL}=="Samsung_SSD_850_PRO_*", ATTR{queue/scheduler}="noop"
+ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{ID_BUS}=="ata", ENV{ID_MODEL}=="Samsung_SSD_850_PRO_*", ATTR{queue/read_ahead_kb}="256"
+
+ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{ID_BUS}=="ata", ENV{ID_MODEL}=="Samsung_SSD_860_PRO_*", ATTR{queue/read_ahead_kb}="4096"
+ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{ID_BUS}=="ata", ENV{ID_MODEL}=="Samsung_SSD_860_PRO_*", ATTR{queue/scheduler}="noop"
+ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{ID_BUS}=="ata", ENV{ID_MODEL}=="Samsung_SSD_860_PRO_*", ATTR{queue/read_ahead_kb}="256"
+
+ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{ID_BUS}=="ata", ENV{ID_MODEL}=="ST240FN0021", ATTR{queue/read_ahead_kb}="4096"
+ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{ID_BUS}=="ata", ENV{ID_MODEL}=="ST240FN0021", ATTR{queue/scheduler}="noop"
+
+ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{ID_BUS}=="ata", ENV{ID_MODEL}=="SuperMicro_SSD", ATTR{queue/read_ahead_kb}="4096"
+ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{ID_BUS}=="ata", ENV{ID_MODEL}=="SuperMicro_SSD", ATTR{queue/scheduler}="noop"
 
 # Enable request merging for NVME devices
 ACTION=="add", SUBSYSTEM=="block", DRIVERS=="nvme", ATTR{queue/nomerges}="1"
 
+# VMware Virtual disk configuration
+ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{ID_VENDOR}=="VMware", ENV{ID_MODEL}=="Virtual_disk", ATTR{queue/read_ahead_kb}="4096"
+ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{ID_VENDOR}=="VMware", ENV{ID_MODEL}=="Virtual_disk", ATTR{queue/scheduler}="noop"
+
 # Increase readahead on virtio block devices
 ACTION=="add", SUBSYSTEM=="block", DRIVERS=="virtio_blk", ATTR{queue/read_ahead_kb}="4096"
 # Note virtio sets scheduler to none automatically
+
+# QEMU Disk IO tune
+ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{ID_VENDOR}=="QEMU", ENV{ID_MODEL}=="QEMU_HARDDISK", ATTR{queue/read_ahead_kb}="4096"
+# Note QEMU sets scheduler to none automatically
+
+# Increase default MD raid5/raid6 strip cache
+ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{MD_LEVEL}=="raid5", ATTR{md/stripe_cache_size}="8192"
+ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{MD_LEVEL}=="raid6", ATTR{md/stripe_cache_size}="8192"

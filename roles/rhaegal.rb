@@ -10,19 +10,6 @@ default_attributes(
   :apt => {
     :sources => ["postgresql"]
   },
-  :devices => {
-    :ssd_samsung => {
-      :comment => "Tune scheduler for SSD",
-      :type => "block",
-      :bus => "ata",
-      :serial => "Samsung_SSD_860_PRO_*",
-      :attrs => {
-        "queue/scheduler" => "noop",
-        "queue/nr_requests" => "256",
-        "queue/read_ahead_kb" => "2048"
-      }
-    }
-  },
   :location => "Zagreb, Croatia",
   :munin => {
     :plugins => {

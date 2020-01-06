@@ -3,17 +3,6 @@ description "Master role applied to orm"
 
 default_attributes(
   :devices => {
-    :ssd_samsung => {
-      :comment => "Tune scheduler for SSD",
-      :type => "block",
-      :bus => "ata",
-      :serial => "Samsung_SSD_840_PRO_Series_*",
-      :attrs => {
-        "queue/scheduler" => "noop",
-        "queue/nr_requests" => "256",
-        "queue/read_ahead_kb" => "2048"
-      }
-    },
     :arecavoltune => {
       :comment => "Tune scheduler for Areca",
       :type => "block",
