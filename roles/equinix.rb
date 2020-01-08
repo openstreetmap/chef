@@ -3,7 +3,7 @@ description "Role applied to all servers at Equinix"
 
 default_attributes(
   :networking => {
-    :nameservers => ["66.28.0.45", "66.28.0.61", "2001:978:1:1::d", "2001:978:1:2::d"],
+    :nameservers => ["66.28.0.45", "66.28.0.61"],
     :roles => {
       :internal => {
         :inet => {
