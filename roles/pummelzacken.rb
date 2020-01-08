@@ -28,12 +28,12 @@ default_attributes(
         :random_page_cost => "1.5",
         :effective_cache_size => "60GB",
         :effective_io_concurrency => "256",
-        :fsync => "off"
+        :fsync => "on"
       }
     }
   },
   :nominatim => {
-    :state => "off",
+    :state => "standalone",
     :dbadmins => %w[lonvia tomh],
     :dbcluster => "12/main",
     :postgis => "2.5",
