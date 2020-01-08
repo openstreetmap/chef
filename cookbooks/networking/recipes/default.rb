@@ -39,6 +39,7 @@ node[:networking][:interfaces].each do |name, interface|
       if role[interface[:family]]
         node.normal[:networking][:interfaces][name][:prefix] = role[interface[:family]][:prefix]
         node.normal[:networking][:interfaces][name][:gateway] = role[interface[:family]][:gateway]
+        node.normal[:networking][:interfaces][name][:routes] = role[interface[:family]][:routes]
       end
 
       node.normal[:networking][:interfaces][name][:metric] = role[:metric]
@@ -122,6 +123,20 @@ node[:networking][:interfaces].each do |name, interface|
           "to" => interface[:gateway],
           "scope" => "link"
         )
+      end
+    end
+
+    if interface[:routes]
+      interface[:routes].each do |to, parameters|
+        route = {
+          "to" => to
+        }
+
+        route["type"] = parameters[:type] if parameters[:type]
+        route["via"] = parameters[:via] if parameters[:via]
+        route["metric"] = parameters[:metric] if parameters[:metric]
+
+        deviceplan["routes"].push(route)
       end
     end
   else

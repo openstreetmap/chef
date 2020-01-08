@@ -19,7 +19,12 @@ default_attributes(
         },
         :inet6 => {
           :prefix => "64",
-          :gateway => "2001:978:2:2C::172:1"
+          :gateway => "2001:978:2:2C::172:1",
+          :routes => {
+            "2001:978:2:2c::/64" => { :type => "unreachable" },
+            "2001:4860::/32" => { :type => "unreachable" },
+            "2a00:1450:4000::/37" => { :type => "unreachable" }
+          }
         }
       }
     }
