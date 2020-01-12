@@ -78,6 +78,15 @@ default_attributes(
         :group => "www-data",
         :home_directory => "/opt/otrs"
       },
+      :otrs_sotm_program => {
+        :comment => "sotm-program@otrs.openstreetmap.org",
+        :domains => ["otrs.openstreetmap.org"],
+        :local_parts => ["sotm-program"],
+        :command => "/opt/otrs/bin/otrs.Console.pl Maint::PostMaster::Read --target-queue 'State of the Map:Program'",
+        :user => "otrs",
+        :group => "www-data",
+        :home_directory => "/opt/otrs"
+      },
       :otrs_support => {
         :comment => "support@otrs.openstreetmap.org",
         :domains => ["otrs.openstreetmap.org"],
