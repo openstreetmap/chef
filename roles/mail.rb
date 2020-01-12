@@ -68,7 +68,8 @@ default_attributes(
       "support" => "support@otrs.openstreetmap.org",
       "memorial" => "communication@osmfoundation.org",
       "legal" => "legal@osmfoundation.org",
-      "dmca" => "dmca@osmfoundation.org"
+      "dmca" => "dmca@osmfoundation.org",
+      "program-sotm" => "sotm-program@otrs.openstreetmap.org"
     },
     :private_aliases => "mail"
   },
