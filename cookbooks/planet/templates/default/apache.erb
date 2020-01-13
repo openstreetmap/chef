@@ -65,9 +65,11 @@
         RewriteRule ^(/cc\-by\-sa/relations\-latest\.osm\.bz2)$         ${latestplanet:$1} [R,L]
 
         # Temporary download rate limit due to upstream fibre connection issues. - 13 Jan 2020
-        SetOutputFilter RATE_LIMIT
-        SetEnv rate-limit 400
-        SetEnv rate-initial-burst 512
+        <FilesMatch ".+\.(7z|bz2|gz|pbf|tgz|xz)$">
+          SetOutputFilter RATE_LIMIT
+          SetEnv rate-limit 400
+          SetEnv rate-initial-burst 512
+        </FilesMatch>
 
 </VirtualHost>
 
