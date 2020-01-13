@@ -97,6 +97,7 @@ end
 apache_module "cgid"
 apache_module "rewrite"
 apache_module "proxy_http"
+apache_module "ratelimit"
 
 ssl_certificate "planet.openstreetmap.org" do
   domains ["planet.openstreetmap.org", "planet.osm.org"]
