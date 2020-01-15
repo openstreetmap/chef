@@ -1,0 +1,7 @@
+{
+  "id": "wiki",
+  "uid": "555",
+  "comment": "wiki.openstreetmap.org",
+  "home": "/opt/wiki",
+  "manage_home": false
+}
