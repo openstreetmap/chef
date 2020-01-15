@@ -93,8 +93,9 @@ ACTION=="add", SUBSYSTEM=="block", DRIVERS=="virtio_blk", ATTR{queue/read_ahead_
 # Note virtio sets scheduler to none automatically
 
 # QEMU Disk IO tune
-ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{ID_VENDOR}=="QEMU", ENV{ID_MODEL}=="QEMU_HARDDISK", ATTR{queue/read_ahead_kb}="4096"
-# Note QEMU sets scheduler to none automatically
+ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{ID_MODEL}=="QEMU_HARDDISK", ATTR{queue/read_ahead_kb}="4096"
+ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{ID_MODEL}=="QEMU_HARDDISK", ATTR{queue/scheduler}="noop"
+# Vendor is sometimes missing
 
 # Increase default MD raid5/raid6 strip cache
 ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{MD_LEVEL}=="raid5", ATTR{md/stripe_cache_size}="8192"
