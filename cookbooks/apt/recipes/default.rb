@@ -158,7 +158,7 @@ apt_repository "mediawiki" do
   uri "https://releases.wikimedia.org/debian"
   distribution "jessie-mediawiki"
   components ["main"]
-  key "90E9F83F22250DD7"
+  key "AF380A3036A03444" # Documented at https://www.mediawiki.org/wiki/Parsoid/Setup#Ubuntu_/_Debian
 end
 
 package "unattended-upgrades"
