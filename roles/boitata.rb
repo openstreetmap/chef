@@ -3,7 +3,7 @@ description "Master role applied to boitata"
 
 default_attributes(
   :hardware => {
-    :shm_size => "14g"
+    :shm_size => "11g"
   },
   :networking => {
     :interfaces => {
@@ -27,7 +27,7 @@ default_attributes(
   },
   :squid => {
     :version => 4,
-    :cache_mem => "10240 MB",
+    :cache_mem => "8192 MB",
     :cache_dir => [
       "rock /store/squid/rock-4096 20000 swap-timeout=200 slot-size=4096 max-size=3996",
       "rock /store/squid/rock-8192 25000 swap-timeout=200 slot-size=8192 min-size=3997 max-size=8092",
