@@ -7,6 +7,8 @@ driver:
 
 provisioner:
   name: chef_zero
+  product_name: chef
+  product_version: 14
   data_bags_path: test/data_bags
 
 platforms:
