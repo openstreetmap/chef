@@ -19,9 +19,6 @@ suites:
   - name: apache
     run_list:
       - recipe[apache::default]
-  - name: apache-ssl
-    run_list:
-      - recipe[apache::ssl]
   - name: apt
     run_list:
       - recipe[apt::default]
