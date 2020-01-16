@@ -23,6 +23,8 @@
 require "ipaddr"
 require "yaml"
 
+package "netplan.io"
+
 netplan = {
   "network" => {
     "version" => 2,
