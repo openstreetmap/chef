@@ -10,7 +10,7 @@ provisioner:
   data_bags_path: test/data_bags
 
 platforms:
-  - name: ubuntu-16.04
+  - name: ubuntu-18.04
 
 suites:
   - name: accounts
