@@ -150,7 +150,7 @@ certificates.each do |name, details|
   end
 end
 
-Dir.each_child("/srv/acme.openstreetmap.org/requests") do |name|
+Dir.glob("*", :base => "/srv/acme.openstreetmap.org/requests") do |name|
   next if certificates.include?(name)
 
   file "/srv/acme.openstreetmap.org/requests/#{name}" do
