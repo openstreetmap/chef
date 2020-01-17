@@ -49,7 +49,7 @@ package %w[mlocate nano whoopsie] do
 end
 
 # Remove screen-cleanup left behind by old release.
-file "/etc/init.d/screen-cleanup" do
+link "/etc/init.d/screen-cleanup" do
   action :delete
 end
 
