@@ -47,4 +47,4 @@ default '_osm_totp_token=${QOS_TOKEN_DEFAULT}; Max-Age=${VALID_TOKEN}; Domain=op
 EOF
 
 # Check config, reload config and fail safe
-/etc/init.d/nginx configtest 2>/dev/null && /bin/systemctl try-reload-or-restart nginx
+# /etc/init.d/nginx configtest 2>/dev/null && /bin/systemctl try-reload-or-restart nginx

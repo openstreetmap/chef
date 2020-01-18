@@ -29,14 +29,14 @@ geo $tile_cache {
 }
 
 # Rates table based on current cookie value
-map $cookie__osm_totp_token $limit_rate_qos {
-  include /etc/nginx/conf.d/tile_qos_rates.map;
-}
+# map $cookie__osm_totp_token $limit_rate_qos {
+#  include /etc/nginx/conf.d/tile_qos_rates.map;
+# }
 
 # Set-Cookie table based on current cookie value
-map $cookie__osm_totp_token $cookie_qos_token_set {
-  include /etc/nginx/conf.d/tile_qos_cookies.map;
-}
+# map $cookie__osm_totp_token $cookie_qos_token_set {
+#  include /etc/nginx/conf.d/tile_qos_cookies.map;
+# }
 
 map $http_user_agent $approved_scraper {
   default                   0; # Not approved
@@ -238,7 +238,7 @@ server {
 <% end -%>
 
       # Set a QoS cookie if none presented (uses nginx Map)
-      add_header Set-Cookie $cookie_qos_token_set;
+      # add_header Set-Cookie $cookie_qos_token_set;
 <% if node[:ssl][:strict_transport_security] -%>
       # Ensure Strict-Transport-Security header is removed from proxied server responses
       proxy_hide_header Strict-Transport-Security;
@@ -248,12 +248,12 @@ server {
 <% end -%>
 
       # QoS Traffic Rate see $limit_rate on http://nginx.org/en/docs/http/ngx_http_core_module.html
-      set $limit_rate $limit_rate_qos;
+      # set $limit_rate $limit_rate_qos;
 
       # Allow Higher Traffic Rate from Approved User-Agents which do not support cookies (uses nginx Map)
-      if ($approved_scraper) {
-        set $limit_rate 65536;
-      }
+      # if ($approved_scraper) {
+      #   set $limit_rate 65536;
+      # }
 
       if ($denied_scraper) {
         set $limit_rate 512;
