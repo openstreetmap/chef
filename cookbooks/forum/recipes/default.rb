@@ -72,7 +72,7 @@ end
 
 execute "#{cache_dir}/air3_v0.8.zip" do
   action :nothing
-  command "unzip -o -qq #{cache_dir}/air3_v0.8.zip Air3.css Air3/*"
+  command "unzip -o -qq #{cache_dir}/air3_v0.8.zip Air3.css 'Air3/*'"
   cwd "/srv/forum.openstreetmap.org/html/style"
   user "forum"
   group "forum"
