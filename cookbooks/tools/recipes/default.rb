@@ -48,16 +48,6 @@ package %w[mlocate nano whoopsie] do
   action :purge
 end
 
-# Remove screen-cleanup left behind by old release.
-link "/etc/init.d/screen-cleanup" do
-  action :delete
-end
-
-# Cleanup unused file
-file "/etc/systemd/system/cron.service.d/chef.conf" do
-  action :delete
-end
-
 # Configure cron to run in the local timezone of the machine
 systemd_service "cron-timezone" do
   service "cron"
