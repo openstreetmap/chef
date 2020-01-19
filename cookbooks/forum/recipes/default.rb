@@ -20,6 +20,8 @@ include_recipe "apache"
 include_recipe "git"
 include_recipe "mysql"
 
+cache_dir = Chef::Config[:file_cache_path]
+
 passwords = data_bag_item("forum", "passwords")
 
 package %w[
@@ -59,7 +61,7 @@ git "/srv/forum.openstreetmap.org/html/" do
   notifies :reload, "service[apache2]"
 end
 
-remote_file "/var/cache/chef/air3_v0.8.zip" do
+remote_file "#{cache_dir}/air3_v0.8.zip" do
   action :create_if_missing
   source "https://fluxbb.org/resources/styles/air3/releases/0.8/air3_v0.8.zip"
   owner "root"
@@ -68,13 +70,13 @@ remote_file "/var/cache/chef/air3_v0.8.zip" do
   backup false
 end
 
-execute "/var/cache/chef/air3_v0.8.zip" do
+execute "#{cache_dir}/air3_v0.8.zip" do
   action :nothing
-  command "unzip -o -qq /var/cache/chef/air3_v0.8.zip Air3.css Air3/*"
+  command "unzip -o -qq #{cache_dir}/air3_v0.8.zip Air3.css Air3/*"
   cwd "/srv/forum.openstreetmap.org/html/style"
   user "forum"
   group "forum"
-  subscribes :run, "remote_file[/var/cache/chef/air3_v0.8.zip]", :immediately
+  subscribes :run, "remote_file[#{cache_dir}/air3_v0.8.zip]", :immediately
 end
 
 directory "/srv/forum.openstreetmap.org/html/cache/" do

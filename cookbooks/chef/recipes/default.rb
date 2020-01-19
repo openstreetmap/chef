@@ -17,17 +17,18 @@
 # limitations under the License.
 #
 
+cache_dir = Chef::Config[:file_cache_path]
+
 chef_version = node[:chef][:client][:version]
 chef_package = "chef_#{chef_version}-1_amd64.deb"
 
 directory "/var/cache/chef" do
-  owner "root"
-  group "root"
-  mode 0o755
+  action :delete
+  recursive true
 end
 
-Dir.glob("/var/cache/chef/chef_*.deb").each do |deb|
-  next if deb == "/var/cache/chef/#{chef_package}"
+Dir.glob("#{cache_dir}/chef_*.deb").each do |deb|
+  next if deb == "#{cache_dir}/#{chef_package}"
 
   file deb do
     action :delete
@@ -35,7 +36,7 @@ Dir.glob("/var/cache/chef/chef_*.deb").each do |deb|
   end
 end
 
-remote_file "/var/cache/chef/#{chef_package}" do
+remote_file "#{cache_dir}/#{chef_package}" do
   source "https://packages.chef.io/files/stable/chef/#{chef_version}/ubuntu/#{node[:lsb][:release]}/#{chef_package}"
   owner "root"
   group "root"
@@ -45,7 +46,7 @@ remote_file "/var/cache/chef/#{chef_package}" do
 end
 
 dpkg_package "chef" do
-  source "/var/cache/chef/#{chef_package}"
+  source "#{cache_dir}/#{chef_package}"
   version "#{chef_version}-1"
 end
 

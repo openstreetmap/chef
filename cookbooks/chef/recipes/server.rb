@@ -19,25 +19,21 @@
 
 include_recipe "apache"
 
+# cache_dir = Chef::Config[:file_cache_path]
+#
 # chef_version = node[:chef][:server][:version]
 # chef_package = "chef-server-core_#{chef_version}-1_amd64.deb"
 #
-# directory "/var/cache/chef" do
-#   owner "root"
-#   group "root"
-#   mode 0755
-# end
+# Dir.glob("#{cache_dir}/chef-server-core_*.deb").each do |deb|
+#   next if deb == "#{cache_dir}/#{chef_package}"
 #
-# Dir.glob("/var/cache/chef/chef-server-core_*.deb").each do |deb|
-#   next if deb == "/var/cache/chef/#{chef_package}"
-
 #   file deb do
 #     action :delete
 #     backup false
 #   end
 # end
 #
-# remote_file "/var/cache/chef/#{chef_package}" do
+# remote_file "#{cache_dir}/#{chef_package}" do
 #   source "https://packages.chef.io/files/stable/chef-server/#{chef_version}/ubuntu/16.04/#{chef_package}"
 #   owner "root"
 #   group "root"
@@ -46,7 +42,7 @@ include_recipe "apache"
 # end
 #
 # dpkg_package "chef-server-core" do
-#   source "/var/cache/chef/#{chef_package}"
+#   source "#{cache_dir}/#{chef_package}"
 #   version "#{chef_version}-1"
 #   notifies :run, "execute[chef-server-reconfigure]"
 # end
