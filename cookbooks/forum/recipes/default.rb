@@ -28,6 +28,7 @@ package %w[
   php-mysql
   php-xml
   php-apcu
+  unzip
 ]
 
 apache_module "php7.2"
