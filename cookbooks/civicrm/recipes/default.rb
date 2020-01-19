@@ -91,7 +91,7 @@ end
 
 execute "#{cache_dir}/civicrm-#{civicrm_version}-wordpress.zip" do
   action :nothing
-  command "unzip -qq #{cache_dir}/civicrm-#{civicrm_version}-wordpress.zip"
+  command "unzip -o -qq #{cache_dir}/civicrm-#{civicrm_version}-wordpress.zip"
   cwd "/opt/civicrm-#{civicrm_version}"
   user "wordpress"
   group "wordpress"
