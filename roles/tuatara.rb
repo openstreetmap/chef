@@ -14,6 +14,14 @@ default_attributes(
         :address => "114.23.141.203",
         :prefix => "29",
         :gateway => "114.23.141.201"
+      },
+      :external_ipv6 => {
+        :interface => "eno1",
+        :role => :external,
+        :family => :inet6,
+        :address => "2406:1e00:b410:c24:529a:4cff:fe79:bc3b",
+        :prefix => "64",
+        :gateway => "2406:1e00:b410:c24::"
       }
     }
   },
