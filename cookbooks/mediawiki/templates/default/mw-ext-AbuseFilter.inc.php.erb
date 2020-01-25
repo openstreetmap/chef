@@ -8,3 +8,8 @@ $wgGroupPermissions['*']['abusefilter-log'] = true;
 $wgGroupPermissions['sysop']['abusefilter-private'] = true;
 $wgGroupPermissions['sysop']['abusefilter-modify-restricted'] = true;
 $wgGroupPermissions['sysop']['abusefilter-revert'] = true;
+
+# Tune AbuseFilter limits
+# https://github.com/openstreetmap/operations/issues/353
+$wgAbuseFilterEmergencyDisableThreshold['default'] = 0.30; # 30%
+$wgAbuseFilterEmergencyDisableCount['default'] = 25;
