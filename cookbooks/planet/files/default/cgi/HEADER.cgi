@@ -10,7 +10,7 @@ def nice_size(file):
     MB = 1024. * KB
     GB = 1024. * MB
     TB = 1024. * GB
-    
+
     if size < KB:
         size, suffix = size, ''
     elif size < MB:
@@ -21,7 +21,7 @@ def nice_size(file):
         size, suffix = size/GB, 'GB'
     else:
         size, suffix = size/TB, 'TB'
-    
+
     if size < 10:
         return '%.1f %s' % (round(size,1), suffix)
     else:
@@ -59,10 +59,10 @@ print """
 <html>
  <head>
   <title>Index of /</title>
-  <link href="style.css" rel="stylesheet" type="text/css">
+  <link href="/style.css" rel="stylesheet" type="text/css">
  </head>
  <body>
-<img id="logo" src="logo.png" alt="OSM logo" width="128" height="128">
+<img id="logo" src="/logo.png" alt="OSM logo" width="128" height="128">
 <h1>Planet OSM</h1>
 
 <p>
@@ -101,8 +101,8 @@ database, and those published before the 12 September 2012 are distributed under
     </td>
     <td>
         <p>
-        You are granted permission to use OpenStreetMap data by 
-        <a href="https://osm.org/copyright">the OpenStreetMap License</a>, which also describes 
+        You are granted permission to use OpenStreetMap data by
+        <a href="https://osm.org/copyright">the OpenStreetMap License</a>, which also describes
         your obligations.
         </p>
         <p>
@@ -133,4 +133,5 @@ database, and those published before the 12 September 2012 are distributed under
 <p>
 If you find data within OpenStreetMap that you believe is an infringement of someone else's copyright, then please make contact with the <a href="https://wiki.openstreetmap.org/wiki/Data_working_group">OpenStreetMap Data Working Group</a>.
 </p>
+<p><div class="alert"><strong>WARNING</strong> Download speeds are currently restricted to 400 KB/s due to limited available capacity on our Internet connection. <a href="https://wiki.openstreetmap.org/wiki/Planet.osm#Planet.osm_mirrors">Please use a mirror if possible.</a></div></p>>
 """ % locals()
