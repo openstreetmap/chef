@@ -52,3 +52,10 @@ table#about tr td
     font-size: 100%;
     white-space: normal;
 }
+
+.alert {
+  padding: 20px;
+  background-color: #ff9800; /* Orange */
+  color: white;
+  margin-bottom: 15px;
+}
