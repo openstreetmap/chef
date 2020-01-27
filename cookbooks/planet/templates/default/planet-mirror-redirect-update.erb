@@ -9,7 +9,7 @@
 */
 $_YEAR = date('Y');
 $_PLANET_FOLDER = '<%= node[:planet][:dump][:xml_directory] %>/'.$_YEAR.'/';
-$_PLANET_REGEX = "/^(planet|changesets)\-\d{6}(\-nolt)?\.osm\.(bz2|gz)$/";
+$_PLANET_REGEX = "/^(planet|changesets)\-\d{6}(\-nolt)?(\.osm\.(bz2|gz)|\.pbf)$/";
 $_MIRROR = 'https://ftp5.gwdg.de/pub/misc/openstreetmap/planet.openstreetmap.org/planet/'.$_YEAR.'/';
 $_PLANET_HTACCESS = realpath('<%= node[:planet][:dump][:xml_directory] %>/..').'/.htaccess';
 
