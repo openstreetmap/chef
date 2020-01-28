@@ -77,7 +77,7 @@ if node[:exim][:smarthost_name]
     relay_from_hosts |= host.ipaddresses(:role => :external)
   end
 
-  domains = node[:exim][:local_domains].reject { |d| ["localhost", "@", "noreply.openstreetmap.org"].any?(d) }
+  domains = node[:exim][:certificate_names].select { |c| c =~ /^a\.mx\./ }.collect { |c| c.sub(/^a\.mx./, "") }
   primary_domain = domains.first
 
   directory "/srv/mta-sts.#{primary_domain}" do
