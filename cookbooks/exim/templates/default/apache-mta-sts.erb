@@ -28,3 +28,7 @@
   Alias /.well-known/mta-sts.txt <%= @directory %>/<%= domain %>.txt
 </VirtualHost>
 <% end -%>
+
+<Directory <%= @directory %>>
+  Require all granted
+</Directory>
