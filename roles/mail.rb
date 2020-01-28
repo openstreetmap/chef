@@ -18,7 +18,13 @@ default_attributes(
     :daemon_smtp_ports => [25, 26],
     :certificate_names => [
       "mail.openstreetmap.org",
-      "a.mx.openstreetmap.org"
+      "a.mx.openstreetmap.org",
+      "a.mx.osm.org",
+      "a.mx.openstreetmap.com",
+      "a.mx.openstreetmap.io",
+      "a.mx.openstreetmap.pro",
+      "a.mx.openstreetmaps.org",
+      "a.mx.osm.io"
     ],
     :smarthost_name => "mail.openstreetmap.org",
     :smarthost_via => false,
