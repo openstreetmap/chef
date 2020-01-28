@@ -1,0 +1,30 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+<VirtualHost *:80>
+  ServerName <%= @name %>
+<% @domains.drop(1).each do |domain| -%>
+  ServerAlias mta-sts.<%= domain %>
+<% end -%>
+  ServerAdmin webmaster@openstreetmap.org
+
+  CustomLog /var/log/apache2/<%= @name %>-access.log combined
+  ErrorLog /var/log/apache2/<%= @name %>-error.log
+
+  RedirectPermanent /.well-known/acme-challenge/ http://acme.openstreetmap.org/.well-known/acme-challenge/
+</VirtualHost>
+<% @domains.each do |domain| -%>
+
+<VirtualHost *:443>
+  ServerName mta-sts.<%= domain %>
+  ServerAdmin webmaster@openstreetmap.org
+
+  SSLEngine on
+  SSLCertificateFile /etc/ssl/certs/<%= @name %>.pem
+  SSLCertificateKeyFile /etc/ssl/private/<%= @name %>.key
+
+  CustomLog /var/log/apache2/<%= @name %>-access.log combined
+  ErrorLog /var/log/apache2/<%= @name %>-error.log
+
+  Alias /.well-known/mta-sts.txt <%= @directory %>/<%= domain %>.txt
+</VirtualHost>
+<% end -%>

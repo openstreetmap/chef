@@ -76,6 +76,35 @@ if node[:exim][:smarthost_name]
   search(:node, "exim_smarthost_via:#{node[:exim][:smarthost_name]}\\:*").each do |host|
     relay_from_hosts |= host.ipaddresses(:role => :external)
   end
+
+  domains = node[:exim][:local_domains].reject { |d| ["localhost", "@", "noreply.openstreetmap.org"].any?(d) }
+  primary_domain = domains.first
+
+  directory "/srv/mta-sts.#{primary_domain}" do
+    owner "root"
+    group "root"
+    mode 0o755
+  end
+
+  domains.each do |domain|
+    template "/srv/mta-sts.#{primary_domain}/#{domain}.txt" do
+      source "mta-sts.erb"
+      owner "root"
+      group "root"
+      mode 0o644
+      variables :domain => domain
+    end
+  end
+
+  ssl_certificate "mta-sts.#{primary_domain}" do
+    domains domains.collect { |d| "mta-sts.#{d}" }
+    notifies :reload, "service[apache2]"
+  end
+
+  apache_site "mta-sts.#{primary_domain}" do
+    template "apache-mta-sts.erb"
+    variables :domains => domains
+  end
 end
 
 file "/etc/exim4/blocked-senders" do
