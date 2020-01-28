@@ -103,6 +103,7 @@ if node[:exim][:smarthost_name]
 
   apache_site "mta-sts.#{primary_domain}" do
     template "apache-mta-sts.erb"
+    directory "/srv/mta-sts.#{primary_domain}"
     variables :domains => domains
   end
 end
