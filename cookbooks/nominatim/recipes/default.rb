@@ -152,6 +152,7 @@ package %w[
   libproj-dev
   python3-pyosmium
   pyosmium
+  python3-psycopg2
 ]
 
 source_directory = "#{basedir}/nominatim"
