@@ -49,18 +49,33 @@ Group=<%= @group %>
 WorkingDirectory=<%= @working_directory %>
 <% end -%>
 <% if @exec_start_pre -%>
+<% if @dropin -%>
+ExecStartPre=
+<% end -%>
 ExecStartPre=<%= @exec_start_pre %>
 <% end -%>
 <% if @exec_start -%>
+<% if @dropin -%>
+ExecStart=
+<% end -%>
 ExecStart=<%= @exec_start %>
 <% end -%>
 <% if @exec_start_post -%>
+<% if @dropin -%>
+ExecStartPost=
+<% end -%>
 ExecStartPost=<%= @exec_start_post %>
 <% end -%>
 <% if @exec_stop -%>
+<% if @dropin -%>
+ExecStop=
+<% end -%>
 ExecStop=<%= @exec_stop %>
 <% end -%>
 <% if @exec_reload -%>
+<% if @dropin -%>
+ExecReload=
+<% end -%>
 ExecReload=<%= @exec_reload %>
 <% end -%>
 <% if @runtime_directory -%>
