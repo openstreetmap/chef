@@ -38,6 +38,7 @@ default_attributes(
   :nginx => {
     :cache => {
       :proxy => {
+        :keys_zone => "proxy_cache_zone:64M",
         :max_size => "2048M"
       }
     }

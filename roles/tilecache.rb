@@ -20,7 +20,7 @@ default_attributes(
     :cache => {
       :proxy => {
         :enable => true,
-        :keys_zone => "proxy_cache_zone:64M",
+        :keys_zone => "proxy_cache_zone:128M"
       }
     }
   },
