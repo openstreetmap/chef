@@ -1,5 +1,20 @@
 sudo: false
 language: ruby
 cache: bundler
-script:
-  - bundle exec cookstyle -f fuubar
+services:
+  - docker
+before_script:
+  - gem install kitchen kitchen-dokken kitchen-vagrant
+  # Put just enough Vagrant in the PATH to satisfy Test-Kitchen. No actual
+  # Vagrant or Virtualbox is run on Travis; this fake shim that echoes a
+  # recent Vagrant version is only here to allow tests to proceed below.
+  - sudo bash -c 'echo "echo Vagrant 2.0.0-fake" > /usr/bin/vagrant'
+  - sudo chmod +x /usr/bin/vagrant
+jobs:
+  include:
+    - name: "Cookstyle"
+      script:
+      - bundle exec cookstyle -f fuubar
+    - name: "Kitchen Test Apt Cookbook"
+      script:
+      - kitchen test apt-ubuntu-1804-ci
