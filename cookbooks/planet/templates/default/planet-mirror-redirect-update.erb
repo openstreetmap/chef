@@ -66,7 +66,7 @@ foreach ($_FOLDERS as $FOLDER) {
   if ($dh = opendir($_PLANET_FOLDER)) {
     while (($file = readdir($dh)) !== false ) {
       if (preg_match($_PLANET_REGEX, $file)) {
-        $file_slashed = $FOLDER['DIR_PREFIX'].str_replace(array('.','-'), array('\.','\-'), $file);
+        $file_slashed = str_replace(array('.','-'), array('\.','\-'), $FOLDER['DIR_PREFIX'].$file);
         if (strpos($htaccess_contents, $file_slashed) === false) {
           $file_size = filesize($_PLANET_FOLDER.$file);
           sleep(rand(2,5));
