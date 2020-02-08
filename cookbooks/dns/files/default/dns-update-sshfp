@@ -1,0 +1,30 @@
+#!/usr/bin/perl
+
+open(SSHFP, "-|","sshfp", "-k", "/etc/ssh/ssh_known_hosts") || die $!;
+open(SSHFP_JS, ">", "/var/lib/dns/include/sshfp.js") || die $!;
+
+print SSHFP_JS qq|var SSHFP_RECORDS = [\n|;
+
+while (my $line = <SSHFP>)
+{
+  if ($line =~ /^(\S+) IN SSHFP (\d+) (\d+) ([0-9A-F]+)$/)
+  {
+    my $host = $1;
+    my $algorithm = $2;
+    my $type = $3;
+    my $value = $4;
+
+    print SSHFP_JS qq|  SSHFP("${host}", ${algorithm}, ${type}, "${value}");\n|;
+  }
+  else
+  {
+    warn $line;
+  }
+}
+
+print SSHFP_JS qq|];\n|;
+
+close(SSHFP_JS);
+close(SSHFP);
+
+exit 0;

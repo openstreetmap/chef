@@ -103,6 +103,13 @@ template "/usr/local/bin/dns-update" do
   variables :passwords => passwords, :geoservers => geoservers
 end
 
+cookbook_file "/usr/local/bin/dns-update-sshfp" do
+  source "dns-update-sshfp"
+  owner "git"
+  group "git"
+  mode 0o750
+end
+
 execute "dns-update" do
   action :nothing
   command "/usr/local/bin/dns-update"
@@ -123,6 +130,14 @@ template "/var/lib/dns/creds.json" do
   group "git"
   mode 0o440
   variables :passwords => passwords
+end
+
+execute "dns-update-sshfp" do
+  action :nothing
+  command "/usr/local/bin/dns-update-sshfp"
+  user "git"
+  group "git"
+  subscribes :run, "template[/etc/ssh/ssh_known_hosts]"
 end
 
 cookbook_file "#{node[:dns][:repository]}/hooks/post-receive" do
