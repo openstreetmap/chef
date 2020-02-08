@@ -34,6 +34,7 @@ package %w[
   libyaml-perl
   libwww-perl
   libjson-xs-perl
+  sshfp
 ]
 
 # remote_file "/usr/local/bin/dnscontrol" do
