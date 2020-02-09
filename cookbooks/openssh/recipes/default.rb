@@ -29,15 +29,16 @@ service "ssh" do
 end
 
 hosts = search(:node, "networking:interfaces").sort_by { |n| n[:hostname] }.collect do |node|
-  names = [node[:hostname]]
+  name = node.name.split(".").first
 
-  node.interfaces(:role => :external).each do |interface|
-    names |= ["#{node[:hostname]}.openstreetmap.org"]
-    names |= ["#{node[:hostname]}.#{interface[:zone]}.openstreetmap.org"]
-  end
+  names = [name]
 
   unless node.interfaces(:role => :internal).empty?
-    names |= ["#{node[:hostname]}.#{node[:networking][:roles][:external][:zone]}.openstreetmap.org"]
+    names.unshift("#{name}.#{node[:networking][:roles][:external][:zone]}.openstreetmap.org")
+  end
+
+  unless node.interfaces(:role => :external).empty?
+    names.unshift("#{name}.openstreetmap.org")
   end
 
   keys = {
@@ -56,7 +57,7 @@ hosts = search(:node, "networking:interfaces").sort_by { |n| n[:hostname] }.coll
   end
 
   Hash[
-    :names => names.sort,
+    :names => names,
     :addresses => node.ipaddresses.sort,
     :keys => keys
   ]
