@@ -13,14 +13,31 @@ provisioner:
 
 platforms:
   - name: ubuntu-18.04
+  - name: ubuntu-18.04-ci
+    driver:
+      name: dokken
+      image: dokken/ubuntu-18.04
+      chef_version: 14
+      provision: true
+      pid_one_command: /bin/systemd
+      intermediate_instructions:
+        - RUN /usr/bin/apt-get update -y
+    provisioner:
+      name: dokken
+      product_name: chef
+      data_bags_path: test/data_bags
+    transport:
+      name: dokken
 
 suites:
   - name: accounts
     run_list:
       - recipe[accounts::default]
+    excludes: ["ubuntu-18.04-ci"]
   - name: apache
     run_list:
       - recipe[apache::default]
+    excludes: ["ubuntu-18.04-ci"]
   - name: apt
     run_list:
       - recipe[apt::default]
@@ -30,14 +47,17 @@ suites:
     attributes:
       bind:
         clients: none
+    excludes: ["ubuntu-18.04-ci"]
   - name: blogs
     run_list:
       - recipe[accounts::default]
       - recipe[blogs::default]
+    excludes: ["ubuntu-18.04-ci"]
   - name: forum
     run_list:
       - recipe[accounts::default]
       - role[forum]
+    excludes: ["ubuntu-18.04-ci"]
   - name: letsencrypt
     run_list:
       - recipe[accounts::default]
@@ -47,26 +67,34 @@ suites:
       apt:
         sources:
           - openstreetmap
+    excludes: ["ubuntu-18.04-ci"]
   - name: munin
     run_list:
       - recipe[munin::default]
+    excludes: ["ubuntu-18.04-ci"]
   - name: munin-server
     run_list:
       - recipe[munin::server]
+    excludes: ["ubuntu-18.04-ci"]
   - name: mysql
     run_list:
       - recipe[mysql::default]
+    excludes: ["ubuntu-18.04-ci"]
   - name: networking
     run_list:
       - recipe[networking::default]
+    excludes: ["ubuntu-18.04-ci"]
   - name: otrs
     run_list:
       - recipe[accounts::default]
       - recipe[chef::default]
       - role[otrs]
+    excludes: ["ubuntu-18.04-ci"]
   - name: python
     run_list:
       - recipe[python::default]
+    excludes: ["ubuntu-18.04-ci"]
   - name: tools
     run_list:
       - recipe[tools::default]
+    excludes: ["ubuntu-18.04-ci"]
