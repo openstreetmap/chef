@@ -4,7 +4,6 @@ cache: bundler
 services:
   - docker
 before_script:
-  - gem install kitchen kitchen-dokken kitchen-vagrant
   # Put just enough Vagrant in the PATH to satisfy Test-Kitchen. No actual
   # Vagrant or Virtualbox is run on Travis; this fake shim that echoes a
   # recent Vagrant version is only here to allow tests to proceed below.
@@ -17,4 +16,4 @@ jobs:
       - bundle exec cookstyle -f fuubar
     - name: "Kitchen Test Apt Cookbook"
       script:
-      - kitchen test apt-ubuntu-1804-ci
+      - bundle exec kitchen test apt-ubuntu-1804-ci
