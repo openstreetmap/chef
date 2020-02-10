@@ -28,7 +28,9 @@ package %w[
   libsqlite3-dev
 ]
 
-gem_package "bundler"
+gem_package "bundler" do
+  version "~> 1.17.2"
+end
 
 directory "/srv/blogs.openstreetmap.org" do
   owner "blogs"
