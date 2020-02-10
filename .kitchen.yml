@@ -22,6 +22,7 @@ platforms:
     driver:
       name: dokken
       image: dokken/ubuntu-18.04
+      chef_version: 14
       provision: true
       # Docker and systemd need full capabilities granted in privileged mode
       privileged: true
@@ -33,10 +34,7 @@ platforms:
     provisioner:
       name: dokken
       product_name: chef
-      product_version: 14
       data_bags_path: test/data_bags
-      # Automatically accept Chef license when running headlessly
-      chef_license: accept
     transport:
       name: dokken
 
