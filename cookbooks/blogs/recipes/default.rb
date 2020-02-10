@@ -25,6 +25,7 @@ package %w[
   ruby-dev
   make
   gcc
+  g++
   libsqlite3-dev
 ]
 
