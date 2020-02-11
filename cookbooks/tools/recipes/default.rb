@@ -36,6 +36,7 @@ package %w[
   lvm2
   rsyslog
   cron
+  locales-all
 ]
 
 service "rsyslog" do
