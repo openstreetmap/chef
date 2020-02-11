@@ -104,14 +104,6 @@ execute "/opt/otrs/bin/otrs.SetPermissions.pl" do
   only_if { File.stat("/opt/otrs/README.md").uid != Etc.getpwnam("otrs").uid }
 end
 
-execute "/opt/otrs/bin/otrs.RebuildConfig.pl" do
-  action :run
-  command "/opt/otrs/bin/otrs.RebuildConfig.pl"
-  user "root"
-  group "root"
-  not_if { ::File.exist?("/opt/otrs/Kernel/Config/Files/ZZZAAuto.pm") }
-end
-
 execute "/opt/otrs/bin/Cron.sh" do
   action :nothing
   command "/opt/otrs/bin/Cron.sh restart"
