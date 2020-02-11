@@ -215,6 +215,13 @@ template "/etc/systemd/resolved.conf.d/99-chef.conf" do
   notifies :restart, "service[systemd-resolved]", :immediately
 end
 
+if node[:filesystem][:by_mountpoint]["/etc/resolv.conf"]
+  mount "/etc/resolv.conf" do
+    action :umount
+    device node[:filesystem][:by_mountpoint]["/etc/resolv.conf"][:devices].first
+  end
+end
+
 link "/etc/resolv.conf" do
   to "../run/systemd/resolve/stub-resolv.conf"
 end
