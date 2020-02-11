@@ -215,6 +215,10 @@ template "/etc/systemd/resolved.conf.d/99-chef.conf" do
   notifies :restart, "service[systemd-resolved]", :immediately
 end
 
+link "/etc/resolv.conf" do
+  to "../run/systemd/resolve/stub-resolv.conf"
+end
+
 if node[:networking][:tcp_fastopen_key]
   fastopen_keys = data_bag_item("networking", "fastopen")
 
