@@ -27,6 +27,9 @@ suites:
   - name: bind
     run_list:
       - recipe[bind::default]
+    attributes:
+      bind:
+        clients: none
   - name: blogs
     run_list:
       - recipe[accounts::default]
