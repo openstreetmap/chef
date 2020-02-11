@@ -54,6 +54,8 @@ end
 
 service "apache2" do
   action [:enable, :start]
+  retries 2
+  retry_delay 10
   supports :status => true, :restart => true, :reload => true
 end
 
