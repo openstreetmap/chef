@@ -212,7 +212,7 @@ template "/etc/systemd/resolved.conf.d/99-chef.conf" do
   owner "root"
   group "root"
   mode 0o644
-  notifies :restart, "service[systemd-resolved]"
+  notifies :restart, "service[systemd-resolved]", :immediately
 end
 
 if node[:networking][:tcp_fastopen_key]
