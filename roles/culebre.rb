@@ -14,13 +14,6 @@ default_attributes(
         :address => "155.210.4.103",
         :prefix => "28",
         :gateway => "155.210.4.110"
-      },
-      :internal_ipv4 => {
-        :interface => "ens4",
-        :role => :internal,
-        :family => :inet,
-        :address => "10.148.97.151",
-        :prefix => "24"
       }
     }
   },
