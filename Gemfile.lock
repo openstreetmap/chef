@@ -25,8 +25,6 @@ GEM
       docker-api (~> 1.33)
       lockfile (~> 2.1)
       test-kitchen (>= 1.15, < 3)
-    kitchen-vagrant (1.6.1)
-      test-kitchen (>= 1.4, < 3)
     license-acceptance (1.0.13)
       pastel (~> 0.7)
       tomlrb (~> 1.2)
@@ -159,7 +157,6 @@ PLATFORMS
 DEPENDENCIES
   cookstyle
   kitchen-dokken
-  kitchen-vagrant
   serverspec
   test-kitchen
 
