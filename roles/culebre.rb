@@ -3,7 +3,7 @@ description "Master role applied to culebre"
 
 default_attributes(
   :hardware => {
-    :shm_size => "14g"
+    :shm_size => "18g"
   },
   :networking => {
     :interfaces => {
@@ -14,19 +14,12 @@ default_attributes(
         :address => "155.210.4.103",
         :prefix => "28",
         :gateway => "155.210.4.110"
-      },
-      :internal_ipv4 => {
-        :interface => "ens4",
-        :role => :internal,
-        :family => :inet,
-        :address => "10.148.97.151",
-        :prefix => "24"
       }
     }
   },
   :squid => {
     :version => 4,
-    :cache_mem => "10240 MB",
+    :cache_mem => "16384 MB",
     :cache_dir => [
       "rock /store/squid/rock-4096 12800 swap-timeout=200 slot-size=4096 max-size=3996",
       "rock /store/squid/rock-8192 16000 swap-timeout=200 slot-size=8192 min-size=3997 max-size=8092",

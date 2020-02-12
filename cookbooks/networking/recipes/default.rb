@@ -212,7 +212,18 @@ template "/etc/systemd/resolved.conf.d/99-chef.conf" do
   owner "root"
   group "root"
   mode 0o644
-  notifies :restart, "service[systemd-resolved]"
+  notifies :restart, "service[systemd-resolved]", :immediately
+end
+
+if node[:filesystem][:by_mountpoint]["/etc/resolv.conf"]
+  mount "/etc/resolv.conf" do
+    action :umount
+    device node[:filesystem][:by_mountpoint]["/etc/resolv.conf"][:devices].first
+  end
+end
+
+link "/etc/resolv.conf" do
+  to "../run/systemd/resolve/stub-resolv.conf"
 end
 
 if node[:networking][:tcp_fastopen_key]

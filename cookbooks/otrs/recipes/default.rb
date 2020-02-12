@@ -26,17 +26,20 @@ passwords = data_bag_item("otrs", "passwords")
 package "libapache2-mod-perl2"
 package "libapache2-reload-perl"
 
-package "libgd-gd2-perl"
-package "libgd-graph-perl"
-package "libgd-text-perl"
-package "libjson-xs-perl"
-package "libmail-imapclient-perl"
-package "libnet-ldap-perl"
-package "libpdf-api2-perl"
-package "libsoap-lite-perl"
-package "libyaml-libyaml-perl"
-package "libcrypt-eksblowfish-perl"
-package "libtemplate-perl"
+package %w[
+  libcrypt-eksblowfish-perl
+  libdatetime-perl
+  libgd-gd2-perl
+  libgd-graph-perl
+  libgd-text-perl
+  libjson-xs-perl
+  libmail-imapclient-perl
+  libnet-ldap-perl
+  libpdf-api2-perl
+  libsoap-lite-perl
+  libtemplate-perl
+  libyaml-libyaml-perl
+]
 
 apache_module "headers"
 
@@ -102,14 +105,6 @@ execute "/opt/otrs/bin/otrs.SetPermissions.pl" do
   user "root"
   group "root"
   only_if { File.stat("/opt/otrs/README.md").uid != Etc.getpwnam("otrs").uid }
-end
-
-execute "/opt/otrs/bin/otrs.RebuildConfig.pl" do
-  action :run
-  command "/opt/otrs/bin/otrs.RebuildConfig.pl"
-  user "root"
-  group "root"
-  not_if { ::File.exist?("/opt/otrs/Kernel/Config/Files/ZZZAAuto.pm") }
 end
 
 execute "/opt/otrs/bin/Cron.sh" do

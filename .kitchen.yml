@@ -53,6 +53,9 @@ suites:
   - name: bind
     run_list:
       - recipe[bind::default]
+    attributes:
+      bind:
+        clients: none
     excludes: ["ubuntu-18.04-ci"]
   - name: blogs
     run_list:
