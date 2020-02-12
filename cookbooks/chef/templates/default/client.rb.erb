@@ -33,6 +33,10 @@ chef_server_url "https://chef.openstreetmap.org/organizations/openstreetmap"
 
 ohai.plugin_path << "<%= node[:ohai][:plugin_dir] %>"
 
+# Enable some optional ohai plugins
+
+ohai.optional_plugins = %w[Passwd]
+
 # Load supporting code for report handlers
 
 require "/etc/chef/report"

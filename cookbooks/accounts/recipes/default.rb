@@ -39,9 +39,15 @@ search(:accounts, "*:*").each do |account|
       user_shell = details[:shell] || account["shell"] || node[:accounts][:shell]
     end
 
+    available_users = if node[:etc]
+                        node[:etc][:passwd].keys
+                      else
+                        []
+                      end
+
     group name.to_s do
       gid account["uid"].to_i
-      members group_members & node[:etc][:passwd].keys
+      members group_members & available_users
     end
 
     user name.to_s do
