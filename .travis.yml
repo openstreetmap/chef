@@ -7,7 +7,46 @@ jobs:
   include:
     - name: "Cookstyle"
       script:
-      - bundle exec cookstyle -f fuubar
-    - name: "Kitchen Test Apt Cookbook"
+        - bundle exec cookstyle -f fuubar
+    - name: "Test Kitchen (accounts)"
       script:
-      - bundle exec kitchen test apt-ubuntu-1804
+        - bundle exec kitchen test accounts-ubuntu-1804
+    - name: "Test Kitchen (apache)"
+      script:
+        - bundle exec kitchen test apache-ubuntu-1804
+    - name: "Test Kitchen (apt)"
+      script:
+        - bundle exec kitchen test apt-ubuntu-1804
+    - name: "Test Kitchen (bind)"
+      script:
+        - bundle exec kitchen test bind-ubuntu-1804
+    - name: "Test Kitchen (blogs)"
+      script:
+        - bundle exec kitchen test blogs-ubuntu-1804
+    - name: "Test Kitchen (forum)"
+      script:
+        - bundle exec kitchen test forum-ubuntu-1804
+    - name: "Test Kitchen (letsencrypt)"
+      script:
+        - bundle exec kitchen test letsencrypt-ubuntu-1804
+    - name: "Test Kitchen (munin)"
+      script:
+        - bundle exec kitchen test munin-ubuntu-1804
+    - name: "Test Kitchen (munin-server)"
+      script:
+        - bundle exec kitchen test munin-server-ubuntu-1804
+    - name: "Test Kitchen (mysql)"
+      script:
+        - bundle exec kitchen test mysql-ubuntu-1804
+    - name: "Test Kitchen (networking)"
+      script:
+        - bundle exec kitchen test networking-ubuntu-1804
+    - name: "Test Kitchen (otrs)"
+      script:
+        - bundle exec kitchen test otrs-ubuntu-1804
+    - name: "Test Kitchen (python)"
+      script:
+        - bundle exec kitchen test python-ubuntu-1804
+    - name: "Test Kitchen (tools)"
+      script:
+        - bundle exec kitchen test tools-ubuntu-1804

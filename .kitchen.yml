@@ -26,11 +26,9 @@ suites:
   - name: accounts
     run_list:
       - recipe[accounts::default]
-    excludes: ["ubuntu-18.04"]
   - name: apache
     run_list:
       - recipe[apache::default]
-    excludes: ["ubuntu-18.04"]
   - name: apt
     run_list:
       - recipe[apt::default]
@@ -40,17 +38,14 @@ suites:
     attributes:
       bind:
         clients: none
-    excludes: ["ubuntu-18.04"]
   - name: blogs
     run_list:
       - recipe[accounts::default]
       - recipe[blogs::default]
-    excludes: ["ubuntu-18.04"]
   - name: forum
     run_list:
       - recipe[accounts::default]
       - role[forum]
-    excludes: ["ubuntu-18.04"]
   - name: letsencrypt
     run_list:
       - recipe[accounts::default]
@@ -60,34 +55,26 @@ suites:
       apt:
         sources:
           - openstreetmap
-    excludes: ["ubuntu-18.04"]
   - name: munin
     run_list:
       - recipe[munin::default]
-    excludes: ["ubuntu-18.04"]
   - name: munin-server
     run_list:
       - recipe[munin::server]
-    excludes: ["ubuntu-18.04"]
   - name: mysql
     run_list:
       - recipe[mysql::default]
-    excludes: ["ubuntu-18.04"]
   - name: networking
     run_list:
       - recipe[networking::default]
-    excludes: ["ubuntu-18.04"]
   - name: otrs
     run_list:
       - recipe[accounts::default]
       - recipe[chef::default]
       - role[otrs]
-    excludes: ["ubuntu-18.04"]
   - name: python
     run_list:
       - recipe[python::default]
-    excludes: ["ubuntu-18.04"]
   - name: tools
     run_list:
       - recipe[tools::default]
-    excludes: ["ubuntu-18.04"]
