@@ -17,5 +17,5 @@ describe port(80) do
 end
 
 describe port(443) do
-  it { should_not be_listening }
+  it { should be_listening }
 end
