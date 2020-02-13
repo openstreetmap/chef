@@ -67,6 +67,9 @@ suites:
   - name: networking
     run_list:
       - recipe[networking::default]
+  - name: ntp
+    run_list:
+      - recipe[ntp::default]
   - name: otrs
     run_list:
       - recipe[accounts::default]

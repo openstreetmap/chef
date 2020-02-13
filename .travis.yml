@@ -41,6 +41,9 @@ jobs:
     - name: "Test Kitchen (networking)"
       script:
         - bundle exec kitchen test networking-ubuntu-1804
+    - name: "Test Kitchen (ntp)"
+      script:
+        - bundle exec kitchen test ntp-ubuntu-1804
     - name: "Test Kitchen (otrs)"
       script:
         - bundle exec kitchen test otrs-ubuntu-1804
