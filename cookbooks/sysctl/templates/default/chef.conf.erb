@@ -1,8 +1,0 @@
-# DO NOT EDIT - This file is being maintained by Chef
-<% node[:sysctl].each do |name,group| -%>
-
-# <%= group[:comment] %>
-<% group[:parameters].each do |key,value| -%>
-<%= key %> = <%= value %>
-<% end -%>
-<% end -%>

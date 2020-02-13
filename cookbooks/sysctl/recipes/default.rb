@@ -17,41 +17,17 @@
 # limitations under the License.
 #
 
-if node[:virtualization][:role] == "guest" &&
-   node[:virtualization][:system] == "lxd"
-  file "/etc/sysctl.d/60-chef.conf" do
-    action :delete
-  end
-else
-  package "procps"
+file "/etc/sysctl.d/60-chef.conf" do
+  action :delete
+end
 
-  directory "/etc/sysctl.d" do
-    owner "root"
-    group "root"
-    mode 0o755
-  end
-
-  execute "sysctl" do
-    action :nothing
-    command "/sbin/sysctl -p /etc/sysctl.d/60-chef.conf"
-  end
-
-  template "/etc/sysctl.d/60-chef.conf" do
-    source "chef.conf.erb"
-    owner "root"
-    group "root"
-    mode 0o644
-    notifies :run, "execute[sysctl]"
-  end
-
+if node[:virtualization][:role] != "guest" ||
+   node[:virtualization][:system] != "lxd"
   node[:sysctl].each_value do |group|
     group[:parameters].each do |key, value|
-      sysctl_file = "/proc/sys/#{key.tr('.', '/')}"
-
-      file sysctl_file do
-        content "#{value}\n"
-        atomic_update false
-        ignore_failure true
+      sysctl key do
+        value value
+        comment group[:comment]
       end
     end
   end
