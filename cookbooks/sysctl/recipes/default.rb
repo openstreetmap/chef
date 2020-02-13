@@ -31,4 +31,12 @@ if node[:virtualization][:role] != "guest" ||
       end
     end
   end
+
+  Dir.new("/etc/sysctl.d").each_entry do |file|
+    next unless file =~ /^99-chef-(.*)\.conf$/
+
+    sysctl Regexp.last_match(1) do
+      action :remove
+    end
+  end
 end
