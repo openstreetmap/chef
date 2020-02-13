@@ -27,7 +27,7 @@ if node[:virtualization][:role] != "guest" ||
     group[:parameters].each do |key, value|
       sysctl key do
         value value
-        comment group[:comment]
+        # comment group[:comment]
       end
     end
   end
