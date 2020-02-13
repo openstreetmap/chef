@@ -6,3 +6,4 @@ description       "Installs and configures spamassassin"
 
 version           "1.0.0"
 supports          "ubuntu"
+depends           "exim"

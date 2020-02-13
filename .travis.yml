@@ -23,6 +23,12 @@ jobs:
     - name: "Test Kitchen (blogs)"
       script:
         - bundle exec kitchen test blogs-ubuntu-1804
+    - name: "Test Kitchen (clamav)"
+      script:
+        - bundle exec kitchen test clamav-ubuntu-1804
+    - name: "Test Kitchen (exim)"
+      script:
+        - bundle exec kitchen test exim-ubuntu-1804
     - name: "Test Kitchen (forum)"
       script:
         - bundle exec kitchen test forum-ubuntu-1804
@@ -50,6 +56,9 @@ jobs:
     - name: "Test Kitchen (python)"
       script:
         - bundle exec kitchen test python-ubuntu-1804
+    - name: "Test Kitchen (spamassassin)"
+      script:
+        - bundle exec kitchen test spamassassin-ubuntu-1804
     - name: "Test Kitchen (tools)"
       script:
         - bundle exec kitchen test tools-ubuntu-1804
