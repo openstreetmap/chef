@@ -34,7 +34,10 @@ execute "freshclam" do
   command "/usr/bin/freshclam"
   user "clamav"
   group "clamav"
-  not_if { ::File.exist?("/var/lib/clamav/daily.cvd") }
+  not_if do
+    ::File.exist?("/var/lib/clamav/daily.cld") ||
+      ::File.exist?("/var/lib/clamav/daily.cvd")
+  end
 end
 
 service "clamav-daemon" do
