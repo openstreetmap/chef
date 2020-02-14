@@ -13,5 +13,5 @@ describe service("mysql") do
 end
 
 describe port(3306) do
-  it { should be_listening }
+  it { should be_listening.with("tcp") }
 end

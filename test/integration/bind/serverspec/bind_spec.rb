@@ -13,5 +13,6 @@ describe service("bind9") do
 end
 
 describe port(53) do
-  it { should be_listening }
+  it { should be_listening.with("udp") }
+  it { should be_listening.with("tcp") }
 end

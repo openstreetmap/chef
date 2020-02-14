@@ -13,5 +13,5 @@ describe service("spamassassin") do
 end
 
 describe port(783) do
-  it { should be_listening }
+  it { should be_listening.with("tcp") }
 end
