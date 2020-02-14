@@ -72,6 +72,13 @@ suites:
     attributes:
       apache:
         mpm: prefork
+  - name: donate
+    run_list:
+      - recipe[accounts::default]
+      - role[donate]
+    attributes:
+      apache:
+        mpm: prefork
   - name: exim
     run_list:
       - recipe[exim::default]
