@@ -26,6 +26,9 @@ jobs:
     - name: "Test Kitchen (clamav)"
       script:
         - bundle exec kitchen test clamav-ubuntu-1804
+    - name: "Test Kitchen (devices)"
+      script:
+        - bundle exec kitchen test devices-ubuntu-1804
     - name: "Test Kitchen (exim)"
       script:
         - bundle exec kitchen test exim-ubuntu-1804

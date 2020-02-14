@@ -45,6 +45,9 @@ suites:
   - name: clamav
     run_list:
       - recipe[clamav::default]
+  - name: devices
+    run_list:
+      - recipe[devices::default]
   - name: exim
     run_list:
       - recipe[exim::default]
