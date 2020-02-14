@@ -27,6 +27,14 @@ template "/etc/fail2ban/jail.d/00-default.conf" do
   notifies :restart, "service[fail2ban]"
 end
 
+template "/etc/fail2ban/paths-overrides.local" do
+  source "paths-overrides.local.erb"
+  owner "root"
+  group "root"
+  mode 0o644
+  notifies :restart, "service[fail2ban]"
+end
+
 service "fail2ban" do
   action [:enable, :start]
 end
