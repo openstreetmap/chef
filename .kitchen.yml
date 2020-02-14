@@ -114,6 +114,9 @@ suites:
   - name: networking
     run_list:
       - recipe[networking::default]
+  - name: nodejs
+    run_list:
+      - recipe[nodejs::default]
   - name: ntp
     run_list:
       - recipe[ntp::default]
