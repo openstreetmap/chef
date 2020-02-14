@@ -1,18 +1,19 @@
 $TTL 86400
 
-@	SOA	a.ns.openstreetmap.org. hostmaster.openstreetmap.org. (
-	1	; serial
-	86400	; refresh
-	172800	; retry
-	604800	; expire
-	3600	; ncache
+@		SOA	a.ns.openstreetmap.org. hostmaster.openstreetmap.org. (
+		2	; serial
+		86400	; refresh
+		172800	; retry
+		604800	; expire
+		3600	; ncache
 )
 
-@	86400   NS	a.ns.openstreetmap.org.
-@	86400   NS	b.ns.openstreetmap.org.
-@	86400   NS	c.ns.openstreetmap.org.
-@	86400   NS	d.ns.openstreetmap.org.
-@	86400   NS	e.ns.openstreetmap.org.
-@	86400   NS	f.ns.openstreetmap.org.
+@		86400   NS	a.ns.openstreetmap.org.
+@		86400   NS	b.ns.openstreetmap.org.
+@		86400   NS	c.ns.openstreetmap.org.
+@		86400   NS	d.ns.openstreetmap.org.
+@		86400   NS	e.ns.openstreetmap.org.
+@		86400   NS	f.ns.openstreetmap.org.
 
-tile	600     DYNC	geoip!tile
+tile		600     DYNC	geoip!tile
+nominatim	600     DYNC    geoip!nominatim
