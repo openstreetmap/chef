@@ -92,6 +92,7 @@ jobs:
           - web-frontend
           - web-rails
           - wordpress
+          - wiki
         os:
           - ubuntu-1804
       fail-fast: false
