@@ -397,6 +397,8 @@ action :create do
   mediawiki_extension "CheckUser" do
     site new_resource.site
     template "mw-ext-CheckUser.inc.php.erb"
+    repository "git://github.com/migurski/extension-checkuser.git"
+    reference "0fe3015e57bb6ee771ecaebf3b2d79a251bd4e3a"
     update_site false
   end
 
