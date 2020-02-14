@@ -113,6 +113,9 @@ suites:
   - name: ntp
     run_list:
       - recipe[ntp::default]
+  - name: openssh
+    run_list:
+      - recipe[openssh::default]
   - name: otrs
     run_list:
       - recipe[accounts::default]
