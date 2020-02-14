@@ -142,6 +142,10 @@ suites:
   - name: spamassassin
     run_list:
       - recipe[spamassassin::default]
+  - name: squid
+    run_list:
+      - recipe[apt::default]
+      - recipe[squid::default]
   - name: tools
     run_list:
       - recipe[tools::default]

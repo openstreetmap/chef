@@ -86,6 +86,9 @@ jobs:
     - name: "Test Kitchen (spamassassin)"
       script:
         - bundle exec kitchen test spamassassin-ubuntu-1804
+    - name: "Test Kitchen (squid)"
+      script:
+        - bundle exec kitchen test squid-ubuntu-1804
     - name: "Test Kitchen (tools)"
       script:
         - bundle exec kitchen test tools-ubuntu-1804

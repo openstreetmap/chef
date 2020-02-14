@@ -6,4 +6,5 @@ description       "Installs and configures squid"
 
 version           "1.0.0"
 supports          "ubuntu"
+depends           "munin"
 depends           "systemd"
