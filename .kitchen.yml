@@ -82,6 +82,9 @@ suites:
   - name: exim
     run_list:
       - recipe[exim::default]
+  - name: fail2ban
+    run_list:
+      - recipe[fail2ban::default]
   - name: forum
     run_list:
       - recipe[accounts::default]

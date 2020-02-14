@@ -41,6 +41,9 @@ jobs:
     - name: "Test Kitchen (exim)"
       script:
         - bundle exec kitchen test exim-ubuntu-1804
+    - name: "Test Kitchen (fail2ban)"
+      script:
+        - bundle exec kitchen test fail2ban-ubuntu-1804
     - name: "Test Kitchen (forum)"
       script:
         - bundle exec kitchen test forum-ubuntu-1804
