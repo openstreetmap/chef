@@ -66,6 +66,12 @@ suites:
         roles:
           external:
             zone: test
+  - name: dmca
+    run_list:
+      - recipe[dmca::default]
+    attributes:
+      apache:
+        mpm: prefork
   - name: exim
     run_list:
       - recipe[exim::default]
