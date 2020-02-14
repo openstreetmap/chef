@@ -29,6 +29,9 @@ jobs:
     - name: "Test Kitchen (devices)"
       script:
         - bundle exec kitchen test devices-ubuntu-1804
+    - name: "Test Kitchen (dhcpd)"
+      script:
+        - bundle exec kitchen test dhcpd-ubuntu-1804
     - name: "Test Kitchen (exim)"
       script:
         - bundle exec kitchen test exim-ubuntu-1804

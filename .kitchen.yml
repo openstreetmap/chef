@@ -48,6 +48,24 @@ suites:
   - name: devices
     run_list:
       - recipe[devices::default]
+  - name: dhcpd
+    run_list:
+      - recipe[dhcpd::default]
+    attributes:
+      dhcpd:
+        first_address: 172.18.100.1
+        last_address: 172.18.100.254
+      networking:
+        interfaces:
+          test:
+            interface: eth0
+            role: internal
+            address: 172.18.0.2
+            prefix: 16
+            gateway: 172.18.0.1
+        roles:
+          external:
+            zone: test
   - name: exim
     run_list:
       - recipe[exim::default]
