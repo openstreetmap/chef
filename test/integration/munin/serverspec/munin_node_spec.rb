@@ -13,5 +13,5 @@ describe service("munin-node") do
 end
 
 describe port(4949) do
-  it { should be_listening.with("tcp") }
+  it { should be_listening.with("tcp6") }
 end
