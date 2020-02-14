@@ -37,13 +37,13 @@ package %w[
   sshfp
 ]
 
-# remote_file "/usr/local/bin/dnscontrol" do
-#   action :create
-#   source "https://github.com/StackExchange/dnscontrol/releases/download/v2.10.0/dnscontrol-Linux"
-#   owner "root"
-#   group "root"
-#   mode 0o755
-# end
+remote_file "/usr/local/bin/dnscontrol" do
+  action :create
+  source "https://github.com/StackExchange/dnscontrol/releases/download/v2.11/dnscontrol-Linux"
+  owner "root"
+  group "root"
+  mode 0o755
+end
 
 directory "/srv/dns.openstreetmap.org" do
   owner "root"
