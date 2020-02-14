@@ -6,4 +6,6 @@ description       "Installs and configures nginx"
 
 version           "1.0.0"
 supports          "ubuntu"
+depends           "munin"
+depends           "networking"
 depends           "ssl"

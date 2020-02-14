@@ -114,6 +114,14 @@ suites:
   - name: networking
     run_list:
       - recipe[networking::default]
+  - name: nginx
+    run_list:
+      - recipe[munin::default]
+      - recipe[nginx::default]
+    attributes:
+      networking:
+        nameservers:
+          - 127.0.0.1
   - name: nodejs
     run_list:
       - recipe[nodejs::default]

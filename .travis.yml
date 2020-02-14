@@ -65,6 +65,9 @@ jobs:
     - name: "Test Kitchen (networking)"
       script:
         - bundle exec kitchen test networking-ubuntu-1804
+    - name: "Test Kitchen (nginx)"
+      script:
+        - bundle exec kitchen test nginx-ubuntu-1804
     - name: "Test Kitchen (nodejs)"
       script:
         - bundle exec kitchen test nodejs-ubuntu-1804
