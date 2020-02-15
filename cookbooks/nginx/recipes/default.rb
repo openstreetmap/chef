@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+include_recipe "munin"
+
 package "nginx"
 
 resolvers = node[:networking][:nameservers].map do |resolver|

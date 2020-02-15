@@ -19,10 +19,11 @@
 
 require "ipaddr"
 
-include_recipe "ssl"
-include_recipe "squid"
-include_recipe "nginx"
 include_recipe "fail2ban"
+include_recipe "munin"
+include_recipe "nginx"
+include_recipe "squid"
+include_recipe "ssl"
 
 package "apache2" do
   action :remove

@@ -24,6 +24,7 @@ include_recipe "apache"
 include_recipe "passenger"
 include_recipe "geoipupdate"
 include_recipe "git"
+include_recipe "munin"
 include_recipe "nodejs"
 
 web_passwords = data_bag_item("web", "passwords")

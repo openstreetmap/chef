@@ -18,6 +18,7 @@
 #
 
 include_recipe "apt"
+include_recipe "munin"
 
 if node[:squid][:version] >= 3
   apt_package "squid" do

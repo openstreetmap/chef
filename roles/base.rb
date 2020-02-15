@@ -91,7 +91,7 @@ run_list(
   "recipe[chef]",
   "recipe[devices]",
   "recipe[hardware]",
-  "recipe[munin]",
+  "recipe[munin::plugins]",
   "recipe[networking]",
   "recipe[exim]",
   "recipe[ntp]",

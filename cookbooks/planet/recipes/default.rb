@@ -19,6 +19,7 @@
 
 include_recipe "accounts"
 include_recipe "apache"
+include_recipe "munin"
 
 package %w[
   perl

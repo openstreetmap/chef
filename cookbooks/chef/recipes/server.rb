@@ -18,6 +18,7 @@
 #
 
 include_recipe "apache"
+include_recipe "munin"
 
 # cache_dir = Chef::Config[:file_cache_path]
 #

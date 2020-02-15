@@ -81,5 +81,5 @@ action_class do
 end
 
 def after_created
-  notifies :restart, "service[munin-node]" if restart_munin && node[:recipes].include?("munin")
+  notifies :restart, "service[munin-node]" if restart_munin
 end

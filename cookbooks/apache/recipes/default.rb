@@ -17,6 +17,7 @@
 # limitations under the License.
 #
 
+include_recipe "munin"
 include_recipe "ssl"
 
 package %w[

@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+include_recipe "munin"
+
 package "locales-all"
 package "postgresql-common"
 

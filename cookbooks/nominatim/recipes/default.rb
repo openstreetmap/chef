@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+include_recipe "munin"
+
 basedir = data_bag_item("accounts", "nominatim")["home"]
 email_errors = data_bag_item("accounts", "lonvia")["email"]
 

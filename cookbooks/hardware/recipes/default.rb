@@ -17,8 +17,8 @@
 # limitations under the License.
 #
 
-include_recipe "tools"
 include_recipe "munin"
+include_recipe "tools"
 
 ohai_plugin "hardware" do
   template "ohai.rb.erb"

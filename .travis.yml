@@ -59,7 +59,10 @@ jobs:
     - name: "Test Kitchen (munin)"
       script:
         - bundle exec kitchen test munin-ubuntu-1804
-    - name: "Test Kitchen (munin-server)"
+    - name: "Test Kitchen (munin::plugins)"
+      script:
+        - bundle exec kitchen test munin-plugins-ubuntu-1804
+    - name: "Test Kitchen (munin::server)"
       script:
         - bundle exec kitchen test munin-server-ubuntu-1804
     - name: "Test Kitchen (mysql)"
