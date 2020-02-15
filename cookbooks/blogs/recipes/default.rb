@@ -43,6 +43,7 @@ end
 git "/srv/blogs.openstreetmap.org" do
   action :sync
   repository "git://github.com/gravitystorm/blogs.osm.org.git"
+  depth 5
   user "blogs"
   group "blogs"
   notifies :run, "execute[/srv/blogs.openstreetmap.org/Gemfile]", :immediately
@@ -50,7 +51,7 @@ end
 
 execute "/srv/blogs.openstreetmap.org/Gemfile" do
   action :nothing
-  command "bundle install"
+  command "bundle install --deployment"
   cwd "/srv/blogs.openstreetmap.org"
   user "root"
   group "root"
@@ -59,7 +60,7 @@ end
 
 execute "/srv/blogs.openstreetmap.org" do
   action :nothing
-  command "bundle exec /usr/local/bin/pluto build -t osm -o build"
+  command "bundle exec pluto build -t osm -o build"
   cwd "/srv/blogs.openstreetmap.org"
   user "blogs"
   group "blogs"
