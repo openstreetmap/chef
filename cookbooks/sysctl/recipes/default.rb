@@ -23,19 +23,27 @@ end
 
 if node[:virtualization][:role] != "guest" ||
    node[:virtualization][:system] != "lxd"
+  keys = []
+
+  Dir.new("/etc/sysctl.d").each_entry do |file|
+    next unless file =~ /^99-chef-(.*)\.conf$/
+
+    keys.push(Regexp.last_match(1))
+  end
+
   node[:sysctl].each_value do |group|
     group[:parameters].each do |key, value|
       sysctl key do
         value value
         # comment group[:comment]
       end
+
+      keys.delete(key)
     end
   end
 
-  Dir.new("/etc/sysctl.d").each_entry do |file|
-    next unless file =~ /^99-chef-(.*)\.conf$/
-
-    sysctl Regexp.last_match(1) do
+  keys.each do |key|
+    sysctl key do
       action :remove
     end
   end
