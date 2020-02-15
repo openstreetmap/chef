@@ -2,16 +2,6 @@ name "otrs"
 description "Role applied to all OTRS servers"
 
 default_attributes(
-  :accounts => {
-    :users => {
-      :otrs => { :status => :role }
-    },
-    :groups => {
-      :"www-data" => {
-        :members => [:otrs]
-      }
-    }
-  },
   :exim => {
     :local_domains => ["otrs.openstreetmap.org"],
     :routes => {
@@ -100,14 +90,7 @@ default_attributes(
   },
   :otrs => {
     :site => "otrs.openstreetmap.org",
-    :site_aliases => ["otrs.osm.org"],
-    :database_cluster => "10/main",
-    :database_name => "otrs",
-    :database_user => "otrs",
-    :database_password => "otrs"
-  },
-  :postgresql => {
-    :versions => ["10"]
+    :site_aliases => ["otrs.osm.org"]
   }
 )
 

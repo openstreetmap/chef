@@ -17,6 +17,7 @@
 # limitations under the License.
 #
 
+include_recipe "accounts"
 include_recipe "apache"
 
 keys = data_bag_item("chef", "keys")
@@ -147,6 +148,7 @@ certificates.each do |name, details|
     user "letsencrypt"
     group "letsencrypt"
     subscribes :run, "template[/srv/acme.openstreetmap.org/requests/#{name}]"
+    not_if { ENV["TEST_KITCHEN"] }
   end
 end
 

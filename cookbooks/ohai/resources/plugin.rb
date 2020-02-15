@@ -27,6 +27,13 @@ action :create do
     action :nothing
   end
 
+  directory "/etc/chef/ohai" do
+    owner "root"
+    group "root"
+    mode 0o755
+    recursive true
+  end
+
   declare_resource :template, plugin_path do
     source new_resource.template
     owner "root"

@@ -17,6 +17,7 @@
 # limitations under the License.
 #
 
+package "locales-all"
 package "postgresql-common"
 
 node[:postgresql][:versions].each do |version|

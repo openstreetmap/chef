@@ -17,9 +17,10 @@
 # limitations under the License.
 #
 
-include_recipe "tools"
-include_recipe "postgresql"
+include_recipe "accounts"
 include_recipe "apache"
+include_recipe "postgresql"
+include_recipe "tools"
 
 passwords = data_bag_item("otrs", "passwords")
 

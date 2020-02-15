@@ -40,7 +40,6 @@ suites:
         clients: none
   - name: blogs
     run_list:
-      - recipe[accounts::default]
       - recipe[blogs::default]
   - name: clamav
     run_list:
@@ -74,8 +73,7 @@ suites:
         mpm: prefork
   - name: donate
     run_list:
-      - recipe[accounts::default]
-      - role[donate]
+      - recipe[donate::default]
     attributes:
       apache:
         mpm: prefork
@@ -87,15 +85,15 @@ suites:
       - recipe[fail2ban::default]
   - name: forum
     run_list:
-      - recipe[accounts::default]
-      - role[forum]
+      - recipe[forum::default]
+    attributes:
+      apache:
+        mpm: prefork
   - name: incron
     run_list:
       - recipe[incron::default]
   - name: letsencrypt
     run_list:
-      - recipe[accounts::default]
-      - recipe[apt::default]
       - role[letsencrypt]
     attributes:
       apt:
@@ -139,9 +137,7 @@ suites:
       - recipe[osmosis::default]
   - name: otrs
     run_list:
-      - recipe[accounts::default]
-      - recipe[chef::default]
-      - role[otrs]
+      - recipe[otrs::default]
   - name: planet
     run_list:
       - recipe[planet::default]
@@ -168,7 +164,6 @@ suites:
       - recipe[spamassassin::default]
   - name: squid
     run_list:
-      - recipe[apt::default]
       - recipe[squid::default]
   - name: tools
     run_list:

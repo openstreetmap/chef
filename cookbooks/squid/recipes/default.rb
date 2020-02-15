@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+include_recipe "apt"
+
 if node[:squid][:version] >= 3
   apt_package "squid" do
     action :unlock
