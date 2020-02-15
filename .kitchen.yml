@@ -134,6 +134,9 @@ suites:
   - name: openssh
     run_list:
       - recipe[openssh::default]
+  - name: osmosis
+    run_list:
+      - recipe[osmosis::default]
   - name: otrs
     run_list:
       - recipe[accounts::default]

@@ -80,6 +80,9 @@ jobs:
     - name: "Test Kitchen (openssh)"
       script:
         - bundle exec kitchen test openssh-ubuntu-1804
+    - name: "Test Kitchen (osmosis)"
+      script:
+        - bundle exec kitchen test osmosis-ubuntu-1804
     - name: "Test Kitchen (otrs)"
       script:
         - bundle exec kitchen test otrs-ubuntu-1804
