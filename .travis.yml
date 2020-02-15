@@ -47,6 +47,9 @@ jobs:
     - name: "Test Kitchen (forum)"
       script:
         - bundle exec kitchen test forum-ubuntu-1804
+    - name: "Test Kitchen (incron)"
+      script:
+        - bundle exec kitchen test incron-ubuntu-1804
     - name: "Test Kitchen (letsencrypt)"
       script:
         - bundle exec kitchen test letsencrypt-ubuntu-1804

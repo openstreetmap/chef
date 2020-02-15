@@ -89,6 +89,9 @@ suites:
     run_list:
       - recipe[accounts::default]
       - role[forum]
+  - name: incron
+    run_list:
+      - recipe[incron::default]
   - name: letsencrypt
     run_list:
       - recipe[accounts::default]
