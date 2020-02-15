@@ -19,15 +19,8 @@
 
 include_recipe "networking"
 
-clients = search(:node, "roles:#{node[:bind][:clients]}")
-
-ipv4_clients = clients.collect do |client|
-  client.ipaddresses(:family => :inet)
-end.flatten
-
-ipv6_clients = clients.collect do |client|
-  client.ipaddresses(:family => :inet6)
-end.flatten
+ipv4_clients = []
+ipv6_clients = []
 
 package "bind9"
 

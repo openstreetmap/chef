@@ -92,6 +92,7 @@ directory "/store/planetdump" do
   owner "www-data"
   group "www-data"
   mode 0o755
+  recursive true
 end
 
 %w[planetdump planet-mirror-redirect-update].each do |program|

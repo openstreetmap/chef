@@ -86,6 +86,18 @@ jobs:
     - name: "Test Kitchen (otrs)"
       script:
         - bundle exec kitchen test otrs-ubuntu-1804
+    - name: "Test Kitchen (planet)"
+      script:
+        - bundle exec kitchen test planet-ubuntu-1804
+    - name: "Test Kitchen (planet::dump)"
+      script:
+        - bundle exec kitchen test planet-dump-ubuntu-1804
+    - name: "Test Kitchen (planet::notes)"
+      script:
+        - bundle exec kitchen test planet-notes-ubuntu-1804
+    - name: "Test Kitchen (planet::replication)"
+      script:
+        - bundle exec kitchen test planet-replication-ubuntu-1804
     - name: "Test Kitchen (python)"
       script:
         - bundle exec kitchen test python-ubuntu-1804

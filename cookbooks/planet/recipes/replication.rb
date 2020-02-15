@@ -17,6 +17,7 @@
 # limitations under the License.
 #
 
+include_recipe "accounts"
 include_recipe "osmosis"
 
 db_passwords = data_bag_item("db", "passwords")
@@ -27,11 +28,11 @@ package "ruby"
 package "ruby-dev"
 package "ruby-libxml"
 
-package "libpq-dev"
-gem_package "pg"
-
 package "make"
 package "gcc"
+package "libpq-dev"
+
+gem_package "pg"
 
 remote_directory "/opt/flush" do
   source "flush"

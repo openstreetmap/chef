@@ -2,15 +2,6 @@ name "planet"
 description "Role applied to all planet servers"
 
 default_attributes(
-  :accounts => {
-    :users => {
-      :bretth => { :status => :user },
-      :planet => {
-        :status => :administrator,
-        :members => [:bretth]
-      }
-    }
-  },
   :rsyncd => {
     :modules => {
       :planet => {
