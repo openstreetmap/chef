@@ -42,6 +42,7 @@
 ######################################################################
 #                    MAIN CONFIGURATION SETTINGS                     #
 ######################################################################
+#
 
 # Specify your host's canonical name here. This should normally be the fully
 # qualified "official" name of your host. If this option is not set, the
@@ -93,12 +94,13 @@ hostlist   relay_from_hosts = <; <%= @relay_from_hosts.join(" ; ") %>
 # to any other host on the Internet. Such a setting commonly refers to a
 # complete local network as well as the localhost. For example:
 #
-# hostlist relay_from_hosts = 127.0.0.1 : 192.168.0.0/16
+# hostlist relay_from_hosts = <; 127.0.0.1 ; ::1 ; 192.168.0.0/16
 #
 # The "/16" is a bit mask (CIDR notation), not a number of hosts. Note that you
 # have to include 127.0.0.1 if you want to allow processes on your host to send
 # SMTP mail by using the loopback address. A number of MUAs use this method of
-# sending mail.
+# sending mail.  Often, connections are made to "localhost", which might be ::1
+# on IPv6-enabled hosts.  Do not forget CIDR for your IPv6 networks.
 
 # All three of these lists may contain many different kinds of item, including
 # wildcarded names, regular expressions, and file lookups. See the reference
@@ -144,11 +146,7 @@ spamd_address = 127.0.0.1 783
 
 # Allow any client to use TLS.
 
-tls_advertise_hosts = <; !127.0.0.1 ; !::1
-
-# Configured TLS cipher selection.
-
-tls_require_ciphers = <%= node[:ssl][:gnutls_ciphers] %>:%SERVER_PRECEDENCE
+tls_advertise_hosts = *
 
 # Specify the location of the Exim server's TLS certificate and private key.
 # The private key must not be encrypted (password protected). You can put
@@ -163,6 +161,10 @@ tls_privatekey = /etc/ssl/private/<%= node[:exim][:certificate_names].first %>.k
 tls_certificate = /etc/ssl/certs/exim.pem
 tls_privatekey = /etc/ssl/private/exim.key
 <% end -%>
+
+# Configure TLS cipher selection.
+
+tls_require_ciphers = <%= node[:ssl][:gnutls_ciphers] %>:%SERVER_PRECEDENCE
 
 # In order to support roaming users who wish to send email from anywhere,
 # you may want to make Exim listen on other ports as well as port 25, in
@@ -233,18 +235,26 @@ never_users = root
 host_lookup = *
 
 
-# The settings below, which are actually the same as the defaults in the
-# code, cause Exim to make RFC 1413 (ident) callbacks for all incoming SMTP
-# calls. You can limit the hosts to which these calls are made, and/or change
-# the timeout that is used. If you set the timeout to zero, all RFC 1413 calls
-# are disabled. RFC 1413 calls are cheap and can provide useful information
-# for tracing problem messages, but some hosts and firewalls have problems
-# with them. This can result in a timeout instead of an immediate refused
-# connection, leading to delays on starting up SMTP sessions. (The default was
-# reduced from 30s to 5s for release 4.61.)
+# The settings below cause Exim to make RFC 1413 (ident) callbacks
+# for all incoming SMTP calls. You can limit the hosts to which these
+# calls are made, and/or change the timeout that is used. If you set
+# the timeout to zero, all RFC 1413 calls are disabled. RFC 1413 calls
+# are cheap and can provide useful information for tracing problem
+# messages, but some hosts and firewalls have problems with them.
+# This can result in a timeout instead of an immediate refused
+# connection, leading to delays on starting up SMTP sessions.
+# (The default was reduced from 30s to 5s for release 4.61. and to
+# disabled for release 4.86)
+#
+#rfc1413_hosts = *
+#rfc1413_query_timeout = 5s
 
-rfc1413_hosts = *
-rfc1413_query_timeout = 5s
+
+# Enable an efficiency feature.  We advertise the feature; clients
+# may request to use it.  For multi-recipient mails we then can
+# reject or accept per-user after the message is received.
+#
+prdr_enable = true
 
 
 # By default, Exim expects all envelope addresses to be fully qualified, that
@@ -258,6 +268,12 @@ rfc1413_query_timeout = 5s
 # to control sender and recipient addresses, respectively. When this is done,
 # unqualified addresses are qualified using the settings of qualify_domain
 # and/or qualify_recipient (see above).
+
+
+# Unless you run a high-volume site you probably want more logging
+# detail than the default.  Adjust to suit.
+
+log_selector = +all -skip_delivery
 
 
 # If you want Exim to support the "percent hack" for certain domains,
@@ -304,21 +320,42 @@ timeout_frozen_after = 7d
 # split_spool_directory = true
 
 
-# Log just about everything we can log so that we have the best
-# possible chance of knowing what's going on.
+# If you're in a part of the world where ASCII is not sufficient for most
+# text, then you're probably familiar with RFC2047 message header extensions.
+# By default, Exim adheres to the specification, including a limit of 76
+# characters to a line, with encoded words fitting within a line.
+# If you wish to use decoded headers in message filters in such a way
+# that successful decoding of malformed messages matters, you may wish to
+# configure Exim to be more lenient.
+#
+# check_rfc2047_length = false
+#
+# In particular, the Exim maintainers have had multiple reports of problems
+# from Russian administrators of issues until they disable this check,
+# because of some popular, yet buggy, mail composition software.
 
-log_selector = +all -skip_delivery
+
+# If you wish to be strictly RFC compliant, or if you know you'll be
+# exchanging email with systems that are not 8-bit clean, then you may
+# wish to disable advertising 8BITMIME.  Uncomment this option to do so.
+
+# accept_8bitmime = false
+
+
+# Exim does not make use of environment variables itself. However,
+# libraries that Exim uses (e.g. LDAP) depend on specific environment settings.
+# There are two lists: keep_environment for the variables we trust, and
+# add_environment for variables we want to set to a specific value.
+# Note that TZ is handled separately by the timezone runtime option
+# and TIMEZONE_DEFAULT buildtime option.
+
+# keep_environment = ^LDAP
+# add_environment = PATH=/usr/bin::/bin
 
 
 # Define trusted users.
 
 trusted_users = <%= node[:exim][:trusted_users].join(" : ") %>
-
-
-# Don't keep any environment when starting programs - this is the
-# default but setting it stops exim warning
-
-keep_environment =
 
 
 
@@ -384,7 +421,7 @@ acl_check_rcpt:
 
   deny    message       = Restricted characters in address
           domains       = !+local_domains
-          local_parts   = ^[./|] : ^.*[@!] : ^.*/\\.\\./
+          local_parts   = ^[./|] : ^.*[@%!] : ^.*/\\.\\./
   #############################################################################
 
   # Block bounces to selected addresses
