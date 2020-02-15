@@ -19,11 +19,10 @@
 
 include_recipe "apache"
 
-package "perl"
-package "pbzip2"
-package "osmosis"
-
-package "php-cli"
+package %w[
+  perl
+  php-cli
+]
 
 file "/etc/cron.d/planet" do
   action :delete

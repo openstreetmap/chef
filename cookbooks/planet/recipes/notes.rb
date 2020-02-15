@@ -21,8 +21,11 @@ include_recipe "git"
 
 db_passwords = data_bag_item("db", "passwords")
 
-package "python-psycopg2"
-package "python-lxml"
+package %w[
+  pbzip2
+  python-psycopg2
+  python-lxml
+]
 
 directory "/opt/planet-notes-dump" do
   owner "root"

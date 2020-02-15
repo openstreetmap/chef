@@ -27,24 +27,25 @@ node.default[:incron][:planetdump] = {
 include_recipe "git"
 include_recipe "incron"
 
-package "gcc"
-package "make"
-package "autoconf"
-package "automake"
-package "libxml2-dev"
-package "libboost-dev"
-package "libboost-program-options-dev"
-package "libboost-date-time-dev"
-package "libboost-filesystem-dev"
-package "libboost-thread-dev"
-package "libboost-iostreams-dev"
-package "libosmpbf-dev"
-package "libprotobuf-dev"
-package "osmpbf-bin"
-
-# Add planet-mirror-redirect-update dependencies
-package "php-cli"
-package "php-curl"
+package %w[
+  gcc
+  make
+  autoconf
+  automake
+  libxml2-dev
+  libboost-dev
+  libboost-program-options-dev
+  libboost-date-time-dev
+  libboost-filesystem-dev
+  libboost-thread-dev
+  libboost-iostreams-dev
+  libosmpbf-dev
+  libprotobuf-dev
+  osmpbf-bin
+  pbzip2
+  php-cli
+  php-curl
+]
 
 directory "/opt/planet-dump-ng" do
   owner "root"
