@@ -4,6 +4,12 @@ description "Role applied to all HP DL360 G6 machines"
 default_attributes(
   :munin => {
     :plugins => {
+      :hpasmcli2_fans => {
+        :fan1 => { :warning => "85", :critical => "90" },
+        :fan2 => { :warning => "85", :critical => "90" },
+        :fan3 => { :warning => "85", :critical => "90" },
+        :fan4 => { :warning => "85", :critical => "90" }
+      },
       :ipmi_temp => {
         :Temp1 => { :label => "External Environment" },
         :Temp2 => { :warning => ":", :label => "CPU 1" },
