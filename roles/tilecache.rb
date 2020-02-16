@@ -13,13 +13,7 @@ default_attributes(
     :tcp_fastopen_key => "tile"
   },
   :nginx => {
-    :access_log => false,
-    :cache => {
-      :proxy => {
-        :enable => true,
-        :keys_zone => "proxy_cache_zone:128M"
-      }
-    }
+    :access_log => false
   },
   :sysctl => {
     :sockets => {
