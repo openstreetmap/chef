@@ -139,6 +139,9 @@ suites:
   - name: otrs
     run_list:
       - recipe[otrs::default]
+  - name: passenger
+    run_list:
+      - recipe[passenger::default]
   - name: planet
     run_list:
       - recipe[planet::default]
