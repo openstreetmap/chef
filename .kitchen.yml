@@ -123,10 +123,6 @@ suites:
   - name: nginx
     run_list:
       - recipe[nginx::default]
-    attributes:
-      networking:
-        nameservers:
-          - 127.0.0.1
   - name: nodejs
     run_list:
       - recipe[nodejs::default]
@@ -175,10 +171,6 @@ suites:
   - name: tilecache
     run_list:
       - recipe[tilecache::default]
-    attributes:
-      networking:
-        nameservers:
-          - 127.0.0.1
   - name: tools
     run_list:
       - recipe[tools::default]

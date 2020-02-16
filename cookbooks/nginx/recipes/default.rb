@@ -22,16 +22,11 @@ include_recipe "munin"
 
 package "nginx"
 
-resolvers = node[:networking][:nameservers].map do |resolver|
-  IPAddr.new(resolver).ipv6? ? "[#{resolver}]" : resolver
-end
-
 template "/etc/nginx/nginx.conf" do
   source "nginx.conf.erb"
   owner "root"
   group "root"
   mode 0o644
-  variables :resolvers => resolvers
 end
 
 directory node[:nginx][:cache][:fastcgi][:directory] do
