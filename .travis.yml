@@ -117,6 +117,9 @@ jobs:
     - name: "Test Kitchen (squid)"
       script:
         - bundle exec kitchen test squid-ubuntu-1804
+    - name: "Test Kitchen (tilecache)"
+      script:
+        - bundle exec kitchen test tilecache-ubuntu-1804
     - name: "Test Kitchen (tools)"
       script:
         - bundle exec kitchen test tools-ubuntu-1804

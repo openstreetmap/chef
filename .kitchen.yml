@@ -172,6 +172,13 @@ suites:
   - name: squid
     run_list:
       - recipe[squid::default]
+  - name: tilecache
+    run_list:
+      - recipe[tilecache::default]
+    attributes:
+      networking:
+        nameservers:
+          - 127.0.0.1
   - name: tools
     run_list:
       - recipe[tools::default]
