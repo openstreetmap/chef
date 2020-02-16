@@ -108,6 +108,9 @@ jobs:
     - name: "Test Kitchen (planet::replication)"
       script:
         - bundle exec kitchen test planet-replication-ubuntu-1804
+    - name: "Test Kitchen (postgresql)"
+      script:
+        - bundle exec kitchen test postgresql-ubuntu-1804
     - name: "Test Kitchen (python)"
       script:
         - bundle exec kitchen test python-ubuntu-1804

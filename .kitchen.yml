@@ -159,6 +159,13 @@ suites:
     attributes:
       web:
         readonly_database_host: readonly
+  - name: postgresql
+    run_list:
+      - recipe[postgresql::default]
+    attributes:
+      postgresql:
+        versions:
+          - 10
   - name: python
     run_list:
       - recipe[python::default]
