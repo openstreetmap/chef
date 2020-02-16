@@ -74,6 +74,15 @@ default_attributes(
         "kernel.sched_wakeup_granularity_ns" => "15000000"
       }
     }
+  },
+  :tools => {
+    :cron => {
+      :load => {
+        :nice => 19,
+        :io_scheduling_class => "best-effort",
+        :io_scheduling_priority => 7
+      }
+    }
   }
 )
 

@@ -110,16 +110,6 @@ template "/etc/logrotate.d/squid" do
   mode 0o644
 end
 
-# Configure cron with lower cpu and IO priority
-systemd_service "cron-load" do
-  service "cron"
-  dropin "load"
-  nice 19
-  io_scheduling_class "best-effort"
-  io_scheduling_priority 7
-  notifies :restart, "service[cron]"
-end
-
 nginx_site "default" do
   action [:delete]
 end

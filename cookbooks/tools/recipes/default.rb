@@ -58,6 +58,18 @@ systemd_service "cron-timezone" do
   only_if { node[:timezone] }
 end
 
+# Configure cron with lower cpu and IO priority
+if node[:tools][:cron][:load]
+  systemd_service "cron-load" do
+    service "cron"
+    dropin "load"
+    nice node[:tools][:cron][:load][:nice]
+    io_scheduling_class node[:tools][:cron][:load][:io_scheduling_class]
+    io_scheduling_priority node[:tools][:cron][:load][:io_scheduling_priority]
+    notifies :restart, "service[cron]"
+  end
+end
+
 # Make sure cron is running
 service "cron" do
   action [:enable, :start]
