@@ -53,8 +53,8 @@ execute "/srv/blogs.openstreetmap.org/Gemfile" do
   action :nothing
   command "bundle install --deployment"
   cwd "/srv/blogs.openstreetmap.org"
-  user "root"
-  group "root"
+  user "blogs"
+  group "blogs"
   notifies :run, "execute[/srv/blogs.openstreetmap.org]", :immediately
 end
 
