@@ -35,7 +35,7 @@ execute "geoipdate" do
   command "geoipupdate"
   user "root"
   group "root"
-  not_if { node[:geoipupdate][:editions].all? { |edition| ::File.exist?("/usr/share/GeoIP/#{edition}.mmdb") } }
+  not_if { ENV.key?("TEST_KITCHEN") || node[:geoipupdate][:editions].all? { |edition| ::File.exist?("/usr/share/GeoIP/#{edition}.mmdb") } }
 end
 
 directory "/var/lib/GeoIP" do

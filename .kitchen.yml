@@ -89,6 +89,9 @@ suites:
     attributes:
       apache:
         mpm: prefork
+  - name: geoipupdate
+    run_list:
+      - recipe[geoipupdate::default]
   - name: incron
     run_list:
       - recipe[incron::default]
