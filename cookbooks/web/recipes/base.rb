@@ -22,6 +22,7 @@ node.default[:nfs]["/store/rails"] = {
   :path => "/store/rails"
 }
 
+include_recipe "accounts"
 include_recipe "nfs"
 
 directory node[:web][:base_directory] do

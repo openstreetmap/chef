@@ -10,9 +10,6 @@ default_attributes(
       :jburgess => { :status => :administrator }
     }
   },
-  :apt => {
-    :sources => ["openstreetmap"]
-  },
   :munin => {
     :plugins => {
       :chrony => {

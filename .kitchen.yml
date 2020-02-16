@@ -175,3 +175,15 @@ suites:
   - name: tools
     run_list:
       - recipe[tools::default]
+  - name: web-backend
+    run_list:
+      - recipe[web::backend]
+  - name: web-cgimap
+    run_list:
+      - recipe[web::cgimap]
+  - name: web-frontend
+    run_list:
+      - recipe[web::frontend]
+  - name: web-rails
+    run_list:
+      - recipe[web::rails]

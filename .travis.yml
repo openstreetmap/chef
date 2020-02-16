@@ -120,3 +120,15 @@ jobs:
     - name: "Test Kitchen (tools)"
       script:
         - bundle exec kitchen test tools-ubuntu-1804
+    - name: "Test Kitchen (web::backend)"
+      script:
+        - bundle exec kitchen test web-backend-ubuntu-1804
+    - name: "Test Kitchen (web::cgimap)"
+      script:
+        - bundle exec kitchen test web-cgimap-ubuntu-1804
+    - name: "Test Kitchen (web::frontend)"
+      script:
+        - bundle exec kitchen test web-frontend-ubuntu-1804
+    - name: "Test Kitchen (web::rails)"
+      script:
+        - bundle exec kitchen test web-rails-ubuntu-1804

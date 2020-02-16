@@ -1,0 +1,12 @@
+{
+  "id": "piwik",
+  "location": "piwik",
+  "site": 100,
+  "goals": {
+    "signup": 1001,
+    "mapnik": 1002,
+    "cyclemap": 1003,
+    "transportmap": 1004,
+    "mapquest": 1005
+  }
+}

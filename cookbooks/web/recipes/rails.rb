@@ -17,15 +17,15 @@
 # limitations under the License.
 #
 
-include_recipe "tools"
-include_recipe "web::base"
-
 include_recipe "apache"
-include_recipe "passenger"
-include_recipe "geoipupdate"
+include_recipe "apt"
 include_recipe "git"
+include_recipe "geoipupdate"
 include_recipe "munin"
 include_recipe "nodejs"
+include_recipe "passenger"
+include_recipe "tools"
+include_recipe "web::base"
 
 web_passwords = data_bag_item("web", "passwords")
 db_passwords = data_bag_item("db", "passwords")

@@ -5,7 +5,6 @@ default_attributes(
   :accounts => {
     :users => {
       :rails => {
-        :status => :role,
         :members => [:tomh, :grant]
       }
     }

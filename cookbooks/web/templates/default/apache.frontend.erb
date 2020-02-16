@@ -194,7 +194,7 @@
   #
   <Proxy balancer://backend>
     ProxySet lbmethod=bybusyness
-<% node[:web][:backends].each do |backend| -%>
+<% Array(node[:web][:backends]).each do |backend| -%>
     BalancerMember https://<%= backend %> disablereuse=on
 <% end -%>
   </Proxy>

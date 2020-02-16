@@ -79,6 +79,7 @@ action :create do
     imagemagick
     nodejs
     geoip-database
+    tzdata
   ]
 
   package %w[
