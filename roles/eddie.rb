@@ -2,9 +2,6 @@ name "eddie"
 description "Master role applied to eddie"
 
 default_attributes(
-  :apt => {
-    :sources => ["postgresql"]
-  },
   :db => {
     :cluster => "9.5/main"
   },

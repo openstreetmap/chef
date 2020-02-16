@@ -2,9 +2,6 @@ name "scorch"
 description "Master role applied to scorch"
 
 default_attributes(
-  :apt => {
-    :sources => ["postgresql"]
-  },
   :devices => {
     :ssd_system => {
       :comment => "Tune scheduler for system disk",

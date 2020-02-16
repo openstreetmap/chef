@@ -2,9 +2,6 @@ name "ysera"
 description "Master role applied to ysera"
 
 default_attributes(
-  :apt => {
-    :sources => ["postgresql"]
-  },
   :networking => {
     :interfaces => {
       :internal_ipv4 => {

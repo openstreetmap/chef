@@ -2,9 +2,6 @@ name "pyrene"
 description "Master role applied to pyrene"
 
 default_attributes(
-  :apt => {
-    :sources => ["postgresql"]
-  },
   :munin => {
     :plugins => {
       :hpasmcli2_temp => {

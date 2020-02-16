@@ -2,9 +2,6 @@ name "bowser"
 description "Master role applied to bowser"
 
 default_attributes(
-  :apt => {
-    :sources => ["postgresql"]
-  },
   :networking => {
     :interfaces => {
       :external_ipv4 => {

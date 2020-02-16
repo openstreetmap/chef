@@ -95,9 +95,6 @@ default_attributes(
       :max_connections_per_child => 10000
     }
   },
-  :apt => {
-    :sources => ["postgresql"]
-  },
   :dev => {
     :rails => {
       :master => {

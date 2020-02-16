@@ -7,9 +7,6 @@ default_attributes(
       :mmiler => { :status => :administrator }
     }
   },
-  :apt => {
-    :sources => ["postgresql"]
-  },
   :location => "Zagreb, Croatia",
   :munin => {
     :plugins => {

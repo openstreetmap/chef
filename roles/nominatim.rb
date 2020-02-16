@@ -27,9 +27,6 @@ default_attributes(
       :listen_cores_buckets_ratio => 6
     }
   },
-  :apt => {
-    :sources => ["postgresql"]
-  },
   :networking => {
     :firewall => {
       :http_rate_limit => "s:2/sec:15"
