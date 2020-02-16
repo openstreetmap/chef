@@ -1,5 +1,5 @@
-sudo: false
 language: ruby
+os: linux
 dist: bionic
 cache: bundler
 services:
