@@ -169,6 +169,9 @@ suites:
   - name: python
     run_list:
       - recipe[python::default]
+  - name: serverinfo
+    run_list:
+      - recipe[serverinfo::default]
   - name: spamassassin
     run_list:
       - recipe[spamassassin::default]

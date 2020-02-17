@@ -114,6 +114,9 @@ jobs:
     - name: "Test Kitchen (python)"
       script:
         - bundle exec kitchen test python-ubuntu-1804
+    - name: "Test Kitchen (serverinfo)"
+      script:
+        - bundle exec kitchen test serverinfo-ubuntu-1804
     - name: "Test Kitchen (spamassassin)"
       script:
         - bundle exec kitchen test spamassassin-ubuntu-1804

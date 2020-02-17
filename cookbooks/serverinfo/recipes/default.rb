@@ -23,7 +23,9 @@ include_recipe "git"
 package %w[
   ruby
   ruby-dev
+  libssl-dev
   zlib1g-dev
+  pkg-config
 ]
 
 gem_package "bundler" do
