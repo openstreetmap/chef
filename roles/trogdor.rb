@@ -46,7 +46,7 @@ default_attributes(
     }
   },
   :tilecache => {
-    :tile_parent => "amsterdam.render.openstreetmap.org"
+    :tile_parent => "netherlands.render.openstreetmap.org"
   }
 )
 
