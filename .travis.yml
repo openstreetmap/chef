@@ -138,6 +138,9 @@ jobs:
     - name: "Test Kitchen (switch2osm)"
       script:
         - bundle exec kitchen test switch2osm-ubuntu-1804
+    - name: "Test Kitchen (taginfo)"
+      script:
+        - bundle exec kitchen test taginfo-ubuntu-1804
     - name: "Test Kitchen (tilecache)"
       script:
         - bundle exec kitchen test tilecache-ubuntu-1804

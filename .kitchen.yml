@@ -194,6 +194,13 @@ suites:
   - name: switch2osm
     run_list:
       - recipe[switch2osm::default]
+  - name: taginfo
+    run_list:
+      - recipe[taginfo::default]
+    attributes:
+      taginfo:
+        sites:
+          - name: taginfo.example.com
   - name: tilecache
     run_list:
       - recipe[tilecache::default]

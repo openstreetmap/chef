@@ -8,7 +8,6 @@ default_attributes(
         :status => :administrator
       },
       :taginfo => {
-        :status => :role,
         :members => [:jochen, :tomh]
       }
     }
