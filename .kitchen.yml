@@ -185,6 +185,9 @@ suites:
   - name: stateofthemap
     run_list:
       - recipe[stateofthemap::default]
+  - name: switch2osm
+    run_list:
+      - recipe[switch2osm::default]
   - name: tilecache
     run_list:
       - recipe[tilecache::default]

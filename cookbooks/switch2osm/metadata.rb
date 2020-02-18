@@ -6,4 +6,5 @@ description       "Installs and configures servers for switch2osm"
 
 version           "1.0.0"
 supports          "ubuntu"
-depends           "wordpress"
+depends           "apache"
+depends           "git"

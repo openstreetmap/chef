@@ -16,13 +16,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+
 include_recipe "apache"
 include_recipe "git"
 
 package %w[
   ruby
   ruby-dev
+  libssl-dev
   zlib1g-dev
+  pkg-config
 ]
 
 apache_module "expires"
