@@ -2,7 +2,7 @@
 default[:accounts][:users][:wordpress][:status] = :role
 
 # Use prefork as PHP is to dumb for anything else
-default[:apache][:mpm] = "prefork"
+override[:apache][:mpm] = "prefork"
 
 # Set wordpress defaults
 default[:wordpress][:user] = "wordpress"

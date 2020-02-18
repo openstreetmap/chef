@@ -5,7 +5,7 @@ default[:apt][:sources] = node[:apt][:sources] | ["mediawiki"]
 default[:accounts][:users][:wiki][:status] = :role
 
 # Use prefork as PHP is to dumb for anything else
-default[:apache][:mpm] = "prefork"
+override[:apache][:mpm] = "prefork"
 
 # Set mediawiki defaults
 default[:mediawiki][:user] = "wiki"

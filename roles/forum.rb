@@ -3,7 +3,6 @@ description "Role applied to all forum servers"
 
 default_attributes(
   :apache => {
-    :mpm => "prefork",
     :timeout => 60,
     :keepalive => false,
     :prefork => {

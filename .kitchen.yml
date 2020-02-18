@@ -72,15 +72,9 @@ suites:
   - name: dmca
     run_list:
       - recipe[dmca::default]
-    attributes:
-      apache:
-        mpm: prefork
   - name: donate
     run_list:
       - recipe[donate::default]
-    attributes:
-      apache:
-        mpm: prefork
   - name: exim
     run_list:
       - recipe[exim::default]
@@ -90,9 +84,6 @@ suites:
   - name: forum
     run_list:
       - recipe[forum::default]
-    attributes:
-      apache:
-        mpm: prefork
   - name: geoipupdate
     run_list:
       - recipe[geoipupdate::default]
@@ -151,9 +142,6 @@ suites:
   - name: piwik
     run_list:
       - recipe[piwik::default]
-    attributes:
-      apache:
-        mpm: prefork
   - name: planet
     run_list:
       - recipe[planet::default]

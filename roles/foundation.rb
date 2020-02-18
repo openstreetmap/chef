@@ -3,7 +3,6 @@ description "Role applied to all OSMF servers"
 
 default_attributes(
   :apache => {
-    :mpm => "prefork",
     :timeout => 60,
     :keepalive => false
   },
