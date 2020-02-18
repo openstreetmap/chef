@@ -17,7 +17,10 @@
 # limitations under the License.
 #
 
+include_recipe "accounts"
 include_recipe "apache"
+include_recipe "fail2ban"
+include_recipe "git"
 include_recipe "mysql"
 
 package %w[
