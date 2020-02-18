@@ -106,6 +106,9 @@ suites:
       apt:
         sources:
           - openstreetmap
+  - name: mailman
+    run_list:
+      - recipe[mailman::default]
   - name: memcached
     run_list:
       - recipe[memcached::default]

@@ -57,6 +57,9 @@ jobs:
     - name: "Test Kitchen (letsencrypt)"
       script:
         - bundle exec kitchen test letsencrypt-ubuntu-1804
+    - name: "Test Kitchen (mailman)"
+      script:
+        - bundle exec kitchen test mailman-ubuntu-1804
     - name: "Test Kitchen (memcached)"
       script:
         - bundle exec kitchen test memcached-ubuntu-1804

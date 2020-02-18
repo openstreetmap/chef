@@ -33,6 +33,13 @@ template "/etc/mailman/mm_cfg.py" do
   notifies :restart, "service[mailman]"
 end
 
+execute "newlist" do
+  command "newlist -q mailman mailman@example.com mailman"
+  user "root"
+  group "root"
+  not_if { ::File.exist?("/var/lib/mailman/lists/mailman/") }
+end
+
 service "mailman" do
   action [:enable, :start]
   supports :restart => true, :reload => true
