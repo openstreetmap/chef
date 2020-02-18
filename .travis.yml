@@ -123,6 +123,9 @@ jobs:
     - name: "Test Kitchen (python)"
       script:
         - bundle exec kitchen test python-ubuntu-1804
+    - name: "Test Kitchen (rsyncd)"
+      script:
+        - bundle exec kitchen test rsyncd-ubuntu-1804
     - name: "Test Kitchen (serverinfo)"
       script:
         - bundle exec kitchen test serverinfo-ubuntu-1804

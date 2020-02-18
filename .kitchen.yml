@@ -179,6 +179,9 @@ suites:
   - name: python
     run_list:
       - recipe[python::default]
+  - name: rsyncd
+    run_list:
+      - recipe[rsyncd::default]
   - name: serverinfo
     run_list:
       - recipe[serverinfo::default]
