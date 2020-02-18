@@ -65,6 +65,7 @@ wordpress_plugin "blog.openstreetmap.org-sitepress-multilingual-cms" do
   plugin "sitepress-multilingual-cms"
   site "blog.openstreetmap.org"
   repository "https://git.openstreetmap.org/private/sitepress-multilingual-cms.git"
+  not_if { ENV["TEST_KITCHEN"] }
 end
 
 wordpress_plugin "blog.openstreetmap.org-wordpress-importer" do

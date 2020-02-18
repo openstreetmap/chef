@@ -166,6 +166,7 @@ wordpress_plugin "2010.stateofthemap.org-sitepress-multilingual-cms" do
   plugin "sitepress-multilingual-cms"
   site "2010.stateofthemap.org"
   repository "https://git.openstreetmap.org/private/sitepress-multilingual-cms.git"
+  not_if { ENV["TEST_KITCHEN"] }
 end
 
 wordpress_plugin "2010.stateofthemap.org-wp-sticky" do
@@ -207,6 +208,7 @@ wordpress_plugin "2011.stateofthemap.org-sitepress-multilingual-cms" do
   plugin "sitepress-multilingual-cms"
   site "2011.stateofthemap.org"
   repository "https://git.openstreetmap.org/private/sitepress-multilingual-cms.git"
+  not_if { ENV["TEST_KITCHEN"] }
 end
 
 wordpress_plugin "2011.stateofthemap.org-wp-sticky" do
@@ -253,6 +255,7 @@ wordpress_plugin "2012.stateofthemap.org-sitepress-multilingual-cms" do
   plugin "sitepress-multilingual-cms"
   site "2012.stateofthemap.org"
   repository "https://git.openstreetmap.org/private/sitepress-multilingual-cms.git"
+  not_if { ENV["TEST_KITCHEN"] }
 end
 
 wordpress_plugin "2012.stateofthemap.org-wp-sticky" do
