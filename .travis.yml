@@ -99,6 +99,9 @@ jobs:
     - name: "Test Kitchen (passenger)"
       script:
         - bundle exec kitchen test passenger-ubuntu-1804
+    - name: "Test Kitchen (piwik)"
+      script:
+        - bundle exec kitchen test piwik-ubuntu-1804
     - name: "Test Kitchen (planet)"
       script:
         - bundle exec kitchen test planet-ubuntu-1804

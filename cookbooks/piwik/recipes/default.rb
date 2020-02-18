@@ -23,14 +23,17 @@ include_recipe "mysql"
 
 passwords = data_bag_item("piwik", "passwords")
 
-package "php"
-package "php-cli"
-package "php-curl"
-package "php-mbstring"
-package "php-mysql"
-package "php-gd"
-package "php-xml"
-package "php-apcu"
+package %w[
+  php
+  php-cli
+  php-curl
+  php-mbstring
+  php-mysql
+  php-gd
+  php-xml
+  php-apcu
+  unzip
+]
 
 apache_module "expires"
 apache_module "php7.2"

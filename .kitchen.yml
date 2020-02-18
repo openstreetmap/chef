@@ -148,6 +148,12 @@ suites:
   - name: passenger
     run_list:
       - recipe[passenger::default]
+  - name: piwik
+    run_list:
+      - recipe[piwik::default]
+    attributes:
+      apache:
+        mpm: prefork
   - name: planet
     run_list:
       - recipe[planet::default]
