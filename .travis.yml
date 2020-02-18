@@ -9,6 +9,19 @@ jobs:
     - name: "Cookstyle"
       script:
         - bundle exec cookstyle -f fuubar
+
+    # Selected long-running tests are at the top to minimize Travis wall time
+    - name: "Test Kitchen (web::backend)"
+      script:
+        - bundle exec kitchen test web-backend-ubuntu-1804
+    - name: "Test Kitchen (web::frontend)"
+      script:
+        - bundle exec kitchen test web-frontend-ubuntu-1804
+    - name: "Test Kitchen (web::rails)"
+      script:
+        - bundle exec kitchen test web-rails-ubuntu-1804
+
+    # Remaining short-running tests are organized alphabetically
     - name: "Test Kitchen (accounts)"
       script:
         - bundle exec kitchen test accounts-ubuntu-1804
@@ -135,15 +148,6 @@ jobs:
     - name: "Test Kitchen (tools)"
       script:
         - bundle exec kitchen test tools-ubuntu-1804
-    - name: "Test Kitchen (web::backend)"
-      script:
-        - bundle exec kitchen test web-backend-ubuntu-1804
     - name: "Test Kitchen (web::cgimap)"
       script:
         - bundle exec kitchen test web-cgimap-ubuntu-1804
-    - name: "Test Kitchen (web::frontend)"
-      script:
-        - bundle exec kitchen test web-frontend-ubuntu-1804
-    - name: "Test Kitchen (web::rails)"
-      script:
-        - bundle exec kitchen test web-rails-ubuntu-1804
