@@ -284,7 +284,9 @@ end
 package %w[
   ruby
   ruby-dev
+  libssl-dev
   zlib1g-dev
+  pkg-config
 ]
 
 apache_module "expires"

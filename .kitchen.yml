@@ -182,6 +182,9 @@ suites:
   - name: squid
     run_list:
       - recipe[squid::default]
+  - name: stateofthemap
+    run_list:
+      - recipe[stateofthemap::default]
   - name: tilecache
     run_list:
       - recipe[tilecache::default]
