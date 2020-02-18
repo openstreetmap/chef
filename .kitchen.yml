@@ -45,6 +45,9 @@ suites:
   - name: blogs
     run_list:
       - recipe[blogs::default]
+  - name: civicrm
+    run_list:
+      - recipe[civicrm::default]
   - name: clamav
     run_list:
       - recipe[clamav::default]

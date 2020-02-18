@@ -24,6 +24,9 @@ jobs:
     - name: "Test Kitchen (blogs)"
       script:
         - bundle exec kitchen test blogs-ubuntu-1804
+    - name: "Test Kitchen (civicrm)"
+      script:
+        - bundle exec kitchen test civicrm-ubuntu-1804
     - name: "Test Kitchen (clamav)"
       script:
         - bundle exec kitchen test clamav-ubuntu-1804

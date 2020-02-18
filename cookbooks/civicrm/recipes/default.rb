@@ -20,7 +20,11 @@
 include_recipe "wordpress"
 include_recipe "mysql"
 
-package "wkhtmltopdf"
+package %w[
+  rsync
+  unzip
+  wkhtmltopdf
+]
 
 cache_dir = Chef::Config[:file_cache_path]
 
