@@ -48,6 +48,9 @@ jobs:
     - name: "Test Kitchen (forum)"
       script:
         - bundle exec kitchen test forum-ubuntu-1804
+    - name: "Test Kitchen (geodns)"
+      script:
+        - bundle exec kitchen test geodns-ubuntu-1804
     - name: "Test Kitchen (geoipupdate)"
       script:
         - bundle exec kitchen test geoipupdate-ubuntu-1804

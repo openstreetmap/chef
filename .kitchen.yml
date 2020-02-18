@@ -84,6 +84,15 @@ suites:
   - name: forum
     run_list:
       - recipe[forum::default]
+  - name: geodns
+    run_list:
+      - recipe[geodns::default]
+    attributes:
+      networking:
+        interfaces:
+          test:
+            role: external
+            address: 172.18.0.2
   - name: geoipupdate
     run_list:
       - recipe[geoipupdate::default]
