@@ -17,10 +17,11 @@
 # limitations under the License.
 #
 
-include_recipe "tools"
+include_recipe "accounts"
 include_recipe "apache"
 include_recipe "memcached"
 include_recipe "python"
+include_recipe "tools"
 
 package "python-dev"
 package "libmysqlclient-dev"

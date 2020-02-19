@@ -6,6 +6,7 @@ description       "Installs and configures OSQA"
 
 version           "1.0.0"
 supports          "ubuntu"
+depends           "accounts"
 depends           "apache"
 depends           "memcached"
 depends           "python"

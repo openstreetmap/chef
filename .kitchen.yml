@@ -148,6 +148,9 @@ suites:
   - name: osmosis
     run_list:
       - recipe[osmosis::default]
+  - name: osqa
+    run_list:
+      - recipe[osqa::default]
   - name: otrs
     run_list:
       - recipe[otrs::default]

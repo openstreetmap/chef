@@ -102,6 +102,13 @@ jobs:
     - name: "Test Kitchen (osmosis)"
       script:
         - bundle exec kitchen test osmosis-ubuntu-1804
+    - name: "Test Kitchen (osqa)"
+      script:
+        - bundle exec kitchen test osqa-ubuntu-1804
+      attributes:
+        osqa:
+          sites:
+            - name: help.example.com
     - name: "Test Kitchen (otrs)"
       script:
         - bundle exec kitchen test otrs-ubuntu-1804
