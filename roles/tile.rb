@@ -11,7 +11,7 @@ default_attributes(
     }
   },
   :apache => {
-    :mpms => ["event"],
+    :mpm => "event",
     :timeout => 60,
     :event => {
       :server_limit => 60,
