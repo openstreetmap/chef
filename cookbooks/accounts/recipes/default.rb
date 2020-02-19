@@ -69,13 +69,11 @@ search(:accounts, "*:*").each do |account|
       files_group name.to_s
       files_mode 0o644
       only_if do
-        begin
-          cookbook = run_context.cookbook_collection[cookbook_name]
-          files = cookbook.relative_filenames_in_preferred_directory(node, :files, name.to_s)
-          !files.empty?
-        rescue Chef::Exceptions::FileNotFound
-          false
-        end
+        cookbook = run_context.cookbook_collection[cookbook_name]
+        files = cookbook.relative_filenames_in_preferred_directory(node, :files, name.to_s)
+        !files.empty?
+      rescue Chef::Exceptions::FileNotFound
+        false
       end
     end
 
