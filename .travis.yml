@@ -57,6 +57,9 @@ jobs:
     - name: "Test Kitchen (geoipupdate)"
       script:
         - bundle exec kitchen test geoipupdate-ubuntu-1804
+    - name: "Test Kitchen (gps-tile)"
+      script:
+        - bundle exec kitchen test gps-tile-ubuntu-1804
     - name: "Test Kitchen (incron)"
       script:
         - bundle exec kitchen test incron-ubuntu-1804

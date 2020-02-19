@@ -6,7 +6,6 @@ default_attributes(
     :users => {
       :enf => { :status => :administrator },
       :gpstile => {
-        :status => :role,
         :members => [:enf, :tomh]
       }
     }
@@ -25,6 +24,5 @@ default_attributes(
 )
 
 run_list(
-  "recipe[memcached]",
   "recipe[gps-tile]"
 )

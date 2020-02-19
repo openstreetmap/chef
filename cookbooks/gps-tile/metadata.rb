@@ -6,5 +6,8 @@ description       "Configures a GPS tile server"
 
 version           "1.0.0"
 supports          "ubuntu"
+depends           "accounts"
 depends           "apache"
+depends           "git"
+depends           "memcached"
 depends           "systemd"

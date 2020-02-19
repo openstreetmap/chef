@@ -17,7 +17,10 @@
 # limitations under the License.
 #
 
+include_recipe "accounts"
 include_recipe "apache"
+include_recipe "git"
+include_recipe "memcached"
 
 package %w[
   make
@@ -48,7 +51,7 @@ end
 
 execute "/srv/gps-tile.openstreetmap.org/import/src/Makefile" do
   action :nothing
-  command "make"
+  command "make DB=none LDFLAGS=-lm"
   cwd "/srv/gps-tile.openstreetmap.org/import/src"
   user "gpstile"
   group "gpstile"

@@ -99,6 +99,9 @@ suites:
   - name: geoipupdate
     run_list:
       - recipe[geoipupdate::default]
+  - name: gps-tile
+    run_list:
+      - recipe[gps-tile::default]
   - name: incron
     run_list:
       - recipe[incron::default]
