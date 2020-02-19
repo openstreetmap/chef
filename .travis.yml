@@ -163,6 +163,9 @@ jobs:
     - name: "Test Kitchen (tools)"
       script:
         - bundle exec kitchen test tools-ubuntu-1804
+    - name: "Test Kitchen (trac)"
+      script:
+        - bundle exec kitchen test trac-ubuntu-1804
     - name: "Test Kitchen (web::backend)"
       script:
         - bundle exec kitchen test web-backend-ubuntu-1804

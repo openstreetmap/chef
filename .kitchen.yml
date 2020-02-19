@@ -219,6 +219,9 @@ suites:
   - name: tools
     run_list:
       - recipe[tools::default]
+  - name: trac
+    run_list:
+      - recipe[trac::default]
   - name: web-backend
     run_list:
       - recipe[web::backend]

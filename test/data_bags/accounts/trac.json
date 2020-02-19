@@ -1,0 +1,7 @@
+{
+  "id": "trac",
+  "uid": "509",
+  "comment": "trac.openstreetmap.org",
+  "home": "/var/lib/trac",
+  "manage_home": false
+}

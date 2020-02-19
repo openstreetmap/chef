@@ -17,16 +17,29 @@
 # limitations under the License.
 #
 
+include_recipe "accounts"
 include_recipe "apache"
 
 package %w[
   trac
-  trac-git
   ruby
 ]
 
 site_name = "trac.openstreetmap.org"
 site_directory = "/srv/#{site_name}"
+
+directory "/var/lib/trac" do
+  owner "trac"
+  group "trac"
+  mode 0o755
+end
+
+execute "trac-initenv-#{site_name}" do
+  command "trac-admin /var/lib/trac initenv #{site_name} sqlite:db/trac.db"
+  user "trac"
+  group "trac"
+  not_if { ::File.exist?("/var/lib/trac/VERSION") }
+end
 
 template "/var/lib/trac/conf/trac.ini" do
   source "trac.ini.erb"
@@ -72,6 +85,10 @@ cookbook_file "/usr/local/bin/trac-authenticate" do
 end
 
 apache_module "wsgi"
+
+apache_module "authnz_external" do
+  package "libapache2-mod-authnz-external"
+end
 
 ssl_certificate "trac.openstreetmap.org" do
   domains ["trac.openstreetmap.org", "trac.osm.org"]
