@@ -209,6 +209,9 @@ suites:
   - name: stateofthemap
     run_list:
       - recipe[stateofthemap::default]
+  - name: subversion
+    run_list:
+      - recipe[subversion::default]
   - name: switch2osm
     run_list:
       - recipe[switch2osm::default]

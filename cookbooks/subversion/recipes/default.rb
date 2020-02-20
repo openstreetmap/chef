@@ -43,11 +43,11 @@ apache_module "dav_fs" do
 end
 
 apache_module "dav_svn" do
-  package "libapache2-svn"
+  package "libapache2-mod-svn"
 end
 
 apache_module "authz_svn" do
-  package "libapache2-svn"
+  package "libapache2-mod-svn"
 end
 
 ssl_certificate "svn.openstreetmap.org" do
