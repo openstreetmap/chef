@@ -42,7 +42,7 @@ end
 
 git "/srv/blogs.openstreetmap.org" do
   action :sync
-  repository "git://github.com/gravitystorm/blogs.osm.org.git"
+  repository "https://github.com/gravitystorm/blogs.osm.org.git"
   depth 5
   user "blogs"
   group "blogs"

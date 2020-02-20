@@ -35,7 +35,7 @@ end
 
 git "/opt/planet-notes-dump" do
   action :sync
-  repository "git://github.com/openstreetmap/planet-notes-dump.git"
+  repository "https://github.com/openstreetmap/planet-notes-dump.git"
   user "root"
   group "root"
 end

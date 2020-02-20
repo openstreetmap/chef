@@ -55,7 +55,7 @@ end
 
 git "/opt/planet-dump-ng" do
   action :sync
-  repository "git://github.com/zerebubuth/planet-dump-ng.git"
+  repository "https://github.com/zerebubuth/planet-dump-ng.git"
   revision "v1.1.6"
   user "root"
   group "root"

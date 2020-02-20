@@ -43,13 +43,13 @@ end
 
 mediawiki_skin "osmf" do
   site "wiki.osmfoundation.org"
-  repository "git://github.com/openstreetmap/mediawiki-skins-osmf.git"
+  repository "https://github.com/openstreetmap/mediawiki-skins-osmf.git"
   revision "master"
 end
 
 mediawiki_skin "OSMFoundation" do
   site "wiki.osmfoundation.org"
-  repository "git://github.com/osmfoundation/osmf-mediawiki-skin.git"
+  repository "https://github.com/osmfoundation/osmf-mediawiki-skin.git"
   revision "master"
   legacy false
 end

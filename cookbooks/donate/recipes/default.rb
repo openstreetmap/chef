@@ -54,7 +54,7 @@ end
 
 git "/srv/donate.openstreetmap.org" do
   action :sync
-  repository "git://github.com/osmfoundation/donation-drive.git"
+  repository "https://github.com/osmfoundation/donation-drive.git"
   user "donate"
   group "donate"
 end
