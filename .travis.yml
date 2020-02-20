@@ -169,6 +169,9 @@ jobs:
     - name: "Test Kitchen (taginfo)"
       script:
         - bundle exec kitchen test taginfo-ubuntu-1804
+    - name: "Test Kitchen (tile)"
+      script:
+        - bundle exec kitchen test tile-ubuntu-1804
     - name: "Test Kitchen (tilecache)"
       script:
         - bundle exec kitchen test tilecache-ubuntu-1804

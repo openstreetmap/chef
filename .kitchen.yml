@@ -225,6 +225,9 @@ suites:
       taginfo:
         sites:
           - name: taginfo.example.com
+  - name: tile
+    run_list:
+      - recipe[tile::default]
   - name: tilecache
     run_list:
       - recipe[tilecache::default]

@@ -50,7 +50,6 @@ default_attributes(
       :cluster => "10/main",
       :postgis => "2.4"
     },
-    :node_file => "/store/database/nodes",
     :styles => {
       :default => {
         :tile_directories => [

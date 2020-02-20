@@ -17,6 +17,7 @@
 # limitations under the License.
 #
 
+include_recipe "accounts"
 include_recipe "apache"
 include_recipe "git"
 include_recipe "munin"
@@ -394,6 +395,7 @@ end
 postgresql_extension "hstore" do
   cluster node[:tile][:database][:cluster]
   database "gis"
+  only_if { node[:tile][:database][:hstore] }
 end
 
 %w[geography_columns planet_osm_nodes planet_osm_rels planet_osm_ways raster_columns raster_overviews spatial_ref_sys].each do |table|
@@ -419,7 +421,14 @@ postgresql_munin "gis" do
   database "gis"
 end
 
-file node[:tile][:node_file] do
+directory File.dirname(node[:tile][:database][:node_file]) do
+  owner "root"
+  group "root"
+  mode 0o755
+  recursive true
+end
+
+file node[:tile][:database][:node_file] do
   owner "tile"
   group "www-data"
   mode 0o660

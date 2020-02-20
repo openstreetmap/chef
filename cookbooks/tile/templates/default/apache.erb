@@ -12,8 +12,8 @@
   #
   SSLEngine on
   SSLProxyEngine on
-  SSLCertificateFile /etc/ssl/certs/<%= node.name %>.pem
-  SSLCertificateKeyFile /etc/ssl/private/<%= node.name %>.key
+  SSLCertificateFile /etc/ssl/certs/<%= node[:fqdn] %>.pem
+  SSLCertificateKeyFile /etc/ssl/private/<%= node[:fqdn] %>.key
 
   # Configure location of static files and CGI scripts
   DocumentRoot /srv/tile.openstreetmap.org/html

@@ -1,0 +1,9 @@
+{
+  "id": "blocks",
+  "user_agents": [
+    "dummy"
+  ],
+  "referers": [
+    "https://www.example.com/"
+  ]
+}

@@ -5,7 +5,6 @@ default_attributes(
   :accounts => {
     :users => {
       :tile => {
-        :status => :role,
         :members => [:jburgess, :tomh]
       }
     }
@@ -67,6 +66,10 @@ default_attributes(
     }
   },
   :tile => {
+    :database => {
+      :style_file => "/srv/tile.openstreetmap.org/styles/default/openstreetmap-carto.style",
+      :tag_transform_script => "/srv/tile.openstreetmap.org/styles/default/openstreetmap-carto.lua"
+    },
     :data => {
       :simplified_land_polygons => {
         :url => "https://osmdata.openstreetmap.de/download/simplified-land-polygons-complete-3857.zip",
