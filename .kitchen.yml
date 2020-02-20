@@ -105,6 +105,9 @@ suites:
   - name: gps-tile
     run_list:
       - recipe[gps-tile::default]
+  - name: hardware
+    run_list:
+      - recipe[hardware::default]
   - name: incron
     run_list:
       - recipe[incron::default]

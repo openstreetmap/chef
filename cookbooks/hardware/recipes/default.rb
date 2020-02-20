@@ -17,7 +17,10 @@
 # limitations under the License.
 #
 
+include_recipe "apt"
+include_recipe "git"
 include_recipe "munin"
+include_recipe "sysfs"
 include_recipe "tools"
 
 ohai_plugin "hardware" do
@@ -259,6 +262,7 @@ if tools_packages.include?("areca")
     repository "https://git.openstreetmap.org/private/areca.git"
     user "root"
     group "root"
+    not_if { ENV["TEST_KITCHEN"] }
   end
 else
   directory "/opt/areca" do
