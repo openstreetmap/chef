@@ -212,6 +212,9 @@ suites:
   - name: subversion
     run_list:
       - recipe[subversion::default]
+  - name: supybot
+    run_list:
+      - recipe[supybot::default]
   - name: switch2osm
     run_list:
       - recipe[switch2osm::default]

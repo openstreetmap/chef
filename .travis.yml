@@ -160,6 +160,9 @@ jobs:
     - name: "Test Kitchen (subversion)"
       script:
         - bundle exec kitchen test subversion-ubuntu-1804
+    - name: "Test Kitchen (supybot)"
+      script:
+        - bundle exec kitchen test supybot-ubuntu-1804
     - name: "Test Kitchen (switch2osm)"
       script:
         - bundle exec kitchen test switch2osm-ubuntu-1804

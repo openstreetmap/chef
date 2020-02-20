@@ -6,4 +6,5 @@ description       "Installs and configures supybot"
 
 version           "1.0.0"
 supports          "ubuntu"
+depends           "accounts"
 depends           "systemd"
