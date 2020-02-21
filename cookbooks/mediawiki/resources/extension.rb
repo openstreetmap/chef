@@ -57,6 +57,7 @@ action :create do
       action :sync
       repository extension_repository
       reference extension_reference
+      depth 1
       enable_submodules true
       user node[:mediawiki][:user]
       group node[:mediawiki][:group]

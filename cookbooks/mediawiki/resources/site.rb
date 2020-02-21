@@ -109,6 +109,7 @@ action :create do
     action :sync
     repository "https://gerrit.wikimedia.org/r/p/mediawiki/core.git"
     revision mediawiki_reference
+    depth 1
     user node[:mediawiki][:user]
     group node[:mediawiki][:group]
     notifies :run, "execute[#{mediawiki_directory}/composer.json]", :immediately

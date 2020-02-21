@@ -35,6 +35,7 @@ end
 git "/srv/hardware.openstreetmap.org" do
   action :sync
   repository "git://github.com/gravitystorm/osmf-server-info.git"
+  depth 1
   user "root"
   group "root"
   notifies :run, "execute[/srv/hardware.openstreetmap.org/Gemfile]"
