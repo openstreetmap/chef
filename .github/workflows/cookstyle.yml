@@ -1,4 +1,4 @@
-name: Coookstyle
+name: Cookstyle
 on:
   - push
   - pull_request
