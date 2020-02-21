@@ -260,6 +260,7 @@ if tools_packages.include?("areca")
   git "/opt/areca" do
     action :sync
     repository "https://git.openstreetmap.org/private/areca.git"
+    depth 1
     user "root"
     group "root"
     not_if { ENV["TEST_KITCHEN"] }

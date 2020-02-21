@@ -36,6 +36,7 @@ end
 git "/opt/planet-notes-dump" do
   action :sync
   repository "https://github.com/openstreetmap/planet-notes-dump.git"
+  depth 1
   user "root"
   group "root"
 end

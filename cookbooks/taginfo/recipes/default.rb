@@ -102,6 +102,7 @@ node[:taginfo][:sites].each do |site|
     action :sync
     repository "https://github.com/taginfo/taginfo.git"
     revision "osmorg-taginfo-live"
+    depth 1
     user "taginfo"
     group "taginfo"
   end

@@ -140,6 +140,7 @@ node[:civicrm][:extensions].each_value do |details|
     action :sync
     repository details[:repository]
     revision details[:revision]
+    depth 1
     user "wordpress"
     group "wordpress"
   end

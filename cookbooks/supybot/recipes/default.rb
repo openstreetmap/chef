@@ -121,6 +121,7 @@ git "/usr/local/lib/supybot/plugins/Git" do
   action :sync
   repository "https://github.com/openstreetmap/supybot-git"
   revision "master"
+  depth 1
   user "root"
   group "root"
 end

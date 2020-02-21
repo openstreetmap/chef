@@ -117,6 +117,7 @@ node[:osqa][:sites].each do |site|
     action :sync
     repository "https://git.openstreetmap.org/public/osqa.git"
     revision "live"
+    depth 1
     user site_user
     group site_group
     notifies :run, "execute[osqa-migrate]"
