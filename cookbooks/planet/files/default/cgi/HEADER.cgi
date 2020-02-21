@@ -69,7 +69,7 @@ print """
 The files found here are regularly-updated, complete copies of the OpenStreetMap.org
 database, and those published before the 12 September 2012 are distributed under a Creative Commons Attribution-ShareAlike 2.0 license, those published after are  Open Data Commons Open Database License 1.0 licensed. For more information, <a href="https://wiki.openstreetmap.org/wiki/Planet.osm">see the project wiki</a>.
 </p>
-<p><div class="alert"><strong>WARNING</strong> Download speeds are currently restricted to 512 KB/s due to limited available capacity on our Internet connection. <a href="https://wiki.openstreetmap.org/wiki/Planet.osm#Planet.osm_mirrors">Please use a mirror if possible.</a></div></p>
+<p><div class="alert"><strong>WARNING</strong> Download speeds are currently restricted to 2048 KB/s due to limited available capacity on our Internet connection. <a href="https://wiki.openstreetmap.org/wiki/Planet.osm#Planet.osm_mirrors">Please use a mirror if possible.</a></div></p>
 <table id="about">
   <tr>
     <th>
