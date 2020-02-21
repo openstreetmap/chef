@@ -45,6 +45,7 @@ git "/srv/gps-tile.openstreetmap.org/import" do
   action :sync
   repository "https://github.com/ericfischer/gpx-import.git"
   revision "live"
+  depth 1
   user "gpstile"
   group "gpstile"
 end
@@ -62,6 +63,7 @@ git "/srv/gps-tile.openstreetmap.org/datamaps" do
   action :sync
   repository "https://github.com/ericfischer/datamaps.git"
   revision "live"
+  depth 1
   user "gpstile"
   group "gpstile"
 end
@@ -79,6 +81,7 @@ git "/srv/gps-tile.openstreetmap.org/updater" do
   action :sync
   repository "https://github.com/ericfischer/gpx-updater.git"
   revision "live"
+  depth 1
   user "gpstile"
   group "gpstile"
 end

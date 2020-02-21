@@ -25,6 +25,7 @@ git "/srv/stateofthemap.org" do
   action :sync
   repository "https://git.openstreetmap.org/public/stateofthemap.git"
   revision "chooser"
+  depth 1
   user "root"
   group "root"
 end
@@ -105,6 +106,7 @@ git "/srv/2009.stateofthemap.org" do
   action :sync
   repository "https://git.openstreetmap.org/public/stateofthemap.git"
   revision "resources-2009"
+  depth 1
   user "wordpress"
   group "wordpress"
 end
@@ -142,6 +144,7 @@ git "/srv/2010.stateofthemap.org" do
   action :sync
   repository "https://git.openstreetmap.org/public/stateofthemap.git"
   revision "resources-2010"
+  depth 1
   user "wordpress"
   group "wordpress"
 end
@@ -184,6 +187,7 @@ git "/srv/2011.stateofthemap.org" do
   action :sync
   repository "https://git.openstreetmap.org/public/stateofthemap.git"
   revision "resources-2011"
+  depth 1
   user "wordpress"
   group "wordpress"
 end
@@ -226,6 +230,7 @@ git "/srv/2012.stateofthemap.org" do
   action :sync
   repository "https://git.openstreetmap.org/public/stateofthemap.git"
   revision "resources-2012"
+  depth 1
   user "wordpress"
   group "wordpress"
 end
@@ -268,6 +273,7 @@ end
     action :sync
     repository "https://git.openstreetmap.org/public/stateofthemap.git"
     revision "site-#{year}"
+    depth 1
     user "root"
     group "root"
   end
@@ -303,6 +309,7 @@ end
   git "/srv/#{year}.stateofthemap.org" do
     action :sync
     repository "https://github.com/openstreetmap/stateofthemap-#{year}.git"
+    depth 1
     user "root"
     group "root"
     notifies :run, "execute[/srv/#{year}.stateofthemap.org/Gemfile]"

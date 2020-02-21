@@ -33,6 +33,7 @@ end
 git "/srv/operations.osmfoundation.org" do
   action :sync
   repository "https://github.com/openstreetmap/owg-website.git"
+  depth 1
   user "root"
   group "root"
   notifies :run, "execute[/srv/operations.osmfoundation.org/Gemfile]"

@@ -43,7 +43,7 @@ end
 git "/srv/blogs.openstreetmap.org" do
   action :sync
   repository "https://github.com/gravitystorm/blogs.osm.org.git"
-  depth 5
+  depth 1
   user "blogs"
   group "blogs"
   notifies :run, "execute[/srv/blogs.openstreetmap.org/Gemfile]", :immediately

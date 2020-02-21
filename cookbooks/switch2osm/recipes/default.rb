@@ -38,6 +38,7 @@ end
 git "/srv/switch2osm.org" do
   action :sync
   repository "https://github.com/switch2osm/switch2osm.github.io.git"
+  depth 1
   user "root"
   group "root"
   notifies :run, "execute[/srv/switch2osm.org/Gemfile]"
