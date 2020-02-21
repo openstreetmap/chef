@@ -129,6 +129,7 @@ action :create do
     action :sync
     repository new_resource.repository
     revision new_resource.revision
+    depth 1
     user new_resource.user
     group new_resource.group
     notifies :run, "execute[#{rails_directory}/Gemfile]"
