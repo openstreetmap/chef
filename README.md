@@ -1,7 +1,7 @@
 # OpenStreetMap chef cookbooks
 
-[![Coookstyle](https://github.com/openstreetmap/chef/workflows/Coookstyle/badge.svg)](https://github.com/openstreetmap/chef/actions?query=workflow%3ACoookstyle)
-[![Test Kitchen](https://github.com/openstreetmap/chef/workflows/Test%20Kitchen/badge.svg)](https://github.com/openstreetmap/chef/actions?query=workflow%3A%22Test+Kitchen%22)
+[![Coookstyle](https://github.com/openstreetmap/chef/workflows/Coookstyle/badge.svg?branch=master&event=push)](https://github.com/openstreetmap/chef/actions?query=workflow%3ACoookstyle%20branch%3Amaster%20event%3Apush)
+[![Test Kitchen](https://github.com/openstreetmap/chef/workflows/Test%20Kitchen/badge.svg?branch=master&event=push)](https://github.com/openstreetmap/chef/actions?query=workflow%3A%22Test+Kitchen%22%20branch%3Amaster%20event%3Apush)
 
 This repository manages the configuration of all the servers run by the
 OpenStreetMap Foundation's Operations Working Group. We use
