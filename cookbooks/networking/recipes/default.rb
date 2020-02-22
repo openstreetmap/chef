@@ -374,6 +374,15 @@ firewall_rule "limit-icmp-echo" do
   rate_limit "s:1/sec:5"
 end
 
+firewall_rule "accept-icmp-fragmentation-needed" do
+  action :accept
+  family :inet
+  source "net"
+  dest "fw"
+  proto "icmp"
+  dest_ports "fragmentation-needed"
+end
+
 %w[ucl ams bm].each do |zone|
   firewall_rule "accept-openvpn-#{zone}" do
     action :accept
@@ -493,6 +502,15 @@ unless node.interfaces(:family => :inet6).empty?
     proto "ipv6-icmp"
     dest_ports "echo-request"
     rate_limit "s:1/sec:5"
+  end
+
+  firewall_rule "allow-icmp6-packet-too-big" do
+    action :accept
+    family :inet6
+    source "net"
+    dest "fw"
+    proto "ipv6-icmp"
+    dest_ports "packet-too-big"
   end
 end
 
