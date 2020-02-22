@@ -59,10 +59,10 @@ print """
 <html>
  <head>
   <title>Index of /</title>
-  <link href="/style.css" rel="stylesheet" type="text/css">
+  <link href="https://planet.openstreetmap.org/style.css" rel="stylesheet" type="text/css">
  </head>
  <body>
-<img id="logo" src="/logo.png" alt="OSM logo" width="128" height="128">
+<img id="logo" src="https://planet.openstreetmap.org/logo.png" alt="OSM logo" width="128" height="128">
 <h1>Planet OSM</h1>
 
 <p>
