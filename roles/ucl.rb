@@ -19,6 +19,15 @@ default_attributes(
         }
       }
     }
+  },
+  :sysctl => {
+    :blackhole => {
+      :comment => "Force TCP level MTU probing because of known ICMP blackhole at UCL",
+      :parameters => {
+        "net.ipv4.tcp_mtu_probing" => "2",
+        "net.ipv4.tcp_base_mss" => "1024"
+      }
+    }
   }
 )
 
