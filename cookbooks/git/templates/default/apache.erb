@@ -47,6 +47,9 @@
         SetEnv GIT_PROJECT_ROOT /var/lib/git
         SetEnv GIT_HTTP_EXPORT_ALL
 
+        # Keepalive should be larger than git config uploadpack.keepalive to avoid potential race on slower links
+        KeepAliveTimeout 60
+
         ScriptAlias /public /usr/lib/git-core/git-http-backend/public
         ScriptAlias /private /usr/lib/git-core/git-http-backend/private
         Alias /gitweb /usr/share/gitweb
