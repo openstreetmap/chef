@@ -169,6 +169,9 @@ suites:
   - name: planet
     run_list:
       - recipe[planet::default]
+  - name: planet-current
+    run_list:
+      - recipe[planet::current]
   - name: planet-dump
     run_list:
       - recipe[planet::dump]

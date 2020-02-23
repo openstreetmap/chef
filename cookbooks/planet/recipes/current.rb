@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+include_recipe "accounts"
+
 package %w[
   pyosmium
 ]
@@ -47,6 +49,7 @@ remote_file "/var/lib/planet/planet.pbf" do
   owner "planet"
   group "planet"
   mode 0o644
+  not_if { ENV["TEST_KITCHEN"] }
 end
 
 template "/etc/cron.d/planet-update" do

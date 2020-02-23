@@ -48,6 +48,7 @@ jobs:
           - passenger
           - piwik
           - planet
+          - planet-current
           - planet-dump
           - planet-notes
           - planet-replication
