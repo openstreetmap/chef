@@ -1,4 +1,4 @@
-default[:civicrm][:version] = "5.21.1"
+default[:civicrm][:version] = "5.22.1"
 
 default[:civicrm][:extensions][:cividiscount][:name] = "org.civicrm.module.cividiscount"
 default[:civicrm][:extensions][:cividiscount][:repository] = "https://github.com/dlobo/org.civicrm.module.cividiscount.git"
@@ -31,3 +31,7 @@ default[:civicrm][:extensions][:username][:revision] = "master"
 default[:civicrm][:extensions][:donotsendreportemail][:name] = "org.civicrm.donotsendreportemail"
 default[:civicrm][:extensions][:donotsendreportemail][:repository] = "https://github.com/pradpnayak/org.civicrm.donotsendreportemail.git"
 default[:civicrm][:extensions][:donotsendreportemail][:revision] = "3b31c2e0c62183872c7ecd244395fb8dcfbd5dbb"
+
+default[:civicrm][:extensions][:donotsendreportemail][:name] = "nz.co.fuzion.omnipaymultiprocessor"
+default[:civicrm][:extensions][:donotsendreportemail][:repository] = "https://github.com/eileenmcnaughton/nz.co.fuzion.omnipaymultiprocessor.git"
+default[:civicrm][:extensions][:donotsendreportemail][:revision] = "3.9"
