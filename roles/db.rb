@@ -39,7 +39,6 @@ default_attributes(
     "/store/rails" => { :host => "ironbelly", :path => "/store/rails" }
   },
   :postgresql => {
-    :versions => ["9.5"],
     :settings => {
       :defaults => {
         :listen_addresses => "*",

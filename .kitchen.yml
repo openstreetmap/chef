@@ -54,6 +54,18 @@ suites:
   - name: clamav
     run_list:
       - recipe[clamav::default]
+  - name: db-backup
+    run_list:
+      - recipe[db::backup]
+  - name: db-base
+    run_list:
+      - recipe[db::base]
+  - name: db-master
+    run_list:
+      - recipe[db::master]
+  - name: db-slave
+    run_list:
+      - recipe[db::slave]
   - name: devices
     run_list:
       - recipe[devices::default]

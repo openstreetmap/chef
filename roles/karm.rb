@@ -2,9 +2,6 @@ name "karm"
 description "Master role applied to karm"
 
 default_attributes(
-  :db => {
-    :cluster => "9.5/main"
-  },
   :networking => {
     :interfaces => {
       :internal_ipv4 => {

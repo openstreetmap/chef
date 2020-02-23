@@ -18,6 +18,10 @@ jobs:
           - blogs
           - civicrm
           - clamav
+          - db-backup
+          - db-base
+          - db-master
+          - db-slave
           - devices
           - dhcpd
           - dmca

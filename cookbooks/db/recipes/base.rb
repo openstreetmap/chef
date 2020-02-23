@@ -17,12 +17,18 @@
 # limitations under the License.
 #
 
-include_recipe "postgresql"
+include_recipe "accounts"
 include_recipe "git"
+include_recipe "postgresql"
 include_recipe "python"
 
 passwords = data_bag_item("db", "passwords")
 wal_secrets = data_bag_item("db", "wal-secrets")
+
+ruby_version = node[:passenger][:ruby_version]
+db_version = node[:db][:cluster].split("/").first
+pg_config = "/usr/lib/postgresql/#{db_version}/bin/pg_config"
+function_directory = "/srv/www.openstreetmap.org/rails/db/functions/#{db_version}"
 
 postgresql_munin "openstreetmap" do
   cluster node[:db][:cluster]
@@ -35,7 +41,7 @@ directory "/srv/www.openstreetmap.org" do
 end
 
 rails_port "www.openstreetmap.org" do
-  ruby "2.5"
+  ruby ruby_version
   directory "/srv/www.openstreetmap.org/rails"
   user "rails"
   group "rails"
@@ -48,10 +54,6 @@ rails_port "www.openstreetmap.org" do
   gpx_dir "/store/rails/gpx"
 end
 
-db_version = node[:db][:cluster].split("/").first
-pg_config = "/usr/lib/postgresql/#{db_version}/bin/pg_config"
-function_directory = "/srv/www.openstreetmap.org/rails/db/functions/#{db_version}"
-
 directory function_directory do
   owner "rails"
   group "rails"
@@ -60,7 +62,7 @@ end
 
 execute function_directory do
   action :nothing
-  command "make PG_CONFIG=#{pg_config} DESTDIR=#{function_directory}"
+  command "make BUNDLE=bundle#{ruby_version} PG_CONFIG=#{pg_config} DESTDIR=#{function_directory}"
   cwd "/srv/www.openstreetmap.org/rails/db/functions"
   user "rails"
   group "rails"

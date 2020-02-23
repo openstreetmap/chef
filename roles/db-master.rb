@@ -3,7 +3,6 @@ description "Role applied to all the master database server"
 
 default_attributes(
   :postgresql => {
-    :versions => ["9.5"],
     :settings => {
       :defaults => {
         :wal_level => "hot_standby",

@@ -2,9 +2,6 @@ name "eddie"
 description "Master role applied to eddie"
 
 default_attributes(
-  :db => {
-    :cluster => "9.5/main"
-  },
   :networking => {
     :interfaces => {
       :internal_ipv4 => {
