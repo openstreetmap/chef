@@ -117,6 +117,15 @@ suites:
   - name: geoipupdate
     run_list:
       - recipe[geoipupdate::default]
+  - name: git
+    run_list:
+      - recipe[git::default]
+  - name: git-server
+    run_list:
+      - recipe[git::server]
+  - name: git-web
+    run_list:
+      - recipe[git::web]
   - name: gps-tile
     run_list:
       - recipe[gps-tile::default]

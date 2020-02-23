@@ -4,8 +4,7 @@ description "Master role applied to sarel"
 default_attributes(
   :git => {
     :private_user => "chefrepo",
-    :private_group => "chefrepo",
-    :private_nodes => "fqdn:*"
+    :private_group => "chefrepo"
   },
   :networking => {
     :interfaces => {

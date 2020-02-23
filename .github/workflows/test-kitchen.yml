@@ -32,6 +32,9 @@ jobs:
           - ftp
           - geodns
           - geoipupdate
+          - git
+          - git-server
+          - git-web
           - gps-tile
           - hardware
           - incron

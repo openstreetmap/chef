@@ -59,10 +59,12 @@
         <Location />
                   Require all granted
         </Location>
+<% unless @private_allowed.empty? -%>
 
         <Location /private>
                   Require ip <%= @private_allowed.sort.join(" ") %>
         </Location>
+<% end -%>
 
         <Location /private/chef.git>
                   Require all denied

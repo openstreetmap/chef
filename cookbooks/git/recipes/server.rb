@@ -17,6 +17,9 @@
 # limitations under the License.
 #
 
+node.default[:accounts][:users][:git][:status] = :role
+
+include_recipe "accounts"
 include_recipe "networking"
 
 git_directory = node[:git][:directory]
