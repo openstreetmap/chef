@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+include_recipe "accounts"
+
 package %w[
   perl
   libdate-calc-perl
@@ -26,6 +28,7 @@ directory "/store/backup" do
   owner "osmbackup"
   group "osmbackup"
   mode 0o2755
+  recursive true
 end
 
 cookbook_file "/usr/local/bin/expire-backups" do

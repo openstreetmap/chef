@@ -12,6 +12,7 @@ jobs:
           - accounts
           - apache
           - apt
+          - backup
           - bind
           - blog
           - blogs

@@ -6,3 +6,4 @@ description       "Installs and configures backup.openstreetmap.org"
 
 version           "1.0.0"
 supports          "ubuntu"
+depends           "accounts"

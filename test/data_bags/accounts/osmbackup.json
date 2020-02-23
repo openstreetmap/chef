@@ -1,0 +1,7 @@
+{
+  "id": "osmbackup",
+  "uid": 501,
+  "comment": "Backups",
+  "home": "/store/backup",
+  "manage_home": false
+}

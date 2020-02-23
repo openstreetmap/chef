@@ -2,11 +2,6 @@ name "backup"
 description "Role applied to backup.openstreetmap.org"
 
 default_attributes(
-  :accounts => {
-    :users => {
-      :osmbackup => { :status => :role }
-    }
-  },
   :rsyncd => {
     :modules => {
       :backup => {

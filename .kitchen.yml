@@ -33,6 +33,9 @@ suites:
   - name: apt
     run_list:
       - recipe[apt::default]
+  - name: backup
+    run_list:
+      - recipe[backup::default]
   - name: bind
     run_list:
       - recipe[bind::default]
