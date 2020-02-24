@@ -93,6 +93,9 @@ suites:
   - name: donate
     run_list:
       - recipe[donate::default]
+  - name: elasticsearch
+    run_list:
+      - recipe[elasticsearch::default]
   - name: exim
     run_list:
       - recipe[exim::default]
@@ -138,6 +141,9 @@ suites:
   - name: incron
     run_list:
       - recipe[incron::default]
+  - name: kibana
+    run_list:
+      - recipe[kibana::default]
   - name: letsencrypt
     run_list:
       - recipe[letsencrypt::default]
@@ -145,6 +151,20 @@ suites:
       apt:
         sources:
           - openstreetmap
+  - name: logstash
+    run_list:
+      - recipe[logstash::default]
+  - name: logstash-forwarder
+    run_list:
+      - recipe[logstash::forwarder]
+    attributes:
+      logstash:
+        forwarder:
+          filebeat.prospectors:
+            - input_type: log
+              paths:
+                - /var/log/apache2/access.log
+              type: apache
   - name: mailman
     run_list:
       - recipe[mailman::default]

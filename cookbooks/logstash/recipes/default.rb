@@ -17,6 +17,7 @@
 # limitations under the License.
 #
 
+include_recipe "elasticsearch"
 include_recipe "networking"
 
 keys = data_bag_item("logstash", "keys")
@@ -47,7 +48,7 @@ template "/etc/logstash/conf.d/chef.conf" do
   user "root"
   group "root"
   mode 0o644
-  notifies :reload, "service[logstash]"
+  notifies :start, "service[logstash]"
 end
 
 file "/etc/logrotate.d/logstash" do
@@ -64,7 +65,6 @@ end
 
 service "logstash" do
   action [:enable, :start]
-  supports :status => true, :restart => true, :reload => true
 end
 
 template "/etc/cron.daily/expire-logstash" do

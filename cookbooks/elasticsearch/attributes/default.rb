@@ -1,4 +1,5 @@
-default[:elasticsearch][:version] = "1.7"
+default[:elasticsearch][:version] = "6.x"
+default[:elasticsearch][:cluster][:name] = "default"
 default[:elasticsearch][:cluster][:routing][:allocation][:disk][:watermark][:low] = "85%"
 default[:elasticsearch][:cluster][:routing][:allocation][:disk][:watermark][:high] = "90%"
 default[:elasticsearch][:cluster][:routing][:allocation][:disk][:watermark][:flood_stage] = "95%"

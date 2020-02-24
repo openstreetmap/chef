@@ -2,12 +2,6 @@ name "logstash"
 description "Role applied to all logstash servers"
 
 default_attributes(
-  :elasticsearch => {
-    :cluster => {
-      :name => "logstash"
-    },
-    :version => "6.x"
-  },
   :kibana => {
     :sites => {
       :logstash => {

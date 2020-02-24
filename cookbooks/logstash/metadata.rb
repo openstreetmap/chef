@@ -6,4 +6,6 @@ description       "Installs and configures a elasticsearch server"
 
 version           "1.0.0"
 supports          "ubuntu"
+depends           "apt"
+depends           "elasticsearch"
 depends           "networking"

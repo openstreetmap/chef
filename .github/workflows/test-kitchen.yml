@@ -26,6 +26,7 @@ jobs:
           - dhcpd
           - dmca
           - donate
+          - elasticsearch
           - exim
           - fail2ban
           - forum
@@ -39,7 +40,10 @@ jobs:
           - hardware
           - hot
           - incron
+          - kibana
           - letsencrypt
+          - logstash
+          - logstash-forwarder
           - mailman
           - memcached
           - munin

@@ -19,6 +19,8 @@
 
 require "yaml"
 
+include_recipe "apt"
+
 package "filebeat"
 
 cookbook_file "/etc/filebeat/filebeat.crt" do

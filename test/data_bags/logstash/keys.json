@@ -1,0 +1,11 @@
+{
+  "id": "keys",
+  "lumberjack": [
+    "-----BEGIN PRIVATE KEY-----",
+    "-----END PRIVATE KEY-----"
+  ],
+  "beats": [
+    "-----BEGIN PRIVATE KEY-----",
+    "-----END PRIVATE KEY-----"
+  ]
+}
