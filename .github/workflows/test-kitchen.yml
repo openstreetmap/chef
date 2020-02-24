@@ -37,6 +37,7 @@ jobs:
           - git-web
           - gps-tile
           - hardware
+          - hot
           - incron
           - letsencrypt
           - mailman
