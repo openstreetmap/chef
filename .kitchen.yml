@@ -311,3 +311,6 @@ suites:
   - name: web-rails
     run_list:
       - recipe[web::rails]
+  - name: wordpress
+    run_list:
+      - recipe[wordpress::default]

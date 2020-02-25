@@ -88,6 +88,7 @@ jobs:
           - web-cgimap
           - web-frontend
           - web-rails
+          - wordpress
         os:
           - ubuntu-1804
       fail-fast: false
