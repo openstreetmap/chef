@@ -250,6 +250,9 @@ suites:
   - name: serverinfo
     run_list:
       - recipe[serverinfo::default]
+  - name: snmpd
+    run_list:
+      - recipe[snmpd::default]
   - name: spamassassin
     run_list:
       - recipe[spamassassin::default]

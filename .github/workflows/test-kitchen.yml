@@ -69,6 +69,7 @@ jobs:
           - python
           - rsyncd
           - serverinfo
+          - snmpd
           - spamassassin
           - squid
           - stateofthemap

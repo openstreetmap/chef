@@ -1,1 +1,1 @@
-default[:rsyncd][:modules] = []
+default[:snmpd][:clients] = []
