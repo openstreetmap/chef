@@ -293,6 +293,9 @@ suites:
   - name: tilecache
     run_list:
       - recipe[tilecache::default]
+  - name: tilelog
+    run_list:
+      - recipe[tilelog::default]
   - name: tools
     run_list:
       - recipe[tools::default]

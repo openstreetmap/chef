@@ -82,6 +82,7 @@ jobs:
           - taginfo
           - tile
           - tilecache
+          - tilelog
           - tools
           - trac
           - web-backend

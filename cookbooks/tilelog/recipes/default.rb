@@ -17,16 +17,18 @@
 # limitations under the License.
 #
 
+include_recipe "git"
 include_recipe "tools"
 
 package %w[
   gcc
+  g++
   make
   autoconf
   automake
   libboost-filesystem-dev
-  libboost-system-dev
   libboost-program-options-dev
+  libboost-system-dev
 ]
 
 tilelog_source_directory = node[:tilelog][:source_directory]
@@ -93,4 +95,5 @@ directory tilelog_output_directory do
   user "www-data"
   group "www-data"
   mode 0o755
+  recursive true
 end
