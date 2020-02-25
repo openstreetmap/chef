@@ -274,6 +274,9 @@ suites:
   - name: switch2osm
     run_list:
       - recipe[switch2osm::default]
+  - name: sysctl
+    run_list:
+      - recipe[sysctl::default]
   - name: taginfo
     run_list:
       - recipe[taginfo::default]

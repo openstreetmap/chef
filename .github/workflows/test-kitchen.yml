@@ -77,6 +77,7 @@ jobs:
           - subversion
           - supybot
           - switch2osm
+          - sysctl
           - taginfo
           - tile
           - tilecache
