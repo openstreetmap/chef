@@ -78,6 +78,7 @@ jobs:
           - supybot
           - switch2osm
           - sysctl
+          - sysfs
           - taginfo
           - tile
           - tilecache

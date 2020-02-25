@@ -277,6 +277,9 @@ suites:
   - name: sysctl
     run_list:
       - recipe[sysctl::default]
+  - name: sysfs
+    run_list:
+      - recipe[sysfs::default]
   - name: taginfo
     run_list:
       - recipe[taginfo::default]
