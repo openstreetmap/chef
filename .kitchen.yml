@@ -259,6 +259,9 @@ suites:
   - name: squid
     run_list:
       - recipe[squid::default]
+  - name: ssl
+    run_list:
+      - recipe[ssl::default]
   - name: stateofthemap
     run_list:
       - recipe[stateofthemap::default]
