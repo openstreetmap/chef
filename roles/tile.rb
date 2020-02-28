@@ -50,6 +50,9 @@ default_attributes(
       }
     }
   },
+  :ssl => {
+    :ct_report_uri => false
+  },
   :sysctl => {
     :sockets => {
       :comment => "Increase size of connection queue",

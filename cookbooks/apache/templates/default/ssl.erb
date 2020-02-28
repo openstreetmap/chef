@@ -13,4 +13,8 @@ SSLStaplingFakeTryLater off
 SSLStaplingCache shmcb:${APACHE_RUN_DIR}/ssl_ocspcache(512000)
 
 Header always set Strict-Transport-Security "<%= node[:ssl][:strict_transport_security] %>" "expr=%{HTTPS} == 'on'"
-Header always set Expect-CT "max-age=0, report-uri=\"https://openstreetmap.report-uri.com/r/d/ct/reportOnly\"" "expr=%{HTTPS} == 'on'
+<% if node[:ssl][:ct_report_uri] -%>
+Header always set Expect-CT "max-age=0, report-uri=\"<%= node[:ssl][:ct_report_uri] %>\"" "expr=%{HTTPS} == 'on'"
+<% else -%>
+Header always set Expect-CT "max-age=0" "expr=%{HTTPS} == 'on'"
+<% end -%>
