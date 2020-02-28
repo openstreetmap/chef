@@ -22,6 +22,14 @@ default_attributes(
       }
     }
   },
+  :apache => {
+    :mpm => "event",
+      :event => {
+        :min_spare_threads => 50,
+        :max_spare_threads => 150,
+        :listen_cores_buckets_ratio => 4
+      }
+  },
   :git => {
     :host => "git.openstreetmap.org",
     :aliases => ["git.osm.org"]
