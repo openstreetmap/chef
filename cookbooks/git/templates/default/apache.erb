@@ -46,6 +46,7 @@
 
         SetEnv GIT_PROJECT_ROOT /var/lib/git
         SetEnv GIT_HTTP_EXPORT_ALL
+        SetEnv GIT_HTTP_MAX_REQUEST_BUFFER 100M
 
         # KeepaliveTimeout longer than git config uploadpack.keepalive 5 second default
         KeepAliveTimeout 20
