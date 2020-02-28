@@ -2,6 +2,14 @@ name "sarel"
 description "Master role applied to sarel"
 
 default_attributes(
+  :apache => {
+    :mpm => "event",
+    :event => {
+      :min_spare_threads => 50,
+      :max_spare_threads => 150,
+      :listen_cores_buckets_ratio => 4
+    }
+  },
   :git => {
     :private_user => "chefrepo",
     :private_group => "chefrepo"
