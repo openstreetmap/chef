@@ -398,7 +398,7 @@ action :create do
     site new_resource.site
     template "mw-ext-CheckUser.inc.php.erb"
     repository "git://github.com/migurski/extension-checkuser.git"
-    reference "0fe3015e57bb6ee771ecaebf3b2d79a251bd4e3a"
+    reference "0e3bf4aa3d05b60240b0abc1a00d87c9fc4c5cf7"
     update_site false
   end
 
