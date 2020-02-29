@@ -204,42 +204,46 @@ end
 tools_packages = []
 status_packages = {}
 
-node[:kernel][:modules].each_key do |modname|
-  case modname
-  when "cciss"
-    tools_packages << "ssacli"
-    status_packages["cciss-vol-status"] ||= []
-  when "hpsa"
-    tools_packages << "ssacli"
-    status_packages["cciss-vol-status"] ||= []
-  when "mptsas"
-    tools_packages << "lsiutil"
-    status_packages["mpt-status"] ||= []
-  when "mpt2sas", "mpt3sas"
-    tools_packages << "sas2ircu"
-    status_packages["sas2ircu-status"] ||= []
-  when "megaraid_mm"
-    tools_packages << "megactl"
-    status_packages["megaraid-status"] ||= []
-  when "megaraid_sas"
-    tools_packages << "megacli"
-    status_packages["megaclisas-status"] ||= []
-  when "aacraid"
-    tools_packages << "arcconf"
-    status_packages["aacraid-status"] ||= []
-  when "arcmsr"
-    tools_packages << "areca"
+if node[:virtualization][:role] != "guest" ||
+  node[:virtualization][:system] != "lxd"
+
+  node[:kernel][:modules].each_key do |modname|
+    case modname
+    when "cciss"
+      tools_packages << "ssacli"
+      status_packages["cciss-vol-status"] ||= []
+    when "hpsa"
+      tools_packages << "ssacli"
+      status_packages["cciss-vol-status"] ||= []
+    when "mptsas"
+      tools_packages << "lsiutil"
+      status_packages["mpt-status"] ||= []
+    when "mpt2sas", "mpt3sas"
+      tools_packages << "sas2ircu"
+      status_packages["sas2ircu-status"] ||= []
+    when "megaraid_mm"
+      tools_packages << "megactl"
+      status_packages["megaraid-status"] ||= []
+    when "megaraid_sas"
+      tools_packages << "megacli"
+      status_packages["megaclisas-status"] ||= []
+    when "aacraid"
+      tools_packages << "arcconf"
+      status_packages["aacraid-status"] ||= []
+    when "arcmsr"
+      tools_packages << "areca"
+    end
   end
-end
 
-node[:block_device].each do |name, attributes|
-  next unless attributes[:vendor] == "HP" && attributes[:model] == "LOGICAL VOLUME"
+  node[:block_device].each do |name, attributes|
+    next unless attributes[:vendor] == "HP" && attributes[:model] == "LOGICAL VOLUME"
 
-  if name =~ /^cciss!(c[0-9]+)d[0-9]+$/
-    status_packages["cciss-vol-status"] |= ["cciss/#{Regexp.last_match[1]}d0"]
-  else
-    Dir.glob("/sys/block/#{name}/device/scsi_generic/*").each do |sg|
-      status_packages["cciss-vol-status"] |= [File.basename(sg)]
+    if name =~ /^cciss!(c[0-9]+)d[0-9]+$/
+      status_packages["cciss-vol-status"] |= ["cciss/#{Regexp.last_match[1]}d0"]
+    else
+      Dir.glob("/sys/block/#{name}/device/scsi_generic/*").each do |sg|
+        status_packages["cciss-vol-status"] |= [File.basename(sg)]
+      end
     end
   end
 end
@@ -289,6 +293,14 @@ if status_packages.include?("cciss-vol-status")
     protect_home true
     no_new_privileges true
     notifies :restart, "service[cciss-vol-statusd]"
+  end
+else
+  systemd_service "cciss-vol-statusd" do
+    action :delete
+  end
+
+  template "/usr/local/bin/cciss-vol-statusd" do
+    action :delete
   end
 end
 
