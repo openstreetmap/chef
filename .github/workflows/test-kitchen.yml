@@ -105,6 +105,14 @@ jobs:
         key: bundle-${{ runner.OS }}-${{ hashFiles('Gemfile.lock') }}
         restore-keys: |
           bundle-${{ runner.OS }}-
+    - name: Enable MTU probing
+      run: |
+        sysctl net.ipv4.tcp_mtu_probing net.ipv4.tcp_base_mss
+        sudo sysctl -w net.ipv4.tcp_mtu_probing=2 net.ipv4.tcp_base_mss=1024
+        sysctl net.ipv4.tcp_keepalive_time net.ipv4.tcp_keepalive_intvl net.ipv4.tcp_keepalive_probes
+        ip addr show
+        sudo ls -l /etc/docker/
+        sudo cat /etc/docker/daemon.json || true
     - name: Disable apparmor for mysqld
       run: |
         sudo apt-get install apparmor-utils
