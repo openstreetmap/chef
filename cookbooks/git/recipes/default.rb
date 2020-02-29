@@ -18,3 +18,8 @@
 #
 
 package "git"
+
+sysctl "enable-mtu-probe" do
+  key   "net.ipv4.tcp_mtu_probing"
+  value "2"
+end
