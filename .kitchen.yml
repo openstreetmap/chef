@@ -165,6 +165,9 @@ suites:
               paths:
                 - /var/log/apache2/access.log
               type: apache
+  - name: mail
+    run_list:
+      - role[mail]
   - name: mailman
     run_list:
       - recipe[mailman::default]

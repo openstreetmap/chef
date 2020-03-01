@@ -91,5 +91,6 @@ default_attributes(
 
 run_list(
   "recipe[clamav]",
+  "recipe[exim]",
   "recipe[spamassassin]"
 )

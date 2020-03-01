@@ -26,7 +26,9 @@ package %w[
   ssl-cert
 ]
 
-package "exim4-daemon-heavy" if File.exist?("/var/run/clamav/clamd.ctl")
+package "exim4-daemon-heavy" do
+  only_if { ::File.exist?("/var/run/clamav/clamd.ctl") }
+end
 
 group "ssl-cert" do
   action :modify
