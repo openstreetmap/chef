@@ -133,7 +133,7 @@ if node[:exim][:dkim_selectors]
     mode 0o755
   end
 
-  node[:exim][:dkim_selectors].each do |domain, selector|
+  node[:exim][:dkim_selectors].each do |domain, _selector|
     file "/etc/exim4/dkim-keys/#{domain}" do
       content keys[domain].join("\n")
       owner "root"
