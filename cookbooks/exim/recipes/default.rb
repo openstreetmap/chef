@@ -120,6 +120,13 @@ end
 if node[:exim][:dkim_selectors]
   keys = data_bag_item("exim", "dkim")
 
+  template "/etc/exim4/dkim-domains" do
+    owner "root"
+    source "dkim-domains.erb"
+    group "Debian-exim"
+    mode 0o644
+  end
+
   template "/etc/exim4/dkim-selectors" do
     owner "root"
     source "dkim-selectors.erb"

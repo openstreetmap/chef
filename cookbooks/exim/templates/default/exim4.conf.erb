@@ -710,7 +710,7 @@ remote_smtp:
 
 signed_smtp:
   driver = smtp
-  dkim_domain = ${lc:${domain:$h_from:}}
+  dkim_domain = ${lookup{${domain:$h_from:}}partial-lsearch{/etc/exim4/dkim-domains}{$value}}
   dkim_selector = ${lookup{$dkim_domain}lsearch{/etc/exim4/dkim-selectors}{$value}}
   dkim_private_key = /etc/exim4/dkim-keys/${dkim_domain}
   dkim_identity = ${lc:${address:$h_from:}}

@@ -1,0 +1,3 @@
+<% node[:exim][:dkim_selectors].each do |domain, _selector| -%>
+*.<%= domain %>: <%= domain %>
+<% end -%>
