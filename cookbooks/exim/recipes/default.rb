@@ -115,6 +115,32 @@ file "/etc/exim4/blocked-senders" do
   mode 0o644
 end
 
+if node[:exim][:dkim_selectors]
+  keys = data_bag_item("exim", "dkim")
+
+  template "/etc/exim4/dkim-selectors" do
+    owner "root"
+    source "dkim-selectors.erb"
+    group "Debian-exim"
+    mode 0o644
+  end
+
+  directory "/etc/exim4/dkim-keys" do
+    owner "root"
+    group "Debian-exim"
+    mode 0o755
+  end
+
+  node[:exim][:dkim_selectors].each do |domain, selector|
+    file "/etc/exim4/dkim-keys/#{domain}" do
+      content keys[domain].join("\n")
+      owner "root"
+      group "Debian-exim"
+      mode 0o640
+    end
+  end
+end
+
 template "/etc/exim4/exim4.conf" do
   source "exim4.conf.erb"
   owner "root"

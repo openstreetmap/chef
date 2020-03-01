@@ -46,6 +46,9 @@ default_attributes(
         :host => "ridley.ucl.openstreetmap.org"
       }
     },
+    :dkim_selectors => {
+      "openstreetmap.org" => "20200301"
+    },
     :aliases => {
       "abuse" => "root",
       "postmaster" => "root",

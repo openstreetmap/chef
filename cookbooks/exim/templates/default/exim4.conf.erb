@@ -678,7 +678,7 @@ smarthost:
 dnslookup:
   driver = dnslookup
   domains = ! +local_domains
-  transport = remote_smtp
+  transport = signed_smtp
   same_domain_copy_routing = yes
   ignore_target_hosts = 0.0.0.0 : 127.0.0.0/8
   no_more
@@ -702,6 +702,19 @@ begin transports
 
 remote_smtp:
   driver = smtp
+  multi_domain = false
+  tls_require_ciphers = <%= node[:ssl][:gnutls_ciphers] %>:%LATEST_RECORD_VERSION
+
+
+# This transport is used for delivering DKIM signed messages over SMTP connections.
+
+signed_smtp:
+  driver = smtp
+  dkim_domain = ${lc:${domain:$h_from:}}
+  dkim_selector = ${lookup{$dkim_domain}lsearch{/etc/exim4/dkim-selectors}{$value}}
+  dkim_private_key = /etc/exim4/dkim-keys/${dkim_domain}
+  dkim_identity = ${lc:${address:$h_from:}}
+  # dkim_timestamps = 1209600
   multi_domain = false
   tls_require_ciphers = <%= node[:ssl][:gnutls_ciphers] %>:%LATEST_RECORD_VERSION
 
