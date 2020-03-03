@@ -73,6 +73,8 @@ map $http_referer $denied_referer {
   'http://www.osm.org'             1; # Faked
   'http://osm.org/'                1; # Faked
   'http://osm.org'                 1; # Faked
+  '~^http://google\.com'           1; # Faked
+  '~^http://www\.google\.com'      1; # Faked
   '~^https?://pmap\.kuku\.lu/'           1; # Too much traffic
   '~^https?://[^.]*\.pmap\.kuku\.lu/'    1; # Too much traffic
   '~^https?://fastpokemap\.com/'         1; # Too much traffic
