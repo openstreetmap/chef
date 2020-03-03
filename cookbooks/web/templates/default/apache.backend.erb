@@ -61,16 +61,15 @@
   #
   # Pass supported calls to cgimap
   #
-  RewriteRule ^/api/0\.6/map$ fcgi://127.0.0.1:8000$0 [P]
+  RewriteRule ^/api/0\.6/map(\.json|\.xml)?$ fcgi://127.0.0.1:8000$0 [P]
   RewriteCond %{REQUEST_METHOD} ^(HEAD|GET)$
-  RewriteRule ^/api/0\.6/(node|way|relation|changeset)/[0-9]+$ fcgi://127.0.0.1:8000$0 [P]
-  RewriteRule ^/api/0\.6/(node|way|relation)/[0-9]+/history$ fcgi://127.0.0.1:8000$0 [P]
-  RewriteRule ^/api/0\.6/node/[0-9]+/ways$ fcgi://127.0.0.1:8000$0 [P]
-  RewriteRule ^/api/0\.6/(node|way|relation)/[0-9]+/relations$ fcgi://127.0.0.1:8000$0 [P]
-  RewriteRule ^/api/0\.6/(way|relation)/[0-9]+/full$ fcgi://127.0.0.1:8000$0 [P]
-  RewriteRule ^/api/0\.6/(nodes|ways|relations)$ fcgi://127.0.0.1:8000$0 [P]
-  RewriteRule ^/api/0\.6/changeset/[0-9]+/download$ fcgi://127.0.0.1:8000$0 [P]
-  RewriteRule ^/api/0\.6/changeset/[0-9]+/upload$ fcgi://127.0.0.1:8000$0 [P]
+  RewriteRule ^/api/0\.6/(node|way|relation|changeset)/[0-9]+(\.json|\.xml)?$ fcgi://127.0.0.1:8000$0 [P]
+  RewriteRule ^/api/0\.6/(node|way|relation)/[0-9]+/history(\.json|\.xml)?$ fcgi://127.0.0.1:8000$0 [P]
+  RewriteRule ^/api/0\.6/(node|way|relation)/[0-9]+/relations(\.json|\.xml)?$ fcgi://127.0.0.1:8000$0 [P]
+  RewriteRule ^/api/0\.6/node/[0-9]+/ways(\.json|\.xml)?$ fcgi://127.0.0.1:8000$0 [P]
+  RewriteRule ^/api/0\.6/(way|relation)/[0-9]+/full(\.json|\.xml)?$ fcgi://127.0.0.1:8000$0 [P]
+  RewriteRule ^/api/0\.6/(nodes|ways|relations)(\.json|\.xml)?$ fcgi://127.0.0.1:8000$0 [P]
+  RewriteRule ^/api/0\.6/changeset/[0-9]+/(upload|download)(\.json|\.xml)?$ fcgi://127.0.0.1:8000$0 [P]
 </VirtualHost>
 
 <Directory <%= node[:web][:base_directory] %>/rails/public>
