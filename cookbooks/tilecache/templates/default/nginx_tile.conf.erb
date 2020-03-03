@@ -53,10 +53,14 @@ map $http_user_agent $denied_scraper {
   '~^R$'                 1; # Library Default
   '~^Java\/'             1; # Library Default
   '~^tiles$'             1; # Library Default
+  '~^okhttp\/'           1; # Library Default
   '~^runtastic'          1; # App
+  'Android'              1; # Default or fake
   'Mozilla/4.0'          1; # Fake
   'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)' 1;  # Fake
   '~^Where\ my\ children' 1; # App
+  'nossoonibusjp.android.crosswalk' 1; # App
+  'br.com.concisoti.potybus' 1; # App
 }
 
 map $http_referer $denied_referer {
