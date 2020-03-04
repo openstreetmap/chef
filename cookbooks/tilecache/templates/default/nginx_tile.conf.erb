@@ -54,10 +54,14 @@ map $http_user_agent $denied_scraper {
   '~^Java\/'             1; # Library Default
   '~^tiles$'             1; # Library Default
   '~^okhttp\/'           1; # Library Default
-  '~^runtastic'          1; # App
+  '~^Microsoft-ATL-Native\/' 1; #Library Default
+  'C\# TilesDownloader'  1; # Downloader
+  'MapDownloader'        1; # Downloader
   'Android'              1; # Default or fake
+  'kc_android'           1; # Default or fake
   'Mozilla/4.0'          1; # Fake
   'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)' 1;  # Fake
+  '~^runtastic'          1; # App
   '~^Where\ my\ children' 1; # App
   'nossoonibusjp.android.crosswalk' 1; # App
   'br.com.concisoti.potybus' 1; # App
