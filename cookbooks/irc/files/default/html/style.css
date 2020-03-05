@@ -1,9 +1,11 @@
 h1 {
-  display: inline-block;
   text-align: center;
 }
 
+div {
+  display: flex;
+}
+
 form {
-  display: inline-block;
-  text-align: center;
+  margin: auto;
 }
