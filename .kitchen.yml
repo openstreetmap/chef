@@ -141,6 +141,9 @@ suites:
   - name: incron
     run_list:
       - recipe[incron::default]
+  - name: irc
+    run_list:
+      - recipe[irc::default]
   - name: kibana
     run_list:
       - recipe[kibana::default]
