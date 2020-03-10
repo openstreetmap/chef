@@ -2,6 +2,7 @@
 
 require "socket"
 require "openssl"
+require "net/http"
 
 host = ARGV.shift
 address = ARGV.shift
@@ -23,11 +24,50 @@ end
 
 if ssl
   certificate = ssl.peer_cert
+  chain = ssl.peer_cert_chain.drop(1)
+  issuer = chain.first
 
   if Time.now < certificate.not_before
     puts "Certificate #{domains.first} on #{host} not valid until #{certificate.not_before}"
   elsif certificate.not_after - Time.now < 21 * 86400
     puts "Certificate #{domains.first} on #{host} expires at #{certificate.not_after}"
+  end
+
+  digest = OpenSSL::Digest::SHA1.new
+  certificate_id = OpenSSL::OCSP::CertificateId.new(certificate, issuer, digest)
+  ocsp_request = OpenSSL::OCSP::Request.new.add_certid(certificate_id)
+
+  authority_info_access = certificate.extensions.find { |ext| ext.oid == "authorityInfoAccess" }
+  ocsp = authority_info_access.value.split("\n").find { |desc| desc.start_with?("OCSP") }
+  ocsp_uri = URI(ocsp.sub(/^.* URI:/, ""))
+
+  http_response = Net::HTTP.start(ocsp_uri.hostname, ocsp_uri.port) do |http|
+    path = ocsp_uri.path
+    path = "/" if path.empty?
+    http.post(path, ocsp_request.to_der, "Content-Type" => "application/ocsp-request")
+  end
+
+  basic_response = OpenSSL::OCSP::Response.new(http_response.body).basic
+
+  store = OpenSSL::X509::Store.new
+  store.set_default_paths
+
+  unless basic_response.verify(chain, store)
+    raise "OCSP response is not signed by a trusted certificate"
+  end
+
+  single_response = basic_response.find_response(certificate_id)
+
+  unless single_response
+    raise "OCSP response does not have the status for the certificate"
+  end
+
+  unless single_response.check_validity
+    raise "OCSP response is not valid"
+  end
+
+  if single_response.cert_status == OpenSSL::OCSP::V_CERTSTATUS_REVOKED
+    puts "Certificate #{domains.first} on #{host} has been revoked"
   end
 
   subject_alt_name = certificate.extensions.find { |ext| ext.oid == "subjectAltName" }
