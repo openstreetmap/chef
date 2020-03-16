@@ -197,7 +197,7 @@ server {
       return 404;
     }
 
-<% for i in 0..15 do %>
+<% for i in 0..16 do %>
 <% if i == 0 -%>
     # Default Fallback Location Handler (lowest)
     location / {
@@ -215,7 +215,7 @@ server {
       proxy_http_version 1.1;
       proxy_set_header Connection '';
 
-      proxy_connect_timeout 10s;
+      proxy_connect_timeout 20s;
 
       # Replace host header.
       proxy_set_header Host 'tile.openstreetmap.org';
@@ -247,15 +247,17 @@ server {
       # Caching
       proxy_cache "proxy_cache_zone";
       proxy_cache_lock on;
-      proxy_cache_valid 200 1d;
+      proxy_cache_valid 200 2d;
       proxy_cache_valid 404 15m;
       # Serve stale cache on errors or if updating
       proxy_cache_use_stale error timeout updating http_404 http_500 http_503 http_504;
       # If in cache as stale, serve stale and update in background
       proxy_cache_background_update on;
+      # Workaround nginx async bug which causes stale cache replies to wait for the async backend cache update reply (seen in v1.16.0)
+      keepalive_requests 0;
       # Enable revalidation using If-Modified-Since and If-None-Match for stale items
       proxy_cache_revalidate on;
-      proxy_cache_min_uses 8;
+      proxy_cache_min_uses 4;
 
       add_header x-cache-status $upstream_cache_status;
 <% end -%>
