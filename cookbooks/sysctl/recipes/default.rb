@@ -22,7 +22,8 @@ file "/etc/sysctl.d/60-chef.conf" do
 end
 
 if node[:virtualization][:role] != "guest" ||
-   node[:virtualization][:system] != "lxd"
+   (node[:virtualization][:system] != "lxc" &&
+    node[:virtualization][:system] != "lxd")
   keys = []
 
   Dir.new("/etc/sysctl.d").each_entry do |file|
