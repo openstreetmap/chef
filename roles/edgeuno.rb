@@ -2,6 +2,11 @@ name "edgeuno"
 description "Role applied to all servers at Edgeuno"
 
 default_attributes(
+  :accounts => {
+    :users => {
+      :e1admin => { :status => :administrator }
+    }
+  },
   :hosted_by => "EdgeUno",
   :location => "Bogotá, Colombia",
   :networking => {
