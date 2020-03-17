@@ -1,11 +1,26 @@
-# DO NOT EDIT - This file is being maintained by Chef
-# Configuration for the irqbalance daemon
+# irqbalance is a daemon process that distributes interrupts across
+# CPUS on SMP systems.  The default is to rebalance once every 10
+# seconds.  This is the environment file that is specified to systemd via the 
+# EnvironmentFile key in the service unit file (or via whatever method the init
+# system you're using has. 
+#
+# ONESHOT=yes
+#    after starting, wait for a minute, then look at the interrupt
+#    load and balance it once; after balancing exit and do not change
+#    it again.
+#IRQBALANCE_ONESHOT=
 
-# Should irqbalance be enabled?
-ENABLED="1"
-# Balance the IRQs only once?
-ONESHOT="0"
+#
+# IRQBALANCE_BANNED_CPUS
+#    64 bit bitmask which allows you to indicate which cpu's should
+#    be skipped when reblancing irqs.  Cpu numbers which have their 
+#    corresponding bits set to one in this mask will not have any
+#    irq's assigned to them on rebalance
+#
+#IRQBALANCE_BANNED_CPUS=
 
-# irqbalance maintainer recommends ignore hint policy
-# http://sourceforge.net/p/e1000/bugs/394/?page=1
-DOPTIONS="--hintpolicy=ignore"
+#
+# IRQBALANCE_ARGS
+#    append any args here to the irqbalance daemon as documented in the man page
+#
+#IRQBALANCE_ARGS=
