@@ -17,10 +17,12 @@
 # limitations under the License.
 #
 
-include_recipe "memcached"
+include_recipe "accounts"
 include_recipe "apache"
-include_recipe "mysql"
+include_recipe "apt"
 include_recipe "git"
+include_recipe "memcached"
+include_recipe "mysql"
 
 # Mediawiki Base Requirements
 package %w[

@@ -320,13 +320,9 @@ suites:
   - name: web-rails
     run_list:
       - recipe[web::rails]
+  - name: wiki
+    run_list:
+      - recipe[wiki::default]
   - name: wordpress
     run_list:
       - recipe[wordpress::default]
-  - name: wiki
-    run_list:
-      - recipe[apt::default]
-      - recipe[accounts::default]
-      - recipe[munin::default]
-      - recipe[wiki]
-      - role[wiki]
