@@ -27,7 +27,7 @@ default_attributes(
   },
   :squid => {
     :version => 4,
-    :cache_mem => "32768 MB",
+    :cache_mem => "10240 MB",
     :cache_dir => [
       "rock /store/squid/rock-4096 20000 swap-timeout=200 slot-size=4096 max-size=3996",
       "rock /store/squid/rock-8192 25000 swap-timeout=200 slot-size=8192 min-size=3997 max-size=8092",
