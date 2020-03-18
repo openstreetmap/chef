@@ -323,3 +323,10 @@ suites:
   - name: wordpress
     run_list:
       - recipe[wordpress::default]
+  - name: wiki
+    run_list:
+      - recipe[apt::default]
+      - recipe[accounts::default]
+      - recipe[munin::default]
+      - recipe[wiki]
+      - role[wiki]
