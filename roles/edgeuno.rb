@@ -8,7 +8,6 @@ default_attributes(
     }
   },
   :hosted_by => "EdgeUno",
-  :location => "Bogotá, Colombia",
   :networking => {
     :firewall => {
       :inet => [
@@ -44,14 +43,4 @@ default_attributes(
       }
     }
   }
-)
-
-override_attributes(
-  :ntp => {
-    :servers => ["0.co.pool.ntp.org", "1.co.pool.ntp.org", "south-america.pool.ntp.org"]
-  }
-)
-
-run_list(
-  "role[co]"
 )

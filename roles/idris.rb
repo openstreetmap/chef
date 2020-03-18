@@ -1,27 +1,27 @@
-name "gorwen"
-description "Master role applied to gorwen"
+name "idris"
+description "Master role applied to idris"
 
 default_attributes(
   :hardware => {
-    :shm_size => "20g"
+    :shm_size => "10g"
   },
   :networking => {
     :interfaces => {
       :external_ipv4 => {
-        :interface => "eth0",
+        :interface => "ens160",
         :role => :external,
         :family => :inet,
-        :address => "200.25.1.70",
-        :prefix => "28",
-        :gateway => "200.25.1.65"
+        :address => "200.25.60.195",
+        :prefix => "27",
+        :gateway => "200.25.60.193"
       },
       :external_ipv6 => {
-        :interface => "eth0",
+        :interface => "ens160",
         :role => :external,
         :family => :inet6,
-        :address => "2800:1e0:a01:a006::6f",
-        :prefix => "125",
-        :gateway => "2800:1e0:a01:a006::69"
+        :address => "2800:1e0:1030::64",
+        :prefix => "123",
+        :gateway => "2800:1e0:1030::61"
       }
     }
   },
@@ -48,6 +48,6 @@ default_attributes(
 )
 
 run_list(
-  "role[edgeuno-co]",
+  "role[edgeuno-ar]",
   "role[tilecache]"
 )

@@ -1,5 +1,5 @@
-name "gorwen"
-description "Master role applied to gorwen"
+name "fuchur"
+description "Master role applied to fuchur"
 
 default_attributes(
   :hardware => {
@@ -8,20 +8,20 @@ default_attributes(
   :networking => {
     :interfaces => {
       :external_ipv4 => {
-        :interface => "eth0",
+        :interface => "ens160",
         :role => :external,
         :family => :inet,
-        :address => "200.25.1.70",
-        :prefix => "28",
-        :gateway => "200.25.1.65"
+        :address => "200.25.58.164",
+        :prefix => "27",
+        :gateway => "200.25.58.161"
       },
       :external_ipv6 => {
-        :interface => "eth0",
+        :interface => "ens160",
         :role => :external,
         :family => :inet6,
-        :address => "2800:1e0:a01:a006::6f",
-        :prefix => "125",
-        :gateway => "2800:1e0:a01:a006::69"
+        :address => "2800:1e0:1020::44",
+        :prefix => "123",
+        :gateway => "2800:1e0:1020::41"
       }
     }
   },
@@ -48,6 +48,6 @@ default_attributes(
 )
 
 run_list(
-  "role[edgeuno-co]",
+  "role[edgeuno-br]",
   "role[tilecache]"
 )
