@@ -3,17 +3,25 @@ description "Master role applied to naga"
 
 default_attributes(
   :hardware => {
-    :shm_size => "38g"
+    :shm_size => "14g"
   },
   :networking => {
     :interfaces => {
       :external_ipv4 => {
-        :interface => "eno1",
+        :interface => "ens18",
         :role => :external,
         :family => :inet,
-        :address => "185.116.130.151",
-        :prefix => "24",
-        :gateway => "185.116.130.151"
+        :address => "45.13.104.40",
+        :prefix => "32",
+        :gateway => "10.0.4.1"
+      },
+      :external_ipv6 => {
+        :interface => "ens18",
+        :role => :external,
+        :family => :inet6,
+        :address => "2a0b:cbc0:1101:1::41",
+        :prefix => "64",
+        :gateway => "2a0b:cbc0:1101:1::1"
       }
     }
   },
@@ -33,6 +41,6 @@ default_attributes(
 )
 
 run_list(
-  "role[fullsave]",
+  "role[milkywan]",
   "role[tilecache]"
 )
