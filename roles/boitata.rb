@@ -36,7 +36,7 @@ default_attributes(
     ]
   },
   :tilecache => {
-    :tile_parent => "curitiba.render.openstreetmap.org"
+    :tile_parent => "brazil.render.openstreetmap.org"
   }
 )
 
