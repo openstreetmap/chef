@@ -2,7 +2,7 @@ name "edgeuno-br"
 description "Role applied to all servers at Edgeuno BR"
 
 default_attributes(
-  :location => "Sao Paulo, Brasil"
+  :location => "São Paulo, Brasil"
 )
 
 override_attributes(
