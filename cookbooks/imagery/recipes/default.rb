@@ -23,7 +23,7 @@ include_recipe "git"
 # Imagery gdal Requirements
 package %w[
   gdal-bin
-  python-gdal
+  # python-gdal - disable while broken in gis unstable repo
 ]
 
 # Imagery MapServer + Mapcache Requirements
