@@ -23,7 +23,7 @@ passwords = data_bag_item("stateofthemap", "passwords")
 
 git "/srv/stateofthemap.org" do
   action :sync
-  repository "https://git.openstreetmap.org/public/stateofthemap.git"
+  repository "https://github.com/openstreetmap/stateofthemap.git"
   revision "chooser"
   depth 1
   user "root"
@@ -60,7 +60,7 @@ end
 wordpress_theme "2007.stateofthemap.org-refreshwp-11" do
   theme "refreshwp-11"
   site "2007.stateofthemap.org"
-  repository "https://git.openstreetmap.org/public/stateofthemap.git"
+  repository "https://github.com/openstreetmap/stateofthemap.git"
   revision "theme-2007"
 end
 
@@ -87,7 +87,7 @@ end
 wordpress_theme "2008.stateofthemap.org-refreshwp-11" do
   theme "refreshwp-11"
   site "2008.stateofthemap.org"
-  repository "https://git.openstreetmap.org/public/stateofthemap.git"
+  repository "https://github.com/openstreetmap/stateofthemap.git"
   revision "theme-2008"
 end
 
@@ -104,7 +104,7 @@ end
 
 git "/srv/2009.stateofthemap.org" do
   action :sync
-  repository "https://git.openstreetmap.org/public/stateofthemap.git"
+  repository "https://github.com/openstreetmap/stateofthemap.git"
   revision "resources-2009"
   depth 1
   user "wordpress"
@@ -125,7 +125,7 @@ end
 wordpress_theme "2009.stateofthemap.org-aerodrome" do
   theme "aerodrome"
   site "2009.stateofthemap.org"
-  repository "https://git.openstreetmap.org/public/stateofthemap.git"
+  repository "https://github.com/openstreetmap/stateofthemap.git"
   revision "theme-2009"
 end
 
@@ -142,7 +142,7 @@ end
 
 git "/srv/2010.stateofthemap.org" do
   action :sync
-  repository "https://git.openstreetmap.org/public/stateofthemap.git"
+  repository "https://github.com/openstreetmap/stateofthemap.git"
   revision "resources-2010"
   depth 1
   user "wordpress"
@@ -161,7 +161,7 @@ end
 wordpress_theme "2010.stateofthemap.org-aerodrome" do
   theme "aerodrome"
   site "2010.stateofthemap.org"
-  repository "https://git.openstreetmap.org/public/stateofthemap.git"
+  repository "https://github.com/openstreetmap/stateofthemap.git"
   revision "theme-2010"
 end
 
@@ -185,7 +185,7 @@ end
 
 git "/srv/2011.stateofthemap.org" do
   action :sync
-  repository "https://git.openstreetmap.org/public/stateofthemap.git"
+  repository "https://github.com/openstreetmap/stateofthemap.git"
   revision "resources-2011"
   depth 1
   user "wordpress"
@@ -204,7 +204,7 @@ end
 wordpress_theme "2011.stateofthemap.org-aerodrome" do
   theme "aerodrome"
   site "2011.stateofthemap.org"
-  repository "https://git.openstreetmap.org/public/stateofthemap.git"
+  repository "https://github.com/openstreetmap/stateofthemap.git"
   revision "theme-2011"
 end
 
@@ -228,7 +228,7 @@ end
 
 git "/srv/2012.stateofthemap.org" do
   action :sync
-  repository "https://git.openstreetmap.org/public/stateofthemap.git"
+  repository "https://github.com/openstreetmap/stateofthemap.git"
   revision "resources-2012"
   depth 1
   user "wordpress"
@@ -247,7 +247,7 @@ end
 wordpress_theme "2012.stateofthemap.org-aerodrome" do
   theme "aerodrome"
   site "2012.stateofthemap.org"
-  repository "https://git.openstreetmap.org/public/stateofthemap.git"
+  repository "https://github.com/openstreetmap/stateofthemap.git"
   revision "theme-2012"
 end
 
@@ -271,7 +271,7 @@ end
 %w[2013].each do |year|
   git "/srv/#{year}.stateofthemap.org" do
     action :sync
-    repository "https://git.openstreetmap.org/public/stateofthemap.git"
+    repository "https://github.com/openstreetmap/stateofthemap.git"
     revision "site-#{year}"
     depth 1
     user "root"
