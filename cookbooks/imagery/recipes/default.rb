@@ -21,10 +21,8 @@ include_recipe "nginx"
 include_recipe "git"
 
 # Imagery gdal Requirements
-package %w[
-  gdal-bin
-  # python-gdal - disable while broken in gis unstable repo
-]
+package "gdal-bin"
+# python-gdal - disable while broken in gis unstable repo
 
 # Imagery MapServer + Mapcache Requirements
 package %w[
