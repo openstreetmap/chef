@@ -181,17 +181,9 @@ package "ipmitool" if node[:kernel][:modules].include?("ipmi_si")
 
 package "irqbalance"
 
-template "/etc/default/irqbalance" do
-  source "irqbalance.erb"
-  owner "root"
-  group "root"
-  mode 0o644
-end
-
 service "irqbalance" do
   action [:start, :enable]
   supports :status => false, :restart => true, :reload => false
-  subscribes :restart, "template[/etc/default/irqbalance]"
 end
 
 # Link Layer Discovery Protocol Daemon
