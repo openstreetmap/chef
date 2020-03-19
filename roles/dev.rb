@@ -98,7 +98,7 @@ default_attributes(
   :dev => {
     :rails => {
       :master => {
-        :repository => "https://git.openstreetmap.org/public/rails.git",
+        :repository => "https://github.com/openstreetmap/openstreetmap-website.git",
         :revision => "master",
         :cgimap_repository => "https://github.com/zerebubuth/openstreetmap-cgimap.git",
         :cgimap_revision => "master",
@@ -117,7 +117,7 @@ default_attributes(
         :revision => "locale"
       },
       :upload => {
-        :repository => "https://git.openstreetmap.org/public/rails.git",
+        :repository => "https://github.com/openstreetmap/openstreetmap-website.git",
         :revision => "master",
         :cgimap_repository => "https://github.com/zerebubuth/openstreetmap-cgimap.git",
         :cgimap_revision => "feature/bulk_upload"

@@ -28,7 +28,7 @@ property :ruby, String, :default => "2.3"
 property :directory, String
 property :user, String
 property :group, String
-property :repository, String, :default => "https://git.openstreetmap.org/public/rails.git"
+property :repository, String, :default => "https://github.com/openstreetmap/openstreetmap-website.git"
 property :revision, String, :default => "live"
 property :run_migrations, [true, false], :default => false
 property :email_from, String, :default => "OpenStreetMap <support@openstreetmap.org>"

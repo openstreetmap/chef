@@ -74,7 +74,7 @@ rails_port "www.openstreetmap.org" do
   directory rails_directory
   user "rails"
   group "rails"
-  repository "https://git.openstreetmap.org/public/rails.git"
+  repository "https://github.com/openstreetmap/openstreetmap-website.git"
   revision "live"
   database_host node[:web][:database_host]
   database_name "openstreetmap"
