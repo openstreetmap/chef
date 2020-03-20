@@ -2,90 +2,6 @@ acl osmtile_thishost dstdomain <%= node.name %>
 acl osmtile_sites dstdomain <%= node.name %> a.tile.openstreetmap.org b.tile.openstreetmap.org c.tile.openstreetmap.org tile.openstreetmap.org a.tile.osm.org b.tile.osm.org c.tile.osm.org tile.osm.org
 acl osmtiles_png urlpath_regex .png$
 
-acl osmtileScrapers browser ^$
-acl osmtileScrapers browser ^MOBAC
-acl osmtileScrapers browser ^JTileDownloader
-acl osmtileScrapers browser ^Apache\-HttpClient
-acl osmtileScrapers browser ^Go-http-client\/
-acl osmtileScrapers browser ^Opera\/10\.00
-acl osmtileScrapers browser ^shipxy01
-# acl osmtileScrapers browser ^OsmAnd # Victor + Email. Whitelist for 1 week
-# acl osmtileScrapers browser ^apemap # CGI143 + Email. Whitelist for 1 week
-acl osmtileScrapers browser Firefox\/2\.0\.0\.11$
-acl osmtileScrapers browser Firefox\/3\.5\.7$
-acl osmtileScrapers browser Firefox\/3\.6$
-acl osmtileScrapers browser ^Mozilla\/4\.0$
-acl osmtileScrapers browser ^Mozilla\/5\.0$ # QLandkarte unwilling to set a real user-agent.
-acl osmtileScrapers browser ^Mozilla$ # Intentionally faked user-agent
-acl osmtileScrapers browser ^User\-Agent
-acl osmtileScrapers browser Firefox\/0\.8$
-acl osmtileScrapers browser Firefox\/1\.0$
-acl osmtileScrapers browser Firefox\/1\.0\.7$
-acl osmtileScrapers browser K\-Meleon\/1\.02$
-acl osmtileScrapers browser MSIE.7\.0.*Windows.NT.5\.1.*2\.0\.50727.$
-acl osmtileScrapers browser MSIE.5.5
-acl osmtileScrapers browser ^LoadOSM\.exe$
-acl osmtileScrapers browser ^app_name$
-acl osmtileScrapers browser ^osmdroid$ # app using osmdroid library not setting app-specific User-Agent
-# acl osmtileScrapers browser ^Mozilla/5\.0 \(Windows NT 5\.1\)$ # Faked User-Agent
-acl osmtileScrapers browser Firefox\/3\.0
-acl osmtileScrapers browser Firefox\/4\.0
-acl osmtileScrapers browser Firefox\/5\.0
-acl osmtileScrapers browser Firefox\/6\.0
-acl osmtileScrapers browser Firefox\/7\.0
-acl osmtileScrapers browser Firefox\/8\.0
-acl osmtileScrapers browser Firefox\/9\.0
-acl osmtileScrapers browser Firefox\/10\.0
-acl osmtileScrapers browser Firefox\/11\.0
-acl osmtileScrapers browser Firefox\/12\.0
-acl osmtileScrapers browser Firefox\/13\.0
-acl osmtileScrapers browser ^Python\-urllib\/
-acl osmtileScrapers browser ^python\-requests\/
-acl osmtileScrapers browser ^node\-fetch\/
-acl osmtileScrapers browser ^R$
-acl osmtileScrapers browser ^Java\/
-acl osmtileScrapers browser ^tiles$
-acl osmtileScrapers browser ^runtastic
-
-acl is_fake_browser browser Firefox\/3\.0
-acl is_fake_browser browser Firefox\/4\.0
-acl is_fake_browser browser Firefox\/5\.0
-acl is_fake_browser browser Firefox\/6\.0
-acl is_fake_browser browser Firefox\/7\.0
-acl is_fake_browser browser Firefox\/8\.0
-acl is_fake_browser browser Firefox\/9\.0
-acl is_fake_browser browser Firefox\/10\.0
-acl is_fake_browser browser Firefox\/11\.0
-acl is_fake_browser browser Firefox\/12\.0
-acl is_fake_browser browser Firefox\/13\.0
-
-http_access deny osmtile_sites osmtileScrapers
-
-acl osmtileOverusers referer_regex ^https?://pmap\.kuku\.lu/
-acl osmtileOverusers referer_regex ^https?://[^.]*\.pmap\.kuku\.lu/
-acl osmtileOverusers referer_regex ^https?://fastpokemap\.com/
-acl osmtileOverusers referer_regex ^https?://[^.]*\.fastpokemap\.com/
-acl osmtileOverusers referer_regex ^https?://pkget\.com/
-acl osmtileOverusers referer_regex ^https?://[^.]*\.pkget\.com/
-acl osmtileOverusers referer_regex ^https?://twpkinfo\.com/
-acl osmtileOverusers referer_regex ^https?://[^.]*\.twpkinfo\.com/
-
-# Faked OSM referers
-acl osmtileOverusers referer_regex ^http://www\.openstreetmap\.org/?$
-acl osmtileOverusers referer_regex ^http://openstreetmap\.org/?$
-acl osmtileOverusers referer_regex ^http://www\.osm\.org/?$
-acl osmtileOverusers referer_regex ^http://osm\.org/?$
-
-http_access deny osmtile_sites osmtileOverusers
-
-# Delay pool when !has_referer and is_browser
-acl has_referer referer_regex .
-acl is_browser browser Chrome\/
-acl is_browser browser Firefox\/
-acl is_browser browser Trident\/
-acl is_browser browser Safari\/
-acl is_browser browser AppleWebKit\/
-
 acl whitelist_path urlpath_regex ^/cgi-bin/(export|debug)
 acl blacklist_path urlpath_regex ^/cgi-bin/
 acl blacklist_path urlpath_regex ^/MyAdmin/
@@ -143,16 +59,7 @@ cache_peer_access osmtileAccelBackup<%= renders[:hostname] %> allow osmtile_site
 <% end -%>
 
 # ----------------------------------
-# Create an unlimited pool for cache IP addresses
-acl pool_unlimited src 127.0.0.1
-<% @caches.each do |cache| -%>
-<% cache.ipaddresses(:family => :inet, :role => :external).sort.each do |address| -%>
-acl pool_unlimited src <%= address %>
-<% end -%>
-<% end -%>
 
-# Juno Minsk office - me@komzpa.net
-acl pool_unlimited src 212.98.173.54
 <% if node[:squid][:version] < 4 -%>
 
 #Allow tile_caches HTCP access
@@ -160,36 +67,6 @@ htcp_access allow tile_caches
 
 #Allow tile_caches ICP access
 icp_access allow tile_caches
-<% end %>
-
-<% (0..127).each do |i| -%>
-acl pool_<%= sprintf("%03d", 2*i) %> src <%= 2*i %>.0.0.0/7
-<% end %>
-
-delay_pools 256
-delay_initial_bucket_level 25
-
-<% (1..256).each do |i| -%>
-delay_class <%= i %> 3
-<% end %>
-#bit mask
-# xxxxxxx- -------- xxxxxxxx xxxxxxxx
-
-# small pools for !has_referer && is_browser - designed to slow down anyone
-# using no-referer to bypass blocks due to abusive levels of use.
-<% (0..127).each do |i| -%>
-delay_access <%= i+1 %> allow pool_<%= sprintf("%03d", 2*i) %> !pool_unlimited is_fake_browser osmtile_sites
-delay_access <%= i+1 %> allow pool_<%= sprintf("%03d", 2*i) %> !pool_unlimited !has_referer is_browser osmtile_sites
-delay_access <%= i+1 %> deny all
-delay_parameters <%= i+1 %> -1/-1 <%= node[:tilecache][:net_bucket_refill] / 10 %>/<%= node[:tilecache][:net_bucket_size] / 10 %> <%= node[:tilecache][:ip_bucket_refill] / 10 %>/<%= node[:tilecache][:ip_bucket_size] / 10 %>
-<% end %>
-
-# bigger pools for users providing a referer (assuming it's not blocked)
-# or non-browser users.
-<% (0..127).each do |i| %>
-delay_access <%= i+129 %> allow pool_<%= sprintf("%03d", 2*i) %> !pool_unlimited osmtile_sites
-delay_access <%= i+129 %> deny all
-delay_parameters <%= i+129 %> -1/-1 <%= node[:tilecache][:net_bucket_refill] %>/<%= node[:tilecache][:net_bucket_size] %> <%= node[:tilecache][:ip_bucket_refill] %>/<%= node[:tilecache][:ip_bucket_size] %>
 <% end %>
 
 #----------------------------------
