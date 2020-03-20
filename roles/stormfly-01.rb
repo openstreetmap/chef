@@ -39,7 +39,10 @@ default_attributes(
     }
   },
   :tilecache => {
-    :tile_parent => "corvallis.render.openstreetmap.org"
+    :tile_parent => "corvallis.render.openstreetmap.org",
+    :tile_siblings => [
+      "stormfly-02.openstreetmap.org"
+    ]
   }
 )
 
