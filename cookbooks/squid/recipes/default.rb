@@ -115,9 +115,9 @@ service "squid" do
   subscribes :reload, "template[/etc/resolv.conf]"
 end
 
-log "squid-restart" do
-  message "Restarting squid due to counter wraparound"
-  notifies :restart, "service[squid]"
+service "squid-restart" do
+  service_name "squid"
+  action :restart
   only_if do
     IO.popen(["squidclient", "--host=127.0.0.1", "--port=3128", "mgr:counters"]) do |io|
       io.each.grep(/^[a-z][a-z_.]+ = -[0-9]+$/).count.positive?
