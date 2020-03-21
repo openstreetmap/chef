@@ -482,6 +482,7 @@ template "/usr/local/bin/replicate" do
   owner "root"
   group "root"
   mode 0o755
+  variables :postgresql_version => postgresql_version.to_f
 end
 
 systemd_service "expire-tiles" do

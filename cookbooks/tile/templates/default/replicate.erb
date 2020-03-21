@@ -17,6 +17,11 @@ exec > /var/log/tile/replicate.log 2>&1
 
 # Change to the replication state directory
 cd /var/lib/replicate
+<% if @postgresql_version >= 12 -%>
+
+# Disable JIT and parallel workers in postgres
+export PGOPTIONS="-c jit=off -c max_parallel_workers_per_gather=0"
+<% end -%>
 
 # Install exit handler
 trap onexit EXIT
