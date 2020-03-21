@@ -9,10 +9,10 @@ ChefModernize/IncludingAptDefaultRecipe:
 Layout/ExtraSpacing:
   AllowForAlignment: true
 
-Layout/IndentHeredoc:
+Layout/HeredocIndentation:
   EnforcedStyle: squiggly
 
-Naming/UncommunicativeMethodParamName:
+Naming/MethodParameterName:
   Enabled: false
 
 Style/HashSyntax:
