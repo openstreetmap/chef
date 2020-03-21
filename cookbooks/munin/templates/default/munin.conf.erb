@@ -507,6 +507,18 @@ unknown_limit 144
     squid_byte_hitrates.<%= tc[:name].tr("-", "_") %>_hits.label <%= tc[:name] %>
     squid_byte_hitrates.<%= tc[:name].tr("-", "_") %>_hits.draw LINE1
 <% end -%>
+    nginx_requests.graph_title Nginx requests
+    nginx_requests.graph_vlabel Requests per ${graph_period}
+    nginx_requests.graph_category nginx
+    nginx_requests.graph_order <%= Chef::Munin.expand "%%%name%%%=%%name%%.openstreetmap.org:nginx_request.request", @tilecaches %>
+    nginx_requests.graph_total total
+    nginx_requests.graph_args --lower-limit 0
+<% @tilecaches.each do |tc| -%>
+    nginx_requests.<%= tc[:name].tr("-", "_") %>.label <%= tc[:name] %>
+    nginx_requests.<%= tc[:name].tr("-", "_") %>.cdef <%= tc[:name].tr("-", "_") %>,8,*
+    nginx_requests.<%= tc[:name].tr("-", "_") %>.draw AREASTACK
+    nginx_requests.<%= tc[:name].tr("-", "_") %>.min 0
+<% end -%>
 <% end -%>
 <% unless @renderers.empty? -%>
 
