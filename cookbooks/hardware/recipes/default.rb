@@ -354,7 +354,7 @@ if !intel_ssds.empty? || !intel_nvmes.empty?
     cwd Chef::Config[:file_cache_path]
     user "root"
     group "root"
-    not_if { File.exist?("#{Chef::Config[:file_cache_path]}/isdct_#{intel_ssd_tool_version}-1_amd64.deb") }
+    not_if { ::File.exist?("#{Chef::Config[:file_cache_path]}/isdct_#{intel_ssd_tool_version}-1_amd64.deb") }
   end
 
   dpkg_package "isdct" do
