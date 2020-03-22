@@ -161,6 +161,14 @@ apt_repository "mediawiki" do
   key "AF380A3036A03444"
 end
 
+apt_repository "docker" do
+  action repository_actions["docker"]
+  uri "https://download.docker.com/linux/ubuntu"
+  arch "amd64"
+  components ["stable"]
+  key "https://download.docker.com/linux/ubuntu/gpg"
+end
+
 package "unattended-upgrades"
 
 if Dir.exist?("/usr/share/unattended-upgrades")
