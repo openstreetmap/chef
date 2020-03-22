@@ -3,7 +3,7 @@ description "Master role applied to idris"
 
 default_attributes(
   :hardware => {
-    :shm_size => "10g"
+    :shm_size => "20g"
   },
   :networking => {
     :interfaces => {
