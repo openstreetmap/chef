@@ -76,8 +76,10 @@ map $http_referer $denied_referer {
   default                          0; # Not denied
   'http://www.openstreetmap.org/'  1; # Faked
   'http://www.openstreetmap.org'   1; # Faked
+  'https://www.openstreetmap.org'  1; # Faked
   'http://openstreetmap.org/'      1; # Faked
   'http://openstreetmap.org'       1; # Faked
+  'https://openstreetmap.org'      1; # Faked
   'http://www.osm.org/'            1; # Faked
   'http://www.osm.org'             1; # Faked
   'http://osm.org/'                1; # Faked
