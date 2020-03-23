@@ -7,4 +7,4 @@ export PINGDOM_PASSWORD="<%= @passwords["pingdom"] %>"
 export STATUSCAKE_USERNAME="OpenStreetMap"
 export STATUSCAKE_APIKEY="<%= @passwords["statuscake"] %>"
 
-make --quiet --jobs --directory=/var/lib/dns --assume-new=lib/countries.xml update > /dev/null
+make --quiet --jobs --directory=/var/lib/dns --assume-new=bin/mkgeo update > /dev/null
