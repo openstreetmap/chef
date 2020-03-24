@@ -93,6 +93,7 @@ map $http_referer $denied_referer {
   'https://www.google.com'         1; # Faked
   'https://google.com/'            1; # Faked
   'https://www.google.com/'        1; # Faked
+  'http://www.microsoft.com/'      1; # Faked
   '~^https?://pmap\.kuku\.lu/'           1; # Too much traffic
   '~^https?://[^.]*\.pmap\.kuku\.lu/'    1; # Too much traffic
   '~^https?://fastpokemap\.com/'         1; # Too much traffic
