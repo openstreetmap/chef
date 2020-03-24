@@ -19,14 +19,6 @@
 
 include_recipe "imagery"
 
-imagery_site "ana_dtm_2017.openstreetmap.lu" do
-  action :delete
-end
-
-ssl_certificate "ana_dtm_2017.openstreetmap.lu" do
-  action :delete
-end
-
 imagery_site "ana-dtm-2017.openstreetmap.lu" do
   title "OpenStreetMap - ANA DTM 2017"
   bbox [[49.38, 5.64], [50.2, 6.64]]
