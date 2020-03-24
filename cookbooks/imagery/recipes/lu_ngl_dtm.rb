@@ -19,13 +19,17 @@
 
 include_recipe "imagery"
 
-imagery_site "ana_dtm_2017.openstreetmap.lu" do
+ssl_certificate "ana_dtm_2017.openstreetmap.lu" do
+  action :delete
+end
+
+imagery_site "ana-dtm-2017.openstreetmap.lu" do
   title "OpenStreetMap - ANA DTM 2017"
   bbox [[49.38, 5.64], [50.2, 6.64]]
 end
 
 imagery_layer "ana_dtm_2017" do
-  site "ana_dtm_2017.openstreetmap.lu"
+  site "ana-dtm-2017.openstreetmap.lu"
   default_layer true
   projection "EPSG:3857"
   source "/data/imagery/lu/LUREF_NGL/ANA_LUREF_NGL_DTM-epsg-3857-compress.tif"
@@ -35,7 +39,7 @@ imagery_layer "ana_dtm_2017" do
 end
 
 imagery_layer "ana_dtm_2017_hillshading" do
-  site "ana_dtm_2017.openstreetmap.lu"
+  site "ana-dtm-2017.openstreetmap.lu"
   projection "EPSG:2169"
   source "/data/imagery/lu/LUREF_NGL/lu_hillshade_2017.tif"
   max_zoom 21
