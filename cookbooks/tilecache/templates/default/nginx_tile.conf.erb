@@ -101,6 +101,8 @@ map $http_referer $denied_referer {
   '~^https?://[^.]*\.pkget\.com/'        1; # Too much traffic
   '~^https?://twpkinfo\.com/'            1; # Too much traffic
   '~^https?://[^.]*\.twpkinfo\.com/'     1; # Too much traffic
+  '~^https?://9db\.jp/'                  1; # Too much traffic
+  '~^https?://[^.]*\.9db\.jp/'           1; # Too much traffic
 }
 
 map $http_referer $osm_referer {
