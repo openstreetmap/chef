@@ -19,6 +19,10 @@
 
 include_recipe "imagery"
 
+imagery_site "ana_dtm_2017.openstreetmap.lu" do
+  action :delete
+end
+
 ssl_certificate "ana_dtm_2017.openstreetmap.lu" do
   action :delete
 end
