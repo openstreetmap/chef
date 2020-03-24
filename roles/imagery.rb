@@ -4,10 +4,12 @@ description "Role applied to all imagery servers"
 default_attributes(
   :accounts => {
     :users => {
+      :dmlu => { :status => :user },
       :htonl => { :status => :user },
+      :stereo => { :status => :user },
       :imagery => {
         :status => :role,
-        :members => [:grant, :tomh, :htonl]
+        :members => [:grant, :tomh, :dmlu, :htonl, :stereo ]
       }
     }
   },
