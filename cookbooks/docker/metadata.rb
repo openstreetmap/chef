@@ -6,3 +6,4 @@ description       "Installs and configures the docker daemon"
 
 version           "1.0.0"
 supports          "ubuntu"
+depends           "apt"

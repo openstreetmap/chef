@@ -17,13 +17,19 @@
 # limitations under the License.
 #
 
+include_recipe "apt"
+
 package %w[
-  apt-transport-https
-  ca-certificates
-  curl
-  software-properties-common
-  gnupg2
+  docker-ce
+  docker-ce-cli
+  containerd.io
 ]
+
+directory "/etc/docker" do
+  owner "root"
+  group "root"
+  mode 0o755
+end
 
 template "/etc/docker/daemon.json" do
   source "daemon.json.erb"
@@ -32,13 +38,8 @@ template "/etc/docker/daemon.json" do
   mode 0o644
 end
 
-package %w[
-  docker-ce
-  docker-ce-cli
-  containerd.io
-]
-
 service "docker" do
   action [:enable, :start]
   subscribes :restart, "template[/etc/docker/daemon.json]"
+  not_if { ENV["TEST_KITCHEN"] }
 end

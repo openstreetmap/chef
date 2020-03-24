@@ -90,6 +90,9 @@ suites:
   - name: dmca
     run_list:
       - recipe[dmca::default]
+  - name: docker
+    run_list:
+      - recipe[docker::default]
   - name: donate
     run_list:
       - recipe[donate::default]

@@ -25,6 +25,7 @@ jobs:
           - devices
           - dhcpd
           - dmca
+          - docker
           - donate
           - elasticsearch
           - exim
