@@ -54,9 +54,9 @@ map $http_user_agent $denied_scraper {
   '~^Java\/'             1; # Library Default
   '~^tiles$'             1; # Library Default
   '~^okhttp\/'           1; # Library Default
-  '~^Microsoft-ATL-Native\/' 1; #Library Default
+  '~^Microsoft-ATL-Native\/' 1; # Library Default
   '/n software IPWorks HTTP/S Component - www.nsoftware.com' 1; #Library default
-  '~^Wget\/'             1; #Library Default
+  '~^Wget\/'             1; # Library Default
   'C# TilesDownloader'   1; # Downloader
   'MapDownloader'        1; # Downloader
   '~^staticmaps'         1; # Downloader
@@ -71,6 +71,7 @@ map $http_user_agent $denied_scraper {
   'com.soft373.taptaxi'  1;
   'com.kradac.ktxcore'   1;
   'ru.crowdsystems.topcontrol.knd' 1;
+  # '~[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}' 1; # Fake UA
 }
 
 map $http_referer $denied_referer {
@@ -125,6 +126,17 @@ map $osm_referer$http_user_agent $limit_http_pragma {
   default '';                          # Unset Header
   '~^osmMozilla\/5\.0\ QGIS\/' '';     # Unset Header
   '~^osmMozilla\/5\.0\ ' $http_pragma; # Pass Header
+}
+
+# Find Browser User-Agents which are not sending a referer.
+# Browsers with no referer could be due to Browser extension or website Referrer-Policy
+map $http_referer$scheme$http_user_agent $deny_missing_referer {
+  default                             0; # Not denied
+  '~^httpsMozilla\/5\.0\ \(X11'       1;
+  '~^httpsMozilla\/5\.0\ \(Windows'   1;
+  '~^httpsMozilla\/5\.0\ \(iPhone'    1;
+  '~^httpsMozilla\/5\.0\ \(Macintosh' 1;
+  '~^httpsMozilla\/5\.0\ \(Linux'     1;
 }
 
 server {
@@ -275,6 +287,13 @@ server {
       proxy_cache_min_uses 4;
 
       add_header x-cache-status $upstream_cache_status;
+<% else %>
+      # Severely rate limit Browser UAs which are not sending a referer.
+      # With no referer we do not know who is using tiles
+      if ($deny_missing_referer) {
+        set $limit_rate 1024;
+        add_header x-cache-ratelimit "missing-referer";
+      }
 <% end -%>
 
       # Set a QoS cookie if none presented (uses nginx Map)
