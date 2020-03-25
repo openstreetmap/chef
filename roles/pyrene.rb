@@ -27,7 +27,6 @@ default_attributes(
     }
   },
   :postgresql => {
-    :versions => ["10"],
     :settings => {
       :defaults => {
         :shared_buffers => "8GB",

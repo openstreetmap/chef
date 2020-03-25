@@ -9,6 +9,6 @@ default[:tile][:database][:tag_transform_script] = nil
 default[:tile][:data] = {}
 default[:tile][:styles] = {}
 
-default[:postgresql][:versions] |= ["12"]
+default[:postgresql][:versions] |= [node[:tile][:database][:cluster].split("/").first]
 
 default[:accounts][:users][:tile][:status] = :role
