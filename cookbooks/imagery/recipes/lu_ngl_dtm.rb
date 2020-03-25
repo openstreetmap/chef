@@ -36,8 +36,8 @@ end
 imagery_layer "ana_dtm_2017_hillshading" do
   site "ana-dtm-2017.openstreetmap.lu"
   default_layer true
-  projection "EPSG:2169"
-  source "/data/imagery/lu/LUREF_NGL/lu_hillshade_2017.tif"
+  projection "EPSG:3857"
+  source "/data/imagery/lu/LUREF_NGL/lu_hillshade_2017-epsg-3857-compress.tif"
   max_zoom 21
   title "DTM Hillshading"
   copyright "Copyright"
