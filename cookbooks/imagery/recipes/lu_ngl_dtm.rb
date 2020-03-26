@@ -27,7 +27,7 @@ end
 imagery_layer "ana_dtm_2017" do
   site "ana-dtm-2017.openstreetmap.lu"
   projection "EPSG:3857"
-  source "/data/imagery/lu/LUREF_NGL/ANA_LUREF_NGL_DTM-epsg-3857-compress.tif"
+  source "/data/imagery/lu/LUREF_NGL/lu_color_relief-epsg3857-compress.tif"
   max_zoom 21
   title "DTM"
   copyright "Copyright"
