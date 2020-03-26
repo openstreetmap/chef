@@ -24,7 +24,7 @@ imagery_site "lidar-hillshade-2019.openstreetmap.lu" do
   bbox [[49.38, 5.64], [50.2, 6.64]]
 end
 
-imagery_layer "lidar-hillshade-2019" do
+imagery_layer "lidar_hillshade_2019" do
   site "lidar-hillshade-2019.openstreetmap.lu"
   default_layer true
   projection "EPSG:3857"
