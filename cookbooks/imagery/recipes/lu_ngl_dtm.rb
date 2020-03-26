@@ -30,7 +30,7 @@ imagery_layer "ana_dtm_2017" do
   source "/data/imagery/lu/LUREF_NGL/lu_color_relief-epsg3857-compress.tif"
   max_zoom 21
   title "DTM"
-  copyright '&copy; 2017 <a href="https://data.public.lu/fr/datasets/digital-terrain-model-high-dem-resolution/">Administration de la Navigation Aérienne Luxembourg</a>, CC0'
+  copyright '&copy; 2017 <a href="https://data.public.lu/fr/datasets/digital-terrain-model-high-dem-resolution/">Administration de la Navigation A&eacute;rienne Luxembourg</a>, CC0'
 end
 
 imagery_layer "ana_dtm_2017_hillshading" do
@@ -40,5 +40,5 @@ imagery_layer "ana_dtm_2017_hillshading" do
   source "/data/imagery/lu/LUREF_NGL/lu_hillshade_2017-epsg-3857-compress.tif"
   max_zoom 21
   title "DTM Hillshading"
-  copyright '&copy; 2017 <a href="https://data.public.lu/fr/datasets/digital-terrain-model-high-dem-resolution/">Administration de la Navigation Aérienne Luxembourg</a>, CC0'
+  copyright '&copy; 2017 <a href="https://data.public.lu/fr/datasets/digital-terrain-model-high-dem-resolution/">Administration de la Navigation A&eacute;rienne Luxembourg</a>, CC0'
 end
