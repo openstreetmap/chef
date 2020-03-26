@@ -21,7 +21,7 @@ upstream <%= @name %>_fastcgi {
 }
 
 server {
-    listen 443 ssl deferred backlog=16384 reuseport fastopen=2048 http2;
+    listen 443 ssl http2;
     server_name <%= @name %> a.<%= @name %> b.<%= @name %> c.<%= @name %><% @aliases.each do |alias_name| %> <%= alias_name %> a.<%= alias_name %> b.<%= alias_name %> c.<%= alias_name %><%- end -%>;
 
     ssl_certificate /etc/ssl/certs/<%= @name %>.pem;
