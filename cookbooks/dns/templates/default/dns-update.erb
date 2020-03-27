@@ -8,6 +8,7 @@ export RSYNC_PASSWORD="<%= @passwords["rsync"] %>"
 export GEODNS_SERVERS="<%= @geoservers.join(" ") %>"
 export STATUSCAKE_USERNAME="OpenStreetMap"
 export STATUSCAKE_APIKEY="<%= @passwords["statuscake"] %>"
+export PATH=/usr/local/bin:$PATH
 
 cd /var/lib/dns
 
