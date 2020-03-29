@@ -20,10 +20,6 @@
 include_recipe "imagery"
 
 imagery_site "lidar-hillshade-2019.openstreetmap.lu" do
-  action :delete
-end
-
-imagery_site "lidar-hillshade-2019.openstreetmap.lu" do
   title "OpenStreetMap - Lidar Hillshade 2019"
   bbox [[49.38, 5.64], [50.2, 6.64]]
 end
@@ -40,6 +36,7 @@ end
 
 imagery_layer "vdl_light6" do
   action :delete
+  site "lidar-hillshade-2019.openstreetmap.lu"
 end
 
 imagery_layer "vdl_light6_deflate" do
