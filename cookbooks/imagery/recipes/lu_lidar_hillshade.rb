@@ -39,6 +39,11 @@ imagery_layer "vdl_light6" do
   site "lidar-hillshade-2019.openstreetmap.lu"
 end
 
+imagery_layer "vdl-light6" do
+  action :delete
+  site "lidar-hillshade-2019.openstreetmap.lu"
+end
+
 imagery_layer "vdl_light6-deflate" do
   action :delete
   site "lidar-hillshade-2019.openstreetmap.lu"
