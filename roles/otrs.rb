@@ -32,6 +32,15 @@ default_attributes(
         :group => "www-data",
         :home_directory => "/opt/otrs"
       },
+      :otrs_membership_osmf_talk_owner => {
+        :comment => "osmf-talk-owner@otrs.openstreetmap.org",
+        :domains => ["otrs.openstreetmap.org"],
+        :local_parts => ["osmf-talk-owner"],
+        :command => "/opt/otrs/bin/otrs.Console.pl Maint::PostMaster::Read --target-queue 'Membership Working Group::osmf-talk'",
+        :user => "otrs",
+        :group => "www-data",
+        :home_directory => "/opt/otrs"
+      },
       :otrs_legal => {
         :comment => "legal@otrs.openstreetmap.org",
         :domains => ["otrs.openstreetmap.org"],
