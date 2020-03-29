@@ -34,7 +34,11 @@ imagery_layer "lidar_hillshade_2019" do
   copyright '&copy; 2019 <a href="https://data.public.lu/fr/datasets/lidar-2019-releve-3d-du-territoire-luxembourgeois">Administration du Cadastre et de la Topographie Luxembourg</a>, CC0'
 end
 
-imagery_layer "vdl_light6-deflate" do
+imagery_layer "vdl_light6" do
+  action :delete
+end
+
+imagery_layer "vdl_light6_deflate" do
   site "lidar-hillshade-2019.openstreetmap.lu"
   projection "EPSG:3857"
   source "/data/imagery/lu/lidar-hillshade/lidar-test-vdl-light6-3857-deflate.tif"
