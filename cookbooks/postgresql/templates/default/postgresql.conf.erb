@@ -102,8 +102,14 @@ random_page_cost = <%= @settings[:random_page_cost] || @defaults[:random_page_co
 cpu_tuple_cost = <%= @settings[:cpu_tuple_cost] || @defaults[:cpu_tuple_cost] %>
 effective_cache_size = <%= @settings[:effective_cache_size] || @defaults[:effective_cache_size] %>
 
+# - Other Planner Options -
+
+<% if @version.to_f >= 12 -%>
+jit = <%= @settings[:jit] || @defaults[:jit] %>
+<% end -%>
+
 #------------------------------------------------------------------------------
-# ERROR REPORTING AND LOGGING
+# REPORTING AND LOGGING
 #------------------------------------------------------------------------------
 
 # - When to Log -
