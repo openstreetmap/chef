@@ -59,3 +59,17 @@ package "libwww-perl"
 
 munin_plugin "nginx_request"
 munin_plugin "nginx_status"
+
+template "/usr/local/bin/nginx-old-cache-cleanup" do
+  source "nginx-old-cache-cleanup.erb"
+  owner "root"
+  group "root"
+  mode 0o755
+end
+
+template "/etc/cron.d/nginx-old-cache-cleanup" do
+  source "nginx-old-cache-cleanup.cron.erb"
+  owner "root"
+  group "root"
+  mode 0o644
+end
