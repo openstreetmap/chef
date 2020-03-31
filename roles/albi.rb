@@ -47,7 +47,6 @@ default_attributes(
     },
     :styles => {
       :default => {
-        :revision => "v5.0.0",
         :tile_directories => [
           { :name => "/store/tiles/default", :min_zoom => 0, :max_zoom => 19 }
         ]

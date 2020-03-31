@@ -63,8 +63,8 @@ default_attributes(
   },
   :tile => {
     :database => {
-      :cluster => "10/main",
-      :postgis => "2.4"
+      :cluster => "12/main",
+      :postgis => "3"
     },
     :styles => {
       :default => {
