@@ -11,7 +11,7 @@ default_attributes(
         :interface => "ens160",
         :role => :external,
         :family => :inet,
-        :address => "200.25.60.195",
+        :address => "200.25.60.197",
         :prefix => "27",
         :gateway => "200.25.60.193"
       },
