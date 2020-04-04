@@ -179,26 +179,26 @@ template "/etc/cron.d/tilecache" do
   mode 0o644
 end
 
-directory "/src/tilecache"
+directory "/srv/tilecache"
   owner "root"
   group "root"
   mode 0o755
 end
 
-directory "/src/tilecache/data"
+directory "/srv/tilecache/data"
   owner "www-data"
   group "www-data"
   mode 0o755
 end
 
-file "/src/tilecache/tilecache-curl-time.txt" do
+file "/srv/tilecache/tilecache-curl-time.txt" do
   source "tilecache-curl-time.txt"
   owner "root"
   group "root"
   mode 0o755
 end
 
-template "/src/tilecache/tilecache-curl-time" do
+template "/srv/tilecache/tilecache-curl-time" do
   source "tilecache-curl-time.erb"
   owner "root"
   group "root"

@@ -1,9 +1,9 @@
 #!/bin/bash
-mkdir -p /src/tilecache/data/$(date --utc "+%Y/%m")
+mkdir -p /srv/tilecache/data/$(date --utc "+%Y/%m")
 <% @caches.each do |cache| -%>
 <% if cache[:hostname] != node[:hostname] -%>
 <% cache.ipaddresses(:family => :inet, :role => :external).sort.each do |address| -%>
-    curl -w "@/src/tilecache/tilecache-curl-time.txt" -o /dev/null -s -k -4 \
+    curl -w "@/srv/tilecache/tilecache-curl-time.txt" -o /dev/null -s -k -4 \
     'https://<%= cache[:hostname] %>/19/262106/174485.png' \
     -H 'authority: c.tile.openstreetmap.org' \
     -H 'sec-fetch-dest: image' \
@@ -14,14 +14,14 @@ mkdir -p /src/tilecache/data/$(date --utc "+%Y/%m")
     -H 'sec-fetch-mode: no-cors' \
     -H 'referer: https://www.openstreetmap.org/' \
     -H 'accept-language: en-GB,en-US;q=0.9,en;q=0.8' \
-    --compressed | tee -a /src/tilecache/data/$(date --utc "+%Y/%m")/tilecache-<%= render[:hostname] %>-$(date --utc --iso-8601).txt
+    --compressed | tee -a /srv/tilecache/data/$(date --utc "+%Y/%m")/tilecache-<%= render[:hostname] %>-$(date --utc --iso-8601).txt
 <% end -%>
 <% end -%>
 <% end -%>
 <% @renders.each do |render| -%>
 <% if render[:hostname] != node[:hostname] -%>
 <% render.ipaddresses(:family => :inet, :role => :external).sort.each do |address| -%>
-      curl -w "@/src/tilecache/tilecache-curl-time.txt" -o /dev/null -s -k -4 \
+      curl -w "@/srv/tilecache/tilecache-curl-time.txt" -o /dev/null -s -k -4 \
       'https://<%= render[:hostname] %>/19/262106/174485.png' \
       -H 'authority: c.tile.openstreetmap.org' \
       -H 'sec-fetch-dest: image' \
@@ -32,7 +32,7 @@ mkdir -p /src/tilecache/data/$(date --utc "+%Y/%m")
       -H 'sec-fetch-mode: no-cors' \
       -H 'referer: https://www.openstreetmap.org/' \
       -H 'accept-language: en-GB,en-US;q=0.9,en;q=0.8' \
-      --compressed | tee -a /src/tilecache/data/$(date --utc "+%Y/%m")/render-<%= render[:hostname] %>-$(date --utc --iso-8601).txt
+      --compressed | tee -a /srv/tilecache/data/$(date --utc "+%Y/%m")/render-<%= render[:hostname] %>-$(date --utc --iso-8601).txt
 <% end -%>
 <% end -%>
 <% end -%>
