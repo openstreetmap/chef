@@ -14,7 +14,7 @@ mkdir -p /srv/tilecache/data/$(date --utc "+%Y/%m")
     -H 'sec-fetch-mode: no-cors' \
     -H 'referer: https://www.openstreetmap.org/' \
     -H 'accept-language: en-GB,en-US;q=0.9,en;q=0.8' \
-    --compressed | tee -a /srv/tilecache/data/$(date --utc "+%Y/%m")/tilecache-<%= render[:hostname] %>-$(date --utc --iso-8601).txt
+    --compressed | tee -a /srv/tilecache/data/$(date --utc "+%Y/%m")/tilecache-<%= cache[:hostname] %>-$(date --utc --iso-8601).txt
 <% end -%>
 <% end -%>
 <% end -%>
