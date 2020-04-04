@@ -1,0 +1,1 @@
+%{time_total},%{http_code},%{url_effective},%{time_namelookup},%{time_connect},%{time_appconnect},%{time_pretransfer},%{time_redirect},%{time_starttransfer}\n

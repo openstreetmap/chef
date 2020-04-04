@@ -1,0 +1,38 @@
+#!/bin/bash
+mkdir -p /src/tilecache/data/$(date --utc "+%Y/%m")
+<% @caches.each do |cache| -%>
+<% if cache[:hostname] != node[:hostname] -%>
+<% cache.ipaddresses(:family => :inet, :role => :external).sort.each do |address| -%>
+    curl -w "@/src/tilecache/tilecache-curl-time.txt" -o /dev/null -s -k -4 \
+    'https://<%= cache[:hostname] %>/19/262106/174485.png' \
+    -H 'authority: c.tile.openstreetmap.org' \
+    -H 'sec-fetch-dest: image' \
+    -H 'user-agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36' \
+    -H 'dnt: 1' \
+    -H 'accept: image/webp,image/apng,image/*,*/*;q=0.8' \
+    -H 'sec-fetch-site: same-site' \
+    -H 'sec-fetch-mode: no-cors' \
+    -H 'referer: https://www.openstreetmap.org/' \
+    -H 'accept-language: en-GB,en-US;q=0.9,en;q=0.8' \
+    --compressed | tee -a /src/tilecache/data/$(date --utc "+%Y/%m")/tilecache-<%= render[:hostname] %>-$(date --utc --iso-8601).txt
+<% end -%>
+<% end -%>
+<% end -%>
+<% @renders.each do |render| -%>
+<% if render[:hostname] != node[:hostname] -%>
+<% render.ipaddresses(:family => :inet, :role => :external).sort.each do |address| -%>
+      curl -w "@/src/tilecache/tilecache-curl-time.txt" -o /dev/null -s -k -4 \
+      'https://<%= render[:hostname] %>/19/262106/174485.png' \
+      -H 'authority: c.tile.openstreetmap.org' \
+      -H 'sec-fetch-dest: image' \
+      -H 'user-agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36' \
+      -H 'dnt: 1' \
+      -H 'accept: image/webp,image/apng,image/*,*/*;q=0.8' \
+      -H 'sec-fetch-site: same-site' \
+      -H 'sec-fetch-mode: no-cors' \
+      -H 'referer: https://www.openstreetmap.org/' \
+      -H 'accept-language: en-GB,en-US;q=0.9,en;q=0.8' \
+      --compressed | tee -a /src/tilecache/data/$(date --utc "+%Y/%m")/render-<%= render[:hostname] %>-$(date --utc --iso-8601).txt
+<% end -%>
+<% end -%>
+<% end -%>
