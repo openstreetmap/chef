@@ -36,9 +36,10 @@ acl tile_caches src <%= address %>
 <% end -%>
 
 # Siblings
-<% node[:tilecache][:tile_siblings].each do |sibling| -%>
-cache_peer <%= sibling %> sibling 3128 4827 htcp weight=1500
-<% end -%>
+# Hit rate for sibling is extremely low. Not worth it.
+# <% node[:tilecache][:tile_siblings].each do |sibling| -%>
+# cache_peer <%= sibling %> sibling 3128 4827 htcp weight=1500
+# <% end -%>
 
 # Primary Parent
 <% if node[:squid][:version] < 4 -%>
