@@ -179,13 +179,13 @@ template "/etc/cron.d/tilecache" do
   mode 0o644
 end
 
-directory "/srv/tilecache"
+directory "/srv/tilecache" do
   owner "root"
   group "root"
   mode 0o755
 end
 
-directory "/srv/tilecache/data"
+directory "/srv/tilecache/data" do
   owner "www-data"
   group "www-data"
   mode 0o755
