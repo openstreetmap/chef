@@ -191,7 +191,7 @@ directory "/srv/tilecache/data" do
   mode 0o755
 end
 
-file "/srv/tilecache/tilecache-curl-time.txt" do
+cookbook_file "/srv/tilecache/tilecache-curl-time.txt" do
   source "tilecache-curl-time.txt"
   owner "root"
   group "root"
