@@ -205,3 +205,10 @@ template "/srv/tilecache/tilecache-curl-time" do
   mode 0o755
   variables :caches => tilecaches, :renders => tilerenders
 end
+
+template "/srv/tilecache/tilecache-fastest-peers" do
+  source "tilecache-fastest-peers.erb"
+  owner "root"
+  group "root"
+  mode 0o755
+end

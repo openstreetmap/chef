@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# Find performance reports for last few minutes
+# Add up total time taken to download tile grouped by remote server
+# Remove 1 second per successful time report (de-prioritise new servers)
+# Add 30 seconds per failed time report request
+# Sort time reports
+# Strip to best 4 server names
+
+/usr/bin/find /srv/tilecache/data/ -type f -iname 'tilecache-*.txt' -mmin -10 -print0 \
+ | /usr/bin/xargs -0 --no-run-if-empty /usr/bin/tail --quiet -n 20 \
+ | /usr/bin/awk -F ',' '$2 == 200 {time[$3] += $1; time[$3] -= 1} $2 != 200 {time[$3] +=30} END{for (i in time) print time[i], i}' \
+ | /usr/bin/sort -k1n \
+ | /usr/bin/cut -d '/' -f 3 \
+ | /bin/grep -E '(openstreetmap|localhost)' \
+ | /usr/bin/head -n 4
