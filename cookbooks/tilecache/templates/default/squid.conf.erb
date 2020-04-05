@@ -35,12 +35,6 @@ acl tile_caches src <%= address %>
 <% end -%>
 <% end -%>
 
-# Siblings
-# Hit rate for sibling is extremely low. Not worth it.
-# <% node[:tilecache][:tile_siblings].each do |sibling| -%>
-# cache_peer <%= sibling %> sibling 3128 4827 htcp weight=1500
-# <% end -%>
-
 # Primary Parent
 <% if node[:squid][:version] < 4 -%>
 cache_peer <%= node[:tilecache][:tile_parent] %> parent 443 0 no-query originserver name=osmtileAccel login=PASS connect-timeout=120 no-digest weight=1000 ssl ssldomain=render.openstreetmap.org

@@ -43,10 +43,7 @@ default_attributes(
     }
   },
   :tilecache => {
-    :tile_parent => "bogota.render.openstreetmap.org",
-    :tile_siblings => [
-      "glaedr.openstreetmap.org"
-    ]
+    :tile_parent => "bogota.render.openstreetmap.org"
   }
 )
 
