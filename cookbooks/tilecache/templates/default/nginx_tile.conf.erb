@@ -12,7 +12,7 @@ upstream tile_cache_backend {
 <% if cache_peer == cache[:fqdn] -%>
 <% if cache[:hostname] != node[:hostname] -%>
 <% cache.ipaddresses(:family => :inet, :role => :external).sort.each do |address| -%>
-  server <%= address %>:80 weight=<%= server_weight.div(5) %>; # Server <%= cache[:hostname] %>
+  server <%= address %>:80 weight=<%= server_weight.div(10) %>; # Server <%= cache[:hostname] %>
 <% server_weight += 5 -%>
 <% end -%>
 <% end -%>
