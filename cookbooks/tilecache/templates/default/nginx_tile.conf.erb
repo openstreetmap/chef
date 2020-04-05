@@ -6,16 +6,19 @@ upstream tile_cache_backend {
 
   # Add the other caches to relieve pressure if local squid failing
   # Balancer: round-robin
+<% server_weight = 10 -%>
+<% @node[:tilecache][:tile_siblings].each do |cache_peer| -%>
 <% @caches.each do |cache| -%>
+<% if cache_peer == cache[:fqdn] -%>
 <% if cache[:hostname] != node[:hostname] -%>
 <% cache.ipaddresses(:family => :inet, :role => :external).sort.each do |address| -%>
-  server <%= address %>:80 backup; # Server <%= cache[:hostname] %>
+  server <%= address %>:80 weight=<%= server_weight.div(5) %>; # Server <%= cache[:hostname] %>
+<% server_weight += 5 -%>
 <% end -%>
 <% end -%>
 <% end -%>
-
-  keepalive 512;
-  keepalive_requests 1024;
+<% end -%>
+<% end -%>
 }
 
 # Geo Map of tile caches
