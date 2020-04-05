@@ -4,9 +4,9 @@ upstream tile_cache_backend {
   server 127.0.0.1:8080;
   server 127.0.0.2:8080;
 
-  # Add the other caches to relieve pressure if local squid failing
+  # Add the tile_siblings caches to relieve pressure if local squid failing
   # Balancer: round-robin
-<% server_weight = 10 -%>
+<% server_weight = 20 -%>
 <% @node[:tilecache][:tile_siblings].each do |cache_peer| -%>
 <% @caches.each do |cache| -%>
 <% if cache_peer == cache[:fqdn] -%>
@@ -19,6 +19,8 @@ upstream tile_cache_backend {
 <% end -%>
 <% end -%>
 <% end -%>
+
+  keepalive 128;
 }
 
 # Geo Map of tile caches
