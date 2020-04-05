@@ -1,8 +1,8 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
 upstream tile_cache_backend {
-  server 127.0.0.1:8080 max_fails=64 fail_timeout=2s;
-  # server 127.0.0.2:8080 max_fails=64 fail_timeout=2s;
+  server 127.0.0.1:8080 max_fails=64 fail_timeout=4s;
+  # server 127.0.0.2:8080 max_fails=64 fail_timeout=4s;
 
   # Add the tile_siblings caches to relieve pressure if local squid failing
   # Balancer: round-robin
@@ -12,8 +12,8 @@ upstream tile_cache_backend {
 <% if cache_peer == cache[:fqdn] -%>
 <% if cache[:hostname] != node[:hostname] -%>
 <% cache.ipaddresses(:family => :inet, :role => :external).sort.each do |address| -%>
-  server <%= address %>:80 weight=<%= server_weight.div(10) %> max_fails=64 fail_timeout=2s; # Server <%= cache[:hostname] %>
-<% server_weight += 5 -%>
+  server <%= address %>:80 weight=<%= server_weight.div(10) %> max_fails=64 fail_timeout=4s; # Server <%= cache[:hostname] %>
+<% server_weight += 10 -%>
 <% end -%>
 <% end -%>
 <% end -%>
@@ -257,6 +257,7 @@ server {
       proxy_connect_timeout 20s;
 
       proxy_next_upstream_tries 3;
+      proxy_next_upstream error timeout http_502 http_404;
 
       # Replace host header.
       proxy_set_header Host 'tile.openstreetmap.org';
