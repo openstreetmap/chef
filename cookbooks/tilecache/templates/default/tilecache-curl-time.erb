@@ -13,14 +13,14 @@ curl -w "@/srv/tilecache/tilecache-curl-time.txt" -o /dev/null -s -k -4 \
 -H 'sec-fetch-mode: no-cors' \
 -H 'referer: https://www.openstreetmap.org/' \
 -H 'accept-language: en-GB,en-US;q=0.9,en;q=0.8' \
---compressed >> /srv/tilecache/data/$(date --utc "+%Y/%m")/localhost-<%= node[:hostname] %>-$(date --utc "+%Y-%m-%dT%H").txt
+--compressed >> /srv/tilecache/data/$(date --utc "+%Y/%m")/localhost-<%= node.name.split(".").first %>-$(date --utc "+%Y-%m-%dT%H").txt
 # render
 <% @renders.each do |render| -%>
-<% if render[:hostname] != node[:hostname] -%>
+<% if render.name != node.name -%>
 <% render.ipaddresses(:family => :inet, :role => :external).sort.each do |address| -%>
     curl -w "@/srv/tilecache/tilecache-curl-time.txt" -o /dev/null -s -k -4 \
     --max-time 60 \
-    'https://<%= render[:hostname] %>.openstreetmap.org/19/262106/174485.png' \
+    'https://<%= render.name %>/19/262106/174485.png' \
     -H 'authority: c.tile.openstreetmap.org' \
     -H 'sec-fetch-dest: image' \
     -H 'user-agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36' \
@@ -30,17 +30,17 @@ curl -w "@/srv/tilecache/tilecache-curl-time.txt" -o /dev/null -s -k -4 \
     -H 'sec-fetch-mode: no-cors' \
     -H 'referer: https://www.openstreetmap.org/' \
     -H 'accept-language: en-GB,en-US;q=0.9,en;q=0.8' \
-    --compressed >> /srv/tilecache/data/$(date --utc "+%Y/%m")/render-<%= render[:hostname] %>-$(date --utc "+%Y-%m-%dT%H").txt
+    --compressed >> /srv/tilecache/data/$(date --utc "+%Y/%m")/render-<%= render.name.split(".").first %>-$(date --utc "+%Y-%m-%dT%H").txt
 <% end -%>
 <% end -%>
 <% end -%>
 # caches
 <% @caches.each do |cache| -%>
-<% if cache[:hostname] != node[:hostname] -%>
+<% if cache.name != node.name -%>
 <% cache.ipaddresses(:family => :inet, :role => :external).sort.each do |address| -%>
     curl -w "@/srv/tilecache/tilecache-curl-time.txt" -o /dev/null -s -k -4 \
     --max-time 60 \
-    'https://<%= cache[:hostname] %>.openstreetmap.org/19/262106/174485.png' \
+    'https://<%= cache.name %>/19/262106/174485.png' \
     -H 'authority: c.tile.openstreetmap.org' \
     -H 'sec-fetch-dest: image' \
     -H 'user-agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36' \
@@ -50,7 +50,7 @@ curl -w "@/srv/tilecache/tilecache-curl-time.txt" -o /dev/null -s -k -4 \
     -H 'sec-fetch-mode: no-cors' \
     -H 'referer: https://www.openstreetmap.org/' \
     -H 'accept-language: en-GB,en-US;q=0.9,en;q=0.8' \
-    --compressed >> /srv/tilecache/data/$(date --utc "+%Y/%m")/tilecache-<%= cache[:hostname] %>-$(date --utc "+%Y-%m-%dT%H").txt
+    --compressed >> /srv/tilecache/data/$(date --utc "+%Y/%m")/tilecache-<%= cache.name.split(".").first %>-$(date --utc "+%Y-%m-%dT%H").txt
 <% end -%>
 <% end -%>
 <% end -%>
