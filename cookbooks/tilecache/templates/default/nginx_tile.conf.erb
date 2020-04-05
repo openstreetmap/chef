@@ -1,19 +1,19 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
 upstream tile_cache_backend {
-  server 127.0.0.1:8080 max_fails=64 fail_timeout=4s;
-  # server 127.0.0.2:8080 max_fails=64 fail_timeout=4s;
+  server 127.0.0.1:8080 weight=1000;
+  server 127.0.0.2:8080 weight=1000;
 
   # Add the tile_siblings caches to relieve pressure if local squid failing
   # Balancer: round-robin
-<% server_weight = 20 -%>
+<% server_weight = 1000 -%>
 <% @node[:tilecache][:tile_siblings].each do |cache_peer| -%>
 <% @caches.each do |cache| -%>
 <% if cache_peer == cache[:fqdn] -%>
 <% if cache[:hostname] != node[:hostname] -%>
 <% cache.ipaddresses(:family => :inet, :role => :external).sort.each do |address| -%>
-  server <%= address %>:80 weight=<%= server_weight.div(10) %> max_fails=64 fail_timeout=4s; # Server <%= cache[:hostname] %>
-<% server_weight += 10 -%>
+  server <%= address %>:80 weight=<%= server_weight %> backup; # Server <%= cache[:hostname] %>
+<% server_weight -= server_weight.div(2) -%>
 <% end -%>
 <% end -%>
 <% end -%>
@@ -127,23 +127,29 @@ map $http_referer $osm_referer {
 }
 
 # Limit Cache-Control header to only approved User-Agents
-map $osm_referer$http_user_agent $limit_http_cache_control {
-  default '';                                # Unset Header
-  '~^osmMozilla\/5\.0\ QGIS\/' '';            # Unset Header
-  '~^osmMozilla\/5\.0\ ' $http_cache_control; # Pass Header
+map $tile_cache$osm_referer$http_user_agent $limit_http_cache_control {
+  default '';                             # Unset Header
+  '~^clientosmMozilla\/5\.0\ \(X11'       $http_cache_control; # Pass Header
+  '~^clientosmMozilla\/5\.0\ \(Windows'   $http_cache_control; # Pass Header
+  '~^clientosmMozilla\/5\.0\ \(iPhone'    $http_cache_control; # Pass Header
+  '~^clientosmMozilla\/5\.0\ \(Macintosh' $http_cache_control; # Pass Header
+  '~^clientosmMozilla\/5\.0\ \(Linux'     $http_cache_control; # Pass Header
 }
 
 # Limit Pragma header to only approved User-Agents
-map $osm_referer$http_user_agent $limit_http_pragma {
-  default '';                          # Unset Header
-  '~^osmMozilla\/5\.0\ QGIS\/' '';     # Unset Header
-  '~^osmMozilla\/5\.0\ ' $http_pragma; # Pass Header
+map $tile_cache$osm_referer$http_user_agent $limit_http_pragma {
+  default '';                             # Unset Header
+  '~^clientosmMozilla\/5\.0\ \(X11'       $http_pragma; # Pass Header
+  '~^clientosmMozilla\/5\.0\ \(Windows'   $http_pragma; # Pass Header
+  '~^clientosmMozilla\/5\.0\ \(iPhone'    $http_pragma; # Pass Header
+  '~^clientosmMozilla\/5\.0\ \(Macintosh' $http_pragma; # Pass Header
+  '~^clientosmMozilla\/5\.0\ \(Linux'     $http_pragma; # Pass Header
 }
 
 # Find Browser User-Agents which are not sending a referer.
 # Browsers with no referer could be due to Browser extension or website Referrer-Policy
 map $tile_cache$http_referer$scheme$http_user_agent $deny_missing_referer {
-  default                             0; # Not denied
+  default                                   0; # Not denied
   '~^clienthttpsMozilla\/5\.0\ \(X11'       1;
   '~^clienthttpsMozilla\/5\.0\ \(Windows'   1;
   '~^clienthttpsMozilla\/5\.0\ \(iPhone'    1;
@@ -173,66 +179,51 @@ server {
     # Immediately 404 layers we do not support
 <% for i in 20..99 do %>
     location /<%= i %>/ {
-      set $limit_rate 512;
       return 404;
     }
 <% end %>
 
     # Immediately 404 silly tile requests
     location = /0/0/-1.png {
-      set $limit_rate 512;
       return 404;
     }
     location = /1/0/-1.png {
-      set $limit_rate 512;
       return 404;
     }
     location = /1/-1/0.png {
-      set $limit_rate 512;
       return 404;
     }
     location = /1/-1/1.png {
-      set $limit_rate 512;
       return 404;
     }
     location = /1/-1/-1.png {
-      set $limit_rate 512;
       return 404;
     }
     location = /1/-1/2.png {
-      set $limit_rate 512;
       return 404;
     }
     location = /1/1/-1.png {
-      set $limit_rate 512;
       return 404;
     }
     location = /1/2/-1.png {
-      set $limit_rate 512;
       return 404;
     }
     location = /2/0/-1.png {
-      set $limit_rate 512;
       return 404;
     }
     location = /2/-1/0.png {
-      set $limit_rate 512;
       return 404;
     }
     location = /2/-1/1.png {
-      set $limit_rate 512;
       return 404;
     }
     location = /2/1/-1.png {
-      set $limit_rate 512;
       return 404;
     }
     location = /2/-1/2.png {
-      set $limit_rate 512;
       return 404;
     }
     location = /2/-1/3.png {
-      set $limit_rate 512;
       return 404;
     }
 
@@ -256,8 +247,7 @@ server {
 
       proxy_connect_timeout 20s;
 
-      proxy_next_upstream_tries 3;
-      proxy_next_upstream error timeout http_502 http_404;
+      proxy_next_upstream_tries 2;
 
       # Replace host header.
       proxy_set_header Host 'tile.openstreetmap.org';
@@ -301,7 +291,7 @@ server {
       proxy_cache_revalidate on;
       proxy_cache_min_uses 4;
 
-      add_header x-cache-status $upstream_cache_status;
+      add_header x-cache-status "$upstream_cache_status - <%= node[:hostname] %>";
 <% else %>
       # Severely rate limit Browser UAs which are not sending a referer.
       # With no referer we do not know who is using tiles
