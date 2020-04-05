@@ -8,7 +8,7 @@ Ohai.plugin(:TileCache) do
     # Find performance reports for last few minutes
     # Add up total time taken to download tile grouped by remote server
     # Remove 1 second per successful time report (de-prioritise new servers)
-    # Add 30 seconds per failed time report request
+    # Add 10 seconds per failed time report request
     Dir.glob("/srv/tilecache/data/**/tilecache-*.txt").each do |path|
       if File.mtime(path) > recent
         IO.readlines(path).reverse.take(20).each do |sample|
@@ -20,7 +20,7 @@ Ohai.plugin(:TileCache) do
             if status == 200 then
               times[host] = times.fetch(host, 0) + time - 1
             else
-              times[host] = times.fetch(host, 0) + 30
+              times[host] = times.fetch(host, 0) + 10
             end
           end
         end
