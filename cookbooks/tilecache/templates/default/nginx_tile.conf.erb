@@ -7,7 +7,7 @@ upstream tile_cache_backend {
   # Add the tile_siblings caches to relieve pressure if local squid failing
   # Balancer: round-robin
 <% server_weight = 1000 -%>
-<% @node[:tilecache][:tile_siblings].each do |cache_peer| -%>
+<% Array(@node[:tilecache][:tile_siblings]).each do |cache_peer| -%>
 <% @caches.each do |cache| -%>
 <% if cache_peer == cache[:fqdn] -%>
 <% if cache[:hostname] != node[:hostname] -%>
