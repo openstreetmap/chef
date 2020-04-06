@@ -7,7 +7,7 @@ default_attributes(
   :networking => {
     :roles => {
       :external => {
-        :zone => "gandi"
+        :zone => "osm"
       }
     }
   }
