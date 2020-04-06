@@ -2,7 +2,7 @@ name "lu"
 description "Role applied to all servers located in Luxembourg"
 
 override_attributes(
-  :country => "lu"
+  :country => "lu",
   :timezone => "Europe/Luxembourg"
 )
 
