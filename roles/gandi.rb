@@ -5,6 +5,11 @@ default_attributes(
   :hosted_by => "Gandi",
   :location => "Bissen, Luxembourg",
   :networking => {
+    :nameservers => [
+      "217.70.186.194",
+      "217.70.186.193",
+      "2001:4b98:dc2:49::193"
+    ],
     :roles => {
       :external => {
         :zone => "osm"
