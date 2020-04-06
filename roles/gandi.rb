@@ -1,0 +1,24 @@
+name "gandi"
+description "Role applied to all servers at Gandi"
+
+default_attributes(
+  :hosted_by => "Gandi",
+  :location => "Bissen, Luxembourg",
+  :networking => {
+    :roles => {
+      :external => {
+        :zone => "gandi"
+      }
+    }
+  }
+)
+
+override_attributes(
+  :ntp => {
+    :servers => ["0.lu.pool.ntp.org", "1.lu.pool.ntp.org", "europe.pool.ntp.org"]
+  }
+)
+
+run_list(
+  "role[lu]"
+)
