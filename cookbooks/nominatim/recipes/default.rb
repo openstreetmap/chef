@@ -50,6 +50,16 @@ file "#{node[:nominatim][:logdir]}/update.log" do
   mode 0o664
 end
 
+# exception granted for a limited time so that they can set up their own server
+firewall_rule "increase-limits-gnome-proxy" do
+  action :accept
+  source "net:8.43.85.23"
+  dest "fw"
+  proto "tcp:syn"
+  dest_ports "https"
+  rate_limit "s:10/sec:30"
+end
+
 ## Postgresql
 
 include_recipe "postgresql"
