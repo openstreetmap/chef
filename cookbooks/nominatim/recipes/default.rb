@@ -53,6 +53,7 @@ end
 # exception granted for a limited time so that they can set up their own server
 firewall_rule "increase-limits-gnome-proxy" do
   action :accept
+  family "inet"
   source "net:8.43.85.23"
   dest "fw"
   proto "tcp:syn"
