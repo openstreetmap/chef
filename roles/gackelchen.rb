@@ -36,7 +36,7 @@ default_attributes(
     ]
   },
   :tilecache => {
-    :tile_parent => "netherlands.render.openstreetmap.org"
+    :tile_parent => "bissen.render.openstreetmap.org"
   }
 )
 
