@@ -1,4 +1,5 @@
 #!/bin/bash
+sleep $[ ( $RANDOM % 20 )  + 1 ]
 mkdir -p /srv/tilecache/data/$(date --utc "+%Y/%m")
 # localhost
 curl -w "@/srv/tilecache/tilecache-curl-time.txt" -o /dev/null -s -k -4 \
