@@ -67,6 +67,9 @@ map $http_user_agent $denied_scraper {
   '~^staticmaps'         1; # Downloader
   'Android'              1; # Default or fake
   'kc_android'           1; # Default or fake
+  'host'                 1; # Default or fake
+  '~^maptestapp'         1; # Default or fake
+  'Other'                1; # Default or fake
   'Mozilla/4.0'          1; # Fake
   'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)' 1;  # Fake
   '~^runtastic'          1; # App
@@ -119,6 +122,10 @@ map $http_referer $denied_referer {
   '~^https?://[^.]*\.9db\.jp/'           1; # Too much traffic
   '~^https?://clustrmaps\.com/'          1; # Too much traffic
   '~^https?://[^.]*\.clustrmaps\.com/'   1; # Too much traffic
+  '~^https?://geoportal360\.pl/'         1; # Too much traffic
+  '~^https?://skelbiu\.lt/'              1; # Too much traffic
+  '~^https?://[^.]*\.skelbiu\.lt/'       1; # Too much traffic
+  '~^https?://[^.]*\.wialon.com/'        1; # Too much traffic
 }
 
 map $http_referer $osm_referer {
