@@ -445,7 +445,7 @@ package %w[
   ruby
   osmium-tool
   pyosmium
-  python-pyproj
+  python3-pyproj
 ]
 
 remote_directory "/usr/local/bin" do
