@@ -18,7 +18,7 @@ Ohai.plugin(:TileCache) do
             host = Regexp.last_match(3)
 
             if status == 200 then
-              times[host] = times.fetch(host, 0) + time - 1
+              times[host] = times.fetch(host, 0) + (time + 1) * (time + 1) - 1
             else
               times[host] = times.fetch(host, 0) + 10
             end
