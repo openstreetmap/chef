@@ -125,7 +125,7 @@ map $http_referer $denied_referer {
   '~^https?://geoportal360\.pl/'         1; # Too much traffic
   '~^https?://skelbiu\.lt/'              1; # Too much traffic
   '~^https?://[^.]*\.skelbiu\.lt/'       1; # Too much traffic
-  '~^https?://[^.]*\.wialon.com/'        1; # Too much traffic
+  # '~^https?://[^.]*\.wialon.com/'        1; # Too much traffic (hold per 2020-04-10 email)
 }
 
 map $http_referer $osm_referer {
