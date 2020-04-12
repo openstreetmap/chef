@@ -37,5 +37,6 @@ default_attributes(
 
 run_list(
   "role[aarnet]",
+  "role[geodns]",
   "role[tilecache]"
 )
