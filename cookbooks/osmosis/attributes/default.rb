@@ -1,2 +1,2 @@
 # Set the default version
-default[:osmosis][:version] = "0.43.1"
+default[:osmosis][:version] = "0.47.4"

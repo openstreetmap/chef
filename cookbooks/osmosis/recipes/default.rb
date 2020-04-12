@@ -24,8 +24,9 @@ package "default-jre"
 
 cache_dir = Chef::Config[:file_cache_path]
 
-osmosis_package = "osmosis-#{node[:osmosis][:version]}.zip"
-osmosis_directory = "/opt/osmosis-#{node[:osmosis][:version]}"
+osmosis_version = node[:osmosis][:version]
+osmosis_package = "osmosis-#{osmosis_version}.zip"
+osmosis_directory = "/opt/osmosis-#{osmosis_version}"
 
 Dir.glob("#{cache_dir}/osmosis-*.zip").each do |zip|
   next if zip == "#{cache_dir}/#{osmosis_package}"
@@ -44,7 +45,7 @@ end
 
 remote_file "#{cache_dir}/#{osmosis_package}" do
   action :create_if_missing
-  source "https://bretth.dev.openstreetmap.org/osmosis-build/#{osmosis_package}"
+  source "https://github.com/openstreetmap/osmosis/releases/download/#{osmosis_version}/osmosis-#{osmosis_version}.zip"
   owner "root"
   group "root"
   mode 0o644
@@ -57,7 +58,7 @@ execute "#{cache_dir}/#{osmosis_package}" do
   cwd osmosis_directory
   user "root"
   group "root"
-  subscribes :run, "execute[#{cache_dir}/#{osmosis_package}]"
+  subscribes :run, "remote_file[#{cache_dir}/#{osmosis_package}]"
 end
 
 link "/usr/local/bin/osmosis" do
