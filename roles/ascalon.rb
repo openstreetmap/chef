@@ -34,6 +34,5 @@ default_attributes(
 
 run_list(
   "role[netalerts]",
-  "role[geodns]",
   "role[tilecache]"
 )

@@ -50,6 +50,5 @@ default_attributes(
 
 run_list(
   "role[ffrl]",
-  "role[geodns]",
   "role[tilecache]"
 )
