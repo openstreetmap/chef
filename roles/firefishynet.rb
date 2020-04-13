@@ -10,9 +10,6 @@ default_attributes(
           :prefix => "24",
           :gateway => "10.89.121.1"
         }
-      },
-      :external => {
-        :zone => "ff"
       }
     }
   }

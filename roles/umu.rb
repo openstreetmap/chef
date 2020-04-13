@@ -10,12 +10,7 @@ default_attributes(
   :hosted_by => "Academic Computer Club, Umeå University",
   :location => "Umeå, Sweden",
   :networking => {
-    :nameservers => ["130.239.18.251", "130.239.18.252", "130.239.1.90"],
-    :roles => {
-      :external => {
-        :zone => "osm"
-      }
-    }
+    :nameservers => ["130.239.18.251", "130.239.18.252", "130.239.1.90"]
   }
 )
 

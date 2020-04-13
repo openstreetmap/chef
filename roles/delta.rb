@@ -5,12 +5,7 @@ default_attributes(
   :hosted_by => "Delta Telecom",
   :location => "Baku, Azerbaijan",
   :networking => {
-    :nameservers => ["94.20.20.20", "8.8.8.8", "8.8.4.4"],
-    :roles => {
-      :external => {
-        :zone => "dt"
-      }
-    }
+    :nameservers => ["94.20.20.20", "8.8.8.8", "8.8.4.4"]
   }
 )
 

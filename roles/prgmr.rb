@@ -6,12 +6,7 @@ default_attributes(
   :location => "San Francisco, California",
   :timezone => "PST8PDT",
   :networking => {
-    :nameservers => ["8.8.8.8", "8.8.4.4"],
-    :roles => {
-      :external => {
-        :zone => "pr"
-      }
-    }
+    :nameservers => ["8.8.8.8", "8.8.4.4"]
   }
 )
 

@@ -8,12 +8,7 @@ default_attributes(
     :nameservers => [
       "62.210.16.6",
       "62.210.16.7"
-    ],
-    :roles => {
-      :external => {
-        :zone => "osm"
-      }
-    }
+    ]
   }
 )
 

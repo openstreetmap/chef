@@ -20,7 +20,7 @@ default_attributes(
   :networking => {
     :roles => {
       :internal => { :metric => 200, :zone => "loc" },
-      :external => { :metric => 100 }
+      :external => { :metric => 100, :zone => "osm" }
     },
     :search => ["openstreetmap.org"]
   },

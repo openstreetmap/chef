@@ -9,12 +9,7 @@ default_attributes(
       "8.8.8.8",
       "8.8.4.4",
       "1.1.1.1"
-    ],
-    :roles => {
-      :external => {
-        :zone => "osm"
-      }
-    }
+    ]
   }
 )
 

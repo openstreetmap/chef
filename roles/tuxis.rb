@@ -5,12 +5,7 @@ default_attributes(
   :hosted_by => "Tuxis",
   :location => "Ede, Netherlands",
   :networking => {
-    :nameservers => ["2a03:7900:2:0:31:3:104:61", "2a03:7900:2:0:31:3:104:62"],
-    :roles => {
-      :external => {
-        :zone => "osm"
-      }
-    }
+    :nameservers => ["2a03:7900:2:0:31:3:104:61", "2a03:7900:2:0:31:3:104:62"]
   }
 )
 

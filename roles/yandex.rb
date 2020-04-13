@@ -6,12 +6,7 @@ default_attributes(
   :location => "Moscow, Russia",
   :timezone => "Europe/Moscow",
   :networking => {
-    :nameservers => ["8.8.8.8", "8.8.4.4"],
-    :roles => {
-      :external => {
-        :zone => "yx"
-      }
-    }
+    :nameservers => ["8.8.8.8", "8.8.4.4"]
   }
 )
 

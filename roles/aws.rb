@@ -14,7 +14,6 @@ default_attributes(
         }
       },
       :external => {
-        :zone => "aws",
         :inet => {
           :prefix => "32"
         }

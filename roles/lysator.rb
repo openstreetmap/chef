@@ -11,12 +11,7 @@ default_attributes(
   :hosted_by => "Lysator",
   :location => "Linköping, Sweden",
   :networking => {
-    :nameservers => ["130.236.254.225", "2001:6b0:17:f0a0::e1", "130.236.254.4"],
-    :roles => {
-      :external => {
-        :zone => "osm"
-      }
-    }
+    :nameservers => ["130.236.254.225", "2001:6b0:17:f0a0::e1", "130.236.254.4"]
   }
 )
 

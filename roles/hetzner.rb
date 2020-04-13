@@ -11,12 +11,7 @@ default_attributes(
       "2a01:4f8:0:a111::add:9898",
       "2a01:4f8:0:a102::add:9999",
       "2a01:4f8:0:a0a1::add:1010"
-    ],
-    :roles => {
-      :external => {
-        :zone => "hz"
-      }
-    }
+    ]
   }
 )
 

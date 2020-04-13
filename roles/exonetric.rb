@@ -13,7 +13,6 @@ default_attributes(
     :nameservers => ["8.8.8.8", "8.8.4.4"],
     :roles => {
       :external => {
-        :zone => "ex",
         :inet => {
           :prefix => "28",
           :gateway => "178.250.74.33"

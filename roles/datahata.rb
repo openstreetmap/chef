@@ -14,12 +14,7 @@ default_attributes(
       "31.130.200.2",
       "8.8.8.8",
       "8.8.4.4"
-    ],
-    :roles => {
-      :external => {
-        :zone => "dh"
-      }
-    }
+    ]
   }
 )
 

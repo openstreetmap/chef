@@ -7,12 +7,7 @@ default_attributes(
   :networking => {
     :nameservers => [
       "213.186.33.99"
-    ],
-    :roles => {
-      :external => {
-        :zone => "ovh"
-      }
-    }
+    ]
   }
 )
 

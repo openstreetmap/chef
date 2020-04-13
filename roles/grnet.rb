@@ -13,12 +13,7 @@ default_attributes(
     :nameservers => [
       "8.8.8.8",
       "8.8.4.4"
-    ],
-    :roles => {
-      :external => {
-        :zone => "grn"
-      }
-    }
+    ]
   }
 )
 

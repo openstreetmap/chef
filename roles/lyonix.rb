@@ -5,12 +5,7 @@ default_attributes(
   :hosted_by => "LyonIX",
   :location => "Lyon, France",
   :networking => {
-    :nameservers => ["77.95.64.205", "77.95.64.206", "8.8.8.8", "8.8.4.4"],
-    :roles => {
-      :external => {
-        :zone => "ly"
-      }
-    }
+    :nameservers => ["77.95.64.205", "77.95.64.206", "8.8.8.8", "8.8.4.4"]
   },
   :snmpd => {
     :clients => ["77.95.64.0/24", "77.95.70.0/24"],

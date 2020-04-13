@@ -7,14 +7,7 @@ default_attributes(
       :hbogner => { :status => :administrator }
     }
   },
-  :hosted_by => "CARNet",
-  :networking => {
-    :roles => {
-      :external => {
-        :zone => "cnt"
-      }
-    }
-  }
+  :hosted_by => "CARNet"
 )
 
 override_attributes(

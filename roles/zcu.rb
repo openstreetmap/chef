@@ -5,12 +5,7 @@ default_attributes(
   :hosted_by => "University of West Bohemia",
   :location => "Pilsen, Czech Republic",
   :networking => {
-    :nameservers => ["147.228.3.3", "147.228.52.11"],
-    :roles => {
-      :external => {
-        :zone => "osm"
-      }
-    }
+    :nameservers => ["147.228.3.3", "147.228.52.11"]
   }
 )
 

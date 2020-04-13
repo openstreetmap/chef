@@ -9,12 +9,7 @@ default_attributes(
     :nameservers => [
       "209.172.41.202",
       "209.172.41.200"
-    ],
-    :roles => {
-      :external => {
-        :zone => "na"
-      }
-    }
+    ]
   }
 )
 

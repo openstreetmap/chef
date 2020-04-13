@@ -10,12 +10,7 @@ default_attributes(
       "2001:ba8:0:2c02::",
       "2001:ba8:0:2c03::",
       "2001:ba8:0:2c04::"
-    ],
-    :roles => {
-      :external => {
-        :zone => "jn"
-      }
-    }
+    ]
   }
 )
 
