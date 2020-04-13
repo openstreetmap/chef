@@ -23,7 +23,8 @@ end
 
 if node[:virtualization][:role] != "guest" ||
    (node[:virtualization][:system] != "lxc" &&
-    node[:virtualization][:system] != "lxd")
+    node[:virtualization][:system] != "lxd" &&
+    node[:virtualization][:system] != "openvz")
   keys = []
 
   Dir.new("/etc/sysctl.d").each_entry do |file|
