@@ -13,8 +13,8 @@
     # Enable SSL
     SSLEngine on
     SSLProxyEngine on
-    SSLCertificateFile /etc/ssl/certs/nominatim.openstreetmap.org.pem
-    SSLCertificateKeyFile /etc/ssl/private/nominatim.openstreetmap.org.key
+    SSLCertificateFile /etc/ssl/certs/<%= node[:fqdn] %>.pem
+    SSLCertificateKeyFile /etc/ssl/private/<%= node[:fqdn] %>.key
 
     # Remove Proxy request header to mitigate https://httpoxy.org/
     RequestHeader unset Proxy early
