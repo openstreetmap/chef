@@ -80,6 +80,8 @@
     # manual blocks
     Include <%= @directory %>/settings/apache_blocks.conf
 
-    RedirectPermanent /.well-known/acme-challenge/ http://acme.openstreetmap.org/.well-known/acme-challenge/
-    RedirectPermanent / https://nominatim.openstreetmap.org/
+    RewriteRule ^/\.well-known/acme-challenge/(.*)$ http://acme.openstreetmap.org/.well-known/acme-challenge/$1 [R=permanent,L]
+
+    RewriteCond %{REQUEST_URI} !^/server-status$
+    RewriteRule ^(.*)$ https://nominatim.openstreetmap.org$1 [L,NE,R=permanent]
 </VirtualHost>
