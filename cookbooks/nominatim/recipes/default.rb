@@ -360,8 +360,9 @@ systemd_service "apache-nominatim" do
   notifies :restart, "service[apache2]"
 end
 
-ssl_certificate "nominatim.openstreetmap.org" do
-  domains ["nominatim.openstreetmap.org",
+ssl_certificate node[:fqdn] do
+  domains [node[:fqdn],
+           "nominatim.openstreetmap.org",
            "nominatim.osm.org",
            "nominatim.openstreetmap.com",
            "nominatim.openstreetmap.net",
