@@ -18,11 +18,6 @@ default[:nominatim][:fpm_pools] = {
     :port => "8001",
     :pm => "static",
     :max_children => "10"
-  },
-  :details => {
-    :port => "8002",
-    :pm => "static",
-    :max_children => "2"
   }
 }
 

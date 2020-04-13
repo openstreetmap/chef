@@ -59,8 +59,7 @@
 
     # regular requests and autoblocks
     RewriteMap bulklist txt:<%= @directory %>/settings/ip_blocks.map
-    RewriteRule ^/(search|reverse|lookup)(\.php)?(/.*)? /pool-${bulklist:%{REMOTE_ADDR}|www}/$1.php$3 [PT]
-    RewriteRule ^/details(\.php)?(/.*)? /pool-${bulklist:%{REMOTE_ADDR}|details}/details.php$2 [PT]
+    RewriteRule ^/(search|reverse|lookup|details)(\.php)?(/.*)? /pool-${bulklist:%{REMOTE_ADDR}|www}/$1.php$3 [PT]
 </VirtualHost>
 
 <VirtualHost *:80>
