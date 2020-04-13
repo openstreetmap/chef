@@ -32,6 +32,12 @@ default_attributes(
       }
     }
   },
+  :apache => {
+    :event => {
+      :max_request_workers => 3000,
+      :threads_per_child => 70
+    }
+  },
   :nominatim => {
     :state => "standalone",
     :dbadmins => %w[lonvia tomh],
