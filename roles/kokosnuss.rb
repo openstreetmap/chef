@@ -13,9 +13,7 @@ default_attributes(
         :family => :inet,
         :address => "85.214.255.86",
         :prefix => "32",
-        :routes => {
-          "0.0.0.0/0" => { :metric => 100 }
-        }
+        :gateway => "85.214.255.86"
       }
     }
   },
