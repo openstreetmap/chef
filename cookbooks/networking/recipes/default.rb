@@ -177,18 +177,7 @@ package "cloud-init" do
   action :purge
 end
 
-execute "hostname" do
-  action :nothing
-  command "/bin/hostname -F /etc/hostname"
-end
-
-template "/etc/hostname" do
-  source "hostname.erb"
-  owner "root"
-  group "root"
-  mode 0o644
-  notifies :run, "execute[hostname]"
-end
+hostname node[:networking][:hostname]
 
 template "/etc/hosts" do
   source "hosts.erb"

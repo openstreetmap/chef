@@ -6,6 +6,7 @@ default_attributes(
     :shm_size => "6g"
   },
   :networking => {
+    :hostname => "seshat.civ.zcu.cz",
     :interfaces => {
       :external_ipv4 => {
         :interface => "ens3",
