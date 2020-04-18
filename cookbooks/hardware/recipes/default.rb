@@ -197,7 +197,9 @@ tools_packages = []
 status_packages = {}
 
 if node[:virtualization][:role] != "guest" ||
-   node[:virtualization][:system] != "lxd"
+   (node[:virtualization][:system] != "lxc" &&
+    node[:virtualization][:system] != "lxd" &&
+    node[:virtualization][:system] != "openvz")
 
   node[:kernel][:modules].each_key do |modname|
     case modname
