@@ -109,41 +109,44 @@ map $http_user_agent $denied_scraper {
 
 map $http_referer $denied_referer {
   default                          0; # Not denied
-  'http://www.openstreetmap.org/'  1; # Faked
-  'http://www.openstreetmap.org'   1; # Faked
-  'https://www.openstreetmap.org'  1; # Faked
-  'http://openstreetmap.org/'      1; # Faked
-  'http://openstreetmap.org'       1; # Faked
-  'https://openstreetmap.org'      1; # Faked
-  'http://www.osm.org/'            1; # Faked
-  'http://www.osm.org'             1; # Faked
-  'http://osm.org/'                1; # Faked
-  'http://osm.org'                 1; # Faked
-  'http://google.com'              1; # Faked
-  'http://www.google.com'          1; # Faked
-  'http://google.com/'             1; # Faked
-  'http://www.google.com/'         1; # Faked
-  'https://google.com'             1; # Faked
-  'https://www.google.com'         1; # Faked
-  'https://google.com/'            1; # Faked
-  'https://www.google.com/'        1; # Faked
-  'http://www.microsoft.com/'      1; # Faked
-  '~^https?://pmap\.kuku\.lu/'           1; # Too much traffic
-  '~^https?://[^.]*\.pmap\.kuku\.lu/'    1; # Too much traffic
-  '~^https?://fastpokemap\.com/'         1; # Too much traffic
-  '~^https?://[^.]*\.fastpokemap\.com/'  1; # Too much traffic
-  '~^https?://pkget\.com/'               1; # Too much traffic
-  '~^https?://[^.]*\.pkget\.com/'        1; # Too much traffic
-  '~^https?://twpkinfo\.com/'            1; # Too much traffic
-  '~^https?://[^.]*\.twpkinfo\.com/'     1; # Too much traffic
-  '~^https?://9db\.jp/'                  1; # Too much traffic
-  '~^https?://[^.]*\.9db\.jp/'           1; # Too much traffic
-  '~^https?://clustrmaps\.com/'          1; # Too much traffic
-  '~^https?://[^.]*\.clustrmaps\.com/'   1; # Too much traffic
-  '~^https?://geoportal360\.pl/'         1; # Too much traffic
-  '~^https?://skelbiu\.lt/'              1; # Too much traffic
-  '~^https?://[^.]*\.skelbiu\.lt/'       1; # Too much traffic
-  # '~^https?://[^.]*\.wialon.com/'        1; # Too much traffic (hold per 2020-04-10 email)
+  # Faked sites
+  'http://www.openstreetmap.org/'  1;
+  'http://www.openstreetmap.org'   1;
+  'https://www.openstreetmap.org'  1;
+  'http://openstreetmap.org/'      1;
+  'http://openstreetmap.org'       1;
+  'https://openstreetmap.org'      1;
+  'http://www.osm.org/'            1;
+  'http://www.osm.org'             1;
+  'http://osm.org/'                1;
+  'http://osm.org'                 1;
+  'http://google.com'              1;
+  'http://www.google.com'          1;
+  'http://google.com/'             1;
+  'http://www.google.com/'         1;
+  'https://google.com'             1;
+  'https://www.google.com'         1;
+  'https://google.com/'            1;
+  'https://www.google.com/'        1;
+  'http://www.microsoft.com/'      1;
+
+  # Overusing websites
+  '~^https?://pmap\.kuku\.lu/'           1;
+  '~^https?://[^.]*\.pmap\.kuku\.lu/'    1;
+  '~^https?://fastpokemap\.com/'         1;
+  '~^https?://[^.]*\.fastpokemap\.com/'  1;
+  '~^https?://pkget\.com/'               1;
+  '~^https?://[^.]*\.pkget\.com/'        1;
+  '~^https?://twpkinfo\.com/'            1;
+  '~^https?://[^.]*\.twpkinfo\.com/'     1;
+  '~^https?://9db\.jp/'                  1;
+  '~^https?://[^.]*\.9db\.jp/'           1;
+  '~^https?://clustrmaps\.com/'          1;
+  '~^https?://[^.]*\.clustrmaps\.com/'   1;
+  '~^https?://geoportal360\.pl/'         1;
+  '~^https?://skelbiu\.lt/'              1;
+  '~^https?://[^.]*\.skelbiu\.lt/'       1;
+  # '~^https?://[^.]*\.wialon.com/'        1; # (hold per 2020-04-10 email)
 }
 
 map $http_referer $osm_referer {
