@@ -47,7 +47,7 @@ http {
     ssl_trusted_certificate /etc/ssl/certs/ca-certificates.crt;
 
     ssl_dhparam /etc/ssl/certs/dhparam.pem;
-    resolver 127.0.0.53;
+    resolver 127.0.0.53 ipv6=off;
     resolver_timeout 5s;
 
     <% if node['nginx']['cache']['fastcgi']['enable'] -%>
