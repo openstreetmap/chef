@@ -52,30 +52,40 @@ map $http_user_agent $approved_scraper {
 map $http_user_agent $denied_scraper {
   default                0; # Not denied
   ''                     1; # No User-Agent Set
-  '~^Python\-urllib\/'   1; # Library Default
-  '~^python\-requests\/' 1; # Library Default
-  '~^node\-fetch\/'      1; # Library Default
-  '~^R$'                 1; # Library Default
-  '~^Java\/'             1; # Library Default
-  '~^tiles$'             1; # Library Default
-  '~^okhttp\/'           1; # Library Default
-  '~^Microsoft-ATL-Native\/' 1; # Library Default
-  '/n software IPWorks HTTP/S Component - www.nsoftware.com' 1; #Library default
-  '~^Wget\/'             1; # Library Default
-  'C# TilesDownloader'   1; # Downloader
-  'MapDownloader'        1; # Downloader
-  '~^staticmaps'         1; # Downloader
-  'Android'              1; # Default or fake
-  'kc_android'           1; # Default or fake
-  'host'                 1; # Default or fake
-  '~^maptestapp'         1; # Default or fake
-  'Other'                1; # Default or fake
-  'Mozilla/4.0'          1; # Fake
-  'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)' 1;  # Fake
-  '~^runtastic'          1; # App
-  '~^Where\ my\ children' 1; # App
-  'nossoonibusjp.android.crosswalk' 1; # App
-  'br.com.concisoti.potybus' 1; # App
+
+  # Library defaults
+  '~^Python\-urllib\/'   1;
+  '~^python\-requests\/' 1;
+  '~^node\-fetch\/'      1;
+  '~^R$'                 1;
+  '~^Java\/'             1;
+  '~^tiles$'             1;
+  '~^okhttp\/'           1;
+  '~^Microsoft-ATL-Native\/' 1;
+  '/n software IPWorks HTTP/S Component - www.nsoftware.com' 1;
+  '~^Wget\/'             1;
+
+  # Library defaults or fakes
+  'Android'              1;
+  'kc_android'           1;
+  'host'                 1;
+  '~^maptestapp'         1;
+  'Other'                1;
+
+  # Fakes
+  'Mozilla/4.0'          1;
+  'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)' 1;
+
+  # Bulk downloaders
+  'C# TilesDownloader'   1;
+  'MapDownloader'        1;
+  '~^staticmaps'         1;
+
+  # Overusage apps
+  '~^runtastic'          1;
+  '~^Where\ my\ children' 1;
+  'nossoonibusjp.android.crosswalk' 1;
+  'br.com.concisoti.potybus' 1;
   'com.soft373.taptaxi'  1;
   'com.kradac.ktxcore'   1;
   'ru.crowdsystems.topcontrol.knd' 1;
