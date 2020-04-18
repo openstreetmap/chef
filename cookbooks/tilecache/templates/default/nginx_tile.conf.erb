@@ -52,6 +52,7 @@ map $http_user_agent $approved_scraper {
 map $http_user_agent $denied_scraper {
   default                0; # Not denied
   ''                     1; # No User-Agent Set
+  '-'                    1;
 
   # Library defaults
   '~^Python\-urllib\/'   1;
@@ -64,6 +65,7 @@ map $http_user_agent $denied_scraper {
   '~^Microsoft-ATL-Native\/' 1;
   '/n software IPWorks HTTP/S Component - www.nsoftware.com' 1;
   '~^Wget\/'             1;
+  'java'                 1;
 
   # Library defaults or fakes
   'Android'              1;
@@ -71,6 +73,9 @@ map $http_user_agent $denied_scraper {
   'host'                 1;
   '~^maptestapp'         1;
   'Other'                1;
+  'osmdroid'             1;
+  '~^tilelive-http'      1;
+  '~^Java-http-client'   1;
 
   # Fakes
   'Mozilla/4.0'          1;
@@ -88,7 +93,7 @@ map $http_user_agent $denied_scraper {
   'br.com.concisoti.potybus' 1;
   'com.soft373.taptaxi'  1;
   'com.kradac.ktxcore'   1;
-  'ru.crowdsystems.topcontrol.knd' 1;
+  '~^ru.crowdsystems.topcontrol.knd' 1;
   'pl.itaxi.driver'      1;
   'net.uztaxi.driver'    1;
   'OSMDroid/2.1 (its; rutaxi 3.28.0)' 1;
@@ -96,6 +101,9 @@ map $http_user_agent $denied_scraper {
   'ru.taximaster.www'    1;
   'com.arobs.trackgps'   1;
   'com.helleniccomms.asteras.driver' 1;
+
+  # Malware
+  'Agent Smith'          1;
   # '~[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}' 1; # Fake UA
 }
 
