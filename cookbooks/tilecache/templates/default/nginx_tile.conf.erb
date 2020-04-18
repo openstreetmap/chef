@@ -146,7 +146,12 @@ map $http_referer $denied_referer {
   '~^https?://geoportal360\.pl/'         1;
   '~^https?://skelbiu\.lt/'              1;
   '~^https?://[^.]*\.skelbiu\.lt/'       1;
-  # '~^https?://[^.]*\.wialon.com/'        1; # (hold per 2020-04-10 email)
+  '~^https?://wialon\.[^.]*/'            1; # wialon has many domains, so block them all
+  '~^https?://[^.]*\.wialon\.[^.]*/'     1;
+  '~^https?://gps-trace\.com/'           1;
+  '~^https?://[^.]*\.gps-trace\.com/'    1;
+  '~^https?://cellmapper\.net/'          1;
+  '~^https?://[^.]*\.cellmapper\.net/'   1;
 }
 
 map $http_referer $osm_referer {
