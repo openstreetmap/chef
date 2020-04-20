@@ -24,7 +24,7 @@ property :directory, :kind_of => String
 property :cookbook, :kind_of => String
 property :template, :kind_of => String, :required => true
 property :variables, :kind_of => Hash, :default => {}
-property :restart_nginx, :kind_of => [TrueClass, FalseClass], :default => true
+property :reload_nginx, :kind_of => [TrueClass, FalseClass], :default => true
 
 action :create do
   declare_resource :template, conf_path do
@@ -54,5 +54,5 @@ action_class do
 end
 
 def after_created
-  notifies :restart, "service[nginx]" if restart_nginx
+  notifies :reload, "service[nginx]" if reload_nginx
 end

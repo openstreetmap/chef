@@ -82,7 +82,7 @@ end
 nginx_site "default" do
   template "nginx_default.conf.erb"
   directory "/srv/imagery/default"
-  restart_nginx false
+  reload_nginx false
 end
 
 systemd_tmpfile "/run/mapserver-fastcgi" do
