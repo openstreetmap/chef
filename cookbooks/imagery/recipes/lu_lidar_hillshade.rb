@@ -24,27 +24,9 @@ imagery_site "lidar-hillshade-2019.openstreetmap.lu" do
   bbox [[49.38, 5.64], [50.2, 6.64]]
 end
 
+
+# Delete borken layers like this
 imagery_layer "lidar_hillshade_2019" do
-  site "lidar-hillshade-2019.openstreetmap.lu"
-  action :delete
-end
-
-imagery_layer "vdl_light6" do
-  action :delete
-  site "lidar-hillshade-2019.openstreetmap.lu"
-end
-
-imagery_layer "vdl-light6" do
-  action :delete
-  site "lidar-hillshade-2019.openstreetmap.lu"
-end
-
-imagery_layer "vdl_light6-deflate" do
-  action :delete
-  site "lidar-hillshade-2019.openstreetmap.lu"
-end
-
-imagery_layer "vdl_light6_deflate" do
   site "lidar-hillshade-2019.openstreetmap.lu"
   action :delete
 end
@@ -56,5 +38,14 @@ imagery_layer "mappers_delight_lidar_hillshade_2019" do
   source "/data/imagery/lu/lidar-hillshade/lu_hillshade_2019-compress-epsg3857.tif"
   max_zoom 22
   title "OpenStreetMap.lu Mapper's Delight 2019 Lidar Hillshading"
+  copyright '&copy; 2019 <a href="https://data.public.lu/fr/datasets/lidar-2019-releve-3d-du-territoire-luxembourgeois">Administration du Cadastre et de la Topographie Luxembourg</a>, CC0'
+end
+
+imagery_layer "mappers_delight_lidar_dem_2019" do
+  site "lidar-dem-2019.openstreetmap.lu"
+  projection "EPSG:3857"
+  source "/data/imagery/lu/lidar-hillshade/dem-3857.tif"
+  max_zoom 22
+  title "OpenStreetMap.lu Mapper's Delight 2019 Lidar DEM"
   copyright '&copy; 2019 <a href="https://data.public.lu/fr/datasets/lidar-2019-releve-3d-du-territoire-luxembourgeois">Administration du Cadastre et de la Topographie Luxembourg</a>, CC0'
 end
