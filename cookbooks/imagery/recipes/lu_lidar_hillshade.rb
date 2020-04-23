@@ -42,7 +42,7 @@ imagery_layer "mappers_delight_lidar_hillshade_2019" do
 end
 
 imagery_layer "mappers_delight_lidar_dem_2019" do
-  site "lidar-dem-2019.openstreetmap.lu"
+  site "lidar-hillshade-2019.openstreetmap.lu"
   projection "EPSG:3857"
   source "/data/imagery/lu/lidar-hillshade/dem-3857.tif"
   max_zoom 22
