@@ -21,7 +21,7 @@ geo $whitelisted {
     default 0;
 <% @frontends.each do |frontend| -%>
 <% frontend.ipaddresses(:role => :external) do |address| -%>
-    <%= address %>;
+    <%= address %> 1;
 <% end -%>
 <% end -%>
     46.235.224.148 1;
