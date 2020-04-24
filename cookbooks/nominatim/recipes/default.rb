@@ -395,10 +395,6 @@ munin_plugin "nominatim_requests" do
   target "#{source_directory}/munin/nominatim_requests_querylog"
 end
 
-munin_plugin "nominatim_throttled_ips" do
-  target "#{source_directory}/munin/nominatim_throttled_ips"
-end
-
 directory "#{basedir}/status" do
   owner "nominatim"
   group "postgres"
