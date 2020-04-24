@@ -56,10 +56,13 @@ limit_req_zone $limit_tarpit zone=tarpit:10m rate=1r/s;
 limit_req_zone $binary_remote_addr zone=blocked:10m rate=20r/m;
 
 server {
-  listen 80 default_server;
-  listen [::]:80 default_server;
+    listen 80 default_server;
+    listen [::]:80 default_server;
 
-  location /nginx_status {
+    access_log <%= node[:nominatim][:logdir] %>/nominatim.openstreetmap.org-access.log combined;
+    error_log <%= node[:nominatim][:logdir] %>/nominatim.openstreetmap.org-error.log;
+
+    location /nginx_status {
         stub_status on;
         access_log   off;
         allow 127.0.0.1;
@@ -67,11 +70,11 @@ server {
         deny all;
     }
 
-   rewrite ^/\.well-known/acme-challenge/(.*)$ http://acme.openstreetmap.org/.well-known/acme-challenge/$1 permanent;
+     rewrite ^/\.well-known/acme-challenge/(.*)$ http://acme.openstreetmap.org/.well-known/acme-challenge/$1 permanent;
 
-   location / {
-       return 301 https://$host$request_uri;
-   }
+     location / {
+         return 301 https://$host$request_uri;
+     }
 }
 
 server {
