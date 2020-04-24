@@ -24,7 +24,6 @@ imagery_site "lidar-hillshade-2019.openstreetmap.lu" do
   bbox [[49.38, 5.64], [50.2, 6.64]]
 end
 
-
 # Delete borken layers like this
 
 imagery_layer "mappers_delight_lidar_hillshade_2019" do
