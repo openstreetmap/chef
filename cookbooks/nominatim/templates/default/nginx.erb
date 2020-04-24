@@ -19,17 +19,11 @@ upstream nominatim_service {
 # Whitelisted IPs
 geo $whitelisted {
     default 0;
-    2001:978:2:2c::172:6 1;
-    2001:978:2:2c::172:7 1;
-    2001:978:2:2c::172:8 1;
-    2001:978:2:2c::172:b 1;
-    2001:978:2:2c::172:c 1;
-    2001:978:2:2c::172:d 1;
-    130.117.76.6 1;
-    130.117.76.7 1;
-    130.117.76.8 1;
-    89.16.162.21 1;
-    89.16.162.22 1;
+<% @frontends.each do |frontend| -%>
+<% frontend.ipaddresses(:role => :external) do |address| -%>
+    <%= address %>;
+<% end -%>
+<% end -%>
     46.235.224.148 1;
     209.132.180.180 1;
     209.132.180.168 1;

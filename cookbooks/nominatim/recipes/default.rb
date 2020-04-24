@@ -367,6 +367,7 @@ nginx_site "nominatim" do
   template "nginx.erb"
   directory build_directory
   variables :pools => node[:nominatim][:fpm_pools],
+            :frontends => search(:node, "recipes:web\\:\\:frontend"),
             :confdir => "#{basedir}/etc"
 end
 
