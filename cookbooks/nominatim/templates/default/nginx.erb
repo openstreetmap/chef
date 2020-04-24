@@ -98,8 +98,8 @@ server {
     }
 
     location / {
-        set anyid = $http_referer$http_user_agent$email_id;
-        if (anyid = "")
+        set $anyid = $http_referer$http_user_agent$email_id;
+        if ($anyid = "")
         { return 403; }
         if ($blocked_user_agent ~ ^2$)
         { return 403; }
