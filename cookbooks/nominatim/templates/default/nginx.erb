@@ -1,0 +1,131 @@
+map $uri $nominatim_script_name {
+    ~^(.+?\.php)         $1;
+    ~^/([^/]+)           $1.php;
+    ^$                   search.php;
+}
+
+map $uri $nominatim_path_info {
+    ~^/([^/]+)(.*)$      $2;
+}
+
+map $query_string $email_id {
+    ~(^|&)email=([^&]+)  $2;
+}
+
+upstream nominatim_service {
+  server 127.0.0.1:<%= @pools[:www][:port ]%>;
+}
+
+# Whitelisted IPs
+geo $limit {
+    default 1;
+    2001:978:2:2c::172:6 0;
+    2001:978:2:2c::172:7 0;
+    2001:978:2:2c::172:8 0;
+    2001:978:2:2c::172:b 0;
+    2001:978:2:2c::172:c 0;
+    2001:978:2:2c::172:d 0;
+    130.117.76.6 0;
+    130.117.76.7 0;
+    130.117.76.8 0;
+    89.16.162.21 0;
+    89.16.162.22 0;
+    46.235.224.148 0;
+    209.132.180.180 0;
+    209.132.180.168 0;
+    8.43.85.23 0; # gnome
+}
+
+map $http_user_agent $blocked_user_agent {
+   default 0;
+   include <%= @confdir %>/nginx_blocked_user_agent.conf;
+}
+
+map $http_referer $blocked_referrer {
+   default 0;
+   include <%= @confdir %>/nginx_blocked_referrer.conf;
+}
+
+map $limit $limit_key {
+    0 "";
+    1 $binary_remote_addr;
+}
+
+map $blocked_user_agent $limit_tarpit {
+    0 "";
+    1 $binary_remote_addr;
+    2 $binary_remote_addr;
+}
+
+limit_req_zone $limit zone=www:50m rate=2r/s;
+limit_req_zone $limit_tarpit zone=tarpit:10m rate=1r/s;
+limit_req_zone $binary_remote_addr zone=blocked:10m rate=20r/m;
+
+server {
+    # IPv4
+    listen       80 deferred backlog=16384 reuseport fastopen=2048 default_server;
+    listen       443 ssl deferred backlog=16384 reuseport fastopen=2048 http2 default_server;
+    # IPv6
+    listen       [::]:80 deferred backlog=16384 reuseport fastopen=2048 default_server;
+    listen       [::]:443 ssl deferred backlog=16384 reuseport fastopen=2048 http2 default_server;
+    server_name  localhost;
+
+    ssl_certificate /etc/ssl/certs/<%= node[:fqdn] %>.pem;
+    ssl_certificate_key /etc/ssl/private/<%= node[:fqdn] %>.key;
+
+    root <%= @directory %>/website;
+    index search.php;
+
+    access_log <%= node[:nominatim][:logdir] %>/nominatim.openstreetmap.org-access.log combined;
+    error_log <%= node[:nominatim][:logdir] %>/nominatim.openstreetmap.org-error.log;
+
+    location /nginx_status {
+        stub_status on;
+        access_log   off;
+        allow 127.0.0.1;
+        allow ::1;
+        deny all;
+    }
+
+    error_page 403 /403.html;
+    location /403.html {
+        limit_req zone=blocked burst=5;
+    }
+
+    error_page 429 /509.html;
+    location /509.html {
+        limit_req zone=blocked burst=5;
+    }
+
+    location / {
+        set anyid = $http_referer$http_user_agent$email_id;
+        if (anyid = "")
+        { return 403; }
+        if ($blocked_user_agent ~ ^2$)
+        { return 403; }
+        if ($blocked_referrer)
+        { return 403; }
+
+        try_files $uri $uri/ @php;
+    }
+
+    location @php {
+        limit_req zone=www burst=10;
+        limit_req zone=tarpit burst=2;
+        limit_req_status 429;
+        fastcgi_pass nominatim_service;
+        include fastcgi_params;
+        fastcgi_param QUERY_STRING    $args;
+        fastcgi_param PATH_INFO       "$nominatim_path_info";
+        fastcgi_param SCRIPT_FILENAME  "$document_root/$nominatim_script_name";
+    }
+
+    location ~* \.php$ {
+        limit_req zone=www burst=10;
+        limit_req zone=tarpit burst=2;
+        limit_req_status 429;
+        fastcgi_pass    nominatim_service;
+        include         fastcgi_params;
+        fastcgi_param   SCRIPT_FILENAME    $document_root$fastcgi_script_name;
+    }
+}

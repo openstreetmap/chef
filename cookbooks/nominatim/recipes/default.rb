@@ -166,6 +166,10 @@ package %w[
   python3-pyosmium
   pyosmium
   python3-psycopg2
+  php
+  php-fpm
+  php-pgsql
+  php-intl
 ]
 
 source_directory = "#{basedir}/nominatim"
@@ -302,40 +306,25 @@ end
 
 ## webserver frontend
 
-template "#{build_directory}/settings/ip_blocks.conf" do
-  action :create_if_missing
-  source "ipblocks.erb"
+directory "#{basedir}/etc" do
   owner "nominatim"
-  group "nominatim"
+  group "adm"
+  mode 0o775
+end
+
+file "#{basedir}/etc/nginx_blocked_user_agent.conf" do
+  action :create_if_missing
+  owner "nominatim"
+  group "adm"
   mode 0o664
 end
 
-file "#{build_directory}/settings/apache_blocks.conf" do
+file "#{basedir}/etc/nginx_blocked_referrer.conf" do
   action :create_if_missing
   owner "nominatim"
-  group "nominatim"
+  group "adm"
   mode 0o664
 end
-
-file "#{build_directory}/settings/ip_blocks.map" do
-  action :create_if_missing
-  owner "nominatim"
-  group "nominatim"
-  mode 0o664
-end
-
-include_recipe "apache"
-
-package "php"
-package "php-fpm"
-package "php-pgsql"
-package "php-intl"
-
-apache_module "rewrite"
-apache_module "proxy"
-apache_module "proxy_fcgi"
-apache_module "proxy_http"
-apache_module "headers"
 
 service "php7.2-fpm" do
   action [:enable, :start]
@@ -353,13 +342,6 @@ node[:nominatim][:fpm_pools].each do |name, data|
   end
 end
 
-systemd_service "apache-nominatim" do
-  service "apache2"
-  dropin "nominatim"
-  tasks_max 12000
-  notifies :restart, "service[apache2]"
-end
-
 ssl_certificate node[:fqdn] do
   domains [node[:fqdn],
            "nominatim.openstreetmap.org",
@@ -368,28 +350,32 @@ ssl_certificate node[:fqdn] do
            "nominatim.openstreetmap.net",
            "nominatim.openstreetmaps.org",
            "nominatim.openmaps.org"]
-  notifies :reload, "service[apache2]"
+  notifies :reload, "service[nginx]"
 end
 
-apache_site "nominatim.openstreetmap.org" do
-  template "apache.erb"
+package "apache2" do
+  action :remove
+end
+
+include_recipe "nginx"
+
+nginx_site "default" do
+  action [:delete]
+end
+
+nginx_site "nominatim" do
+  template "nginx.erb"
   directory build_directory
-  variables :pools => node[:nominatim][:fpm_pools]
-  only_if { node[:nominatim][:state] != "off" }
+  variables :pools => node[:nominatim][:fpm_pools],
+            :confdir => "#{basedir}/etc"
 end
 
-apache_site "default" do
-  action [:disable]
-end
-
-template "/etc/logrotate.d/apache2" do
-  source "logrotate.apache.erb"
+template "/etc/logrotate.d/nginx" do
+  source "logrotate.nginx.erb"
   owner "root"
   group "root"
   mode 0o644
 end
-
-include_recipe "fail2ban"
 
 munin_plugin_conf "nominatim" do
   template "munin.erb"

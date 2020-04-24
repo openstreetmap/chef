@@ -2,7 +2,6 @@
 
 MAILTO=<%= @mailto %>
 
-* * * * * lonvia <%= @bin_directory %>/cron_ipanalyse.py <%= node[:nominatim][:logdir] %>/nominatim.openstreetmap.org-access.log
 <% if node[:nominatim][:enable_backup] -%>
 00 3 1 * * nominatim /usr/local/bin/backup-nominatim
 <% end -%>
