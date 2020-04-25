@@ -133,6 +133,10 @@ server {
     }
 
     location / {
+        try_files $uri $uri/ @php;
+    }
+
+    location @php {
         if ($blocked_user_agent ~ ^2$)
         { return 403; }
         if ($blocked_referrer)
@@ -140,10 +144,6 @@ server {
         if ($blocked_email)
         { return 403; }
 
-        try_files $uri $uri/ @php;
-    }
-
-    location @php {
         limit_req zone=www burst=10;
         limit_req zone=tarpit burst=2;
         limit_req_status 429;
@@ -155,6 +155,13 @@ server {
     }
 
     location ~* \.php$ {
+        if ($blocked_user_agent ~ ^2$)
+        { return 403; }
+        if ($blocked_referrer)
+        { return 403; }
+        if ($blocked_email)
+        { return 403; }
+
         limit_req zone=www burst=10;
         limit_req zone=tarpit burst=2;
         limit_req_status 429;
