@@ -401,3 +401,12 @@ directory "#{basedir}/status" do
   group "postgres"
   mode 0o775
 end
+
+include_recipe "fail2ban"
+
+fail2ban_jail "nominatim_limit_req" do
+  filter "nginx-limit-req"
+  logpath "#{node[:nominatim][:logdir]}/nominatim.openstreetmap.org-error.log"
+  ports [80, 443]
+  maxretry 5
+end
