@@ -21,6 +21,10 @@ include_recipe "git"
 
 keys = data_bag_item("chef", "keys")
 
+chef_gem "bundler" do
+  version ">= 2.1.4"
+end
+
 directory "/var/lib/chef" do
   owner "chefrepo"
   group "chefrepo"
