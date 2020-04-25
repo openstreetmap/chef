@@ -115,7 +115,8 @@ jobs:
         sudo aa-disable /usr/sbin/mysqld
     - name: Install gems
       run: |
-        gem install bundler --version "~> 1.17"
-        bundle install --jobs 4 --retry 3 --deployment
+        gem install bundler
+        bundle config set deployment true
+        bundle install --jobs 4 --retry 3
     - name: Run kitchen test ${{ matrix.suite }}-${{ matrix.os }}
       run: bundle exec kitchen test ${{ matrix.suite }}-${{ matrix.os }}

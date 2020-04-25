@@ -20,7 +20,8 @@ jobs:
           bundle-${{ runner.OS }}-
     - name: Install gems
       run: |
-        gem install bundler --version "~> 1.17"
-        bundle install --jobs 4 --retry 3 --deployment
+        gem install bundler
+        bundle config set deployment true
+        bundle install --jobs 4 --retry 3
     - name: Run cookstyle
       run: bundle exec cookstyle --format fuubar
