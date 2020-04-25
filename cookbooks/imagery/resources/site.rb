@@ -137,7 +137,6 @@ action :create do
   nginx_site new_resource.site do
     template "nginx_imagery.conf.erb"
     directory "/srv/imagery/#{new_resource.site}"
-    reload_nginx false
     variables new_resource.to_hash
   end
 end
