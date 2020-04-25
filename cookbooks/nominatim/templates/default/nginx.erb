@@ -56,7 +56,7 @@ map $missing_email$missing_ua$http_referer $blocked_referrer {
    include <%= @confdir %>/nginx_blocked_referrer.conf;
 }
 
-map $missing_referer$missing_ua$http_referer $blocked_email {
+map $missing_referer$missing_ua$email_id $blocked_email {
    default 0;
    include <%= @confdir %>/nginx_blocked_email.conf;
 }
