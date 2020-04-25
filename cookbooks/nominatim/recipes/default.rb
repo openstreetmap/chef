@@ -312,18 +312,13 @@ directory "#{basedir}/etc" do
   mode 0o775
 end
 
-file "#{basedir}/etc/nginx_blocked_user_agent.conf" do
-  action :create_if_missing
-  owner "nominatim"
-  group "adm"
-  mode 0o664
-end
-
-file "#{basedir}/etc/nginx_blocked_referrer.conf" do
-  action :create_if_missing
-  owner "nominatim"
-  group "adm"
-  mode 0o664
+%w[user_agent referer email].each do |name|
+  file "#{basedir}/etc/nginx_blocked_#{name}.conf" do
+    action :create_if_missing
+    owner "nominatim"
+    group "adm"
+    mode 0o664
+  end
 end
 
 service "php7.2-fpm" do

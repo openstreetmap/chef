@@ -1,3 +1,7 @@
+upstream nominatim_service {
+  server 127.0.0.1:<%= @pools[:www][:port ]%>;
+}
+
 map $uri $nominatim_script_name {
     ~^(.+?\.php)         $1;
     ~^/([^/]+)           $1.php;
@@ -12,8 +16,19 @@ map $query_string $email_id {
     ~(^|&)email=([^&]+)  $2;
 }
 
-upstream nominatim_service {
-  server 127.0.0.1:<%= @pools[:www][:port ]%>;
+map $email_id $missing_email {
+    default "";
+    "" 1;
+}
+
+map $http_user_agent $missing_ua {
+    default "";
+    "" 1;
+}
+
+map $http_referer $missing_referer {
+    default "";
+    "" 1;
 }
 
 # Whitelisted IPs
@@ -30,14 +45,20 @@ geo $whitelisted {
     8.43.85.23 1; # gnome
 }
 
-map $http_user_agent $blocked_user_agent {
+map $missing_email$missing_referer$http_user_agent $blocked_user_agent {
    default 0;
+   "11" 2; # block any requests without identifier
    include <%= @confdir %>/nginx_blocked_user_agent.conf;
 }
 
-map $http_referer $blocked_referrer {
+map $missing_email$missing_ua$http_referer $blocked_referrer {
    default 0;
    include <%= @confdir %>/nginx_blocked_referrer.conf;
+}
+
+map $missing_referer$missing_ua$http_referer $blocked_email {
+   default 0;
+   include <%= @confdir %>/nginx_blocked_email.conf;
 }
 
 map $whitelisted $limit_www {
@@ -112,12 +133,11 @@ server {
     }
 
     location / {
-        set $anyid $http_referer$http_user_agent$email_id;
-        if ($anyid = "")
-        { return 403; }
         if ($blocked_user_agent ~ ^2$)
         { return 403; }
         if ($blocked_referrer)
+        { return 403; }
+        if ($blocked_email)
         { return 403; }
 
         try_files $uri $uri/ @php;
