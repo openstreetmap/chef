@@ -177,7 +177,9 @@ package "cloud-init" do
   action :purge
 end
 
-hostname node[:networking][:hostname]
+hostname node[:networking][:hostname] do
+  ipaddress nil
+end
 
 template "/etc/hosts" do
   source "hosts.erb"
