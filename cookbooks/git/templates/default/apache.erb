@@ -48,6 +48,8 @@
         SetEnv GIT_HTTP_EXPORT_ALL
         SetEnv GIT_HTTP_MAX_REQUEST_BUFFER 100M
 
+        SetEnvIf Git-Protocol ".*" GIT_PROTOCOL=$0
+
         # KeepaliveTimeout longer than git config uploadpack.keepalive 5 second default
         KeepAliveTimeout 20
 
