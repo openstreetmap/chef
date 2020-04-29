@@ -185,7 +185,7 @@ end
 execute "hostnamectl-set-static" do
   command "hostnamectl set-static #{node[:networking][:hostname]}"
   notifies :reload, "ohai[reload-hostname]"
-  not_if { node[:hostnamectl][:static_hostname] == node[:networking][:hostname] }
+  not_if { ENV.key?("TEST_KITCHEN") || node[:hostnamectl][:static_hostname] == node[:networking][:hostname] }
 end
 
 template "/etc/hosts" do
