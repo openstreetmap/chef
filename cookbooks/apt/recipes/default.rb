@@ -73,6 +73,11 @@ apt_repository "ubuntugis-unstable" do
   uri "ppa:ubuntugis/ubuntugis-unstable"
 end
 
+apt_repository "git-core" do
+  action repository_actions["git-core"]
+  uri "ppa:git-core/ppa"
+end
+
 apt_repository "maxmind" do
   action repository_actions["maxmind"]
   uri "ppa:maxmind/ppa"
