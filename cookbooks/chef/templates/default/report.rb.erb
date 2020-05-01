@@ -32,7 +32,7 @@ class Chef
         require "mail"
 
         Mail.defaults do
-          mail.delivery_method :exim, :location => "/usr/sbin/exim"
+          delivery_method :exim, :location => "/usr/sbin/exim"
         end
 
         Mail.deliver do
