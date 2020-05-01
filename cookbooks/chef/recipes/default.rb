@@ -110,17 +110,22 @@ end
 
 systemd_service "chef-client" do
   description "Chef client"
-  after "network.target"
-  exec_start "/usr/bin/chef-client -i 1800 -s 20"
-  restart "on-failure"
+  exec_start "/usr/bin/chef-client"
 end
 
-service "chef-client" do
+systemd_timer "chef-client" do
+  description "Chef client"
+  after "network.target"
+  on_active_sec 60
+  on_unit_inactive_sec 25 * 60
+  randomized_delay_sec 10 * 60
+end
+
+service "chef-client.timer" do
   action [:enable, :start]
-  restart_command "systemctl kill --signal=TERM chef-client.service"
-  supports :status => true, :restart => true, :reload => true
-  subscribes :restart, "dpkg_package[chef]"
-  subscribes :restart, "template[/etc/init/chef-client.conf]"
-  subscribes :restart, "template[/etc/chef/client.rb]"
-  subscribes :restart, "template[/etc/chef/report.rb]"
+end
+
+service "chef-client.service" do
+  action :disable
+  subscribes :stop, "service[chef-client.timer]"
 end
