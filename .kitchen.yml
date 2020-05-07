@@ -1,13 +1,14 @@
 ---
 driver:
   name: dokken
-  chef_version: 14
+  chef_version: 15
 
 transport:
   name: dokken
 
 provisioner:
   name: dokken
+  chef_license: accept
   data_bags_path: test/data_bags
 
 verifier:
