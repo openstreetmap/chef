@@ -305,6 +305,10 @@ gem_package "bundler" do
   version "1.17.3"
 end
 
+gem_package "bundler" do
+  version "2.1.4"
+end
+
 %w[2016 2017 2018 2019 2020].each do |year|
   git "/srv/#{year}.stateofthemap.org" do
     action :sync
