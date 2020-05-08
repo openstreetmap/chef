@@ -107,7 +107,7 @@ default_attributes(
     :styles => {
       :default => {
         :repository => "https://github.com/gravitystorm/openstreetmap-carto.git",
-        :revision => "v5.1.0",
+        :revision => "v5.2.0",
         :max_zoom => 19
       }
     }
