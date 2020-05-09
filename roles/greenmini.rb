@@ -2,6 +2,11 @@ name "greenmini"
 description "Role applied to all servers at greenminihost"
 
 default_attributes(
+  :accounts => {
+    :users => {
+      :joris => { :status => :administrator }
+    }
+  },
   :hosted_by => "greenminihost",
   :location => "Dronten, Netherlands",
   :networking => {
