@@ -182,8 +182,8 @@ ohai "reload-hostname" do
   plugin "hostname"
 end
 
-execute "hostnamectl-set-static" do
-  command "hostnamectl set-static #{node[:networking][:hostname]}"
+execute "hostnamectl-set-hostname" do
+  command "hostnamectl set-hostname #{node[:networking][:hostname]}"
   notifies :reload, "ohai[reload-hostname]"
   not_if { ENV.key?("TEST_KITCHEN") || node[:hostnamectl][:static_hostname] == node[:networking][:hostname] }
 end
