@@ -21,7 +21,7 @@ default_action :create
 
 property :database, :kind_of => String, :name_property => true
 property :cluster, :kind_of => String, :required => true
-property :owner, :kind_of => String, :required => true
+property :owner, :kind_of => String, :required => [:create]
 property :encoding, :kind_of => String, :default => "UTF8"
 property :collation, :kind_of => String, :default => "en_GB.UTF8"
 property :ctype, :kind_of => String, :default => "en_GB.UTF8"

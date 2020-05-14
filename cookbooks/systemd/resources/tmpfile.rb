@@ -19,7 +19,7 @@
 
 default_action :create
 
-property :type, String, :required => true
+property :type, String, :required => [:create]
 property :path, String, :name_property => true
 property :mode, String, :default => "-"
 property :owner, String, :default => "-"

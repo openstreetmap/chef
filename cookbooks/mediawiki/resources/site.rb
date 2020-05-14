@@ -24,8 +24,8 @@ property :aliases, :kind_of => [String, Array]
 property :directory, :kind_of => String
 property :version, :kind_of => String, :default => "1.33"
 property :database_name, :kind_of => String, :required => true
-property :database_user, :kind_of => String, :required => true
-property :database_password, :kind_of => String, :required => true
+property :database_user, :kind_of => String, :required => [:create, :update]
+property :database_password, :kind_of => String, :required => [:create, :update]
 property :sitename, :kind_of => String, :default => "OpenStreetMap Wiki"
 property :metanamespace, :kind_of => String, :default => "OpenStreetMap"
 property :logo, :kind_of => String, :default => "$wgStylePath/common/images/wiki.png"
@@ -37,7 +37,7 @@ property :skin, :kind_of => String, :default => "vector"
 property :site_notice, :kind_of => [String, TrueClass, FalseClass], :default => false
 property :site_readonly, :kind_of => [String, TrueClass, FalseClass], :default => false
 property :admin_user, :kind_of => String, :default => "Admin"
-property :admin_password, :kind_of => String, :required => true
+property :admin_password, :kind_of => String, :required => [:create]
 property :private_accounts, :kind_of => [TrueClass, FalseClass], :default => false
 property :private_site, :kind_of => [TrueClass, FalseClass], :default => false
 property :recaptcha_public_key, :kind_of => String

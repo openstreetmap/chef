@@ -20,7 +20,7 @@
 default_action :create
 
 property :timer, String, :name_property => true
-property :description, String, :required => true
+property :description, String, :required => [:create]
 property :after, [String, Array]
 property :wants, [String, Array]
 property :on_active_sec, [Integer, String]

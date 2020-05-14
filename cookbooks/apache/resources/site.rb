@@ -22,7 +22,7 @@ default_action [:create, :enable]
 property :site, :kind_of => String, :name_property => true
 property :directory, :kind_of => String
 property :cookbook, :kind_of => String
-property :template, :kind_of => String, :required => true
+property :template, :kind_of => String, :required => [:create]
 property :variables, :kind_of => Hash, :default => {}
 property :reload_apache, :kind_of => [TrueClass, FalseClass], :default => true
 

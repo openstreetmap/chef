@@ -21,7 +21,7 @@ default_action :create
 
 property :plugin_conf, :kind_of => String, :name_property => true
 property :cookbook, :kind_of => [String, nil]
-property :template, :kind_of => String, :required => true
+property :template, :kind_of => String, :required => [:create]
 property :variables, :kind_of => Hash, :default => {}
 property :restart_munin, :kind_of => [TrueClass, FalseClass], :default => true
 

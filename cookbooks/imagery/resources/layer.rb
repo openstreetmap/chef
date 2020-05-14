@@ -23,7 +23,7 @@ default_action :create
 
 property :layer, String, :name_property => true
 property :site, String, :required => true
-property :source, String, :required => true
+property :source, String, :required => [:create]
 property :root_layer, [true, false], :default => false
 property :title, String
 property :copyright, String, :default => "Copyright"

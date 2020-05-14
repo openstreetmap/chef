@@ -22,9 +22,9 @@ require "yaml"
 default_action :create
 
 property :site, String, :name_property => true
-property :title, String, :required => true
+property :title, String, :required => [:create]
 property :aliases, [String, Array], :default => []
-property :bbox, Array, :required => true
+property :bbox, Array, :required => [:create]
 
 action :create do
   directory "/srv/#{new_resource.site}" do

@@ -25,8 +25,8 @@ property :aliases, :kind_of => [String, Array]
 property :directory, :kind_of => String
 property :version, :kind_of => String
 property :database_name, :kind_of => String, :required => true
-property :database_user, :kind_of => String, :required => true
-property :database_password, :kind_of => String, :required => true
+property :database_user, :kind_of => String, :required => [:create]
+property :database_password, :kind_of => String, :required => [:create]
 property :database_prefix, :kind_of => String, :default => "wp_"
 property :urls, :kind_of => Hash, :default => {}
 property :reload_apache, :kind_of => [TrueClass, FalseClass], :default => true

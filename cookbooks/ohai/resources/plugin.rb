@@ -20,7 +20,7 @@
 default_action :create
 
 property :plugin, :kind_of => String, :name_property => true
-property :template, :kind_of => String, :required => true
+property :template, :kind_of => String, :required => [:create]
 
 action :create do
   ohai new_resource.plugin do

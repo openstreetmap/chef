@@ -21,7 +21,7 @@ default_action :create
 
 property :tablespace, :kind_of => String, :name_property => true
 property :cluster, :kind_of => String, :required => true
-property :location, :kind_of => String, :required => true
+property :location, :kind_of => String, :required => [:create]
 
 action :create do
   unless cluster.tablespaces.include?(new_resource.tablespace)

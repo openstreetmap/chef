@@ -20,7 +20,7 @@
 default_action :create
 
 property :fragment, :kind_of => String, :name_property => true
-property :template, :kind_of => String, :required => true
+property :template, :kind_of => String, :required => [:create]
 property :variables, :kind_of => Hash, :default => {}
 
 action :create do

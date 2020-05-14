@@ -20,7 +20,7 @@
 default_action :create
 
 property :certificate, String, :name_property => true
-property :domains, [String, Array], :required => true
+property :domains, [String, Array], :required => [:create]
 
 action :create do
   node.default[:letsencrypt][:certificates][new_resource.certificate] = {
