@@ -9,6 +9,14 @@ jobs:
     strategy:
       matrix:
         suite:
+          - db-base
+          - db-master
+          - db-slave
+          - stateofthemap
+          - web-backend
+          - web-frontend
+          - web-rails
+          - wiki
           - accounts
           - apache
           - apt
@@ -19,9 +27,6 @@ jobs:
           - civicrm
           - clamav
           - db-backup
-          - db-base
-          - db-master
-          - db-slave
           - devices
           - dhcpd
           - dmca
@@ -76,7 +81,6 @@ jobs:
           - spamassassin
           - squid
           - ssl
-          - stateofthemap
           - subversion
           - supybot
           - switch2osm
@@ -88,12 +92,8 @@ jobs:
           - tilelog
           - tools
           - trac
-          - web-backend
           - web-cgimap
-          - web-frontend
-          - web-rails
           - wordpress
-          - wiki
         os:
           - ubuntu-1804
       fail-fast: false
