@@ -34,7 +34,7 @@ action :create do
     owner "root"
     group "root"
     mode "644"
-    variables new_resource.to_hash
+    variables new_resource.to_hash.merge(:path => new_resource.path)
   end
 
   execute "systemd-tmpfiles" do
