@@ -100,7 +100,17 @@ jobs:
           - wordpress
           - wiki
         os:
-          - ubuntu-1804
+          - ubuntu-2004
+        include:
+          - os: ubuntu-1804
+            suite: osqa
+          - os: ubuntu-1804
+            suite: trac
+        exclude:
+          - suite: osqa
+            os: ubuntu-2004
+          - suite: trac
+            os: ubuntu-2004
       fail-fast: false
     steps:
     - name: Check out code
