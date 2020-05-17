@@ -25,7 +25,7 @@ end
 
 execute "udevadm-trigger" do
   action :nothing
-  command "/sbin/udevadm trigger --action=add"
+  command "/bin/udevadm trigger --action=add"
 end
 
 template "/etc/udev/rules.d/99-chef.rules" do
