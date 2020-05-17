@@ -17,10 +17,12 @@
 # limitations under the License.
 #
 
-package "python"
-package "python-pip"
+if node[:lsb][:release].to_f < 20.04
+  package "python"
+  package "python-pip"
+end
 
 package "python3"
 package "python3-pip"
 
-package "python-virtualenv"
+package "virtualenv"
