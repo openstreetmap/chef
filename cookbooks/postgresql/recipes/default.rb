@@ -106,7 +106,7 @@ ohai_plugin "postgresql" do
   template "ohai.rb.erb"
 end
 
-package "ptop"
+package "pgtop"
 package "libdbd-pg-perl"
 
 clusters = node[:postgresql][:clusters] || []
