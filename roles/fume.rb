@@ -29,7 +29,7 @@ default_attributes(
     ]
   },
   :tilecache => {
-    :tile_parent => "pilsen.render.openstreetmap.org"
+    :tile_parent => "czechia.render.openstreetmap.org"
   }
 )
 
