@@ -29,6 +29,7 @@ include_recipe "incron"
 
 package %w[
   gcc
+  g++
   make
   autoconf
   automake
