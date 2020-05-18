@@ -23,10 +23,10 @@ include_recipe "apt"
 include_recipe "git"
 include_recipe "memcached"
 include_recipe "mysql"
+include_recipe "php::apache"
 
 # Mediawiki Base Requirements
 package %w[
-  php
   php-cli
   php-curl
   php-gd
@@ -86,9 +86,7 @@ service "parsoid" do
   subscribes :restart, "template[/etc/mediawiki/parsoid/config.yaml]"
 end
 
-apache_module "php7.2"
-
-link "/etc/php/7.2/apache2/conf.d/20-wikidiff2.ini" do
+link "/etc/php/#{node[:php][:version]}/apache2/conf.d/20-wikidiff2.ini" do
   to "../../mods-available/wikidiff2.ini"
 end
 

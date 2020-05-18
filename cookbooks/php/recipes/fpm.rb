@@ -1,8 +1,8 @@
 #
-# Cookbook:: wordpress
-# Recipe:: default
+# Cookbook:: php
+# Recipe:: fpm
 #
-# Copyright:: 2013, OpenStreetMap Foundation
+# Copyright:: 2020, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,27 +17,10 @@
 # limitations under the License.
 #
 
-include_recipe "accounts"
-include_recipe "apache"
-include_recipe "fail2ban"
-include_recipe "git"
-include_recipe "mysql"
-include_recipe "php::apache"
+include_recipe "php"
 
-package %w[
-  subversion
-  php-mysql
-]
+package "php-fpm"
 
-apache_module "rewrite"
-
-fail2ban_filter "wordpress" do
-  source "https://plugins.svn.wordpress.org/wp-fail2ban/trunk/filters.d/wordpress-hard.conf"
-end
-
-fail2ban_jail "wordpress" do
-  filter "wordpress"
-  logpath "/var/log/auth.log"
-  ports [80, 443]
-  maxretry 6
+service "php#{node[:php][:version]}-fpm" do
+  action [:enable, :start]
 end

@@ -28,16 +28,15 @@ include_recipe "memcached"
 include_recipe "munin"
 include_recipe "mysql"
 include_recipe "nodejs"
+include_recipe "php"
 include_recipe "postgresql"
 include_recipe "python"
 
 package %w[
-  php
   php-cgi
   php-cli
   php-curl
   php-db
-  php-fpm
   php-imagick
   php-mysql
   php-pear
@@ -90,21 +89,12 @@ apache_module "wsgi"
 
 package "apache2-suexec-pristine"
 
-service "php7.2-fpm" do
-  action [:enable, :start]
+php_fpm "default" do
+  template "fpm-default.conf.erb"
 end
 
-template "/etc/php/7.2/fpm/pool.d/default.conf" do
-  source "fpm-default.conf.erb"
-  owner "root"
-  group "root"
-  mode 0o644
-  notifies :reload, "service[php7.2-fpm]"
-end
-
-file "/etc/php/7.2/fpm/pool.d/www.conf" do
+php_fpm "www" do
   action :delete
-  notifies :reload, "service[php7.2-fpm]"
 end
 
 directory "/srv/dev.openstreetmap.org" do
@@ -163,13 +153,9 @@ search(:accounts, "*:*").each do |account|
 
   port = 7000 + account["uid"].to_i
 
-  template "/etc/php/7.2/fpm/pool.d/#{name}.conf" do
-    source "fpm.conf.erb"
-    owner "root"
-    group "root"
-    mode 0o644
+  php_fpm name do
+    template "fpm.conf.erb"
     variables :user => name, :port => port
-    notifies :reload, "service[php7.2-fpm]"
   end
 
   ssl_certificate "#{name}.dev.openstreetmap.org" do

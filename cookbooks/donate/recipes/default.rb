@@ -19,18 +19,16 @@
 
 include_recipe "accounts"
 include_recipe "apache"
-include_recipe "mysql"
 include_recipe "git"
+include_recipe "mysql"
+include_recipe "php::apache"
 
 package %w[
-  php
   php-cli
   php-curl
   php-mysql
   php-gd
 ]
-
-apache_module "php7.2"
 
 apache_module "headers"
 

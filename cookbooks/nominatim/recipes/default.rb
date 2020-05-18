@@ -19,6 +19,7 @@
 
 include_recipe "accounts"
 include_recipe "munin"
+include_recipe "php::fpm"
 
 basedir = data_bag_item("accounts", "nominatim")["home"]
 email_errors = data_bag_item("accounts", "lonvia")["email"]
@@ -167,8 +168,6 @@ package %w[
   python3-pyosmium
   pyosmium
   python3-psycopg2
-  php
-  php-fpm
   php-pgsql
   php-intl
 ]
@@ -322,19 +321,10 @@ end
   end
 end
 
-service "php7.2-fpm" do
-  action [:enable, :start]
-  supports :status => true, :restart => true, :reload => true
-end
-
 node[:nominatim][:fpm_pools].each do |name, data|
-  template "/etc/php/7.2/fpm/pool.d/#{name}.conf" do
-    source "fpm.conf.erb"
-    owner "root"
-    group "root"
-    mode 0o644
+  php_fpm name do
+    template "fpm.conf.erb"
     variables data.merge(:name => name)
-    notifies :reload, "service[php7.2-fpm]"
   end
 end
 

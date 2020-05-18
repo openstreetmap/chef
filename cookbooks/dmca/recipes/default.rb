@@ -18,8 +18,7 @@
 #
 
 include_recipe "apache"
-
-apache_module "php7.2"
+include_recipe "php::apache"
 
 directory "/srv/dmca.openstreetmap.org" do
   owner "root"

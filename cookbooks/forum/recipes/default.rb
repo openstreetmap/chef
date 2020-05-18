@@ -21,13 +21,13 @@ include_recipe "accounts"
 include_recipe "apache"
 include_recipe "git"
 include_recipe "mysql"
+include_recipe "php::apache"
 
 cache_dir = Chef::Config[:file_cache_path]
 
 passwords = data_bag_item("forum", "passwords")
 
 package %w[
-  php
   php-cli
   php-mysql
   php-xml
@@ -35,7 +35,6 @@ package %w[
   unzip
 ]
 
-apache_module "php7.2"
 apache_module "rewrite"
 
 ssl_certificate "forum.openstreetmap.org" do

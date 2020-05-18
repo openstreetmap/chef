@@ -63,6 +63,9 @@ jobs:
           - osqa
           - otrs
           - passenger
+          - php
+          - php-apache
+          - php-fpm
           - piwik
           - planet
           - planet-current

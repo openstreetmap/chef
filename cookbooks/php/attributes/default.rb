@@ -1,0 +1,1 @@
+default[:php][:version] = "7.2"

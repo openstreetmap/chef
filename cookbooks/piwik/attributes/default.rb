@@ -11,5 +11,3 @@ default[:piwik][:plugins] = %w[
   VisitFrequency VisitorInterest VisitsSummary VisitTime WebsiteMeasurable
   Widgetize
 ]
-
-override[:apache][:mpm] = "prefork"

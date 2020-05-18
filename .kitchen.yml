@@ -223,6 +223,15 @@ suites:
   - name: passenger
     run_list:
       - recipe[passenger::default]
+  - name: php
+    run_list:
+      - recipe[php::default]
+  - name: php-apache
+    run_list:
+      - recipe[php::apache]
+  - name: php-fpm
+    run_list:
+      - recipe[php::fpm]
   - name: piwik
     run_list:
       - recipe[piwik::default]

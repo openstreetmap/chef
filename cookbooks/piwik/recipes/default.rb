@@ -20,11 +20,11 @@
 include_recipe "apache"
 include_recipe "geoipupdate"
 include_recipe "mysql"
+include_recipe "php::apache"
 
 passwords = data_bag_item("piwik", "passwords")
 
 package %w[
-  php
   php-cli
   php-curl
   php-mbstring
@@ -36,7 +36,6 @@ package %w[
 ]
 
 apache_module "expires"
-apache_module "php7.2"
 apache_module "rewrite"
 
 version = node[:piwik][:version]
