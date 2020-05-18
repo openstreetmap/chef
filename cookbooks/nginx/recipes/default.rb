@@ -19,6 +19,7 @@
 
 include_recipe "apt"
 include_recipe "munin"
+include_recipe "ssl"
 
 package "nginx"
 

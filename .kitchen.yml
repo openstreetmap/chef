@@ -202,6 +202,9 @@ suites:
   - name: nodejs
     run_list:
       - recipe[nodejs::default]
+  - name: nominatim
+    run_list:
+      - recipe[nominatim::default]
   - name: ntp
     run_list:
       - recipe[ntp::default]

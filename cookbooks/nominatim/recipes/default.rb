@@ -17,6 +17,7 @@
 # limitations under the License.
 #
 
+include_recipe "accounts"
 include_recipe "munin"
 
 basedir = data_bag_item("accounts", "nominatim")["home"]
@@ -312,7 +313,7 @@ directory "#{basedir}/etc" do
   mode 0o775
 end
 
-%w[user_agent referer email].each do |name|
+%w[user_agent referrer email].each do |name|
   file "#{basedir}/etc/nginx_blocked_#{name}.conf" do
     action :create_if_missing
     owner "nominatim"

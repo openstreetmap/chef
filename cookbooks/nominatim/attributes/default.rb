@@ -1,7 +1,9 @@
 default[:nominatim][:state] = "off" # or: standalone, master, slave
 default[:nominatim][:dbadmins] = []
+default[:nominatim][:dbcluster] = "12/main"
 default[:nominatim][:dbname] = "nominatim"
 default[:nominatim][:tablespaces] = []
+default[:nominatim][:postgis] = "2.5"
 default[:nominatim][:logdir] = "/var/log/nominatim"
 default[:nominatim][:repository] = "https://git.openstreetmap.org/public/nominatim.git"
 default[:nominatim][:revision] = "master"
@@ -17,3 +19,7 @@ default[:nominatim][:fpm_pools] = {
 }
 
 default[:nominatim][:redirects] = {}
+
+default[:postgresql][:versions] |= [node[:nominatim][:dbcluster].split("/").first]
+
+default[:accounts][:users][:nominatim][:status] = :role
