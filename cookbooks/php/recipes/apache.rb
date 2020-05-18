@@ -17,8 +17,6 @@
 # limitations under the License.
 #
 
-node.override[:apache][:mpm] = "prefork"
-
 include_recipe "php"
 include_recipe "apache"
 
