@@ -33,6 +33,7 @@ package %w[
   make
   autoconf
   automake
+  pkg-config
   libxml2-dev
   libboost-dev
   libboost-program-options-dev
