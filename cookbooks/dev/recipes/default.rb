@@ -28,7 +28,7 @@ include_recipe "memcached"
 include_recipe "munin"
 include_recipe "mysql"
 include_recipe "nodejs"
-include_recipe "php"
+include_recipe "php::fpm"
 include_recipe "postgresql"
 include_recipe "python"
 
