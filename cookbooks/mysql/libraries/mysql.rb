@@ -85,7 +85,9 @@ module OpenStreetMap
     end
 
     def mysql_users
-      @mysql_users ||= query("SELECT * FROM user").each_with_object({}) do |user, users|
+      privilege_columns = USER_PRIVILEGES.collect { |privilege| "#{privilege}_priv" }.join(", ")
+
+      @mysql_users ||= query("SELECT user, host, #{privilege_columns} FROM user").each_with_object({}) do |user, users|
         name = "'#{user[:user]}'@'#{user[:host]}'"
 
         users[name] = USER_PRIVILEGES.each_with_object({}) do |privilege, privileges|
