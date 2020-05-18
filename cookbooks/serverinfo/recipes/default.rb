@@ -21,6 +21,9 @@ include_recipe "apache"
 include_recipe "git"
 
 package %w[
+  gcc
+  g++
+  make
   ruby
   ruby-dev
   libssl-dev

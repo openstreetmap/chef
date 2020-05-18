@@ -21,9 +21,14 @@ include_recipe "apache"
 include_recipe "git"
 
 package %w[
+  gcc
+  g++
+  make
   ruby
   ruby-dev
+  libssl-dev
   zlib1g-dev
+  pkg-config
 ]
 
 gem_package "bundler" do

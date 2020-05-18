@@ -291,6 +291,9 @@ end
 end
 
 package %w[
+  gcc
+  g++
+  make
   ruby
   ruby-dev
   libssl-dev
