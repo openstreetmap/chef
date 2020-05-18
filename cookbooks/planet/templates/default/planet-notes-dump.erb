@@ -33,7 +33,7 @@ if [ \! -d ${planet_dir}/notes/ ]
 if [ \! -d ${planet_dir}/notes/${cur_year}/ ]; then mkdir ${planet_dir}/notes/${cur_year}/; fi
 cd ${planet_dir}/notes/${cur_year}/
 
-/usr/bin/python /opt/planet-notes-dump/dump.py --quiet --database openstreetmap --host <%= node[:web][:readonly_database_host] %> --user planetdump --password '<%= @password %>' .${cur_planet_notes}
+/usr/bin/python3 /opt/planet-notes-dump/dump.py --quiet --database openstreetmap --host <%= node[:web][:readonly_database_host] %> --user planetdump --password '<%= @password %>' .${cur_planet_notes}
 pbzip2 -p6 -9 .${cur_planet_notes}
 
 planet_notes_size=$(du -sb .${cur_planet_notes}.bz2 | awk '{ print $1 }')

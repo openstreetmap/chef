@@ -23,8 +23,9 @@ db_passwords = data_bag_item("db", "passwords")
 
 package %w[
   pbzip2
-  python-psycopg2
-  python-lxml
+  python3
+  python3-psycopg2
+  python3-lxml
 ]
 
 directory "/opt/planet-notes-dump" do
