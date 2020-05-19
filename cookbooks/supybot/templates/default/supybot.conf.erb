@@ -58,7 +58,7 @@ supybot.networks.oftc.password:
 #
 # Default value: 
 ###
-supybot.networks.oftc.servers: irc.oftc.net:6667
+supybot.networks.oftc.servers: irc.oftc.net:6697
 
 ###
 # Determines what channels the bot will join only on oftc.
@@ -80,7 +80,7 @@ supybot.networks.oftc.channels.key:
 #
 # Default value: False
 ###
-supybot.networks.oftc.ssl: False
+supybot.networks.oftc.ssl: True
 
 ###
 # Determines how timestamps printed for human reading should be
@@ -1067,6 +1067,15 @@ supybot.databases.types.cdb: True
 # Default value: 0.5
 ###
 supybot.databases.types.cdb.maximumModifications: 0.5
+
+###
+# Determines whether server certificates will be verified, which
+# checks whether the server certificate is signed by a known certificate
+# authority, and aborts the connection if it is not.
+#
+# Default value: False
+###
+supybot.protocols.ssl.verifyCertificates: True
 
 ###
 # Determines what will be used as the default banmask style.
