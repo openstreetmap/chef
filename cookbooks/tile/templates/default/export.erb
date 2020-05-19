@@ -1,9 +1,9 @@
-#!/usr/bin/python -u
+#!/usr/bin/python3 -u
 # -*- coding: utf-8 -*-
 
 import cairo
 import cgi
-import Cookie
+import http.cookies
 import mapnik
 import os
 import pyotp
@@ -23,17 +23,17 @@ resource.setrlimit(resource.RLIMIT_AS,(4000000000, 4000000000))
 
 # Routine to output HTTP headers
 def output_headers(content_type, filename = "", length = 0):
-  print "Content-Type: %s" % content_type
+  print("Content-Type: %s" % content_type)
   if filename:
-    print "Content-Disposition: attachment; filename=\"%s\"" % filename
+    print("Content-Disposition: attachment; filename=\"%s\"" % filename)
   if length:
-    print "Content-Length: %d" % length
-  print ""
+    print("Content-Length: %d" % length)
+  print("")
 
 # Routine to output the contents of a file
 def output_file(file):
   file.seek(0)
-  shutil.copyfileobj(file, sys.stdout)
+  shutil.copyfileobj(file, sys.stdout.buffer)
 
 # Routine to get the size of a file
 def file_size(file):
@@ -41,17 +41,17 @@ def file_size(file):
 
 # Routine to report an error
 def output_error(message, status = "400 Bad Request"):
-  print "Status: %s" % status
+  print("Status: %s" % status)
   output_headers("text/html")
-  print "<html>"
-  print "<head>"
-  print "<title>Error</title>"
-  print "</head>"
-  print "<body>"
-  print "<h1>Error</h1>"
-  print "<p>%s</p>" % message
-  print "</body>"
-  print "</html>"
+  print("<html>")
+  print("<head>")
+  print("<title>Error</title>")
+  print("</head>")
+  print("<body>")
+  print("<h1>Error</h1>")
+  print("<p>%s</p>" % message)
+  print("</body>")
+  print("</html>")
 
 # Create TOTP token validator
 totp = pyotp.TOTP('<%= @totp_key %>', interval = 3600)
@@ -60,18 +60,18 @@ totp = pyotp.TOTP('<%= @totp_key %>', interval = 3600)
 form = cgi.FieldStorage()
 
 # Import cookies
-cookies = Cookie.SimpleCookie(os.environ.get('HTTP_COOKIE'))
+cookies = http.cookies.SimpleCookie(os.environ.get('HTTP_COOKIE'))
 
 # Make sure we have a user agent
-if not os.environ.has_key('HTTP_USER_AGENT'):
+if 'HTTP_USER_AGENT' not in os.environ:
   os.environ['HTTP_USER_AGENT'] = 'NONE'
 
 # Make sure we have a referer
-if not os.environ.has_key('HTTP_REFERER'):
+if 'HTTP_REFERER' not in os.environ:
   os.environ['HTTP_REFERER'] = 'NONE'
 
 # Look for TOTP token
-if cookies.has_key('_osm_totp_token'):
+if '_osm_totp_token' in cookies:
   token = cookies['_osm_totp_token'].value
 else:
   token = None
@@ -97,13 +97,13 @@ elif os.environ['HTTP_REFERER'] == '<%= referer %>':
   # Block scraper
   output_error("The server is too busy at the moment. Please wait a few minutes before trying again.", "503 Service Unavailable")
 <% end -%>
-elif not form.has_key("bbox"):
+elif "bbox" not in form:
   # No bounding box specified
   output_error("No bounding box specified")
-elif not form.has_key("scale"):
+elif "scale" not in form:
   # No scale specified
   output_error("No scale specified")
-elif not form.has_key("format"):
+elif "format" not in form:
   # No format specified
   output_error("No format specified")
 else:
@@ -152,13 +152,13 @@ else:
           mapnik.render(map, image)
           png = image.tostring("png")
           output_headers("image/png", "map.png", len(png))
-          sys.stdout.write(png)
+          sys.stdout.buffer.write(png)
         elif form.getvalue("format") == "jpeg":
           image = mapnik.Image(map.width, map.height)
           mapnik.render(map, image)
           jpeg = image.tostring("jpeg")
           output_headers("image/jpeg", "map.jpg", len(jpeg))
-          sys.stdout.write(jpeg)
+          sys.stdout.buffer.write(jpeg)
         elif form.getvalue("format") == "svg":
           file = tempfile.NamedTemporaryFile(prefix = "export")
           surface = cairo.SVGSurface(file.name, map.width, map.height)

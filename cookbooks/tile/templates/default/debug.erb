@@ -1,4 +1,4 @@
-#!/usr/bin/python -u
+#!/usr/bin/python3 -u
 # -*- coding: utf-8 -*-
 
 import cgi
@@ -22,35 +22,35 @@ resource.setrlimit(resource.RLIMIT_AS,(4000000000, 4000000000))
 
 # Routine to output HTTP headers
 def output_headers(content_type, filename = "", length = 0):
-  print "Cache-Control: no-cache, no-store, must-revalidate')"
-  print "Pragma: no-cache"
-  print "Expires: 0"
-  print "Content-Type: %s" % content_type
+  print("Cache-Control: no-cache, no-store, must-revalidate')")
+  print("Pragma: no-cache")
+  print("Expires: 0")
+  print("Content-Type: %s" % content_type)
   if filename:
-    print "Content-Disposition: attachment; filename=\"%s\"" % filename
+    print("Content-Disposition: attachment; filename=\"%s\"" % filename)
   if length:
-    print "Content-Length: %d" % length
-  print ""
+    print("Content-Length: %d" % length)
+  print("")
 
 # Routine to report an error
 def output_error(message):
   output_headers("text/html")
-  print "<html>"
-  print "<head>"
-  print "<title>Error</title>"
-  print "</head>"
-  print "<body>"
-  print "<h1>Error</h1>"
-  print "<p>%s</p>" % message
-  print "</body>"
-  print "</html>"
+  print("<html>")
+  print("<head>")
+  print("<title>Error</title>")
+  print("</head>")
+  print("<body>")
+  print("<h1>Error</h1>")
+  print("<p>%s</p>" % message)
+  print("</body>")
+  print("</html>")
 
 # Make sure we have a user agent
-if not os.environ.has_key('HTTP_USER_AGENT'):
+if 'HTTP_USER_AGENT' not in os.environ:
   os.environ['HTTP_USER_AGENT'] = 'NONE'
 
 # Get the cache server name
-if os.environ.has_key('HTTP_VIA'):
+if 'HTTP_VIA' in os.environ:
   cache_server = re.search('[a-z0-9-]+\.openstreetmap\.org', os.environ['HTTP_VIA']).group(0)
 else:
   cache_server = None
@@ -59,35 +59,35 @@ else:
 loadavg = float(open("/proc/loadavg").readline().split(" ")[0])
 
 output_headers("text/html")
-print "<html>"
-print "<head>"
-print "<title>tile.openstreetmap.org debug</title>"
-print "</head>"
-print "<body>"
-print "<h1>tile.openstreetmap.org debug</h1>"
-print "<h2>Server Stats</h2>"
+print("<html>")
+print("<head>")
+print("<title>tile.openstreetmap.org debug</title>")
+print("</head>")
+print("<body>")
+print("<h1>tile.openstreetmap.org debug</h1>")
+print("<h2>Server Stats</h2>")
 if cache_server:
-  print "<p><b>Cache Server</b>: %s</p>" % cache_server
-print "<p>"
-print "<b>Render Server</b>: <%= node['fqdn'] %><br />"
-print "<b>Load Average</b>: %s</p>" % loadavg
-print "<h2>File Status</h2>"
-print "<p>"
+  print("<p><b>Cache Server</b>: %s</p>" % cache_server)
+print("<p>")
+print("<b>Render Server</b>: <%= node['fqdn'] %><br />")
+print("<b>Load Average</b>: %s</p>" % loadavg)
+print("<h2>File Status</h2>")
+print("<p>")
 <%
 node[:tile][:data].each do |name,data|
   url = data[:url]
   file = "/srv/tile.openstreetmap.org/data/#{File.basename(url)}"
   file_basename = File.basename(url)
 -%>
-print "<b>%s</b> last modified: %s<br />" % ("<%= file_basename %>", time.ctime(os.path.getmtime("<%= file %>")))
+print("<b>%s</b> last modified: %s<br />" % ("<%= file_basename %>", time.ctime(os.path.getmtime("<%= file %>"))))
 <%
 end
 -%>
-print "</p>"
-print "<h2>Browser Request Headers</h2>"
-print "<p>"
-for param in os.environ.keys():
-  print "<b>%20s</b>: %s<br />" % (param, os.environ[param])
-print "</p>"
-print "</body>"
-print "</html>"
+print("</p>")
+print("<h2>Browser Request Headers</h2>")
+print("<p>")
+for param in sorted(os.environ):
+  print("<b>%20s</b>: %s<br />" % (param, os.environ[param]))
+print("</p>")
+print("</body>")
+print("</html>")

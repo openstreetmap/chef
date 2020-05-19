@@ -126,12 +126,14 @@ template "/srv/tile.openstreetmap.org/html/index.html" do
 end
 
 package %w[
-  python-cairo
-  python-mapnik
-  python-setuptools
+  python3-cairo
+  python3-mapnik
+  python3-setuptools
 ]
 
-python_package "pyotp"
+python_package "pyotp" do
+  python_version "3"
+end
 
 package %w[
   fonts-noto-cjk
