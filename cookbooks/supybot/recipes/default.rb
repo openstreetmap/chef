@@ -22,8 +22,8 @@ include_recipe "accounts"
 users = data_bag_item("supybot", "users")
 passwords = data_bag_item("supybot", "passwords")
 
-package "supybot"
-package "python-git"
+package "limnoria"
+package "python3-git"
 
 directory "/etc/supybot" do
   owner "supybot"

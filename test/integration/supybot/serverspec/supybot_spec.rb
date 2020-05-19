@@ -3,7 +3,7 @@ require "serverspec"
 # Required by serverspec
 set :backend, :exec
 
-describe package("supybot") do
+describe package("limnoria") do
   it { should be_installed }
 end
 
