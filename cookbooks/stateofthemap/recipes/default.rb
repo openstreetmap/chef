@@ -312,6 +312,12 @@ gem_package "bundler" do
   version "2.1.4"
 end
 
+directory "/srv/stateofthemap.org-vendor-bundle" do
+  owner "root"
+  group "root"
+  mode 0o755
+end
+
 %w[2016 2017 2018 2019 2020].each do |year|
   git "/srv/#{year}.stateofthemap.org" do
     action :sync
@@ -334,6 +340,20 @@ end
     mode 0o755
     owner "nobody"
     group "nogroup"
+  end
+
+  directory "/srv/#{year}.stateofthemap.org/vendor" do
+    mode 0o755
+    owner "root"
+    group "root"
+  end
+
+  link "/srv/#{year}.stateofthemap.org/vendor/bundle" do
+    to "/srv/stateofthemap.org-vendor-bundle"
+    mode 0o755
+    owner "root"
+    group "root"
+    only_if { ::File.exist?("/srv/#{year}.stateofthemap.org/Gemfile") }
   end
 
   execute "/srv/#{year}.stateofthemap.org/Gemfile" do
