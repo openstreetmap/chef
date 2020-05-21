@@ -5,6 +5,13 @@ default_attributes(
   :hardware => {
     :shm_size => "6g"
   },
+  :munin => {
+    :plugins => {
+      "diskstats_latency.sdd" => {
+        :avgrdwait => { :warning => "0:30" }
+      }
+    }
+  },
   :networking => {
     :interfaces => {
       :external_ipv4 => {
