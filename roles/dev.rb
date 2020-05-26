@@ -118,6 +118,10 @@ default_attributes(
         :repository => "https://github.com/tomhughes/openstreetmap-website.git",
         :revision => "locale"
       },
+      :microsms => {
+        :repository => "https://github.com/openbrian/osm-microcosms.git",
+        :revision => "microcosms"
+      },
       :upload => {
         :repository => "https://git.openstreetmap.org/public/rails.git",
         :revision => "master",
