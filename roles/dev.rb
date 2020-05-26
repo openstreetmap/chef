@@ -118,7 +118,7 @@ default_attributes(
         :repository => "https://github.com/tomhughes/openstreetmap-website.git",
         :revision => "locale"
       },
-      :microsms => {
+      :microcosms => {
         :repository => "https://github.com/openbrian/osm-microcosms.git",
         :revision => "microcosms"
       },
