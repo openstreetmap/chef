@@ -178,9 +178,9 @@ search(:accounts, "*:*").each do |account|
   end
 end
 
-if node[:postgresql][:clusters][:"9.5/main"]
+if node[:postgresql][:clusters][:"12/main"]
   postgresql_user "apis" do
-    cluster "9.5/main"
+    cluster "12/main"
   end
 
   template "/usr/local/bin/cleanup-rails-assets" do
@@ -240,12 +240,12 @@ if node[:postgresql][:clusters][:"9.5/main"]
       node.normal[:dev][:rails][name][:secret_key_base] = secret_key_base
 
       postgresql_database database_name do
-        cluster "9.5/main"
+        cluster "12/main"
         owner "apis"
       end
 
       postgresql_extension "#{database_name}_btree_gist" do
-        cluster "9.5/main"
+        cluster "12/main"
         database database_name
         extension "btree_gist"
       end
@@ -287,7 +287,7 @@ if node[:postgresql][:clusters][:"9.5/main"]
         group "apis"
         repository details[:repository]
         revision details[:revision]
-        database_port node[:postgresql][:clusters][:"9.5/main"][:port]
+        database_port node[:postgresql][:clusters][:"12/main"][:port]
         database_name database_name
         database_username "apis"
         gpx_dir gpx_directory
@@ -358,7 +358,7 @@ if node[:postgresql][:clusters][:"9.5/main"]
           group "root"
           mode 0o640
           variables :cgimap_port => cgimap_port,
-                    :database_port => node[:postgresql][:clusters][:"9.5/main"][:port],
+                    :database_port => node[:postgresql][:clusters][:"12/main"][:port],
                     :database_name => database_name,
                     :log_directory => log_directory
           notifies :restart, "service[cgimap@#{name}]"
@@ -422,7 +422,7 @@ if node[:postgresql][:clusters][:"9.5/main"]
 
       postgresql_database database_name do
         action :drop
-        cluster "9.5/main"
+        cluster "12/main"
       end
 
       node.normal[:dev][:rails].delete(name)
