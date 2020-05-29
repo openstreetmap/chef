@@ -48,10 +48,12 @@ node[:networking][:interfaces].each do |name, interface|
       node.normal[:networking][:interfaces][name][:zone] = role[:zone]
     end
 
-    prefix = node[:networking][:interfaces][name][:prefix]
+    if interface[:address]
+      prefix = node[:networking][:interfaces][name][:prefix]
 
-    node.normal[:networking][:interfaces][name][:netmask] = (~IPAddr.new(interface[:address]).mask(0)).mask(prefix)
-    node.normal[:networking][:interfaces][name][:network] = IPAddr.new(interface[:address]).mask(prefix)
+      node.normal[:networking][:interfaces][name][:netmask] = (~IPAddr.new(interface[:address]).mask(0)).mask(prefix)
+      node.normal[:networking][:interfaces][name][:network] = IPAddr.new(interface[:address]).mask(prefix)
+    end
 
     interface = node[:networking][:interfaces][name]
 
@@ -77,7 +79,9 @@ node[:networking][:interfaces].each do |name, interface|
                    }
                  end
 
-    deviceplan["addresses"].push("#{interface[:address]}/#{prefix}")
+    if interface[:address]
+      deviceplan["addresses"].push("#{interface[:address]}/#{prefix}")
+    end
 
     if interface[:mtu]
       deviceplan["mtu"] = interface[:mtu]
