@@ -6,6 +6,8 @@ class Chef
       interfaces(options).each do |interface|
         address = interface[:public_address] || interface[:address]
 
+        next if address.nil?
+
         if block.nil?
           addresses << address
         else
