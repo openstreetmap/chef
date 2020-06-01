@@ -47,6 +47,7 @@ SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x14e4", ATTRS{device}=="0x165f
 
 # Disable scatter-gather offload for HP NC362i network controllers
 SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x10c9", ATTRS{subsystem_vendor}=="0x103c", ATTRS{subsystem_device}=="0x323f", RUN+="/sbin/ethtool -K $name gso off tso off sg off gro off"
+SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x10c9", ATTRS{subsystem_vendor}=="0x103c", ATTRS{subsystem_device}=="0x323f", RUN+="/sbin/ethtool -G $name rx 4096 tx 4096"
 # Ethernet controller: Intel Corporation 82574L Gigabit Network Connection
 SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x10d3", RUN+="/sbin/ethtool -G $name rx 4096 tx 4096"
 # Fix Power Saving Bug on Intel 82574L and Intel 82583 network controllers
