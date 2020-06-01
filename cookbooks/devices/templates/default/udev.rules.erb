@@ -37,11 +37,14 @@ SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x10ec", ATTRS{device}=="0x8168
 
 # Ethernet controller: Mellanox Technologies MT27710 Family [ConnectX-4 Lx]
 SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x15b3", ATTRS{device}=="0x1015", RUN+="/sbin/ethtool -G $name rx 8192 tx 8192"
+
 # Ethernet controller: Broadcom Inc. and subsidiaries NetXtreme II BCM5709 Gigabit Ethernet
 SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x14e4", ATTRS{device}=="0x1639", RUN+="/sbin/ethtool -G $name rx 2040"
 # Ethernet controller: Broadcom Inc. and subsidiaries NetXtreme BCM5719 Gigabit Ethernet PCIe
 # Hewlett-Packard Company Ethernet 1Gb 4-port 331i Adapter
 SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x14e4", ATTRS{device}=="0x1657", RUN+="/sbin/ethtool -G $name rx 2047"
+# Ethernet controller: Broadcom Inc. and subsidiaries NetXtreme BCM5721 Gigabit Ethernet PCI Express
+SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x14e4", ATTRS{device}=="0x1659", RUN+="/sbin/ethtool -G $name rx 511"
 # Ethernet controller: Broadcom Inc. and subsidiaries NetXtreme BCM5720 2-port Gigabit Ethernet PCIe
 SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x14e4", ATTRS{device}=="0x165f", RUN+="/sbin/ethtool -G $name rx 2047"
 
