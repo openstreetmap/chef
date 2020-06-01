@@ -32,8 +32,8 @@ ACTION=="add", SUBSYSTEM=="block", ENV{ID_BUS}=="<%= device[:bus] %>", ENV{ID_SE
 <% end -%>
 <% end -%>
 
-# Disable scatter-gather offload for HP NC362i network controllers
-SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x10c9", ATTRS{subsystem_vendor}=="0x103c", ATTRS{subsystem_device}=="0x323f", RUN+="/sbin/ethtool -K $name gso off tso off sg off gro off"
+# Ethernet controller: Realtek Semiconductor Co., Ltd. RTL8111/8168/8411 PCI Express Gigabit Ethernet Controller
+SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x10ec", ATTRS{device}=="0x8168", RUN+="/sbin/ethtool -K $name tso off gso off"
 
 # Ethernet controller: Mellanox Technologies MT27710 Family [ConnectX-4 Lx]
 SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x15b3", ATTRS{device}=="0x1015", RUN+="/sbin/ethtool -G $name rx 8192 tx 8192"
@@ -44,8 +44,16 @@ SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x14e4", ATTRS{device}=="0x1639
 SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x14e4", ATTRS{device}=="0x1657", RUN+="/sbin/ethtool -G $name rx 2047"
 # Ethernet controller: Broadcom Inc. and subsidiaries NetXtreme BCM5720 2-port Gigabit Ethernet PCIe
 SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x14e4", ATTRS{device}=="0x165f", RUN+="/sbin/ethtool -G $name rx 2047"
-# Ethernet controller: Realtek Semiconductor Co., Ltd. RTL8111/8168/8411 PCI Express Gigabit Ethernet Controller
-SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x10ec", ATTRS{device}=="0x8168", RUN+="/sbin/ethtool -K $name tso off gso off"
+
+# Disable scatter-gather offload for HP NC362i network controllers
+SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x10c9", ATTRS{subsystem_vendor}=="0x103c", ATTRS{subsystem_device}=="0x323f", RUN+="/sbin/ethtool -K $name gso off tso off sg off gro off"
+# Ethernet controller: Intel Corporation 82574L Gigabit Network Connection
+SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x10d3", RUN+="/sbin/ethtool -G $name rx 4096 tx 4096"
+# Fix Power Saving Bug on Intel 82574L and Intel 82583 network controllers
+SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x10d3", RUN+="/usr/local/bin/fixeep-82574_83.sh $name"
+SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x10f6", RUN+="/usr/local/bin/fixeep-82574_83.sh $name"
+SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x150c", RUN+="/usr/local/bin/fixeep-82574_83.sh $name"
+
 # Ethernet controller: Intel Corporation I350 Gigabit Network Connection
 SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x1521", RUN+="/sbin/ethtool -G $name rx 4096 tx 4096"
 # Ethernet controller: Intel Corporation Ethernet Controller 10-Gigabit X540-AT2
@@ -54,11 +62,6 @@ SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x1528
 SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x1533", RUN+="/sbin/ethtool -G $name rx 4096 tx 4096"
 # Ethernet controller: Intel Corporation Ethernet Controller 10G X550T
 SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x1563", RUN+="/sbin/ethtool -G $name rx 4096 tx 4096"
-
-# Fix Power Saving Bug on Intel 82574L and Intel 82583 network controllers
-SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x10d3", RUN+="/usr/local/bin/fixeep-82574_83.sh $name"
-SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x10f6", RUN+="/usr/local/bin/fixeep-82574_83.sh $name"
-SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x150c", RUN+="/usr/local/bin/fixeep-82574_83.sh $name"
 
 # Workaround unreliable Western Digital WD RE3/RE4 disks (ATA only)
 # Set sufficent Linux subsystem timeout and fix severe NCQ performance issue
