@@ -39,7 +39,10 @@ SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x10ec", ATTRS{device}=="0x8168
 SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x15b3", ATTRS{device}=="0x1015", RUN+="/sbin/ethtool -G $name rx 8192 tx 8192"
 
 # Ethernet controller: Broadcom Inc. and subsidiaries NetXtreme II BCM5709 Gigabit Ethernet
+# Hewlett-Packard Company NC382i Integrated Multi-port PCI Express Gigabit Server Adapter
 SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x14e4", ATTRS{device}=="0x1639", RUN+="/sbin/ethtool -G $name rx 2040"
+# Ethernet controller: Broadcom Inc. and subsidiaries NetXtreme II BCM5708 Gigabit Ethernet
+SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x14e4", ATTRS{device}=="0x164c", RUN+="/sbin/ethtool -G $name rx 2040"
 # Ethernet controller: Broadcom Inc. and subsidiaries NetXtreme BCM5719 Gigabit Ethernet PCIe
 # Hewlett-Packard Company Ethernet 1Gb 4-port 331i Adapter
 SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x14e4", ATTRS{device}=="0x1657", RUN+="/sbin/ethtool -G $name rx 2047"
@@ -48,6 +51,12 @@ SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x14e4", ATTRS{device}=="0x1659
 # Ethernet controller: Broadcom Inc. and subsidiaries NetXtreme BCM5720 2-port Gigabit Ethernet PCIe
 SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x14e4", ATTRS{device}=="0x165f", RUN+="/sbin/ethtool -G $name rx 2047"
 
+# Ethernet controller: Intel Corporation 82571EB/82571GB Gigabit Ethernet Controller D0/D1 (copper applications)
+SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x105e", RUN+="/sbin/ethtool -G $name rx 4096 tx 4096"
+# Ethernet controller: Intel Corporation 80003ES2LAN Gigabit Ethernet Controller (Copper)
+SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x1096", RUN+="/sbin/ethtool -G $name rx 4096 tx 4096"
+# Ethernet controller: Intel Corporation 82575EB Gigabit Network Connection
+SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x10a7", RUN+="/sbin/ethtool -G $name rx 4096 tx 4096"
 # Disable scatter-gather offload for HP NC362i network controllers
 SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x10c9", ATTRS{subsystem_vendor}=="0x103c", ATTRS{subsystem_device}=="0x323f", RUN+="/sbin/ethtool -K $name gso off tso off sg off gro off"
 SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x10c9", ATTRS{subsystem_vendor}=="0x103c", ATTRS{subsystem_device}=="0x323f", RUN+="/sbin/ethtool -G $name rx 4096 tx 4096"
@@ -58,6 +67,8 @@ SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x10d3
 SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x10f6", RUN+="/usr/local/bin/fixeep-82574_83.sh $name"
 SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x150c", RUN+="/usr/local/bin/fixeep-82574_83.sh $name"
 
+# Ethernet controller: Intel Corporation 82580 Gigabit Network Connection
+SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x150e", RUN+="/sbin/ethtool -G $name rx 4096 tx 4096"
 # Ethernet controller: Intel Corporation I350 Gigabit Network Connection
 SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x1521", RUN+="/sbin/ethtool -G $name rx 4096 tx 4096"
 # Ethernet controller: Intel Corporation Ethernet Controller 10-Gigabit X540-AT2
@@ -66,6 +77,8 @@ SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x1528
 SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x1533", RUN+="/sbin/ethtool -G $name rx 4096 tx 4096"
 # Ethernet controller: Intel Corporation Ethernet Controller 10G X550T
 SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x1563", RUN+="/sbin/ethtool -G $name rx 4096 tx 4096"
+# Ethernet controller: Intel Corporation Ethernet Connection X722 for 10GBASE-T
+SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x37d2", RUN+="/sbin/ethtool -G $name rx 4096 tx 4096"
 
 # Workaround unreliable Western Digital WD RE3/RE4 disks (ATA only)
 # Set sufficent Linux subsystem timeout and fix severe NCQ performance issue
