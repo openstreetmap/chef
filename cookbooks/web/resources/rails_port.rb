@@ -19,7 +19,7 @@
 
 require "yaml"
 
-resource_name :rails_port
+provides :rails_port
 
 default_action :create
 
