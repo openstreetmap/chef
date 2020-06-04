@@ -77,6 +77,13 @@ apache_site "blogs.openstreetmap.org" do
   variables :aliases => ["blogs.osm.org"]
 end
 
+template "/usr/local/bin/blogs-update" do
+  source "blogs-update.erb"
+  owner "root"
+  group "root"
+  mode "0755"
+end
+
 template "/etc/cron.d/blogs" do
   source "cron.erb"
   owner "root"

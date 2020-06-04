@@ -1,0 +1,18 @@
+#!/bin/sh
+
+cd /srv/blogs.openstreetmap.org
+
+bundle exec pluto \
+       --quieter \
+       --config=/srv/blogs.openstreetmap.org build \
+       --dbpath=/srv/blogs.openstreetmap.org \
+       --template=osm \
+       --output=/srv/blogs.openstreetmap.org/build \
+       /srv/blogs.openstreetmap.org/planet.ini > log.$$ 2>&1
+
+if [ $? -ne 0 ]
+then
+    cat log.$$
+fi
+
+rm -f log.$$
