@@ -30,7 +30,11 @@ else
     supports :status => false, :restart => true, :reload => false
   end
 
-  template "/etc/sysfs.conf" do
+  file "/etc/sysfs.conf" do
+    action :delete
+  end
+
+  template "/etc/sysfs.d/99-chef.conf" do
     source "sysfs.conf.erb"
     owner "root"
     group "root"
