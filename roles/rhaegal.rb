@@ -29,7 +29,7 @@ default_attributes(
   :networking => {
     :interfaces => {
       :external_ipv4 => {
-        :interface => "enp1s0f0",
+        :interface => "eno1",
         :role => :external,
         :family => :inet,
         :address => "10.5.0.77",
