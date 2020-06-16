@@ -28,6 +28,14 @@ service "ssh" do
   supports :status => true, :restart => true, :reload => true
 end
 
+file "/etc/ssh/ssh_host_dsa_key" do
+  action :delete
+end
+
+file "/etc/ssh/ssh_host_dsa_key.pub" do
+  action :delete
+end
+
 hosts = search(:node, "networking:interfaces").sort_by { |n| n[:hostname] }.collect do |node|
   name = node.name.split(".").first
 
@@ -42,8 +50,7 @@ hosts = search(:node, "networking:interfaces").sort_by { |n| n[:hostname] }.coll
   end
 
   keys = {
-    "ssh-rsa" => node[:keys][:ssh][:host_rsa_public],
-    "ssh-dss" => node[:keys][:ssh][:host_dsa_public]
+    "ssh-rsa" => node[:keys][:ssh][:host_rsa_public]
   }
 
   if node[:keys][:ssh][:host_ecdsa_public]
