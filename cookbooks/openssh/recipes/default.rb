@@ -28,14 +28,6 @@ service "ssh" do
   supports :status => true, :restart => true, :reload => true
 end
 
-file "/etc/ssh/ssh_host_dsa_key" do
-  action :delete
-end
-
-file "/etc/ssh/ssh_host_dsa_key.pub" do
-  action :delete
-end
-
 hosts = search(:node, "networking:interfaces").sort_by { |n| n[:hostname] }.collect do |node|
   name = node.name.split(".").first
 
@@ -68,13 +60,6 @@ hosts = search(:node, "networking:interfaces").sort_by { |n| n[:hostname] }.coll
     :addresses => node.ipaddresses.sort,
     :keys => keys
   ]
-end
-
-template "/etc/ssh/ssh_config" do
-  source "ssh_config.erb"
-  mode 0o644
-  owner "root"
-  group "root"
 end
 
 template "/etc/ssh/ssh_known_hosts" do
