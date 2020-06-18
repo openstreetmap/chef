@@ -29,13 +29,13 @@ package %w[
   parallel
   rsync
   perl
+  libdigest-sha-perl
+  libjson-xs-perl
+  libwww-perl
   libxml-treebuilder-perl
   libxml-writer-perl
   libyaml-libyaml-perl
-  libwww-perl
-  libjson-xs-perl
   lockfile-progs
-  sshfp
 ]
 
 remote_file "/usr/local/bin/dnscontrol" do
