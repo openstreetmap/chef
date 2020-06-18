@@ -5,4 +5,8 @@ export STATUSCAKE_USERNAME="OpenStreetMap"
 export STATUSCAKE_APIKEY="<%= @passwords["statuscake"] %>"
 export PATH=/usr/local/bin:$PATH
 
+lockfile-create --use-pid /var/lib/dns/update || exit 1
+
 make --quiet --jobs --directory=/var/lib/dns update > /dev/null
+
+lockfile-remove /var/lib/dns/update

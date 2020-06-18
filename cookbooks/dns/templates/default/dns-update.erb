@@ -11,6 +11,8 @@ export PATH=/usr/local/bin:$PATH
 
 cd /var/lib/dns
 
+lockfile-create --use-pid update || exit 1
+
 if [ ! -d .git ]
 then
   git clone /var/lib/git/public/dns.git /var/lib/dns
@@ -19,3 +21,5 @@ fi
 git pull -q
 
 make --jobs update
+
+lockfile-remove update

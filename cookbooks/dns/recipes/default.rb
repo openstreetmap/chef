@@ -34,6 +34,7 @@ package %w[
   libyaml-libyaml-perl
   libwww-perl
   libjson-xs-perl
+  lockfile-progs
   sshfp
 ]
 
