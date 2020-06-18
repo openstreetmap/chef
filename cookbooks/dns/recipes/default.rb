@@ -31,7 +31,7 @@ package %w[
   perl
   libxml-treebuilder-perl
   libxml-writer-perl
-  libyaml-perl
+  libyaml-libyaml-perl
   libwww-perl
   libjson-xs-perl
   sshfp
