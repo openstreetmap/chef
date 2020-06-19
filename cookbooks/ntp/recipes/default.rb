@@ -62,3 +62,11 @@ service "chrony" do
 end
 
 munin_plugin "chrony"
+
+# chrony occasionally marks all servers offline during a network outage.
+# force online all sources during a chef run
+execute "chronyc-online" do
+  command "/usr/bin/chronyc online"
+  user "root"
+  group "root"
+end

@@ -6,8 +6,8 @@ pool <%= server %> iburst
 <% end -%>
 # Add additional non-pool NTP servers
 # pool.ntp.org can sometimes be aggressive with KoD
-pool time.cloudflare.com iburst maxsources 2
-pool time.google.com iburst maxsources 2
+pool time.cloudflare.com iburst
+pool time.google.com iburst
 
 # Run an initial NTP sync on daemon startup
 initstepslew 30 time.cloudflare.com time.google.com <%= node[:ntp][:servers].join(" ") %>
