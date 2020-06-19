@@ -69,4 +69,5 @@ execute "chronyc-online" do
   command "/usr/bin/chronyc online"
   user "root"
   group "root"
+  ignore_failure true
 end
