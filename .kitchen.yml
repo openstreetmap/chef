@@ -2,6 +2,8 @@
 driver:
   name: dokken
   chef_version: 15
+  env:
+    - container=dokken
 
 transport:
   name: dokken
