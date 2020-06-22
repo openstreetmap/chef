@@ -12,7 +12,7 @@ default_attributes(
     :clients6 => ["2a03:9180::/32", "2001:7f8:47::/48"],
     :community => "lyonix",
     :location => "LYON",
-    :contact => "noc@lyonix.net"
+    :contact => "sysadm@rezopole.net"
   }
 )
 
