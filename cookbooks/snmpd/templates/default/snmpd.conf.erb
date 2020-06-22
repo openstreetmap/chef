@@ -1,6 +1,9 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
-rocommunity     <%= @communities[node[:snmpd][:community]] %>
+<% @communities[node[:snmpd][:community]].each do |community| -%>  
+rocommunity     <%= community %>
+rocommunity6    <%= community %>
+<% end -%>
 syslocation     <%= node[:snmpd][:location] %>
 <% if node[:snmpd][:contact] -%>
 syscontact      <%= node[:snmpd][:contact] %>
