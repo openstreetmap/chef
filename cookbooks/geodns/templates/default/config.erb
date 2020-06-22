@@ -1,4 +1,5 @@
 options => {
+  include_optional_ns = true
   listen => [ <%= node.ipaddresses(:role => :external).join(", ") %> ]
 }
         
