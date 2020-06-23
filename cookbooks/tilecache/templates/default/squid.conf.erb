@@ -38,8 +38,10 @@ acl tile_caches src <%= address %>
 # Primary Parent
 <% if node[:squid][:version] < 4 -%>
 cache_peer <%= node[:tilecache][:tile_parent] %> parent 443 0 no-query originserver name=osmtileAccel login=PASS connect-timeout=120 no-digest weight=1000 ssl ssldomain=render.openstreetmap.org
-<% else -%>
+<% elif node[:lsb][:release].to_f < 20.04 -%>
 cache_peer <%= node[:tilecache][:tile_parent] %> parent 443 0 no-query originserver name=osmtileAccel login=PASS connect-timeout=120 no-digest weight=1000 tls tlsdomain=render.openstreetmap.org
+<% else -%>
+cache_peer <%= node[:tilecache][:tile_parent] %> parent 443 0 no-query originserver name=osmtileAccel login=PASS connect-timeout=120 no-digest weight=1000 tls tlsdomain=render.openstreetmap.org tls-options=NORMAL:-VERS-TLS1.3
 <% end -%>
 cache_peer_access osmtileAccel allow osmtile_sites
 
@@ -47,8 +49,10 @@ cache_peer_access osmtileAccel allow osmtile_sites
 <% @renders.each do |renders| -%>
 <% if node[:squid][:version] < 4 -%>
 cache_peer <%= renders[:hostname] %>.render.openstreetmap.org parent 443 0 no-query originserver name=osmtileAccelBackup<%= renders[:hostname] %> login=PASS connect-timeout=60 no-digest weight=10 ssl ssldomain=render.openstreetmap.org
-<% else -%>
+<% elif node[:lsb][:release].to_f < 20.04 -%>
 cache_peer <%= renders[:hostname] %>.render.openstreetmap.org parent 443 0 no-query originserver name=osmtileAccelBackup<%= renders[:hostname] %> login=PASS connect-timeout=60 no-digest weight=10 tls tlsdomain=render.openstreetmap.org
+<% else -%>
+cache_peer <%= renders[:hostname] %>.render.openstreetmap.org parent 443 0 no-query originserver name=osmtileAccelBackup<%= renders[:hostname] %> login=PASS connect-timeout=60 no-digest weight=10 tls tlsdomain=render.openstreetmap.org tls-options=NORMAL:-VERS-TLS1.3
 <% end -%>
 cache_peer_access osmtileAccelBackup<%= renders[:hostname] %> allow osmtile_sites
 <% end -%>
