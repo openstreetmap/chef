@@ -90,22 +90,19 @@ end
 
 address_families = %w[AF_UNIX AF_INET AF_INET6]
 
+file "/etc/systemd/system/squid.service" do
+  action :delete
+end
+
 systemd_service "squid" do
-  description "Squid caching proxy"
-  after ["network.target", "nss-lookup.target"]
-  type "forking"
+  dropin "chef"
   limit_nofile 98304
-  exec_start_pre "/usr/sbin/squid --foreground -z"
-  exec_start "/usr/sbin/squid -YC"
-  exec_reload "/bin/kill -HUP $MAINPID"
-  pid_file "/var/run/squid.pid"
   private_tmp true
   private_devices true
   protect_system "full"
   protect_home true
   restrict_address_families address_families
   restart "always"
-  kill_mode "mixed"
 end
 
 service "squid" do
