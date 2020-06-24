@@ -36,7 +36,7 @@ default_attributes(
     ]
   },
   :tilecache => {
-    :tile_parent => "wellington.render.openstreetmap.org"
+    :tile_parent => "newzealand.render.openstreetmap.org"
   }
 )
 
