@@ -74,3 +74,11 @@ end
 service "cron" do
   action [:enable, :start]
 end
+
+# Ubuntu MOTD adverts be-gone
+template "/etc/default/motd-news" do
+  source "motd-news.erb"
+  owner "root"
+  group "root"
+  mode 0o644
+end
