@@ -93,6 +93,9 @@ suites:
   - name: dmca
     run_list:
       - recipe[dmca::default]
+  - name: dns
+    run_list:
+      - recipe[dns::default]
   - name: docker
     run_list:
       - recipe[docker::default]

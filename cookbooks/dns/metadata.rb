@@ -6,5 +6,6 @@ description       "Configure DNS management"
 
 version           "1.0.0"
 supports          "ubuntu"
-depends           "git"
+depends           "accounts"
 depends           "apache"
+depends           "git"

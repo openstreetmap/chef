@@ -17,8 +17,9 @@
 # limitations under the License.
 #
 
-include_recipe "git"
+include_recipe "accounts"
 include_recipe "apache"
+include_recipe "git"
 
 geoservers = search(:node, "roles:geodns").collect(&:name).sort
 
@@ -132,6 +133,7 @@ cookbook_file "#{node[:dns][:repository]}/hooks/post-receive" do
   owner "git"
   group "git"
   mode 0o750
+  only_if { ::Dir.exist?("#{node[:dns][:repository]}/hooks") }
 end
 
 template "/usr/local/bin/dns-check" do
