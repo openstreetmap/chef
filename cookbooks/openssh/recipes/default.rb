@@ -23,6 +23,15 @@ include_recipe "networking"
 package "openssh-client"
 package "openssh-server"
 
+template "/etc/ssh/sshd_config.d/chef.conf" do
+  source "sshd_config.conf.erb"
+  owner "root"
+  group "root"
+  mode 0o644
+  notifies :restart, "service[ssh]"
+  only_if { Dir.exist?("/etc/ssh/sshd_config.d") }
+end
+
 service "ssh" do
   action [:enable, :start]
   supports :status => true, :restart => true, :reload => true
