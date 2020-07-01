@@ -2,7 +2,7 @@
 
 # DO NOT EDIT - This file is being maintained by Chef
 
-for prefix in chef-server chef-repository chef-git forum git lists munin osm-blog osm-donate osmf-crm osmf-ledgersmb wiki-wiki.osmfoundation.org osqa otrs sotm svn switch2osm trac wiki-board.osmfoundation.org wiki-dwg.osmfoundation.org wiki-wiki.openstreetmap.org
+for prefix in chef-server chef-repository chef-git forum git lists munin osm-blog osm-donate osmf-crm osmf-ledgersmb wiki-wiki.osmfoundation.org osqa otrs sotm svn switch2osm trac wiki-board.osmfoundation.org wiki-dwg.osmfoundation.org wiki-mwg.osmfoundation.org wiki-wiki.openstreetmap.org
 do
   /usr/local/bin/expire-backups --days=3 --weeks=3 --months=3 /store/backup $prefix
 done
