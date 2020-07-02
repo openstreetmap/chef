@@ -7,7 +7,7 @@ MAP
     MIMETYPE "image/png"
     IMAGEMODE RGB
     EXTENSION "png"
-    FORMATOPTION "COMPRESSION=9"
+    FORMATOPTION "COMPRESSION=6"
     FORMATOPTION "PALETTE_FORCE=on"
     FORMATOPTION "PALETTE=/srv/imagery/common/ossv-palette.txt"
   END
@@ -19,7 +19,19 @@ MAP
     MIMETYPE "image/png"
     IMAGEMODE RGBA
     EXTENSION "png"
-    FORMATOPTION "COMPRESSION=9"
+    FORMATOPTION "COMPRESSION=6"
+  END
+<% end -%>
+<% if @extension == "os_om_local_png" -%>
+  OUTPUTFORMAT
+    NAME "os_om_local_png"
+    DRIVER AGG/PNG
+    MIMETYPE "image/png"
+    IMAGEMODE RGB
+    EXTENSION "png"
+    FORMATOPTION "COMPRESSION=6"
+    FORMATOPTION "PALETTE_FORCE=on"
+    FORMATOPTION "PALETTE=/srv/imagery/common/os-openmap-local-palette.txt"
   END
 <% end -%>
 

@@ -26,6 +26,13 @@ cookbook_file "/srv/imagery/common/ossv-palette.txt" do
   mode "0644"
 end
 
+cookbook_file "/srv/imagery/common/os-openmap-local-palette.txt" do
+  source "os-openmap-local-palette.txt"
+  owner "root"
+  group "root"
+  mode "0644"
+end
+
 cookbook_file "/srv/imagery/common/osstvw_process" do
   source "osstvw_process"
   owner "root"
@@ -1052,10 +1059,10 @@ end
 
 imagery_layer "gb_os_om_local_2020_04" do
   site "os.openstreetmap.org"
-  title "Testing OS OpenMap Local"
+  title "OS OpenMap Local - April 2020"
   projection "EPSG:27700"
-  source "/data/imagery/gb/openmap-local/2020-04/os-openmap-local-2020-04-combined-auto.vrt"
+  source "/data/imagery/gb/openmap-local/2020-04/os-openmap-local-2020-04-combined-sea.vrt"
   copyright "Contains OS data &copy; Crown copyright and database right 2020"
-  extension "png"
+  extension "os_om_local_png"
   url_aliases ["/om-local-2020-04"]
 end
