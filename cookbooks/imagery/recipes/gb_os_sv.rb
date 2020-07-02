@@ -1063,6 +1063,7 @@ imagery_layer "gb_os_om_local_2020_04" do
   projection "EPSG:27700"
   source "/data/imagery/gb/openmap-local/2020-04/os-openmap-local-2020-04-combined-sea.vrt"
   copyright "Contains OS data &copy; Crown copyright and database right 2020"
+  background_colour "213 244 248" # OS OpenMap Local Water Blue
   extension "os_om_local_png"
   url_aliases ["/om-local-2020-04"]
 end
