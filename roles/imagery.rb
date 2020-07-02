@@ -13,9 +13,6 @@ default_attributes(
       }
     }
   },
-  :apt => {
-    :sources => %w[ubuntugis-unstable]
-  },
   :sysctl => {
     :sockets => {
       :comment => "Increase size of connection queue",
