@@ -1,6 +1,6 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
-<% @communities[node[:snmpd][:community]].each do |community| -%>  
+<% Array(@communities[node[:snmpd][:community]]).each do |community| -%>  
 rocommunity     <%= community %>
 rocommunity6    <%= community %>
 <% end -%>
