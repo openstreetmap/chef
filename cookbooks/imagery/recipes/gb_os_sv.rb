@@ -1054,8 +1054,8 @@ imagery_layer "gb_os_om_local_2020_04" do
   site "os.openstreetmap.org"
   title "Testing OS OpenMap Local"
   projection "EPSG:27700"
-  source "/data/imagery/gb/openmap-local/2020-04/os-openmap-local-2020-04-combined.vrt"
-  copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2020"
+  source "/data/imagery/gb/openmap-local/2020-04/os-openmap-local-2020-04-combined-auto.vrt"
+  copyright "Contains OS data &copy; Crown copyright and database right 2020"
   extension "png"
   url_aliases ["/om-local-2020-04"]
 end
