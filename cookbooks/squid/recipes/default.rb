@@ -94,6 +94,10 @@ file "/etc/systemd/system/squid.service" do
   action :delete
 end
 
+file "/etc/logrotate.d/squid.dpkg-dist" do
+  action :delete
+end
+
 systemd_service "squid" do
   dropin "chef"
   limit_nofile 98304
