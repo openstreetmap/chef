@@ -44,14 +44,13 @@ package %w[
   php-sqlite3
   pngcrush
   pngquant
-  python
-  python-argparse
-  python-beautifulsoup
-  python-cheetah
-  python-dateutil
-  python-magic
-  python-psycopg2
-  python-gdal
+  python3
+  python3-bs4
+  python3-cheetah
+  python3-dateutil
+  python3-magic
+  python3-psycopg2
+  python3-gdal
   g++
   gcc
   make
@@ -75,7 +74,9 @@ package %w[
 
 nodejs_package "svgo"
 
-python_package "geojson"
+python_package "geojson" do
+  python_version "3"
+end
 
 apache_module "env"
 apache_module "expires"
