@@ -17,12 +17,10 @@
 # limitations under the License.
 #
 
-unless node[:web][:status] == "gpx_offline"
-  node.default[:nfs]["/store/rails"] = {
-    :host => node[:web][:fileserver],
-    :path => "/store/rails"
-  }
-end
+node.default[:nfs]["/store/rails"] = {
+  :host => node[:web][:fileserver],
+  :path => "/store/rails"
+}
 
 include_recipe "accounts"
 include_recipe "nfs"
