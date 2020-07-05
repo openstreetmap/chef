@@ -14,5 +14,6 @@ make
 psql -d <%= @dbname %> -c "SELECT version();" >/dev/null 2>&1
 if [[ "$?" == "0" ]]; then
   ./utils/setup.php --create-functions --create-partition-functions --enable-diff-updates
+  ./utils/setup.php --setup-website
   ./utils/update.php --update-address-levels
 fi
