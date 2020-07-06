@@ -18,7 +18,7 @@ default_attributes(
           :mode => "802.3ad",
           :miimon => "100",
           :xmithashpolicy => "layer3+4",
-          :slaves => %w[eth0 eth1]
+          :slaves => %w[ens1f0 ens1f1]
         }
       },
       :external_ipv6 => {
