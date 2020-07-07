@@ -262,7 +262,6 @@ node[:tile][:data].each_value do |data|
 end
 
 nodejs_package "carto"
-nodejs_package "millstone"
 
 systemd_service "update-lowzoom@" do
   description "Low zoom tile update service for %i layer"
