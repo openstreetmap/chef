@@ -15,7 +15,8 @@ default_attributes(
         :fan4 => { :warning => "95", :critical => "100" },
         :fan5 => { :warning => "95", :critical => "100" },
         :fan6 => { :warning => "95", :critical => "100" },
-        :fan7 => { :warning => "95", :critical => "100" }
+        :fan7 => { :warning => "95", :critical => "100" },
+        :fan8 => { :warning => "95", :critical => "100" }
       }
     }
   },
