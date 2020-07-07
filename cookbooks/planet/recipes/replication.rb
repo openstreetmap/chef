@@ -127,6 +127,12 @@ directory "/etc/replication" do
   mode 0o755
 end
 
+directory "/var/run/lock/changeset-replication/" do
+  owner "planet"
+  group "planet"
+  mode 0o750
+end
+
 template "/etc/replication/auth.conf" do
   source "replication.auth.erb"
   user "root"
