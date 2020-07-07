@@ -7,6 +7,15 @@ default_attributes(
       :hpasmcli2_temp => {
         :temp15 => { :warning => "59.5", :critical => "70" },
         :temp17 => { :warning => "59.5", :critical => "70" }
+      },
+      :hpasmcli2_fans => {
+        :fan1 => { :warning => "95", :critical => "100" },
+        :fan2 => { :warning => "95", :critical => "100" },
+        :fan3 => { :warning => "95", :critical => "100" },
+        :fan4 => { :warning => "95", :critical => "100" },
+        :fan5 => { :warning => "95", :critical => "100" },
+        :fan6 => { :warning => "95", :critical => "100" },
+        :fan7 => { :warning => "95", :critical => "100" }
       }
     }
   },
