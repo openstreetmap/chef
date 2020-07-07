@@ -261,8 +261,13 @@ class Replicator
 
   # saves new state (including the changeset dump xml)
   def save!
-    File.open(@config["state_file"], "r") do |fl|
-      fl.flock(File::LOCK_EX)
+    File.open(@config["lock_file"], File::RDWR | File::CREAT, 0o600) do |fl|
+      # take the lock in non-blocking mode. if this process doesn't get the lock
+      # then another will be run from cron shortly. this prevents a whole bunch
+      # of processes queueing on the lock and causing weirdness if/when they
+      # get woken up in a random order.
+      got_lock = fl.flock(File::LOCK_EX | File::LOCK_NB)
+      return unless got_lock
 
       # try and write the files to tmp locations and then
       # move them into place later, to avoid in-progress
