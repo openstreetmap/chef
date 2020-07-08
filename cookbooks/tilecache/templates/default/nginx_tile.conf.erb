@@ -192,11 +192,11 @@ map $tile_cache$http_referer$scheme$http_user_agent $deny_missing_referer {
 
 server {
     # IPv4
-    listen       80 deferred backlog=16384 reuseport fastopen=2048 default_server;
-    listen       443 ssl deferred backlog=16384 reuseport fastopen=2048 http2 default_server;
+    listen       80 deferred backlog=16384 reuseport default_server;
+    listen       443 ssl deferred backlog=16384 reuseport http2 default_server;
     # IPv6
-    listen       [::]:80 deferred backlog=16384 reuseport fastopen=2048 default_server;
-    listen       [::]:443 ssl deferred backlog=16384 reuseport fastopen=2048 http2 default_server;
+    listen       [::]:80 deferred backlog=16384 reuseport default_server;
+    listen       [::]:443 ssl deferred backlog=16384 reuseport http2 default_server;
     server_name  localhost;
 
     proxy_buffers 8 64k;

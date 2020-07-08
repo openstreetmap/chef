@@ -1,6 +1,6 @@
 server {
-    listen 80 deferred backlog=16384 reuseport fastopen=2048 default_server;
-    listen 443 ssl deferred backlog=16384 reuseport fastopen=2048 http2; # No default_server here unless certificate specified here too.
+    listen 80 deferred backlog=16384 reuseport default_server;
+    listen 443 ssl deferred backlog=16384 reuseport http2; # No default_server here unless certificate specified here too.
 
     server_name  _;
     default_type text/html;

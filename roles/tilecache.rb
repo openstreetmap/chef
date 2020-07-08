@@ -46,12 +46,6 @@ default_attributes(
         "net.ipv4.tcp_tw_reuse" => 1
       }
     },
-    :kernel_tfo_listen_enable => {
-      :comment => "Enable TCP Fast Open for listening sockets",
-      :parameters => {
-        "net.ipv4.tcp_fastopen" => 3
-      }
-    },
     :squid_swappiness => {
       :comment => "Prefer not to swapout to free memory",
       :parameters => {
