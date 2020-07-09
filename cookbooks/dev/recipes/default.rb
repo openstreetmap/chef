@@ -86,7 +86,10 @@ apache_module "proxy_fcgi"
 apache_module "rewrite"
 apache_module "suexec"
 apache_module "userdir"
-apache_module "wsgi"
+
+apache_module "wsgi" do
+  package "libapache2-mod-wsgi-py3"
+end
 
 package "apache2-suexec-pristine"
 
