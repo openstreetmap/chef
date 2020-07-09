@@ -121,6 +121,9 @@ ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{ID_BUS}=="ata", ENV
 ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{ID_BUS}=="ata", ENV{ID_MODEL}=="SuperMicro_SSD", ATTR{queue/read_ahead_kb}="4096"
 ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{ID_BUS}=="ata", ENV{ID_MODEL}=="SuperMicro_SSD", ATTR{queue/scheduler}="noop"
 
+# Delete failed disk in cmok
+ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{ID_BUS}=="ata", ENV{ID_MODEL}=="ST_M13FQBL", ENV{ID_SERIAL}=="ST_M13FQBL_QNR_BFW", ATTR{device/delete}="1"
+
 # Enable request merging for NVME devices
 ACTION=="add", SUBSYSTEM=="block", DRIVERS=="nvme", ATTR{queue/nomerges}="1"
 
