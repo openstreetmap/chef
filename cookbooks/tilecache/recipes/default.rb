@@ -206,8 +206,11 @@ template "/srv/tilecache/tilecache-curl-time" do
   variables :caches => tilecaches, :renders => tilerenders
 end
 
-file "/srv/tilecache/tilecache-fastest-peers" do
-  action :delete
+template "/srv/tilecache/tilecache-curl-time-cleanup" do
+  source "tilecache-curl-time-cleanup.erb"
+  owner "root"
+  group "root"
+  mode 0o755
 end
 
 ohai_plugin "tilecache" do
