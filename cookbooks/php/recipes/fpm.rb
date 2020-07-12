@@ -22,6 +22,13 @@ include_recipe "php"
 
 package "php-fpm"
 
+template "/etc/php/#{node[:php][:version]}/fpm/conf.d/99-chef.ini" do
+  source "php-fpm.ini.erb"
+  owner "root"
+  group "root"
+  mode 0o644
+end
+
 service "php#{node[:php][:version]}-fpm" do
   action [:enable, :start]
 end

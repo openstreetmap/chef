@@ -1,0 +1,5 @@
+; DO NOT EDIT - This file is being maintained by Chef
+
+<% node[:php][:fpm][:options].sort.each do |key,value| -%>
+<%= key %>=<%= value %>
+<% end -%>
