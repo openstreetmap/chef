@@ -38,11 +38,6 @@
 	ErrorLog /var/log/apache2/forum.openstreetmap.org-error.log
 
 	DocumentRoot /srv/forum.openstreetmap.org/html
-
-	php_admin_value open_basedir /srv/forum.openstreetmap.org/html/:/usr/share/php/:/tmp/
-	php_admin_value disable_functions "exec,shell_exec,system,passthru,popen,proc_open"
-	php_value upload_max_filesize 70M
-	php_value post_max_size 100M
 </VirtualHost>
 
 <Directory /srv/forum.openstreetmap.org/html>
@@ -52,8 +47,4 @@
 	Options -Indexes
 
 	Require all granted
-</Directory>
-
-<Directory /srv/forum.openstreetmap.org/html/img>
-	php_admin_flag engine off
 </Directory>
