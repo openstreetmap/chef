@@ -21,7 +21,7 @@ include_recipe "accounts"
 include_recipe "apache"
 include_recipe "git"
 include_recipe "mysql"
-include_recipe "php::apache"
+include_recipe "php::fpm"
 
 cache_dir = Chef::Config[:file_cache_path]
 
@@ -36,6 +36,10 @@ package %w[
 ]
 
 apache_module "rewrite"
+
+apache_conf "php#{node[:php][:version]}-fpm" do
+  action :enable
+end
 
 ssl_certificate "forum.openstreetmap.org" do
   domains ["forum.openstreetmap.org", "forum.osm.org"]
