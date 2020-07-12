@@ -1,6 +1,6 @@
 #
 # Cookbook:: php
-# Recipe:: fpm
+# Recipe:: apache-fpm
 #
 # Copyright:: 2020, OpenStreetMap Foundation
 #
@@ -17,18 +17,12 @@
 # limitations under the License.
 #
 
-include_recipe "php"
+include_recipe "apache"
+include_recipe "php::fpm"
 
-package "php-fpm"
+apache_module "proxy"
+apache_module "proxy_fcgi"
 
-template "/etc/php/#{node[:php][:version]}/fpm/conf.d/99-chef.ini" do
-  source "php-fpm.ini.erb"
-  owner "root"
-  group "root"
-  mode 0o644
-  notifies :restart, "service[php#{node[:php][:version]}-fpm]"
-end
-
-service "php#{node[:php][:version]}-fpm" do
-  action [:enable, :start]
+apache_conf "php#{node[:php][:version]}-fpm" do
+  action :enable
 end
