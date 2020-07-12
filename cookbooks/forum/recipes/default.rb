@@ -37,10 +37,6 @@ package %w[
 
 apache_module "rewrite"
 
-apache_conf "php#{node[:php][:version]}-fpm" do
-  action :enable
-end
-
 ssl_certificate "forum.openstreetmap.org" do
   domains ["forum.openstreetmap.org", "forum.osm.org"]
   notifies :reload, "service[apache2]"

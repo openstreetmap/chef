@@ -17,10 +17,18 @@
 # limitations under the License.
 #
 
+include_recipe "apache"
 include_recipe "php"
 
 package "php-fpm"
 
 service "php#{node[:php][:version]}-fpm" do
   action [:enable, :start]
+end
+
+apache_module "proxy"
+apache_module "proxy_fcgi"
+
+apache_conf "php#{node[:php][:version]}-fpm" do
+  action :enable
 end
