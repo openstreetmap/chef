@@ -17,9 +17,12 @@
 # limitations under the License.
 #
 
-node.override[:apache][:mpm] = "prefork"
-
-include_recipe "php"
 include_recipe "apache"
+include_recipe "php::fpm"
 
-apache_module "php#{node[:php][:version]}"
+apache_module "proxy"
+apache_module "proxy_fcgi"
+
+apache_conf "php#{node[:php][:version]}-fpm" do
+  action :enable
+end

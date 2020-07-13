@@ -21,7 +21,7 @@ include_recipe "accounts"
 include_recipe "apache"
 include_recipe "git"
 include_recipe "mysql"
-include_recipe "php::apache-fpm"
+include_recipe "php::apache"
 
 cache_dir = Chef::Config[:file_cache_path]
 

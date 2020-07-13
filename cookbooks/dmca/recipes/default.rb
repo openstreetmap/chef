@@ -18,7 +18,7 @@
 #
 
 include_recipe "apache"
-include_recipe "php::apache-fpm"
+include_recipe "php::apache"
 
 directory "/srv/dmca.openstreetmap.org" do
   owner "root"
