@@ -4,6 +4,7 @@ description "Role applied to all Piwik servers"
 default_attributes(
   :apache => {
     :worker => {
+      :server_limit => 18,
       :max_request_workers => 450
     }
   },
