@@ -32,12 +32,8 @@
 
   DocumentRoot <%= @directory %>
 
-  php_admin_value open_basedir <%= @directory %>/:/usr/share/php/:/dev/null:/tmp/
-  #php_admin_value disable_functions "exec,shell_exec,system,passthru,popen,proc_open"
-  php_value memory_limit 500M
-  php_value max_execution_time 240
-  php_value upload_max_filesize 70M
-  php_value post_max_size 100M
+  ProxyFCGISetEnvIf "true" PHP_ADMIN_VALUE "open_basedir=<%= @directory %>/:/usr/share/php/:/dev/null:/tmp/"
+  ProxyFCGISetEnvIf "true" PHP_VALUE "memory_limit=500M\nmax_execution_time=240\nupload_max_filesize=70M\npost_max_size=100M"
 
   RewriteCond %{SERVER_NAME} !=<%= @name %>
   RewriteRule ^/(.*)$ https://<%= @name %>/$1 [R=permanent]
@@ -100,14 +96,15 @@
   </Directory>
 
   <Directory <%= @directory %>/w/images/>
-    # No php execution in the upload area
-    php_admin_flag engine off
     Options -ExecCGI -Includes -Indexes
     AllowOverride None
     AddType text/plain .html .htm .shtml
 <% if @private_site -%>
     Require all denied
 <% end -%>
+    <FilesMatch ".+\.ph(ar|p|tml)$">
+      SetHandler None
+    </FilesMatch>
   </Directory>
 
   <Directory <%= @directory %>/w/images/thumb/>
@@ -142,7 +139,9 @@
     Options -ExecCGI -Includes -Indexes
     AllowOverride None
     AddType text/plain .html .htm .shtml
-    php_admin_flag engine off
+    <FilesMatch ".+\.ph(ar|p|tml)$">
+      SetHandler None
+    </FilesMatch>
   </Directory>
 
   <Directory <%= @directory %>/dump/>
