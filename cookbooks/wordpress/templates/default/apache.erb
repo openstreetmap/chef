@@ -35,15 +35,15 @@
   Alias <%= url %> <%= directory %>
   <Directory <%= directory %>>
     AllowOverride None
-    php_admin_flag engine off
     Require all granted
+    <FilesMatch ".+\.ph(ar|p|tml)$">
+      SetHandler None
+    </FilesMatch>
   </Directory>
 <% end -%>
 
-  php_admin_value open_basedir <%= @directory %>/:/usr/share/php/:/tmp/
-  php_admin_value disable_functions "exec,shell_exec,system,passthru,popen,proc_open"
-  php_value upload_max_filesize 70M
-  php_value post_max_size 100M
+  ProxyFCGISetEnvIf "true" PHP_ADMIN_VALUE "open_basedir=<%= @directory %>/:/usr/share/php/:/tmp/\ndisable_functions=exec,shell_exec,system,passthru,popen,proc_open"
+  ProxyFCGISetEnvIf "true" PHP_VALUE "upload_max_filesize=70M\npost_max_size=100M"
 
   <Directory <%= @directory %>>
     RewriteEngine on
@@ -71,7 +71,9 @@
   <Directory <%= @directory %>/uploads>
     AllowOverride None
     AddType text/plain .html .htm .shtml
-    php_admin_flag engine off
+    <FilesMatch ".+\.ph(ar|p|tml)$">
+      SetHandler None
+    </FilesMatch>
   </Directory>
 
   <Directory ~ "\.svn">
