@@ -35,6 +35,7 @@ package %w[
   unzip
 ]
 
+apache_module "env"
 apache_module "rewrite"
 
 ssl_certificate "forum.openstreetmap.org" do

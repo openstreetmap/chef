@@ -38,6 +38,9 @@
 	ErrorLog /var/log/apache2/forum.openstreetmap.org-error.log
 
 	DocumentRoot /srv/forum.openstreetmap.org/html
+
+	ProxyFCGISetEnvIf "true" PHP_ADMIN_VALUE "open_basedir=/srv/forum.openstreetmap.org/html/:/usr/share/php/:/tmp/\ndisable_functions=exec,shell_exec,system,passthru,popen,proc_open"
+	ProxyFCGISetEnvIf "true" PHP_VALUE "upload_max_filesize=70M\npost_max_size=100M"
 </VirtualHost>
 
 <Directory /srv/forum.openstreetmap.org/html>
@@ -47,4 +50,10 @@
 	Options -Indexes
 
 	Require all granted
+</Directory>
+
+<Directory /srv/forum.openstreetmap.org/html/img>
+	<FilesMatch ".+\.ph(ar|p|tml)$">
+		SetHandler None
+	</FilesMatch>
 </Directory>
