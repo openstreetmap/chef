@@ -5,11 +5,8 @@ default_attributes(
   :apache => {
     :timeout => 60,
     :keepalive => false,
-    :prefork => {
-      :start_servers => 20,
-      :min_spare_servers => 20,
-      :max_spare_servers => 50,
-      :max_request_workers => 256
+    :worker => {
+      :max_request_workers => 250
     }
   }
 )
