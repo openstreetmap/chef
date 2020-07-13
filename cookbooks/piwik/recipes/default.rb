@@ -20,7 +20,7 @@
 include_recipe "apache"
 include_recipe "geoipupdate"
 include_recipe "mysql"
-include_recipe "php::apache"
+include_recipe "php::apache-fpm"
 
 passwords = data_bag_item("piwik", "passwords")
 
