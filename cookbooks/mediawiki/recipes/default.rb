@@ -86,7 +86,7 @@ service "parsoid" do
   subscribes :restart, "template[/etc/mediawiki/parsoid/config.yaml]"
 end
 
-link "/etc/php/#{node[:php][:version]}/apache2/conf.d/20-wikidiff2.ini" do
+link "/etc/php/#{node[:php][:version]}/fpm/conf.d/20-wikidiff2.ini" do
   to "../../mods-available/wikidiff2.ini"
 end
 
