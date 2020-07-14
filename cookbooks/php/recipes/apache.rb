@@ -23,6 +23,10 @@ include_recipe "php::fpm"
 apache_module "proxy"
 apache_module "proxy_fcgi"
 
+apache_module "php#{node[:php][:version]}" do
+  action :disable
+end
+
 apache_conf "php#{node[:php][:version]}-fpm" do
   action :enable
 end
