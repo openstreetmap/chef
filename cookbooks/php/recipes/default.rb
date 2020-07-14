@@ -17,4 +17,7 @@
 # limitations under the License.
 #
 
-package "php"
+package %W[
+  php
+  php#{node[:php][:version]}-fpm
+]
