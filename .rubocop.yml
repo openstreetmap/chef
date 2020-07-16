@@ -10,7 +10,7 @@ Layout/ExtraSpacing:
   AllowForAlignment: true
 
 Layout/HeredocIndentation:
-  EnforcedStyle: squiggly
+  Enabled: true
 
 Naming/MethodParameterName:
   Enabled: false
