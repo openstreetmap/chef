@@ -12,8 +12,7 @@ EXPIRY_TIME = 946681200 # 2000-01-01 00:00:00
 # width/height of the spherical mercator projection
 SIZE = 40075016.6855784
 
-proj_wsg84 = pyproj.Proj(init='epsg:4326')
-proj_merc = pyproj.Proj(init='epsg:3857')
+proj_transformer = pyproj.Transformer.from_crs('epsg:4326', 'epsg:3857', always_xy = True)
 
 class TileCollector(o.SimpleHandler):
 
@@ -29,7 +28,7 @@ class TileCollector(o.SimpleHandler):
             return
 
         lat = max(-85, min(85.0, location.lat))
-        x, y = pyproj.transform(proj_wsg84, proj_merc, location.lon, lat)
+        x, y = proj_transformer.transform(location.lon, lat)
 
         # renormalise into unit space [0,1]
         x = 0.5 + x / SIZE
