@@ -10,6 +10,6 @@ args = [
   "--max", "<%= node[:tile][:styles].collect { |n,d| d[:max_zoom] }.max %>"
 ]
 
-Dir.glob("/var/lib/replicate/expire-queue/changes-*.gz").each do |f|
+Dir.glob("/var/lib/replicate/expire-queue/changes-*.gz").sort.each do |f|
    system("/usr/local/bin/expire-tiles-single", *args, f) && File::unlink(f)
 end
