@@ -18,10 +18,10 @@
 #
 
 node.default[:incron][:planetdump] = {
-  :user => "www-data",
+  :user => "root",
   :path => "/store/backup",
   :events => %w[IN_CREATE IN_MOVED_TO],
-  :command => "/usr/local/bin/planetdump $#"
+  :command => "/usr/bin/systemctl start planetdump@$#"
 }
 
 include_recipe "git"
@@ -105,6 +105,19 @@ end
     group "root"
     mode 0o755
   end
+end
+
+systemd_service "planetdump@" do
+  description "Planet dump for %i"
+  user "www-data"
+  exec_start "/usr/local/bin/planetdump %i"
+  memory_max "64G"
+  private_tmp true
+  private_devices true
+  private_network true
+  protect_system "full"
+  protect_home true
+  no_new_privileges true
 end
 
 template "/etc/cron.d/planet-dump-mirror" do
