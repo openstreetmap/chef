@@ -67,6 +67,7 @@ rm -rf relations relation_tags relation_members
 
 # Run the dump
 time nice -n 19 /opt/planet-dump-ng/planet-dump-ng \
+     --max-concurrency=4 \
      -c "pbzip2 -c" -f "/store/backup/${file}" --dense-nodes=1 \
      -C "changesets-${date}.osm.bz2" \
      -D "discussions-${date}.osm.bz2" \
