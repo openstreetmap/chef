@@ -37,7 +37,7 @@ default_attributes(
     ]
   },
   :tilecache => {
-    :tile_parent => "germany.render.openstreetmap.org"
+    :tile_parent => "france.render.openstreetmap.org"
   }
 )
 
