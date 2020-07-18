@@ -174,6 +174,7 @@ package %w[
 
 source_directory = "#{basedir}/nominatim"
 build_directory = "#{basedir}/bin"
+ui_directory = "#{basedir}/ui"
 
 directory build_directory do
   owner "nominatim"
@@ -224,6 +225,21 @@ template "#{build_directory}/settings/local.php" do
             :dbname => node[:nominatim][:dbname],
             :flatnode_file => node[:nominatim][:flatnode_file],
             :log_file => "#{node[:nominatim][:logdir]}/query.log"
+end
+
+git ui_directory do
+  action :sync
+  repository node[:nominatim][:ui_repository]
+  revision node[:nominatim][:ui_revision]
+  user "nominatim"
+  group "nominatim"
+end
+
+template "#{ui_directory}/dist/config.js" do
+  source "ui-config.js.erb"
+  owner "nominatim"
+  group "nominatim"
+  mode 0o664
 end
 
 if node[:nominatim][:flatnode_file]
@@ -401,7 +417,8 @@ nginx_site "nominatim" do
   directory build_directory
   variables :pools => node[:nominatim][:fpm_pools],
             :frontends => search(:node, "recipes:web\\:\\:frontend"),
-            :confdir => "#{basedir}/etc"
+            :confdir => "#{basedir}/etc",
+            :ui_directory => ui_directory
 end
 
 template "/etc/logrotate.d/nginx" do

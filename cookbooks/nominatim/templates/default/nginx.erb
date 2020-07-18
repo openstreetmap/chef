@@ -12,6 +12,20 @@ map $uri $nominatim_path_info {
     ~^/([^/]+)(.*)$      $2;
 }
 
+map $args $format {
+    default                  default;
+    ~(^|&)format=html(&|$)   html;
+    ~(^|&)format=            other;
+}
+
+map $uri/$format $forward_to_ui {
+    default               1;
+    ~^/ui                 0;
+    ~/other$              0;
+    ~/reverse.*/default   0;
+    ~/lookup.*/default    0;
+}
+
 map $query_string $email_id {
     ~(^|&)email=([^&]+)  $2;
 }
@@ -136,6 +150,11 @@ server {
         try_files $uri $uri/ @php;
     }
 
+    location /ui/ {
+        alias <%= @ui_directory %>/dist/;
+        index search.html;
+    }
+
     location @php {
         if ($blocked_user_agent ~ ^2$)
         { return 403; }
@@ -152,6 +171,9 @@ server {
         fastcgi_param QUERY_STRING    $args;
         fastcgi_param PATH_INFO       "$nominatim_path_info";
         fastcgi_param SCRIPT_FILENAME  "$document_root/$nominatim_script_name";
+        if ($forward_to_ui) {
+            rewrite ^(/[^/]*) http://$host/ui$1.html redirect;
+        }
     }
 
     location ~* \.php$ {
@@ -168,5 +190,9 @@ server {
         fastcgi_pass    nominatim_service;
         include         fastcgi_params;
         fastcgi_param   SCRIPT_FILENAME    $document_root$fastcgi_script_name;
+
+        if ($forward_to_ui) {
+            rewrite (.*).php http://$host/ui$1.html redirect;
+        }
     }
 }
