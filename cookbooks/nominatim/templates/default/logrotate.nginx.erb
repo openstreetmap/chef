@@ -14,7 +14,7 @@
   endscript
 }
 
-<%= node[:nominatim][:logdir] %>/nominatim.openstreetmap.org-access.log {
+<%= node[:nominatim][:logdir] %>/nominatim.openstreetmap.org-*.log {
   daily
   missingok
   rotate 28
