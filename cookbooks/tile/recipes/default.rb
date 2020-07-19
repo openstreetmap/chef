@@ -564,10 +564,6 @@ service "render-lowzoom.timer" do
   action [:enable, :start]
 end
 
-file "/etc/cron.d/render-lowzoom" do
-  action :delete
-end
-
 package "liblockfile-simple-perl"
 package "libfilesys-df-perl"
 
