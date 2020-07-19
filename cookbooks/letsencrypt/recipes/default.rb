@@ -175,9 +175,18 @@ template "/srv/acme.openstreetmap.org/bin/check-certificates" do
   variables :certificates => certificates
 end
 
-template "/etc/cron.d/letsencrypt" do
-  source "cron.erb"
-  owner "root"
-  group "root"
-  mode 0o644
+cron_d "letencrypt-renew" do
+  minute "00"
+  hour "*/12"
+  user "letsencrypt"
+  command "/srv/acme.openstreetmap.org/bin/renew"
+  mailto "admins@openstreetmap.org"
+end
+
+cron_d "letencrypt-check" do
+  minute "30"
+  hour "*/12"
+  user "letsencrypt"
+  command "/srv/acme.openstreetmap.org/bin/check-certificates"
+  mailto "admins@openstreetmap.org"
 end

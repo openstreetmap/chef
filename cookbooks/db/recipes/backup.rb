@@ -24,9 +24,11 @@ template "/usr/local/bin/backup-db" do
   mode 0o755
 end
 
-template "/etc/cron.d/backup-db" do
-  source "backup.cron.erb"
-  owner "root"
-  group "root"
-  mode 0o644
+cron_d "backup-db" do
+  minute "00"
+  hour "02"
+  weekday "1"
+  user "osmbackup"
+  command "/usr/local/bin/backup-db"
+  mailto "admins@openstreetmap.org"
 end

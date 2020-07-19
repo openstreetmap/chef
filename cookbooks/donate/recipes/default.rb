@@ -82,12 +82,10 @@ apache_site "donate.openstreetmap.org" do
   template "apache.erb"
 end
 
-template "/etc/cron.d/osmf-donate" do
-  source "cron.erb"
-  owner "root"
-  group "root"
-  mode 0o600
-  variables :passwords => passwords
+cron_d "osmf-donate" do
+  minute "*/2"
+  user "donate"
+  command "cd /srv/donate.openstreetmap.org/scripts/; /usr/bin/php /srv/donate.openstreetmap.org/scripts/update_csv_donate2016.php"
 end
 
 template "/etc/cron.daily/osmf-donate-backup" do

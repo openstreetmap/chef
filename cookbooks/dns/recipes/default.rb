@@ -144,9 +144,9 @@ template "/usr/local/bin/dns-check" do
   variables :passwords => passwords, :geoservers => geoservers
 end
 
-template "/etc/cron.d/dns" do
-  source "cron.erb"
-  owner "root"
-  group "root"
-  mode 0o644
+cron_d "dns" do
+  minute "*/3"
+  user "git"
+  command "/usr/local/bin/dns-check"
+  mailto "admins@openstreetmap.org"
 end

@@ -173,12 +173,11 @@ file "#{civicrm_directory}/civicrm.settings.php" do
   content settings
 end
 
-template "/etc/cron.d/osmf-crm" do
-  source "cron.erb"
-  owner "root"
-  group "root"
-  mode 0o600
-  variables :directory => civicrm_directory, :passwords => passwords
+cron_d "osmf-crm" do
+  minute "*/15"
+  user "www-data"
+  command "php #{civicrm_directory}/civicrm/bin/cli.php -s join.osmfoundation.org -u batch -p \"#{passwords['batch']}\" -e Job -a execute 2>&1 | egrep -v '^PHP (Deprecated|Warning):'"
+  mailto "admins@openstreetmap.org"
 end
 
 template "/etc/cron.daily/osmf-crm-backup" do

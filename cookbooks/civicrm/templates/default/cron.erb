@@ -1,5 +1,0 @@
-# DO NOT EDIT - This file is being maintained by Chef
-
-MAILTO=admins@openstreetmap.org
-
-*/15 * * * * www-data php <%= @directory %>/civicrm/bin/cli.php -s join.osmfoundation.org -u batch -p "<%= @passwords["batch"] %>" -e Job -a execute 2>&1 | egrep -v '^PHP (Deprecated|Warning):'
