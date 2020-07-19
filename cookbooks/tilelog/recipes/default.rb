@@ -82,11 +82,12 @@ template "/usr/local/bin/tilelog" do
             :output_dir => tilelog_output_directory
 end
 
-template "/etc/cron.d/tilelog" do
-  source "tilelog.cron.erb"
-  owner "root"
-  group "root"
-  mode 0o644
+cron_d "tilelog" do
+  minute "17"
+  hour "22"
+  user "www-data"
+  command "/usr/local/bin/tilelog"
+  mailto "zerebubuth@gmail.com"
 end
 
 # resources related to the output of the analysis and where it

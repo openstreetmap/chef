@@ -128,10 +128,9 @@ directory "/srv/wiki.openstreetmap.org/dump" do
   mode "0775"
 end
 
-template "/etc/cron.d/wiki-dump" do
-  owner "root"
-  group "root"
-  mode 0o644
-  source "wiki-dump.erb"
-  variables :directory => "/srv/wiki.openstreetmap.org"
+cron_d "wiki-dump" do
+  minute "0"
+  hour "2"
+  user "wiki"
+  command "cd /srv/wiki.openstreetmap.org && php w/maintenance/dumpBackup.php --full --quiet --output=gzip:dump/dump.xml.gz"
 end

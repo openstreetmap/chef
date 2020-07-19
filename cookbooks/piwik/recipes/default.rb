@@ -123,9 +123,8 @@ apache_site "piwik.openstreetmap.org" do
   template "apache.erb"
 end
 
-template "/etc/cron.d/piwiki" do
-  source "cron.erb"
-  owner "root"
-  group "root"
-  mode "0644"
+cron_d "piwik" do
+  minute "5"
+  user "www-data"
+  command "/usr/bin/php /srv/piwik.openstreetmap.org/console core:archive --quiet --url=https://piwik.openstreetmap.org/"
 end

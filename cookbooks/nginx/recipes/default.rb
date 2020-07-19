@@ -68,9 +68,9 @@ template "/usr/local/bin/nginx-old-cache-cleanup" do
   mode 0o755
 end
 
-template "/etc/cron.d/nginx-old-cache-cleanup" do
-  source "nginx-old-cache-cleanup.cron.erb"
-  owner "root"
-  group "root"
-  mode 0o644
+cron_d "nginx-old-cache-cleanup" do
+  minute "15"
+  hour "23"
+  user "www-data"
+  command "/usr/bin/timeout 6h /usr/local/bin/nginx-old-cache-cleanup"
 end

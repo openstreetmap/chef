@@ -30,9 +30,9 @@ template "/usr/local/bin/statistics" do
   variables :ruby => ruby, :directory => rails_directory
 end
 
-template "/etc/cron.d/statistics" do
-  source "statistics.cron.erb"
-  owner "root"
-  group "root"
-  mode 0o644
+cron_d "statistics" do
+  minute "0"
+  hour "0"
+  user "rails"
+  command "/usr/local/bin/statistics"
 end
