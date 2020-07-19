@@ -84,9 +84,9 @@ template "/usr/local/bin/blogs-update" do
   mode "0755"
 end
 
-template "/etc/cron.d/blogs" do
-  source "cron.erb"
-  owner "root"
-  group "root"
-  mode "0644"
+cron_d "blogs" do
+  minute "*/30"
+  user "blogs"
+  command "/usr/local/bin/blogs-update"
+  mailto "admins@openstreetmap.org"
 end
