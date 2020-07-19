@@ -172,13 +172,6 @@ tilerenders.each do |render|
   end
 end
 
-template "/etc/cron.d/tilecache" do
-  source "cron.erb"
-  owner "root"
-  group "root"
-  mode 0o644
-end
-
 directory "/srv/tilecache" do
   owner "root"
   group "root"
