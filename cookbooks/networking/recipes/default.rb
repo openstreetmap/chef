@@ -39,20 +39,20 @@ node[:networking][:interfaces].each do |name, interface|
   if interface[:interface]
     if interface[:role] && (role = node[:networking][:roles][interface[:role]])
       if role[interface[:family]]
-        node.normal[:networking][:interfaces][name][:prefix] = role[interface[:family]][:prefix]
-        node.normal[:networking][:interfaces][name][:gateway] = role[interface[:family]][:gateway]
-        node.normal[:networking][:interfaces][name][:routes] = role[interface[:family]][:routes]
+        node.default[:networking][:interfaces][name][:prefix] = role[interface[:family]][:prefix]
+        node.default[:networking][:interfaces][name][:gateway] = role[interface[:family]][:gateway]
+        node.default[:networking][:interfaces][name][:routes] = role[interface[:family]][:routes]
       end
 
-      node.normal[:networking][:interfaces][name][:metric] = role[:metric]
-      node.normal[:networking][:interfaces][name][:zone] = role[:zone]
+      node.default[:networking][:interfaces][name][:metric] = role[:metric]
+      node.default[:networking][:interfaces][name][:zone] = role[:zone]
     end
 
     if interface[:address]
       prefix = node[:networking][:interfaces][name][:prefix]
 
-      node.normal[:networking][:interfaces][name][:netmask] = (~IPAddr.new(interface[:address]).mask(0)).mask(prefix)
-      node.normal[:networking][:interfaces][name][:network] = IPAddr.new(interface[:address]).mask(prefix)
+      node.default[:networking][:interfaces][name][:netmask] = (~IPAddr.new(interface[:address]).mask(0)).mask(prefix)
+      node.default[:networking][:interfaces][name][:network] = IPAddr.new(interface[:address]).mask(prefix)
     end
 
     interface = node[:networking][:interfaces][name]

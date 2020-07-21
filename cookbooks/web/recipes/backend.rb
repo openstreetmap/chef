@@ -40,8 +40,6 @@ apache_site "www.openstreetmap.org" do
             :secret_key_base => web_passwords["secret_key_base"]
 end
 
-node.normal[:memcached][:ip_address] = node.internal_ipaddress
-
 service "rails-jobs@storage" do
   action [:enable, :start]
   supports :restart => true

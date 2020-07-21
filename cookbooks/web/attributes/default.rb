@@ -4,3 +4,5 @@ default[:web][:log_directory] = "/var/log/web"
 default[:web][:primary_cluster] = false
 
 default[:accounts][:users][:rails][:status] = :role
+
+override[:memcached][:ip_address] = node.internal_ipaddress
