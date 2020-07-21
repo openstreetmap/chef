@@ -175,14 +175,54 @@ action :create do
     notifies :run, "execute[#{mediawiki_directory}/maintenance/update.php]"
   end
 
-  template "/etc/cron.d/mediawiki-#{cron_name}" do
-    cookbook "mediawiki"
-    source "mediawiki.cron.erb"
-    owner "root"
-    group "root"
-    mode 0o644
-    variables :name => new_resource.site, :directory => site_directory,
-              :user => node[:mediawiki][:user]
+  file "/etc/cron.d/mediawiki-#{cron_name}" do
+    action :delete
+  end
+
+  cron_d "mediawiki-#{cron_name}-sitemap" do
+    comment "Generate sitemap.xml daily"
+    minute "30"
+    hour "0"
+    user node[:mediawiki][:user]
+    command "/usr/bin/nice /usr/bin/php -d memory_limit=2048M -d error_reporting=22517 #{site_directory}/w/maintenance/generateSitemap.php --server=https://#{new_resource.site} --urlpath=https://#{new_resource.site}/ --fspath=#{site_directory} --quiet --skip-redirects"
+  end
+
+  cron_d "mediawiki-#{cron_name}-jobs" do
+    comment "Run mediawiki jobs"
+    minute "*/3"
+    user node[:mediawiki][:user]
+    command "/usr/bin/nice /usr/bin/php -d memory_limit=2048M -d error_reporting=22517 #{site_directory}/w/maintenance/runJobs.php --server=https://#{new_resource.site} --maxtime=160 --memory-limit=2048M --procs=8 --quiet"
+  end
+
+  cron_d "mediawiki-#{cron_name}-email-jobs" do
+    comment "Run mediawiki email jobs"
+    user node[:mediawiki][:user]
+    command "/usr/bin/nice /usr/bin/php -d memory_limit=2048M -d error_reporting=22517 #{site_directory}/w/maintenance/runJobs.php --server=https://#{new_resource.site} --maxtime=30 --type=enotifNotify --memory-limit=2048M --procs=4 --quiet"
+  end
+
+  cron_d "mediawiki-#{cron_name}-refresh-links" do
+    comment "Run mediawiki refresh links table weekly"
+    minute "5"
+    hour "0"
+    weekday "0"
+    user node[:mediawiki][:user]
+    command "/usr/bin/nice /usr/bin/php -d memory_limit=2048M -d error_reporting=22517 #{site_directory}/w/maintenance/refreshLinks.php --server=https://#{new_resource.site} --memory-limit=2048M --quiet"
+  end
+
+  cron_d "mediawiki-#{cron_name}-cleanup-gs" do
+    comment "Clean up imagemagick garbage"
+    minute "10"
+    hour "2"
+    user node[:mediawiki][:user]
+    command "/usr/bin/find /tmp/ -maxdepth 1 -type f -user www-data -mmin +90 -name 'gs_*' -delete"
+  end
+
+  cron_d "mediawiki-#{cron_name}-cleanup-magick" do
+    comment "Clean up imagemagick garbage"
+    minute "20"
+    hour "2"
+    user node[:mediawiki][:user]
+    command "/usr/bin/find /tmp/ -maxdepth 1 -type f -user www-data -mmin +90 -name 'magick-*' -delete"
   end
 
   template "/etc/cron.daily/mediawiki-#{cron_name}-backup" do
