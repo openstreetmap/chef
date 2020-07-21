@@ -9,9 +9,6 @@ default_attributes(
       }
     }
   },
-  :networking => {
-    :tcp_fastopen_key => "tile"
-  },
   :nginx => {
     :access_log => false
   },

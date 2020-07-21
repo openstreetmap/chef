@@ -21,9 +21,6 @@ default_attributes(
       ]
     }
   },
-  :networking => {
-    :tcp_fastopen_key => "www"
-  },
   :passenger => {
     :max_pool_size => 50
   },

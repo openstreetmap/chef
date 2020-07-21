@@ -229,17 +229,6 @@ link "/etc/resolv.conf" do
   to "../run/systemd/resolve/stub-resolv.conf"
 end
 
-if node[:networking][:tcp_fastopen_key]
-  fastopen_keys = data_bag_item("networking", "fastopen")
-
-  node.normal[:sysctl][:tcp_fastopen] = {
-    :comment => "Set shared key for TCP fast open",
-    :parameters => {
-      "net.ipv4.tcp_fastopen_key" => fastopen_keys[node[:networking][:tcp_fastopen_key]]
-    }
-  }
-end
-
 node.interfaces(:role => :internal) do |interface|
   if interface[:gateway] && interface[:gateway] != interface[:address]
     search(:node, "networking_interfaces*address:#{interface[:gateway]}") do |gateway|
