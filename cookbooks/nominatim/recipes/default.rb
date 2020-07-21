@@ -262,15 +262,61 @@ remote_file "#{source_directory}/data/country_osm_grid.sql.gz" do
   mode 0o644
 end
 
-template "/etc/cron.d/nominatim" do
-  action node[:nominatim][:state] == "off" ? :delete : :create
-  source "nominatim.cron.erb"
-  owner "root"
-  group "root"
-  mode "0644"
-  variables :bin_directory => "#{source_directory}/utils",
-            :mailto => email_errors,
-            :update_maintenance_trigger => "#{basedir}/status/update_maintenance"
+file "/etc/cron.d/nominatim" do
+  action :delete
+end
+
+if node[:nominatim][:state] == "off"
+  cron_d "nominatim-backup" do
+    action :delete
+  end
+
+  cron_d "nominatim-vacuum-db" do
+    action :delete
+  end
+
+  cron_d "nominatim-clean-db" do
+    action :delete
+  end
+
+  cron_d "nominatim-update-maintenance-trigger" do
+    action :delete
+  end
+else
+  cron_d "nominatim-backup" do
+    action node[:nominatim][:enable_backup] ? :create : :delete
+    minute "0"
+    hour "3"
+    day "1"
+    user "nominatim"
+    command "/usr/local/bin/backup-nominatim"
+    mailto email_errors
+  end
+
+  cron_d "nominatim-vacuum-db" do
+    minute "20"
+    hour "0"
+    user "postgres"
+    command "/usr/local/bin/vacuum-db-nominatim"
+    mailto email_errors
+  end
+
+  cron_d "nominatim-clean-db" do
+    action node[:nominatim][:state] == "master" ? :create : :delete
+    minute "5"
+    hour "*/4"
+    user "postgres"
+    command "/usr/local/bin/clean-db-nominatim"
+    mailto email_errors
+  end
+
+  cron_d "nominatim-update-maintenance-trigger" do
+    minute "18"
+    hour "1"
+    user "nominatim"
+    command "touch #{basedir}/status/update_maintenance"
+    mailto email_errors
+  end
 end
 
 template "#{source_directory}/utils/nominatim-update" do
