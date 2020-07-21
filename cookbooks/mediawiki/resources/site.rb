@@ -400,16 +400,6 @@ action :create do
     update_site false
   end
 
-  # LocalisationUpdate Update Cron
-  # template "/etc/cron.d/mediawiki-#{name}-LocalisationUpdate" do
-  #   cookbook "mediawiki"
-  #   source "mediawiki-LocalisationUpdate.cron.erb"
-  #   owner "root"
-  #   group "root"
-  #   mode 0755
-  #   variables :name => name, :directory => site_directory, :user => node[:mediawiki][:user]
-  # end
-
   # mediawiki_extension "Translate" do
   #   site new_resource.site
   #   template "mw-ext-Translate.inc.php.erb"
