@@ -37,7 +37,7 @@ action :create do
       source new_resource.source
       owner node[:mediawiki][:user]
       group node[:mediawiki][:group]
-      mode 0o755
+      mode "755"
       files_owner node[:mediawiki][:user]
       files_group node[:mediawiki][:group]
       files_mode 0o755
@@ -63,7 +63,7 @@ action :create do
       source new_resource.template
       user node[:mediawiki][:user]
       group node[:mediawiki][:group]
-      mode 0o664
+      mode "664"
       variables new_resource.variables
     end
   else
@@ -79,7 +79,7 @@ action :create do
       content file_content
       user node[:mediawiki][:user]
       group node[:mediawiki][:group]
-      mode 0o664
+      mode "664"
       only_if { ::File.exist?(skin_file) }
     end
   end

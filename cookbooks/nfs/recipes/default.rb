@@ -29,7 +29,7 @@ node[:nfs].each do |mountpoint, details|
   directory mountpoint do
     owner "root"
     group "root"
-    mode 0o755
+    mode "755"
     recursive true
     not_if { ::File.exist?(mountpoint) }
   end

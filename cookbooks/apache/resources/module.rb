@@ -33,7 +33,7 @@ action :install do
       source new_resource.conf
       owner "root"
       group "root"
-      mode 0o644
+      mode "644"
       variables new_resource.variables
     end
   end

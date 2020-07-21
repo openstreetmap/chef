@@ -52,7 +52,7 @@ package %w[
 directory "/opt/planet-dump-ng" do
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end
 
 git "/opt/planet-dump-ng" do
@@ -94,7 +94,7 @@ end
 directory "/store/planetdump" do
   owner "www-data"
   group "www-data"
-  mode 0o755
+  mode "755"
   recursive true
 end
 
@@ -103,7 +103,7 @@ end
     source "#{program}.erb"
     owner "root"
     group "root"
-    mode 0o755
+    mode "755"
   end
 end
 

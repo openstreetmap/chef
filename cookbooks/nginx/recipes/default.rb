@@ -27,13 +27,13 @@ template "/etc/nginx/nginx.conf" do
   source "nginx.conf.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
 end
 
 directory node[:nginx][:cache][:fastcgi][:directory] do
   owner "www-data"
   group "root"
-  mode 0o755
+  mode "755"
   recursive true
   only_if { node[:nginx][:cache][:fastcgi][:enable] }
 end
@@ -41,7 +41,7 @@ end
 directory node[:nginx][:cache][:proxy][:directory] do
   owner "www-data"
   group "root"
-  mode 0o755
+  mode "755"
   recursive true
   only_if { node[:nginx][:cache][:proxy][:enable] }
 end
@@ -65,7 +65,7 @@ template "/usr/local/bin/nginx-old-cache-cleanup" do
   source "nginx-old-cache-cleanup.erb"
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end
 
 cron_d "nginx-old-cache-cleanup" do

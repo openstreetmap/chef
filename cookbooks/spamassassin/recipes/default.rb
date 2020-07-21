@@ -27,14 +27,14 @@ end
 directory "/var/spool/spamassassin" do
   owner "debian-spamd"
   group "debian-spamd"
-  mode 0o755
+  mode "755"
 end
 
 template "/etc/default/spamassassin" do
   source "spamassassin.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   notifies :restart, "service[spamassassin]"
 end
 
@@ -52,7 +52,7 @@ template "/etc/spamassassin/local.cf" do
   source "local.cf.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   variables :trusted_networks => trusted_networks.sort
   notifies :restart, "service[spamassassin]"
 end

@@ -29,20 +29,20 @@ template "/etc/gitweb.conf" do
   source "gitweb.conf.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
 end
 
 directory "/srv/#{git_site}" do
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end
 
 template "/srv/#{git_site}/robots.txt" do
   source "robots.txt.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
 end
 
 ssl_certificate git_site do

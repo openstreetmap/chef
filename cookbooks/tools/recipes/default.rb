@@ -80,5 +80,5 @@ template "/etc/default/motd-news" do
   source "motd-news.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
 end

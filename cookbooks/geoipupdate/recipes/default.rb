@@ -27,7 +27,7 @@ template "/etc/GeoIP.conf" do
   source "GeoIP.conf.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   variables :license_keys => license_keys
 end
 

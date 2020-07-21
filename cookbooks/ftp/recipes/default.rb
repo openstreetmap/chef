@@ -26,14 +26,14 @@ template "/etc/vsftpd.conf" do
   source "vsftpd.conf.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
 end
 
 template "/etc/pam.d/vsftpd" do
   source "pam-vsftpd.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
 end
 
 service "vsftpd" do

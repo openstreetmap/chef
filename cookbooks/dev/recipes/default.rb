@@ -104,14 +104,14 @@ end
 directory "/srv/dev.openstreetmap.org" do
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end
 
 template "/srv/dev.openstreetmap.org/index.html" do
   source "dev.html.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
 end
 
 ssl_certificate "dev.openstreetmap.org" do
@@ -129,7 +129,7 @@ template "/etc/phppgadmin/config.inc.php" do
   source "phppgadmin.conf.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
 end
 
 file "/etc/apache2/conf.d/phppgadmin" do
@@ -177,7 +177,7 @@ search(:accounts, "*:*").each do |account|
     source "sudoers.user.erb"
     owner "root"
     group "root"
-    mode 0o440
+    mode "440"
     variables :user => name
   end
 end
@@ -192,7 +192,7 @@ if node[:postgresql][:clusters][:"12/main"]
     source "cleanup-assets.erb"
     owner "root"
     group "root"
-    mode 0o755
+    mode "755"
   end
 
   ruby_version = node[:passenger][:ruby_version]
@@ -257,31 +257,31 @@ if node[:postgresql][:clusters][:"12/main"]
       directory site_directory do
         owner "apis"
         group "apis"
-        mode 0o755
+        mode "755"
       end
 
       directory log_directory do
         owner "apis"
         group "apis"
-        mode 0o755
+        mode "755"
       end
 
       directory gpx_directory do
         owner "apis"
         group "apis"
-        mode 0o755
+        mode "755"
       end
 
       directory "#{gpx_directory}/traces" do
         owner "apis"
         group "apis"
-        mode 0o755
+        mode "755"
       end
 
       directory "#{gpx_directory}/images" do
         owner "apis"
         group "apis"
-        mode 0o755
+        mode "755"
       end
 
       rails_port site_name do
@@ -306,7 +306,7 @@ if node[:postgresql][:clusters][:"12/main"]
         source "rails.setup.rb.erb"
         owner "apis"
         group "apis"
-        mode 0o644
+        mode "644"
         variables :site => site_name
         notifies :restart, "rails_port[#{site_name}]"
       end
@@ -360,7 +360,7 @@ if node[:postgresql][:clusters][:"12/main"]
           source "cgimap.environment.erb"
           owner "root"
           group "root"
-          mode 0o640
+          mode "640"
           variables :cgimap_port => cgimap_port,
                     :database_port => node[:postgresql][:clusters][:"12/main"][:port],
                     :database_name => database_name,
@@ -391,7 +391,7 @@ if node[:postgresql][:clusters][:"12/main"]
         source "logrotate.apis.erb"
         owner "root"
         group "root"
-        mode 0o644
+        mode "644"
         variables :name => name,
                   :log_directory => log_directory,
                   :rails_directory => rails_directory
@@ -436,14 +436,14 @@ if node[:postgresql][:clusters][:"12/main"]
   directory "/srv/apis.dev.openstreetmap.org" do
     owner "apis"
     group "apis"
-    mode 0o755
+    mode "755"
   end
 
   template "/srv/apis.dev.openstreetmap.org/index.html" do
     source "apis.html.erb"
     owner "apis"
     group "apis"
-    mode 0o644
+    mode "644"
   end
 
   ssl_certificate "apis.dev.openstreetmap.org" do
@@ -466,14 +466,14 @@ end
 directory "/srv/ooc.openstreetmap.org" do
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end
 
 remote_directory "/srv/ooc.openstreetmap.org/html" do
   source "ooc"
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
   files_owner "root"
   files_group "root"
   files_mode 0o644

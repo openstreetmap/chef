@@ -30,7 +30,7 @@ action :create do
   directory "/etc/chef/ohai" do
     owner "root"
     group "root"
-    mode 0o755
+    mode "755"
     recursive true
   end
 
@@ -38,7 +38,7 @@ action :create do
     source new_resource.template
     owner "root"
     group "root"
-    mode 0o644
+    mode "644"
     notifies :reload, "ohai[#{new_resource.plugin}]"
   end
 end

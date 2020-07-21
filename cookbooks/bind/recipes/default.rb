@@ -45,7 +45,7 @@ template "/etc/bind/named.conf.local" do
   source "named.local.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   notifies :restart, "service[#{service_name}]"
 end
 
@@ -53,7 +53,7 @@ template "/etc/bind/named.conf.options" do
   source "named.options.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   variables :ipv4_clients => ipv4_clients, :ipv6_clients => ipv6_clients
   notifies :restart, "service[#{service_name}]"
 end
@@ -62,7 +62,7 @@ template "/etc/bind/db.10" do
   source "db.10.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   notifies :reload, "service[#{service_name}]"
 end
 

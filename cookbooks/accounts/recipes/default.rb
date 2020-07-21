@@ -64,7 +64,7 @@ search(:accounts, "*:*").each do |account|
       source name.to_s
       owner name.to_s
       group name.to_s
-      mode 0o755
+      mode "755"
       files_owner name.to_s
       files_group name.to_s
       files_mode 0o644

@@ -23,7 +23,7 @@ remote_directory "/usr/local/share/munin/plugins" do
   source "plugins"
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
   files_owner "root"
   files_group "root"
   files_mode 0o755
@@ -34,7 +34,7 @@ remote_directory "/etc/munin/plugin-conf.d" do
   source "plugin-conf.d"
   owner "root"
   group "munin"
-  mode 0o750
+  mode "750"
   files_owner "root"
   files_group "root"
   files_mode 0o644

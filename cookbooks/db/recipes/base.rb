@@ -37,7 +37,7 @@ end
 
 directory "/srv/www.openstreetmap.org" do
   group "rails"
-  mode 0o2775
+  mode "2775"
 end
 
 rails_port "www.openstreetmap.org" do
@@ -57,7 +57,7 @@ end
 directory function_directory do
   owner "rails"
   group "rails"
-  mode 0o755
+  mode "755"
 end
 
 execute function_directory do
@@ -90,6 +90,6 @@ template "/usr/local/bin/openstreetmap-wal-e" do
   source "wal-e.erb"
   owner "root"
   group "postgres"
-  mode 0o750
+  mode "750"
   variables :s3_key => wal_secrets["s3_key"]
 end

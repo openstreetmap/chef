@@ -42,7 +42,7 @@ template "/etc/chrony/chrony.conf" do
   source "chrony.conf.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   notifies :restart, "service[chrony]"
 end
 

@@ -92,7 +92,7 @@ end
 file "/opt/otrs-#{version}/Kernel/Config.pm" do
   owner user
   group "www-data"
-  mode 0o664
+  mode "664"
   content config
 end
 
@@ -121,7 +121,7 @@ Dir.glob("/opt/otrs/var/cron/*.dist") do |distname|
   file name do
     owner "otrs"
     group "www-data"
-    mode 0o664
+    mode "664"
     content IO.read(distname)
     notifies :run, "execute[/opt/otrs/bin/Cron.sh]"
   end
@@ -141,12 +141,12 @@ template "/etc/sudoers.d/otrs" do
   source "sudoers.erb"
   owner "root"
   group "root"
-  mode 0o440
+  mode "440"
 end
 
 template "/etc/cron.daily/otrs-backup" do
   source "backup.cron.erb"
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end

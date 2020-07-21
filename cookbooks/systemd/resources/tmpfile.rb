@@ -33,7 +33,7 @@ action :create do
     source "tmpfile.erb"
     owner "root"
     group "root"
-    mode 0o644
+    mode "644"
     variables new_resource.to_hash
   end
 

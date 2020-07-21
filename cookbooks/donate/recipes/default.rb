@@ -47,7 +47,7 @@ end
 directory "/srv/donate.openstreetmap.org" do
   owner "donate"
   group "donate"
-  mode 0o755
+  mode "755"
 end
 
 git "/srv/donate.openstreetmap.org" do
@@ -61,14 +61,14 @@ end
 directory "/srv/donate.openstreetmap.org/data" do
   owner "donate"
   group "donate"
-  mode 0o755
+  mode "755"
 end
 
 template "/srv/donate.openstreetmap.org/scripts/db-connect.inc.php" do
   source "db-connect.inc.php.erb"
   owner "root"
   group "donate"
-  mode 0o644
+  mode "644"
   variables :passwords => passwords
 end
 
@@ -92,6 +92,6 @@ template "/etc/cron.daily/osmf-donate-backup" do
   source "backup.cron.erb"
   owner "root"
   group "root"
-  mode 0o750
+  mode "750"
   variables :passwords => passwords
 end

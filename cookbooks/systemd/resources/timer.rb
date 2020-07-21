@@ -44,7 +44,7 @@ action :create do
     source "timer.erb"
     owner "root"
     group "root"
-    mode 0o644
+    mode "644"
     variables timer_variables
   end
 

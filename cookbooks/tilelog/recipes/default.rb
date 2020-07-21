@@ -76,7 +76,7 @@ template "/usr/local/bin/tilelog" do
   source "tilelog.erb"
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
   variables :analyze_bin => "#{tilelog_source_directory}/openstreetmap-tile-analyze",
             :input_dir => tilelog_input_directory,
             :output_dir => tilelog_output_directory
@@ -95,6 +95,6 @@ end
 directory tilelog_output_directory do
   user "www-data"
   group "www-data"
-  mode 0o755
+  mode "755"
   recursive true
 end

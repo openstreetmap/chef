@@ -67,14 +67,14 @@ apache_module "headers"
 directory "/var/log/taginfo" do
   owner "taginfo"
   group "taginfo"
-  mode 0o755
+  mode "755"
 end
 
 template "/etc/sudoers.d/taginfo" do
   source "sudoers.erb"
   owner "root"
   group "root"
-  mode 0o440
+  mode "440"
 end
 
 node[:taginfo][:sites].each do |site|
@@ -89,13 +89,13 @@ node[:taginfo][:sites].each do |site|
   directory "/var/log/taginfo/#{site_name}" do
     owner "taginfo"
     group "taginfo"
-    mode 0o755
+    mode "755"
   end
 
   directory directory do
     owner "taginfo"
     group "taginfo"
-    mode 0o755
+    mode "755"
   end
 
   git "#{directory}/taginfo" do
@@ -131,7 +131,7 @@ node[:taginfo][:sites].each do |site|
   file "#{directory}/taginfo-config.json" do
     owner "taginfo"
     group "taginfo"
-    mode 0o644
+    mode "644"
     content settings
     notifies :restart, "service[apache2]"
   end
@@ -163,7 +163,7 @@ node[:taginfo][:sites].each do |site|
     directory "#{directory}/#{dir}" do
       owner "taginfo"
       group "taginfo"
-      mode 0o755
+      mode "755"
     end
   end
 
@@ -171,7 +171,7 @@ node[:taginfo][:sites].each do |site|
     source "update.erb"
     owner "taginfo"
     group "taginfo"
-    mode 0o755
+    mode "755"
     variables :name => site_name, :directory => directory
   end
 
@@ -195,6 +195,6 @@ template "/usr/local/bin/taginfo-update" do
   source "taginfo-update.erb"
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
   variables :sites => node[:taginfo][:sites]
 end

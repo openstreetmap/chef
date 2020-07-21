@@ -36,7 +36,7 @@ node[:postgresql][:versions].each do |version|
     source "postgresql.conf.erb"
     owner "postgres"
     group "postgres"
-    mode 0o644
+    mode "644"
     variables :version => version, :defaults => defaults, :settings => settings
     notifies :reload, "service[postgresql]"
   end
@@ -45,7 +45,7 @@ node[:postgresql][:versions].each do |version|
     source "pg_hba.conf.erb"
     owner "postgres"
     group "postgres"
-    mode 0o640
+    mode "640"
     variables :early_rules => settings[:early_authentication_rules] || defaults[:early_authentication_rules],
               :late_rules => settings[:late_authentication_rules] || defaults[:late_authentication_rules]
     notifies :reload, "service[postgresql]"
@@ -55,7 +55,7 @@ node[:postgresql][:versions].each do |version|
     source "pg_ident.conf.erb"
     owner "postgres"
     group "postgres"
-    mode 0o640
+    mode "640"
     variables :maps => settings[:user_name_maps] || defaults[:user_name_maps]
     notifies :reload, "service[postgresql]"
   end
@@ -82,7 +82,7 @@ node[:postgresql][:versions].each do |version|
       source "recovery.conf.erb"
       owner "postgres"
       group "postgres"
-      mode 0o640
+      mode "640"
       variables :standby_mode => standby_mode,
                 :primary_conninfo => primary_conninfo,
                 :restore_command => restore_command,

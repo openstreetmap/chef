@@ -25,7 +25,7 @@ template "/etc/php/#{node[:php][:version]}/fpm/conf.d/99-chef.ini" do
   source "php-fpm.ini.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   notifies :restart, "service[php#{node[:php][:version]}-fpm]"
 end
 

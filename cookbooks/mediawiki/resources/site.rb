@@ -94,13 +94,13 @@ action :create do
   declare_resource :directory, site_directory do
     owner node[:mediawiki][:user]
     group node[:mediawiki][:group]
-    mode 0o775
+    mode "775"
   end
 
   declare_resource :directory, mediawiki_directory do
     owner node[:mediawiki][:user]
     group node[:mediawiki][:group]
-    mode 0o775
+    mode "775"
   end
 
   mediawiki_reference = "REL#{new_resource.version}".tr(".", "_")
@@ -130,7 +130,7 @@ action :create do
     source "composer.local.json.erb"
     owner node[:mediawiki][:user]
     group node[:mediawiki][:group]
-    mode 0o664
+    mode "664"
   end
 
   # Safety catch if git doesn't update but install.php hasn't run
@@ -147,19 +147,19 @@ action :create do
   declare_resource :directory, "#{mediawiki_directory}/images" do
     owner "www-data"
     group node[:mediawiki][:group]
-    mode 0o775
+    mode "775"
   end
 
   declare_resource :directory, "#{mediawiki_directory}/cache" do
     owner "www-data"
     group node[:mediawiki][:group]
-    mode 0o775
+    mode "775"
   end
 
   declare_resource :directory, "#{mediawiki_directory}/LocalSettings.d" do
     user node[:mediawiki][:user]
     group node[:mediawiki][:group]
-    mode 0o775
+    mode "775"
   end
 
   template "#{mediawiki_directory}/LocalSettings.php" do
@@ -167,7 +167,7 @@ action :create do
     source "LocalSettings.php.erb"
     owner node[:mediawiki][:user]
     group node[:mediawiki][:group]
-    mode 0o664
+    mode "664"
     variables :name => new_resource.site,
               :directory => mediawiki_directory,
               :database_params => database_params,
@@ -226,7 +226,7 @@ action :create do
     source "mediawiki-backup.cron.erb"
     owner "root"
     group "root"
-    mode 0o700
+    mode "700"
     variables :name => new_resource.site,
               :directory => site_directory,
               :database_params => database_params
@@ -493,7 +493,7 @@ action :create do
     cookbook "mediawiki"
     owner node[:mediawiki][:user]
     group node[:mediawiki][:group]
-    mode 0o644
+    mode "644"
     backup false
   end
 
@@ -501,7 +501,7 @@ action :create do
     cookbook "mediawiki"
     owner node[:mediawiki][:user]
     group node[:mediawiki][:group]
-    mode 0o644
+    mode "644"
     backup false
   end
 
@@ -509,7 +509,7 @@ action :create do
     cookbook "mediawiki"
     owner node[:mediawiki][:user]
     group node[:mediawiki][:group]
-    mode 0o644
+    mode "644"
     backup false
   end
 
@@ -544,7 +544,7 @@ action :update do
     source "LocalSettings.php.erb"
     owner node[:mediawiki][:user]
     group node[:mediawiki][:group]
-    mode 0o664
+    mode "664"
     variables :name => new_resource.site,
               :directory => mediawiki_directory,
               :database_params => database_params,

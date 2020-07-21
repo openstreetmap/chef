@@ -53,7 +53,7 @@ else
     key_file "/etc/ssl/private/exim.key"
     owner "root"
     group "ssl-cert"
-    mode 0o640
+    mode "640"
     org "OpenStreetMap"
     email "postmaster@openstreetmap.org"
     common_name node[:fqdn]
@@ -86,7 +86,7 @@ if node[:exim][:smarthost_name]
   directory "/srv/mta-sts.#{primary_domain}" do
     owner "root"
     group "root"
-    mode 0o755
+    mode "755"
   end
 
   domains.each do |domain|
@@ -94,7 +94,7 @@ if node[:exim][:smarthost_name]
       source "mta-sts.erb"
       owner "root"
       group "root"
-      mode 0o644
+      mode "644"
       variables :domain => domain
     end
   end
@@ -114,7 +114,7 @@ end
 file "/etc/exim4/blocked-senders" do
   owner "root"
   group "Debian-exim"
-  mode 0o644
+  mode "644"
 end
 
 if node[:exim][:dkim_selectors]
@@ -124,20 +124,20 @@ if node[:exim][:dkim_selectors]
     owner "root"
     source "dkim-domains.erb"
     group "Debian-exim"
-    mode 0o644
+    mode "644"
   end
 
   template "/etc/exim4/dkim-selectors" do
     owner "root"
     source "dkim-selectors.erb"
     group "Debian-exim"
-    mode 0o644
+    mode "644"
   end
 
   directory "/etc/exim4/dkim-keys" do
     owner "root"
     group "Debian-exim"
-    mode 0o755
+    mode "755"
   end
 
   node[:exim][:dkim_selectors].each do |domain, _selector|
@@ -145,7 +145,7 @@ if node[:exim][:dkim_selectors]
       content keys[domain].join("\n")
       owner "root"
       group "Debian-exim"
-      mode 0o640
+      mode "640"
     end
   end
 end
@@ -154,7 +154,7 @@ template "/etc/exim4/exim4.conf" do
   source "exim4.conf.erb"
   owner "root"
   group "Debian-exim"
-  mode 0o644
+  mode "644"
   variables :relay_to_domains => relay_to_domains.sort,
             :relay_from_hosts => relay_from_hosts.sort
   notifies :restart, "service[exim4]"
@@ -181,14 +181,14 @@ template "/etc/aliases" do
   source "aliases.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
 end
 
 remote_directory "/etc/exim4/noreply" do
   source "noreply"
   owner "root"
   group "Debian-exim"
-  mode 0o755
+  mode "755"
   files_owner "root"
   files_group "Debian-exim"
   files_mode 0o755

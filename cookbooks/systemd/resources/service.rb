@@ -81,7 +81,7 @@ action :create do
       source "environment.erb"
       owner "root"
       group "root"
-      mode 0o640
+      mode "640"
       variables :environment => new_resource.environment_file
     end
 
@@ -92,7 +92,7 @@ action :create do
     directory dropin_directory do
       owner "root"
       group "root"
-      mode 0o755
+      mode "755"
     end
   end
 
@@ -101,7 +101,7 @@ action :create do
     source "service.erb"
     owner "root"
     group "root"
-    mode 0o644
+    mode "644"
     variables service_variables
     notifies :run, "execute[systemctl-reload]"
   end

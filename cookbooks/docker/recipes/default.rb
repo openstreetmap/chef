@@ -28,14 +28,14 @@ package %w[
 directory "/etc/docker" do
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end
 
 template "/etc/docker/daemon.json" do
   source "daemon.json.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
 end
 
 service "docker" do

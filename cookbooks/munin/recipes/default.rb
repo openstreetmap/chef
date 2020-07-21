@@ -44,7 +44,7 @@ template "/etc/munin/munin-node.conf" do
   source "munin-node.conf.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   variables :servers => servers
   notifies :restart, "service[munin-node]"
 end

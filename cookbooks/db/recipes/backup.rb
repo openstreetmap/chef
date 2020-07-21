@@ -21,7 +21,7 @@ template "/usr/local/bin/backup-db" do
   source "backup-db.erb"
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end
 
 cron_d "backup-db" do

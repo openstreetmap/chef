@@ -173,7 +173,7 @@ end
 file "/etc/netplan/99-chef.yaml" do
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   content YAML.dump(netplan)
 end
 
@@ -196,7 +196,7 @@ template "/etc/hosts" do
   source "hosts.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   not_if { ENV["TEST_KITCHEN"] }
 end
 
@@ -207,14 +207,14 @@ end
 directory "/etc/systemd/resolved.conf.d" do
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end
 
 template "/etc/systemd/resolved.conf.d/99-chef.conf" do
   source "resolved.conf.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   notifies :restart, "service[systemd-resolved]", :immediately
 end
 
@@ -288,7 +288,7 @@ template "/etc/default/shorewall" do
   source "shorewall-default.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   notifies :restart, "service[shorewall]"
 end
 
@@ -296,7 +296,7 @@ template "/etc/shorewall/shorewall.conf" do
   source "shorewall.conf.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   notifies :restart, "service[shorewall]"
 end
 
@@ -304,7 +304,7 @@ template "/etc/shorewall/zones" do
   source "shorewall-zones.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   variables :type => "ipv4"
   notifies :restart, "service[shorewall]"
 end
@@ -313,7 +313,7 @@ template "/etc/shorewall/interfaces" do
   source "shorewall-interfaces.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   notifies :restart, "service[shorewall]"
 end
 
@@ -321,7 +321,7 @@ template "/etc/shorewall/hosts" do
   source "shorewall-hosts.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   variables :zones => zones
   notifies :restart, "service[shorewall]"
 end
@@ -330,7 +330,7 @@ template "/etc/shorewall/conntrack" do
   source "shorewall-conntrack.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   notifies :restart, "service[shorewall]"
   only_if { node[:networking][:firewall][:raw] }
 end
@@ -339,7 +339,7 @@ template "/etc/shorewall/policy" do
   source "shorewall-policy.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   notifies :restart, "service[shorewall]"
 end
 
@@ -347,7 +347,7 @@ template "/etc/shorewall/rules" do
   source "shorewall-rules.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   variables :family => "inet"
   notifies :restart, "service[shorewall]"
 end
@@ -362,7 +362,7 @@ template "/etc/logrotate.d/shorewall" do
   source "logrotate.shorewall.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   variables :name => "shorewall"
 end
 
@@ -392,7 +392,7 @@ if node[:roles].include?("gateway")
     source "shorewall-masq.erb"
     owner "root"
     group "root"
-    mode 0o644
+    mode "644"
     notifies :restart, "service[shorewall]"
   end
 else
@@ -409,7 +409,7 @@ unless node.interfaces(:family => :inet6).empty?
     source "shorewall-default.erb"
     owner "root"
     group "root"
-    mode 0o644
+    mode "644"
     notifies :restart, "service[shorewall6]"
   end
 
@@ -417,7 +417,7 @@ unless node.interfaces(:family => :inet6).empty?
     source "shorewall6.conf.erb"
     owner "root"
     group "root"
-    mode 0o644
+    mode "644"
     notifies :restart, "service[shorewall6]"
   end
 
@@ -425,7 +425,7 @@ unless node.interfaces(:family => :inet6).empty?
     source "shorewall-zones.erb"
     owner "root"
     group "root"
-    mode 0o644
+    mode "644"
     variables :type => "ipv6"
     notifies :restart, "service[shorewall6]"
   end
@@ -434,7 +434,7 @@ unless node.interfaces(:family => :inet6).empty?
     source "shorewall6-interfaces.erb"
     owner "root"
     group "root"
-    mode 0o644
+    mode "644"
     notifies :restart, "service[shorewall6]"
   end
 
@@ -442,7 +442,7 @@ unless node.interfaces(:family => :inet6).empty?
     source "shorewall6-hosts.erb"
     owner "root"
     group "root"
-    mode 0o644
+    mode "644"
     variables :zones => zones
     notifies :restart, "service[shorewall6]"
   end
@@ -451,7 +451,7 @@ unless node.interfaces(:family => :inet6).empty?
     source "shorewall-conntrack.erb"
     owner "root"
     group "root"
-    mode 0o644
+    mode "644"
     notifies :restart, "service[shorewall6]"
     only_if { node[:networking][:firewall][:raw] }
   end
@@ -460,7 +460,7 @@ unless node.interfaces(:family => :inet6).empty?
     source "shorewall-policy.erb"
     owner "root"
     group "root"
-    mode 0o644
+    mode "644"
     notifies :restart, "service[shorewall6]"
   end
 
@@ -468,7 +468,7 @@ unless node.interfaces(:family => :inet6).empty?
     source "shorewall-rules.erb"
     owner "root"
     group "root"
-    mode 0o644
+    mode "644"
     variables :family => "inet6"
     notifies :restart, "service[shorewall6]"
   end
@@ -483,7 +483,7 @@ unless node.interfaces(:family => :inet6).empty?
     source "logrotate.shorewall.erb"
     owner "root"
     group "root"
-    mode 0o644
+    mode "644"
     variables :name => "shorewall6"
   end
 

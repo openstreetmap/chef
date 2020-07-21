@@ -51,7 +51,7 @@ template "/etc/default/rsync" do
   source "rsync.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   notifies :restart, "service[rsync]"
 end
 
@@ -59,7 +59,7 @@ template "/etc/rsyncd.conf" do
   source "rsyncd.conf.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   variables :hosts_allow => hosts_allow, :hosts_deny => hosts_deny
 end
 

@@ -56,13 +56,13 @@ template "/etc/squid/squid.conf" do
   source "squid.conf.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
 end
 
 directory "/etc/squid/squid.conf.d" do
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end
 
 Array(node[:squid][:cache_dir]).each do |cache_dir|
@@ -75,7 +75,7 @@ Array(node[:squid][:cache_dir]).each do |cache_dir|
   directory cache_dir do
     owner "proxy"
     group "proxy"
-    mode 0o750
+    mode "750"
     recursive true
     notifies :restart, "service[squid]"
   end

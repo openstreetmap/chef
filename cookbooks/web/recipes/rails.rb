@@ -46,7 +46,7 @@ template "/etc/cron.hourly/passenger" do
   source "passenger.cron.erb"
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end
 
 ruby_version = node[:passenger][:ruby_version]
@@ -136,7 +136,7 @@ template "/usr/local/bin/cleanup-rails-assets" do
   source "cleanup-assets.erb"
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end
 
 gem_package "apachelogregex"
@@ -146,7 +146,7 @@ template "/usr/local/bin/api-statistics" do
   source "api-statistics.erb"
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end
 
 systemd_service "api-statistics" do

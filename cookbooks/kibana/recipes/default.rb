@@ -34,7 +34,7 @@ end
 directory "/opt/kibana-#{version}" do
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end
 
 execute "unzip-kibana-#{version}" do
@@ -48,19 +48,19 @@ end
 directory "/etc/kibana" do
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end
 
 directory "/var/run/kibana" do
   owner "kibana"
   group "kibana"
-  mode 0o755
+  mode "755"
 end
 
 directory "/var/log/kibana" do
   owner "kibana"
   group "kibana"
-  mode 0o755
+  mode "755"
 end
 
 systemd_service "kibana@" do
@@ -87,7 +87,7 @@ node[:kibana][:sites].each do |name, details|
                       ))
     owner "root"
     group "root"
-    mode 0o644
+    mode "644"
     notifies :restart, "service[kibana@#{name}]"
   end
 

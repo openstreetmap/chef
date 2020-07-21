@@ -33,7 +33,7 @@ template "/usr/local/bin/passenger-ruby" do
   source "ruby.erb"
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
   notifies :reload, "service[apache2]"
 end
 

@@ -44,20 +44,20 @@ remote_file "/usr/local/bin/dnscontrol" do
   source "https://github.com/StackExchange/dnscontrol/releases/download/v3.2.0/dnscontrol-Linux"
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end
 
 directory "/srv/dns.openstreetmap.org" do
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end
 
 remote_directory "/srv/dns.openstreetmap.org/html" do
   source "html"
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
   files_owner "root"
   files_group "root"
   files_mode 0o644
@@ -72,7 +72,7 @@ Dir.glob("/var/lib/dns/json/*.json").each do |kmlfile|
     source "zone.html.erb"
     owner "root"
     group "root"
-    mode 0o644
+    mode "644"
     variables :zone => zone
   end
 
@@ -83,7 +83,7 @@ template "/srv/dns.openstreetmap.org/html/index.html" do
   source "index.html.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   variables :zones => zones
 end
 
@@ -102,7 +102,7 @@ template "/usr/local/bin/dns-update" do
   source "dns-update.erb"
   owner "root"
   group "git"
-  mode 0o750
+  mode "750"
   variables :passwords => passwords, :geoservers => geoservers
 end
 
@@ -116,7 +116,7 @@ end
 directory "/var/lib/dns" do
   owner "git"
   group "git"
-  mode 0o2775
+  mode "2775"
   notifies :run, "execute[dns-update]"
 end
 
@@ -124,7 +124,7 @@ template "/var/lib/dns/creds.json" do
   source "creds.json.erb"
   owner "git"
   group "git"
-  mode 0o440
+  mode "440"
   variables :passwords => passwords
 end
 
@@ -132,7 +132,7 @@ cookbook_file "#{node[:dns][:repository]}/hooks/post-receive" do
   source "post-receive"
   owner "git"
   group "git"
-  mode 0o750
+  mode "750"
   only_if { ::Dir.exist?("#{node[:dns][:repository]}/hooks") }
 end
 
@@ -140,7 +140,7 @@ template "/usr/local/bin/dns-check" do
   source "dns-check.erb"
   owner "root"
   group "git"
-  mode 0o750
+  mode "750"
   variables :passwords => passwords, :geoservers => geoservers
 end
 

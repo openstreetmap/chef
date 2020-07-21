@@ -27,7 +27,7 @@ remote_directory "#{repository_directory}/hooks" do
   source "hooks"
   owner "www-data"
   group "www-data"
-  mode 0o755
+  mode "755"
   files_owner "www-data"
   files_group "www-data"
   files_mode 0o755
@@ -65,5 +65,5 @@ template "/etc/cron.daily/svn-backup" do
   source "backup.cron.erb"
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end

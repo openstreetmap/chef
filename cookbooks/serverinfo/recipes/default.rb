@@ -49,7 +49,7 @@ roles = { :rows => search(:role, "*:*") }
 
 file "/srv/hardware.openstreetmap.org/_data/nodes.json" do
   content nodes.to_json
-  mode 0o644
+  mode "644"
   owner "root"
   group "root"
   notifies :run, "execute[/srv/hardware.openstreetmap.org]"
@@ -57,14 +57,14 @@ end
 
 file "/srv/hardware.openstreetmap.org/_data/roles.json" do
   content roles.to_json
-  mode 0o644
+  mode "644"
   owner "root"
   group "root"
   notifies :run, "execute[/srv/hardware.openstreetmap.org]"
 end
 
 directory "/srv/hardware.openstreetmap.org/_site" do
-  mode 0o755
+  mode "755"
   owner "nobody"
   group "nogroup"
 end
@@ -72,7 +72,7 @@ end
 # Workaround https://github.com/jekyll/jekyll/issues/7804
 # by creating a .jekyll-cache folder
 directory "/srv/hardware.openstreetmap.org/.jekyll-cache" do
-  mode 0o755
+  mode "755"
   owner "nobody"
   group "nogroup"
 end

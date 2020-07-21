@@ -146,7 +146,7 @@ if File.exist?("/etc/default/grub")
     source "grub.erb"
     owner "root"
     group "root"
-    mode 0o644
+    mode "644"
     variables :units => units, :entry => grub_entry
     notifies :run, "execute[update-grub]"
   end
@@ -163,7 +163,7 @@ template "/etc/initramfs-tools/conf.d/mdadm" do
   source "initramfs-mdadm.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   notifies :run, "execute[update-initramfs]"
 end
 
@@ -270,7 +270,7 @@ if status_packages.include?("cciss-vol-status")
     source "cciss-vol-statusd.erb"
     owner "root"
     group "root"
-    mode 0o755
+    mode "755"
     notifies :restart, "service[cciss-vol-statusd]"
   end
 
@@ -301,7 +301,7 @@ end
       source "raid.default.erb"
       owner "root"
       group "root"
-      mode 0o644
+      mode "644"
       variables :devices => status_packages[status_package]
     end
 
@@ -406,14 +406,14 @@ if disks.count.positive?
     source "smartd-mailer.erb"
     owner "root"
     group "root"
-    mode 0o755
+    mode "755"
   end
 
   template "/etc/smartd.conf" do
     source "smartd.conf.erb"
     owner "root"
     group "root"
-    mode 0o644
+    mode "644"
     variables :disks => disks
   end
 
@@ -421,7 +421,7 @@ if disks.count.positive?
     source "smartmontools.erb"
     owner "root"
     group "root"
-    mode 0o644
+    mode "644"
   end
 
   service "smartd" do
@@ -481,7 +481,7 @@ if File.exist?("/etc/mdadm/mdadm.conf")
   file "/etc/mdadm/mdadm.conf" do
     owner "root"
     group "root"
-    mode 0o644
+    mode "644"
     content mdadm_conf
   end
 
@@ -495,7 +495,7 @@ template "/etc/modules" do
   source "modules.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
 end
 
 service "kmod" do
@@ -510,7 +510,7 @@ if node[:hardware][:watchdog]
     source "watchdog.erb"
     owner "root"
     group "root"
-    mode 0o644
+    mode "644"
     variables :module => node[:hardware][:watchdog]
   end
 
@@ -557,7 +557,7 @@ unless Dir.glob("/sys/class/hwmon/hwmon*").empty?
     source "sensors.conf.erb"
     owner "root"
     group "root"
-    mode 0o644
+    mode "644"
     notifies :run, "execute[/etc/sensors.d/chef.conf]"
   end
 end

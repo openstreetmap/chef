@@ -108,7 +108,7 @@ template "/etc/logrotate.d/squid" do
   source "logrotate.squid.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
 end
 
 nginx_site "default" do
@@ -119,7 +119,7 @@ template "/usr/local/bin/nginx_generate_tilecache_qos_map" do
   source "nginx_generate_tilecache_qos_map.erb"
   owner "root"
   group "root"
-  mode 0o750
+  mode "750"
   variables :totp_key => web_passwords["totp_key"]
 end
 
@@ -172,7 +172,7 @@ template "/etc/logrotate.d/nginx" do
   source "logrotate.nginx.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
 end
 
 fail2ban_jail "squid" do
@@ -190,27 +190,27 @@ end
 directory "/srv/tilecache" do
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end
 
 directory "/srv/tilecache/data" do
   owner "www-data"
   group "www-data"
-  mode 0o755
+  mode "755"
 end
 
 cookbook_file "/srv/tilecache/tilecache-curl-time.txt" do
   source "tilecache-curl-time.txt"
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end
 
 template "/srv/tilecache/tilecache-curl-time" do
   source "tilecache-curl-time.erb"
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
   variables :caches => tilecaches, :renders => tilerenders
 end
 
@@ -218,7 +218,7 @@ template "/srv/tilecache/tilecache-curl-time-cleanup" do
   source "tilecache-curl-time-cleanup.erb"
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end
 
 ohai_plugin "tilecache" do

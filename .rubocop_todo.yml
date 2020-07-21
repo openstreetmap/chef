@@ -40,8 +40,3 @@ ChefModernize/Definitions:
 # SupportedStyles: strings, symbols
 ChefStyle/AttributeKeys:
   EnforcedStyle: symbols
-
-# Offense count: 489
-# Cop supports --auto-correct.
-ChefStyle/FileMode:
-  Enabled: false

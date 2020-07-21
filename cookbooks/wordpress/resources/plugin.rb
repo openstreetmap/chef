@@ -34,7 +34,7 @@ action :create do
       source new_resource.source
       owner node[:wordpress][:user]
       group node[:wordpress][:group]
-      mode 0o755
+      mode "755"
       files_owner node[:wordpress][:user]
       files_group node[:wordpress][:group]
       files_mode 0o755

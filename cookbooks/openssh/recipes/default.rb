@@ -27,7 +27,7 @@ template "/etc/ssh/sshd_config.d/chef.conf" do
   source "sshd_config.conf.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   notifies :restart, "service[ssh]"
   only_if { Dir.exist?("/etc/ssh/sshd_config.d") }
 end
@@ -73,7 +73,7 @@ end
 
 template "/etc/ssh/ssh_known_hosts" do
   source "ssh_known_hosts.erb"
-  mode 0o444
+  mode "444"
   owner "root"
   group "root"
   backup false

@@ -26,7 +26,7 @@ package %w[
 directory "/etc/gdnsd/config.d" do
   owner "nobody"
   group "nogroup"
-  mode 0o755
+  mode "755"
 end
 
 %w[tile nominatim].each do |zone|
@@ -36,7 +36,7 @@ end
       source "zone.#{type}.erb"
       owner "nobody"
       group "nogroup"
-      mode 0o644
+      mode "644"
       variables :zone => zone
     end
   end
@@ -46,7 +46,7 @@ template "/etc/gdnsd/config" do
   source "config.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   notifies :restart, "service[gdnsd]"
 end
 
@@ -54,7 +54,7 @@ template "/etc/gdnsd/zones/geo.openstreetmap.org" do
   source "geo.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   notifies :restart, "service[gdnsd]"
 end
 

@@ -45,7 +45,7 @@ git "/srv/operations.osmfoundation.org" do
 end
 
 directory "/srv/operations.osmfoundation.org/_site" do
-  mode 0o755
+  mode "755"
   owner "nobody"
   group "nogroup"
 end
@@ -53,7 +53,7 @@ end
 # Workaround https://github.com/jekyll/jekyll/issues/7804
 # by creating a .jekyll-cache folder
 directory "/srv/operations.osmfoundation.org/.jekyll-cache" do
-  mode 0o755
+  mode "755"
   owner "nobody"
   group "nogroup"
 end

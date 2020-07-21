@@ -27,20 +27,20 @@ template "/usr/local/bin/planet-update" do
   source "planet-update.erb"
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end
 
 template "/usr/local/bin/planet-update-file" do
   source "planet-update-file.erb"
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end
 
 directory "/var/lib/planet" do
   owner "planet"
   group "planet"
-  mode 0o755
+  mode "755"
 end
 
 remote_file "/var/lib/planet/planet.pbf" do
@@ -48,7 +48,7 @@ remote_file "/var/lib/planet/planet.pbf" do
   source "https://planet.openstreetmap.org/pbf/planet-latest.osm.pbf"
   owner "planet"
   group "planet"
-  mode 0o644
+  mode "644"
   not_if { ENV["TEST_KITCHEN"] }
 end
 
@@ -63,5 +63,5 @@ template "/etc/logrotate.d/planet-update" do
   source "planet-update.logrotate.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
 end

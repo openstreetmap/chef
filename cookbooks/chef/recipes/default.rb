@@ -40,7 +40,7 @@ remote_file "#{cache_dir}/#{chef_package}" do
   source "https://packages.chef.io/files/stable/chef/#{chef_version}/ubuntu/#{node[:lsb][:release]}/#{chef_package}"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   backup false
   ignore_failure true
 end
@@ -53,59 +53,59 @@ end
 directory "/etc/chef" do
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end
 
 template "/etc/chef/client.rb" do
   source "client.rb.erb"
   owner "root"
   group "root"
-  mode 0o640
+  mode "640"
 end
 
 file "/etc/chef/client.pem" do
   owner "root"
   group "root"
-  mode 0o400
+  mode "400"
 end
 
 template "/etc/chef/report.rb" do
   source "report.rb.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
 end
 
 template "/etc/logrotate.d/chef" do
   source "logrotate.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
 end
 
 directory "/etc/chef/trusted_certs" do
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end
 
 template "/etc/chef/trusted_certs/verisign.pem" do
   source "verisign.pem.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
 end
 
 directory node[:ohai][:plugin_dir] do
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end
 
 directory "/var/log/chef" do
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end
 
 systemd_service "chef-client" do

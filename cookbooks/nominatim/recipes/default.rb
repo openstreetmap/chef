@@ -27,14 +27,14 @@ email_errors = data_bag_item("accounts", "lonvia")["email"]
 directory basedir do
   owner "nominatim"
   group "nominatim"
-  mode 0o755
+  mode "755"
   recursive true
 end
 
 directory node[:nominatim][:logdir] do
   owner "nominatim"
   group "nominatim"
-  mode 0o755
+  mode "755"
   recursive true
 end
 
@@ -42,14 +42,14 @@ file "#{node[:nominatim][:logdir]}/query.log" do
   action :create_if_missing
   owner "www-data"
   group "adm"
-  mode 0o664
+  mode "664"
 end
 
 file "#{node[:nominatim][:logdir]}/update.log" do
   action :create_if_missing
   owner "nominatim"
   group "adm"
-  mode 0o664
+  mode "664"
 end
 
 # exception granted for a limited time so that they can set up their own server
@@ -99,7 +99,7 @@ end
 directory "#{basedir}/tablespaces" do
   owner "postgres"
   group "postgres"
-  mode 0o700
+  mode "700"
 end
 
 # Note: tablespaces must be exactly in the same location on each
@@ -109,7 +109,7 @@ node[:nominatim][:tablespaces].each do |name, location|
   directory location do
     owner "postgres"
     group "postgres"
-    mode 0o700
+    mode "700"
     recursive true
   end
 
@@ -133,14 +133,14 @@ if node[:nominatim][:state] == "master"
   directory node[:rsyncd][:modules][:archive][:path] do
     owner "postgres"
     group "postgres"
-    mode 0o700
+    mode "700"
   end
 
   template "/usr/local/bin/clean-db-nominatim" do
     source "clean-db-nominatim.erb"
     owner "root"
     group "root"
-    mode 0o755
+    mode "755"
     variables :archive_dir => node[:rsyncd][:modules][:archive][:path],
               :update_stop_file => "#{basedir}/status/updates_disabled",
               :streaming_clients => search(:node, "nominatim_state:slave").map { |slave| slave[:fqdn] }.join(" ")
@@ -178,7 +178,7 @@ build_directory = "#{basedir}/bin"
 directory build_directory do
   owner "nominatim"
   group "nominatim"
-  mode 0o755
+  mode "755"
   recursive true
 end
 
@@ -209,7 +209,7 @@ template "#{source_directory}/.git/hooks/post-merge" do
   source "git-post-merge-hook.erb"
   owner "nominatim"
   group "nominatim"
-  mode 0o755
+  mode "755"
   variables :srcdir => source_directory,
             :builddir => build_directory,
             :dbname => node[:nominatim][:dbname]
@@ -219,7 +219,7 @@ template "#{build_directory}/settings/local.php" do
   source "settings.erb"
   owner "nominatim"
   group "nominatim"
-  mode 0o664
+  mode "664"
   variables :base_url => node[:nominatim][:state] == "off" ? node[:fqdn] : "nominatim.openstreetmap.org",
             :dbname => node[:nominatim][:dbname],
             :flatnode_file => node[:nominatim][:flatnode_file],
@@ -236,7 +236,7 @@ template "/etc/logrotate.d/nominatim" do
   source "logrotate.nominatim.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
 end
 
 external_data = [
@@ -250,7 +250,7 @@ external_data.each do |fname|
     source "https://www.nominatim.org/data/#{fname}"
     owner "nominatim"
     group "nominatim"
-    mode 0o644
+    mode "644"
   end
 end
 
@@ -259,7 +259,7 @@ remote_file "#{source_directory}/data/country_osm_grid.sql.gz" do
   source "https://www.nominatim.org/data/country_grid.sql.gz"
   owner "nominatim"
   group "nominatim"
-  mode 0o644
+  mode "644"
 end
 
 if node[:nominatim][:state] == "off"
@@ -319,7 +319,7 @@ template "#{source_directory}/utils/nominatim-update" do
   source "updater.erb"
   user "nominatim"
   group "nominatim"
-  mode 0o755
+  mode "755"
   variables :bindir => build_directory,
             :srcdir => source_directory,
             :logfile => "#{node[:nominatim][:logdir]}/update.log",
@@ -332,7 +332,7 @@ template "/etc/init.d/nominatim-update" do
   source "updater.init.erb"
   user "nominatim"
   group "nominatim"
-  mode 0o755
+  mode "755"
   variables :source_directory => source_directory
 end
 
@@ -341,7 +341,7 @@ end
     source "#{fname}.erb"
     owner "root"
     group "root"
-    mode 0o755
+    mode "755"
     variables :db => node[:nominatim][:dbname]
   end
 end
@@ -351,7 +351,7 @@ end
 directory "#{basedir}/etc" do
   owner "nominatim"
   group "adm"
-  mode 0o775
+  mode "775"
 end
 
 %w[user_agent referrer email].each do |name|
@@ -359,7 +359,7 @@ end
     action :create_if_missing
     owner "nominatim"
     group "adm"
-    mode 0o664
+    mode "664"
   end
 end
 
@@ -403,7 +403,7 @@ template "/etc/logrotate.d/nginx" do
   source "logrotate.nginx.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
 end
 
 munin_plugin_conf "nominatim" do
@@ -427,7 +427,7 @@ end
 directory "#{basedir}/status" do
   owner "nominatim"
   group "postgres"
-  mode 0o775
+  mode "775"
 end
 
 include_recipe "fail2ban"

@@ -32,7 +32,7 @@ template "/etc/apt/preferences.d/99-chef" do
   source "preferences.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
 end
 
 apt_update "/etc/apt/sources.list" do
@@ -49,7 +49,7 @@ template "/etc/apt/sources.list" do
   source "sources.list.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   variables :archive_host => archive_host, :codename => node[:lsb][:codename]
   notifies :update, "apt_update[/etc/apt/sources.list]", :immediately
 end
@@ -186,7 +186,7 @@ if Dir.exist?("/usr/share/unattended-upgrades")
   file "/etc/apt/apt.conf.d/20auto-upgrades" do
     user "root"
     group "root"
-    mode 0o644
+    mode "644"
     content auto_upgrades
   end
 end
@@ -195,5 +195,5 @@ template "/etc/apt/apt.conf.d/60chef" do
   source "apt.conf.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
 end

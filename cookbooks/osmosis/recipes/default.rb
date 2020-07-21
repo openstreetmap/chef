@@ -40,7 +40,7 @@ end
 directory osmosis_directory do
   owner "root"
   group "root"
-  mode 0o755
+  mode "755"
 end
 
 remote_file "#{cache_dir}/#{osmosis_package}" do
@@ -48,7 +48,7 @@ remote_file "#{cache_dir}/#{osmosis_package}" do
   source "https://github.com/openstreetmap/osmosis/releases/download/#{osmosis_version}/osmosis-#{osmosis_version}.zip"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
   backup false
 end
 

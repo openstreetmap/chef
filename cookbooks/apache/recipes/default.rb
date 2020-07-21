@@ -50,7 +50,7 @@ template "/etc/apache2/ports.conf" do
   source "ports.conf.erb"
   owner "root"
   group "root"
-  mode 0o644
+  mode "644"
 end
 
 service "apache2" do
