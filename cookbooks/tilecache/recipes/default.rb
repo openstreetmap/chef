@@ -123,7 +123,7 @@ template "/usr/local/bin/nginx_generate_tilecache_qos_map" do
   variables :totp_key => web_passwords["totp_key"]
 end
 
-file "/etc/cron.d/tilecache" do
+cron_d "tilecache" do
   action :delete
 end
 

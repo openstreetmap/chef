@@ -262,10 +262,6 @@ remote_file "#{source_directory}/data/country_osm_grid.sql.gz" do
   mode 0o644
 end
 
-file "/etc/cron.d/nominatim" do
-  action :delete
-end
-
 if node[:nominatim][:state] == "off"
   cron_d "nominatim-backup" do
     action :delete

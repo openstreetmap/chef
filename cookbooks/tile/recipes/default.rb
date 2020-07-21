@@ -578,10 +578,6 @@ tile_directories = node[:tile][:styles].collect do |_, style|
   style[:tile_directories].collect { |directory| directory[:name] }
 end.flatten.sort.uniq
 
-file "/etc/cron.d/cleanup-tiles" do
-  action :delete
-end
-
 tile_directories.each do |directory|
   label = directory.gsub("/", "-")
 

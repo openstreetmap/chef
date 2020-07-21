@@ -27,10 +27,6 @@ ChefCorrectness/NodeNormalUnless:
     - 'cookbooks/mediawiki/resources/site.rb'
     - 'cookbooks/wordpress/resources/site.rb'
 
-# Offense count: 23
-ChefModernize/CronDFileOrTemplate:
-  Enabled: false
-
 # Offense count: 1
 # Configuration parameters: Include.
 # Include: **/definitions/*.rb

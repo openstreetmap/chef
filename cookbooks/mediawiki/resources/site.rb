@@ -175,10 +175,6 @@ action :create do
     notifies :run, "execute[#{mediawiki_directory}/maintenance/update.php]"
   end
 
-  file "/etc/cron.d/mediawiki-#{cron_name}" do
-    action :delete
-  end
-
   cron_d "mediawiki-#{cron_name}-sitemap" do
     comment "Generate sitemap.xml daily"
     minute "30"
