@@ -123,11 +123,26 @@ template "/usr/local/bin/nginx_generate_tilecache_qos_map" do
   variables :totp_key => web_passwords["totp_key"]
 end
 
-template "/etc/cron.d/tilecache" do
-  source "cron.erb"
-  owner "root"
-  group "root"
-  mode 0o644
+file "/etc/cron.d/tilecache" do
+  action :delete
+end
+
+cron_d "tilecache-generate-qos-map" do
+  minute "0"
+  user "root"
+  command "/usr/local/bin/nginx_generate_tilecache_qos_map"
+end
+
+cron_d "tilecache-curl-time" do
+  user "www-data"
+  command "/srv/tilecache/tilecache-curl-time"
+end
+
+cron_d "tilecache-curl-time-cleanup" do
+  minute "15"
+  hour "0"
+  user "www-data"
+  command "/srv/tilecache/tilecache-curl-time-cleanup"
 end
 
 execute "execute_nginx_generate_tilecache_qos_map" do
