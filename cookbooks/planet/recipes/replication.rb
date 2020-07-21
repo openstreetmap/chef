@@ -200,14 +200,72 @@ link "/var/lib/replication/day/data" do
 end
 
 if node[:planet][:replication] == "enabled"
-  template "/etc/cron.d/replication" do
-    source "replication.cron.erb"
-    owner "root"
-    group "root"
-    mode 0o644
+  cron_d "users-agreed" do
+    minute "0"
+    hour "7"
+    user "planet"
+    command "/usr/local/bin/users-agreed"
+    mailto "zerebubuth@gmail.com"
+  end
+
+  cron_d "users-deleted" do
+    minute "0"
+    hour "17"
+    user "planet"
+    command "/usr/local/bin/users-deleted"
+    mailto "zerebubuth@gmail.com"
+  end
+
+  cron_d "replication-changesets" do
+    user "planet"
+    command "/usr/local/bin/replicate-changesets /etc/replication/changesets.conf"
+    mailto "zerebubuth@gmail.com"
+  end
+
+  cron_d "replication-minutely" do
+    user "planet"
+    command "/usr/local/bin/osmosis -q --replicate-apidb authFile=/etc/replication/auth.conf validateSchemaVersion=false --write-replication workingDirectory=/store/planet/replication/minute"
+    mailto "brett@bretth.com"
+    environment "LD_PRELOAD" => "/opt/flush/flush.so"
+  end
+
+  cron_d "replication-hourly" do
+    minute "2,7,12,17"
+    user "planet"
+    command "/usr/local/bin/osmosis -q --merge-replication-files workingDirectory=/var/lib/replication/hour"
+    mailto "brett@bretth.com"
+    environment "LD_PRELOAD" => "/opt/flush/flush.so"
+  end
+
+  cron_d "replication-daily" do
+    minute "5,10,15,20"
+    user "planet"
+    command "/usr/local/bin/osmosis -q --merge-replication-files workingDirectory=/var/lib/replication/day"
+    mailto "brett@bretth.com"
+    environment "LD_PRELOAD" => "/opt/flush/flush.so"
   end
 else
-  file "/etc/cron.d/replication" do
+  cron_d "users-agreed" do
+    action :delete
+  end
+
+  cron_d "users-deleted" do
+    action :delete
+  end
+
+  cron_d "replication-changesets" do
+    action :delete
+  end
+
+  cron_d "replication-minutely" do
+    action :delete
+  end
+
+  cron_d "replication-hourly" do
+    action :delete
+  end
+
+  cron_d "replication-daily" do
     action :delete
   end
 end

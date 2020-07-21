@@ -26,10 +26,6 @@ package %w[
   php-cli
 ]
 
-file "/etc/cron.d/planet" do
-  action :delete
-end
-
 remote_directory "/store/planet#html" do
   path "/store/planet"
   source "html"
@@ -125,9 +121,12 @@ template "/usr/local/bin/old-planet-file-cleanup" do
   mode 0o755
 end
 
-template "/etc/cron.d/old-planet-file-cleanup" do
-  source "old-planet-file-cleanup.cron.erb"
-  owner "root"
-  group "root"
-  mode 0o644
+cron_d "old-planet-file-cleanup" do
+  comment "run this on the first monday of the month at 3:44am"
+  minute "44"
+  hour "3"
+  day "1-7"
+  user "www-data"
+  command "test $(date +\%u) -eq 1 && /usr/local/bin/old-planet-file-cleanup --debug"
+  mailto "zerebubuth@gmail.com"
 end

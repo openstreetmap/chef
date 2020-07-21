@@ -1,5 +1,0 @@
-MAILTO=grant-smaug@firefishy.com
-0 3 * * * www-data /usr/local/bin/planet-notes-dump
-
-#Delete Planet Notes dump files older than 8 days
-10 8 * * * www-data find /store/planet/notes/20??/ -maxdepth 1 -type f -iname 'planet-notes-??????.osn*' -printf '\%T@ \%p\n' | sort -k 1nr | sed 's/^[^ ]* //' | tail -n +17 | xargs -r rm -f

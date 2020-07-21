@@ -120,9 +120,9 @@ systemd_service "planetdump@" do
   no_new_privileges true
 end
 
-template "/etc/cron.d/planet-dump-mirror" do
-  source "planet-dump-mirror-cron.erb"
-  owner "root"
-  group "root"
-  mode 0o644
+cron_d "planet-dump-mirror" do
+  minute "*/10"
+  user "www-data"
+  command "/usr/local/bin/planet-mirror-redirect-update"
+  mailto "horntail-www-data-cron@firefishy.com"
 end

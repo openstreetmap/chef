@@ -50,9 +50,19 @@ template "/usr/local/bin/planet-notes-dump" do
   variables :password => db_passwords["planetdump"]
 end
 
-template "/etc/cron.d/planet-notes-dump" do
-  source "planet-notes-dump.cron.erb"
-  owner "root"
-  group "root"
-  mode 0o644
+cron_d "planet-notes-dump" do
+  minute "0"
+  hour "3"
+  user "www-data"
+  command "/usr/local/bin/planet-notes-dump"
+  mailto "grant-smaug@firefishy.com"
+end
+
+cron_d "planet-notes-cleanup" do
+  comment "Delete Planet Notes dump files older than 8 days"
+  minute "10"
+  hour "8"
+  user "www-data"
+  command "find /store/planet/notes/20??/ -maxdepth 1 -type f -iname 'planet-notes-??????.osn*' -printf '\%T@ \%p\n' | sort -k 1nr | sed 's/^[^ ]* //' | tail -n +17 | xargs -r rm -f"
+  mailto "grant-smaug@firefishy.com"
 end

@@ -52,11 +52,11 @@ remote_file "/var/lib/planet/planet.pbf" do
   not_if { ENV["TEST_KITCHEN"] }
 end
 
-template "/etc/cron.d/planet-update" do
-  source "planet-update.cron.erb"
-  owner "root"
-  group "root"
-  mode 0o644
+cron_d "planet-update" do
+  minute "17"
+  hour "1"
+  user "root"
+  command "/usr/local/bin/planet-update"
 end
 
 template "/etc/logrotate.d/planet-update" do
