@@ -76,11 +76,11 @@ default_attributes(
     },
     :data => {
       :simplified_land_polygons => {
-        :url => "https://osmdata.openstreetmap.de/download/simplified-land-polygons-complete-3857.zip",
+        :url => "https://osmdata.openstreetmap.de/new/simplified-land-polygons-complete-3857.zip",
         :refresh => true
       },
       :simplified_water_polygons => {
-        :url => "https://osmdata.openstreetmap.de/download/simplified-water-polygons-split-3857.zip",
+        :url => "https://osmdata.openstreetmap.de/new/simplified-water-polygons-split-3857.zip",
         :refresh => true
       },
       :admin_boundaries => {
@@ -88,11 +88,11 @@ default_attributes(
         :directory => "ne_110m_admin_0_boundary_lines_land"
       },
       :land_polygons => {
-        :url => "https://osmdata.openstreetmap.de/download/land-polygons-split-3857.zip",
+        :url => "https://osmdata.openstreetmap.de/new/land-polygons-split-3857.zip",
         :refresh => true
       },
       :water_polygons => {
-        :url => "https://osmdata.openstreetmap.de/download/water-polygons-split-3857.zip",
+        :url => "https://osmdata.openstreetmap.de/new/water-polygons-split-3857.zip",
         :refresh => true
       },
       :antarctica_icesheet_polygons => {
