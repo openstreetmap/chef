@@ -1,6 +1,8 @@
 function createMap(divName) {
   // Create a map
-  var map = L.map(divName).fitBounds(<%= @bbox.to_json %>);
+  var map = L.map(divName, {
+    worldCopyJump: true
+  }).fitBounds(<%= @bbox.to_json %>);
 
   // Create a layer switcher
   var layers = L.control.layers(null, null, {collapsed:false}).addTo(map);
