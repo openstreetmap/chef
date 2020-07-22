@@ -61,6 +61,9 @@
   # Force extended cache headers on the old 404 map tile
   #
   <Location /openlayers/img/404.png>
+    Header unset Last-Modified
+    FileETag Size
+
     Header always set Cache-Control "public, max-age=31536000, immutable"
     Header always set Expires "Tue, 19 Jan 2038 03:14:07 GMT"
   </Location>
@@ -120,6 +123,9 @@
     ExpiresDefault "access plus 10 years"
   </Location>
   <Location /openlayers/>
+    Header unset Last-Modified
+    FileETag Size
+
     ExpiresDefault "access plus 7 days"
   </Location>
 
@@ -136,7 +142,7 @@
   SetEnv OPENSTREETMAP_STATUS <%= @status %>
   SetEnv SECRET_KEY_BASE <%= @secret_key_base %>
   Alias /favicon.ico <%= node[:web][:base_directory] %>/rails/app/assets/favicons/favicon.ico
-  Alias /openlayers <%= node[:web][:base_directory] %>/rails/vendor/assets/openlayers
+  Alias /openlayers <%= node[:web][:base_directory] %>/static/openlayers
   Alias /stats /store/rails/stats
   Alias /user/image /store/rails/user/image
   Alias /attachments /store/rails/attachments
