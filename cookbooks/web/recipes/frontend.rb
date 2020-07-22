@@ -36,6 +36,18 @@ apache_site "default" do
   action [:disable]
 end
 
+# Static legacy files used by external websites
+# eg: OpenLayers
+remote_directory "#{node[:web][:base_directory]}/static" do
+  source "static"
+  owner "root"
+  group "root"
+  mode "755"
+  files_owner "root"
+  files_group "root"
+  files_mode 0o644
+end
+
 apache_site "www.openstreetmap.org" do
   template "apache.frontend.erb"
   variables :status => node[:web][:status],
