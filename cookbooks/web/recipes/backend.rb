@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+node.default[:memcached][:ip_address] = node.internal_ipaddress
+
 include_recipe "memcached"
 include_recipe "apache"
 include_recipe "web::rails"
