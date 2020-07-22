@@ -37,7 +37,7 @@ action :create do
       mode "755"
       files_owner node[:wordpress][:user]
       files_group node[:wordpress][:group]
-      files_mode 0o644
+      files_mode "644"
     end
   else
     theme_repository = new_resource.repository || default_repository

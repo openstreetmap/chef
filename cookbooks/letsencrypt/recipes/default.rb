@@ -112,7 +112,7 @@ remote_directory "/srv/acme.openstreetmap.org/bin" do
   mode "755"
   files_owner "root"
   files_group "root"
-  files_mode 0o755
+  files_mode "755"
 end
 
 directory "/srv/acme.openstreetmap.org/requests" do

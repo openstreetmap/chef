@@ -56,7 +56,7 @@ remote_directory "/var/lib/trac/htdocs" do
   mode "755"
   files_owner "trac"
   files_group "trac"
-  files_mode 0o644
+  files_mode "644"
   purge true
 end
 
@@ -67,7 +67,7 @@ remote_directory "/var/lib/trac/templates" do
   mode "755"
   files_owner "trac"
   files_group "trac"
-  files_mode 0o644
+  files_mode "644"
   purge true
 end
 

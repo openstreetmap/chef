@@ -41,7 +41,7 @@ remote_directory "/opt/flush" do
   mode "755"
   files_owner "root"
   files_group "root"
-  files_mode 0o755
+  files_mode "755"
 end
 
 execute "/opt/flush/Makefile" do
@@ -60,7 +60,7 @@ remote_directory "/usr/local/bin" do
   mode "755"
   files_owner "root"
   files_group "root"
-  files_mode 0o755
+  files_mode "755"
 end
 
 template "/usr/local/bin/users-agreed" do
@@ -84,7 +84,7 @@ remote_directory "/store/planet/users_deleted" do
   mode "755"
   files_owner "root"
   files_group "root"
-  files_mode 0o644
+  files_mode "644"
 end
 
 remote_directory "/store/planet/replication" do
@@ -94,7 +94,7 @@ remote_directory "/store/planet/replication" do
   mode "755"
   files_owner "root"
   files_group "root"
-  files_mode 0o755
+  files_mode "755"
 end
 
 directory "/store/planet/replication/changesets" do

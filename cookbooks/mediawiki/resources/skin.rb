@@ -40,7 +40,7 @@ action :create do
       mode "755"
       files_owner node[:mediawiki][:user]
       files_group node[:mediawiki][:group]
-      files_mode 0o755
+      files_mode "755"
     end
   else
     skin_repository = new_resource.repository || default_repository

@@ -37,7 +37,7 @@ action :create do
       mode "755"
       files_owner node[:wordpress][:user]
       files_group node[:wordpress][:group]
-      files_mode 0o755
+      files_mode "755"
     end
   else
     plugin_repository = new_resource.repository || default_repository

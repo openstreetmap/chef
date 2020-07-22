@@ -476,7 +476,7 @@ remote_directory "/srv/ooc.openstreetmap.org/html" do
   mode "755"
   files_owner "root"
   files_group "root"
-  files_mode 0o644
+  files_mode "644"
 end
 
 ssl_certificate "ooc.openstreetmap.org" do

@@ -114,7 +114,7 @@ remote_directory "/srv/gps-tile.openstreetmap.org/html" do
   mode "755"
   files_owner "gpstile"
   files_group "gpstile"
-  files_mode 0o644
+  files_mode "644"
 end
 
 apache_module "headers"

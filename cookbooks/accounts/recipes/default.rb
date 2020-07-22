@@ -67,7 +67,7 @@ search(:accounts, "*:*").each do |account|
       mode "755"
       files_owner name.to_s
       files_group name.to_s
-      files_mode 0o644
+      files_mode "644"
       only_if do
         cookbook = run_context.cookbook_collection[cookbook_name]
         files = cookbook.relative_filenames_in_preferred_directory(node, :files, name.to_s)

@@ -26,7 +26,7 @@ remote_directory "/usr/local/share/munin/plugins" do
   mode "755"
   files_owner "root"
   files_group "root"
-  files_mode 0o755
+  files_mode "755"
   purge true
 end
 
@@ -37,7 +37,7 @@ remote_directory "/etc/munin/plugin-conf.d" do
   mode "750"
   files_owner "root"
   files_group "root"
-  files_mode 0o644
+  files_mode "644"
   purge false
   notifies :restart, "service[munin-node]"
 end

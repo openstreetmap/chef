@@ -30,7 +30,7 @@ remote_directory "#{repository_directory}/hooks" do
   mode "755"
   files_owner "www-data"
   files_group "www-data"
-  files_mode 0o755
+  files_mode "755"
   purge false
 end
 

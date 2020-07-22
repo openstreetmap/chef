@@ -37,7 +37,7 @@ remote_directory "/srv/irc.openstreetmap.org/html" do
   mode "755"
   files_owner "root"
   files_group "root"
-  files_mode 0o644
+  files_mode "644"
 end
 
 apache_site "irc.openstreetmap.org" do

@@ -80,7 +80,7 @@ remote_directory "/srv/munin.openstreetmap.org" do
   mode "755"
   files_owner "root"
   files_group "root"
-  files_mode 0o644
+  files_mode "644"
 end
 
 # directory to put dumped files in

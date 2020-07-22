@@ -115,7 +115,7 @@ remote_directory "/srv/tile.openstreetmap.org/html" do
   mode "755"
   files_owner "tile"
   files_group "tile"
-  files_mode 0o644
+  files_mode "644"
 end
 
 template "/srv/tile.openstreetmap.org/html/index.html" do
@@ -456,7 +456,7 @@ remote_directory "/usr/local/bin" do
   mode "755"
   files_owner "root"
   files_group "root"
-  files_mode 0o755
+  files_mode "755"
 end
 
 template "/usr/local/bin/expire-tiles" do

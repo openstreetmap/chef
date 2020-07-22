@@ -191,7 +191,7 @@ remote_directory "/etc/exim4/noreply" do
   mode "755"
   files_owner "root"
   files_group "Debian-exim"
-  files_mode 0o755
+  files_mode "755"
   purge true
 end
 

@@ -36,8 +36,6 @@ apache_site "default" do
   action [:disable]
 end
 
-# Static legacy files used by external websites
-# eg: OpenLayers
 remote_directory "#{node[:web][:base_directory]}/static" do
   source "static"
   owner "root"
@@ -45,7 +43,7 @@ remote_directory "#{node[:web][:base_directory]}/static" do
   mode "755"
   files_owner "root"
   files_group "root"
-  files_mode 0o644
+  files_mode "644"
 end
 
 apache_site "www.openstreetmap.org" do

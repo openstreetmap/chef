@@ -34,7 +34,7 @@ remote_directory "/store/planet#html" do
   mode "0755"
   files_owner "root"
   files_group "root"
-  files_mode 0o644
+  files_mode "644"
 end
 
 remote_directory "/store/planet#cgi" do
@@ -45,7 +45,7 @@ remote_directory "/store/planet#cgi" do
   mode "755"
   files_owner "root"
   files_group "root"
-  files_mode 0o755
+  files_mode "755"
 end
 
 remote_directory node[:planet][:dump][:xml_history_directory] do
@@ -55,7 +55,7 @@ remote_directory node[:planet][:dump][:xml_history_directory] do
   mode "775"
   files_owner "root"
   files_group "root"
-  files_mode 0o755
+  files_mode "755"
 end
 
 remote_directory "/store/planet/cc-by-sa/full-experimental" do
@@ -65,7 +65,7 @@ remote_directory "/store/planet/cc-by-sa/full-experimental" do
   mode "775"
   files_owner "root"
   files_group "root"
-  files_mode 0o755
+  files_mode "755"
 end
 
 [:xml_directory, :xml_history_directory,

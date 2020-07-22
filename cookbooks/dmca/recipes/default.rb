@@ -33,7 +33,7 @@ remote_directory "/srv/dmca.openstreetmap.org/html" do
   mode "755"
   files_owner "root"
   files_group "root"
-  files_mode 0o644
+  files_mode "644"
 end
 
 ssl_certificate "dmca.openstreetmap.org" do
