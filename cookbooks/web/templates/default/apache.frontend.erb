@@ -58,17 +58,6 @@
   RewriteRule . - [F,L]
 
   #
-  # Force extended cache headers on the old 404 map tile
-  #
-  <Location /openlayers/img/404.png>
-    Header unset Last-Modified
-    FileETag Size
-
-    Header always set Cache-Control "public, max-age=31536000, immutable"
-    Header always set Expires "Tue, 19 Jan 2038 03:14:07 GMT"
-  </Location>
-
-  #
   # Block attempts to access old API versions
   #
   RewriteRule ^/api/0.[12345]/ - [G,L]
@@ -126,7 +115,8 @@
     Header unset Last-Modified
     FileETag Size
 
-    ExpiresDefault "access plus 7 days"
+    Header always set Cache-Control "public, max-age=31536000, immutable"
+    Header always set Expires "Tue, 19 Jan 2038 03:14:07 GMT"
   </Location>
 
   #
