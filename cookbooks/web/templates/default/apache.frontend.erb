@@ -300,6 +300,10 @@
   </FilesMatch>
 </Directory>
 
+<Directory /srv/www.openstreetmap.org/static>
+  Require all granted
+</Directory>
+
 <Directory /srv/www.openstreetmap.org/rails/app/assets>
   Require all granted
 </Directory>
