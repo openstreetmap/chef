@@ -27,8 +27,6 @@
 
   DocumentRoot /srv/donate.openstreetmap.org
 
-  ProxyFCGISetEnvIf "true" PHP_ADMIN_VALUE "open_basedir=/srv/donate.openstreetmap.org/:/usr/share/php/:/tmp/\ndisable_functions=exec,shell_exec,system,passthru,popen"
-
   # Alias Dynamic Content to data folder to avoid serving dummy git content
   Alias /donors-eur.csv /srv/donate.openstreetmap.org/data/donors-eur.csv
   Alias /donors.csv /srv/donate.openstreetmap.org/data/donors.csv
@@ -41,7 +39,11 @@
   Redirect permanent /server2015 https://donate.openstreetmap.org/
 
   <Directory /srv/donate.openstreetmap.org>
-  	Require all granted
+    Require all granted
+
+    <FilesMatch ".+\.ph(ar|p|tml)$">
+      SetHandler "proxy:unix:/run/php/donate.openstreetmap.org.sock|fcgi://127.0.0.1"
+    </FilesMatch>
   </Directory>
 
   <Directory /srv/donate.openstreetmap.org/scripts>

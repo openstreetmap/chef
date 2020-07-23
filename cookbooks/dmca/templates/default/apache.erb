@@ -47,10 +47,12 @@
   DocumentRoot <%= @directory %>/html
 
   Options -Indexes
-
-  ProxyFCGISetEnvIf "true" PHP_ADMIN_VALUE "open_basedir=<%= @directory %>/html/:/usr/share/php/:/tmp/\ndisable_functions=exec,shell_exec,system,passthru,popen"
 </VirtualHost>
 
 <Directory <%= @directory %>/html>
   Require all granted
+
+  <FilesMatch ".+\.ph(ar|p|tml)$">
+    SetHandler "proxy:unix:/run/php/<%= @name %>.sock|fcgi://127.0.0.1"
+  </FilesMatch>
 </Directory>

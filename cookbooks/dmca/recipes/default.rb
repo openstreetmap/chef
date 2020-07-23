@@ -18,7 +18,7 @@
 #
 
 include_recipe "apache"
-include_recipe "php::apache"
+include_recipe "php::fpm"
 
 directory "/srv/dmca.openstreetmap.org" do
   owner "root"
@@ -39,6 +39,11 @@ end
 ssl_certificate "dmca.openstreetmap.org" do
   domains ["dmca.openstreetmap.org", "dmca.osm.org"]
   notifies :reload, "service[apache2]"
+end
+
+php_fpm "dmca.openstreetmap.org" do
+  php_admin_values "open_basedir" => "/srv/dmca.openstreetmap.org/html/:/usr/share/php/:/tmp/",
+                   "disable_functions" => "exec,shell_exec,system,passthru,popen,proc_open"
 end
 
 apache_site "dmca.openstreetmap.org" do

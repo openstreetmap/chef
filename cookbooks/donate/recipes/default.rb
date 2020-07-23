@@ -21,7 +21,7 @@ include_recipe "accounts"
 include_recipe "apache"
 include_recipe "git"
 include_recipe "mysql"
-include_recipe "php::apache"
+include_recipe "php::fpm"
 
 package %w[
   php-cli
@@ -76,6 +76,11 @@ ssl_certificate "donate.openstreetmap.org" do
   domains ["donate.openstreetmap.org", "donate.openstreetmap.com",
            "donate.openstreetmap.net", "donate.osm.org"]
   notifies :reload, "service[apache2]"
+end
+
+php_fpm "donate.openstreetmap.org" do
+  php_admin_values "open_basedir" => "/srv/donate.openstreetmap.org/:/usr/share/php/:/tmp/",
+                   "disable_functions" => "exec,shell_exec,system,passthru,popen,proc_open"
 end
 
 apache_site "donate.openstreetmap.org" do
