@@ -22,7 +22,7 @@ include_recipe "apache"
 include_recipe "fail2ban"
 include_recipe "git"
 include_recipe "mysql"
-include_recipe "php::apache"
+include_recipe "php::fpm"
 
 package %w[
   subversion

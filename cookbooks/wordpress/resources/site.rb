@@ -130,6 +130,13 @@ action :create do
     domains [new_resource.site] + Array(new_resource.aliases)
   end
 
+  php_fpm new_resource.site do
+    php_admin_values "open_basedir" => "#{site_directory}/:/usr/share/php/:/tmp/",
+                     "disable_functions" => "exec,shell_exec,system,passthru,popen,proc_open"
+    php_values "upload_max_filesize" => "70M",
+               "post_max_size" => "100M"
+  end
+
   apache_site new_resource.site do
     cookbook "wordpress"
     template "apache.erb"
