@@ -43,6 +43,7 @@ property :private_site, :kind_of => [TrueClass, FalseClass], :default => false
 property :recaptcha_public_key, :kind_of => String
 property :recaptcha_private_key, :kind_of => String
 property :extra_file_extensions, :kind_of => [String, Array], :default => []
+property :fpm_max_children, :kind_of => Integer, :default => 5
 property :reload_apache, :kind_of => [TrueClass, FalseClass], :default => true
 
 action :create do
@@ -515,6 +516,15 @@ action :create do
 
   ssl_certificate new_resource.site do
     domains [new_resource.site] + Array(new_resource.aliases)
+  end
+
+  php_fpm new_resource.site do
+    pm_max_children new_resource.fpm_max_children
+    php_admin_values "open_basedir" => "#{site_directory}/:/usr/share/php/:/dev/null:/tmp/"
+    php_values "memory_limit" => "500M",
+               "max_execution_time" => "240",
+               "upload_max_filesize" => "70M",
+               "post_max_size" => "100M"
   end
 
   apache_site new_resource.site do

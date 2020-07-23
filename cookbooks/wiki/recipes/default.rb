@@ -33,6 +33,8 @@ mediawiki_site "wiki.openstreetmap.org" do
            "wiki.openstreetmap.pro", "wiki.openstreetmaps.org"]
   directory "/srv/wiki.openstreetmap.org"
 
+  fpm_max_children 25
+
   database_name "wiki"
   database_user "wiki-user"
   database_password passwords["database"]

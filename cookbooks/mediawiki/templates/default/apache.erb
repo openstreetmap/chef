@@ -32,9 +32,6 @@
 
   DocumentRoot <%= @directory %>
 
-  ProxyFCGISetEnvIf "true" PHP_ADMIN_VALUE "open_basedir=<%= @directory %>/:/usr/share/php/:/dev/null:/tmp/"
-  ProxyFCGISetEnvIf "true" PHP_VALUE "memory_limit=500M\nmax_execution_time=240\nupload_max_filesize=70M\npost_max_size=100M"
-
   RewriteCond %{SERVER_NAME} !=<%= @name %>
   RewriteRule ^/(.*)$ https://<%= @name %>/$1 [R=permanent]
 
@@ -93,6 +90,10 @@
   <Directory <%= @directory %>>
     Options -Indexes
     Require all granted
+
+    <FilesMatch ".+\.ph(ar|p|tml)$">
+      SetHandler "proxy:unix:/run/php/<%= @name %>.sock|fcgi://127.0.0.1"
+    </FilesMatch>
   </Directory>
 
   <Directory <%= @directory %>/w/images/>
