@@ -46,8 +46,12 @@ munin_plugin "rrdcached"
 expiry_time = 14 * 86400
 
 clients = search(:node, "recipes:munin\\:\\:default").sort_by(&:name)
-frontends = search(:node, "recipes:web\\:\\:frontend").reject { |n| Time.now - Time.at(n[:ohai_time]) > expiry_time }.map(&:name).sort
-backends = search(:node, "recipes:web\\:\\:backend").reject { |n| Time.now - Time.at(n[:ohai_time]) > expiry_time }.map(&:name).sort
+frontends = search(:node, "recipes:web\\:\\:frontend").reject { |n| Time.now - Time.at(n[:ohai_time]) > expiry_time }.sort_by(&:name).map do |n|
+  { :name => n.name.split(".").first, :interface => n.interfaces(:role => :external).first[:interface].tr(".", "_") }
+end
+backends = search(:node, "recipes:web\\:\\:backend").reject { |n| Time.now - Time.at(n[:ohai_time]) > expiry_time }.sort_by(&:name).map do |n|
+  { :name => n.name.split(".").first }
+end
 tilecaches = search(:node, "roles:tilecache").reject { |n| Time.now - Time.at(n[:ohai_time]) > expiry_time }.sort_by(&:name).map do |n|
   { :name => n.name.split(".").first, :interface => n.interfaces(:role => :external).first[:interface].tr(".", "_") }
 end
