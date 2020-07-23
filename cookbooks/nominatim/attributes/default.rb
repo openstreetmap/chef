@@ -12,9 +12,9 @@ default[:nominatim][:enable_git_updates] = true
 
 default[:nominatim][:fpm_pools] = {
   :www => {
-    :port => "8000",
+    :port => 8000,
     :pm => "dynamic",
-    :max_children => "60"
+    :max_children => 60
   }
 }
 

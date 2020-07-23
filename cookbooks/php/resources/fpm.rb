@@ -20,19 +20,31 @@
 default_action :create
 
 property :pool, :kind_of => String, :name_property => true
-property :cookbook, :kind_of => String
-property :template, :kind_of => String, :required => true
-property :variables, :kind_of => Hash, :default => {}
+property :port, :kind_of => Integer
+property :user, :kind_of => String, :default => "www-data"
+property :group, :kind_of => String, :default => "www-data"
+property :pm, :kind_of => String, :default => "dynamic"
+property :pm_max_children, :kind_of => Integer, :default => 5
+property :pm_start_servers, :kind_of => Integer, :default => 2
+property :pm_min_spare_servers, :kind_of => Integer, :default => 1
+property :pm_max_spare_servers, :kind_of => Integer, :default => 3
+property :pm_max_requests, :kind_of => Integer, :default => 500
+property :request_terminate_timeout, :kind_of => Integer, :default => 0
+property :environment, :kind_of => Hash, :default => {}
+property :php_values, :kind_of => Hash, :default => {}
+property :php_admin_values, :kind_of => Hash, :default => {}
+property :php_flags, :kind_of => Hash, :default => {}
+property :php_admin_flags, :kind_of => Hash, :default => {}
 property :reload_fpm, :kind_of => [TrueClass, FalseClass], :default => true
 
 action :create do
-  declare_resource :template, conf_file do
-    cookbook new_resource.cookbook
-    source new_resource.template
+  template conf_file do
+    cookbook "php"
+    source "pool.conf.erb"
     owner "root"
     group "root"
     mode "644"
-    variables new_resource.variables
+    variables new_resource.to_hash
   end
 end
 

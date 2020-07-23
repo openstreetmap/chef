@@ -364,9 +364,14 @@ end
 end
 
 node[:nominatim][:fpm_pools].each do |name, data|
-  php_fpm name do
-    template "fpm.conf.erb"
-    variables data.merge(:name => name)
+  php_fpm name.to_s do
+    port data[:port]
+    pm data[:pm]
+    pm_max_children data[:max_children]
+    pm_start_servers 20
+    pm_min_spare_servers 10
+    pm_max_spare_servers 20
+    pm_max_requests 10000
   end
 end
 

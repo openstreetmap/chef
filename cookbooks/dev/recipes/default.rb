@@ -94,7 +94,11 @@ end
 package "apache2-suexec-pristine"
 
 php_fpm "default" do
-  template "fpm-default.conf.erb"
+  port 7000
+  pm_max_children 10
+  pm_start_servers 4
+  pm_min_spare_servers 2
+  pm_max_spare_servers 6
 end
 
 php_fpm "www" do
@@ -155,11 +159,30 @@ search(:accounts, "*:*").each do |account|
 
   next unless File.directory?("#{user_home}/public_html")
 
-  port = 7000 + account["uid"].to_i
+  port_number = 7000 + account["uid"].to_i
 
   php_fpm name do
-    template "fpm.conf.erb"
-    variables :user => name, :port => port
+    port port_number
+    user name
+    group name
+    pm_max_children 10
+    pm_start_servers 4
+    pm_min_spare_servers 2
+    pm_max_spare_servers 6
+    pm_max_requests 10000
+    request_terminate_timeout 1800
+    environment "HOSTNAME" => "$HOSTNAME",
+                "PATH" => "/usr/local/bin:/usr/bin:/bin",
+                "TMP" => "/tmp",
+                "TMPDIR" => "/tmp",
+                "TEMP" => "/tmp"
+    php_values "max_execution_time" => "300",
+               "memory_limit" => "128M",
+               "post_max_size" => "32M",
+               "upload_max_filesize" => "32M"
+    php_admin_values "sendmail_path" => "/usr/sbin/sendmail -t -i -f #{name}@errol.openstreetmap.org",
+                     "open_basedir" => "/home/#{name}/:/tmp/:/usr/share/php/"
+    php_flags "display_errors" => "on"
   end
 
   ssl_certificate "#{name}.dev.openstreetmap.org" do
@@ -170,7 +193,7 @@ search(:accounts, "*:*").each do |account|
   apache_site "#{name}.dev.openstreetmap.org" do
     template "apache.user.erb"
     directory "#{user_home}/public_html"
-    variables :user => name, :port => port
+    variables :user => name, :port => port_number
   end
 
   template "/etc/sudoers.d/#{name}" do
