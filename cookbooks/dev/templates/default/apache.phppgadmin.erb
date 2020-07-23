@@ -16,9 +16,9 @@
 	# Remove Proxy request header to mitigate https://httpoxy.org/
 	RequestHeader unset Proxy early
 
-	ProxyPassMatch ^/(.*\.php(/.*)?)$ fcgi://127.0.0.1:7000/usr/share/phppgadmin
-	ProxyPassMatch ^/(.*\.phpx(/.*)?)$ fcgi://127.0.0.1:7000/usr/share/phppgadmin
-	ProxyPassMatch ^/(.*\.phpj(/.*)?)$ fcgi://127.0.0.1:7000/usr/share/phppgadmin
+	ProxyPassMatch ^/(.*\.php(/.*)?)$ unix:/run/php/default.sock|fcgi://127.0.0.1
+	ProxyPassMatch ^/(.*\.phpx(/.*)?)$ unix:/run/php/default.sock|fcgi://127.0.0.1
+	ProxyPassMatch ^/(.*\.phpj(/.*)?)$ unix:/run/php/default.sock|fcgi://127.0.0.1
 </VirtualHost>
 
 <VirtualHost *:80>

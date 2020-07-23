@@ -29,8 +29,9 @@ WSGIDaemonProcess <%= @user %>.dev.openstreetmap.org user=<%= @user %> inactivit
 	RewriteCond <%= @directory %>%{REQUEST_FILENAME} -f
 	RewriteRule ^/cgi-bin/(.*)$ /~<%= @user %>/cgi-bin/$1 [PT,L]
 
-	RewriteCond <%= @directory %>%{REQUEST_FILENAME} -f
-	RewriteRule ^/(.*\.ph(p|ps|p3|tml)(/.*)?)$ fcgi://127.0.0.1:<%= @port %><%= @directory %>/$1 [P]
+	<FilesMatch ".+\.ph(p|ps|p3|tml)$">
+		SetHandler "proxy:unix:/run/php/tomh.sock|fcgi://127.0.0.1"
+	</FilesMatch>
 </VirtualHost>
 
 <VirtualHost *:80>

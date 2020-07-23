@@ -94,7 +94,6 @@ end
 package "apache2-suexec-pristine"
 
 php_fpm "default" do
-  port 7000
   pm_max_children 10
   pm_start_servers 4
   pm_min_spare_servers 2
@@ -159,10 +158,7 @@ search(:accounts, "*:*").each do |account|
 
   next unless File.directory?("#{user_home}/public_html")
 
-  port_number = 7000 + account["uid"].to_i
-
   php_fpm name do
-    port port_number
     user name
     group name
     pm_max_children 10
@@ -193,7 +189,7 @@ search(:accounts, "*:*").each do |account|
   apache_site "#{name}.dev.openstreetmap.org" do
     template "apache.user.erb"
     directory "#{user_home}/public_html"
-    variables :user => name, :port => port_number
+    variables :user => name
   end
 
   template "/etc/sudoers.d/#{name}" do
