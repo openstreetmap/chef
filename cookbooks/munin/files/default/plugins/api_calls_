@@ -12,9 +12,9 @@ def uris_from_status(server)
   rows = (tables[1] / "tr")[1..-1]
   data = rows.collect { |r| (r / "td").collect(&:inner_html) }
   # filter where the PID is numeric, status is 'W' and host matches the server
-  matching_data = data.select { |r| r[1].to_i.positive? && r[3].match(/W/) && r[11].match(server) }
+  matching_data = data.select { |r| r[1].to_i.positive? && r[3].match(/W/) && r[12].match(server) }
   # return only the URI part
-  matching_data.collect { |r| r[12] }
+  matching_data.collect { |r| r[13] }
 end
 
 CALL_TYPES = {

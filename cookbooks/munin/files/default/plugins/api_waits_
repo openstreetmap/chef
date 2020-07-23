@@ -12,9 +12,9 @@ def uri_and_times_from_status(server)
   rows = (tables[1] / "tr")[1..-1]
   data = rows.collect { |r| (r / "td").collect(&:inner_html) }
   # filter where the PID is numeric, status is 'W' and host matches the server
-  matching_data = data.select { |r| r[1].to_i.positive? && r[3].match(/W/) && r[11].match(server) }
+  matching_data = data.select { |r| r[1].to_i.positive? && r[3].match(/W/) && r[12].match(server) }
   # return URI and number of seconds processing for each request
-  matching_data.collect { |r| [r[12], r[5].to_i] }
+  matching_data.collect { |r| [r[13], r[5].to_i] }
 end
 
 CALL_TYPES = {
