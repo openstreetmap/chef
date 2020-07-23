@@ -42,7 +42,7 @@
   </Directory>
 <% end -%>
 
-  ProxyFCGISetEnvIf "true" PHP_ADMIN_VALUE "open_basedir=<%= @directory %>/:/usr/share/php/:/tmp/\ndisable_functions=exec,shell_exec,system,passthru,popen,proc_open"
+  ProxyFCGISetEnvIf "true" PHP_ADMIN_VALUE "open_basedir=<%= @directory %>/:/usr/share/php/:/tmp/\ndisable_functions=exec,shell_exec,system,passthru,popen"
   ProxyFCGISetEnvIf "true" PHP_VALUE "upload_max_filesize=70M\npost_max_size=100M"
 
   <Directory <%= @directory %>>

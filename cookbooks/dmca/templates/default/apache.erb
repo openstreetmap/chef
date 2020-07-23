@@ -48,7 +48,7 @@
 
   Options -Indexes
 
-  ProxyFCGISetEnvIf "true" PHP_ADMIN_VALUE "open_basedir=<%= @directory %>/html/:/usr/share/php/:/tmp/\ndisable_functions=exec,shell_exec,system,passthru,popen,proc_open"
+  ProxyFCGISetEnvIf "true" PHP_ADMIN_VALUE "open_basedir=<%= @directory %>/html/:/usr/share/php/:/tmp/\ndisable_functions=exec,shell_exec,system,passthru,popen"
 </VirtualHost>
 
 <Directory <%= @directory %>/html>

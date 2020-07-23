@@ -27,7 +27,7 @@
 
   DocumentRoot /srv/donate.openstreetmap.org
 
-  ProxyFCGISetEnvIf "true" PHP_ADMIN_VALUE "open_basedir=/srv/donate.openstreetmap.org/:/usr/share/php/:/tmp/\ndisable_functions=exec,shell_exec,system,passthru,popen,proc_open"
+  ProxyFCGISetEnvIf "true" PHP_ADMIN_VALUE "open_basedir=/srv/donate.openstreetmap.org/:/usr/share/php/:/tmp/\ndisable_functions=exec,shell_exec,system,passthru,popen"
 
   # Alias Dynamic Content to data folder to avoid serving dummy git content
   Alias /donors-eur.csv /srv/donate.openstreetmap.org/data/donors-eur.csv
