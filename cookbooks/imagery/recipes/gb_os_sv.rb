@@ -1068,3 +1068,13 @@ imagery_layer "gb_os_om_local_2020_04" do
   extension "os_om_local_png"
   url_aliases ["/om-local-2020-04", "/om-local"]
 end
+
+imagery_layer "gb_os_om_local_2017_10" do
+  site "os.openstreetmap.org"
+  title "OS OpenMap Local - October 2017"
+  projection "EPSG:27700"
+  source "/data/imagery/gb/openmap-local/2017-10/os-openmap-local-2017-10.vrt"
+  copyright "Contains OS data &copy; Crown copyright and database right 2017"
+  background_colour "213 244 248" # OS OpenMap Local Water Blue
+  extension "os_om_local_png"
+end
