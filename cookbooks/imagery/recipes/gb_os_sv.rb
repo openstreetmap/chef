@@ -1073,7 +1073,7 @@ imagery_layer "gb_os_om_local_2016_10" do
   site "os.openstreetmap.org"
   title "OS OpenMap Local - October 2016"
   projection "EPSG:27700"
-  source "/data/imagery/gb/openmap-local/2017-10/os-openmap-local-2016-10.vrt"
+  source "/data/imagery/gb/openmap-local/2016-10/os-openmap-local-2016-10.vrt"
   copyright "Contains OS data &copy; Crown copyright and database right 2016"
   background_colour "213 244 248" # OS OpenMap Local Water Blue
   extension "os_om_local_png"
@@ -1083,7 +1083,7 @@ imagery_layer "gb_os_om_local_2017_04" do
   site "os.openstreetmap.org"
   title "OS OpenMap Local - April 2017"
   projection "EPSG:27700"
-  source "/data/imagery/gb/openmap-local/2017-10/os-openmap-local-2017-04.vrt"
+  source "/data/imagery/gb/openmap-local/2017-04/os-openmap-local-2017-04.vrt"
   copyright "Contains OS data &copy; Crown copyright and database right 2017"
   background_colour "213 244 248" # OS OpenMap Local Water Blue
   extension "os_om_local_png"
