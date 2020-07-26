@@ -188,7 +188,6 @@ end
 imagery_layer "gb_os_sv_2016_04" do
   site "os.openstreetmap.org"
   title "April 2016"
-  default_layer true
   projection "EPSG:27700"
   source "/data/imagery/gb/os-sv/ossv-2016-04-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2016"
@@ -1067,6 +1066,27 @@ imagery_layer "gb_os_om_local_2020_04" do
   background_colour "213 244 248" # OS OpenMap Local Water Blue
   extension "os_om_local_png"
   url_aliases ["/om-local-2020-04", "/om-local"]
+  default_layer true
+end
+
+imagery_layer "gb_os_om_local_2016_10" do
+  site "os.openstreetmap.org"
+  title "OS OpenMap Local - October 2016"
+  projection "EPSG:27700"
+  source "/data/imagery/gb/openmap-local/2017-10/os-openmap-local-2016-10.vrt"
+  copyright "Contains OS data &copy; Crown copyright and database right 2016"
+  background_colour "213 244 248" # OS OpenMap Local Water Blue
+  extension "os_om_local_png"
+end
+
+imagery_layer "gb_os_om_local_2017_04" do
+  site "os.openstreetmap.org"
+  title "OS OpenMap Local - April 2017"
+  projection "EPSG:27700"
+  source "/data/imagery/gb/openmap-local/2017-10/os-openmap-local-2017-04.vrt"
+  copyright "Contains OS data &copy; Crown copyright and database right 2017"
+  background_colour "213 244 248" # OS OpenMap Local Water Blue
+  extension "os_om_local_png"
 end
 
 imagery_layer "gb_os_om_local_2017_10" do
