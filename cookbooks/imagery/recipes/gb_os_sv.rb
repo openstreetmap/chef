@@ -1098,3 +1098,13 @@ imagery_layer "gb_os_om_local_2017_10" do
   background_colour "213 244 248" # OS OpenMap Local Water Blue
   extension "os_om_local_png"
 end
+
+imagery_layer "gb_os_om_local_2018_04" do
+  site "os.openstreetmap.org"
+  title "OS OpenMap Local - April 2018"
+  projection "EPSG:27700"
+  source "/data/imagery/gb/openmap-local/2018-04/os-openmap-local-2018-04.vrt"
+  copyright "Contains OS data &copy; Crown copyright and database right 2018"
+  background_colour "213 244 248" # OS OpenMap Local Water Blue
+  extension "os_om_local_png"
+end
