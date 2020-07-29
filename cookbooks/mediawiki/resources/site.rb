@@ -47,8 +47,6 @@ property :fpm_max_children, :kind_of => Integer, :default => 5
 property :reload_apache, :kind_of => [TrueClass, FalseClass], :default => true
 
 action :create do
-  node.rm_normal(:mediawiki, :sites, new_resource.site)
-
   node.default[:mediawiki][:sites][new_resource.site] = {
     :directory => site_directory,
     :version => new_resource.version

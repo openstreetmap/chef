@@ -260,8 +260,6 @@ if node[:postgresql][:clusters][:"12/main"]
       site_aliases = details[:aliases] || []
       secret_key_base = persistent_token("dev", "rails", name, "secret_key_base")
 
-      node.rm_normal(:dev, :rails, name)
-
       postgresql_database database_name do
         cluster "12/main"
         owner "apis"

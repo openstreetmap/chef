@@ -23,8 +23,6 @@ include_recipe "apache"
 
 package "mailman"
 
-node.rm_normal(:mailman, :subscribe_form_secret)
-
 subscribe_form_secret = persistent_token("mailman", "subscribe_form_secret")
 
 template "/etc/mailman/mm_cfg.py" do

@@ -34,8 +34,6 @@ property :reload_apache, :kind_of => [TrueClass, FalseClass], :default => true
 action :create do
   version = new_resource.version || Chef::Wordpress.current_version
 
-  node.rm_normal(:wordpress, :sites, new_resource.site)
-
   node.default[:wordpress][:sites][new_resource.site] = {
     :directory => site_directory
   }
