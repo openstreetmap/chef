@@ -21,7 +21,7 @@ node.default[:incron][:planetdump] = {
   :user => "root",
   :path => "/store/backup",
   :events => %w[IN_CREATE IN_MOVED_TO],
-  :command => "/usr/bin/systemctl start planetdump@$#"
+  :command => "/bin/systemctl start planetdump@$#"
 }
 
 include_recipe "git"
