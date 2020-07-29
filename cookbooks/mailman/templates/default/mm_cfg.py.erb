@@ -109,7 +109,7 @@ POSTFIX_STYLE_VIRTUAL_DOMAINS = ['openstreetmap.org']
 
 #-------------------------------------------------------------
 # Secret for web forms to protect against XSRF attacks
-SUBSCRIBE_FORM_SECRET='<%= node[:mailman][:subscribe_form_secret] %>'
+SUBSCRIBE_FORM_SECRET='<%= @subscribe_form_secret %>'
 
 # Note - if you're looking for something that is imported from mm_cfg, but you
 # didn't find it above, it's probably in /usr/lib/mailman/Mailman/Defaults.py.

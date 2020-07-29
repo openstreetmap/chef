@@ -34,18 +34,20 @@ property :reload_apache, :kind_of => [TrueClass, FalseClass], :default => true
 action :create do
   version = new_resource.version || Chef::Wordpress.current_version
 
-  node.normal_unless[:wordpress][:sites][new_resource.site] = {}
+  node.rm_normal(:wordpress, :sites, new_resource.site)
 
-  node.normal[:wordpress][:sites][new_resource.site][:directory] = site_directory
+  node.default[:wordpress][:sites][new_resource.site] = {
+    :directory => site_directory
+  }
 
-  node.normal_unless[:wordpress][:sites][new_resource.site][:auth_key] = SecureRandom.base64(48)
-  node.normal_unless[:wordpress][:sites][new_resource.site][:secure_auth_key] = SecureRandom.base64(48)
-  node.normal_unless[:wordpress][:sites][new_resource.site][:logged_in_key] = SecureRandom.base64(48)
-  node.normal_unless[:wordpress][:sites][new_resource.site][:nonce_key] = SecureRandom.base64(48)
-  node.normal_unless[:wordpress][:sites][new_resource.site][:auth_salt] = SecureRandom.base64(48)
-  node.normal_unless[:wordpress][:sites][new_resource.site][:secure_auth_salt] = SecureRandom.base64(48)
-  node.normal_unless[:wordpress][:sites][new_resource.site][:logged_in_salt] = SecureRandom.base64(48)
-  node.normal_unless[:wordpress][:sites][new_resource.site][:nonce_salt] = SecureRandom.base64(48)
+  auth_key = persistent_token("wordpress", new_resource.site, "auth_key")
+  secure_auth_key = persistent_token("wordpress", new_resource.site, "secure_auth_key")
+  logged_in_key = persistent_token("wordpress", new_resource.site, "logged_in_key")
+  nonce_key = persistent_token("wordpress", new_resource.site, "nonce_key")
+  auth_salt = persistent_token("wordpress", new_resource.site, "auth_salt")
+  secure_auth_salt = persistent_token("wordpress", new_resource.site, "secure_auth_salt")
+  logged_in_salt = persistent_token("wordpress", new_resource.site, "logged_in_salt")
+  nonce_salt = persistent_token("wordpress", new_resource.site, "nonce_salt")
 
   mysql_user "#{new_resource.database_user}@localhost" do
     password new_resource.database_password
@@ -75,14 +77,14 @@ action :create do
     line.gsub!(/password_here/, new_resource.database_password)
     line.gsub!(/wp_/, new_resource.database_prefix)
 
-    line.gsub!(/('AUTH_KEY', *)'put your unique phrase here'/, "\\1'#{node[:wordpress][:sites][new_resource.site][:auth_key]}'")
-    line.gsub!(/('SECURE_AUTH_KEY', *)'put your unique phrase here'/, "\\1'#{node[:wordpress][:sites][new_resource.site][:secure_auth_key]}'")
-    line.gsub!(/('LOGGED_IN_KEY', *)'put your unique phrase here'/, "\\1'#{node[:wordpress][:sites][new_resource.site][:logged_in_key]}'")
-    line.gsub!(/('NONCE_KEY', *)'put your unique phrase here'/, "\\1'#{node[:wordpress][:sites][new_resource.site][:nonce_key]}'")
-    line.gsub!(/('AUTH_SALT', *)'put your unique phrase here'/, "\\1'#{node[:wordpress][:sites][new_resource.site][:auth_salt]}'")
-    line.gsub!(/('SECURE_AUTH_SALT', *)'put your unique phrase here'/, "\\1'#{node[:wordpress][:sites][new_resource.site][:secure_auth_salt]}'")
-    line.gsub!(/('LOGGED_IN_SALT', *)'put your unique phrase here'/, "\\1'#{node[:wordpress][:sites][new_resource.site][:logged_in_salt]}'")
-    line.gsub!(/('NONCE_SALT', *)'put your unique phrase here'/, "\\1'#{node[:wordpress][:sites][new_resource.site][:nonce_salt]}'")
+    line.gsub!(/('AUTH_KEY', *)'put your unique phrase here'/, "\\1'#{auth_key}'")
+    line.gsub!(/('SECURE_AUTH_KEY', *)'put your unique phrase here'/, "\\1'#{secure_auth_key}'")
+    line.gsub!(/('LOGGED_IN_KEY', *)'put your unique phrase here'/, "\\1'#{logged_in_key}'")
+    line.gsub!(/('NONCE_KEY', *)'put your unique phrase here'/, "\\1'#{nonce_key}'")
+    line.gsub!(/('AUTH_SALT', *)'put your unique phrase here'/, "\\1'#{auth_salt}'")
+    line.gsub!(/('SECURE_AUTH_SALT', *)'put your unique phrase here'/, "\\1'#{secure_auth_salt}'")
+    line.gsub!(/('LOGGED_IN_SALT', *)'put your unique phrase here'/, "\\1'#{logged_in_salt}'")
+    line.gsub!(/('NONCE_SALT', *)'put your unique phrase here'/, "\\1'#{nonce_salt}'")
 
     if line =~ /define\('WP_DEBUG'/
       line += "\n"
@@ -202,6 +204,7 @@ end
 
 action_class do
   include Chef::Mixin::EditFile
+  include Chef::Mixin::PersistentToken
 
   def site_directory
     new_resource.directory || "/srv/#{new_resource.site}"

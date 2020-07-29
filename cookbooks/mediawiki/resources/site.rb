@@ -47,12 +47,14 @@ property :fpm_max_children, :kind_of => Integer, :default => 5
 property :reload_apache, :kind_of => [TrueClass, FalseClass], :default => true
 
 action :create do
-  node.normal_unless[:mediawiki][:sites][new_resource.site] = {}
+  node.rm_normal(:mediawiki, :sites, new_resource.site)
 
-  node.normal[:mediawiki][:sites][new_resource.site][:directory] = site_directory
-  node.normal[:mediawiki][:sites][new_resource.site][:version] = new_resource.version
+  node.default[:mediawiki][:sites][new_resource.site] = {
+    :directory => site_directory,
+    :version => new_resource.version
+  }
 
-  node.normal_unless[:mediawiki][:sites][new_resource.site][:wgSecretKey] = SecureRandom.base64(48)
+  secret_key = persistent_token("mediawiki", new_resource.site, "wgSecretKey")
 
   mysql_user "#{new_resource.database_user}@localhost" do
     password new_resource.database_password
@@ -172,7 +174,8 @@ action :create do
     variables :name => new_resource.site,
               :directory => mediawiki_directory,
               :database_params => database_params,
-              :mediawiki => mediawiki_params
+              :mediawiki => mediawiki_params,
+              :secret_key => secret_key
     notifies :run, "execute[#{mediawiki_directory}/maintenance/update.php]"
   end
 
@@ -592,6 +595,8 @@ action :delete do
 end
 
 action_class do
+  include Chef::Mixin::PersistentToken
+
   def site_directory
     new_resource.directory || "/srv/#{new_resource.site}"
   end

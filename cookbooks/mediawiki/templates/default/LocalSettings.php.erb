@@ -141,7 +141,7 @@ $wgLanguageCode = "en";
 $wgPageLanguageUseDB = true;
 $wgGroupPermissions['user']['pagelang'] = true;
 
-$wgSecretKey = '<%= @node[:mediawiki][:sites][@name][:wgSecretKey] %>';
+$wgSecretKey = '<%= @secret_key %>';
 
 # Site upgrade key. Must be set to a string (default provided) to turn on the
 # web installer while LocalSettings.php is in place

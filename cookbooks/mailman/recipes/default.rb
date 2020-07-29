@@ -23,13 +23,16 @@ include_recipe "apache"
 
 package "mailman"
 
-node.normal_unless[:mailman][:subscribe_form_secret] = SecureRandom.base64(48)
+node.rm_normal(:mailman, :subscribe_form_secret)
+
+subscribe_form_secret = persistent_token("mailman", "subscribe_form_secret")
 
 template "/etc/mailman/mm_cfg.py" do
   source "mm_cfg.py.erb"
   user "root"
   group "root"
   mode "644"
+  variables :subscribe_form_secret => subscribe_form_secret
   notifies :restart, "service[mailman]"
 end
 

@@ -258,9 +258,9 @@ if node[:postgresql][:clusters][:"12/main"]
 
     if details[:repository]
       site_aliases = details[:aliases] || []
-      secret_key_base = details[:secret_key_base] || SecureRandom.base64(96)
+      secret_key_base = persistent_token("dev", "rails", name, "secret_key_base")
 
-      node.normal[:dev][:rails][name][:secret_key_base] = secret_key_base
+      node.rm_normal(:dev, :rails, name)
 
       postgresql_database database_name do
         cluster "12/main"
@@ -447,8 +447,6 @@ if node[:postgresql][:clusters][:"12/main"]
         action :drop
         cluster "12/main"
       end
-
-      node.normal[:dev][:rails].delete(name)
     end
   end
 
