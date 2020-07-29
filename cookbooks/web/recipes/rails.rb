@@ -115,13 +115,25 @@ rails_port "www.openstreetmap.org" do
   storage_url "https://openstreetmap-user-avatars.s3.dualstack.eu-west-1.amazonaws.com"
 end
 
+gem_package "bundler#{ruby_version}" do
+  package_name "bundler"
+  gem_binary "gem#{ruby_version}"
+  options "--format-executable"
+end
+
+bundle = if File.exist?("/usr/bin/bundle#{ruby_version}")
+           "/usr/bin/bundle#{ruby_version}"
+         else
+           "/usr/local/bin/bundle#{ruby_version}"
+         end
+
 systemd_service "rails-jobs@" do
   description "Rails job queue runner"
   type "simple"
   environment "RAILS_ENV" => "production", "QUEUE" => "%I"
   user "rails"
   working_directory rails_directory
-  exec_start "/usr/local/bin/bundle#{ruby_version} exec rake jobs:work"
+  exec_start "#{bundle} exec rake jobs:work"
   restart "on-failure"
   private_tmp true
   private_devices true
