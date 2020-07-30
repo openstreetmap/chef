@@ -130,6 +130,44 @@ node[:networking][:interfaces].each do |name, interface|
           "scope" => "link"
         )
       end
+
+      if interface[:role] == "internal" && interface[:gateway] != interface[:address]
+        search(:node, "networking_interfaces*address:#{interface[:gateway]}") do |gateway|
+          next unless gateway[:openvpn]
+
+          gateway[:openvpn][:tunnels].each_value do |tunnel|
+            if tunnel[:peer][:address]
+              deviceplan["routes"].push(
+                "to" => "#{tunnel[:peer][:address]}/32",
+                "via" => interface[:gateway]
+              )
+
+              route tunnel[:peer][:address] do
+                netmask "255.255.255.255"
+                gateway interface[:gateway]
+                device interface[:interface]
+              end
+            end
+
+            next unless tunnel[:peer][:networks]
+
+            tunnel[:peer][:networks].each do |network|
+              prefix = IPAddr.new("#{network[:address]}/#{network[:netmask]}").prefix
+
+              deviceplan["routes"].push(
+                "to" => "#{network[:address]}/#{prefix}",
+                "via" => interface[:gateway]
+              )
+
+              route network[:address] do
+                netmask network[:netmask]
+                gateway interface[:gateway]
+                device interface[:interface]
+              end
+            end
+          end
+        end
+      end
     end
 
     if interface[:routes]
@@ -227,34 +265,6 @@ end
 
 link "/etc/resolv.conf" do
   to "../run/systemd/resolve/stub-resolv.conf"
-end
-
-node.interfaces(:role => :internal) do |interface|
-  if interface[:gateway] && interface[:gateway] != interface[:address]
-    search(:node, "networking_interfaces*address:#{interface[:gateway]}") do |gateway|
-      next unless gateway[:openvpn]
-
-      gateway[:openvpn][:tunnels].each_value do |tunnel|
-        if tunnel[:peer][:address]
-          route tunnel[:peer][:address] do
-            netmask "255.255.255.255"
-            gateway interface[:gateway]
-            device interface[:interface]
-          end
-        end
-
-        next unless tunnel[:peer][:networks]
-
-        tunnel[:peer][:networks].each do |network|
-          route network[:address] do
-            netmask network[:netmask]
-            gateway interface[:gateway]
-            device interface[:interface]
-          end
-        end
-      end
-    end
-  end
 end
 
 zones = {}
