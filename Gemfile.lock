@@ -4,7 +4,7 @@ GEM
     ast (2.4.1)
     bcrypt_pbkdf (1.0.1)
     builder (3.2.4)
-    chef-utils (16.2.73)
+    chef-utils (16.3.45)
     cookstyle (6.13.3)
       rubocop (= 0.88.0)
     diff-lcs (1.4.4)
@@ -39,7 +39,7 @@ GEM
       mixlib-shellout
       mixlib-versioning
       thor
-    mixlib-shellout (3.1.1)
+    mixlib-shellout (3.1.2)
       chef-utils
     mixlib-versioning (1.2.12)
     multi_json (1.15.0)
@@ -106,7 +106,7 @@ GEM
       unicode-display_width (~> 1.5)
       unicode_utils (~> 1.4)
     strings-ansi (0.2.0)
-    test-kitchen (2.5.3)
+    test-kitchen (2.5.4)
       bcrypt_pbkdf (~> 1.0)
       ed25519 (~> 1.2)
       license-acceptance (~> 1.0, >= 1.0.11)
