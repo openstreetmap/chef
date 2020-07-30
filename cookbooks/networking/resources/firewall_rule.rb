@@ -30,7 +30,7 @@ property :proto, :kind_of => String, :required => true
 property :dest_ports, :kind_of => [String, Integer], :default => "-"
 property :source_ports, :kind_of => [String, Integer], :default => "-"
 property :rate_limit, :kind_of => String, :default => "-"
-property :connection_limit, :kind_of => String, :default => "-"
+property :connection_limit, :kind_of => [String, Integer], :default => "-"
 property :helper, :kind_of => String, :default => "-"
 
 action :accept do
@@ -55,7 +55,7 @@ action_class do
       :dest_ports => new_resource.dest_ports.to_s,
       :source_ports => new_resource.source_ports.to_s,
       :rate_limit => new_resource.rate_limit,
-      :connection_limit => new_resource.connection_limit,
+      :connection_limit => new_resource.connection_limit.to_s,
       :helper => new_resource.helper
     }
 
