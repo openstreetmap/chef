@@ -343,12 +343,18 @@ template "/etc/shorewall/policy" do
 end
 
 template "/etc/shorewall/rules" do
+  action :nothing
   source "shorewall-rules.erb"
   owner "root"
   group "root"
   mode "644"
   variables :family => "inet"
   notifies :restart, "service[shorewall]"
+end
+
+notify_group "shorewall-rules" do
+  action :run
+  notifies :create, "template[/etc/shorewall/rules]"
 end
 
 service "shorewall" do
@@ -464,12 +470,18 @@ unless node.interfaces(:family => :inet6).empty?
   end
 
   template "/etc/shorewall6/rules" do
+    action :nothing
     source "shorewall-rules.erb"
     owner "root"
     group "root"
     mode "644"
     variables :family => "inet6"
     notifies :restart, "service[shorewall6]"
+  end
+
+  notify_group "shorewall6-rules" do
+    action :run
+    notifies :create, "template[/etc/shorewall6/rules]"
   end
 
   service "shorewall6" do

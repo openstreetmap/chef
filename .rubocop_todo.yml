@@ -6,13 +6,6 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
-# Offense count: 1
-# Configuration parameters: Include.
-# Include: **/definitions/*.rb
-ChefModernize/Definitions:
-  Exclude:
-    - 'cookbooks/networking/definitions/firewall_rule.rb'
-
 # Offense count: 1038
 # Cop supports --auto-correct.
 # Configuration parameters: .
