@@ -73,10 +73,16 @@ file "/etc/mediawiki/parsoid/settings.js" do
 end
 
 template "/etc/mediawiki/parsoid/config.yaml" do
+  action :nothing
   source "parsoid-config.yaml.erb"
   owner "root"
   group "root"
   mode "644"
+end
+
+notify_group "parsoid-config" do
+  action :run
+  notifies :create, "template[/etc/mediawiki/parsoid/config.yaml]"
 end
 
 service "parsoid" do
