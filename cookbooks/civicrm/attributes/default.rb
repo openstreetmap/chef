@@ -1,8 +1,8 @@
-default[:civicrm][:version] = "5.22.1"
+default[:civicrm][:version] = "5.27.3"
 
 default[:civicrm][:extensions][:cividiscount][:name] = "org.civicrm.module.cividiscount"
 default[:civicrm][:extensions][:cividiscount][:repository] = "https://github.com/dlobo/org.civicrm.module.cividiscount.git"
-default[:civicrm][:extensions][:cividiscount][:revision] = "3.7"
+default[:civicrm][:extensions][:cividiscount][:revision] = "3.8.1"
 
 default[:civicrm][:extensions][:osm][:name] = "de.systopia.osm"
 default[:civicrm][:extensions][:osm][:repository] = "https://github.com/systopia/de.systopia.osm.git"
@@ -18,7 +18,7 @@ default[:civicrm][:extensions][:civiruleshttppost][:revision] = "e2c7de5f0fee319
 
 default[:civicrm][:extensions][:civirules][:name] = "org.civicoop.civirules"
 default[:civicrm][:extensions][:civirules][:repository] = "https://lab.civicrm.org/extensions/civirules.git"
-default[:civicrm][:extensions][:civirules][:revision] = "2.11"
+default[:civicrm][:extensions][:civirules][:revision] = "2.16"
 
 default[:civicrm][:extensions][:mailchimp][:name] = "uk.co.vedaconsulting.mailchimp"
 default[:civicrm][:extensions][:mailchimp][:repository] = "https://github.com/veda-consulting/uk.co.vedaconsulting.mailchimp.git"
@@ -34,4 +34,4 @@ default[:civicrm][:extensions][:donotsendreportemail][:revision] = "3b31c2e0c621
 
 default[:civicrm][:extensions][:donotsendreportemail][:name] = "nz.co.fuzion.omnipaymultiprocessor"
 default[:civicrm][:extensions][:donotsendreportemail][:repository] = "https://github.com/eileenmcnaughton/nz.co.fuzion.omnipaymultiprocessor.git"
-default[:civicrm][:extensions][:donotsendreportemail][:revision] = "3.9"
+default[:civicrm][:extensions][:donotsendreportemail][:revision] = "3.10"
