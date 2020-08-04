@@ -22,5 +22,6 @@ default_attributes(
 
 run_list(
   "role[ucl]",
-  "role[supermicro-x8dtt-h]"
+  "role[supermicro-x8dtt-h]",
+  "role[crm]"
 )
