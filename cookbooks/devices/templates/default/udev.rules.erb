@@ -75,6 +75,8 @@ SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x1521
 SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x1528", RUN+="/sbin/ethtool -G $name rx 4096 tx 4096"
 # Ethernet controller: Intel Corporation I210 Gigabit Network Connection
 SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x1533", RUN+="/sbin/ethtool -G $name rx 4096 tx 4096"
+# Ethernet controller: Intel Corporation I210 Gigabit Network Connection (rev 03)
+SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x157b", RUN+="/sbin/ethtool -G $name rx 4096 tx 4096"
 # Ethernet controller: Intel Corporation Ethernet Controller 10G X550T
 SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x1563", RUN+="/sbin/ethtool -G $name rx 4096 tx 4096"
 # Ethernet controller: Intel Corporation Ethernet Connection X722 for 10GBASE-T
