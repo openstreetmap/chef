@@ -172,7 +172,7 @@ server {
         fastcgi_param PATH_INFO       "$nominatim_path_info";
         fastcgi_param SCRIPT_FILENAME  "$document_root/$nominatim_script_name";
         if ($forward_to_ui) {
-            rewrite ^(/[^/]*) http://$host/ui$1.html redirect;
+            rewrite ^(/[^/]*) https://$host/ui$1.html redirect;
         }
     }
 
@@ -192,7 +192,7 @@ server {
         fastcgi_param   SCRIPT_FILENAME    $document_root$fastcgi_script_name;
 
         if ($forward_to_ui) {
-            rewrite (.*).php http://$host/ui$1.html redirect;
+            rewrite (.*).php https://$host/ui$1.html redirect;
         }
     }
 }
