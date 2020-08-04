@@ -28,15 +28,6 @@ default_attributes(
       }
     },
     :trusted_users => ["www-data"]
-  },
-  :mysql => {
-    :settings => {
-      :mysqld => {
-        :innodb_strict_mode => true,
-        :innodb_file_per_table => true,
-        :innodb_file_format => "Barracuda"
-      }
-    }
   }
 )
 
