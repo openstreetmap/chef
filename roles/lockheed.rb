@@ -2,6 +2,9 @@ name "lockheed"
 description "Master role applied to lockheed"
 
 default_attributes(
+  :accounts => {
+    :administrators => %w[luc qt fat115 tcit chocobozzz qdupont josephk spf pyg]
+  },
   :hardware => {
     :shm_size => "12g"
   },

@@ -4,3 +4,4 @@ default[:accounts][:manage_home] = true
 
 default[:accounts][:groups] = {}
 default[:accounts][:users] = {}
+default[:accounts][:administrators] = []

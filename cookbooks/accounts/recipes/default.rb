@@ -19,7 +19,7 @@
 
 package "zsh"
 
-administrators = []
+administrators = node[:accounts][:administrators].to_a
 
 search(:accounts, "*:*").each do |account|
   name = account["id"]
