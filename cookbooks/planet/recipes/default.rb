@@ -127,6 +127,6 @@ cron_d "old-planet-file-cleanup" do
   hour "3"
   day "1-7"
   user "www-data"
-  command "test $(date +\%u) -eq 1 && /usr/local/bin/old-planet-file-cleanup --debug"
+  command "test $(date +\\%u) -eq 1 && /usr/local/bin/old-planet-file-cleanup --debug"
   mailto "zerebubuth@gmail.com"
 end
