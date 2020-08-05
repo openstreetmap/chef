@@ -405,7 +405,8 @@ action :create do
   execute "#{rails_directory}/package.json" do
     action :nothing
     command "bundle#{new_resource.ruby} exec rake yarn:install"
-    environment "RAILS_ENV" => "production"
+    environment "HOME" => rails_directory,
+                "RAILS_ENV" => "production"
     cwd rails_directory
     user new_resource.user
     group new_resource.group
@@ -416,7 +417,8 @@ action :create do
   execute "#{rails_directory}/app/assets/javascripts/i18n" do
     action :nothing
     command "bundle#{new_resource.ruby} exec rake i18n:js:export"
-    environment "RAILS_ENV" => "production"
+    environment "HOME" => rails_directory,
+                "RAILS_ENV" => "production"
     cwd rails_directory
     user new_resource.user
     group new_resource.group
@@ -427,7 +429,8 @@ action :create do
   execute "#{rails_directory}/public/assets" do
     action :nothing
     command "bundle#{new_resource.ruby} exec rake assets:precompile"
-    environment "RAILS_ENV" => "production"
+    environment "HOME" => rails_directory,
+                "RAILS_ENV" => "production"
     cwd rails_directory
     user new_resource.user
     group new_resource.group
