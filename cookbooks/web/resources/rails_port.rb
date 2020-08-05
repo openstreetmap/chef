@@ -32,6 +32,7 @@ property :group, String
 property :repository, String, :default => "https://git.openstreetmap.org/public/rails.git"
 property :revision, String, :default => "live"
 property :run_migrations, [true, false], :default => false
+property :build_assets, [true, false], :default => true
 property :email_from, String, :default => "OpenStreetMap <support@openstreetmap.org>"
 property :status, String, :default => "online"
 property :database_host, String
@@ -397,6 +398,21 @@ action :create do
     only_if { new_resource.run_migrations }
   end
 
+  package "yarnpkg" do
+    only_if { new_resource.build_assets }
+  end
+
+  execute "#{rails_directory}/package.json" do
+    action :nothing
+    command "bundle#{new_resource.ruby} exec rake yarn:install"
+    environment "RAILS_ENV" => "production"
+    cwd rails_directory
+    user new_resource.user
+    group new_resource.group
+    subscribes :run, "git[#{rails_directory}]"
+    only_if { new_resource.build_assets }
+  end
+
   execute "#{rails_directory}/app/assets/javascripts/i18n" do
     action :nothing
     command "bundle#{new_resource.ruby} exec rake i18n:js:export"
@@ -405,6 +421,7 @@ action :create do
     user new_resource.user
     group new_resource.group
     subscribes :run, "git[#{rails_directory}]"
+    only_if { new_resource.build_assets }
   end
 
   execute "#{rails_directory}/public/assets" do
@@ -419,8 +436,10 @@ action :create do
     subscribes :run, "file[#{rails_directory}/config/settings.local.yml]"
     subscribes :run, "file[#{rails_directory}/config/storage.yml]"
     subscribes :run, "file[#{rails_directory}/config/piwik.yml]"
+    subscribes :run, "execute[#{rails_directory}/package.json]"
     subscribes :run, "execute[#{rails_directory}/app/assets/javascripts/i18n]"
     notifies :restart, "passenger_application[#{rails_directory}]"
+    only_if { new_resource.build_assets }
   end
 
   file "#{rails_directory}/public/export/embed.html" do

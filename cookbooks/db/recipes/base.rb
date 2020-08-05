@@ -47,6 +47,7 @@ rails_port "www.openstreetmap.org" do
   group "rails"
   repository "https://git.openstreetmap.org/public/rails.git"
   revision "live"
+  build_assets false
   database_host "localhost"
   database_name "openstreetmap"
   database_username "openstreetmap"
