@@ -133,10 +133,6 @@ action :create do
     depth 1
     user new_resource.user
     group new_resource.group
-    notifies :run, "execute[#{rails_directory}/Gemfile]"
-    notifies :run, "execute[#{rails_directory}/app/assets/javascripts/i18n]"
-    notifies :run, "execute[#{rails_directory}/public/assets]"
-    notifies :delete, "file[#{rails_directory}/public/export/embed.html]"
     notifies :restart, "passenger_application[#{rails_directory}]"
   end
 
@@ -283,7 +279,7 @@ action :create do
     group new_resource.group
     mode "664"
     content application_yml
-    notifies :run, "execute[#{rails_directory}/public/assets]"
+    notifies :restart, "passenger_application[#{rails_directory}]"
     only_if { ::File.exist?("#{rails_directory}/config/example.application.yml") }
   end
 
@@ -348,7 +344,6 @@ action :create do
     group new_resource.group
     mode "664"
     content YAML.dump(settings)
-    notifies :run, "execute[#{rails_directory}/public/assets]"
     only_if { ::File.exist?("#{rails_directory}/config/settings.yml") }
   end
 
@@ -364,7 +359,6 @@ action :create do
     group new_resource.group
     mode "664"
     content YAML.dump(storage_configuration)
-    notifies :run, "execute[#{rails_directory}/public/assets]"
   end
 
   if new_resource.piwik_configuration
@@ -373,12 +367,10 @@ action :create do
       group new_resource.group
       mode "664"
       content YAML.dump(new_resource.piwik_configuration)
-      notifies :run, "execute[#{rails_directory}/public/assets]"
     end
   else
     file "#{rails_directory}/config/piwik.yml" do
       action :delete
-      notifies :run, "execute[#{rails_directory}/public/assets]"
     end
   end
 
@@ -390,6 +382,7 @@ action :create do
     group "root"
     environment "NOKOGIRI_USE_SYSTEM_LIBRARIES" => "yes"
     subscribes :run, "gem_package[bundler#{new_resource.ruby}]"
+    subscribes :run, "git[#{rails_directory}]"
     notifies :restart, "passenger_application[#{rails_directory}]"
   end
 
@@ -411,7 +404,7 @@ action :create do
     cwd rails_directory
     user new_resource.user
     group new_resource.group
-    notifies :run, "execute[#{rails_directory}/public/assets]"
+    subscribes :run, "git[#{rails_directory}]"
   end
 
   execute "#{rails_directory}/public/assets" do
@@ -421,11 +414,18 @@ action :create do
     cwd rails_directory
     user new_resource.user
     group new_resource.group
+    subscribes :run, "git[#{rails_directory}]"
+    subscribes :run, "file[create:#{rails_directory}/config/application.yml]"
+    subscribes :run, "file[#{rails_directory}/config/settings.local.yml]"
+    subscribes :run, "file[#{rails_directory}/config/storage.yml]"
+    subscribes :run, "file[#{rails_directory}/config/piwik.yml]"
+    subscribes :run, "execute[#{rails_directory}/app/assets/javascripts/i18n]"
     notifies :restart, "passenger_application[#{rails_directory}]"
   end
 
   file "#{rails_directory}/public/export/embed.html" do
     action :nothing
+    subscribes :delete, "git[#{rails_directory}]"
   end
 
   passenger_application rails_directory do
