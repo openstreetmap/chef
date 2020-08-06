@@ -107,7 +107,7 @@ systemd_service "squid" do
   protect_home true
   restrict_address_families address_families
   restart "always"
-  ExecStart "/usr/sbin/squid --foreground -YC"
+  exec_start "/usr/sbin/squid --foreground -YC"
 end
 
 # Quick hack to cleanup bloated journal
