@@ -102,10 +102,10 @@ jobs:
         os:
           - ubuntu-2004
         include:
-          - os: ubuntu-1804
-            suite: osqa
-          - os: ubuntu-1804
-            suite: trac
+          - suite: osqa
+            os: ubuntu-1804
+          - suite: trac
+            os: ubuntu-1804
         exclude:
           - suite: osqa
             os: ubuntu-2004
