@@ -110,6 +110,11 @@ systemd_service "squid" do
   ExecStart "/usr/sbin/squid --foreground -YC"
 end
 
+# Quick hack to cleanup bloated journal
+execute "tmp_journal_clean_up" do
+  command "/bin/journalctl --vacuum-time=1d"
+end
+
 service "squid" do
   action :enable
   subscribes :restart, "systemd_service[squid]"
