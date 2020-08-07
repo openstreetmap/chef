@@ -101,7 +101,7 @@ end
 squid_service_exec = if node[:lsb][:release].to_f < 20.04
                        "/usr/sbin/squid -YC"
                      else
-                       "/usr/sbin/squid --foreground -sYC"
+                       "/usr/sbin/squid --foreground -YC"
                      end
 
 systemd_service "squid" do
@@ -114,11 +114,6 @@ systemd_service "squid" do
   restrict_address_families address_families
   restart "always"
   exec_start "#{squid_service_exec}"
-end
-
-# Quick hack to cleanup bloated journal
-execute "tmp_journal_clean_up" do
-  command "/bin/journalctl --vacuum-time=1d"
 end
 
 service "squid" do
