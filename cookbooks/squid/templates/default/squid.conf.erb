@@ -10,7 +10,7 @@ workers <%= [ node[:cpu][:total] - 2, 1 ].max.ceil %>
 cpu_affinity_map process_numbers=<%= (1..[ node[:cpu][:total] - 2, 1 ].max.ceil).to_a.join(',') %> cores=<%=(1..[ node[:cpu][:total] - 2, 1 ].max.ceil).to_a.join(',') %>
 
 # Set short clean shutdown interval
-shutdown_lifetime 10 seconds
+shutdown_lifetime 2 seconds
 
 error_log_languages off
 <% end -%>

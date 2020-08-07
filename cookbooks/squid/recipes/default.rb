@@ -98,6 +98,12 @@ file "/etc/logrotate.d/squid.dpkg-dist" do
   action :delete
 end
 
+squid_service_exec = if node[:lsb][:release].to_f < 20.04
+                       "/usr/sbin/squid -YC"
+                     else
+                       "/usr/sbin/squid --foreground -sYC"
+                     end
+
 systemd_service "squid" do
   dropin "chef"
   limit_nofile 98304
@@ -107,7 +113,7 @@ systemd_service "squid" do
   protect_home true
   restrict_address_families address_families
   restart "always"
-  exec_start "/usr/sbin/squid --foreground -YC"
+  exec_start "#{squid_service_exec}"
 end
 
 # Quick hack to cleanup bloated journal
