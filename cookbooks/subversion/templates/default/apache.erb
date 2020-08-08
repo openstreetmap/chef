@@ -19,10 +19,6 @@
     SVNPath <%= @directory %>
     SVNIndexXSLT /svnindex.xsl
 
-    AuthType Basic
-    AuthName "<%= @realm %>"
-    AuthUserFile <%= @password_file %>
-
     LimitXMLRequestBody 0
     LimitRequestBody 0
 
@@ -31,7 +27,7 @@
     </Limit>
 
     <LimitExcept GET PROPFIND OPTIONS REPORT>
-      Require valid-user
+      Require all denied
     </LimitExcept>
   </Location>
 </VirtualHost>
