@@ -136,7 +136,6 @@ run_list(
   "role[backup]",
   "role[planet]",
   "role[planetdump]",
-  "role[logstash]",
   "recipe[rsyncd]",
   "recipe[dhcpd]",
   "recipe[openvpn]",
