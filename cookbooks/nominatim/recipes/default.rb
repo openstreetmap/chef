@@ -239,7 +239,7 @@ template "#{ui_directory}/dist/config.js" do
   source "ui-config.js.erb"
   owner "nominatim"
   group "nominatim"
-  mode 0o664
+  mode "664"
 end
 
 if node[:nominatim][:flatnode_file]
