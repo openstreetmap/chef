@@ -13,10 +13,9 @@ echo 'password=<%= @passwords["database"] %>' >> $T/mysqldump.opts
 mysqldump --defaults-file=$T/mysqldump.opts --opt donate > $T/osm-donate-$D/osm-donate.sql
 ln -s /srv/donate.openstreetmap.org $T/osm-donate-$D/www
 
-export GZIP="--rsyncable -9"
 export RSYNC_RSH="ssh -ax"
 
-nice tar --create --gzip --dereference --directory=$T --file=$T/$B osm-donate-$D
+nice tar --create --dereference --directory=$T osm-donate-$D | nice gzip --rsyncable -9 > $T/$B
 nice rsync --preallocate --fuzzy $T/$B backup::backup
 
 rm -rf $T

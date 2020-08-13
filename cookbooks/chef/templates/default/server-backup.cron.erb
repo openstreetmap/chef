@@ -10,9 +10,7 @@ chmod g+rwx $T $T/chef-server-$D
 sudo -u opscode-pgsql /opt/opscode/embedded/bin/pg_dumpall --file=$T/chef-server-$D/chef.dmp --clean
 ln -s /var/opt/opscode/bookshelf/data $T/chef-server-$D/bookshelf
 
-export GZIP="--rsyncable -9"
-
-nice tar --create --gzip --dereference --directory=$T --file=$T/$B chef-server-$D
+nice tar --create --dereference --directory=$T chef-server-$D | nice gzip --rsyncable -9 > $T/$B
 nice rsync --preallocate --fuzzy $T/$B backup::backup
 
 rm -rf $T

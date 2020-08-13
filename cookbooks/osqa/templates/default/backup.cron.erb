@@ -12,10 +12,9 @@ chown <%= @user %> $T/osqa-$D
 sudo -u <%= @user %> pg_dump --format=custom --file=$T/<%= @name %>-$D/osqa.dmp <%= @database %>
 ln -s <%= @directory %>/upfiles $T/<%= @name %>-$D/upfiles
 
-export GZIP="--rsyncable -9"
 export RSYNC_RSH="ssh -ax"
 
-nice tar --create --gzip --dereference --directory=$T --file=$T/$B <%= @name %>-$D
+nice tar --create --dereference --directory=$T <%= @name %>-$D | nice gzip --rsyncable -9 > $T/$B
 nice rsync --preallocate --fuzzy $T/$B backup::backup
 
 rm -rf $T

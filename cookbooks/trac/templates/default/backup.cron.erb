@@ -8,10 +8,9 @@ B=trac-$D.tar.gz
 
 trac-admin /var/lib/trac hotcopy $T/trac-$D > /dev/null
 
-export GZIP="--rsyncable -9"
 export RSYNC_RSH="ssh -ax"
 
-nice tar --create --gzip --directory=$T --file=$T/$B trac-$D
+nice tar --create --directory=$T trac-$D | nice gzip --rsyncable -9 > $T/$B
 nice rsync --preallocate --fuzzy $T/$B backup::backup
 
 rm -rf $T
