@@ -9,9 +9,24 @@ require_once "$IP/extensions/MultiMaps/MultiMaps.php";
 # denote different tiles within a BaseMapService
 $egMultiMaps_MapServices = [
   'Leaflet',
+  'cycle' => [
+    'service' => 'Leaflet',
+    'attribution' => '&copy; <a href="https://osm.org/copyright">OpenStreetMap contributors</a>. Tiles courtesy of <a href="https://www.thunderforest.com/" target="_blank">Andy Allan</a>',
+    'source' => 'https://tile.thunderforest.com/cycle/{z}/{x}/{y}.png?apikey=<%= @thunderforest_key %>',
+  ],
   'transport' => [
     'service' => 'Leaflet',
     'attribution' => '&copy; <a href="https://osm.org/copyright">OpenStreetMap contributors</a>. Tiles courtesy of <a href="https://www.thunderforest.com/" target="_blank">Andy Allan</a>',
     'source' => 'https://tile.thunderforest.com/transport/{z}/{x}/{y}.png?apikey=<%= @thunderforest_key %>',
+  ],
+  'oepnv' => [
+    'service' => 'Leaflet',
+    'attribution' => '&copy; <a href="https://osm.org/copyright">OpenStreetMap contributors</a>. Tiles courtesy of <a href="https://memomaps.de/" target="_blank">MeMoMaps</a>',
+    'source' => 'https://tileserver.memomaps.de/tilegen/{z}/{x}/{y}.png',
+  ],
+  'humanitarian' => [
+    'service' => 'Leaflet',
+    'attribution' => '&copy; <a href="https://osm.org/copyright">OpenStreetMap contributors</a>. Tiles style by <a href="https://www.hotosm.org/" target="_blank">Humanitarian OpenStreetMap team</a> hosted by <a href="https://openstreetmap.fr/" target="_blank">OpenStreetMap France</a>',
+    'source' => 'https://tile.openstreetmap.fr/hot/{z}/{x}/{y}.png'
   ],
 ];
