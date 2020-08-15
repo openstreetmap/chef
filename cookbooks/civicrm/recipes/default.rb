@@ -121,7 +121,7 @@ execute "/opt/civicrm-#{civicrm_version}/civicrm" do
   subscribes :run, "execute[#{cache_dir}/civicrm-#{civicrm_version}-l10n.tar.gz]", :immediately
 end
 
-directory "/srv/join.osmfoundation.org/wp-content/plugins/files" do
+directory "/srv/join.osmfoundation.org/wp-content/uploads" do
   owner "www-data"
   group "www-data"
   mode "755"
@@ -157,7 +157,7 @@ settings = edit_file "#{civicrm_directory}/civicrm/templates/CRM/common/civicrm.
   line.gsub!(/%%dbHost%%/, "localhost")
   line.gsub!(/%%dbName%%/, "civicrm")
   line.gsub!(/%%crmRoot%%/, "#{civicrm_directory}/civicrm/")
-  line.gsub!(/%%templateCompileDir%%/, "/srv/join.osmfoundation.org/wp-content/plugins/files/civicrm/templates_c/")
+  line.gsub!(/%%templateCompileDir%%/, "/srv/join.osmfoundation.org/wp-content/uploads/civicrm/templates_c/")
   line.gsub!(/%%baseURL%%/, "http://join.osmfoundation.org/")
   line.gsub!(/%%siteKey%%/, site_key)
   line.gsub!(%r{// *(.*'ext_repo_url'.*)$}, "\\1")
