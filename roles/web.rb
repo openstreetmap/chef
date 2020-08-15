@@ -16,7 +16,7 @@ default_attributes(
     :pool_idle_time => 3600
   },
   :web => {
-    :status => "online",
+    :status => "gpx_offline",
     :memcached_servers => %w[rails1.ams rails2.ams rails3.ams]
   }
 )
