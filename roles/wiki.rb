@@ -8,7 +8,14 @@ default_attributes(
     }
   },
   :apache => {
-    :timeout => 30
+    :mpm => "event",
+    :timeout => 30,
+    :event => {
+      :server_limit => 32,
+      :max_request_workers => 800,
+      :threads_per_child => 50,
+      :max_connections_per_child => 10000
+    }
   },
   :elasticsearch => {
     :version => "5.x",

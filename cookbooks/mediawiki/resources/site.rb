@@ -44,6 +44,7 @@ property :recaptcha_public_key, :kind_of => String
 property :recaptcha_private_key, :kind_of => String
 property :extra_file_extensions, :kind_of => [String, Array], :default => []
 property :fpm_max_children, :kind_of => Integer, :default => 5
+property :fpm_request_terminate_timeout, :kind_of => Integer, :default => 300
 property :reload_apache, :kind_of => [TrueClass, FalseClass], :default => true
 
 action :create do
@@ -521,6 +522,7 @@ action :create do
 
   php_fpm new_resource.site do
     pm_max_children new_resource.fpm_max_children
+    request_terminate_timeout new_resource.fpm_request_terminate_timeout
     php_admin_values "open_basedir" => "#{site_directory}/:/usr/share/php/:/dev/null:/tmp/"
     php_values "memory_limit" => "500M",
                "max_execution_time" => "240",
