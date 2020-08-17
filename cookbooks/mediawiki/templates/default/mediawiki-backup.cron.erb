@@ -7,7 +7,7 @@ mkdir $T/wiki-<%= @name %>-$D
 echo '[mysqldump]' > $T/mysqldump.opts
 echo 'user=<%= @database_params[:username] %>' >> $T/mysqldump.opts
 echo 'password=<%= @database_params[:password] %>' >> $T/mysqldump.opts
-mysqldump --defaults-file=$T/mysqldump.opts --opt --skip-lock-tables --single-transaction "<%= @database_params[:name] %>" | lz4 -9 > $T/wiki-<%= @name %>-$D/wiki.sql.lz4
+mysqldump --defaults-file=$T/mysqldump.opts --opt --skip-lock-tables --single-transaction --no-tablespaces "<%= @database_params[:name] %>" | lz4 -9 > $T/wiki-<%= @name %>-$D/wiki.sql.lz4
 ln -s <%= @directory %>  $T/wiki-<%= @name %>-$D/www
 nice tar --create --dereference --directory=$T --warning=no-file-changed --exclude=wiki-<%= @name %>-$D/www/w/images/thumb --exclude=wiki-<%= @name %>-$D/www/w/.git --exclude=wiki-<%= @name %>-$D/www/w/extensions/*/.git wiki-<%= @name %>-$D | nice gzip --rsyncable -9 > $T/$B
 nice rsync --preallocate --fuzzy $T/$B backup::backup

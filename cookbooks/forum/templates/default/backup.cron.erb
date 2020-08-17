@@ -10,7 +10,7 @@ mkdir $T/forum-$D
 echo '[mysqldump]' > $T/mysqldump.opts
 echo 'user=forum' >> $T/mysqldump.opts
 echo 'password=<%= @passwords["database"] %>' >> $T/mysqldump.opts
-mysqldump --defaults-file=$T/mysqldump.opts --opt forum > $T/forum-$D/forum.sql
+mysqldump --defaults-file=$T/mysqldump.opts --opt --no-tablespaces forum > $T/forum-$D/forum.sql
 ln -s /srv/forum.openstreetmap.org $T/forum-$D/www
 
 export RSYNC_RSH="ssh -ax"
