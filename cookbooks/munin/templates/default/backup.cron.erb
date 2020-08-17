@@ -12,7 +12,7 @@ ln -s /var/lib/munin/*.storable $T/munin-$D
 
 export RSYNC_RSH="ssh -ax"
 
-nice tar --create --dereference --directory=$T munin-$D | nice gzip --rsyncable -9 > $T/$B
+nice tar --create --dereference --directory=$T --warning=no-file-removed munin-$D | nice gzip --rsyncable -9 > $T/$B
 nice rsync --preallocate --fuzzy $T/$B backup::backup
 
 rm -rf $T
