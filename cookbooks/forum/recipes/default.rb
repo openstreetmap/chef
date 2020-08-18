@@ -65,8 +65,7 @@ end
 
 remote_file "#{cache_dir}/air3_v0.8.zip" do
   action :create_if_missing
-  source "https://grant.dev.openstreetmap.org/forum/air3_v0.8.zip" # Workaround OpenSSL chain of trust bug in chef https://fluxbb.org/resources/styles/air3/releases/0.8/air3_v0.8.zip
-  checksum "df547e3ac9596c1e6d9eedcb108559f84a28669763e24114ca6cdcbf118caf6c"
+  source "https://fluxbb.org/resources/styles/air3/releases/0.8/air3_v0.8.zip"
   owner "root"
   group "root"
   mode "644"
