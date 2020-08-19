@@ -10,6 +10,7 @@ default_attributes(
         :archive_command => "/usr/local/bin/openstreetmap-wal-e --terse wal-push %p",
         :max_wal_senders => "3",
         :late_authentication_rules => [
+          { :database => "replication", :user => "replication", :address => "10.0.48.49/32" },
           { :database => "replication", :user => "replication", :address => "10.0.48.50/32" },
           { :database => "replication", :user => "replication", :address => "10.0.48.5/32" },
           { :database => "replication", :user => "replication", :address => "10.0.0.10/32" },
