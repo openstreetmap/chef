@@ -14,9 +14,31 @@ default_attributes(
         }
       }
     }
+  },
+  :postgresql => {
+    :settings => {
+      :defaults => {
+        :shared_buffers => "128GB",
+        :work_mem => "128MB",
+        :maintenance_work_mem => "2GB",
+        :effective_cache_size => "360GB",
+        :effective_io_concurrency => "256",
+        :random_page_cost => "1.1"
+      }
+    }
+  },
+  :sysctl => {
+    :postgres => {
+      :comment => "Increase shared memory for postgres",
+      :parameters => {
+        "kernel.shmmax" => 132 * 1024 * 1024 * 1024,
+        "kernel.shmall" => 132 * 1024 * 1024 * 1024 / 4096
+      }
+    }
   }
 )
 
 run_list(
-  "role[equinix]"
+  "role[equinix]",
+  "role[db-slave]"
 )
