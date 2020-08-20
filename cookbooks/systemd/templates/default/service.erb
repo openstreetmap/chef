@@ -108,6 +108,15 @@ ProtectSystem=<%= @protect_system %>
 <% if @protect_home -%>
 ProtectHome=<%= @protect_home %>
 <% end -%>
+<% if @read_write_paths -%>
+ReadWritePaths=<%= Array(@read_write_paths).join(" ") %>
+<% end -%>
+<% if @read_only_paths -%>
+ReadOnlyPaths=<%= Array(@read_only_paths).join(" ") %>
+<% end -%>
+<% if @inaccessible_paths -%>
+InaccessiblePaths=<%= Array(@inaccessible_paths).join(" ") %>
+<% end -%>
 <% if @restrict_address_families -%>
 RestrictAddressFamilies=<%= Array(@restrict_address_families).join(" ") %>
 <% end -%>
