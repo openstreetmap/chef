@@ -73,6 +73,7 @@ property :diary_feed_delay, Integer
 property :storage_configuration, Hash, :default => {}
 property :storage_service, String, :default => "local"
 property :storage_url, String
+property :tile_cdn_url, String
 
 action :create do
   package %W[
@@ -318,7 +319,8 @@ action :create do
     "trace_use_job_queue",
     "diary_feed_delay",
     "storage_service",
-    "storage_url"
+    "storage_url",
+    "tile_cdn_url"
   ).reject { |_k, v| v.nil? }.merge(
     "server_protocol" => "https",
     "server_url" => new_resource.site,

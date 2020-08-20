@@ -113,6 +113,7 @@ rails_port "www.openstreetmap.org" do
   storage_configuration storage
   storage_service "aws"
   storage_url "https://openstreetmap-user-avatars.s3.dualstack.eu-west-1.amazonaws.com"
+  tile_cdn_url "https://cdn-fastly-test.tile.openstreetmap.org/{z}/{x}/{y}.png"
 end
 
 gem_package "bundler#{ruby_version}" do
