@@ -21,6 +21,19 @@ include_recipe "apt"
 
 license_keys = data_bag_item("geoipupdate", "license-keys")
 
+package "geoip-database" do
+  action :purge
+end
+
+package "geoip-database-contrib" do
+  action :purge
+end
+
+package "geoipupdate" do
+  action :purge
+  only_if { ::File.exist?("/etc/cron.d/geoipupdate") }
+end
+
 package "geoipupdate"
 
 template "/etc/GeoIP.conf" do
@@ -31,7 +44,7 @@ template "/etc/GeoIP.conf" do
   variables :license_keys => license_keys
 end
 
-execute "geoipdate" do
+execute "geoipupdate" do
   command "geoipupdate"
   user "root"
   group "root"
