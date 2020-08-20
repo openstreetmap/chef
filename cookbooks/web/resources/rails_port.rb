@@ -80,7 +80,6 @@ action :create do
     ruby#{new_resource.ruby}-dev
     imagemagick
     nodejs
-    geoip-database
     tzdata
   ]
 
@@ -181,7 +180,6 @@ action :create do
 
     line.gsub!(/^( *)#geonames_username:.*$/, "\\1geonames_username: \"openstreetmap\"")
 
-    line.gsub!(/^( *)#geoip_database:.*$/, "\\1geoip_database: \"/usr/share/GeoIP/GeoIPv6.dat\"")
     line.gsub!(/^( *)#maxmind_database:.*$/, "\\1maxmind_database: \"/usr/share/GeoIP/GeoLite2-Country.mmdb\"")
 
     if new_resource.gpx_dir
@@ -327,7 +325,6 @@ action :create do
     "support_email" => "support@openstreetmap.org",
     "email_return_path" => "bounces@openstreetmap.org",
     "geonames_username" => "openstreetmap",
-    "geoip_database" => "/usr/share/GeoIP/GeoIPv6.dat",
     "maxmind_database" => "/usr/share/GeoIP/GeoLite2-Country.mmdb"
   )
 
