@@ -51,6 +51,32 @@ execute "geoipupdate" do
   not_if { ENV.key?("TEST_KITCHEN") || node[:geoipupdate][:editions].all? { |edition| ::File.exist?("/usr/share/GeoIP/#{edition}.mmdb") } }
 end
 
+systemd_service "geoipdate" do
+  action :delete
+end
+
+systemd_service "geoipupdate" do
+  description "Update GeoIP databases"
+  user "root"
+  exec_start "/usr/bin/geoipupdate"
+  private_tmp true
+  private_devices true
+  protect_system "strict"
+  protect_home true
+  read_write_paths "/usr/share/GeoIP"
+end
+
+systemd_timer "geoipupdate" do
+  description "Update GeoIP databases"
+  on_boot_sec "15m"
+  on_unit_active_sec "7d"
+  randomized_delay_sec "4h"
+end
+
+service "geoipupdate.timer" do
+  action [:enable, :start]
+end
+
 directory "/var/lib/GeoIP" do
   action :delete
   recursive true
