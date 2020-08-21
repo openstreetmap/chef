@@ -21,19 +21,6 @@ include_recipe "apt"
 
 license_keys = data_bag_item("geoipupdate", "license-keys")
 
-package "geoip-database" do
-  action :purge
-end
-
-package "geoip-database-contrib" do
-  action :purge
-end
-
-package "geoipupdate" do
-  action :purge
-  only_if { ::File.exist?("/etc/cron.d/geoipupdate") }
-end
-
 package "geoipupdate"
 
 template "/etc/GeoIP.conf" do
@@ -49,10 +36,6 @@ execute "geoipupdate" do
   user "root"
   group "root"
   not_if { ENV.key?("TEST_KITCHEN") || node[:geoipupdate][:editions].all? { |edition| ::File.exist?("/usr/share/GeoIP/#{edition}.mmdb") } }
-end
-
-systemd_service "geoipdate" do
-  action :delete
 end
 
 systemd_service "geoipupdate" do
@@ -75,9 +58,4 @@ end
 
 service "geoipupdate.timer" do
   action [:enable, :start]
-end
-
-directory "/var/lib/GeoIP" do
-  action :delete
-  recursive true
 end
