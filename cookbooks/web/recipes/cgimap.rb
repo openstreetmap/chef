@@ -37,7 +37,7 @@ end
 
 memcached_servers = node[:web][:memcached_servers] || []
 
-switches = database_readonly ? " --readonly" : ""
+switches = database_readonly ? " --disable-api-write" : ""
 
 systemd_service "cgimap" do
   description "OpenStreetMap API Server"
