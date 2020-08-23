@@ -98,6 +98,33 @@ node[:taginfo][:sites].each do |site|
     mode "755"
   end
 
+  git "#{directory}/taginfo-tools" do
+    action :sync
+    repository "https://github.com/taginfo/taginfo-tools.git"
+    revision "osmorg-taginfo-live"
+    depth 1
+    enable_submodules true
+    user "taginfo"
+    group "taginfo"
+  end
+
+  directory "#{directory}/build" do
+    owner "taginfo"
+    group "taginfo"
+    mode "755"
+  end
+
+  execute "compile_taginfo_tools" do
+    action :nothing
+    owner "taginfo"
+    group "taginfo"
+    cwd "#{directory}/build"
+    command "cmake #{directory}/taginfo-tools && make"
+    subscribes :run, "apt_package[libprotozero-dev]"
+    subscribes :run, "apt_package[libosmium2-dev]"
+    subscribes :run, "git[#{directory}/taginfo-tools]"
+  end
+
   git "#{directory}/taginfo" do
     action :sync
     repository "https://github.com/taginfo/taginfo.git"
