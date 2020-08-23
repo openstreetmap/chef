@@ -116,7 +116,7 @@ node[:taginfo][:sites].each do |site|
 
   execute "compile_taginfo_tools" do
     action :nothing
-    owner "taginfo"
+    user "taginfo"
     group "taginfo"
     cwd "#{directory}/build"
     command "cmake #{directory}/taginfo-tools && make"
