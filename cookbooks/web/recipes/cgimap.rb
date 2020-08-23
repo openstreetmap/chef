@@ -27,17 +27,13 @@ package "openstreetmap-cgimap-bin" do
   action :upgrade
 end
 
-if node[:web][:readonly_database_host]
-  database_host = node[:web][:readonly_database_host]
-  database_readonly = true
-else
-  database_host = node[:web][:database_host]
-  database_readonly = node[:web][:status] == "database_readonly"
-end
+database_host = if node[:web][:readonly_database_host]
+                  node[:web][:readonly_database_host]
+                else
+                  node[:web][:database_host]
+                end
 
 memcached_servers = node[:web][:memcached_servers] || []
-
-switches = database_readonly ? " --readonly" : ""
 
 systemd_service "cgimap" do
   description "OpenStreetMap API Server"
@@ -54,7 +50,7 @@ systemd_service "cgimap" do
                    "CGIMAP_RATELIMIT" => "204800",
                    "CGIMAP_MAXDEBT" => "250"
   user "rails"
-  exec_start "/usr/bin/openstreetmap-cgimap --daemon --port 8000 --instances 30#{switches}"
+  exec_start "/usr/bin/openstreetmap-cgimap --daemon --port 8000 --instances 30"
   exec_reload "/bin/kill -HUP $MAINPID"
   private_tmp true
   private_devices true
