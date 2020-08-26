@@ -21,6 +21,8 @@ include_recipe "wordpress"
 include_recipe "mysql"
 
 package %w[
+  php-xml
+  php-curl
   rsync
   unzip
   wkhtmltopdf
