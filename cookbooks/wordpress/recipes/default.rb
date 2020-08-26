@@ -29,6 +29,8 @@ package %w[
   php-mysql
 ]
 
+apache_module "proxy"
+apache_module "proxy_fcgi"
 apache_module "rewrite"
 
 fail2ban_filter "wordpress" do

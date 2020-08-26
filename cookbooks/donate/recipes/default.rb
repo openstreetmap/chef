@@ -31,6 +31,8 @@ package %w[
 ]
 
 apache_module "headers"
+apache_module "proxy"
+apache_module "proxy_fcgi"
 
 passwords = data_bag_item("donate", "passwords")
 

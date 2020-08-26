@@ -96,4 +96,6 @@ link "/etc/php/#{node[:php][:version]}/fpm/conf.d/20-wikidiff2.ini" do
   to "../../mods-available/wikidiff2.ini"
 end
 
+apache_module "proxy"
+apache_module "proxy_fcgi"
 apache_module "rewrite"

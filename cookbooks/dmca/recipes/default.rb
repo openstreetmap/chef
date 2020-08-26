@@ -20,6 +20,9 @@
 include_recipe "apache"
 include_recipe "php::fpm"
 
+apache_module "proxy"
+apache_module "proxy_fcgi"
+
 directory "/srv/dmca.openstreetmap.org" do
   owner "root"
   group "root"
