@@ -149,7 +149,7 @@ node[:taginfo][:sites].each do |site|
     settings["sources"]["download"] = ""
     settings["sources"]["create"] = "db languages projects wiki"
     settings["sources"]["db"]["planetfile"] = "/var/lib/planet/planet.pbf"
-    settings["sources"]["db"]["bindir"] = "#{directory}/taginfo/tagstats"
+    settings["sources"]["db"]["bindir"] = "#{directory}/build/src"
     settings["tagstats"]["geodistribution"] = "DenseMmapArray"
 
     JSON.pretty_generate(settings)
@@ -160,18 +160,6 @@ node[:taginfo][:sites].each do |site|
     group "taginfo"
     mode "644"
     content settings
-    notifies :restart, "service[apache2]"
-  end
-
-  execute "#{directory}/taginfo/tagstats/Makefile" do
-    action :nothing
-    command "make"
-    cwd "#{directory}/taginfo/tagstats"
-    user "taginfo"
-    group "taginfo"
-    subscribes :run, "apt_package[libprotozero-dev]"
-    subscribes :run, "apt_package[libosmium2-dev]"
-    subscribes :run, "git[#{directory}/taginfo]"
     notifies :restart, "service[apache2]"
   end
 
