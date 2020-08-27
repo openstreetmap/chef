@@ -119,7 +119,7 @@ node[:taginfo][:sites].each do |site|
     user "taginfo"
     group "taginfo"
     cwd "#{directory}/build"
-    command "cmake #{directory}/taginfo-tools && make"
+    command "cmake #{directory}/taginfo-tools -DCMAKE_BUILD_TYPE=Release && make"
     subscribes :run, "apt_package[libprotozero-dev]"
     subscribes :run, "apt_package[libosmium2-dev]"
     subscribes :run, "git[#{directory}/taginfo-tools]"
