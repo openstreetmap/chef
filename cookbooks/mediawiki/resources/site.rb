@@ -463,9 +463,6 @@ action :create do
 
   mediawiki_extension "SlippyMap" do
     site new_resource.site
-    template "mw-ext-SlippyMap.inc.php.erb"
-    repository "https://github.com/Firefishy/SlippyMap.git"
-    tag "live"
     update_site false
     action :delete
   end
