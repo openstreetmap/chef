@@ -3,9 +3,10 @@ description "Role applied to all web/api backend servers"
 
 default_attributes(
   :apache => {
-    :mpm => "worker",
-    :worker => {
-      :max_connections_per_child => 10000
+    :mpm => "event",
+    :event => {
+      :max_connections_per_child => 10000,
+      :async_request_worker_factor => 4
     }
   },
   :logstash => {
