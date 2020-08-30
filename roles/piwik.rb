@@ -3,9 +3,13 @@ description "Role applied to all Piwik servers"
 
 default_attributes(
   :apache => {
-    :worker => {
+    :mpm => "event",
+    :event => {
       :server_limit => 18,
-      :max_request_workers => 450
+      :max_request_workers => 450,
+      :min_spare_threads => 50,
+      :max_spare_threads => 150,
+      :listen_cores_buckets_ratio => 4
     }
   },
   :mysql => {
