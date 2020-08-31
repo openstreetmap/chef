@@ -42,6 +42,13 @@ end
 
 package "rsync"
 
+systemd_service "rsync-override" do
+  service "rsync"
+  dropin "override"
+  exec_start "/usr/bin/rsync --daemon --no-detach --bwlimit=16384"
+  notifies :restart, "service[rsync]"
+end
+
 service "rsync" do
   action [:enable, :start]
   supports :status => true, :restart => true
