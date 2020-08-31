@@ -1,4 +1,4 @@
-default[:apache][:mpm] = "worker"
+default[:apache][:mpm] = "event"
 
 default[:apache][:timeout] = 300
 
