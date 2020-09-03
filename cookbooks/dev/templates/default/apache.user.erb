@@ -1,6 +1,6 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
-WSGIDaemonProcess <%= @user %>.dev.openstreetmap.org user=<%= @user %> inactivity-timeout=600
+WSGIDaemonProcess <%= @user %>.dev.openstreetmap.org user=<%= @user %> processes=2 threads=8 restart-interval=3600 inactivity-timeout=600 graceful-timeout=60 maximum-requests=2000
 
 <VirtualHost *:443>
 	ServerName <%= @user %>.dev.openstreetmap.org

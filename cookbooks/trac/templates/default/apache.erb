@@ -1,6 +1,6 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
-WSGIDaemonProcess <%= @name %> user=<%= @user %> group=<%= @group %> maximum-requests=5000 threads=25 inactivity-timeout=180
+WSGIDaemonProcess <%= @name %> user=<%= @user %> group=<%= @group %> processes=4 threads=8 restart-interval=3600 inactivity-timeout=180 graceful-timeout=60 maximum-requests=2000
 
 <VirtualHost *:80>
   ServerName <%= @name %>
