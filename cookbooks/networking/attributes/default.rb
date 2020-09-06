@@ -1,3 +1,4 @@
+default[:networking][:firewall][:enabled] = true
 default[:networking][:firewall][:inet] = []
 default[:networking][:firewall][:inet6] = []
 default[:networking][:firewall][:http_rate_limit] = "-"

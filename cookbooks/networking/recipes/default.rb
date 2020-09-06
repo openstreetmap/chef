@@ -357,10 +357,18 @@ notify_group "shorewall-rules" do
   notifies :create, "template[/etc/shorewall/rules]"
 end
 
-service "shorewall" do
-  action [:enable, :start]
-  supports :restart => true
-  status_command "shorewall status"
+if node[:networking][:firewall][:enabled]
+  service "shorewall" do
+    action [:enable, :start]
+    supports :restart => true
+    status_command "shorewall status"
+  end
+else
+  service "shorewall" do
+    action [:disable, :stop]
+    supports :restart => true
+    status_command "shorewall status"
+  end
 end
 
 template "/etc/logrotate.d/shorewall" do
@@ -484,10 +492,18 @@ unless node.interfaces(:family => :inet6).empty?
     notifies :create, "template[/etc/shorewall6/rules]"
   end
 
-  service "shorewall6" do
-    action [:enable, :start]
-    supports :restart => true
-    status_command "shorewall6 status"
+  if node[:networking][:firewall][:enabled]
+    service "shorewall6" do
+      action [:enable, :start]
+      supports :restart => true
+      status_command "shorewall6 status"
+    end
+  else
+    service "shorewall6" do
+      action [:disable, :stop]
+      supports :restart => true
+      status_command "shorewall6 status"
+    end
   end
 
   template "/etc/logrotate.d/shorewall6" do
