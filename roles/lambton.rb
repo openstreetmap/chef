@@ -7,9 +7,6 @@ default_attributes(
   },
   :location => "Falkenstein, Germany",
   :networking => {
-    :firewall => {
-      :enabled => false
-    },
     :interfaces => {
       :external_ipv4 => {
         :interface => "enp0s31f6",
