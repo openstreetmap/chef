@@ -2,6 +2,11 @@ name "lambton"
 description "Master role applied to lambton"
 
 default_attributes(
+  :accounts => {
+    :users => {
+      :joey => { :status => :administrator }
+    }
+  },
   :hardware => {
     :shm_size => "36g"
   },
