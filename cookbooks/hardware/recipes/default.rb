@@ -424,7 +424,7 @@ if disks.count.positive?
     mode "644"
   end
 
-  service "smartd" do
+  service "smartmontools" do
     action [:enable, :start]
     subscribes :reload, "template[/etc/smartd.conf]"
     subscribes :restart, "template[/etc/default/smartmontools]"
