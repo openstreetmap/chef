@@ -19,6 +19,7 @@
 
 include_recipe "apache"
 include_recipe "web::rails"
+include_recipe "web::cgimap"
 
 web_passwords = data_bag_item("web", "passwords")
 
