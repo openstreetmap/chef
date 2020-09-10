@@ -148,7 +148,7 @@ unknown_limit 144
     apcpdu_humidity.humidity.label Humidity
     apcpdu_humidity.humidity.draw LINE2
     apcpdu_humidity.humidity.min 0
-<% unless @frontends.empty? && @backends.empty? -%>
+<% unless @frontends.empty? -%>
 
 # Configure compound graphs for www.openstreetmap.org
 [www.openstreetmap.org]
@@ -285,77 +285,77 @@ unknown_limit 144
     memcached_multi_commands.graph_vlabel Commands per ${graph_period}
     memcached_multi_commands.graph_category memcached
     memcached_multi_commands.graph_order cmd_get cmd_set cmd_touch get_hits get_misses delete_hits delete_misses incr_hits incr_misses decr_hits decr_misses touch_hits touch_misses
-    memcached_multi_commands.cmd_get.sum <%= Chef::Munin.expand "%%name%%.openstreetmap.org:memcached_multi_commands.cmd_get", @backends %>
+    memcached_multi_commands.cmd_get.sum <%= Chef::Munin.expand "%%name%%.openstreetmap.org:memcached_multi_commands.cmd_get", @frontends %>
     memcached_multi_commands.cmd_get.label Gets
-    memcached_multi_commands.cmd_set.sum <%= Chef::Munin.expand "%%name%%.openstreetmap.org:memcached_multi_commands.cmd_set", @backends %>
+    memcached_multi_commands.cmd_set.sum <%= Chef::Munin.expand "%%name%%.openstreetmap.org:memcached_multi_commands.cmd_set", @frontends %>
     memcached_multi_commands.cmd_set.label Sets
-    memcached_multi_commands.cmd_touch.sum <%= Chef::Munin.expand "%%name%%.openstreetmap.org:memcached_multi_commands.cmd_touch", @backends %>
+    memcached_multi_commands.cmd_touch.sum <%= Chef::Munin.expand "%%name%%.openstreetmap.org:memcached_multi_commands.cmd_touch", @frontends %>
     memcached_multi_commands.cmd_touch.label Touches
-    memcached_multi_commands.get_hits.sum <%= Chef::Munin.expand "%%name%%.openstreetmap.org:memcached_multi_commands.get_hits", @backends %>
+    memcached_multi_commands.get_hits.sum <%= Chef::Munin.expand "%%name%%.openstreetmap.org:memcached_multi_commands.get_hits", @frontends %>
     memcached_multi_commands.get_hits.label Get Hits
-    memcached_multi_commands.get_misses.sum <%= Chef::Munin.expand "%%name%%.openstreetmap.org:memcached_multi_commands.get_misses", @backends %>
+    memcached_multi_commands.get_misses.sum <%= Chef::Munin.expand "%%name%%.openstreetmap.org:memcached_multi_commands.get_misses", @frontends %>
     memcached_multi_commands.get_misses.label Get Misses
-    memcached_multi_commands.delete_hits.sum <%= Chef::Munin.expand "%%name%%.openstreetmap.org:memcached_multi_commands.delete_hits", @backends %>
+    memcached_multi_commands.delete_hits.sum <%= Chef::Munin.expand "%%name%%.openstreetmap.org:memcached_multi_commands.delete_hits", @frontends %>
     memcached_multi_commands.delete_hits.label Delete Hits
-    memcached_multi_commands.delete_misses.sum <%= Chef::Munin.expand "%%name%%.openstreetmap.org:memcached_multi_commands.delete_misses", @backends %>
+    memcached_multi_commands.delete_misses.sum <%= Chef::Munin.expand "%%name%%.openstreetmap.org:memcached_multi_commands.delete_misses", @frontends %>
     memcached_multi_commands.delete_misses.label Delete Misses
-    memcached_multi_commands.incr_hits.sum <%= Chef::Munin.expand "%%name%%.openstreetmap.org:memcached_multi_commands.incr_hits", @backends %>
+    memcached_multi_commands.incr_hits.sum <%= Chef::Munin.expand "%%name%%.openstreetmap.org:memcached_multi_commands.incr_hits", @frontends %>
     memcached_multi_commands.incr_hits.label Increment Hits
-    memcached_multi_commands.incr_misses.sum <%= Chef::Munin.expand "%%name%%.openstreetmap.org:memcached_multi_commands.incr_misses", @backends %>
+    memcached_multi_commands.incr_misses.sum <%= Chef::Munin.expand "%%name%%.openstreetmap.org:memcached_multi_commands.incr_misses", @frontends %>
     memcached_multi_commands.incr_misses.label Increment Misses
-    memcached_multi_commands.decr_hits.sum <%= Chef::Munin.expand "%%name%%.openstreetmap.org:memcached_multi_commands.decr_hits", @backends %>
+    memcached_multi_commands.decr_hits.sum <%= Chef::Munin.expand "%%name%%.openstreetmap.org:memcached_multi_commands.decr_hits", @frontends %>
     memcached_multi_commands.decr_hits.label Decrement Hits
-    memcached_multi_commands.decr_misses.sum <%= Chef::Munin.expand "%%name%%.openstreetmap.org:memcached_multi_commands.decr_misses", @backends %>
+    memcached_multi_commands.decr_misses.sum <%= Chef::Munin.expand "%%name%%.openstreetmap.org:memcached_multi_commands.decr_misses", @frontends %>
     memcached_multi_commands.decr_misses.label Decrement Misses
-    memcached_multi_commands.touch_hits.sum <%= Chef::Munin.expand "%%name%%.openstreetmap.org:memcached_multi_commands.touch_hits", @backends %>
+    memcached_multi_commands.touch_hits.sum <%= Chef::Munin.expand "%%name%%.openstreetmap.org:memcached_multi_commands.touch_hits", @frontends %>
     memcached_multi_commands.touch_hits.label Touch Hits
-    memcached_multi_commands.touch_misses.sum <%= Chef::Munin.expand "%%name%%.openstreetmap.org:memcached_multi_commands.touch_misses", @backends %>
+    memcached_multi_commands.touch_misses.sum <%= Chef::Munin.expand "%%name%%.openstreetmap.org:memcached_multi_commands.touch_misses", @frontends %>
     memcached_multi_commands.touch_misses.label Touch Misses
     memcached_multi_conns.graph_title Connections
     memcached_multi_conns.graph_vlabel Connections per ${graph_period}
     memcached_multi_conns.graph_category memcached
     memcached_multi_conns.graph_order max_conns curr_conns avg_conns
-    memcached_multi_conns.curr_conns.sum <%= Chef::Munin.expand "%%name%%.openstreetmap.org:memcached_multi_conns.curr_conns", @backends %>
+    memcached_multi_conns.curr_conns.sum <%= Chef::Munin.expand "%%name%%.openstreetmap.org:memcached_multi_conns.curr_conns", @frontends %>
     memcached_multi_conns.curr_conns.label Current Connections
-    memcached_multi_conns.max_conns.sum <%= Chef::Munin.expand "%%name%%.openstreetmap.org:memcached_multi_conns.max_conns", @backends %>
+    memcached_multi_conns.max_conns.sum <%= Chef::Munin.expand "%%name%%.openstreetmap.org:memcached_multi_conns.max_conns", @frontends %>
     memcached_multi_conns.max_conns.label Max Connections
-    memcached_multi_conns.avg_conns.sum <%= Chef::Munin.expand "%%name%%.openstreetmap.org:memcached_multi_conns.avg_conns", @backends %>
+    memcached_multi_conns.avg_conns.sum <%= Chef::Munin.expand "%%name%%.openstreetmap.org:memcached_multi_conns.avg_conns", @frontends %>
     memcached_multi_conns.avg_conns.label Avg Connections
     memcached_multi_evictions.graph_title Evictions
     memcached_multi_evictions.graph_vlabel Evictions per ${graph_period}
     memcached_multi_evictions.graph_category memcached
-    memcached_multi_evictions.evictions.sum <%= Chef::Munin.expand "%%name%%.openstreetmap.org:memcached_multi_evictions.evictions", @backends %>
+    memcached_multi_evictions.evictions.sum <%= Chef::Munin.expand "%%name%%.openstreetmap.org:memcached_multi_evictions.evictions", @frontends %>
     memcached_multi_evictions.evictions.label Evictions
-    memcached_multi_evictions.evicted_nonzero.sum <%= Chef::Munin.expand "%%name%%.openstreetmap.org:memcached_multi_evictions.evicted_nonzero", @backends %>
+    memcached_multi_evictions.evicted_nonzero.sum <%= Chef::Munin.expand "%%name%%.openstreetmap.org:memcached_multi_evictions.evicted_nonzero", @frontends %>
     memcached_multi_evictions.evicted_nonzero.label Evictions prior to Expire
-    memcached_multi_evictions.reclaimed.sum <%= Chef::Munin.expand "%%name%%.openstreetmap.org:memcached_multi_evictions.reclaimed", @backends %>
+    memcached_multi_evictions.reclaimed.sum <%= Chef::Munin.expand "%%name%%.openstreetmap.org:memcached_multi_evictions.reclaimed", @frontends %>
     memcached_multi_evictions.reclaimed.label Reclaimed Items
     memcached_multi_items.graph_title Items
     memcached_multi_items.graph_vlabel Items in Memcached
     memcached_multi_items.graph_category memcached
     memcached_multi_items.graph_order curr_items total_items
-    memcached_multi_items.curr_items.sum <%= Chef::Munin.expand "%%name%%.openstreetmap.org:memcached_multi_items.curr_items", @backends %>
+    memcached_multi_items.curr_items.sum <%= Chef::Munin.expand "%%name%%.openstreetmap.org:memcached_multi_items.curr_items", @frontends %>
     memcached_multi_items.curr_items.label Current Items
-    memcached_multi_items.total_items.sum <%= Chef::Munin.expand "%%name%%.openstreetmap.org:memcached_multi_items.total_items", @backends %>
+    memcached_multi_items.total_items.sum <%= Chef::Munin.expand "%%name%%.openstreetmap.org:memcached_multi_items.total_items", @frontends %>
     memcached_multi_items.total_items.label New Items
     memcached_multi_memory.graph_title Memory Usage
     memcached_multi_memory.graph_vlabel Bytes Used
     memcached_multi_memory.graph_category memcached
     memcached_multi_memory.graph_order limit_maxbytes bytes
-    memcached_multi_memory.limit_maxbytes.sum <%= Chef::Munin.expand "%%name%%.openstreetmap.org:memcached_multi_memory.limit_maxbytes", @backends %>
+    memcached_multi_memory.limit_maxbytes.sum <%= Chef::Munin.expand "%%name%%.openstreetmap.org:memcached_multi_memory.limit_maxbytes", @frontends %>
     memcached_multi_memory.limit_maxbytes.label Maximum Bytes Allocated
-    memcached_multi_memory.bytes.sum <%= Chef::Munin.expand "%%name%%.openstreetmap.org:memcached_multi_memory.bytes", @backends %>
+    memcached_multi_memory.bytes.sum <%= Chef::Munin.expand "%%name%%.openstreetmap.org:memcached_multi_memory.bytes", @frontends %>
     memcached_multi_memory.bytes.label Current Bytes Used
     memcached_multi_bytes.graph_title Network Traffic
     memcached_multi_bytes.graph_args --base 1000
     memcached_multi_bytes.graph_vlabel bits in (-) / out (+)
     memcached_multi_bytes.graph_category memcached
     memcached_multi_bytes.graph_order bytes_read bytes_written
-    memcached_multi_bytes.bytes_read.sum <%= Chef::Munin.expand "%%name%%.openstreetmap.org:memcached_multi_bytes.bytes_read", @backends %>
+    memcached_multi_bytes.bytes_read.sum <%= Chef::Munin.expand "%%name%%.openstreetmap.org:memcached_multi_bytes.bytes_read", @frontends %>
     memcached_multi_bytes.bytes_read.label Network Traffic coming in (-)
     memcached_multi_bytes.bytes_read.cdef bytes_read,8,*
     memcached_multi_bytes.bytes_read.graph no
-    memcached_multi_bytes.bytes_written.sum <%= Chef::Munin.expand "%%name%%.openstreetmap.org:memcached_multi_bytes.bytes_written", @backends %>
+    memcached_multi_bytes.bytes_written.sum <%= Chef::Munin.expand "%%name%%.openstreetmap.org:memcached_multi_bytes.bytes_written", @frontends %>
     memcached_multi_bytes.bytes_written.negative bytes_read
     memcached_multi_bytes.bytes_written.label Traffic in (-) / out (+)
     memcached_multi_bytes.bytes_written.cdef bytes_written,8,*

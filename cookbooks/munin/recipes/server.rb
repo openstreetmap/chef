@@ -49,9 +49,6 @@ clients = search(:node, "recipes:munin\\:\\:default").sort_by(&:name)
 frontends = search(:node, "recipes:web\\:\\:frontend").reject { |n| Time.now - Time.at(n[:ohai_time]) > expiry_time }.sort_by(&:name).map do |n|
   { :name => n.name.split(".").first, :interface => n.interfaces(:role => :external).first[:interface].tr(".", "_") }
 end
-backends = search(:node, "recipes:web\\:\\:backend").reject { |n| Time.now - Time.at(n[:ohai_time]) > expiry_time }.sort_by(&:name).map do |n|
-  { :name => n.name.split(".").first }
-end
 tilecaches = search(:node, "roles:tilecache").reject { |n| Time.now - Time.at(n[:ohai_time]) > expiry_time }.sort_by(&:name).map do |n|
   { :name => n.name.split(".").first, :interface => n.interfaces(:role => :external).first[:interface].tr(".", "_") }
 end
@@ -68,9 +65,8 @@ template "/etc/munin/munin.conf" do
   group "root"
   mode "644"
   variables :expiry_time => expiry_time, :clients => clients,
-            :frontends => frontends, :backends => backends,
-            :tilecaches => tilecaches, :renderers => renderers,
-            :geocoders => geocoders
+            :frontends => frontends, :geocoders => geocoders,
+            :tilecaches => tilecaches, :renderers => renderers
 end
 
 apache_module "fcgid"
