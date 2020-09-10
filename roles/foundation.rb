@@ -2,10 +2,6 @@ name "foundation"
 description "Role applied to all OSMF servers"
 
 default_attributes(
-  :apache => {
-    :timeout => 60,
-    :keepalive => false
-  },
   :apt => {
     :sources => ["passenger"]
   },

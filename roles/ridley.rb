@@ -7,6 +7,8 @@ default_attributes(
     :event => {
       :min_spare_threads => 50,
       :max_spare_threads => 150,
+      :max_connections_per_child => 10000,
+      :async_request_worker_factor => 4,
       :listen_cores_buckets_ratio => 4
     }
   },
