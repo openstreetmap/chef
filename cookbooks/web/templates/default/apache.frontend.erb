@@ -12,7 +12,6 @@
   # Enable SSL
   #
   SSLEngine on
-  SSLProxyEngine on
   SSLCertificateFile /etc/ssl/certs/www.openstreetmap.org.pem
   SSLCertificateKeyFile /etc/ssl/private/www.openstreetmap.org.key
 
@@ -138,38 +137,24 @@
   Alias /attachments /store/rails/attachments
 
   #
-  # Preserve the host name when forwarding to the proxy
+  # Pass authentication related headers to cgimap
   #
-  ProxyPreserveHost on
+  <Location />
+    CGIPassAuth On
+  </Location>
 
   #
-  # Set a long timeout - changeset uploads can take a long time
+  # Pass supported calls to cgimap
   #
-  ProxyTimeout 3600
-
-  #
-  # Allow all proxy requests
-  #
-  <Proxy *>
-    Require all granted
-  </Proxy>
-
-  #
-  # Pass some other API calls to the backends via a load balancer
-  #
-  ProxyPassMatch ^(/api/0\.6/map(\.json|\.xml)?)$ balancer://backend$1
-  ProxyPassMatch ^(/api/0\.6/tracepoints)$ balancer://backend$1
-  ProxyPassMatch ^(/api/0\.6/amf/read)$ balancer://backend$1
-  ProxyPassMatch ^(/api/0\.6/swf/trackpoints)$ balancer://backend$1
-  ProxyPassMatch ^(/api/0\.6/changeset/[0-9]+(\.json|\.xml)?)$ balancer://backend$1
-  ProxyPassMatch ^(/api/0\.6/changeset/[0-9]+/upload(\.json|\.xml)?)$ balancer://amsterdam$1
-  ProxyPassMatch ^(/api/0\.6/changeset/[0-9]+/download(\.json|\.xml)?)$ balancer://backend$1
-  ProxyPassMatch ^(/api/0\.6/(node|way|relation)/[0-9]+(\.json|\.xml)?)$ balancer://backend$1
-  ProxyPassMatch ^(/api/0\.6/(node|way|relation)/[0-9]+/(full|history|search|ways|relations)(\.json|\.xml)?)$ balancer://backend$1
-  ProxyPassMatch ^(/api/0\.6/nodes(\.json|\.xml)?)$ balancer://backend$1
-  ProxyPassMatch ^(/api/0\.6/ways(\.json|\.xml)?)$ balancer://backend$1
-  ProxyPassMatch ^(/api/0\.6/relations(\.json|\.xml)?)$ balancer://backend$1
-  ProxyPassMatch ^(/trace/[0-9]+/data(|/|.xml))$ balancer://backend$1
+  RewriteRule ^/api/0\.6/map(\.json|\.xml)?$ fcgi://127.0.0.1:8000$0 [P]
+  RewriteCond %{REQUEST_METHOD} ^(HEAD|GET)$
+  RewriteRule ^/api/0\.6/(node|way|relation|changeset)/[0-9]+(\.json|\.xml)?$ fcgi://127.0.0.1:8000$0 [P]
+  RewriteRule ^/api/0\.6/(node|way|relation)/[0-9]+/history(\.json|\.xml)?$ fcgi://127.0.0.1:8000$0 [P]
+  RewriteRule ^/api/0\.6/(node|way|relation)/[0-9]+/relations(\.json|\.xml)?$ fcgi://127.0.0.1:8000$0 [P]
+  RewriteRule ^/api/0\.6/node/[0-9]+/ways(\.json|\.xml)?$ fcgi://127.0.0.1:8000$0 [P]
+  RewriteRule ^/api/0\.6/(way|relation)/[0-9]+/full(\.json|\.xml)?$ fcgi://127.0.0.1:8000$0 [P]
+  RewriteRule ^/api/0\.6/(nodes|ways|relations)(\.json|\.xml)?$ fcgi://127.0.0.1:8000$0 [P]
+  RewriteRule ^/api/0\.6/changeset/[0-9]+/(upload|download)(\.json|\.xml)?$ fcgi://127.0.0.1:8000$0 [P]
 
   #
   # Redirect trac and wiki requests to the right places
@@ -182,36 +167,6 @@
   #
   RedirectPermanent /images/osm_logo.png https://www.openstreetmap.org/assets/osm_logo.png
   RedirectPermanent /images/cc_button.png https://www.openstreetmap.org/assets/cc_button.png
-
-  #
-  # Define a load balancer for the local backends
-  #
-  <Proxy balancer://backend>
-    ProxySet lbmethod=bybusyness
-<% Array(node[:web][:backends]).each do |backend| -%>
-    BalancerMember https://<%= backend %> disablereuse=on
-<% end -%>
-  </Proxy>
-
-  #
-  # Define a load balancer for the Amsterdam backends
-  #
-  <Proxy balancer://amsterdam>
-    ProxySet lbmethod=bybusyness
-<% ["rails1.ams", "rails2.ams", "rails3.ams"].each do |backend| -%>
-    BalancerMember https://<%= backend %> disablereuse=on
-<% end -%>
-  </Proxy>
-
-  #
-  # Define a load balancer for the Bytemark backends
-  #
-  <Proxy balancer://bytemark>
-    ProxySet lbmethod=bybusyness
-<% ["rails4.bm", "rails5.bm"].each do |backend| -%>
-    BalancerMember https://<%= backend %> disablereuse=on
-<% end -%>
-  </Proxy>
 
   #
   # Redirect api requests made to www.osm.org to api.osm.org
