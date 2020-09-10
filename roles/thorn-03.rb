@@ -18,6 +18,5 @@ default_attributes(
 )
 
 run_list(
-  "role[equinix]",
-  "role[web-backend]"
+  "role[equinix]"
 )

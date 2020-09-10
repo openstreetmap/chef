@@ -18,6 +18,5 @@ default_attributes(
 )
 
 run_list(
-  "role[bytemark]",
-  "role[web-backend]"
+  "role[bytemark]"
 )
