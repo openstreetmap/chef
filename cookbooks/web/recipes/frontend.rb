@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-node.default[:memcached][:ip_address] = node.internal_ipaddress
+node.default[:memcached][:ip_address] = node.internal_ipaddress || "127.0.0.1"
 
 include_recipe "memcached"
 include_recipe "apache"
