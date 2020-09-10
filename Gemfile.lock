@@ -24,7 +24,7 @@ GEM
       docker-api (~> 1.33)
       lockfile (~> 2.1)
       test-kitchen (>= 1.15, < 3)
-    license-acceptance (2.0.0)
+    license-acceptance (2.1.2)
       pastel (~> 0.7)
       tomlrb (~> 1.2)
       tty-box (~> 0.6)
@@ -38,7 +38,7 @@ GEM
       mixlib-shellout
       mixlib-versioning
       thor
-    mixlib-shellout (3.1.4)
+    mixlib-shellout (3.1.6)
       chef-utils
     mixlib-versioning (1.2.12)
     multi_json (1.15.0)
@@ -103,7 +103,7 @@ GEM
       unicode-display_width (~> 1.5)
       unicode_utils (~> 1.4)
     strings-ansi (0.2.0)
-    test-kitchen (2.6.0)
+    test-kitchen (2.7.0)
       bcrypt_pbkdf (~> 1.0)
       ed25519 (~> 1.2)
       license-acceptance (>= 1.0.11, < 3.0)
