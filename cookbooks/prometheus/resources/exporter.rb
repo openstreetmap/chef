@@ -23,11 +23,14 @@ property :exporter, :kind_of => String, :name_property => true
 property :port, :kind_of => Integer, :required => [:create]
 property :listen_switch, :kind_of => String, :default => "web.listen-address"
 property :package, :kind_of => String
+property :package_options, :kind_of => String
 property :defaults, :kind_of => String
 property :service, :kind_of => String
 
 action :create do
-  package package_name
+  package package_name do
+    options new_resource.package_options
+  end
 
   template defaults_name do
     source "defaults.erb"

@@ -19,4 +19,5 @@
 
 prometheus_exporter "node" do
   port 9100
+  package_options "--no-install-recommends"
 end
