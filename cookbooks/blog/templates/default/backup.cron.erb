@@ -10,7 +10,7 @@ mkdir $T/osm-blog-$D
 echo '[mysqldump]' > $T/mysqldump.opts
 echo 'user=osm-blog-user' >> $T/mysqldump.opts
 echo 'password=<%= @passwords["osm-blog-user"] %>' >> $T/mysqldump.opts
-mysqldump --defaults-file=$T/mysqldump.opts --opt osm-blog > $T/osm-blog-$D/osm-blog.sql
+mysqldump --defaults-file=$T/mysqldump.opts --opt --no-tablespaces osm-blog > $T/osm-blog-$D/osm-blog.sql
 ln -s /srv/blog.openstreetmap.org $T/osm-blog-$D/www
 
 export RSYNC_RSH="ssh -ax"
