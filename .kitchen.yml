@@ -275,6 +275,12 @@ suites:
       postgresql:
         versions:
           - 10
+  - name: prometheus
+    run_list:
+      - recipe[prometheus::default]
+  - name: prometheus-server
+    run_list:
+      - recipe[prometheus::server]
   - name: python
     run_list:
       - recipe[python::default]

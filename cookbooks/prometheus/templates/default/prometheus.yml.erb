@@ -1,0 +1,21 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: prometheus
+    scrape_interval: 5s
+    scrape_timeout: 5s
+    static_configs:
+      - targets:
+          - localhost:9090
+<% @clients.each do |client| -%>
+  - job_name: <%= client.name %>
+    static_configs:
+      - targets:
+<% client[:prometheus][:exporters].sort.each do |_,address| -%>
+          - <%= address %>
+<% end -%>
+<% end -%>
