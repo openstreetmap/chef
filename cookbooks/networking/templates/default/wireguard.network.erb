@@ -1,0 +1,8 @@
+[Match]
+Name=wg0
+
+[Network]
+Address=<%= node[:networking][:wireguard][:address] %>/128
+
+[Route]
+Destination=fd43:e709:ea6d:1::/64

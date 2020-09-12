@@ -1,0 +1,20 @@
+[NetDev]
+Name=wg0
+Kind=wireguard
+
+[WireGuard]
+PrivateKeyFile=/var/lib/systemd/wireguard/private.key
+ListenPort=51820
+<% node[:networking][:wireguard][:peers].each do |peer| -%>
+
+[WireGuardPeer]
+PublicKey=<%= peer[:public_key] %>
+PresharedKeyFile=/var/lib/systemd/wireguard/preshared.key
+AllowedIPs=<%= Array(peer[:allowed_ips]).sort.join(",") %>
+<% if peer[:endpoint] -%>
+Endpoint=<%= peer[:endpoint] %>
+<% end -%>
+<% if node[:networking][:wireguard][:keepalive] -%>
+PersistentKeepalive=<%= node[:networking][:wireguard][:keepalive] %>
+<% end -%>
+<% end -%>

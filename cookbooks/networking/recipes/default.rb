@@ -23,6 +23,8 @@
 require "ipaddr"
 require "yaml"
 
+keys = data_bag_item("networking", "keys")
+
 package "netplan.io"
 
 netplan = {
@@ -219,6 +221,67 @@ package "cloud-init" do
   action :purge
 end
 
+if node[:networking][:wireguard][:enabled]
+  package "wireguard-tools" do
+    compile_time true
+  end
+
+  directory "/var/lib/systemd/wireguard" do
+    owner "root"
+    group "systemd-network"
+    mode "750"
+    compile_time true
+  end
+
+  file "/var/lib/systemd/wireguard/private.key" do
+    action :create_if_missing
+    owner "root"
+    group "systemd-network"
+    mode "640"
+    content %x{wg genkey}
+    compile_time true
+  end
+
+  node.default[:networking][:wireguard][:public_key] = %x{wg pubkey < /var/lib/systemd/wireguard/private.key}
+
+  file "/var/lib/systemd/wireguard/preshared.key" do
+    action :create_if_missing
+    owner "root"
+    group "systemd-network"
+    mode "640"
+    content keys["wireguard"]
+  end
+
+  template "/etc/systemd/network/wireguard.netdev" do
+    source "wireguard.netdev.erb"
+    owner "root"
+    group "root"
+    mode "644"
+  end
+
+  template "/etc/systemd/network/wireguard.network" do
+    source "wireguard.network.erb"
+    owner "root"
+    group "root"
+    mode "644"
+  end
+
+  execute "ip-link-delete-wg0" do
+    action :nothing
+    command "ip link delete wg0"
+    subscribes :run, "template[/etc/systemd/network/wireguard.netdev]"
+    only_if { ::File.exist?("/sys/class/net/wg0") }
+  end
+
+  execute "networkctl-reload" do
+    action :nothing
+    command "networkctl reload"
+    subscribes :run, "template[/etc/systemd/network/wireguard.netdev]"
+    subscribes :run, "template[/etc/systemd/network/wireguard.network]"
+    not_if { ENV.key?("TEST_KITCHEN") }
+  end
+end
+
 ohai "reload-hostname" do
   action :nothing
   plugin "hostname"
@@ -397,6 +460,17 @@ end
     proto "udp"
     dest_ports "1194:1197"
     source_ports "1194:1197"
+  end
+end
+
+if node[:networking][:wireguard][:enabled]
+  firewall_rule "accept-wireguard" do
+    action :accept
+    source "osm"
+    dest "fw"
+    proto "udp"
+    dest_ports "51820"
+    source_ports "51820"
   end
 end
 
