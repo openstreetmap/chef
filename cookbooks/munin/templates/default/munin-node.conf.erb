@@ -35,9 +35,6 @@ allow ^127\.0\.0\.1$
 <% server.interfaces do |interface| -%>
 allow ^<%= Regexp.quote(interface[:address]) %>$
 <% end -%>
-<% if server[:openvpn] -%>
-allow ^<%= Regexp.quote(server[:openvpn][:address]) %>$
-<% end -%>
 <% end -%>
 <% node[:munin][:allow].each do |address| -%>
 allow ^<%= Regexp.quote(address) %>$

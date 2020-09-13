@@ -34,44 +34,6 @@ default_attributes(
         :address => "10.0.0.3"
       }
     }
-  },
-  :openvpn => {
-    :address => "10.0.16.1",
-    :tunnels => {
-      :ic2ucl => {
-        :port => "1194",
-        :mode => "client",
-        :peer => {
-          :host => "ironbelly.openstreetmap.org",
-          :port => "1194"
-        }
-      },
-      :shenron2ucl => {
-        :port => "1195",
-        :mode => "client",
-        :peer => {
-          :host => "shenron.openstreetmap.org",
-          :port => "1194"
-        }
-      },
-      :ucl2bm => {
-        :port => "1196",
-        :mode => "client",
-        :peer => {
-          :host => "grisu.openstreetmap.org",
-          :port => "1196"
-        }
-      },
-      :firefishy => {
-        :port => "1197",
-        :mode => "client",
-        :peer => {
-          :host => "home.firefishy.com",
-          :port => "1194",
-          :address => "10.0.16.201"
-        }
-      }
-    }
   }
 )
 
@@ -87,6 +49,5 @@ run_list(
   "role[donate]",
   "recipe[hot]",
   "recipe[dmca]",
-  "recipe[dhcpd]",
-  "recipe[openvpn]"
+  "recipe[dhcpd]"
 )

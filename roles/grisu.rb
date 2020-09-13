@@ -30,32 +30,6 @@ default_attributes(
       }
     }
   },
-  :openvpn => {
-    :address => "10.0.16.5",
-    :tunnels => {
-      :ic2bm => {
-        :port => "1194",
-        :mode => "server",
-        :peer => {
-          :host => "ironbelly.openstreetmap.org"
-        }
-      },
-      :aws2bm => {
-        :port => "1195",
-        :mode => "server",
-        :peer => {
-          :host => "fafnir.openstreetmap.org"
-        }
-      },
-      :ucl2bm => {
-        :port => "1196",
-        :mode => "server",
-        :peer => {
-          :host => "ridley.openstreetmap.org"
-        }
-      }
-    }
-  },
   :planet => {
     :replication => "disabled"
   }
@@ -68,6 +42,5 @@ run_list(
   "role[web-storage]",
   "role[backup]",
   "role[planet]",
-  # "role[planetdump]",
-  "recipe[openvpn]"
+  # "role[planetdump]"
 )

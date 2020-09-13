@@ -132,48 +132,12 @@ node[:networking][:interfaces].each do |name, interface|
           "scope" => "link"
         )
       end
-
-      if interface[:role] == "internal" && interface[:gateway] != interface[:address]
-        search(:node, "networking_interfaces*address:#{interface[:gateway]}") do |gateway|
-          next unless gateway[:openvpn]
-
-          gateway[:openvpn][:tunnels].each_value do |tunnel|
-            if tunnel[:peer][:address]
-              deviceplan["routes"].push(
-                "to" => "#{tunnel[:peer][:address]}/32",
-                "via" => interface[:gateway]
-              )
-
-              route tunnel[:peer][:address] do
-                netmask "255.255.255.255"
-                gateway interface[:gateway]
-                device interface[:interface]
-              end
-            end
-
-            next unless tunnel[:peer][:networks]
-
-            tunnel[:peer][:networks].each do |network|
-              prefix = IPAddr.new("#{network[:address]}/#{network[:netmask]}").prefix
-
-              deviceplan["routes"].push(
-                "to" => "#{network[:address]}/#{prefix}",
-                "via" => interface[:gateway]
-              )
-
-              route network[:address] do
-                netmask network[:netmask]
-                gateway interface[:gateway]
-                device interface[:interface]
-              end
-            end
-          end
-        end
-      end
     end
 
     if interface[:routes]
       interface[:routes].each do |to, parameters|
+        next if parameters[:via] == interface[:address]
+
         route = {
           "to" => to
         }
@@ -250,6 +214,23 @@ if node[:networking][:wireguard][:enabled]
     group "systemd-network"
     mode "640"
     content keys["wireguard"]
+  end
+
+  if node[:roles].include?("gateway")
+    search(:node, "roles:gateway") do |gateway|
+      next if gateway.name == node.name
+      next unless gateway[:networking][:wireguard] && gateway[:networking][:wireguard][:enabled]
+
+      allowed_ips = gateway.interfaces(:role => :internal).map do |interface|
+        "#{interface[:network]}/#{interface[:metric]}"
+      end
+
+      node.default[:networking][:wireguard][:peers] << {
+        :public_key => gateway[:networking][:wireguard][:public_key],
+        :allowed_ips => allowed_ips,
+        :endpoint => "#{gateway.name}:51820"
+      }
+    end
   end
 
   template "/etc/systemd/network/wireguard.netdev" do
@@ -450,17 +431,6 @@ firewall_rule "limit-icmp-echo" do
   proto "icmp"
   dest_ports "echo-request"
   rate_limit "s:1/sec:5"
-end
-
-%w[ucl ams bm].each do |zone|
-  firewall_rule "accept-openvpn-#{zone}" do
-    action :accept
-    source zone
-    dest "fw"
-    proto "udp"
-    dest_ports "1194:1197"
-    source_ports "1194:1197"
-  end
 end
 
 if node[:networking][:wireguard][:enabled]
