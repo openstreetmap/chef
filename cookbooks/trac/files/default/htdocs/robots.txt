@@ -1,5 +1,3 @@
-#Trac really does not handle well being scraped.
+# This trac is no more. It has ceased to be.
 User-agent: *
-Disallow: /changeset
-Disallow: /changeset/
-Disallow: /wiki/
+Disallow: /
