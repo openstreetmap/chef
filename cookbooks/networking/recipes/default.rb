@@ -251,19 +251,35 @@ if node[:networking][:wireguard][:enabled]
     mode "644"
   end
 
-  execute "ip-link-delete-wg0" do
-    action :nothing
-    command "ip link delete wg0"
-    subscribes :run, "template[/etc/systemd/network/wireguard.netdev]"
-    only_if { ::File.exist?("/sys/class/net/wg0") }
-  end
+  if node[:lsb][:release].to_f < 20.04
+    execute "ip-link-delete-wg0" do
+      action :nothing
+      command "ip link delete wg0"
+      subscribes :run, "template[/etc/systemd/network/wireguard.netdev]"
+      only_if { ::File.exist?("/sys/class/net/wg0") }
+    end
 
-  execute "networkctl-reload" do
-    action :nothing
-    command "networkctl reload"
-    subscribes :run, "template[/etc/systemd/network/wireguard.netdev]"
-    subscribes :run, "template[/etc/systemd/network/wireguard.network]"
-    not_if { ENV.key?("TEST_KITCHEN") }
+    service "systemd-networkd" do
+      action :nothing
+      subscribes :restart, "template[/etc/systemd/network/wireguard.netdev]"
+      subscribes :restart, "template[/etc/systemd/network/wireguard.network]"
+      not_if { ENV.key?("TEST_KITCHEN") }
+    end
+  else
+    execute "networkctl-delete-wg0" do
+      action :nothing
+      command "networkctl delete wg0"
+      subscribes :run, "template[/etc/systemd/network/wireguard.netdev]"
+      only_if { ::File.exist?("/sys/class/net/wg0") }
+    end
+
+    execute "networkctl-reload" do
+      action :nothing
+      command "networkctl reload"
+      subscribes :run, "template[/etc/systemd/network/wireguard.netdev]"
+      subscribes :run, "template[/etc/systemd/network/wireguard.network]"
+      not_if { ENV.key?("TEST_KITCHEN") }
+    end
   end
 end
 
