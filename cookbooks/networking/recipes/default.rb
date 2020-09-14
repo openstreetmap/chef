@@ -186,6 +186,10 @@ package "cloud-init" do
 end
 
 if node[:networking][:wireguard][:enabled]
+  wireguard_id = persistent_token("networking", "wireguard")
+
+  node.default[:networking][:wireguard][:address] = "fd43:e709:ea6d:1:#{wireguard_id[0, 4]}:#{wireguard_id[4, 4]}:#{wireguard_id[8, 4]}:#{wireguard_id[12, 4]}"
+
   package "wireguard-tools" do
     compile_time true
   end
