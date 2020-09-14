@@ -6,3 +6,12 @@ Address=<%= node[:networking][:wireguard][:address] %>/128
 
 [Route]
 Destination=fd43:e709:ea6d:1::/64
+<% node[:networking][:wireguard][:peers].each do |peer| -%>
+<% Array(peer[:allowed_ips]).sort.each do |ip| -%>
+<% unless ip =~ /^fd43:e709:ea6d:1::/ -%>
+
+[Route]
+Destination=<%= ip %>
+<% end -%>
+<% end -%>
+<% end -%>
