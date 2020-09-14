@@ -37,6 +37,8 @@ netplan = {
   }
 }
 
+node.rm_normal(:networking)
+
 node[:networking][:interfaces].each do |name, interface|
   if interface[:interface]
     if interface[:role] && (role = node[:networking][:roles][interface[:role]])
