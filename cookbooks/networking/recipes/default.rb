@@ -202,11 +202,11 @@ if node[:networking][:wireguard][:enabled]
     owner "root"
     group "systemd-network"
     mode "640"
-    content %x{wg genkey}
+    content %x(wg genkey)
     compile_time true
   end
 
-  node.default[:networking][:wireguard][:public_key] = %x{wg pubkey < /var/lib/systemd/wireguard/private.key}
+  node.default[:networking][:wireguard][:public_key] = %x(wg pubkey < /var/lib/systemd/wireguard/private.key)
 
   file "/var/lib/systemd/wireguard/preshared.key" do
     action :create_if_missing

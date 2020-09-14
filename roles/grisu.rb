@@ -41,6 +41,6 @@ run_list(
   "role[gateway]",
   "role[web-storage]",
   "role[backup]",
-  "role[planet]",
+  "role[planet]"
   # "role[planetdump]"
 )

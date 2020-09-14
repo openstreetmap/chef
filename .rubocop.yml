@@ -15,6 +15,9 @@ Layout/HeredocIndentation:
 Naming/MethodParameterName:
   Enabled: false
 
+Style/CommandLiteral:
+  EnforcedStyle: percent_x
+
 Style/HashSyntax:
   EnforcedStyle: hash_rockets
 

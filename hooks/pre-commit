@@ -12,7 +12,7 @@ if IO.popen(["git", "ls-files", "--unmerged"]).read.empty?
   end.compact
 
   ruby_files = files.select do |file|
-    file =~ /\.rb$/ || (file !~ /\.erb$/ && `file --brief --mime-type #{file}` == "text/x-ruby\n")
+    file =~ /\.rb$/ || (file !~ /\.erb$/ && %x(file --brief --mime-type #{file}) == "text/x-ruby\n")
   end
 
   ok &&= system("bundle", "exec", "rubocop", *ruby_files) unless ruby_files.empty?
