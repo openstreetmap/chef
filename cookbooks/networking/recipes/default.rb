@@ -240,8 +240,8 @@ if node[:networking][:wireguard][:enabled]
   template "/etc/systemd/network/wireguard.netdev" do
     source "wireguard.netdev.erb"
     owner "root"
-    group "root"
-    mode "644"
+    group "systemd-network"
+    mode "640"
   end
 
   template "/etc/systemd/network/wireguard.network" do
