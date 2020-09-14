@@ -55,7 +55,7 @@ WSGIDaemonProcess <%= @name %> user=<%= @user %> group=<%= @group %> processes=4
   DefineExternalAuth osm pipe /usr/local/bin/trac-authenticate
 
   # Disable /timeline for now
-  RedirectMatch 410 /timeline ^/timeline(.*)$
+  RedirectMatch 410 ^/timeline(.*)$
 
   <Location /login>
     AuthType Basic
