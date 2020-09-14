@@ -226,7 +226,7 @@ if node[:networking][:wireguard][:enabled]
       next unless gateway[:networking][:wireguard] && gateway[:networking][:wireguard][:enabled]
 
       allowed_ips = gateway.interfaces(:role => :internal).map do |interface|
-        "#{interface[:network]}/#{interface[:metric]}"
+        "#{interface[:network]}/#{interface[:prefix]}"
       end
 
       node.default[:networking][:wireguard][:peers] << {
