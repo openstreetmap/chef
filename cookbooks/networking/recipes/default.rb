@@ -210,7 +210,7 @@ if node[:networking][:wireguard][:enabled]
     compile_time true
   end
 
-  node.default[:networking][:wireguard][:public_key] = %x(wg pubkey < /var/lib/systemd/wireguard/private.key)
+  node.default[:networking][:wireguard][:public_key] = %x(wg pubkey < /var/lib/systemd/wireguard/private.key).chomp
 
   file "/var/lib/systemd/wireguard/preshared.key" do
     action :create_if_missing
