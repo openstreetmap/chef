@@ -462,7 +462,7 @@ end
 if node[:networking][:wireguard][:enabled]
   firewall_rule "accept-wireguard" do
     action :accept
-    source "osm"
+    source "net"
     dest "fw"
     proto "udp"
     dest_ports "51820"
