@@ -21,12 +21,19 @@ package "prometheus"
 
 clients = search(:node, "recipes:prometheus\\:\\:default").sort_by(&:name)
 
+prometheus_jobs = clients.each_with_object({}) do |client, jobs|
+  client[:prometheus][:exporters].each do |name, address|
+    jobs[name] ||= []
+    jobs[name] << address
+  end
+end
+
 template "/etc/prometheus/prometheus.yml" do
   source "prometheus.yml.erb"
   owner "root"
   group "root"
   mode "644"
-  variables :clients => clients
+  variables :jobs => prometheus_jobs
 end
 
 service "prometheus" do

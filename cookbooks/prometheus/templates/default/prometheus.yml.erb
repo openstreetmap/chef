@@ -11,11 +11,11 @@ scrape_configs:
     static_configs:
       - targets:
           - localhost:9090
-<% @clients.each do |client| -%>
-  - job_name: <%= client.name %>
+<% @jobs.sort.each do |name, addresses| -%>
+  - job_name: <%= name %>
     static_configs:
       - targets:
-<% client[:prometheus][:exporters].sort.each do |_,address| -%>
+<% addresses.sort.each do |address| -%>
           - <%= address %>
 <% end -%>
 <% end -%>
