@@ -174,6 +174,14 @@ apt_repository "docker" do
   key "https://download.docker.com/linux/ubuntu/gpg"
 end
 
+apt_repository "grafana" do
+  action repository_actions["grafana"]
+  uri "https://packages.grafana.com/enterprise/deb"
+  distribution "stable"
+  components ["main"]
+  key "https://packages.grafana.com/gpg.key"
+end
+
 package "unattended-upgrades"
 
 if Dir.exist?("/usr/share/unattended-upgrades")

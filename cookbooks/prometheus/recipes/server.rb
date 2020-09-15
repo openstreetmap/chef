@@ -17,6 +17,11 @@
 # limitations under the License.
 #
 
+include_recipe "apache"
+include_recipe "apt"
+
+passwords = data_bag_item("prometheus", "passwords")
+
 package "prometheus"
 
 clients = search(:node, "recipes:prometheus\\:\\:default").sort_by(&:name)
@@ -39,4 +44,30 @@ end
 service "prometheus" do
   action [:enable, :start]
   subscribes :reload, "template[/etc/prometheus/prometheus.yml]"
+end
+
+package "grafana-enterprise"
+
+template "/etc/grafana/grafana.ini" do
+  source "grafana.ini.erb"
+  owner "root"
+  group "grafana"
+  mode "640"
+  variables :passwords => passwords
+end
+
+service "grafana-server" do
+  action [:enable, :start]
+end
+
+apache_module "alias"
+apache_module "proxy_http"
+
+ssl_certificate "prometheus.openstreetmap.org" do
+  domains ["prometheus.openstreetmap.org", "prometheus.osm.org"]
+  notifies :reload, "service[apache2]"
+end
+
+apache_site "prometheus.openstreetmap.org" do
+  template "apache.erb"
 end

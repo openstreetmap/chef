@@ -6,4 +6,6 @@ description       "Installs and configures prometheus"
 
 version           "1.0.0"
 supports          "ubuntu"
+depends           "apache"
+depends           "apt"
 depends           "networking"

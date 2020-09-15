@@ -1,0 +1,28 @@
+# DO NOT EDIT - This file is being maintained by Prometheus
+
+<VirtualHost *:80>
+	ServerName prometheus.openstreetmap.org
+	ServerAlias prometheus.osm.org
+	ServerAdmin webmaster@openstreetmap.org
+
+	CustomLog /var/log/apache2/prometheus.openstreetmap.org-access.log combined
+	ErrorLog /var/log/apache2/prometheus.openstreetmap.org-error.log
+
+	RedirectPermanent /.well-known/acme-challenge/ http://acme.openstreetmap.org/.well-known/acme-challenge/
+	Redirect permanent / https://prometheus.openstreetmap.org/
+</VirtualHost>
+
+<VirtualHost *:443>
+	ServerName prometheus.openstreetmap.org
+	ServerAdmin webmaster@openstreetmap.org
+
+	CustomLog /var/log/apache2/prometheus.openstreetmap.org-access.log combined
+	ErrorLog /var/log/apache2/prometheus.openstreetmap.org-error.log
+
+	SSLEngine on
+	SSLCertificateFile /etc/ssl/certs/prometheus.openstreetmap.org.pem
+	SSLCertificateKeyFile /etc/ssl/private/prometheus.openstreetmap.org.key
+
+	ProxyPass / http://localhost:3000/
+	ProxyPreserveHost on
+</VirtualHost>
