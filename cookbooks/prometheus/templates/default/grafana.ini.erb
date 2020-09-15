@@ -1,8 +1,17 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
+instance_name = prometheus.openstreetmap.org
+
 [server]
 root_url = https://prometheus.openstreetmap.org/
 
 [security]
 admin_user = admin
 admin_password = <%= @passwords[:grafana_admin] %>
+
+[smtp]
+enabled = true
+host = localhost:25
+skip_verify = true
+from_address = admins@openstreetmap.org
+from_name = Prometheus

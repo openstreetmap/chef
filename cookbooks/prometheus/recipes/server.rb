@@ -58,6 +58,7 @@ end
 
 service "grafana-server" do
   action [:enable, :start]
+  subscribes :restart, "template[/etc/grafana/grafana.ini]"
 end
 
 apache_module "alias"
