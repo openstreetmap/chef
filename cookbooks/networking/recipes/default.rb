@@ -235,6 +235,12 @@ if node[:networking][:wireguard][:enabled]
         :endpoint => "#{gateway.name}:51820"
       }
     end
+
+    node.default[:networking][:wireguard][:peers] << {
+      :public_key => "7Oj9ufNlgidyH/xDc+aHQKMjJPqTmD/ab13agMh6AxA=",
+      :allowed_ips => "10.0.16.1/32",
+      :endpoint => "gate.compton.nu:51820"
+    }
   end
 
   template "/etc/systemd/network/wireguard.netdev" do
