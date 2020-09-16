@@ -77,7 +77,11 @@ action_class do
   end
 
   def listen_address
-    "#{node[:prometheus][:address]}:#{new_resource.port}"
+    if node[:prometheus][:mode] == "wireguard"
+      "[#{node[:prometheus][:address]}]:#{new_resource.port}"
+    else
+      "#{node[:prometheus][:address]}:#{new_resource.port}"
+    end
   end
 
   def service_name

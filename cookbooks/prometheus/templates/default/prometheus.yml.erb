@@ -16,7 +16,7 @@ scrape_configs:
     static_configs:
 <% targets.each do |target| -%>
       - targets:
-          - <%= target[:address] %>
+          - "<%= target[:address] %>"
         labels:
           instance: <%= target[:name].split(".").first %>
 <% end -%>
