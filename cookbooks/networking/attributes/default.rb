@@ -7,6 +7,7 @@ default[:networking][:firewall][:log] = true
 default[:networking][:firewall][:mark] = true
 default[:networking][:firewall][:raw] = true
 default[:networking][:firewall][:mangle] = true
+default[:networking][:roles] = {}
 default[:networking][:interfaces] = {}
 default[:networking][:nameservers] = []
 default[:networking][:search] = []

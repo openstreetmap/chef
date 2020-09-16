@@ -13,5 +13,5 @@ describe service("prometheus-node-exporter") do
 end
 
 describe port(9100) do
-  it { should be_listening.with("tcp6") }
+  it { should be_listening.with("tcp") }
 end

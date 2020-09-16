@@ -278,6 +278,15 @@ suites:
   - name: prometheus
     run_list:
       - recipe[prometheus::default]
+    attributes:
+      networking:
+        interfaces:
+          test:
+            interface: eth0
+            role: internal
+            address: 172.18.0.2
+            prefix: 16
+            gateway: 172.18.0.1
   - name: prometheus-server
     run_list:
       - recipe[prometheus::server]
