@@ -2,9 +2,6 @@ name "gateway"
 description "Role applied to all network gateways"
 
 default_attributes(
-  :networking => {
-    :wireguard => { :enabled => true }
-  },
   :sysctl => {
     :network_forwarding => {
       :comment => "Enable forwarding",

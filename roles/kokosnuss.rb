@@ -15,6 +15,9 @@ default_attributes(
         :prefix => "32",
         :gateway => "85.214.255.86"
       }
+    },
+    :wireguard => {
+      :enabled => false
     }
   },
   :squid => {

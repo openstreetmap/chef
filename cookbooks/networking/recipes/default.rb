@@ -460,9 +460,15 @@ firewall_rule "limit-icmp-echo" do
 end
 
 if node[:networking][:wireguard][:enabled]
+  wireguard_source = if node[:roles].include?("gateway")
+                       "net"
+                     else
+                       "osm"
+                     end
+
   firewall_rule "accept-wireguard" do
     action :accept
-    source "net"
+    source wireguard_source
     dest "fw"
     proto "udp"
     dest_ports "51820"
