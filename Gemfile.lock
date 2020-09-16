@@ -103,7 +103,7 @@ GEM
       unicode-display_width (~> 1.5)
       unicode_utils (~> 1.4)
     strings-ansi (0.2.0)
-    test-kitchen (2.7.0)
+    test-kitchen (2.7.1)
       bcrypt_pbkdf (~> 1.0)
       ed25519 (~> 1.2)
       license-acceptance (>= 1.0.11, < 3.0)
