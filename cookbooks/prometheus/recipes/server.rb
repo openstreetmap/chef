@@ -19,14 +19,23 @@
 
 include_recipe "apache"
 include_recipe "apt"
+include_recipe "networking"
 
 passwords = data_bag_item("prometheus", "passwords")
 
 package "prometheus"
 
-clients = search(:node, "recipes:prometheus\\:\\:default").sort_by(&:name)
+jobs = {}
 
-prometheus_jobs = clients.sort_by(&:name).each_with_object({}) do |client, jobs|
+search(:node, "recipes:prometheus\\:\\:default").sort_by(&:name).each do |client|
+  if client[:prometheus][:mode] == "wireguard"
+    node.default[:networking][:wireguard][:peers] << {
+      :public_key => client[:networking][:wireguard][:public_key],
+      :allowed_ips => client[:networking][:wireguard][:address],
+      :endpoint => "#{client.name}:51820"
+    }
+  end
+
   client[:prometheus][:exporters].each do |name, address|
     jobs[name] ||= []
     jobs[name] << { :address => address, :name => client.name }
@@ -38,7 +47,7 @@ template "/etc/prometheus/prometheus.yml" do
   owner "root"
   group "root"
   mode "644"
-  variables :jobs => prometheus_jobs
+  variables :jobs => jobs
 end
 
 service "prometheus" do

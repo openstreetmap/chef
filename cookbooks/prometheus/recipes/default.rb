@@ -17,6 +17,27 @@
 # limitations under the License.
 #
 
+include_recipe "networking"
+
+if node.internal_ipaddress
+  node.default[:prometheus][:mode] = "internal"
+  node.default[:prometheus][:address] = node.internal_ipaddress
+elsif node[:networking][:wireguard][:enabled]
+  node.default[:prometheus][:mode] = "wireguard"
+  node.default[:prometheus][:address] = node[:networking][:wireguard][:address]
+
+  search(:node, "roles:prometheus") do |server|
+    node.default[:networking][:wireguard][:peers] << {
+      :public_key => server[:networking][:wireguard][:public_key],
+      :allowed_ips => server[:networking][:wireguard][:address],
+      :endpoint => "#{server.name}:51820"
+    }
+  end
+else
+  node.default[:prometheus][:mode] = "external"
+  node.default[:prometheus][:address] = node.external_ipaddress(:family => :inet)
+end
+
 prometheus_exporter "node" do
   port 9100
   package_options "--no-install-recommends"

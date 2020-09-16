@@ -45,6 +45,15 @@ action :create do
     subscribes :restart, "template[#{defaults_name}]"
   end
 
+  firewall_rule "accept-prometheus-#{new_resource.name}" do
+    action :accept
+    source "osm"
+    dest "fw"
+    proto "tcp:syn"
+    dest_ports new_resource.port
+    only_if { node[:prometheus][:mode] == "external" }
+  end
+
   node.default[:prometheus][:exporters][new_resource.exporter] = listen_address
 end
 
@@ -68,7 +77,7 @@ action_class do
   end
 
   def listen_address
-    "#{node.internal_ipaddress}:#{new_resource.port}"
+    "#{node[:prometheus][:address]}:#{new_resource.port}"
   end
 
   def service_name
