@@ -11,7 +11,8 @@ default_attributes(
   :location => "Curitiba, Brazil",
   :timezone => "America/Sao_Paulo",
   :networking => {
-    :nameservers => ["200.17.202.3", "200.236.31.1"]
+    :nameservers => ["200.17.202.3", "200.236.31.1"],
+    :wireguard => { :keepalive => 180 }
   }
 )
 

@@ -6,7 +6,8 @@ default_attributes(
   :location => "Moscow, Russia",
   :timezone => "Europe/Moscow",
   :networking => {
-    :nameservers => ["8.8.8.8", "8.8.4.4"]
+    :nameservers => ["8.8.8.8", "8.8.4.4"],
+    :wireguard => { :keepalive => 180 }
   }
 )
 
