@@ -12,6 +12,9 @@ default_attributes(
   },
   :location => "Osijek, Croatia",
   :networking => {
+    :firewall => {
+      :enabled => false
+    },
     :interfaces => {
       :external_ipv4 => {
         :interface => "eth0",
