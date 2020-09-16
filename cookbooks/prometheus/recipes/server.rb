@@ -26,10 +26,10 @@ package "prometheus"
 
 clients = search(:node, "recipes:prometheus\\:\\:default").sort_by(&:name)
 
-prometheus_jobs = clients.each_with_object({}) do |client, jobs|
+prometheus_jobs = clients.sort_by(&:name).each_with_object({}) do |client, jobs|
   client[:prometheus][:exporters].each do |name, address|
     jobs[name] ||= []
-    jobs[name] << address
+    jobs[name] << { :address => address, :name => client.name }
   end
 end
 
