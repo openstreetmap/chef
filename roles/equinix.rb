@@ -50,6 +50,5 @@ override_attributes(
 )
 
 run_list(
-  "role[nl]",
-  "recipe[prometheus]"
+  "role[nl]"
 )

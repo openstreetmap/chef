@@ -39,6 +39,5 @@ override_attributes(
 )
 
 run_list(
-  "role[gb]",
-  "recipe[prometheus]"
+  "role[gb]"
 )
