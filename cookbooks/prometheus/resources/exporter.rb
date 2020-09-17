@@ -33,6 +33,7 @@ action :create do
   end
 
   template defaults_name do
+    cookbook "prometheus"
     source "defaults.erb"
     owner "root"
     group "root"

@@ -18,6 +18,7 @@
 #
 
 include_recipe "munin"
+include_recipe "prometheus"
 include_recipe "ssl"
 
 package %w[
@@ -94,3 +95,8 @@ end
 munin_plugin "apache_accesses"
 munin_plugin "apache_processes"
 munin_plugin "apache_volume"
+
+prometheus_exporter "apache" do
+  port 9117
+  listen_switch "telemetry.address"
+end
