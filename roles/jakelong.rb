@@ -23,9 +23,6 @@ default_attributes(
         :prefix => "64",
         :gateway => "2605:2700:0:17::1"
       }
-    },
-    :wireguard => {
-      :enabled => false
     }
   },
   :squid => {
