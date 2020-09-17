@@ -22,6 +22,7 @@ default_action :create
 property :exporter, :kind_of => String, :name_property => true
 property :port, :kind_of => Integer, :required => [:create]
 property :listen_switch, :kind_of => String, :default => "web.listen-address"
+property :exporter_options, :kind_of => [String, Array]
 property :package, :kind_of => String
 property :package_options, :kind_of => String
 property :defaults, :kind_of => String
