@@ -403,7 +403,7 @@ if disks.count.positive?
   package "smartmontools"
 
   template "/etc/cron.daily/update-smart-drivedb" do
-    source "expire.cron.erb"
+    source "update-smart-drivedb.erb"
     owner "root"
     group "root"
     mode "755"
