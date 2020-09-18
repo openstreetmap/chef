@@ -236,6 +236,22 @@ if node[:networking][:wireguard][:enabled]
       }
     end
 
+    search(:node, "roles:mail") do |server|
+      allowed_ips = server.interfaces(:role => :internal).map do |interface|
+        "#{interface[:network]}/#{interface[:prefix]}"
+      end
+
+      if server[:networking][:private_address]
+        allowed_ips << "#{server[:networking][:private_address]}/32"
+      end
+
+      node.default[:networking][:wireguard][:peers] << {
+        :public_key => server[:networking][:wireguard][:public_key],
+        :allowed_ips => allowed_ips,
+        :endpoint => "#{server.name}:51820"
+      }
+    end
+
     node.default[:networking][:wireguard][:peers] << {
       :public_key => "7Oj9ufNlgidyH/xDc+aHQKMjJPqTmD/ab13agMh6AxA=",
       :allowed_ips => "10.0.16.1/32",

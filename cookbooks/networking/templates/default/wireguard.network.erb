@@ -5,6 +5,9 @@ Name=wg0
 <% if node.internal_ipaddress -%>
 Address=<%= node.internal_ipaddress %>/32
 <% end -%>
+<% if node[:networking][:private_address] -%>
+Address=<%= node[:networking][:private_address] %>/32
+<% end -%>
 Address=<%= node[:networking][:wireguard][:address] %>/128
 
 [Route]
