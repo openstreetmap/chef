@@ -41,5 +41,5 @@ end
 prometheus_exporter "node" do
   port 9100
   package_options "--no-install-recommends"
-  exporter_options "--collector.ntp"
+  exporter_options "--collector.ntp --collector.processes --collector.interrupts"
 end
