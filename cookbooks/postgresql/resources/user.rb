@@ -24,10 +24,10 @@ default_action :create
 property :user, :kind_of => String, :name_property => true
 property :cluster, :kind_of => String, :required => true
 property :password, :kind_of => String
-property :superuser, :default => false
-property :createdb, :default => false
-property :createrole, :default => false
-property :replication, :default => false
+property :superuser, :kind_of => [TrueClass, FalseClass], :default => false
+property :createdb, :kind_of => [TrueClass, FalseClass], :default => false
+property :createrole, :kind_of => [TrueClass, FalseClass], :default => false
+property :replication, :kind_of => [TrueClass, FalseClass], :default => false
 
 action :create do
   password = new_resource.password ? "ENCRYPTED PASSWORD '#{new_resource.password.shellescape}'" : ""

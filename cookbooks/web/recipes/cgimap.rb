@@ -27,11 +27,7 @@ package "openstreetmap-cgimap-bin" do
   action :upgrade
 end
 
-database_host = if node[:web][:readonly_database_host]
-                  node[:web][:readonly_database_host]
-                else
-                  node[:web][:database_host]
-                end
+database_host = node[:web][:readonly_database_host] || node[:web][:database_host]
 
 memcached_servers = node[:web][:memcached_servers] || []
 
