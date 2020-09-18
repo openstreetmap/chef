@@ -402,6 +402,13 @@ disks = disks.compact.uniq
 if disks.count.positive?
   package "smartmontools"
 
+  template "/etc/cron.daily/update-smart-drivedb" do
+    source "expire.cron.erb"
+    owner "root"
+    group "root"
+    mode "755"
+  end
+
   template "/usr/local/bin/smartd-mailer" do
     source "smartd-mailer.erb"
     owner "root"

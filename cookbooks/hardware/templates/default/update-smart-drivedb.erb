@@ -1,0 +1,10 @@
+#/bin/bash
+# DO NOT EDIT - This file is being maintained by Chef
+
+set -eu
+
+if [ -x /usr/sbin/update-smart-drivedb ]; then
+  /usr/sbin/update-smart-drivedb -u github
+fi
+
+exit 0
