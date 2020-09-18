@@ -1,6 +1,6 @@
 # Basic Dockerfile to run cookstyle linting
-# run: docker build -t test .
-FROM ruby:2.6-alpine as build
+# run: docker build -t chef-test .
+FROM ruby:2.7-alpine as build
 
 # Add Gem build requirements
 RUN apk add --no-cache build-base
