@@ -110,7 +110,7 @@ action_class do
   end
 
   def executable_options
-    "--#{new_resource.listen_switch}=#{listen_address} #{Array(new_resource.options).join(" ")}"
+    "--#{new_resource.listen_switch}=#{listen_address} #{Array(new_resource.options).join(' ')}"
   end
 
   def listen_address
