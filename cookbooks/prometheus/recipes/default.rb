@@ -38,8 +38,14 @@ else
   node.default[:prometheus][:address] = node.external_ipaddress(:family => :inet)
 end
 
+directory "/opt/prometheus" do
+  owner "root"
+  group "root"
+  mode "755"
+end
+
 prometheus_exporter "node" do
+  version "1.0.1"
   port 9100
-  package_options "--no-install-recommends"
-  exporter_options "--collector.ntp --collector.processes --collector.interrupts"
+  options "--collector.ntp --collector.processes --collector.interrupts"
 end

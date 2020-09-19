@@ -20,34 +20,53 @@
 default_action :create
 
 property :exporter, :kind_of => String, :name_property => true
+property :github_owner, :kind_of => String, :default => "prometheus"
+property :github_project, :kind_of => String
+property :version, :kind_of => String, :required => [:create]
 property :port, :kind_of => Integer, :required => [:create]
 property :listen_switch, :kind_of => String, :default => "web.listen-address"
-property :exporter_options, :kind_of => [String, Array]
-property :package, :kind_of => String
-property :package_options, :kind_of => String
-property :defaults, :kind_of => String
-property :service, :kind_of => String
+property :options, :kind_of => [String, Array]
 
 action :create do
-  package package_name do
-    options new_resource.package_options
+  package "prometheus-#{new_resource.exporter}-exporter" do
+    action :purge
   end
 
-  template defaults_name do
-    cookbook "prometheus"
-    source "defaults.erb"
+  remote_file archive_file do
+    action :create_if_missing
+    source archive_url
     owner "root"
     group "root"
     mode "644"
-    variables new_resource.to_hash.merge(:listen_address => listen_address)
+    backup false
+  end
+
+  execute archive_file do
+    action :nothing
+    command "tar -xf #{archive_file}"
+    cwd "/opt/prometheus"
+    user "root"
+    group "root"
+    subscribes :run, "remote_file[#{archive_file}]"
+  end
+
+  systemd_service service_name do
+    description "Prometheus #{new_resource.exporter} exporter"
+    type "simple"
+    user "root"
+    exec_start "#{executable_path} #{executable_options}"
+    private_tmp true
+    protect_system "strict"
+    protect_home true
+    no_new_privileges true
   end
 
   service service_name do
     action [:enable, :start]
-    subscribes :restart, "template[#{defaults_name}]"
+    subscribes :restart, "systemd_service[#{service_name}]"
   end
 
-  firewall_rule "accept-prometheus-#{new_resource.name}" do
+  firewall_rule "accept-prometheus-#{new_resource.exporter}" do
     action :accept
     source "osm"
     dest "fw"
@@ -70,12 +89,28 @@ action :delete do
 end
 
 action_class do
-  def package_name
-    new_resource.package || "prometheus-#{new_resource.exporter}-exporter"
+  def github_project
+    new_resource.github_project || "#{new_resource.exporter}_exporter"
   end
 
-  def defaults_name
-    new_resource.defaults || "/etc/default/prometheus-#{new_resource.exporter}-exporter"
+  def archive_url
+    "https://github.com/#{new_resource.github_owner}/#{github_project}/releases/download/v#{new_resource.version}/#{github_project}-#{new_resource.version}.linux-amd64.tar.gz"
+  end
+
+  def archive_file
+    "#{Chef::Config[:file_cache_path]}/prometheus-#{new_resource.exporter}-exporter-#{new_resource.version}.tar.gz"
+  end
+
+  def service_name
+    "prometheus-#{new_resource.exporter}-exporter"
+  end
+
+  def executable_path
+    "/opt/prometheus/#{github_project}-#{new_resource.version}.linux-amd64/#{github_project}"
+  end
+
+  def executable_options
+    "--#{new_resource.listen_switch}=#{listen_address} #{Array(new_resource.options).join(" ")}"
   end
 
   def listen_address
@@ -84,9 +119,5 @@ action_class do
     else
       "#{node[:prometheus][:address]}:#{new_resource.port}"
     end
-  end
-
-  def service_name
-    new_resource.service || "prometheus-#{new_resource.exporter}-exporter"
   end
 end
