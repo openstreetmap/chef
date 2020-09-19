@@ -101,5 +101,5 @@ prometheus_exporter "apache" do
   version "0.8.0"
   port 9117
   listen_switch "telemetry.address"
-  options "-scrape_uri http://localhost/server-status?auto"
+  options "--scrape_uri=http://localhost/server-status?auto"
 end
