@@ -1,5 +1,6 @@
 require "chef/mixin/shell_out"
 
+require "addressable"
 require "httpclient"
 require "php_serialize"
 
