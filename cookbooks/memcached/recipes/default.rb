@@ -18,6 +18,7 @@
 #
 
 include_recipe "munin"
+include_recipe "prometheus"
 
 package "memcached"
 
@@ -42,4 +43,10 @@ end
   munin_plugin "memcached_multi_#{stat}" do
     target "memcached_multi_"
   end
+end
+
+prometheus_exporter "memcached" do
+  version "0.7.0"
+  port 9150
+  options "--memcached.address=#{node[:memcached][:ip_address]}:#{node[:memcached][:tcp_port]} --memcached.pid-file=/run/memcached/memcached.pid"
 end
