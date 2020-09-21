@@ -3,7 +3,7 @@ description "Master role applied to fuchur"
 
 default_attributes(
   :hardware => {
-    :shm_size => "20g"
+    :shm_size => "12g"
   },
   :networking => {
     :interfaces => {
@@ -30,7 +30,7 @@ default_attributes(
   },
   :squid => {
     :version => 4,
-    :cache_mem => "16384 MB",
+    :cache_mem => "8192 MB",
     :cache_dir => [
       "rock /store/squid/rock-4096 20000 swap-timeout=200 slot-size=4096 max-size=3996",
       "rock /store/squid/rock-8192 25000 swap-timeout=200 slot-size=8192 min-size=3997 max-size=8092",
