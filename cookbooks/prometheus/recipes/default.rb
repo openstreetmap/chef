@@ -17,6 +17,7 @@
 # limitations under the License.
 #
 
+include_recipe "git"
 include_recipe "networking"
 
 if node.internal_ipaddress
@@ -39,13 +40,24 @@ else
 end
 
 directory "/opt/prometheus" do
+  action :delete
   owner "root"
   group "root"
   mode "755"
+  recursive true
+  not_if { ::Dir.exist?("/opt/prometheus/.git") }
+end
+
+git "/opt/prometheus" do
+  action :sync
+  repository "https://github.com/openstreetmap/prometheus-exporters.git"
+  revision "main"
+  depth 1
+  user "root"
+  group "root"
 end
 
 prometheus_exporter "node" do
-  version "1.0.1"
   port 9100
   options "--collector.ntp --collector.processes --collector.interrupts"
 end

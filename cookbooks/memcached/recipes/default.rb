@@ -46,7 +46,6 @@ end
 end
 
 prometheus_exporter "memcached" do
-  version "0.7.0"
   port 9150
   options "--memcached.address=#{node[:memcached][:ip_address]}:#{node[:memcached][:tcp_port]} --memcached.pid-file=/run/memcached/memcached.pid"
 end
