@@ -6,9 +6,6 @@ default_attributes(
     :shm_size => "20g"
   },
   :networking => {
-    :firewall => {
-      :enabled => false
-    },
     :interfaces => {
       :external_ipv4 => {
         :interface => "eth0",
