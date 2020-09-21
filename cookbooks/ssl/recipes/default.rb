@@ -27,8 +27,9 @@ cookbook_file "/etc/ssl/certs/letsencrypt.pem" do
   backup false
 end
 
-openssl_dhparam "/etc/ssl/certs/dhparam.pem" do
+cookbook_file "/etc/ssl/certs/dhparam.pem" do
   owner "root"
   group "root"
   mode "444"
+  backup false
 end
