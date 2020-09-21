@@ -6,7 +6,7 @@ default_attributes(
     :shm_size => "10g"
   },
   :networking => {
-    :fireweall => {
+    :firewall => {
       :enabled => false
     },
     :interfaces => {
