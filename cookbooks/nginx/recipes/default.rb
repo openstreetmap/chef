@@ -64,6 +64,7 @@ munin_plugin "nginx_status"
 
 prometheus_exporter "nginx" do
   port 9113
+  options "--nginx.scrape-uri=http://localhost:8050/nginx_status"
 end
 
 template "/usr/local/bin/nginx-old-cache-cleanup" do
