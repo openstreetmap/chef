@@ -20,6 +20,7 @@
 include_recipe "apache"
 include_recipe "apt"
 include_recipe "munin"
+include_recipe "prometheus"
 
 package "ruby#{node[:passenger][:ruby_version]}"
 package "ruby#{node[:passenger][:ruby_version]}-dev"
@@ -56,3 +57,8 @@ munin_plugin "passenger_memory"
 munin_plugin "passenger_processes"
 munin_plugin "passenger_queues"
 munin_plugin "passenger_requests"
+
+prometheus_exporter "passenger" do
+  port 9149
+  environment "PASSENGER_INSTANCE_REGISTRY_DIR" => node[:passenger][:instance_registry_dir]
+end

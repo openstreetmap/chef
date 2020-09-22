@@ -23,12 +23,14 @@ property :exporter, :kind_of => String, :name_property => true
 property :port, :kind_of => Integer, :required => [:create]
 property :listen_switch, :kind_of => String, :default => "web.listen-address"
 property :options, :kind_of => [String, Array]
+property :environment, :kind_of => Hash, :default => {}
 
 action :create do
   systemd_service service_name do
     description "Prometheus #{new_resource.exporter} exporter"
     type "simple"
     user "root"
+    environment new_resource.environment
     exec_start "#{executable_path} #{executable_options}"
     private_tmp true
     protect_system "strict"
