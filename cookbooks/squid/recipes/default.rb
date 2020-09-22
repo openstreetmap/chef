@@ -108,7 +108,7 @@ systemd_service "squid" do
   dropin "chef"
   limit_nofile 98304
   private_tmp true
-  private_devices true
+  private_devices node[:squid][:private_devices]
   protect_system "full"
   protect_home true
   restrict_address_families address_families
