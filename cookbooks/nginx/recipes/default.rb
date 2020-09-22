@@ -19,6 +19,7 @@
 
 include_recipe "apt"
 include_recipe "munin"
+include_recipe "prometheus"
 include_recipe "ssl"
 
 package "nginx"
@@ -60,6 +61,10 @@ package "libwww-perl"
 
 munin_plugin "nginx_request"
 munin_plugin "nginx_status"
+
+prometheus_exporter "nginx" do
+  port 9113
+end
 
 template "/usr/local/bin/nginx-old-cache-cleanup" do
   source "nginx-old-cache-cleanup.erb"
