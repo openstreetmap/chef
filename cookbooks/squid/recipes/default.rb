@@ -19,6 +19,7 @@
 
 include_recipe "apt"
 include_recipe "munin"
+include_recipe "prometheus"
 
 if node[:squid][:version] >= 3
   apt_package "squid" do
@@ -151,4 +152,9 @@ end
 
 munin_plugin "squid_delay_pools_noreferer" do
   action :delete
+end
+
+prometheus_exporter "squid" do
+  port 9301
+  listen_switch "listen"
 end
