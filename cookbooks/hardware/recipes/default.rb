@@ -141,6 +141,7 @@ if File.exist?("/etc/default/grub")
   execute "update-grub" do
     action :nothing
     command "/usr/sbin/update-grub"
+    not_if { ENV["TEST_KITCHEN"] }
   end
 
   template "/etc/default/grub" do
