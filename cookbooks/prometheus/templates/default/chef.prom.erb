@@ -1,0 +1,5 @@
+# HELP chef_network_interface Information about network interfaces
+# TYPE chef_network_interface gauge
+<% node.interfaces do |interface| -%>
+chef_network_interface{name="<%= interface[:interface] %>",role="<%= interface[:role].to_s %>",family="<%= interface[:family].to_s %>"} 1
+<% end -%>

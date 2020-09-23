@@ -71,6 +71,13 @@ directory "/var/lib/prometheus/node-exporter" do
   recursive true
 end
 
+template "/var/lib/prometheus/node-exporter/chef.prom" do
+  source "chef.prom.erb"
+  owner "root"
+  group "root"
+  mode "644"
+end
+
 prometheus_exporter "node" do
   port 9100
   options "--collector.ntp --collector.processes --collector.interrupts --collector.textfile.directory=/var/lib/prometheus/node-exporter"
