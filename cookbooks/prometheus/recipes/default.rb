@@ -57,7 +57,21 @@ git "/opt/prometheus" do
   group "root"
 end
 
+directory "/etc/prometheus/collectors" do
+  owner "root"
+  group "root"
+  mode "755"
+  recursive true
+end
+
+directory "/var/lib/prometheus/node-exporter" do
+  owner "root"
+  group "root"
+  mode "755"
+  recursive true
+end
+
 prometheus_exporter "node" do
   port 9100
-  options "--collector.ntp --collector.processes --collector.interrupts"
+  options "--collector.ntp --collector.processes --collector.interrupts --collector.textfile.directory=/var/lib/prometheus/node-exporter"
 end
