@@ -21,7 +21,10 @@ require "securerandom"
 
 include_recipe "apache"
 
-package "mailman"
+package %w[
+  locales-all
+  mailman
+]
 
 subscribe_form_secret = persistent_token("mailman", "subscribe_form_secret")
 
