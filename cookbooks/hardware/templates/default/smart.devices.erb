@@ -1,0 +1,9 @@
+<% @disks.each do |disk| -%>
+<% if disk[:smart] -%>
+/dev/<%= disk[:device] %>|<%= disk[:smart] %>
+<% elsif disk[:device] =~ /nvme/ -%>
+/dev/<%= disk[:device] %>|nvme
+<% else -%>
+/dev/<%= disk[:device] %>|sat
+<% end -%>
+<% end -%>

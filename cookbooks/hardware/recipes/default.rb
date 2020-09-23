@@ -20,6 +20,7 @@
 include_recipe "apt"
 include_recipe "git"
 include_recipe "munin"
+include_recipe "prometheus"
 include_recipe "sysfs"
 include_recipe "tools"
 
@@ -449,6 +450,18 @@ if disks.count.positive?
       conf "munin.smart.erb"
       conf_variables :disk => disk
     end
+  end
+
+  template "/etc/prometheus/collectors/smart.devices" do
+    source "smart.devices.erb"
+    owner "root"
+    group "root"
+    mode "644"
+    variables :disks => disks
+  end
+
+  prometheus_collector "smart" do
+    interval "15m"
   end
 else
   service "smartd" do
