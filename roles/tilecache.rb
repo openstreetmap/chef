@@ -9,11 +9,6 @@ default_attributes(
       }
     }
   },
-  :networking => {
-    :firewall => {
-      :enabled => false
-    }
-  },
   :nginx => {
     :access_log => false
   },
