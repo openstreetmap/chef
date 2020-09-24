@@ -3,3 +3,8 @@
 <% node.interfaces do |interface| -%>
 chef_network_interface{name="<%= interface[:interface] %>",role="<%= interface[:role].to_s %>",family="<%= interface[:family].to_s %>"} 1
 <% end -%>
+# HELP chef_role Information about chef roles
+# TYPE chef_role gauge
+<% node[:roles].sort.each do |role| -%>
+chef_role{name="<%= role %>"} 1
+<% end -%>
