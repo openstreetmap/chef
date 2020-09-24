@@ -453,6 +453,7 @@ else
     action [:disable, :stop]
     supports :restart => true
     status_command "shorewall status"
+    ignore_failure true
   end
 end
 
@@ -594,6 +595,7 @@ unless node.interfaces(:family => :inet6).empty?
       action [:disable, :stop]
       supports :restart => true
       status_command "shorewall6 status"
+      ignore_failure true
     end
   end
 
