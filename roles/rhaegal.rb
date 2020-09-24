@@ -27,9 +27,6 @@ default_attributes(
     }
   },
   :networking => {
-    :firewall => {
-      :enabled => false
-    },
     :interfaces => {
       :external_ipv4 => {
         :interface => "eno1",
