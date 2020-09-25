@@ -447,6 +447,7 @@ if node[:networking][:firewall][:enabled]
     action [:enable, :start]
     supports :restart => true
     status_command "shorewall status"
+    ignore_failure true
   end
 else
   service "shorewall" do
@@ -589,6 +590,7 @@ unless node.interfaces(:family => :inet6).empty?
       action [:enable, :start]
       supports :restart => true
       status_command "shorewall6 status"
+      ignore_failure true
     end
   else
     service "shorewall6" do
