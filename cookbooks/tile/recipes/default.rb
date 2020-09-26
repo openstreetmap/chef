@@ -23,6 +23,7 @@ include_recipe "git"
 include_recipe "munin"
 include_recipe "nodejs"
 include_recipe "postgresql"
+include_recipe "prometheus"
 include_recipe "python"
 include_recipe "tools"
 
@@ -601,3 +602,11 @@ munin_plugin "renderd_zoom"
 munin_plugin "renderd_zoom_time"
 
 munin_plugin "replication_delay"
+
+prometheus_collector "modtile" do
+  interval "1m"
+end
+
+prometheus_collector "renderd" do
+  interval "1m"
+end
