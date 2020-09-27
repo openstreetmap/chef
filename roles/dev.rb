@@ -144,7 +144,8 @@ default_attributes(
         :port => "5433"
       },
       "12" => {
-        :port => "5432"
+        :port => "5432",
+        :wal_level => "logical"
       }
     }
   },
