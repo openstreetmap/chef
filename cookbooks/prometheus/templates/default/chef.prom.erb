@@ -8,3 +8,8 @@ chef_network_interface{name="<%= interface[:interface] %>",role="<%= interface[:
 <% node[:roles].sort.each do |role| -%>
 chef_role{name="<%= role %>"} 1
 <% end -%>
+<% if node[:roles].include?("tilecache") -%>
+# HELP chef_tile_parent Information about tile cache parents
+# TYPE chef_tile_parent gauge
+chef_tile_parent{name="<%= node[:tilecache][:tile_parent].split(".").first %>"} 1
+<% end -%>
