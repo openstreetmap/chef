@@ -49,5 +49,5 @@ imagery_layer "ana_dtm_2017_hillshading_multi" do
   source "/data/imagery/lu/LUREF_NGL/ANA_LUREF_NGL_DTM_hillshade_multi_epsg3857.tif"
   max_zoom 21
   title "DTM Hillshading (multidirectional)"
-  copyright 'DEM 2017 <a href="https://data.public.lu/fr/datasets/digital-terrain-model-high-dem-resolution/">Administration de la Navigation A&eacute;rienne Luxembourg</a>, hillshading <a href="https://twitter.com/grischard">Guillaume Rischard</a> CC0'
+  copyright 'DEM 2017 <a href="https://data.public.lu/fr/datasets/digital-terrain-model-high-dem-resolution/">Administration de la Navigation A&eacute;rienne Luxembourg</a>, hillshading <a href="https://twitter.com/dmoraisferreira">David Morais Ferreira</a> &amp; <a href="https://twitter.com/grischard">Guillaume Rischard</a> CC0'
 end
