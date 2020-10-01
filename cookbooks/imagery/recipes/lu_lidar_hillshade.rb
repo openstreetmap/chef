@@ -49,3 +49,12 @@ imagery_layer "mappers_delight_lidar_hillshade_2019_reprojected" do
   title "OpenStreetMap.lu Mapper's Delight 2019 Lidar Hillshading"
   copyright 'Lidar data 2019 <a href="https://data.public.lu/fr/datasets/lidar-2019-releve-3d-du-territoire-luxembourgeois">Administration du Cadastre et de la Topographie Luxembourg</a>, DEM and hillshading <a href="https://twitter.com/grischard">Guillaume Rischard</a>, CC0'
 end
+
+imagery_layer "mappers_delight_lidar_hillshade_2019_classy_reprojected" do
+  site "lidar-hillshade-2019.openstreetmap.lu"
+  projection "EPSG:3857"
+  source "/data/imagery/lu/lidar-hillshade/classy.tif"
+  max_zoom 22
+  title "OpenStreetMap.lu Mapper's Delight 2019 Lidar Hillshading with unclassified points"
+  copyright 'Lidar data 2019 <a href="https://data.public.lu/fr/datasets/lidar-2019-releve-3d-du-territoire-luxembourgeois">Administration du Cadastre et de la Topographie Luxembourg</a>, DEM and hillshading <a href="https://twitter.com/grischard">Guillaume Rischard</a>, CC0'
+end
