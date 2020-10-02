@@ -39,7 +39,7 @@ override_attributes(
         :gateway => "fe80::1"
       }
     },
-    :nameservers => ["89.16.162.20", "2001:41c9:2:d6::20"],
+    :nameservers => ["8.8.8.8", "8.8.4.4"],
     :private_address => "10.0.16.100"
   }
 )
