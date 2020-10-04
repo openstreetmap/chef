@@ -160,5 +160,6 @@ end
 
 prometheus_exporter "postgres" do
   port 9187
+  user "postgres"
   environment "DATA_SOURCE_NAME" => "user=postgres host=/run/postgresql #{ports.join(',')}"
 end
