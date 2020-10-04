@@ -19,6 +19,7 @@
 
 include_recipe "apt"
 include_recipe "munin"
+include_recipe "prometheus"
 
 package "locales-all"
 package "postgresql-common"
@@ -151,4 +152,13 @@ clusters.each do |name, details|
     conf "munin.erb"
     conf_variables :port => details[:port]
   end
+end
+
+ports = clusters.collect do |_, details|
+  "port=#{details[:port]}"
+end
+
+prometheus_exporter "postgres" do
+  port 9187
+  environment "DATA_SOURCE_NAME" => "user=postgres host=/run/postgresql #{ports.join(',')}"
 end
