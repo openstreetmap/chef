@@ -1,0 +1,22 @@
+pg_replication:
+  query: "SELECT EXTRACT(EPOCH FROM (now() - pg_last_xact_replay_timestamp())) AS lag_seconds"
+  master: true
+  metrics:
+    - lag_seconds:
+        usage: "GAUGE"
+        description: "Replication lag behind master in seconds"
+
+pg_database:
+  query: "SELECT pg_database.oid AS datid, pg_database.datname, pg_database_size(pg_database.datname) AS size_bytes FROM pg_database"
+  master: true
+  cache_seconds: 30
+  metrics:
+    - datid:
+        usage: "LABEL"
+        description: "ID of the database"
+    - datname:
+        usage: "LABEL"
+        description: "Name of the database"
+    - size_bytes:
+        usage: "GAUGE"
+        description: "Disk space used by the database"

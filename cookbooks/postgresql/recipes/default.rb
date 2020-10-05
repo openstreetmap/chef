@@ -158,9 +158,17 @@ ports = clusters.collect do |_, details|
   "port=#{details[:port]}"
 end
 
+template "/etc/prometheus/collectors/postgres_queries.yml" do
+  source "postgres_queries.yml.erb"
+  owner "root"
+  group "root"
+  mode "644"
+end
+
 prometheus_exporter "postgres" do
   port 9187
   user "postgres"
+  options "--extend.query-path=/etc/prometheus/collectors/postgres_queries.yml"
   environment "DATA_SOURCE_NAME" => "user=postgres host=/run/postgresql #{ports.join(',')}",
               "PG_EXPORTER_EXCLUDE_DATABASES" => "postgres,template0,template1"
 end
