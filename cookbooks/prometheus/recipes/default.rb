@@ -66,8 +66,8 @@ end
 
 directory "/var/lib/prometheus/node-exporter" do
   owner "root"
-  group "root"
-  mode "755"
+  group "adm"
+  mode "775"
   recursive true
 end
 

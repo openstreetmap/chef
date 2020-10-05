@@ -21,22 +21,80 @@ end
 
 parser = ApacheLogRegex.new('%h %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\" %Dus %{UNIQUE_ID}e %{SSL_PROTOCOL}x %{SSL_CIPHER}x')
 last_write = Time.now
-statistics = { :status => Hash.new(0), :uri => Hash.new(0) }
+
+statistics = {
+  :status => Hash.new(0),
+  :uri => Hash.new(0),
+  :count => Hash.new(0),
+  :bytes => Hash.new(0),
+  :seconds => Hash.new(0.0),
+  :ssl => Hash.new(0)
+}
 
 File::Tail::Logfile.tail("/var/log/apache2/access.log") do |line|
   begin
     hash = parser.parse(line)
-    status = hash["%>s"]
+
     uri = categorise_uri(hash["%r"])
+    status = hash["%>s"]
+    bytes = hash["%O"].to_i
+    seconds = hash["%Dus"].to_f / 1000000
+    protocol = hash["%{SSL_PROTOCOL}x"]
+    cipher = hash["%{SSL_CIPHER}x"]
 
     statistics[:status][status] += 1
     statistics[:uri][uri] += 1
+    statistics[:count][[uri, status]] += 1
+    statistics[:bytes][[uri, status]] += bytes
+    statistics[:seconds][[uri, status]] += seconds
+    statistics[:ssl][[protocol, cipher]] += 1 unless protocol == "-"
   rescue ApacheLogRegex::ParseError
     # nil
   end
 
   if Time.now - last_write > 10
-    File.write("/srv/www.openstreetmap.org/rails/tmp/statistics.json", statistics.to_json)
+    File.write("/srv/www.openstreetmap.org/rails/tmp/statistics.json", statistics.slice(:status, :uri).to_json)
+
+    File.open("/var/lib/prometheus/node-exporter/api.tmp", "w") do |file|
+      file.puts "# HELP api_call_count_total Number of calls by type and status"
+      file.puts "# TYPE api_call_count_total counter"
+
+      statistics[:count].each do |key, value|
+        uri, status = key
+
+        file.puts "api_call_count_total{uri=\"#{uri}\",status=\"#{status}\"} #{value}"
+      end
+
+      file.puts "# HELP api_call_bytes_total Number of bytes returned by type and status"
+      file.puts "# TYPE api_call_bytes_total counter"
+
+      statistics[:bytes].each do |key, value|
+        uri, status = key
+
+        file.puts "api_call_bytes_total{uri=\"#{uri}\",status=\"#{status}\"} #{value}"
+      end
+
+      file.puts "# HELP api_call_seconds_total Number of seconds returned by type and status"
+      file.puts "# TYPE api_call_seconds_total counter"
+
+      statistics[:seconds].each do |key, value|
+        uri, status = key
+
+        file.puts "api_call_seconds_total{uri=\"#{uri}\",status=\"#{status}\"} #{value}"
+      end
+
+      file.puts "# HELP api_call_ssl_total Number of calls by SSL protocol and cipher"
+      file.puts "# TYPE api_call_ssl_total counter"
+
+      statistics[:ssl].each do |key, value|
+        protocol, cipher = key
+
+        file.puts "api_call_ssl_total{protocol=\"#{protocol}\",cipher=\"#{cipher}\"} #{value}"
+      end
+    end
+
+    File.rename("/var/lib/prometheus/node-exporter/api.tmp", "/var/lib/prometheus/node-exporter/api.prom")
+
     last_write = Time.now
   end
 end
