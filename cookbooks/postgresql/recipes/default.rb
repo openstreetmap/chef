@@ -155,11 +155,7 @@ clusters.each do |name, details|
 end
 
 ports = clusters.collect do |_, details|
-  "port=#{details[:port]}"
-end
-
-file "/etc/prometheus/collectors/postgres_queries.yml" do
-  action :delete
+  details[:port]
 end
 
 template "/etc/prometheus/exporters/postgres_queries.yml" do
@@ -173,7 +169,8 @@ prometheus_exporter "postgres" do
   port 9187
   user "postgres"
   options "--extend.query-path=/etc/prometheus/exporters/postgres_queries.yml"
-  environment "DATA_SOURCE_NAME" => "user=postgres host=/run/postgresql #{ports.join(',')}",
+  environment "DATA_SOURCE_URI" => "postgres@:#{ports.join(',:')}/postgres?host=/run/postgresql",
+              "PG_EXPORTER_AUTO_DISCOVER_DATABASES" => "true",
               "PG_EXPORTER_EXCLUDE_DATABASES" => "postgres,template0,template1"
   subscribes :restart, "template[/etc/prometheus/exporters/postgres_queries.yml]"
 end
