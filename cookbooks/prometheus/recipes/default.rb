@@ -64,6 +64,13 @@ directory "/etc/prometheus/collectors" do
   recursive true
 end
 
+directory "/etc/prometheus/exporters" do
+  owner "root"
+  group "root"
+  mode "755"
+  recursive true
+end
+
 directory "/var/lib/prometheus/node-exporter" do
   owner "root"
   group "adm"
