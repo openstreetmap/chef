@@ -162,6 +162,7 @@ server {
         { return 403; }
         if ($blocked_email)
         { return 403; }
+        include <%= @confdir %>/nginx_blocked_generic.conf;
 
         limit_req zone=www burst=10;
         limit_req zone=tarpit burst=2;
@@ -183,6 +184,7 @@ server {
         { return 403; }
         if ($blocked_email)
         { return 403; }
+        include <%= @confdir %>/nginx_blocked_generic.conf;
 
         limit_req zone=www burst=10;
         limit_req zone=tarpit burst=2;

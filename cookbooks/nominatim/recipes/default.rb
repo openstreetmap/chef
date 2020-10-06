@@ -370,7 +370,7 @@ directory "#{basedir}/etc" do
   mode "775"
 end
 
-%w[user_agent referrer email].each do |name|
+%w[user_agent referrer email generic].each do |name|
   file "#{basedir}/etc/nginx_blocked_#{name}.conf" do
     action :create_if_missing
     owner "nominatim"
