@@ -39,6 +39,7 @@ override_attributes(
         :gateway => "fe80::1"
       }
     },
+    :nameservers => ["1.1.1.1", "1.0.0.1", "2606:4700:4700::1111", "2606:4700:4700::1001"],
     :private_address => "10.0.16.100"
   }
 )
