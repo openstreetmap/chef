@@ -455,7 +455,6 @@ action :create do
 
   mediawiki_extension "OSMCALWikiWidget" do
     site new_resource.site
-    template "mw-ext-osmcalwikiwidget.inc.php.erb"
     repository "https://github.com/thomersch/OSMCALWikiWidget.git"
     tag "live"
     update_site false
