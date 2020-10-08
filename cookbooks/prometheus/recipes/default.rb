@@ -87,5 +87,12 @@ end
 
 prometheus_exporter "node" do
   port 9100
-  options "--collector.ntp --collector.processes --collector.interrupts --collector.tcpstat --collector.textfile.directory=/var/lib/prometheus/node-exporter"
+  options %w[
+    --collector.textfile.directory=/var/lib/prometheus/node-exporter
+    --collector.interrupts
+    --collector.ntp
+    --collector.processes
+    --collector.systemd
+    --collector.tcpstat
+  ]
 end
