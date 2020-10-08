@@ -8,14 +8,7 @@ default_attributes(
     }
   },
   :hosted_by => "DataHata",
-  :location => "Minsk, Belarus",
-  :networking => {
-    :nameservers => [
-      "31.130.200.2",
-      "8.8.8.8",
-      "8.8.4.4"
-    ]
-  }
+  :location => "Minsk, Belarus"
 )
 
 override_attributes(

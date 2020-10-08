@@ -29,11 +29,7 @@ default_attributes(
         :prefix => "64",
         :gateway => "fe80::161:53:30:97"
       }
-    },
-    :nameservers => [
-      "161.53.30.100",
-      "8.8.8.8"
-    ]
+    }
   },
   :squid => {
     :version => 4,

@@ -32,10 +32,6 @@ default_attributes(
           :connection_limit => "-"
         }
       ]
-    },
-    :nameservers => [
-      "8.8.8.8",
-      "1.1.1.1"
-    ]
+    }
   }
 )

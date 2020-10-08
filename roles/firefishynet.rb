@@ -3,7 +3,6 @@ description "Role applied to all servers at Firefishy"
 
 default_attributes(
   :networking => {
-    :nameservers => ["8.8.8.8", "8.8.4.4"],
     :roles => {
       :internal => {
         :inet => {

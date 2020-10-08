@@ -5,7 +5,6 @@ default_attributes(
   :hosted_by => "Bytemark",
   :location => "York, England",
   :networking => {
-    :nameservers => ["10.0.32.20"],
     :roles => {
       :internal => {
         :inet => {
@@ -38,6 +37,7 @@ default_attributes(
 
 override_attributes(
   :networking => {
+    :nameservers => ["10.0.32.20"],
     :search => ["bm.openstreetmap.org", "openstreetmap.org"]
   },
   :ntp => {

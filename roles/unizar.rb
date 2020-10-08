@@ -8,13 +8,13 @@ default_attributes(
     }
   },
   :hosted_by => "University of Zaragoza",
-  :location => "Zaragoza, Spain",
-  :networking => {
-    :nameservers => ["155.210.12.9", "155.210.3.12"]
-  }
+  :location => "Zaragoza, Spain"
 )
 
 override_attributes(
+  :networking => {
+    :nameservers => ["155.210.12.9", "155.210.3.12"]
+  },
   :ntp => {
     :servers => ["0.es.pool.ntp.org", "1.es.pool.ntp.org", "europe.pool.ntp.org"]
   }

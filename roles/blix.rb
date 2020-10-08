@@ -7,8 +7,5 @@ default_attributes(
       :blixadmin => { :status => :administrator }
     }
   },
-  :hosted_by => "Blix Solutions",
-  :networking => {
-    :nameservers => ["8.8.8.8", "8.8.4.4"]
-  }
+  :hosted_by => "Blix Solutions"
 )

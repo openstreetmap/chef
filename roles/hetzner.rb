@@ -2,7 +2,10 @@ name "hetzner"
 description "Role applied to all servers at Hetzner"
 
 default_attributes(
-  :hosted_by => "Hetzner",
+  :hosted_by => "Hetzner"
+)
+
+override_attributes(
   :networking => {
     :nameservers => [
       "213.133.98.98",
@@ -12,10 +15,7 @@ default_attributes(
       "2a01:4f8:0:a102::add:9999",
       "2a01:4f8:0:a0a1::add:1010"
     ]
-  }
-)
-
-override_attributes(
+  },
   :ntp => {
     :servers => ["0.de.pool.ntp.org", "1.de.pool.ntp.org", "europe.pool.ntp.org"]
   }

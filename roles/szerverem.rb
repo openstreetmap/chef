@@ -3,13 +3,7 @@ description "Role applied to all servers at szerverem.hu"
 
 default_attributes(
   :hosted_by => "szerverem.hu",
-  :location => "Budapest, Hungary",
-  :networking => {
-    :nameservers => [
-      "8.8.8.8",
-      "8.8.4.4"
-    ]
-  }
+  :location => "Budapest, Hungary"
 )
 
 override_attributes(

@@ -23,8 +23,7 @@ default_attributes(
           :connection_limit => "-"
         }
       ]
-    },
-    :nameservers => ["2001:8e0:ffff:ac1::1", "8.8.8.8", "8.8.4.4"]
+    }
   }
 )
 

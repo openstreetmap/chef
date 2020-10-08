@@ -3,14 +3,7 @@ description "Role applied to all servers at FAImaison"
 
 default_attributes(
   :hosted_by => "FAImaison",
-  :location => "France",
-  :networking => {
-    :nameservers => [
-      "8.8.8.8",
-      "8.8.4.4",
-      "1.1.1.1"
-    ]
-  }
+  :location => "France"
 )
 
 override_attributes(

@@ -51,12 +51,6 @@ default_attributes(
   }
 )
 
-override_attributes(
-  :networking => {
-    :nameservers => ["8.8.8.8", "8.8.4.4"]
-  }
-)
-
 run_list(
   "role[equinix]",
   "role[tyan-s7010]"

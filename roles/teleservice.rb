@@ -3,10 +3,7 @@ description "Role applied to all servers at Teleservice"
 
 default_attributes(
   :hosted_by => "Teleservice Skåne AB",
-  :location => "Sjöbo, Sweden",
-  :networking => {
-    :nameservers => ["8.8.8.8", "8.8.4.4"]
-  }
+  :location => "Sjöbo, Sweden"
 )
 
 override_attributes(

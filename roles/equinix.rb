@@ -3,7 +3,6 @@ description "Role applied to all servers at Equinix"
 
 default_attributes(
   :networking => {
-    :nameservers => ["66.28.0.45", "66.28.0.61"],
     :roles => {
       :internal => {
         :inet => {
@@ -42,6 +41,7 @@ default_attributes(
 
 override_attributes(
   :networking => {
+    :nameservers => ["66.28.0.45", "66.28.0.61"],
     :search => ["ams.openstreetmap.org", "openstreetmap.org"]
   },
   :ntp => {

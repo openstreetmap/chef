@@ -37,11 +37,7 @@ default_attributes(
         :gateway => "10.5.0.1",
         :public_address => "161.53.248.77"
       }
-    },
-    :nameservers => [
-      "10.5.0.7",
-      "8.8.8.8"
-    ]
+    }
   },
   :postgresql => {
     :settings => {
