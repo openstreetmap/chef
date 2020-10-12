@@ -20,10 +20,11 @@
 default_action :create
 
 property :virtualenv_directory, :kind_of => String, :name_property => true
+property :interpreter, :kind_of => String, :default => "/usr/bin/python"
 
 action :create do
   execute "virtualenv-#{new_resource.virtualenv_directory}" do
-    command "virtualenv #{new_resource.virtualenv_directory}"
+    command "virtualenv --python=#{new_resource.interpreter} #{new_resource.virtualenv_directory}"
     not_if { ::File.exist?(new_resource.virtualenv_directory) }
   end
 end

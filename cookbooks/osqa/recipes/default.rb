@@ -29,16 +29,13 @@ package "libpq-dev"
 
 python_directory = "/opt/osqa-python"
 
-python_virtualenv python_directory
+python_virtualenv python_directory do
+  interpreter "/usr/bin/python2"
+end
 
 python_package "Django" do
   python_virtualenv python_directory
   version "1.6.11"
-end
-
-python_package "html5lib" do
-  python_virtualenv python_directory
-  version "0.999"
 end
 
 python_package "Markdown" do
@@ -56,11 +53,6 @@ python_package "python-openid" do
   version "2.2.5"
 end
 
-python_package "MySQL-python" do
-  python_virtualenv python_directory
-  version "1.2.3"
-end
-
 python_package "psycopg2" do
   python_virtualenv python_directory
   version "2.7.6.1"
@@ -69,6 +61,11 @@ end
 python_package "South" do
   python_virtualenv python_directory
   version "0.7.6"
+end
+
+python_package "html5lib" do
+  python_virtualenv python_directory
+  version "0.999"
 end
 
 apache_module "rewrite"
