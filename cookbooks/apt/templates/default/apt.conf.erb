@@ -3,3 +3,7 @@
 // Do automatic removal of new unused dependencies after the upgrade
 // (equivalent to apt-get autoremove)
 Unattended-Upgrade::Remove-Unused-Dependencies "<%= node[:apt][:unattended_upgrades][:remove_unused_dependencies] ? 'true' : 'false' %>";
+
+// Don't install recommended packages as we don't want to get
+// new postgres versions automatically
+APT::Install-Recommends "false";
