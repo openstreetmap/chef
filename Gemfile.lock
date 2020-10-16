@@ -5,7 +5,7 @@ GEM
     bcrypt_pbkdf (1.0.1)
     builder (3.2.4)
     chef-utils (16.5.77)
-    cookstyle (6.20.2)
+    cookstyle (6.21.1)
       rubocop (= 0.93.1)
     diff-lcs (1.4.4)
     docker-api (2.0.0)
