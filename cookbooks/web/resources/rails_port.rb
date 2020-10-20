@@ -86,6 +86,7 @@ action :create do
 
   package %w[
     g++
+    make
     pkg-config
     libpq-dev
     libsasl2-dev
