@@ -22,6 +22,14 @@ include_recipe "apt"
 include_recipe "networking"
 
 passwords = data_bag_item("prometheus", "passwords")
+tokens = data_bag_item("prometheus", "tokens")
+
+prometheus_exporter "fastly" do
+  port 8080
+  listen_switch "endpoint"
+  listen_type "url"
+  environment "FASTLY_API_TOKEN" => tokens["fastly"]
+end
 
 package "prometheus"
 

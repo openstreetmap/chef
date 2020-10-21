@@ -22,6 +22,7 @@ default_action :create
 property :exporter, :kind_of => String, :name_property => true
 property :port, :kind_of => Integer, :required => [:create]
 property :listen_switch, :kind_of => String, :default => "web.listen-address"
+property :listen_type, :kind_of => String, :default => "address"
 property :user, :kind_of => String, :default => "root"
 property :options, :kind_of => [String, Array]
 property :environment, :kind_of => Hash, :default => {}
@@ -82,7 +83,14 @@ action_class do
   end
 
   def executable_options
-    "--#{new_resource.listen_switch}=#{listen_address} #{Array(new_resource.options).join(' ')}"
+    "--#{new_resource.listen_switch}=#{listen_argument} #{Array(new_resource.options).join(' ')}"
+  end
+
+  def listen_argument
+    case new_resource.listen_type
+    when "address" then listen_address
+    when "url" then "http://#{listen_address}/metrics"
+    end
   end
 
   def listen_address
