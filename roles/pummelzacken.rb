@@ -7,7 +7,7 @@ default_attributes(
       :bond => {
         :interface => "bond0",
         :bond => {
-          :slaves => %w[em1 p5p1]
+          :slaves => %w[eno1 enp5s0f0]
         }
       },
       :internal_ipv4 => {
