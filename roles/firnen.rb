@@ -28,7 +28,7 @@ default_attributes(
     ]
   },
   :tilecache => {
-    :tile_parent => "katowice.render.openstreetmap.org"
+    :tile_parent => "germany.render.openstreetmap.org"
   }
 )
 
