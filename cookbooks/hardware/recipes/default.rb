@@ -380,6 +380,13 @@ disks = disks.map do |disk|
       elsif smart =~ %r{^.*,(\d+)/(\d+)$}
         munin = "#{device}-#{Regexp.last_match(1)}:#{Regexp.last_match(2)}"
       end
+    elsif disk[:device]
+      device = disk[:device].sub("/dev/", "")
+      smart = disk[:smart_device]
+
+      if smart =~ /^.*,(\d+),(\d+),(\d+)$/
+        munin = "#{device}-#{Regexp.last_match(1)}:#{Regexp.last_match(2)}:#{Regexp.last_match(3)}"
+      end
     end
   elsif disk[:device] =~ %r{^/dev/(nvme\d+)n\d+$}
     device = Regexp.last_match(1)

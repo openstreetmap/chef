@@ -766,10 +766,11 @@ Ohai.plugin(:Hardware) do
         array[:disks].map! do |location|
           disk = disks.find { |disk| disk[:location] == location }
 
+          controller_number = controller[:number] - 1
           device_number = disk[:device_number]
-          device = Dir.glob("#{host}/device/target*:1:#{device_number}/*:1:#{device_number}:0/scsi_generic/*").first
 
           disk[:device] = "/dev/#{File.basename(device)}"
+          disk[:smart_device] = "aacraid,#{controller_number},0,#{device_number}"
 
           disk[:arrays] << array[:id]
           disk[:id]
