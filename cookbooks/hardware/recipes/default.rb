@@ -174,7 +174,14 @@ service "haveged" do
   action [:enable, :start]
 end
 
-package "ipmitool" if node[:kernel][:modules].include?("ipmi_si")
+if node[:kernel][:modules].include?("ipmi_si")
+  package "ipmitool"
+  package "freeipmi-tools"
+
+  prometheus_exporter "ipmi" do
+    port 9290
+  end
+end
 
 package "irqbalance"
 
