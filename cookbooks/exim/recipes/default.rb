@@ -19,6 +19,7 @@
 
 include_recipe "munin"
 include_recipe "networking"
+include_recipe "prometheus"
 
 package %w[
   exim4
@@ -209,6 +210,10 @@ end
 
 munin_plugin "exim_mailqueue"
 munin_plugin "exim_mailstats"
+
+prometheus_exporter "exim" do
+  port 9636
+end
 
 if node[:exim][:smarthost_name]
   node[:exim][:daemon_smtp_ports].each do |port|
