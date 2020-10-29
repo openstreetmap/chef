@@ -146,6 +146,7 @@ node[:taginfo][:sites].each do |site|
     settings["logging"]["directory"] = "/var/log/taginfo/#{site_name}"
     settings["opensearch"]["shortname"] = "Taginfo"
     settings["opensearch"]["contact"] = "webmaster@openstreetmap.org"
+    settings["paths"]["bin_dir"] = "#{directory}/build/src"
     settings["sources"]["download"] = ""
     settings["sources"]["create"] = "db languages projects wiki"
     settings["sources"]["db"]["planetfile"] = "/var/lib/planet/planet.pbf"
