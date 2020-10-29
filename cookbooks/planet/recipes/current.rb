@@ -43,9 +43,9 @@ directory "/var/lib/planet" do
   mode "755"
 end
 
-remote_file "/var/lib/planet/planet.pbf" do
+remote_file "/var/lib/planet/planet.osh.pbf" do
   action :create_if_missing
-  source "https://planet.openstreetmap.org/pbf/planet-latest.osm.pbf"
+  source "https://planet.openstreetmap.org/pbf/full-history/history-latest.osm.pbf"
   owner "planet"
   group "planet"
   mode "644"

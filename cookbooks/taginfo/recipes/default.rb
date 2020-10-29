@@ -149,7 +149,7 @@ node[:taginfo][:sites].each do |site|
     settings["paths"]["bin_dir"] = "#{directory}/build/src"
     settings["sources"]["download"] = ""
     settings["sources"]["create"] = "db languages projects wiki"
-    settings["sources"]["db"]["planetfile"] = "/var/lib/planet/planet.pbf"
+    settings["sources"]["db"]["planetfile"] = "/var/lib/planet/planet.osh.pbf"
     settings["sources"]["db"]["bindir"] = "#{directory}/build/src"
     settings["tagstats"]["geodistribution"] = "DenseMmapArray"
 

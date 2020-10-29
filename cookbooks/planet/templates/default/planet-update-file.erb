@@ -4,11 +4,13 @@
 
 # setup
 
+SUFFIX="osh.pbf"
+
 PLANETDIR="/var/lib/planet"
-PLANETPREV="${PLANETDIR}/planet-previous.pbf"
-PLANETCURR="${PLANETDIR}/planet.pbf"
-PLANETNEW="${PLANETDIR}/planet-new.pbf"
-PLANETTMP="${PLANETDIR}/planet-tmp.pbf"
+PLANETPREV="${PLANETDIR}/planet-previous.${SUFFIX}"
+PLANETCURR="${PLANETDIR}/planet.${SUFFIX}"
+PLANETNEW="${PLANETDIR}/planet-new.${SUFFIX}"
+PLANETTMP="${PLANETDIR}/planet-tmp.${SUFFIX}"
 
 pyosmium-up-to-date -v -o "$PLANETNEW" "$PLANETCURR"
 retval=$?
