@@ -43,6 +43,7 @@ package %w[
 
 package %w[
   sqlite3
+  sqlite3-pcre
   osmium-tool
   pyosmium
   curl
