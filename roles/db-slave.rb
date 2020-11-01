@@ -9,7 +9,7 @@ default_attributes(
         :hot_standby_feedback => "on",
         :standby_mode => "on",
         :primary_conninfo => {
-          :host => "karm.ams.openstreetmap.org",
+          :host => "snap-01.ams.openstreetmap.org",
           :port => "5432",
           :user => "replication",
           :passwords => { :bag => "db", :item => "passwords" }
