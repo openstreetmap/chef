@@ -89,6 +89,7 @@ action :create do
     cwd mediawiki_directory
     user node[:mediawiki][:user]
     group node[:mediawiki][:group]
+    environment "COMPOSER_HOME" => site_directory
     only_if { ::File.exist?("#{extension_directory}/composer.json") }
     subscribes :run, "git[#{extension_directory}]"
   end

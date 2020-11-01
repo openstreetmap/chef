@@ -125,6 +125,7 @@ action :create do
     cwd mediawiki_directory
     user node[:mediawiki][:user]
     group node[:mediawiki][:group]
+    environment "COMPOSER_HOME" => site_directory
   end
 
   template "#{mediawiki_directory}/composer.local.json" do
