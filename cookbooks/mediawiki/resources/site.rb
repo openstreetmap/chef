@@ -109,7 +109,7 @@ action :create do
 
   git mediawiki_directory do
     action :sync
-    repository "https://gerrit.wikimedia.org/r/p/mediawiki/core.git"
+    repository "https://gerrit.wikimedia.org/r/mediawiki/core.git"
     revision mediawiki_reference
     depth 1
     user node[:mediawiki][:user]
