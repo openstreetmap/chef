@@ -22,7 +22,7 @@ default_action :create
 property :site, :kind_of => String, :name_property => true
 property :aliases, :kind_of => [String, Array]
 property :directory, :kind_of => String
-property :version, :kind_of => String, :default => "1.33"
+property :version, :kind_of => String, :default => "1.34"
 property :database_name, :kind_of => String, :required => true
 property :database_user, :kind_of => String, :required => [:create, :update]
 property :database_password, :kind_of => String, :required => [:create, :update]
