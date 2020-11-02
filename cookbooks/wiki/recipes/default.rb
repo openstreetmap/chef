@@ -33,7 +33,10 @@ mediawiki_site "wiki.openstreetmap.org" do
            "wiki.openstreetmap.pro", "wiki.openstreetmaps.org"]
   directory "/srv/wiki.openstreetmap.org"
 
-  fpm_max_children 25
+  fpm_max_children 50
+  fpm_start_servers 10
+  fpm_min_spare_servers 10
+  fpm_max_spare_servers 20
   fpm_prometheus_port 9253
 
   database_name "wiki"
