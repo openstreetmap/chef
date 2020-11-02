@@ -36,6 +36,7 @@ property :php_admin_values, :kind_of => Hash, :default => {}
 property :php_flags, :kind_of => Hash, :default => {}
 property :php_admin_flags, :kind_of => Hash, :default => {}
 property :reload_fpm, :kind_of => [TrueClass, FalseClass], :default => true
+property :prometheus_port, :kind_of => Integer
 
 action :create do
   template conf_file do
@@ -46,11 +47,30 @@ action :create do
     mode "644"
     variables new_resource.to_hash
   end
+
+  if new_resource.prometheus_port
+    prometheus_exporter "phpfpm" do
+      port new_resource.prometheus_port
+      service service_name
+      command "server"
+      options "--phpfpm.scrape-uri=#{scrape_uri}"
+    end
+  else
+    prometheus_exporter "phpfpm" do
+      action :delete
+      service service_name
+    end
+  end
 end
 
 action :delete do
   file conf_file do
     action :delete
+  end
+
+  prometheus_exporter "phpfpm" do
+    action :delete
+    service service_name
   end
 end
 
@@ -61,6 +81,18 @@ action_class do
 
   def conf_file
     "/etc/php/#{php_version}/fpm/pool.d/#{new_resource.pool}.conf"
+  end
+
+  def service_name
+    "phpfpm-#{new_resource.pool}"
+  end
+
+  def scrape_uri
+    if new_resource.port
+      "tcp://127.0.0.1:#{new_resource.port}/status"
+    else
+      "unix:///run/php/#{new_resource.pool}.sock;/status"
+    end
   end
 end
 

@@ -18,6 +18,7 @@
 #
 
 include_recipe "php"
+include_recipe "prometheus"
 
 package "php-fpm"
 
@@ -32,3 +33,4 @@ end
 service "php#{node[:php][:version]}-fpm" do
   action [:enable, :start]
 end
+

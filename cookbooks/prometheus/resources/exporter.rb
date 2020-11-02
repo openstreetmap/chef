@@ -24,8 +24,10 @@ property :port, :kind_of => Integer, :required => [:create]
 property :listen_switch, :kind_of => String, :default => "web.listen-address"
 property :listen_type, :kind_of => String, :default => "address"
 property :user, :kind_of => String, :default => "root"
+property :command, :kind_of => String
 property :options, :kind_of => [String, Array]
 property :environment, :kind_of => Hash, :default => {}
+property :service, :kind_of => String
 
 action :create do
   systemd_service service_name do
@@ -33,7 +35,7 @@ action :create do
     type "simple"
     user new_resource.user
     environment new_resource.environment
-    exec_start "#{executable_path} #{executable_options}"
+    exec_start "#{executable_path} #{new_resource.command} #{executable_options}"
     private_tmp true
     protect_system "strict"
     protect_home true
@@ -75,7 +77,11 @@ end
 
 action_class do
   def service_name
-    "prometheus-#{new_resource.exporter}-exporter"
+    if new_resource.service
+      "prometheus-#{new_resource.service}-exporter"
+    else
+      "prometheus-#{new_resource.exporter}-exporter"
+    end
   end
 
   def executable_path

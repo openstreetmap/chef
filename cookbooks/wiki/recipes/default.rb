@@ -34,6 +34,7 @@ mediawiki_site "wiki.openstreetmap.org" do
   directory "/srv/wiki.openstreetmap.org"
 
   fpm_max_children 25
+  fpm_prometheus_port 9253
 
   database_name "wiki"
   database_user "wiki-user"

@@ -45,6 +45,7 @@ property :recaptcha_private_key, :kind_of => String
 property :extra_file_extensions, :kind_of => [String, Array], :default => []
 property :fpm_max_children, :kind_of => Integer, :default => 5
 property :fpm_request_terminate_timeout, :kind_of => Integer, :default => 300
+property :fpm_prometheus_port, :kind_of => Integer
 property :reload_apache, :kind_of => [TrueClass, FalseClass], :default => true
 
 action :create do
@@ -527,6 +528,7 @@ action :create do
                "max_execution_time" => "240",
                "upload_max_filesize" => "70M",
                "post_max_size" => "100M"
+    prometheus_port new_resource.fpm_prometheus_port
   end
 
   apache_site new_resource.site do
