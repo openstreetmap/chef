@@ -190,3 +190,10 @@ cron_d "letencrypt-check" do
   command "/srv/acme.openstreetmap.org/bin/check-certificates"
   mailto "admins@openstreetmap.org"
 end
+
+template "/etc/logrotate.d/letsencrypt" do
+  source "logrotate.erb"
+  owner "root"
+  group "root"
+  mode "644"
+end
