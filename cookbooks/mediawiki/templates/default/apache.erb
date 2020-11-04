@@ -32,6 +32,8 @@
 
   DocumentRoot <%= @directory %>
 
+  ProxyTimeout 300
+
   RewriteCond %{SERVER_NAME} !=<%= @name %>
   RewriteRule ^/(.*)$ https://<%= @name %>/$1 [R=permanent]
 
