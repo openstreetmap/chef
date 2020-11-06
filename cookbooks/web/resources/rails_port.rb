@@ -322,7 +322,7 @@ action :create do
     "storage_service",
     "storage_url",
     "tile_cdn_url"
-  ).reject { |_k, v| v.nil? }.merge(
+  ).compact.merge(
     "server_protocol" => "https",
     "server_url" => new_resource.site,
     "support_email" => "support@openstreetmap.org",
