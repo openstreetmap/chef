@@ -4,6 +4,7 @@
 
 /usr/bin/certbot certonly \
     --non-interactive \
+    --preferred-chain "DST Root CA X3" \
     --config-dir /srv/acme.openstreetmap.org/config \
     --work-dir /srv/acme.openstreetmap.org/work \
     --logs-dir /srv/acme.openstreetmap.org/logs \
