@@ -17,20 +17,23 @@
 # limitations under the License.
 #
 
+require "yaml"
+
 include_recipe "accounts"
 include_recipe "osmosis"
 
 db_passwords = data_bag_item("db", "passwords")
 
-package "postgresql-client"
-
-package "ruby"
-package "ruby-dev"
-package "ruby-libxml"
-
-package "make"
-package "gcc"
-package "libpq-dev"
+package %w[
+  postgresql-client
+  ruby
+  ruby-dev
+  ruby-libxml
+  make
+  gcc
+  libpq-dev
+  osmdbt
+]
 
 gem_package "pg"
 
@@ -121,6 +124,25 @@ directory "/store/planet/replication/minute" do
   mode "755"
 end
 
+directory "/store/planet/replication/test" do
+  owner "planet"
+  group "planet"
+  mode "755"
+end
+
+directory "/store/planet/replication/test/minute" do
+  owner "planet"
+  group "planet"
+  mode "755"
+end
+
+systemd_tmpfile "/run/replication" do
+  type "d"
+  owner "planet"
+  group "planet"
+  mode "755"
+end
+
 directory "/etc/replication" do
   owner "root"
   group "root"
@@ -141,6 +163,27 @@ template "/etc/replication/auth.conf" do
   variables :password => db_passwords["planetdiff"]
 end
 
+osmdbt_config = {
+  "database" => {
+    "host" => node[:web][:database_host],
+    "dbname" => "openstreetmap",
+    "user" => "planetdiff",
+    "password" => db_passwords["planetdiff"],
+    "replication_slot" => "osmdbt"
+  },
+  "log_dir" => "/var/lib/replication/minute",
+  "changes_dir" => "/store/planet/replication/test/minute",
+  "tmp_dir" => "/tmp",
+  "run_dir" => "/run/replication"
+}
+
+file "/etc/replication/osmdbt-config.yaml" do
+  user "root"
+  group "planet"
+  mode "640"
+  content YAML.dump(osmdbt_config)
+end
+
 template "/etc/replication/changesets.conf" do
   source "changesets.conf.erb"
   user "root"
@@ -158,6 +201,12 @@ template "/etc/replication/users-agreed.conf" do
 end
 
 directory "/var/lib/replication" do
+  owner "planet"
+  group "planet"
+  mode "755"
+end
+
+directory "/var/lib/replication/minute" do
   owner "planet"
   group "planet"
   mode "755"
