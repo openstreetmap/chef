@@ -1,0 +1,10 @@
+#!/bin/sh
+
+set -e
+
+cd /etc/replication
+
+osmdbt-catchup --quiet
+osmdbt-get-log --quiet
+osmdbt-catchup --quiet
+osmdbt-create-diff --quiet

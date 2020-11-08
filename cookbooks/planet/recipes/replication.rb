@@ -66,6 +66,13 @@ remote_directory "/usr/local/bin" do
   files_mode "755"
 end
 
+template "/usr/local/bin/replicate-minute" do
+  source "replicate-minute.erb"
+  owner "root"
+  group "root"
+  mode "755"
+end
+
 template "/usr/local/bin/users-agreed" do
   source "users-agreed.erb"
   owner "root"
@@ -184,6 +191,19 @@ file "/etc/replication/osmdbt-config.yaml" do
   content YAML.dump(osmdbt_config)
 end
 
+systemd_service "replication-minutely" do
+  description "Minutely replication"
+  user "planet"
+  working_directory "/etc/replication"
+  exec_start "/usr/local/bin/replicate-minute"
+  private_tmp true
+  private_devices true
+  protect_system "full"
+  protect_home true
+  restrict_address_families %w[AF_INET AF_INET6]
+  no_new_privileges true
+end
+
 template "/etc/replication/changesets.conf" do
   source "changesets.conf.erb"
   user "root"
@@ -269,6 +289,12 @@ if node[:planet][:replication] == "enabled"
     user "planet"
     command "/usr/local/bin/replicate-changesets /etc/replication/changesets.conf"
     mailto "zerebubuth@gmail.com"
+  end
+
+  systemd_timer "replication-minutely" do
+    description "Minutely replication"
+    on_boot_sec 60
+    on_unit_active_sec 60
   end
 
   cron_d "replication-minutely" do
