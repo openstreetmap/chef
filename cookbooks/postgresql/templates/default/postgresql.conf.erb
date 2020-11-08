@@ -86,6 +86,7 @@ archive_command = '<%= @settings[:archive_command] || @defaults[:archive_command
 # - Sending Server(s) -
 
 max_wal_senders = <%= @settings[:max_wal_senders] || @defaults[:max_wal_senders] %>
+max_replication_slots = <%= @settings[:max_replication_slots] || @defaults[:max_replication_slots] %>
 
 # - Standby Servers -
 

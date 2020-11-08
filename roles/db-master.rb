@@ -5,10 +5,11 @@ default_attributes(
   :postgresql => {
     :settings => {
       :defaults => {
-        :wal_level => "hot_standby",
+        :wal_level => "logical",
         :archive_mode => "on",
         :archive_command => "/usr/local/bin/openstreetmap-wal-e --terse wal-push %p",
         :max_wal_senders => "3",
+        :max_replication_slots => "1",
         :late_authentication_rules => [
           { :database => "replication", :user => "replication", :address => "10.0.48.49/32" },
           { :database => "replication", :user => "replication", :address => "10.0.48.50/32" },
