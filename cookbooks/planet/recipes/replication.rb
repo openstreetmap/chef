@@ -216,6 +216,12 @@ systemd_service "replication-minutely" do
   no_new_privileges true
 end
 
+systemd_timer "replication-minutely" do
+  description "Minutely replication"
+  on_boot_sec 60
+  on_unit_active_sec 60
+end
+
 template "/etc/replication/changesets.conf" do
   source "changesets.conf.erb"
   user "root"
@@ -303,10 +309,8 @@ if node[:planet][:replication] == "enabled"
     mailto "zerebubuth@gmail.com"
   end
 
-  systemd_timer "replication-minutely" do
-    description "Minutely replication"
-    on_boot_sec 60
-    on_unit_active_sec 60
+  service "replication-minutely.timer" do
+    action [:enable, :start]
   end
 
   cron_d "replication-minutely" do
@@ -342,6 +346,10 @@ else
 
   cron_d "replication-changesets" do
     action :delete
+  end
+
+  service "replication-minutely.timer" do
+    action [:stop, :disable]
   end
 
   cron_d "replication-minutely" do
