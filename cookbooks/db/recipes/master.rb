@@ -49,6 +49,7 @@ end
 postgresql_user "planetdiff" do
   cluster node[:db][:cluster]
   password passwords["planetdiff"]
+  replication true
 end
 
 postgresql_user "backup" do
