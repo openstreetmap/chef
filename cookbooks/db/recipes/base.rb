@@ -77,6 +77,58 @@ link "/usr/lib/postgresql/#{db_version}/lib/libpgosm.so" do
   group "root"
 end
 
+package %w[
+  cmake
+  libosmium2-dev
+  libprotozero-dev
+  libboost-filesystem-dev
+  libboost-program-options-dev
+  libbz2-dev
+  zlib1g-dev
+  libexpat1-dev
+  libyaml-cpp-dev
+  libpqxx-dev
+]
+
+git "/opt/osmdbt" do
+  action :sync
+  repository "https://github.com/openstreetmap/osmdbt.git"
+  revision "master"
+  depth 1
+  user "root"
+  group "root"
+end
+
+directory "/opt/osmdbt/build-#{db_version}" do
+  owner "root"
+  group "root"
+  mode "755"
+end
+
+execute "/opt/osmdbt/CMakeLists.txt" do
+  action :nothing
+  command "cmake -DPG_CONFIG=/usr/lib/postgresql/#{db_version}/bin/pg_config .."
+  cwd "/opt/osmdbt/build-#{db_version}"
+  user "root"
+  group "root"
+  subscribes :run, "git[/opt/osmdbt]"
+end
+
+execute "/opt/osmdbt/build-#{db_version}/postgresql-plugin/Makefile" do
+  action :nothing
+  command "make"
+  cwd "/opt/osmdbt/build-#{db_version}/postgresql-plugin"
+  user "root"
+  group "root"
+  subscribes :run, "execute[/opt/osmdbt/CMakeLists.txt]"
+end
+
+link "/usr/lib/postgresql/#{db_version}/lib/osm-logical.so" do
+  to "/opt/osmdbt/build-#{db_version}/postgresql-plugin/osm-logical.so"
+  owner "root"
+  group "root"
+end
+
 package "lzop"
 
 python_package "wal-e" do
