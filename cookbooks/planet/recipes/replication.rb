@@ -143,6 +143,18 @@ directory "/store/planet/replication/test/minute" do
   mode "755"
 end
 
+directory "/store/replication" do
+  owner "planet"
+  group "planet"
+  mode "755"
+end
+
+directory "/store/replication/minute" do
+  owner "planet"
+  group "planet"
+  mode "755"
+end
+
 systemd_tmpfile "/run/replication" do
   type "d"
   owner "planet"
@@ -180,7 +192,7 @@ osmdbt_config = {
   },
   "log_dir" => "/var/lib/replication/minute",
   "changes_dir" => "/store/planet/replication/test/minute",
-  "tmp_dir" => "/tmp",
+  "tmp_dir" => "/store/replication/minute",
   "run_dir" => "/run/replication"
 }
 
