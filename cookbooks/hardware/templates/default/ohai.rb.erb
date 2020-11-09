@@ -287,7 +287,7 @@ Ohai.plugin(:Hardware) do
     disk = nil
 
     IO.popen(%w(ssacli controller all show config detail)).each do |line|
-      if line =~ /^Smart Array (\S+) /
+      if line =~ /^Smart (?:Array|HBA) (\S+) /
         controller = {
           :id => devices[:controllers].count,
           :model => Regexp.last_match(1),
@@ -303,6 +303,7 @@ Ohai.plugin(:Hardware) do
         disk = nil
       elsif controller && line =~ /^   (\S.*):\s+(.*)$/
         case Regexp.last_match(1)
+        when "Slot" then controller[:slot] = Regexp.last_match(2)
         when "Serial Number" then controller[:serial_number] = Regexp.last_match(2)
         when "Hardware Revision" then controller[:hardware_version] = Regexp.last_match(2)
         when "Firmware Version" then controller[:firmware_version] = Regexp.last_match(2)
@@ -320,15 +321,12 @@ Ohai.plugin(:Hardware) do
         controller[:arrays] << array[:id]
 
         disk = nil
-      elsif controller && line =~ /^      physicaldrive (\S+) /
-        disks << Regexp.last_match(1)
       elsif array && line =~ /^      physicaldrive (\S+)$/
         disk = {
           :id => devices[:disks].count,
           :controller => controller[:id],
           :arrays => [array[:id]],
-          :location => Regexp.last_match(1),
-          :smart_device => "cciss,#{disks.find_index(Regexp.last_match(1))}"
+          :location => Regexp.last_match(1)
         }
 
         devices[:disks] << disk
@@ -355,6 +353,14 @@ Ohai.plugin(:Hardware) do
     end
 
     controllers.each do |controller|
+      slot = controller[:slot]
+
+      IO.popen(%W(ssacli controller slot=#{slot} pd all show status)).each do |line|
+        if line =~ /^   physicaldrive (\S+) /
+          disks << Regexp.last_match(1)
+        end
+      end
+
       if device = Dir.glob("/sys/bus/pci/devices/#{controller[:pci_slot]}/cciss*").first
         controller[:device] = File.basename(device).sub(/^cciss(\d+)$/, "/dev/cciss/c\\1d0")
       elsif device = Dir.glob("/sys/bus/pci/devices/#{controller[:pci_slot]}/host*/target*:3:0/*:3:0:0/scsi_generic/sg*").first
@@ -362,6 +368,10 @@ Ohai.plugin(:Hardware) do
       elsif device = Dir.glob("/sys/bus/pci/devices/#{controller[:pci_slot]}/host*/target*:1:0/*:1:0:*/scsi_generic/sg*").first
         controller[:device] = "/dev/#{File.basename(device)}"
       end
+    end
+
+    devices[:disks].each do |disk|
+     disk[:smart_device] = "cciss,#{disks.find_index(disk[:location])}"
     end
   end
 
