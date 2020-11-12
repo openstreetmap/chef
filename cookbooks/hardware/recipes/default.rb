@@ -453,6 +453,18 @@ if disks.count.positive?
     subscribes :restart, "template[/etc/default/smartmontools]"
   end
 
+  template "/etc/prometheus/collectors/smart.devices" do
+    source "smart.devices.erb"
+    owner "root"
+    group "root"
+    mode "644"
+    variables :disks => disks
+  end
+
+  prometheus_collector "smart" do
+    interval "15m"
+  end
+
   # Don't try and do munin monitoring of disks behind
   # an Areca controller as they only allow one thing to
   # talk to the controller at a time and smartd will
@@ -465,18 +477,6 @@ if disks.count.positive?
       conf "munin.smart.erb"
       conf_variables :disk => disk
     end
-  end
-
-  template "/etc/prometheus/collectors/smart.devices" do
-    source "smart.devices.erb"
-    owner "root"
-    group "root"
-    mode "644"
-    variables :disks => disks
-  end
-
-  prometheus_collector "smart" do
-    interval "15m"
   end
 else
   service "smartd" do
