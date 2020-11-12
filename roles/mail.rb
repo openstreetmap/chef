@@ -47,7 +47,8 @@ default_attributes(
       }
     },
     :dkim_selectors => {
-      "openstreetmap.org" => "20200301"
+      "openstreetmap.org" => "20200301",
+      "osmfoundation.org" => "20201112"
     },
     :aliases => {
       "abuse" => "root",
