@@ -24,7 +24,7 @@ property :domains, [String, Array], :required => [:create]
 
 action :create do
   node.default[:letsencrypt][:certificates][new_resource.certificate] = {
-    :domains => Array(new_resource.domains)
+    :domains => domains
   }
 
   if letsencrypt
@@ -53,7 +53,7 @@ action :create do
       force_unlink true
     end
   else
-    alt_names = new_resource.domains.collect { |domain| "DNS:#{domain}" }
+    alt_names = domains.collect { |domain| "DNS:#{domain}" }
 
     openssl_x509_certificate "/etc/ssl/certs/#{new_resource.certificate}.pem" do
       key_file "/etc/ssl/private/#{new_resource.certificate}.key"
@@ -62,7 +62,7 @@ action :create do
       mode "640"
       org "OpenStreetMap"
       email "operations@osmfoundation.org"
-      common_name new_resource.domains.first
+      common_name domains.first
       subject_alt_name alt_names
       extensions "keyUsage" => { "values" => %w[digitalSignature keyEncipherment], "critical" => true },
                  "extendedKeyUsage" => { "values" => %w[serverAuth clientAuth], "critical" => true }
@@ -83,5 +83,9 @@ end
 action_class do
   def letsencrypt
     @letsencrypt ||= search(:letsencrypt, "id:#{new_resource.certificate}").first
+  end
+
+  def domains
+    Array(new_resource.domains)
   end
 end
