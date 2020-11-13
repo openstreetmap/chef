@@ -41,9 +41,9 @@ default_attributes(
       :parameters => {
         "net.core.rmem_max" => "16777216",
         "net.core.wmem_max" => "16777216",
-        "net.ipv4.tcp_rmem" => "4096\t87380\t16777216",
-        "net.ipv4.tcp_wmem" => "4096\t65536\t16777216",
-        "net.ipv4.udp_mem" => "3145728\t4194304\t16777216"
+        "net.ipv4.tcp_rmem" => "4096 87380 16777216",
+        "net.ipv4.tcp_wmem" => "4096 65536 16777216",
+        "net.ipv4.udp_mem" => "3145728 4194304 16777216"
       }
     },
     :network_backlog => {
