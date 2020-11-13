@@ -145,7 +145,8 @@ default_attributes(
       },
       "12" => {
         :port => "5432",
-        :wal_level => "logical"
+        :wal_level => "logical",
+        :max_replication_slots => "1"
       }
     }
   },
