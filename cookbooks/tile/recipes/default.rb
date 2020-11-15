@@ -46,7 +46,13 @@ ssl_certificate node[:fqdn] do
   notifies :reload, "service[apache2]"
 end
 
+remote_file "#{Chef::Config[:file_cache_path]}/fastly-ip-list.json" do
+  source "https://api.fastly.com/public-ip-list"
+  compile_time true
+end
+
 tilecaches = search(:node, "roles:tilecache").sort_by { |n| n[:hostname] }
+fastlyips = JSON.parse(IO.read("#{Chef::Config[:file_cache_path]}/fastly-ip-list.json"))
 
 apache_site "default" do
   action [:disable]
@@ -54,7 +60,7 @@ end
 
 apache_site "tile.openstreetmap.org" do
   template "apache.erb"
-  variables :caches => tilecaches
+  variables :caches => tilecaches, :fastly => fastlyips["addresses"]
 end
 
 template "/etc/logrotate.d/apache2" do
