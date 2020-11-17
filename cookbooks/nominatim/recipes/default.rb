@@ -102,7 +102,7 @@ directory "#{basedir}/tablespaces" do
   mode "700"
 end
 
-# Note: tablespaces must be exactly in the same location on each
+# NOTE: tablespaces must be exactly in the same location on each
 #       Nominatim instance when replication is in use. Therefore
 #       use symlinks to canonical directory locations.
 node[:nominatim][:tablespaces].each do |name, location|
