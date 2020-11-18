@@ -26,6 +26,10 @@ mediawiki_site "wiki.osmfoundation.org" do
            "foundation.openstreetmap.org", "foundation.osm.org"]
   sitename "OpenStreetMap Foundation"
   directory "/srv/wiki.osmfoundation.org"
+  fpm_max_children 20
+  fpm_start_servers 5
+  fpm_min_spare_servers 5
+  fpm_max_spare_servers 10
   fpm_prometheus_port 11001
   database_name "osmf-wiki"
   database_user "osmf-wikiuser"
