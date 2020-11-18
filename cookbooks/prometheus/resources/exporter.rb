@@ -56,7 +56,9 @@ action :create do
     only_if { node[:prometheus][:mode] == "external" }
   end
 
-  node.default[:prometheus][:exporters][new_resource.exporter] = listen_address
+  node.default[:prometheus][:exporters][new_resource.port] = {
+    :name => new_resource.exporter, :address => listen_address
+  }
 end
 
 action :delete do

@@ -44,12 +44,17 @@ search(:node, "recipes:prometheus\\:\\:default").sort_by(&:name).each do |client
     }
   end
 
-  client[:prometheus][:exporters].each do |name, addresses|
-    jobs[name] ||= []
-
-    Array(addresses).each do |address|
-      jobs[name] << { :address => address, :name => client.name }
+  client[:prometheus][:exporters].each do |key, exporter|
+    if exporter.is_a?(Hash)
+      name = exporter[:name]
+      address = exporter[:address]
+    else
+      name = key
+      address = exporter
     end
+
+    jobs[name] ||= []
+    jobs[name] << { :address => address, :name => client.name }
   end
 end
 
