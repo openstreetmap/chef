@@ -6,4 +6,6 @@ description       "Installs and configures mysql"
 
 version           "1.0.0"
 supports          "ubuntu"
+depends           "chef"
 depends           "munin"
+depends           "prometheus"
