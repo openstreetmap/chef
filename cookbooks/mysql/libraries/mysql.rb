@@ -133,6 +133,12 @@ module OpenStreetMap
       case privilege
       when :grant
         "GRANT OPTION"
+      when :show_db
+        "SHOW DATABASES"
+      when :repl_slave
+        "REPLICATION SLAVE"
+      when :repl_client
+        "REPLICATION CLIENT"
       when :create_tmp_table
         "CREATE TEMPORARY TABLES"
       else
