@@ -29,6 +29,12 @@ property :database_user, :kind_of => String, :required => [:create]
 property :database_password, :kind_of => String, :required => [:create]
 property :database_prefix, :kind_of => String, :default => "wp_"
 property :urls, :kind_of => Hash, :default => {}
+property :fpm_max_children, :kind_of => Integer, :default => 5
+property :fpm_start_servers, :kind_of => Integer, :default => 2
+property :fpm_min_spare_servers, :kind_of => Integer, :default => 1
+property :fpm_max_spare_servers, :kind_of => Integer, :default => 3
+property :fpm_request_terminate_timeout, :kind_of => Integer, :default => 300
+property :fpm_prometheus_port, :kind_of => Integer
 property :reload_apache, :kind_of => [TrueClass, FalseClass], :default => true
 
 action :create do
@@ -131,10 +137,16 @@ action :create do
   end
 
   php_fpm new_resource.site do
+    pm_max_children new_resource.fpm_max_children
+    pm_start_servers new_resource.fpm_start_servers
+    pm_min_spare_servers new_resource.fpm_min_spare_servers
+    pm_max_spare_servers new_resource.fpm_max_spare_servers
+    request_terminate_timeout new_resource.fpm_request_terminate_timeout
     php_admin_values "open_basedir" => "#{site_directory}/:/usr/share/php/:/tmp/",
                      "disable_functions" => "exec,shell_exec,system,passthru,popen,proc_open"
     php_values "upload_max_filesize" => "70M",
                "post_max_size" => "100M"
+    prometheus_port new_resource.fpm_prometheus_port
   end
 
   apache_site new_resource.site do
