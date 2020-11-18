@@ -83,6 +83,7 @@ end
 php_fpm "donate.openstreetmap.org" do
   php_admin_values "open_basedir" => "/srv/donate.openstreetmap.org/:/usr/share/php/:/tmp/",
                    "disable_functions" => "exec,shell_exec,system,passthru,popen,proc_open"
+  prometheus_port 11101
 end
 
 apache_site "donate.openstreetmap.org" do

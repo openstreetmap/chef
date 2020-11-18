@@ -47,6 +47,7 @@ end
 php_fpm "dmca.openstreetmap.org" do
   php_admin_values "open_basedir" => "/srv/dmca.openstreetmap.org/html/:/usr/share/php/:/tmp/",
                    "disable_functions" => "exec,shell_exec,system,passthru,popen,proc_open"
+  prometheus_port 11201
 end
 
 apache_site "dmca.openstreetmap.org" do

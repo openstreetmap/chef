@@ -38,6 +38,7 @@ wordpress_site "blog.openstreetmap.org" do
   urls "/casts" => "/srv/blog.openstreetmap.org/casts",
        "/images" => "/srv/blog.openstreetmap.org/images",
        "/static" => "/srv/blog.openstreetmap.org/static"
+  fpm_prometheus_port 11401
 end
 
 wordpress_theme "blog.openstreetmap.org-osmblog-wp-theme" do

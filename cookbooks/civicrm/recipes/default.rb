@@ -49,6 +49,7 @@ wordpress_site "join.osmfoundation.org" do
   database_name "civicrm"
   database_user "civicrm"
   database_password database_password
+  fpm_prometheus_port 11301
 end
 
 wordpress_theme "osmblog-wp-theme" do

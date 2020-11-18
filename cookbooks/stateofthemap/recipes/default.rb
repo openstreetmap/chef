@@ -55,6 +55,7 @@ wordpress_site "2007.stateofthemap.org" do
   database_user "sotm2007"
   database_password passwords["sotm2007"]
   database_prefix "wp_sotm_"
+  fpm_prometheus_port 12007
 end
 
 wordpress_theme "2007.stateofthemap.org-refreshwp-11" do
@@ -82,6 +83,7 @@ wordpress_site "2008.stateofthemap.org" do
   database_user "sotm2008"
   database_password passwords["sotm2008"]
   database_prefix "wp_sotm08_"
+  fpm_prometheus_port 12008
 end
 
 wordpress_theme "2008.stateofthemap.org-refreshwp-11" do
@@ -120,6 +122,7 @@ wordpress_site "2009.stateofthemap.org" do
   urls "/register" => "/srv/2009.stateofthemap.org/register",
        "/register-pro-user" => "/srv/2009.stateofthemap.org/register-pro-user",
        "/podcasts" => "/srv/2009.stateofthemap.org/podcasts"
+  fpm_prometheus_port 12009
 end
 
 wordpress_theme "2009.stateofthemap.org-aerodrome" do
@@ -156,6 +159,7 @@ wordpress_site "2010.stateofthemap.org" do
   database_user "sotm2010"
   database_password passwords["sotm2010"]
   urls "/register" => "/srv/2010.stateofthemap.org/register"
+  fpm_prometheus_port 12010
 end
 
 wordpress_theme "2010.stateofthemap.org-aerodrome" do
@@ -199,6 +203,7 @@ wordpress_site "2011.stateofthemap.org" do
   database_user "sotm2011"
   database_password passwords["sotm2011"]
   urls "/register" => "/srv/2011.stateofthemap.org/register"
+  fpm_prometheus_port 12011
 end
 
 wordpress_theme "2011.stateofthemap.org-aerodrome" do
@@ -242,6 +247,7 @@ wordpress_site "2012.stateofthemap.org" do
   database_user "sotm2012"
   database_password passwords["sotm2012"]
   urls "/register" => "/srv/2012.stateofthemap.org/register"
+  fpm_prometheus_port 12012
 end
 
 wordpress_theme "2012.stateofthemap.org-aerodrome" do

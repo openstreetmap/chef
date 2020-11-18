@@ -25,6 +25,7 @@ mediawiki_site "mwg.osmfoundation.org" do
   sitename "OSMF Membership Working Group Wiki"
   metanamespace "OSMFMWG"
   directory "/srv/mwg.osmfoundation.org"
+  fpm_prometheus_port 11003
   database_name "mwg_wiki"
   database_user "mwg_wikiuser"
   database_password passwords["mwg"]["database"]
