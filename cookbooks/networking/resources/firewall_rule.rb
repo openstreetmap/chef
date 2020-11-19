@@ -33,6 +33,8 @@ property :rate_limit, :kind_of => String, :default => "-"
 property :connection_limit, :kind_of => [String, Integer], :default => "-"
 property :helper, :kind_of => String, :default => "-"
 
+property :compile_time, TrueClass, :default => true
+
 action :accept do
   add_rule :accept
 end
