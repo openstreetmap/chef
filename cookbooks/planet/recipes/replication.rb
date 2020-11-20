@@ -220,6 +220,7 @@ systemd_timer "replication-minutely" do
   description "Minutely replication"
   on_boot_sec 60
   on_unit_active_sec 60
+  accuracy_sec 5
 end
 
 template "/etc/replication/changesets.conf" do
