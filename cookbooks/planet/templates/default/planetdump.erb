@@ -79,7 +79,6 @@ function mk_torrent {
   type="$1"
   format="$2"
   web_dir="$3"
-  disk_dir="$4"
   name="${type}-${date}.osm.${format}"
   web_path="${web_dir}/${name}"
 
@@ -96,8 +95,6 @@ function mk_torrent {
      -w https://planet.openstreetmap.org/${web_path} \
      -c "OpenStreetMap planet database dump, licensed under https://opendatacommons.org/licenses/odbl/ by OpenStreetMap contributors" \
      -o ${name}.torrent
-
-  mv "${name}.torrent" "${disk_dir}"
 }
 
 # Function to install a dump in place
@@ -111,15 +108,16 @@ function install_dump {
 
   md5sum "${name}" > "${name}.md5"
   mkdir -p "${dir}/${year}"
+  test -f "${name}.torrent" && mv "${name}.torrent" "${dir}/${year}"
   mv "${name}" "${name}.md5" "${dir}/${year}"
   ln -sf "${year:-.}/${name}" "${dir}/${latest}"
   rm -f "${dir}/${latest}.md5"
   sed -e "s/${name}/${latest}/" "${dir}/${year}/${name}.md5" > "${dir}/${latest}.md5"
 }
 
-# Create torrent files and move them into place
-mk_torrent "planet" "pbf" "pbf" "<%= node[:planet][:dump][:pbf_directory] %>"
-mk_torrent "history" "pbf" "pbf/full-history" "<%= node[:planet][:dump][:pbf_history_directory] %>"
+# Create *.torrent files
+mk_torrent "planet" "pbf" "pbf"
+mk_torrent "history" "pbf" "pbf/full-history"
 
 # Move dumps into place
 install_dump "changesets" "bz2" "<%= node[:planet][:dump][:xml_directory] %>" "${year}"
