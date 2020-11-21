@@ -103,10 +103,10 @@ function mk_torrent {
 
 # Function to create RSS/Atom feed for .torrent files
 function mk_rss {
-  type="$1"		# fixme "history" / "planet"
-  format="$2"		# fixme "pbf"
-  web_dir="$3"		# fixme "pbf/full-history" or "pbf"
-  disk_dir="$4"		# fixme "/store/planet/pbf/full-history"
+  type="$1"
+  format="$2"
+  web_dir="$3"
+  disk_dir="$4"
   old_pwd="$PWD"
   rss_name="${type}-${format}-rss.xml"
   rss_path="${old_pwd}/${rss_name}"
@@ -117,12 +117,12 @@ function mk_rss {
 
   # RSS header
   printf '%s\n' \
-     '<?xml version="1.0" encoding="utf-8"?>' \
-     '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">' \
+     '<?xml version="1.0" encoding="UTF-8"?>' \
+     '<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom">' \
      '<channel>' > "${rss_path}"
   cat >> "${rss_path}" <<__EOF
-     <title>OpenStreetMap planet torrent RSS</title>
-     <link>${rss_baseurl}</link>
+     <title>OpenStreetMap ${type} torrent RSS</title>
+     <link>${rss_dirurl}</link>
      <atom:link href="${rss_dirurl}/${rss_name}" rel="self" type="application/rss+xml" />
      <description>RSS feed for ${type}.osm.${format}.torrent</description>
      <language>en-us</language>
@@ -134,20 +134,20 @@ __EOF
   do
     cat >> "${rss_path}" <<__EOF
      <item>
-        <title>$tf</title>
-        <guid>${rss_dirurl}/$tf</guid>
-        <pubDate>`date -R -r $tf`</pubDate>
+        <title>${tf}</title>
+        <guid>${rss_dirurl}/${tf}</guid>
+        <pubDate>`date -R -r ${tf}`</pubDate>
         <category>OpenStreetMap</category>
-        <link>${rss_dirurl}/$tf</link>
-        <enclosure url="${rss_dirurl}/$tf" length="`find -maxdepth 1 -name ${tf%.torrent} -printf "%s"`" type="application/x-bittorrent" />
-        <description>OSM Torrent $tf (torrent size: `find -maxdepth 1 -name $tf -printf "%s"`)</description>
+        <link>${rss_dirurl}/${tf}</link>
+        <enclosure url="${rss_dirurl}/${tf}" length="`find -maxdepth 1 -name ${tf%.torrent} -printf "%s"`" type="application/x-bittorrent" />
+        <description>OSM Torrent ${tf} (torrent size: `find -maxdepth 1 -name ${tf} -printf "%s"`)</description>
      </item>
 __EOF
   done
 
   # RSS footer
   printf '</channel>\n</rss>\n' >> "${rss_path}"
-  cd "$old_pwd"
+  cd "${old_pwd}"
   mv "${rss_path}" "${disk_dir}"
 }
 
