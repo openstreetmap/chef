@@ -71,6 +71,10 @@ wordpress_plugin "contact-form-7" do
   site "join.osmfoundation.org"
 end
 
+wordpress_plugin "civicrm-admin-utilities" do
+  site "join.osmfoundation.org"
+end
+
 civicrm_version = node[:civicrm][:version]
 civicrm_directory = "/srv/join.osmfoundation.org/wp-content/plugins/civicrm"
 
