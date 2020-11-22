@@ -31,3 +31,7 @@ default[:civicrm][:extensions][:username][:revision] = "master"
 default[:civicrm][:extensions][:donotsendreportemail][:name] = "org.civicrm.donotsendreportemail"
 default[:civicrm][:extensions][:donotsendreportemail][:repository] = "https://github.com/pradpnayak/org.civicrm.donotsendreportemail.git"
 default[:civicrm][:extensions][:donotsendreportemail][:revision] = "3b31c2e0c62183872c7ecd244395fb8dcfbd5dbb"
+
+default[:civicrm][:extensions][:shoreditch][:name] = "org.civicrm.shoreditch"
+default[:civicrm][:extensions][:shoreditch][:repository] = "https://github.com/civicrm/org.civicrm.shoreditch.git"
+default[:civicrm][:extensions][:shoreditch][:revision] = "1.0.0-beta.1"
