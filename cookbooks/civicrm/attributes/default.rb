@@ -2,7 +2,7 @@ default[:civicrm][:version] = "5.31.0"
 
 default[:civicrm][:extensions][:cividiscount][:name] = "org.civicrm.module.cividiscount"
 default[:civicrm][:extensions][:cividiscount][:repository] = "https://github.com/dlobo/org.civicrm.module.cividiscount.git"
-default[:civicrm][:extensions][:cividiscount][:revision] = "3.8.1"
+default[:civicrm][:extensions][:cividiscount][:revision] = "3.8.2"
 
 default[:civicrm][:extensions][:osm][:name] = "de.systopia.osm"
 default[:civicrm][:extensions][:osm][:repository] = "https://github.com/systopia/de.systopia.osm.git"
