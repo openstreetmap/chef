@@ -74,6 +74,33 @@ time nice -n 19 /opt/planet-dump-ng/planet-dump-ng \
      -x "planet-${date}.osm.bz2" -X "history-${date}.osm.bz2" \
      -p "planet-${date}.osm.pbf" -P "history-${date}.osm.pbf"
 
+# Function to create bittorrent files
+function mk_torrent {
+  type="$1"
+  format="$2"
+  web_dir="$3"
+  name="${type}-${date}.osm.${format}"
+  web_path="${web_dir}/${name}"
+
+  mktorrent -l 22 ${name} \
+     -a udp://tracker.opentrackr.org:1337 \
+     -a udp://tracker.datacenterlight.ch:6969/announce,http://tracker.datacenterlight.ch:6969/announce \
+     -a udp://tracker.torrent.eu.org:451 \
+     -a udp://tracker-udp.gbitt.info:80/announce,http://tracker.gbitt.info/announce,https://tracker.gbitt.info/announce \
+     -a http://retracker.local/announce \
+     -w https://planet.openstreetmap.org/${web_path} \
+     -w https://ftp5.gwdg.de/pub/misc/openstreetmap/planet.openstreetmap.org/${web_path} \
+     -w https://ftpmirror.your.org/pub/openstreetmap/${web_path} \
+     -w https://mirror.init7.net/openstreetmap/${web_path} \
+     -w https://free.nchc.org.tw/osm.planet/${web_path} \
+     -w https://ftp.fau.de/osm-planet/${web_path} \
+     -w https://ftp.spline.de/pub/openstreetmap/${web_path} \
+     -w https://osm.openarchive.site/${name} \
+     -w https://downloads.opencagedata.com/planet/${name} \
+     -c "OpenStreetMap ${type} data export, licensed under https://opendatacommons.org/licenses/odbl/ by OpenStreetMap contributors" \
+     -o ${name}.torrent
+}
+
 # Function to install a dump in place
 function install_dump {
   type="$1"
@@ -85,11 +112,20 @@ function install_dump {
 
   md5sum "${name}" > "${name}.md5"
   mkdir -p "${dir}/${year}"
+  test -f "${name}.torrent" && mv "${name}.torrent" "${dir}/${year}"
   mv "${name}" "${name}.md5" "${dir}/${year}"
   ln -sf "${year:-.}/${name}" "${dir}/${latest}"
   rm -f "${dir}/${latest}.md5"
   sed -e "s/${name}/${latest}/" "${dir}/${year}/${name}.md5" > "${dir}/${latest}.md5"
 }
+
+# Create *.torrent files
+mk_torrent "changesets" "bz2" "planet/${year}"
+mk_torrent "discussions" "bz2" "planet/${year}"
+mk_torrent "planet" "bz2" "planet/${year}"
+mk_torrent "history" "bz2" "planet/full-history/${year}"
+mk_torrent "planet" "pbf" "pbf"
+mk_torrent "history" "pbf" "pbf/full-history"
 
 # Move dumps into place
 install_dump "changesets" "bz2" "<%= node[:planet][:dump][:xml_directory] %>" "${year}"
@@ -100,4 +136,12 @@ install_dump "planet" "pbf" "<%= node[:planet][:dump][:pbf_directory] %>"
 install_dump "history" "pbf" "<%= node[:planet][:dump][:pbf_history_directory] %>"
 
 # Remove pbf dumps older than 90 days
-find "<%= node[:planet][:dump][:pbf_directory] %>" "<%= node[:planet][:dump][:pbf_history_directory] %>" -maxdepth 1 -mindepth 1 -type f -mtime +90 \( -iname 'planet-*.pbf' -o -iname 'history-*.pbf' -o -iname 'planet-*.pbf.md5' -o -iname 'history-*.pbf.md5' \) -delete
+find "<%= node[:planet][:dump][:pbf_directory] %>" "<%= node[:planet][:dump][:pbf_history_directory] %>" \
+     -maxdepth 1 -mindepth 1 -type f -mtime +90 \
+     \( \
+     -iname 'planet-*.pbf' \
+     -o -iname 'history-*.pbf' \
+     -o -iname 'planet-*.pbf.md5' \
+     -o -iname 'history-*.pbf.md5' \
+     \) \
+     -delete
