@@ -88,67 +88,17 @@ function mk_torrent {
      -a udp://tracker.torrent.eu.org:451 \
      -a udp://tracker-udp.gbitt.info:80/announce,http://tracker.gbitt.info/announce,https://tracker.gbitt.info/announce \
      -a http://retracker.local/announce \
+     -w https://planet.openstreetmap.org/${web_path} \
      -w https://ftp5.gwdg.de/pub/misc/openstreetmap/planet.openstreetmap.org/${web_path} \
      -w https://ftpmirror.your.org/pub/openstreetmap/${web_path} \
      -w https://mirror.init7.net/openstreetmap/${web_path} \
-     -w https://planet.openstreetmap.org/${web_path} \
      -w https://free.nchc.org.tw/osm.planet/${web_path} \
      -w https://ftp.fau.de/osm-planet/${web_path} \
      -w https://ftp.spline.de/pub/openstreetmap/${web_path} \
      -w https://osm.openarchive.site/${name} \
      -w https://downloads.opencagedata.com/planet/${name} \
-     -c "OpenStreetMap ${type} database dump, licensed under https://opendatacommons.org/licenses/odbl/ by OpenStreetMap contributors" \
+     -c "OpenStreetMap ${type} data export, licensed under https://opendatacommons.org/licenses/odbl/ by OpenStreetMap contributors" \
      -o ${name}.torrent
-}
-
-# Function to create RSS/Atom feed for .torrent files
-function mk_rss {
-  type="$1"
-  format="$2"
-  web_dir="$3"
-  disk_dir="$4"
-  old_pwd="$PWD"
-  rss_name="${type}-${format}-rss.xml"
-  rss_path="${old_pwd}/${rss_name}"
-  rss_baseurl="https://planet.openstreetmap.org"
-  rss_dirurl="${rss_baseurl}/${web_dir}"
-
-  cd "${disk_dir}"
-
-  # RSS header
-  printf '%s\n' \
-     '<?xml version="1.0" encoding="UTF-8"?>' \
-     '<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom">' \
-     '<channel>' > "${rss_path}"
-  cat >> "${rss_path}" <<__EOF
-     <title>OpenStreetMap ${type} torrent RSS</title>
-     <link>${rss_dirurl}</link>
-     <atom:link href="${rss_dirurl}/${rss_name}" rel="self" type="application/rss+xml" />
-     <description>RSS feed for ${type}.osm.${format}.torrent</description>
-     <language>en-us</language>
-     <lastBuildDate>`date -R`</lastBuildDate>
-__EOF
-
-  # add RSS item for each torrent
-  for tf in `ls -1t *.torrent | grep -v latest | head -n 5`
-  do
-    cat >> "${rss_path}" <<__EOF
-     <item>
-        <title>${tf}</title>
-        <guid>${rss_dirurl}/${tf}</guid>
-        <pubDate>`date -R -r ${tf}`</pubDate>
-        <category>OpenStreetMap</category>
-        <link>${rss_dirurl}/${tf}</link>
-        <enclosure url="${rss_dirurl}/${tf}" length="`find -maxdepth 1 -name ${tf%.torrent} -printf "%s"`" type="application/x-bittorrent" />
-        <description>OSM Torrent ${tf} (torrent size: `find -maxdepth 1 -name ${tf} -printf "%s"`)</description>
-     </item>
-__EOF
-  done
-
-  # RSS footer
-  printf '</channel>\n</rss>\n' >> "${rss_path}"
-  cd "${old_pwd}"
-  mv "${rss_path}" "${disk_dir}"
 }
 
 # Function to install a dump in place
@@ -170,6 +120,10 @@ function install_dump {
 }
 
 # Create *.torrent files
+mk_torrent "changesets" "bz2" "planet/${year}"
+mk_torrent "discussions" "bz2" "planet/${year}"
+mk_torrent "planet" "bz2" "planet/${year}"
+mk_torrent "history" "bz2" "planet/full-history/${year}"
 mk_torrent "planet" "pbf" "pbf"
 mk_torrent "history" "pbf" "pbf/full-history"
 
@@ -182,8 +136,12 @@ install_dump "planet" "pbf" "<%= node[:planet][:dump][:pbf_directory] %>"
 install_dump "history" "pbf" "<%= node[:planet][:dump][:pbf_history_directory] %>"
 
 # Remove pbf dumps older than 90 days
-find "<%= node[:planet][:dump][:pbf_directory] %>" "<%= node[:planet][:dump][:pbf_history_directory] %>" -maxdepth 1 -mindepth 1 -type f -mtime +90 \( -iname 'planet-*.pbf' -o -iname 'history-*.pbf' -o -iname 'planet-*.pbf.md5' -o -iname 'history-*.pbf.md5' -o -iname 'planet-*.pbf.torrent' -o -iname 'history-*.pbf.torrent' \) -delete
-
-# Create RSS feed of available *.torrent files to enable automatic seeders
-mk_rss "planet" "pbf" "pbf"  "<%= node[:planet][:dump][:pbf_directory] %>"
-mk_rss "history" "pbf" "pbf/full-history" "<%= node[:planet][:dump][:pbf_history_directory] %>"
+find "<%= node[:planet][:dump][:pbf_directory] %>" "<%= node[:planet][:dump][:pbf_history_directory] %>" \
+     -maxdepth 1 -mindepth 1 -type f -mtime +90 \
+     \( \
+     -iname 'planet-*.pbf' \
+     -o -iname 'history-*.pbf' \
+     -o -iname 'planet-*.pbf.md5' \
+     -o -iname 'history-*.pbf.md5' \
+     \) \
+     -delete
