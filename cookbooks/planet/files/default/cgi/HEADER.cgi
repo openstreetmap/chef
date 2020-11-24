@@ -113,9 +113,8 @@ database, and those published before the 12 September 2012 are distributed under
         is a tool for importing the data into a Postgis database for rendering maps.
         </p>
         <p>
-        <a href="https://wiki.openstreetmap.org/wiki/Coastline_error_checker">Processed coastline data</a>
-        derived from OSM data is also needed for rendering usable maps, and can be found in a
-        <a href="historical-shapefiles/processed_p.tar.bz2">single shapefile</a> (360MB).
+        <a href="https://osmdata.openstreetmap.de/">Processed coastline data</a>
+        derived from OSM data is also needed for rendering usable maps.
         </p>
     </td>
     <td>
