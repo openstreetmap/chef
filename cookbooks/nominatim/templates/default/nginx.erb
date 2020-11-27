@@ -86,9 +86,22 @@ map $blocked_user_agent $limit_tarpit {
     2 $binary_remote_addr;
 }
 
+map $missing_email$missing_referer$http_user_agent $generic_mozilla {
+    default 0;
+    ~^11Mozilla/4.0 1;
+    ~^11Mozilla/5.0 2;
+}
+
+map $whitelisted$generic_mozilla$uri $limit_reverse {
+    default "";
+    ~01/reverse.*  $binary_remote_addr;
+    ~02/reverse.*  $binary_remote_addr;
+}
+
 limit_req_zone $limit_www zone=www:50m rate=2r/s;
 limit_req_zone $limit_tarpit zone=tarpit:10m rate=1r/s;
 limit_req_zone $binary_remote_addr zone=blocked:10m rate=20r/m;
+limit_req_zone $limit_reverse zone=reverse:10m rate=10r/m;
 
 server {
     listen 80 default_server;
@@ -166,6 +179,7 @@ server {
 
         limit_req zone=www burst=10;
         limit_req zone=tarpit burst=2;
+        limit_req zone=reverse burst=5;
         limit_req_status 429;
         fastcgi_pass nominatim_service;
         include fastcgi_params;
@@ -188,6 +202,7 @@ server {
 
         limit_req zone=www burst=10;
         limit_req zone=tarpit burst=2;
+        limit_req zone=reverse burst=5;
         limit_req_status 429;
         fastcgi_pass    nominatim_service;
         include         fastcgi_params;
