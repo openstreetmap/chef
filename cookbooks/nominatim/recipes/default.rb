@@ -412,7 +412,7 @@ nginx_site "default" do
   action [:delete]
 end
 
-frontends = search(:node, "recipes:web\\:\\:frontend")
+frontends = search(:node, "recipes:web\\:\\:frontend").sort_by(&:name)
 
 nginx_site "nominatim" do
   template "nginx.erb"
@@ -463,5 +463,5 @@ fail2ban_jail "nominatim_limit_req" do
   logpath "#{node[:nominatim][:logdir]}/nominatim.openstreetmap.org-error.log"
   ports [80, 443]
   maxretry 5
-  ignoreips frontend_addresses.flatten
+  ignoreips frontend_addresses.flatten.sort
 end

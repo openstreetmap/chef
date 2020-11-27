@@ -49,7 +49,7 @@ map $http_referer $missing_referer {
 geo $whitelisted {
     default 0;
 <% @frontends.each do |frontend| -%>
-<% frontend.ipaddresses(:role => :external) do |address| -%>
+<% frontend.ipaddresses(:role => :external).sort.each do |address| -%>
     <%= address %> 1;
 <% end -%>
 <% end -%>
