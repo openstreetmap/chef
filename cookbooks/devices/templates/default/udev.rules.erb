@@ -85,6 +85,8 @@ SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x1563
 SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x1586", RUN+="/sbin/ethtool -G $name rx 4096 tx 4096"
 # Ethernet controller: Intel Corporation Ethernet Controller X710 for 10GBASE-T
 SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x15ff", RUN+="/sbin/ethtool -G $name rx 4096 tx 4096"
+# Ethernet controller: Intel Corporation Ethernet Connection I354 (rev 03)
+SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x1f41", RUN+="/sbin/ethtool -G $name rx 4096 tx 4096"
 # Ethernet controller: Intel Corporation Ethernet Connection X722 for 10GBASE-T
 SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x37d2", RUN+="/sbin/ethtool -G $name rx 4096 tx 4096"
 
