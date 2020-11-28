@@ -458,6 +458,13 @@ action :create do
     update_site false
   end
 
+  mediawiki_extension "OSMCALWikiWidget" do
+    site new_resource.site
+    repository "https://github.com/thomersch/OSMCALWikiWidget.git"
+    tag "live"
+    update_site false
+  end
+
   mediawiki_extension "SimpleMap" do
     site new_resource.site
     template "mw-ext-SimpleMap.inc.php.erb"
