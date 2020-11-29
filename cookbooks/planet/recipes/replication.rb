@@ -137,6 +137,18 @@ directory "/store/planet/replication/test" do
   mode "755"
 end
 
+directory "/store/planet/replication/test/day" do
+  owner "planet"
+  group "planet"
+  mode "755"
+end
+
+directory "/store/planet/replication/test/hour" do
+  owner "planet"
+  group "planet"
+  mode "755"
+end
+
 directory "/store/planet/replication/test/minute" do
   owner "planet"
   group "planet"
@@ -172,6 +184,18 @@ directory "/var/run/lock/changeset-replication/" do
   owner "planet"
   group "planet"
   mode "750"
+end
+
+directory "/var/lib/replication" do
+  owner "planet"
+  group "planet"
+  mode "755"
+end
+
+directory "/var/lib/replication/test" do
+  owner "planet"
+  group "planet"
+  mode "755"
 end
 
 template "/etc/replication/auth.conf" do
@@ -223,6 +247,76 @@ systemd_timer "replication-minutely" do
   accuracy_sec 5
 end
 
+directory "/var/lib/replication/test/hour" do
+  owner "planet"
+  group "planet"
+  mode "755"
+end
+
+template "/var/lib/replication/test/hour/configuration.txt" do
+  source "replication.config.erb"
+  owner "planet"
+  group "planet"
+  mode "644"
+  variables :base => "test/minute", :interval => 3600
+end
+
+link "/var/lib/replication/test/hour/data" do
+  to "/store/planet/replication/test/hour"
+end
+
+systemd_service "replication-hourly" do
+  description "Hourly replication"
+  user "planet"
+  exec_start "/usr/local/bin/osmosis -q --merge-replication-files workingDirectory=/var/lib/replication/test/hour"
+  private_tmp true
+  private_devices true
+  protect_system "full"
+  protect_home true
+  restrict_address_families %w[AF_INET AF_INET6]
+  no_new_privileges true
+end
+
+systemd_timer "replication-hourly" do
+  description "Daily replication"
+  on_calendar "*-*-* *:02/15:00"
+end
+
+directory "/var/lib/replication/test/day" do
+  owner "planet"
+  group "planet"
+  mode "755"
+end
+
+template "/var/lib/replication/test/day/configuration.txt" do
+  source "replication.config.erb"
+  owner "planet"
+  group "planet"
+  mode "644"
+  variables :base => "test/hour", :interval => 86400
+end
+
+link "/var/lib/replication/test/day/data" do
+  to "/store/planet/replication/test/day"
+end
+
+systemd_service "replication-daily" do
+  description "Daily replication"
+  user "planet"
+  exec_start "/usr/local/bin/osmosis -q --merge-replication-files workingDirectory=/var/lib/replication/test/day"
+  private_tmp true
+  private_devices true
+  protect_system "full"
+  protect_home true
+  restrict_address_families %w[AF_INET AF_INET6]
+  no_new_privileges true
+end
+
+systemd_timer "replication-daily" do
+  description "Daily replication"
+  on_calendar "*-*-* *:02/15:00"
+end
+
 template "/etc/replication/changesets.conf" do
   source "changesets.conf.erb"
   user "root"
@@ -237,12 +331,6 @@ template "/etc/replication/users-agreed.conf" do
   group "planet"
   mode "600"
   variables :password => db_passwords["planetdiff"]
-end
-
-directory "/var/lib/replication" do
-  owner "planet"
-  group "planet"
-  mode "755"
 end
 
 directory "/var/lib/replication/minute" do
@@ -314,6 +402,14 @@ if node[:planet][:replication] == "enabled"
     action [:enable, :start]
   end
 
+  service "replication-hourly.timer" do
+    action [:enable, :start]
+  end
+
+  service "replication-daily.timer" do
+    action [:enable, :start]
+  end
+
   cron_d "replication-minutely" do
     user "planet"
     command "/usr/local/bin/osmosis -q --replicate-apidb authFile=/etc/replication/auth.conf validateSchemaVersion=false --write-replication workingDirectory=/store/planet/replication/minute"
@@ -350,6 +446,14 @@ else
   end
 
   service "replication-minutely.timer" do
+    action [:stop, :disable]
+  end
+
+  service "replication-hourly.timer" do
+    action [:stop, :disable]
+  end
+
+  service "replication-daily.timer" do
     action [:stop, :disable]
   end
 
