@@ -380,7 +380,7 @@ end
 end
 
 node[:nominatim][:fpm_pools].each do |name, data|
-  php_fpm name.to_s do
+  php_fpm name do
     port data[:port]
     pm data[:pm]
     pm_max_children data[:max_children]

@@ -13,8 +13,7 @@ default[:nominatim][:ui_repository] = "https://github.com/osm-search/nominatim-u
 default[:nominatim][:ui_revision] = "master"
 
 default[:nominatim][:fpm_pools] = {
-  :www => {
-    :port => 8000,
+  "nominatim.openstreetmap.org" => {
     :pm => "dynamic",
     :max_children => 60,
     :prometheus_port => 9253

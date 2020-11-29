@@ -1,5 +1,5 @@
 upstream nominatim_service {
-  server 127.0.0.1:<%= @pools[:www][:port ]%>;
+  server unix:/run/php/nominatim.openstreetmap.org.sock;
 }
 
 map $uri $nominatim_script_name {
