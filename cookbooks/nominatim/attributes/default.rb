@@ -16,7 +16,8 @@ default[:nominatim][:fpm_pools] = {
   :www => {
     :port => 8000,
     :pm => "dynamic",
-    :max_children => 60
+    :max_children => 60,
+    :prometheus_port => 9253
   }
 }
 

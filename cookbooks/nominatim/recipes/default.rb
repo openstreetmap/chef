@@ -388,6 +388,7 @@ node[:nominatim][:fpm_pools].each do |name, data|
     pm_min_spare_servers 10
     pm_max_spare_servers 20
     pm_max_requests 10000
+    prometheus_port data[:prometheus_port]
   end
 end
 
