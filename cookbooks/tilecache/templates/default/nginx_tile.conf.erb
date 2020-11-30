@@ -156,7 +156,7 @@ map $http_referer $denied_referer {
 
 map $http_referer $censored_referer {
   default                                 0; # Not denied
-  # Legal Reasons
+  # Blocked on board instructions
   '~^https?://schiebt-sie-ab\.de/'        1;
   '~^https?://[^.]*\.schiebt-sie-ab\.de/' 1;
 }
@@ -415,7 +415,7 @@ server {
 
       if ($censored_referer) {
         set $limit_rate 512;
-        return 451 "Unavailable For Legal Reasons";
+        return 451 "Unavailable at OSMF Board request";
       }
 
       # Strip any ?query parameters from urls
