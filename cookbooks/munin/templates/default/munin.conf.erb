@@ -519,7 +519,6 @@ unknown_limit 144
     nginx_requests.graph_args --lower-limit 0
 <% @tilecaches.each do |tc| -%>
     nginx_requests.<%= tc[:name].tr("-", "_") %>.label <%= tc[:name] %>
-    nginx_requests.<%= tc[:name].tr("-", "_") %>.cdef <%= tc[:name].tr("-", "_") %>,8,*
     nginx_requests.<%= tc[:name].tr("-", "_") %>.draw AREASTACK
     nginx_requests.<%= tc[:name].tr("-", "_") %>.min 0
 <% end -%>
