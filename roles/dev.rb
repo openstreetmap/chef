@@ -141,7 +141,8 @@ default_attributes(
         :effective_cache_size => "4GB"
       },
       "9.1" => {
-        :port => "5433"
+        :port => "5433",
+        :ssl => "false"
       },
       "12" => {
         :port => "5432",
