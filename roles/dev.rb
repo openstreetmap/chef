@@ -131,7 +131,7 @@ default_attributes(
     }
   },
   :postgresql => {
-    :versions => ["9.1", "12"],
+    :versions => ["12"],
     :settings => {
       :defaults => {
         :shared_buffers => "1GB",
@@ -139,10 +139,6 @@ default_attributes(
         :maintenance_work_mem => "64MB",
         :max_stack_depth => "4MB",
         :effective_cache_size => "4GB"
-      },
-      "9.1" => {
-        :port => "5433",
-        :ssl => "false"
       },
       "12" => {
         :port => "5432",
