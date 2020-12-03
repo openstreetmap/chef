@@ -174,6 +174,13 @@ directory "/store/planet/replication/changesets" do
   mode "755"
 end
 
+# lockfile directory for changeset replication (see template changesets.conf)
+directory "/run/lock/replication" do
+  owner "planet"
+  group "planet"
+  mode "755"
+end
+
 template "/etc/replication/changesets.conf" do
   source "changesets.conf.erb"
   user "root"
