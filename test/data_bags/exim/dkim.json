@@ -3,5 +3,9 @@
   "openstreetmap.org": [
     "-----BEGIN RSA PRIVATE KEY-----",
     "-----END RSA PRIVATE KEY-----"
+  ],
+  "osmfoundation.org": [
+    "-----BEGIN RSA PRIVATE KEY-----",
+    "-----END RSA PRIVATE KEY-----"
   ]
 }
