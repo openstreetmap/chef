@@ -20,6 +20,7 @@
 require "yaml"
 
 include_recipe "accounts"
+include_recipe "apt"
 include_recipe "osmosis"
 
 db_passwords = data_bag_item("db", "passwords")
