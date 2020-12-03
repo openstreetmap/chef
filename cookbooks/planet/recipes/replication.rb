@@ -32,6 +32,7 @@ package %w[
   ruby-libxml
   make
   gcc
+  libc6-dev
   libpq-dev
   osmdbt
 ]
