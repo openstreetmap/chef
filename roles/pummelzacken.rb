@@ -62,6 +62,13 @@ default_attributes(
       "isearch" => "/ssd/tablespaces/isearch",
       "daux" => "/data/tablespaces/daux",
       "iaux" => "/data/tablespaces/iaux"
+    },
+    :fpm_pools => {
+      "nominatim.openstreetmap.org" => {
+        :pm => "dynamic",
+        :max_children => 120,
+        :prometheus_port => 9253
+      }
     }
   }
 )
