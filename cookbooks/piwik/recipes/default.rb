@@ -20,7 +20,7 @@
 include_recipe "apache"
 include_recipe "geoipupdate"
 include_recipe "mysql"
-include_recipe "php::apache"
+include_recipe "php::fpm"
 
 passwords = data_bag_item("piwik", "passwords")
 
@@ -103,7 +103,7 @@ end
 
 link "/srv/piwik.openstreetmap.org" do
   to "/opt/piwik-#{version}/piwik"
-  notifies :restart, "service[apache2]"
+  notifies :restart, "service[php#{node[:php][:version]}-fpm]"
 end
 
 mysql_user "piwik@localhost" do
@@ -117,6 +117,10 @@ end
 ssl_certificate "piwik.openstreetmap.org" do
   domains ["piwik.openstreetmap.org", "piwik.osm.org"]
   notifies :reload, "service[apache2]"
+end
+
+php_fpm "piwik.openstreetmap.org" do
+  prometheus_port 9253
 end
 
 apache_site "piwik.openstreetmap.org" do

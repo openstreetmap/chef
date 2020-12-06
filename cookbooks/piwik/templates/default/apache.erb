@@ -50,4 +50,8 @@
 		ExpiresDefault "access plus 1 week"
 		Header set Cache-Control "max-age=604800"
 	</FilesMatch>
+
+        <FilesMatch ".+\.ph(ar|p|tml)$">
+                SetHandler "proxy:unix:/run/php/piwik.openstreetmap.org.sock|fcgi://127.0.0.1"
+        </FilesMatch>
 </Directory>
