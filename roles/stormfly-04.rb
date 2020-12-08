@@ -33,7 +33,7 @@ default_attributes(
         :random_page_cost => "1.5",
         :effective_cache_size => "60GB",
         :fsync => "on",
-        :effective_io_concurrency => "500"
+        :effective_io_concurrency => "100"
       }
     }
   },
@@ -46,6 +46,11 @@ default_attributes(
     :postgis => "2.5",
     :flatnode_file => "/ssd/nominatim/nodes.store",
     :logdir => "/ssd/nominatim/log",
+    :fpm_pools => {
+      "nominatim.openstreetmap.org" => {
+        :max_children => 100
+      }
+    },
     :tablespaces => {
       "dosm" => "/ssd/tablespaces/dosm",
       "iosm" => "/ssd/tablespaces/iosm",
