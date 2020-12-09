@@ -44,11 +44,12 @@ def nice_time(time):
     return '%d months' % (time / 2592000.)
 
 def file_info(file, name):
+    torrent_file = file + '.torrent'
     size = nice_size(file)
     hash = search(r'\w{32}', open(file+'.md5', 'r').read()).group(0)
     date = nice_time(time() - stat(file).st_mtime)
 
-    return '<b><a href="%(file)s">%(name)s</a></b><br><b>%(size)s</b>, created %(date)s ago.<br><small>md5: %(hash)s</small>.' % locals()
+    return '<b><a href="%(file)s">%(name)s</a> (<a href="%(torrent_file)s">torrent</a>)</b><br><b>%(size)s</b>, created %(date)s ago.<br><small>md5: %(hash)s</small>.' % locals()
 
 planet_link = file_info('planet/planet-latest.osm.bz2', 'Latest Weekly Planet XML File')
 changesets_link = file_info('planet/changesets-latest.osm.bz2', 'Latest Weekly Changesets')
