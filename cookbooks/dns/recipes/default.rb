@@ -41,7 +41,7 @@ package %w[
 
 remote_file "/usr/local/bin/dnscontrol" do
   action :create
-  source "https://github.com/StackExchange/dnscontrol/releases/download/v3.4.2/dnscontrol-Linux"
+  source "https://github.com/StackExchange/dnscontrol/releases/download/v3.5.0/dnscontrol-Linux"
   owner "root"
   group "root"
   mode "755"
