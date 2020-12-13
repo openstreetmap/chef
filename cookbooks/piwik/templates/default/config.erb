@@ -11,9 +11,13 @@ charset = "utf8"
 [General]
 force_ssl = 1
 force_ssl_login = 1
+login_allowlist_apply_to_reporting_api_requests = "0"
 proxy_client_headers[] = "HTTP_X_FORWARDED_FOR"
 trusted_hosts[] = "piwik.openstreetmap.org"
 salt = "<%= @passwords['salt'] %>"
+
+[Tracker]
+ignore_visits_cookie_name = "piwik_ignore"
 
 [Plugins]
 <% @plugins.each do |plugin| -%>
@@ -28,7 +32,6 @@ PluginsInstalled[] = "<%= plugin %>"
 [Plugins_Tracker]
 Plugins_Tracker[] = "Provider"
 Plugins_Tracker[] = "Goals"
-Plugins_Tracker[] = "DoNotTrack"
 Plugins_Tracker[] = "UserCountry"
 Plugins_Tracker[] = "DevicesDetection"
 Plugins_Tracker[] = "UsersManager"

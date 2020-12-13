@@ -2,6 +2,7 @@ default[:postgresql][:versions] = []
 default[:postgresql][:clusters] = {}
 default[:postgresql][:settings][:defaults][:port] = "5432"
 default[:postgresql][:settings][:defaults][:max_connections] = "100"
+default[:postgresql][:settings][:defaults][:ssl] = "true"
 default[:postgresql][:settings][:defaults][:shared_buffers] = "32MB"
 default[:postgresql][:settings][:defaults][:temp_buffers] = "8MB"
 default[:postgresql][:settings][:defaults][:work_mem] = "1MB"

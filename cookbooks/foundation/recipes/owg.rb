@@ -69,7 +69,7 @@ end
 
 execute "/srv/operations.osmfoundation.org" do
   action :nothing
-  command "bundle exec jekyll build --trace --baseurl=https://operations.osmfoundation.org"
+  command "bundle exec jekyll build --trace"
   cwd "/srv/operations.osmfoundation.org"
   user "nobody"
   group "nogroup"

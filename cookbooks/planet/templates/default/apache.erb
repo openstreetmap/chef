@@ -51,13 +51,13 @@
         RewriteCond %{QUERY_STRING} nomirror
         RewriteRule	.*      - [L]
 
-        RewriteRule ^(/planet/planet\-latest\.osm\.bz2)$                ${latestplanet:$1} [R,L]
-        RewriteRule ^(/planet/full\-history/history\-latest\.osm\.bz2)$ ${latestplanet:$1} [R,L]
-        RewriteRule ^(/planet/changesets\-latest\.osm\.bz2)$            ${latestplanet:$1} [R,L]
-        RewriteRule ^(/planet/discussions\-latest\.osm\.bz2)$           ${latestplanet:$1} [R,L]
+        RewriteRule ^(/planet/planet\-latest\.osm\.bz2(\.torrent)?)$                ${latestplanet:$1} [R,L]
+        RewriteRule ^(/planet/full\-history/history\-latest\.osm\.bz2(\.torrent)?)$ ${latestplanet:$1} [R,L]
+        RewriteRule ^(/planet/changesets\-latest\.osm\.bz2(\.torrent)?)$            ${latestplanet:$1} [R,L]
+        RewriteRule ^(/planet/discussions\-latest\.osm\.bz2(\.torrent)?)$           ${latestplanet:$1} [R,L]
 
-        RewriteRule ^(/pbf/planet\-latest\.osm\.pbf)$                   ${latestplanet:$1} [R,L]
-        RewriteRule ^(/pbf/full\-history/history\-latest\.osm\.pbf)$    ${latestplanet:$1} [R,L]
+        RewriteRule ^(/pbf/planet\-latest\.osm\.pbf(\.torrent)?)$                   ${latestplanet:$1} [R,L]
+        RewriteRule ^(/pbf/full\-history/history\-latest\.osm\.pbf(\.torrent)?)$    ${latestplanet:$1} [R,L]
 
         RewriteRule ^(/cc\-by\-sa/pbf/planet\-latest\.osm\.pbf)$        ${latestplanet:$1} [R,L]
         RewriteRule ^(/cc\-by\-sa/planet\-latest\.osm\.bz2)$            ${latestplanet:$1} [R,L]

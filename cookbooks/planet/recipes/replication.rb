@@ -20,9 +20,12 @@
 require "yaml"
 
 include_recipe "accounts"
+include_recipe "apt"
 include_recipe "osmosis"
 
 db_passwords = data_bag_item("db", "passwords")
+
+## Install required packages
 
 package %w[
   postgresql-client
@@ -31,11 +34,14 @@ package %w[
   ruby-libxml
   make
   gcc
+  libc6-dev
   libpq-dev
   osmdbt
 ]
 
 gem_package "pg"
+
+## Build preload library to flush files
 
 remote_directory "/opt/flush" do
   source "flush"
@@ -55,6 +61,8 @@ execute "/opt/flush/Makefile" do
   group "root"
   subscribes :run, "remote_directory[/opt/flush]"
 end
+
+## Install scripts
 
 remote_directory "/usr/local/bin" do
   source "replication-bin"
@@ -87,6 +95,8 @@ template "/usr/local/bin/users-deleted" do
   mode "755"
 end
 
+## Published deleted users directory
+
 remote_directory "/store/planet/users_deleted" do
   source "users_deleted"
   owner "planet"
@@ -96,6 +106,8 @@ remote_directory "/store/planet/users_deleted" do
   files_group "root"
   files_mode "644"
 end
+
+## Published replication directory
 
 remote_directory "/store/planet/replication" do
   source "replication-cgi"
@@ -107,23 +119,70 @@ remote_directory "/store/planet/replication" do
   files_mode "755"
 end
 
+directory "/store/planet/replication/test" do
+  owner "planet"
+  group "planet"
+  mode "755"
+end
+
+## Configuration directory
+
+directory "/etc/replication" do
+  owner "root"
+  group "root"
+  mode "755"
+end
+
+## Transient state directory
+
+systemd_tmpfile "/run/replication" do
+  type "d"
+  owner "planet"
+  group "planet"
+  mode "755"
+end
+
+## Persistent state directory
+
+directory "/var/lib/replication" do
+  owner "planet"
+  group "planet"
+  mode "755"
+end
+
+directory "/var/lib/replication/test" do
+  owner "planet"
+  group "planet"
+  mode "755"
+end
+
+## Users replication
+
+template "/etc/replication/users-agreed.conf" do
+  source "users-agreed.conf.erb"
+  user "planet"
+  group "planet"
+  mode "600"
+  variables :password => db_passwords["planetdiff"]
+end
+
+## Changeset replication
+
 directory "/store/planet/replication/changesets" do
   owner "planet"
   group "planet"
   mode "755"
 end
 
-directory "/store/planet/replication/day" do
-  owner "planet"
+template "/etc/replication/changesets.conf" do
+  source "changesets.conf.erb"
+  user "root"
   group "planet"
-  mode "755"
+  mode "640"
+  variables :password => db_passwords["planetdiff"]
 end
 
-directory "/store/planet/replication/hour" do
-  owner "planet"
-  group "planet"
-  mode "755"
-end
+## Minutely replication
 
 directory "/store/planet/replication/minute" do
   owner "planet"
@@ -131,11 +190,73 @@ directory "/store/planet/replication/minute" do
   mode "755"
 end
 
-directory "/store/planet/replication/test" do
+directory "/var/lib/replication/minute" do
   owner "planet"
   group "planet"
   mode "755"
 end
+
+template "/etc/replication/auth.conf" do
+  source "replication.auth.erb"
+  user "root"
+  group "planet"
+  mode "640"
+  variables :password => db_passwords["planetdiff"]
+end
+
+## Hourly replication
+
+directory "/store/planet/replication/hour" do
+  owner "planet"
+  group "planet"
+  mode "755"
+end
+
+directory "/var/lib/replication/hour" do
+  owner "planet"
+  group "planet"
+  mode "755"
+end
+
+link "/var/lib/replication/hour/data" do
+  to "/store/planet/replication/hour"
+end
+
+template "/var/lib/replication/hour/configuration.txt" do
+  source "replication.config.erb"
+  owner "planet"
+  group "planet"
+  mode "644"
+  variables :base => "minute", :interval => 3600
+end
+
+## Daily replication
+
+directory "/store/planet/replication/day" do
+  owner "planet"
+  group "planet"
+  mode "755"
+end
+
+directory "/var/lib/replication/day" do
+  owner "planet"
+  group "planet"
+  mode "755"
+end
+
+link "/var/lib/replication/day/data" do
+  to "/store/planet/replication/day"
+end
+
+template "/var/lib/replication/day/configuration.txt" do
+  source "replication.config.erb"
+  owner "planet"
+  group "planet"
+  mode "644"
+  variables :base => "hour", :interval => 86400
+end
+
+## Minutely replication (test feed)
 
 directory "/store/planet/replication/test/minute" do
   owner "planet"
@@ -153,33 +274,6 @@ directory "/store/replication/minute" do
   owner "planet"
   group "planet"
   mode "755"
-end
-
-systemd_tmpfile "/run/replication" do
-  type "d"
-  owner "planet"
-  group "planet"
-  mode "755"
-end
-
-directory "/etc/replication" do
-  owner "root"
-  group "root"
-  mode "755"
-end
-
-directory "/var/run/lock/changeset-replication/" do
-  owner "planet"
-  group "planet"
-  mode "750"
-end
-
-template "/etc/replication/auth.conf" do
-  source "replication.auth.erb"
-  user "root"
-  group "planet"
-  mode "640"
-  variables :password => db_passwords["planetdiff"]
 end
 
 osmdbt_config = {
@@ -223,69 +317,93 @@ systemd_timer "replication-minutely" do
   accuracy_sec 5
 end
 
-template "/etc/replication/changesets.conf" do
-  source "changesets.conf.erb"
-  user "root"
+### Hourly replication (test feed)
+
+directory "/store/planet/replication/test/hour" do
+  owner "planet"
   group "planet"
-  mode "640"
-  variables :password => db_passwords["planetdiff"]
+  mode "755"
 end
 
-template "/etc/replication/users-agreed.conf" do
-  source "users-agreed.conf.erb"
+directory "/var/lib/replication/test/hour" do
+  owner "planet"
+  group "planet"
+  mode "755"
+end
+
+link "/var/lib/replication/test/hour/data" do
+  to "/store/planet/replication/test/hour"
+end
+
+template "/var/lib/replication/test/hour/configuration.txt" do
+  source "replication.config.erb"
+  owner "planet"
+  group "planet"
+  mode "644"
+  variables :base => "test/minute", :interval => 3600
+end
+
+systemd_service "replication-hourly" do
+  description "Hourly replication"
   user "planet"
-  group "planet"
-  mode "600"
-  variables :password => db_passwords["planetdiff"]
+  exec_start "/usr/local/bin/osmosis -q --merge-replication-files workingDirectory=/var/lib/replication/test/hour"
+  private_tmp true
+  private_devices true
+  protect_system "full"
+  protect_home true
+  restrict_address_families %w[AF_INET AF_INET6]
+  no_new_privileges true
 end
 
-directory "/var/lib/replication" do
+systemd_timer "replication-hourly" do
+  description "Daily replication"
+  on_calendar "*-*-* *:02/15:00"
+end
+
+## Daily replication (test feed)
+
+directory "/store/planet/replication/test/day" do
   owner "planet"
   group "planet"
   mode "755"
 end
 
-directory "/var/lib/replication/minute" do
+directory "/var/lib/replication/test/day" do
   owner "planet"
   group "planet"
   mode "755"
 end
 
-directory "/var/lib/replication/hour" do
-  owner "planet"
-  group "planet"
-  mode "755"
+link "/var/lib/replication/test/day/data" do
+  to "/store/planet/replication/test/day"
 end
 
-template "/var/lib/replication/hour/configuration.txt" do
+template "/var/lib/replication/test/day/configuration.txt" do
   source "replication.config.erb"
   owner "planet"
   group "planet"
   mode "644"
-  variables :base => "minute", :interval => 3600
+  variables :base => "test/hour", :interval => 86400
 end
 
-link "/var/lib/replication/hour/data" do
-  to "/store/planet/replication/hour"
+systemd_service "replication-daily" do
+  description "Daily replication"
+  user "planet"
+  exec_start "/usr/local/bin/osmosis -q --merge-replication-files workingDirectory=/var/lib/replication/test/day"
+  private_tmp true
+  private_devices true
+  protect_system "full"
+  protect_home true
+  restrict_address_families %w[AF_INET AF_INET6]
+  no_new_privileges true
 end
 
-directory "/var/lib/replication/day" do
-  owner "planet"
-  group "planet"
-  mode "755"
+systemd_timer "replication-daily" do
+  description "Daily replication"
+  on_calendar "*-*-* *:02/15:00"
 end
 
-template "/var/lib/replication/day/configuration.txt" do
-  source "replication.config.erb"
-  owner "planet"
-  group "planet"
-  mode "644"
-  variables :base => "hour", :interval => 86400
-end
-
-link "/var/lib/replication/day/data" do
-  to "/store/planet/replication/day"
-end
+## Enable/disable feeds
 
 if node[:planet][:replication] == "enabled"
   cron_d "users-agreed" do
@@ -310,10 +428,6 @@ if node[:planet][:replication] == "enabled"
     mailto "zerebubuth@gmail.com"
   end
 
-  service "replication-minutely.timer" do
-    action [:enable, :start]
-  end
-
   cron_d "replication-minutely" do
     user "planet"
     command "/usr/local/bin/osmosis -q --replicate-apidb authFile=/etc/replication/auth.conf validateSchemaVersion=false --write-replication workingDirectory=/store/planet/replication/minute"
@@ -336,6 +450,18 @@ if node[:planet][:replication] == "enabled"
     mailto "brett@bretth.com"
     environment "LD_PRELOAD" => "/opt/flush/flush.so"
   end
+
+  service "replication-minutely.timer" do
+    action [:enable, :start]
+  end
+
+  service "replication-hourly.timer" do
+    action [:enable, :start]
+  end
+
+  service "replication-daily.timer" do
+    action [:enable, :start]
+  end
 else
   cron_d "users-agreed" do
     action :delete
@@ -349,10 +475,6 @@ else
     action :delete
   end
 
-  service "replication-minutely.timer" do
-    action [:stop, :disable]
-  end
-
   cron_d "replication-minutely" do
     action :delete
   end
@@ -363,5 +485,17 @@ else
 
   cron_d "replication-daily" do
     action :delete
+  end
+
+  service "replication-minutely.timer" do
+    action [:stop, :disable]
+  end
+
+  service "replication-hourly.timer" do
+    action [:stop, :disable]
+  end
+
+  service "replication-daily.timer" do
+    action [:stop, :disable]
   end
 end

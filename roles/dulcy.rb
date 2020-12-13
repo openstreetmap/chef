@@ -28,7 +28,7 @@ default_attributes(
     }
   },
   :postgresql => {
-    :versions => ["12"],
+    :versions => ["13"],
     :settings => {
       :defaults => {
         :work_mem => "300MB",
@@ -45,8 +45,8 @@ default_attributes(
     :enable_backup => false,
     :enable_git_updates => true,
     :dbadmins => %w[lonvia tomh],
-    :dbcluster => "12/main",
-    :postgis => "2.5",
+    :dbcluster => "13/main",
+    :postgis => "3",
     :flatnode_file => "/ssd/nominatim/nodes.store",
     :logdir => "/ssd/nominatim/log",
     :tablespaces => {

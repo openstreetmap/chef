@@ -24,25 +24,45 @@ default_attributes(
       }
     }
   },
-  :squid => {
-    :version => 4,
-    :cache_mem => "32768 MB",
-    :cache_dir => [
-      "rock /store/squid/rock-4096 20000 swap-timeout=200 slot-size=4096 max-size=3996",
-      "rock /store/squid/rock-8192 25000 swap-timeout=200 slot-size=8192 min-size=3997 max-size=8092",
-      "rock /store/squid/rock-16384 35000 swap-timeout=200 slot-size=16384 min-size=8093 max-size=16284",
-      "rock /store/squid/rock-32768 45000 swap-timeout=200 slot-size=32768 min-size=16285 max-size=262144"
-    ]
-  },
-  :nginx => {
-    :cache => {
-      :proxy => {
-        :max_size => "65536M"
+  :postgresql => {
+    :versions => ["12"],
+    :settings => {
+      :defaults => {
+        :work_mem => "300MB",
+        :maintenance_work_mem => "10GB",
+        :random_page_cost => "1.5",
+        :effective_cache_size => "60GB",
+        :fsync => "on",
+        :effective_io_concurrency => "100"
       }
     }
   },
-  :tilecache => {
-    :tile_parent => "corvallis.render.openstreetmap.org"
+  :nominatim => {
+    :state => "standalone",
+    :enable_backup => false,
+    :enable_git_updates => true,
+    :dbadmins => %w[lonvia tomh],
+    :dbcluster => "12/main",
+    :postgis => "2.5",
+    :flatnode_file => "/ssd/nominatim/nodes.store",
+    :logdir => "/ssd/nominatim/log",
+    :fpm_pools => {
+      "nominatim.openstreetmap.org" => {
+        :max_children => 100
+      }
+    },
+    :tablespaces => {
+      "dosm" => "/ssd/tablespaces/dosm",
+      "iosm" => "/ssd/tablespaces/iosm",
+      "dplace" => "/ssd/tablespaces/dplace",
+      "iplace" => "/ssd/tablespaces/iplace",
+      "daddress" => "/ssd/tablespaces/daddress",
+      "iaddress" => "/ssd/tablespaces/iaddress",
+      "dsearch" => "/ssd/tablespaces/dsearch",
+      "isearch" => "/ssd/tablespaces/isearch",
+      "daux" => "/ssd/tablespaces/daux",
+      "iaux" => "/ssd/tablespaces/iaux"
+    }
   }
 )
 
@@ -50,5 +70,5 @@ run_list(
   "role[osuosl]",
   "role[hp-g9]",
   "role[geodns]",
-  "role[tilecache]"
+  "role[nominatim]"
 )

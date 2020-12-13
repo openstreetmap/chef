@@ -47,6 +47,7 @@ package %w[
   pbzip2
   php-cli
   php-curl
+  mktorrent
 ]
 
 directory "/opt/planet-dump-ng" do

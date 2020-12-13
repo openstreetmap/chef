@@ -6,6 +6,8 @@ default[:tile][:database][:hstore] = true
 default[:tile][:database][:style_file] = nil
 default[:tile][:database][:tag_transform_script] = nil
 
+default[:tile][:replication][:url] = "https://planet.osm.org/replication/minute/"
+
 default[:tile][:data] = {}
 default[:tile][:styles] = {}
 

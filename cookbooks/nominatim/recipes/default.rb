@@ -380,7 +380,7 @@ end
 end
 
 node[:nominatim][:fpm_pools].each do |name, data|
-  php_fpm name.to_s do
+  php_fpm name do
     port data[:port]
     pm data[:pm]
     pm_max_children data[:max_children]
@@ -388,6 +388,7 @@ node[:nominatim][:fpm_pools].each do |name, data|
     pm_min_spare_servers 10
     pm_max_spare_servers 20
     pm_max_requests 10000
+    prometheus_port data[:prometheus_port]
   end
 end
 
@@ -412,11 +413,13 @@ nginx_site "default" do
   action [:delete]
 end
 
+frontends = search(:node, "recipes:web\\:\\:frontend").sort_by(&:name)
+
 nginx_site "nominatim" do
   template "nginx.erb"
   directory build_directory
   variables :pools => node[:nominatim][:fpm_pools],
-            :frontends => search(:node, "recipes:web\\:\\:frontend"),
+            :frontends => frontends,
             :confdir => "#{basedir}/etc",
             :ui_directory => ui_directory
 end
@@ -454,9 +457,12 @@ end
 
 include_recipe "fail2ban"
 
+frontend_addresses = frontends.collect { |f| f.ipaddresses(:role => :external) }
+
 fail2ban_jail "nominatim_limit_req" do
   filter "nginx-limit-req"
   logpath "#{node[:nominatim][:logdir]}/nominatim.openstreetmap.org-error.log"
   ports [80, 443]
   maxretry 5
+  ignoreips frontend_addresses.flatten.sort
 end

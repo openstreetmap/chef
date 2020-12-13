@@ -28,7 +28,7 @@ unix_socket_directory = '/var/run/postgresql'
 
 # - Security and Authentication -
 
-ssl = true
+ssl = <%= @settings[:ssl] || @defaults[:ssl] %>
 ssl_renegotiation_limit = 0
 
 #------------------------------------------------------------------------------
@@ -86,7 +86,9 @@ archive_command = '<%= @settings[:archive_command] || @defaults[:archive_command
 # - Sending Server(s) -
 
 max_wal_senders = <%= @settings[:max_wal_senders] || @defaults[:max_wal_senders] %>
+<% if @version.to_f >= 9.4 -%>
 max_replication_slots = <%= @settings[:max_replication_slots] || @defaults[:max_replication_slots] %>
+<% end -%>
 
 # - Standby Servers -
 

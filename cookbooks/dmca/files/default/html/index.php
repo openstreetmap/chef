@@ -12,7 +12,8 @@ function process_data ($values) {
         $email_body .= print_r($values, true);
         $reply_address = $values['name_first'].' '.$values['name_last'].' <'.$values['email'].'>';
         $email_body .= 'Formatted address: '.$reply_address."\n\n";
-        mail('dmca@osmfoundation.org','OSM Claim of Copyright Infringement', $email_body, 'From: OSMF Copyright Form <dmca@osmfoundation.org>', '-fdmca@osmfoundation.org');
+        $email_header = 'From: OSMF Copyright Form <dmca@osmfoundation.org>' . "\r\n" . 'Content-Type: text/plain; charset="utf-8"';
+        mail('dmca@osmfoundation.org','OSM Claim of Copyright Infringement', $email_body, $email_header, '-fdmca@osmfoundation.org');
 }
 ?>
 <!DOCTYPE html>

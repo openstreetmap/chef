@@ -25,7 +25,7 @@ default_attributes(
     }
   },
   :postgresql => {
-    :versions => ["12"],
+    :versions => ["13"],
     :settings => {
       :defaults => {
         :listen_addresses => "10.0.0.20",
@@ -47,8 +47,8 @@ default_attributes(
   :nominatim => {
     :state => "standalone",
     :dbadmins => %w[lonvia tomh],
-    :dbcluster => "12/main",
-    :postgis => "2.5",
+    :dbcluster => "13/main",
+    :postgis => "3",
     :enable_backup => true,
     :flatnode_file => "/ssd/nominatim/nodes.store",
     :tablespaces => {
