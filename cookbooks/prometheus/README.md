@@ -2,7 +2,7 @@
 
 This cookbook configures prometheus, which we use for server monitoring at
 [prometheus.openstreetmap.org](https://prometheus.openstreetmap.org). The
-cookbook contains teo recipes:
+cookbook contains two recipes:
 
 * default - installs and configures basic prometheus exporters on each machine
 * server - configures the central prometheus server
