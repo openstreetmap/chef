@@ -311,6 +311,7 @@ if node[:postgresql][:clusters][:"12/main"]
         database_port node[:postgresql][:clusters][:"12/main"][:port]
         database_name database_name
         database_username "apis"
+        email_from "OpenStreetMap <web@noreply.openstreetmap.org>"
         gpx_dir gpx_directory
         log_path "#{log_directory}/rails.log"
         memcache_servers ["127.0.0.1"]

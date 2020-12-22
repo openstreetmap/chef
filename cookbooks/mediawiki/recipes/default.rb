@@ -36,6 +36,7 @@ package %w[
   php-xml
   php-zip
   composer
+  unzip
 ]
 
 # Mediawiki enhanced difference engine
