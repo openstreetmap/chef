@@ -229,6 +229,13 @@ $wgGroupPermissions['*']['createaccount'] = false;
 $wgUploadPath = "$wgScriptPath/img_auth.php";
 <% end -%>
 
+<% if not(@mediawiki[:private_accounts]) and not(@mediawiki[:private_site]) -%>
+# user group "confirmed" with identical rights as "autoconfirmed", but assigned manually by sysops
+$wgGroupPermissions['confirmed'] = $wgGroupPermissions['autoconfirmed'];
+$wgAddGroups['sysop'][] = 'confirmed';
+$wgRemoveGroups['sysop'][] = 'confirmed';
+<% end -%>
+
 # Allow Subpages on Main Namespace
 $wgNamespacesWithSubpages[NS_MAIN] = true;
 
