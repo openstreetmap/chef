@@ -176,13 +176,13 @@
   RedirectPermanent /images/cc_button.png https://www.openstreetmap.org/assets/cc_button.png
 
   #
-  # Redirect api requests made to www.osm.org to api.osm.org
+  # Redirect api requests made to www.openstreetmap.org to api.openstreetmap.org
   #
 #  RewriteCond %{HTTP_HOST} =www.openstreetmap.org
 #  RewriteRule ^/api/(.*)$ https://api.openstreetmap.org/api/$1 [L,NE,R=permanent]
 
   #
-  # Redirect non-api requests made to api.osm.org to www.osm.org
+  # Redirect non-api requests made to api.openstreetmap.org to www.openstreetmap.org
   #
   RewriteCond %{HTTP_HOST} =api.openstreetmap.org
   RewriteCond %{REQUEST_URI} !^/api/
@@ -223,6 +223,16 @@
   RewriteEngine on
 
   RewriteRule ^/\.well-known/acme-challenge/(.*)$ http://acme.openstreetmap.org/.well-known/acme-challenge/$1 [R=permanent,L]
+
+  # HSTS Preloading requires domain name match
+  RewriteCond %{HTTP_HOST} =osm.org
+  RewriteCond %{REQUEST_URI} !^/server-status$
+  RewriteRule ^(.*)$ https://osm.org$1 [L,NE,R=permanent]
+
+  # HSTS Preloading requires domain match
+  RewriteCond %{HTTP_HOST} =www.osm.org
+  RewriteCond %{REQUEST_URI} !^/server-status$
+  RewriteRule ^(.*)$ https://www.osm.org$1 [L,NE,R=permanent]
 
   RewriteCond %{REQUEST_URI} !^/server-status$
   RewriteRule ^(.*)$ https://www.openstreetmap.org$1 [L,NE,R=permanent]
