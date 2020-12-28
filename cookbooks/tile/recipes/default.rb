@@ -86,6 +86,7 @@ systemd_service "renderd" do
   exec_start "/usr/bin/renderd -f"
   runtime_directory "renderd"
   standard_error "null"
+  limit_nofile 4096
   private_tmp true
   private_devices true
   private_network true
