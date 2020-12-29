@@ -200,6 +200,34 @@
 </VirtualHost>
 
 <VirtualHost *:80>
+  ServerName osm.org
+
+  Header always set Cache-Control "max-age=31536000"
+  Header always set Expires "Tue, 19 Jan 2038 03:14:07 GMT"
+
+  RewriteEngine on
+
+  RewriteRule ^/\.well-known/acme-challenge/(.*)$ http://acme.openstreetmap.org/.well-known/acme-challenge/$1 [R=permanent,L]
+
+  RewriteCond %{REQUEST_URI} !^/server-status$
+  RewriteRule ^(.*)$ https://osm.org$1 [L,NE,R=permanent]
+</VirtualHost>
+
+<VirtualHost *:80>
+  ServerName www.osm.org
+
+  Header always set Cache-Control "max-age=31536000"
+  Header always set Expires "Tue, 19 Jan 2038 03:14:07 GMT"
+
+  RewriteEngine on
+
+  RewriteRule ^/\.well-known/acme-challenge/(.*)$ http://acme.openstreetmap.org/.well-known/acme-challenge/$1 [R=permanent,L]
+
+  RewriteCond %{REQUEST_URI} !^/server-status$
+  RewriteRule ^(.*)$ https://www.osm.org$1 [L,NE,R=permanent]
+</VirtualHost>
+
+<VirtualHost *:80>
   ServerName openstreetmap.org
 
   Header always set Cache-Control "max-age=31536000"
@@ -223,16 +251,6 @@
   RewriteEngine on
 
   RewriteRule ^/\.well-known/acme-challenge/(.*)$ http://acme.openstreetmap.org/.well-known/acme-challenge/$1 [R=permanent,L]
-
-  # HSTS Preloading requires domain name match
-  RewriteCond %{HTTP_HOST} =osm.org
-  RewriteCond %{REQUEST_URI} !^/server-status$
-  RewriteRule ^(.*)$ https://osm.org$1 [L,NE,R=permanent]
-
-  # HSTS Preloading requires domain match
-  RewriteCond %{HTTP_HOST} =www.osm.org
-  RewriteCond %{REQUEST_URI} !^/server-status$
-  RewriteRule ^(.*)$ https://www.osm.org$1 [L,NE,R=permanent]
 
   RewriteCond %{REQUEST_URI} !^/server-status$
   RewriteRule ^(.*)$ https://www.openstreetmap.org$1 [L,NE,R=permanent]
