@@ -217,17 +217,6 @@ template "#{source_directory}/.git/hooks/post-merge" do
             :dbname => node[:nominatim][:dbname]
 end
 
-template "#{build_directory}/settings/local.php" do
-  source "settings.erb"
-  owner "nominatim"
-  group "nominatim"
-  mode "664"
-  variables :base_url => node[:nominatim][:state] == "off" ? node[:fqdn] : "nominatim.openstreetmap.org",
-            :dbname => node[:nominatim][:dbname],
-            :flatnode_file => node[:nominatim][:flatnode_file],
-            :log_file => "#{node[:nominatim][:logdir]}/query.log"
-end
-
 template "#{build_directory}/.env" do
   source "nominatim.env.erb"
   owner "nominatim"
