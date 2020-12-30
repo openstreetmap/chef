@@ -170,6 +170,7 @@ package %w[
   python3-psycopg2
   php-pgsql
   php-intl
+  php-symfony-dotenv
 ]
 
 source_directory = "#{basedir}/nominatim"
