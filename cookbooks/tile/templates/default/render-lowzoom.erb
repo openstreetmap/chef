@@ -18,7 +18,7 @@ function update_<%= style %>
     --socket=/var/run/renderd/renderd.sock \
     --num-threads=<%= node[:cpu][:total] - 1 %> \
     --map="<%= style %>" \
-    --max-load=70 \
+    --max-load=<%= node[:cpu][:total] %> \
     --min-zoom=0 --max-zoom=12
 }
 
