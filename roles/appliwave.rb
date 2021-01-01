@@ -2,6 +2,11 @@ name "appliwave"
 description "Role applied to all servers at Appliwave"
 
 default_attributes(
+  :accounts => {
+    :users => {
+      :appliwave => { :status => :administrator }
+    }
+  },
   :hosted_by => "Appliwave",
   :location => "Croissy-Beaubourg, France"
 )
