@@ -6,7 +6,7 @@ default_attributes(
     :interfaces => {
       :external_ipv4 => {
         :interface => "bond0",
-        :mtu => "9000",
+        :mtu => 9000,
         :role => :external,
         :family => :inet,
         :address => "45.85.134.91",
