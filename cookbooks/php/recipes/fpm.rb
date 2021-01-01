@@ -33,4 +33,3 @@ end
 service "php#{node[:php][:version]}-fpm" do
   action [:enable, :start]
 end
-
