@@ -550,9 +550,13 @@ acl_check_data:
          !hosts      = +relay_from_hosts
           message    = This message failed local spam checks.
 
-  # Accept the message.
+  # Accept messages from relay hosts without modification.
 
-  accept
+  accept  hosts      = +relay_from_hosts
+
+  # Accept messages from external hosts and add authentication results.
+
+  accept  add_header = :at_start:${authresults {$primary_hostname}}
 
 
 
