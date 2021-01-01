@@ -349,11 +349,11 @@ intel_nvmes = nvmes.select { |pci| pci[:vendor_name] == "Intel Corporation" }
 if !intel_ssds.empty? || !intel_nvmes.empty?
   package "unzip"
 
-  intel_ssd_tool_version = "3.0.26"
+  intel_ssd_tool_version = "3.0.27"
   intel_ssd_package_version = "#{intel_ssd_tool_version}.400-1"
 
   remote_file "#{Chef::Config[:file_cache_path]}/Intel_SSD_Data_Center_Tool_#{intel_ssd_tool_version}_Linux.zip" do
-    source "https://downloadmirror.intel.com/29720/eng/Intel_SSD_DCT_#{intel_ssd_tool_version}_Linux.zip"
+    source "https://downloadmirror.intel.com/30065/eng/Intel_SSD_DCT_#{intel_ssd_tool_version}_Linux.zip"
   end
 
   execute "#{Chef::Config[:file_cache_path]}/Intel_SSD_Data_Center_Tool_#{intel_ssd_tool_version}_Linux.zip" do
