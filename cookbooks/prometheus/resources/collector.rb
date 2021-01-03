@@ -64,6 +64,10 @@ action :delete do
   systemd_service service_name do
     action :delete
   end
+
+  file "/var/lib/prometheus/node-exporter/#{new_resource.collector}.prom" do
+    action :delete
+  end
 end
 
 action_class do

@@ -611,9 +611,17 @@ munin_plugin "renderd_zoom_time"
 munin_plugin "replication_delay"
 
 prometheus_collector "modtile" do
-  interval "1m"
+  action :delete
 end
 
 prometheus_collector "renderd" do
-  interval "1m"
+  action :delete
+end
+
+prometheus_exporter "modtile" do
+  port 9494
+end
+
+prometheus_exporter "renderd" do
+  port 9393
 end
