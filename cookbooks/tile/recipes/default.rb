@@ -610,14 +610,6 @@ munin_plugin "renderd_zoom_time"
 
 munin_plugin "replication_delay"
 
-prometheus_collector "modtile" do
-  action :delete
-end
-
-prometheus_collector "renderd" do
-  action :delete
-end
-
 prometheus_exporter "modtile" do
   port 9494
 end
