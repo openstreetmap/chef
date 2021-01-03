@@ -68,7 +68,6 @@ execute "/srv/operations.osmfoundation.org/Gemfile" do
 end
 
 execute "/srv/operations.osmfoundation.org" do
-  action :nothing
   command "bundle exec jekyll build --trace"
   cwd "/srv/operations.osmfoundation.org"
   user "nobody"
