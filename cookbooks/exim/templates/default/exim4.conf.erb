@@ -720,6 +720,7 @@ signed_smtp:
   dkim_identity = ${lc:${address:$h_from:}}
   # dkim_timestamps = 1209600
   multi_domain = false
+  hosts_try_dane =
   tls_require_ciphers = <%= node[:ssl][:gnutls_ciphers] %>:%LATEST_RECORD_VERSION
 
 
