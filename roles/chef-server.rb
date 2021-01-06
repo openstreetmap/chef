@@ -6,7 +6,6 @@ default_attributes(
     :plugins => {
       :chef_status => {
         :ascalon => { :warning => ":", :critical => ":" },
-        :idris => { :warning => ":", :critical => ":" },
         :norbert => { :warning => ":", :critical => ":" },
         :smaug => { :warning => ":", :critical => ":" },
         :zark => { :warning => ":", :critical => ":" }
