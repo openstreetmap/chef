@@ -170,6 +170,7 @@ package %w[
   python3-psycopg2
   php-pgsql
   php-intl
+  php-symfony-dotenv
 ]
 
 source_directory = "#{basedir}/nominatim"
@@ -216,8 +217,8 @@ template "#{source_directory}/.git/hooks/post-merge" do
             :dbname => node[:nominatim][:dbname]
 end
 
-template "#{build_directory}/settings/local.php" do
-  source "settings.erb"
+template "#{build_directory}/.env" do
+  source "nominatim.env.erb"
   owner "nominatim"
   group "nominatim"
   mode "664"

@@ -349,24 +349,28 @@ intel_nvmes = nvmes.select { |pci| pci[:vendor_name] == "Intel Corporation" }
 if !intel_ssds.empty? || !intel_nvmes.empty?
   package "unzip"
 
-  intel_ssd_tool_version = "3.0.26"
-  intel_ssd_package_version = "#{intel_ssd_tool_version}.400-1"
+  intel_mas_tool_version = "1.4"
+  intel_mas_package_version = "#{intel_mas_tool_version}.102-0"
 
-  remote_file "#{Chef::Config[:file_cache_path]}/Intel_SSD_Data_Center_Tool_#{intel_ssd_tool_version}_Linux.zip" do
-    source "https://downloadmirror.intel.com/29720/eng/Intel_SSD_DCT_#{intel_ssd_tool_version}_Linux.zip"
+  remote_file "#{Chef::Config[:file_cache_path]}/Intel_MAS_CLI_Tool_#{intel_mas_tool_version}_Linux.zip" do
+    source "https://downloadmirror.intel.com/30059/eng/Intel%C2%AE_MAS_CLI_Tool_Linux.zip"
   end
 
-  execute "#{Chef::Config[:file_cache_path]}/Intel_SSD_Data_Center_Tool_#{intel_ssd_tool_version}_Linux.zip" do
-    command "unzip Intel_SSD_Data_Center_Tool_#{intel_ssd_tool_version}_Linux.zip isdct_#{intel_ssd_package_version}_amd64.deb"
+  execute "#{Chef::Config[:file_cache_path]}/Intel_MAS_CLI_Tool_#{intel_mas_tool_version}_Linux.zip" do
+    command "unzip Intel_MAS_CLI_Tool_#{intel_mas_tool_version}_Linux.zip intelmas_#{intel_mas_package_version}_amd64.deb"
     cwd Chef::Config[:file_cache_path]
     user "root"
     group "root"
-    not_if { ::File.exist?("#{Chef::Config[:file_cache_path]}/isdct_#{intel_ssd_package_version}_amd64.deb") }
+    not_if { ::File.exist?("#{Chef::Config[:file_cache_path]}/intelmas_#{intel_mas_package_version}_amd64.deb") }
+  end
+
+  dpkg_package "intelmas" do
+    version "#{intel_mas_package_version}"
+    source "#{Chef::Config[:file_cache_path]}/intelmas_#{intel_mas_package_version}_amd64.deb"
   end
 
   dpkg_package "isdct" do
-    version "#{intel_ssd_package_version}"
-    source "#{Chef::Config[:file_cache_path]}/isdct_#{intel_ssd_package_version}_amd64.deb"
+    action :purge
   end
 end
 

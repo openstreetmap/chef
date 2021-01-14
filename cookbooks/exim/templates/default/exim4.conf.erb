@@ -550,9 +550,13 @@ acl_check_data:
          !hosts      = +relay_from_hosts
           message    = This message failed local spam checks.
 
-  # Accept the message.
+  # Accept messages from relay hosts without modification.
 
-  accept
+  accept  hosts      = +relay_from_hosts
+
+  # Accept messages from external hosts and add authentication results.
+
+  accept  add_header = :at_start:${authresults {$primary_hostname}}
 
 
 
@@ -714,8 +718,9 @@ signed_smtp:
   dkim_selector = ${lookup{$dkim_domain}lsearch{/etc/exim4/dkim-selectors}{$value}}
   dkim_private_key = /etc/exim4/dkim-keys/${dkim_domain}
   dkim_identity = ${lc:${address:$h_from:}}
-  # dkim_timestamps = 1209600
+  dkim_timestamps = 1209600
   multi_domain = false
+  hosts_try_dane =
   tls_require_ciphers = <%= node[:ssl][:gnutls_ciphers] %>:%LATEST_RECORD_VERSION
 
 
@@ -768,7 +773,7 @@ noreply:
   to = $sender_address
   subject = Re: $header_subject:
   headers = MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8
-  file = /etc/exim4/noreply/$local_part
+  file = /etc/exim4/noreply/$local_part_data
   user = Debian-exim
   group = Debian-exim
 

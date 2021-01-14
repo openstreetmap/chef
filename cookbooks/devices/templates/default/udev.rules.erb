@@ -67,6 +67,8 @@ SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x10d3
 SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x10f6", RUN+="/usr/local/bin/fixeep-82574_83.sh $name"
 SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x150c", RUN+="/usr/local/bin/fixeep-82574_83.sh $name"
 
+# Ethernet controller: Intel Corporation 82599ES 10-Gigabit SFI/SFP+ Network Connection
+SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x10fb", RUN+="/sbin/ethtool -G $name rx 4096 tx 4096"
 # Ethernet controller: Intel Corporation 82580 Gigabit Network Connection
 SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x150e", RUN+="/sbin/ethtool -G $name rx 4096 tx 4096"
 # Ethernet controller: Intel Corporation I350 Gigabit Network Connection

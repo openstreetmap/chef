@@ -176,13 +176,13 @@
   RedirectPermanent /images/cc_button.png https://www.openstreetmap.org/assets/cc_button.png
 
   #
-  # Redirect api requests made to www.osm.org to api.osm.org
+  # Redirect api requests made to www.openstreetmap.org to api.openstreetmap.org
   #
 #  RewriteCond %{HTTP_HOST} =www.openstreetmap.org
 #  RewriteRule ^/api/(.*)$ https://api.openstreetmap.org/api/$1 [L,NE,R=permanent]
 
   #
-  # Redirect non-api requests made to api.osm.org to www.osm.org
+  # Redirect non-api requests made to api.openstreetmap.org to www.openstreetmap.org
   #
   RewriteCond %{HTTP_HOST} =api.openstreetmap.org
   RewriteCond %{REQUEST_URI} !^/api/
@@ -197,6 +197,34 @@
 
   RedirectPermanent /events.ics http://calendar.openstreetmap.org.uk/events.ics
   RedirectPermanent / https://www.openstreetmap.org/
+</VirtualHost>
+
+<VirtualHost *:80>
+  ServerName osm.org
+
+  Header always set Cache-Control "max-age=31536000"
+  Header always set Expires "Tue, 19 Jan 2038 03:14:07 GMT"
+
+  RewriteEngine on
+
+  RewriteRule ^/\.well-known/acme-challenge/(.*)$ http://acme.openstreetmap.org/.well-known/acme-challenge/$1 [R=permanent,L]
+
+  RewriteCond %{REQUEST_URI} !^/server-status$
+  RewriteRule ^(.*)$ https://osm.org$1 [L,NE,R=permanent]
+</VirtualHost>
+
+<VirtualHost *:80>
+  ServerName www.osm.org
+
+  Header always set Cache-Control "max-age=31536000"
+  Header always set Expires "Tue, 19 Jan 2038 03:14:07 GMT"
+
+  RewriteEngine on
+
+  RewriteRule ^/\.well-known/acme-challenge/(.*)$ http://acme.openstreetmap.org/.well-known/acme-challenge/$1 [R=permanent,L]
+
+  RewriteCond %{REQUEST_URI} !^/server-status$
+  RewriteRule ^(.*)$ https://www.osm.org$1 [L,NE,R=permanent]
 </VirtualHost>
 
 <VirtualHost *:80>

@@ -448,6 +448,7 @@ action :create do
   file "#{rails_directory}/public/export/embed.html" do
     action :nothing
     subscribes :delete, "git[#{rails_directory}]"
+    subscribes :delete, "file[#{rails_directory}/config/settings.local.yml]"
   end
 
   passenger_application rails_directory do

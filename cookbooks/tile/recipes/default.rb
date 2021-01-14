@@ -86,6 +86,7 @@ systemd_service "renderd" do
   exec_start "/usr/bin/renderd -f"
   runtime_directory "renderd"
   standard_error "null"
+  limit_nofile 4096
   private_tmp true
   private_devices true
   private_network true
@@ -609,10 +610,10 @@ munin_plugin "renderd_zoom_time"
 
 munin_plugin "replication_delay"
 
-prometheus_collector "modtile" do
-  interval "1m"
+prometheus_exporter "modtile" do
+  port 9494
 end
 
-prometheus_collector "renderd" do
-  interval "1m"
+prometheus_exporter "renderd" do
+  port 9393
 end
