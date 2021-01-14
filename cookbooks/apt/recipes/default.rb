@@ -182,6 +182,11 @@ apt_repository "grafana" do
   key "https://packages.grafana.com/gpg.key"
 end
 
+apt_repository "timescaledb" do
+  action repository_actions["timescaledb"]
+  uri "ppa:timescale/timescaledb-ppa"
+end
+
 package "unattended-upgrades"
 
 if Dir.exist?("/usr/share/unattended-upgrades")
