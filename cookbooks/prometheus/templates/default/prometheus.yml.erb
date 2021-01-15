@@ -21,3 +21,9 @@ scrape_configs:
           instance: <%= target[:name].split(".").first %>
 <% end -%>
 <% end -%>
+
+remote_write:
+  - url: "http://localhost:9201/write"
+
+remote_read:
+  - url: "http://localhost:9201/read"
