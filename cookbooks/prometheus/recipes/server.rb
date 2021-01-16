@@ -81,8 +81,8 @@ execute "/opt/promscale/extension/Makefile" do
   cwd "/opt/promscale/extension"
   user "root"
   group "root"
-  subscribes :run, "git[/opt/promscale/extension]", :immediate
-  notifies :restart, "service[postgresql]", :immediate
+  subscribes :run, "git[/opt/promscale/extension]", :immediately
+  notifies :restart, "service[postgresql]", :immediately
 end
 
 directory "/opt/promscale/bin" do
@@ -104,7 +104,7 @@ systemd_service "promscale" do
   type "simple"
   user "prometheus"
   exec_start "/opt/promscale/bin/promscale --db-host /run/postgresql --db-port 5432 --db-user prometheus --db-name promscale --db-connections-max 400"
-#  exec_start lazy { "/opt/promscale/bin/promscale --db-host /run/postgresql --db-port #{node[:postgresql][:clusters][database_cluster][:port]} --db-user prometheus --db-name promscale --db-max-connections 400" }
+  # exec_start lazy { "/opt/promscale/bin/promscale --db-host /run/postgresql --db-port #{node[:postgresql][:clusters][database_cluster][:port]} --db-user prometheus --db-name promscale --db-max-connections 400" }
   private_tmp true
   protect_system "strict"
   protect_home true
