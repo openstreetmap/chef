@@ -349,11 +349,11 @@ intel_nvmes = nvmes.select { |pci| pci[:vendor_name] == "Intel Corporation" }
 if !intel_ssds.empty? || !intel_nvmes.empty?
   package "unzip"
 
-  intel_mas_tool_version = "1.4"
-  intel_mas_package_version = "#{intel_mas_tool_version}.102-0"
+  intel_mas_tool_version = "1.5"
+  intel_mas_package_version = "#{intel_mas_tool_version}.113-0"
 
   remote_file "#{Chef::Config[:file_cache_path]}/Intel_MAS_CLI_Tool_#{intel_mas_tool_version}_Linux.zip" do
-    source "https://downloadmirror.intel.com/30059/eng/Intel%C2%AE_MAS_CLI_Tool_Linux.zip"
+    source "https://downloadmirror.intel.com/30162/eng/Intel%C2%AE_MAS_CLI_Tool_Linux.zip"
   end
 
   execute "#{Chef::Config[:file_cache_path]}/Intel_MAS_CLI_Tool_#{intel_mas_tool_version}_Linux.zip" do
