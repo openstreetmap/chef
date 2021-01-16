@@ -81,7 +81,12 @@ function mk_torrent {
   web_dir="$3"
   name="${type}-${date}.osm.${format}"
   web_path="${web_dir}/${name}"
+  rss_web_dir="https://planet.openstreetmap.org/${web_dir}"
+  rss_file="${type}-${format}-rss.xml"
+  torrent_file="${name}.torrent"
+  torrent_url="${rss_web_dir}/${torrent_file}"
 
+  # create .torrent file
   mktorrent -l 22 ${name} \
      -a udp://tracker.opentrackr.org:1337 \
      -a udp://tracker.datacenterlight.ch:6969/announce,http://tracker.datacenterlight.ch:6969/announce \
@@ -99,7 +104,49 @@ function mk_torrent {
      -w https://downloads.opencagedata.com/planet/${name} \
      -w https://planet.osm-hr.org/${web_path} \
      -c "OpenStreetMap ${type} data export, licensed under https://opendatacommons.org/licenses/odbl/ by OpenStreetMap contributors" \
-     -o ${name}.torrent
+     -o ${torrent_file}
+
+  # create .xml global RSS headers if missing
+  torrent_time_rfc="`date -R -r ${torrent_file}`"
+  test -f "${rss_file}" || echo "<x/>" | xmlstarlet select --xml-decl --indent \
+	-N "atom=http://www.w3.org/2005/Atom" \
+	-N "dcterms=http://purl.org/dc/terms/" \
+	-N "content=http://purl.org/rss/1.0/modules/content/" \
+	--encode "UTF-8" \
+	--template \
+	--match / \
+	--elem "rss" --attr "version" --output "2.0" --break \
+	--elem "channel" \
+	--elem "title" --output "OpenStreetMap ${type} ${format} torrent RSS" --break \
+	--elem "link"  --output "${rss_web_dir}" --break \
+	--elem "atom:link" \
+		--attr "href" --output "${rss_web_dir}/${rss_file}" --break \
+		--attr "rel" --output "self" --break \
+		--attr "type" --output "application/rss+xml" --break \
+		--break \
+	--elem "description" --output "${type}.osm.${format}.torrent RSS feed" --break \
+	--elem "generator" --output "OpenStreetMap xmlstarlet powered shell script v1.0" --break \
+	--elem "language" --output "en" --break \
+	--elem "lastBuildDate" --output "${torrent_time_rfc}" \
+	> ${rss_file}
+
+  # add newly created .torrent file as new entry to .xml RSS feed, removing excess entries
+  xmlstarlet edit --inplace \
+	-s /rss/channel -t elem -n NEW_item  \
+	-s //NEW_item -t elem -n "title" -v "${torrent_file}" \
+	-s //NEW_item -t elem -n "guid" -v "${torrent_url}" \
+	-s //NEW_item -t elem -n "pubDate" -v "${torrent_time_rfc}" \
+	-s //NEW_item -t elem -n "category" -v "OpenStreetMap data" \
+	-s //NEW_item -t elem -n "link" -v "${torrent_url}" \
+	-s //NEW_item -t elem -n "enclosure" \
+		-s //NEW_item/enclosure -t attr -n "type" -v "application/x-bittorrent" \
+		-s //NEW_item/enclosure -t attr -n "url" -v "${torrent_url}" \
+	-s //NEW_item -t elem -n "description" -v "OpenStreetMap torrent ${torrent_file}" \
+	-s //NEW_item -t elem -n "comments" -v "Source: OpenStreetMap contributors, under ODbL 1.0 licence" \
+	-r //NEW_item -v "item" \
+	-u /rss/channel/lastBuildDate -v "${torrent_time_rfc}" \
+	-d '/rss/channel/item[position() <= count(/rss/channel/item) - 5]' \
+	${rss_file}
 }
 
 # Function to install a dump in place
@@ -110,12 +157,14 @@ function install_dump {
   year="$4"
   name="${type}-${date}.osm.${format}"
   latest="${type}-latest.osm.${format}"
+  rss_file="${type}-${format}-rss.xml"
 
   md5sum "${name}" > "${name}.md5"
   mkdir -p "${dir}/${year}"
   mv "${name}" "${name}.md5" "${dir}/${year}"
   ln -sf "${year:-.}/${name}" "${dir}/${latest}"
   test -f "${name}.torrent" && mv "${name}.torrent" "${dir}/${year}" && ln -sf "${year:-.}/${name}.torrent" "${dir}/${latest}.torrent"
+  test -f "${rss_file}" && xmllint --noout "${rss_file}" && cp -f "${rss_file}" "${dir}/${year}"
   rm -f "${dir}/${latest}.md5"
   sed -e "s/${name}/${latest}/" "${dir}/${year}/${name}.md5" > "${dir}/${latest}.md5"
 }
