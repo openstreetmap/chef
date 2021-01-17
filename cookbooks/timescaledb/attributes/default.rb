@@ -7,6 +7,7 @@ default[:apt][:sources] |= ["timescaledb"]
 
 memory_gb = (node[:memory][:total].to_f / 1024 / 1024).ceil
 
+default_unless[:postgresql][:versions] = []
 default[:postgresql][:versions] |= [database_version]
 default[:postgresql][:settings][database_version][:max_connections] = 500
 default[:postgresql][:settings][database_version][:shared_buffers] = "#{memory_gb / 4}GB"
