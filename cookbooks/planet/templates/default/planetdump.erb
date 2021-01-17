@@ -117,7 +117,9 @@ function mk_torrent {
 	--encode "UTF-8" \
 	--template \
 	--match / \
-	--elem "rss" --attr "version" --output "2.0" --break \
+	--elem "rss" \
+		--attr "version" --output "2.0" --break \
+		--attr "atom:DUMMY" --break \
 	--elem "channel" \
 	--elem "title" --output "OpenStreetMap ${type} ${format} torrent RSS" --break \
 	--elem "link"  --output "${rss_web_dir}" --break \
@@ -147,6 +149,7 @@ function mk_torrent {
 	-s //NEW_item -t elem -n "comments" -v "Source: OpenStreetMap contributors, under ODbL 1.0 licence" \
 	-r //NEW_item -v "item" \
 	-u /rss/channel/lastBuildDate -v "${torrent_time_rfc}" \
+	-d /rss/@atom:DUMMY \
 	-d '/rss/channel/item[position() <= count(/rss/channel/item) - 5]' \
 	${rss_file}
 }
