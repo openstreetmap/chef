@@ -136,21 +136,20 @@ function mk_torrent {
 
   # add newly created .torrent file as new entry to .xml RSS feed, removing excess entries
   xmlstarlet edit --inplace \
-	-s /rss/channel -t elem -n NEW_item  \
-	-s //NEW_item -t elem -n "title" -v "${torrent_file}" \
-	-s //NEW_item -t elem -n "guid" -v "${torrent_url}" \
-	-s //NEW_item -t elem -n "link" -v "${torrent_url}" \
-	-s //NEW_item -t elem -n "pubDate" -v "${torrent_time_rfc}" \
-	-s //NEW_item -t elem -n "category" -v "OpenStreetMap data" \
-	-s //NEW_item -t elem -n "enclosure" \
-		-s //NEW_item/enclosure -t attr -n "type" -v "application/x-bittorrent" \
-		-s //NEW_item/enclosure -t attr -n "url" -v "${torrent_url}" \
-	-s //NEW_item -t elem -n "description" -v "OpenStreetMap torrent ${torrent_file}" \
-	-s //NEW_item -t elem -n "comments" -v "Source: OpenStreetMap contributors, under ODbL 1.0 licence" \
-	-r //NEW_item -v "item" \
+	-a "//channel" -t elem -n item -v ""  \
+	-s "//item[1]" -t elem -n "title" -v "${torrent_file}" \
+	-s "//item[1]" -t elem -n "guid" -v "${torrent_url}" \
+	-s "//item[1]" -t elem -n "link" -v "${torrent_url}" \
+	-s "//item[1]" -t elem -n "pubDate" -v "${torrent_time_rfc}" \
+	-s "//item[1]" -t elem -n "category" -v "OpenStreetMap data" \
+	-s "//item[1]" -t elem -n "enclosure" \
+		-s "//item[1]"/enclosure -t attr -n "type" -v "application/x-bittorrent" \
+		-s "//item[1]"/enclosure -t attr -n "url" -v "${torrent_url}" \
+	-s "//item[1]" -t elem -n "description" -v "OpenStreetMap torrent ${torrent_file}" \
+	-s "//item[1]" -t elem -n "comments" -v "Source: OpenStreetMap contributors, under ODbL 1.0 licence" \
 	-u /rss/channel/lastBuildDate -v "${torrent_time_rfc}" \
 	-d /rss/@atom:DUMMY \
-	-d '/rss/channel/item[position() <= count(/rss/channel/item) - 5]' \
+	-d "//item[position()>5]" \
 	${rss_file}
 }
 
