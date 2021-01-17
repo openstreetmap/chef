@@ -78,13 +78,15 @@ time nice -n 19 /opt/planet-dump-ng/planet-dump-ng \
 function mk_torrent {
   type="$1"
   format="$2"
-  web_dir="$3"
+  dir="$3"
+  s_year="$4"
+  web_dir="${dir}${s_year}"
   name="${type}-${date}.osm.${format}"
   web_path="${web_dir}/${name}"
-  rss_web_dir="https://planet.openstreetmap.org/${web_dir}"
+  rss_web_dir="https://planet.openstreetmap.org/${dir}"
   rss_file="${type}-${format}-rss.xml"
   torrent_file="${name}.torrent"
-  torrent_url="${rss_web_dir}/${torrent_file}"
+  torrent_url="${rss_web_dir}${s_year}/${torrent_file}"
 
   # create .torrent file
   mktorrent -l 22 ${name} \
@@ -104,7 +106,7 @@ function mk_torrent {
      -w https://downloads.opencagedata.com/planet/${name} \
      -w https://planet.osm-hr.org/${web_path} \
      -c "OpenStreetMap ${type} data export, licensed under https://opendatacommons.org/licenses/odbl/ by OpenStreetMap contributors" \
-     -o ${torrent_file}
+     -o ${torrent_file} > /dev/null
 
   # create .xml global RSS headers if missing
   torrent_time_rfc="`date -R -r ${torrent_file}`"
@@ -135,9 +137,9 @@ function mk_torrent {
 	-s /rss/channel -t elem -n NEW_item  \
 	-s //NEW_item -t elem -n "title" -v "${torrent_file}" \
 	-s //NEW_item -t elem -n "guid" -v "${torrent_url}" \
+	-s //NEW_item -t elem -n "link" -v "${torrent_url}" \
 	-s //NEW_item -t elem -n "pubDate" -v "${torrent_time_rfc}" \
 	-s //NEW_item -t elem -n "category" -v "OpenStreetMap data" \
-	-s //NEW_item -t elem -n "link" -v "${torrent_url}" \
 	-s //NEW_item -t elem -n "enclosure" \
 		-s //NEW_item/enclosure -t attr -n "type" -v "application/x-bittorrent" \
 		-s //NEW_item/enclosure -t attr -n "url" -v "${torrent_url}" \
@@ -164,16 +166,16 @@ function install_dump {
   mv "${name}" "${name}.md5" "${dir}/${year}"
   ln -sf "${year:-.}/${name}" "${dir}/${latest}"
   test -f "${name}.torrent" && mv "${name}.torrent" "${dir}/${year}" && ln -sf "${year:-.}/${name}.torrent" "${dir}/${latest}.torrent"
-  test -f "${rss_file}" && xmllint --noout "${rss_file}" && cp -f "${rss_file}" "${dir}/${year}"
+  test -f "${rss_file}" && xmllint --noout "${rss_file}" && cp -f "${rss_file}" "${dir}"
   rm -f "${dir}/${latest}.md5"
   sed -e "s/${name}/${latest}/" "${dir}/${year}/${name}.md5" > "${dir}/${latest}.md5"
 }
 
 # Create *.torrent files
-mk_torrent "changesets" "bz2" "planet/${year}"
-mk_torrent "discussions" "bz2" "planet/${year}"
-mk_torrent "planet" "bz2" "planet/${year}"
-mk_torrent "history" "bz2" "planet/full-history/${year}"
+mk_torrent "changesets" "bz2" "planet" "/${year}"
+mk_torrent "discussions" "bz2" "planet" "/${year}"
+mk_torrent "planet" "bz2" "planet" "/${year}"
+mk_torrent "history" "bz2" "planet/full-history" "/${year}"
 mk_torrent "planet" "pbf" "pbf"
 mk_torrent "history" "pbf" "pbf/full-history"
 
