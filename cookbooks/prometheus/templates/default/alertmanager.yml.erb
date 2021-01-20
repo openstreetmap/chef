@@ -3,6 +3,7 @@
 global:
   smtp_smarthost: localhost:25
   smtp_from: prometheus@openstreetmap.org
+  smtp_require_tls: false
 
 templates:
   - /etc/prometheus/alertmanager_templates/*.tmpl
