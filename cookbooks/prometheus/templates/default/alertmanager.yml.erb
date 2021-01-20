@@ -1,0 +1,23 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+global:
+  smtp_smarthost: localhost:25
+  smtp_from: prometheus@openstreetmap.org
+
+templates:
+  - /etc/prometheus/alertmanager_templates/*.tmpl
+
+route:
+  group_by:
+    - service
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 3h
+  receiver: admins-email
+
+inhibit_rules:
+
+receivers:
+  - name: admins-email
+    email_configs:
+      - to: admins@openstreetmap.org

@@ -32,7 +32,10 @@ prometheus_exporter "fastly" do
   environment "FASTLY_API_TOKEN" => tokens["fastly"]
 end
 
-package "prometheus"
+package %w[
+  prometheus
+  prometheus-alertmanager
+]
 
 promscale_version = "0.1.4"
 
@@ -177,6 +180,18 @@ end
 service "prometheus" do
   action [:enable, :start]
   subscribes :reload, "template[/etc/prometheus/prometheus.yml]"
+end
+
+template "/etc/prometheus/alertmanager.yml" do
+  source "alertmanager.yml.erb"
+  owner "root"
+  group "root"
+  mode "644"
+end
+
+service "prometheus-alertmanager" do
+  action [:enable, :start]
+  subscribes :reload, "template[/etc/prometheus/alertmanager.yml]"
 end
 
 package "grafana-enterprise"

@@ -58,6 +58,7 @@ default_attributes(
       "rails" => "root",
       "trac" => "root",
       "munin" => "root",
+      "prometheus" => "root",
       "www-data" => "root",
       "osmbackup" => "root",
       "noreply" => "/dev/null",
