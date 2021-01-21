@@ -20,6 +20,10 @@ scrape_configs:
     static_configs:
       - targets:
           - localhost:9090
+  - job_name: alertmanager
+    static_configs:
+      - targets:
+          - localhost:9093
 <% @jobs.sort.each do |name, targets| -%>
   - job_name: <%= name %>
     static_configs:
