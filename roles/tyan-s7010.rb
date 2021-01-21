@@ -3,6 +3,9 @@ description "Role applied to machines using the Tyan S7010 motherboard"
 
 default_attributes(
   :hardware => {
+    :ipmi => {
+      :excluded_sensors => [13, 14, 15, 16, 17, 18, 19, 20]
+    },
     :modules => %w[i2c_i801 jc42 w83793],
     :sensors => {
       "jc42-*" => {
