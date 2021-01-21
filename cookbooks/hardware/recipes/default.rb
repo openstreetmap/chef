@@ -178,8 +178,17 @@ if node[:kernel][:modules].include?("ipmi_si")
   package "ipmitool"
   package "freeipmi-tools"
 
+  template "/etc/prometheus/ipmi_local.yml" do
+    source "ipmi_local.yml.erb"
+    owner "root"
+    group "root"
+    mode "644"
+  end
+
   prometheus_exporter "ipmi" do
     port 9290
+    options "--config.file=/etc/prometheus/ipmi_local.yml"
+    subscribes :restart, "template[/etc/prometheus/ipmi_local.yml]"
   end
 end
 
