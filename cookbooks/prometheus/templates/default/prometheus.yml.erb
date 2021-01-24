@@ -34,7 +34,17 @@ scrape_configs:
       - targets:
           - "<%= target[:address] %>"
         labels:
-          instance: <%= target[:name].split(".").first %>
+          instance: <%= target[:instance] %>
+<% end -%>
+<% end -%>
+    metric_relabel_configs:
+<% @jobs.sort.each do |name, targets| -%>
+<% targets.each do |target| -%>
+<% target[:metric_relabel].each do |relabel| -%>
+      - source_labels: [instance,<%= relabel[:source_labels] %>]
+        regex: "<%= target[:instance] %>;<%= relabel[:regex] %>"
+        action: <%= relabel[:action] %>
+<% end -%>
 <% end -%>
 <% end -%>
 

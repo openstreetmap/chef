@@ -159,13 +159,19 @@ search(:node, "recipes:prometheus\\:\\:default").sort_by(&:name).each do |client
     if exporter.is_a?(Hash)
       name = exporter[:name]
       address = exporter[:address]
+      metric_relabel = exporter[:metric_relabel] || []
     else
       name = key
       address = exporter
+      metric_relabel = []
     end
 
     jobs[name] ||= []
-    jobs[name] << { :address => address, :name => client.name }
+    jobs[name] << {
+      :address => address,
+      :instance => client.name.split(".").first,
+      :metric_relabel => metric_relabel
+    }
   end
 end
 

@@ -28,6 +28,7 @@ property :command, :kind_of => String
 property :options, :kind_of => [String, Array]
 property :environment, :kind_of => Hash, :default => {}
 property :service, :kind_of => String
+property :metric_relabel, :kind_of => Array
 
 action :create do
   systemd_service service_name do
@@ -57,7 +58,9 @@ action :create do
   end
 
   node.default[:prometheus][:exporters][new_resource.port] = {
-    :name => new_resource.exporter, :address => listen_address
+    :name => new_resource.exporter,
+    :address => listen_address,
+    :metric_relabel => new_resource.metric_relabel
   }
 end
 
