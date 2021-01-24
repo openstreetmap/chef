@@ -6,7 +6,8 @@ global:
 
 alerting:
   alertmanagers:
-    - static_configs:
+    - path_prefix: /alertmanager
+      static_configs:
         - targets:
             - localhost:9093
 
@@ -17,10 +18,12 @@ scrape_configs:
   - job_name: prometheus
     scrape_interval: 5s
     scrape_timeout: 5s
+    metrics_path: /prometheus/metrics
     static_configs:
       - targets:
           - localhost:9090
   - job_name: alertmanager
+    metrics_path: /alertmanager/metrics
     static_configs:
       - targets:
           - localhost:9093

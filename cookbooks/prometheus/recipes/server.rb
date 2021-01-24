@@ -169,6 +169,13 @@ search(:node, "recipes:prometheus\\:\\:default").sort_by(&:name).each do |client
   end
 end
 
+template "/etc/default/prometheus" do
+  source "default.prometheus.erb"
+  owner "root"
+  group "root"
+  mode "644"
+end
+
 template "/etc/prometheus/prometheus.yml" do
   source "prometheus.yml.erb"
   owner "root"
@@ -179,7 +186,15 @@ end
 
 service "prometheus" do
   action [:enable, :start]
+  subscribes :restart, "template[/etc/default/prometheus]"
   subscribes :reload, "template[/etc/prometheus/prometheus.yml]"
+end
+
+template "/etc/default/prometheus-alertmanager" do
+  source "default.alertmanager.erb"
+  owner "root"
+  group "root"
+  mode "644"
 end
 
 template "/etc/prometheus/alertmanager.yml" do
@@ -191,6 +206,7 @@ end
 
 service "prometheus-alertmanager" do
   action [:enable, :start]
+  subscribes :restart, "template[/etc/default/prometheus-alertmanager]"
   subscribes :reload, "template[/etc/prometheus/alertmanager.yml]"
 end
 
