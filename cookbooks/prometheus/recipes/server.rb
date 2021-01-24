@@ -184,10 +184,18 @@ template "/etc/prometheus/prometheus.yml" do
   variables :jobs => jobs
 end
 
+template "/etc/prometheus/alert_rules.yml" do
+  source "alert_rules.yml.erb"
+  owner "root"
+  group "root"
+  mode "644"
+end
+
 service "prometheus" do
   action [:enable, :start]
   subscribes :restart, "template[/etc/default/prometheus]"
   subscribes :reload, "template[/etc/prometheus/prometheus.yml]"
+  subscribes :reload, "template[/etc/prometheus/alert_rules.yml]"
 end
 
 template "/etc/default/prometheus-alertmanager" do

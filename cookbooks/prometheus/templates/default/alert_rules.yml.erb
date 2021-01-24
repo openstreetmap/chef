@@ -1,0 +1,76 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+groups:
+  - name: hwmon
+    rules:
+      - alert: hwmon fan alarm
+        expr: node_hwmon_fan_alarm == 1
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+        annotations:
+          fan_rpm: "{{ with printf \"node_hwmon_fan_rpm{instance='%s',chip='%s',sensor='%s'}\" $labels.instance $labels.chip $labels.sensor | query }}{{ . | first | value | humanize }}rpm{{end}}"
+          fan_min_rpm: "{{ with printf \"node_hwmon_fan_min_rpm{instance='%s',chip='%s',sensor='%s'}\" $labels.instance $labels.chip $labels.sensor | query }}{{ . | first | value | humanize }}rpm{{end}}"
+      - alert: hwmon temperature alarm
+        expr: node_hwmon_temp_alarm == 1
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+        annotations:
+          temp_celsius: "{{ with printf \"node_hwmon_temp_celsius{instance='%s',chip='%s',sensor='%s'}\" $labels.instance $labels.chip $labels.sensor | query }}{{ . | first | value | humanize }}C{{end}}"
+          temp_max_celsius: "{{ with printf \"node_hwmon_temp_max_celsius{instance='%s',chip='%s',sensor='%s'}\" $labels.instance $labels.chip $labels.sensor | query }}{{ . | first | value | humanize }}C{{end}}"
+          temp_crit_celsius: "{{ with printf \"node_hwmon_temp_crit_celsius{instance='%s',chip='%s',sensor='%s'}\" $labels.instance $labels.chip $labels.sensor | query }}{{ . | first | value | humanize }}C{{end}}"
+      - alert: hwmon voltage alarm
+        expr: node_hwmon_in_alarm == 1
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+        annotations:
+          in_volts: "{{ with printf \"node_hwmon_in_volts{instance='%s',chip='%s',sensor='%s'}\" $labels.instance $labels.chip $labels.sensor | query }}{{ . | first | value | humanize }}V{{end}}"
+          in_min_volts: "{{ with printf \"node_hwmon_in_min_volts{instance='%s',chip='%s',sensor='%s'}\" $labels.instance $labels.chip $labels.sensor | query }}{{ . | first | value | humanize }}V{{end}}"
+          in_max_volts: "{{ with printf \"node_hwmon_in_max_volts{instance='%s',chip='%s',sensor='%s'}\" $labels.instance $labels.chip $labels.sensor | query }}{{ . | first | value | humanize }}V{{end}}"
+  - name: ipmi
+    rules:
+      - alert: ipmi fan alarm
+        expr: ipmi_fan_speed_state > 0
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+        annotations:
+          fan_speed_rpm: "{{ with printf \"ipmi_fan_speed_rpm{instance='%s',id='%s'}\" $labels.instance $labels.id | query }}{{ . | first | value | humanize }}rpm{{end}}"
+      - alert: ipmi temperature alarm
+        expr: ipmi_temperature_state > 0
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+        annotations:
+          temperature_celsius: "{{ with printf \"ipmi_temperature_celsius{instance='%s',id='%s'}\" $labels.instance $labels.id | query }}{{ . | first | value | humanize }}C{{end}}"
+      - alert: ipmi voltage alarm
+        expr: ipmi_voltage_state > 0
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+        annotations:
+          voltage_volts: "{{ with printf \"ipmi_voltage_volts{instance='%s',id='%s'}\" $labels.instance $labels.id | query }}{{ . | first | value | humanize }}V{{end}}"
+  - name: mdadm
+    rules:
+      - alert: mdadm array inactive
+        expr: node_md_state{state="inactive"} > 0
+        for: 0m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+        annotations:
+          required: "{{ with printf \"node_md_disks_required{instance='%s',device='%s'}\" $labels.instance $labels.device | query }}{{ . | first | value | humanize }} disks{{end}}"
+          active: "{{ with printf \"node_md_disks{instance='%s',device='%s',state='active'}\" $labels.instance $labels.device | query }}{{ . | first | value | humanize }} disks{{end}}"
+          failed: "{{ with printf \"node_md_disks{instance='%s',device='%s',state='failed'}\" $labels.instance $labels.device | query }}{{ . | first | value | humanize }} disks{{end}}"
+          spare: "{{ with printf \"node_md_disks{instance='%s',device='%s',state='spare'}\" $labels.instance $labels.device | query }}{{ . | first | value | humanize }} disks{{end}}"
+      - alert: mdadm disk failed
+        expr: node_md_disks{state="failed"} > 0
+        for: 0m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+        annotations:
+          required: "{{ with printf \"node_md_disks_required{instance='%s',device='%s'}\" $labels.instance $labels.device | query }}{{ . | first | value | humanize }} disks{{end}}"
+          active: "{{ with printf \"node_md_disks{instance='%s',device='%s',state='active'}\" $labels.instance $labels.device | query }}{{ . | first | value | humanize }} disks{{end}}"
+          failed: "{{ with printf \"node_md_disks{instance='%s',device='%s',state='failed'}\" $labels.instance $labels.device | query }}{{ . | first | value | humanize }} disks{{end}}"
+          spare: "{{ with printf \"node_md_disks{instance='%s',device='%s',state='spare'}\" $labels.instance $labels.device | query }}{{ . | first | value | humanize }} disks{{end}}"
