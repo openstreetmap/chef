@@ -10,6 +10,11 @@ default_attributes(
     }
   },
   :hardware => {
+    :hwmon => {
+      "platform_it87_552" => {
+        :ignore => %w[in6]
+      }
+    },
     :mcelog => {
       :enabled => false
     },
