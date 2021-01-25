@@ -36,9 +36,7 @@ scrape_configs:
         labels:
           instance: <%= target[:instance] %>
 <% end -%>
-<% end -%>
     metric_relabel_configs:
-<% @jobs.sort.each do |name, targets| -%>
 <% targets.each do |target| -%>
 <% target[:metric_relabel].each do |relabel| -%>
       - source_labels: [instance,<%= relabel[:source_labels] %>]
