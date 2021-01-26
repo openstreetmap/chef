@@ -84,12 +84,12 @@ groups:
   - name: memory
     rules:
       - alert: low memory
-        expr: node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes * 100 < 10
+        expr: node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes < 0.1
         for: 5m
         labels:
           alertgroup: "{{ $labels.instance }}"
         annotations:
-          memory_free: "{{ $value }}%"
+          memory_free: "{{ $value | humanizePercentage }}"
       - alert: memory pressure
         expr: rate(node_vmstat_pgmajfault[1m]) > 1000
         for: 5m
