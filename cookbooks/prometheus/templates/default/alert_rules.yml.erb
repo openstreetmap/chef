@@ -1,6 +1,13 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
 groups:
+  - name: alertmanager
+    rules:
+      - alert: prometheus target missing
+        expr: up == 0
+        for: 5m
+        labels:
+          alertgroup: "prometheus"
   - name: hwmon
     rules:
       - alert: hwmon fan alarm
@@ -74,3 +81,26 @@ groups:
           active: "{{ with printf \"node_md_disks{instance='%s',device='%s',state='active'}\" $labels.instance $labels.device | query }}{{ . | first | value | humanize }} disks{{end}}"
           failed: "{{ with printf \"node_md_disks{instance='%s',device='%s',state='failed'}\" $labels.instance $labels.device | query }}{{ . | first | value | humanize }} disks{{end}}"
           spare: "{{ with printf \"node_md_disks{instance='%s',device='%s',state='spare'}\" $labels.instance $labels.device | query }}{{ . | first | value | humanize }} disks{{end}}"
+  - name: memory
+    rules:
+      - alert: low memory
+        expr: node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes * 100 < 10
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+        annotations:
+          memory_free: "{{ $value }}%"
+      - alert: memory pressure
+        expr: rate(node_vmstat_pgmajfault[1m]) > 1000
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+        annotations:
+          major_page_faults: "{{ $value }} faults/s"
+      - alert: oom kill detected
+        expr: increase(node_vmstat_oom_kill[1m]) > 0
+        for: 0m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+        annotations:
+          new_oom_kills: "{{ $value }}"
