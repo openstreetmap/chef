@@ -224,6 +224,13 @@ service "prometheus-alertmanager" do
   subscribes :reload, "template[/etc/prometheus/alertmanager.yml]"
 end
 
+template "/etc/prometheus/amtool.yml" do
+  source "amtool.yml.erb"
+  owner "root"
+  group "root"
+  mode "644"
+end
+
 package "grafana-enterprise"
 
 template "/etc/grafana/grafana.ini" do
