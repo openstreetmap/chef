@@ -49,6 +49,7 @@ end
 remote_file "#{Chef::Config[:file_cache_path]}/fastly-ip-list.json" do
   source "https://api.fastly.com/public-ip-list"
   compile_time true
+  ignore_failure true
 end
 
 tilecaches = search(:node, "roles:tilecache").sort_by { |n| n[:hostname] }
