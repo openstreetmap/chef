@@ -257,3 +257,10 @@ end
 apache_site "prometheus.openstreetmap.org" do
   template "apache.erb"
 end
+
+template "/etc/cron.daily/prometheus-backup" do
+  source "backup.cron.erb"
+  owner "root"
+  group "root"
+  mode "750"
+end
