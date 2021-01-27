@@ -146,6 +146,18 @@ end
 
 jobs = {}
 
+search(:node, "roles:gateway") do |gateway|
+  allowed_ips = gateway.interfaces(:role => :internal).map do |interface|
+    "#{interface[:network]}/#{interface[:prefix]}"
+  end
+
+  node.default[:networking][:wireguard][:peers] << {
+    :public_key => gateway[:networking][:wireguard][:public_key],
+    :allowed_ips => allowed_ips,
+    :endpoint => "#{gateway.name}:51820"
+  }
+end
+
 search(:node, "recipes:prometheus\\:\\:default").sort_by(&:name).each do |client|
   if client[:prometheus][:mode] == "wireguard"
     node.default[:networking][:wireguard][:peers] << {

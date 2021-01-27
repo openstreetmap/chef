@@ -19,7 +19,8 @@ default_attributes(
         :family => :inet6,
         :address => "2605:bc80:3010:700::8cd3:a763"
       }
-    }
+    },
+    :private_address => "10.0.16.200"
   },
   :tilecache => {
     :tile_parent => "corvallis.render.openstreetmap.org"
