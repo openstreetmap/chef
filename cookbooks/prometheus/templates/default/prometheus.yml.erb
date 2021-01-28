@@ -48,3 +48,10 @@ scrape_configs:
 
 remote_write:
   - url: "http://localhost:9201/write"
+    write_relabel_configs:
+      - source_labels: [__name__]
+        regex: "go_.*"
+        action: drop
+      - source_labels: [__name__]
+        regex: "promhttp_.*"
+        action: drop
