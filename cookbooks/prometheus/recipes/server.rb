@@ -144,6 +144,10 @@ systemd_timer "promscale-maintenance" do
   on_unit_inactive_sec 1800
 end
 
+service "promscale-maintenance.timer" do
+  action [:enable, :start]
+end
+
 jobs = {}
 
 search(:node, "roles:gateway") do |gateway|
