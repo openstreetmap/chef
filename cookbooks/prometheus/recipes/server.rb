@@ -39,7 +39,7 @@ package %w[
 
 promscale_version = "0.1.4"
 
-database_cluster = node[:timescaledb][:cluster]
+database_cluster = "#{node[:timescaledb][:database_version]}/main"
 
 postgresql_user "prometheus" do
   cluster database_cluster
