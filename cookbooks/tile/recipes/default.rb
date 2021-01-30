@@ -426,6 +426,30 @@ end
   end
 end
 
+package %w[
+  gdal-bin
+  python3-yaml
+  python3-psycopg2
+]
+
+if node[:tile][:database][:external_data_script]
+  execute node[:tile][:database][:external_data_script] do
+    command node[:tile][:database][:external_data_script]
+    cwd "/srv/tile.openstreetmap.org"
+    user "tile"
+    group "tile"
+  end
+
+  Array(node[:tile][:database][:external_data_tables]).each do |table|
+    postgresql_table table do
+      cluster node[:tile][:database][:cluster]
+      database "gis"
+      owner "tile"
+      permissions "tile" => :all, "www-data" => :select
+    end
+  end
+end
+
 postgresql_munin "gis" do
   cluster node[:tile][:database][:cluster]
   database "gis"
