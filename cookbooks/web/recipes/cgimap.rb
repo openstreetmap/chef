@@ -31,20 +31,28 @@ database_host = node[:web][:readonly_database_host] || node[:web][:database_host
 
 memcached_servers = node[:web][:memcached_servers] || []
 
+cgimap_options = {
+  "CGIMAP_HOST" => database_host,
+  "CGIMAP_DBNAME" => "openstreetmap",
+  "CGIMAP_USERNAME" => "cgimap",
+  "CGIMAP_PASSWORD" => db_passwords["cgimap"],
+  "CGIMAP_OAUTH_HOST" => node[:web][:database_host],
+  "CGIMAP_UPDATE_HOST" => node[:web][:database_host],
+  "CGIMAP_PIDFILE" => "#{node[:web][:pid_directory]}/cgimap.pid",
+  "CGIMAP_LOGFILE" => "#{node[:web][:log_directory]}/cgimap.log",
+  "CGIMAP_MEMCACHE" => memcached_servers.join(","),
+  "CGIMAP_RATELIMIT" => "204800",
+  "CGIMAP_MAXDEBT" => "250"
+}
+
+if %w[database_readonly api_readonly].include?(node[:web][:status])
+  cgimap_options["CGIMAP_DISABLE_API_WRITE"] = "true"
+end
+
 systemd_service "cgimap" do
   description "OpenStreetMap API Server"
   type "forking"
-  environment_file "CGIMAP_HOST" => database_host,
-                   "CGIMAP_DBNAME" => "openstreetmap",
-                   "CGIMAP_USERNAME" => "cgimap",
-                   "CGIMAP_PASSWORD" => db_passwords["cgimap"],
-                   "CGIMAP_OAUTH_HOST" => node[:web][:database_host],
-                   "CGIMAP_UPDATE_HOST" => node[:web][:database_host],
-                   "CGIMAP_PIDFILE" => "#{node[:web][:pid_directory]}/cgimap.pid",
-                   "CGIMAP_LOGFILE" => "#{node[:web][:log_directory]}/cgimap.log",
-                   "CGIMAP_MEMCACHE" => memcached_servers.join(","),
-                   "CGIMAP_RATELIMIT" => "204800",
-                   "CGIMAP_MAXDEBT" => "250"
+  environment_file cgimap_options
   user "rails"
   exec_start "/usr/bin/openstreetmap-cgimap --daemon --port 8000 --instances 30"
   exec_reload "/bin/kill -HUP $MAINPID"
