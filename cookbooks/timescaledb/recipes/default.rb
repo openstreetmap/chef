@@ -30,6 +30,7 @@ memory_gb = (node[:memory][:total].to_f / 1024 / 1024).ceil
 
 node.default_unless[:postgresql][:versions] = []
 node.default[:postgresql][:versions] |= [database_version]
+node.default[:postgresql][:monitor_tables] = false
 node.default[:postgresql][:settings][database_version][:max_connections] = 500
 node.default[:postgresql][:settings][database_version][:shared_buffers] = "#{memory_gb / 4}GB"
 node.default[:postgresql][:settings][database_version][:work_mem] = "#{memory_gb * 128 / 50 / node[:cpu][:total]}MB"
