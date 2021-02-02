@@ -46,6 +46,7 @@ $wgEnableUserEmail  = true; # UPO
 $wgEmergencyContact = "<%= @mediawiki[:email_contact] %>";
 $wgPasswordSender   = "<%= @mediawiki[:email_sender] %>";
 $wgPasswordSenderName = "<%= @mediawiki[:email_sender_name] %>"; //Replaced by MediaWiki:Emailsender in v1.23.0
+$wgNoReplyAddress = "<%= @mediawiki[:email_sender] %>";
 
 $wgEnotifUserTalk      = true; # UPO
 $wgEnotifWatchlist     = true; # UPO
