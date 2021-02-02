@@ -21,17 +21,26 @@ include_recipe "accounts"
 include_recipe "apache"
 include_recipe "git"
 
-package %w[
-  ruby
-  ruby-dev
+ruby_version = if node[:lsb][:release].to_f < 20.04
+                 "2.5"
+               else
+                 "2.7"
+               end
+
+package %W[
+  ruby#{ruby_version}
+  ruby#{ruby_version}-dev
   make
   gcc
   g++
   libsqlite3-dev
 ]
 
-gem_package "bundler" do
+gem_package "bundler#{ruby_version}" do
+  package_name "bundler"
   version "~> 2.1.4"
+  gem_binary "gem#{ruby_version}"
+  options "--format-executable"
 end
 
 directory "/srv/blogs.openstreetmap.org" do
@@ -51,7 +60,7 @@ end
 
 execute "/srv/blogs.openstreetmap.org/Gemfile" do
   action :nothing
-  command "bundle install --deployment"
+  command "bundle#{ruby_version} install --deployment"
   cwd "/srv/blogs.openstreetmap.org"
   user "blogs"
   group "blogs"
@@ -60,7 +69,7 @@ end
 
 execute "/srv/blogs.openstreetmap.org" do
   action :nothing
-  command "bundle exec pluto build -t osm -o build"
+  command "bundle#{ruby_version} exec pluto build -t osm -o build"
   cwd "/srv/blogs.openstreetmap.org"
   user "blogs"
   group "blogs"
@@ -82,6 +91,7 @@ template "/usr/local/bin/blogs-update" do
   owner "root"
   group "root"
   mode "0755"
+  variables :ruby_version => ruby_version
 end
 
 cron_d "blogs" do
