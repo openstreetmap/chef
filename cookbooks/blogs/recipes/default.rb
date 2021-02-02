@@ -31,7 +31,7 @@ package %w[
 ]
 
 gem_package "bundler" do
-  version "~> 1.17.2"
+  version "~> 2.1.4"
 end
 
 directory "/srv/blogs.openstreetmap.org" do
