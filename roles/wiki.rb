@@ -24,7 +24,7 @@ default_attributes(
     }
   },
   :exim => {
-    :trusted_users => ["www-data"],
+    :trusted_users => ["www-data", "wiki"],
     :aliases => {
       :root => "grant"
     },
