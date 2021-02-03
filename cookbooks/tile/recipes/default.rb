@@ -274,8 +274,10 @@ nodejs_package "carto"
 
 systemd_service "update-lowzoom@" do
   description "Low zoom tile update service for %i layer"
+  conflicts "render-lowzoom.service"
   user "tile"
   exec_start "/bin/bash /usr/local/bin/update-lowzoom-%i"
+  runtime_directory "update-lowzoom-%i"
   private_tmp true
   private_devices true
   private_network true
@@ -578,6 +580,7 @@ end
 
 systemd_service "render-lowzoom" do
   description "Render low zoom tiles"
+  condition_path_exists_glob "!/run/update-lowzoom-*"
   user "tile"
   exec_start "/usr/local/bin/render-lowzoom"
   private_tmp true
