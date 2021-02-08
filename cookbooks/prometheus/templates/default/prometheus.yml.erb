@@ -55,3 +55,8 @@ remote_write:
       - source_labels: [__name__]
         regex: "promhttp_.*"
         action: drop
+    queue_config:
+      capacity: 10000
+      min_shards: 4
+      batch_send_deadline: 30s
+      max_backoff: 1s
