@@ -148,8 +148,6 @@ service "promscale-maintenance.timer" do
   action [:enable, :start]
 end
 
-jobs = {}
-
 search(:node, "roles:gateway") do |gateway|
   allowed_ips = gateway.interfaces(:role => :internal).map do |interface|
     "#{interface[:network]}/#{interface[:prefix]}"
@@ -161,6 +159,8 @@ search(:node, "roles:gateway") do |gateway|
     :endpoint => "#{gateway.name}:51820"
   }
 end
+
+jobs = {}
 
 search(:node, "recipes:prometheus\\:\\:default").sort_by(&:name).each do |client|
   if client[:prometheus][:mode] == "wireguard"
@@ -191,6 +191,32 @@ search(:node, "recipes:prometheus\\:\\:default").sort_by(&:name).each do |client
   end
 end
 
+certificates = search(:node, "letsencrypt:certificates").each_with_object({}) do |n, c|
+  n[:letsencrypt][:certificates].each do |name, details|
+    c[name] ||= details.merge(:nodes => [])
+
+    c[name][:nodes] << {
+      :name => n[:fqdn],
+      :address => n.external_ipaddress || n.internal_ipaddress
+    }
+  end
+end
+
+template "/etc/prometheus/ssl.yml" do
+  source "ssl.yml.erb"
+  owner "root"
+  group "root"
+  mode "644"
+  variables :certificates => certificates
+end
+
+prometheus_exporter "ssl" do
+  address "127.0.0.1"
+  port 9219
+  options "--config.file=/etc/prometheus/ssl.yml"
+  register_target false
+end
+
 template "/etc/default/prometheus" do
   source "default.prometheus.erb"
   owner "root"
@@ -203,7 +229,7 @@ template "/etc/prometheus/prometheus.yml" do
   owner "root"
   group "root"
   mode "644"
-  variables :jobs => jobs
+  variables :jobs => jobs, :certificates => certificates
 end
 
 template "/etc/prometheus/alert_rules.yml" do

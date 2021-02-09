@@ -20,6 +20,7 @@
 default_action :create
 
 property :exporter, :kind_of => String, :name_property => true
+property :address, :kind_of => String
 property :port, :kind_of => Integer, :required => [:create]
 property :listen_switch, :kind_of => String, :default => "web.listen-address"
 property :listen_type, :kind_of => String, :default => "address"
@@ -29,6 +30,7 @@ property :options, :kind_of => [String, Array]
 property :environment, :kind_of => Hash, :default => {}
 property :service, :kind_of => String
 property :metric_relabel, :kind_of => Array
+property :register_target, :kind_of => [TrueClass, FalseClass], :default => true
 
 action :create do
   systemd_service service_name do
@@ -57,11 +59,13 @@ action :create do
     only_if { node[:prometheus][:mode] == "external" }
   end
 
-  node.default[:prometheus][:exporters][new_resource.port] = {
-    :name => new_resource.exporter,
-    :address => listen_address,
-    :metric_relabel => new_resource.metric_relabel
-  }
+  if new_resource.register_target
+    node.default[:prometheus][:exporters][new_resource.port] = {
+      :name => new_resource.exporter,
+      :address => listen_address,
+      :metric_relabel => new_resource.metric_relabel
+    }
+  end
 end
 
 action :delete do
@@ -105,7 +109,9 @@ action_class do
   end
 
   def listen_address
-    if node[:prometheus][:mode] == "wireguard"
+    if new_resource.address
+      "#{new_resource.address}:#{new_resource.port}"
+    elsif node[:prometheus][:mode] == "wireguard"
       "[#{node[:prometheus][:address]}]:#{new_resource.port}"
     else
       "#{node[:prometheus][:address]}:#{new_resource.port}"
