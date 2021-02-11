@@ -31,11 +31,13 @@ scrape_configs:
     scrape_interval: 15m
     metrics_path: /probe
     static_configs:
-      - targets:
 <% @certificates.values.sort_by { |c| c[:domains].first }.each do |certificate| -%>
+      - targets:
 <% certificate[:nodes].sort_by { |h| h[:name] }.each do |host| -%>
           - <%= certificate[:domains].first %>/<%= host[:name] %>:443
 <% end -%>
+        labels:
+          domain: <%= certificate[:domains].first %>
 <% end -%>
     relabel_configs:
       - source_labels: [__address__]
