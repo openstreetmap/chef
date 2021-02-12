@@ -259,11 +259,12 @@ end
 
 external_data = [
   "wikimedia-importance.sql.gz",
-  "gb_postcode_data.sql.gz"
+  "gb_postcode_data.sql.gz",
+  "us_postcode_data.sql.gz"
 ]
 
 external_data.each do |fname|
-  remote_file "#{source_directory}/data/#{fname}" do
+  remote_file "#{build_directory}/#{fname}" do
     action :create_if_missing
     source "https://www.nominatim.org/data/#{fname}"
     owner "nominatim"
