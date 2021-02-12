@@ -201,6 +201,14 @@ git source_directory do
   notifies :run, "execute[compile_nominatim]", :immediately
 end
 
+remote_file "#{source_directory}/data/country_osm_grid.sql.gz" do
+  action :create_if_missing
+  source "https://www.nominatim.org/data/country_grid.sql.gz"
+  owner "nominatim"
+  group "nominatim"
+  mode "644"
+end
+
 execute "compile_nominatim" do
   action :nothing
   user "nominatim"
@@ -271,14 +279,6 @@ external_data.each do |fname|
     group "nominatim"
     mode "644"
   end
-end
-
-remote_file "#{source_directory}/data/country_osm_grid.sql.gz" do
-  action :create_if_missing
-  source "https://www.nominatim.org/data/country_grid.sql.gz"
-  owner "nominatim"
-  group "nominatim"
-  mode "644"
 end
 
 if node[:nominatim][:state] == "off"
