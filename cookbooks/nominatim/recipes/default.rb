@@ -198,7 +198,7 @@ git source_directory do
   user "nominatim"
   group "nominatim"
   not_if { node[:nominatim][:state] != "slave" && File.exist?("#{source_directory}/README.md") }
-  notifies :run, "execute[compile_nominatim]", :immediately
+  notifies :run, "execute[compile_nominatim]"
 end
 
 remote_file "#{source_directory}/data/country_osm_grid.sql.gz" do
