@@ -8,6 +8,15 @@ groups:
         for: 5m
         labels:
           alertgroup: "prometheus"
+  - name: database
+    rules:
+      - alert: postgres replication delay
+        expr: pg_replication_lag_seconds > 5
+        for: 5m
+        labels:
+          alertgroup: database
+        annotations:
+          delay: "{{ $value | humanizeDuration }}"
   - name: hwmon
     rules:
       - alert: hwmon fan alarm
@@ -104,3 +113,33 @@ groups:
           alertgroup: "{{ $labels.instance }}"
         annotations:
           new_oom_kills: "{{ $value }}"
+  - name: tile
+    rules:
+      - alert: renderd replication delay
+        expr: renderd_replication_delay > 120
+        for: 5m
+        labels:
+          alertgroup: tile
+        annotations:
+          delay: "{{ $value | humanizeDuration }}"
+      - alert: missed tile rate
+        expr: sum(rate(modtile_http_response_total{code="404"}[5m])) by (instance) / sum(rate(modtile_http_response_total[5m])) by (instance) > 0.05
+        for: 5m
+        labels:
+          alertgroup: tile
+        annotations:
+          miss_rate: "{{ $value | humanizePercentage }}"
+  - name: time
+    rules:
+      - alert: clock not synchronising
+        expr: min_over_time(node_timex_sync_status[1m]) == 0 and node_timex_maxerror_seconds >= 16
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+      - alert: clock skew detected
+        expr: (node_timex_offset_seconds > 0.05 and deriv(node_timex_offset_seconds[5m]) >= 0) or (node_timex_offset_seconds < -0.05 and deriv(node_timex_offset_seconds[5m]) <= 0)
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+        annotations:
+          skew: "{{ with printf \"node_timex_offset_seconds{instance='%s'}\" $labels.instance | query }} {{ . | humanizeDuration }}{{ end }}"
