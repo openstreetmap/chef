@@ -20,6 +20,7 @@ default_attributes(
         :random_page_cost => "1.1",
         :effective_cache_size => "144GB",
         :default_statistics_target => "500",
+        :log_autovacuum_min_duration => "0",
         :autovacuum_max_workers => "10",
         :autovacuum_naptime => "10",
         :max_locks_per_transaction => "512"

@@ -144,6 +144,7 @@ stats_temp_directory = '/run/postgresql/<%= @version %>-main.pg_stat_tmp'
 # AUTOVACUUM PARAMETERS
 #------------------------------------------------------------------------------
 
+log_autovacuum_min_duration = <%= @settings[:log_autovacuum_min_duration] || @defaults[:log_autovacuum_min_duration] %>
 autovacuum_max_workers = <%= @settings[:autovacuum_max_workers] || @defaults[:autovacuum_max_workers] %>
 autovacuum_naptime = <%= @settings[:autovacuum_naptime] || @defaults[:autovacuum_naptime] %>
 autovacuum_vacuum_scale_factor = <%= @settings[:autovacuum_vacuum_scale_factor] || @defaults[:autovacuum_vacuum_scale_factor] %>
