@@ -8,6 +8,20 @@ groups:
         for: 5m
         labels:
           alertgroup: "prometheus"
+  - name: apache
+    rules:
+      - alert: apache down
+        expr: apache_up == 0
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+      - alert: apache workers busy
+        expr: sum(apache_workers{state="busy"}) by (instance) / sum(apache_scoreboard) by (instance) > 0.8
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+        annotations:
+          busy_workers: "{{ $value | humanizePercentage }}"
   - name: database
     rules:
       - alert: postgres replication delay
@@ -113,6 +127,43 @@ groups:
           alertgroup: "{{ $labels.instance }}"
         annotations:
           new_oom_kills: "{{ $value }}"
+  - name: network
+    rules:
+      - alert: interface transmit rate
+        expr: rate(node_network_transmit_bytes_total[1m]) / node_network_speed_bytes > 0.98
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+        annotations:
+          bandwidth_used: "{{ $value | humanizePercentage }}"
+      - alert: interface receive rate
+        expr: rate(node_network_receive_bytes_total[1m]) / node_network_speed_bytes > 0.98
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+        annotations:
+          bandwidth_used: "{{ $value | humanizePercentage }}"
+      - alert: interface transmit errors
+        expr: rate(node_network_transmit_errs_total[1m]) / rate(node_network_transmit_packets_total[1m]) > 0.01
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+        annotations:
+          error_rate: "{{ $value | humanizePercentage }}"
+      - alert: interface receive errors
+        expr: rate(node_network_receive_errs_total[1m]) / rate(node_network_receive_packets_total[1m]) > 0.01
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+        annotations:
+          error_rate: "{{ $value | humanizePercentage }}"
+      - alert: conntrack entries
+        expr: node_nf_conntrack_entries / node_nf_conntrack_entries_limit > 0.8
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+        annotations:
+          entries_used: "{{ $value | humanizePercentage }}"
   - name: tile
     rules:
       - alert: renderd replication delay
