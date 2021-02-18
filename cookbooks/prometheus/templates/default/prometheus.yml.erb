@@ -27,6 +27,10 @@ scrape_configs:
     static_configs:
       - targets:
           - localhost:9093
+  - job_name: promscale
+    static_configs:
+      - targets:
+          - localhost:9201
   - job_name: ssl
     scrape_interval: 15m
     metrics_path: /probe
