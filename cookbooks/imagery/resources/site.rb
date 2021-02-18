@@ -107,8 +107,8 @@ action :create do
                   "GDAL_CACHEMAX" => "512"
       limit_nofile 16384
       limit_cpu 180
-      memory_high "1G"
-      memory_max "2G"
+      memory_high "512M"
+      memory_max "1G"
       user "imagery"
       group "imagery"
       exec_start_pre "/bin/rm -f /run/mapserver-fastcgi/layer-#{new_resource.site}-#{index}.socket"
