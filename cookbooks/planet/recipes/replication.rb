@@ -239,10 +239,6 @@ systemd_timer "replication-minutely" do
   accuracy_sec 5
 end
 
-file "/etc/replication/auth.conf" do
-  action :delete
-end
-
 ## Hourly replication
 
 directory "/store/planet/replication/hour" do
