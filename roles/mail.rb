@@ -26,6 +26,7 @@ default_attributes(
       "a.mx.openstreetmaps.org",
       "a.mx.osm.io"
     ],
+    :queue_run_max => 5,
     :smarthost_name => "mail.openstreetmap.org",
     :smarthost_via => false,
     :dns_blacklists => ["zen.spamhaus.org"],

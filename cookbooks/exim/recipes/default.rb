@@ -163,6 +163,14 @@ if node[:exim][:dkim_selectors]
   end
 end
 
+template "/etc/default/exim4" do
+  source "default.erb"
+  owner "root"
+  group "root"
+  mode "044"
+  notifies :restart, "service[exim4]"
+end
+
 template "/etc/exim4/exim4.conf" do
   source "exim4.conf.erb"
   owner "root"
