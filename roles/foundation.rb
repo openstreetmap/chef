@@ -6,7 +6,7 @@ default_attributes(
     :sources => ["passenger"]
   },
   :elasticsearch => {
-    :version => "5.x",
+    :version => "6.x",
     :cluster => {
       :name => "foundation"
     }
