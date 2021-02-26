@@ -10,7 +10,7 @@ default[:civicrm][:extensions][:osm][:revision] = "1.2.1"
 
 default[:civicrm][:extensions][:emailapi][:name] = "org.civicoop.emailapi"
 default[:civicrm][:extensions][:emailapi][:repository] = "https://github.com/CiviCooP/org.civicoop.emailapi.git"
-default[:civicrm][:extensions][:emailapi][:revision] = "2.0"
+default[:civicrm][:extensions][:emailapi][:revision] = "1.19"
 
 default[:civicrm][:extensions][:civiruleshttppost][:name] = "org.civicoop.civiruleshttppost"
 default[:civicrm][:extensions][:civiruleshttppost][:repository] = "https://github.com/CiviCooP/org.civicoop.civiruleshttppost.git"
