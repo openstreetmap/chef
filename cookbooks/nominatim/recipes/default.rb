@@ -245,7 +245,7 @@ git ui_directory do
   group "nominatim"
 end
 
-template "#{ui_directory}/dist/config.js" do
+template "#{ui_directory}/dist/theme/config.theme.js" do
   source "ui-config.js.erb"
   owner "nominatim"
   group "nominatim"
