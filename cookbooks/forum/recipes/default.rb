@@ -21,7 +21,7 @@ include_recipe "accounts"
 include_recipe "apache"
 include_recipe "git"
 include_recipe "mysql"
-include_recipe "php::apache"
+include_recipe "php::fpm"
 
 cache_dir = Chef::Config[:file_cache_path]
 
@@ -41,6 +41,12 @@ apache_module "rewrite"
 ssl_certificate "forum.openstreetmap.org" do
   domains ["forum.openstreetmap.org", "forum.osm.org"]
   notifies :reload, "service[apache2]"
+end
+
+php_fpm "forum.openstreetmap.org" do
+  php_admin_values "open_basedir" => "/srv/forum.openstreetmap.org/html/:/usr/share/php/:/tmp/",
+                   "disable_functions" => "exec,shell_exec,system,passthru,popen,proc_open"
+  prometheus_port 9253
 end
 
 apache_site "forum.openstreetmap.org" do
