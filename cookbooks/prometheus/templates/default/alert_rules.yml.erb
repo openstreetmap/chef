@@ -164,6 +164,65 @@ groups:
           alertgroup: "{{ $labels.instance }}"
         annotations:
           entries_used: "{{ $value | humanizePercentage }}"
+  - name: postgresql
+    rules:
+      - alert: postgresql down
+        expr: pg_up == 0
+        for: 1m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+      - alert: postgresql replication delay
+        expr: pg_replication_lag_seconds > 5
+        for: 1m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+        annotations:
+          delay: "{{ $value | humanizeDuration }}"
+      - alert: postgresql connection limit
+        expr: sum (pg_stat_activity_count) by (instance, server) / sum (pg_settings_max_connections) by (instance, server) > 0.8
+        for: 1m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+        annotations:
+          connections_used: "{{ $value | humanizePercentage }}"
+      - alert: postgresql deadlocks
+        expr: increase(pg_stat_database_deadlocks[1m]) > 5
+        for: 0m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+        annotations:
+          new_deadlocks: "{{ $value }}"
+      - alert: postgresql slow queries
+        expr: pg_slow_queries > 0
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+        annotations:
+          queries: "{{ $value }}"
+  - name: ssl
+    rules:
+      - alert: ssl certificate probe failed
+        expr: ssl_probe_success == 0
+        for: 60m
+        labels:
+          alertgroup: ssl
+      - alert: ssl certificate expiry
+        expr: ssl_verified_cert_not_after{chain_no="0"} - time() < 86400 * 14
+        for: 0m
+        labels:
+          alertgroup: ssl
+        annotations:
+          expires_in: "{{ $value | humanizeDuration }}"
+      - alert: ssl certificate revoked
+        expr: ssl_ocsp_response_status == 1
+        for: 0m
+        labels:
+          alertgroup: ssl
+      - alert: ocsp status unknown
+        expr: ssl_ocsp_response_status == 1
+        for: 0m
+        labels:
+          alertgroup: ssl
   - name: tile
     rules:
       - alert: renderd replication delay
