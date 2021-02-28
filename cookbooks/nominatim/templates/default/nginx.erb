@@ -178,7 +178,7 @@ server {
         include <%= @confdir %>/nginx_blocked_generic.conf;
 
         limit_req zone=www burst=10;
-        limit_req zone=tarpit burst=2;
+        limit_req zone=tarpit burst=5;
         limit_req zone=reverse burst=5;
         limit_req_status 429;
         fastcgi_pass nominatim_service;
