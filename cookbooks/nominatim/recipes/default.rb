@@ -402,7 +402,8 @@ ssl_certificate node[:fqdn] do
            "nominatim.openstreetmap.com",
            "nominatim.openstreetmap.net",
            "nominatim.openstreetmaps.org",
-           "nominatim.openmaps.org"]
+           "nominatim.openmaps.org",
+           "nominatim.qgis.org"]
   notifies :reload, "service[nginx]"
 end
 
