@@ -137,3 +137,16 @@ pg_database:
     - size_bytes:
         usage: "GAUGE"
         description: "Disk space used by the database"
+
+pg_unfrozen_ids:
+  query: "SELECT current_database() AS datname, max(age(relfrozenxid)) AS xid_age, max(mxid_age(relminmxid)) AS mxid_age FROM pg_class WHERE relkind IN ('r', 'm')"
+  metrics:
+    - datname:
+        usage: "LABEL"
+        description: "Name of the database"
+    - xid_age:
+        usage: "GAUGE"
+        description: "Age of the oldest unfrozen transaction ID in this database"
+    - mxid_age:
+        usage: "GAUGE"
+        description: "Age of the oldest unfrozen multixact ID in this database"
