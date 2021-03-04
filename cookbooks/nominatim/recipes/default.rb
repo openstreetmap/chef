@@ -169,6 +169,8 @@ package %w[
   pyosmium
   python3-psycopg2
   python3-dotenv
+  python3-psutil
+  python3-jinja2
   php-pgsql
   php-intl
   php-symfony-dotenv
