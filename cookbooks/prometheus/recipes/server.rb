@@ -43,17 +43,12 @@ database_cluster = "#{node[:timescaledb][:database_version]}/main"
 
 postgresql_user "prometheus" do
   cluster database_cluster
-  createrole true
+  superuser true
 end
 
 postgresql_database "promscale" do
   cluster database_cluster
   owner "prometheus"
-end
-
-postgresql_extension "timescaledb" do
-  cluster database_cluster
-  database "promscale"
 end
 
 directory "/opt/promscale" do
@@ -119,12 +114,6 @@ service "promscale" do
   action [:enable, :start]
   subscribes :restart, "remote_file[/opt/promscale/bin/promscale]"
   subscribes :restart, "systemd_service[promscale]"
-end
-
-postgresql_extension "promscale" do
-  cluster database_cluster
-  database "promscale"
-  notifies :restart, "service[promscale]"
 end
 
 systemd_service "promscale-maintenance" do
