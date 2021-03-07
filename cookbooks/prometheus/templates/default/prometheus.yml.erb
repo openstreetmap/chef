@@ -84,6 +84,9 @@ scrape_configs:
           - "<%= target[:target] %>/<%= target[:module] %>/<%= target[:address] %>"
         labels:
           instance: <%= target[:instance] %>
+<% target[:labels].sort.each do |name, value| -%>
+          <%= name %>: <%= value %>
+<% end -%>
 <% end -%>
     relabel_configs:
       - source_labels: [__address__]

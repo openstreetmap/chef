@@ -185,7 +185,8 @@ search(:node, "recipes:prometheus\\:\\:default").sort_by(&:name).each do |client
       :instance => instance,
       :target => details[:address],
       :module => details[:module],
-      :address => client[:prometheus][:addresses]["snmp"]
+      :address => client[:prometheus][:addresses]["snmp"],
+      :labels => Array(details[:labels])
     }
   end
 end
