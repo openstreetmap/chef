@@ -58,6 +58,13 @@ default_attributes(
   :planet => {
     :replication => "enabled"
   },
+  :prometheus => {
+    :snmp => {
+      "pdu1" => { :address => "10.0.48.100", :module => "apcups" },
+      "pdu2" => { :address => "10.0.48.101", :module => "apcups" },
+      "switch1" => { :address => "130.117.76.2", :module => "if_mib" }
+    }
+  },
   :rsyncd => {
     :modules => {
       :hosts => {

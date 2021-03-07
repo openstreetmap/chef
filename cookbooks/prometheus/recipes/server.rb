@@ -150,6 +150,7 @@ search(:node, "roles:gateway") do |gateway|
 end
 
 jobs = {}
+snmp_targets = []
 
 search(:node, "recipes:prometheus\\:\\:default").sort_by(&:name).each do |client|
   if client[:prometheus][:mode] == "wireguard"
@@ -176,6 +177,15 @@ search(:node, "recipes:prometheus\\:\\:default").sort_by(&:name).each do |client
       :address => address,
       :instance => client.name.split(".").first,
       :metric_relabel => metric_relabel
+    }
+  end
+
+  Hash(client[:prometheus][:snmp]).each do |instance, details|
+    snmp_targets << {
+      :instance => instance,
+      :target => details[:address],
+      :module => details[:module],
+      :address => client[:prometheus][:addresses]["snmp"]
     }
   end
 end
@@ -218,7 +228,7 @@ template "/etc/prometheus/prometheus.yml" do
   owner "root"
   group "root"
   mode "644"
-  variables :jobs => jobs, :certificates => certificates
+  variables :jobs => jobs, :snmp_targets => snmp_targets, :certificates => certificates
 end
 
 template "/etc/prometheus/alert_rules.yml" do

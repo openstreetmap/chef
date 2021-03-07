@@ -73,6 +73,28 @@ scrape_configs:
 <% end -%>
 <% end -%>
 <% end -%>
+  - job_name: snmp
+    scrape_interval: 5m
+    scrape_timeout: 1m
+    metrics_path: /snmp
+    static_configs:
+      - targets:
+<% @snmp_targets.sort_by { |t| t[:instance] }.each do |target| -%>
+      - targets:
+          - "<%= target[:target] %>/<%= target[:module] %>/<%= target[:address] %>"
+        labels:
+          instance: <%= target[:instance] %>
+<% end -%>
+    relabel_configs:
+      - source_labels: [__address__]
+        regex: "([^/]+)/[^/]+/.*"
+        target_label: __param_target
+      - source_labels: [__address__]
+        regex: "[^/]+/([^/]+)/.*"
+        target_label: __param_module
+      - source_labels: [__address__]
+        regex: "[^/]+/[^/]+/(.*)"
+        target_label: __address__
 
 remote_write:
   - url: "http://localhost:9201/write"

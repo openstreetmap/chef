@@ -113,3 +113,11 @@ prometheus_exporter "node" do
   ]
   metric_relabel metric_relabel
 end
+
+unless node[:prometheus][:snmp].empty?
+  prometheus_exporter "snmp" do
+    port 9116
+    options "--config.file=/opt/prometheus/exporters/snmp/snmp.yml"
+    register_target false
+  end
+end
