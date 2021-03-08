@@ -82,6 +82,11 @@ groups:
           alertgroup: "{{ $labels.instance }}"
         annotations:
           voltage_volts: "{{ with printf \"ipmi_voltage_volts{instance='%s',id='%s'}\" $labels.instance $labels.id | query }}{{ . | first | value | humanize }}V{{end}}"
+      - alert: ipmi power alarm
+        expr: ipmi_power_state > 0 or ipmi_sensor_state{type=~"Power .*"} > 0
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
   - name: mdadm
     rules:
       - alert: mdadm array inactive
