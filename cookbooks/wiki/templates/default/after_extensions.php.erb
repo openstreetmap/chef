@@ -1,0 +1,14 @@
+<?php
+# DO NOT EDIT - This file is being maintained by Chef
+
+# Protect against web entry
+if ( !defined( 'MEDIAWIKI' ) ) {
+	exit;
+}
+
+# configuration loaded after the extensions
+
+# user group "confirmed" with identical rights as "autoconfirmed", but assigned manually by sysops
+$wgGroupPermissions['confirmed'] = $wgGroupPermissions['autoconfirmed'];
+$wgAddGroups['sysop'][] = 'confirmed';
+$wgRemoveGroups['sysop'][] = 'confirmed';

@@ -60,6 +60,13 @@ mediawiki_site "wiki.openstreetmap.org" do
   # site_readonly "MAINTENANCE: WIKI READ-ONLY UNTIL Monday 16 May 2016 - 11:00am UTC/GMT."
 end
 
+template "/srv/wiki.openstreetmap.org/00_before_extensions.php" do
+  source "before_extensions.php.erb"
+  owner node[:mediawiki][:user]
+  group node[:mediawiki][:group]
+  mode "600"
+end
+
 mediawiki_extension "CodeEditor" do
   site "wiki.openstreetmap.org"
 end
@@ -132,6 +139,13 @@ directory "/srv/wiki.openstreetmap.org/dump" do
   owner node[:mediawiki][:user]
   group node[:mediawiki][:group]
   mode "0775"
+end
+
+template "/srv/wiki.openstreetmap.org/99_after_extensions.php" do
+  source "after_extensions.php.erb"
+  owner node[:mediawiki][:user]
+  group node[:mediawiki][:group]
+  mode "600"
 end
 
 cron_d "wiki-dump" do

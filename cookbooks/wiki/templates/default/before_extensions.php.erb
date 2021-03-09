@@ -6,6 +6,8 @@ if ( !defined( 'MEDIAWIKI' ) ) {
 	exit;
 }
 
+# configuration loaded before the extensions
+
 # DE
 define('NS_LANG_DE', 200);
 $wgExtraNamespaces[NS_LANG_DE] = 'DE';
@@ -88,3 +90,6 @@ $wgNamespacesToBeSearchedDefault[NS_LANG_NL] = TRUE;
 $wgNamespacesToBeSearchedDefault[NS_LANG_RU] = TRUE;
 $wgNamespacesToBeSearchedDefault[NS_LANG_JA] = TRUE;
 $wgNamespacesToBeSearchedDefault[NS_PROPOSAL] = TRUE;
+
+# defines which links of the sidebar are translatable 
+$wgForceUIMsgAsContentMsg = array( 'mainpage-url', 'mapfeatures-url', 'contributors-url', 'helppage', 'blogs-url', 'shop-url', 'sitesupport-url' );

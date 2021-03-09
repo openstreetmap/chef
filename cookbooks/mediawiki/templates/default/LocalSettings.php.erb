@@ -230,13 +230,6 @@ $wgGroupPermissions['*']['createaccount'] = false;
 $wgUploadPath = "$wgScriptPath/img_auth.php";
 <% end -%>
 
-<% if not(@mediawiki[:private_accounts]) and not(@mediawiki[:private_site]) -%>
-# user group "confirmed" with identical rights as "autoconfirmed", but assigned manually by sysops
-$wgGroupPermissions['confirmed'] = $wgGroupPermissions['autoconfirmed'];
-$wgAddGroups['sysop'][] = 'confirmed';
-$wgRemoveGroups['sysop'][] = 'confirmed';
-<% end -%>
-
 # Allow Subpages on Main Namespace
 $wgNamespacesWithSubpages[NS_MAIN] = true;
 
@@ -272,10 +265,6 @@ $wgFixDoubleRedirects = TRUE;
 $wgAllowExternalImagesFrom = array( 'http://tile.openstreetmap.org/', 'https://tile.openstreetmap.org', 'http://josm.openstreetmap.de/', 'http://trac.openstreetmap.org/', 'http://rweait.dev.openstreetmap.org/' );
 
 $wgNoFollowDomainExceptions = array( 'www.openstreetmap.org', 'josm.openstreetmap.de', 'taginfo.openstreetmap.org', 'blog.openstreetmap.org', 'wiki.osmfoundation.org' );
-
-# FIXME - move to specific
-# defines which links of the sidebar are translatable 
-$wgForceUIMsgAsContentMsg = array( 'mainpage-url', 'mapfeatures-url', 'contributors-url', 'helppage', 'blogs-url', 'shop-url', 'sitesupport-url' );
 
 # FIXME - move to specific
 $wgAllowUserJs = TRUE;
