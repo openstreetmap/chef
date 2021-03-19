@@ -1,6 +1,8 @@
 default[:hardware][:modules] = %w[lp]
 default[:hardware][:grub][:cmdline] = %w[nomodeset]
 default[:hardware][:sensors] = {}
+default[:hardware][:hwmon] = {}
+default[:hardware][:ipmi][:excluded_sensors] = []
 
 if node[:dmi] && node[:dmi][:system]
   case node[:dmi][:system][:manufacturer]

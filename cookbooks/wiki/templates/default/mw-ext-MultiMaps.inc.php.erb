@@ -9,6 +9,11 @@ require_once "$IP/extensions/MultiMaps/MultiMaps.php";
 # denote different tiles within a BaseMapService
 $egMultiMaps_MapServices = [
   'Leaflet',
+  'cyclosm' => [
+    'service' => 'Leaflet',
+    'attribution' => '&copy; <a href="https://osm.org/copyright">OpenStreetMap contributors</a>. Tiles style by <a href="https://www.cyclosm.org/" target="_blank">CyclOSM</a> hosted by <a href="https://openstreetmap.fr/" target="_blank">OpenStreetMap France</a>',
+    'source' => 'https://{s}.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png',
+  ],
   'cycle' => [
     'service' => 'Leaflet',
     'attribution' => '&copy; <a href="https://osm.org/copyright">OpenStreetMap contributors</a>. Tiles courtesy of <a href="https://www.thunderforest.com/" target="_blank">Andy Allan</a>',

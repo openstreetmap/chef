@@ -39,8 +39,9 @@
 
 	DocumentRoot /srv/forum.openstreetmap.org/html
 
-	ProxyFCGISetEnvIf "true" PHP_ADMIN_VALUE "open_basedir=/srv/forum.openstreetmap.org/html/:/usr/share/php/:/tmp/\ndisable_functions=exec,shell_exec,system,passthru,popen,proc_open"
-	ProxyFCGISetEnvIf "true" PHP_VALUE "upload_max_filesize=70M\npost_max_size=100M"
+	<FilesMatch ".+\.ph(ar|p|tml)$">
+		SetHandler "proxy:unix:/run/php/forum.openstreetmap.org.sock|fcgi://127.0.0.1"
+	</FilesMatch>
 </VirtualHost>
 
 <Directory /srv/forum.openstreetmap.org/html>

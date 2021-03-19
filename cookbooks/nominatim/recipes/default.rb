@@ -168,6 +168,9 @@ package %w[
   python3-pyosmium
   pyosmium
   python3-psycopg2
+  python3-dotenv
+  python3-psutil
+  python3-jinja2
   php-pgsql
   php-intl
   php-symfony-dotenv
@@ -197,7 +200,15 @@ git source_directory do
   user "nominatim"
   group "nominatim"
   not_if { node[:nominatim][:state] != "slave" && File.exist?("#{source_directory}/README.md") }
-  notifies :run, "execute[compile_nominatim]", :immediately
+  notifies :run, "execute[compile_nominatim]"
+end
+
+remote_file "#{source_directory}/data/country_osm_grid.sql.gz" do
+  action :create_if_missing
+  source "https://www.nominatim.org/data/country_grid.sql.gz"
+  owner "nominatim"
+  group "nominatim"
+  mode "644"
 end
 
 execute "compile_nominatim" do
@@ -236,7 +247,7 @@ git ui_directory do
   group "nominatim"
 end
 
-template "#{ui_directory}/dist/config.js" do
+template "#{ui_directory}/dist/theme/config.theme.js" do
   source "ui-config.js.erb"
   owner "nominatim"
   group "nominatim"
@@ -258,25 +269,18 @@ end
 
 external_data = [
   "wikimedia-importance.sql.gz",
-  "gb_postcode_data.sql.gz"
+  "gb_postcode_data.sql.gz",
+  "us_postcode_data.sql.gz"
 ]
 
 external_data.each do |fname|
-  remote_file "#{source_directory}/data/#{fname}" do
+  remote_file "#{build_directory}/#{fname}" do
     action :create_if_missing
     source "https://www.nominatim.org/data/#{fname}"
     owner "nominatim"
     group "nominatim"
     mode "644"
   end
-end
-
-remote_file "#{source_directory}/data/country_osm_grid.sql.gz" do
-  action :create_if_missing
-  source "https://www.nominatim.org/data/country_grid.sql.gz"
-  owner "nominatim"
-  group "nominatim"
-  mode "644"
 end
 
 if node[:nominatim][:state] == "off"
@@ -400,7 +404,8 @@ ssl_certificate node[:fqdn] do
            "nominatim.openstreetmap.com",
            "nominatim.openstreetmap.net",
            "nominatim.openstreetmaps.org",
-           "nominatim.openmaps.org"]
+           "nominatim.openmaps.org",
+           "nominatim.qgis.org"]
   notifies :reload, "service[nginx]"
 end
 
@@ -464,6 +469,6 @@ fail2ban_jail "nominatim_limit_req" do
   filter "nginx-limit-req"
   logpath "#{node[:nominatim][:logdir]}/nominatim.openstreetmap.org-error.log"
   ports [80, 443]
-  maxretry 5
+  maxretry 20
   ignoreips frontend_addresses.flatten.sort
 end

@@ -72,42 +72,20 @@ default_attributes(
   :tile => {
     :database => {
       :style_file => "/srv/tile.openstreetmap.org/styles/default/openstreetmap-carto.style",
-      :tag_transform_script => "/srv/tile.openstreetmap.org/styles/default/openstreetmap-carto.lua"
-    },
-    :data => {
-      :simplified_land_polygons => {
-        :url => "https://osmdata.openstreetmap.de/download/simplified-land-polygons-complete-3857.zip",
-        :refresh => true
-      },
-      :simplified_water_polygons => {
-        :url => "https://osmdata.openstreetmap.de/download/simplified-water-polygons-split-3857.zip",
-        :refresh => true
-      },
-      :admin_boundaries => {
-        :url => "http://www.naturalearthdata.com/http//www.naturalearthdata.com/download/110m/cultural/ne_110m_admin_0_boundary_lines_land.zip",
-        :directory => "ne_110m_admin_0_boundary_lines_land"
-      },
-      :land_polygons => {
-        :url => "https://osmdata.openstreetmap.de/download/land-polygons-split-3857.zip",
-        :refresh => true
-      },
-      :water_polygons => {
-        :url => "https://osmdata.openstreetmap.de/download/water-polygons-split-3857.zip",
-        :refresh => true
-      },
-      :antarctica_icesheet_polygons => {
-        :url => "https://osmdata.openstreetmap.de/download/antarctica-icesheet-polygons-3857.zip",
-        :refresh => true
-      },
-      :antarctica_icesheet_outlines => {
-        :url => "https://osmdata.openstreetmap.de/download/antarctica-icesheet-outlines-3857.zip",
-        :refresh => true
-      }
+      :tag_transform_script => "/srv/tile.openstreetmap.org/styles/default/openstreetmap-carto.lua",
+      :external_data_script => "/srv/tile.openstreetmap.org/styles/default/scripts/get-external-data.py -c /srv/tile.openstreetmap.org/styles/default/external-data.yml",
+      :external_data_tables => %w[
+        icesheet_outlines
+        icesheet_polygons
+        ne_110m_admin_0_boundary_lines_land
+        simplified_water_polygons
+        water_polygons
+      ]
     },
     :styles => {
       :default => {
         :repository => "https://github.com/gravitystorm/openstreetmap-carto.git",
-        :revision => "v5.2.0",
+        :revision => "v5.3.0",
         :max_zoom => 19
       }
     }

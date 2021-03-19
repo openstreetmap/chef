@@ -49,6 +49,7 @@ end
 remote_file "#{Chef::Config[:file_cache_path]}/fastly-ip-list.json" do
   source "https://api.fastly.com/public-ip-list"
   compile_time true
+  ignore_failure true
 end
 
 tilecaches = search(:node, "roles:tilecache").sort_by { |n| n[:hostname] }
@@ -273,8 +274,10 @@ nodejs_package "carto"
 
 systemd_service "update-lowzoom@" do
   description "Low zoom tile update service for %i layer"
+  conflicts "render-lowzoom.service"
   user "tile"
   exec_start "/bin/bash /usr/local/bin/update-lowzoom-%i"
+  runtime_directory "update-lowzoom-%i"
   private_tmp true
   private_devices true
   private_network true
@@ -425,6 +428,30 @@ end
   end
 end
 
+package %w[
+  gdal-bin
+  python3-yaml
+  python3-psycopg2
+]
+
+if node[:tile][:database][:external_data_script]
+  execute node[:tile][:database][:external_data_script] do
+    command node[:tile][:database][:external_data_script]
+    cwd "/srv/tile.openstreetmap.org"
+    user "tile"
+    group "tile"
+  end
+
+  Array(node[:tile][:database][:external_data_tables]).each do |table|
+    postgresql_table table do
+      cluster node[:tile][:database][:cluster]
+      database "gis"
+      owner "tile"
+      permissions "tile" => :all, "www-data" => :select
+    end
+  end
+end
+
 postgresql_munin "gis" do
   cluster node[:tile][:database][:cluster]
   database "gis"
@@ -553,6 +580,7 @@ end
 
 systemd_service "render-lowzoom" do
   description "Render low zoom tiles"
+  condition_path_exists_glob "!/run/update-lowzoom-*"
   user "tile"
   exec_start "/usr/local/bin/render-lowzoom"
   private_tmp true

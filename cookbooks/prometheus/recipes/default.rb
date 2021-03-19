@@ -87,6 +87,20 @@ template "/var/lib/prometheus/node-exporter/chef.prom" do
   mode "644"
 end
 
+metric_relabel = []
+
+node[:hardware][:hwmon].each do |chip, details|
+  next unless details[:ignore]
+
+  sensors = details[:ignore].join("|")
+
+  metric_relabel << {
+    :source_labels => "chip,sensor",
+    :regex => "#{chip};(#{sensors})",
+    :action => "drop"
+  }
+end
+
 prometheus_exporter "node" do
   port 9100
   options %w[
@@ -97,4 +111,13 @@ prometheus_exporter "node" do
     --collector.systemd
     --collector.tcpstat
   ]
+  metric_relabel metric_relabel
+end
+
+unless node[:prometheus][:snmp].empty?
+  prometheus_exporter "snmp" do
+    port 9116
+    options "--config.file=/opt/prometheus/exporters/snmp/snmp.yml"
+    register_target false
+  end
 end

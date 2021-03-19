@@ -1,0 +1,260 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+groups:
+  - name: alertmanager
+    rules:
+      - alert: prometheus target missing
+        expr: up == 0
+        for: 5m
+        labels:
+          alertgroup: "prometheus"
+  - name: apache
+    rules:
+      - alert: apache down
+        expr: apache_up == 0
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+      - alert: apache workers busy
+        expr: sum(apache_workers{state="busy"}) by (instance) / sum(apache_scoreboard) by (instance) > 0.8
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+        annotations:
+          busy_workers: "{{ $value | humanizePercentage }}"
+  - name: database
+    rules:
+      - alert: postgres replication delay
+        expr: pg_replication_lag_seconds > 5
+        for: 5m
+        labels:
+          alertgroup: database
+        annotations:
+          delay: "{{ $value | humanizeDuration }}"
+  - name: hwmon
+    rules:
+      - alert: hwmon fan alarm
+        expr: node_hwmon_fan_alarm == 1
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+        annotations:
+          fan_rpm: "{{ with printf \"node_hwmon_fan_rpm{instance='%s',chip='%s',sensor='%s'}\" $labels.instance $labels.chip $labels.sensor | query }}{{ . | first | value | humanize }}rpm{{end}}"
+          fan_min_rpm: "{{ with printf \"node_hwmon_fan_min_rpm{instance='%s',chip='%s',sensor='%s'}\" $labels.instance $labels.chip $labels.sensor | query }}{{ . | first | value | humanize }}rpm{{end}}"
+      - alert: hwmon temperature alarm
+        expr: node_hwmon_temp_alarm == 1
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+        annotations:
+          temp_celsius: "{{ with printf \"node_hwmon_temp_celsius{instance='%s',chip='%s',sensor='%s'}\" $labels.instance $labels.chip $labels.sensor | query }}{{ . | first | value | humanize }}C{{end}}"
+          temp_max_celsius: "{{ with printf \"node_hwmon_temp_max_celsius{instance='%s',chip='%s',sensor='%s'}\" $labels.instance $labels.chip $labels.sensor | query }}{{ . | first | value | humanize }}C{{end}}"
+          temp_crit_celsius: "{{ with printf \"node_hwmon_temp_crit_celsius{instance='%s',chip='%s',sensor='%s'}\" $labels.instance $labels.chip $labels.sensor | query }}{{ . | first | value | humanize }}C{{end}}"
+      - alert: hwmon voltage alarm
+        expr: node_hwmon_in_alarm == 1
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+        annotations:
+          in_volts: "{{ with printf \"node_hwmon_in_volts{instance='%s',chip='%s',sensor='%s'}\" $labels.instance $labels.chip $labels.sensor | query }}{{ . | first | value | humanize }}V{{end}}"
+          in_min_volts: "{{ with printf \"node_hwmon_in_min_volts{instance='%s',chip='%s',sensor='%s'}\" $labels.instance $labels.chip $labels.sensor | query }}{{ . | first | value | humanize }}V{{end}}"
+          in_max_volts: "{{ with printf \"node_hwmon_in_max_volts{instance='%s',chip='%s',sensor='%s'}\" $labels.instance $labels.chip $labels.sensor | query }}{{ . | first | value | humanize }}V{{end}}"
+  - name: ipmi
+    rules:
+      - alert: ipmi fan alarm
+        expr: ipmi_fan_speed_state > 0
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+        annotations:
+          fan_speed_rpm: "{{ with printf \"ipmi_fan_speed_rpm{instance='%s',id='%s'}\" $labels.instance $labels.id | query }}{{ . | first | value | humanize }}rpm{{end}}"
+      - alert: ipmi temperature alarm
+        expr: ipmi_temperature_state > 0
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+        annotations:
+          temperature_celsius: "{{ with printf \"ipmi_temperature_celsius{instance='%s',id='%s'}\" $labels.instance $labels.id | query }}{{ . | first | value | humanize }}C{{end}}"
+      - alert: ipmi voltage alarm
+        expr: ipmi_voltage_state > 0
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+        annotations:
+          voltage_volts: "{{ with printf \"ipmi_voltage_volts{instance='%s',id='%s'}\" $labels.instance $labels.id | query }}{{ . | first | value | humanize }}V{{end}}"
+      - alert: ipmi power alarm
+        expr: ipmi_power_state > 0 or ipmi_sensor_state{type=~"Power .*"} > 0
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+  - name: mdadm
+    rules:
+      - alert: mdadm array inactive
+        expr: node_md_state{state="inactive"} > 0
+        for: 0m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+        annotations:
+          required: "{{ with printf \"node_md_disks_required{instance='%s',device='%s'}\" $labels.instance $labels.device | query }}{{ . | first | value | humanize }} disks{{end}}"
+          active: "{{ with printf \"node_md_disks{instance='%s',device='%s',state='active'}\" $labels.instance $labels.device | query }}{{ . | first | value | humanize }} disks{{end}}"
+          failed: "{{ with printf \"node_md_disks{instance='%s',device='%s',state='failed'}\" $labels.instance $labels.device | query }}{{ . | first | value | humanize }} disks{{end}}"
+          spare: "{{ with printf \"node_md_disks{instance='%s',device='%s',state='spare'}\" $labels.instance $labels.device | query }}{{ . | first | value | humanize }} disks{{end}}"
+      - alert: mdadm disk failed
+        expr: node_md_disks{state="failed"} > 0
+        for: 0m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+        annotations:
+          required: "{{ with printf \"node_md_disks_required{instance='%s',device='%s'}\" $labels.instance $labels.device | query }}{{ . | first | value | humanize }} disks{{end}}"
+          active: "{{ with printf \"node_md_disks{instance='%s',device='%s',state='active'}\" $labels.instance $labels.device | query }}{{ . | first | value | humanize }} disks{{end}}"
+          failed: "{{ with printf \"node_md_disks{instance='%s',device='%s',state='failed'}\" $labels.instance $labels.device | query }}{{ . | first | value | humanize }} disks{{end}}"
+          spare: "{{ with printf \"node_md_disks{instance='%s',device='%s',state='spare'}\" $labels.instance $labels.device | query }}{{ . | first | value | humanize }} disks{{end}}"
+  - name: memory
+    rules:
+      - alert: low memory
+        expr: node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes < 0.1
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+        annotations:
+          memory_free: "{{ $value | humanizePercentage }}"
+      - alert: memory pressure
+        expr: rate(node_vmstat_pgmajfault[1m]) > 1000
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+        annotations:
+          major_page_faults: "{{ $value }} faults/s"
+      - alert: oom kill detected
+        expr: increase(node_vmstat_oom_kill[1m]) > 0
+        for: 0m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+        annotations:
+          new_oom_kills: "{{ $value }}"
+  - name: network
+    rules:
+      - alert: interface transmit rate
+        expr: rate(node_network_transmit_bytes_total[1m]) / node_network_speed_bytes > 0.98
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+        annotations:
+          bandwidth_used: "{{ $value | humanizePercentage }}"
+      - alert: interface receive rate
+        expr: rate(node_network_receive_bytes_total[1m]) / node_network_speed_bytes > 0.98
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+        annotations:
+          bandwidth_used: "{{ $value | humanizePercentage }}"
+      - alert: interface transmit errors
+        expr: rate(node_network_transmit_errs_total[1m]) / rate(node_network_transmit_packets_total[1m]) > 0.01
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+        annotations:
+          error_rate: "{{ $value | humanizePercentage }}"
+      - alert: interface receive errors
+        expr: rate(node_network_receive_errs_total[1m]) / rate(node_network_receive_packets_total[1m]) > 0.01
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+        annotations:
+          error_rate: "{{ $value | humanizePercentage }}"
+      - alert: conntrack entries
+        expr: node_nf_conntrack_entries / node_nf_conntrack_entries_limit > 0.8
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+        annotations:
+          entries_used: "{{ $value | humanizePercentage }}"
+  - name: postgresql
+    rules:
+      - alert: postgresql down
+        expr: pg_up == 0
+        for: 1m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+      - alert: postgresql replication delay
+        expr: pg_replication_lag_seconds > 5
+        for: 1m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+        annotations:
+          delay: "{{ $value | humanizeDuration }}"
+      - alert: postgresql connection limit
+        expr: sum (pg_stat_activity_count) by (instance, server) / sum (pg_settings_max_connections) by (instance, server) > 0.8
+        for: 1m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+        annotations:
+          connections_used: "{{ $value | humanizePercentage }}"
+      - alert: postgresql deadlocks
+        expr: increase(pg_stat_database_deadlocks[1m]) > 5
+        for: 0m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+        annotations:
+          new_deadlocks: "{{ $value }}"
+      - alert: postgresql slow queries
+        expr: pg_slow_queries > 0
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+        annotations:
+          queries: "{{ $value }}"
+  - name: ssl
+    rules:
+      - alert: ssl certificate probe failed
+        expr: ssl_probe_success == 0
+        for: 60m
+        labels:
+          alertgroup: ssl
+      - alert: ssl certificate expiry
+        expr: ssl_verified_cert_not_after{chain_no="0"} - time() < 86400 * 14
+        for: 0m
+        labels:
+          alertgroup: ssl
+        annotations:
+          expires_in: "{{ $value | humanizeDuration }}"
+      - alert: ssl certificate revoked
+        expr: ssl_ocsp_response_status == 1
+        for: 0m
+        labels:
+          alertgroup: ssl
+      - alert: ocsp status unknown
+        expr: ssl_ocsp_response_status == 1
+        for: 0m
+        labels:
+          alertgroup: ssl
+  - name: tile
+    rules:
+      - alert: renderd replication delay
+        expr: renderd_replication_delay > 120
+        for: 5m
+        labels:
+          alertgroup: tile
+        annotations:
+          delay: "{{ $value | humanizeDuration }}"
+      - alert: missed tile rate
+        expr: sum(rate(modtile_http_response_total{code="404"}[5m])) by (instance) / sum(rate(modtile_http_response_total[5m])) by (instance) > 0.05
+        for: 5m
+        labels:
+          alertgroup: tile
+        annotations:
+          miss_rate: "{{ $value | humanizePercentage }}"
+  - name: time
+    rules:
+      - alert: clock not synchronising
+        expr: min_over_time(node_timex_sync_status[1m]) == 0 and node_timex_maxerror_seconds >= 16
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+      - alert: clock skew detected
+        expr: (node_timex_offset_seconds > 0.05 and deriv(node_timex_offset_seconds[5m]) >= 0) or (node_timex_offset_seconds < -0.05 and deriv(node_timex_offset_seconds[5m]) <= 0)
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+        annotations:
+          skew: "{{ with printf \"node_timex_offset_seconds{instance='%s'}\" $labels.instance | query }} {{ . | humanizeDuration }}{{ end }}"

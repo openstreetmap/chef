@@ -119,12 +119,6 @@ remote_directory "/store/planet/replication" do
   files_mode "755"
 end
 
-directory "/store/planet/replication/test" do
-  owner "planet"
-  group "planet"
-  mode "755"
-end
-
 ## Configuration directory
 
 directory "/etc/replication" do
@@ -150,7 +144,9 @@ directory "/var/lib/replication" do
   mode "755"
 end
 
-directory "/var/lib/replication/test" do
+## Temporary directory
+
+directory "/store/replication" do
   owner "planet"
   group "planet"
   mode "755"
@@ -196,80 +192,6 @@ directory "/var/lib/replication/minute" do
   mode "755"
 end
 
-template "/etc/replication/auth.conf" do
-  source "replication.auth.erb"
-  user "root"
-  group "planet"
-  mode "640"
-  variables :password => db_passwords["planetdiff"]
-end
-
-## Hourly replication
-
-directory "/store/planet/replication/hour" do
-  owner "planet"
-  group "planet"
-  mode "755"
-end
-
-directory "/var/lib/replication/hour" do
-  owner "planet"
-  group "planet"
-  mode "755"
-end
-
-link "/var/lib/replication/hour/data" do
-  to "/store/planet/replication/hour"
-end
-
-template "/var/lib/replication/hour/configuration.txt" do
-  source "replication.config.erb"
-  owner "planet"
-  group "planet"
-  mode "644"
-  variables :base => "minute", :interval => 3600
-end
-
-## Daily replication
-
-directory "/store/planet/replication/day" do
-  owner "planet"
-  group "planet"
-  mode "755"
-end
-
-directory "/var/lib/replication/day" do
-  owner "planet"
-  group "planet"
-  mode "755"
-end
-
-link "/var/lib/replication/day/data" do
-  to "/store/planet/replication/day"
-end
-
-template "/var/lib/replication/day/configuration.txt" do
-  source "replication.config.erb"
-  owner "planet"
-  group "planet"
-  mode "644"
-  variables :base => "hour", :interval => 86400
-end
-
-## Minutely replication (test feed)
-
-directory "/store/planet/replication/test/minute" do
-  owner "planet"
-  group "planet"
-  mode "755"
-end
-
-directory "/store/replication" do
-  owner "planet"
-  group "planet"
-  mode "755"
-end
-
 directory "/store/replication/minute" do
   owner "planet"
   group "planet"
@@ -285,7 +207,7 @@ osmdbt_config = {
     "replication_slot" => "osmdbt"
   },
   "log_dir" => "/var/lib/replication/minute",
-  "changes_dir" => "/store/planet/replication/test/minute",
+  "changes_dir" => "/store/planet/replication/minute",
   "tmp_dir" => "/store/replication/minute",
   "run_dir" => "/run/replication"
 }
@@ -317,36 +239,36 @@ systemd_timer "replication-minutely" do
   accuracy_sec 5
 end
 
-### Hourly replication (test feed)
+## Hourly replication
 
-directory "/store/planet/replication/test/hour" do
+directory "/store/planet/replication/hour" do
   owner "planet"
   group "planet"
   mode "755"
 end
 
-directory "/var/lib/replication/test/hour" do
+directory "/var/lib/replication/hour" do
   owner "planet"
   group "planet"
   mode "755"
 end
 
-link "/var/lib/replication/test/hour/data" do
-  to "/store/planet/replication/test/hour"
+link "/var/lib/replication/hour/data" do
+  to "/store/planet/replication/hour"
 end
 
-template "/var/lib/replication/test/hour/configuration.txt" do
+template "/var/lib/replication/hour/configuration.txt" do
   source "replication.config.erb"
   owner "planet"
   group "planet"
   mode "644"
-  variables :base => "test/minute", :interval => 3600
+  variables :base => "minute", :interval => 3600
 end
 
 systemd_service "replication-hourly" do
   description "Hourly replication"
   user "planet"
-  exec_start "/usr/local/bin/osmosis -q --merge-replication-files workingDirectory=/var/lib/replication/test/hour"
+  exec_start "/usr/local/bin/osmosis -q --merge-replication-files workingDirectory=/var/lib/replication/hour"
   private_tmp true
   private_devices true
   protect_system "full"
@@ -360,36 +282,36 @@ systemd_timer "replication-hourly" do
   on_calendar "*-*-* *:02/15:00"
 end
 
-## Daily replication (test feed)
+## Daily replication
 
-directory "/store/planet/replication/test/day" do
+directory "/store/planet/replication/day" do
   owner "planet"
   group "planet"
   mode "755"
 end
 
-directory "/var/lib/replication/test/day" do
+directory "/var/lib/replication/day" do
   owner "planet"
   group "planet"
   mode "755"
 end
 
-link "/var/lib/replication/test/day/data" do
-  to "/store/planet/replication/test/day"
+link "/var/lib/replication/day/data" do
+  to "/store/planet/replication/day"
 end
 
-template "/var/lib/replication/test/day/configuration.txt" do
+template "/var/lib/replication/day/configuration.txt" do
   source "replication.config.erb"
   owner "planet"
   group "planet"
   mode "644"
-  variables :base => "test/hour", :interval => 86400
+  variables :base => "hour", :interval => 86400
 end
 
 systemd_service "replication-daily" do
   description "Daily replication"
   user "planet"
-  exec_start "/usr/local/bin/osmosis -q --merge-replication-files workingDirectory=/var/lib/replication/test/day"
+  exec_start "/usr/local/bin/osmosis -q --merge-replication-files workingDirectory=/var/lib/replication/day"
   private_tmp true
   private_devices true
   protect_system "full"
@@ -428,29 +350,6 @@ if node[:planet][:replication] == "enabled"
     mailto "zerebubuth@gmail.com"
   end
 
-  cron_d "replication-minutely" do
-    user "planet"
-    command "/usr/local/bin/osmosis -q --replicate-apidb authFile=/etc/replication/auth.conf validateSchemaVersion=false --write-replication workingDirectory=/store/planet/replication/minute"
-    mailto "brett@bretth.com"
-    environment "LD_PRELOAD" => "/opt/flush/flush.so"
-  end
-
-  cron_d "replication-hourly" do
-    minute "2,7,12,17"
-    user "planet"
-    command "/usr/local/bin/osmosis -q --merge-replication-files workingDirectory=/var/lib/replication/hour"
-    mailto "brett@bretth.com"
-    environment "LD_PRELOAD" => "/opt/flush/flush.so"
-  end
-
-  cron_d "replication-daily" do
-    minute "5,10,15,20"
-    user "planet"
-    command "/usr/local/bin/osmosis -q --merge-replication-files workingDirectory=/var/lib/replication/day"
-    mailto "brett@bretth.com"
-    environment "LD_PRELOAD" => "/opt/flush/flush.so"
-  end
-
   service "replication-minutely.timer" do
     action [:enable, :start]
   end
@@ -472,18 +371,6 @@ else
   end
 
   cron_d "replication-changesets" do
-    action :delete
-  end
-
-  cron_d "replication-minutely" do
-    action :delete
-  end
-
-  cron_d "replication-hourly" do
-    action :delete
-  end
-
-  cron_d "replication-daily" do
     action :delete
   end
 

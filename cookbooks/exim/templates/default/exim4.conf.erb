@@ -358,6 +358,12 @@ timeout_frozen_after = 7d
 trusted_users = <%= node[:exim][:trusted_users].join(" : ") %>
 
 
+# Do all deliveries via a limited set of queues.
+
+queue_only = true
+queue_run_max = <%= node[:exim][:queue_run_max] %>
+
+
 
 ######################################################################
 #                       ACL CONFIGURATION                            #

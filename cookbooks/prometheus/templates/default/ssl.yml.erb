@@ -1,0 +1,7 @@
+modules:
+<% @certificates.values.sort_by { |c| c[:domains].first }.each do |certificate| -%>
+  <%= certificate[:domains].first %>:
+    prober: tcp
+    tls_config:
+      server_name: <%= certificate[:domains].first %>
+<% end -%>

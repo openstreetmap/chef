@@ -4,8 +4,17 @@
 <% if @description -%>
 Description=<%= @description %>
 <% end -%>
+<% if @condition_path_exists -%>
+ConditionPathExists=<%= Array(@condition_path_exists).join(" ") %>
+<% end -%>
+<% if @condition_path_exists_glob -%>
+ConditionPathExistsGlob=<%= Array(@condition_path_exists_glob).join(" ") %>
+<% end -%>
 <% if @after -%>
 After=<%= Array(@after).join(" ") %>
+<% end -%>
+<% if @conflicts -%>
+Conflicts=<%= Array(@conflicts).join(" ") %>
 <% end -%>
 <% if @wants -%>
 Wants=<%= Array(@wants).join(" ") %>

@@ -63,16 +63,6 @@ action :create do
     variables new_resource.to_hash
   end
 
-  # Disable legacy service
-  service "mapserv-fcgi-#{new_resource.layer}" do
-    action [:stop, :disable]
-  end
-
-  # Remove legacy service
-  systemd_service "mapserv-fcgi-#{new_resource.layer}" do
-    action :delete
-  end
-
   directory "/srv/imagery/nginx/#{new_resource.site}" do
     owner "root"
     group "root"
@@ -95,15 +85,7 @@ action :delete do
     action :delete
   end
 
-  service "mapserv-fcgi-layer-#{new_resource.layer}" do
-    action [:stop, :disable]
-  end
-
   file "/srv/imagery/mapserver/layer-#{new_resource.layer}.map" do
-    action :delete
-  end
-
-  systemd_service "mapserv-fcgi-#{new_resource.layer}" do
     action :delete
   end
 

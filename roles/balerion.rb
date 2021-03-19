@@ -2,9 +2,6 @@ name "balerion"
 description "Master role applied to balerion"
 
 default_attributes(
-  :hardware => {
-    :shm_size => "36g"
-  },
   :networking => {
     :interfaces => {
       :external_ipv4 => {
@@ -20,23 +17,41 @@ default_attributes(
       }
     }
   },
-  :squid => {
-    :version => 4,
-    :cache_mem => "32768 MB",
-    :cache_dir => [
-      "rock /store/squid/rock-4096 20000 swap-timeout=200 slot-size=4096 max-size=3996",
-      "rock /store/squid/rock-8192 25000 swap-timeout=200 slot-size=8192 min-size=3997 max-size=8092",
-      "rock /store/squid/rock-16384 35000 swap-timeout=200 slot-size=16384 min-size=8093 max-size=16284",
-      "rock /store/squid/rock-32768 45000 swap-timeout=200 slot-size=32768 min-size=16285 max-size=262144"
-    ]
+  :postgresql => {
+    :settings => {
+      :defaults => {
+        :shared_buffers => "8GB",
+        :maintenance_work_mem => "7144MB",
+        :effective_cache_size => "16GB"
+      }
+    }
   },
-  :tilecache => {
-    :tile_parent => "melbourne.render.openstreetmap.org"
+  :sysctl => {
+    :postgres => {
+      :comment => "Increase shared memory for postgres",
+      :parameters => {
+        "kernel.shmmax" => 9 * 1024 * 1024 * 1024,
+        "kernel.shmall" => 9 * 1024 * 1024 * 1024 / 4096
+      }
+    }
+  },
+  :tile => {
+    :database => {
+      :cluster => "12/main",
+      :postgis => "3"
+    },
+    :styles => {
+      :default => {
+        :tile_directories => [
+          { :name => "/store/tiles/default", :min_zoom => 0, :max_zoom => 19 }
+        ]
+      }
+    }
   }
 )
 
 run_list(
   "role[aarnet]",
   "role[geodns]",
-  "role[tilecache]"
+  "role[tile]"
 )

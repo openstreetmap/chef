@@ -46,6 +46,7 @@ $wgEnableUserEmail  = true; # UPO
 $wgEmergencyContact = "<%= @mediawiki[:email_contact] %>";
 $wgPasswordSender   = "<%= @mediawiki[:email_sender] %>";
 $wgPasswordSenderName = "<%= @mediawiki[:email_sender_name] %>"; //Replaced by MediaWiki:Emailsender in v1.23.0
+$wgNoReplyAddress = "<%= @mediawiki[:email_sender] %>";
 
 $wgEnotifUserTalk      = true; # UPO
 $wgEnotifWatchlist     = true; # UPO
@@ -229,6 +230,13 @@ $wgGroupPermissions['*']['createaccount'] = false;
 $wgUploadPath = "$wgScriptPath/img_auth.php";
 <% end -%>
 
+<% if not(@mediawiki[:private_accounts]) and not(@mediawiki[:private_site]) -%>
+# user group "confirmed" with identical rights as "autoconfirmed", but assigned manually by sysops
+$wgGroupPermissions['confirmed'] = $wgGroupPermissions['autoconfirmed'];
+$wgAddGroups['sysop'][] = 'confirmed';
+$wgRemoveGroups['sysop'][] = 'confirmed';
+<% end -%>
+
 # Allow Subpages on Main Namespace
 $wgNamespacesWithSubpages[NS_MAIN] = true;
 
@@ -266,7 +274,8 @@ $wgAllowExternalImagesFrom = array( 'http://tile.openstreetmap.org/', 'https://t
 $wgNoFollowDomainExceptions = array( 'www.openstreetmap.org', 'josm.openstreetmap.de', 'taginfo.openstreetmap.org', 'blog.openstreetmap.org', 'wiki.osmfoundation.org' );
 
 # FIXME - move to specific
-$wgForceUIMsgAsContentMsg = array( 'mainpage-url', 'portal-url', 'mapfeatures-url', 'helppage' );
+# defines which links of the sidebar are translatable 
+$wgForceUIMsgAsContentMsg = array( 'mainpage-url', 'mapfeatures-url', 'contributors-url', 'helppage', 'blogs-url', 'shop-url', 'sitesupport-url' );
 
 # FIXME - move to specific
 $wgAllowUserJs = TRUE;

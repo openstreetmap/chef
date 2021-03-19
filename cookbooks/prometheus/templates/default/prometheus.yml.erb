@@ -4,13 +4,57 @@ global:
   scrape_interval: 15s
   evaluation_interval: 15s
 
+alerting:
+  alertmanagers:
+    - path_prefix: /alertmanager
+      static_configs:
+        - targets:
+            - localhost:9093
+
+rule_files:
+  - /etc/prometheus/*_rules.yml
+
 scrape_configs:
   - job_name: prometheus
     scrape_interval: 5s
     scrape_timeout: 5s
+    metrics_path: /prometheus/metrics
     static_configs:
       - targets:
           - localhost:9090
+  - job_name: alertmanager
+    metrics_path: /alertmanager/metrics
+    static_configs:
+      - targets:
+          - localhost:9093
+  - job_name: promscale
+    static_configs:
+      - targets:
+          - localhost:9201
+  - job_name: ssl
+    scrape_interval: 15m
+    metrics_path: /probe
+    static_configs:
+<% @certificates.values.sort_by { |c| c[:domains].first }.each do |certificate| -%>
+      - targets:
+<% certificate[:nodes].sort_by { |h| h[:name] }.each do |host| -%>
+          - <%= certificate[:domains].first %>/<%= host[:name] %>:443
+<% end -%>
+        labels:
+          domain: <%= certificate[:domains].first %>
+<% end -%>
+    relabel_configs:
+      - source_labels: [__address__]
+        regex: "([^/]+)/.*"
+        target_label: __param_module
+      - source_labels: [__address__]
+        regex: "[^/]+/(.*)"
+        target_label: __param_target
+      - source_labels: [__param_target]
+        regex: "([^.]+)\\..*"
+        target_label: instance
+      - target_label: __address__
+        replacement: 127.0.0.1:9219
 <% @jobs.sort.each do |name, targets| -%>
   - job_name: <%= name %>
     static_configs:
@@ -18,6 +62,54 @@ scrape_configs:
       - targets:
           - "<%= target[:address] %>"
         labels:
-          instance: <%= target[:name].split(".").first %>
+          instance: <%= target[:instance] %>
+<% end -%>
+    metric_relabel_configs:
+<% targets.each do |target| -%>
+<% target[:metric_relabel].each do |relabel| -%>
+      - source_labels: [instance,<%= relabel[:source_labels] %>]
+        regex: "<%= target[:instance] %>;<%= relabel[:regex] %>"
+        action: <%= relabel[:action] %>
 <% end -%>
 <% end -%>
+<% end -%>
+  - job_name: snmp
+    scrape_interval: 5m
+    scrape_timeout: 1m
+    metrics_path: /snmp
+    static_configs:
+      - targets:
+<% @snmp_targets.sort_by { |t| t[:instance] }.each do |target| -%>
+      - targets:
+          - "<%= target[:target] %>/<%= target[:module] %>/<%= target[:address] %>"
+        labels:
+          instance: <%= target[:instance] %>
+<% target[:labels].sort.each do |name, value| -%>
+          <%= name %>: <%= value %>
+<% end -%>
+<% end -%>
+    relabel_configs:
+      - source_labels: [__address__]
+        regex: "([^/]+)/[^/]+/.*"
+        target_label: __param_target
+      - source_labels: [__address__]
+        regex: "[^/]+/([^/]+)/.*"
+        target_label: __param_module
+      - source_labels: [__address__]
+        regex: "[^/]+/[^/]+/(.*)"
+        target_label: __address__
+
+remote_write:
+  - url: "http://localhost:9201/write"
+    write_relabel_configs:
+      - source_labels: [__name__]
+        regex: "go_.*"
+        action: drop
+      - source_labels: [__name__]
+        regex: "promhttp_.*"
+        action: drop
+    queue_config:
+      capacity: 10000
+      min_shards: 4
+      batch_send_deadline: 30s
+      max_backoff: 1s

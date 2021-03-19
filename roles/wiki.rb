@@ -18,13 +18,13 @@ default_attributes(
     }
   },
   :elasticsearch => {
-    :version => "5.x",
+    :version => "6.x",
     :cluster => {
       :name => "wiki"
     }
   },
   :exim => {
-    :trusted_users => ["www-data"],
+    :trusted_users => %w[www-data wiki],
     :aliases => {
       :root => "grant"
     },
