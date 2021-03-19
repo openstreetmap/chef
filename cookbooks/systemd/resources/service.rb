@@ -22,7 +22,10 @@ default_action :create
 property :service, String, :name_property => true
 property :dropin, String
 property :description, String
+property :condition_path_exists, [String, Array]
+property :condition_path_exists_glob, [String, Array]
 property :after, [String, Array]
+property :conflicts, [String, Array]
 property :wants, [String, Array]
 property :type, String, :is => %w[simple forking oneshot dbus notify idle]
 property :limit_nofile, Integer

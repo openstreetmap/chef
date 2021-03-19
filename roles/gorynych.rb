@@ -3,6 +3,9 @@ description "Master role applied to gorynych"
 
 default_attributes(
   :hardware => {
+    :ipmi => {
+      :excluded_sensors => [3, 4]
+    },
     :shm_size => "20g"
   },
   :munin => {

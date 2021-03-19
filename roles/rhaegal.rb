@@ -62,9 +62,6 @@ default_attributes(
       :cluster => "12/main",
       :postgis => "3"
     },
-    :replication => {
-      :url => "https://planet.osm.org/replication/test/minute/"
-    },
     :styles => {
       :default => {
         :tile_directories => [

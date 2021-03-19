@@ -1,0 +1,19 @@
+#!/bin/sh
+
+# DO NOT EDIT - This file is being maintained by Chef
+
+T=$(mktemp -d -t -p /var/tmp prometheus.XXXXXXXXXX)
+D=$(date +%Y-%m-%d)
+B=prometheus-$D.tar.gz
+
+mkdir $T/prometheus-$D
+
+ln -s /var/lib/prometheus/alertmanager $T/prometheus-$D/alertmanager
+ln -s /var/lib/grafana $T/prometheus-$D/grafana
+
+export RSYNC_RSH="ssh -ax"
+
+nice tar --create --dereference --directory=$T prometheus-$D | nice gzip --rsyncable -9 > $T/$B
+nice rsync --preallocate --fuzzy $T/$B backup::backup
+
+rm -rf $T

@@ -23,6 +23,9 @@
 	SSLCertificateFile /etc/ssl/certs/prometheus.openstreetmap.org.pem
 	SSLCertificateKeyFile /etc/ssl/private/prometheus.openstreetmap.org.key
 
+	ProxyPass /prometheus http://localhost:9090/prometheus
+	Redirect 403 /alertmanager/api
+	ProxyPass /alertmanager http://localhost:9093/alertmanager
 	ProxyPass / http://localhost:3000/
 	ProxyPreserveHost on
 </VirtualHost>

@@ -3,6 +3,9 @@ description "Master role applied to ridgeback"
 
 default_attributes(
   :hardware => {
+    :ipmi => {
+      :excluded_sensors => [19, 20, 21, 22]
+    },
     :shm_size => "10g"
   },
   :munin => {

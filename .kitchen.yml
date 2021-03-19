@@ -345,6 +345,9 @@ suites:
   - name: tilelog
     run_list:
       - recipe[tilelog::default]
+  - name: timescaledb
+    run_list:
+      - recipe[timescaledb::default]
   - name: tools
     run_list:
       - recipe[tools::default]

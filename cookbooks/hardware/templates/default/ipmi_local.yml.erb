@@ -1,0 +1,13 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+modules:
+  default:
+    collectors:
+      - bmc
+      - ipmi
+      - dcmi
+      - chassis
+    exclude_sensor_ids:
+<% node[:hardware][:ipmi][:excluded_sensors].each do |sensor| -%>
+      - <%= sensor %>
+<% end -%>

@@ -134,6 +134,7 @@ default_attributes(
     :versions => ["12"],
     :settings => {
       :defaults => {
+        :max_connections => "500",
         :shared_buffers => "1GB",
         :work_mem => "32MB",
         :maintenance_work_mem => "64MB",

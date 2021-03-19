@@ -109,8 +109,6 @@ action :create do
     mode "775"
   end
 
-  mediawiki_reference = "REL#{new_resource.version}".tr(".", "_")
-
   git mediawiki_directory do
     action :sync
     repository "https://gerrit.wikimedia.org/r/mediawiki/core.git"
@@ -613,6 +611,17 @@ action_class do
 
   def site_directory
     new_resource.directory || "/srv/#{new_resource.site}"
+  end
+
+  def mediawiki_reference
+    shell_out!("git", "ls-remote", "--refs", "--sort=-version:refname",
+               "https://gerrit.wikimedia.org/r/mediawiki/core.git",
+               "refs/tags/#{new_resource.version}.*")
+      .stdout
+      .split("\n")
+      .first
+      .split("/")
+      .last
   end
 
   def cron_name

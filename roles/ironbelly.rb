@@ -58,6 +58,13 @@ default_attributes(
   :planet => {
     :replication => "enabled"
   },
+  :prometheus => {
+    :snmp => {
+      "pdu1" => { :address => "10.0.48.100", :module => "apcups", :labels => { "site" => "amsterdam" } },
+      "pdu2" => { :address => "10.0.48.101", :module => "apcups", :labels => { "site" => "amsterdam" } },
+      "switch1" => { :address => "130.117.76.2", :module => "if_mib", :labels => { "site" => "amsterdam" } }
+    }
+  },
   :rsyncd => {
     :modules => {
       :hosts => {

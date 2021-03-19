@@ -46,6 +46,13 @@ max_stack_depth = <%= @settings[:max_stack_depth] || @defaults[:max_stack_depth]
 # - Asynchronous Behavior -
 
 effective_io_concurrency = <%= @settings[:effective_io_concurrency] || @defaults[:effective_io_concurrency] %>
+max_worker_processes = <%= @settings[:max_worker_processes] || @defaults[:max_worker_processes] %>
+<% if @version.to_f >= 9.6 -%>
+max_parallel_workers_per_gather = <%= @settings[:max_parallel_workers_per_gather] || @defaults[:max_parallel_workers_per_gather] %>
+<% end -%>
+<% if @version.to_f >= 10 -%>
+max_parallel_workers = <%= @settings[:max_parallel_workers] || @defaults[:max_parallel_workers] %>
+<% end -%>
 
 #------------------------------------------------------------------------------
 # WRITE AHEAD LOG
@@ -107,6 +114,7 @@ effective_cache_size = <%= @settings[:effective_cache_size] || @defaults[:effect
 
 # - Other Planner Options -
 
+default_statistics_target = <%= @settings[:default_statistics_target] || @defaults[:default_statistics_target] %>
 <% if @version.to_f >= 12 -%>
 jit = <%= @settings[:jit] || @defaults[:jit] %>
 <% end -%>
@@ -130,14 +138,19 @@ log_line_prefix = '%t '
 # - Query/Index Statistics Collector -
 
 track_activity_query_size = <%= @settings[:track_activity_query_size] || @defaults[:track_activity_query_size] %>
+stats_temp_directory = '/run/postgresql/<%= @version %>-main.pg_stat_tmp'
 
 #------------------------------------------------------------------------------
 # AUTOVACUUM PARAMETERS
 #------------------------------------------------------------------------------
 
+log_autovacuum_min_duration = <%= @settings[:log_autovacuum_min_duration] || @defaults[:log_autovacuum_min_duration] %>
 autovacuum_max_workers = <%= @settings[:autovacuum_max_workers] || @defaults[:autovacuum_max_workers] %>
+autovacuum_naptime = <%= @settings[:autovacuum_naptime] || @defaults[:autovacuum_naptime] %>
 autovacuum_vacuum_scale_factor = <%= @settings[:autovacuum_vacuum_scale_factor] || @defaults[:autovacuum_vacuum_scale_factor] %>
 autovacuum_analyze_scale_factor = <%= @settings[:autovacuum_analyze_scale_factor] || @defaults[:autovacuum_analyze_scale_factor] %>
+autovacuum_freeze_max_age = <%= @settings[:autovacuum_freeze_max_age] || @defaults[:autovacuum_freeze_max_age] %>
+autovacuum_multixact_freeze_max_age = <%= @settings[:autovacuum_multixact_freeze_max_age] || @defaults[:autovacuum_multixact_freeze_max_age] %>
 
 #------------------------------------------------------------------------------
 # CLIENT CONNECTION DEFAULTS
@@ -151,3 +164,21 @@ lc_monetary = 'en_GB.UTF-8'
 lc_numeric = 'en_GB.UTF-8'
 lc_time = 'en_GB.UTF-8'
 default_text_search_config = 'pg_catalog.english'
+
+# - Shared Library Preloading -
+
+shared_preload_libraries = '<%= (@settings[:shared_preload_libraries] || @defaults[:shared_preload_libraries]).sort.join(",") %>'
+
+#------------------------------------------------------------------------------
+# LOCK MANAGEMENT
+#------------------------------------------------------------------------------
+
+max_locks_per_transaction = <%= @settings[:max_locks_per_transaction] || @defaults[:max_locks_per_transaction] %>
+
+#------------------------------------------------------------------------------
+# CUSTOMIZED OPTIONS
+#------------------------------------------------------------------------------
+
+<% Hash(@settings[:customized_options]).sort.each do |name, value| -%>
+<%= name %> = <%= value %>
+<% end -%>
