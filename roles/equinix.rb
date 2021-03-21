@@ -25,7 +25,8 @@ default_attributes(
           :routes => {
             "2001:978:2:2c::/64" => { :type => "unreachable" },
             "2001:4860::/32" => { :type => "unreachable" },
-            "2a00:1450:4000::/37" => { :type => "unreachable" }
+            "2a00:1450:4000::/37" => { :type => "unreachable" },
+            "2a04:fa80::/29" => { :type => "unreachable" }
           }
         }
       }
