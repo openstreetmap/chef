@@ -14,6 +14,7 @@ default_attributes(
           { :database => "replication", :user => "replication", :address => "10.0.48.49/32" },
           { :database => "replication", :user => "replication", :address => "10.0.48.50/32" },
           { :database => "replication", :user => "replication", :address => "10.0.48.5/32" },
+          { :database => "replication", :user => "replication", :address => "10.0.0.4/32" },
           { :database => "replication", :user => "replication", :address => "10.0.0.10/32" },
           { :database => "replication", :user => "replication", :address => "10.0.32.40/32" }
         ]
