@@ -171,6 +171,7 @@ package %w[
   python3-dotenv
   python3-psutil
   python3-jinja2
+  python3-icu
   php-pgsql
   php-intl
   php-symfony-dotenv
