@@ -64,7 +64,7 @@ postgresql_database database_name do
 end
 
 remote_file "#{Chef::Config[:file_cache_path]}/otrs-#{version}.tar.bz2" do
-  source "https://ftp.otrs.org/pub/otrs/otrs-#{version}.tar.bz2"
+  source "https://download.znuny.org/releases/otrs-#{version}.tar.bz2"
   not_if { ::File.exist?("/opt/otrs-#{version}") }
 end
 
