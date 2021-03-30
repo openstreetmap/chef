@@ -344,7 +344,7 @@ end
 
   execute "/srv/#{year}.stateofthemap.org/Gemfile" do
     action :nothing
-    command "bundle install --deployment"
+    command "bundle install --deployment --jobs #{node[:cpu][:total]}"
     cwd "/srv/#{year}.stateofthemap.org"
     user "root"
     group "root"
