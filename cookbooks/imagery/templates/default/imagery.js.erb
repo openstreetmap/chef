@@ -36,5 +36,9 @@ function createMap(divName) {
   // Add the permalink control
   map.addControl(new L.Control.Permalink());
 
+  var lc = L.control.locate({
+    position: 'topright'
+  }).addTo(map);
+
   return map;
 }
