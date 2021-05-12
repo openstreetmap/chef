@@ -55,7 +55,7 @@ rails_directory = "#{node[:web][:base_directory]}/rails"
 piwik = data_bag_item("web", "piwik")
 
 storage = {
-  "aws" => {
+  "avatars" => {
     "service" => "S3",
     "access_key_id" => "AKIASQUXHPE7AMJQRFOS",
     "secret_access_key" => web_passwords["aws_key"],
@@ -111,7 +111,7 @@ rails_port "www.openstreetmap.org" do
   trace_use_job_queue true
   diary_feed_delay 12
   storage_configuration storage
-  storage_service "aws"
+  storage_service "avatars"
   storage_url "https://openstreetmap-user-avatars.s3.dualstack.eu-west-1.amazonaws.com"
 end
 
