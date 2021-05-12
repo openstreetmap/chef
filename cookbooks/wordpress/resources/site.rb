@@ -29,10 +29,10 @@ property :database_user, :kind_of => String, :required => [:create]
 property :database_password, :kind_of => String, :required => [:create]
 property :database_prefix, :kind_of => String, :default => "wp_"
 property :urls, :kind_of => Hash, :default => {}
-property :fpm_max_children, :kind_of => Integer, :default => 5
-property :fpm_start_servers, :kind_of => Integer, :default => 2
-property :fpm_min_spare_servers, :kind_of => Integer, :default => 1
-property :fpm_max_spare_servers, :kind_of => Integer, :default => 3
+property :fpm_max_children, :kind_of => Integer, :default => 10
+property :fpm_start_servers, :kind_of => Integer, :default => 4
+property :fpm_min_spare_servers, :kind_of => Integer, :default => 2
+property :fpm_max_spare_servers, :kind_of => Integer, :default => 6
 property :fpm_request_terminate_timeout, :kind_of => Integer, :default => 300
 property :fpm_prometheus_port, :kind_of => Integer
 property :reload_apache, :kind_of => [TrueClass, FalseClass], :default => true
