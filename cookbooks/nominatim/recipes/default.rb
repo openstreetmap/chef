@@ -270,8 +270,8 @@ end
 
 external_data = [
   "wikimedia-importance.sql.gz",
-  "gb_postcode_data.sql.gz",
-  "us_postcode_data.sql.gz"
+  "gb_postcodes.csv.gz",
+  "us_postcodes.csv.gz"
 ]
 
 external_data.each do |fname|
