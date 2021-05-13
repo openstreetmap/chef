@@ -131,10 +131,6 @@ default_attributes(
       :oauth2 => {
         :repository => "https://github.com/tomhughes/openstreetmap-website.git",
         :revision => "doorkeeper"
-      },
-      :rails61 => {
-        :repository => "https://github.com/tomhughes/openstreetmap-website.git",
-        :revision => "rails61"
       }
     }
   },
