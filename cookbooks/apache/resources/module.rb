@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+unified_mode true
+
 default_action [:install, :enable]
 
 property :module, :kind_of => String, :name_property => true

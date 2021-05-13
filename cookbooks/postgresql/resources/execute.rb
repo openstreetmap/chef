@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+unified_mode true
+
 default_action :run
 
 property :command, :kind_of => String, :name_property => true

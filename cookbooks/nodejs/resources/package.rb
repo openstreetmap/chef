@@ -19,6 +19,8 @@
 
 require "json"
 
+unified_mode true
+
 default_action :install
 
 property :package, :kind_of => String, :name_property => true

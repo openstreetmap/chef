@@ -20,6 +20,8 @@
 resource_name :firewall_rule
 provides :firewall_rule
 
+unified_mode true
+
 default_action :nothing
 
 property :rule, :kind_of => String, :name_property => true

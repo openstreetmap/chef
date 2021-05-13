@@ -18,6 +18,8 @@
 
 require "securerandom"
 
+unified_mode true
+
 default_action :create
 
 property :site, :kind_of => String, :name_property => true
