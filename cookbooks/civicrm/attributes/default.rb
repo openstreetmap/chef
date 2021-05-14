@@ -9,7 +9,7 @@ default[:civicrm][:extensions][:osm][:repository] = "https://github.com/systopia
 default[:civicrm][:extensions][:osm][:revision] = "1.2.1"
 
 default[:civicrm][:extensions][:emailapi][:name] = "org.civicoop.emailapi"
-default[:civicrm][:extensions][:emailapi][:repository] = "https://github.com/CiviCooP/org.civicoop.emailapi.git"
+default[:civicrm][:extensions][:emailapi][:repository] = "https://lab.civicrm.org/extensions/emailapi.git"
 default[:civicrm][:extensions][:emailapi][:revision] = "2.2"
 
 default[:civicrm][:extensions][:civiruleshttppost][:name] = "org.civicoop.civiruleshttppost"
