@@ -89,27 +89,27 @@ function mk_torrent {
   torrent_url="${rss_web_dir}${s_year}/${torrent_file}"
 
   # create .torrent file
-  mktorrent -l 22 ${name} \
+  mktorrent -l 22 "${name}" \
      -a udp://tracker.opentrackr.org:1337 \
      -a udp://tracker.datacenterlight.ch:6969/announce,http://tracker.datacenterlight.ch:6969/announce \
      -a udp://tracker.torrent.eu.org:451 \
      -a udp://tracker-udp.gbitt.info:80/announce,http://tracker.gbitt.info/announce,https://tracker.gbitt.info/announce \
      -a http://retracker.local/announce \
-     -w https://planet.openstreetmap.org/${web_path} \
-     -w https://ftp5.gwdg.de/pub/misc/openstreetmap/planet.openstreetmap.org/${web_path} \
-     -w https://ftpmirror.your.org/pub/openstreetmap/${web_path} \
-     -w https://mirror.init7.net/openstreetmap/${web_path} \
-     -w https://free.nchc.org.tw/osm.planet/${web_path} \
-     -w https://ftp.fau.de/osm-planet/${web_path} \
-     -w https://ftp.spline.de/pub/openstreetmap/${web_path} \
-     -w https://osm.openarchive.site/${name} \
-     -w https://downloads.opencagedata.com/planet/${name} \
-     -w https://planet.osm-hr.org/${web_path} \
+     -w "https://planet.openstreetmap.org/${web_path}" \
+     -w "https://ftp5.gwdg.de/pub/misc/openstreetmap/planet.openstreetmap.org/${web_path}" \
+     -w "https://ftpmirror.your.org/pub/openstreetmap/${web_path}" \
+     -w "https://mirror.init7.net/openstreetmap/${web_path}" \
+     -w "https://free.nchc.org.tw/osm.planet/${web_path}" \
+     -w "https://ftp.fau.de/osm-planet/${web_path}" \
+     -w "https://ftp.spline.de/pub/openstreetmap/${web_path}" \
+     -w "https://osm.openarchive.site/${name}" \
+     -w "https://downloads.opencagedata.com/planet/${name}" \
+     -w "https://planet.osm-hr.org/${web_path}" \
      -c "OpenStreetMap ${type} data export, licensed under https://opendatacommons.org/licenses/odbl/ by OpenStreetMap contributors" \
-     -o ${torrent_file} > /dev/null
+     -o "${torrent_file}" > /dev/null
 
   # create .xml global RSS headers if missing
-  torrent_time_rfc="`date -R -r ${torrent_file}`"
+  torrent_time_rfc="$(date -R -r ${torrent_file})"
   test -f "${rss_file}" || echo "<x/>" | xmlstarlet select --xml-decl --indent \
 	-N "atom=http://www.w3.org/2005/Atom" \
 	-N "dcterms=http://purl.org/dc/terms/" \
@@ -132,7 +132,7 @@ function mk_torrent {
 	--elem "generator" --output "OpenStreetMap xmlstarlet powered shell script v1.0" --break \
 	--elem "language" --output "en" --break \
 	--elem "lastBuildDate" --output "${torrent_time_rfc}" \
-	> ${rss_file}
+	> "${rss_file}"
 
   # add newly created .torrent file as new entry to .xml RSS feed, removing excess entries
   xmlstarlet edit --inplace \
@@ -150,7 +150,7 @@ function mk_torrent {
 	-u /rss/channel/lastBuildDate -v "${torrent_time_rfc}" \
 	-d /rss/@atom:DUMMY \
 	-d "//item[position()>5]" \
-	${rss_file}
+	"${rss_file}"
 }
 
 # Function to install a dump in place
