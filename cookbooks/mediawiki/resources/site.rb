@@ -471,6 +471,7 @@ action :create do
     repository "https://github.com/Firefishy/SimpleMap.git"
     tag "live"
     update_site false
+    action :delete
   end
 
   mediawiki_extension "SlippyMap" do
