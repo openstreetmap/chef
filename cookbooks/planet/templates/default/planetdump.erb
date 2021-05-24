@@ -129,12 +129,14 @@ function mk_torrent {
 		--attr "type" --output "application/rss+xml" --break \
 		--break \
 	--elem "description" --output "${type}.osm.${format}.torrent RSS feed" --break \
+	--elem "copyright" --output "Source: OpenStreetMap contributors, under ODbL 1.0 licence" --break \
 	--elem "generator" --output "OpenStreetMap xmlstarlet powered shell script v1.0" --break \
 	--elem "language" --output "en" --break \
 	--elem "lastBuildDate" --output "${torrent_time_rfc}" \
 	> "${rss_file}"
 
   # add newly created .torrent file as new entry to .xml RSS feed, removing excess entries
+  torrent_size="$(stat --format="%s" ${torrent_file})"
   xmlstarlet edit --inplace \
 	-a "//lastBuildDate" -t elem -n item -v ""  \
 	-s "//item[1]" -t elem -n "title" -v "${torrent_file}" \
@@ -144,9 +146,9 @@ function mk_torrent {
 	-s "//item[1]" -t elem -n "category" -v "OpenStreetMap data" \
 	-s "//item[1]" -t elem -n "enclosure" \
 		-s "//item[1]"/enclosure -t attr -n "type" -v "application/x-bittorrent" \
+		-s "//item[1]"/enclosure -t attr -n "length" -v "${torrent_size}" \
 		-s "//item[1]"/enclosure -t attr -n "url" -v "${torrent_url}" \
 	-s "//item[1]" -t elem -n "description" -v "OpenStreetMap torrent ${torrent_file}" \
-	-s "//item[1]" -t elem -n "comments" -v "Source: OpenStreetMap contributors, under ODbL 1.0 licence" \
 	-u /rss/channel/lastBuildDate -v "${torrent_time_rfc}" \
 	-d /rss/@atom:DUMMY \
 	-d "//item[position()>5]" \
