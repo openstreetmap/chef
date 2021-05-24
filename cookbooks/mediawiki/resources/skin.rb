@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+unified_mode true
+
 default_action :create
 
 property :skin, :kind_of => String, :name_property => true

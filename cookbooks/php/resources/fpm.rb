@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+unified_mode true
+
 default_action :create
 
 property :pool, :kind_of => String, :name_property => true
@@ -24,12 +26,12 @@ property :port, :kind_of => Integer
 property :user, :kind_of => String, :default => "www-data"
 property :group, :kind_of => String, :default => "www-data"
 property :pm, :kind_of => String, :default => "dynamic"
-property :pm_max_children, :kind_of => Integer, :default => 5
-property :pm_start_servers, :kind_of => Integer, :default => 2
-property :pm_min_spare_servers, :kind_of => Integer, :default => 1
-property :pm_max_spare_servers, :kind_of => Integer, :default => 3
-property :pm_max_requests, :kind_of => Integer, :default => 500
-property :request_terminate_timeout, :kind_of => Integer, :default => 0
+property :pm_max_children, :kind_of => Integer, :default => 10
+property :pm_start_servers, :kind_of => Integer, :default => 4
+property :pm_min_spare_servers, :kind_of => Integer, :default => 2
+property :pm_max_spare_servers, :kind_of => Integer, :default => 6
+property :pm_max_requests, :kind_of => Integer, :default => 1000
+property :request_terminate_timeout, :kind_of => Integer, :default => 1800
 property :environment, :kind_of => Hash, :default => {}
 property :php_values, :kind_of => Hash, :default => {}
 property :php_admin_values, :kind_of => Hash, :default => {}

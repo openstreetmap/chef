@@ -37,6 +37,6 @@ do
 
     if [ -f "<%= @update_maintenance_trigger %>" ]; then
         rm <%= @update_maintenance_trigger %>
-        ./nominatim refresh --postcodes
+        ./nominatim refresh --postcodes --threads 4 -v
     fi
 done

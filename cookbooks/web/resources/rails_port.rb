@@ -22,6 +22,8 @@ require "yaml"
 resource_name :rails_port
 provides :rails_port
 
+unified_mode true
+
 default_action :create
 
 property :site, String, :name_property => true

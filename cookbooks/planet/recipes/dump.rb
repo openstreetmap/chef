@@ -48,6 +48,8 @@ package %w[
   php-cli
   php-curl
   mktorrent
+  xmlstarlet
+  libxml2-utils
 ]
 
 directory "/opt/planet-dump-ng" do

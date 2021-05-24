@@ -9,7 +9,7 @@ PrivateKey=<%= IO.read("/var/lib/systemd/wireguard/private.key").chomp %>
 PrivateKeyFile=/var/lib/systemd/wireguard/private.key
 <% end -%>
 ListenPort=51820
-<% node[:networking][:wireguard][:peers].each do |peer| -%>
+<% node[:networking][:wireguard][:peers].sort_by { |p| p[:public_key] }.each do |peer| -%>
 
 [WireGuardPeer]
 PublicKey=<%= peer[:public_key] %>

@@ -38,6 +38,7 @@ default_attributes(
         :max_connections => "250",
         :temp_buffers => "32MB",
         :work_mem => "128MB",
+        :max_parallel_workers_per_gather => "0",
         :wal_buffers => "1024kB",
         :wal_writer_delay => "500ms",
         :commit_delay => "10000",
@@ -85,7 +86,7 @@ default_attributes(
     :styles => {
       :default => {
         :repository => "https://github.com/gravitystorm/openstreetmap-carto.git",
-        :revision => "v5.3.0",
+        :revision => "v5.3.1",
         :max_zoom => 19
       }
     }

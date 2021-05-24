@@ -171,6 +171,7 @@ package %w[
   python3-dotenv
   python3-psutil
   python3-jinja2
+  python3-icu
   php-pgsql
   php-intl
   php-symfony-dotenv
@@ -269,8 +270,8 @@ end
 
 external_data = [
   "wikimedia-importance.sql.gz",
-  "gb_postcode_data.sql.gz",
-  "us_postcode_data.sql.gz"
+  "gb_postcodes.csv.gz",
+  "us_postcodes.csv.gz"
 ]
 
 external_data.each do |fname|

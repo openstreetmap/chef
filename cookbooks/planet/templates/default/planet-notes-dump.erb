@@ -17,43 +17,42 @@ fi
 echo $$ > /tmp/planet-notes-dump.lock
 
 
-cur_date=`date +%y%m%d`
-cur_year=`date +%Y`
-cur_planet_notes=planet-notes-${cur_date}.osn
+cur_date=$(date +%y%m%d)
+cur_year=$(date +%Y)
+cur_planet_notes="planet-notes-${cur_date}.osn"
 planet_dir=/store/planet/
 
 export PATH='/usr/local/bin:/usr/bin:/bin:/usr/bin/X11'
 
 
-if [ \! -d ${planet_dir}/notes/ ]
+if [ \! -d "${planet_dir}/notes/" ]
 	then
-		echo ${planet_dir}notes/ does not exist
+		echo "${planet_dir}notes/ does not exist"
 		exit 1
 	fi
-if [ \! -d ${planet_dir}/notes/${cur_year}/ ]; then mkdir ${planet_dir}/notes/${cur_year}/; fi
-cd ${planet_dir}/notes/${cur_year}/
+if [ \! -d "${planet_dir}/notes/${cur_year}/" ]; then mkdir "${planet_dir}/notes/${cur_year}/"; fi
+cd "${planet_dir}/notes/${cur_year}/"
 
-/usr/bin/python3 /opt/planet-notes-dump/dump.py --quiet --database openstreetmap --host <%= node[:web][:readonly_database_host] %> --user planetdump --password '<%= @password %>' .${cur_planet_notes}
-pbzip2 -p6 -9 .${cur_planet_notes}
+/usr/bin/python3 /opt/planet-notes-dump/dump.py --quiet --database openstreetmap --host <%= node[:web][:readonly_database_host] %> --user planetdump --password '<%= @password %>' ".${cur_planet_notes}"
+pbzip2 -p6 -9 ".${cur_planet_notes}"
 
-planet_notes_size=$(du -sb .${cur_planet_notes}.bz2 | awk '{ print $1 }')
+planet_notes_size=$(du -sb ".${cur_planet_notes}.bz2" | awk '{ print $1 }')
 if ((planet_notes_size<12000000)); then
-	echo Planet .${cur_planet_notes}.bz2 too small
+	echo "Planet .${cur_planet_notes}.bz2 too small"
 	exit 1
 fi
 
-mv .${cur_planet_notes}.bz2 ${cur_planet_notes}.bz2
-md5sum ${cur_planet_notes}.bz2 > ${cur_planet_notes}.bz2.md5
+mv ".${cur_planet_notes}.bz2" "${cur_planet_notes}.bz2"
+md5sum "${cur_planet_notes}.bz2" > "${cur_planet_notes}.bz2.md5"
 
 #link planet latest to the new file
-cd ${planet_dir}/notes/
+cd "${planet_dir}/notes/"
 
-ln -fs ${cur_year}/${cur_planet_notes}.bz2 planet-notes-latest.osn.bz2
+ln -fs "${cur_year}/${cur_planet_notes}.bz2" planet-notes-latest.osn.bz2
 
 # mangle md5 files for 'latest' ones
 rm -f planet-notes-latest.osn.bz2.md5
 
-sed -e "s/${cur_planet_notes}.bz2/planet-notes-latest.osn.bz2/" ${cur_year}/${cur_planet_notes}.bz2.md5 > planet-notes-latest.osn.bz2.md5
+sed -e "s/${cur_planet_notes}.bz2/planet-notes-latest.osn.bz2/" "${cur_year}/${cur_planet_notes}.bz2.md5" > planet-notes-latest.osn.bz2.md5
 
 rm /tmp/planet-notes-dump.lock
-

@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+unified_mode true
+
 default_action :restart
 
 property :application, String, :name_property => true

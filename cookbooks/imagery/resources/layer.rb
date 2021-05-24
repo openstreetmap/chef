@@ -19,6 +19,8 @@
 
 require "yaml"
 
+unified_mode true
+
 default_action :create
 
 property :layer, String, :name_property => true

@@ -19,6 +19,8 @@
 
 require "shellwords"
 
+unified_mode true
+
 default_action :create
 
 property :user, :kind_of => String, :name_property => true

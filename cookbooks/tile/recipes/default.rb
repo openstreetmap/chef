@@ -436,19 +436,10 @@ package %w[
 
 if node[:tile][:database][:external_data_script]
   execute node[:tile][:database][:external_data_script] do
-    command node[:tile][:database][:external_data_script]
+    command "#{node[:tile][:database][:external_data_script]} -R www-data"
     cwd "/srv/tile.openstreetmap.org"
     user "tile"
     group "tile"
-  end
-
-  Array(node[:tile][:database][:external_data_tables]).each do |table|
-    postgresql_table table do
-      cluster node[:tile][:database][:cluster]
-      database "gis"
-      owner "tile"
-      permissions "tile" => :all, "www-data" => :select
-    end
   end
 end
 

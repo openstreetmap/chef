@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+unified_mode true
+
 default_action :create
 
 property :site, :kind_of => String, :name_property => true
@@ -76,27 +78,6 @@ action :create do
     end
   end
 
-  execute "#{mediawiki_directory}/maintenance/install.php" do
-    action :nothing
-    # Use metanamespace as Site Name to ensure correct set namespace
-    command "php maintenance/install.php --server '#{name}' --dbtype 'mysql' --dbname '#{new_resource.database_name}' --dbuser '#{new_resource.database_user}' --dbpass '#{new_resource.database_password}' --dbserver 'localhost' --scriptpath /w --pass '#{new_resource.admin_password}' '#{new_resource.metanamespace}' '#{new_resource.admin_user}'"
-    cwd mediawiki_directory
-    user node[:mediawiki][:user]
-    group node[:mediawiki][:group]
-    not_if do
-      ::File.exist?("#{mediawiki_directory}/LocalSettings-install.php")
-    end
-    notifies :run, "ruby_block[rename-installer-localsettings]", :immediately
-  end
-
-  execute "#{mediawiki_directory}/maintenance/update.php" do
-    action :nothing
-    command "php maintenance/update.php --quick"
-    cwd mediawiki_directory
-    user node[:mediawiki][:user]
-    group node[:mediawiki][:group]
-  end
-
   declare_resource :directory, site_directory do
     owner node[:mediawiki][:user]
     group node[:mediawiki][:group]
@@ -121,6 +102,14 @@ action :create do
     notifies :run, "execute[#{mediawiki_directory}/maintenance/update.php]"
   end
 
+  template "#{mediawiki_directory}/composer.local.json" do
+    cookbook "mediawiki"
+    source "composer.local.json.erb"
+    owner node[:mediawiki][:user]
+    group node[:mediawiki][:group]
+    mode "664"
+  end
+
   execute "#{mediawiki_directory}/composer.json" do
     action :nothing
     command "composer update --no-dev"
@@ -130,12 +119,25 @@ action :create do
     environment "COMPOSER_HOME" => site_directory
   end
 
-  template "#{mediawiki_directory}/composer.local.json" do
-    cookbook "mediawiki"
-    source "composer.local.json.erb"
-    owner node[:mediawiki][:user]
+  execute "#{mediawiki_directory}/maintenance/install.php" do
+    action :nothing
+    # Use metanamespace as Site Name to ensure correct set namespace
+    command "php maintenance/install.php --server '#{name}' --dbtype 'mysql' --dbname '#{new_resource.database_name}' --dbuser '#{new_resource.database_user}' --dbpass '#{new_resource.database_password}' --dbserver 'localhost' --scriptpath /w --pass '#{new_resource.admin_password}' '#{new_resource.metanamespace}' '#{new_resource.admin_user}'"
+    cwd mediawiki_directory
+    user node[:mediawiki][:user]
     group node[:mediawiki][:group]
-    mode "664"
+    not_if do
+      ::File.exist?("#{mediawiki_directory}/LocalSettings-install.php")
+    end
+    notifies :run, "ruby_block[rename-installer-localsettings]", :immediately
+  end
+
+  execute "#{mediawiki_directory}/maintenance/update.php" do
+    action :nothing
+    command "php maintenance/update.php --quick"
+    cwd mediawiki_directory
+    user node[:mediawiki][:user]
+    group node[:mediawiki][:group]
   end
 
   # Safety catch if git doesn't update but install.php hasn't run
@@ -469,6 +471,7 @@ action :create do
     repository "https://github.com/Firefishy/SimpleMap.git"
     tag "live"
     update_site false
+    action :delete
   end
 
   mediawiki_extension "SlippyMap" do
