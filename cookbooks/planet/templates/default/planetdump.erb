@@ -136,7 +136,7 @@ function mk_torrent {
 
   # add newly created .torrent file as new entry to .xml RSS feed, removing excess entries
   xmlstarlet edit --inplace \
-	-a "//channel" -t elem -n item -v ""  \
+	-a "//lastBuildDate" -t elem -n item -v ""  \
 	-s "//item[1]" -t elem -n "title" -v "${torrent_file}" \
 	-s "//item[1]" -t elem -n "guid" -v "${torrent_url}" \
 	-s "//item[1]" -t elem -n "link" -v "${torrent_url}" \
