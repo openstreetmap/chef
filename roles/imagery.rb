@@ -6,7 +6,7 @@ default_attributes(
     :users => {
       :dmlu => { :status => :user },
       :htonl => { :status => :user },
-      :stereo => { :status => :user },
+      :stereo => { :status => :administrator },
       :imagery => {
         :status => :role,
         :members => [:grant, :tomh, :dmlu, :htonl, :stereo ]
