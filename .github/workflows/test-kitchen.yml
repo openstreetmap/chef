@@ -116,7 +116,7 @@ jobs:
     - name: Setup ruby
       uses: actions/setup-ruby@v1.1.3
     - name: Cache gems
-      uses: actions/cache@v2.1.5
+      uses: actions/cache@v2.1.6
       with:
         path: vendor/bundle
         key: bundle-${{ runner.OS }}-${{ hashFiles('Gemfile.lock') }}
