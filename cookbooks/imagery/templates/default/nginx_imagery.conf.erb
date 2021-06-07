@@ -31,6 +31,12 @@ server {
     add_header Strict-Transport-Security "<%= node[:ssl][:strict_transport_security] %>" always;
 <% end -%>
 
+    # CSP report only policy
+    add_header Content-Security-Policy-Report-Only "default-src 'none'; form-action 'none'; frame-ancestors 'none'; report-uri https://openstreetmap.report-uri.com/r/d/csp/wizard";
+    # Add NEL reporting
+    add_header Report-To "{\"group\":\"default\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://openstreetmap.report-uri.com/a/d/g\"}],\"include_subdomains\":true}";
+    add_header NEL "{\"report_to\":\"default\",\"max_age\":604800,\"include_subdomains\":true}";
+
     # Requests sent within early data are subject to replay attacks.
     # See: http://nginx.org/en/docs/http/ngx_http_ssl_module.html#ssl_early_data
     ssl_early_data on;
