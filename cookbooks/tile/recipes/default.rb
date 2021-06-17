@@ -88,7 +88,6 @@ systemd_service "renderd" do
   runtime_directory "renderd"
   standard_error "null"
   limit_nofile 4096
-  memory_max "32G"
   private_tmp true
   private_devices true
   private_network true
