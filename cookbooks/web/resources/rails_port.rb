@@ -137,7 +137,6 @@ action :create do
     depth 1
     user new_resource.user
     group new_resource.group
-    notifies :restart, "passenger_application[#{rails_directory}]"
   end
 
   declare_resource :directory, "#{rails_directory}/tmp" do
@@ -161,7 +160,6 @@ action :create do
               :name => new_resource.database_name,
               :username => new_resource.database_username,
               :password => new_resource.database_password
-    notifies :restart, "passenger_application[#{rails_directory}]"
   end
 
   application_yml = edit_file "#{rails_directory}/config/example.application.yml" do |line|
@@ -282,7 +280,6 @@ action :create do
     group new_resource.group
     mode "664"
     content application_yml
-    notifies :restart, "passenger_application[#{rails_directory}]"
     only_if { ::File.exist?("#{rails_directory}/config/example.application.yml") }
   end
 
@@ -386,7 +383,6 @@ action :create do
     environment "NOKOGIRI_USE_SYSTEM_LIBRARIES" => "yes"
     subscribes :run, "gem_package[bundler#{new_resource.ruby}]"
     subscribes :run, "git[#{rails_directory}]"
-    notifies :restart, "passenger_application[#{rails_directory}]"
   end
 
   execute "#{rails_directory}/db/migrate" do
@@ -396,7 +392,6 @@ action :create do
     user new_resource.user
     group new_resource.group
     subscribes :run, "git[#{rails_directory}]"
-    notifies :restart, "passenger_application[#{rails_directory}]"
     only_if { new_resource.run_migrations }
   end
 
@@ -443,7 +438,6 @@ action :create do
     subscribes :run, "file[#{rails_directory}/config/piwik.yml]"
     subscribes :run, "execute[#{rails_directory}/package.json]"
     subscribes :run, "execute[#{rails_directory}/app/assets/javascripts/i18n]"
-    notifies :restart, "passenger_application[#{rails_directory}]"
     only_if { new_resource.build_assets }
   end
 
@@ -455,6 +449,17 @@ action :create do
 
   passenger_application rails_directory do
     action :nothing
+    subscribes :restart, "git[#{rails_directory}]"
+    subscribes :restart, "file[#{rails_directory}/config/database.yml]"
+    subscribes :restart, "file[create:#{rails_directory}/config/application.yml]"
+    subscribes :restart, "file[#{rails_directory}/config/settings.local.yml]"
+    subscribes :restart, "file[#{rails_directory}/config/storage.yml]"
+    subscribes :restart, "file[#{rails_directory}/config/piwik.yml]"
+    subscribes :restart, "execute[#{rails_directory}/Gemfile]"
+    subscribes :restart, "execute[#{rails_directory}/db/migrate]"
+    subscribes :restart, "execute[#{rails_directory}/package.json]"
+    subscribes :restart, "execute[#{rails_directory}/app/assets/javascripts/i18n]"
+    subscribes :restart, "execute[#{rails_directory}/public/assets]"
     only_if { ::File.exist?("/usr/bin/passenger-config") }
   end
 
