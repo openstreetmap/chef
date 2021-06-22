@@ -41,6 +41,10 @@ apache_module "tile" do
   conf "tile.conf.erb"
 end
 
+apache_conf "renderd" do
+  action :disable
+end
+
 ssl_certificate node[:fqdn] do
   domains [node[:fqdn], "tile.openstreetmap.org", "render.openstreetmap.org"]
   notifies :reload, "service[apache2]"
@@ -56,7 +60,11 @@ tilecaches = search(:node, "roles:tilecache").sort_by { |n| n[:hostname] }
 fastlyips = JSON.parse(IO.read("#{Chef::Config[:file_cache_path]}/fastly-ip-list.json"))
 
 apache_site "default" do
-  action [:disable]
+  action :disable
+end
+
+apache_site "tileserver_site" do
+  action :disable
 end
 
 apache_site "tile.openstreetmap.org" do
