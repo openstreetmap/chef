@@ -24,7 +24,7 @@ include_recipe "web::base"
 db_passwords = data_bag_item("db", "passwords")
 
 package "openstreetmap-cgimap-bin" do
-  action :upgrade
+  action :install
 end
 
 database_host = node[:web][:readonly_database_host] || node[:web][:database_host]
