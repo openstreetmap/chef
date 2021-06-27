@@ -127,12 +127,6 @@ default_attributes(
         :revision => "master",
         :cgimap_repository => "https://github.com/zerebubuth/openstreetmap-cgimap.git",
         :cgimap_revision => "feature/bulk_upload"
-      },
-      :oauth2 => {
-        :repository => "https://github.com/tomhughes/openstreetmap-website.git",
-        :revision => "doorkeeper",
-        :cgimap_repository => "https://github.com/zerebubuth/openstreetmap-cgimap.git",
-        :cgimap_revision => "feature/oauth2"
       }
     }
   },
