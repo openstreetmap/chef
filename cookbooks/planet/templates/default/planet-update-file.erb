@@ -12,12 +12,12 @@ PLANETCURR="${PLANETDIR}/planet.${SUFFIX}"
 PLANETNEW="${PLANETDIR}/planet-new.${SUFFIX}"
 PLANETTMP="${PLANETDIR}/planet-tmp.${SUFFIX}"
 
-pyosmium-up-to-date -v -o "$PLANETNEW" "$PLANETCURR"
+pyosmium-up-to-date -vvv -o "$PLANETNEW" "$PLANETCURR"
 retval=$?
 
 while [ $retval -eq 1 ]; do
     mv "$PLANETNEW" "$PLANETTMP"
-    pyosmium-up-to-date -v -o "$PLANETNEW" "$PLANETTMP"
+    pyosmium-up-to-date -vvv -o "$PLANETNEW" "$PLANETTMP"
     retval=$?
     rm "$PLANETTMP"
 done
