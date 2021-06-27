@@ -53,7 +53,7 @@ remote_file "/var/lib/planet/planet.osh.pbf" do
 end
 
 cron_d "planet-update" do
-  minute "17"
+  minute "37"
   hour "1"
   user "root"
   command "/usr/local/bin/planet-update"
