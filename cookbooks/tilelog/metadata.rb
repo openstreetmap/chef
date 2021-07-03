@@ -6,5 +6,4 @@ description      "Installs and configures tile log analysis"
 
 version          "1.0.0"
 supports         "ubuntu"
-depends          "git"
-depends          "tools"
+depends          "python"

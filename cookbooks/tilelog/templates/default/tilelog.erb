@@ -1,28 +1,17 @@
 #!/bin/sh
 
-ANALYZE=<%= @analyze_bin %>
-LOGDIR=<%= @input_dir %>
-OUTDIR=<%= @output_dir %>
-if [ -z "$DATE" ]; then
-		DATE=`date -d "1 day ago" "+%Y-%m-%d"`
+if [ -z "$DATE" ]
+then
+  DATE=$(date -d "1 day ago" "+%Y-%m-%d")
 fi
-TMPDIR=`mktemp -d -t tmp.XXXXXXXXX`
-ORIGDIR=`pwd`
 
-clean_up() {
-		cd $ORIGDIR
-		rm -rf $TMPDIR
-}
+OUTDIR="<%= @output_dir %>"
+TMPDIR=$(mktemp -d -t tilelog.XXXXXXXXX)
 
-trap clean_up 0 HUP INT TERM
 cd $TMPDIR
 
-mkdir db
-nice -n 19 $ANALYZE $LOGDIR/*-${DATE}.xz > analyze.log
-if [ -f tiles.txt ]; then
-		nice -n 19 xz -9e -z tiles.txt
-		mv tiles.txt.xz $OUTDIR/tiles-${DATE}.txt.xz
+export AWS_ACCESS_KEY_ID="AKIASQUXHPE7JFCFMOUP"
+export AWS_SECRET_ACCESS_KEY="<%= @aws_key %>"
+export AWS_REGION="eu-west-1"
 
-else
-		cat analyze.log
-fi
+nice -n 19 /usr/local/bin/tilelog --date ${DATE} && mv tiles-${DATE}.txt.xz "${OUTDIR}"

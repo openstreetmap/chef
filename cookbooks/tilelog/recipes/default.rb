@@ -17,84 +17,36 @@
 # limitations under the License.
 #
 
-include_recipe "git"
-include_recipe "tools"
+include_recipe "python"
 
-package %w[
-  gcc
-  g++
-  make
-  autoconf
-  automake
-  libboost-filesystem-dev
-  libboost-program-options-dev
-  libboost-system-dev
-]
+passwords = data_bag_item("tilelog", "passwords")
 
-tilelog_source_directory = node[:tilelog][:source_directory]
-tilelog_input_directory = node[:tilelog][:input_directory]
 tilelog_output_directory = node[:tilelog][:output_directory]
 
-# resources for building the tile analysis binary
-git tilelog_source_directory do
-  action :sync
-  repository "https://github.com/zerebubuth/openstreetmap-tile-analyze.git"
-  revision "live"
-  user "root"
-  group "root"
-  notifies :run, "execute[tilelog-autogen]", :immediately
+python_package "tilelog" do
+  python_version "3"
 end
 
-execute "tilelog-autogen" do
-  action :nothing
-  command "autoreconf -i"
-  cwd tilelog_source_directory
-  user "root"
-  group "root"
-  notifies :run, "execute[tilelog-configure]", :immediately
+directory tilelog_output_directory do
+  user "www-data"
+  group "www-data"
+  mode "755"
+  recursive true
 end
 
-execute "tilelog-configure" do
-  action :nothing
-  command "./configure --with-boost-libdir=/usr/lib/x86_64-linux-gnu"
-  cwd tilelog_source_directory
-  user "root"
-  group "root"
-  notifies :run, "execute[tilelog-build]", :immediately
-end
-
-execute "tilelog-build" do
-  action :nothing
-  command "make"
-  cwd tilelog_source_directory
-  user "root"
-  group "root"
-end
-
-# resources for running the tile analysis
-template "/usr/local/bin/tilelog" do
+template "/usr/local/bin/generate-tilelog" do
   source "tilelog.erb"
   owner "root"
   group "root"
   mode "755"
-  variables :analyze_bin => "#{tilelog_source_directory}/openstreetmap-tile-analyze",
-            :input_dir => tilelog_input_directory,
-            :output_dir => tilelog_output_directory
+  variables :output_dir => tilelog_output_directory,
+            :aws_key => passwords["aws_key"]
 end
 
 cron_d "tilelog" do
   minute "17"
   hour "22"
   user "www-data"
-  command "/usr/local/bin/tilelog"
-  mailto "zerebubuth@gmail.com"
-end
-
-# resources related to the output of the analysis and where it
-# can be publicly downloaded.
-directory tilelog_output_directory do
-  user "www-data"
-  group "www-data"
-  mode "755"
-  recursive true
+  command "/usr/local/bin/generate-tilelog"
+  mailto "admins@openstreetmap.org"
 end
