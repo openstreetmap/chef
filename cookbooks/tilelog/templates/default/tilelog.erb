@@ -15,3 +15,5 @@ export AWS_SECRET_ACCESS_KEY="<%= @aws_key %>"
 export AWS_REGION="eu-west-1"
 
 nice -n 19 /opt/tilelog/bin/tilelog --date ${DATE} && mv tiles-${DATE}.txt.xz "${OUTDIR}"
+
+rm -rf $TMPDIR
