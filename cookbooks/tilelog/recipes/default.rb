@@ -21,9 +21,15 @@ include_recipe "python"
 
 passwords = data_bag_item("tilelog", "passwords")
 
+tilelog_directory = "/opt/tilelog"
 tilelog_output_directory = node[:tilelog][:output_directory]
 
+python_virtualenv tilelog_directory do
+  interpreter "/usr/bin/python3"
+end
+
 python_package "tilelog" do
+  python_virtualenv tilelog_directory
   python_version "3"
 end
 
@@ -34,7 +40,7 @@ directory tilelog_output_directory do
   recursive true
 end
 
-template "/usr/local/bin/generate-tilelog" do
+template "/usr/local/bin/tilelog" do
   source "tilelog.erb"
   owner "root"
   group "root"
@@ -47,6 +53,6 @@ cron_d "tilelog" do
   minute "17"
   hour "22"
   user "www-data"
-  command "/usr/local/bin/generate-tilelog"
+  command "/usr/local/bin/tilelog"
   mailto "admins@openstreetmap.org"
 end
