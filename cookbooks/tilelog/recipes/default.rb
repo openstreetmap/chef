@@ -50,8 +50,8 @@ template "/usr/local/bin/tilelog" do
 end
 
 cron_d "tilelog" do
-  minute "17"
-  hour "22"
+  minute "7"
+  hour "1"
   user "www-data"
   command "/usr/local/bin/tilelog"
   mailto "admins@openstreetmap.org"
