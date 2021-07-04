@@ -49,10 +49,22 @@ template "/usr/local/bin/tilelog" do
             :aws_key => passwords["aws_key"]
 end
 
-cron_d "tilelog" do
-  minute "17"
-  hour "22"
+systemd_service "tilelog" do
+  description "Tile log analysis"
   user "www-data"
-  command "/usr/local/bin/tilelog"
-  mailto "admins@openstreetmap.org"
+  exec_start "/usr/local/bin/tilelog"
+  private_tmp true
+  private_devices true
+  protect_system "strict"
+  protect_home true
+  read_write_paths tilelog_output_directory
+end
+
+systemd_timer "tilelog" do
+  description "Tile log analysis"
+  on_calendar "*-*-* 01:07:00"
+end
+
+service "tilelog.timer" do
+  action [:enable, :start]
 end
