@@ -88,7 +88,7 @@ GEM
       parser (>= 3.0.1.1)
     ruby-progressbar (1.11.0)
     rubyntlm (0.6.3)
-    rubyzip (2.3.1)
+    rubyzip (2.3.2)
     serverspec (2.41.8)
       multi_json
       rspec (~> 3.0)
@@ -105,7 +105,7 @@ GEM
       unicode-display_width (>= 1.5, < 3.0)
       unicode_utils (~> 1.4)
     strings-ansi (0.2.0)
-    test-kitchen (2.12.0)
+    test-kitchen (3.0.0)
       bcrypt_pbkdf (~> 1.0)
       chef-utils (>= 16.4.35)
       ed25519 (~> 1.2)
