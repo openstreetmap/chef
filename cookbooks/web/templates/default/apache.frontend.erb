@@ -78,7 +78,7 @@
   # https://gist.github.com/Firefishy/86ed5b86991b225179b54bbafbcd769e
   #
   RewriteCond "%{QUERY_STRING}" "^q=abcde&t=20"
-  RewriteRule "^/api/0\.6/notes/search$" - [R=204,L]
+  RewriteRule "^/api/0\.6/notes/search$" - [R=429,L]
 
   #
   # Force special MIME type for crossdomain.xml files
