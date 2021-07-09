@@ -41,7 +41,7 @@ default_attributes(
 
 override_attributes(
   :networking => {
-    :nameservers => ["66.28.0.45", "66.28.0.61"],
+    :nameservers => ["10.0.48.10", "1.1.1.1", "1.0.0.1"],
     :search => ["ams.openstreetmap.org", "openstreetmap.org"]
   },
   :ntp => {
