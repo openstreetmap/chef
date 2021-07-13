@@ -56,7 +56,6 @@ remote_file "#{Chef::Config[:file_cache_path]}/fastly-ip-list.json" do
   ignore_failure true
 end
 
-tilecaches = search(:node, "roles:tilecache").sort_by { |n| n[:hostname] }
 fastlyips = JSON.parse(IO.read("#{Chef::Config[:file_cache_path]}/fastly-ip-list.json"))
 
 apache_site "default" do
@@ -69,7 +68,7 @@ end
 
 apache_site "tile.openstreetmap.org" do
   template "apache.erb"
-  variables :caches => tilecaches, :fastly => fastlyips["addresses"]
+  variables :fastly => fastlyips["addresses"]
 end
 
 template "/etc/logrotate.d/apache2" do

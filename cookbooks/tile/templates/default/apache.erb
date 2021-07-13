@@ -21,11 +21,6 @@
 
   # Get the real remote IP for requests via a trusted proxy
   RemoteIPHeader X-Forwarded-For
-<% @caches.each do |cache| -%>
-<% cache.ipaddresses(:role => :external).sort.each do |address| -%>
-  RemoteIPTrustedProxy <%= address %>
-<% end -%>
-<% end -%>
 <% @fastly.sort.each do |address| -%>
   RemoteIPTrustedProxy <%= address %>
 <% end -%>
@@ -72,14 +67,6 @@
   ServerAlias tile.openstreetmap.org
   ServerAlias render.openstreetmap.org
   ServerAdmin webmaster@openstreetmap.org
-
-  # Get the real remote IP for requests via a trusted proxy
-  RemoteIPHeader X-Forwarded-For
-<% @caches.each do |cache| -%>
-<% cache.ipaddresses(:role => :external).sort.each do |address| -%>
-  RemoteIPTrustedProxy <%= address %>
-<% end -%>
-<% end -%>
 
   # Setup logging
   LogFormat "%a %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\"" combined_with_remoteip
