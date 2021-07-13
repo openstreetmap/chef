@@ -7,7 +7,7 @@ tile_dir=/srv/tile.openstreetmap.org/tiles
 stats_file=/var/run/renderd/renderd.stats
 
 [mapnik]
-plugins_dir=/usr/lib/mapnik/3.0/input
+plugins_dir=/usr/lib/mapnik/<%= node[:tile][:mapnik] %>/input
 font_dir=/usr/share/fonts
 font_dir_recurse=true
 <% node[:tile][:styles].each do |name,details| -%>
