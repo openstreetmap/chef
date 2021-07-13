@@ -101,7 +101,7 @@ systemd_service "promscale" do
   description "Promscale Connector"
   type "simple"
   user "prometheus"
-  exec_start "/opt/promscale/bin/promscale --db-host /run/postgresql --db-port 5432 --db-user prometheus --db-name promscale --db-connections-max 400"
+  exec_start "/opt/promscale/bin/promscale --db-uri postgresql:///promscale?host=/run/postgresql&port=5432 --db-connections-max 400"
   # exec_start lazy { "/opt/promscale/bin/promscale --db-host /run/postgresql --db-port #{node[:postgresql][:clusters][database_cluster][:port]} --db-user prometheus --db-name promscale --db-max-connections 400" }
   limit_nofile 16384
   private_tmp true
