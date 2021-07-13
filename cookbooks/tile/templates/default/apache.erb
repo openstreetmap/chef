@@ -20,7 +20,7 @@
   ScriptAlias /cgi-bin/ /srv/tile.openstreetmap.org/cgi-bin/
 
   # Get the real remote IP for requests via a trusted proxy
-  RemoteIPHeader X-Forwarded-For
+  RemoteIPHeader Fastly-Client-IP
 <% @fastly.sort.each do |address| -%>
   RemoteIPTrustedProxy <%= address %>
 <% end -%>
