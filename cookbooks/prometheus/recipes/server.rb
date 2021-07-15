@@ -68,7 +68,7 @@ package %w[
 git "/opt/promscale/extension" do
   action :sync
   repository "https://github.com/timescale/promscale_extension.git"
-  revision "0.1.1"
+  revision "0.2.0"
   user "root"
   group "root"
 end
