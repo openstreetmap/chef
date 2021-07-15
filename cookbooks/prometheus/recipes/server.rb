@@ -117,7 +117,7 @@ service "promscale" do
 end
 
 systemd_service "promscale-maintenance" do
-  description "Promscale Maintenace"
+  description "Promscale Maintenance"
   type "simple"
   user "prometheus"
   exec_start "/usr/bin/psql --command='CALL prom_api.execute_maintenance()' promscale"
