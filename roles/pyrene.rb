@@ -66,6 +66,10 @@ default_attributes(
           { :name => "/store/tiles/default", :min_zoom => 0, :max_zoom => 19 }
         ]
       }
+    },
+    :ratelimit => {
+      :requests_per_second => 40,
+      :maximum_backlog => 7200
     }
   }
 )

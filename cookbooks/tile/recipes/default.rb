@@ -84,6 +84,18 @@ directory "/srv/tile.openstreetmap.org" do
   mode "755"
 end
 
+directory "/srv/tile.openstreetmap.org/conf" do
+  owner "tile"
+  group "tile"
+  mode "755"
+end
+
+file "/srv/tile.openstreetmap.org/conf/ip.map" do
+  owner "tile"
+  group "adm"
+  mode "644"
+end
+
 package "renderd"
 
 systemd_service "renderd" do
@@ -482,6 +494,10 @@ package %w[
   python3-pyproj
 ]
 
+gem_package "apachelogregex"
+gem_package "file-tail"
+gem_package "lru_redux"
+
 remote_directory "/usr/local/bin" do
   source "bin"
   owner "root"
@@ -490,6 +506,35 @@ remote_directory "/usr/local/bin" do
   files_owner "root"
   files_group "root"
   files_mode "755"
+end
+
+template "/usr/local/bin/tile-ratelimit" do
+  source "tile-ratelimit.erb"
+  owner "root"
+  group "root"
+  mode "755"
+end
+
+systemd_service "tile-ratelimit" do
+  description "Monitor tile requests and enforce rate limits"
+  after "apache2.service"
+  user "tile"
+  group "adm"
+  exec_start "/usr/local/bin/tile-ratelimit"
+  private_tmp true
+  private_devices true
+  private_network true
+  protect_system "full"
+  protect_home true
+  read_write_paths "/srv/tile.openstreetmap.org/conf"
+  no_new_privileges true
+  restart "on-failure"
+end
+
+service "tile-ratelimit" do
+  action [:enable, :start]
+  subscribes :restart, "file[/usr/local/bin/time-ratelimit]"
+  subscribes :restart, "systemd_service[tile-ratelimit]"
 end
 
 template "/usr/local/bin/expire-tiles" do

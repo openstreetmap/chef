@@ -13,6 +13,9 @@ default[:tile][:replication][:url] = "https://planet.osm.org/replication/minute/
 default[:tile][:data] = {}
 default[:tile][:styles] = {}
 
+default[:tile][:ratelimit][:requests_per_second] = 20
+default[:tile][:ratelimit][:maximum_backlog] = 3600
+
 default[:postgresql][:versions] |= [node[:tile][:database][:cluster].split("/").first]
 
 default[:accounts][:users][:tile][:status] = :role
