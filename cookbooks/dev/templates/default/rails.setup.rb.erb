@@ -51,4 +51,21 @@ OpenStreetMap::Application.config.after_initialize do
       OAUTH_KEY = website.key
     end
   end
+
+  if ActiveRecord::Base.connection.table_exists?(:oauth_applications)
+    unless website = webmaster.oauth2_applications.find_by_name("Web Site")
+      website = webmaster.oauth2_applications.new
+      website.name = "Web Site"
+      website.redirect_uri = "https://<%= @site %>/"
+      website.scopes = Oauth.scopes.map(&:name)
+      website.confidential = true
+      website.save!
+    end
+
+    if Kernel.const_defined?("Settings")
+      Settings.oauth_application = website.uid
+    else
+      OAUTH_APPLICATION = website.uid
+    end
+  end
 end

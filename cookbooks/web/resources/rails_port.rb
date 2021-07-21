@@ -52,6 +52,7 @@ property :memcache_servers, Array
 property :potlatch2_key, String
 property :id_key, String
 property :oauth_key, String
+property :oauth_application, String
 property :nominatim_url, String
 property :osrm_url, String
 property :google_auth_id, String
@@ -217,6 +218,10 @@ action :create do
       line.gsub!(/^( *)#oauth_key:.*$/, "\\1oauth_key: \"#{new_resource.oauth_key}\"")
     end
 
+    if new_resource.oauth_application
+      line.gsub!(/^( *)#oauth_application:.*$/, "\\1oauth_application: \"#{new_resource.oauth_application}\"")
+    end
+
     if new_resource.nominatim_url
       line.gsub!(/^( *)nominatim_url:.*$/, "\\1nominatim_url: \"#{new_resource.nominatim_url}\"")
     end
@@ -299,6 +304,7 @@ action :create do
     "potlatch2_key",
     "id_key",
     "oauth_key",
+    "oauth_application",
     "nominatim_url",
     "osrm_url",
     "google_auth_id",
