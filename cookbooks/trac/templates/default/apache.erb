@@ -1,7 +1,5 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
-WSGIDaemonProcess <%= @name %> user=<%= @user %> group=<%= @group %> processes=4 threads=8 restart-interval=3600 inactivity-timeout=180 graceful-timeout=60 maximum-requests=2000
-
 <VirtualHost *:80>
   ServerName <%= @name %>
 <% @aliases.each do |alias_name| -%>
@@ -46,30 +44,9 @@ WSGIDaemonProcess <%= @name %> user=<%= @user %> group=<%= @group %> processes=4
   CustomLog /var/log/apache2/<%= @name %>-access.log combined
   ErrorLog /var/log/apache2/<%= @name %>-error.log
 
-  DocumentRoot <%= @directory %>/htdocs
-  Alias /robots.txt <%= @directory %>/htdocs/site/robots.txt
-  WSGIScriptAlias / <%= @directory %>/cgi-bin/trac.wsgi
+  RewriteEngine on
+  RewriteMap tickets txt:/srv/trac.openstreetmap.org/tickets.map
+  RewriteRule ^/ticket/(\d+)$ https://github.com/openstreetmap/trac-tickets/issues/${tickets:$1}
 
-  WSGIProcessGroup <%= @name %>
-
-  DefineExternalAuth osm pipe /usr/local/bin/trac-authenticate
-
-  # Disable /timeline for now
-  RedirectMatch 410 ^/timeline(.*)$
-
-  <Location /login>
-    AuthType Basic
-    AuthName "OpenStreetMap Trac"
-    AuthBasicProvider external
-    AuthExternal osm
-    Require valid-user
-  </Location>
+  RedirectPermanent / https://github.com/openstreetmap/trac-tickets
 </VirtualHost>
-
-<Directory <%= @directory %>/htdocs>
-  Require all granted
-</Directory>
-
-<Directory <%= @directory %>/cgi-bin>
-  Require all granted
-</Directory>
