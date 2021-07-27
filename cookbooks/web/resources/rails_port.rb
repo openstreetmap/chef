@@ -407,7 +407,7 @@ action :create do
 
   execute "#{rails_directory}/package.json" do
     action :nothing
-    command "yarnpkg install --ignore-engines"
+    command "bundle#{new_resource.ruby} exec rake yarn:install"
     environment "HOME" => rails_directory,
                 "RAILS_ENV" => "production"
     cwd rails_directory
