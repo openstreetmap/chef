@@ -533,7 +533,7 @@ end
 
 service "tile-ratelimit" do
   action [:enable, :start]
-  subscribes :restart, "file[/usr/local/bin/time-ratelimit]"
+  subscribes :restart, "file[/usr/local/bin/tile-ratelimit]"
   subscribes :restart, "systemd_service[tile-ratelimit]"
 end
 
