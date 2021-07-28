@@ -50,6 +50,7 @@ File::Tail::Logfile.tail("/var/log/apache2/access.log") do |line|
     hash = parser.parse!(line)
 
     address = hash["%a"]
+    request = hash["%r"]
 
     next if address == "127.0.0.1" || address == "::1"
 
@@ -61,7 +62,11 @@ File::Tail::Logfile.tail("/var/log/apache2/access.log") do |line|
 
     decay_count(client, time)
 
-    client[:request_count] = client[:request_count] + 1
+    if request =~ %r{^(GET|POST) /cgi-bin/export.*}
+      client[:request_count] = client[:request_count] + 150
+    else
+      client[:request_count] = client[:request_count] + 1
+    end
 
     if client[:request_count] > BLOCK_AT && !client.has_key?(:blocked_at)
       puts "Blocked #{address}"
