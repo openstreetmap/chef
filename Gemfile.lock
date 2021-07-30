@@ -7,7 +7,7 @@ GEM
     chef-utils (17.2.29)
       concurrent-ruby
     concurrent-ruby (1.1.9)
-    cookstyle (7.15.2)
+    cookstyle (7.15.4)
       rubocop (= 1.18.4)
     diff-lcs (1.4.4)
     docker-api (2.1.0)
