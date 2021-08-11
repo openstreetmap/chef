@@ -5,10 +5,10 @@ default_attributes(
   :munin => {
     :plugins => {
       :hpasmcli2_fans => {
-        :fan1 => { :warning => "90", :critical => "100" },
-        :fan2 => { :warning => "90", :critical => "100" },
-        :fan3 => { :warning => "90", :critical => "100" },
-        :fan4 => { :warning => "90", :critical => "100" }
+        :fan1 => { :warning => "98", :critical => "100" },
+        :fan2 => { :warning => "98", :critical => "100" },
+        :fan3 => { :warning => "98", :critical => "100" },
+        :fan4 => { :warning => "98", :critical => "100" }
       },
       :hpasmcli2_temp => {
         :temp3 => { :warning => "80.0", :critical => "85" }
