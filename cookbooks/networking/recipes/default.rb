@@ -368,6 +368,13 @@ end
 
 package "shorewall"
 
+systemd_service "shorewall-docker" do
+  service "shorewall"
+  dropin "docker"
+  exec_stop "/sbin/shorewall $OPTIONS stop"
+  notifies :restart, "service[shorewall]"
+end
+
 template "/etc/default/shorewall" do
   source "shorewall-default.erb"
   owner "root"
