@@ -11,3 +11,7 @@ $wgTitleBlacklistSources = array(
     'src'  => 'https://meta.wikimedia.org/w/index.php?title=Title_blacklist&action=raw',
   ),
 );
+# log hits, but allow only administrators to view them
+$wgTitleBlacklistLogHits = true;
+$wgGroupPermissions['user']['titleblacklistlog'] = false;
+$wgGroupPermissions['sysop']['titleblacklistlog'] = true;
