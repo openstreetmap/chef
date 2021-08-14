@@ -5,3 +5,7 @@ wfLoadExtension( 'SpamBlacklist' );
 $wgSpamBlacklistFiles = array(
 	'https://meta.wikimedia.org/w/index.php?title=Spam_blacklist&action=raw&sb_ver=1'
 );
+# log hits, but allow only administrators to view them
+$wgLogSpamBlacklistHits = true;
+$wgGroupPermissions['user']['spamblacklistlog'] = false;
+$wgGroupPermissions['sysop']['spamblacklistlog'] = true;
