@@ -169,6 +169,10 @@ server {
         index search.html;
     }
 
+    location /qa-data/ {
+        add_header Access-Control-Allow-Origin "*";
+    }
+
     location @php {
         if ($blocked_user_agent ~ ^2$)
         { return 403; }
