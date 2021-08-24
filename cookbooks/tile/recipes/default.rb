@@ -459,6 +459,7 @@ if node[:tile][:database][:external_data_script]
     cwd "/srv/tile.openstreetmap.org"
     user "tile"
     group "tile"
+    ignore_failure true
   end
 end
 
