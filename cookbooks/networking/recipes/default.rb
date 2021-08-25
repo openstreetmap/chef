@@ -443,6 +443,14 @@ template "/etc/shorewall/rules" do
   notifies :restart, "service[shorewall]"
 end
 
+template "/etc/shorewall/stoppedrules" do
+  source "shorewall-stoppedrules.erb"
+  owner "root"
+  group "root"
+  mode "644"
+  notifies :restart, "service[shorewall]"
+end
+
 if node[:networking][:firewall][:enabled]
   service "shorewall" do
     action [:enable, :start]
