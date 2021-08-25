@@ -368,6 +368,13 @@ end
 
 package "shorewall"
 
+systemd_service "shorewall-docker" do
+  service "shorewall"
+  dropin "docker"
+  exec_stop "/sbin/shorewall $OPTIONS stop"
+  notifies :restart, "service[shorewall]"
+end
+
 template "/etc/default/shorewall" do
   source "shorewall-default.erb"
   owner "root"
@@ -433,6 +440,14 @@ template "/etc/shorewall/rules" do
   group "root"
   mode "644"
   variables :family => "inet"
+  notifies :restart, "service[shorewall]"
+end
+
+template "/etc/shorewall/stoppedrules" do
+  source "shorewall-stoppedrules.erb"
+  owner "root"
+  group "root"
+  mode "644"
   notifies :restart, "service[shorewall]"
 end
 
