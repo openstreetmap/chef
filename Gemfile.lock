@@ -7,7 +7,7 @@ GEM
     chef-utils (17.2.29)
       concurrent-ruby
     concurrent-ruby (1.1.9)
-    cookstyle (7.20.0)
+    cookstyle (7.21.0)
       rubocop (= 1.19.0)
     diff-lcs (1.4.4)
     docker-api (2.1.0)
@@ -84,7 +84,7 @@ GEM
       rubocop-ast (>= 1.9.1, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 1.4.0, < 3.0)
-    rubocop-ast (1.10.0)
+    rubocop-ast (1.11.0)
       parser (>= 3.0.1.1)
     ruby-progressbar (1.11.0)
     rubyntlm (0.6.3)
