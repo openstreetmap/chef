@@ -321,7 +321,7 @@ template "/etc/hosts" do
   owner "root"
   group "root"
   mode "644"
-  not_if { ENV["TEST_KITCHEN"] }
+  not_if { kitchen? }
 end
 
 service "systemd-resolved" do

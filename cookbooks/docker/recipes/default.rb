@@ -41,5 +41,5 @@ end
 service "docker" do
   action [:enable, :start]
   subscribes :restart, "template[/etc/docker/daemon.json]"
-  not_if { ENV["TEST_KITCHEN"] }
+  not_if { kitchen? }
 end

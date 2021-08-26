@@ -352,7 +352,7 @@ if node[:postgresql][:clusters][:"13/main"]
           cwd cgimap_directory
           user "apis"
           group "apis"
-          subscribes :run, "git[#{cgimap_directory}]", :immediate
+          subscribes :run, "git[#{cgimap_directory}]", :immediately
         end
 
         execute "#{cgimap_directory}/configure" do
@@ -361,7 +361,7 @@ if node[:postgresql][:clusters][:"13/main"]
           cwd cgimap_directory
           user "apis"
           group "apis"
-          subscribes :run, "execute[#{cgimap_directory}/autogen.sh]", :immediate
+          subscribes :run, "execute[#{cgimap_directory}/autogen.sh]", :immediately
         end
 
         execute "#{cgimap_directory}/Makefile" do
@@ -370,7 +370,7 @@ if node[:postgresql][:clusters][:"13/main"]
           cwd cgimap_directory
           user "apis"
           group "apis"
-          subscribes :run, "execute[#{cgimap_directory}/configure]", :immediate
+          subscribes :run, "execute[#{cgimap_directory}/configure]", :immediately
           notifies :restart, "service[cgimap@#{name}]"
         end
 

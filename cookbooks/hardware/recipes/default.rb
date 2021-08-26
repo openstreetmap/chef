@@ -141,7 +141,7 @@ if File.exist?("/etc/default/grub")
   execute "update-grub" do
     action :nothing
     command "/usr/sbin/update-grub"
-    not_if { ENV["TEST_KITCHEN"] }
+    not_if { kitchen? }
   end
 
   template "/etc/default/grub" do
@@ -274,7 +274,7 @@ if tools_packages.include?("areca")
     depth 1
     user "root"
     group "root"
-    not_if { ENV["TEST_KITCHEN"] }
+    not_if { kitchen? }
   end
 else
   directory "/opt/areca" do

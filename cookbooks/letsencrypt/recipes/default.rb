@@ -148,7 +148,7 @@ certificates.each do |name, details|
     user "letsencrypt"
     group "letsencrypt"
     subscribes :run, "template[/srv/acme.openstreetmap.org/requests/#{name}]"
-    not_if { ENV["TEST_KITCHEN"] }
+    not_if { kitchen? }
   end
 end
 

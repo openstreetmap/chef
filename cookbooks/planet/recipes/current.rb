@@ -49,7 +49,7 @@ remote_file "/var/lib/planet/planet.osh.pbf" do
   owner "planet"
   group "planet"
   mode "644"
-  not_if { ENV["TEST_KITCHEN"] }
+  not_if { kitchen? }
 end
 
 cron_d "planet-update" do
