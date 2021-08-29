@@ -18,13 +18,6 @@ verifier:
   sudo: false
 
 platforms:
-  - name: ubuntu-18.04
-    driver:
-      image: dokken/ubuntu-18.04
-      privileged: true
-      pid_one_command: /bin/systemd
-      intermediate_instructions:
-        - RUN /usr/bin/apt-get update -y
   - name: ubuntu-20.04
     driver:
       image: dokken/ubuntu-20.04

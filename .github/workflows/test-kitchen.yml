@@ -103,12 +103,6 @@ jobs:
           - wiki
         os:
           - ubuntu-2004
-        include:
-          - suite: trac
-            os: ubuntu-1804
-        exclude:
-          - suite: trac
-            os: ubuntu-2004
       fail-fast: false
     steps:
     - name: Check out code
