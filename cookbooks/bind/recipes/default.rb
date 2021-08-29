@@ -31,13 +31,7 @@ end.flatten
 
 package "bind9"
 
-service_name = if node[:lsb][:release].to_f < 20.04
-                 "bind9"
-               else
-                 "named"
-               end
-
-service service_name do
+service "named" do
   action [:enable, :start]
 end
 
@@ -46,7 +40,7 @@ template "/etc/bind/named.conf.local" do
   owner "root"
   group "root"
   mode "644"
-  notifies :restart, "service[#{service_name}]"
+  notifies :restart, "service[named]"
 end
 
 template "/etc/bind/named.conf.options" do
@@ -55,7 +49,7 @@ template "/etc/bind/named.conf.options" do
   group "root"
   mode "644"
   variables :ipv4_clients => ipv4_clients, :ipv6_clients => ipv6_clients
-  notifies :restart, "service[#{service_name}]"
+  notifies :restart, "service[named]"
 end
 
 template "/etc/bind/db.10" do
@@ -63,7 +57,7 @@ template "/etc/bind/db.10" do
   owner "root"
   group "root"
   mode "644"
-  notifies :reload, "service[#{service_name}]"
+  notifies :reload, "service[named]"
 end
 
 firewall_rule "accept-dns-udp" do
