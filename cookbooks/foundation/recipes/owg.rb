@@ -24,15 +24,18 @@ package %w[
   gcc
   g++
   make
-  ruby
-  ruby-dev
+  ruby2.7
+  ruby2.7-dev
   libssl-dev
   zlib1g-dev
   pkg-config
 ]
 
 gem_package "bundler" do
-  version "1.17.3"
+  package_name "bundler"
+  version "~> 2.2.22"
+  gem_binary "gem2.7"
+  options "--format-executable"
 end
 
 git "/srv/operations.osmfoundation.org" do
@@ -60,7 +63,7 @@ end
 
 execute "/srv/operations.osmfoundation.org/Gemfile" do
   action :nothing
-  command "bundle install --deployment"
+  command "bundle2.7 install --deployment"
   cwd "/srv/operations.osmfoundation.org"
   user "root"
   group "root"
@@ -68,7 +71,7 @@ execute "/srv/operations.osmfoundation.org/Gemfile" do
 end
 
 execute "/srv/operations.osmfoundation.org" do
-  command "bundle exec jekyll build --trace"
+  command "bundle2.7 exec jekyll build --trace"
   cwd "/srv/operations.osmfoundation.org"
   user "nobody"
   group "nogroup"
