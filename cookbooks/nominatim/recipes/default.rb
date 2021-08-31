@@ -180,6 +180,8 @@ package %w[
 source_directory = "#{basedir}/nominatim"
 build_directory = "#{basedir}/bin"
 ui_directory = "#{basedir}/ui"
+qa_bin_directory = "#{basedir}/Nominatim-Data-Analyser"
+qa_data_directory = "#{basedir}/qa-data"
 
 directory build_directory do
   owner "nominatim"
@@ -472,4 +474,41 @@ fail2ban_jail "nominatim_limit_req" do
   ports [80, 443]
   maxretry 20
   ignoreips frontend_addresses.flatten.sort
+end
+
+### QA tile generation
+
+if node[:nominatim][:enable_qa_tiles]
+  git qa_bin_directory do
+    repository node[:nominatim][:qa_repository]
+    revision node[:nominatim][:qa_revision]
+    enable_submodules true
+    user "nominatim"
+    group "nominatim"
+    notifies :run, "execute[compile_qa]"
+  end
+
+  execute "compile_nominatim" do
+    action :nothing
+    user "nominatim"
+    cwd "#{qa_bin_directory}/clustering-vt"
+    command "make"
+  end
+
+  directory qa_data_directory do
+    owner "nominatim"
+    group "nominatim"
+    mode "755"
+    recursive true
+  end
+
+  template "#{qa_bin_directory}/analyser/config/config.yaml" do
+    source "qa_config.erb"
+    owner "nominatim"
+    group "nominatim"
+    mode "755"
+    variables :outputdir => "#{qa_data_directory}/new"
+  end
+
+
 end

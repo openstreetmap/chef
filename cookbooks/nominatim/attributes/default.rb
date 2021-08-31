@@ -9,8 +9,11 @@ default[:nominatim][:repository] = "https://git.openstreetmap.org/public/nominat
 default[:nominatim][:revision] = "master"
 default[:nominatim][:enable_backup] = false
 default[:nominatim][:enable_git_updates] = true
+default[:nominatim][:enable_qa_tiles] = false
 default[:nominatim][:ui_repository] = "https://git.openstreetmap.org/public/nominatim-ui.git"
 default[:nominatim][:ui_revision] = "master"
+default[:nominatim][:qa_repository] = "https://github.com/osm-search/Nominatim-Data-Analyser"
+default[:nominatim][:qa_revision] = "main"
 
 default[:nominatim][:fpm_pools] = {
   "nominatim.openstreetmap.org" => {

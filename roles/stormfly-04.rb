@@ -41,6 +41,7 @@ default_attributes(
     :state => "standalone",
     :enable_backup => false,
     :enable_git_updates => true,
+    :enable_qa_tiles => true,
     :dbadmins => %w[lonvia tomh],
     :dbcluster => "12/main",
     :postgis => "2.5",
