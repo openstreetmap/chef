@@ -510,5 +510,7 @@ if node[:nominatim][:enable_qa_tiles]
     variables :outputdir => "#{qa_data_directory}/new"
   end
 
-
+  link "#{build_directory}/website/qa_data" do
+    to "#{qa_data_directory}/current"
+  end
 end
