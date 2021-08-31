@@ -488,7 +488,7 @@ if node[:nominatim][:enable_qa_tiles]
     notifies :run, "execute[compile_qa]"
   end
 
-  execute "compile_nominatim" do
+  execute "compile_qa" do
     action :nothing
     user "nominatim"
     cwd "#{qa_bin_directory}/clustering-vt"
