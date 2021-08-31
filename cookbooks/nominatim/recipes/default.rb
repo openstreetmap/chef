@@ -349,7 +349,9 @@ template "#{source_directory}/utils/nominatim-update" do
             :logfile => "#{node[:nominatim][:logdir]}/update.log",
             :branch => node[:nominatim][:revision],
             :update_stop_file => "#{basedir}/status/updates_disabled",
-            :update_maintenance_trigger => "#{basedir}/status/update_maintenance"
+            :update_maintenance_trigger => "#{basedir}/status/update_maintenance",
+            :qabindir => qa_bin_directory,
+            :qadatadir => qa_data_directory
 end
 
 template "/etc/init.d/nominatim-update" do

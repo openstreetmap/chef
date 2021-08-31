@@ -38,5 +38,16 @@ do
     if [ -f "<%= @update_maintenance_trigger %>" ]; then
         rm <%= @update_maintenance_trigger %>
         ./nominatim refresh --postcodes --threads 4 -v
+<% if node[:nominatim][:enable_qa_tiles] -%>
+        pushd <%= @qabindir %>
+        if python3 cli.py --execute-all; then
+          rm -rf "<%= @qadatadir %>/old"
+          if [ -d "<%= @qadatadir %>/current" ]; then
+            mv "<%= @qadatadir %>/current" "<%= @qadatadir %>/old"
+          fi
+          mv "<%= @qadatadir %>/new" "<%= @qadatadir %>/current"
+        fi
+        popd
+<% end -%>
     fi
 done
