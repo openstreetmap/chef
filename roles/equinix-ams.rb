@@ -32,7 +32,6 @@ default_attributes(
     }
   },
   :web => {
-    :backends => %w[rails1 rails2 rails3],
     :fileserver => "ironbelly",
     :readonly_database_host => "snap-01.ams.openstreetmap.org",
     :primary_cluster => true
