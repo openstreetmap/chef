@@ -1,5 +1,5 @@
-name "equinix"
-description "Role applied to all servers at Equinix"
+name "equinix-ams"
+description "Role applied to all servers at Equinix Amsterdam"
 
 default_attributes(
   :networking => {

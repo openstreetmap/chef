@@ -34,7 +34,7 @@ default_attributes(
 )
 
 run_list(
-  "role[equinix]",
+  "role[equinix-ams]",
   "role[hp-g9]",
   "role[wiki]",
   "recipe[dhcpd]"
