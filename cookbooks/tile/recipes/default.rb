@@ -409,6 +409,10 @@ postgresql_user "tile" do
   cluster node[:tile][:database][:cluster]
 end
 
+postgresql_user "www-data" do
+  cluster node[:tile][:database][:cluster]
+end
+
 postgresql_user "_renderd" do
   cluster node[:tile][:database][:cluster]
 end
@@ -443,7 +447,7 @@ end
     cluster node[:tile][:database][:cluster]
     database "gis"
     owner "tile"
-    permissions "tile" => :all, "_renderd" => :select
+    permissions "tile" => :all, "www-data" => :select, "_renderd" => :select
   end
 end
 
@@ -460,6 +464,15 @@ if node[:tile][:database][:external_data_script]
     user "tile"
     group "tile"
     ignore_failure true
+  end
+
+  Array(node[:tile][:database][:external_data_tables]).each do |table|
+    postgresql_table table do
+      cluster node[:tile][:database][:cluster]
+      database "gis"
+      owner "tile"
+      permissions "tile" => :all, "www-data" => :select, "_renderd" => :select
+    end
   end
 end
 
