@@ -99,13 +99,9 @@ end
 package "renderd"
 
 systemd_service "renderd" do
-  description "Mapnik rendering daemon"
+  dropin "chef"
   after "postgresql.service"
   wants "postgresql.service"
-  user "www-data"
-  exec_start "/usr/bin/renderd -f"
-  runtime_directory "renderd"
-  standard_error "null"
   limit_nofile 4096
   private_tmp true
   private_devices true
@@ -114,6 +110,10 @@ systemd_service "renderd" do
   protect_home true
   no_new_privileges true
   restart "on-failure"
+end
+
+systemd_service "renderd" do
+  action :delete
 end
 
 service "renderd" do
@@ -337,15 +337,15 @@ node[:tile][:styles].each do |name, details|
 
   details[:tile_directories].each do |directory|
     directory directory[:name] do
-      owner "www-data"
-      group "www-data"
+      owner "_renderd"
+      group "_renderd"
       mode "755"
     end
 
     directory[:min_zoom].upto(directory[:max_zoom]) do |zoom|
       directory "#{directory[:name]}/#{zoom}" do
-        owner "www-data"
-        group "www-data"
+        owner "_renderd"
+        group "_renderd"
         mode "755"
       end
 
@@ -409,7 +409,7 @@ postgresql_user "tile" do
   cluster node[:tile][:database][:cluster]
 end
 
-postgresql_user "www-data" do
+postgresql_user "_renderd" do
   cluster node[:tile][:database][:cluster]
 end
 
@@ -443,7 +443,7 @@ end
     cluster node[:tile][:database][:cluster]
     database "gis"
     owner "tile"
-    permissions "tile" => :all, "www-data" => :select
+    permissions "tile" => :all, "_renderd" => :select
   end
 end
 
@@ -455,7 +455,7 @@ package %w[
 
 if node[:tile][:database][:external_data_script]
   execute node[:tile][:database][:external_data_script] do
-    command "#{node[:tile][:database][:external_data_script]} -R www-data"
+    command "#{node[:tile][:database][:external_data_script]} -R _renderd"
     cwd "/srv/tile.openstreetmap.org"
     user "tile"
     group "tile"
@@ -477,7 +477,7 @@ end
 
 file node[:tile][:database][:node_file] do
   owner "tile"
-  group "www-data"
+  group "_renderd"
   mode "660"
 end
 
@@ -553,7 +553,7 @@ end
 
 directory "/var/lib/replicate/expire-queue" do
   owner "tile"
-  group "www-data"
+  group "_renderd"
   mode "775"
 end
 
@@ -568,7 +568,7 @@ end
 systemd_service "expire-tiles" do
   description "Tile dirtying service"
   type "simple"
-  user "www-data"
+  user "_renderd"
   exec_start "/usr/local/bin/expire-tiles"
   standard_output "null"
   private_tmp true
@@ -663,7 +663,7 @@ tile_directories.each do |directory|
 
   cron_d "cleanup-tiles#{label}" do
     minute "0"
-    user "www-data"
+    user "_renderd"
     command "ionice -c 3 /usr/local/bin/cleanup-tiles #{directory}"
     mailto "admins@openstreetmap.org"
   end
