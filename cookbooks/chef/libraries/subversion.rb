@@ -42,7 +42,7 @@ class Chef
 
       def svn_info
         command = scm(:info)
-        shell_out!(command, run_options(:cwd => cwd, :returns => [0, 1])).stdout
+        shell_out!(command, **run_options(:cwd => cwd, :returns => [0, 1])).stdout
       end
 
       def revision_int
@@ -50,7 +50,7 @@ class Chef
                             new_resource.revision
                           else
                             command = scm(:info, new_resource.repository, new_resource.svn_info_args, authentication, "-r#{new_resource.revision}")
-                            svn_info = shell_out!(command, run_options(:returns => [0, 1])).stdout
+                            svn_info = shell_out!(command, **run_options(:returns => [0, 1])).stdout
 
                             extract_revision_info(svn_info)
                           end
