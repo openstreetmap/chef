@@ -166,6 +166,10 @@ netplan["network"]["vlans"].each_value do |vlan|
   end
 end
 
+file "/etc/netplan/00-installer-config.yaml" do
+  action :delete
+end
+
 file "/etc/netplan/01-netcfg.yaml" do
   action :delete
 end
