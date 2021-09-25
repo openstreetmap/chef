@@ -19,7 +19,7 @@ default_attributes(
         :bond => {
           :mode => "802.3ad",
           :lacprate => "fast",
-          :slaves => %w[eno1 eno2]
+          :slaves => %w[eno1 eno2 eno3 eno4 eno49 eno50]
         }
       },
       :external_ipv4 => {
