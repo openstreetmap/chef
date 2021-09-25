@@ -10,6 +10,8 @@ default_attributes(
         :family => :inet,
         :address => "10.0.64.50",
         :bond => {
+          :mode => "802.3ad",
+          :lacprate => "fast",
           :slaves => %w[eno1 eno2 eno3 eno4]
         }
       }
