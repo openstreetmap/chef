@@ -42,5 +42,6 @@ run_list(
   "role[equinix-dub]",
   "role[hp-g9]",
   "role[gateway]",
-  "role[web-storage]"
+  "role[web-storage]",
+  "recipe[dhcpd]"
 )
