@@ -104,7 +104,7 @@ node[:networking][:interfaces].each do |name, interface|
       deviceplan["parameters"]["lacp-rate"] = interface[:bond][:lacprate] if interface[:bond][:lacprate]
     end
 
-    if interface[:gateway]
+    if interface[:gateway] && interface[:gateway] != interface[:address]
       if interface[:family] == "inet"
         default_route = "0.0.0.0/0"
       elsif interface[:family] == "inet6"
