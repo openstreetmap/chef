@@ -36,6 +36,13 @@ default_attributes(
         :address => "2001:470:1:b3b::2"
       }
     }
+  },
+  :prometheus => {
+    :snmp => {
+      "pdu1" => { :address => "10.0.64.100", :module => "apcups", :labels => { "site" => "dublin" } },
+      "pdu2" => { :address => "10.0.64.101", :module => "apcups", :labels => { "site" => "dublin" } },
+      "switch1" => { :address => "184.104.226.97", :module => "if_mib", :labels => { "site" => "dublin" } }
+    }
   }
 )
 
