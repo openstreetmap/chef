@@ -1,10 +1,15 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
+# Automatically generated records
+
 <% @hosts.each do |host| -%>
 <% host[:keys].keys.sort.each do |type| -%>
 <%= host[:names].join(",") -%>,<%= host[:addresses].join(",") -%> <%= type %> <%= host[:keys][type] %>
 <% end -%>
 <% end -%>
+
+# Manually maintained records
+
 ridley.oob.openstreetmap.org,ridley.oob,10.0.1.3 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAAgQCohCtONR/6e/RvHnLlSbvl0GqY+EJeTn+Sxu2PyWsw+W1OAfa2jmb2DQg7S54CwbkyI/owJdVrM8Gj3s5CVOi1kIddu7+pbkqrIZKo4Mf+jviFypyZoGYHnPSBwEfgAWKtfBepnbW2RIZ9+JEXLjUyOFwU6jT8QnQMKJc5FiDP3Q==
 ridley.oob.openstreetmap.org,ridley.oob,10.0.1.3 ssh-dss AAAAB3NzaC1kc3MAAACBAKzNiUprAK/uF6ippll2gTyE7QIYg8kcE1a59/4iyyh56ChG3W4bq8jgA6ZLvJRks+rbKnjs98duqFKFoGC7sXmvNvLGD7jtSbAUkiPzNUsQ1uwPatNJk/mY5zzHjaxmgOUfA0EtDxKgvxli0atn8Xj8PGy49BbtlBPdnS+tItQ/AAAAFQCO2II1Su14H1gaeU0ogUCkG20ePQAAAIEAo0+0I7Ha53KM9xJWt1qQAVTV3FTGrOwrmedpz6JYcyELhNhC/ZUDOXu5GKqkp5SRcXZ9NRV4FiDMZgKvMGyvRcF1ZOkytNGtx12FiXAzVsM55O+hszLouqZocJVXY6Km3SKmVkymGi+unoowCHWMWJEIAjz80KyR7dsXHQKqIXEAAACAdlDbeOLTQLcgwTGRMbJR63fz6zvQQMZVJ3DDYzQxiW/0qB2CeaB0CuS9DDSJBLVlp2C9MIVnDxxaQi1KmUOvNs2fqb0NEZ8AQG7clCASgf9nXN0EBju+dZ+lGcB6c5ZIcDB/z0gFEp/16sHe8bay70Zp+S4ot6jXD5UM/pLSmF4=
 snap-02.oob.openstreetmap.org,snap-02.oob,10.0.1.4 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCKyiu+/H4R/Dx1dzhWIH2Z4+SHyhgo6xONxKjlC6te2blHPjbiWgZzS+WWQXj8siiv6w98p/DonTV/+tqW9RP7fJLca0UBjexQwZBGxjBWPsMCG5bdjWLtiQCN5vVD5Hy3A/6TUeHFYfbSbEuUO+VZVHR6fVMJ0sHHy9eIIwDNsyzGoi2SDB/QsuNgSK8y0TGBQzqHPv0AAGhvmvRONGO/htLZ3lsSuvZQ0D9NPx2fNbcFzkPsOUH05I+1+Wq3tnB7doJ/+hzj6/+wyPZar0zqhNs9YJrKrSOxiltVNnObwFHWvEZabHF3jKDNzmr4IHYUgEMwoMeHvXwI1ly0xz8T
