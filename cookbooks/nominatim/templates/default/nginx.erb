@@ -170,7 +170,7 @@ server {
     }
 
     location /qa-data/ {
-        add_header Access-Control-Allow-Origin "*";
+        add_header Access-Control-Allow-Origin "*" always;
     }
 
     location @php {
