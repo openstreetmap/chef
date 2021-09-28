@@ -13,3 +13,8 @@ chef_role{name="<%= role %>"} 1
 # TYPE chef_tile_parent gauge
 chef_tile_parent{name="<%= node[:tilecache][:tile_parent].split(".").first %>"} 1
 <% end -%>
+<% node[:prometheus][:metrics].sort.each do |name, details| -%>
+# HELP <%= name %> <%= details[:help] %>
+# TYPE <%= name %> gauge
+<%= name %>{<%= details[:labels].map { |k,v| "#{k}=\"#{v}\"" }.join(",") %>} 1
+<% end -%>
