@@ -111,7 +111,7 @@ action :create do
     action :delete
   end
 
-  systemd_service "mapserv-fcgi-#{new_resource.site}@" do
+  systemd_service "mapserv-fcgi-#{new_resource.site}" do
     description "Map server for #{new_resource.site} layer"
     environment "MS_MAP_PATTERN" => "^/srv/imagery/mapserver/",
                 "=" => "0",
@@ -137,6 +137,14 @@ action :create do
     socket_user "imagery"
     socket_group "imagery"
     listen_stream "/run/mapserver-fastcgi/layer-#{new_resource.site}.socket"
+  end
+
+  # Ensure service is stopped because otherwise the socket cannot reload
+  service "mapserv-fcgi-#{new_resource.site}" do
+    provider Chef::Provider::Service::Systemd
+    action :nothing
+    subscribes :stop, "systemd_service[mapserv-fcgi-#{new_resource.site}]"
+    subscribes :stop, "systemd_socket[mapserv-fcgi-#{new_resource.site}]"
   end
 
   systemd_unit "mapserv-fcgi-#{new_resource.site}.socket" do
