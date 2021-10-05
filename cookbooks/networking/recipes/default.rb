@@ -156,7 +156,7 @@ end
 
 netplan["network"]["bonds"].each_value do |bond|
   bond["interfaces"].each do |interface|
-    netplan["network"]["ethernets"][interface] ||= { "accept-ra" => false }
+    netplan["network"]["ethernets"][interface] ||= { "accept-ra" => false, "optional" => true }
   end
 end
 
