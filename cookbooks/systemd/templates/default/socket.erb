@@ -1,0 +1,174 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+[Unit]
+Description=<%= @description %>
+<% if @after -%>
+After=<%= Array(@after).join(" ") %>
+<% end -%>
+<% if @wants -%>
+Wants=<%= Array(@wants).join(" ") %>
+<% end -%>
+
+[Socket]
+<% Array(@listen_stream).each do |listen| -%>
+ListenStream=<%= listen %>
+<% end -%>
+<% Array(@listen_datagram).each do |listen| -%>
+ListenDatagram=<%= listen %>
+<% end -%>
+<% Array(@listen_sequential_packet).each do |listen| -%>
+ListenSequentialPacket=<%= listen %>
+<% end -%>
+<% Array(@listen_fifo).each do |listen| -%>
+ListenFIFO=<%= listen %>
+<% end -%>
+<% Array(@listen_special).each do |listen| -%>
+ListenSpecial=<%= listen %>
+<% end -%>
+<% Array(@listen_netlink).each do |listen| -%>
+ListenNetlink=<%= listen %>
+<% end -%>
+<% Array(@listen_message_queue).each do |listen| -%>
+ListenMessageQueue=<%= listen %>
+<% end -%>
+<% Array(@listen_usb_function).each do |listen| -%>
+ListenUSBFunction=<%= listen %>
+<% end -%>
+<% if @socket_protocol -%>
+SocketProtocol=<%= @socket_protocol %>
+<% end -%>
+<% if @bind_ipv6_only -%>
+BindIpv6Only=<%= @bind_ipv6_only %>
+<% end -%>
+<% if @backlog -%>
+Backlog=<%= @backlog %>
+<% end -%>
+<% if @bind_to_device -%>
+BindToDevice=<%= @bind_to_device %>
+<% end -%>
+<% if @socket_user -%>
+SocketUser=<%= @socket_user %>
+<% end -%>
+<% if @socket_group -%>
+SocketGroup=<%= @socket_group %>
+<% end -%>
+<% if @socket_mode -%>
+SocketMode=<%= sprintf("0%o", @socket_mode) %>
+<% end -%>
+<% if @directory_mode -%>
+DirectoryMode=<%= sprintf("0%o", @directory_mode) %>
+<% end -%>
+<% if @accept -%>
+Accept=<%= @accept %>
+<% end -%>
+<% if @writable -%>
+Writable=<%= @writable %>
+<% end -%>
+<% if @max_connections -%>
+MaxConnections=<%= @max_connections %>
+<% end -%>
+<% if @max_connections_per_source -%>
+MaxConnectionsPerSource=<%= @max_connections_per_source %>
+<% end -%>
+<% if @keep_alive -%>
+KeepAlive=<%= @keep_alive %>
+<% end -%>
+<% if @keep_alive_time_sec -%>
+KeepAliveTimeSec=<%= @keep_alive_time_sec %>
+<% end -%>
+<% if @keep_alive_interval_sec -%>
+KeepAliveIntervalSec=<%= @keep_alive_interval_sec %>
+<% end -%>
+<% if @keep_alive_probes -%>
+KeepAliveProbes=<%= @keep_alive_probes %>
+<% end -%>
+<% if @no_delay -%>
+NoDelay=<%= @no_delay %>
+<% end -%>
+<% if @priority -%>
+Priority=<%= @priority %>
+<% end -%>
+<% if @defer_accept_sec -%>
+DeferAcceptSec=<%= @defer_accept_sec %>
+<% end -%>
+<% if @receive_buffer -%>
+ReceiveBuffer=<%= @receive_buffer %>
+<% end -%>
+<% if @send_buffer -%>
+SendBuffer=<%= @send_buffer %>
+<% end -%>
+<% if @ip_tos -%>
+IpTos=<%= @ip_tos %>
+<% end -%>
+<% if @ip_ttl -%>
+IpTtl=<%= @ip_ttl %>
+<% end -%>
+<% if @mark -%>
+Mark=<%= @mark %>
+<% end -%>
+<% if @reuse_port -%>
+ReusePort=<%= @reuse_port %>
+<% end -%>
+<% if @pipe_size -%>
+PipeSize=<%= @pipe_size %>
+<% end -%>
+<% if @message_queue_max_messages -%>
+MessageQueueMaxMessages=<%= @message_queue_max_messages %>
+<% end -%>
+<% if @message_queue_message_size -%>
+MessageQueueMessageSize=<%= @message_queue_message_size %>
+<% end -%>
+<% if @free_bind -%>
+FreeBind=<%= @free_bind %>
+<% end -%>
+<% if @transparent -%>
+Transparent=<%= @transparent %>
+<% end -%>
+<% if @broadcast -%>
+Broadcast=<%= @broadcast %>
+<% end -%>
+<% if @pass_credentials -%>
+PassCredentials=<%= @pass_credentials %>
+<% end -%>
+<% if @pass_security -%>
+PassSecurity=<%= @pass_security %>
+<% end -%>
+<% if @tcp_congestion -%>
+TcpCongestion=<%= @tcp_congestion %>
+<% end -%>
+<% Array(@exec_start_pre).each do |exec| -%>
+ExecStartPre=<%= exec %>
+<% end -%>
+<% Array(@exec_start).each do |exec| -%>
+ExecStart=<%= exec %>
+<% end -%>
+<% Array(@exec_stop_post).each do |exec| -%>
+ExecStopPost=<%= exec %>
+<% end -%>
+<% Array(@exec_stop).each do |exec| -%>
+ExecStop=<%= exec %>
+<% end -%>
+<% if @timeout_sec -%>
+TimeoutSec=<%= @timeout_sec %>
+<% end -%>
+<% if @service -%>
+Service=<%= @service %>
+<% end -%>
+<% if @remove_on_stop -%>
+RemoveOnStop=<%= @remove_on_stop %>
+<% end -%>
+<% Array(@symlinks).each do |symlink| -%>
+Symlinks=<%= symlink %>
+<% end -%>
+<% if @file_descriptor_name -%>
+FileDescriptorName=<%= @file_descriptor_name %>
+<% end -%>
+<% if @trigger_limit_interval_sec -%>
+TriggerLimitIntervalSec=<%= @trigger_limit_interval_sec %>
+<% end -%>
+<% if @trigger_limit_burst -%>
+TriggerLimitBurst=<%= @trigger_limit_burst %>
+<% end -%>
+
+[Install]
+WantedBy=multi-user.target
