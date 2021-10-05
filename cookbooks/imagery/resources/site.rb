@@ -100,7 +100,18 @@ action :create do
   base_domains = [new_resource.site] + Array(new_resource.aliases)
   tile_domains = base_domains.flat_map { |d| [d, "a.#{d}", "b.#{d}", "c.#{d}"] }
 
+  # FIXME Clean up old service
+  service "mapserv-fcgi-#{new_resource.site}" do
+    provider Chef::Provider::Service::Systemd
+    action [:stop, :disable]
+  end
+
+  # FIXME Clean up old service
   systemd_service "mapserv-fcgi-#{new_resource.site}" do
+    action :delete
+  end
+
+  systemd_service "mapserv-fcgi-#{new_resource.site}@" do
     description "Map server for #{new_resource.site} layer"
     environment "MS_MAP_PATTERN" => "^/srv/imagery/mapserver/",
                 "MS_DEBUGLEVEL" => "0",
@@ -126,15 +137,8 @@ action :create do
     socket_user "imagery"
     socket_group "imagery"
     listen_stream "/run/mapserver-fastcgi/layer-#{new_resource.site}.socket"
-
-  end
-
-  # Ensure service is stopped because otherwise the socket cannot reload
-  service "mapserv-fcgi-#{new_resource.site}" do
-    provider Chef::Provider::Service::Systemd
-    action :nothing
-    subscribes :stop, "systemd_service[mapserv-fcgi-#{new_resource.site}]"
-    subscribes :stop, "systemd_socket[mapserv-fcgi-#{new_resource.site}]"
+    accept true
+    max_connections 4
   end
 
   systemd_unit "mapserv-fcgi-#{new_resource.site}.socket" do
