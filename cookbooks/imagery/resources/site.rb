@@ -101,20 +101,20 @@ action :create do
   tile_domains = base_domains.flat_map { |d| [d, "a.#{d}", "b.#{d}", "c.#{d}"] }
 
   # FIXME Clean up old service
-  service "mapserv-fcgi-#{new_resource.site}" do
+  service "mapserv-fcgi-#{new_resource.site}@" do
     provider Chef::Provider::Service::Systemd
     action [:stop, :disable]
   end
 
   # FIXME Clean up old service
-  systemd_service "mapserv-fcgi-#{new_resource.site}" do
+  systemd_service "mapserv-fcgi-#{new_resource.site}@" do
     action :delete
   end
 
   systemd_service "mapserv-fcgi-#{new_resource.site}@" do
     description "Map server for #{new_resource.site} layer"
     environment "MS_MAP_PATTERN" => "^/srv/imagery/mapserver/",
-                "MS_DEBUGLEVEL" => "0",
+                "=" => "0",
                 "MS_ERRORFILE" => "stderr",
                 "GDAL_CACHEMAX" => "512"
     limit_nofile 16384
@@ -122,7 +122,7 @@ action :create do
     memory_max "1G"
     user "imagery"
     group "imagery"
-    exec_start "/usr/lib/cgi-bin/mapserv"
+    exec_start "/usr/bin/multiwatch -f 4 -- /usr/lib/cgi-bin/mapserv"
     standard_input "socket"
     private_tmp true
     private_devices true
@@ -137,8 +137,6 @@ action :create do
     socket_user "imagery"
     socket_group "imagery"
     listen_stream "/run/mapserver-fastcgi/layer-#{new_resource.site}.socket"
-    accept true
-    max_connections 4
   end
 
   systemd_unit "mapserv-fcgi-#{new_resource.site}.socket" do
