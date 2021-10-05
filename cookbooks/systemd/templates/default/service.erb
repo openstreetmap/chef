@@ -93,6 +93,9 @@ RuntimeDirectory=<%= @runtime_directory %>
 <% if @runtime_directory_mode -%>
 RuntimeDirectoryMode=<%= sprintf("0%o", @runtime_directory_mode) %>
 <% end -%>
+<% if @runtime_max_sec -%>
+RuntimeMaxSec=<%= @runtime_max_sec %>
+<% end -%>
 <% if @standard_input -%>
 StandardInput=<%= @standard_input %>
 <% end -%>

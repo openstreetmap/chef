@@ -48,6 +48,7 @@ property :exec_stop, String
 property :exec_reload, String
 property :runtime_directory, String
 property :runtime_directory_mode, Integer
+property :runtime_max_sec, Integer
 property :standard_input, String,
          :is => %w[null tty tty-force tty-fail socket]
 property :standard_output, String,
