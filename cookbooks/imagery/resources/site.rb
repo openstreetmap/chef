@@ -100,17 +100,6 @@ action :create do
   base_domains = [new_resource.site] + Array(new_resource.aliases)
   tile_domains = base_domains.flat_map { |d| [d, "a.#{d}", "b.#{d}", "c.#{d}"] }
 
-  # FIXME Clean up old service
-  service "mapserv-fcgi-#{new_resource.site}@" do
-    provider Chef::Provider::Service::Systemd
-    action [:stop, :disable]
-  end
-
-  # FIXME Clean up old service
-  systemd_service "mapserv-fcgi-#{new_resource.site}@" do
-    action :delete
-  end
-
   systemd_service "mapserv-fcgi-#{new_resource.site}" do
     description "Map server for #{new_resource.site} layer"
     environment "MS_MAP_PATTERN" => "^/srv/imagery/mapserver/",
@@ -118,11 +107,11 @@ action :create do
                 "MS_ERRORFILE" => "stderr",
                 "GDAL_CACHEMAX" => "512"
     limit_nofile 16384
-    memory_high "512M"
-    memory_max "1G"
+    memory_high "1G"
+    memory_max "2G"
     user "imagery"
     group "imagery"
-    exec_start "/usr/bin/multiwatch -f 4 -- /usr/lib/cgi-bin/mapserv"
+    exec_start "/usr/bin/multiwatch -f 6 --signal=TERM -- /usr/lib/cgi-bin/mapserv"
     standard_input "socket"
     private_tmp true
     private_devices true
@@ -130,6 +119,8 @@ action :create do
     protect_system "full"
     protect_home true
     no_new_privileges true
+    # Terminate service after 5mins. Service is socket activated
+    runtime_max_sec 300
   end
 
   systemd_socket "mapserv-fcgi-#{new_resource.site}" do
