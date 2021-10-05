@@ -100,17 +100,6 @@ action :create do
   base_domains = [new_resource.site] + Array(new_resource.aliases)
   tile_domains = base_domains.flat_map { |d| [d, "a.#{d}", "b.#{d}", "c.#{d}"] }
 
-  %w[0 1 2 3 4 5 6 7].each do |index|
-    service "mapserv-fcgi-#{new_resource.site}-#{index}" do
-      provider Chef::Provider::Service::Systemd
-      action [:stop, :disable]
-    end
-
-    systemd_service "mapserv-fcgi-#{new_resource.site}-#{index}" do
-      action :delete
-    end
-  end
-
   systemd_service "mapserv-fcgi-#{new_resource.site}" do
     description "Map server for #{new_resource.site} layer"
     environment "MS_MAP_PATTERN" => "^/srv/imagery/mapserver/",
@@ -137,6 +126,20 @@ action :create do
     socket_user "imagery"
     socket_group "imagery"
     listen_stream "/run/mapserver-fastcgi/layer-#{new_resource.site}.socket"
+
+  end
+
+  # Ensure service is stopped else socket cannot reload
+  service "mapserv-fcgi-#{new_resource.site}" do
+    provider Chef::Provider::Service::Systemd
+    action :nothing
+    subscribes :stop, "systemd_service[mapserv-fcgi-#{new_resource.site}]"
+    subscribes :stop, "systemd_socket[mapserv-fcgi-#{new_resource.site}]"
+  end
+
+  systemd_unit 'mapserv-fcgi-#{new_resource.site}.socket' do
+    action [:enable, :start]
+    subscribes :restart, "systemd_socket[mapserv-fcgi-#{new_resource.site}]"
   end
 
   ssl_certificate new_resource.site do
@@ -151,15 +154,13 @@ action :create do
 end
 
 action :delete do
-  %w[0 1 2 3 4 5 6 7].each do |index|
-    service "mapserv-fcgi-#{new_resource.site}-#{index}" do
-      provider Chef::Provider::Service::Systemd
-      action [:stop, :disable]
-    end
+  service "mapserv-fcgi-#{new_resource.site}" do
+    provider Chef::Provider::Service::Systemd
+    action [:stop, :disable]
+  end
 
-    systemd_service "mapserv-fcgi-#{new_resource.site}-#{index}" do
-      action :delete
-    end
+  systemd_service "mapserv-fcgi-#{new_resource.site}" do
+    action :delete
   end
 
   nginx_site new_resource.site do
