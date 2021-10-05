@@ -129,7 +129,7 @@ action :create do
 
   end
 
-  # Ensure service is stopped else socket cannot reload
+  # Ensure service is stopped because otherwise the socket cannot reload
   service "mapserv-fcgi-#{new_resource.site}" do
     provider Chef::Provider::Service::Systemd
     action :nothing
@@ -137,7 +137,7 @@ action :create do
     subscribes :stop, "systemd_socket[mapserv-fcgi-#{new_resource.site}]"
   end
 
-  systemd_unit 'mapserv-fcgi-#{new_resource.site}.socket' do
+  systemd_unit "mapserv-fcgi-#{new_resource.site}.socket" do
     action [:enable, :start]
     subscribes :restart, "systemd_socket[mapserv-fcgi-#{new_resource.site}]"
   end
