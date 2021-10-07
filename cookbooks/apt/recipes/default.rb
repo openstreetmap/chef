@@ -184,7 +184,9 @@ end
 
 apt_repository "timescaledb" do
   action repository_actions["timescaledb"]
-  uri "ppa:timescale/timescaledb-ppa"
+  uri "https://packagecloud.io/timescale/timescaledb/ubuntu"
+  components ["main"]
+  key "https://packagecloud.io/timescale/timescaledb/gpgkey"
 end
 
 package "unattended-upgrades"
