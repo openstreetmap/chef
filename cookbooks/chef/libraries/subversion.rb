@@ -5,6 +5,12 @@ class Chef
     class Subversion
       extend Chef::Mixin::ShellOut
 
+      def shell_out!(*args, **options)
+        options = args.pop if options.empty? && args.last.is_a?(Hash)
+
+        super(*args, **options)
+      end
+
       def sync_command
         if current_repository_matches_target_repository?
           c = scm :update, new_resource.svn_arguments, verbose, authentication, proxy, "-r#{revision_int}", new_resource.destination
