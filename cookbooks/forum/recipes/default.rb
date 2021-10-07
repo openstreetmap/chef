@@ -69,22 +69,22 @@ git "/srv/forum.openstreetmap.org/html/" do
   notifies :reload, "service[apache2]"
 end
 
-remote_file "#{cache_dir}/air3_v0.8.zip" do
+remote_file "#{cache_dir}/air3_v0.8.tar.gz" do
   action :create_if_missing
-  source "https://fluxbb.org/resources/styles/air3/releases/0.8/air3_v0.8.zip"
+  source "https://github.com/natrius/air3/archive/refs/tags/v0.8.tar.gz"
   owner "root"
   group "root"
   mode "644"
   backup false
 end
 
-execute "#{cache_dir}/air3_v0.8.zip" do
+execute "#{cache_dir}/air3_v0.8.tar.gz" do
   action :nothing
-  command "unzip -o -qq #{cache_dir}/air3_v0.8.zip Air3.css 'Air3/*'"
+  command "tar --gunzip --extract --file=#{cache_dir}/air3_v0.8.tar.gz --strip-components=1 --wildcards air3-0.8/Air3.css 'air3-0.8/Air3/*'"
   cwd "/srv/forum.openstreetmap.org/html/style"
   user "forum"
   group "forum"
-  subscribes :run, "remote_file[#{cache_dir}/air3_v0.8.zip]", :immediately
+  subscribes :run, "remote_file[#{cache_dir}/air3_v0.8.tar.gz]", :immediately
 end
 
 directory "/srv/forum.openstreetmap.org/html/cache/" do
