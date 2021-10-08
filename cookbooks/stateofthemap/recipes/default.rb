@@ -358,6 +358,7 @@ end
     cwd "/srv/#{year}.stateofthemap.org"
     user "nobody"
     group "nogroup"
+    environment "LANG" => "C.UTF-8"
   end
 
   ssl_certificate "#{year}.stateofthemap.org" do
