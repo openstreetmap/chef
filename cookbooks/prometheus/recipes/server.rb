@@ -39,7 +39,8 @@ package %w[
 
 promscale_version = "0.6.1"
 
-database_cluster = "#{node[:timescaledb][:database_version]}/main"
+database_version = node[:timescaledb][:database_version]
+database_cluster = "#{database_version}/main"
 
 postgresql_user "prometheus" do
   cluster database_cluster
@@ -57,30 +58,11 @@ directory "/opt/promscale" do
   mode "755"
 end
 
-package %w[
-  make
-  gcc
-  clang-9
-  llvm-9
-  cargo
-]
-
-git "/opt/promscale/extension" do
-  action :sync
-  repository "https://github.com/timescale/promscale_extension.git"
-  revision "0.2.0"
-  user "root"
+cookbook_file "/usr/lib/postgresql/#{database_version}/lib/promscale.so" do
+  source "postgresql-#{database_version}-promscale.so"
+  owner "root"
   group "root"
-end
-
-execute "/opt/promscale/extension/Makefile" do
-  action :nothing
-  command "make install"
-  cwd "/opt/promscale/extension"
-  user "root"
-  group "root"
-  subscribes :run, "git[/opt/promscale/extension]", :immediately
-  notifies :restart, "service[postgresql]", :immediately
+  mode "644"
 end
 
 directory "/opt/promscale/bin" do
