@@ -268,7 +268,7 @@ external_data = [
 
 external_data.each do |fname|
   remote_file "#{build_directory}/#{fname}" do
-    action :create_if_missing
+    action :create
     source "https://www.nominatim.org/data/#{fname}"
     owner "nominatim"
     group "nominatim"
