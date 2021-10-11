@@ -25,7 +25,7 @@ default_attributes(
     }
   },
   :postgresql => {
-    :versions => ["13"],
+    :versions => ["14"],
     :settings => {
       :defaults => {
         :listen_addresses => "10.0.0.20",
@@ -34,7 +34,7 @@ default_attributes(
         :random_page_cost => "1.5",
         :effective_cache_size => "60GB",
         :effective_io_concurrency => "256",
-        :fsync => "on"
+        :fsync => "off"
       }
     }
   },
