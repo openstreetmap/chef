@@ -23,6 +23,10 @@ default[:nominatim][:fpm_pools] = {
   }
 }
 
+default[:nominatim][:config] = {
+  :tokenizer => "legacy"
+}
+
 default[:nominatim][:redirects] = {}
 
 default[:postgresql][:versions] |= [node[:nominatim][:dbcluster].split("/").first]

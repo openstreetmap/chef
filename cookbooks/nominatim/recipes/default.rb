@@ -239,7 +239,8 @@ template "#{build_directory}/.env" do
   variables :base_url => node[:nominatim][:state] == "off" ? node[:fqdn] : "nominatim.openstreetmap.org",
             :dbname => node[:nominatim][:dbname],
             :flatnode_file => node[:nominatim][:flatnode_file],
-            :log_file => "#{node[:nominatim][:logdir]}/query.log"
+            :log_file => "#{node[:nominatim][:logdir]}/query.log",
+            :tokenizer => node[:nominatim][:config][:tokenizer]
 end
 
 git ui_directory do
