@@ -116,11 +116,9 @@ systemd_service "planetdump@" do
   exec_start "/usr/local/bin/planetdump %i"
   memory_max "64G"
   private_tmp true
-  private_devices true
-  private_network true
   protect_system "full"
   protect_home true
-  no_new_privileges true
+  read_write_paths "/var/log/exim4"
 end
 
 cron_d "planet-dump-mirror" do
