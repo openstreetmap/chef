@@ -5,6 +5,8 @@
 umask 0002
 unset GIT_DIR
 
+knife="/opt/chef/embedded/bin/knife"
+
 while read oldrev newrev refname
 do
   if [[ "$refname" = "refs/heads/master" ]]
@@ -25,17 +27,17 @@ do
       if [[ $file == roles/*.rb ]]
       then
         case "$action" in
-          A|M) knife role from file "${file}";;
-          D) knife role delete -y "${file:t:r}";;
+          A|M) $knife role from file "${file}";;
+          D) $knife role delete -y "${file:t:r}";;
         esac
       elif [[ $file == data_bags/*/*.json ]]
       then
         case "$action" in
           A|M) 
-            knife data bag create "${file:h:t}"
-            knife data bag from file "${file:h:t}" "${file:t}";;
+            $knife data bag create "${file:h:t}"
+            $knife data bag from file "${file:h:t}" "${file:t}";;
           D)
-            knife data bag delete -y "${file:h:t}" "${file:t:r}";;
+            $knife data bag delete -y "${file:h:t}" "${file:t:r}";;
         esac
       elif [[ $file == cookbooks/* ]]
       then
@@ -52,14 +54,14 @@ do
 
     if [[ -n "$updated_cookbooks" ]]
     then
-      knife cookbook upload "${(ou)updated_cookbooks[@]}"
+      $knife cookbook upload "${(ou)updated_cookbooks[@]}"
     fi
 
     if [[ -n "$deleted_cookbooks" ]]
     then
       for cookbook in "${(ou)deleted_cookbooks[@]}"
       do
-        knife cookbook delete -y "$cookbook"
+        $knife cookbook delete -y "$cookbook"
       done
     fi
   fi

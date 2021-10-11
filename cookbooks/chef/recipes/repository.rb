@@ -25,6 +25,8 @@ chef_gem "bundler" do
   version ">= 2.1.4"
 end
 
+chef_gem "knife"
+
 directory "/var/lib/chef" do
   owner "chefrepo"
   group "chefrepo"

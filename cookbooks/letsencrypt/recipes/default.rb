@@ -27,6 +27,8 @@ package %w[
   ruby
 ]
 
+chef_gem "knife"
+
 directory "/etc/letsencrypt" do
   owner "letsencrypt"
   group "letsencrypt"

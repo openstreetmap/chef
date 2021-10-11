@@ -2,7 +2,7 @@
 
 require "json"
 
-nodes = JSON.parse(IO.popen(["knife", "status", "-c", "/var/lib/chef/.chef/knife.rb", "-F", "json"]).read).sort_by { |node| node["name"] }
+nodes = JSON.parse(IO.popen(["/opt/chef/embedded/bin/knife", "status", "-c", "/var/lib/chef/.chef/knife.rb", "-F", "json"]).read).sort_by { |node| node["name"] }
 
 if ARGV[0] == "config"
   puts "graph_title Chef node status"

@@ -48,6 +48,8 @@ include_recipe "munin"
 #   notifies :run, "execute[chef-server-reconfigure]"
 # end
 
+chef_gem "knife"
+
 template "/etc/opscode/chef-server.rb" do
   source "server.rb.erb"
   owner "root"
