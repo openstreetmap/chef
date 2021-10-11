@@ -45,6 +45,9 @@ default_attributes(
     :postgis => "3",
     :enable_backup => true,
     :flatnode_file => "/ssd/nominatim/nodes.store",
+    :config => {
+      :tokenizer => "icu"
+    },
     :tablespaces => {
       "dosm" => "/ssd/tablespaces/dosm",
       "iosm" => "/ssd/tablespaces/iosm",
