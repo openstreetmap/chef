@@ -5,26 +5,10 @@ default_attributes(
   :accounts => {
     :users => {
       :lonvia => { :status => :administrator },
-      :twain => { :status => :administrator },
       :nominatim => {
         :status => :role,
-        :members => [:lonvia, :tomh, :twain]
+        :members => [:lonvia, :tomh]
       }
-    }
-  },
-  :apache => {
-    :mpm => "event",
-    :timeout => 30,
-    :keepalive => false,
-    :reqtimeout => true,
-    :event => {
-      :server_limit => 100,
-      :max_request_workers => 2400,
-      :threads_per_child => 50,
-      :min_spare_threads => 125,
-      :max_spare_threads => 925,
-      :async_request_worker_factor => 4,
-      :listen_cores_buckets_ratio => 6
     }
   },
   :networking => {
