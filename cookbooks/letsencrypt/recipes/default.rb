@@ -19,6 +19,7 @@
 
 include_recipe "accounts"
 include_recipe "apache"
+include_recipe "chef::knife"
 
 keys = data_bag_item("chef", "keys")
 
@@ -26,8 +27,6 @@ package %w[
   certbot
   ruby
 ]
-
-chef_gem "knife"
 
 directory "/etc/letsencrypt" do
   owner "letsencrypt"

@@ -18,6 +18,7 @@
 #
 
 include_recipe "apache"
+include_recipe "chef::knife"
 include_recipe "munin"
 
 # cache_dir = Chef::Config[:file_cache_path]
@@ -47,8 +48,6 @@ include_recipe "munin"
 #   version "#{chef_version}-1"
 #   notifies :run, "execute[chef-server-reconfigure]"
 # end
-
-chef_gem "knife"
 
 template "/etc/opscode/chef-server.rb" do
   source "server.rb.erb"

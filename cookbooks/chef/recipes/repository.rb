@@ -17,6 +17,7 @@
 # limitations under the License.
 #
 
+include_recipe "chef::knife"
 include_recipe "git"
 
 keys = data_bag_item("chef", "keys")
@@ -24,8 +25,6 @@ keys = data_bag_item("chef", "keys")
 chef_gem "bundler" do
   version ">= 2.1.4"
 end
-
-chef_gem "knife"
 
 directory "/var/lib/chef" do
   owner "chefrepo"
