@@ -20,6 +20,8 @@
 include_recipe "apache"
 include_recipe "php::fpm"
 
+package "php-pear"
+
 apache_module "proxy"
 apache_module "proxy_fcgi"
 
