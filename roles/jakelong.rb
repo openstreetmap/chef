@@ -2,6 +2,10 @@ name "jakelong"
 description "Master role applied to jakelong"
 
 default_attributes(
+  :dhcpd => {
+    :first_address => "10.0.78.1",
+    :last_address => "10.0.78.254"
+  },
   :networking => {
     :interfaces => {
       :internal_ipv4 => {
@@ -34,5 +38,6 @@ default_attributes(
 
 run_list(
   "role[equinix-dub]",
-  "role[hp-dl360e-g8]"
+  "role[hp-dl360e-g8]",
+  "recipe[dhcpd]"
 )
