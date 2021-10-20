@@ -28,14 +28,14 @@ default_attributes(
     }
   },
   :postgresql => {
-    :versions => ["13"],
+    :versions => ["14"],
     :settings => {
       :defaults => {
         :work_mem => "300MB",
         :maintenance_work_mem => "10GB",
         :random_page_cost => "1.5",
         :effective_cache_size => "60GB",
-        :fsync => "on",
+        :fsync => "off",
         :effective_io_concurrency => "500"
       }
     }
@@ -45,9 +45,12 @@ default_attributes(
     :enable_backup => false,
     :enable_git_updates => true,
     :dbadmins => %w[lonvia tomh],
-    :dbcluster => "13/main",
+    :dbcluster => "14/main",
     :postgis => "3",
     :flatnode_file => "/ssd/nominatim/nodes.store",
+    :config => {
+      :tokenizer => "icu"
+    },
     :logdir => "/ssd/nominatim/log",
     :tablespaces => {
       "dosm" => "/ssd/tablespaces/dosm",
