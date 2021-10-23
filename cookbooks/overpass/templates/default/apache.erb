@@ -1,0 +1,53 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+<VirtualHost *:80>
+        ServerName <%= node[:fqdn] %>
+        ServerAlias <%= node[:overpass][:fqdn] %>
+        ServerAdmin webmaster@openstreetmap.org
+
+        CustomLog /var/log/apache2/<%= node[:overpass][:fqdn] %>-access.log combined
+        ErrorLog /var/log/apache2/<%= node[:overpass][:fqdn] %>-error.log
+
+        DocumentRoot <%= @directory %>
+
+        RedirectPermanent /.well-known/acme-challenge/ http://acme.openstreetmap.org/.well-known/acme-challenge/
+        RedirectPermanent / https://<%= @name %>/
+</VirtualHost>
+
+
+<VirtualHost *:443>
+        ServerName <%= node[:fqdn] %>
+        ServerAlias <%= node[:overpass][:fqdn] %>
+        ServerAdmin webmaster@openstreetmap.org
+
+        CustomLog /var/log/apache2/<%= node[:overpass][:fqdn] %>-access.log combined
+        ErrorLog /var/log/apache2/<%= node[:overpass][:fqdn] %>-error.log
+
+        SSLEngine on
+        SSLCertificateFile /etc/ssl/certs/<%= node[:fqdn] %>.pem
+        SSLCertificateKeyFile /etc/ssl/private/<%= node[:fqdn] %>.key
+
+        DocumentRoot <%= @directory %>
+
+<% if node[:overpass][:restricted_api] -%>
+        ScriptAlias /query-features <%= @script_directory %>/interpreter
+        SetEnvIf Origin "http.*(osm.org|openstreetmap.org).*" AccessControlAllowOrigin=$0
+        # Remove Origin so Overpass does not interfere.
+        RequestHeader unset Origin
+        Header always add Access-Control-Allow-Origin %{AccessControlAllowOrigin}e env=AccessControlAllowOrigin
+<% else -%>
+        ScriptAlias /api/ <%= @script_directory %>/
+<% end -%>
+</VirtualHost>
+
+<Directory "<%= @directory %>">
+        Require all granted
+</Directory>
+
+<Directory "<%= @script_directory %>">
+        SetOutputFilter DEFLATE
+
+        AllowOverride None
+        Options +ExecCGI -MultiViews +FollowSymLinks
+        Require all granted
+</Directory>

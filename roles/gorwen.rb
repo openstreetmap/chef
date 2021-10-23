@@ -34,5 +34,6 @@ default_attributes(
 
 run_list(
   "role[equinix-dub]",
-  "role[hp-dl360e-g8]"
+  "role[hp-dl360e-g8]",
+  "role[overpass-query]"
 )
