@@ -32,7 +32,6 @@ package %w[
   php-gd
   php-xml
   php-apcu
-  unzip
 ]
 
 apache_module "expires"
@@ -51,10 +50,10 @@ remote_file "#{Chef::Config[:file_cache_path]}/piwik-#{version}.zip" do
   not_if { ::File.exist?("/opt/piwik-#{version}/piwik") }
 end
 
-execute "unzip-piwik-#{version}" do
-  command "unzip -q #{Chef::Config[:file_cache_path]}/piwik-#{version}.zip"
-  cwd "/opt/piwik-#{version}"
-  user "root"
+archive_file "#{Chef::Config[:file_cache_path]}/piwik-#{version}.zip" do
+  destination "/opt/piwik-#{version}"
+  overwrite true
+  owner "root"
   group "root"
   not_if { ::File.exist?("/opt/piwik-#{version}/piwik") }
 end

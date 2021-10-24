@@ -19,7 +19,6 @@
 
 include_recipe "chef"
 
-package "unzip"
 package "default-jre"
 
 cache_dir = Chef::Config[:file_cache_path]
@@ -52,13 +51,13 @@ remote_file "#{cache_dir}/#{osmosis_package}" do
   backup false
 end
 
-execute "#{cache_dir}/#{osmosis_package}" do
+archive_file "#{cache_dir}/#{osmosis_package}" do
   action :nothing
-  command "unzip -q #{cache_dir}/#{osmosis_package}"
-  cwd osmosis_directory
-  user "root"
+  destination osmosis_directory
+  overwrite true
+  owner "root"
   group "root"
-  subscribes :run, "remote_file[#{cache_dir}/#{osmosis_package}]"
+  subscribes :extract, "remote_file[#{cache_dir}/#{osmosis_package}]"
 end
 
 link "/usr/local/bin/osmosis" do

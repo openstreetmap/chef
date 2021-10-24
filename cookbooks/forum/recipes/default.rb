@@ -32,7 +32,6 @@ package %w[
   php-mysql
   php-xml
   php-apcu
-  unzip
 ]
 
 apache_module "env"
@@ -78,13 +77,14 @@ remote_file "#{cache_dir}/air3_v0.8.tar.gz" do
   backup false
 end
 
-execute "#{cache_dir}/air3_v0.8.tar.gz" do
+archive_file "#{cache_dir}/air3_v0.8.tar.gz" do
   action :nothing
-  command "tar --gunzip --extract --file=#{cache_dir}/air3_v0.8.tar.gz --strip-components=1 --wildcards air3-0.8/Air3.css 'air3-0.8/Air3/*'"
-  cwd "/srv/forum.openstreetmap.org/html/style"
-  user "forum"
+  destination "/srv/forum.openstreetmap.org/html/style"
+  strip_components 1
+  overwrite true
+  owner "forum"
   group "forum"
-  subscribes :run, "remote_file[#{cache_dir}/air3_v0.8.tar.gz]", :immediately
+  subscribes :extract, "remote_file[#{cache_dir}/air3_v0.8.tar.gz]", :immediately
 end
 
 directory "/srv/forum.openstreetmap.org/html/cache/" do

@@ -24,7 +24,6 @@ package %w[
   php-xml
   php-curl
   rsync
-  unzip
   wkhtmltopdf
   php-bcmath
 ]
@@ -102,22 +101,22 @@ remote_file "#{cache_dir}/civicrm-#{civicrm_version}-l10n.tar.gz" do
   backup false
 end
 
-execute "#{cache_dir}/civicrm-#{civicrm_version}-wordpress.zip" do
+archive_file "#{cache_dir}/civicrm-#{civicrm_version}-wordpress.zip" do
   action :nothing
-  command "unzip -o -qq #{cache_dir}/civicrm-#{civicrm_version}-wordpress.zip"
-  cwd "/opt/civicrm-#{civicrm_version}"
-  user "wordpress"
+  destination "/opt/civicrm-#{civicrm_version}"
+  overwrite true
+  owner "wordpress"
   group "wordpress"
-  subscribes :run, "remote_file[#{cache_dir}/civicrm-#{civicrm_version}-wordpress.zip]", :immediately
+  subscribes :extract, "remote_file[#{cache_dir}/civicrm-#{civicrm_version}-wordpress.zip]", :immediately
 end
 
-execute "#{cache_dir}/civicrm-#{civicrm_version}-l10n.tar.gz" do
+archive_file "#{cache_dir}/civicrm-#{civicrm_version}-l10n.tar.gz" do
   action :nothing
-  command "tar -zxf #{cache_dir}/civicrm-#{civicrm_version}-l10n.tar.gz"
-  cwd "/opt/civicrm-#{civicrm_version}/civicrm"
-  user "wordpress"
+  destination "/opt/civicrm-#{civicrm_version}/civicrm"
+  overwrite true
+  owner "wordpress"
   group "wordpress"
-  subscribes :run, "remote_file[#{cache_dir}/civicrm-#{civicrm_version}-l10n.tar.gz]", :immediately
+  subscribes :extract, "remote_file[#{cache_dir}/civicrm-#{civicrm_version}-l10n.tar.gz]", :immediately
 end
 
 execute "/opt/civicrm-#{civicrm_version}/civicrm" do
@@ -125,8 +124,8 @@ execute "/opt/civicrm-#{civicrm_version}/civicrm" do
   command "rsync --archive --delete /opt/civicrm-#{civicrm_version}/civicrm/ #{civicrm_directory}"
   user "wordpress"
   group "wordpress"
-  subscribes :run, "execute[#{cache_dir}/civicrm-#{civicrm_version}-wordpress.zip]", :immediately
-  subscribes :run, "execute[#{cache_dir}/civicrm-#{civicrm_version}-l10n.tar.gz]", :immediately
+  subscribes :run, "archive_file[#{cache_dir}/civicrm-#{civicrm_version}-wordpress.zip]", :immediately
+  subscribes :run, "archive_file[#{cache_dir}/civicrm-#{civicrm_version}-l10n.tar.gz]", :immediately
 end
 
 directory "/srv/join.osmfoundation.org/wp-content/uploads" do

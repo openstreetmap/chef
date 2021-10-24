@@ -37,10 +37,11 @@ directory "/opt/kibana-#{version}" do
   mode "755"
 end
 
-execute "unzip-kibana-#{version}" do
-  command "tar --gunzip --extract --strip-components=1 --file=#{Chef::Config[:file_cache_path]}/kibana-#{version}.tar.gz"
-  cwd "/opt/kibana-#{version}"
-  user "root"
+archive_file "#{Chef::Config[:file_cache_path]}/kibana-#{version}.tar.gz" do
+  destination "/opt/kibana-#{version}"
+  overwrite true
+  strip_components 1
+  owner "root"
   group "root"
   not_if { ::File.exist?("/opt/kibana-#{version}/bin/kibana") }
 end
