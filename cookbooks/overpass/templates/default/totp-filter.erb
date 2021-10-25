@@ -8,7 +8,7 @@ totp = ROTP::TOTP.new("<%= @totp_key %>", :interval => 3600)
 STDIN.each_line do |header|
   cookies = CGI::Cookie.parse(header)
 
-  if totp.verify(cookies["_osm_totp_token"], :drift_behind => 43200, :drift_ahead => 3600)
+  if totp.verify(cookies["_osm_totp_token"], :drift_behind => 3600, :drift_ahead => 3600)
     puts "1"
   else
     puts "0"
