@@ -35,3 +35,11 @@ default[:civicrm][:extensions][:donotsendreportemail][:revision] = "3b31c2e0c621
 default[:civicrm][:extensions][:shoreditch][:name] = "org.civicrm.shoreditch"
 default[:civicrm][:extensions][:shoreditch][:repository] = "https://github.com/civicrm/org.civicrm.shoreditch.git"
 default[:civicrm][:extensions][:shoreditch][:revision] = "1.0.0-beta.7"
+
+default[:civicrm][:extensions][:membershipextra][:name] = "com.skvare.membershipextra"
+default[:civicrm][:extensions][:membershipextra][:repository] = "https://github.com/lemniscus/com.skvare.membershipextra.git"
+default[:civicrm][:extensions][:membershipextra][:revision] = "1593911d6bfe184b45d59773fed27bab69cbb93a"
+
+default[:civicrm][:extensions][:osmfverifycontributor][:name] = "osmf-verify-contributor"
+default[:civicrm][:extensions][:osmfverifycontributor][:repository] = "https://github.com/lemniscus/osmf-verify-contributor.git"
+default[:civicrm][:extensions][:osmfverifycontributor][:revision] = "82e1e20167db6756deb182d0d0426828cbbe6990"
