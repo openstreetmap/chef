@@ -23,6 +23,7 @@ include_recipe "apache"
 
 username = "overpass"
 basedir = data_bag_item("accounts", username)["home"]
+web_passwords = data_bag_item("web", "passwords")
 
 %w[bin site diffs db src].each do |dirname|
   directory "#{basedir}/#{dirname}" do
@@ -71,6 +72,22 @@ end
 
 ## Setup Apache
 
+gem_package "rotp"
+
+directory "#{basedir}/apache" do
+  owner "root"
+  group "root"
+  mode "755"
+end
+
+template "#{basedir}/apache/totp-filter" do
+  source "totp-filter.erb"
+  owner "root"
+  group "root"
+  mode "755"
+  variables :totp_key => web_passwords["totp_key"]
+end
+
 ssl_certificate node[:fqdn] do
   domains [node[:fqdn],
            node[:overpass][:fqdn]]
@@ -79,6 +96,7 @@ end
 
 apache_module "cgi"
 apache_module "headers"
+apache_module "rewrite"
 
 apache_site "default" do
   action :disable
