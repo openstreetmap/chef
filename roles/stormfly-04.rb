@@ -47,6 +47,9 @@ default_attributes(
     :postgis => "3",
     :flatnode_file => "/ssd/nominatim/nodes.store",
     :logdir => "/ssd/nominatim/log",
+    :config => {
+      :tokenizer => "icu"
+    },
     :fpm_pools => {
       "nominatim.openstreetmap.org" => {
         :max_children => 100
