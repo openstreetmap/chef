@@ -80,6 +80,10 @@ end
 apache_module "cgi"
 apache_module "headers"
 
+apache_site "default" do
+  action :disable
+end
+
 apache_site "#{node[:overpass][:fqdn]}" do
   template "apache.erb"
   directory "#{basedir}/site"
