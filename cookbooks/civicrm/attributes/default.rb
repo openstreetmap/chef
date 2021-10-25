@@ -1,4 +1,4 @@
-default[:civicrm][:version] = "5.40.4"
+default[:civicrm][:version] = "5.42.1"
 
 default[:civicrm][:extensions][:cividiscount][:name] = "org.civicrm.module.cividiscount"
 default[:civicrm][:extensions][:cividiscount][:repository] = "https://github.com/dlobo/org.civicrm.module.cividiscount.git"
@@ -10,7 +10,7 @@ default[:civicrm][:extensions][:osm][:revision] = "1.3"
 
 default[:civicrm][:extensions][:emailapi][:name] = "org.civicoop.emailapi"
 default[:civicrm][:extensions][:emailapi][:repository] = "https://lab.civicrm.org/extensions/emailapi.git"
-default[:civicrm][:extensions][:emailapi][:revision] = "2.3"
+default[:civicrm][:extensions][:emailapi][:revision] = "2.5"
 
 default[:civicrm][:extensions][:civiruleshttppost][:name] = "org.civicoop.civiruleshttppost"
 default[:civicrm][:extensions][:civiruleshttppost][:repository] = "https://github.com/CiviCooP/org.civicoop.civiruleshttppost.git"
@@ -18,7 +18,7 @@ default[:civicrm][:extensions][:civiruleshttppost][:revision] = "e2c7de5f0fee319
 
 default[:civicrm][:extensions][:civirules][:name] = "org.civicoop.civirules"
 default[:civicrm][:extensions][:civirules][:repository] = "https://lab.civicrm.org/extensions/civirules.git"
-default[:civicrm][:extensions][:civirules][:revision] = "2.35"
+default[:civicrm][:extensions][:civirules][:revision] = "2.37"
 
 default[:civicrm][:extensions][:mailchimp][:name] = "uk.co.vedaconsulting.mailchimp"
 default[:civicrm][:extensions][:mailchimp][:repository] = "https://github.com/veda-consulting/uk.co.vedaconsulting.mailchimp.git"
