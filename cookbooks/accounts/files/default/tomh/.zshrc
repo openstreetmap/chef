@@ -28,6 +28,8 @@ unset zle_bracketed_paste
 # Keep tramp happy
 if [[ "$TERM" = "dumb" ]]
 then
+    unsetopt PROMPT_SP
+    unsetopt PROMPT_CR
     unsetopt ZLE
 fi
 
