@@ -61,12 +61,6 @@ wordpress_plugin "registration-honeypot" do
   site "join.osmfoundation.org"
 end
 
-wordpress_plugin "sitepress-multilingual-cms" do
-  site "join.osmfoundation.org"
-  repository "https://git.openstreetmap.org/private/sitepress-multilingual-cms.git"
-  not_if { kitchen? }
-end
-
 wordpress_plugin "contact-form-7" do
   site "join.osmfoundation.org"
 end
