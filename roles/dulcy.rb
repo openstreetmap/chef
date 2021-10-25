@@ -31,7 +31,7 @@ default_attributes(
     :versions => ["14"],
     :settings => {
       :defaults => {
-        :work_mem => "300MB",
+        :work_mem => "240MB",
         :maintenance_work_mem => "10GB",
         :random_page_cost => "1.5",
         :effective_cache_size => "60GB",
