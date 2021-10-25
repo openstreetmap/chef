@@ -26,6 +26,7 @@ package %w[
   rsync
   wkhtmltopdf
   php-bcmath
+  php-intl
 ]
 
 cache_dir = Chef::Config[:file_cache_path]
