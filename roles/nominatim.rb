@@ -26,7 +26,8 @@ default_attributes(
         :checkpoint_completion_target => "0.9",
         :jit => "off",
         :shared_buffers => "2GB",
-        :autovacuum_max_workers => "1"
+        :autovacuum_max_workers => "1",
+        :max_parallel_workers_per_gather => "0"
       }
     }
   },
