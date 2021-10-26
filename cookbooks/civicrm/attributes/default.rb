@@ -41,5 +41,5 @@ default[:civicrm][:extensions][:membershipextra][:repository] = "https://github.
 default[:civicrm][:extensions][:membershipextra][:revision] = "1593911d6bfe184b45d59773fed27bab69cbb93a"
 
 default[:civicrm][:extensions][:osmfverifycontributor][:name] = "osmf-verify-contributor"
-default[:civicrm][:extensions][:osmfverifycontributor][:repository] = "https://github.com/lemniscus/osmf-verify-contributor.git"
-default[:civicrm][:extensions][:osmfverifycontributor][:revision] = "82e1e20167db6756deb182d0d0426828cbbe6990"
+default[:civicrm][:extensions][:osmfverifycontributor][:repository] = "https://github.com/openstreetmap/osmf-verify-contributor.git"
+default[:civicrm][:extensions][:osmfverifycontributor][:revision] = "bb0cd61783033fb2e108c30e47224e5a818987f8"
