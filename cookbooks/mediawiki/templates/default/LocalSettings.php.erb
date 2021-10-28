@@ -111,11 +111,20 @@ $wgSVGConverters = array( 'rsvg' => '/usr/bin/rsvg-convert -w $width -h $height 
 $wgSVGConverter = 'rsvg';
 $wgSVGMaxSize = 2000;
 
-# InstantCommons allows wiki to use images from https://commons.wikimedia.org
 <% if @mediawiki[:commons] -%>
-$wgUseInstantCommons  = true;
-<% else -%>
-$wgUseInstantCommons  = false;
+# Enable use of images from https://commons.wikimedia.org
+$wgForeignFileRepos[] = [
+  'class' => ForeignAPIRepo::class,
+  'name' => 'wikimediacommons',
+  'apibase' => 'https://commons.wikimedia.org/w/api.php',
+  'url' => 'https://upload.wikimedia.org/wikipedia/commons', 
+  'thumbUrl' => 'https://upload.wikimedia.org/wikipedia/commons/thumb',
+  'hashLevels' => 2,
+  'transformVia404' => true,
+  'fetchDescription' => true,
+  'descriptionCacheExpiry' => 43200,
+  'apiThumbCacheExpiry' => 86400,
+];   
 <% end -%>
 
 ## If you use ImageMagick (or any other shell command) on a
