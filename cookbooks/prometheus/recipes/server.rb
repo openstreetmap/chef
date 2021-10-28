@@ -37,7 +37,7 @@ package %w[
   prometheus-alertmanager
 ]
 
-promscale_version = "0.6.1"
+promscale_version = "0.6.2"
 
 database_version = node[:timescaledb][:database_version]
 database_cluster = "#{database_version}/main"
