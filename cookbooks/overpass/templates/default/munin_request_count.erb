@@ -9,19 +9,19 @@ if [[ "$1" = "config" ]]; then
   echo 'graph_title API request count'
   echo 'graph_vlabel per minute'
   echo 'graph_category overpass'
-  echo "overpass_request_started.label started"
+  echo "overpass_request_started.label Base started"
   echo "overpass_request_started.type COUNTER"
   echo "overpass_request_started.cdef overpass_request_started,60,*"
   echo "overpass_request_started.max 10000"
-  echo "overpass_request_completed.label completed"
+  echo "overpass_request_completed.label Base completed"
   echo "overpass_request_completed.type COUNTER"
   echo "overpass_request_completed.cdef overpass_request_completed,60,*"
   echo "overpass_request_completed.max 10000"
-  echo "overpass_area_request_started.label started"
+  echo "overpass_area_request_started.label Area started"
   echo "overpass_area_request_started.type COUNTER"
   echo "overpass_area_request_started.cdef overpass_request_started,60,*"
   echo "overpass_area_request_started.max 10000"
-  echo "overpass_area_request_completed.label completed"
+  echo "overpass_area_request_completed.label Area completed"
   echo "overpass_area_request_completed.type COUNTER"
   echo "overpass_area_request_completed.cdef overpass_request_completed,60,*"
   echo "overpass_area_request_completed.max 10000"
