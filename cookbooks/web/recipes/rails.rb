@@ -114,6 +114,7 @@ rails_port "www.openstreetmap.org" do
   storage_configuration storage
   storage_service "avatars"
   storage_url "https://openstreetmap-user-avatars.s3.dualstack.eu-west-1.amazonaws.com"
+  overpass_url "https://query.openstreetmap.org/query-features"
 end
 
 gem_package "bundler#{ruby_version}" do
