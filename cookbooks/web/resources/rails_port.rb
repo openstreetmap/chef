@@ -54,6 +54,7 @@ property :id_key, String
 property :oauth_key, String
 property :oauth_application, String
 property :nominatim_url, String
+property :overpass_url, String
 property :google_auth_id, String
 property :google_auth_secret, String
 property :google_openid_realm, String
@@ -225,6 +226,10 @@ action :create do
       line.gsub!(/^( *)nominatim_url:.*$/, "\\1nominatim_url: \"#{new_resource.nominatim_url}\"")
     end
 
+    if new_resource.overpass_url
+      line.gsub!(/^( *)overpass_url:.*$/, "\\1overpass_url: \"#{new_resource.overpass_url}\"")
+    end
+
     if new_resource.google_auth_id
       line.gsub!(/^( *)#google_auth_id:.*$/, "\\1google_auth_id: \"#{new_resource.google_auth_id}\"")
       line.gsub!(/^( *)#google_auth_secret:.*$/, "\\1google_auth_secret: \"#{new_resource.google_auth_secret}\"")
@@ -301,6 +306,7 @@ action :create do
     "oauth_key",
     "oauth_application",
     "nominatim_url",
+    "overpass_url",
     "google_auth_id",
     "google_auth_secret",
     "google_openid_realm",
