@@ -25,7 +25,7 @@ username = "overpass"
 basedir = data_bag_item("accounts", username)["home"]
 web_passwords = data_bag_item("web", "passwords")
 
-%w[bin site diffs db src].each do |dirname|
+%w[bin site diffs db src munin].each do |dirname|
   directory "#{basedir}/#{dirname}" do
     owner username
     group username
@@ -209,4 +209,22 @@ end
 
 service "overpass-area-processor" do
   action [:enable]
+end
+
+# Munin scripts
+
+%w[db_lag request_count].each do |name|
+  template "#{basedir}/munin/overpass_#{name}" do
+    source "munin_#{name}.erb"
+    owner username
+    group username
+    mode "755"
+    variables :basedir => basedir
+  end
+
+  munin_plugin "overpass_#{name}" do
+    target "#{basedir}/munin/overpass_#{name}"
+    conf "munin.erb"
+    conf_variables :user => username
+  end
 end
