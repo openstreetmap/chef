@@ -335,6 +335,7 @@ else
 
   service "nominatim-update-maintenance-trigger" do
     action [:enable, :start]
+  end
 end
 
 template "#{source_directory}/utils/nominatim-update" do
