@@ -332,6 +332,9 @@ else
     description "Schedule maintenance tasks for Nominatim DB"
     on_calendar "*-*-* 02:03:00 UTC"
   end
+
+  service "nominatim-update-maintenance-trigger" do
+    action [:enable, :start]
 end
 
 template "#{source_directory}/utils/nominatim-update" do
