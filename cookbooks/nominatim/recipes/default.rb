@@ -330,7 +330,7 @@ else
   systemd_timer "nominatim-update-maintenance-trigger" do
     action :create
     description "Schedule maintenance tasks for Nominatim DB"
-    on_calender "*-*-* 02:03:00 UTC"
+    on_calendar "*-*-* 02:03:00 UTC"
   end
 end
 
