@@ -290,7 +290,7 @@ if node[:nominatim][:state] == "off"
     action :delete
   end
 
-  cron_d "nominatim-update-maintenance-trigger" do
+  systemd_timer "nominatim-update-maintenance-trigger" do
     action :delete
   end
 else
@@ -321,12 +321,16 @@ else
     mailto email_errors
   end
 
-  cron_d "nominatim-update-maintenance-trigger" do
-    minute "18"
-    hour "1"
+  systemd_service "nominatim-update-maintenance-trigger" do
+    description "Trigger maintenance tasks for Nominatim DB"
+    exec_start "touch #{basedir}/status/update_maintenance"
     user "nominatim"
-    command "touch #{basedir}/status/update_maintenance"
-    mailto email_errors
+  end
+
+  systemd_timer "nominatim-update-maintenance-trigger" do
+    action :create
+    description "Schedule maintenance tasks for Nominatim DB"
+    on_calender "*-*-* 02:03:00 UTC"
   end
 end
 
