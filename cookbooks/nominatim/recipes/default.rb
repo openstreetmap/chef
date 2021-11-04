@@ -334,7 +334,7 @@ else
   end
 
   service "nominatim-update-maintenance-trigger" do
-    action [:enable, :start]
+    action [:enable]
   end
 end
 
