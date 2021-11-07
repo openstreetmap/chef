@@ -57,6 +57,7 @@ package %w[
   autoconf
   automake
   libtool
+  libargon2-dev
   libfcgi-dev
   libxml2-dev
   libmemcached-dev
