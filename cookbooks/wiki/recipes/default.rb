@@ -60,6 +60,10 @@ mediawiki_site "wiki.openstreetmap.org" do
   # site_readonly "MAINTENANCE: WIKI READ-ONLY UNTIL Monday 16 May 2016 - 11:00am UTC/GMT."
 end
 
+mediawiki_extension "CategoryTree" do
+  site "wiki.openstreetmap.org"
+end
+
 mediawiki_extension "CodeEditor" do
   site "wiki.openstreetmap.org"
 end
