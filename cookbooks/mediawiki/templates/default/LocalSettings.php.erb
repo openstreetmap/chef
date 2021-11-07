@@ -186,16 +186,6 @@ $wgResourceLoaderMaxQueryLength = -1;
 # Only Allow Signed-in users to edit
 $wgGroupPermissions['*']['edit'] = false;
 
-# Only allow autoconfirmed for a few actions
-$wgGroupPermissions['user']['move'] = false;
-$wgGroupPermissions['user']['movefile'] = false;
-$wgGroupPermissions['user']['move-categorypages'] = false;
-$wgGroupPermissions['user']['upload'] = false;
-$wgGroupPermissions['autoconfirmed']['move'] = true;
-$wgGroupPermissions['autoconfirmed']['movefile'] = true;
-$wgGroupPermissions['autoconfirmed']['move-categorypages'] = true;
-$wgGroupPermissions['autoconfirmed']['upload'] = true;
-
 # Allow bureaucrat group access to oversight options
 $wgGroupPermissions['bureaucrat']['hideuser'] = true;
 $wgGroupPermissions['bureaucrat']['deletelogentry'] = true;
@@ -224,8 +214,8 @@ $wgGroupPermissions['sysop']['gadgets-definition-edit'] = true;
 $wgGroupPermissions['*']['createaccount'] = false;
 $wgGroupPermissions['user']['createaccount'] = true;
 <% end -%>
-<% if @mediawiki[:private_site] -%>
 
+<% if @mediawiki[:private_site] -%>
 # Disable reading by anonymous users
 $wgGroupPermissions['*']['read'] = false;
 
@@ -237,13 +227,6 @@ $wgGroupPermissions['*']['createaccount'] = false;
 
 # Restrict access to the upload directory
 $wgUploadPath = "$wgScriptPath/img_auth.php";
-<% end -%>
-
-<% if not(@mediawiki[:private_accounts]) and not(@mediawiki[:private_site]) -%>
-# user group "confirmed" with identical rights as "autoconfirmed", but assigned manually by sysops
-$wgGroupPermissions['confirmed'] = $wgGroupPermissions['autoconfirmed'];
-$wgAddGroups['sysop'][] = 'confirmed';
-$wgRemoveGroups['sysop'][] = 'confirmed';
 <% end -%>
 
 # Allow Subpages on Main Namespace
@@ -258,10 +241,6 @@ $wgEmailConfirmToEdit = true;
 
 # Extend autoblock period
 $wgAutoblockExpiry = 7776000; // 90 days
-
-# Autopromote users to autoconfirmed
-$wgAutoConfirmAge = 345600; // 4 days
-$wgAutoConfirmCount = 10;
 
 # Disable Hit Counter for Performance
 $wgDisableCounters = TRUE;
@@ -373,6 +352,41 @@ $wgSiteNotice = "<%= @mediawiki[:site_notice] %>";
 $wgReadOnly = "<%= @mediawiki[:site_readonly] %>";
 <% end -%>
 
+# load extensions
 <% Dir.glob("#{@directory}/LocalSettings.d/*.php") do |file| -%>
 <%= "require_once('#{file}');" %>
+<% end -%>
+
+<% if not(@mediawiki[:private_accounts]) and not(@mediawiki[:private_site]) -%>
+# require user confirmation for certain actions
+$wgGroupPermissions['user']['move'] = false;
+$wgGroupPermissions['user']['movefile'] = false;
+$wgGroupPermissions['user']['move-categorypages'] = false;
+$wgGroupPermissions['user']['upload'] = false;
+$wgGroupPermissions['autoconfirmed']['move'] = true;
+$wgGroupPermissions['autoconfirmed']['movefile'] = true;
+$wgGroupPermissions['autoconfirmed']['move-categorypages'] = true;
+$wgGroupPermissions['autoconfirmed']['upload'] = true;
+# Autopromote users to autoconfirmed
+$wgAutoConfirmAge = 345600; // 4 days
+$wgAutoConfirmCount = 10;
+
+# user group "confirmed" with identical rights as "autoconfirmed", but assigned manually by sysops
+$wgGroupPermissions['confirmed'] = $wgGroupPermissions['autoconfirmed'];
+$wgAddGroups['sysop'][] = 'confirmed';
+$wgRemoveGroups['sysop'][] = 'confirmed';
+<% end -%>
+
+<% if @mediawiki[:private_accounts] or @mediawiki[:private_site] -%>
+# disable automatic confirmation of users, grant all "autoconfirmed" rights to all users
+$wgAutoConfirmAge = 0;
+$wgAutoConfirmCount = 0;
+$wgGroupPermissions['user'] = array_merge( $wgGroupPermissions['user'], $wgGroupPermissions['autoconfirmed'] );
+
+unset( $wgGroupPermissions['autoconfirmed'] );
+unset( $wgRevokePermissions['autoconfirmed'] );
+unset( $wgAddGroups['autoconfirmed'] );
+unset( $wgRemoveGroups['autoconfirmed'] );
+unset( $wgGroupsAddToSelf['autoconfirmed'] );
+unset( $wgGroupsRemoveFromSelf['autoconfirmed'] );
 <% end -%>
