@@ -540,16 +540,14 @@ if File.exist?("/etc/mdadm/mdadm.conf")
   end
 end
 
-template "/etc/modules" do
-  source "modules.erb"
-  owner "root"
-  group "root"
-  mode "644"
+file "/etc/modules" do
+  action :delete
 end
 
-service "systemd-modules-load" do
-  action :nothing
-  subscribes :restart, "template[/etc/modules]"
+node[:hardware][:modules].each do |module_name|
+  kernel_module module_name do
+    action :install
+  end
 end
 
 if node[:hardware][:watchdog]
