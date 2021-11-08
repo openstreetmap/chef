@@ -32,6 +32,10 @@ end
 
 if node[:kernel][:modules].include?("ipmi_si")
   default[:hardware][:modules] |= ["ipmi_devintf"]
+
+  if node[:kernel][:modules].include?("acpi_power_meter")
+    default[:hardware][:modules] |= ["acpi_ipmi"]
+  end
 end
 
 if File.exist?("/proc/xen")
