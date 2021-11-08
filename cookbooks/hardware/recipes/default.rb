@@ -547,9 +547,9 @@ template "/etc/modules" do
   mode "644"
 end
 
-service "kmod" do
+service "systemd-modules-load" do
   action :nothing
-  subscribes :start, "template[/etc/modules]"
+  subscribes :restart, "template[/etc/modules]"
 end
 
 if node[:hardware][:watchdog]
