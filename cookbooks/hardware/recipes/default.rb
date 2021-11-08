@@ -550,6 +550,12 @@ node[:hardware][:modules].each do |module_name|
   end
 end
 
+node[:hardware][:blacklisted_modules].each do |module_name|
+  kernel_module module_name do
+    action :blacklist
+  end
+end
+
 if node[:hardware][:watchdog]
   package "watchdog"
 
