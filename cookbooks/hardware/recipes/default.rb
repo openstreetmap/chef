@@ -547,6 +547,7 @@ end
 node[:hardware][:modules].each do |module_name|
   kernel_module module_name do
     action :install
+    not_if { kitchen? }
   end
 end
 
