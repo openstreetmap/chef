@@ -27,6 +27,7 @@ default_attributes(
       "a.mx.osm.io"
     ],
     :queue_run_max => 5,
+    :smtp_accept_max => 200,
     :smarthost_name => "mail.openstreetmap.org",
     :smarthost_via => false,
     :dns_blacklists => ["zen.spamhaus.org"],

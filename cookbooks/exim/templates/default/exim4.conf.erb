@@ -364,6 +364,11 @@ queue_only = true
 queue_run_max = <%= node[:exim][:queue_run_max] %>
 
 
+# Maximum number of simultaneous SMTP connections
+
+smtp_accept_max = <%= node[:exim][:smtp_accept_max] %>
+
+
 
 ######################################################################
 #                       ACL CONFIGURATION                            #
