@@ -35,7 +35,7 @@ execute "geoipupdate" do
   command "geoipupdate"
   user "root"
   group "root"
-  not_if { ENV.key?("TEST_KITCHEN") || node[:geoipupdate][:editions].all? { |edition| ::File.exist?("/usr/share/GeoIP/#{edition}.mmdb") } }
+  not_if { kitchen? || node[:geoipupdate][:editions].all? { |edition| ::File.exist?("/usr/share/GeoIP/#{edition}.mmdb") } }
 end
 
 systemd_service "geoipupdate" do

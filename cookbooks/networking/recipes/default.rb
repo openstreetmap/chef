@@ -295,7 +295,7 @@ if node[:networking][:wireguard][:enabled]
       action :nothing
       subscribes :restart, "template[/etc/systemd/network/wireguard.netdev]"
       subscribes :restart, "template[/etc/systemd/network/wireguard.network]"
-      not_if { ENV.key?("TEST_KITCHEN") }
+      not_if { kitchen? }
     end
   else
     execute "networkctl-delete-wg0" do
@@ -310,7 +310,7 @@ if node[:networking][:wireguard][:enabled]
       command "networkctl reload"
       subscribes :run, "template[/etc/systemd/network/wireguard.netdev]"
       subscribes :run, "template[/etc/systemd/network/wireguard.network]"
-      not_if { ENV.key?("TEST_KITCHEN") }
+      not_if { kitchen? }
     end
   end
 end
@@ -323,7 +323,7 @@ end
 execute "hostnamectl-set-hostname" do
   command "hostnamectl set-hostname #{node[:networking][:hostname]}"
   notifies :reload, "ohai[reload-hostname]"
-  not_if { ENV.key?("TEST_KITCHEN") || node[:hostnamectl][:static_hostname] == node[:networking][:hostname] }
+  not_if { kitchen? || node[:hostnamectl][:static_hostname] == node[:networking][:hostname] }
 end
 
 template "/etc/hosts" do
