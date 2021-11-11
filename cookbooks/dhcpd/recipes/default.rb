@@ -29,7 +29,7 @@ service "tftpd-hpa" do
   supports :status => true, :restart => true
 end
 
-remote_file "/var/lib/tftpboot/netboot.xyz.efi" do
+remote_file "/srv/tftp/netboot.xyz.efi" do
   action :create
   source "https://boot.netboot.xyz/ipxe/netboot.xyz.efi"
   owner "root"
@@ -37,7 +37,7 @@ remote_file "/var/lib/tftpboot/netboot.xyz.efi" do
   mode "644"
 end
 
-remote_file "/var/lib/tftpboot/netboot.xyz.kpxe" do
+remote_file "/srv/tftp/netboot.xyz.kpxe" do
   action :create
   source "https://boot.netboot.xyz/ipxe/netboot.xyz.kpxe"
   owner "root"
