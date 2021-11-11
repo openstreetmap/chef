@@ -1,5 +1,7 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
+option architecture-type code 93 = unsigned integer 16;
+
 default-lease-time 600;
 max-lease-time 7200;
 <% node.interfaces(:role => :internal).each do |interface| -%>
@@ -12,6 +14,17 @@ subnet <%= interface[:network] %> netmask <%= interface[:netmask] %> {
   option domain-name "<%= @domain %>";
   option domain-name-servers <%= interface[:gateway] %>;
   option ntp-servers <%= node[:ntp][:servers].first %>;
+
+  class "pxeclients" {
+    match if substring (option vendor-class-identifier, 0, 9) = "PXEClient";
+    next-server <%= interface[:gateway] %>;
+
+    if option architecture-type = 00:07 {
+      filename "netboot.xyz.efi";
+    } else {
+      filename "netboot.xyz.kpxe";
+    }
+  }
 }
 <% end -%>
 
