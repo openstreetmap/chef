@@ -10,7 +10,7 @@ default_attributes(
         :family => :inet,
         :address => "10.0.48.17",
         :bond => {
-          :slaves => %w[eno1 eno2 eno3 eno4]
+          :slaves => %w[enp25s0f0 enp25s0f1]
         }
       },
       :external_ipv4 => {
