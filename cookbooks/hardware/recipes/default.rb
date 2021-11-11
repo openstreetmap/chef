@@ -353,6 +353,10 @@ nvmes = if node[:hardware][:pci]
           []
         end
 
+unless nvmes.empty?
+  package "nvme-cli"
+end
+
 intel_nvmes = nvmes.select { |pci| pci[:vendor_name] == "Intel Corporation" }
 
 if !intel_ssds.empty? || !intel_nvmes.empty?
