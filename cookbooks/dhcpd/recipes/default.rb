@@ -19,7 +19,31 @@
 
 include_recipe "networking"
 
-package "isc-dhcp-server"
+package %w[
+  isc-dhcp-server
+  tftpd-hpa
+]
+
+service "tftpd-hpa" do
+  action [:enable, :start]
+  supports :status => true, :restart => true
+end
+
+remote_file "/srv/tftp/netboot.xyz.efi" do
+  action :create
+  source "https://boot.netboot.xyz/ipxe/netboot.xyz.efi"
+  owner "root"
+  group "root"
+  mode "644"
+end
+
+remote_file "/srv/tftp/netboot.xyz.kpxe" do
+  action :create
+  source "https://boot.netboot.xyz/ipxe/netboot.xyz.kpxe"
+  owner "root"
+  group "root"
+  mode "644"
+end
 
 domain = "#{node[:networking][:roles][:external][:zone]}.openstreetmap.org"
 
