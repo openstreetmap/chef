@@ -6,7 +6,7 @@ Ohai.plugin(:Lldp) do
   collect_data(:default) do
     lldp Mash.new
 
-    json = JSON.parse(%x(/sbin/lldpctl -f json))
+    json = JSON.parse(%x(/usr/sbin/lldpctl -f json))
 
     json["lldp"]["interface"].each do |interface|
       interface.each do |name, details|
