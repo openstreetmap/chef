@@ -199,11 +199,15 @@ service "irqbalance" do
   supports :status => false, :restart => true, :reload => false
 end
 
-# Link Layer Discovery Protocol Daemon
 package "lldpd"
+
 service "lldpd" do
   action [:start, :enable]
   supports :status => true, :restart => true, :reload => true
+end
+
+ohai_plugin "lldp" do
+  template "lldp.rb.erb"
 end
 
 tools_packages = []

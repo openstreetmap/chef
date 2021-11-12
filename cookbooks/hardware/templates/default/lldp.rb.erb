@@ -1,0 +1,17 @@
+require "json"
+
+Ohai.plugin(:Lldp) do
+  provides "lldp"
+
+  collect_data(:default) do
+    lldp Mash.new
+
+    json = JSON.parse(%x(/sbin/lldpctl -f json))
+
+    json["lldp"].each do |key, value|
+      lldp[key] = value
+    end
+
+    lldp
+  end
+end
