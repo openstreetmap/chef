@@ -8,8 +8,10 @@ Ohai.plugin(:Lldp) do
 
     json = JSON.parse(%x(/sbin/lldpctl -f json))
 
-    json["lldp"].each do |key, value|
-      lldp[key] = value
+    json["lldp"]["interface"].each do |interface|
+      interface.each do |name, details|
+        lldp[name] = details
+      end
     end
 
     lldp
