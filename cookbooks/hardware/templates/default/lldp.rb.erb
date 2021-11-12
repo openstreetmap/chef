@@ -8,7 +8,13 @@ Ohai.plugin(:Lldp) do
 
     json = JSON.parse(%x(/usr/sbin/lldpctl -f json))
 
-    json["lldp"]["interface"].each do |interface|
+    interfaces = if json["lldp"]["interface"].is_a?(Array)
+                   json["lldp"]["interface"]
+                 else
+                   [json["lldp"]["interface"]]
+                 end
+
+    interfaces.each do |interface|
       interface.each do |name, details|
         lldp[name] = details
       end
