@@ -204,6 +204,20 @@ groups:
           alertgroup: "{{ $labels.instance }}"
         annotations:
           queries: "{{ $value }}"
+  - name: smart
+    rules:
+      - alert: smart failure
+        expr: smart_health_status == 0
+        for: 60m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+      - alert: smart ssd wearout approaching
+        expr: smart_percentage_used >= 90
+        for: 60m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+        annotations:
+          percentage_used: "{{ $value | humanizePercentage }}"
   - name: ssl
     rules:
       - alert: ssl certificate probe failed
