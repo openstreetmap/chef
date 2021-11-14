@@ -31,6 +31,26 @@ groups:
           alertgroup: database
         annotations:
           delay: "{{ $value | humanizeDuration }}"
+  - name: filesystem
+    rules:
+      - alert: filesystem low on space
+        expr: node_filesystem_avail_bytes / node_filesystem_size_bytes < 0.05
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+        annotations:
+          percentage_free: "{{ $value | humanizePercentage }}"
+          free_bytes: "{{ with printf \"node_filesystem_avail_bytes{instance='%s',mountpoint='%s'}\" $labels.instance $labels.mountpoint | query }}{{ . | first | value | humanize1024 }}bytes{{end}}"
+          total_total: "{{ with printf \"node_filesystem_size_bytes{instance='%s',mountpoint='%s'}\" $labels.instance $labels.mountpoint | query }}{{ . | first | value | humanize1024 }}bytes{{end}}"
+      - alert: filesystem low on inodes
+        expr: node_filesystem_files_free / node_filesystem_files < 0.1
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+        annotations:
+          percentage_free: "{{ $value | humanizePercentage }}"
+          free_inodes: "{{ with printf \"node_filesystem_files_free{instance='%s',mountpoint='%s'}\" $labels.instance $labels.mountpoint | query }}{{ . | first | value }}{{end}}"
+          total_inodes: "{{ with printf \"node_filesystem_files{instance='%s',mountpoint='%s'}\" $labels.instance $labels.mountpoint | query }}{{ . | first | value }}{{end}}"
   - name: hwmon
     rules:
       - alert: hwmon fan alarm
