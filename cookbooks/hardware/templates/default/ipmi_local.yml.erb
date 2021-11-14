@@ -7,6 +7,11 @@ modules:
       - ipmi
       - dcmi
       - chassis
+    custom_args:
+      ipmi:
+<% node[:hardware][:ipmi][:custom_args].each do |arg| -%>
+        - <%= arg %>
+<% end -%>
     exclude_sensor_ids:
 <% node[:hardware][:ipmi][:excluded_sensors].each do |sensor| -%>
       - <%= sensor %>

@@ -4,6 +4,7 @@ default[:hardware][:grub][:cmdline] = %w[nomodeset]
 default[:hardware][:sensors] = {}
 default[:hardware][:hwmon] = {}
 default[:hardware][:ipmi][:excluded_sensors] = []
+default[:hardware][:ipmi][:custom_args] = []
 
 if node[:dmi] && node[:dmi][:system]
   case node[:dmi][:system][:manufacturer]
@@ -13,6 +14,11 @@ if node[:dmi] && node[:dmi][:system]
     case node[:dmi][:system][:product_name]
     when "ProLiant DL360 G6", "ProLiant DL360 G7", "ProLiant SE326M1R2"
       default[:hardware][:sensors][:"power_meter-*"][:power][:power1] = { :ignore => true }
+    end
+
+    case node[:dmi][:system][:product_name]
+    when "ProLiant DL360 G6", "ProLiant DL360 G7", "ProLiant SE326M1R2", "ProLiant DL360e Gen8", "ProLiant DL360p Gen8"
+      default[:hardware][:ipmi][:custom_args] |= ["--workaround-flags=discretereading"]
     end
   end
 end
