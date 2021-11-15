@@ -262,6 +262,13 @@ groups:
         for: 0m
         labels:
           alertgroup: ssl
+  - name: systemd
+    rules:
+      - alert: systemd failed service
+        expr: node_systemd_unit_state{state="failed"} == 1
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
   - name: tile
     rules:
       - alert: renderd replication delay
