@@ -15,9 +15,12 @@ default_attributes(
         :transfer_logging => false,
         :hosts_allow => [
           "193.60.236.0/24",                     # ucl external
-          "10.0.48.0/20",                        # equinix internal
-          "130.117.76.0/27",                     # equinix external
-          "2001:978:2:2C::172:0/112",            # equinix external
+          "10.0.48.0/20",                        # amsterdam internal
+          "130.117.76.0/27",                     # amsterdam external
+          "2001:978:2:2C::172:0/112",            # amsterdam external
+          "10.0.64.0/20",                        # dublin internal
+          "184.104.226.96/27",                   # dublin external
+          "2001:470:1:b3b::/64",                 # dublin external
           "10.0.32.0/20",                        # bytemark internal
           "89.16.162.16/28",                     # bytemark external
           "2001:41c9:2:d6::/64",                 # bytemark external
