@@ -60,3 +60,7 @@ service "isc-dhcp-server" do
   supports :status => true, :restart => true
   subscribes :restart, "template[/etc/dhcp/dhcpd.conf]"
 end
+
+service "isc-dhcp-server6" do
+  action [:disable, :stop]
+end
