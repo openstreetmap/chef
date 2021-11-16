@@ -119,6 +119,16 @@ groups:
           active: "{{ with printf \"node_md_disks{instance='%s',device='%s',state='active'}\" $labels.instance $labels.device | query }}{{ . | first | value | humanize }} disks{{end}}"
           failed: "{{ with printf \"node_md_disks{instance='%s',device='%s',state='failed'}\" $labels.instance $labels.device | query }}{{ . | first | value | humanize }} disks{{end}}"
           spare: "{{ with printf \"node_md_disks{instance='%s',device='%s',state='spare'}\" $labels.instance $labels.device | query }}{{ . | first | value | humanize }} disks{{end}}"
+      - alert: mdadm array degraded
+        expr: sum (node_md_disks{state="active"}) without (state) < node_md_disks_required
+        for: 0m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+        annotations:
+          required: "{{ with printf \"node_md_disks_required{instance='%s',device='%s'}\" $labels.instance $labels.device | query }}{{ . | first | value | humanize }} disks{{end}}"
+          active: "{{ with printf \"node_md_disks{instance='%s',device='%s',state='active'}\" $labels.instance $labels.device | query }}{{ . | first | value | humanize }} disks{{end}}"
+          failed: "{{ with printf \"node_md_disks{instance='%s',device='%s',state='failed'}\" $labels.instance $labels.device | query }}{{ . | first | value | humanize }} disks{{end}}"
+          spare: "{{ with printf \"node_md_disks{instance='%s',device='%s',state='spare'}\" $labels.instance $labels.device | query }}{{ . | first | value | humanize }} disks{{end}}"
       - alert: mdadm disk failed
         expr: node_md_disks{state="failed"} > 0
         for: 0m
@@ -299,3 +309,12 @@ groups:
           alertgroup: "{{ $labels.instance }}"
         annotations:
           skew: "{{ with printf \"node_timex_offset_seconds{instance='%s'}\" $labels.instance | query }} {{ . | humanizeDuration }}{{ end }}"
+  - name: web
+    rules:
+      - alert: web error rate
+        expr: sum(rate(api_call_count_total{status=~"5.*"}[5m])) by (instance) / sum(rate(api_call_count_total[5m])) by (instance) > 0.002
+        for: 5m
+        labels:
+          alertgroup: web
+        annotations:
+          error_rate: "{{ $value | humanizePercentage }}"
