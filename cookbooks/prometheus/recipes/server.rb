@@ -92,12 +92,6 @@ systemd_service "promscale" do
   no_new_privileges true
 end
 
-service "promscale" do
-  action [:enable, :start]
-  subscribes :restart, "remote_file[/opt/promscale/bin/promscale]"
-  subscribes :restart, "systemd_service[promscale]"
-end
-
 systemd_service "promscale-maintenance" do
   description "Promscale Maintenance"
   type "simple"
@@ -115,8 +109,24 @@ systemd_timer "promscale-maintenance" do
   on_unit_inactive_sec 1800
 end
 
-service "promscale-maintenance.timer" do
-  action [:enable, :start]
+if node[:prometheus][:promscale]
+  service "promscale" do
+    action [:enable, :start]
+    subscribes :restart, "remote_file[/opt/promscale/bin/promscale]"
+    subscribes :restart, "systemd_service[promscale]"
+  end
+
+  service "promscale-maintenance.timer" do
+    action [:enable, :start]
+  end
+else
+  service "promscale" do
+    action [:disable, :stop]
+  end
+
+  service "promscale-maintenance.timer" do
+    action [:disable, :stop]
+  end
 end
 
 search(:node, "roles:gateway") do |gateway|
