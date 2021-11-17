@@ -19,6 +19,19 @@ default_attributes(
       :http_connection_limit => 10
     }
   },
+  :prometheus => {
+    :files => %w[
+      /store/planet/notes/planet-notes-latest.osn.bz2
+      /store/planet/pbf/planet-latest.osm.pbf
+      /store/planet/planet/changesets-latest.osm.bz2
+      /store/planet/planet/discussions-latest.osm.bz2
+      /store/planet/planet/planet-latest.osm.bz2
+      /store/planet/replication/changesets/state.yaml
+      /store/planet/replication/day/state.txt
+      /store/planet/replication/hour/state.txt
+      /store/planet/replication/minute/state.txt
+    ]
+  },
   :rsyncd => {
     :modules => {
       :planet => {
