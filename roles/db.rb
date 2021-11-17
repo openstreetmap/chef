@@ -51,7 +51,8 @@ default_attributes(
         :log_min_duration_statement => "1000",
         :late_authentication_rules => [
           { :address => "10.0.32.0/20" },
-          { :address => "10.0.48.0/20" }
+          { :address => "10.0.48.0/20" },
+          { :address => "10.0.64.0/20" }
         ]
       }
     }
