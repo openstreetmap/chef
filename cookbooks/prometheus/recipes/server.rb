@@ -32,6 +32,53 @@ prometheus_exporter "fastly" do
   environment "FASTLY_API_TOKEN" => tokens["fastly"]
 end
 
+cache_dir = Chef::Config[:file_cache_path]
+
+prometheus_version = "2.31.1"
+alertmanager_version = "0.23.0"
+
+directory "/opt/prometheus-server" do
+  owner "root"
+  group "root"
+  mode "755"
+end
+
+remote_file "#{cache_dir}/prometheus.linux-amd64.tar.gz" do
+  source "https://github.com/prometheus/prometheus/releases/download/v#{prometheus_version}/prometheus-#{prometheus_version}.linux-amd64.tar.gz"
+  owner "root"
+  group "root"
+  mode "644"
+  backup false
+end
+
+archive_file "#{cache_dir}/prometheus.linux-amd64.tar.gz" do
+  action :nothing
+  destination "/opt/prometheus-server/prometheus"
+  overwrite true
+  strip_components 1
+  owner "root"
+  group "root"
+  subscribes :extract, "remote_file[#{cache_dir}/prometheus.linux-amd64.tar.gz]"
+end
+
+remote_file "#{cache_dir}/alertmanager.linux-amd64.tar.gz" do
+  source "https://github.com/prometheus/alertmanager/releases/download/v#{alertmanager_version}/alertmanager-#{alertmanager_version}.linux-amd64.tar.gz"
+  owner "root"
+  group "root"
+  mode "644"
+  backup false
+end
+
+archive_file "#{cache_dir}/alertmanager.linux-amd64.tar.gz" do
+  action :nothing
+  destination "/opt/prometheus-server/alertmanager"
+  overwrite true
+  strip_components 1
+  owner "root"
+  group "root"
+  subscribes :extract, "remote_file[#{cache_dir}/alertmanager.linux-amd64.tar.gz]"
+end
+
 package %w[
   prometheus
   prometheus-alertmanager
@@ -209,11 +256,11 @@ prometheus_exporter "ssl" do
   register_target false
 end
 
-template "/etc/default/prometheus" do
-  source "default.prometheus.erb"
-  owner "root"
-  group "root"
-  mode "644"
+systemd_service "prometheus-executable" do
+  service "prometheus"
+  dropin "executable"
+  exec_start "/opt/prometheus-server/prometheus/prometheus --config.file=/etc/prometheus/prometheus.yml --web.external-url=https://prometheus.openstreetmap.org/prometheus --storage.tsdb.path=/var/lib/prometheus/metrics2"
+  notifies :restart, "service[prometheus]"
 end
 
 template "/etc/prometheus/prometheus.yml" do
@@ -233,16 +280,15 @@ end
 
 service "prometheus" do
   action [:enable, :start]
-  subscribes :restart, "template[/etc/default/prometheus]"
   subscribes :reload, "template[/etc/prometheus/prometheus.yml]"
   subscribes :reload, "template[/etc/prometheus/alert_rules.yml]"
 end
 
-template "/etc/default/prometheus-alertmanager" do
-  source "default.alertmanager.erb"
-  owner "root"
-  group "root"
-  mode "644"
+systemd_service "prometheus-alertmanager-executable" do
+  service "prometheus-alertmanager"
+  dropin "executable"
+  exec_start "/opt/prometheus-server/alertmanager/alertmanager --config.file=/etc/prometheus/alertmanager.yml --storage.path=/var/lib/prometheus/alertmanager --web.external-url=https://prometheus.openstreetmap.org/alertmanager"
+  notifies :restart, "service[prometheus-alertmanager]"
 end
 
 template "/etc/prometheus/alertmanager.yml" do
@@ -254,7 +300,6 @@ end
 
 service "prometheus-alertmanager" do
   action [:enable, :start]
-  subscribes :restart, "template[/etc/default/prometheus-alertmanager]"
   subscribes :reload, "template[/etc/prometheus/alertmanager.yml]"
 end
 
