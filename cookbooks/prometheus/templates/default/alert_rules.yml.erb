@@ -199,6 +199,50 @@ groups:
           alertgroup: "{{ $labels.instance }}"
         annotations:
           entries_used: "{{ $value | humanizePercentage }}"
+  - name: planet
+    rules:
+      - alert: planet dump overdue
+        expr: time() - file_stat_modif_time_seconds{path=~"/store/planet/(pbf|planet)/.*"} > 7 * 86400 and ignoring (job, name, path) chef_role{name="planetdump"} == 1
+        for: 24h
+        labels:
+          alertgroup: planet
+        annotations:
+          overdue_by: "{{ $value | humanizeDuration }}"
+      - alert: notes dump overdue
+        expr: time() - file_stat_modif_time_seconds{path=~"/store/planet/notes/.*"} > 86400 and ignoring (job, name, path) chef_role{name="planetdump"} == 1
+        for: 6h
+        labels:
+          alertgroup: planet
+        annotations:
+          overdue_by: "{{ $value | humanizeDuration }}"
+      - alert: daily replication feed delayed
+        expr: time() - file_stat_modif_time_seconds{path=~"/store/planet/replication/day/.*"} > 86400 and ignoring (job, name, path) chef_role{name="planetdump"} == 1
+        for: 3h
+        labels:
+          alertgroup: planet
+        annotations:
+          delayed_by: "{{ $value | humanizeDuration }}"
+      - alert: hourly replication feed delayed
+        expr: time() - file_stat_modif_time_seconds{path=~"/store/planet/replication/hour/.*"} > 3600 and ignoring (job, name, path) chef_role{name="planetdump"} == 1
+        for: 30m
+        labels:
+          alertgroup: planet
+        annotations:
+          delayed_by: "{{ $value | humanizeDuration }}"
+      - alert: minutely replication feed delayed
+        expr: time() - file_stat_modif_time_seconds{path=~"/store/planet/replication/minute/.*"} > 60 and ignoring (job, name, path) chef_role{name="planetdump"} == 1
+        for: 5m
+        labels:
+          alertgroup: planet
+        annotations:
+          delayed_by: "{{ $value | humanizeDuration }}"
+      - alert: changeset replication feed delayed
+        expr: time() - file_stat_modif_time_seconds{path=~"/store/planet/replication/changesets/.*"} > 60 and ignoring (job, name, path) chef_role{name="planetdump"} == 1
+        for: 5m
+        labels:
+          alertgroup: planet
+        annotations:
+          delayed_by: "{{ $value | humanizeDuration }}"
   - name: postgresql
     rules:
       - alert: postgresql down
