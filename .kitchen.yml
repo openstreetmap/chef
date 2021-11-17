@@ -283,6 +283,9 @@ suites:
   - name: prometheus-server
     run_list:
       - recipe[prometheus::server]
+    attributes:
+      prometheus:
+        promscale: true
   - name: python
     run_list:
       - recipe[python::default]
