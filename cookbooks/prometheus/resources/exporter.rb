@@ -99,7 +99,7 @@ action_class do
   end
 
   def service_exists?
-    File.exist?("/etc/systemd/system/#{service_name}.service")
+    ::File.exist?("/etc/systemd/system/#{service_name}.service")
   end
 
   def executable_path
