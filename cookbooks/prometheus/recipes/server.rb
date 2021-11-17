@@ -24,6 +24,7 @@ include_recipe "timescaledb"
 
 passwords = data_bag_item("prometheus", "passwords")
 tokens = data_bag_item("prometheus", "tokens")
+admins = data_bag_item("apache", "admins")
 
 prometheus_exporter "fastly" do
   port 8080
@@ -335,6 +336,7 @@ end
 
 apache_site "prometheus.openstreetmap.org" do
   template "apache.erb"
+  variables :admin_hosts => admins["hosts"]
 end
 
 template "/etc/cron.daily/prometheus-backup" do

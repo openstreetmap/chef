@@ -28,4 +28,10 @@
 	ProxyPass /alertmanager http://localhost:9093/alertmanager
 	ProxyPass / http://localhost:3000/
 	ProxyPreserveHost on
+
+	<Location /alertmanager>
+<% @admin_hosts.each do |host| -%>
+		Require ip <%= host %>
+<% end -%>
+	</Location>
 </VirtualHost>
