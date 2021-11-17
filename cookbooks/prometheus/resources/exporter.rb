@@ -103,7 +103,7 @@ action_class do
   end
 
   def executable_path
-    "/opt/prometheus/exporters/#{new_resource.exporter}/#{new_resource.exporter}_exporter"
+    "/opt/prometheus-exporters/exporters/#{new_resource.exporter}/#{new_resource.exporter}_exporter"
   end
 
   def executable_options
@@ -129,5 +129,5 @@ action_class do
 end
 
 def after_created
-  subscribes :restart, "git[/opt/prometheus]"
+  subscribes :restart, "git[/opt/prometheus-exporters]"
 end

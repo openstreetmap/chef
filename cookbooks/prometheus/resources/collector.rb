@@ -78,7 +78,7 @@ action_class do
   end
 
   def executable_path
-    "/opt/prometheus/collectors/#{new_resource.collector}/#{new_resource.collector}_collector"
+    "/opt/prometheus-exporters/collectors/#{new_resource.collector}/#{new_resource.collector}_collector"
   end
 
   def executable_options

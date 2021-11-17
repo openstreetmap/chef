@@ -43,14 +43,10 @@ end
 
 directory "/opt/prometheus" do
   action :delete
-  owner "root"
-  group "root"
-  mode "755"
   recursive true
-  not_if { ::Dir.exist?("/opt/prometheus/.git") }
 end
 
-git "/opt/prometheus" do
+git "/opt/prometheus-exporters" do
   action :sync
   repository "https://github.com/openstreetmap/prometheus-exporters.git"
   revision "main"
@@ -117,7 +113,7 @@ end
 unless node[:prometheus][:snmp].empty?
   prometheus_exporter "snmp" do
     port 9116
-    options "--config.file=/opt/prometheus/exporters/snmp/snmp.yml"
+    options "--config.file=/opt/prometheus-exporters/exporters/snmp/snmp.yml"
     register_target false
   end
 end
