@@ -1,0 +1,6 @@
+exporter:
+  files:
+    - patterns:
+<% node[:prometheus][:files].each do |file| -%>
+        - <%= file %>
+<% end -%>

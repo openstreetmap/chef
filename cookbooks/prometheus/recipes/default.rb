@@ -121,3 +121,26 @@ unless node[:prometheus][:snmp].empty?
     register_target false
   end
 end
+
+if node[:prometheus][:files].empty?
+  prometheus_exporter "filestat" do
+    action :delete
+  end
+
+  file "/etc/prometheus/filestat.yml" do
+    action :delete
+  end
+else
+  template "/etc/prometheus/filestat.yml" do
+    source "filestat.yml.erb"
+    owner "root"
+    group "root"
+    mode "644"
+  end
+
+  prometheus_exporter "filestat" do
+    port 9943
+    options "--config.file=/etc/prometheus/filestat.yml"
+    subscribes :restart, "template[/etc/prometheus/filestat.yml]"
+  end
+end
