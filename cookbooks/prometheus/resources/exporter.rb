@@ -85,6 +85,7 @@ end
 action :restart do
   service service_name do
     action :restart
+    only_if { service_exists? }
   end
 end
 
@@ -95,6 +96,10 @@ action_class do
     else
       "prometheus-#{new_resource.exporter}-exporter"
     end
+  end
+
+  def service_exists?
+    File.exist?("/etc/systemd/system/#{service_name}.service")
   end
 
   def executable_path
