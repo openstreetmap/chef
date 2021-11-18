@@ -74,20 +74,6 @@ remote_directory "/usr/local/bin" do
   files_mode "755"
 end
 
-template "/usr/local/bin/replicate-minute" do
-  source "replicate-minute.erb"
-  owner "root"
-  group "root"
-  mode "755"
-end
-
-template "/usr/local/bin/replicate-cleanup" do
-  source "replicate-cleanup.erb"
-  owner "root"
-  group "root"
-  mode "755"
-end
-
 template "/usr/local/bin/users-agreed" do
   source "users-agreed.erb"
   owner "root"
