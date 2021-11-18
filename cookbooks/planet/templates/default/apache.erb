@@ -26,12 +26,6 @@
                 Require all granted
         </Directory>
 
-        ProxyPass /replication/streaming http://127.0.0.1:8080
-
-        <Location /replication/steaming>
-                Require all granted
-        </Location>
-
         Redirect /pbf-experimental/	/pbf/
 
         <IfModule mod_headers.c>
