@@ -1,0 +1,5 @@
+#!/bin/sh
+
+set -e
+
+find /var/lib/replication/minute -name *.done -mtime +14 -print0 | xargs -0r rm

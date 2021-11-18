@@ -81,6 +81,13 @@ template "/usr/local/bin/replicate-minute" do
   mode "755"
 end
 
+template "/usr/local/bin/replicate-cleanup" do
+  source "replicate-cleanup.erb"
+  owner "root"
+  group "root"
+  mode "755"
+end
+
 template "/usr/local/bin/users-agreed" do
   source "users-agreed.erb"
   owner "root"
@@ -325,6 +332,27 @@ systemd_timer "replication-daily" do
   on_calendar "*-*-* *:02/15:00"
 end
 
+## Replication cleanup
+
+systemd_service "replication-cleanup" do
+  description "Cleanup replication"
+  user "planet"
+  exec_start "/usr/local/bin/replicate-cleanup"
+  private_tmp true
+  private_devices true
+  private_network true
+  protect_system "full"
+  protect_home true
+  no_new_privileges true
+end
+
+systemd_timer "replication-cleanup" do
+  description "Cleanup replication"
+  on_boot_sec 60
+  on_unit_active_sec 86400
+  accuracy_sec 1800
+end
+
 ## Enable/disable feeds
 
 if node[:planet][:replication] == "enabled"
@@ -361,6 +389,10 @@ if node[:planet][:replication] == "enabled"
   service "replication-daily.timer" do
     action [:enable, :start]
   end
+
+  service "replication-cleanup.timer" do
+    action [:enable, :start]
+  end
 else
   cron_d "users-agreed" do
     action :delete
@@ -383,6 +415,10 @@ else
   end
 
   service "replication-daily.timer" do
+    action [:stop, :disable]
+  end
+
+  service "replication-cleanup.timer" do
     action [:stop, :disable]
   end
 end
