@@ -81,7 +81,6 @@ jobs:
           - serverinfo
           - snmpd
           - spamassassin
-          - squid
           - ssl
           - stateofthemap
           - subversion

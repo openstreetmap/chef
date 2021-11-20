@@ -301,9 +301,6 @@ suites:
   - name: spamassassin
     run_list:
       - recipe[spamassassin::default]
-  - name: squid
-    run_list:
-      - recipe[squid::default]
   - name: ssl
     run_list:
       - recipe[ssl::default]
