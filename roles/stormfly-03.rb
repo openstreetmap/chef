@@ -21,9 +21,6 @@ default_attributes(
       }
     },
     :private_address => "10.0.16.200"
-  },
-  :tilecache => {
-    :tile_parent => "corvallis.render.openstreetmap.org"
   }
 )
 

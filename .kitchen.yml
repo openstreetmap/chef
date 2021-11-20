@@ -335,9 +335,6 @@ suites:
   - name: tile
     run_list:
       - recipe[tile::default]
-  - name: tilecache
-    run_list:
-      - recipe[tilecache::default]
   - name: tilelog
     run_list:
       - recipe[tilelog::default]

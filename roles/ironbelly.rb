@@ -110,8 +110,7 @@ default_attributes(
           "2001:41c9:2:d6::/64",      # bytemark external
           "127.0.0.0/8",              # localhost
           "::1"                       # localhost
-        ],
-        :nodes_allow => "roles:tilecache"
+        ]
       }
     }
   }

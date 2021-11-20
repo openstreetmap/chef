@@ -91,7 +91,6 @@ jobs:
           - sysfs
           - taginfo
           - tile
-          - tilecache
           - tilelog
           - tools
           - trac
