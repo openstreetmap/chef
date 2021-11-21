@@ -37,6 +37,7 @@ cache_dir = Chef::Config[:file_cache_path]
 
 prometheus_version = "2.31.1"
 alertmanager_version = "0.23.0"
+karma_version = "0.93"
 
 directory "/opt/prometheus-server" do
   owner "root"
@@ -78,6 +79,23 @@ archive_file "#{cache_dir}/alertmanager.linux-amd64.tar.gz" do
   owner "root"
   group "root"
   subscribes :extract, "remote_file[#{cache_dir}/alertmanager.linux-amd64.tar.gz]"
+end
+
+remote_file "#{cache_dir}/karma-linux-amd64.tar.gz" do
+  source "https://github.com/prymitive/karma/releases/download/v#{karma_version}/karma-linux-amd64.tar.gz"
+  owner "root"
+  group "root"
+  mode "644"
+  backup false
+end
+
+archive_file "#{cache_dir}/karma-linux-amd64.tar.gz" do
+  action :nothing
+  destination "/opt/prometheus-server/karma"
+  overwrite true
+  owner "root"
+  group "root"
+  subscribes :extract, "remote_file[#{cache_dir}/karma-linux-amd64.tar.gz]"
 end
 
 package %w[
@@ -309,6 +327,30 @@ template "/etc/prometheus/amtool.yml" do
   owner "root"
   group "root"
   mode "644"
+end
+
+template "/etc/prometheus/karma.yml" do
+  source "karma.yml.erb"
+  owner "root"
+  group "root"
+  mode "644"
+end
+
+systemd_service "prometheus-karma" do
+  description "Alert dashboard for Prometheus Alertmanager"
+  user "prometheus"
+  exec_start "/opt/prometheus-server/karma/karma-linux-amd64 --config.file=/etc/prometheus/karma.yml"
+  private_tmp true
+  private_devices true
+  protect_system "full"
+  protect_home true
+  no_new_privileges true
+  restart "on-failure"
+end
+
+service "prometheus-karma" do
+  action [:enable, :start]
+  subscribes :reload, "template[/etc/prometheus/karma.yml]"
 end
 
 package "grafana-enterprise"

@@ -1,0 +1,21 @@
+karma:
+  name: OpenStreetMap
+alertmanager:
+  interval: 1m
+  servers:
+    - name: openstreetmap
+      uri: http://127.0.0.1:9093/alertmanager/
+      external_uri: https://prometheus.openstreetmap.org/alertmanager/
+      proxy: true
+listen:
+  port: 8081
+  prefix: /karma/
+filters:
+  default:
+    - "@state=active"
+labels:
+  color:
+    static:
+      - instance
+  strip:
+    - "@cluster"

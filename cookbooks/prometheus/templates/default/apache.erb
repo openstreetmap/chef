@@ -26,10 +26,17 @@
 	ProxyPass /prometheus http://localhost:9090/prometheus
 	Redirect 403 /alertmanager/api
 	ProxyPass /alertmanager http://localhost:9093/alertmanager
+	ProxyPass /karma http://localhost:8081/karma
 	ProxyPass / http://localhost:3000/
 	ProxyPreserveHost on
 
 	<Location /alertmanager>
+<% @admin_hosts.each do |host| -%>
+		Require ip <%= host %>
+<% end -%>
+	</Location>
+
+	<Location /karma>
 <% @admin_hosts.each do |host| -%>
 		Require ip <%= host %>
 <% end -%>
