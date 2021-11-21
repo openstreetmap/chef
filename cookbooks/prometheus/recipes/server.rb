@@ -301,6 +301,7 @@ service "prometheus" do
   action [:enable, :start]
   subscribes :reload, "template[/etc/prometheus/prometheus.yml]"
   subscribes :reload, "template[/etc/prometheus/alert_rules.yml]"
+  subscribes :restart, "archive_file[#{cache_dir}/prometheus.linux-amd64.tar.gz]"
 end
 
 systemd_service "prometheus-alertmanager-executable" do
@@ -320,6 +321,7 @@ end
 service "prometheus-alertmanager" do
   action [:enable, :start]
   subscribes :reload, "template[/etc/prometheus/alertmanager.yml]"
+  subscribes :restart, "archive_file[#{cache_dir}/alertmanager.linux-amd64.tar.gz]"
 end
 
 template "/etc/prometheus/amtool.yml" do
@@ -351,6 +353,7 @@ end
 service "prometheus-karma" do
   action [:enable, :start]
   subscribes :reload, "template[/etc/prometheus/karma.yml]"
+  subscribes :restart, "archive_file[#{cache_dir}/karma-linux-amd64.tar.gz]"
 end
 
 package "grafana-enterprise"
