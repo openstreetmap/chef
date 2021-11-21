@@ -25,7 +25,7 @@ groups:
   - name: cpu
     rules:
       - alert: cpu pressure
-        expr: rate(node_pressure_memory_waiting_seconds_total[5m]) > 0.3
+        expr: rate(node_pressure_cpu_waiting_seconds_total[5m]) > 0.3
         for: 15m
         labels:
           alertgroup: "{{ $labels.instance }}"
