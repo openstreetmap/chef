@@ -92,6 +92,9 @@ SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x1f41
 # Ethernet controller: Intel Corporation Ethernet Connection X722 for 10GBASE-T
 SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x37d2", RUN+="/sbin/ethtool -G $name rx 4096 tx 4096"
 
+# Disable Firmware Based LLDP handler
+SUBSYSTEM=="net", ACTION=="add", ENV{INTERFACE}=="*", DRIVERS=="i40e", RUN+="/sbin/ethtool --set-priv-flags $name disable-fw-lldp on"
+
 # Workaround unreliable Western Digital WD RE3/RE4 disks (ATA only)
 # Set sufficent Linux subsystem timeout and fix severe NCQ performance issue
 ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{ID_BUS}=="ata", ENV{ID_MODEL}=="WDC_WD5002ABYS-02B1B0", ATTR{device/timeout}="90", ATTR{device/queue_depth}="1", ATTR{queue/nr_requests}="256"
