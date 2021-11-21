@@ -22,6 +22,15 @@ groups:
           alertgroup: "{{ $labels.instance }}"
         annotations:
           busy_workers: "{{ $value | humanizePercentage }}"
+  - name: cpu
+    rules:
+      - alert: cpu pressure
+        expr: rate(node_pressure_memory_waiting_seconds_total[5m]) > 0.3
+        for: 15m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+        annotations:
+          major_page_faults: "{{ $value | humanizePercentage }}"
   - name: database
     rules:
       - alert: postgres replication delay
@@ -33,6 +42,11 @@ groups:
           delay: "{{ $value | humanizeDuration }}"
   - name: filesystem
     rules:
+      - alert: readonly filesystem
+        expr: node_filesystem_readonly == 1
+        for: 0m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
       - alert: filesystem low on space
         expr: node_filesystem_avail_bytes / node_filesystem_size_bytes < 0.05
         for: 5m
@@ -79,6 +93,15 @@ groups:
           in_volts: "{{ with printf \"node_hwmon_in_volts{instance='%s',chip='%s',sensor='%s'}\" $labels.instance $labels.chip $labels.sensor | query }}{{ . | first | value | humanize }}V{{end}}"
           in_min_volts: "{{ with printf \"node_hwmon_in_min_volts{instance='%s',chip='%s',sensor='%s'}\" $labels.instance $labels.chip $labels.sensor | query }}{{ . | first | value | humanize }}V{{end}}"
           in_max_volts: "{{ with printf \"node_hwmon_in_max_volts{instance='%s',chip='%s',sensor='%s'}\" $labels.instance $labels.chip $labels.sensor | query }}{{ . | first | value | humanize }}V{{end}}"
+  - name: io
+    rules:
+      - alert: cpu pressure
+        expr: rate(node_pressure_io_waiting_seconds_total[5m]) > 0.6
+        for: 60m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+        annotations:
+          major_page_faults: "{{ $value | humanizePercentage }}"
   - name: ipmi
     rules:
       - alert: ipmi fan alarm
@@ -143,18 +166,18 @@ groups:
     rules:
       - alert: low memory
         expr: node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes < 0.1
-        for: 5m
+        for: 15m
         labels:
           alertgroup: "{{ $labels.instance }}"
         annotations:
           memory_free: "{{ $value | humanizePercentage }}"
       - alert: memory pressure
-        expr: rate(node_vmstat_pgmajfault[1m]) > 1000
-        for: 5m
+        expr: rate(node_pressure_memory_waiting_seconds_total[5m]) > 0.6
+        for: 60m
         labels:
           alertgroup: "{{ $labels.instance }}"
         annotations:
-          major_page_faults: "{{ $value }} faults/s"
+          major_page_faults: "{{ $value | humanizePercentage }}"
       - alert: oom kill detected
         expr: increase(node_vmstat_oom_kill[1m]) > 0
         for: 0m
