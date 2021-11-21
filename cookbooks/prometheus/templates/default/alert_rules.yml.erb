@@ -30,7 +30,7 @@ groups:
         labels:
           alertgroup: "{{ $labels.instance }}"
         annotations:
-          major_page_faults: "{{ $value | humanizePercentage }}"
+          pressure: "{{ $value | humanizePercentage }}"
   - name: database
     rules:
       - alert: postgres replication delay
@@ -101,7 +101,7 @@ groups:
         labels:
           alertgroup: "{{ $labels.instance }}"
         annotations:
-          major_page_faults: "{{ $value | humanizePercentage }}"
+          pressure: "{{ $value | humanizePercentage }}"
   - name: ipmi
     rules:
       - alert: ipmi fan alarm
@@ -177,7 +177,7 @@ groups:
         labels:
           alertgroup: "{{ $labels.instance }}"
         annotations:
-          major_page_faults: "{{ $value | humanizePercentage }}"
+          pressure: "{{ $value | humanizePercentage }}"
       - alert: oom kill detected
         expr: increase(node_vmstat_oom_kill[1m]) > 0
         for: 0m
