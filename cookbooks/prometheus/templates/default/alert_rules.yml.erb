@@ -95,7 +95,7 @@ groups:
           in_max_volts: "{{ with printf \"node_hwmon_in_max_volts{instance='%s',chip='%s',sensor='%s'}\" $labels.instance $labels.chip $labels.sensor | query }}{{ . | first | value | humanize }}V{{end}}"
   - name: io
     rules:
-      - alert: cpu pressure
+      - alert: io pressure
         expr: rate(node_pressure_io_waiting_seconds_total[5m]) > 0.6
         for: 60m
         labels:
