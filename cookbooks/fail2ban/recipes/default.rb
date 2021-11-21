@@ -18,6 +18,7 @@
 #
 
 include_recipe "munin"
+include_recipe "prometheus"
 
 package "fail2ban"
 
@@ -42,3 +43,7 @@ service "fail2ban" do
 end
 
 munin_plugin "fail2ban"
+
+prometheus_exporter "fail2ban" do
+  port 9635
+end
