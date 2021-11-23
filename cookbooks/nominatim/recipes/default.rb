@@ -20,6 +20,7 @@
 include_recipe "accounts"
 include_recipe "munin"
 include_recipe "php::fpm"
+include_recipe "prometheus"
 
 basedir = data_bag_item("accounts", "nominatim")["home"]
 email_errors = data_bag_item("accounts", "lonvia")["email"]
@@ -453,6 +454,15 @@ end
 
 munin_plugin "nominatim_requests" do
   target "#{source_directory}/munin/nominatim_requests_querylog"
+end
+
+prometheus_exporter "nominatim" do
+  port 8082
+  user "www-data"
+  options [
+    "--nominatim.query-log=#{node[:nominatim][:logdir]}/query.log",
+    "--nominatim.database-name=#{node[:nominatim][:dbname]}"
+  ]
 end
 
 directory "#{basedir}/status" do
