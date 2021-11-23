@@ -166,6 +166,9 @@ package %w[
   php-pgsql
   php-intl
   php-symfony-dotenv
+  ruby
+  ruby-file-tail
+  ruby-pg
 ]
 
 source_directory = "#{basedir}/nominatim"
