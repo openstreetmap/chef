@@ -20,6 +20,7 @@
 require "securerandom"
 
 include_recipe "apache"
+include_recipe "prometheus"
 
 package %w[
   locales-all
@@ -68,4 +69,9 @@ template "/etc/cron.daily/lists-backup" do
   owner "root"
   group "root"
   mode "755"
+end
+
+prometheus_exporter "mailman" do
+  port 8083
+  user "list"
 end
