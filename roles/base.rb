@@ -24,6 +24,14 @@ default_attributes(
     },
     :search => ["openstreetmap.org"]
   },
+  :prometheus => {
+    :metrics => {
+      :exim_queue_limit => {
+        :help => "Mail queue alert level",
+        :metric => 50
+      }
+    }
+  },
   :sysctl => {
     :panic => {
       :comment => "Reboot automatically after a panic",

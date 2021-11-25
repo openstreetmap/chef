@@ -11,5 +11,5 @@ chef_role{name="<%= role %>"} 1
 <% node[:prometheus][:metrics].sort.each do |name, details| -%>
 # HELP <%= name %> <%= details[:help] %>
 # TYPE <%= name %> gauge
-<%= name %>{<%= details[:labels].map { |k,v| "#{k}=\"#{v}\"" }.join(",") %>} 1
+<%= name %>{<%= Hash(details[:labels]).map { |k,v| "#{k}=\"#{v}\"" }.join(",") %>} <%= details[:metric] || 1 %>
 <% end -%>

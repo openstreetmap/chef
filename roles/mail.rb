@@ -90,6 +90,11 @@ default_attributes(
         }
       }
     }
+  },
+  :prometheus => {
+    :metrics => {
+      :exim_queue_limit => { :metric => 500 }
+    }
   }
 )
 

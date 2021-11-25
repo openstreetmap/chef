@@ -130,6 +130,15 @@ groups:
         for: 5m
         labels:
           alertgroup: "{{ $labels.instance }}"
+  - name: mail
+    rules:
+      - alert: mail queue length
+        expr: exim_queue > exim_queue_limit
+        for: 60m
+        labels:
+          alertgroup: mail
+        annotations:
+          queue_length: "{{ $value }}"
   - name: mdadm
     rules:
       - alert: mdadm array inactive
