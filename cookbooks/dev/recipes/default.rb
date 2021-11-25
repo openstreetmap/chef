@@ -202,9 +202,9 @@ search(:accounts, "*:*").each do |account|
   end
 end
 
-if node[:postgresql][:clusters][:"13/main"]
+if node[:postgresql][:clusters][:"14/main"]
   postgresql_user "apis" do
-    cluster "13/main"
+    cluster "14/main"
   end
 
   template "/usr/local/bin/cleanup-rails-assets" do
@@ -262,12 +262,12 @@ if node[:postgresql][:clusters][:"13/main"]
       secret_key_base = persistent_token("dev", "rails", name, "secret_key_base")
 
       postgresql_database database_name do
-        cluster "13/main"
+        cluster "14/main"
         owner "apis"
       end
 
       postgresql_extension "#{database_name}_btree_gist" do
-        cluster "13/main"
+        cluster "14/main"
         database database_name
         extension "btree_gist"
       end
@@ -309,7 +309,7 @@ if node[:postgresql][:clusters][:"13/main"]
         group "apis"
         repository details[:repository]
         revision details[:revision]
-        database_port node[:postgresql][:clusters][:"13/main"][:port]
+        database_port node[:postgresql][:clusters][:"14/main"][:port]
         database_name database_name
         database_username "apis"
         email_from "OpenStreetMap <web@noreply.openstreetmap.org>"
@@ -381,7 +381,7 @@ if node[:postgresql][:clusters][:"13/main"]
           group "root"
           mode "640"
           variables :cgimap_port => cgimap_port,
-                    :database_port => node[:postgresql][:clusters][:"13/main"][:port],
+                    :database_port => node[:postgresql][:clusters][:"14/main"][:port],
                     :database_name => database_name,
                     :log_directory => log_directory
           notifies :restart, "service[cgimap@#{name}]"
@@ -445,7 +445,7 @@ if node[:postgresql][:clusters][:"13/main"]
 
       postgresql_database database_name do
         action :drop
-        cluster "13/main"
+        cluster "14/main"
       end
     end
   end

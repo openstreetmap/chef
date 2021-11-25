@@ -137,7 +137,7 @@ default_attributes(
     }
   },
   :postgresql => {
-    :versions => ["13"],
+    :versions => ["14"],
     :settings => {
       :defaults => {
         :max_connections => "500",
@@ -147,7 +147,7 @@ default_attributes(
         :max_stack_depth => "4MB",
         :effective_cache_size => "4GB"
       },
-      "13" => {
+      "14" => {
         :port => "5432",
         :wal_level => "logical",
         :max_replication_slots => "1"
