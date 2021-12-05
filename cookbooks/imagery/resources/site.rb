@@ -111,7 +111,7 @@ action :create do
     memory_max "2G"
     user "imagery"
     group "imagery"
-    exec_start "/usr/bin/multiwatch -f 6 --signal=TERM -- /usr/lib/cgi-bin/mapserv"
+    exec_start "/usr/bin/multiwatch -f 12 --signal=TERM -- /usr/lib/cgi-bin/mapserv"
     standard_input "socket"
     private_tmp true
     private_devices true
