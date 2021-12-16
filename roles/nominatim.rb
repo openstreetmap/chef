@@ -83,7 +83,6 @@ default_attributes(
       "iaux" => "/ssd/tablespaces/iaux"
     }
   }
-
 )
 
 run_list(
