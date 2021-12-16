@@ -30,9 +30,6 @@ default_attributes(
       :defaults => {
         :listen_addresses => "10.0.0.20",
         :work_mem => "160MB",
-        :maintenance_work_mem => "10GB",
-        :random_page_cost => "1.5",
-        :effective_cache_size => "60GB",
         :effective_io_concurrency => "256",
         :fsync => "on"
       }
@@ -40,26 +37,10 @@ default_attributes(
   },
   :nominatim => {
     :state => "standalone",
-    :dbadmins => %w[lonvia tomh],
     :dbcluster => "13/main",
     :postgis => "3",
     :enable_backup => true,
-    :flatnode_file => "/ssd/nominatim/nodes.store",
-    :config => {
-      :tokenizer => "icu"
-    },
-    :tablespaces => {
-      "dosm" => "/ssd/tablespaces/dosm",
-      "iosm" => "/ssd/tablespaces/iosm",
-      "dplace" => "/ssd/tablespaces/dplace",
-      "iplace" => "/ssd/tablespaces/iplace",
-      "daddress" => "/ssd/tablespaces/daddress",
-      "iaddress" => "/ssd/tablespaces/iaddress",
-      "dsearch" => "/ssd/tablespaces/dsearch",
-      "isearch" => "/ssd/tablespaces/isearch",
-      "daux" => "/data/tablespaces/daux",
-      "iaux" => "/data/tablespaces/iaux"
-    }
+    :flatnode_file => "/ssd/nominatim/nodes.store"
   }
 )
 
