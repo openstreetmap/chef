@@ -34,8 +34,9 @@ default_attributes(
     :versions => ["14"],
     :settings => {
       :defaults => {
+        :max_connections => "550",
         :work_mem => "240MB",
-        :fsync => "off",
+        :fsync => "on",
         :effective_io_concurrency => "500"
       }
     }
@@ -44,8 +45,13 @@ default_attributes(
     :state => "standalone",
     :dbcluster => "14/main",
     :postgis => "3",
+    :enable_qa_tiles => true,
     :flatnode_file => "/ssd/nominatim/nodes.store",
-    :logdir => "/ssd/nominatim/log"
+    :logdir => "/ssd/nominatim/log",
+    :fpm_pools => {
+      "nominatim.openstreetmap.org" => {
+        :max_children => 200
+      }
   }
 )
 
