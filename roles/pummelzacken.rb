@@ -40,7 +40,12 @@ default_attributes(
     :dbcluster => "13/main",
     :postgis => "3",
     :enable_backup => true,
-    :flatnode_file => "/ssd/nominatim/nodes.store"
+    :flatnode_file => "/ssd/nominatim/nodes.store",
+    :tablespaces => {
+      "daux" => "/data/tablespaces/daux",
+      "iaux" => "/data/tablespaces/iaux"
+    }
+
   }
 )
 
