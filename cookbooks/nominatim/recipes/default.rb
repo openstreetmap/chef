@@ -489,6 +489,8 @@ end
 ### QA tile generation
 
 if node[:nominatim][:enable_qa_tiles]
+  package "python3-geojson"
+
   git qa_bin_directory do
     repository node[:nominatim][:qa_repository]
     revision node[:nominatim][:qa_revision]
