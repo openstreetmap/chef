@@ -40,6 +40,15 @@ groups:
           alertgroup: database
         annotations:
           delay: "{{ $value | humanizeDuration }}"
+  - name: fastly
+    rules:
+      - alert: error rate
+        expr: sum(rate(fastly_rt_status_group_total{status_group="5xx"}[5m])) by (service_name, datacenter) / sum(rate(fastly_rt_status_group_total[5m])) by (service_name, datacenter) > 0.005
+        for: 15m
+        labels:
+          alertgroup: fastly
+        annotations:
+          error_rate: "{{ $value | humanizePercentage }}"
   - name: filesystem
     rules:
       - alert: readonly filesystem
