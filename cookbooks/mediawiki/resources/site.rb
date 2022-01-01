@@ -495,6 +495,7 @@ action :create do
   mediawiki_extension "VisualEditor" do
     site new_resource.site
     template "mw-ext-VisualEditor.inc.php.erb"
+    variables :version => new_resource.version
     update_site false
   end
 
