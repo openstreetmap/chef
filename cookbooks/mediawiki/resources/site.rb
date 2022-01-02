@@ -452,7 +452,6 @@ action :create do
 
   mediawiki_extension "osmtaginfo" do
     site new_resource.site
-    template "mw-ext-osmtaginfo.inc.php.erb"
     repository "https://github.com/Firefishy/osmtaginfo.git"
     tag "live"
     update_site false
