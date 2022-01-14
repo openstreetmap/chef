@@ -7,7 +7,7 @@ GEM
     chef-utils (17.8.25)
       concurrent-ruby
     concurrent-ruby (1.1.9)
-    cookstyle (7.26.1)
+    cookstyle (7.28.2)
       rubocop (= 1.24.1)
     diff-lcs (1.4.4)
     docker-api (2.2.0)
@@ -56,7 +56,7 @@ GEM
       ast (~> 2.4.1)
     pastel (0.8.0)
       tty-color (~> 0.5)
-    rainbow (3.0.0)
+    rainbow (3.1.1)
     regexp_parser (2.2.0)
     rexml (3.2.5)
     rspec (3.10.0)
