@@ -10,7 +10,7 @@ server {
 
     server_name qa-tile.nominatim.openstreetmap.org;
 
-    root <%= qa_data_directory %>/current;
+    root <%= @qa_data_directory %>/current;
 
     access_log <%= node[:nominatim][:logdir] %>/qa-tile.nominatim.openstreetmap.org-access.log combined;
     error_log <%= node[:nominatim][:logdir] %>/qa-tile.nominatim.openstreetmap.org-error.log;
