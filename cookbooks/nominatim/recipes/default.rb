@@ -534,5 +534,3 @@ if node[:nominatim][:enable_qa_tiles]
   end
 
 end
-
-end
