@@ -522,7 +522,7 @@ if node[:nominatim][:enable_qa_tiles]
     variables :outputdir => "#{qa_data_directory}/new"
   end
 
-  ssl_certificate qa-tile.nominatim.openstreetmap.org do
+  ssl_certificate "qa-tile.nominatim.openstreetmap.org" do
     domains ["qa-tile.nominatim.openstreetmap.org"]
     notifies :reload, "service[nginx]"
   end
