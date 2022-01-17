@@ -128,9 +128,9 @@ server {
 
 server {
     # IPv4
-    listen       443 ssl deferred backlog=16384 reuseport http2 default_server;
+    listen       443 ssl http2 default_server;
     # IPv6
-    listen       [::]:443 ssl deferred backlog=16384 reuseport http2 default_server;
+    listen       [::]:443 ssl http2 default_server;
     server_name  localhost;
 
     ssl_certificate /etc/ssl/certs/<%= node[:fqdn] %>.pem;

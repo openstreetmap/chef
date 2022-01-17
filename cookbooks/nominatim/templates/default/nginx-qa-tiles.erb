@@ -2,8 +2,8 @@ server {
     listen 80;
     listen [::]:80;
 
-    listen 443 ssl deferred backlog=16384 reuseport http2;
-    listen [::]:443 ssl deferred backlog=16384 reuseport http2;
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
 
     ssl_certificate /etc/ssl/certs/qa-tile.nominatim.openstreetmap.org.pem;
     ssl_certificate_key /etc/ssl/private/qa-tile.nominatim.openstreetmap.org.key;
