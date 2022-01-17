@@ -1,0 +1,23 @@
+server {
+    listen 80;
+    listen [::]:80;
+
+    listen 443 ssl deferred backlog=16384 reuseport http2;
+    listen [::]:443 ssl deferred backlog=16384 reuseport http2;
+
+    ssl_certificate /etc/ssl/certs/qa-tile.nominatim.openstreetmap.org.pem;
+    ssl_certificate_key /etc/ssl/private/qa-tile.nominatim.openstreetmap.org.key;
+
+    server_name qa-tile.nominatim.openstreetmap.org;
+
+    root <%= qa_data_directory %>/current;
+
+    access_log <%= node[:nominatim][:logdir] %>/qa-tile.nominatim.openstreetmap.org-access.log combined;
+    error_log <%= node[:nominatim][:logdir] %>/qa-tile.nominatim.openstreetmap.org-error.log;
+
+    rewrite ^/\.well-known/acme-challenge/(.*)$ http://acme.openstreetmap.org/.well-known/acme-challenge/$1 permanent;
+
+    location / {
+        add_header Access-Control-Allow-Origin "*" always;
+    }
+}

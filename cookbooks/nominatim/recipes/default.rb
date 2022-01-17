@@ -522,9 +522,17 @@ if node[:nominatim][:enable_qa_tiles]
     variables :outputdir => "#{qa_data_directory}/new"
   end
 
-  link "#{build_directory}/website/qa-data" do
-    to "#{qa_data_directory}/current"
-    owner "nominatim"
-    group "nominatim"
+  ssl_certificate qa-tile.nominatim.openstreetmap.org do
+    domains ["qa-tile.nominatim.openstreetmap.org"]
+    notifies :reload, "service[nginx]"
   end
+
+  nginx_site "qa-tiles.nominatim" do
+    template "nginx-qa-tiles.erb"
+    directory build_directory
+    variables :qa_data_directory => qa_data_directory
+  end
+
+end
+
 end
