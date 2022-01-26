@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# DO NOT EDIT - This file is being maintained by Chef
+
+export WALE_S3_PREFIX="s3://openstreetmap-wal/"
+export AWS_ACCESS_KEY_ID="AKIAIQX2LTDOBIW4CZUQ"
+export AWS_SECRET_ACCESS_KEY="<%= @s3_key %>"
+export AWS_REGION="eu-west-2"
+
+exec /usr/local/bin/wal-g "$@" < /dev/null

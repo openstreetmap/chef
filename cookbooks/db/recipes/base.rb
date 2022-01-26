@@ -146,3 +146,19 @@ template "/usr/local/bin/openstreetmap-wal-e" do
   mode "750"
   variables :s3_key => wal_secrets["s3_key"]
 end
+
+remote_file "/usr/local/bin/wal-g" do
+  action :create
+  source "https://github.com/wal-g/wal-g/releases/download/v1.1/wal-g-pg-ubuntu-20.04-amd64"
+  owner "root"
+  group "root"
+  mode "755"
+end
+
+template "/usr/local/bin/openstreetmap-wal-g" do
+  source "wal-g.erb"
+  owner "root"
+  group "postgres"
+  mode "750"
+  variables :s3_key => wal_secrets["s3_key"]
+end
