@@ -31,7 +31,7 @@ default_attributes(
   },
   :web => {
     :fileserver => "fafnir",
-    :readonly_database_host => "snap-03.ucl.openstreetmap.org"
+    :readonly_database_host => "snap-03.dub.openstreetmap.org"
   }
 )
 
