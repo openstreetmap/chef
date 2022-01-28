@@ -26,6 +26,7 @@ default_attributes(
 
 override_attributes(
   :networking => {
+    :dnssec => "false",
     :interfaces => {
       :external_ipv4 => {
         :interface => "eth0",
