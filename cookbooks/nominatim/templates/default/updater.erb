@@ -37,7 +37,7 @@ do
 
     if [ -f "<%= @update_maintenance_trigger %>" ]; then
         rm <%= @update_maintenance_trigger %>
-        ./nominatim refresh --postcodes --threads 4 -v
+        ./nominatim refresh --postcodes --word-tokens --threads 4 -v
 <% if node[:nominatim][:enable_qa_tiles] -%>
         pushd <%= @qabindir %>
         if python3 cli.py --execute-all; then
