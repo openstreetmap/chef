@@ -76,6 +76,11 @@ property :diary_feed_delay, Integer
 property :storage_configuration, Hash, :default => {}
 property :storage_service, String, :default => "local"
 property :storage_url, String
+property :avatar_storage, String
+property :trace_file_storage, String
+property :trace_image_storage, String
+property :trace_icon_storage, String
+property :storage_urls, Array
 property :tile_cdn_url, String
 
 action :create do
@@ -326,6 +331,11 @@ action :create do
     "diary_feed_delay",
     "storage_service",
     "storage_url",
+    "avatar_storage",
+    "trace_file_storage",
+    "trace_image_storage",
+    "trace_icon_storage",
+    "storage_urls",
     "tile_cdn_url"
   ).compact.merge(
     "server_protocol" => "https",

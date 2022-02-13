@@ -66,6 +66,30 @@ storage = {
       "acl" => "public-read",
       "cache_control" => "public, max-age=31536000, immutable"
     }
+  },
+  "gps_traces" => {
+    "service" => "S3",
+    "access_key_id" => "AKIASQUXHPE7AMJQRFOS",
+    "secret_access_key" => web_passwords["aws_key"],
+    "region" => "eu-west-1",
+    "bucket" => "openstreetmap-gps-traces",
+    "use_dualstack_endpoint" => true,
+    "upload" => {
+      "acl" => "public-read",
+      "cache_control" => "public, max-age=31536000, immutable"
+    }
+  },
+  "gps_images" => {
+    "service" => "S3",
+    "access_key_id" => "AKIASQUXHPE7AMJQRFOS",
+    "secret_access_key" => web_passwords["aws_key"],
+    "region" => "eu-west-1",
+    "bucket" => "openstreetmap-gps-images",
+    "use_dualstack_endpoint" => true,
+    "upload" => {
+      "acl" => "public-read",
+      "cache_control" => "public, max-age=31536000, immutable"
+    }
   }
 }
 
@@ -114,6 +138,15 @@ rails_port "www.openstreetmap.org" do
   storage_configuration storage
   storage_service "avatars"
   storage_url "https://openstreetmap-user-avatars.s3.dualstack.eu-west-1.amazonaws.com"
+  avatar_storage "avatars"
+  trace_file_storage "gps_traces"
+  trace_image_storage "gps_images"
+  trace_icon_storage "gps_images"
+  storage_urls %w[
+    https://openstreetmap-user-avatars.s3.dualstack.eu-west-1.amazonaws.com
+    https://openstreetmap-gps-traces.s3.dualstack.eu-west-1.amazonaws.com
+    https://openstreetmap-gps-images.s3.dualstack.eu-west-1.amazonaws.com
+  ]
   overpass_url "https://query.openstreetmap.org/query-features"
 end
 
