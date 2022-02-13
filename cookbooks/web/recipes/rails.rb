@@ -136,17 +136,12 @@ rails_port "www.openstreetmap.org" do
   trace_use_job_queue true
   diary_feed_delay 12
   storage_configuration storage
-  storage_service "avatars"
-  storage_url "https://openstreetmap-user-avatars.s3.dualstack.eu-west-1.amazonaws.com"
   avatar_storage "avatars"
   trace_file_storage "gps_traces"
   trace_image_storage "gps_images"
   trace_icon_storage "gps_images"
-  storage_urls %w[
-    https://openstreetmap-user-avatars.s3.dualstack.eu-west-1.amazonaws.com
-    https://openstreetmap-gps-traces.s3.dualstack.eu-west-1.amazonaws.com
-    https://openstreetmap-gps-images.s3.dualstack.eu-west-1.amazonaws.com
-  ]
+  avatar_storage_url "https://openstreetmap-user-avatars.s3.dualstack.eu-west-1.amazonaws.com"
+  trace_image_storage_url "https://openstreetmap-gps-images.s3.dualstack.eu-west-1.amazonaws.com"
   overpass_url "https://query.openstreetmap.org/query-features"
 end
 

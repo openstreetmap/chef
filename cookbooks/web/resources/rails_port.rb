@@ -71,16 +71,18 @@ property :totp_key, String
 property :csp_enforce, [true, false], :default => false
 property :csp_report_url, String
 property :piwik_configuration, Hash
+property :storage_service, String, :default => "local"
+property :storage_url, String
 property :trace_use_job_queue, [true, false], :default => false
 property :diary_feed_delay, Integer
 property :storage_configuration, Hash, :default => {}
-property :storage_service, String, :default => "local"
-property :storage_url, String
 property :avatar_storage, String
 property :trace_file_storage, String
 property :trace_image_storage, String
 property :trace_icon_storage, String
-property :storage_urls, Array
+property :avatar_storage_url, String
+property :trace_image_storage_url, String
+property :trace_icon_storage_url, String
 property :tile_cdn_url, String
 
 action :create do
@@ -335,7 +337,9 @@ action :create do
     "trace_file_storage",
     "trace_image_storage",
     "trace_icon_storage",
-    "storage_urls",
+    "avatar_storage_url",
+    "trace_image_storage_url",
+    "trace_icon_storage_url",
     "tile_cdn_url"
   ).compact.merge(
     "server_protocol" => "https",
