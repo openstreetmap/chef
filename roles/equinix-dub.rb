@@ -2,6 +2,15 @@ name "equinix-dub"
 description "Role applied to all servers at Equinix Dublin"
 
 default_attributes(
+  :sysctl => {
+    :enable_bbr_10g => {
+      :comment => "Enable BBR. Equinix Dub has 10G uplink unlikely to buffer overrun",
+      :parameters => {
+        "net.ipv4.tcp_congestion_control" => "bbr",
+        "net.ipv4.tcp_notsent_lowat" => "16384"
+      }
+    }
+  },
   :networking => {
     :roles => {
       :internal => {
