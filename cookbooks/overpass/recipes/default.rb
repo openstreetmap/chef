@@ -211,6 +211,14 @@ service "overpass-area-processor" do
   action [:enable]
 end
 
+template "/etc/logrotate.d/overpass" do
+  source "logrotate.erb"
+  owner "root"
+  group "root"
+  mode "644"
+  variables :logdir => logdir
+end
+
 # Munin scripts
 
 %w[db_lag request_count].each do |name|
