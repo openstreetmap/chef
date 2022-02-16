@@ -42,7 +42,11 @@ cgimap_options = {
   "CGIMAP_LOGFILE" => "#{node[:web][:log_directory]}/cgimap.log",
   "CGIMAP_MEMCACHE" => memcached_servers.join(","),
   "CGIMAP_RATELIMIT" => "204800",
-  "CGIMAP_MAXDEBT" => "250"
+  "CGIMAP_MAXDEBT" => "250",
+  "CGIMAP_MAP_AREA" => node[:web][:max_request_area],
+  "CGIMAP_MAP_NODES" => node[:web][:max_number_of_nodes],
+  "CGIMAP_MAX_WAY_NODES" => node[:web][:max_number_of_way_nodes],
+  "CGIMAP_MAX_RELATION_MEMBERS" => node[:web][:max_number_of_relation_members]
 }
 
 if %w[database_readonly api_readonly].include?(node[:web][:status])

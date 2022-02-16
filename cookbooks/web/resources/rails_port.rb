@@ -347,7 +347,11 @@ action :create do
     "support_email" => "support@openstreetmap.org",
     "email_return_path" => "bounces@openstreetmap.org",
     "geonames_username" => "openstreetmap",
-    "maxmind_database" => "/usr/share/GeoIP/GeoLite2-Country.mmdb"
+    "maxmind_database" => "/usr/share/GeoIP/GeoLite2-Country.mmdb",
+    "max_request_area" => node[:web][:max_request_area],
+    "max_number_of_nodes" => node[:web][:max_number_of_nodes],
+    "max_number_of_way_nodes" => node[:web][:max_number_of_way_nodes],
+    "max_number_of_relation_members" => node[:web][:max_number_of_relation_members]
   )
 
   if new_resource.memcache_servers
