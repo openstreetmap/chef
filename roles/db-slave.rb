@@ -14,7 +14,7 @@ default_attributes(
           :user => "replication",
           :passwords => { :bag => "db", :item => "passwords" }
         },
-        :restore_command => "/usr/local/bin/openstreetmap-wal-e --terse wal-fetch %f %p"
+        :restore_command => "/usr/local/bin/openstreetmap-wal-g wal-fetch %f %p"
       }
     }
   }
