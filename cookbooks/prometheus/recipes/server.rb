@@ -104,6 +104,7 @@ package %w[
 ]
 
 promscale_version = "0.7.1"
+promscale_extension_version = "0.3.0"
 
 database_version = node[:timescaledb][:database_version]
 database_cluster = "#{database_version}/main"
@@ -124,11 +125,17 @@ directory "/opt/promscale" do
   mode "755"
 end
 
-cookbook_file "/usr/lib/postgresql/#{database_version}/lib/promscale.so" do
-  source "postgresql-#{database_version}-promscale.so"
+remote_file "#{cache_dir}/promscale_extension.pg#{database_version}.x86_64.deb" do
+  source "https://github.com/timescale/promscale_extension/releases/download/#{promscale_extension_version}/promscale_extension-#{promscale_extension_version}.pg#{database_version}.x86_64.deb"
   owner "root"
   group "root"
   mode "644"
+  backup false
+end
+
+dpkg_package "promscale-extension-postgresql-#{database_version}" do
+  source "#{cache_dir}/promscale_extension.pg#{database_version}.x86_64.deb"
+  version "#{promscale_extension_version}-1"
 end
 
 directory "/opt/promscale/bin" do
