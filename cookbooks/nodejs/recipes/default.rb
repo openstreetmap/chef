@@ -23,3 +23,10 @@ package %w[
   g++
   make
 ]
+
+template "/usr/local/bin/yarn" do
+  source "yarn.erb"
+  owner "root"
+  group "root"
+  mode "755"
+end
