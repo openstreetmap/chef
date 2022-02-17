@@ -80,7 +80,7 @@ end
 git "/srv/gps-tile.openstreetmap.org/updater" do
   action :sync
   repository "https://github.com/e-n-f/gpx-updater.git"
-  revision "live"
+  revision "master"
   depth 1
   user "gpstile"
   group "gpstile"
