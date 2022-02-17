@@ -103,7 +103,7 @@ package %w[
   prometheus-alertmanager
 ]
 
-promscale_version = "0.7.1"
+promscale_version = "0.10.0"
 promscale_extension_version = "0.3.0"
 
 database_version = node[:timescaledb][:database_version]
@@ -156,8 +156,7 @@ systemd_service "promscale" do
   description "Promscale Connector"
   type "simple"
   user "prometheus"
-  exec_start "/opt/promscale/bin/promscale --db-uri postgresql:///promscale?host=/run/postgresql&port=5432 --db-connections-max 400"
-  # exec_start lazy { "/opt/promscale/bin/promscale --db-host /run/postgresql --db-port #{node[:postgresql][:clusters][database_cluster][:port]} --db-user prometheus --db-name promscale --db-max-connections 400" }
+  exec_start "/opt/promscale/bin/promscale --db.uri postgresql:///promscale?host=/run/postgresql&port=5432 --db.connections-max 400"
   limit_nofile 16384
   private_tmp true
   protect_system "strict"
