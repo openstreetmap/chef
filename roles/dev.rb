@@ -121,12 +121,6 @@ default_attributes(
       :microcosms => {
         :repository => "https://github.com/openbrian/osm-microcosms.git",
         :revision => "microcosms"
-      },
-      :upload => {
-        :repository => "https://git.openstreetmap.org/public/rails.git",
-        :revision => "master",
-        :cgimap_repository => "https://github.com/zerebubuth/openstreetmap-cgimap.git",
-        :cgimap_revision => "feature/bulk_upload"
       }
     }
   },
