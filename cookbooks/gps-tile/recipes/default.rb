@@ -79,8 +79,8 @@ end
 
 git "/srv/gps-tile.openstreetmap.org/updater" do
   action :sync
-  repository "https://github.com/e-n-f/gpx-updater.git"
-  revision "master"
+  repository "https://github.com/openstreetmap/gpx-updater.git"
+  revision "live"
   depth 1
   user "gpstile"
   group "gpstile"
