@@ -5,6 +5,9 @@ AllCops:
 
 ChefModernize/IncludingAptDefaultRecipe:
   Enabled: false
+  
+Chef/Modernize/CronDFileOrTemplate:
+  Enabled: false
 
 Layout/ExtraSpacing:
   AllowForAlignment: true
