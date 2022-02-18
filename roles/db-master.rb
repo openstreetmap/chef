@@ -7,7 +7,7 @@ default_attributes(
       :defaults => {
         :wal_level => "logical",
         :archive_mode => "on",
-        :archive_command => "/usr/local/bin/openstreetmap-wal-e --terse wal-push %p",
+        :archive_command => "/usr/local/bin/openstreetmap-wal-g wal-push %p",
         :max_wal_senders => "5",
         :max_replication_slots => "1",
         :late_authentication_rules => [
