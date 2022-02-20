@@ -49,6 +49,17 @@ default_attributes(
         :ignore_nonreadable => true,
         :timeout => 3600,
         :refuse_options => ["checksum"]
+      },
+      :statistics => {
+        :comment => "Statistics",
+        :path => "/store/planet/statistics",
+        :read_only => false,
+        :write_only => true,
+        :list => false,
+        :uid => "planet",
+        :gid => "planet",
+        :transfer_logging => false,
+        :nodes_allow => "roles:web-statistics"
       }
     }
   }

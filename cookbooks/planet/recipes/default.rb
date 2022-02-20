@@ -83,6 +83,12 @@ directory "/store/planet/notes" do
   mode "775"
 end
 
+directory "/store/planet/statistics" do
+  owner "www-data"
+  group "planet"
+  mode "775"
+end
+
 template "/usr/local/bin/apache-latest-planet-filename" do
   source "apache-latest-planet-filename.erb"
   owner "root"

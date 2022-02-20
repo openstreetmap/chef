@@ -10,7 +10,7 @@ export PATH=$PATH:/usr/local/bin
 <%= @ruby %> -W0 <%= @directory %>/script/statistics > <%= @directory %>/tmp/data_stats.html
 
 # Move new statistics into place
-mv -f <%= @directory %>/tmp/data_stats.html /store/rails/stats
+rsync --quiet <%= @directory %>/tmp/data_stats.html planet.openstreetmap.org::statistics
 
 # Mail statistics to Blackadder
 mail -s "OpenStreetMap Statistics" blackadderajr@gmail.com < /store/rails/stats/data_stats.html

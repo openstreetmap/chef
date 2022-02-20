@@ -139,7 +139,7 @@
   SetEnv SECRET_KEY_BASE <%= @secret_key_base %>
   Alias /favicon.ico <%= node[:web][:base_directory] %>/rails/app/assets/favicons/favicon.ico
   Alias /openlayers <%= node[:web][:base_directory] %>/static/openlayers
-  Alias /stats /store/rails/stats
+  RedirectPermanent /stats https://planet.openstreetmap.org/statistics
   Alias /user/image /store/rails/user/image
   Alias /attachments /store/rails/attachments
 
