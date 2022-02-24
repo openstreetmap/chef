@@ -410,3 +410,10 @@ groups:
           alertgroup: web
         annotations:
           error_rate: "{{ $value | humanizePercentage }}"
+      - alert: job processing rate
+        expr: rate(pg_stat_user_tables_n_tup_del{datname="openstreetmap",relname="delayed_jobs"}[5m]) / rate(pg_stat_user_tables_n_tup_ins{datname="openstreetmap",relname="delayed_jobs"}[5m]) < 0.9 and ignoring(job, name, datname, relname, schemaname, server) chef_role{name="db-master"} == 1
+        for: 5m
+        labels:
+          alertgroup: web
+        annotations:
+          job_processing_rate: "{{ $value | humanizePercentage }}"
