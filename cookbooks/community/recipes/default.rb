@@ -20,32 +20,15 @@
 include_recipe "docker"
 include_recipe "git"
 include_recipe "ssl"
+include_recipe "geoipupdate"
+
+passwords = data_bag_item("community", "passwords")
+license_keys = data_bag_item("geoipupdate", "license-keys")
 
 ssl_certificate "community.openstreetmap.org" do
   domains ["community.openstreetmap.org", "community.osm.org"]
+  notifies :run, "execute[discourse_container_web_only_rebuild]"
 end
-
-# passwords = data_bag_item("community", "passwords")
-
-# postgresql_user "community_user" do
-#   cluster node[:db][:cluster]
-#   password passwords["database"]
-# end
-
-# postgresql_database "community_db" do
-#   cluster node[:db][:cluster]
-#   owner "community_user"
-# end
-
-# postgresql_extension "hstore" do
-#   cluster node[:db][:cluster]
-#   database "community_db"
-# end
-
-# postgresql_extension "pg_trgm" do
-#   cluster node[:db][:cluster]
-#   database "community_db"
-# end
 
 directory "/srv/community.openstreetmap.org" do
   owner "root"
@@ -62,13 +45,50 @@ end
 git "/srv/community.openstreetmap.org/docker" do
   action :sync
   repository "https://github.com/discourse/discourse_docker.git"
-  revision "master"
+  revision "main"
   depth 1
+  user "root"
+  group "root"
+  notifies :run, "execute[discourse_container_data_rebuild]"
+  notifies :run, "execute[discourse_container_web_only_rebuild]"
+end
+
+template "/srv/community.openstreetmap.org/docker/containers/data.yml" do
+  source "data.yml.erb"
+  owner "root"
+  group "root"
+  mode "644"
+  variables :license_keys => license_keys, :passwords => passwords
+  notifies :run, "execute[discourse_container_data_rebuild]"
+end
+
+template "/srv/community.openstreetmap.org/docker/containers/web_only.yml" do
+  source "web_only.yml.erb"
+  owner "root"
+  group "root"
+  mode "644"
+  variables :license_keys => license_keys, :passwords => passwords
+  notifies :run, "execute[discourse_container_web_only_rebuild]"
+end
+
+execute "discourse_container_data_rebuild" do
+  action :nothing
+  command "./launcher rebuild data"
+  cwd "/srv/community.openstreetmap.org/docker/"
   user "root"
   group "root"
 end
 
-# TBC: discourse docker templates
-#   web.ssl.template.yml
-#   redis.template.yml
-# TBC: discourse launcher rebuild
+execute "discourse_container_web_only_rebuild" do
+  action :nothing
+  command "./launcher rebuild web_only"
+  cwd "/srv/community.openstreetmap.org/docker/"
+  user "root"
+  group "root"
+end
+
+## FIXME
+# Backup the backups
+# Maybe use /srv/community.openstreetmap.org/shared/web-only/backups/
+# Or https://github.com/discourse/discourse_docker/blob/8b0ae9b4da2f48d62d7a88035018dba403918325/templates/postgres.template.yml#L240
+#    and tar of the shared web uploads

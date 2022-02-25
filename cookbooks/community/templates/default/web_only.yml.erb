@@ -1,0 +1,131 @@
+templates:
+  - "templates/web.template.yml"
+  - "templates/web.ratelimited.template.yml"
+  - "templates/web.ssl.template.yml"
+
+## which TCP/IP ports should this container expose?
+## If you want Discourse to share a port with another webserver like Apache or nginx,
+## see https://meta.discourse.org/t/17247 for details
+expose:
+  - "80:80"   # http
+  - "443:443" # https
+
+# Use 'links' key to link containers together, aka use Docker --link flag.
+links:
+  - link:
+      name: data
+      alias: data
+
+# any extra arguments for Docker?
+# docker_args:
+
+params:
+  version: v2.8.1
+
+env:
+  LC_ALL: en_US.UTF-8
+  LANG: en_US.UTF-8
+  LANGUAGE: en_US.UTF-8
+  EMBER_CLI_PROD_ASSETS: 1
+  DISCOURSE_FORCE_HTTPS: true
+
+  ## How many concurrent web requests are supported? Depends on memory and CPU cores.
+  ## will be set automatically by bootstrap based on detected CPUs, or you can override
+  UNICORN_WORKERS: 8
+
+  ## TODO: The domain name this Discourse instance will respond to
+  DISCOURSE_HOSTNAME: community.openstreetmap.org
+
+  ## Uncomment if you want the container to be started with the same
+  ## hostname (-h option) as specified above (default "$hostname-$config")
+  #DOCKER_USE_HOSTNAME: true
+
+  ## TODO: List of comma delimited emails that will be made admin and developer
+  ## on initial signup example 'user1@example.com,user2@example.com'
+  DISCOURSE_DEVELOPER_EMAILS: 'operations@openstreetmap.org'
+
+  ## TODO: The SMTP mail server used to validate new accounts and send notifications
+  # SMTP ADDRESS, username, and password are required
+  # WARNING the char '#' in SMTP password can cause problems!
+  DISCOURSE_SMTP_ADDRESS: mail.openstreetmap.org
+  DISCOURSE_SMTP_PORT: 26
+  DISCOURSE_SMTP_USER_NAME:
+  DISCOURSE_SMTP_PASSWORD:
+  # DISCOURSE_SMTP_ENABLE_START_TLS: true           # (optional, default true)
+  DISCOURSE_SMTP_DOMAIN: community.openstreetmap.org
+  DISCOURSE_NOTIFICATION_EMAIL: noreply@community.openstreetmap.org
+
+  ## TODO: configure connectivity to the databases
+  DISCOURSE_DB_SOCKET: ''
+  #DISCOURSE_DB_USERNAME: discourse
+  DISCOURSE_DB_PASSWORD: '<%= @passwords["database"] %>'
+  DISCOURSE_DB_HOST: data
+  DISCOURSE_REDIS_HOST: data
+
+  ## The maxmind geolocation IP address key for IP address lookup
+  ## see https://meta.discourse.org/t/-/137387/23 for details
+  DISCOURSE_MAXMIND_LICENSE_KEY: '<%= @license_keys[node[:geoipupdate][:account]] %>'
+
+volumes:
+  - volume:
+      host: /srv/community.openstreetmap.org/shared/web-only
+      guest: /shared
+  - volume:
+      host: /srv/community.openstreetmap.org/shared/web-only/log/var-log
+      guest: /var/log
+  - volume:
+      host: /etc/ssl/certs/community.openstreetmap.org.pem
+      guest: /shared/ssl/ssl.crt;
+  - volume:
+      host: /etc/ssl/private/community.openstreetmap.org.key
+      guest: /shared/ssl/ssl.key;;
+
+## Plugins go here
+## see https://meta.discourse.org/t/19157 for details
+hooks:
+  after_code:
+    - exec:
+        cd: $home/plugins
+        cmd:
+          - git clone --depth 1 https://github.com/discourse/docker_manager.git
+          - git clone --depth 1 https://github.com/discourse/discourse-oauth2-basic.git
+          - git clone --depth 1 https://github.com/discourse/discourse-solved.git
+          - git clone --depth 1 https://github.com/discourse/discourse-canned-replies.git
+          - git clone --depth 1 https://github.com/discourse/discourse-reactions.git
+  after_ssl:
+    - file:
+        path: "/etc/nginx/letsencrypt.conf"
+        contents: |
+          user www-data;
+          worker_processes auto;
+          daemon on;
+
+          events {
+            worker_connections 768;
+            # multi_accept on;
+          }
+
+          http {
+            sendfile on;
+            tcp_nopush on;
+            tcp_nodelay on;
+            keepalive_timeout 65;
+            types_hash_max_size 2048;
+
+            access_log /var/log/nginx/access.letsencrypt.log;
+            error_log /var/log/nginx/error.letsencrypt.log;
+
+            server {
+              listen 80;
+              listen [::]:80;
+
+              rewrite ^/\.well-known/acme-challenge/(.*)$ http://acme.openstreetmap.org/.well-known/acme-challenge/$1 permanent;
+
+            }
+          }
+
+    - replace:
+        filename: "/etc/nginx/conf.d/discourse.conf"
+        from: /add_header.+/
+        to: |
+          add_header Strict-Transport-Security 'max-age=63072000';
