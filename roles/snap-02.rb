@@ -22,8 +22,7 @@ default_attributes(
         :effective_io_concurrency => "256",
         :random_page_cost => "1.1"
       }
-    },
-    :versions => ["14"]
+    }
   },
   :sysctl => {
     :postgres => {
@@ -38,5 +37,5 @@ default_attributes(
 
 run_list(
   "role[ucl]",
-  "role[db-master]"
+  "role[db-slave]"
 )
