@@ -8,7 +8,7 @@ default_attributes(
         :wal_level => "logical",
         :archive_mode => "on",
         :archive_command => "/usr/local/bin/openstreetmap-wal-g wal-push %p",
-        :max_wal_senders => "5",
+        :max_wal_senders => "10",
         :max_replication_slots => "1",
         :late_authentication_rules => [
           { :database => "replication", :user => "replication", :address => "10.0.0.4/32" },   # snap-02
