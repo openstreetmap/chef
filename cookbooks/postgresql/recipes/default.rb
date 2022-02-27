@@ -40,6 +40,7 @@ node[:postgresql][:versions].each do |version|
     mode "644"
     variables :version => version, :defaults => defaults, :settings => settings
     notifies :reload, "service[postgresql]"
+    only_if { ::Dir.exist?("/etc/postgresql/#{version}/main") }
   end
 
   template "/etc/postgresql/#{version}/main/pg_hba.conf" do
@@ -50,6 +51,7 @@ node[:postgresql][:versions].each do |version|
     variables :early_rules => settings[:early_authentication_rules] || defaults[:early_authentication_rules],
               :late_rules => settings[:late_authentication_rules] || defaults[:late_authentication_rules]
     notifies :reload, "service[postgresql]"
+    only_if { ::Dir.exist?("/etc/postgresql/#{version}/main") }
   end
 
   template "/etc/postgresql/#{version}/main/pg_ident.conf" do
@@ -59,14 +61,17 @@ node[:postgresql][:versions].each do |version|
     mode "640"
     variables :maps => settings[:user_name_maps] || defaults[:user_name_maps]
     notifies :reload, "service[postgresql]"
+    only_if { ::Dir.exist?("/etc/postgresql/#{version}/main") }
   end
 
   link "/var/lib/postgresql/#{version}/main/server.crt" do
     to "/etc/ssl/certs/ssl-cert-snakeoil.pem"
+    only_if { ::Dir.exist?("/var/lib/postgresql/#{version}/main") }
   end
 
   link "/var/lib/postgresql/#{version}/main/server.key" do
     to "/etc/ssl/private/ssl-cert-snakeoil.key"
+    only_if { ::Dir.exist?("/var/lib/postgresql/#{version}/main") }
   end
 
   standby_mode = settings[:standby_mode] || defaults[:standby_mode]
@@ -89,11 +94,13 @@ node[:postgresql][:versions].each do |version|
                 :restore_command => restore_command,
                 :passwords => passwords
       notifies :reload, "service[postgresql]"
+      only_if { ::Dir.exist?("/var/lib/postgresql/#{version}/main") }
     end
   else
     template "/var/lib/postgresql/#{version}/main/recovery.conf" do
       action :delete
       notifies :reload, "service[postgresql]"
+      only_if { ::Dir.exist?("/var/lib/postgresql/#{version}/main") }
     end
   end
 end
