@@ -95,7 +95,7 @@ default_attributes(
         :group => "www-data",
         :home_directory => "/opt/otrs"
       },
-      :otrs_communications_privacy => {
+      :otrs_communications_freebies => {
         :comment => "freebies@otrs.openstreetmap.org",
         :domains => ["otrs.openstreetmap.org"],
         :local_parts => ["freebies"],
