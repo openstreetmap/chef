@@ -13,4 +13,4 @@ export PATH=$PATH:/usr/local/bin
 rsync --quiet <%= @directory %>/tmp/data_stats.html planet.openstreetmap.org::statistics
 
 # Mail statistics to Blackadder
-mail -s "OpenStreetMap Statistics" blackadderajr@gmail.com < /store/rails/stats/data_stats.html
+mail -s "OpenStreetMap Statistics" blackadderajr@gmail.com < <%= @directory %>/tmp/data_stats.html
