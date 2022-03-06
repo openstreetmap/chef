@@ -35,9 +35,6 @@ default_attributes(
       }
     }
   },
-  :nfs => {
-    "/store/rails" => { :host => "ironbelly", :path => "/store/rails" }
-  },
   :postgresql => {
     :settings => {
       :defaults => {
@@ -65,8 +62,4 @@ default_attributes(
       }
     }
   }
-)
-
-run_list(
-  "recipe[nfs]"
 )
