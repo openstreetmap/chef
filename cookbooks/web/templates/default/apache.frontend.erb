@@ -140,8 +140,6 @@
   Alias /favicon.ico <%= node[:web][:base_directory] %>/rails/app/assets/favicons/favicon.ico
   Alias /openlayers <%= node[:web][:base_directory] %>/static/openlayers
   RedirectPermanent /stats https://planet.openstreetmap.org/statistics
-  Alias /user/image /store/rails/user/image
-  Alias /attachments /store/rails/attachments
 
   #
   # Pass authentication related headers to cgimap
@@ -299,17 +297,5 @@
 </Directory>
 
 <Directory /srv/www.openstreetmap.org/rails/vendor/assets>
-  Require all granted
-</Directory>
-
-<Directory /store/rails/stats>
-  Require all granted
-</Directory>
-
-<Directory /store/rails/user/image>
-  Require all granted
-</Directory>
-
-<Directory /store/rails/attachments>
   Require all granted
 </Directory>

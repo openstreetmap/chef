@@ -17,13 +17,7 @@
 # limitations under the License.
 #
 
-node.default[:nfs]["/store/rails"] = {
-  :host => node[:web][:fileserver],
-  :path => "/store/rails"
-}
-
 include_recipe "accounts"
-include_recipe "nfs"
 
 directory node[:web][:base_directory] do
   group "rails"

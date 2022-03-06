@@ -107,8 +107,6 @@ rails_port "www.openstreetmap.org" do
   email_from "OpenStreetMap <web@noreply.openstreetmap.org>"
   status node[:web][:status]
   messages_domain "messages.openstreetmap.org"
-  gpx_dir "/store/rails/gpx"
-  attachments_dir "/store/rails/attachments"
   log_path "#{node[:web][:log_directory]}/rails.log"
   logstash_path "#{node[:web][:log_directory]}/rails-logstash.log"
   memcache_servers node[:web][:memcached_servers]
