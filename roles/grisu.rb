@@ -39,7 +39,6 @@ run_list(
   "role[bytemark]",
   "role[hp-dl180-g6]",
   "role[gateway]",
-  "role[web-storage]",
   "role[backup]",
   "role[planet]"
   # "role[planetdump]"

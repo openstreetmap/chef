@@ -119,7 +119,6 @@ default_attributes(
 run_list(
   "role[equinix-ams]",
   "role[gateway]",
-  "role[web-storage]",
   "role[supybot]",
   "role[backup]",
   "role[planet]",
