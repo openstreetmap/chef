@@ -69,6 +69,5 @@ run_list(
   "role[web-db]",
   "recipe[planet]",
   "recipe[planet::replication]",
-  "recipe[nfs::server]",
   "recipe[rsyncd]"
 )
