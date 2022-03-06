@@ -49,7 +49,6 @@ rails_port "www.openstreetmap.org" do
   database_name "openstreetmap"
   database_username "openstreetmap"
   database_password passwords["openstreetmap"]
-  gpx_dir "/store/rails/gpx"
 end
 
 package %w[
