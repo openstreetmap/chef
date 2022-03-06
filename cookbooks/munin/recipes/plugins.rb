@@ -205,33 +205,20 @@ munin_plugin "load"
 munin_plugin "memory"
 munin_plugin "netstat"
 
-if node[:kernel][:modules].include?("nfsv3")
-  munin_plugin "nfs_client"
-else
-  munin_plugin "nfs_client" do
-    action :delete
-  end
+munin_plugin "nfs_client" do
+  action :delete
 end
 
-if node[:kernel][:modules].include?("nfsv4")
-  munin_plugin "nfs4_client"
-else
-  munin_plugin "nfs4_client" do
-    action :delete
-  end
+munin_plugin "nfs4_client" do
+  action :delete
 end
 
-if node[:kernel][:modules].include?("nfsd")
-  munin_plugin "nfsd"
-  munin_plugin "nfsd4"
-else
-  munin_plugin "nfsd" do
-    action :delete
-  end
+munin_plugin "nfsd" do
+  action :delete
+end
 
-  munin_plugin "nfsd4" do
-    action :delete
-  end
+munin_plugin "nfsd4" do
+  action :delete
 end
 
 munin_plugin "open_files"
