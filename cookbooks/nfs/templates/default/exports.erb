@@ -1,8 +1,0 @@
-# DO NOT EDIT - This file is being maintained by Chef
-
-<% @exports.sort.each do |directory,clients| -%>
-<% clients.sort.each do |address,options| -%>
-<%= directory -%> -sync,subtree_check,<%= options %> <%= address %>
-<% end -%>
-<% end -%>
-/store/planet -sync,subtree_check,rw 10.0.48.50 10.0.48.5
