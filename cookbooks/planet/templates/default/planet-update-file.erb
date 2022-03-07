@@ -10,16 +10,15 @@ PLANETDIR="/var/lib/planet"
 PLANETPREV="${PLANETDIR}/planet-previous.${SUFFIX}"
 PLANETCURR="${PLANETDIR}/planet.${SUFFIX}"
 PLANETNEW="${PLANETDIR}/planet-new.${SUFFIX}"
-PLANETTMP="${PLANETDIR}/planet-tmp.${SUFFIX}"
 
 pyosmium-up-to-date -vvv -o "$PLANETNEW" "$PLANETCURR"
 retval=$?
 
 while [ $retval -eq 1 ]; do
-    mv "$PLANETNEW" "$PLANETTMP"
-    pyosmium-up-to-date -vvv -o "$PLANETNEW" "$PLANETTMP"
+    mv "$PLANETCURR" "$PLANETPREV"
+    mv "$PLANETNEW" "$PLANETCURR"
+    pyosmium-up-to-date -vvv -o "$PLANETNEW" "$PLANETCURR"
     retval=$?
-    rm "$PLANETTMP"
 done
 
 if [ $retval -ne 0 ]; then
