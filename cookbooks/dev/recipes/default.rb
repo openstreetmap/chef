@@ -248,6 +248,10 @@ if node[:postgresql][:clusters][:"14/main"]
 
   cgimap_port = 9000
 
+  Dir.glob("/srv/*.apis.dev.openstreetmap.org").each do |dir|
+    node.default_unless[:dev][:rails][File.basename(dir).split(".").first] = {}
+  end
+
   node[:dev][:rails].each do |name, details|
     database_name = details[:database] || "apis_#{name}"
     site_name = "#{name}.apis.dev.openstreetmap.org"
