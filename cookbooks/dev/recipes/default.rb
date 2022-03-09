@@ -438,6 +438,10 @@ if node[:postgresql][:clusters][:"14/main"]
         action :delete
       end
 
+      service "rails-jobs@#{name}" do
+        action [:stop, :disable]
+      end
+
       directory site_directory do
         action :delete
         recursive true
