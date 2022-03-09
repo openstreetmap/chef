@@ -43,7 +43,11 @@ end
 action :drop do
   if cluster.databases.include?(new_resource.database)
     converge_by "drop database #{new_resource.database}" do
-      cluster.execute(:command => "DROP DATABASE \"#{new_resource.database}\"")
+      if cluster.version >= 13
+        cluster.execute(:command => "DROP DATABASE \"#{new_resource.database}\" WITH (FORCE)")
+      else
+        cluster.execute(:command => "DROP DATABASE \"#{new_resource.database}\"")
+      end
     end
   end
 end

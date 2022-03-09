@@ -12,6 +12,10 @@ module OpenStreetMap
       @cluster = cluster
     end
 
+    def version
+      @cluster.split("/").first.to_f
+    end
+
     def execute(options)
       # Create argument array
       args = []
