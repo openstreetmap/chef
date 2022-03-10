@@ -42,3 +42,9 @@ hooks:
         cmd: su - postgres -c 'psql discourse'
 
         raise_on_fail: false
+    - file:
+        path: /var/spool/cron/crontabs/postgres
+        contents: |
+          # m h  dom mon dow   command
+          # MAILTO=?
+          0 4 * * * /var/lib/postgresql/take-database-backup

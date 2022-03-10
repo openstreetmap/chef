@@ -99,36 +99,12 @@ hooks:
           - git fetch --depth=1 origin tag v2.8.1 --no-tags
           - git checkout v2.8.1
   after_ssl:
-    - file:
-        path: "/etc/nginx/letsencrypt.conf"
-        contents: |
-          user www-data;
-          worker_processes auto;
-          daemon on;
-
-          events {
-            worker_connections 768;
-            # multi_accept on;
-          }
-
-          http {
-            sendfile on;
-            tcp_nopush on;
-            tcp_nodelay on;
-            keepalive_timeout 65;
-            types_hash_max_size 2048;
-
-            access_log /var/log/nginx/access.letsencrypt.log;
-            error_log /var/log/nginx/error.letsencrypt.log;
-
-            server {
-              listen 80;
-              listen [::]:80;
-
-              rewrite ^/\.well-known/acme-challenge/(.*)$ http://acme.openstreetmap.org/.well-known/acme-challenge/$1 permanent;
-
-            }
-          }
+    - replace:
+        filename: "/etc/nginx/conf.d/discourse.conf"
+        from: /listen 80;/
+        to: |
+          listen 80;
+          rewrite ^/\.well-known/acme-challenge/(.*)$ http://acme.openstreetmap.org/.well-known/acme-challenge/$1 permanent;
 
     - replace:
         filename: "/etc/nginx/conf.d/discourse.conf"
