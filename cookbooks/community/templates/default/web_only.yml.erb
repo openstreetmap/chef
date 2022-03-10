@@ -19,8 +19,9 @@ links:
 # any extra arguments for Docker?
 # docker_args:
 
-params:
-  version: v2.8.1
+# Workaround bug: https://github.com/discourse/discourse_docker/pull/505
+# params:
+#  version: v2.8.1
 
 env:
   LC_ALL: en_US.UTF-8
@@ -92,6 +93,11 @@ hooks:
           - git clone --depth 1 https://github.com/discourse/discourse-solved.git
           - git clone --depth 1 https://github.com/discourse/discourse-canned-replies.git
           - git clone --depth 1 https://github.com/discourse/discourse-reactions.git
+    - exec:
+        cd: $home
+        cmd:
+          - git fetch --depth=1 origin tag v2.8.1 --no-tags
+          - git checkout v2.8.1
   after_ssl:
     - file:
         path: "/etc/nginx/letsencrypt.conf"
