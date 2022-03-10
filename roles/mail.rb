@@ -46,6 +46,11 @@ default_attributes(
         :comment => "join.osmfoundation.org",
         :domains => ["join.osmfoundation.org"],
         :host => "ridley.ucl.openstreetmap.org"
+      },
+      :discourse => {
+        :comment => "community.osmfoundation.org",
+        :domains => ["community.osmfoundation.org"],
+        :host => "lockheed.ams.openstreetmap.org"
       }
     },
     :dkim_selectors => {
