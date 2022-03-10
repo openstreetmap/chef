@@ -50,7 +50,7 @@ default_attributes(
       :discourse => {
         :comment => "community.osmfoundation.org",
         :domains => ["community.osmfoundation.org"],
-        :host => "lockheed.ams.openstreetmap.org"
+        :host => "lockheed.ams.openstreetmap.org::2500"
       }
     },
     :dkim_selectors => {
