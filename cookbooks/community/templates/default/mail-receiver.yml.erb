@@ -33,7 +33,7 @@ env:
 
   ## The master API key of your Discourse forum.  You can get this from
   ## the "API" tab of your admin panel.
-  DISCOURSE_API_KEY: abcdefghijklmnop
+  DISCOURSE_API_KEY: '<%= @passwords["mail_receiver_api_key"] %>'
 
   ## The username to use for processing incoming e-mail.  Unless you have
   ## renamed the `system` user, you should leave this as-is.
