@@ -51,6 +51,7 @@ git "/srv/community.openstreetmap.org/docker" do
   group "root"
   notifies :run, "execute[discourse_container_data_rebuild]"
   notifies :run, "execute[discourse_container_web_only_rebuild]"
+  notifies :run, "execute[discourse_container_mail_receiver_rebuild]"
 end
 
 template "/srv/community.openstreetmap.org/docker/containers/data.yml" do
@@ -58,7 +59,7 @@ template "/srv/community.openstreetmap.org/docker/containers/data.yml" do
   owner "root"
   group "root"
   mode "644"
-  variables :license_keys => license_keys, :passwords => passwords
+  variables :passwords => passwords
   notifies :run, "execute[discourse_container_data_rebuild]"
 end
 
@@ -69,6 +70,15 @@ template "/srv/community.openstreetmap.org/docker/containers/web_only.yml" do
   mode "644"
   variables :license_keys => license_keys, :passwords => passwords
   notifies :run, "execute[discourse_container_web_only_rebuild]"
+end
+
+template "/srv/community.openstreetmap.org/docker/containers/mail-receiver.yml" do
+  source "mail-receiver.yml.erb"
+  owner "root"
+  group "root"
+  mode "644"
+  variables :passwords => passwords
+  notifies :run, "execute[discourse_container_mail_receiver_rebuild]"
 end
 
 execute "discourse_container_data_rebuild" do
@@ -82,6 +92,14 @@ end
 execute "discourse_container_web_only_rebuild" do
   action :nothing
   command "./launcher rebuild web_only"
+  cwd "/srv/community.openstreetmap.org/docker/"
+  user "root"
+  group "root"
+end
+
+execute "discourse_container_mail_receiver_rebuild" do
+  action :nothing
+  command "./launcher rebuild mail-receiver"
   cwd "/srv/community.openstreetmap.org/docker/"
   user "root"
   group "root"
