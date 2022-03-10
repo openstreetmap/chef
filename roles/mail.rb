@@ -48,8 +48,8 @@ default_attributes(
         :host => "ridley.ucl.openstreetmap.org"
       },
       :community => {
-        :comment => "community.osmfoundation.org",
-        :domains => ["community.osmfoundation.org"],
+        :comment => "community.openstreetmap.org",
+        :domains => ["community.openstreetmap.org"],
         :host => "lockheed.ams.openstreetmap.org::2500"
       }
     },
