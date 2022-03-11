@@ -50,7 +50,7 @@ default_attributes(
       :community => {
         :comment => "community.openstreetmap.org",
         :domains => ["community.openstreetmap.org"],
-        :host => "lockheed.ams.openstreetmap.org::2500"
+        :host => "jakelong.dub.openstreetmap.org::2500"
       }
     },
     :dkim_selectors => {
