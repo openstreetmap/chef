@@ -109,4 +109,5 @@ end
 # Backup the backups
 # Maybe use /srv/community.openstreetmap.org/shared/web-only/backups/
 # Or https://github.com/discourse/discourse_docker/blob/8b0ae9b4da2f48d62d7a88035018dba403918325/templates/postgres.template.yml#L240
-#    and tar of the shared web uploads
+#   and tar of the shared web uploads
+# https://github.com/discourse/discourse_docker/pull/611
