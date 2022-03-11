@@ -25,11 +25,6 @@ include_recipe "geoipupdate"
 passwords = data_bag_item("community", "passwords")
 license_keys = data_bag_item("geoipupdate", "license-keys")
 
-ssl_certificate "community.openstreetmap.org" do
-  domains ["community.openstreetmap.org", "community.osm.org"]
-  notifies :run, "execute[discourse_container_web_only_rebuild]"
-end
-
 directory "/srv/community.openstreetmap.org" do
   owner "root"
   group "root"
@@ -87,6 +82,11 @@ execute "discourse_container_data_rebuild" do
   cwd "/srv/community.openstreetmap.org/docker/"
   user "root"
   group "root"
+end
+
+ssl_certificate "community.openstreetmap.org" do
+  domains ["community.openstreetmap.org", "community.osm.org"]
+  notifies :run, "execute[discourse_container_web_only_rebuild]"
 end
 
 execute "discourse_container_web_only_rebuild" do
