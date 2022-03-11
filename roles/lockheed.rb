@@ -31,6 +31,5 @@ default_attributes(
 )
 
 run_list(
-  "role[equinix-ams]",
-  "role[community]"
+  "role[equinix-ams]"
 )
