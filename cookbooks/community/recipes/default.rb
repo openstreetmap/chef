@@ -105,9 +105,10 @@ execute "discourse_container_mail_receiver_rebuild" do
   group "root"
 end
 
-## FIXME
-# Backup the backups
-# Maybe use /srv/community.openstreetmap.org/shared/web-only/backups/
-# Or https://github.com/discourse/discourse_docker/blob/8b0ae9b4da2f48d62d7a88035018dba403918325/templates/postgres.template.yml#L240
-#   and tar of the shared web uploads
-# https://github.com/discourse/discourse_docker/pull/611
+## FIXME https://github.com/discourse/discourse_docker/pull/611
+template "/etc/cron.daily/community-backup" do
+  source "backup.cron.erb"
+  owner "root"
+  group "root"
+  mode "750"
+end
