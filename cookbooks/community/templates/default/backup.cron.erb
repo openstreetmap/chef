@@ -6,11 +6,11 @@ T=$(mktemp -d -t -p /var/tmp community.XXXXXXXXXX)
 D=$(date +%Y-%m-%d)
 B=community-$D.tar.gz
 
-mkdir $T/commmunity-$D
-ln -s /srv/community.openstreetmap.org/docker/containers $T/commmunity-$D/containers
-ln -s /srv/community.openstreetmap.org/shared/web-only $T/commmunity-$D/shared-web-only
-ln -s /srv/community.openstreetmap.org/shared/data/redis_data $T/commmunity-$D/shared-data-redis_data
-ln -s /srv/community.openstreetmap.org/shared/data/postgres_backup $T/commmunity-$D/shared-data-postgres_backup
+mkdir $T/community-$D
+ln -s /srv/community.openstreetmap.org/docker/containers $T/community-$D/containers
+ln -s /srv/community.openstreetmap.org/shared/web-only $T/community-$D/shared-web-only
+ln -s /srv/community.openstreetmap.org/shared/data/redis_data $T/community-$D/shared-data-redis_data
+ln -s /srv/community.openstreetmap.org/shared/data/postgres_backup $T/community-$D/shared-data-postgres_backup
 
 export RSYNC_RSH="ssh -ax"
 
