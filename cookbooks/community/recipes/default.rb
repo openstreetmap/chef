@@ -45,7 +45,7 @@ git "/srv/community.openstreetmap.org/docker" do
   user "root"
   group "root"
   notifies :run, "execute[discourse_container_data_rebuild]"
-  notifies :run, "execute[discourse_container_web_only_rebuild]"
+  notifies :run, "execute[discourse_container_web_only_bootstrap]"
   notifies :run, "execute[discourse_container_mail_receiver_rebuild]"
 end
 
@@ -64,7 +64,7 @@ template "/srv/community.openstreetmap.org/docker/containers/web_only.yml" do
   group "root"
   mode "644"
   variables :license_keys => license_keys, :passwords => passwords
-  notifies :run, "execute[discourse_container_web_only_rebuild]"
+  notifies :run, "execute[discourse_container_web_only_bootstrap]"
 end
 
 template "/srv/community.openstreetmap.org/docker/containers/mail-receiver.yml" do
@@ -76,6 +76,7 @@ template "/srv/community.openstreetmap.org/docker/containers/mail-receiver.yml" 
   notifies :run, "execute[discourse_container_mail_receiver_rebuild]"
 end
 
+# Destroy Bootstap Start
 execute "discourse_container_data_rebuild" do
   action :nothing
   command "./launcher rebuild data"
@@ -86,17 +87,45 @@ end
 
 ssl_certificate "community.openstreetmap.org" do
   domains ["community.openstreetmap.org", "community.osm.org", "communities.openstreetmap.org", "communities.osm.org"]
-  notifies :run, "execute[discourse_container_web_only_rebuild]"
+  notifies :run, "execute[discourse_container_web_only_bootstrap]"
 end
 
-execute "discourse_container_web_only_rebuild" do
-  action :nothing
-  command "./launcher rebuild web_only"
+execute "discourse_container_data_start" do
+  action :run
+  command "./launcher rebuild start"
   cwd "/srv/community.openstreetmap.org/docker/"
   user "root"
   group "root"
 end
 
+execute "discourse_container_web_only_bootstrap" do
+  action :nothing
+  command "./launcher bootstrap web_only"
+  cwd "/srv/community.openstreetmap.org/docker/"
+  user "root"
+  group "root"
+  notifies :run, "execute[discourse_container_web_only_destroy]", :immediately
+end
+
+execute "discourse_container_web_only_destroy" do
+  action :nothing
+  command "./launcher destroy web_only"
+  cwd "/srv/community.openstreetmap.org/docker/"
+  user "root"
+  group "root"
+  notifies :run, "execute[discourse_container_web_only_start]", :immediately
+end
+
+execute "discourse_container_web_only_start" do
+  action :nothing
+  command "./launcher start web_only"
+  cwd "/srv/community.openstreetmap.org/docker/"
+  user "root"
+  group "root"
+  notifies :run, "execute[discourse_container_data_start]", :before
+end
+
+# Destroy Bootstap Start
 execute "discourse_container_mail_receiver_rebuild" do
   action :nothing
   command "./launcher rebuild mail-receiver"
@@ -105,7 +134,6 @@ execute "discourse_container_mail_receiver_rebuild" do
   group "root"
 end
 
-## FIXME https://github.com/discourse/discourse_docker/pull/611
 template "/etc/cron.daily/community-backup" do
   source "backup.cron.erb"
   owner "root"
