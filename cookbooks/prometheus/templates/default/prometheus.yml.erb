@@ -57,6 +57,13 @@ scrape_configs:
         replacement: 127.0.0.1:9219
 <% @jobs.sort.each do |name, targets| -%>
   - job_name: <%= name %>
+<% if targets.first[:sni] -%>
+    tls_config:
+      server_name: <%= targets.first[:sni] %>
+    relabel_configs:
+      - target_label: __scheme__
+        replacement: https
+<% end -%>
     static_configs:
 <% targets.each do |target| -%>
       - targets:

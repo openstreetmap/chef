@@ -112,3 +112,9 @@ template "/etc/cron.daily/community-backup" do
   group "root"
   mode "750"
 end
+
+node.default[:prometheus][:exporters][443] = {
+  :name => "community",
+  :address => "#{node[:prometheus][:address]}:443",
+  :sni => "community.openstreetmap.org"
+}
