@@ -69,6 +69,7 @@ default_attributes(
       :gregrs => { :status => :user },
       :stereo => { :status => :user },
       :dmlu => { :status => :user },
+      :antonkh => { :status => :user },
       :ooc => {
         :status => :role,
         :members => [:tomh, :blackadder, :timsc, :ollie]
