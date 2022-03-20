@@ -45,7 +45,7 @@ function cleanup {
     # support doing this in the incrontab
     if [[ -s "$logfile" ]]
     then
-        mailx -s "Planet dump output: ${file}" zerebubuth@gmail.com < "${logfile}"
+        mailx -s "Planet dump output: ${file}" admins@openstreetmap.org zerebubuth@gmail.com < "${logfile}"
     fi
 
     # Remove the log file
