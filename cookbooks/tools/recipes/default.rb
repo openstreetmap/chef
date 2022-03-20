@@ -37,6 +37,7 @@ package %w[
   rsyslog
   cron
   locales-all
+  systemd-coredump
 ]
 
 service "rsyslog" do
