@@ -88,6 +88,12 @@ directory "/opt/piwik-#{version}/piwik/tmp" do
   mode "0755"
 end
 
+directory "/opt/piwik-#{version}/piwik/tmp/assets" do
+  owner "www-data"
+  group "mysql"
+  mode "0750"
+end
+
 link "/opt/piwik-#{version}/piwik/misc/GeoLite2-ASN.mmdb" do
   to "/usr/share/GeoIP/GeoLite2-ASN.mmdb"
 end

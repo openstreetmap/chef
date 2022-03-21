@@ -12,3 +12,5 @@ default[:piwik][:plugins] = %w[
   VisitFrequency VisitorInterest VisitsSummary VisitTime WebsiteMeasurable
   Widgetize
 ]
+
+default[:mysql][:settings][:mysqld][:secure_file_priv] = "/opt/piwik-#{node[:piwik][:version]}/piwik/tmp/assets"

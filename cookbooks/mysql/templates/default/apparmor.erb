@@ -1,0 +1,4 @@
+# DO NOT EDIT - This file is being maintained by Chef
+<% if node[:mysql][:settings][:mysqld][:secure_file_priv] -%>
+<%= node[:mysql][:settings][:mysqld][:secure_file_priv] %>/* rw,
+<% end -%>

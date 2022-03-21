@@ -36,6 +36,18 @@ template "/etc/mysql/mysql.conf.d/zzz-chef.cnf" do
   notifies :restart, "service[mysql]"
 end
 
+service "apparmor" do
+  action :nothing
+end
+
+template "/etc/apparmor.d/local/usr.sbin.mysqld" do
+  source "apparmor.erb"
+  owner "root"
+  group "root"
+  mode "644"
+  notifies :restart, "service[apparmor]"
+end
+
 package "libdbd-mysql-perl"
 package "libcache-cache-perl"
 
