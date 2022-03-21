@@ -15,6 +15,11 @@
 	Options -Indexes
 
 	DocumentRoot /srv/piwik.openstreetmap.org
+
+	Redirect 403 /core/
+	Redirect 403 /config/
+	Redirect 403 /lang/
+	Redirect 403 /tmp/
 </VirtualHost>
 
 <VirtualHost *:80>
