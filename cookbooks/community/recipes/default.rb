@@ -85,7 +85,7 @@ execute "discourse_container_data_rebuild" do
 end
 
 ssl_certificate "community.openstreetmap.org" do
-  domains ["community.openstreetmap.org", "community.osm.org"]
+  domains ["community.openstreetmap.org", "community.osm.org", "communities.openstreetmap.org", "communities.osm.org"]
   notifies :run, "execute[discourse_container_web_only_rebuild]"
 end
 
