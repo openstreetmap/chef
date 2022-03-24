@@ -318,7 +318,7 @@ gem_package "bundler" do
   version "2.1.4"
 end
 
-%w[2016 2017 2018 2019 2020 2021].each do |year|
+%w[2016 2017 2018 2019 2020 2021 2022].each do |year|
   git "/srv/#{year}.stateofthemap.org" do
     action :sync
     repository "https://github.com/openstreetmap/stateofthemap-#{year}.git"
