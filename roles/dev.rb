@@ -151,6 +151,9 @@ default_attributes(
         "kernel.shmmax" => "17179869184"
       }
     }
+  },
+  :openssh => {
+    :password_authentication => true
   }
 )
 
