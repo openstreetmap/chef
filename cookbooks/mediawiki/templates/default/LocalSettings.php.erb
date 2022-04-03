@@ -117,14 +117,14 @@ $wgForeignFileRepos[] = [
   'class' => ForeignAPIRepo::class,
   'name' => 'wikimediacommons',
   'apibase' => 'https://commons.wikimedia.org/w/api.php',
-  'url' => 'https://upload.wikimedia.org/wikipedia/commons', 
+  'url' => 'https://upload.wikimedia.org/wikipedia/commons',
   'thumbUrl' => 'https://upload.wikimedia.org/wikipedia/commons/thumb',
   'hashLevels' => 2,
   'transformVia404' => true,
   'fetchDescription' => true,
-  'descriptionCacheExpiry' => 43200,
-  'apiThumbCacheExpiry' => 86400,
-];   
+  'descriptionCacheExpiry' => 604800,
+  'apiThumbCacheExpiry' => 0,
+];
 <% end -%>
 
 ## If you use ImageMagick (or any other shell command) on a
@@ -279,7 +279,7 @@ $wgAllowExternalImagesFrom = array( 'http://tile.openstreetmap.org/', 'https://t
 $wgNoFollowDomainExceptions = array( 'www.openstreetmap.org', 'josm.openstreetmap.de', 'taginfo.openstreetmap.org', 'blog.openstreetmap.org', 'wiki.osmfoundation.org' );
 
 # FIXME - move to specific
-# defines which links of the sidebar are translatable 
+# defines which links of the sidebar are translatable
 $wgForceUIMsgAsContentMsg = array( 'mainpage-url', 'mapfeatures-url', 'contributors-url', 'helppage', 'blogs-url', 'shop-url', 'sitesupport-url' );
 
 # FIXME - move to specific
