@@ -503,6 +503,13 @@ action :create do
     update_site false
   end
 
+  # Broken Extension - 3 April 2022 - Remove. See https://github.com/openstreetmap/chef/pull/491#issuecomment-1086759504
+  mediawiki_extension "QuickInstantCommons" do
+    site new_resource.site
+    update_site false
+    action :delete
+  end
+
   cookbook_file "#{site_directory}/cc-wiki.png" do
     cookbook "mediawiki"
     owner node[:mediawiki][:user]
