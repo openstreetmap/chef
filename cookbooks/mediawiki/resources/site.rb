@@ -503,12 +503,6 @@ action :create do
     update_site false
   end
 
-  mediawiki_extension "QuickInstantCommons" do
-    site new_resource.site
-    update_site false
-    only_if { new_resource.commons == true }
-  end
-
   cookbook_file "#{site_directory}/cc-wiki.png" do
     cookbook "mediawiki"
     owner node[:mediawiki][:user]
