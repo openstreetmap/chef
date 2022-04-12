@@ -164,39 +164,14 @@ systemd_service "promscale" do
   no_new_privileges true
 end
 
-systemd_service "promscale-maintenance" do
-  description "Promscale Maintenance"
-  type "simple"
-  user "prometheus"
-  exec_start "/usr/bin/psql --command='CALL prom_api.execute_maintenance()' promscale"
-  private_tmp true
-  protect_system "strict"
-  protect_home true
-  no_new_privileges true
-end
-
-systemd_timer "promscale-maintenance" do
-  description "Promscale Maintenace"
-  on_active_sec 1800
-  on_unit_inactive_sec 1800
-end
-
 if node[:prometheus][:promscale]
   service "promscale" do
     action [:enable, :start]
     subscribes :restart, "remote_file[/opt/promscale/bin/promscale]"
     subscribes :restart, "systemd_service[promscale]"
   end
-
-  service "promscale-maintenance.timer" do
-    action [:enable, :start]
-  end
 else
   service "promscale" do
-    action [:disable, :stop]
-  end
-
-  service "promscale-maintenance.timer" do
     action [:disable, :stop]
   end
 end
