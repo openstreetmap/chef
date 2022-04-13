@@ -92,7 +92,7 @@ end
 
 execute "discourse_container_data_start" do
   action :run
-  command "./launcher rebuild start"
+  command "./launcher start data"
   cwd "/srv/community.openstreetmap.org/docker/"
   user "root"
   group "root"
