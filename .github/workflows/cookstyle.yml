@@ -10,18 +10,8 @@ jobs:
     - name: Check out code
       uses: actions/checkout@v3
     - name: Setup ruby
-      uses: actions/setup-ruby@v1.1.3
-    - name: Cache gems
-      uses: actions/cache@v3
+      uses: ruby/setup-ruby@v1
       with:
-        path: vendor/bundle
-        key: bundle-${{ runner.OS }}-${{ hashFiles('Gemfile.lock') }}
-        restore-keys: |
-          bundle-${{ runner.OS }}-
-    - name: Install gems
-      run: |
-        gem install bundler
-        bundle config set deployment true
-        bundle install --jobs 4 --retry 3
+        bundler-cache: true
     - name: Run cookstyle
       run: bundle exec cookstyle --format fuubar
