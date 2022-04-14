@@ -117,7 +117,7 @@ execute "discourse_container_web_only_destroy" do
 end
 
 execute "discourse_container_web_only_start" do
-  action :nothing
+  action :run
   command "./launcher start web_only"
   cwd "/srv/community.openstreetmap.org/docker/"
   user "root"
