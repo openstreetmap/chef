@@ -1,0 +1,7 @@
+{
+  "id": "stateofthemap",
+  "uid": "529",
+  "comment": "State of the Map",
+  "home": "/srv/stateofthemap",
+  "manage_home": false
+}

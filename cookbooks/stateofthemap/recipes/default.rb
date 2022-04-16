@@ -311,53 +311,60 @@ apache_module "expires"
 apache_module "rewrite"
 
 gem_package "bundler" do
-  version "1.17.3"
+  version "2.3.11"
+  gem_binary "/usr/bin/gem"
 end
 
-gem_package "bundler" do
-  version "2.1.4"
+directory "/srv/stateofthemap" do
+  mode "755"
+  owner "stateofthemap"
+  group "stateofthemap"
 end
 
 %w[2016 2017 2018 2019 2020 2021 2022].each do |year|
-  git "/srv/#{year}.stateofthemap.org" do
+  git "/srv/stateofthemap/#{year}.stateofthemap.org" do
     action :sync
     repository "https://github.com/openstreetmap/stateofthemap-#{year}.git"
     depth 1
-    user "root"
-    group "root"
-    notifies :run, "execute[/srv/#{year}.stateofthemap.org/Gemfile]"
+    user "stateofthemap"
+    group "stateofthemap"
+    notifies :run, "execute[/srv/stateofthemap/#{year}.stateofthemap.org/Gemfile]"
   end
 
-  directory "/srv/#{year}.stateofthemap.org/_site" do
-    mode "755"
-    owner "nobody"
-    group "nogroup"
+  execute "/srv/stateofthemap/#{year}.stateofthemap.org/bundler-global-cache" do
+    action :run
+    command "bundle config set --local global_gem_cache true"
+    cwd "/srv/stateofthemap/#{year}.stateofthemap.org"
+    user "stateofthemap"
+    group "stateofthemap"
+    only_if { ::File.exist?("/srv/stateofthemap/#{year}.stateofthemap.org/Gemfile") }
   end
 
-  # Workaround https://github.com/jekyll/jekyll/issues/7804
-  # by creating a .jekyll-cache folder
-  directory "/srv/#{year}.stateofthemap.org/.jekyll-cache" do
-    mode "755"
-    owner "nobody"
-    group "nogroup"
+  execute "/srv/stateofthemap/#{year}.stateofthemap.org/bundler-deploy" do
+    action :run
+    command "bundle config set --local deployment true"
+    cwd "/srv/stateofthemap/#{year}.stateofthemap.org"
+    user "stateofthemap"
+    group "stateofthemap"
+    only_if { ::File.exist?("/srv/stateofthemap/#{year}.stateofthemap.org/Gemfile") }
   end
 
-  execute "/srv/#{year}.stateofthemap.org/Gemfile" do
+  execute "/srv/stateofthemap/#{year}.stateofthemap.org/Gemfile" do
     action :nothing
-    command "bundle install --deployment --jobs #{node[:cpu][:total]}"
-    cwd "/srv/#{year}.stateofthemap.org"
-    user "root"
-    group "root"
-    notifies :run, "execute[/srv/#{year}.stateofthemap.org]"
-    only_if { ::File.exist?("/srv/#{year}.stateofthemap.org/Gemfile") }
+    command "bundle install --verbose --jobs #{node[:cpu][:total]}"
+    cwd "/srv/stateofthemap/#{year}.stateofthemap.org"
+    user "stateofthemap"
+    group "stateofthemap"
+    notifies :run, "execute[/srv/stateofthemap/#{year}.stateofthemap.org]"
+    only_if { ::File.exist?("/srv/stateofthemap/#{year}.stateofthemap.org/Gemfile") }
   end
 
-  execute "/srv/#{year}.stateofthemap.org" do
+  execute "/srv/stateofthemap/#{year}.stateofthemap.org" do
     action :nothing
     command "bundle exec jekyll build --trace --baseurl=https://#{year}.stateofthemap.org"
-    cwd "/srv/#{year}.stateofthemap.org"
-    user "nobody"
-    group "nogroup"
+    cwd "/srv/stateofthemap/#{year}.stateofthemap.org"
+    user "stateofthemap"
+    group "stateofthemap"
     environment "LANG" => "C.UTF-8"
   end
 
@@ -368,7 +375,7 @@ end
 
   apache_site "#{year}.stateofthemap.org" do
     template "apache.jekyll.erb"
-    directory "/srv/#{year}.stateofthemap.org/_site"
+    directory "/srv/stateofthemap/#{year}.stateofthemap.org/_site"
     variables :year => year
   end
 end

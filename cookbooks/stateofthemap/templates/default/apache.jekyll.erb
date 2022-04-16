@@ -38,7 +38,7 @@
         SSLCertificateFile /etc/ssl/certs/<%= @year %>.stateofthemap.org.pem
         SSLCertificateKeyFile /etc/ssl/private/<%= @year %>.stateofthemap.org.key
 
-        DocumentRoot /srv/<%= @year %>.stateofthemap.org/_site
+        DocumentRoot /srv/stateofthemap/<%= @year %>.stateofthemap.org/_site
 
         ErrorDocument 404 /404.html
 
@@ -46,6 +46,6 @@
         ExpiresDefault "access plus 10 minutes"
 </VirtualHost>
 
-<Directory /srv/<%= @year %>.stateofthemap.org/_site>
+<Directory /srv/stateofthemap/<%= @year %>.stateofthemap.org/_site>
         Require all granted
 </Directory>
