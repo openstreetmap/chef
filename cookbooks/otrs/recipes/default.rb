@@ -115,10 +115,9 @@ systemd_service "otrs" do
   group "otrs"
   exec_start "/opt/otrs/bin/otrs.Daemon.pl start"
   private_tmp true
-  private_devices true
   protect_system "full"
   protect_home true
-  no_new_privileges true
+  read_write_paths "/var/log/exim4"
 end
 
 service "otrs" do
