@@ -53,7 +53,13 @@ wordpress_plugin "blog.openstreetmap.org-google-analytics-for-wordpress" do
 end
 
 wordpress_plugin "blog.openstreetmap.org-google-sitemap-generator" do
+  action :delete
   plugin "google-sitemap-generator"
+  site "blog.openstreetmap.org"
+end
+
+wordpress_plugin "blog.openstreetmap.org-www-xml-sitemap-generator-org" do
+  plugin "www-xml-sitemap-generator-org"
   site "blog.openstreetmap.org"
 end
 
