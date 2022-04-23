@@ -9,7 +9,6 @@ class Chef
     extend Chef::Mixin::ShellOut
 
     @api_responses = {}
-    @svn_responses = {}
 
     class << self
       def current_version
@@ -17,11 +16,7 @@ class Chef
       end
 
       def current_plugin_version(name)
-        if svn_cat("https://plugins.svn.wordpress.org/#{name}/trunk/readme.txt") =~ /Stable tag:\s*([^\s\r]*)[\s\r]*/
-          Regexp.last_match[1]
-        else
-          "trunk"
-        end
+        plugin_information(name)["version"]
       end
 
       private
@@ -30,18 +25,12 @@ class Chef
         api_get("https://api.wordpress.org/core/version-check/1.7")
       end
 
-      def api_get(url)
-        @api_responses[url] ||= ::JSON.parse(::HTTPClient.new.get_content(url))
+      def plugin_information(name)
+        api_get("https://api.wordpress.org/plugins/info/1.2/?action=plugin_information&request[slug]=#{name}")
       end
 
-      def svn_cat(url)
-        unless @svn_responses[url]
-          result = shell_out!("svn", "cat", url)
-
-          @svn_responses[url] = result.stdout.force_encoding("UTF-8")
-        end
-
-        @svn_responses[url]
+      def api_get(url)
+        @api_responses[url] ||= ::JSON.parse(::HTTPClient.new.get_content(url))
       end
     end
   end
