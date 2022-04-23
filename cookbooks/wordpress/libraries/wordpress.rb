@@ -2,7 +2,7 @@ require "chef/mixin/shell_out"
 
 require "addressable"
 require "httpclient"
-require "php_serialize"
+require "json"
 
 class Chef
   module Wordpress
@@ -27,11 +27,11 @@ class Chef
       private
 
       def core_version_check
-        api_get("https://api.wordpress.org/core/version-check/1.6")
+        api_get("https://api.wordpress.org/core/version-check/1.7")
       end
 
       def api_get(url)
-        @api_responses[url] ||= ::PHP.unserialize(::HTTPClient.new.get_content(url))
+        @api_responses[url] ||= ::JSON.parse(::HTTPClient.new.get_content(url))
       end
 
       def svn_cat(url)
