@@ -132,10 +132,10 @@ wordpress_theme "2009.stateofthemap.org-aerodrome" do
   revision "theme-2009"
 end
 
-wordpress_plugin "2009.stateofthemap.org-wp-sticky" do
-  plugin "wp-sticky"
-  site "2009.stateofthemap.org"
-end
+# wordpress_plugin "2009.stateofthemap.org-wp-sticky" do
+#   plugin "wp-sticky"
+#   site "2009.stateofthemap.org"
+# end
 
 directory "/srv/2010.stateofthemap.org" do
   owner "wordpress"
@@ -176,10 +176,10 @@ wordpress_plugin "2010.stateofthemap.org-sitepress-multilingual-cms" do
   not_if { kitchen? }
 end
 
-wordpress_plugin "2010.stateofthemap.org-wp-sticky" do
-  plugin "wp-sticky"
-  site "2010.stateofthemap.org"
-end
+# wordpress_plugin "2010.stateofthemap.org-wp-sticky" do
+#   plugin "wp-sticky"
+#   site "2010.stateofthemap.org"
+# end
 
 directory "/srv/2011.stateofthemap.org" do
   owner "wordpress"
@@ -220,10 +220,10 @@ wordpress_plugin "2011.stateofthemap.org-sitepress-multilingual-cms" do
   not_if { kitchen? }
 end
 
-wordpress_plugin "2011.stateofthemap.org-wp-sticky" do
-  plugin "wp-sticky"
-  site "2011.stateofthemap.org"
-end
+# wordpress_plugin "2011.stateofthemap.org-wp-sticky" do
+#   plugin "wp-sticky"
+#   site "2011.stateofthemap.org"
+# end
 
 directory "/srv/2012.stateofthemap.org" do
   owner "wordpress"
@@ -269,10 +269,10 @@ wordpress_plugin "2012.stateofthemap.org-sitepress-multilingual-cms" do
   not_if { kitchen? }
 end
 
-wordpress_plugin "2012.stateofthemap.org-wp-sticky" do
-  plugin "wp-sticky"
-  site "2012.stateofthemap.org"
-end
+# wordpress_plugin "2012.stateofthemap.org-wp-sticky" do
+#   plugin "wp-sticky"
+#   site "2012.stateofthemap.org"
+# end
 
 %w[2013].each do |year|
   git "/srv/#{year}.stateofthemap.org" do
