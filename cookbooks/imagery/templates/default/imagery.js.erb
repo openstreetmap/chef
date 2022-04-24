@@ -37,7 +37,9 @@ function createMap(divName) {
   map.addControl(new L.Control.Permalink());
 
   var lc = L.control.locate({
-    position: 'topright'
+    position: 'topright',
+    icon: '/location-arrow-solid.svg',
+    iconLoading: '/spinner-solid.svg'
   }).addTo(map);
 
   return map;

@@ -85,6 +85,20 @@ action :create do
     mode "644"
   end
 
+  cookbook_file "/srv/#{new_resource.site}/location-arrow-solid.svg" do
+    source "location-arrow-solid.svg"
+    user "root"
+    group "root"
+    mode "644"
+end
+
+  cookbook_file "/srv/#{new_resource.site}/spinner-solid.svg" do
+    source "spinner-solid.svg"
+    user "root"
+    group "root"
+    mode "644"
+  end
+
   layers = Dir.glob("/srv/imagery/layers/#{new_resource.site}/*.yml").collect do |path|
     YAML.safe_load(::File.read(path), [Symbol])
   end
