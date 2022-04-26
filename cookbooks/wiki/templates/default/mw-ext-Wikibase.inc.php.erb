@@ -4,8 +4,8 @@
 $wgEnableWikibaseRepo = true;
 $wgEnableWikibaseClient = true;
 
-require_once "$IP/extensions/Wikibase/repo/Wikibase.php";
-require_once "$IP/extensions/Wikibase/client/WikibaseClient.php";
+wfLoadExtension( 'WikibaseRepository', "$IP/extensions/Wikibase/extension-repo.json" );
+wfLoadExtension( 'WikibaseClient', "$IP/extensions/Wikibase/extension-client.json" );
 // Include Wikibase.searchindex.php to include string and text values in the full text index:
 require_once "$IP/extensions/Wikibase/repo/config/Wikibase.searchindex.php";
 
