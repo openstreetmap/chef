@@ -89,7 +89,7 @@ $baseRepoNs = 120;
 define( 'WB_REPO_NS_ITEM', $baseRepoNs );
 define( 'WB_REPO_NS_PROPERTY', $baseRepoNs + 2 );
 
-$wgWBClientSettings['entitySources'] = [
+$entitySources = [
         'local' => [
                 'repoDatabase' => 'repo',
                 'baseUri' => $wgWBClientSettings['repoUrl'] . '/entity',
@@ -103,11 +103,16 @@ $wgWBClientSettings['entitySources'] = [
         ],
 ];
 
+$wgWBRepoSettings['entitySources'] = $entitySources;
+$wgWBRepoSettings['localEntitySourceName'] = 'local';
+$wgWBClientSettings['entitySources'] = $entitySources;
+$wgWBClientSettings['itemAndPropertySourceName'] = 'local';
+
 $wgWBClientSettings['namespaces'] = [ NS_MAIN ];
 
 // Avoid complaints that nobody seems to know the cause off...
 $wgWBClientSettings['entityUsagePerPageLimit'] = 500;
-                                  
+
 // no edit rights for anonymous users
 $wgGroupPermissions['*']['item-term'] = false;
 $wgGroupPermissions['*']['item-merge'] = false;
