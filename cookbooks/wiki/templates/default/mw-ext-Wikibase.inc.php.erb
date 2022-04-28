@@ -1,6 +1,9 @@
 <?php
 # DO NOT EDIT - This file is being maintained by Chef
 
+use MediaWiki\MediaWikiServices;
+use Wikibase\Lib\SettingsArray;
+
 $wgEnableWikibaseRepo = true;
 $wgEnableWikibaseClient = true;
 
@@ -17,8 +20,6 @@ call_user_func( function() {
         $wgNamespacesToBeSearchedDefault,
         $wgWBRepoSettings;
 
-    $wgContentHandlerUseDB = true;
-
     $baseNs = 120;
 
     // Define custom namespaces. Use these exact constant names.
@@ -33,12 +34,32 @@ call_user_func( function() {
     $wgExtraNamespaces[WB_NS_PROPERTY] = 'Property';
     $wgExtraNamespaces[WB_NS_PROPERTY_TALK] = 'Property_talk';
 
-    // Tell Wikibase which namespace to use for which kind of entity
-    $wgWBRepoSettings['entityNamespaces']['item'] = WB_NS_ITEM;
-    $wgWBRepoSettings['entityNamespaces']['property'] = WB_NS_PROPERTY;
+    $wgWBRepoSettings['entitySources'] = function ( SettingsArray $settings ) {
+        global $wgServer;
+
+        $entityNamespaces = [
+            'item' => WB_NS_ITEM,
+            'property' => WB_NS_PROPERTY,
+        ];
+
+        $hookContainer = MediaWikiServices::getInstance()->getHookContainer();
+        $hookContainer->run( 'WikibaseRepoEntityNamespaces', [ &$entityNamespaces ] );
+
+        return [
+             $settings->getSetting( 'localEntitySourceName' ) => [
+                                    'entityNamespaces' => $entityNamespaces,
+                                    'repoDatabase' => false,
+                                    'baseUri' => $wgServer . '/entity/',
+                                    'rdfNodeNamespacePrefix' => 'wd',
+                                    'rdfPredicateNamespacePrefix' => '',
+                                    'interwikiPrefix' => '',
+             ],
+        ];
+    };
 
     // Make sure we use the same keys on repo and clients, so we can share cached objects.
-    $wgWBRepoSettings['sharedCacheKeyPrefix'] = $wgDBname;
+    $wgWBRepoSettings['sharedCacheKeyPrefix'] = $wgDBname . ':WBL';
+    $wgWBRepoSettings['sharedCacheKeyGroup'] = $wgDBname;
 
     // Include Wikibase items in the regular search result by default
     $wgNamespacesToBeSearchedDefault[WB_NS_ITEM] = true;
@@ -91,7 +112,7 @@ define( 'WB_REPO_NS_PROPERTY', $baseRepoNs + 2 );
 
 $wgWBClientSettings['entitySources'] = [
         'local' => [
-                'repoDatabase' => 'repo',
+                'repoDatabase' => $wgDBname,
                 'baseUri' => $wgWBClientSettings['repoUrl'] . '/entity',
                 'entityNamespaces' => [
                         'item' => WB_REPO_NS_ITEM,
