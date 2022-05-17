@@ -43,6 +43,13 @@ directory "#{git_directory}/private" do
   mode "2775"
 end
 
+template "/etc/gitconfig" do
+  source "gitconfig.erb"
+  owner "root"
+  group "root"
+  mode "644"
+end
+
 Dir.glob("#{git_directory}/*/*.git").each do |repository|
   template "#{repository}/hooks/post-update" do
     source "post-update.erb"
