@@ -367,8 +367,13 @@ groups:
   - name: systemd
     rules:
       - alert: systemd failed service
-        expr: node_systemd_unit_state{state="failed"} == 1
+        expr: node_systemd_unit_state{state="failed",name!="chef-client.service"} == 1
         for: 5m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+      - alert: systemd failed service
+        expr: node_systemd_unit_state{state="failed",name="chef-client.service"} == 1
+        for: 6h
         labels:
           alertgroup: "{{ $labels.instance }}"
   - name: tile
