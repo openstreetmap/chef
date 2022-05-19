@@ -6,5 +6,5 @@ default[:prometheus][:files] = []
 default[:prometheus][:promscale] = true
 
 if node[:recipes].include?("prometheus::server")
-  default[:apt][:sources] |= ["grafana"]
+  default[:apt][:sources] |= %w[grafana timescaledb]
 end

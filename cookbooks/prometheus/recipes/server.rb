@@ -98,16 +98,16 @@ archive_file "#{cache_dir}/karma-linux-amd64.tar.gz" do
   subscribes :extract, "remote_file[#{cache_dir}/karma-linux-amd64.tar.gz]"
 end
 
-package %w[
-  prometheus
-  prometheus-alertmanager
-]
-
 promscale_version = "0.11.0"
-promscale_extension_version = "0.5.0"
 
 database_version = node[:timescaledb][:database_version]
 database_cluster = "#{database_version}/main"
+
+package %W[
+  prometheus
+  prometheus-alertmanager
+  promscale-extension-postgresql-#{database_version}
+]
 
 postgresql_user "prometheus" do
   cluster database_cluster
@@ -123,19 +123,6 @@ directory "/opt/promscale" do
   owner "root"
   group "root"
   mode "755"
-end
-
-remote_file "#{cache_dir}/promscale_extension.pg#{database_version}.x86_64.deb" do
-  source "https://github.com/timescale/promscale_extension/releases/download/#{promscale_extension_version}/promscale_extension-#{promscale_extension_version}.pg#{database_version}.x86_64.deb"
-  owner "root"
-  group "root"
-  mode "644"
-  backup false
-end
-
-dpkg_package "promscale-extension-postgresql-#{database_version}" do
-  source "#{cache_dir}/promscale_extension.pg#{database_version}.x86_64.deb"
-  version "#{promscale_extension_version}-1"
 end
 
 directory "/opt/promscale/bin" do
