@@ -22,6 +22,15 @@ groups:
           alertgroup: "{{ $labels.instance }}"
         annotations:
           busy_workers: "{{ $value | humanizePercentage }}"
+  - name: chef
+    rules:
+      - alert: chef client not running
+        expr: time() - node_systemd_timer_last_trigger_seconds{name="chef-client.timer"} > 3600
+        for: 12h
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+        annotations:
+          down_time: "{{ $value | humanizeDuration }}"
   - name: cpu
     rules:
       - alert: cpu pressure
