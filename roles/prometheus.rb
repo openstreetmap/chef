@@ -21,8 +21,8 @@ default_attributes(
         :effective_cache_size => "144GB",
         :default_statistics_target => "500",
         :log_autovacuum_min_duration => "0",
-        :autovacuum_max_workers => "10",
-        :autovacuum_naptime => "10",
+        :autovacuum_max_workers => "56",
+        :autovacuum_naptime => "1",
         :autovacuum_multixact_freeze_max_age => "200000000",
         :max_locks_per_transaction => "512"
       }
