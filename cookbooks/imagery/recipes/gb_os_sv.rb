@@ -1155,6 +1155,16 @@ imagery_layer "gb_os_om_local_2021_10" do
   copyright "Contains OS data &copy; Crown copyright and database right 2021"
   background_colour "213 244 248" # OS OpenMap Local Water Blue
   extension "os_om_local_png"
-  url_aliases ["/om-local-2021-10", "/om-local"]
+end
+
+imagery_layer "gb_os_om_local_2022_04" do
+  site "os.openstreetmap.org"
+  title "OS OpenMap Local - April 2022"
+  projection "EPSG:27700"
+  source "/data/imagery/gb/openmap-local/2022-04/os-openmap-local-2022-04.vrt"
+  copyright "Contains OS data &copy; Crown copyright and database right 2022"
+  background_colour "213 244 248" # OS OpenMap Local Water Blue
+  extension "os_om_local_png"
+  url_aliases ["/om-local-2022-04", "/om-local"]
   default_layer true
 end
