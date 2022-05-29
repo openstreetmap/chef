@@ -389,7 +389,7 @@ groups:
     rules:
       - alert: renderd replication delay
         expr: renderd_replication_delay > 120
-        for: 5m
+        for: 15m
         labels:
           alertgroup: tile
         annotations:
