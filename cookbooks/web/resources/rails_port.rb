@@ -51,6 +51,7 @@ property :logstash_path, String
 property :memcache_servers, Array
 property :potlatch2_key, String
 property :id_key, String
+property :id_application, String
 property :oauth_key, String
 property :oauth_application, String
 property :nominatim_url, String
@@ -221,6 +222,10 @@ action :create do
       line.gsub!(/^( *)#id_key:.*$/, "\\1id_key: \"#{new_resource.id_key}\"")
     end
 
+    if new_resource.id_application
+      line.gsub!(/^( *)#id_application:.*$/, "\\1id_application: \"#{new_resource.id_application}\"")
+    end
+
     if new_resource.oauth_key
       line.gsub!(/^( *)#oauth_key:.*$/, "\\1oauth_key: \"#{new_resource.oauth_key}\"")
     end
@@ -310,6 +315,7 @@ action :create do
     "logstash_path",
     "potlatch2_key",
     "id_key",
+    "id_application",
     "oauth_key",
     "oauth_application",
     "nominatim_url",
