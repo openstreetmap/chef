@@ -49,7 +49,6 @@ action :create do
         action :sync
         repository theme_repository
         revision new_resource.revision
-        depth 1
         user node[:wordpress][:user]
         group node[:wordpress][:group]
       end

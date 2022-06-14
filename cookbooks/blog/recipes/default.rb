@@ -72,6 +72,7 @@ wordpress_plugin "blog.openstreetmap.org-sitepress-multilingual-cms" do
   plugin "sitepress-multilingual-cms"
   site "blog.openstreetmap.org"
   repository "https://git.openstreetmap.org/private/sitepress-multilingual-cms.git"
+  revision "master"
   not_if { kitchen? }
 end
 
