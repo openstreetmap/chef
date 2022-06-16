@@ -23,7 +23,7 @@ GEM
       builder (>= 2.1.2)
       rexml (~> 3.0)
     httpclient (2.8.3)
-    kitchen-dokken (2.17.1)
+    kitchen-dokken (2.17.2)
       docker-api (>= 1.33, < 3)
       lockfile (~> 2.1)
       test-kitchen (>= 1.15, < 4)
