@@ -62,13 +62,6 @@ default_attributes(
         "net.core.somaxconn" => 10000
       }
     },
-    :kernel_scheduler_tune => {
-      :comment => "Tune kernel scheduler preempt",
-      :parameters => {
-        "kernel.sched_min_granularity_ns" => 10000000,
-        "kernel.sched_wakeup_granularity_ns" => 15000000
-      }
-    },
     :no_tcp_slow_start => {
       :comment => "Disable TCP slow start",
       :parameters => {
