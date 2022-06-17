@@ -58,10 +58,10 @@ wordpress_plugin "blog.openstreetmap.org-google-sitemap-generator" do
   site "blog.openstreetmap.org"
 end
 
-wordpress_plugin "blog.openstreetmap.org-www-xml-sitemap-generator-org" do
-  plugin "www-xml-sitemap-generator-org"
-  site "blog.openstreetmap.org"
-end
+# wordpress_plugin "blog.openstreetmap.org-www-xml-sitemap-generator-org" do
+#   plugin "www-xml-sitemap-generator-org"
+#   site "blog.openstreetmap.org"
+# end
 
 wordpress_plugin "blog.openstreetmap.org-shareadraft" do
   plugin "shareadraft"
