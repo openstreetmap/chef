@@ -8,6 +8,36 @@ groups:
         for: 5m
         labels:
           alertgroup: "prometheus"
+  - name: amsterdam
+    rules:
+      - alert: pdu current draw
+        expr: rPDU2PhaseStatusCurrent{site="amsterdam",rPDU2PhaseStatusIndex="1"} / 10 > 10
+        for: 5m
+        labels:
+          alertgroup: "amsterdam"
+        annotations:
+          current: "{{ $value | humanize }}A"
+      - alert: site current draw
+        expr: sum(rPDU2PhaseStatusCurrent{site="amsterdam",rPDU2PhaseStatusIndex="1"} / 10) > 13
+        for: 5m
+        labels:
+          alertgroup: "amsterdam"
+        annotations:
+          current: "{{ $value | humanize }}A"
+      - alert: site temperature
+        expr: min(rPDU2SensorTempHumidityStatusTempC{site="amsterdam"}) / 10 < 18 or min(rPDU2SensorTempHumidityStatusTempC{site="amsterdam"}) / 10 > 25
+        for: 5m
+        labels:
+          alertgroup: "amsterdam"
+        annotations:
+          temperature: "{{ $value | humanize }}C"
+      - alert: site humidity
+        expr: max(rPDU2SensorTempHumidityStatusRelativeHumidity{site="amsterdam"}) / 100 < 0.25 or max(rPDU2SensorTempHumidityStatusRelativeHumidity{site="amsterdam"}) / 100 > 0.65
+        for: 5m
+        labels:
+          alertgroup: "amsterdam"
+        annotations:
+          humidity: "{{ $value | humanizePercentage }}"
   - name: apache
     rules:
       - alert: apache down
