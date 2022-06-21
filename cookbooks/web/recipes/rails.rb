@@ -93,6 +93,12 @@ storage = {
   }
 }
 
+db_host = if node[:web][:status] == "database_readonly"
+            node[:web][:readonly_database_host]
+          else
+            node[:web][:database_host]
+          end
+
 rails_port "www.openstreetmap.org" do
   ruby ruby_version
   directory rails_directory
@@ -100,7 +106,7 @@ rails_port "www.openstreetmap.org" do
   group "rails"
   repository "https://git.openstreetmap.org/public/rails.git"
   revision "live"
-  database_host node[:web][:database_host]
+  database_host db_host
   database_name "openstreetmap"
   database_username "rails"
   database_password db_passwords["rails"]
