@@ -28,8 +28,7 @@ admins = data_bag_item("apache", "admins")
 
 prometheus_exporter "fastly" do
   port 8080
-  listen_switch "endpoint"
-  listen_type "url"
+  listen_switch "listen"
   environment "FASTLY_API_TOKEN" => tokens["fastly"]
 end
 
