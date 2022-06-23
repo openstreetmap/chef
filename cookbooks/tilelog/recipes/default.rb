@@ -2,7 +2,7 @@
 # Cookbook:: tilelog
 # Recipe:: default
 #
-# Copyright:: 2014, OpenStreetMap Foundation
+# Copyright:: 2014-2022, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -31,6 +31,7 @@ end
 python_package "tilelog" do
   python_virtualenv tilelog_directory
   python_version "3"
+  version "0.4.0"
 end
 
 directory tilelog_output_directory do
