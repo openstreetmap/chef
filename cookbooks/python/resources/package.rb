@@ -40,6 +40,20 @@ action :install do
   end
 end
 
+action :upgrade do
+  if new_resource.version.nil?
+    execute "pip-upgrade-#{new_resource.package_name}" do
+      command "#{pip_command} install --upgrade #{new_resource.package_name}"
+      only_if "#{pip_command} list --outdated | fgrep -q #{new_resource.package_name}"
+    end
+  else
+    execute "pip-upgrade-#{new_resource.package_name}" do
+      command "#{pip_command} install --upgrade #{new_resource.package_name}==#{new_resource.version}"
+      not_if "#{pip_command} show #{new_resource.package_name} | fgrep -q #{new_resource.version}"
+    end
+  end
+end
+
 action :remove do
   execute "pip-uninstall-#{new_resource.package_name}" do
     command "#{pip_command} uninstall #{new_resource.package_name}"
