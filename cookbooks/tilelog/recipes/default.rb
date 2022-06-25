@@ -31,7 +31,7 @@ end
 python_package "tilelog" do
   python_virtualenv tilelog_directory
   python_version "3"
-  version "0.4.0"
+  version "1.1.0"
 end
 
 directory tilelog_output_directory do

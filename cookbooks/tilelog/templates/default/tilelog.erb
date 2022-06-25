@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 
 if [ -z "$DATE" ]
 then
@@ -8,12 +9,18 @@ fi
 OUTDIR="<%= @output_dir %>"
 TMPDIR=$(mktemp -d -t tilelog.XXXXXXXXX)
 
-cd $TMPDIR
+cd "$TMPDIR"
 
 export AWS_ACCESS_KEY_ID="AKIASQUXHPE7JFCFMOUP"
 export AWS_SECRET_ACCESS_KEY="<%= @aws_key %>"
 export AWS_REGION="eu-west-1"
 
-nice -n 19 /opt/tilelog/bin/tilelog --date ${DATE} && mv tiles-${DATE}.txt.xz "${OUTDIR}"
+TILEFILE="tiles-${DATE}.txt.xz"
+HOSTFILE="hosts-${DATE}.csv"
 
-rm -rf $TMPDIR
+nice -n 19 /opt/tilelog/bin/tilelog --date "${DATE}" \
+  --tile "${TILEFILE}" --host "${HOSTFILE}"
+
+mv "${TILEFILE}" "${HOSTFILE}" "${OUTDIR}"
+
+rm -rf "$TMPDIR"
