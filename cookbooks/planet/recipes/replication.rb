@@ -155,6 +155,40 @@ template "/etc/replication/users-agreed.conf" do
   variables :password => db_passwords["planetdiff"]
 end
 
+systemd_service "users-agreed" do
+  description "Update list of users accepting CTs"
+  user "planet"
+  exec_start "/usr/local/bin/users-agreed"
+  private_tmp true
+  private_devices true
+  protect_system "full"
+  protect_home true
+  restrict_address_families %w[AF_INET AF_INET6]
+  no_new_privileges true
+end
+
+systemd_timer "users-agreed" do
+  description "Update list of users accepting CTs"
+  on_calendar "7:00"
+end
+
+systemd_service "users-deleted" do
+  description "Update list of deleted users"
+  user "planet"
+  exec_start "/usr/local/bin/users-deleted"
+  private_tmp true
+  private_devices true
+  protect_system "full"
+  protect_home true
+  restrict_address_families %w[AF_INET AF_INET6]
+  no_new_privileges true
+end
+
+systemd_timer "users-deleted" do
+  description "Update list of deleted users"
+  on_calendar "17:00"
+end
+
 ## Changeset replication
 
 directory "/store/planet/replication/changesets" do
@@ -169,6 +203,25 @@ template "/etc/replication/changesets.conf" do
   group "planet"
   mode "640"
   variables :password => db_passwords["planetdiff"]
+end
+
+systemd_service "replication-changesets" do
+  description "Changesets replication"
+  user "planet"
+  exec_start "/usr/local/bin/replicate-changesets /etc/replication/changesets.conf"
+  private_tmp true
+  private_devices true
+  protect_system "full"
+  protect_home true
+  restrict_address_families %w[AF_INET AF_INET6]
+  no_new_privileges true
+end
+
+systemd_timer "replication-changesets" do
+  description "Changesets replication"
+  on_boot_sec 60
+  on_unit_active_sec 60
+  accuracy_sec 5
 end
 
 ## Minutely replication
@@ -342,26 +395,16 @@ end
 ## Enable/disable feeds
 
 if node[:planet][:replication] == "enabled"
-  cron_d "users-agreed" do
-    minute "0"
-    hour "7"
-    user "planet"
-    command "/usr/local/bin/users-agreed"
-    mailto "zerebubuth@gmail.com"
+  service "users-agreed.timer" do
+    action [:enable, :start]
   end
 
-  cron_d "users-deleted" do
-    minute "0"
-    hour "17"
-    user "planet"
-    command "/usr/local/bin/users-deleted"
-    mailto "zerebubuth@gmail.com"
+  service "users-deleted.timer" do
+    action [:enable, :start]
   end
 
-  cron_d "replication-changesets" do
-    user "planet"
-    command "/usr/local/bin/replicate-changesets /etc/replication/changesets.conf"
-    mailto "zerebubuth@gmail.com"
+  service "replication-changesets.timer" do
+    action [:enable, :start]
   end
 
   service "replication-minutely.timer" do
@@ -380,16 +423,16 @@ if node[:planet][:replication] == "enabled"
     action [:enable, :start]
   end
 else
-  cron_d "users-agreed" do
-    action :delete
+  service "users-agreed.timer" do
+    action [:stop, :disable]
   end
 
-  cron_d "users-deleted" do
-    action :delete
+  service "users-deleted.timer" do
+    action [:stop, :disable]
   end
 
-  cron_d "replication-changesets" do
-    action :delete
+  service "replication-changesets.timer" do
+    action [:stop, :disable]
   end
 
   service "replication-minutely.timer" do
