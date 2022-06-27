@@ -86,6 +86,7 @@ end
 apt_repository "openstreetmap" do
   action repository_actions["openstreetmap"]
   uri "ppa:osmadmins/ppa"
+  only_if { node[:lsb][:release].to_f < 22.04 }
 end
 
 apt_repository "management-component-pack" do
