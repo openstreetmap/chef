@@ -62,11 +62,13 @@ when "HP"
   package "hp-health" do
     action :install
     notifies :restart, "service[hp-health]"
+    only_if { node[:lsb][:release].to_f < 22.04 }
   end
 
   service "hp-health" do
     action [:enable, :start]
     supports :status => true, :restart => true
+    only_if { node[:lsb][:release].to_f < 22.04 }
   end
 
   if product.end_with?("Gen8", "Gen9")
