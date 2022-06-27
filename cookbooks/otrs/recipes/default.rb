@@ -19,6 +19,7 @@
 
 include_recipe "accounts"
 include_recipe "apache"
+include_recipe "exim"
 include_recipe "postgresql"
 include_recipe "tools"
 
@@ -35,6 +36,7 @@ package %w[
   libgd-text-perl
   libjson-xs-perl
   libmail-imapclient-perl
+  libmoo-perl
   libnet-ldap-perl
   libpdf-api2-perl
   libsoap-lite-perl
