@@ -46,7 +46,7 @@ systemd_service "geoipupdate" do
   private_devices true
   protect_system "strict"
   protect_home true
-  read_write_paths "/usr/share/GeoIP"
+  read_write_paths %w[/usr/share/GeoIP /var/lib/GeoIP]
 end
 
 systemd_timer "geoipupdate" do
