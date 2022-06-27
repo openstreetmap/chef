@@ -20,7 +20,10 @@
 include_recipe "munin"
 include_recipe "prometheus"
 
-package "fail2ban"
+package %w[
+  fail2ban
+  ruby-webrick
+]
 
 template "/etc/fail2ban/jail.d/00-default.conf" do
   source "jail.default.erb"

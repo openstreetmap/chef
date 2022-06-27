@@ -695,6 +695,8 @@ munin_plugin "renderd_zoom_time"
 
 munin_plugin "replication_delay"
 
+package "ruby-webrick"
+
 prometheus_exporter "modtile" do
   port 9494
 end

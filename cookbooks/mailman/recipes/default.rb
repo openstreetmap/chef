@@ -25,6 +25,7 @@ include_recipe "prometheus"
 package %w[
   locales-all
   mailman
+  ruby-webrick
 ]
 
 subscribe_form_secret = persistent_token("mailman", "subscribe_form_secret")

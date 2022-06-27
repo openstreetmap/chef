@@ -459,6 +459,8 @@ munin_plugin "nominatim_requests" do
   target "#{source_directory}/munin/nominatim_requests_querylog"
 end
 
+package "ruby-webrick"
+
 prometheus_exporter "nominatim" do
   port 8082
   user "www-data"
