@@ -215,6 +215,10 @@ execute "compile_nominatim" do
   command "cmake #{source_directory} && make"
 end
 
+link "/usr/local/bin/nominatim" do
+  to "#{build_directory}/nominatim"
+end
+
 template "#{source_directory}/.git/hooks/post-merge" do
   source "git-post-merge-hook.erb"
   owner "nominatim"

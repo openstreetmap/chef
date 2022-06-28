@@ -13,6 +13,6 @@ make
 
 psql -d <%= @dbname %> -c "SELECT version();" >/dev/null 2>&1
 if [[ "$?" == "0" ]]; then
-  ./nominatim admin --migrate
-  ./nominatim refresh --functions --address-levels --website
+  nominatim admin --migrate
+  nominatim refresh --functions --address-levels --website
 fi
