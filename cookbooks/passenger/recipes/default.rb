@@ -21,14 +21,7 @@ include_recipe "apache"
 include_recipe "apt"
 include_recipe "munin"
 include_recipe "prometheus"
-
-package "ruby#{node[:passenger][:ruby_version]}"
-package "ruby#{node[:passenger][:ruby_version]}-dev"
-
-if node[:passenger][:ruby_version].to_f < 1.9
-  package "rubygems#{node[:passenger][:ruby_version]}"
-  package "irb#{node[:passenger][:ruby_version]}"
-end
+include_recipe "ruby"
 
 template "/usr/local/bin/passenger-ruby" do
   source "ruby.erb"

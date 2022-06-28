@@ -19,21 +19,16 @@
 
 include_recipe "apache"
 include_recipe "git"
+include_recipe "ruby"
 
 package %w[
   gcc
   g++
   make
-  ruby
-  ruby-dev
   libssl-dev
   zlib1g-dev
   pkg-config
 ]
-
-gem_package "bundler" do
-  version "1.17.3"
-end
 
 git "/srv/hardware.openstreetmap.org" do
   action :sync
@@ -41,7 +36,7 @@ git "/srv/hardware.openstreetmap.org" do
   depth 1
   user "root"
   group "root"
-  notifies :run, "execute[/srv/hardware.openstreetmap.org/Gemfile]"
+  notifies :run, "bundle_install[/srv/hardware.openstreetmap.org]"
 end
 
 nodes = { :rows => search(:node, "*:*") }
@@ -52,7 +47,7 @@ file "/srv/hardware.openstreetmap.org/_data/nodes.json" do
   mode "644"
   owner "root"
   group "root"
-  notifies :run, "execute[/srv/hardware.openstreetmap.org]"
+  notifies :run, "bundle_exec[/srv/hardware.openstreetmap.org]"
 end
 
 file "/srv/hardware.openstreetmap.org/_data/roles.json" do
@@ -60,7 +55,7 @@ file "/srv/hardware.openstreetmap.org/_data/roles.json" do
   mode "644"
   owner "root"
   group "root"
-  notifies :run, "execute[/srv/hardware.openstreetmap.org]"
+  notifies :run, "bundle_exec[/srv/hardware.openstreetmap.org]"
 end
 
 directory "/srv/hardware.openstreetmap.org/_site" do
@@ -77,19 +72,17 @@ directory "/srv/hardware.openstreetmap.org/.jekyll-cache" do
   group "nogroup"
 end
 
-execute "/srv/hardware.openstreetmap.org/Gemfile" do
+bundle_install "/srv/hardware.openstreetmap.org" do
   action :nothing
-  command "bundle install --deployment"
-  cwd "/srv/hardware.openstreetmap.org"
+  options "--deployment"
   user "root"
   group "root"
-  notifies :run, "execute[/srv/hardware.openstreetmap.org]"
+  notifies :run, "bundle_exec[/srv/hardware.openstreetmap.org]"
 end
 
-execute "/srv/hardware.openstreetmap.org" do
+bundle_exec "/srv/hardware.openstreetmap.org" do
   action :nothing
-  command "bundle exec jekyll build --trace --baseurl=https://hardware.openstreetmap.org"
-  cwd "/srv/hardware.openstreetmap.org"
+  command "jekyll build --trace --baseurl=https://hardware.openstreetmap.org"
   user "nobody"
   group "nogroup"
 end

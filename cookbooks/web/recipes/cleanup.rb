@@ -19,7 +19,7 @@
 
 include_recipe "web::base"
 
-ruby = "ruby#{node[:passenger][:ruby_version]}"
+ruby = "ruby#{node[:ruby][:version]}"
 rails_directory = "#{node[:web][:base_directory]}/rails"
 
 template "/etc/cron.daily/web-cleanup" do

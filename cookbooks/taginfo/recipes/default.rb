@@ -21,8 +21,9 @@ require "json"
 
 include_recipe "accounts"
 include_recipe "apache"
-include_recipe "passenger"
 include_recipe "git"
+include_recipe "passenger"
+include_recipe "ruby"
 
 package %w[
   libsqlite3-dev
@@ -49,17 +50,6 @@ package %w[
   curl
   pbzip2
 ]
-
-ruby_version = node[:passenger][:ruby_version]
-
-package "ruby#{ruby_version}"
-
-gem_package "bundler#{ruby_version}" do
-  package_name "bundler"
-  version "~> 1.16.2"
-  gem_binary "gem#{ruby_version}"
-  options "--format-executable"
-end
 
 apache_module "cache"
 apache_module "cache_disk"
@@ -165,13 +155,10 @@ node[:taginfo][:sites].each do |site|
     notifies :restart, "service[apache2]"
   end
 
-  execute "#{directory}/taginfo/Gemfile" do
+  bundle_install "#{directory}/taginfo" do
     action :nothing
-    command "bundle#{ruby_version} install"
-    cwd "#{directory}/taginfo"
     user "root"
     group "root"
-    subscribes :run, "gem_package[bundler#{ruby_version}]"
     subscribes :run, "git[#{directory}/taginfo]"
     notifies :restart, "passenger_application[#{directory}/taginfo/web/public]"
   end

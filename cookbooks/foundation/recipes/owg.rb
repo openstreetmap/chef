@@ -19,24 +19,16 @@
 
 include_recipe "apache"
 include_recipe "git"
+include_recipe "ruby"
 
-package %w[
+package %W[
   gcc
   g++
   make
-  ruby2.7
-  ruby2.7-dev
   libssl-dev
   zlib1g-dev
   pkg-config
 ]
-
-gem_package "bundler" do
-  package_name "bundler"
-  version "~> 2.2.22"
-  gem_binary "gem2.7"
-  options "--format-executable"
-end
 
 git "/srv/operations.osmfoundation.org" do
   action :sync
@@ -44,7 +36,7 @@ git "/srv/operations.osmfoundation.org" do
   depth 1
   user "root"
   group "root"
-  notifies :run, "execute[/srv/operations.osmfoundation.org/Gemfile]"
+  notifies :run, "bundle_install[/srv/operations.osmfoundation.org]"
 end
 
 directory "/srv/operations.osmfoundation.org/_site" do
@@ -61,18 +53,17 @@ directory "/srv/operations.osmfoundation.org/.jekyll-cache" do
   group "nogroup"
 end
 
-execute "/srv/operations.osmfoundation.org/Gemfile" do
+bundle_install "/srv/operations.osmfoundation.org" do
   action :nothing
-  command "bundle2.7 install --deployment"
-  cwd "/srv/operations.osmfoundation.org"
+  options "--deployment"
   user "root"
   group "root"
-  notifies :run, "execute[/srv/operations.osmfoundation.org]"
+  notifies :run, "bundle_exec[/srv/operations.osmfoundation.org]"
 end
 
-execute "/srv/operations.osmfoundation.org" do
-  command "bundle2.7 exec jekyll build --trace"
-  cwd "/srv/operations.osmfoundation.org"
+bundle_exec "/srv/operations.osmfoundation.org" do
+  action :nothing
+  command "jekyll build --trace"
   user "nobody"
   group "nogroup"
 end

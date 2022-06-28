@@ -19,13 +19,12 @@
 
 include_recipe "apache"
 include_recipe "git"
+include_recipe "ruby"
 
 package %w[
   gcc
   g++
   make
-  ruby
-  ruby-dev
   libssl-dev
   zlib1g-dev
   pkg-config
@@ -34,17 +33,13 @@ package %w[
 apache_module "expires"
 apache_module "rewrite"
 
-gem_package "bundler" do
-  version "1.17.3"
-end
-
 git "/srv/switch2osm.org" do
   action :sync
   repository "https://github.com/switch2osm/switch2osm.github.io.git"
   depth 1
   user "root"
   group "root"
-  notifies :run, "execute[/srv/switch2osm.org/Gemfile]"
+  notifies :run, "bundle_install[/srv/switch2osm.org]"
 end
 
 directory "/srv/switch2osm.org/_site" do
@@ -61,19 +56,17 @@ directory "/srv/switch2osm.org/.jekyll-cache" do
   group "nogroup"
 end
 
-execute "/srv/switch2osm.org/Gemfile" do
+bundle_install "/srv/switch2osm.org" do
   action :nothing
-  command "bundle install --deployment"
-  cwd "/srv/switch2osm.org"
+  options "--deployment"
   user "root"
   group "root"
-  notifies :run, "execute[/srv/switch2osm.org]"
+  notifies :run, "bundle_exec[/srv/switch2osm.org]"
 end
 
-execute "/srv/switch2osm.org" do
+bundle_exec "/srv/switch2osm.org" do
   action :nothing
-  command "bundle exec jekyll build --trace --config _config.yml,_config_osm.yml"
-  cwd "/srv/switch2osm.org"
+  command "jekyll build --trace --config _config.yml,_config_osm.yml"
   user "nobody"
   group "nogroup"
 end

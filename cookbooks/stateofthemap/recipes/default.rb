@@ -17,6 +17,7 @@
 # limitations under the License.
 #
 
+include_recipe "ruby"
 include_recipe "wordpress"
 
 passwords = data_bag_item("stateofthemap", "passwords")
@@ -303,8 +304,6 @@ package %w[
   gcc
   g++
   make
-  ruby
-  ruby-dev
   libssl-dev
   zlib1g-dev
   pkg-config
@@ -313,14 +312,6 @@ package %w[
 apache_module "expires"
 apache_module "rewrite"
 
-gem_package "bundler" do
-  version "1.17.3"
-end
-
-gem_package "bundler" do
-  version "2.1.4"
-end
-
 %w[2016 2017 2018 2019 2020 2021 2022].each do |year|
   git "/srv/#{year}.stateofthemap.org" do
     action :sync
@@ -328,7 +319,7 @@ end
     depth 1
     user "root"
     group "root"
-    notifies :run, "execute[/srv/#{year}.stateofthemap.org/Gemfile]"
+    notifies :run, "bundle_install[/srv/#{year}.stateofthemap.org]"
   end
 
   directory "/srv/#{year}.stateofthemap.org/_site" do
@@ -345,20 +336,18 @@ end
     group "nogroup"
   end
 
-  execute "/srv/#{year}.stateofthemap.org/Gemfile" do
+  bundle_install "/srv/#{year}.stateofthemap.org" do
     action :nothing
-    command "bundle install --deployment --jobs #{node[:cpu][:total]}"
-    cwd "/srv/#{year}.stateofthemap.org"
+    options "--deployment --jobs #{node[:cpu][:total]}"
     user "root"
     group "root"
-    notifies :run, "execute[/srv/#{year}.stateofthemap.org]"
+    notifies :run, "bundle_exec[/srv/#{year}.stateofthemap.org]"
     only_if { ::File.exist?("/srv/#{year}.stateofthemap.org/Gemfile") }
   end
 
-  execute "/srv/#{year}.stateofthemap.org" do
+  bundle_exec "/srv/#{year}.stateofthemap.org" do
     action :nothing
-    command "bundle exec jekyll build --trace --baseurl=https://#{year}.stateofthemap.org"
-    cwd "/srv/#{year}.stateofthemap.org"
+    command "jekyll build --trace --baseurl=https://#{year}.stateofthemap.org"
     user "nobody"
     group "nogroup"
     environment "LANG" => "C.UTF-8"

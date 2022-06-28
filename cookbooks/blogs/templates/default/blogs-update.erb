@@ -2,7 +2,7 @@
 
 cd /srv/blogs.openstreetmap.org
 
-/usr/bin/bundle<%= @ruby_version %> exec pluto \
+<%= node[:ruby][:bundle] %> exec pluto \
        --quieter \
        --config=/srv/blogs.openstreetmap.org build \
        --dbpath=/srv/blogs.openstreetmap.org \

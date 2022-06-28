@@ -24,6 +24,7 @@ include_recipe "geoipupdate"
 include_recipe "munin"
 include_recipe "nodejs"
 include_recipe "passenger"
+include_recipe "ruby"
 include_recipe "tools"
 include_recipe "web::base"
 
@@ -49,7 +50,6 @@ template "/etc/cron.hourly/passenger" do
   mode "755"
 end
 
-ruby_version = node[:passenger][:ruby_version]
 rails_directory = "#{node[:web][:base_directory]}/rails"
 
 piwik = data_bag_item("web", "piwik")
@@ -100,7 +100,6 @@ db_host = if node[:web][:status] == "database_readonly"
           end
 
 rails_port "www.openstreetmap.org" do
-  ruby ruby_version
   directory rails_directory
   user "rails"
   group "rails"
@@ -150,25 +149,13 @@ rails_port "www.openstreetmap.org" do
   overpass_url "https://query.openstreetmap.org/query-features"
 end
 
-gem_package "bundler#{ruby_version}" do
-  package_name "bundler"
-  gem_binary "gem#{ruby_version}"
-  options "--format-executable"
-end
-
-bundle = if File.exist?("/usr/bin/bundle#{ruby_version}")
-           "/usr/bin/bundle#{ruby_version}"
-         else
-           "/usr/local/bin/bundle#{ruby_version}"
-         end
-
 systemd_service "rails-jobs@" do
   description "Rails job queue runner"
   type "simple"
   environment "RAILS_ENV" => "production", "QUEUE" => "%I"
   user "rails"
   working_directory rails_directory
-  exec_start "#{bundle} exec rake jobs:work"
+  exec_start "#{node[:ruby][:bundle]} exec rake jobs:work"
   restart "on-failure"
   private_tmp true
   private_devices true

@@ -21,11 +21,10 @@ include_recipe "accounts"
 include_recipe "git"
 include_recipe "postgresql"
 include_recipe "python"
+include_recipe "ruby"
 
 passwords = data_bag_item("db", "passwords")
 wal_secrets = data_bag_item("db", "wal-secrets")
-
-ruby_version = node[:passenger][:ruby_version]
 
 postgresql_munin "openstreetmap" do
   cluster node[:db][:cluster]
@@ -38,7 +37,6 @@ directory "/srv/www.openstreetmap.org" do
 end
 
 rails_port "www.openstreetmap.org" do
-  ruby ruby_version
   directory "/srv/www.openstreetmap.org/rails"
   user "rails"
   group "rails"
@@ -85,7 +83,7 @@ node[:postgresql][:versions].each do |db_version|
 
   execute function_directory do
     action :nothing
-    command "make BUNDLE=bundle#{ruby_version} PG_CONFIG=#{pg_config} DESTDIR=#{function_directory}"
+    command "make BUNDLE=#{node[:ruby][:bundle]} PG_CONFIG=#{pg_config} DESTDIR=#{function_directory}"
     cwd "/srv/www.openstreetmap.org/rails/db/functions"
     user "rails"
     group "rails"

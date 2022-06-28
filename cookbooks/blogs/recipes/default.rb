@@ -20,28 +20,14 @@
 include_recipe "accounts"
 include_recipe "apache"
 include_recipe "git"
-
-ruby_version = if node[:lsb][:release].to_f < 20.04
-                 "2.5"
-               else
-                 "2.7"
-               end
+include_recipe "ruby"
 
 package %W[
-  ruby#{ruby_version}
-  ruby#{ruby_version}-dev
   make
   gcc
   g++
   libsqlite3-dev
 ]
-
-gem_package "bundler#{ruby_version}" do
-  package_name "bundler"
-  version "~> 2.1.4"
-  gem_binary "gem#{ruby_version}"
-  options "--format-executable"
-end
 
 directory "/srv/blogs.openstreetmap.org" do
   owner "blogs"
@@ -55,22 +41,20 @@ git "/srv/blogs.openstreetmap.org" do
   depth 1
   user "blogs"
   group "blogs"
-  notifies :run, "execute[/srv/blogs.openstreetmap.org/Gemfile]", :immediately
+  notifies :run, "bundle_install[/srv/blogs.openstreetmap.org]", :immediately
 end
 
-execute "/srv/blogs.openstreetmap.org/Gemfile" do
+bundle_install "/srv/blogs.openstreetmap.org" do
   action :nothing
-  command "bundle#{ruby_version} install --deployment"
-  cwd "/srv/blogs.openstreetmap.org"
+  options "--deployment"
   user "blogs"
   group "blogs"
-  notifies :run, "execute[/srv/blogs.openstreetmap.org]", :immediately
+  notifies :run, "bundle_exec[/srv/blogs.openstreetmap.org]", :immediately
 end
 
-execute "/srv/blogs.openstreetmap.org" do
+bundle_exec "/srv/blogs.openstreetmap.org" do
   action :nothing
-  command "bundle#{ruby_version} exec pluto build -t osm -o build"
-  cwd "/srv/blogs.openstreetmap.org"
+  command "pluto build -t osm -o build"
   user "blogs"
   group "blogs"
 end
@@ -91,7 +75,6 @@ template "/usr/local/bin/blogs-update" do
   owner "root"
   group "root"
   mode "0755"
-  variables :ruby_version => ruby_version
 end
 
 cron_d "blogs" do

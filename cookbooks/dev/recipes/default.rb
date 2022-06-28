@@ -31,6 +31,7 @@ include_recipe "nodejs"
 include_recipe "php::fpm"
 include_recipe "postgresql"
 include_recipe "python"
+include_recipe "ruby"
 
 package %w[
   php-cgi
@@ -215,14 +216,12 @@ if node[:postgresql][:clusters][:"14/main"]
     mode "755"
   end
 
-  ruby_version = node[:passenger][:ruby_version]
-
   systemd_service "rails-jobs@" do
     description "Rails job queue runner"
     type "simple"
     user "apis"
     working_directory "/srv/%i.apis.dev.openstreetmap.org/rails"
-    exec_start "/usr/local/bin/bundle#{ruby_version} exec rake jobs:work"
+    exec_start "#{node[:ruby][:bundle]} exec rake jobs:work"
     restart "on-failure"
     private_tmp true
     private_devices true
@@ -307,7 +306,6 @@ if node[:postgresql][:clusters][:"14/main"]
       end
 
       rails_port site_name do
-        ruby ruby_version
         directory rails_directory
         user "apis"
         group "apis"

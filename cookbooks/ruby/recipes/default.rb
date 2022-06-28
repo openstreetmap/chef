@@ -1,8 +1,8 @@
 #
-# Cookbook:: web
-# Recipe:: statistics
+# Cookbook:: ruby
+# Recipe:: default
 #
-# Copyright:: 2011, OpenStreetMap Foundation
+# Copyright:: 2022, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,22 +17,25 @@
 # limitations under the License.
 #
 
-include_recipe "web::base"
+ruby_version = node[:ruby][:version]
 
-ruby = "ruby#{node[:ruby][:version]}"
-rails_directory = "#{node[:web][:base_directory]}/rails"
+package %W[
+  ruby
+  ruby#{ruby_version}
+  ruby
+  ruby#{ruby_version}-dev
+]
 
-template "/usr/local/bin/statistics" do
-  source "statistics.erb"
-  owner "root"
-  group "root"
-  mode "755"
-  variables :ruby => ruby, :directory => rails_directory
+gem_package "bundler#{ruby_version}-1" do
+  package_name "bundler"
+  version "~> 1.17.3"
+  gem_binary "gem#{ruby_version}"
+  options "--format-executable"
 end
 
-cron_d "statistics" do
-  minute "0"
-  hour "0"
-  user "rails"
-  command "/usr/local/bin/statistics"
+gem_package "bundler#{ruby_version}-2" do
+  package_name "bundler"
+  version "~> 2.3.16"
+  gem_binary "gem#{ruby_version}"
+  options "--format-executable"
 end

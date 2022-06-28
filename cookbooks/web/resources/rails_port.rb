@@ -27,7 +27,6 @@ unified_mode true
 default_action :create
 
 property :site, String, :name_property => true
-property :ruby, String, :default => "2.3"
 property :directory, String
 property :user, String
 property :group, String
@@ -88,8 +87,6 @@ property :tile_cdn_url, String
 
 action :create do
   package %W[
-    ruby#{new_resource.ruby}
-    ruby#{new_resource.ruby}-dev
     imagemagick
     nodejs
     tzdata
@@ -120,18 +117,6 @@ action :create do
     gifsicle
     libjpeg-turbo-progs
   ]
-
-  gem_package "bundler#{new_resource.ruby}" do
-    package_name "bundler"
-    version "2.1.4"
-    gem_binary "gem#{new_resource.ruby}"
-    options "--format-executable"
-  end
-
-  gem_package "bundler#{new_resource.ruby}" do
-    package_name "pkg-config"
-    gem_binary "gem#{new_resource.ruby}"
-  end
 
   declare_resource :directory, rails_directory do
     owner new_resource.user
@@ -404,21 +389,18 @@ action :create do
     end
   end
 
-  execute "#{rails_directory}/Gemfile" do
+  bundle_install "#{rails_directory}" do
     action :nothing
-    command "bundle#{new_resource.ruby} install"
-    cwd rails_directory
     user "root"
     group "root"
     environment "NOKOGIRI_USE_SYSTEM_LIBRARIES" => "yes"
-    subscribes :run, "gem_package[bundler#{new_resource.ruby}]"
     subscribes :run, "git[#{rails_directory}]"
   end
 
-  execute "#{rails_directory}/db/migrate" do
+  bundle_exec "#{rails_directory}/db/migrate" do
     action :nothing
-    command "bundle#{new_resource.ruby} exec rake db:migrate"
-    cwd rails_directory
+    directory rails_directory
+    command "rails db:migrate"
     user new_resource.user
     group new_resource.group
     subscribes :run, "git[#{rails_directory}]"
@@ -429,36 +411,36 @@ action :create do
     only_if { new_resource.build_assets }
   end
 
-  execute "#{rails_directory}/package.json" do
+  bundle_exec "#{rails_directory}/package.json" do
     action :nothing
-    command "bundle#{new_resource.ruby} exec rake yarn:install"
+    directory rails_directory
+    command "rails yarn:install"
     environment "HOME" => rails_directory,
                 "RAILS_ENV" => "production"
-    cwd rails_directory
     user new_resource.user
     group new_resource.group
     subscribes :run, "git[#{rails_directory}]"
     only_if { new_resource.build_assets }
   end
 
-  execute "#{rails_directory}/app/assets/javascripts/i18n" do
+  bundle_exec "#{rails_directory}/app/assets/javascripts/i18n" do
     action :nothing
-    command "bundle#{new_resource.ruby} exec rake i18n:js:export"
+    directory rails_directory
+    command "rails i18n:js:export"
     environment "HOME" => rails_directory,
                 "RAILS_ENV" => "production"
-    cwd rails_directory
     user new_resource.user
     group new_resource.group
     subscribes :run, "git[#{rails_directory}]"
     only_if { new_resource.build_assets }
   end
 
-  execute "#{rails_directory}/public/assets" do
+  bundle_exec "#{rails_directory}/public/assets" do
     action :nothing
-    command "bundle#{new_resource.ruby} exec rake assets:precompile"
+    directory rails_directory
+    command "rails assets:precompile"
     environment "HOME" => rails_directory,
                 "RAILS_ENV" => "production"
-    cwd rails_directory
     user new_resource.user
     group new_resource.group
     subscribes :run, "git[#{rails_directory}]"
@@ -466,8 +448,8 @@ action :create do
     subscribes :run, "file[#{rails_directory}/config/settings.local.yml]"
     subscribes :run, "file[#{rails_directory}/config/storage.yml]"
     subscribes :run, "file[#{rails_directory}/config/piwik.yml]"
-    subscribes :run, "execute[#{rails_directory}/package.json]"
-    subscribes :run, "execute[#{rails_directory}/app/assets/javascripts/i18n]"
+    subscribes :run, "bundle_exec[#{rails_directory}/package.json]"
+    subscribes :run, "bundle_exec[#{rails_directory}/app/assets/javascripts/i18n]"
     only_if { new_resource.build_assets }
   end
 
@@ -485,11 +467,11 @@ action :create do
     subscribes :restart, "file[#{rails_directory}/config/settings.local.yml]"
     subscribes :restart, "file[#{rails_directory}/config/storage.yml]"
     subscribes :restart, "file[#{rails_directory}/config/piwik.yml]"
-    subscribes :restart, "execute[#{rails_directory}/Gemfile]"
-    subscribes :restart, "execute[#{rails_directory}/db/migrate]"
-    subscribes :restart, "execute[#{rails_directory}/package.json]"
-    subscribes :restart, "execute[#{rails_directory}/app/assets/javascripts/i18n]"
-    subscribes :restart, "execute[#{rails_directory}/public/assets]"
+    subscribes :restart, "bundle_installl[#{rails_directory}]"
+    subscribes :restart, "bundle_exec[#{rails_directory}/db/migrate]"
+    subscribes :restart, "bundle_exec[#{rails_directory}/package.json]"
+    subscribes :restart, "bundle_exec[#{rails_directory}/app/assets/javascripts/i18n]"
+    subscribes :restart, "bundle_exec[#{rails_directory}/public/assets]"
     only_if { ::File.exist?("/usr/bin/passenger-config") }
   end
 
