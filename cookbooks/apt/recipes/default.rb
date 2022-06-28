@@ -144,14 +144,6 @@ apt_repository "postgresql" do
   key "7FCC7D46ACCC4CF8"
 end
 
-apt_repository "mediawiki" do
-  action repository_actions["mediawiki"]
-  uri "https://releases.wikimedia.org/debian"
-  distribution "jessie-mediawiki"
-  components ["main"]
-  key "AF380A3036A03444"
-end
-
 apt_repository "docker" do
   action repository_actions["docker"]
   uri "https://download.docker.com/linux/ubuntu"
