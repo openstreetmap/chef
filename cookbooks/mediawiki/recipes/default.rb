@@ -63,35 +63,10 @@ package %w[
 # Mediawiki packages for VisualEditor support
 package %w[
   curl
-  parsoid
 ]
 
 # Mediawiki packages for SyntaxHighight support
 package "python3-pygments"
-
-file "/etc/mediawiki/parsoid/settings.js" do
-  action :delete
-end
-
-template "/etc/mediawiki/parsoid/config.yaml" do
-  action :nothing
-  source "parsoid-config.yaml.erb"
-  owner "root"
-  group "root"
-  mode "644"
-end
-
-notify_group "parsoid-config" do
-  action :run
-  notifies :create, "template[/etc/mediawiki/parsoid/config.yaml]"
-end
-
-service "parsoid" do
-  action [:enable]
-  supports :status => false, :restart => true, :reload => false
-  subscribes :restart, "file[/etc/mediawiki/parsoid/settings.js]"
-  subscribes :restart, "template[/etc/mediawiki/parsoid/config.yaml]"
-end
 
 link "/etc/php/#{node[:php][:version]}/fpm/conf.d/20-wikidiff2.ini" do
   to "../../mods-available/wikidiff2.ini"
