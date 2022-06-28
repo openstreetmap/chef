@@ -39,6 +39,8 @@ apache_module "rewrite"
 
 version = node[:piwik][:version]
 
+geoip_directory = node[:geoipupdate][:directory]
+
 directory "/opt/piwik-#{version}" do
   owner "root"
   group "root"
@@ -95,15 +97,15 @@ directory "/opt/piwik-#{version}/piwik/tmp/assets" do
 end
 
 link "/opt/piwik-#{version}/piwik/misc/GeoLite2-ASN.mmdb" do
-  to "/usr/share/GeoIP/GeoLite2-ASN.mmdb"
+  to "#{geoip_directory}/GeoLite2-ASN.mmdb"
 end
 
 link "/opt/piwik-#{version}/piwik/misc/GeoLite2-City.mmdb" do
-  to "/usr/share/GeoIP/GeoLite2-City.mmdb"
+  to "#{geoip_directory}/GeoLite2-City.mmdb"
 end
 
 link "/opt/piwik-#{version}/piwik/misc/GeoLite2-Country.mmdb" do
-  to "/usr/share/GeoIP/GeoLite2-Country.mmdb"
+  to "#{geoip_directory}/GeoLite2-Country.mmdb"
 end
 
 link "/srv/piwik.openstreetmap.org" do

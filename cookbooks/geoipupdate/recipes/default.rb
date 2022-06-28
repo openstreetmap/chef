@@ -35,7 +35,7 @@ execute "geoipupdate" do
   command "geoipupdate"
   user "root"
   group "root"
-  not_if { kitchen? || node[:geoipupdate][:editions].all? { |edition| ::File.exist?("/usr/share/GeoIP/#{edition}.mmdb") } }
+  not_if { kitchen? || node[:geoipupdate][:editions].all? { |edition| ::File.exist?("#{node[:geoipupdate][:directory]}/#{edition}.mmdb") } }
 end
 
 systemd_service "geoipupdate" do
@@ -46,7 +46,7 @@ systemd_service "geoipupdate" do
   private_devices true
   protect_system "strict"
   protect_home true
-  read_write_paths %w[/usr/share/GeoIP /var/lib/GeoIP]
+  read_write_paths node[:geoipupdate][:directory]
 end
 
 systemd_timer "geoipupdate" do
