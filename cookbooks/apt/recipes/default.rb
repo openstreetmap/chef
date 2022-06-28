@@ -58,11 +58,6 @@ repository_actions = Hash.new do |_, repository|
   node[:apt][:sources].include?(repository) ? :add : :remove
 end
 
-apt_repository "brightbox-ruby-ng" do
-  action repository_actions["brightbox-ruby-ng"]
-  uri "ppa:brightbox/ruby-ng"
-end
-
 apt_repository "ubuntugis-stable" do
   action repository_actions["ubuntugis-stable"]
   uri "ppa:ubuntugis/ppa"
