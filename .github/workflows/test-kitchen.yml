@@ -114,9 +114,5 @@ jobs:
       uses: ruby/setup-ruby@v1
       with:
         bundler-cache: true
-    - name: Disable apparmor for mysqld
-      run: |
-        sudo apt-get install apparmor-utils
-        sudo aa-disable /usr/sbin/mysqld
     - name: Run kitchen test ${{ matrix.suite }}-${{ matrix.os }}
       run: bundle exec kitchen test ${{ matrix.suite }}-${{ matrix.os }}
