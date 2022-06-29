@@ -20,25 +20,24 @@
 include_recipe "apache"
 include_recipe "php::fpm"
 
-package "php-pear"
-
 apache_module "proxy"
 apache_module "proxy_fcgi"
 
-directory "/srv/dmca.openstreetmap.org" do
-  owner "root"
-  group "root"
-  mode "755"
+package "composer"
+
+git "/srv/dmca.openstreetmap.org" do
+  action :sync
+  repository "https://github.com/openstreetmap/dmca-website.git"
+  revision "main"
+  depth 1
+  notifies :run, "execute[/srv/dmca.openstreetmap.org/composer.json]", :immediately
 end
 
-remote_directory "/srv/dmca.openstreetmap.org/html" do
-  source "html"
-  owner "root"
-  group "root"
-  mode "755"
-  files_owner "root"
-  files_group "root"
-  files_mode "644"
+execute "/srv/dmca.openstreetmap.org/composer.json" do
+  action :nothing
+  command "composer install --no-dev"
+  cwd "/srv/dmca.openstreetmap.org/"
+  environment "COMPOSER_HOME" => "/srv/dmca.openstreetmap.org/"
 end
 
 ssl_certificate "dmca.openstreetmap.org" do
@@ -47,7 +46,7 @@ ssl_certificate "dmca.openstreetmap.org" do
 end
 
 php_fpm "dmca.openstreetmap.org" do
-  php_admin_values "open_basedir" => "/srv/dmca.openstreetmap.org/html/:/usr/share/php/:/tmp/",
+  php_admin_values "open_basedir" => "/srv/dmca.openstreetmap.org/:/usr/share/php/:/tmp/",
                    "disable_functions" => "exec,shell_exec,system,passthru,popen,proc_open"
   prometheus_port 11201
 end
