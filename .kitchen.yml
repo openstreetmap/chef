@@ -344,9 +344,6 @@ suites:
   - name: trac
     run_list:
       - recipe[trac::default]
-  - name: web-backend
-    run_list:
-      - recipe[web::backend]
   - name: web-cgimap
     run_list:
       - recipe[web::cgimap]

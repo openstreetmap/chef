@@ -99,7 +99,6 @@ jobs:
           - tilelog
           - tools
           - trac
-          - web-backend
           - web-cgimap
           - web-frontend
           - web-rails

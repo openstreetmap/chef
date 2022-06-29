@@ -3,7 +3,6 @@
 This cookbook installs and configures the web frontend machines that power
 [www.openstreetmap.org](https://www.openstreetmap.org). There are several recipes
 
-* `web::backend` - sets up the backend servers, used for processing longer-running requests
 * `web::base` - sets up common storage configuration between all the machines
 * `web::cgimap` - builds and configures [cgimap](https://github.com/openstreetmap/cgimap)
 * `web::cleanup` - configures a cleanup script to be run daily
