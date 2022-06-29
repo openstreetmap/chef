@@ -29,6 +29,8 @@ package "libapache2-mod-perl2"
 package "libapache2-reload-perl"
 
 package %w[
+  tar
+  bzip2
   libcrypt-eksblowfish-perl
   libdatetime-perl
   libgd-gd2-perl
