@@ -46,6 +46,7 @@ template "/etc/apparmor.d/local/usr.sbin.mysqld" do
   group "root"
   mode "644"
   notifies :restart, "service[apparmor]"
+  only_if { ::Dir.exist?("/sys/kernel/security/apparmor") }
 end
 
 package "libdbd-mysql-perl"
