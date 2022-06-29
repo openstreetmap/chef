@@ -163,12 +163,18 @@ python_package "pyotp" do
   python_version "3"
 end
 
-package %w[
+unifont = if node[:lsb][:release].to_f < 22.04
+            "ttf-unifont"
+          else
+            "fonts-unifont"
+          end
+
+package %W[
   fonts-noto-cjk
   fonts-noto-hinted
   fonts-noto-unhinted
   fonts-hanazono
-  ttf-unifont
+  #{unifont}
 ]
 
 ["NotoSansArabicUI-Regular.ttf", "NotoSansArabicUI-Bold.ttf"].each do |font|
