@@ -1,0 +1,15 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+nominatim refresh --postcodes --word-tokens --threads 4 -v
+
+<% if node[:nominatim][:enable_qa_tiles] -%>
+pushd <%= @qabindir %>
+if python3 cli.py --execute-all; then
+  rm -rf "<%= @qadatadir %>/old"
+  if [ -d "<%= @qadatadir %>/current" ]; then
+    mv "<%= @qadatadir %>/current" "<%= @qadatadir %>/old"
+  fi
+  mv "<%= @qadatadir %>/new" "<%= @qadatadir %>/current"
+fi
+popd
+<% end -%>

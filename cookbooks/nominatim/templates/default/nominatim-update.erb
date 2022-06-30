@@ -1,0 +1,35 @@
+#!/bin/bash
+
+# DO NOT EDIT - This file is being maintained by Chef
+
+date "+%c === Starting Nominatim update cycle"
+
+starttime=`date +%s`
+
+<% if node[:nominatim][:enable_git_updates] -%>
+if /sbin/runuser -u nominatim -- <%= @bindir %>/nominatim-update-source; then
+  pushd <%= @builddir %>
+  make install
+
+  if ! /sbin/runuser -u nominatim -- <%= @bindir %>/nominatim-update-refresh-db; then
+    date "+%c === Database refresh failed. Stopping updates."
+    exit 1
+  fi
+fi
+<% end -%>
+
+if ! /sbin/runuser -u nominatim -- <%= @bindir %>/nominatim-update-data; then
+  date "+%c === Data update failed. Stopping updates."
+  exit 1
+fi
+
+date "+%c === Nominatim update cycle finished"
+
+# sleep a bit if updates take less than a minute
+endtime=`date +%s`
+elapsed=$((endtime - starttime))
+if [[ $elapsed -lt 60 ]]; then
+  sleepy=$((60 - $elapsed))
+  date "+%c === Sleeping for ${sleepy}s..."
+  sleep $sleepy
+fi

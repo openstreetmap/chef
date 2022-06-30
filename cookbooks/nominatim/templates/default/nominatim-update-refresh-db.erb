@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# DO NOT EDIT - This file is being maintained by Chef
+
+date "+%c === Refresh database after software updates"
+
+cd <%= @projectdir %>
+
+nominatim admin --migrate
+nominatim refresh --functions --address-levels --website
