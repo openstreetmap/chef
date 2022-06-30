@@ -32,6 +32,8 @@
 
   DocumentRoot <%= @directory %>
 
+  AllowEncodedSlashes NoDecode
+
   ProxyTimeout 300
 
   RewriteCond %{SERVER_NAME} !=<%= @name %>
