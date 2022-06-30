@@ -1,4 +1,4 @@
-name "nominatim"
+name "nominatim-v4"
 description "Role applied to all nominatim servers. For Nominatim 4."
 
 default_attributes(
