@@ -221,15 +221,15 @@ template "#{project_directory}/.env" do
             :tokenizer => node[:nominatim][:config][:tokenizer]
 end
 
-#%w[wikimedia-importance.sql.gz gb_postcodes.csv.gz us_postcodes.csv.gz].each do |fname|
-#  remote_file "#{project_directory}/#{fname}" do
-#    action :create
-#    source "https://www.nominatim.org/data/#{fname}"
-#    owner "nominatim"
-#    group "nominatim"
-#    mode "644"
-#  end
-#end
+%w[wikimedia-importance.sql.gz gb_postcodes.csv.gz us_postcodes.csv.gz].each do |fname|
+  remote_file "#{project_directory}/#{fname}" do
+    action :create
+    source "https://www.nominatim.org/data/#{fname}"
+    owner "nominatim"
+    group "nominatim"
+    mode "644"
+  end
+end
 
 # Webserver + frontend
 
