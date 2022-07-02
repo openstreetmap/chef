@@ -29,7 +29,7 @@ directory "/etc/gdnsd/config.d" do
   mode "755"
 end
 
-%w[tile nominatim].each do |zone|
+%w[nominatim].each do |zone|
   %w[map resource weighted].each do |type|
     template "/etc/gdnsd/config.d/#{zone}.#{type}" do
       action :create_if_missing

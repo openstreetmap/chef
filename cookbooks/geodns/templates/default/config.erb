@@ -6,16 +6,13 @@ options => {
 plugins => {
   geoip => {
     maps => {
-      $include{config.d/tile.map}
       $include{config.d/nominatim.map}
     }
     resources => {
-      $include{config.d/tile.resource}
       $include{config.d/nominatim.resource}
     }
   },
   weighted => {
-    $include{config.d/tile.weighted}
     $include{config.d/nominatim.weighted}
   }
 }
