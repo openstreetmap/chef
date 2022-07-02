@@ -173,8 +173,13 @@ template "/usr/local/bin/cleanup-rails-assets" do
   mode "755"
 end
 
-gem_package "apachelogregex"
-gem_package "file-tail"
+gem_package "apachelogregex" do
+  gem_binary node[:ruby][:gem]
+end
+
+gem_package "file-tail" do
+  gem_binary node[:ruby][:gem]
+end
 
 template "/usr/local/bin/api-statistics" do
   source "api-statistics.erb"
@@ -204,7 +209,9 @@ service "api-statistics" do
   subscribes :restart, "systemd_service[api-statistics]"
 end
 
-gem_package "hpricot"
+gem_package "hpricot" do
+  gem_binary node[:ruby][:gem]
+end
 
 munin_plugin "api_calls_status"
 munin_plugin "api_calls_num"

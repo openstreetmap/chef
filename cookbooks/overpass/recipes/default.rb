@@ -18,8 +18,9 @@
 #
 
 include_recipe "accounts"
-include_recipe "munin"
 include_recipe "apache"
+include_recipe "munin"
+include_recipe "ruby"
 
 username = "overpass"
 basedir = data_bag_item("accounts", username)["home"]
@@ -72,7 +73,9 @@ end
 
 ## Setup Apache
 
-gem_package "rotp"
+gem_package "rotp" do
+  gem_binary node[:ruby][:gem]
+end
 
 directory "#{basedir}/apache" do
   owner "root"

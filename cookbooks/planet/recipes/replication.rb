@@ -22,6 +22,8 @@ require "yaml"
 include_recipe "accounts"
 include_recipe "apt"
 include_recipe "osmosis"
+include_recipe "ruby"
+include_recipe "tools"
 
 db_passwords = data_bag_item("db", "passwords")
 
@@ -29,8 +31,6 @@ db_passwords = data_bag_item("db", "passwords")
 
 package %w[
   postgresql-client
-  ruby
-  ruby-dev
   ruby-libxml
   make
   gcc
@@ -39,7 +39,9 @@ package %w[
   osmdbt
 ]
 
-gem_package "pg"
+gem_package "pg" do
+  gem_binary node[:ruby][:gem]
+end
 
 ## Build preload library to flush files
 

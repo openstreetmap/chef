@@ -29,13 +29,13 @@ package %W[
 gem_package "bundler#{ruby_version}-1" do
   package_name "bundler"
   version "~> 1.17.3"
-  gem_binary "gem#{ruby_version}"
+  gem_binary node[:ruby][:gem]
   options "--format-executable"
 end
 
 gem_package "bundler#{ruby_version}-2" do
   package_name "bundler"
   version "~> 2.3.16"
-  gem_binary "gem#{ruby_version}"
+  gem_binary node[:ruby][:gem]
   options "--format-executable"
 end

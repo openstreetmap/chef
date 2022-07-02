@@ -25,6 +25,7 @@ include_recipe "nodejs"
 include_recipe "postgresql"
 include_recipe "prometheus"
 include_recipe "python"
+include_recipe "ruby"
 include_recipe "tools"
 
 blocks = data_bag_item("tile", "blocks")
@@ -508,15 +509,22 @@ end
 
 package %w[
   osm2pgsql
-  ruby
   osmium-tool
   pyosmium
   python3-pyproj
 ]
 
-gem_package "apachelogregex"
-gem_package "file-tail"
-gem_package "lru_redux"
+gem_package "apachelogregex" do
+  gem_binary node[:ruby][:gem]
+end
+
+gem_package "file-tail" do
+  gem_binary node[:ruby][:gem]
+end
+
+gem_package "lru_redux" do
+  gem_binary node[:ruby][:gem]
+end
 
 remote_directory "/usr/local/bin" do
   source "bin"
