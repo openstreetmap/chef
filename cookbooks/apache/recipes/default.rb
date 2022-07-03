@@ -71,6 +71,10 @@ apache_module "status" do
   variables :hosts => admins["hosts"]
 end
 
+apache_module "brotli" do
+  conf "brotli.conf.erb"
+end
+
 apache_module "deflate" do
   conf "deflate.conf.erb"
 end

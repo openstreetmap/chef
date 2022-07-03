@@ -1,0 +1,12 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+<IfModule mod_deflate.c>
+        <IfModule mod_filter.c>
+                AddOutputFilterByType BROTLI_COMPRESS text/html text/plain text/xml
+                AddOutputFilterByType BROTLI_COMPRESS text/css
+                AddOutputFilterByType BROTLI_COMPRESS application/x-javascript application/javascript application/ecmascript
+                AddOutputFilterByType BROTLI_COMPRESS application/rss+xml
+                AddOutputFilterByType BROTLI_COMPRESS application/xml
+                AddOutputFilterByType BROTLI_COMPRESS image/svg+xml
+        </IfModule>
+</IfModule>
