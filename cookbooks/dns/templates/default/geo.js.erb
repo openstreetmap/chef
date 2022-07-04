@@ -1,5 +1,5 @@
 var GEO_NS_RECORDS = [
 <% @geoservers.each do |server| -%>
-  NS("geo", QUALIFY("<%= server.split(".").first %>")),
+  NS("geo", "<%= server %>."),
 <% end -%>
 ];
