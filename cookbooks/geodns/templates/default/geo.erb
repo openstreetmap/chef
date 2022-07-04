@@ -1,6 +1,6 @@
 $TTL 86400
 
-@		SOA	saphira.openstreetmap.org. hostmaster.openstreetmap.org. (
+@		SOA	<%= @servers.first %>. hostmaster.openstreetmap.org. (
 		3	; serial
 		86400	; refresh
 		7200	; retry
@@ -8,11 +8,8 @@ $TTL 86400
 		3600	; ncache
 )
 
-@		86400   NS	balerion.openstreetmap.org.
-@		86400   NS	chrysophylax.openstreetmap.org.
-@		86400   NS	katie.openstreetmap.org.
-@		86400   NS	saphira.openstreetmap.org.
-@		86400   NS	stormfly-04.openstreetmap.org.
-@		86400   NS	ridgeback.openstreetmap.org.
+<% @servers.each do |server| -%>
+@		86400   NS	<%= server %>.
+<% end -%>
 
 nominatim	300     DYNC    geoip!nominatim

@@ -19,6 +19,8 @@
 
 include_recipe "geoipupdate"
 
+servers = search(:node, "roles:geodns").collect(&:name).sort
+
 package %w[
   gdnsd
 ]
@@ -55,6 +57,7 @@ template "/etc/gdnsd/zones/geo.openstreetmap.org" do
   owner "root"
   group "root"
   mode "644"
+  variables :servers => servers
   notifies :restart, "service[gdnsd]"
 end
 

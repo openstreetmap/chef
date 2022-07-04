@@ -128,6 +128,15 @@ template "/var/lib/dns/creds.json" do
   variables :passwords => passwords
 end
 
+template "/var/lib/dns/include/geo.js" do
+  source "geo.js.erb"
+  owner "git"
+  group "git"
+  mode "440"
+  variables :geoservers => geoservers
+  only_if { ::Dir.exist?("/var/lib/dns/include") }
+end
+
 cookbook_file "#{node[:dns][:repository]}/hooks/post-receive" do
   source "post-receive"
   owner "git"
