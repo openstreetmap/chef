@@ -25,19 +25,19 @@ default_attributes(
     }
   },
   :postgresql => {
-    :versions => ["13"],
+    :versions => ["14"],
     :settings => {
       :defaults => {
         :listen_addresses => "10.0.0.20",
         :work_mem => "160MB",
         :effective_io_concurrency => "256",
-        :fsync => "on"
+        :fsync => "off"
       }
     }
   },
   :nominatim => {
-    :state => "standalone",
-    :dbcluster => "13/main",
+    :state => "off",
+    :dbcluster => "14/main",
     :postgis => "3",
     :enable_backup => true,
     :flatnode_file => "/ssd/nominatim/nodes.store",
@@ -51,5 +51,5 @@ default_attributes(
 
 run_list(
   "role[ucl]",
-  "role[nominatim]"
+  "role[nominatim-v4]"
 )
