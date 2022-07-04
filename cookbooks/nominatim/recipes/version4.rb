@@ -64,6 +64,14 @@ postgis_version = node[:nominatim][:postgis]
 
 package "postgresql-#{postgresql_version}-postgis-#{postgis_version}"
 
+node[:nominatim][:dbadmins].each do |user|
+  postgresql_user user do
+    cluster node[:nominatim][:dbcluster]
+    superuser true
+    only_if { node[:nominatim][:state] != "slave" }
+  end
+end
+
 postgresql_user "nominatim" do
   cluster node[:nominatim][:dbcluster]
   superuser true
