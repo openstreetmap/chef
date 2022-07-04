@@ -19,10 +19,13 @@
 
 include_recipe "networking"
 
+writable_paths = []
 hosts_allow = {}
 hosts_deny = {}
 
 node[:rsyncd][:modules].each do |name, details|
+  writable_paths << details[:path] if details[:write_only]
+
   hosts_allow[name] = details[:hosts_allow] || []
 
   if details[:nodes_allow]
@@ -46,6 +49,7 @@ systemd_service "rsync-override" do
   service "rsync"
   dropin "override"
   exec_start "/usr/bin/rsync --daemon --no-detach --bwlimit=16384"
+  read_write_paths writable_paths.sort
   notifies :restart, "service[rsync]"
 end
 
