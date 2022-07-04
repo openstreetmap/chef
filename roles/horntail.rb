@@ -34,5 +34,6 @@ default_attributes(
 
 run_list(
   "role[equinix-dub]",
+  "role[geodns]",
   "role[planet]"
 )
