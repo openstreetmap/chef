@@ -271,16 +271,25 @@
 <Directory <%= node[:web][:base_directory] %>/rails/public>
   Require all granted
 
+  RewriteCond "%{HTTP:Accept-encoding}" "br"
+  RewriteCond "%{REQUEST_FILENAME}\.br" -s
+  RewriteRule "^(.*)\.(css|ico|js|json|svg|xml)$" "$1\.$2\.br" [QSA]
+
   RewriteCond "%{HTTP:Accept-encoding}" "gzip"
   RewriteCond "%{REQUEST_FILENAME}\.gz" -s
   RewriteRule "^(.*)\.(css|ico|js|json|svg|xml)$" "$1\.$2\.gz" [QSA]
 
-  RewriteRule "\.css\.gz$" "-" [T=text/css,E=no-gzip:1,E=no-brotli:1]
-  RewriteRule "\.ico\.gz$"  "-" [T=image/vnd.microsoft.icon,E=no-gzip:1,E=no-brotli:1]
-  RewriteRule "\.js\.gz$"  "-" [T=text/javascript,E=no-gzip:1,E=no-brotli:1]
-  RewriteRule "\.json\.gz$"  "-" [T=application/json,E=no-gzip:1,E=no-brotli:1]
-  RewriteRule "\.svg\.gz$"  "-" [T=image/svg+xml,E=no-gzip:1,E=no-brotli:1]
-  RewriteRule "\.xml\.gz$"  "-" [T=application/xml,E=no-gzip:1,E=no-brotli:1]
+  RewriteRule "\.css\.(br|gz)$" "-" [T=text/css,E=no-gzip:1,E=no-brotli:1]
+  RewriteRule "\.ico\.(br|gz)$"  "-" [T=image/vnd.microsoft.icon,E=no-gzip:1,E=no-brotli:1]
+  RewriteRule "\.js\.(br|gz)$"  "-" [T=text/javascript,E=no-gzip:1,E=no-brotli:1]
+  RewriteRule "\.json\.(br|gz)$"  "-" [T=application/json,E=no-gzip:1,E=no-brotli:1]
+  RewriteRule "\.svg\.(br|gz)$"  "-" [T=image/svg+xml,E=no-gzip:1,E=no-brotli:1]
+  RewriteRule "\.xml\.(br|gz)$"  "-" [T=application/xml,E=no-gzip:1,E=no-brotli:1]
+
+  <FilesMatch "\.(css|ico|js|json|svg|xml)\.br$">
+    Header append Content-Encoding br
+    Header append Vary Accept-Encoding
+  </FilesMatch>
 
   <FilesMatch "\.(css|ico|js|json|svg|xml)\.gz$">
     Header append Content-Encoding gzip
