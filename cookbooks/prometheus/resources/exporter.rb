@@ -36,6 +36,8 @@ property :register_target, :kind_of => [TrueClass, FalseClass], :default => true
 
 action :create do
   systemd_service service_name do
+    after "network-online.target"
+    wants "network-online.target"
     description "Prometheus #{new_resource.exporter} exporter"
     type "simple"
     user new_resource.user
