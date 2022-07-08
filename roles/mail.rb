@@ -30,7 +30,7 @@ default_attributes(
     :smtp_accept_max => 200,
     :smarthost_name => "mail.openstreetmap.org",
     :smarthost_via => false,
-    :dns_blacklists => ["zen.spamhaus.org"],
+    :dns_blacklists => ["zen.spamhaus.org!&0.255.255.0"],
     :routes => {
       :messages => {
         :comment => "messages.openstreetmap.org",
