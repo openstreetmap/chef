@@ -69,6 +69,9 @@ property :inaccessible_paths, [String, Array]
 property :restrict_address_families, [String, Array]
 property :no_new_privileges, [true, false]
 property :tasks_max, Integer
+property :timeout_start_sec, Integer
+property :timeout_stop_sec, Integer
+property :timeout_abort_sec, Integer
 property :timeout_sec, Integer
 property :pid_file, String
 property :nice, Integer
