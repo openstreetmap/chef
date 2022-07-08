@@ -249,6 +249,7 @@ systemd_service "prometheus-executable" do
   service "prometheus"
   dropin "executable"
   exec_start "/opt/prometheus-server/prometheus/prometheus --config.file=/etc/prometheus/prometheus.yml --web.external-url=https://prometheus.openstreetmap.org/prometheus --storage.tsdb.path=/var/lib/prometheus/metrics2 --storage.tsdb.retention.time=30d"
+  timeout_stop_sec 300
   notifies :restart, "service[prometheus]"
 end
 
