@@ -233,7 +233,7 @@ if node[:virtualization][:role] != "guest" ||
       status_packages["mpt-status"] ||= []
     when "mpt2sas", "mpt3sas"
       tools_packages << "sas2ircu"
-      status_packages["sas2ircu-status"] ||= []
+      status_packages["sas2ircu-status"] ||= [] if node[:lsb][:release].to_f < 22.04
     when "megaraid_mm"
       tools_packages << "megactl"
       status_packages["megaraid-status"] ||= []
