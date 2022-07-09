@@ -104,6 +104,7 @@ prometheus_exporter "node" do
     --collector.interrupts
     --collector.ntp
     --collector.processes
+    --collector.rapl.enable-zone-label
     --collector.systemd
     --collector.tcpstat
   ]
