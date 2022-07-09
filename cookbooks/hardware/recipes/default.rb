@@ -239,7 +239,7 @@ if node[:virtualization][:role] != "guest" ||
       status_packages["megaraid-status"] ||= []
     when "megaraid_sas"
       tools_packages << "megacli"
-      status_packages["megaclisas-status"] ||= []
+      status_packages["megaclisas-status"] ||= [] if node[:lsb][:release].to_f < 22.04
     when "aacraid"
       tools_packages << "arcconf"
       status_packages["aacraid-status"] ||= []
