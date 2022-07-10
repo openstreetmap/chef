@@ -58,7 +58,12 @@ if File.exist?("/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor") &&
   default[:sysfs][:cpufreq_ondemand][:parameters][:"devices/system/cpu/cpufreq/ondemand/sampling_down_factor"] = "100"
 end
 
-if File.exist?("/sys/devices/system/cpu/cpu0/power/energy_perf_bias")
+energy_perf_bias = Dir.glob("/sys/devices/system/cpu/cpu*/power/energy_perf_bias")
+
+unless energy_perf_bias.empty?
   default[:sysfs][:cpu_power_energy_perf_bias][:comment] = "Set CPU Energy-Performance Bias Preference to performance"
-  default[:sysfs][:cpu_power_energy_perf_bias][:parameters][:"devices/system/cpu/cpu*/power/energy_perf_bias"] = "0"
+
+  energy_perf_bias.sort.each do |path|
+    default[:sysfs][:cpu_power_energy_perf_bias][:parameters][path.sub(%r{^/sys/}, "")] = "0"
+  end
 end
