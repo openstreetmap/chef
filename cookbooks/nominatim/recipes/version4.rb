@@ -285,7 +285,7 @@ frontends = search(:node, "recipes:web\\:\\:frontend").sort_by(&:name)
 
 nginx_site "nominatim" do
   template "nginx.erb"
-  directory build_directory
+  directory project_directory
   variables :pools => node[:nominatim][:fpm_pools],
             :frontends => frontends,
             :confdir => "#{basedir}/etc",
