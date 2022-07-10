@@ -71,6 +71,7 @@ package %w[
   libpqxx-dev
   libcrypto++-dev
   libyajl-dev
+  libfmt-dev
   zlib1g-dev
 ]
 
