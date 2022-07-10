@@ -31,12 +31,12 @@ default_attributes(
         :listen_addresses => "10.0.0.20",
         :work_mem => "160MB",
         :effective_io_concurrency => "256",
-        :fsync => "off"
+        :fsync => "on"
       }
     }
   },
   :nominatim => {
-    :state => "off",
+    :state => "standalone",
     :dbcluster => "14/main",
     :postgis => "3",
     :enable_backup => true,
