@@ -317,6 +317,7 @@ systemd_service "replication-hourly" do
   description "Hourly replication"
   user "planet"
   exec_start "/usr/local/bin/osmosis -q --merge-replication-files workingDirectory=/var/lib/replication/hour"
+  environment "LD_PRELOAD" => "/opt/flush/flush.so"
   private_tmp true
   private_devices true
   protect_system "full"
@@ -360,6 +361,7 @@ systemd_service "replication-daily" do
   description "Daily replication"
   user "planet"
   exec_start "/usr/local/bin/osmosis -q --merge-replication-files workingDirectory=/var/lib/replication/day"
+  environment "LD_PRELOAD" => "/opt/flush/flush.so"
   private_tmp true
   private_devices true
   protect_system "full"
