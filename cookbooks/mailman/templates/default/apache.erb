@@ -58,6 +58,9 @@
   RedirectMatch ^/$ /listinfo
   RedirectMatch ^/cgi-bin/mailman/(.*)$ /$1
 
+  # Redact list archive entries pending moderator review
+  RedirectMatch 451 ^/pipermail/talk/2022-July/(087645|087647)\.html$
+
   <Directory /var/lib/mailman/archives/>
 	  Options Indexes FollowSymLinks
     AllowOverride None
