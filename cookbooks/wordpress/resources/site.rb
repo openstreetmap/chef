@@ -92,14 +92,16 @@ action :create do
     line.gsub!(/('LOGGED_IN_SALT', *)'put your unique phrase here'/, "\\1'#{logged_in_salt}'")
     line.gsub!(/('NONCE_SALT', *)'put your unique phrase here'/, "\\1'#{nonce_salt}'")
 
-    if line =~ /define\('WP_DEBUG'/
-      line += "\n"
-      line += "/**\n"
-      line += " * Don't allow file editing.\n"
-      line += " */\n"
-      line += "define('DISALLOW_FILE_EDIT', true);\n"
-      line += "define('FORCE_SSL_LOGIN', true);\n"
-      line += "define('FORCE_SSL_ADMIN', true);\n"
+    if line =~ /Add any custom values between this line/
+      line += "\r\n"
+      line += "/**\r\n"
+      line += " * Don't allow file editing.\r\n"
+      line += " */\r\n"
+      line += "define( 'DISALLOW_FILE_EDIT', true);\r\n"
+      line += "define( 'DISALLOW_FILE_MODS', true);\r\n"
+      line += "define( 'AUTOMATIC_UPDATER_DISABLED', true);\r\n"
+      line += "define( 'FORCE_SSL_LOGIN', true);\r\n"
+      line += "define( 'FORCE_SSL_ADMIN', true);\r\n"
     end
 
     line
