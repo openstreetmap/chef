@@ -1,8 +1,0 @@
-# DO NOT EDIT - This file is being maintained by Chef
-
-# INTERFACE	SOURCE		ADDRESS
-<% node.interfaces(:role => :external).each do |external| -%>
-<% node.interfaces(:role => :internal).each do |internal| -%>
-<%= external[:interface] %>		<%= internal[:network] %>/<%= internal[:prefix] %>	detect
-<% end -%>
-<% end -%>

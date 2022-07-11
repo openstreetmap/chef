@@ -512,16 +512,24 @@ if node[:networking][:wireguard][:enabled]
   end
 end
 
+file "/etc/shorewall/masq" do
+  action :delete
+end
+
+file "/etc/shorewall/masq.bak" do
+  action :delete
+end
+
 if node[:roles].include?("gateway")
-  template "/etc/shorewall/masq" do
-    source "shorewall-masq.erb"
+  template "/etc/shorewall/snat" do
+    source "shorewall-snat.erb"
     owner "root"
     group "root"
     mode "644"
     notifies :restart, "service[shorewall]"
   end
 else
-  file "/etc/shorewall/masq" do
+  file "/etc/shorewall/snat" do
     action :delete
     notifies :restart, "service[shorewall]"
   end

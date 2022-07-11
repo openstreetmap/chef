@@ -1,0 +1,8 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+# ACTION        SOURCE          DEST            PROTO   PORT   IPSEC  MARK   USER    SWITCH  ORIGDEST   PROBABILITY
+<% node.interfaces(:role => :external).each do |external| -%>
+<% node.interfaces(:role => :internal).each do |internal| -%>
+SNAT(detect)	<%= internal[:network] %>/<%= internal[:prefix] %>	<%= external[:interface] %>
+<% end -%>
+<% end -%>
