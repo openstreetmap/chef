@@ -32,13 +32,13 @@ default_attributes(
     :settings => {
       :defaults => {
         :work_mem => "240MB",
-        :fsync => "on",
+        :fsync => "off",
         :effective_io_concurrency => "500"
       }
     }
   },
   :nominatim => {
-    :state => "standalone",
+    :state => "off",
     :dbcluster => "14/main",
     :postgis => "3",
     :flatnode_file => "/ssd/nominatim/nodes.store",
@@ -48,5 +48,5 @@ default_attributes(
 
 run_list(
   "role[equinix-ams]",
-  "role[nominatim]"
+  "role[nominatim-v4]"
 )
