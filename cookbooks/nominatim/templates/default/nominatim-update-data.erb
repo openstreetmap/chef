@@ -8,7 +8,7 @@ cd <%= @projectdir %>
 
 # First execute any maintenance task that may be there.
 
-for task in `find <%= @bindir %>/maintenance -type f`; do
+for task in `find <%= @bindir %>/maintenance -type f,l`; do
   date "+%c === Running maintenance task ${task}"
   . ${task}
   rm ${task}
