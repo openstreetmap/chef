@@ -31,18 +31,11 @@ directory "/etc/docker" do
   mode "755"
 end
 
-storage_driver = if kitchen?
-                   "vfs"
-                 else
-                   "overlay2"
-                 end
-
 template "/etc/docker/daemon.json" do
   source "daemon.json.erb"
   owner "root"
   group "root"
   mode "644"
-  variables :storage_driver => storage_driver
 end
 
 service "docker" do
