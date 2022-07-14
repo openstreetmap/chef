@@ -157,6 +157,7 @@ end
 package %w[
   python3-cairo
   python3-mapnik
+  python3-pyproj
   python3-setuptools
 ]
 

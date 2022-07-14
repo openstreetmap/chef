@@ -7,6 +7,7 @@ import http.cookies
 import mapnik
 import os
 import pyotp
+import pyproj
 import resource
 import shutil
 import signal
@@ -108,7 +109,7 @@ elif "format" not in form:
   output_error("No format specified")
 else:
   # Create projection object
-  prj = mapnik.Projection("+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs +over");
+  transformer = pyproj.Transformer.from_crs("EPSG:4326", "EPSG:3857", always_xy=True)
 
   # Get the bounds of the area to render
   bbox = [float(x) for x in form.getvalue("bbox").split(",")]
@@ -118,7 +119,8 @@ else:
     output_error("Invalid bounding box")
   else:
     # Project the bounds to the map projection
-    bbox = mapnik.forward_(mapnik.Box2d(*bbox), prj)
+    bbox = mapnik.Box2d(*transformer.transform(bbox[0], bbox[1]),
+                        *transformer.transform(bbox[2], bbox[3]))
 
     # Get the style to use
     style = form.getvalue("style", "default")
