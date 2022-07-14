@@ -24,6 +24,7 @@ jobs:
           - blogs
           - civicrm
           - clamav
+          - community
           - db-backup
           - db-base
           - db-master

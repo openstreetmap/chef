@@ -17,13 +17,14 @@
 # limitations under the License.
 #
 
+include_recipe "accounts"
 include_recipe "docker"
+include_recipe "geoipupdate"
 include_recipe "git"
 include_recipe "ssl"
-include_recipe "geoipupdate"
 
 passwords = data_bag_item("community", "passwords")
-license_keys = data_bag_item("geoipupdate", "license-keys")
+license_keys = data_bag_item("geoipupdate", "license-keys") unless kitchen?
 
 directory "/srv/community.openstreetmap.org" do
   owner "root"

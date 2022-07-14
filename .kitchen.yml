@@ -59,6 +59,9 @@ suites:
   - name: clamav
     run_list:
       - recipe[clamav::default]
+  - name: community
+    run_list:
+      - recipe[community::default]
   - name: db-backup
     run_list:
       - recipe[db::backup]
