@@ -225,6 +225,9 @@ suites:
   - name: otrs
     run_list:
       - recipe[otrs::default]
+  - name: overpass
+    run_list:
+      - recipe[overpass::default]
   - name: passenger
     run_list:
       - recipe[passenger::default]

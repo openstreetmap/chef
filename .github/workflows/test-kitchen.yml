@@ -69,6 +69,7 @@ jobs:
           - osmosis
           - osqa
           - otrs
+          - overpass
           - passenger
           - php
           - php-apache
