@@ -21,6 +21,8 @@ include_recipe "geoipupdate"
 
 servers = search(:node, "roles:geodns").collect(&:name).sort
 
+servers << "dummy.example.com" if servers.empty?
+
 package %w[
   gdnsd
 ]
