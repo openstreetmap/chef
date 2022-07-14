@@ -37,7 +37,7 @@ end
 
 ## Install overpass from source
 
-srcdir = "#{basedir}/src/osm-3s_v#{node[:overpass][:version]}"
+srcdir = "#{basedir}/src/osm-3s_v#{node[:overpass][:full_version]}"
 
 package %w[
   build-essential
