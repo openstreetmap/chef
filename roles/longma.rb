@@ -36,13 +36,13 @@ default_attributes(
       :defaults => {
         :max_connections => "550",
         :work_mem => "240MB",
-        :fsync => "on",
+        :fsync => "off",
         :effective_io_concurrency => "500"
       }
     }
   },
   :nominatim => {
-    :state => "standalone",
+    :state => "off",
     :dbcluster => "14/main",
     :postgis => "3",
     :enable_qa_tiles => true,
@@ -58,5 +58,5 @@ default_attributes(
 
 run_list(
   "role[equinix-dub]",
-  "role[nominatim]"
+  "role[nominatim-v4]"
 )
