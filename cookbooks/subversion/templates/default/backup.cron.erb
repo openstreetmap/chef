@@ -6,11 +6,14 @@ T=$(mktemp -d -t -p /var/tmp svn.XXXXXXXXXX)
 D=$(date +%Y-%m-%d)
 B=svn-$D.tar.gz
 
-nice svnadmin hotcopy /var/lib/subversion/repos/openstreetmap $T/svn-$D > /dev/null
+mkdir $T/svn-$D
+ln -s /etc/apache2/svn.passwd $T/svn-$D/svn.passwd
+
+nice svnadmin hotcopy /var/lib/subversion/repos/openstreetmap $T/svn-$D/repo > /dev/null
 
 export RSYNC_RSH="ssh -ax"
 
-nice tar --create --directory=$T svn-$D | nice gzip --rsyncable -9 > $T/$B
+nice tar --create --dereference --directory=$T svn-$D | nice gzip --rsyncable -9 > $T/$B
 nice rsync --preallocate --fuzzy $T/$B backup::backup
 
 rm -rf $T
