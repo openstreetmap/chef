@@ -4,32 +4,18 @@
   ServerName <%= @name %>
   ServerAdmin webmaster@openstreetmap.org
 
-  Protocols http/1.1
-
   SSLEngine on
   SSLCertificateFile /etc/ssl/certs/<%= @name %>.pem
   SSLCertificateKeyFile /etc/ssl/private/<%= @name %>.key
 
   CustomLog /var/log/apache2/<%= @name %>-access.log combined
-  CustomLog /var/log/apache2/<%= @name %>-svn-access.log "%h %t %u %{SVN-ACTION}e" env=SVN-ACTION
   ErrorLog /var/log/apache2/<%= @name %>-error.log
 
-  <Location />
-    DAV svn
-    SVNPath <%= @directory %>
-    SVNIndexXSLT /svnindex.xsl
+  RedirectPermanent /applications/editors/josm/plugins/cadastre-fr/images/cadastre_small.png https://raw.githubusercontent.com/openstreetmap/svn-archive/main/applications/editors/josm/plugins/cadastre-fr/images/cadastre_small.png
+  RedirectPermanent / https://github.com/openstreetmap/svn-archive
 
-    LimitXMLRequestBody 0
-    LimitRequestBody 0
+  ErrorDocument 404 https://github.com/openstreetmap/svn-archive
 
-    <Limit GET PROPFIND OPTIONS REPORT>
-      Require all granted
-    </Limit>
-
-    <LimitExcept GET PROPFIND OPTIONS REPORT>
-      Require all denied
-    </LimitExcept>
-  </Location>
 </VirtualHost>
 <% unless @aliases.empty? -%>
 

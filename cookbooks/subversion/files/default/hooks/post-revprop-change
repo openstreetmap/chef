@@ -1,3 +1,0 @@
-#!/bin/sh
-
-/usr/bin/sudo -u trac /usr/bin/trac-admin /var/lib/trac changeset modified "$1" "$2"

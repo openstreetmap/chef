@@ -19,35 +19,26 @@
 
 include_recipe "apache"
 
-package "subversion"
-
-repository_directory = "/var/lib/subversion/repos/openstreetmap"
-
-remote_directory "#{repository_directory}/hooks" do
-  source "hooks"
-  owner "www-data"
-  group "www-data"
-  mode "755"
-  files_owner "www-data"
-  files_group "www-data"
-  files_mode "755"
-  purge false
+package "subversion" do
+  action :remove
 end
 
 apache_module "dav" do
-  package "apache2"
+  action :disable
 end
 
 apache_module "dav_fs" do
-  package "apache2"
+  action :disable
 end
 
 apache_module "dav_svn" do
   package "libapache2-mod-svn"
+  action [:disable, :delete]
 end
 
 apache_module "authz_svn" do
   package "libapache2-mod-svn"
+  action [:disable, :delete]
 end
 
 ssl_certificate "svn.openstreetmap.org" do
@@ -57,13 +48,9 @@ end
 
 apache_site "svn.openstreetmap.org" do
   template "apache.erb"
-  directory repository_directory
-  variables :realm => "Subversion Repository", :password_file => "/etc/apache2/svn.passwd", :aliases => ["svn.osm.org"]
+  variables :aliases => ["svn.osm.org"]
 end
 
-template "/etc/cron.daily/svn-backup" do
-  source "backup.cron.erb"
-  owner "root"
-  group "root"
-  mode "755"
+file "/etc/cron.daily/svn-backup" do
+  action :delete
 end
