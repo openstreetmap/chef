@@ -48,5 +48,5 @@
   RewriteMap tickets txt:/srv/trac.openstreetmap.org/tickets.map
   RewriteRule ^/ticket/(\d+)$ https://github.com/openstreetmap/trac-tickets/issues/${tickets:$1}
 
-  RedirectPermanent / https://github.com/openstreetmap/trac-tickets
+  ErrorDocument 404 https://github.com/openstreetmap/trac-tickets
 </VirtualHost>
