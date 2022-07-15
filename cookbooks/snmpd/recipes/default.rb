@@ -23,11 +23,6 @@ communities = data_bag_item("snmpd", "communities")
 
 package "snmpd"
 
-service "snmpd" do
-  action [:enable, :start]
-  supports :status => true, :restart => true
-end
-
 template "/etc/snmp/snmpd.conf" do
   source "snmpd.conf.erb"
   owner "root"
@@ -35,6 +30,11 @@ template "/etc/snmp/snmpd.conf" do
   mode "600"
   variables :communities => communities
   notifies :restart, "service[snmpd]"
+end
+
+service "snmpd" do
+  action [:enable, :start]
+  supports :status => true, :restart => true
 end
 
 if node[:snmpd][:clients]
