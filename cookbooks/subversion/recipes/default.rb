@@ -19,27 +19,7 @@
 
 include_recipe "apache"
 
-package "subversion" do
-  action :remove
-end
-
-apache_module "dav" do
-  action :disable
-end
-
-apache_module "dav_fs" do
-  action :disable
-end
-
-apache_module "dav_svn" do
-  package "libapache2-mod-svn"
-  action [:disable, :delete]
-end
-
-apache_module "authz_svn" do
-  package "libapache2-mod-svn"
-  action [:disable, :delete]
-end
+apache_module "rewrite"
 
 ssl_certificate "svn.openstreetmap.org" do
   domains ["svn.openstreetmap.org", "svn.osm.org"]
@@ -49,8 +29,4 @@ end
 apache_site "svn.openstreetmap.org" do
   template "apache.erb"
   variables :aliases => ["svn.osm.org"]
-end
-
-file "/etc/cron.daily/svn-backup" do
-  action :delete
 end

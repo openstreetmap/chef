@@ -12,7 +12,9 @@
   ErrorLog /var/log/apache2/<%= @name %>-error.log
 
   RedirectPermanent /applications/editors/josm/plugins/cadastre-fr/images/cadastre_small.png https://raw.githubusercontent.com/openstreetmap/svn-archive/main/applications/editors/josm/plugins/cadastre-fr/images/cadastre_small.png
-  ErrorDocument 404 https://github.com/openstreetmap/svn-archive
+
+  RewriteEngine on
+  RewriteRule ^/?(.*) https://github.com/openstreetmap/svn-archive [L,R=permanent]
 
 </VirtualHost>
 <% unless @aliases.empty? -%>
