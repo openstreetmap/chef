@@ -14,7 +14,7 @@
   RedirectPermanent /applications/editors/josm/plugins/cadastre-fr/images/cadastre_small.png https://raw.githubusercontent.com/openstreetmap/svn-archive/main/applications/editors/josm/plugins/cadastre-fr/images/cadastre_small.png
 
   RewriteEngine on
-  RewriteRule ^/?(.*) https://github.com/openstreetmap/svn-archive [L,R=permanent]
+  RewriteRule ^/?(.*) https://github.com/openstreetmap/svn-archive [QSD,L,R=permanent]
 
 </VirtualHost>
 <% unless @aliases.empty? -%>
