@@ -77,15 +77,9 @@ service "rails-jobs@storage" do
   subscribes :restart, "systemd_service[rails-jobs]"
 end
 
-if node[:web][:primary_cluster]
-  service "rails-jobs@traces" do
-    action [:enable, :start]
-    supports :restart => true
-    subscribes :restart, "rails_port[www.openstreetmap.org]"
-    subscribes :restart, "systemd_service[rails-jobs]"
-  end
-else
-  service "rails-jobs@traces" do
-    action [:disable, :stop]
-  end
+service "rails-jobs@traces" do
+  action [:enable, :start]
+  supports :restart => true
+  subscribes :restart, "rails_port[www.openstreetmap.org]"
+  subscribes :restart, "systemd_service[rails-jobs]"
 end
