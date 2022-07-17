@@ -36,13 +36,13 @@ default_attributes(
       :defaults => {
         :max_connections => "550",
         :work_mem => "240MB",
-        :fsync => "off",
+        :fsync => "on",
         :effective_io_concurrency => "500"
       }
     }
   },
   :nominatim => {
-    :state => "off",
+    :state => "standalone",
     :dbcluster => "14/main",
     :postgis => "3",
     :enable_qa_tiles => true,
