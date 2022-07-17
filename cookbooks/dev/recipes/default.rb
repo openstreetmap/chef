@@ -222,7 +222,7 @@ if node[:postgresql][:clusters][:"14/main"]
     type "simple"
     user "apis"
     working_directory "/srv/%i.apis.dev.openstreetmap.org/rails"
-    exec_start "#{node[:ruby][:bundle]} exec rake jobs:work"
+    exec_start "#{node[:ruby][:bundle]} exec rails jobs:work"
     restart "on-failure"
     private_tmp true
     private_devices true

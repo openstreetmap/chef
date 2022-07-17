@@ -155,7 +155,7 @@ systemd_service "rails-jobs@" do
   environment "RAILS_ENV" => "production", "QUEUE" => "%I"
   user "rails"
   working_directory rails_directory
-  exec_start "#{node[:ruby][:bundle]} exec rake jobs:work"
+  exec_start "#{node[:ruby][:bundle]} exec rails jobs:work"
   restart "on-failure"
   private_tmp true
   private_devices true
