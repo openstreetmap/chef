@@ -403,6 +403,13 @@ groups:
         for: 0m
         labels:
           alertgroup: ssl
+  - name: statuscake
+    rules:
+      - alert: statuscake uptime check failing
+        expr: statuscake_uptime{status="down",paused="false"} > 0
+        for: 0m
+        labels:
+          alertgroup: statuscake
   - name: systemd
     rules:
       - alert: systemd failed service
