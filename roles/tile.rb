@@ -62,6 +62,18 @@ default_attributes(
         "net.core.somaxconn" => 10000
       }
     },
+    :network_conntrack_time_wait => {
+      :comment => "Only track completed connections for 30 seconds",
+      :parameters => {
+        "net.netfilter.nf_conntrack_tcp_timeout_time_wait" => "30"
+      }
+    },
+    :network_conntrack_max => {
+      :comment => "Increase max number of connections tracked",
+      :parameters => {
+        "net.netfilter.nf_conntrack_max" => "524288"
+      }
+    },
     :no_tcp_slow_start => {
       :comment => "Disable TCP slow start",
       :parameters => {
@@ -74,7 +86,7 @@ default_attributes(
         "net.core.default_qdisc" => "fq",
         "net.ipv4.tcp_congestion_control" => "bbr"
       }
-    },
+    }
   },
   :tile => {
     :database => {
