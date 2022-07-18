@@ -29,14 +29,13 @@ default_attributes(
     :settings => {
       :defaults => {
         :work_mem => "300MB",
-        :fsync => "on",
+        :fsync => "off",
         :effective_io_concurrency => "100"
       }
     }
   },
   :nominatim => {
-    :state => "standalone",
-    :enable_qa_tiles => true,
+    :state => "off",
     :dbcluster => "14/main",
     :postgis => "3",
     :flatnode_file => "/ssd/nominatim/nodes.store",
@@ -53,5 +52,5 @@ run_list(
   "role[osuosl]",
   "role[hp-g9]",
   "role[geodns]",
-  "role[nominatim]"
+  "role[nominatim-v4]"
 )
