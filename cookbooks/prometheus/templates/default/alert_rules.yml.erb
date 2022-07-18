@@ -52,6 +52,13 @@ groups:
           alertgroup: "{{ $labels.instance }}"
         annotations:
           busy_workers: "{{ $value | humanizePercentage }}"
+      - alert: apache low request rate
+        expr: rate(apache_accesses_total[$__rate_interval]) / rate(apache_accesses_total[$__rate_interval] offset 1w) < 0.25 and rate(apache_accesses_total[1h] offset 1w) > 2
+        for: 15m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+        annotations:
+          request_rate: "{{ $value | humanizePercentage }}"
   - name: chef
     rules:
       - alert: chef client not running
