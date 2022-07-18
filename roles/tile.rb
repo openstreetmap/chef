@@ -13,7 +13,7 @@ default_attributes(
     :mpm => "event",
     :timeout => 60,
     :event => {
-      :server_limit => 60,
+      :server_limit => 80,
       :max_request_workers => 1200,
       :threads_per_child => 20,
       :min_spare_threads => 300,
