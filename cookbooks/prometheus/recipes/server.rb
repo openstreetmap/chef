@@ -32,6 +32,11 @@ prometheus_exporter "fastly" do
   environment "FASTLY_API_TOKEN" => tokens["fastly"]
 end
 
+prometheus_exporter "statuscake" do
+  port 9595
+  environment "STATUSCAKE_APIKEY" => tokens["statuscake"]
+end
+
 cache_dir = Chef::Config[:file_cache_path]
 
 prometheus_version = "2.31.1"
