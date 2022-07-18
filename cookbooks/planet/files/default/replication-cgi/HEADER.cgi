@@ -1,6 +1,6 @@
-#!/usr/bin/env python
+#!/usr/bin/python3
 
-print """
+print("""
 <html>
  <head>
   <title>OpenStreetMap replication diffs</title>
@@ -11,4 +11,4 @@ print """
 <h1>planet.openstreetmap.org - replication diffs</h1>
 <p>OpenStreetMap is <i>open data</i>, licensed under the <a href="https://opendatacommons.org/licenses/odbl/">Open Data Commons Open Database License</a> (ODbL)</p>
 <p>&nbsp;</p>
-"""
+""")

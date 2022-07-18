@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/python3
 
 from time import time
 from os import stat, environ
@@ -54,7 +54,7 @@ def file_info(file, name):
 planet_link = file_info('history-latest.osm.bz2', 'Latest Full History Planet XML File')
 planet_pbf_link = file_info('../../pbf/full-history/history-latest.osm.pbf', 'Latest Full History Planet PBF File')
 
-print """
+print("""
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
 <html>
  <head>
@@ -118,4 +118,4 @@ information, <a href="https://wiki.openstreetmap.org/wiki/Planet.osm/full">see t
 <p>
 If you find data within OpenStreetMap that you believe is an infringement of someone else's copyright, then please make contact with the <a href="https://wiki.openstreetmap.org/wiki/Data_working_group">OpenStreetMap Data Working Group</a>.
 </p>
-""" % locals()
+""" % locals())

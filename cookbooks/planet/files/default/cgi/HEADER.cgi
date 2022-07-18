@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/python3
 
 from time import time
 from os import stat, environ
@@ -55,7 +55,7 @@ planet_link = file_info('planet/planet-latest.osm.bz2', 'planet/planet-bz2-rss.x
 changesets_link = file_info('planet/changesets-latest.osm.bz2', 'planet/changesets-bz2-rss.xml', 'Latest Weekly Changesets')
 planet_pbf_link = file_info('pbf/planet-latest.osm.pbf', 'pbf/planet-pbf-rss.xml', 'Latest Weekly Planet PBF File')
 
-print """
+print("""
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
 <html>
  <head>
@@ -133,4 +133,4 @@ database, and those published before the 12 September 2012 are distributed under
 <p>
 If you find data within OpenStreetMap that you believe is an infringement of someone else's copyright, then please make contact with the <a href="https://wiki.openstreetmap.org/wiki/Data_working_group">OpenStreetMap Data Working Group</a>.
 </p>
-""" % locals()
+""" % locals())
