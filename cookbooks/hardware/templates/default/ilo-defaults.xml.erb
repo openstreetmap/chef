@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<RIBCL VERSION="2.0">
+  <LOGIN USER_LOGIN="admin" PASSWORD="password">
+    <SERVER_INFO mode="write">
+      <!-- Set Server Name -->
+      <SERVER_NAME VALUE="<%= node[:fqdn] %>"/>
+      <!-- 1 Operating system control mode -->
+      <!-- 2 HP Static Low Power mode -->
+      <!-- 3 HP Dynamic Power Savings mode -->
+      <!-- 4 HP Static High Performance mode -->
+      <SET_HOST_POWER_SAVER HOST_POWER_SAVER="3"/>
+      <!-- Set Auto Power ON -->
+      <!-- Set Auto Power after random delay -->
+      <!-- Both are required -->
+      <SERVER_AUTO_PWR VALUE="ON"/>
+      <SERVER_AUTO_PWR VALUE="RANDOM"/>
+      <!-- Unset max power cap -->
+      <SET_POWER_CAP POWER_CAP="0"/>
+    </SERVER_INFO>
+  </LOGIN>
+</RIBCL>
