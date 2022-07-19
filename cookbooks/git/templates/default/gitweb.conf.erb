@@ -10,7 +10,7 @@ $git_temp = "/tmp";
 #$home_link = $my_uri || "/";
 
 # html text to include at home page
-$home_text = "indextext.html";
+$home_text = "/srv/<%= node[:git][:host] %>/indextext.html";
 
 # file with project list; by default, simply scan the projectroot dir.
 $projects_list = $projectroot;

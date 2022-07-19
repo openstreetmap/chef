@@ -45,6 +45,13 @@ template "/srv/#{git_site}/robots.txt" do
   mode "644"
 end
 
+template "/srv/#{git_site}/indextext.html" do
+  source "indextext.html.erb"
+  owner "root"
+  group "root"
+  mode "644"
+end
+
 ssl_certificate git_site do
   domains [git_site] + Array(node[:git][:aliases])
   notifies :reload, "service[apache2]"
