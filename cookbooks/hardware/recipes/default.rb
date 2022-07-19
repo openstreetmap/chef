@@ -59,6 +59,19 @@ case manufacturer
 when "HP"
   package "hponcfg"
 
+  execute "update-ilo" do
+    action :nothing
+    command "/usr/sbin/hponcfg -f /etc/ilo-defaults.xml"
+  end
+
+  template "/etc/ilo-defaults.xml" do
+    source "ilo-defaults.xml.erb"
+    owner "root"
+    group "root"
+    mode "644"
+    notifies :run, "execute[update-ilo]"
+  end
+
   package "hp-health" do
     action :install
     notifies :restart, "service[hp-health]"
