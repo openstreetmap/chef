@@ -85,10 +85,11 @@ scrape_configs:
     scrape_timeout: 2m
     metrics_path: /snmp
     static_configs:
-      - targets:
 <% @snmp_targets.sort_by { |t| t[:instance] }.each do |target| -%>
       - targets:
-          - "<%= target[:target] %>/<%= target[:module] %>/<%= target[:address] %>"
+<% target[:modules].each do |module_name| -%>
+          - "<%= target[:target] %>/<%= module_name %>/<%= target[:address] %>"
+<% end -%>
         labels:
           instance: <%= target[:instance] %>
 <% target[:labels].sort.each do |name, value| -%>
