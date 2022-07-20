@@ -60,9 +60,9 @@ default_attributes(
   },
   :prometheus => {
     :snmp => {
-      "pdu1" => { :address => "10.0.48.100", :modules => ["apcups"], :labels => { "site" => "amsterdam" } },
-      "pdu2" => { :address => "10.0.48.101", :modules => ["apcups"], :labels => { "site" => "amsterdam" } },
-      "switch1" => { :address => "130.117.76.2", :modules => ["if_mib"], :labels => { "site" => "amsterdam" } }
+      "pdu1" => { :address => "10.0.48.100", :modules => %w[apcups], :labels => { "site" => "amsterdam" } },
+      "pdu2" => { :address => "10.0.48.101", :modules => %w[apcups], :labels => { "site" => "amsterdam" } },
+      "switch1" => { :address => "130.117.76.2", :modules => %w[if_mib cisco_550x], :labels => { "site" => "amsterdam" } }
     },
     :metrics => {
       :uplink_interface => {
