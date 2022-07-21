@@ -29,13 +29,13 @@ default_attributes(
     :settings => {
       :defaults => {
         :work_mem => "300MB",
-        :fsync => "off",
+        :fsync => "on",
         :effective_io_concurrency => "100"
       }
     }
   },
   :nominatim => {
-    :state => "off",
+    :state => "standalone",
     :dbcluster => "14/main",
     :postgis => "3",
     :flatnode_file => "/ssd/nominatim/nodes.store",
