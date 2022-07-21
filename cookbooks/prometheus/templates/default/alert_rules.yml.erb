@@ -311,8 +311,15 @@ groups:
         annotations:
           bandwidth_used: "{{ $value | humanizePercentage }}"
       - alert: interface transmit errors
-        expr: rate(node_network_transmit_errs_total[1m]) / rate(node_network_transmit_packets_total[1m]) > 0.01
+        expr: rate(node_network_transmit_errs_total{device!~"wg.*"}[1m]) / rate(node_network_transmit_packets_total{device!~"wg.*"}[1m]) > 0.01
         for: 5m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+        annotations:
+          error_rate: "{{ $value | humanizePercentage }}"
+      - alert: interface transmit errors
+        expr: rate(node_network_transmit_errs_total{device=~"wg.*"}[1m]) / rate(node_network_transmit_packets_total{device=~"wg.*"}[1m]) > 0.05
+        for: 1h
         labels:
           alertgroup: "{{ $labels.instance }}"
         annotations:
