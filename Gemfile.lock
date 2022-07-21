@@ -15,7 +15,7 @@ GEM
       multi_json
     ed25519 (1.3.0)
     erubi (1.10.0)
-    excon (0.92.3)
+    excon (0.92.4)
     ffi (1.15.5)
     gssapi (1.3.1)
       ffi (>= 1.0.1)
@@ -23,7 +23,7 @@ GEM
       builder (>= 2.1.2)
       rexml (~> 3.0)
     httpclient (2.8.3)
-    kitchen-dokken (2.17.2)
+    kitchen-dokken (2.17.3)
       docker-api (>= 1.33, < 3)
       lockfile (~> 2.1)
       test-kitchen (>= 1.15, < 4)
