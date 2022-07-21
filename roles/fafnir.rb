@@ -39,9 +39,9 @@ default_attributes(
   },
   :prometheus => {
     :snmp => {
-      "pdu1" => { :address => "10.0.64.100", :modules => ["apcups"], :labels => { "site" => "dublin" } },
-      "pdu2" => { :address => "10.0.64.101", :modules => ["apcups"], :labels => { "site" => "dublin" } },
-      "switch1" => { :address => "184.104.226.97", :modules => ["if_mib"], :labels => { "site" => "dublin" } }
+      "pdu1" => { :address => "10.0.64.100", :modules => %w[apcups], :labels => { "site" => "dublin" } },
+      "pdu2" => { :address => "10.0.64.101", :modules => %w[apcups], :labels => { "site" => "dublin" } },
+      "switch1" => { :address => "184.104.226.97", :modules => %w[if_mib juniper_ex4300], :labels => { "site" => "dublin" } }
     },
     :metrics => {
       :uplink_interface => {
