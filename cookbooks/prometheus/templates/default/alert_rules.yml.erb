@@ -68,6 +68,28 @@ groups:
           alertgroup: "{{ $labels.instance }}"
         annotations:
           down_time: "{{ $value | humanizeDuration }}"
+  - name: cisco
+    rules:
+      - alert: cisco fan alarm
+        expr: rlPhdUnitEnvParamFan1Status{rlPhdUnitEnvParamFan1Status!="normal"} > 0 or rlPhdUnitEnvParamFan2Status{rlPhdUnitEnvParamFan2Status!="normal"} > 0
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.site }}"
+      - alert: cisco temperature alarm
+        expr: rlPhdUnitEnvParamTempSensorStatus{rlPhdUnitEnvParamTempSensorStatus!="ok"} > 0
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.site }}"
+      - alert: cisco main power alarm
+        expr: rlPhdUnitEnvParamMainPSStatus{rlPhdUnitEnvParamMainPSStatus!="normal"} > 0
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.site }}"
+      - alert: cisco redundant power alarm
+        expr: rlPhdUnitEnvParamRedundantPSStatus{rlPhdUnitEnvParamRedundantPSStatus!="normal"} > 0
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.site }}"
   - name: cpu
     rules:
       - alert: cpu pressure
