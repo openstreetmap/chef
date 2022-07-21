@@ -32,7 +32,7 @@ package %w[
 
 git "/srv/hardware.openstreetmap.org" do
   action :sync
-  repository "https://github.com/gravitystorm/osmf-server-info.git"
+  repository "https://github.com/osmfoundation/osmf-server-info.git"
   depth 1
   user "root"
   group "root"
