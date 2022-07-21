@@ -207,6 +207,18 @@ groups:
         for: 5m
         labels:
           alertgroup: "{{ $labels.instance }}"
+  - name: juniper
+    rules:
+      - alert: juniper fan alarm
+        expr: jnxOperatingState{jnxOperatingContentsIndex="4",jnxOperatingState!="running"} > 0
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.site }}"
+      - alert: juniper power alarm
+        expr: jnxOperatingState{jnxOperatingContentsIndex="2",jnxOperatingState!="running"} > 0
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.site }}"
   - name: mail
     rules:
       - alert: exim queue length
