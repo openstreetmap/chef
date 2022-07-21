@@ -5,7 +5,7 @@ groups:
     rules:
       - alert: prometheus target missing
         expr: up == 0
-        for: 5m
+        for: 10m
         labels:
           alertgroup: "prometheus"
   - name: amsterdam
@@ -459,7 +459,7 @@ groups:
     rules:
       - alert: statuscake uptime check failing
         expr: statuscake_uptime{status="down",paused="false"} > 0
-        for: 0m
+        for: 10m
         labels:
           alertgroup: statuscake
   - name: systemd
