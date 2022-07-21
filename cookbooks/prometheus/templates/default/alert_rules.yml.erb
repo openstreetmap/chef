@@ -75,11 +75,15 @@ groups:
         for: 5m
         labels:
           alertgroup: "{{ $labels.site }}"
+        annotations:
+          fan_rpm: "{{ with printf \"rlPhdUnitEnvParamFan1Speed{site='%s',instance='%s',rlPhdUnitEnvParamStackUnit='%s'}\" $labels.site $labels.instance $labels.rlPhdUnitEnvParamStackUnit | query }}{{ . | first | value | humanize }}rpm{{end}}"
       - alert: cisco temperature alarm
         expr: rlPhdUnitEnvParamTempSensorStatus{rlPhdUnitEnvParamTempSensorStatus!="ok"} > 0
         for: 5m
         labels:
           alertgroup: "{{ $labels.site }}"
+        annotations:
+          temp_celsius: "{{ with printf \"rlPhdUnitEnvParamTempSensorValue{site='%s',instance='%s',rlPhdUnitEnvParamStackUnit='%s'}\" $labels.site $labels.instance $labels.rlPhdUnitEnvParamStackUnit | query }}{{ . | first | value | humanize }}C{{end}}"
       - alert: cisco main power alarm
         expr: rlPhdUnitEnvParamMainPSStatus{rlPhdUnitEnvParamMainPSStatus!="normal"} > 0
         for: 5m
