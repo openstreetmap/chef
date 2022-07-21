@@ -52,5 +52,5 @@ run_list(
   "role[osuosl]",
   "role[hp-g9]",
   "role[geodns]",
-  "role[nominatim-v4]"
+  "role[nominatim]"
 )

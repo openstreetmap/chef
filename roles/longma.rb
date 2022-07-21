@@ -58,5 +58,5 @@ default_attributes(
 
 run_list(
   "role[equinix-dub]",
-  "role[nominatim-v4]"
+  "role[nominatim]"
 )

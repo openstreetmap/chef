@@ -48,5 +48,5 @@ default_attributes(
 
 run_list(
   "role[equinix-ams]",
-  "role[nominatim-v4]"
+  "role[nominatim]"
 )
