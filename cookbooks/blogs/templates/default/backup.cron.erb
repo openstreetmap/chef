@@ -1,0 +1,17 @@
+#!/bin/sh
+
+# DO NOT EDIT - This file is being maintained by Chef
+
+T=$(mktemp -d -t -p /var/tmp blogs.XXXXXXXXXX)
+D=$(date +%Y-%m-%d)
+B=blogs-$D.tar.gz
+
+mkdir $T/blogs-$D
+sqlite3 /srv/blogs.openstreetmap.org/planet.db ".backup $T/blogs-$D/planet.db"
+
+export RSYNC_RSH="ssh -ax"
+
+nice tar --create --dereference --directory=$T blogs-$D | nice gzip --rsyncable -9 > $T/$B
+nice rsync --preallocate --fuzzy $T/$B backup::backup
+
+rm -rf $T

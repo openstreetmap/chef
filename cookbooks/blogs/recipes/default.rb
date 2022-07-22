@@ -27,6 +27,7 @@ package %W[
   gcc
   g++
   libsqlite3-dev
+  sqlite3
 ]
 
 directory "/srv/blogs.openstreetmap.org" do
@@ -82,4 +83,11 @@ cron_d "blogs" do
   user "blogs"
   command "/usr/local/bin/blogs-update"
   mailto "admins@openstreetmap.org"
+end
+
+template "/etc/cron.daily/blogs-backup" do
+  source "blogs-backup.erb"
+  owner "root"
+  group "root"
+  mode "0755"
 end
