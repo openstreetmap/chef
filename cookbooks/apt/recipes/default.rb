@@ -115,14 +115,6 @@ apt_repository "elasticsearch5.x" do
   key "D27D666CD88E42B4"
 end
 
-apt_repository "elasticsearch6.x" do
-  action repository_actions["elasticsearch6.x"]
-  uri "https://artifacts.elastic.co/packages/6.x/apt"
-  distribution "stable"
-  components ["main"]
-  key "D27D666CD88E42B4"
-end
-
 apt_repository "elasticsearch8.x" do
   action repository_actions["elasticsearch8.x"]
   uri "https://artifacts.elastic.co/packages/8.x/apt"
