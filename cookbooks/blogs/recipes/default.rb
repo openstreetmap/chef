@@ -86,7 +86,7 @@ cron_d "blogs" do
 end
 
 template "/etc/cron.daily/blogs-backup" do
-  source "blogs-backup.erb"
+  source "backup.cron.erb"
   owner "root"
   group "root"
   mode "0755"
