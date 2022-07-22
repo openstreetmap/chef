@@ -88,6 +88,7 @@ property :tile_cdn_url, String
 action :create do
   package %W[
     imagemagick
+    libvips42
     nodejs
     tzdata
   ]
