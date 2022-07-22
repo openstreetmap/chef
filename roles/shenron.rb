@@ -45,9 +45,7 @@ override_attributes(
         :gateway => "fe80::1"
       }
     },
-    # Do not use Cloudflare Public DNS as it does not support ECS as required by https://www.spamhaus.org/organization/dnsblusage/
-    # https://www.spamhaus.org/news/article/816/service-update-spamhaus-dnsbl-users-who-query-via-cloudflare-dns-need-to-make-changes-to-email-set-up
-    :nameservers => ["8.8.8.8", "8.8.4.4", "2001:4860:4860::8888", "2001:4860:4860::8844"],
+    :nameservers => ["89.16.162.20", "2001:41c9:2:d6::20"],
     :private_address => "10.0.16.100"
   }
 )
