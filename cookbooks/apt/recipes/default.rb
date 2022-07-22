@@ -123,6 +123,14 @@ apt_repository "elasticsearch6.x" do
   key "D27D666CD88E42B4"
 end
 
+apt_repository "elasticsearch8.x" do
+  action repository_actions["elasticsearch8.x"]
+  uri "https://artifacts.elastic.co/packages/8.x/apt"
+  distribution "stable"
+  components ["main"]
+  key "D27D666CD88E42B4"
+end
+
 apt_repository "passenger" do
   action repository_actions["passenger"]
   uri "https://oss-binaries.phusionpassenger.com/apt/passenger"

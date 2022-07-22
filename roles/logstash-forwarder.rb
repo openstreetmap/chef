@@ -3,7 +3,7 @@ description "Role applied to all logstash forwarders"
 
 default_attributes(
   :apt => {
-    :sources => ["elasticsearch6.x"]
+    :sources => ["elasticsearch8.x"]
   }
 )
 

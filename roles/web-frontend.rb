@@ -15,9 +15,9 @@ default_attributes(
   },
   :logstash => {
     :forwarder => {
-      "filebeat.prospectors" => [
-        { "input_type" => "log", "paths" => ["/var/log/apache2/access.log"], "fields" => { "type" => "apache" } },
-        { "input_type" => "log", "paths" => ["/var/log/web/rails-logstash.log"], "fields" => { "type" => "rails" } }
+      "filebeat.inputs" => [
+        { "type" => "filestream", "id" => "apache", "paths" => ["/var/log/apache2/access.log"], "fields" => { "type" => "apache" }, "fields_under_root" => true },
+        { "type" => "filestream", "id" => "rails", "paths" => ["/var/log/web/rails-logstash.log"], "fields" => { "type" => "rails" }, "fields_under_root" => true }
       ]
     }
   },

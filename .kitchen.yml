@@ -177,11 +177,14 @@ suites:
     attributes:
       logstash:
         forwarder:
-          filebeat.prospectors:
-            - input_type: log
+          filebeat.inputs:
+            - type: filestream
+              id: apache
               paths:
                 - /var/log/apache2/access.log
-              type: apache
+              fields:
+                type: apache
+              fields_under_root: true
   - name: mail
     run_list:
       - role[mail]
