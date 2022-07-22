@@ -56,6 +56,5 @@ run_list(
   "role[bytemark]",
   "role[mail]",
   "role[lists]",
-  "role[osqa]",
-  "recipe[blogs]"
+  "role[osqa]"
 )

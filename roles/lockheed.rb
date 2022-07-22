@@ -34,5 +34,6 @@ run_list(
   "role[equinix-ams]",
   "role[subversion]",
   "role[trac]",
-  "role[irc]"
+  "role[irc]",
+  "recipe[blogs]"
 )
