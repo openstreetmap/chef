@@ -63,17 +63,11 @@ template "/etc/logrotate.d/apache2" do
   mode "644"
 end
 
-if node[:lsb][:release].to_f < 22.04
-  service "rails-jobs@mailers" do
-    action [:enable, :start]
-    supports :restart => true
-    subscribes :restart, "rails_port[www.openstreetmap.org]"
-    subscribes :restart, "systemd_service[rails-jobs]"
-  end
-else
-  service "rails-jobs@mailers" do
-    action [:disable, :stop]
-  end
+service "rails-jobs@mailers" do
+  action [:enable, :start]
+  supports :restart => true
+  subscribes :restart, "rails_port[www.openstreetmap.org]"
+  subscribes :restart, "systemd_service[rails-jobs]"
 end
 
 service "rails-jobs@storage" do
