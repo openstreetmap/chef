@@ -317,6 +317,8 @@ Ohai.plugin(:Hardware) do
     disk = nil
 
     IO.popen(%w(ssacli controller all show config detail)).each do |line|
+      next unless line.valid_encoding?
+
       if line =~ /^Smart (?:Array|HBA) (\S+) /
         controller = {
           :id => devices[:controllers].count,
