@@ -247,9 +247,6 @@ if node[:virtualization][:role] != "guest" ||
     when "mpt2sas", "mpt3sas"
       tools_packages << "sas2ircu"
       status_packages["sas2ircu-status"] ||= []
-    when "megaraid_mm"
-      tools_packages << "megactl"
-      status_packages["megaraid-status"] ||= []
     when "megaraid_sas"
       tools_packages << "megacli"
       status_packages["megaclisas-status"] ||= []
@@ -330,7 +327,7 @@ else
   end
 end
 
-%w[cciss-vol-status mpt-status sas2ircu-status megaraid-status megaclisas-status aacraid-status].each do |status_package|
+%w[cciss-vol-status mpt-status sas2ircu-status megaclisas-status aacraid-status].each do |status_package|
   if status_packages.include?(status_package)
     package status_package
 
