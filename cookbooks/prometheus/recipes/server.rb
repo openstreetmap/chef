@@ -32,6 +32,11 @@ prometheus_exporter "fastly" do
   environment "FASTLY_API_TOKEN" => tokens["fastly"]
 end
 
+prometheus_exporter "fastly_healthcheck" do
+  port 9696
+  environment "FASTLY_API_TOKEN" => tokens["fastly"]
+end
+
 prometheus_exporter "statuscake" do
   port 9595
   environment "STATUSCAKE_APIKEY" => tokens["statuscake"]
