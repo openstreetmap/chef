@@ -413,7 +413,7 @@ Ohai.plugin(:Hardware) do
         disk[:status] = "online"
       elsif disk[:status] == "OK" && disk[:drive_type] == "Spare Drive"
         disk[:status] = "hotspare"
-      elsif disk[:status] == "OK" && disk[:drive_type] == "Unassigned Drive"
+      elsif disk[:drive_type] == "Unassigned Drive"
         disk[:status] = "unconfigured"
       else
         disk[:status] = "unknown"
