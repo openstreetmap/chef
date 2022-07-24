@@ -446,11 +446,11 @@ Ohai.plugin(:Hardware) do
         devices[:controllers] << controller
 
         controllers << controller
-      elsif line =~ /^Bus Number\s+:\s+(\d+)$/
+      elsif line =~ /^Bus Number\s+:\s+([0-9a-f]+)$/i
         controller[:pci_slot] = format "0000:%02x", Integer("0x#{Regexp.last_match(1)}")
-      elsif line =~ /^Device Number\s+:\s+(\d+)$/
+      elsif line =~ /^Device Number\s+:\s+([0-9a-f]+)$/i
         controller[:pci_slot] = format "%s:%02x", controller[:pci_slot], Integer("0x#{Regexp.last_match(1)}")
-      elsif line =~ /^Function Number\s+:\s+(\d+)$/
+      elsif line =~ /^Function Number\s+:\s+([0-9a-f]+)$/i
         controller[:pci_slot] = format "%s.%01x", controller[:pci_slot], Integer("0x#{Regexp.last_match(1)}")
       end
     end
