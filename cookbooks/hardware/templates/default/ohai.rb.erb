@@ -253,19 +253,10 @@ Ohai.plugin(:Hardware) do
   end
 
   def find_md_arrays(devices)
-    controller = {
-      :id => devices[:controllers].count,
-      :type => "md",
-      :arrays => [],
-      :disks => []
-    }
-
-    devices[:controllers] << controller
-
     array = nil
 
     File.new("/proc/mdstat", "r").each do |line|
-      if line =~ /^(md\d+) : active raid(\d+)((?: (?:sd[a-z]|nvme\d+n\d+)\d*\[\d+\](?:\([A-Z]\))*)+)$/
+      if line =~ /^(md\d+) : active raid(\d+)((?: (?:sd[a-z]\d*|nvme\d+n\d+(?:p\d+)?)\[\d+\](?:\([A-Z]\))*)+)$/
         array = {
           :id => devices[:arrays].count,
           :device => "/dev/#{Regexp.last_match(1)}",
@@ -294,7 +285,6 @@ Ohai.plugin(:Hardware) do
         end
 
         devices[:arrays] << array
-        controller[:arrays] << array[:id]
       elsif array && line =~ /^\s+(\d+) blocks.*(?:\[([U_]+)\])?/
         array[:size] = format_disk_size(Regexp.last_match(1).to_i)
         array[:status] = "degraded" if Regexp.last_match(2) =~ /_/
