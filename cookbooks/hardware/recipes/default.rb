@@ -652,3 +652,7 @@ if node[:hardware][:shm_size]
     notifies :run, "execute[remount-dev-shm]"
   end
 end
+
+prometheus_collector "ohai" do
+  interval "15m"
+end
