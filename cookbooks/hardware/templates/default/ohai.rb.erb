@@ -496,8 +496,9 @@ Ohai.plugin(:Hardware) do
         devices[:disks] << disk
         controller[:disks] << disk[:id]
         array[:disks] << disk[:id]
-      elsif disk && line =~ /^Firmware state:\s+(.*\S),\s*(.*\S)\s*$/
-        case Regexp.last_match(1)
+      elsif disk && line =~ /^Firmware state:\s+(\S.*)$/
+        status, state = Regexp.last_match(1).split(/,\s*/)
+        case status
         when "Unconfigured(good)" then disk[:status] = "unconfigured"
         when "Unconfigured(bad)" then disk[:status] = "unconfigured"
         when "Hotspare" then disk[:status] = "hotspare"
@@ -508,7 +509,7 @@ Ohai.plugin(:Hardware) do
         when "Copyback" then disk[:status] = "rebuilding"
         else disk[:status] = "unknown"
         end
-        case Regexp.last_match(2)
+        case state
         when "Spun Up" then disk[:state] = "spun_up"
         when "Spun down" then disk[:state] = "spun_down"
         else disk[:state] = "unknown"
@@ -554,8 +555,9 @@ Ohai.plugin(:Hardware) do
 
           devices[:disks] << disk
         end
-      elsif disk && line =~ /^Firmware state:\s+(.*\S),\s*(.*\S)\s*$/
-        case Regexp.last_match(1)
+      elsif disk && line =~ /^Firmware state:\s+(\S.*)$/
+        status, state = Regexp.last_match(1).split(/,\s*/)
+        case status
         when "Unconfigured(good)" then disk[:status] = "unconfigured"
         when "Unconfigured(bad)" then disk[:status] = "unconfigured"
         when "Hotspare" then disk[:status] = "hotspare"
@@ -566,7 +568,7 @@ Ohai.plugin(:Hardware) do
         when "Copyback" then disk[:status] = "rebuilding"
         else disk[:status] = "unknown"
         end
-        case Regexp.last_match(2)
+        case state
         when "Spun Up" then disk[:state] = "spun_up"
         when "Spun down" then disk[:state] = "spun_down"
         else disk[:state] = "unknown"
