@@ -34,6 +34,7 @@ end
 
 prometheus_exporter "fastly_healthcheck" do
   port 9696
+  scrape_interval "1m"
   environment "FASTLY_API_TOKEN" => tokens["fastly"]
 end
 
@@ -201,11 +202,13 @@ search(:node, "recipes:prometheus\\:\\:default").sort_by(&:name).each do |client
       name = exporter[:name]
       address = exporter[:address]
       sni = exporter[:sni]
+      scrape_interval = exporter[:scrape_interval]
       metric_relabel = exporter[:metric_relabel] || []
     else
       name = key
       address = exporter
       sni = nil
+      scrape_interval = nil
       metric_relabel = []
     end
 
@@ -214,6 +217,7 @@ search(:node, "recipes:prometheus\\:\\:default").sort_by(&:name).each do |client
       :address => address,
       :sni => sni,
       :instance => client.name.split(".").first,
+      :scrape_interval => scrape_interval,
       :metric_relabel => metric_relabel
     }
   end

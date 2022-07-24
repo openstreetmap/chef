@@ -57,6 +57,9 @@ scrape_configs:
         replacement: 127.0.0.1:9219
 <% @jobs.sort.each do |name, targets| -%>
   - job_name: <%= name %>
+<% if targets.first[:scrape_interval] -%>
+    scrape_interval: <%= targets.first[:scrape_interval] %>
+<% end -%>
 <% if targets.first[:sni] -%>
     tls_config:
       server_name: <%= targets.first[:sni] %>

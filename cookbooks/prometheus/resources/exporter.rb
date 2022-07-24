@@ -31,6 +31,7 @@ property :command, :kind_of => String
 property :options, :kind_of => [String, Array]
 property :environment, :kind_of => Hash, :default => {}
 property :service, :kind_of => String
+property :scrape_interval, :kind_of => String
 property :metric_relabel, :kind_of => Array
 property :register_target, :kind_of => [TrueClass, FalseClass], :default => true
 
@@ -69,6 +70,7 @@ action :create do
     node.default[:prometheus][:exporters][new_resource.port] = {
       :name => new_resource.exporter,
       :address => listen_address,
+      :scrape_interval => new_resource.scrape_interval,
       :metric_relabel => new_resource.metric_relabel
     }
   end
