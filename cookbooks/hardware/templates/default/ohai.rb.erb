@@ -379,6 +379,7 @@ Ohai.plugin(:Hardware) do
       elsif array && line =~ /^         Status:\s+(.*\S)\s*$/
         case Regexp.last_match(1)
         when "OK" then array[:status] = "optimal"
+        when "Interim Recovery Mode" then array[:status] = "degraded"
         else array[:status] = "unknown"
         end
       elsif array && line =~ /^         (\S[^:]+):\s+(.*\S)\s*$/
