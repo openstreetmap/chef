@@ -38,7 +38,7 @@ action :create do
     private_tmp true
     protect_system "strict"
     protect_home true
-    read_write_paths ["/var/lib/prometheus/node-exporter", "/var/lock"]
+    read_write_paths ["/var/lib/prometheus/node-exporter", "/var/lock", "/var/log"]
     no_new_privileges true
   end
 
