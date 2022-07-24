@@ -417,10 +417,14 @@ Ohai.plugin(:Hardware) do
 
       if disk[:status] == "Failed"
         disk[:status] = "failed"
+      elsif disk[:status] == "Predictive Failure"
+        disk[:status] = "failed"
       elsif disk[:status] == "OK" && disk[:drive_type] == "Data Drive"
         disk[:status] = "online"
       elsif disk[:status] == "OK" && disk[:drive_type] == "Spare Drive"
         disk[:status] = "hotspare"
+      elsif disk[:status] == "OK" && disk[:drive_type] == "Unassigned Drive"
+        disk[:status] = "unconfigured"
       else
         disk[:status] = "unknown"
       end
