@@ -422,6 +422,18 @@ groups:
           alertgroup: "{{ $labels.instance }}"
         annotations:
           queries: "{{ $value }}"
+  - name: raid
+    rules:
+      - alert: raid array degraded
+        expr: ohai_array_info{status="degraded"} > 0
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+      - alert: raid disk failed
+        expr: ohai_disk_info{status="failed"} > 0
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
   - name: smart
     rules:
       - alert: smart failure
