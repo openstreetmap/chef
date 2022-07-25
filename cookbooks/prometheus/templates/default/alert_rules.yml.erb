@@ -1,13 +1,6 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
 groups:
-  - name: alertmanager
-    rules:
-      - alert: prometheus target missing
-        expr: up == 0
-        for: 10m
-        labels:
-          alertgroup: "prometheus"
   - name: amsterdam
     rules:
       - alert: pdu current draw
@@ -422,6 +415,18 @@ groups:
           alertgroup: "{{ $labels.instance }}"
         annotations:
           queries: "{{ $value }}"
+  - name: prometheus
+    rules:
+      - alert: prometheus configuration error
+        expr: prometheus_config_last_reload_successful == 0
+        for: 10m
+        labels:
+          alertgroup: "prometheus"
+      - alert: prometheus target missing
+        expr: up == 0
+        for: 10m
+        labels:
+          alertgroup: "prometheus"
   - name: raid
     rules:
       - alert: raid array degraded
