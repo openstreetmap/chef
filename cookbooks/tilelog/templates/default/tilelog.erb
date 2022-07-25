@@ -18,7 +18,7 @@ export AWS_REGION="eu-west-1"
 TILEFILE="tiles-${DATE}.txt.xz"
 HOSTFILE="hosts-${DATE}.csv"
 
-nice -n 19 /opt/tilelog/bin/tilelog --date "${DATE}" \
+nice -n 19 /opt/tilelog/bin/tilelog --date "${DATE}" --generate-success \
   --tile "${TILEFILE}" --host "${HOSTFILE}"
 
 mv "${TILEFILE}" "${HOSTFILE}" "${OUTDIR}"
