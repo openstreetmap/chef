@@ -73,6 +73,8 @@ package %w[
   libyajl-dev
   libfmt-dev
   zlib1g-dev
+  nano
+  osm2pgsql
 ]
 
 nodejs_package "svgo"
