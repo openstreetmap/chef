@@ -27,6 +27,15 @@ default_attributes(
         :gateway => "2a05:46c0:100:1004::"
       }
     }
+  },
+  :sysfs => {
+    :hdd_tune => {
+      :comment => "Tune the queue for improved performance",
+      :parameters => {
+        "block/sda/queue/nr_requests" => "975",
+        "block/sdb/queue/rotational" => "0"
+      }
+    }
   }
 )
 
