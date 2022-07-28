@@ -28,6 +28,13 @@ default_attributes(
       }
     },
     :trusted_users => ["www-data"]
+  },
+  :mysql => {
+    :settings => {
+      :mysqld => {
+        :log_bin_trust_function_creators => 1
+      }
+    }
   }
 )
 
