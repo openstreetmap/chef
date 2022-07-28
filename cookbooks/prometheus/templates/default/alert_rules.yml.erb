@@ -1,4 +1,4 @@
-# DO NOT EDIT - This file is being maintained by Chef
+c# DO NOT EDIT - This file is being maintained by Chef
 
 groups:
   - name: amsterdam
@@ -452,7 +452,7 @@ groups:
         labels:
           alertgroup: "{{ $labels.instance }}"
       - alert: smart ssd wearout approaching
-        expr: smart_percentage_used >= 90
+        expr: smart_percentage_used >= 80
         for: 60m
         labels:
           alertgroup: "{{ $labels.instance }}"
