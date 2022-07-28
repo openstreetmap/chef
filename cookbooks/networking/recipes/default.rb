@@ -272,7 +272,8 @@ if node[:networking][:wireguard][:enabled]
     # Grant roaming
     node.default[:networking][:wireguard][:peers] << {
       :public_key => "YbUkREE9TAmomqgL/4Fh2e5u2Hh7drN/2o5qg3ndRxg=",
-      :allowed_ips => "10.89.123.1/32"
+      :allowed_ips => "10.89.123.1/32",
+      :endpoint => "roaming.firefishy.com:51820"
     }
   end
 
