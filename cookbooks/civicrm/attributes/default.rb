@@ -1,8 +1,8 @@
-default[:civicrm][:version] = "5.42.1"
+default[:civicrm][:version] = "5.45.7"
 
 default[:civicrm][:extensions][:cividiscount][:name] = "org.civicrm.module.cividiscount"
 default[:civicrm][:extensions][:cividiscount][:repository] = "https://github.com/dlobo/org.civicrm.module.cividiscount.git"
-default[:civicrm][:extensions][:cividiscount][:revision] = "3.8.4"
+default[:civicrm][:extensions][:cividiscount][:revision] = "3.8.5"
 
 default[:civicrm][:extensions][:osm][:name] = "de.systopia.osm"
 default[:civicrm][:extensions][:osm][:repository] = "https://github.com/systopia/de.systopia.osm.git"
@@ -10,7 +10,7 @@ default[:civicrm][:extensions][:osm][:revision] = "1.3"
 
 default[:civicrm][:extensions][:emailapi][:name] = "org.civicoop.emailapi"
 default[:civicrm][:extensions][:emailapi][:repository] = "https://lab.civicrm.org/extensions/emailapi.git"
-default[:civicrm][:extensions][:emailapi][:revision] = "2.5"
+default[:civicrm][:extensions][:emailapi][:revision] = "2.8"
 
 default[:civicrm][:extensions][:civiruleshttppost][:name] = "org.civicoop.civiruleshttppost"
 default[:civicrm][:extensions][:civiruleshttppost][:repository] = "https://github.com/CiviCooP/org.civicoop.civiruleshttppost.git"
@@ -18,7 +18,7 @@ default[:civicrm][:extensions][:civiruleshttppost][:revision] = "e2c7de5f0fee319
 
 default[:civicrm][:extensions][:civirules][:name] = "org.civicoop.civirules"
 default[:civicrm][:extensions][:civirules][:repository] = "https://lab.civicrm.org/extensions/civirules.git"
-default[:civicrm][:extensions][:civirules][:revision] = "2.37"
+default[:civicrm][:extensions][:civirules][:revision] = "2.43"
 
 default[:civicrm][:extensions][:mailchimp][:name] = "uk.co.vedaconsulting.mailchimp"
 default[:civicrm][:extensions][:mailchimp][:repository] = "https://github.com/veda-consulting/uk.co.vedaconsulting.mailchimp.git"
@@ -34,7 +34,7 @@ default[:civicrm][:extensions][:donotsendreportemail][:revision] = "3b31c2e0c621
 
 default[:civicrm][:extensions][:shoreditch][:name] = "org.civicrm.shoreditch"
 default[:civicrm][:extensions][:shoreditch][:repository] = "https://github.com/civicrm/org.civicrm.shoreditch.git"
-default[:civicrm][:extensions][:shoreditch][:revision] = "1.0.0-beta.7"
+default[:civicrm][:extensions][:shoreditch][:revision] = "1.0.0-beta.11"
 
 default[:civicrm][:extensions][:membershipextra][:name] = "com.skvare.membershipextra"
 default[:civicrm][:extensions][:membershipextra][:repository] = "https://github.com/lemniscus/com.skvare.membershipextra.git"
