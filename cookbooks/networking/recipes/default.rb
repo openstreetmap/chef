@@ -262,10 +262,17 @@ if node[:networking][:wireguard][:enabled]
       :endpoint => "gate.compton.nu:51820"
     }
 
+    # Grant home
     node.default[:networking][:wireguard][:peers] << {
       :public_key => "RofATnvlWxP3mt87+QKRXFE5MVxtoCcTsJ+yftZYEE4=",
       :allowed_ips => "10.89.122.1/32",
       :endpoint => "gate.firefishy.com:51820"
+    }
+
+    # Grant roaming
+    node.default[:networking][:wireguard][:peers] << {
+      :public_key => "RofATnvlWxP3mt87+QKRXFE5MVxtoCcTsJ+yftZYEE4=",
+      :allowed_ips => "10.89.123.1/32"
     }
   end
 
