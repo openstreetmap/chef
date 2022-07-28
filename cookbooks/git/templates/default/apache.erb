@@ -55,9 +55,9 @@
 
         RewriteEngine on
         RewriteRule ^/cgimap\.git.* https://github.com/zerebubuth/openstreetmap-cgimap [QSD,L,R=permanent]
-        # RewriteRule ^/planetdump\.git.* https://github.com/openstreetmap/planetdump [QSD,L,R=permanent]
-        # RewriteRule ^/gpx-import\.git.* https://github.com/openstreetmap/gpx-import [QSD,L,R=permanent]
-        # RewriteRule ^/potlatch2\.git.* https://github.com/openstreetmap/potlatch2 [QSD,L,R=permanent]
+        RewriteRule ^/planetdump\.git.* https://github.com/openstreetmap/planetdump [QSD,L,R=permanent]
+        RewriteRule ^/gpx-import\.git.* https://github.com/openstreetmap/gpx-import [QSD,L,R=permanent]
+        RewriteRule ^/potlatch2\.git.* https://github.com/openstreetmap/potlatch2 [QSD,L,R=permanent]
 
         ScriptAlias /public /usr/lib/git-core/git-http-backend/public
         ScriptAlias /private /usr/lib/git-core/git-http-backend/private
