@@ -115,7 +115,12 @@ groups:
         annotations:
           error_rate: "{{ $value | humanizePercentage }}"
       - alert: fastly healthcheck failing
-        expr: fastly_healthcheck_status == 0
+        expr: count(fastly_healthcheck_status == 0) > 0
+        for: 15m
+        labels:
+          alertgroup: fastly
+      - alert: fastly healthcheck failing
+        expr: count(fastly_healthcheck_status == 0) > 4
         for: 5m
         labels:
           alertgroup: fastly
