@@ -191,6 +191,9 @@ suites:
   - name: mailman
     run_list:
       - recipe[mailman::default]
+  - name: matomo
+    run_list:
+      - recipe[matomo::default]
   - name: memcached
     run_list:
       - recipe[memcached::default]
@@ -248,9 +251,6 @@ suites:
   - name: php-fpm
     run_list:
       - recipe[php::fpm]
-  - name: piwik
-    run_list:
-      - recipe[piwik::default]
   - name: planet
     run_list:
       - recipe[planet::default]

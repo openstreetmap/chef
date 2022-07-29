@@ -1,5 +1,5 @@
-default[:piwik][:version] = "4.10.1"
-default[:piwik][:plugins] = {
+default[:matomo][:version] = "4.10.1"
+default[:matomo][:plugins] = {
   "Actions" => nil,
   "Annotations" => nil,
   "API" => nil,
@@ -67,4 +67,4 @@ default[:piwik][:plugins] = {
   "Widgetize" => nil,
 }
 
-default[:mysql][:settings][:mysqld][:secure_file_priv] = "/opt/piwik-#{node[:piwik][:version]}/piwik/tmp/assets"
+default[:mysql][:settings][:mysqld][:secure_file_priv] = "/opt/matomo-#{node[:matomo][:version]}/matomo/tmp/assets"

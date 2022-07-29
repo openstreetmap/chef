@@ -1,5 +1,5 @@
-name "piwik"
-description "Role applied to all Piwik servers"
+name "matomo"
+description "Role applied to all Matomo servers"
 
 default_attributes(
   :apache => {
@@ -24,5 +24,5 @@ default_attributes(
 )
 
 run_list(
-  "recipe[piwik]"
+  "recipe[matomo]"
 )

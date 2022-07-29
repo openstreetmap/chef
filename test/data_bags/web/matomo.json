@@ -1,6 +1,6 @@
 {
-  "id": "piwik",
-  "location": "piwik",
+  "id": "matomo",
+  "location": "matomo",
   "site": 100,
   "goals": {
     "signup": 1001,

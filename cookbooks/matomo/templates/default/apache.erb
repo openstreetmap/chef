@@ -1,20 +1,22 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
 <VirtualHost *:443>
-	ServerName piwik.openstreetmap.org
+	ServerName matomo.openstreetmap.org
+	ServerAlias matomo.osm.org
+	ServerAlias piwik.openstreetmap.org
 	ServerAlias piwik.osm.org
 	ServerAdmin webmaster@openstreetmap.org
 
 	SSLEngine on
-	SSLCertificateFile /etc/ssl/certs/piwik.openstreetmap.org.pem
-	SSLCertificateKeyFile /etc/ssl/private/piwik.openstreetmap.org.key
+	SSLCertificateFile /etc/ssl/certs/matomo.openstreetmap.org.pem
+	SSLCertificateKeyFile /etc/ssl/private/matomo.openstreetmap.org.key
 
-	CustomLog /var/log/apache2/piwik.openstreetmap.org-access.log combined
-	ErrorLog /var/log/apache2/piwik.openstreetmap.org-error.log
+	CustomLog /var/log/apache2/matomo.openstreetmap.org-access.log combined
+	ErrorLog /var/log/apache2/matomo.openstreetmap.org-error.log
 
 	Options -Indexes
 
-	DocumentRoot /srv/piwik.openstreetmap.org
+	DocumentRoot /srv/matomo.openstreetmap.org
 
 	Redirect 403 /core/
 	Redirect 403 /config/
@@ -23,18 +25,20 @@
 </VirtualHost>
 
 <VirtualHost *:80>
-	ServerName piwik.openstreetmap.org
+	ServerName matomo.openstreetmap.org
+	ServerAlias matomo.osm.org
+	ServerAlias piwik.openstreetmap.org
 	ServerAlias piwik.osm.org
 	ServerAdmin webmaster@openstreetmap.org
 
-	CustomLog /var/log/apache2/piwik.openstreetmap.org-access.log combined
-	ErrorLog /var/log/apache2/piwik.openstreetmap.org-error.log
+	CustomLog /var/log/apache2/matomo.openstreetmap.org-access.log combined
+	ErrorLog /var/log/apache2/matomo.openstreetmap.org-error.log
 
 	RedirectPermanent /.well-known/acme-challenge/ http://acme.openstreetmap.org/.well-known/acme-challenge/
-	RedirectPermanent / https://piwik.openstreetmap.org/
+	RedirectPermanent / https://matomo.openstreetmap.org/
 </VirtualHost>
 
-<Directory /srv/piwik.openstreetmap.org>
+<Directory /srv/matomo.openstreetmap.org>
 	Require all granted
 
 	ExpiresActive On
@@ -57,6 +61,6 @@
 	</FilesMatch>
 
         <FilesMatch ".+\.ph(ar|p|tml)$">
-                SetHandler "proxy:unix:/run/php/piwik.openstreetmap.org.sock|fcgi://127.0.0.1"
+                SetHandler "proxy:unix:/run/php/matomo.openstreetmap.org.sock|fcgi://127.0.0.1"
         </FilesMatch>
 </Directory>
