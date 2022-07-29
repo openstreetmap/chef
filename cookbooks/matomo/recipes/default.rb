@@ -165,7 +165,3 @@ cron_d "matomo" do
   user "www-data"
   command "/usr/bin/php /srv/matomo.openstreetmap.org/console core:archive --quiet --url=https://matomo.openstreetmap.org/"
 end
-
-cron_d "piwik" do
-  action :delete
-end
