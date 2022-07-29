@@ -60,6 +60,23 @@ archive_file "#{Chef::Config[:file_cache_path]}/piwik-#{version}.zip" do
   not_if { ::File.exist?("/opt/piwik-#{version}/piwik") }
 end
 
+node[:piwik][:plugins].each do |plugin_name, plugin_version|
+  next if plugin_version.nil?
+
+  remote_file "#{Chef::Config[:file_cache_path]}/piwik-#{plugin_name}-#{plugin_version}.zip" do
+    source "https://plugins.matomo.org/api/2.0/plugins/#{plugin_name}/download/#{plugin_version}"
+  end
+
+  archive_file "#{Chef::Config[:file_cache_path]}/piwik-#{plugin_name}-#{plugin_version}.zip" do
+    action :nothing
+    destination "/opt/piwik-#{version}/piwik/plugins"
+    overwrite true
+    owner "root"
+    group "root"
+    subscribes :extract, "remote_file[#{Chef::Config[:file_cache_path]}/piwik-#{plugin_name}-#{plugin_version}.zip]", :immediately
+  end
+end
+
 execute "/opt/piwik-#{version}/piwik/piwik.js" do
   command "gzip -k -9 /opt/piwik-#{version}/piwik/piwik.js"
   cwd "/opt/piwik-#{version}"
@@ -81,7 +98,7 @@ template "/opt/piwik-#{version}/piwik/config/config.ini.php" do
   mode "0644"
   variables :passwords => passwords,
             :directory => "/opt/piwik-#{version}/piwik",
-            :plugins => node[:piwik][:plugins]
+            :plugins => node[:piwik][:plugins].keys.sort
 end
 
 directory "/opt/piwik-#{version}/piwik/tmp" do

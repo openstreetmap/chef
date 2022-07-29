@@ -1,16 +1,70 @@
 default[:piwik][:version] = "4.10.1"
-default[:piwik][:plugins] = %w[
-  Actions Annotations API BulkTracking Contents CoreAdminHome CoreConsole
-  CoreHome CorePluginsAdmin CoreUpdater CoreVisualizations CoreVue
-  CustomJsTracker Dashboard DBStats DevicePlugins DevicesDetection Diagnostics
-  Ecommerce Events Feedback GeoIp2 Goals Heartbeat ImageGraph Insights
-  Installation Intl IntranetMeasurable LanguagesManager Live Login Marketplace
-  MobileAppMeasurable MobileMessaging Monolog Morpheus MultiSites Overlay
-  PagePerformance PrivacyManager ProfessionalServices Proxy Referrers Resolution
-  RssWidget ScheduledReports SegmentEditor SEO SitesManager Tour Transitions
-  TwoFactorAuth UserCountry UserCountryMap UserId UserLanguage UsersManager
-  VisitFrequency VisitorInterest VisitsSummary VisitTime WebsiteMeasurable
-  Widgetize
-]
+default[:piwik][:plugins] = {
+  "Actions" => nil,
+  "Annotations" => nil,
+  "API" => nil,
+  "BulkTracking" => nil,
+  "Contents" => nil,
+  "CoreAdminHome" => nil,
+  "CoreConsole" => nil,
+  "CoreHome" => nil,
+  "CorePluginsAdmin" => nil,
+  "CoreUpdater" => nil,
+  "CoreVisualizations" => nil,
+  "CoreVue" => nil,
+  "CustomJsTracker" => nil,
+  "Dashboard" => nil,
+  "DBStats" => nil,
+  "DeviceFeatureWebGL" => "4.0.1",
+  "DevicePlugins" => nil,
+  "DevicesDetection" => nil,
+  "Diagnostics" => nil,
+  "Ecommerce" => nil,
+  "Events" => nil,
+  "Feedback" => nil,
+  "GeoIp2" => nil,
+  "Goals" => nil,
+  "Heartbeat" => nil,
+  "ImageGraph" => nil,
+  "Insights" => nil,
+  "Installation" => nil,
+  "Intl" => nil,
+  "IntranetMeasurable" => nil,
+  "LanguagesManager" => nil,
+  "Live" => nil,
+  "Login" => nil,
+  "Marketplace" => nil,
+  "MobileAppMeasurable" => nil,
+  "MobileMessaging" => nil,
+  "Monolog" => nil,
+  "Morpheus" => nil,
+  "MultiSites" => nil,
+  "Overlay" => nil,
+  "PagePerformance" => nil,
+  "PrivacyManager" => nil,
+  "ProfessionalServices" => nil,
+  "Proxy" => nil,
+  "Referrers" => nil,
+  "Resolution" => nil,
+  "RssWidget" => nil,
+  "ScheduledReports" => nil,
+  "SegmentEditor" => nil,
+  "SEO" => nil,
+  "SitesManager" => nil,
+  "Tour" => nil,
+  "Transitions" => nil,
+  "TwoFactorAuth" => nil,
+  "UserCountry" => nil,
+  "UserCountryMap" => nil,
+  "UserId" => nil,
+  "UserLanguage" => nil,
+  "UsersManager" => nil,
+  "VisitFrequency" => nil,
+  "VisitorInterest" => nil,
+  "VisitsSummary" => nil,
+  "VisitTime" => nil,
+  "WebsiteMeasurable" => nil,
+  "Widgetize" => nil,
+}
 
 default[:mysql][:settings][:mysqld][:secure_file_priv] = "/opt/piwik-#{node[:piwik][:version]}/piwik/tmp/assets"
