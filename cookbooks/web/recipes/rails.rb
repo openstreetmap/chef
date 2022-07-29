@@ -52,7 +52,7 @@ end
 
 rails_directory = "#{node[:web][:base_directory]}/rails"
 
-piwik = data_bag_item("web", "piwik")
+matomo = data_bag_item("web", "matomo")
 
 storage = {
   "avatars" => {
@@ -120,9 +120,9 @@ rails_port "www.openstreetmap.org" do
   id_application web_passwords["id_application"]
   oauth_key web_passwords["oauth_key"]
   oauth_application web_passwords["oauth_application"]
-  piwik_configuration "location" => piwik[:location],
-                      "site" => piwik[:site],
-                      "goals" => piwik[:goals].to_hash
+  matomo_configuration "location" => matomo[:location],
+                       "site" => matomo[:site],
+                       "goals" => matomo[:goals].to_hash
   google_auth_id "651529786092-6c5ahcu0tpp95emiec8uibg11asmk34t.apps.googleusercontent.com"
   google_auth_secret web_passwords["google_auth_secret"]
   google_openid_realm "https://www.openstreetmap.org"

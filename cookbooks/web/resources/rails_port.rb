@@ -70,7 +70,7 @@ property :thunderforest_key, String
 property :totp_key, String
 property :csp_enforce, [true, false], :default => false
 property :csp_report_url, String
-property :piwik_configuration, Hash
+property :matomo_configuration, Hash
 property :storage_service, String, :default => "local"
 property :storage_url, String
 property :trace_use_job_queue, [true, false], :default => false
@@ -377,12 +377,12 @@ action :create do
     content YAML.dump(storage_configuration)
   end
 
-  if new_resource.piwik_configuration
+  if new_resource.matomo_configuration
     file "#{rails_directory}/config/piwik.yml" do
       owner new_resource.user
       group new_resource.group
       mode "664"
-      content YAML.dump(new_resource.piwik_configuration)
+      content YAML.dump(new_resource.matomo_configuration)
     end
   else
     file "#{rails_directory}/config/piwik.yml" do
