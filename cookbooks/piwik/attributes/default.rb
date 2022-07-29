@@ -2,7 +2,7 @@ default[:piwik][:version] = "4.10.1"
 default[:piwik][:plugins] = %w[
   Actions Annotations API BulkTracking Contents CoreAdminHome CoreConsole
   CoreHome CorePluginsAdmin CoreUpdater CoreVisualizations CoreVue
-  CustomJsTracker Dashboard DBStats DevicePlugins DevicesDetection Diagnostics
+  CustomJsTracker Dashboard DBStats DeviceFeatureWebGL DevicePlugins DevicesDetection Diagnostics
   Ecommerce Events Feedback GeoIp2 Goals Heartbeat ImageGraph Insights
   Installation Intl IntranetMeasurable LanguagesManager Live Login Marketplace
   MobileAppMeasurable MobileMessaging Monolog Morpheus MultiSites Overlay
