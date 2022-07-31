@@ -48,13 +48,17 @@ my $keep = qr/^${prefix}(?:${dates})\./;
 
 opendir(DIR, "$dir") || die "Can't open ${dir}: $!";
 
-while (my $file = readdir(DIR))
-{
-#    print "Expiring $file\n" if $file =~ $match && $file !~ $keep;
-    unlink("${dir}/${file}") if $file =~ $match && $file !~ $keep;
-}
+my @files = sort(grep($match, readdir(DIR)));
 
 closedir(DIR);
+
+pop @files;
+
+for my $file (@files)
+{
+#    print "Expiring $file\n" if $file !~ $keep;
+    unlink("${dir}/${file}") if $file !~ $keep;
+}
 
 exit 0;
 
