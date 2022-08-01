@@ -14,5 +14,5 @@ default[:networking][:search] = []
 default[:networking][:dnssec] = "allow-downgrade"
 default[:networking][:hostname] = node.name
 default[:networking][:wireguard][:enabled] = true
-default[:networking][:wireguard][:keepalive] = false
+default[:networking][:wireguard][:keepalive] = 180
 default[:networking][:wireguard][:peers] = []
