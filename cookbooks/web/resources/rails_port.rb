@@ -355,6 +355,10 @@ action :create do
     settings["gpx_image_dir"] = "#{new_resource.gpx_dir}/images"
   end
 
+  if new_resource.matomo_configuration
+    settings["matomo"] = new_resource.matomo_configuration.to_h
+  end
+
   file "#{rails_directory}/config/settings.local.yml" do
     owner new_resource.user
     group new_resource.group
@@ -377,17 +381,8 @@ action :create do
     content YAML.dump(storage_configuration)
   end
 
-  if new_resource.matomo_configuration
-    file "#{rails_directory}/config/piwik.yml" do
-      owner new_resource.user
-      group new_resource.group
-      mode "664"
-      content YAML.dump(new_resource.matomo_configuration)
-    end
-  else
-    file "#{rails_directory}/config/piwik.yml" do
-      action :delete
-    end
+  file "#{rails_directory}/config/piwik.yml" do
+    action :delete
   end
 
   bundle_install "#{rails_directory}" do
@@ -448,7 +443,6 @@ action :create do
     subscribes :run, "file[create:#{rails_directory}/config/application.yml]"
     subscribes :run, "file[#{rails_directory}/config/settings.local.yml]"
     subscribes :run, "file[#{rails_directory}/config/storage.yml]"
-    subscribes :run, "file[#{rails_directory}/config/piwik.yml]"
     subscribes :run, "bundle_exec[#{rails_directory}/package.json]"
     subscribes :run, "bundle_exec[#{rails_directory}/app/assets/javascripts/i18n]"
     only_if { new_resource.build_assets }
@@ -467,7 +461,6 @@ action :create do
     subscribes :restart, "file[create:#{rails_directory}/config/application.yml]"
     subscribes :restart, "file[#{rails_directory}/config/settings.local.yml]"
     subscribes :restart, "file[#{rails_directory}/config/storage.yml]"
-    subscribes :restart, "file[#{rails_directory}/config/piwik.yml]"
     subscribes :restart, "bundle_installl[#{rails_directory}]"
     subscribes :restart, "bundle_exec[#{rails_directory}/db/migrate]"
     subscribes :restart, "bundle_exec[#{rails_directory}/package.json]"
