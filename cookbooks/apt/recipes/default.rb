@@ -107,9 +107,9 @@ apt_repository "nginx" do
   key "ABF5BD827BD9BF62"
 end
 
-apt_repository "elasticsearch5.x" do
-  action repository_actions["elasticsearch5.x"]
-  uri "https://artifacts.elastic.co/packages/5.x/apt"
+apt_repository "elasticsearch6.x" do
+  action repository_actions["elasticsearch6.x"]
+  uri "https://artifacts.elastic.co/packages/6.x/apt"
   distribution "stable"
   components ["main"]
   key "D27D666CD88E42B4"
