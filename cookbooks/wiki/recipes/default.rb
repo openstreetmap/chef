@@ -53,8 +53,8 @@ mediawiki_site "wiki.openstreetmap.org" do
 
   metanamespace "Wiki"
 
-  recaptcha_public_key "6LdFIQATAAAAAMwtHeI8KDgPqvRbXeNYSq1gujKz"
-  recaptcha_private_key passwords["recaptcha"]
+  hcaptcha_public_key "b67a410b-955e-4049-b432-f9c00e0202c0"
+  hcaptcha_private_key passwords["hcaptcha"]
 
   # site_notice "MAINTENANCE: WIKI READ-ONLY UNTIL Monday 16 May 2016 - 11:00am UTC/GMT."
   # site_readonly "MAINTENANCE: WIKI READ-ONLY UNTIL Monday 16 May 2016 - 11:00am UTC/GMT."

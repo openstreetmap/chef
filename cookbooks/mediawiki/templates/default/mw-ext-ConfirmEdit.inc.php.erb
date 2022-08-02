@@ -1,12 +1,12 @@
 <?php
 # DO NOT EDIT - This file is being maintained by Chef
-wfLoadExtensions( array( 'ConfirmEdit', 'ConfirmEdit/ReCaptchaNoCaptcha' ) );
-$wgCaptchaClass = 'ReCaptchaNoCaptcha';
-$wgReCaptchaSendRemoteIP = true;
-$wgReCaptchaSiteKey = '<%= @public_key %>';
-$wgReCaptchaSecretKey = '<%= @private_key %>';
-
-$wgCaptchaTriggers['addurl'] = true;
-$wgCaptchaTriggers['create'] = true;
+wfLoadExtensions( array( 'ConfirmEdit', 'ConfirmEdit/hCaptcha' ) );
+$wgHCaptchaSendRemoteIP = true;
+$wgHCaptchaSiteKey = '<%= @public_key %>';
+$wgHCaptchaSecretKey = '<%= @private_key %>';
 
 $wgGroupPermissions['autoconfirmed']['skipcaptcha'] = true;
+$wgGroupPermissions['bot'          ]['skipcaptcha'] = true;
+$wgGroupPermissions['sysop'        ]['skipcaptcha'] = true;
+
+$wgRateLimits['badcaptcha']['newbie'] = [ 100, 86400 ];
