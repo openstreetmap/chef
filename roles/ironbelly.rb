@@ -73,21 +73,6 @@ default_attributes(
   },
   :rsyncd => {
     :modules => {
-      :hosts => {
-        :comment => "Host data",
-        :path => "/home/hosts",
-        :read_only => true,
-        :write_only => false,
-        :list => false,
-        :uid => "tomh",
-        :gid => "tomh",
-        :transfer_logging => false,
-        :hosts_allow => [
-          "212.110.172.32",                      # shenron
-          "2001:41c9:1:400::32",                 # shenron
-          "212.159.112.221"                      # grant
-        ]
-      },
       :logs => {
         :comment => "Log files",
         :path => "/store/logs",
