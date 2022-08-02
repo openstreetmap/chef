@@ -654,6 +654,7 @@ action_class do
 
   def mediawiki_params
     {
+      :site => => new_resource.site,
       :sitename => new_resource.sitename,
       :metanamespace => new_resource.metanamespace,
       :logo => new_resource.logo,
