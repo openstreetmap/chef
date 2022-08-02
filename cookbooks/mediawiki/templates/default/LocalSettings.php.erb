@@ -275,7 +275,7 @@ $wgSiteNotice = "<%= @mediawiki[:site_notice] %>";
 $wgReadOnly = "<%= @mediawiki[:site_readonly] %>";
 <% end -%>
 
-<% if @mediawiki[:site] == "wiki.openstreetmap.org" -%>
+<% if @name == "wiki.openstreetmap.org" -%>
 # DE
 define('NS_LANG_DE', 200);
 $wgExtraNamespaces[NS_LANG_DE] = 'DE';
