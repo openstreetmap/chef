@@ -386,6 +386,11 @@ action :create do
     update_site false
   end
 
+  mediawiki_extension "CategoryTree" do
+    site new_resource.site
+    update_site false
+  end
+
   mediawiki_extension "cldr" do
     site new_resource.site
     template "mw-ext-cldr.inc.php.erb"
