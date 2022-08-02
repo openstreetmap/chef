@@ -49,15 +49,16 @@ end
 
 remote_file "#{Chef::Config[:file_cache_path]}/matomo-#{version}.zip" do
   source "https://builds.matomo.org/matomo-#{version}.zip"
-  not_if { ::File.exist?("/opt/matomo-#{version}/matomo") }
 end
 
 archive_file "#{Chef::Config[:file_cache_path]}/matomo-#{version}.zip" do
+  action :nothing
   destination "/opt/matomo-#{version}"
   overwrite true
   owner "root"
   group "root"
-  not_if { ::File.exist?("/opt/matomo-#{version}/matomo") }
+  subscribes :extract, "remote_file[#{Chef::Config[:file_cache_path]}/matomo-#{version}.zip]", :immediately
+  notifies :run, "notify_group[matomo-updated]"
 end
 
 node[:matomo][:plugins].each do |plugin_name, plugin_version|
@@ -74,23 +75,8 @@ node[:matomo][:plugins].each do |plugin_name, plugin_version|
     owner "root"
     group "root"
     subscribes :extract, "remote_file[#{Chef::Config[:file_cache_path]}/matomo-#{plugin_name}-#{plugin_version}.zip]", :immediately
+    notifies :run, "notify_group[matomo-updated]"
   end
-end
-
-execute "/opt/matomo-#{version}/matomo/matomo.js" do
-  command "gzip -k -9 /opt/matomo-#{version}/matomo/matomo.js"
-  cwd "/opt/matomo-#{version}"
-  user "root"
-  group "root"
-  not_if { ::File.exist?("/opt/matomo-#{version}/matomo/matomo.js.gz") }
-end
-
-execute "/opt/matomo-#{version}/matomo/piwik.js" do
-  command "gzip -k -9 /opt/matomo-#{version}/matomo/piwik.js"
-  cwd "/opt/matomo-#{version}"
-  user "root"
-  group "root"
-  not_if { ::File.exist?("/opt/matomo-#{version}/matomo/piwik.js.gz") }
 end
 
 directory "/opt/matomo-#{version}/matomo/config" do
@@ -107,6 +93,7 @@ template "/opt/matomo-#{version}/matomo/config/config.ini.php" do
   variables :passwords => passwords,
             :directory => "/opt/matomo-#{version}/matomo",
             :plugins => node[:matomo][:plugins].keys.sort
+  notifies :run, "notify_group[matomo-updated]"
 end
 
 directory "/opt/matomo-#{version}/matomo/tmp" do
@@ -118,6 +105,12 @@ end
 directory "/opt/matomo-#{version}/matomo/tmp/assets" do
   owner "www-data"
   group "mysql"
+  mode "0750"
+end
+
+directory "/opt/matomo-#{version}/matomo/tmp/cache" do
+  owner "www-data"
+  group "www-data"
   mode "0750"
 end
 
@@ -133,17 +126,55 @@ link "/opt/matomo-#{version}/matomo/misc/GeoLite2-Country.mmdb" do
   to "#{geoip_directory}/GeoLite2-Country.mmdb"
 end
 
-link "/srv/matomo.openstreetmap.org" do
-  to "/opt/matomo-#{version}/matomo"
-  notifies :restart, "service[php#{node[:php][:version]}-fpm]"
-end
-
 mysql_user "piwik@localhost" do
   password passwords["database"]
 end
 
 mysql_database "piwik" do
   permissions "piwik@localhost" => :all
+end
+
+notify_group "matomo-updated"
+
+if File.symlink?("/srv/matomo.openstreetmap.org")
+  execute "core:update" do
+    action :nothing
+    command "/opt/matomo-#{version}/matomo/console core:update --yes"
+    user "www-data"
+    group "www-data"
+    subscribes :run, "notify_group[matomo-updated]"
+  end
+
+  execute "custom-matomo-js:update" do
+    action :nothing
+    command "/opt/matomo-#{version}/matomo/console custom-matomo-js:update"
+    user "root"
+    group "root"
+    subscribes :run, "execute[core:update]"
+  end
+
+  execute "/opt/matomo-#{version}/matomo/matomo.js" do
+    action :nothing
+    command "gzip -k -9 /opt/matomo-#{version}/matomo/matomo.js"
+    cwd "/opt/matomo-#{version}"
+    user "root"
+    group "root"
+    subscribes :run, "execute[custom-matomo-js:update]"
+  end
+
+  execute "/opt/matomo-#{version}/matomo/piwik.js" do
+    action :nothing
+    command "gzip -k -9 /opt/matomo-#{version}/matomo/piwik.js"
+    cwd "/opt/matomo-#{version}"
+    user "root"
+    group "root"
+    subscribes :run, "execute[custom-matomo-js:update]"
+  end
+end
+
+link "/srv/matomo.openstreetmap.org" do
+  to "/opt/matomo-#{version}/matomo"
+  notifies :restart, "service[php#{node[:php][:version]}-fpm]"
 end
 
 ssl_certificate "matomo.openstreetmap.org" do
