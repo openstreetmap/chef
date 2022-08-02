@@ -5,7 +5,7 @@ default_attributes(
   :accounts => {
     :users => {
       :edgemaster => { :status => :administrator },
-      :emacsen => { :status => :administrator },
+      :emacsen => { :status => :user },
       :twain => { :status => :user },
       :bretth => { :status => :user },
       :richard => { :status => :user },
