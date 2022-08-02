@@ -42,8 +42,8 @@ property :admin_user, :kind_of => String, :default => "Admin"
 property :admin_password, :kind_of => String, :required => [:create]
 property :private_accounts, :kind_of => [TrueClass, FalseClass], :default => false
 property :private_site, :kind_of => [TrueClass, FalseClass], :default => false
-property :recaptcha_public_key, :kind_of => String
-property :recaptcha_private_key, :kind_of => String
+property :hcaptcha_public_key, :kind_of => String, :default => ""
+property :hcaptcha_private_key, :kind_of => String, :default => ""
 property :extra_file_extensions, :kind_of => [String, Array], :default => []
 property :fpm_max_children, :kind_of => Integer, :default => 5
 property :fpm_start_servers, :kind_of => Integer, :default => 2
@@ -297,8 +297,8 @@ action :create do
     mediawiki_extension "ConfirmEdit" do
       site new_resource.site
       template "mw-ext-ConfirmEdit.inc.php.erb"
-      variables :public_key => new_resource.recaptcha_public_key,
-                :private_key => new_resource.recaptcha_private_key
+      variables :public_key => new_resource.hcaptcha_public_key,
+                :private_key => new_resource.hcaptcha_private_key
       update_site false
     end
   end

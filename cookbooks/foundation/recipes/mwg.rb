@@ -35,8 +35,6 @@ mediawiki_site "mwg.osmfoundation.org" do
   email_sender "webmaster@openstreetmap.org"
   email_sender_name "OSMF Board Wiki"
   private_site true
-  recaptcha_public_key "6LflIQATAAAAAMXyDWpba-FgipVzE-aGF4HIR59N"
-  recaptcha_private_key passwords["mwg"]["recaptcha"]
   version "1.37"
 end
 
