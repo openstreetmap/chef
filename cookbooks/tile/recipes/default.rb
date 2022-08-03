@@ -29,7 +29,6 @@ include_recipe "ruby"
 include_recipe "tools"
 
 blocks = data_bag_item("tile", "blocks")
-admins = data_bag_item("apache", "admins")
 web_passwords = data_bag_item("web", "passwords")
 
 apache_module "alias"
@@ -60,14 +59,6 @@ end
 
 fastlyips = JSON.parse(IO.read("#{Chef::Config[:file_cache_path]}/fastly-ip-list.json"))
 
-remote_file "#{Chef::Config[:file_cache_path]}/statuscake-locations.json" do
-  source "https://app.statuscake.com/Workfloor/Locations.php?format=json"
-  compile_time true
-  ignore_failure true
-end
-
-statuscakelocations = JSON.parse(IO.read("#{Chef::Config[:file_cache_path]}/statuscake-locations.json"))
-
 apache_site "default" do
   action :disable
 end
@@ -78,9 +69,7 @@ end
 
 apache_site "tile.openstreetmap.org" do
   template "apache.erb"
-  variables :fastly => fastlyips["addresses"] + fastlyips["ipv6_addresses"],
-            :statuscake => statuscakelocations.flat_map { |_, v| [v["ip"], v["ipv6"]] },
-            :admins => admins["hosts"]
+  variables :fastly => fastlyips["addresses"]
 end
 
 template "/etc/logrotate.d/apache2" do

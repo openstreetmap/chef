@@ -19,6 +19,12 @@
   DocumentRoot /srv/tile.openstreetmap.org/html
   ScriptAlias /cgi-bin/ /srv/tile.openstreetmap.org/cgi-bin/
 
+  # Get the real remote IP for requests via a trusted proxy
+  RemoteIPHeader Fastly-Client-IP
+<% @fastly.sort.each do |address| -%>
+  RemoteIPTrustedProxy <%= address %>
+<% end -%>
+
   # Setup logging
   LogFormat "%a %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\"" combined_with_remoteip
   CustomLog /var/log/apache2/access.log combined_with_remoteip
@@ -41,6 +47,11 @@
   # Enable the rewrite engine
   RewriteEngine on
 
+  # Enforce rate limits
+  RewriteMap ipmap txt:/srv/tile.openstreetmap.org/conf/ip.map
+  RewriteCond ${ipmap:%{REMOTE_ADDR}} ^.+$
+  RewriteRule ^.*$ /${ipmap:%{REMOTE_ADDR}} [PT]
+
   # Rewrite tile requests to the default style
   RewriteRule ^/(\d+)/(\d+)/(\d+)\.png$ /default/$1/$2/$3.png [PT,T=image/png,L]
   RewriteRule ^/(\d+)/(\d+)/(\d+)\.png/status/?$  /default/$1/$2/$3.png/status [PT,T=text/plain,L]
@@ -53,35 +64,6 @@
 
   # Redirect ACME certificate challenges
   RedirectPermanent /.well-known/acme-challenge/ http://acme.openstreetmap.org/.well-known/acme-challenge/
-
-  # Restrict tile access to CDN nodes and admins
-  <LocationMatch ^/default/\d+/\d+/\d+\.png$>
-<% @fastly.sort.each do |address| -%>
-    Require ip <%= address %>
-<% end -%>
-<% @statuscake.sort.reject { |address| address.empty? }.each do |address| -%>
-    Require ip <%= address %>
-<% end -%>
-<% @admins.sort.each do |address| -%>
-    Require ip <%= address %>
-<% end -%>
-    Require ip 130.117.76.0/27
-    Require ip 2001:978:2:2C::/64
-    Require ip 184.104.226.96/27
-    Require ip 2001:470:1:b3b::/64
-    Require ip 193.60.236.0/24
-  </LocationMatch>
-
-  # Get the real remote IP for requests via a trusted proxy
-  RemoteIPHeader Fastly-Client-IP
-<% @fastly.sort.each do |address| -%>
-  RemoteIPTrustedProxy <%= address %>
-<% end -%>
-
-  # Enforce rate limits
-  RewriteMap ipmap txt:/srv/tile.openstreetmap.org/conf/ip.map
-  RewriteCond ${ipmap:%{REMOTE_ADDR}} ^.+$
-  RewriteRule ^.*$ /${ipmap:%{REMOTE_ADDR}} [PT]
 
   # Internal endpoint for blocked users
   <Location /blocked>
