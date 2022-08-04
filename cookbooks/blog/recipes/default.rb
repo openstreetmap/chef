@@ -44,7 +44,7 @@ end
 wordpress_theme "blog.openstreetmap.org-osmblog-wp-theme" do
   theme "osmblog-wp-theme"
   site "blog.openstreetmap.org"
-  repository "https://github.com/harry-wood/osmblog-wp-theme.git"
+  repository "https://github.com/osmfoundation/osmblog-wp-theme.git"
 end
 
 wordpress_plugin "blog.openstreetmap.org-google-analytics-for-wordpress" do

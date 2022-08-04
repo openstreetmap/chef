@@ -54,7 +54,7 @@ end
 
 wordpress_theme "osmblog-wp-theme" do
   site "join.osmfoundation.org"
-  repository "https://github.com/harry-wood/osmblog-wp-theme.git"
+  repository "https://github.com/osmfoundation/osmblog-wp-theme.git"
 end
 
 wordpress_plugin "registration-honeypot" do
