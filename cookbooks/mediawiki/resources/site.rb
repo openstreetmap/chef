@@ -512,6 +512,7 @@ action :create do
     mediawiki_extension "QuickInstantCommons" do
       site new_resource.site
       update_site false
+      reference "master"
     end
   else
     mediawiki_extension "QuickInstantCommons" do
