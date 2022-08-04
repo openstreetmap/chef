@@ -42,6 +42,14 @@ default_attributes(
     :chunk_growth_factor => 1.25,
     :min_item_size => 48
   },
+  :sysctl => {
+    :swappiness => {
+      :comment => "Reduce swap usage",
+      :parameters => {
+        "vm.swappiness" => 10
+      }
+    }
+  },
   :mysql => {
     :settings => {
       :mysqld => {
