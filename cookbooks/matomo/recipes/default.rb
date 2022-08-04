@@ -25,6 +25,8 @@ include_recipe "php::fpm"
 passwords = data_bag_item("matomo", "passwords")
 
 package %w[
+  brotli
+  gzip
   php-cli
   php-curl
   php-mbstring
@@ -153,9 +155,27 @@ if File.symlink?("/srv/matomo.openstreetmap.org")
     subscribes :run, "execute[core:update]"
   end
 
+  execute "/opt/matomo-#{version}/matomo/matomo.br" do
+    action :nothing
+    command "brotli -k -9 /opt/matomo-#{version}/matomo/matomo.js"
+    cwd "/opt/matomo-#{version}"
+    user "root"
+    group "root"
+    subscribes :run, "execute[custom-matomo-js:update]"
+  end
+
   execute "/opt/matomo-#{version}/matomo/matomo.js" do
     action :nothing
     command "gzip -k -9 /opt/matomo-#{version}/matomo/matomo.js"
+    cwd "/opt/matomo-#{version}"
+    user "root"
+    group "root"
+    subscribes :run, "execute[custom-matomo-js:update]"
+  end
+
+  execute "/opt/matomo-#{version}/matomo/piwik.br" do
+    action :nothing
+    command "brotli -k -9 /opt/matomo-#{version}/matomo/piwik.js"
     cwd "/opt/matomo-#{version}"
     user "root"
     group "root"
