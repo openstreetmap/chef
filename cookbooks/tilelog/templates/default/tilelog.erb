@@ -3,7 +3,7 @@ set -e
 
 if [ -z "$DATE" ]
 then
-  DATE=$(date -d "1 day ago" "+%Y-%m-%d")
+  DATE=$(date -u -d "1 day ago" "+%Y-%m-%d")
 fi
 
 OUTDIR="<%= @output_dir %>"
