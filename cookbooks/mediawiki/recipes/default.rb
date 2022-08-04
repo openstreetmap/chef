@@ -33,6 +33,7 @@ package %w[
   php-gd
   php-igbinary
   php-intl
+  php-memcache
   php-mbstring
   php-mysql
   php-xml

@@ -72,6 +72,9 @@ $wgDBmysql5 = false;
 
 ## Shared memory settings
 $wgMainCacheType    = CACHE_MEMCACHED;
+$wgParserCacheType  = CACHE_MEMCACHED;
+$wgMessageCacheType = CACHE_MEMCACHED;
+$wgSessionCacheType = CACHE_MEMCACHED;
 $wgMemCachedServers = array('127.0.0.1:11211');
 $wgSessionsInObjectCache = TRUE;
 
@@ -218,7 +221,12 @@ $wgNamespacesWithSubpages[NS_MAIN] = true;
 
 # DNS Blacklists to use
 $wgEnableDnsBlacklist = true;
-$wgDnsBlacklistUrls = array( 'proxies.dnsbl.sorbs.net.', 'opm.tornevall.org.', 'xbl.spamhaus.org.', 'dnsbl-2.uceprotect.net.' );
+$wgDnsBlacklistUrls = [
+  'proxies.dnsbl.sorbs.net.',
+  'opm.tornevall.org.',
+  'xbl.spamhaus.org.',
+  'dnsbl-2.uceprotect.net.'
+];
 
 # Require validated email to edit
 $wgEmailConfirmToEdit = true;
@@ -238,9 +246,31 @@ $wgJobRunRate = 0.01;
 $wgFixDoubleRedirects = TRUE;
 
 # Allow external images from a few sites
-$wgAllowExternalImagesFrom = array( 'http://tile.openstreetmap.org/', 'https://tile.openstreetmap.org', 'http://josm.openstreetmap.de/', 'http://trac.openstreetmap.org/', 'http://rweait.dev.openstreetmap.org/' );
+$wgAllowExternalImagesFrom = [
+  'http://tile.openstreetmap.org/',
+  'https://tile.openstreetmap.org',
+  'http://josm.openstreetmap.de/'
+];
 
-$wgNoFollowDomainExceptions = array( 'www.openstreetmap.org', 'josm.openstreetmap.de', 'taginfo.openstreetmap.org', 'blog.openstreetmap.org', 'wiki.osmfoundation.org' );
+$wgNoFollowDomainExceptions = [
+  'www.openstreetmap.org',
+  'josm.openstreetmap.de',
+  'taginfo.openstreetmap.org',
+  'blog.openstreetmap.org',
+  'forum.openstreetmap.org',
+  'community.openstreetmap.org',
+  'lists.openstreetmap.org',
+  'help.openstreetmap.org',
+  'switch2osm.org',
+  'wiki.osmfoundation.org',
+  'www.openstreetmap.us',
+  'learnosm.org',
+  'nominatim.org',
+  'openstreetmap.community',
+  'www.openstreetbrowser.org',
+  'openinframap.org',
+  'leafletjs.com'
+];
 
 # FIXME - move to specific
 $wgAllowUserJs = TRUE;
