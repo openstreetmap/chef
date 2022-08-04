@@ -65,6 +65,25 @@
   # Redirect ACME certificate challenges
   RedirectPermanent /.well-known/acme-challenge/ http://acme.openstreetmap.org/.well-known/acme-challenge/
 
+  # Restrict tile access to CDN nodes and admins
+  <LocationMatch ^/default/\d+/\d+/\d+\.png$>
+    Require expr "%{CONN_REMOTE_ADDR} != %{REMOTE_ADDR}"
+<% @fastly.sort.each do |address| -%>
+    Require ip <%= address %>
+<% end -%>
+<% @statuscake.sort.reject { |address| address.empty? }.each do |address| -%>
+    Require ip <%= address %>
+<% end -%>
+<% @admins.sort.each do |address| -%>
+    Require ip <%= address %>
+<% end -%>
+    Require ip 130.117.76.0/27
+    Require ip 2001:978:2:2C::/64
+    Require ip 184.104.226.96/27
+    Require ip 2001:470:1:b3b::/64
+    Require ip 193.60.236.0/24
+  </LocationMatch>
+
   # Internal endpoint for blocked users
   <Location /blocked>
     Header always set Cache-Control private
