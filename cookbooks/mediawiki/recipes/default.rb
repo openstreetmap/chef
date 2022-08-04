@@ -27,9 +27,11 @@ include_recipe "php::fpm"
 
 # Mediawiki Base Requirements
 package %w[
+  php-apcu
   php-cli
   php-curl
   php-gd
+  php-igbinary
   php-intl
   php-mbstring
   php-mysql
