@@ -48,6 +48,7 @@ wordpress_theme "blog.openstreetmap.org-osmblog-wp-theme" do
 end
 
 wordpress_plugin "blog.openstreetmap.org-google-analytics-for-wordpress" do
+  action :delete
   plugin "google-analytics-for-wordpress"
   site "blog.openstreetmap.org"
 end
@@ -64,7 +65,13 @@ end
 # end
 
 wordpress_plugin "blog.openstreetmap.org-shareadraft" do
+  action :delete
   plugin "shareadraft"
+  site "blog.openstreetmap.org"
+end
+
+wordpress_plugin "blog.openstreetmap.org-public-post-preview" do
+  plugin "public-post-preview"
   site "blog.openstreetmap.org"
 end
 
@@ -77,6 +84,7 @@ wordpress_plugin "blog.openstreetmap.org-sitepress-multilingual-cms" do
 end
 
 wordpress_plugin "blog.openstreetmap.org-wordpress-importer" do
+  action :delete
   plugin "wordpress-importer"
   site "blog.openstreetmap.org"
 end
