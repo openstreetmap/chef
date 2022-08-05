@@ -239,8 +239,8 @@ $wgDisableCounters = TRUE;
 # Disable IP in Header to avoid cache issue
 $wgShowIPinHeader = FALSE;
 
-# Job Runs mostly by cron
-$wgJobRunRate = 0.01;
+# Job Runs by cron
+$wgJobRunRate = 0;
 
 # dissolves double redirects automatically
 $wgFixDoubleRedirects = TRUE;
@@ -383,10 +383,7 @@ $wgForceUIMsgAsContentMsg = array( 'mainpage-url', 'mapfeatures-url', 'contribut
 <% end -%>
 
 <% if @name == "wiki.openstreetmap.org" -%>
-# setting the search weight of the main wiki's proposal namespace lower then general talk pages (0.2), but
-# higher then wiki project namespace (0.1)
-# Documentation at https://phabricator.wikimedia.org/source/extension-cirrussearch/browse/master/docs/settings.txt$693
-$wgCirrusSearchNamespaceWeights = array_merge ( $wgCirrusSearchNamespaceWeights, array ( NS_PROPOSAL => 0.15 ));
+# Placeholder for the wiki.openstreetmap.org specific config
 <% end -%>
 
 <% if not(@mediawiki[:private_accounts]) and not(@mediawiki[:private_site]) -%>

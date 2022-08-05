@@ -205,12 +205,11 @@ action :create do
   end
 
   cron_d "mediawiki-#{cron_name}-refresh-links" do
-    comment "Run mediawiki refresh links table weekly"
+    comment "Run mediawiki refresh links table daily"
     minute "5"
     hour "0"
-    weekday "0"
     user node[:mediawiki][:user]
-    command "/usr/bin/nice /usr/bin/php -d memory_limit=2048M -d error_reporting=22517 #{site_directory}/w/maintenance/refreshLinks.php --server=https://#{new_resource.site} --memory-limit=2048M --quiet"
+    command "/usr/bin/nice /usr/bin/php -d memory_limit=2048M -d error_reporting=22517 #{site_directory}/w/maintenance/refreshLinks.php --server=https://#{new_resource.site} --memory-limit=2048M  --procs=4 --quiet"
   end
 
   cron_d "mediawiki-#{cron_name}-cleanup-gs" do

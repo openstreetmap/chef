@@ -40,6 +40,7 @@ package %w[
   php-zip
   composer
   unzip
+  ffmpeg
 ]
 
 # Mediawiki enhanced difference engine
