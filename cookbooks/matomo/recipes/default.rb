@@ -76,6 +76,7 @@ node[:matomo][:plugins].each do |plugin_name, plugin_version|
     overwrite true
     owner "root"
     group "root"
+    subscribes :extract, "archive_file[#{Chef::Config[:file_cache_path]}/matomo-#{version}.zip]", :immediately
     subscribes :extract, "remote_file[#{Chef::Config[:file_cache_path]}/matomo-#{plugin_name}-#{plugin_version}.zip]", :immediately
     notifies :run, "notify_group[matomo-updated]"
   end
