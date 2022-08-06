@@ -165,30 +165,6 @@ python_package "pyotp" do
   python_version "3"
 end
 
-unifont = if node[:lsb][:release].to_f < 22.04
-            "ttf-unifont"
-          else
-            "fonts-unifont"
-          end
-
-package %W[
-  fonts-noto-cjk
-  fonts-noto-hinted
-  fonts-noto-unhinted
-  fonts-hanazono
-  #{unifont}
-]
-
-["NotoSansArabicUI-Regular.ttf", "NotoSansArabicUI-Bold.ttf"].each do |font|
-  remote_file "/usr/share/fonts/truetype/noto/#{font}" do
-    action :create_if_missing
-    source "https://github.com/googlei18n/noto-fonts/raw/master/hinted/#{font}"
-    owner "root"
-    group "root"
-    mode "644"
-  end
-end
-
 directory "/srv/tile.openstreetmap.org/cgi-bin" do
   owner "tile"
   group "tile"
@@ -384,6 +360,17 @@ node[:tile][:styles].each do |name, details|
     to "/srv/tile.openstreetmap.org/data"
     owner "tile"
     group "tile"
+  end
+
+  if details[:fonts_script]
+    execute details[:fonts_script] do
+      action :nothing
+      command details[:fonts_script]
+      cwd style_directory
+      user "tile"
+      group "tile"
+      subscribes :run, "git[#{style_directory}]"
+    end
   end
 
   execute "#{style_directory}/project.mml" do
