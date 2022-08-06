@@ -362,19 +362,15 @@ node[:tile][:styles].each do |name, details|
     group "tile"
   end
 
-  link "#{style_directory}/fonts" do
-    to "/srv/tile.openstreetmap.org/fonts"
-    owner "tile"
-    group "tile"
-  end
-
-  execute "#{style_directory}/fonts" do
-    action :nothing
-    command "scripts/get-fonts.sh"
-    cwd style_directory
-    user "tile"
-    group "tile"
-    subscribes :run, "git[#{style_directory}]"
+  if details[:fonts_script]
+    execute details[:fonts_script] do
+      action :nothing
+      command details[:fonts_script]
+      cwd style_directory
+      user "tile"
+      group "tile"
+      subscribes :run, "git[#{style_directory}]"
+    end
   end
 
   execute "#{style_directory}/project.mml" do
