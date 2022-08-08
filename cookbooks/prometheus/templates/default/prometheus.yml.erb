@@ -60,6 +60,9 @@ scrape_configs:
 <% if targets.first[:scrape_interval] -%>
     scrape_interval: <%= targets.first[:scrape_interval] %>
 <% end -%>
+<% if targets.first[:scrape_timeout] -%>
+    scrape_timeout: <%= targets.first[:scrape_timeout] %>
+<% end -%>
 <% if targets.first[:sni] -%>
     tls_config:
       server_name: <%= targets.first[:sni] %>

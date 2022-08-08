@@ -40,6 +40,8 @@ end
 
 prometheus_exporter "statuscake" do
   port 9595
+  scrape_interval "5m"
+  scrape_timeout "2m"
   environment "STATUSCAKE_APIKEY" => tokens["statuscake"]
 end
 
@@ -203,12 +205,14 @@ search(:node, "recipes:prometheus\\:\\:default").sort_by(&:name).each do |client
       address = exporter[:address]
       sni = exporter[:sni]
       scrape_interval = exporter[:scrape_interval]
+      scrape_timeout = exporter[:scrape_timeout]
       metric_relabel = exporter[:metric_relabel] || []
     else
       name = key
       address = exporter
       sni = nil
       scrape_interval = nil
+      scrape_timeout = nil
       metric_relabel = []
     end
 
@@ -218,6 +222,7 @@ search(:node, "recipes:prometheus\\:\\:default").sort_by(&:name).each do |client
       :sni => sni,
       :instance => client.name.split(".").first,
       :scrape_interval => scrape_interval,
+      :scrape_timeout => scrape_timeout,
       :metric_relabel => metric_relabel
     }
   end

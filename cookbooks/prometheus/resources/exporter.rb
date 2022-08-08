@@ -32,6 +32,7 @@ property :options, :kind_of => [String, Array]
 property :environment, :kind_of => Hash, :default => {}
 property :service, :kind_of => String
 property :scrape_interval, :kind_of => String
+property :scrape_timeout, :kind_of => String
 property :metric_relabel, :kind_of => Array
 property :register_target, :kind_of => [TrueClass, FalseClass], :default => true
 
@@ -71,6 +72,7 @@ action :create do
       :name => new_resource.exporter,
       :address => listen_address,
       :scrape_interval => new_resource.scrape_interval,
+      :scrape_timeout => new_resource.scrape_timeout,
       :metric_relabel => new_resource.metric_relabel
     }
   end
