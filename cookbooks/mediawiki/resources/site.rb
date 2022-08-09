@@ -456,7 +456,7 @@ action :create do
 
   mediawiki_extension "osmtaginfo" do
     site new_resource.site
-    repository "https://github.com/Firefishy/osmtaginfo.git"
+    repository "https://github.com/openstreetmap/osmtaginfo.git"
     tag "live"
     update_site false
   end
