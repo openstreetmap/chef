@@ -468,27 +468,6 @@ action :create do
     update_site false
   end
 
-  mediawiki_extension "SimpleMap" do
-    site new_resource.site
-    template "mw-ext-SimpleMap.inc.php.erb"
-    repository "https://github.com/Firefishy/SimpleMap.git"
-    tag "live"
-    update_site false
-    action :delete
-  end
-
-  mediawiki_extension "SlippyMap" do
-    site new_resource.site
-    update_site false
-    action :delete
-  end
-
-  mediawiki_extension "Mantle" do
-    site new_resource.site
-    update_site false
-    action :delete
-  end
-
   mediawiki_extension "DisableAccount" do
     site new_resource.site
     template "mw-ext-DisableAccount.inc.php.erb"
