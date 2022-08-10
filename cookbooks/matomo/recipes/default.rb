@@ -142,7 +142,7 @@ if File.symlink?("/srv/matomo.openstreetmap.org")
 
   execute "/opt/matomo-#{version}/matomo/matomo.br" do
     action :nothing
-    command "brotli --keep --best /opt/matomo-#{version}/matomo/matomo.js"
+    command "brotli --keep --force --best /opt/matomo-#{version}/matomo/matomo.js"
     cwd "/opt/matomo-#{version}"
     user "root"
     group "root"
@@ -151,7 +151,7 @@ if File.symlink?("/srv/matomo.openstreetmap.org")
 
   execute "/opt/matomo-#{version}/matomo/matomo.js" do
     action :nothing
-    command "gzip --keep --best /opt/matomo-#{version}/matomo/matomo.js"
+    command "gzip --keep --force --best /opt/matomo-#{version}/matomo/matomo.js"
     cwd "/opt/matomo-#{version}"
     user "root"
     group "root"
@@ -160,7 +160,7 @@ if File.symlink?("/srv/matomo.openstreetmap.org")
 
   execute "/opt/matomo-#{version}/matomo/piwik.br" do
     action :nothing
-    command "brotli --keep --best /opt/matomo-#{version}/matomo/piwik.js"
+    command "brotli --keep --force --best /opt/matomo-#{version}/matomo/piwik.js"
     cwd "/opt/matomo-#{version}"
     user "root"
     group "root"
@@ -169,7 +169,7 @@ if File.symlink?("/srv/matomo.openstreetmap.org")
 
   execute "/opt/matomo-#{version}/matomo/piwik.js" do
     action :nothing
-    command "gzip --keep --best /opt/matomo-#{version}/matomo/piwik.js"
+    command "gzip --keep --force --best /opt/matomo-#{version}/matomo/piwik.js"
     cwd "/opt/matomo-#{version}"
     user "root"
     group "root"
