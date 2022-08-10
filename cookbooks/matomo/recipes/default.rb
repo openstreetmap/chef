@@ -60,8 +60,11 @@ node[:matomo][:plugins].each do |plugin_name, plugin_version|
   end
 
   archive_file "#{Chef::Config[:file_cache_path]}/matomo-#{plugin_name}-#{plugin_version}.zip" do
-    destination "/opt/matomo-#{version}/matomo/plugins"
-    overwrite :auto
+    destination "/opt/matomo-#{plugin_name}-#{plugin_version}"
+  end
+
+  link "/opt/matomo-#{version}/matomo/plugins/#{plugin_name}" do
+    to "/opt/matomo-#{plugin_name}-#{plugin_version}/#{plugin_name}"
     notifies :run, "notify_group[matomo-updated]"
   end
 end
