@@ -34,15 +34,23 @@ include_recipe "python"
 include_recipe "ruby"
 
 package %w[
+  composer
+  php-apcu
   php-cgi
   php-cli
   php-curl
   php-db
+  php-gd
+  php-igbinary
   php-imagick
+  php-intl
+  php-mbstring
+  php-memcache
   php-mysql
   php-pear
   php-pgsql
   php-sqlite3
+  php-xml
   pngcrush
   pngquant
   python3
