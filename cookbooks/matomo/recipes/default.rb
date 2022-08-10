@@ -43,23 +43,12 @@ version = node[:matomo][:version]
 
 geoip_directory = node[:geoipupdate][:directory]
 
-directory "/opt/matomo-#{version}" do
-  owner "root"
-  group "root"
-  mode "0755"
-end
-
 remote_file "#{Chef::Config[:file_cache_path]}/matomo-#{version}.zip" do
   source "https://builds.matomo.org/matomo-#{version}.zip"
 end
 
 archive_file "#{Chef::Config[:file_cache_path]}/matomo-#{version}.zip" do
-  action :nothing
   destination "/opt/matomo-#{version}"
-  overwrite true
-  owner "root"
-  group "root"
-  subscribes :extract, "remote_file[#{Chef::Config[:file_cache_path]}/matomo-#{version}.zip]", :immediately
   notifies :run, "notify_group[matomo-updated]"
 end
 
@@ -71,13 +60,8 @@ node[:matomo][:plugins].each do |plugin_name, plugin_version|
   end
 
   archive_file "#{Chef::Config[:file_cache_path]}/matomo-#{plugin_name}-#{plugin_version}.zip" do
-    action :nothing
     destination "/opt/matomo-#{version}/matomo/plugins"
-    overwrite true
-    owner "root"
-    group "root"
-    subscribes :extract, "archive_file[#{Chef::Config[:file_cache_path]}/matomo-#{version}.zip]", :immediately
-    subscribes :extract, "remote_file[#{Chef::Config[:file_cache_path]}/matomo-#{plugin_name}-#{plugin_version}.zip]", :immediately
+    overwrite :auto
     notifies :run, "notify_group[matomo-updated]"
   end
 end
