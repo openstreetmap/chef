@@ -597,12 +597,13 @@ Ohai.plugin(:Hardware) do
 
     disks.each do |disk|
       controller = devices[:controllers][disk[:controller]]
-      id = disk.delete(:device_id)
 
-      if device = Dir.glob("/sys/bus/pci/devices/#{controller[:pci_slot]}/host*/target0:0:#{id}/0:0:#{id}:0/block/sd*").first
-        disk[:device] = "/dev/#{File.basename(device)}"
-      else
-        disk[:smart_device] = "megaraid,#{id}"
+      if id = disk.delete(:device_id)
+        if device = Dir.glob("/sys/bus/pci/devices/#{controller[:pci_slot]}/host*/target0:0:#{id}/0:0:#{id}:0/block/sd*").first
+          disk[:device] = "/dev/#{File.basename(device)}"
+        else
+          disk[:smart_device] = "megaraid,#{id}"
+        end
       end
     end
   end
