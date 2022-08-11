@@ -100,7 +100,7 @@ hooks:
         cd: $home
         cmd:
           - git fetch --depth=1 origin tag v2.8.8 --no-tags
-          - git checkout v2.8.7
+          - git checkout v2.8.8
   after_ssl:
     - replace:
         filename: "/etc/nginx/conf.d/discourse.conf"
