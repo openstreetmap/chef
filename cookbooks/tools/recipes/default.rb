@@ -46,7 +46,7 @@ service "rsyslog" do
 end
 
 # Remove some unused and unwanted packages
-package %w[mlocate nano whoopsie] do
+package %w[mlocate whoopsie] do
   action :purge
 end
 
