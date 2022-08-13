@@ -93,7 +93,7 @@ action_class do
     if new_resource.port
       "tcp://127.0.0.1:#{new_resource.port}/status"
     else
-      "unix:///run/php/#{new_resource.pool}.sock;/status"
+      "unix:///run/php/php-#{new_resource.pool}-fpm.sock;/status"
     end
   end
 end

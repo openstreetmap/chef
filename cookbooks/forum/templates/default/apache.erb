@@ -40,7 +40,7 @@
 	DocumentRoot /srv/forum.openstreetmap.org/html
 
 	<FilesMatch ".+\.ph(ar|p|tml)$">
-		SetHandler "proxy:unix:/run/php/forum.openstreetmap.org.sock|fcgi://127.0.0.1"
+		SetHandler "proxy:unix:/run/php/php-forum.openstreetmap.org-fpm.sock|fcgi://127.0.0.1"
 	</FilesMatch>
 </VirtualHost>
 
