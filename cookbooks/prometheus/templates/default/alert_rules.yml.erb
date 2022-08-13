@@ -407,7 +407,7 @@ groups:
         annotations:
           connections_used: "{{ $value | humanizePercentage }}"
       - alert: postgresql deadlocks
-        expr: increase(pg_stat_database_deadlocks[1m]) > 5
+        expr: increase(pg_stat_database_deadlocks{datname!="nominatim"}[1m]) > 5
         for: 0m
         labels:
           alertgroup: "{{ $labels.instance }}"
