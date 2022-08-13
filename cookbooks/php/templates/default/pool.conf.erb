@@ -5,7 +5,7 @@
 listen = 127.0.0.1:<%= @port %>
 listen.backlog = 256
 <% else -%>
-listen = /run/php/<%= @pool %>.sock
+listen = /run/php/php-<%= @pool %>-fpm.sock
 listen.owner = www-data
 listen.group = www-data
 <% end -%>

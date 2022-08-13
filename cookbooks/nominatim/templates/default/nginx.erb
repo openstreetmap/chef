@@ -1,5 +1,5 @@
 upstream nominatim_service {
-  server unix:/run/php/nominatim.openstreetmap.org.sock;
+  server unix:/run/php/php-nominatim.openstreetmap.org-fpm.sock;
 }
 
 map $uri $nominatim_script_name {

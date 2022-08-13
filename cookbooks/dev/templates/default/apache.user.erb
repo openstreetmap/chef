@@ -30,7 +30,7 @@ WSGIDaemonProcess <%= @user %>.dev.openstreetmap.org user=<%= @user %> processes
 	RewriteRule ^/cgi-bin/(.*)$ /~<%= @user %>/cgi-bin/$1 [PT,L]
 
 	<FilesMatch ".+\.ph(p|ps|p3|tml)$">
-		SetHandler "proxy:unix:/run/php/<%= @user %>.sock|fcgi://127.0.0.1"
+		SetHandler "proxy:unix:/run/php/php-<%= @user %>-fpm.sock|fcgi://127.0.0.1"
 	</FilesMatch>
 </VirtualHost>
 
