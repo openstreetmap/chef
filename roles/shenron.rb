@@ -15,9 +15,6 @@ default_attributes(
         :ignore => %w[in6]
       }
     },
-    :mcelog => {
-      :enabled => false
-    },
     :modules => [
       "it87"
     ]

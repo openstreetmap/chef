@@ -225,6 +225,20 @@ ohai_plugin "lldp" do
   template "lldp.rb.erb"
 end
 
+%w[bus cache dimm iomca page socket-memory unknown].each do |trigger|
+  file "/etc/mcelog/#{trigger}-error-trigger.local" do
+    action :delete
+  end
+end
+
+service "mcelog" do
+  action [:stop, :disable]
+end
+
+package "mcelog" do
+  action :purge
+end
+
 tools_packages = []
 status_packages = {}
 
