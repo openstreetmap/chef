@@ -39,6 +39,8 @@ package %w[
   lockfile-progs
 ]
 
+cache_dir = Chef::Config[:file_cache_path]
+
 dnscontrol_version = "3.19.0"
 
 remote_file "#{cache_dir}/dnscontrol_amd64.deb" do
