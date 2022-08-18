@@ -51,7 +51,7 @@ remote_file "#{cache_dir}/dnscontrol_amd64.deb" do
   backup false
 end
 
-package "dnscontrol" do
+dpkg_package "dnscontrol" do
   action :nothing
   source "#{cache_dir}/dnscontrol_amd64.deb"
   subscribes :install, "remote_file[#{cache_dir}/dnscontrol_amd64.deb]"
