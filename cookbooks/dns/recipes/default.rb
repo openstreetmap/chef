@@ -39,12 +39,24 @@ package %w[
   lockfile-progs
 ]
 
-remote_file "/usr/local/bin/dnscontrol" do
-  action :create
-  source "https://github.com/StackExchange/dnscontrol/releases/download/v3.18.1/dnscontrol-Linux"
+dnscontrol_version = "3.19.0"
+
+remote_file "#{cache_dir}/dnscontrol_amd64.deb" do
+  source "https://github.com/StackExchange/dnscontrol/releases/download/v#{dnscontrol_version}/dnscontrol_#{dnscontrol_version}_amd64.deb"
   owner "root"
   group "root"
-  mode "755"
+  mode "644"
+  backup false
+end
+
+package "dnscontrol" do
+  action :nothing
+  source "#{cache_dir}/dnscontrol_amd64.deb"
+  subscribes :install, "remote_file[#{cache_dir}/dnscontrol_amd64.deb]"
+end
+
+file "/usr/local/bin/dnscontrol" do
+  action :delete
 end
 
 directory "/srv/dns.openstreetmap.org" do
