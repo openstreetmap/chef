@@ -41,7 +41,7 @@ package %w[
 
 cache_dir = Chef::Config[:file_cache_path]
 
-dnscontrol_version = "3.19.0"
+dnscontrol_version = "3.20.0"
 
 remote_file "#{cache_dir}/dnscontrol_amd64.deb" do
   source "https://github.com/StackExchange/dnscontrol/releases/download/v#{dnscontrol_version}/dnscontrol_#{dnscontrol_version}_amd64.deb"
