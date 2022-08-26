@@ -117,6 +117,7 @@ end
 systemd_service "chef-client" do
   description "Chef client"
   exec_start "/usr/bin/chef-client"
+  nice 10
 end
 
 systemd_timer "chef-client" do

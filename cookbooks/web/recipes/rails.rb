@@ -157,6 +157,7 @@ systemd_service "rails-jobs@" do
   working_directory rails_directory
   exec_start "#{node[:ruby][:bundle]} exec rails jobs:work"
   restart "on-failure"
+  nice 10
   private_tmp true
   private_devices true
   protect_system "full"
@@ -193,6 +194,7 @@ systemd_service "api-statistics" do
   user "rails"
   group "adm"
   exec_start "/usr/local/bin/api-statistics"
+  nice 10
   private_tmp true
   private_devices true
   private_network true

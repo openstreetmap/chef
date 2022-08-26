@@ -161,6 +161,7 @@ systemd_service "users-agreed" do
   description "Update list of users accepting CTs"
   user "planet"
   exec_start "/usr/local/bin/users-agreed"
+  nice 10
   private_tmp true
   private_devices true
   protect_system "full"
@@ -178,6 +179,7 @@ systemd_service "users-deleted" do
   description "Update list of deleted users"
   user "planet"
   exec_start "/usr/local/bin/users-deleted"
+  nice 10
   private_tmp true
   private_devices true
   protect_system "full"

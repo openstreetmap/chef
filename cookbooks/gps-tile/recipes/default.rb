@@ -93,6 +93,7 @@ systemd_service "gps-update" do
   user "gpstile"
   working_directory "/srv/gps-tile.openstreetmap.org"
   exec_start "/srv/gps-tile.openstreetmap.org/updater/update"
+  nice 10
   private_tmp true
   private_devices true
   protect_system "full"
