@@ -230,6 +230,7 @@ if node[:postgresql][:clusters][:"14/main"]
   systemd_service "rails-jobs@" do
     description "Rails job queue runner"
     type "simple"
+    environment "RAILS_ENV" => "production", "SLEEP_DELAY" => "60"
     user "apis"
     working_directory "/srv/%i.apis.dev.openstreetmap.org/rails"
     exec_start "#{node[:ruby][:bundle]} exec rails jobs:work"
