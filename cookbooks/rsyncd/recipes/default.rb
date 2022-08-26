@@ -49,6 +49,7 @@ systemd_service "rsync-override" do
   service "rsync"
   dropin "override"
   exec_start "/usr/bin/rsync --daemon --no-detach --bwlimit=16384"
+  nice 10
   read_write_paths writable_paths.sort
   notifies :restart, "service[rsync]"
 end

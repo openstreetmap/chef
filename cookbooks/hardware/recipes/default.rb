@@ -325,6 +325,7 @@ if status_packages.include?("cciss-vol-status")
   systemd_service "cciss-vol-statusd" do
     description "Check cciss_vol_status values in the background"
     exec_start "/usr/local/bin/cciss-vol-statusd"
+    nice 10
     private_tmp true
     protect_system "full"
     protect_home true

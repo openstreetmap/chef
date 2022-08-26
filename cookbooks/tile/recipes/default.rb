@@ -537,6 +537,7 @@ systemd_service "tile-ratelimit" do
   user "tile"
   group "adm"
   exec_start "/usr/local/bin/tile-ratelimit"
+  nice 10
   private_tmp true
   private_devices true
   private_network true
@@ -585,6 +586,7 @@ systemd_service "expire-tiles" do
   type "simple"
   user "_renderd"
   exec_start "/usr/local/bin/expire-tiles"
+  nice 10
   standard_output "null"
   private_tmp true
   private_devices true

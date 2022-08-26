@@ -54,6 +54,7 @@ systemd_service "tilelog" do
   description "Tile log analysis"
   user "www-data"
   exec_start "/usr/local/bin/tilelog"
+  nice 10
   private_tmp true
   private_devices true
   protect_system "strict"

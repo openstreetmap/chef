@@ -234,6 +234,7 @@ if node[:postgresql][:clusters][:"14/main"]
     working_directory "/srv/%i.apis.dev.openstreetmap.org/rails"
     exec_start "#{node[:ruby][:bundle]} exec rails jobs:work"
     restart "on-failure"
+    nice 10
     private_tmp true
     private_devices true
     protect_system "full"
