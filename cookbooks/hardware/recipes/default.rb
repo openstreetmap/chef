@@ -225,6 +225,19 @@ ohai_plugin "lldp" do
   template "lldp.rb.erb"
 end
 
+package %w[
+  rasdaemon
+  ruby-sqlite3
+]
+
+service "rasdaemon" do
+  action [:enable, :start]
+end
+
+prometheus_exporter "rasdaemon" do
+  port 9797
+end
+
 tools_packages = []
 status_packages = {}
 
