@@ -444,6 +444,22 @@ groups:
         for: 5m
         labels:
           alertgroup: "{{ $labels.instance }}"
+  - name: rasdaemon
+    rules:
+      - alert: memory controller errors
+        expr: increase(rasdaemon_mc_events_total) > 0
+        for: 0m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+        annotations:
+          new_errors: "{{ $value }}"
+      - alert: pcie aer errors
+        expr: increase(rasdaemon_aer_events_total) > 0
+        for: 0m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+        annotations:
+          new_errors: "{{ $value }}"
   - name: smart
     rules:
       - alert: smart failure
