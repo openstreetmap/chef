@@ -58,6 +58,7 @@ default_attributes(
       :cobra => { :status => :user },
       :ppawel => { :status => :user },
       :simon04 => { :status => :user },
+      :jeslop => { :status => :user },
       :jfire => { :status => :user },
       :malenki => { :status => :user },
       :lonvia => { :status => :user },
