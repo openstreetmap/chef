@@ -47,9 +47,9 @@ end
 
 cache_dir = Chef::Config[:file_cache_path]
 
-prometheus_version = "2.31.1"
-alertmanager_version = "0.23.0"
-karma_version = "0.105"
+prometheus_version = "2.38.0"
+alertmanager_version = "0.24.0"
+karma_version = "0.108"
 
 directory "/opt/prometheus-server" do
   owner "root"
