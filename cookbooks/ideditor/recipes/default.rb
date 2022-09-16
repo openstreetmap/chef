@@ -20,6 +20,7 @@
 include_recipe "apache"
 
 ssl_certificate "preview.ideditor.com" do
+  domains ["preview.ideditor.com"]
   notifies :reload, "service[apache2]"
 end
 
