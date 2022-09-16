@@ -22,6 +22,6 @@
   SSLCertificateKeyFile /etc/ssl/private/<%= @name %>.key
 
   RewriteEngine on
-  RewriteRule ^release/?.* https://ideditor-release.netlify.app/ [QSD,L,R=307]
+  RewriteRule ^/release/?.* https://ideditor-release.netlify.app/ [QSD,L,R=307]
   RewriteRule ^/?.* https://ideditor.netlify.app/ [QSD,L,R=307]
 </VirtualHost>
