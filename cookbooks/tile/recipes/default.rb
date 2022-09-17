@@ -400,6 +400,11 @@ postgresql_user "tomh" do
   superuser true
 end
 
+postgresql_user "pnorman" do
+  cluster node[:tile][:database][:cluster]
+  superuser true
+end
+
 postgresql_user "tile" do
   cluster node[:tile][:database][:cluster]
 end
