@@ -88,7 +88,7 @@ bundle_exec "/srv/hardware.openstreetmap.org" do
 end
 
 ssl_certificate "hardware.openstreetmap.org" do
-  domains ["hardware.openstreetmap.org", "hardware.osm.org"]
+  domains ["hardware.openstreetmap.org", "hardware.osm.org", "hardware.osmfoundation.org"]
   notifies :reload, "service[apache2]"
 end
 
