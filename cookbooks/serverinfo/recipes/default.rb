@@ -95,5 +95,5 @@ end
 apache_site "hardware.openstreetmap.org" do
   template "apache.erb"
   directory "/srv/hardware.openstreetmap.org/_site"
-  variables :aliases => ["hardware.osm.org"]
+  variables :aliases => ["hardware.osm.org", "hardware.osmfoundation.org"]
 end
