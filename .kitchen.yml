@@ -318,6 +318,15 @@ suites:
   - name: stateofthemap
     run_list:
       - recipe[stateofthemap::default]
+  - name: stateofthemap-static
+    run_list:
+      - recipe[stateofthemap::static]
+  - name: stateofthemap-jekyll
+    run_list:
+      - recipe[stateofthemap::jekyll]
+  - name: stateofthemap-wordpress
+    run_list:
+      - recipe[stateofthemap::wordpress]
   - name: subversion
     run_list:
       - recipe[subversion::default]
