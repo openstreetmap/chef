@@ -39,18 +39,26 @@ apt_update "/etc/apt/sources.list" do
   action :nothing
 end
 
-archive_host = if node[:country]
-                 "#{node[:country]}.archive.ubuntu.com"
-               else
-                 "archive.ubuntu.com"
-               end
+if node[:kernel][:machine] == "x86_64"
+  archive_host = if node[:country]
+                   "#{node[:country]}.archive.ubuntu.com"
+                 else
+                   "archive.ubuntu.com"
+                 end
+  archive_security_host = "security.ubuntu.com"
+  archive_distro = "ubuntu"
+else
+  archive_host = "ports.ubuntu.com"
+  archive_security_host = archive_host
+  archive_distro = "ubuntu-ports"
+end
 
 template "/etc/apt/sources.list" do
   source "sources.list.erb"
   owner "root"
   group "root"
   mode "644"
-  variables :archive_host => archive_host, :codename => node[:lsb][:codename]
+  variables :archive_host => archive_host, :archive_security_host => archive_security_host, :archive_distro => archive_distro, :codename => node[:lsb][:codename]
   notifies :update, "apt_update[/etc/apt/sources.list]", :immediately
 end
 
