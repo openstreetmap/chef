@@ -15,20 +15,31 @@ jobs:
     strategy:
       matrix:
         suite:
+          # Slow tests >10mins first to improve overall runtime
+          - blogs
+          - community
+          - db-base
+          - db-master
+          - db-slave
+          - nominatim
+          - overpass
+          - serverinfo
+          - stateofthemap-jekyll
+          - taginfo
+          - web-frontend
+          - web-rails
+          - wiki
+
+          # Rest of the tests
           - accounts
           - apache
           - apt
           - backup
           - bind
           - blog
-          - blogs
           - civicrm
           - clamav
-          - community
           - db-backup
-          - db-base
-          - db-master
-          - db-slave
           - devices
           - dhcpd
           - dmca
@@ -65,13 +76,11 @@ jobs:
           - networking
           - nginx
           - nodejs
-          - nominatim
           - ntp
           - openssh
           - osmosis
           - osqa
           - otrs
-          - overpass
           - passenger
           - php
           - php-apache
@@ -86,12 +95,10 @@ jobs:
           - prometheus-server
           - python
           - rsyncd
-          - serverinfo
           - snmpd
           - spamassassin
           - ssl
           - stateofthemap
-          - stateofthemap-jekyll
           - stateofthemap-static
           - stateofthemap-wordpress
           - subversion
@@ -99,16 +106,12 @@ jobs:
           - switch2osm
           - sysctl
           - sysfs
-          - taginfo
           - tile
           - tilelog
           - tools
           - trac
           - web-cgimap
-          - web-frontend
-          - web-rails
           - wordpress
-          - wiki
         os:
           - ubuntu-2004
       fail-fast: false
