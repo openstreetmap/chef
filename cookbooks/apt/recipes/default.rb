@@ -39,7 +39,7 @@ apt_update "/etc/apt/sources.list" do
   action :nothing
 end
 
-if node[:kernel][:machine] == "x86_64"
+if intel?
   archive_host = if node[:country]
                    "#{node[:country]}.archive.ubuntu.com"
                  else
