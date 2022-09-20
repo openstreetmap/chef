@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+include_recipe "stateofthemap"
+
 %w[2013].each do |year|
   git "/srv/#{year}.stateofthemap.org" do
     action :sync

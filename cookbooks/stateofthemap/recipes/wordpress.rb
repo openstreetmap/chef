@@ -17,6 +17,7 @@
 # limitations under the License.
 #
 
+include_recipe "stateofthemap"
 include_recipe "wordpress"
 
 passwords = data_bag_item("stateofthemap", "passwords")
