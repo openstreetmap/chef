@@ -17,6 +17,9 @@
 # limitations under the License.
 #
 
+include_recipe "apache"
+include_recipe "git"
+
 git "/srv/stateofthemap.org" do
   action :sync
   repository "https://git.openstreetmap.org/public/stateofthemap.git"
