@@ -20,6 +20,8 @@
 include_recipe "apache"
 include_recipe "git"
 
+apache_module "expires"
+
 git "/srv/stateofthemap.org" do
   action :sync
   repository "https://git.openstreetmap.org/public/stateofthemap.git"
