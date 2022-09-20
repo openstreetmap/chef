@@ -91,6 +91,9 @@ jobs:
           - spamassassin
           - ssl
           - stateofthemap
+          - stateofthemap-jekyll
+          - stateofthemap-static
+          - stateofthemap-wordpress
           - subversion
           - supybot
           - switch2osm
