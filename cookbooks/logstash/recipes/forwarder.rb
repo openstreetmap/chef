@@ -43,3 +43,13 @@ service "filebeat" do
   action [:enable, :start]
   supports :status => true, :restart => true
 end
+
+# Hack to get the reason why filebeat is failing kitchen on GHA
+chef_sleep "filebeat-service-sleep" do
+  seconds 20
+end
+
+execute "filebeat-service-log" do
+  command "journalctl -u filebeat.service"
+  live_stream true
+end
