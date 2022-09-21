@@ -39,7 +39,8 @@ apache_module "rewrite"
     depth 1
     user "root"
     group "root"
-    notifies :run, "bundle_install[/srv/#{year}.stateofthemap.org]"
+    notifies :extract, "archive_file[/srv/#{year}.stateofthemap.org/vendor/bundle-tar-cache]", :immediately
+    notifies :run, "bundle_install[/srv/#{year}.stateofthemap.org]", :immediately
   end
 
   directory "/srv/#{year}.stateofthemap.org/_site" do
@@ -56,13 +57,33 @@ apache_module "rewrite"
     group "nogroup"
   end
 
+  archive_file "/srv/#{year}.stateofthemap.org/vendor/bundle-tar-cache" do
+    action :nothing
+    destination "/srv/#{year}.stateofthemap.org/vendor"
+    path "#{Chef::Config[:file_cache_path]}/stateofthemap-gem-bundle-cache.tar"
+    overwrite false
+    only_if { ::File.exist?("#{Chef::Config[:file_cache_path]}/stateofthemap-gem-bundle-cache.tar") }
+    not_if { ::Dir.exist?("/srv/#{year}.stateofthemap.org/vendor/bundle") }
+    only_if { kitchen? }
+  end
+
   bundle_install "/srv/#{year}.stateofthemap.org" do
     action :nothing
     options "--deployment --jobs #{node[:cpu][:total]}"
     user "root"
     group "root"
+    notifies :run, "execute[/srv/#{year}.stateofthemap.org/vendor/bundle-tar-cache]", :immediately
     notifies :run, "bundle_exec[/srv/#{year}.stateofthemap.org]"
     only_if { ::File.exist?("/srv/#{year}.stateofthemap.org/Gemfile") }
+  end
+
+  execute "/srv/#{year}.stateofthemap.org/vendor/bundle-tar-cache" do
+    action :nothing
+    command "tar -cf #{Chef::Config[:file_cache_path]}/stateofthemap-gem-bundle-cache.tar bundle"
+    cwd "/srv/#{year}.stateofthemap.org/vendor"
+    only_if { kitchen? }
+    only_if { ::Dir.exist?("/srv/#{year}.stateofthemap.org/vendor/bundle") }
+    not_if { ::File.exist?("#{Chef::Config[:file_cache_path]}/stateofthemap-gem-bundle-cache.tar") }
   end
 
   bundle_exec "/srv/#{year}.stateofthemap.org" do
