@@ -175,6 +175,9 @@ suites:
     run_list:
       - recipe[logstash::forwarder]
     attributes:
+      apt:
+        sources:
+          - elasticsearch8.x
       logstash:
         forwarder:
           filebeat.inputs:
