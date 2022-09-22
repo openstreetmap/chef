@@ -2,9 +2,6 @@ name "ironbelly"
 description "Master role applied to ironbelly"
 
 default_attributes(
-  :apt => {
-    :sources => ["ubuntugis-unstable"]
-  },
   :bind => {
     :clients => "equinix-ams"
   },

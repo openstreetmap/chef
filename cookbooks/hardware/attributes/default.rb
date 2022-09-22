@@ -9,8 +9,6 @@ default[:hardware][:ipmi][:custom_args] = []
 if node[:dmi] && node[:dmi][:system]
   case node[:dmi][:system][:manufacturer]
   when "HP"
-    default[:apt][:sources] |= ["management-component-pack"]
-
     case node[:dmi][:system][:product_name]
     when "ProLiant DL360 G6", "ProLiant DL360 G7", "ProLiant SE326M1R2"
       default[:hardware][:sensors][:"power_meter-*"][:power][:power1] = { :ignore => true }
@@ -29,12 +27,6 @@ if Chef::Util.compare_versions(node[:kernel][:release], [3, 3]).negative?
   if node[:cpu][:"0"][:vendor_id] == "GenuineIntel"
     default[:hardware][:modules] |= ["coretemp"]
   end
-end
-
-if node[:kernel] && node[:kernel][:modules]
-  raidmods = node[:kernel][:modules].keys & %w[cciss hpsa mptsas mpt2sas mpt3sas megaraid_mm megaraid_sas aacraid]
-
-  default[:apt][:sources] |= ["hwraid"] unless raidmods.empty?
 end
 
 if node[:kernel][:modules].include?("ipmi_si")

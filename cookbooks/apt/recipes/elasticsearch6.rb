@@ -1,8 +1,8 @@
 #
-# Cookbook:: git
-# Recipe:: default
+# Cookbook:: apt
+# Recipe:: elasticsearch6
 #
-# Copyright:: 2011, OpenStreetMap Foundation
+# Copyright:: 2022, Tom Hughes
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,6 +17,11 @@
 # limitations under the License.
 #
 
-include_recipe "apt::git-core"
+include_recipe "apt"
 
-package "git"
+apt_repository "elasticsearch6.x" do
+  uri "https://artifacts.elastic.co/packages/6.x/apt"
+  distribution "stable"
+  components ["main"]
+  key "D27D666CD88E42B4"
+end

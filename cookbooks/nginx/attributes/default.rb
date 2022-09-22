@@ -14,6 +14,3 @@ default[:nginx][:cache][:proxy][:directory] = "/var/cache/nginx/proxy-cache"
 default[:nginx][:cache][:proxy][:keys_zone] = "proxy_cache_zone:128M"
 default[:nginx][:cache][:proxy][:inactive] = "45d"
 default[:nginx][:cache][:proxy][:max_size] = "16384M"
-
-# Enable nginx repository
-default[:apt][:sources] = node[:apt][:sources] | ["nginx"]

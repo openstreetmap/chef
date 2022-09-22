@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-include_recipe "apt"
+include_recipe "apt::postgresql"
 include_recipe "munin"
 include_recipe "prometheus"
 

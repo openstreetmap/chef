@@ -1,8 +1,8 @@
 #
-# Cookbook:: git
-# Recipe:: default
+# Cookbook:: apt
+# Recipe:: management-component-pack
 #
-# Copyright:: 2011, OpenStreetMap Foundation
+# Copyright:: 2022, Tom Hughes
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,6 +17,11 @@
 # limitations under the License.
 #
 
-include_recipe "apt::git-core"
+include_recipe "apt"
 
-package "git"
+apt_repository "management-component-pack" do
+  uri "https://downloads.linux.hpe.com/SDR/repo/mcp"
+  distribution "bionic/current-gen9"
+  components ["non-free"]
+  key "C208ADDE26C2B797"
+end

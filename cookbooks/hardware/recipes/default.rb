@@ -17,7 +17,6 @@
 # limitations under the License.
 #
 
-include_recipe "apt"
 include_recipe "git"
 include_recipe "munin"
 include_recipe "prometheus"
@@ -57,6 +56,8 @@ end
 
 case manufacturer
 when "HP"
+  include_recipe "apt::management-component-pack"
+
   package "hponcfg"
 
   execute "update-ilo" do
@@ -311,6 +312,8 @@ else
     recursive true
   end
 end
+
+include_recipe "apt::hwraid" unless status_packages.empty?
 
 if status_packages.include?("cciss-vol-status")
   template "/usr/local/bin/cciss-vol-statusd" do

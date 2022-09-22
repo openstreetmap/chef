@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-include_recipe "apt"
+include_recipe "apt::timescaledb"
 
 database_version = node[:timescaledb][:database_version]
 

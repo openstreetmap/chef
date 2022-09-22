@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-include_recipe "apt"
+include_recipe "apt::maxmind"
 
 license_keys = data_bag_item("geoipupdate", "license-keys")
 

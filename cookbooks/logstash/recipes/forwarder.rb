@@ -19,7 +19,7 @@
 
 require "yaml"
 
-include_recipe "apt"
+include_recipe "apt::elasticsearch8"
 
 package "filebeat"
 

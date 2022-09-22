@@ -2,9 +2,6 @@ name "foundation"
 description "Role applied to all OSMF servers"
 
 default_attributes(
-  :apt => {
-    :sources => ["passenger"]
-  },
   :elasticsearch => {
     :version => "6.x",
     :cluster => {

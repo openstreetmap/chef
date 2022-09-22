@@ -1,8 +1,8 @@
 #
-# Cookbook:: git
-# Recipe:: default
+# Cookbook:: apt
+# Recipe:: hwraid
 #
-# Copyright:: 2011, OpenStreetMap Foundation
+# Copyright:: 2022, Tom Hughes
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,6 +17,11 @@
 # limitations under the License.
 #
 
-include_recipe "apt::git-core"
+include_recipe "apt"
 
-package "git"
+apt_repository "hwraid" do
+  uri "https://hwraid.le-vert.net/ubuntu"
+  distribution "precise"
+  components ["main"]
+  key "6005210E23B3D3B4"
+end

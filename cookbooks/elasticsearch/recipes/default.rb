@@ -17,7 +17,10 @@
 # limitations under the License.
 #
 
-include_recipe "apt"
+case node[:elasticsearch][:version]
+when "6.x" then include_recipe "apt::elasticsearch6"
+when "8.x" then include_recipe "apt::elasticsearch8"
+end
 
 package "default-jre-headless"
 package "elasticsearch"

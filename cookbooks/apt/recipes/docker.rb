@@ -1,8 +1,8 @@
 #
-# Cookbook:: git
-# Recipe:: default
+# Cookbook:: apt
+# Recipe:: docker
 #
-# Copyright:: 2011, OpenStreetMap Foundation
+# Copyright:: 2022, Tom Hughes
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,6 +17,11 @@
 # limitations under the License.
 #
 
-include_recipe "apt::git-core"
+include_recipe "apt"
 
-package "git"
+apt_repository "docker" do
+  uri "https://download.docker.com/linux/ubuntu"
+  arch "amd64"
+  components ["stable"]
+  key "https://download.docker.com/linux/ubuntu/gpg"
+end

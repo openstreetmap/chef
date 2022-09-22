@@ -18,7 +18,8 @@
 #
 
 include_recipe "apache"
-include_recipe "apt"
+include_recipe "apt::grafana"
+include_recipe "apt::timescaledb"
 include_recipe "networking"
 include_recipe "timescaledb"
 

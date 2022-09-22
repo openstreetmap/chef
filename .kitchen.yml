@@ -164,10 +164,6 @@ suites:
   - name: letsencrypt
     run_list:
       - recipe[letsencrypt::default]
-    attributes:
-      apt:
-        sources:
-          - openstreetmap
   - name: logstash
     run_list:
       - recipe[logstash::default]
@@ -175,9 +171,6 @@ suites:
     run_list:
       - recipe[logstash::forwarder]
     attributes:
-      apt:
-        sources:
-          - elasticsearch8.x
       logstash:
         forwarder:
           filebeat.inputs:
