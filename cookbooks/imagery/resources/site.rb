@@ -103,7 +103,7 @@ action :create do
   systemd_service "mapserv-fcgi-#{new_resource.site}" do
     description "Map server for #{new_resource.site} layer"
     environment "MS_MAP_PATTERN" => "^/srv/imagery/mapserver/",
-                "=" => "0",
+                "MS_DEBUGLEVEL" => "0",
                 "MS_ERRORFILE" => "stderr",
                 "GDAL_CACHEMAX" => "512"
     limit_nofile 16384
