@@ -414,10 +414,6 @@ if !intel_ssds.empty? || !intel_nvmes.empty?
     version "#{intel_mas_package_version}"
     source "#{Chef::Config[:file_cache_path]}/intelmas_#{intel_mas_package_version}_amd64.deb"
   end
-
-  dpkg_package "isdct" do
-    action :purge
-  end
 end
 
 disks = disks.map do |disk|
