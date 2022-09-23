@@ -398,9 +398,9 @@ if !intel_ssds.empty? || !intel_nvmes.empty?
   intel_mas_tool_version = "1.10"
   intel_mas_package_version = "#{intel_mas_tool_version}.155-0"
 
-  remote_file "#{Chef::Config[:file_cache_path]}/Intel_MAS_CLI_Tool_#{intel_mas_tool_version}_Linux.zip" do
-    source "https://downloadmirror.intel.com/646992/Intel_MAS_CLI_Tool_Linux_#{intel_mas_tool_version}-v2.zip"
-  end
+  # remote_file "#{Chef::Config[:file_cache_path]}/Intel_MAS_CLI_Tool_#{intel_mas_tool_version}_Linux.zip" do
+  #   source "https://downloadmirror.intel.com/646992/Intel_MAS_CLI_Tool_Linux_#{intel_mas_tool_version}-v2.zip"
+  # end
 
   execute "#{Chef::Config[:file_cache_path]}/Intel_MAS_CLI_Tool_#{intel_mas_tool_version}_Linux.zip" do
     command "unzip Intel_MAS_CLI_Tool_#{intel_mas_tool_version}_Linux.zip intelmas_#{intel_mas_package_version}_amd64.deb"
