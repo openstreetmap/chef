@@ -240,7 +240,7 @@ if node[:networking][:wireguard][:enabled]
       }
     end
 
-    search(:node, "roles:mail OR roles:prometheus") do |server|
+    search(:node, "roles:shenron OR roles:prometheus") do |server|
       allowed_ips = server.interfaces(:role => :internal).map do |interface|
         "#{interface[:network]}/#{interface[:prefix]}"
       end
@@ -275,6 +275,18 @@ if node[:networking][:wireguard][:enabled]
       :allowed_ips => "10.89.123.1/32",
       :endpoint => "roaming.firefishy.com:51820"
     }
+  elsif node[:roles].include?("shenron")
+    search(:node, "roles:gateway") do |gateway|
+      allowed_ips = gateway.interfaces(:role => :internal).map do |interface|
+        "#{interface[:network]}/#{interface[:prefix]}"
+      end
+
+      node.default[:networking][:wireguard][:peers] << {
+        :public_key => gateway[:networking][:wireguard][:public_key],
+        :allowed_ips => allowed_ips,
+        :endpoint => "#{gateway.name}:51820"
+      }
+    end
   end
 
   template "/etc/systemd/network/wireguard.netdev" do

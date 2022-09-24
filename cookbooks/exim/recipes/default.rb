@@ -77,18 +77,6 @@ end
 relay_from_hosts = node[:exim][:relay_from_hosts]
 
 if node[:exim][:smarthost_name]
-  search(:node, "roles:gateway") do |gateway|
-    allowed_ips = gateway.interfaces(:role => :internal).map do |interface|
-      "#{interface[:network]}/#{interface[:prefix]}"
-    end
-
-    node.default[:networking][:wireguard][:peers] << {
-      :public_key => gateway[:networking][:wireguard][:public_key],
-      :allowed_ips => allowed_ips,
-      :endpoint => "#{gateway.name}:51820"
-    }
-  end
-
   search(:node, "exim_smarthost_via:#{node[:exim][:smarthost_name]}\\:*").each do |host|
     relay_from_hosts |= host.ipaddresses(:role => :external)
   end
