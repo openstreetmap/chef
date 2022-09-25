@@ -55,7 +55,7 @@ if node[:roles].include?("bytemark") || node[:roles].include?("exonetric") || no
 end
 
 case manufacturer
-when "HP"
+when "HP", "HPE"
   include_recipe "apt::management-component-pack"
 
   package "hponcfg"
@@ -85,7 +85,7 @@ when "HP"
     only_if { node[:lsb][:release].to_f < 22.04 }
   end
 
-  if product.end_with?("Gen8", "Gen9")
+  if product.end_with?("Gen8", "Gen9", "Gen10")
     package "hp-ams" do
       action :install
       notifies :restart, "service[hp-ams]"
