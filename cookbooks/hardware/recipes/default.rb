@@ -395,24 +395,28 @@ intel_nvmes = nvmes.select { |pci| pci[:vendor_name] == "Intel Corporation" }
 if !intel_ssds.empty? || !intel_nvmes.empty?
   package "unzip"
 
-  intel_mas_tool_version = "1.10"
-  intel_mas_package_version = "#{intel_mas_tool_version}.155-0"
+  sst_tool_version = "1.3"
+  sst_package_version = "#{sst_tool_version}.208-0"
 
-  # remote_file "#{Chef::Config[:file_cache_path]}/Intel_MAS_CLI_Tool_#{intel_mas_tool_version}_Linux.zip" do
-  #   source "https://downloadmirror.intel.com/646992/Intel_MAS_CLI_Tool_Linux_#{intel_mas_tool_version}-v2.zip"
-  # end
+  remote_file "#{Chef::Config[:file_cache_path]}/SST_CLI_Linux_#{sst_tool_version}.zip" do
+    source "https://downloadmirror.intel.com/743764/SST_CLI_Linux_#{sst_tool_version}.zip"
+  end
 
-  execute "#{Chef::Config[:file_cache_path]}/Intel_MAS_CLI_Tool_#{intel_mas_tool_version}_Linux.zip" do
-    command "unzip Intel_MAS_CLI_Tool_#{intel_mas_tool_version}_Linux.zip intelmas_#{intel_mas_package_version}_amd64.deb"
+  execute "#{Chef::Config[:file_cache_path]}/SST_CLI_Linux_#{sst_tool_version}.zip" do
+    command "unzip SST_CLI_Linux_#{sst_tool_version}.zip sst_#{sst_package_version}_amd64.deb"
     cwd Chef::Config[:file_cache_path]
     user "root"
     group "root"
-    not_if { ::File.exist?("#{Chef::Config[:file_cache_path]}/intelmas_#{intel_mas_package_version}_amd64.deb") }
+    not_if { ::File.exist?("#{Chef::Config[:file_cache_path]}/sst_#{sst_package_version}_amd64.deb") }
+  end
+
+  dpkg_package "sst" do
+    version "#{sst_package_version}"
+    source "#{Chef::Config[:file_cache_path]}/sst_#{sst_package_version}_amd64.deb"
   end
 
   dpkg_package "intelmas" do
-    version "#{intel_mas_package_version}"
-    source "#{Chef::Config[:file_cache_path]}/intelmas_#{intel_mas_package_version}_amd64.deb"
+    action :purge
   end
 end
 
