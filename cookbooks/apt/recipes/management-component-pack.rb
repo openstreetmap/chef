@@ -19,9 +19,15 @@
 
 include_recipe "apt"
 
+distribution_name = if node[:dmi][:system][:product_name].end_with?("Gen10")
+                      "focal/current-gen10"
+                    else
+                      "bionic/current-gen9"
+                    end
+
 apt_repository "management-component-pack" do
   uri "https://downloads.linux.hpe.com/SDR/repo/mcp"
-  distribution "bionic/current-gen9"
+  distribution distribution_name
   components ["non-free"]
   key "C208ADDE26C2B797"
 end
