@@ -9,6 +9,15 @@ default_attributes(
     :first_address => "10.0.79.1",
     :last_address => "10.0.79.254"
   },
+  :exim => {
+    :routes => {
+      :openstreetmap => {
+        :comment => "openstreetmap.org",
+        :domains => ["openstreetmap.org"],
+        :host => ["shenron.openstreetmap.org"]
+      }
+    }
+  },
   :networking => {
     :interfaces => {
       :internal_ipv4 => {
