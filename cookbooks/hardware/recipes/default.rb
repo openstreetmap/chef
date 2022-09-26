@@ -95,6 +95,16 @@ when "HP", "HPE"
       action [:enable, :start]
       supports :status => true, :restart => true
     end
+  elsif product.end_with?("Gen10")
+    package "amsd" do
+      action :install
+      notifies :restart, "service[amsd]"
+    end
+
+    service "amsd" do
+      action [:enable, :start]
+      supports :status => true, :restart => true
+    end
   end
 
   units << if product.end_with?("Gen10")
