@@ -97,7 +97,11 @@ when "HP", "HPE"
     end
   end
 
-  units << "1"
+  units << if product.end_with?("Gen10")
+             "0"
+           else
+             "1"
+           end
 when "TYAN"
   units << "0"
 when "TYAN Computer Corporation"
