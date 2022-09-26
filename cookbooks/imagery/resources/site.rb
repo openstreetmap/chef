@@ -108,7 +108,7 @@ action :create do
                 "GDAL_CACHEMAX" => "512"
     limit_nofile 16384
     memory_high "1G"
-    memory_max "2G"
+    memory_max "4G"
     user "imagery"
     group "imagery"
     exec_start "/usr/bin/multiwatch -f 8 --signal=TERM -- /usr/lib/cgi-bin/mapserv"
@@ -119,8 +119,8 @@ action :create do
     protect_system "full"
     protect_home true
     no_new_privileges true
-    # Terminate service after 5mins. Service is socket activated
-    runtime_max_sec 300
+    # Terminate service after 30mins. Service is socket activated
+    runtime_max_sec 1800
   end
 
   systemd_socket "mapserv-fcgi-#{new_resource.site}" do
