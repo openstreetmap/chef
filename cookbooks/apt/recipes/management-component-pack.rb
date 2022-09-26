@@ -19,15 +19,29 @@
 
 include_recipe "apt"
 
-distribution_name = if node[:dmi][:system][:product_name].end_with?("Gen10")
-                      "focal/current-gen10"
-                    else
-                      "bionic/current-gen9"
-                    end
-
 apt_repository "management-component-pack" do
-  uri "https://downloads.linux.hpe.com/SDR/repo/mcp"
-  distribution distribution_name
-  components ["non-free"]
-  key "C208ADDE26C2B797"
+  action :remove
+end
+
+if node[:dmi][:system][:product_name].end_with?("Gen10")
+  apt_repository "mcp-jammy" do
+    uri "https://downloads.linux.hpe.com/SDR/repo/mcp"
+    distribution "jammy/current"
+    components ["non-free"]
+    key "C208ADDE26C2B797"
+  end
+
+  apt_repository "mcp-focal-gen10" do
+    uri "https://downloads.linux.hpe.com/SDR/repo/mcp"
+    distribution "focal/current-gen10"
+    components ["non-free"]
+    key "C208ADDE26C2B797"
+  end
+else
+  apt_repository "mcp-bionic-gen9" do
+    uri "https://downloads.linux.hpe.com/SDR/repo/mcp"
+    distribution "bionic/current-gen9"
+    components ["non-free"]
+    key "C208ADDE26C2B797"
+  end
 end
