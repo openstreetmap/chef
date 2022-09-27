@@ -10,6 +10,7 @@ default_attributes(
     :last_address => "10.0.79.254"
   },
   :exim => {
+    :smarthost_name => "fafnir.openstreetmap.org",
     :routes => {
       :openstreetmap => {
         :comment => "openstreetmap.org",
