@@ -72,7 +72,7 @@ file "/opt/oxidized/.ssh/id_rsa.pub" do
   action :nothing
 end
 
-exec "/opt/oxidized/.ssh/id_rsa.pub" do
+execute "/opt/oxidized/.ssh/id_rsa.pub" do
   command "ssh-keygen -f /opt/oxidized/.ssh/id_rsa -y > /opt/oxidized/.ssh/id_rsa.pub"
   owner "oxidized"
   group "oxidized"
