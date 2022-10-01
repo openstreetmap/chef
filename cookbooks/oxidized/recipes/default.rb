@@ -108,6 +108,7 @@ execute "/opt/oxidized/.ssh/id_rsa.pub" do
 end
 
 ssh_known_hosts_entry 'github.com' do
+  file_location "/opt/oxidized/.ssh/known_hosts"
   owner "oxidized"
   group "oxidized"
 end
