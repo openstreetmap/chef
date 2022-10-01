@@ -113,6 +113,12 @@ ssh_known_hosts_entry 'github.com' do
   group "oxidized"
 end
 
+directory "/var/lib/oxidized" do
+  owner "oxidized"
+  group "oxidized"
+  mode "750"
+end
+
 git "/var/lib/oxidized/configs.git" do
   action :sync
   repository "git@github.com:openstreetmap/oxidized-configs.git" # Uses oxidized ssh key
