@@ -1,0 +1,4 @@
+# DO NOT EDIT - This file is being maintained by Chef
+<% @devices[:hardware].keys.sort.each do |d| -%>
+<%= d -%>:<%= @devices[:hardware][d][:device] -%>:<%= @devices[:hardware][d][:input] -%>:<%= @devices[:hardware][d][:username] -%>:<%= @devices[:hardware][d][:password] %>
+<% end -%>
