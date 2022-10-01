@@ -34,6 +34,12 @@ package %w[
 keys = data_bag_item("oxidized", "keys")
 devices = data_bag_item("oxidized", "devices")
 
+directory "/etc/oxidized" do
+  owner "root"
+  group "root"
+  mode "755"
+end
+
 template "/etc/oxidized/config" do
   source "config.erb"
   owner "oxidized"
@@ -57,6 +63,15 @@ directory "/var/log/oxidized" do
   mode "755"
 end
 
+git "/opt/oxidized" do
+  action :sync
+  repository "https://github.com/openstreetmap/oxidized.git"
+  depth 1
+  user "oxidized"
+  group "oxidized"
+  notifies :run, "bundle_install[/opt/oxidized]"
+end
+
 # Key is set as a deployment key in github repo
 file "/opt/oxidized/.ssh/id_rsa" do
   content keys["git"].join("\n")
@@ -78,15 +93,6 @@ execute "/opt/oxidized/.ssh/id_rsa.pub" do
   group "oxidized"
   creates "/opt/oxidized/.ssh/id_rsa.pub"
   notifies :restart, "service[oxidized]"
-end
-
-git "/opt/oxidized" do
-  action :sync
-  repository "https://github.com/openstreetmap/oxidized.git"
-  depth 1
-  user "oxidized"
-  group "oxidized"
-  notifies :run, "bundle_install[/opt/oxidized]"
 end
 
 git "/var/lib/oxidized/configs.git" do
