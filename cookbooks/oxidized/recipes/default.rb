@@ -59,7 +59,7 @@ end
 
 # Key is set as a deployment key in github repo
 file "/opt/oxidized/.ssh/id_rsa" do
-  content keys["git"]
+  content keys["git"].join("\n")
   owner "oxidized"
   group "oxidized"
   mode "400"
