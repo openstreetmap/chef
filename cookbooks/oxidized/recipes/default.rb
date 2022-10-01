@@ -63,13 +63,19 @@ directory "/var/log/oxidized" do
   mode "755"
 end
 
-git "/opt/oxidized" do
+directory "/opt/oxidized" do
+  owner "oxidized"
+  group "oxidized"
+  mode "755"
+end
+
+git "/opt/oxidized/daemon" do
   action :sync
   repository "https://github.com/openstreetmap/oxidized.git"
   depth 1
   user "oxidized"
   group "oxidized"
-  notifies :run, "bundle_install[/opt/oxidized]"
+  notifies :run, "bundle_install[/opt/oxidized/daemon]"
 end
 
 # Key is set as a deployment key in github repo
@@ -103,7 +109,7 @@ git "/var/lib/oxidized/configs.git" do
   group "oxidized"
 end
 
-bundle_install "/opt/oxidized" do
+bundle_install "/opt/oxidized/daemon" do
   action :nothing
   options "--deployment"
   user "oxidized"
@@ -116,7 +122,7 @@ systemd_service "oxidized" do
   description "oxidized network device backup daemon"
   after "network.target"
   user "oxidized"
-  working_directory "/opt/oxidized"
+  working_directory "/opt/oxidized/daemon"
   exec_start "#{node[:ruby][:bundle]} exec oxidized"
   environment "OXIDIZED_HOME" => "/etc/oxidized",
               "OXIDIZED_LOGS" => "/var/log/oxidized"
