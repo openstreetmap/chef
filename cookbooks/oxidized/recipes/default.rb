@@ -107,6 +107,11 @@ execute "/opt/oxidized/.ssh/id_rsa.pub" do
   notifies :restart, "service[oxidized]"
 end
 
+ssh_known_hosts_entry 'github.com' do
+  owner "oxidized"
+  group "oxidized"
+end
+
 git "/var/lib/oxidized/configs.git" do
   action :sync
   repository "git@github.com:openstreetmap/oxidized-configs.git" # Uses oxidized ssh key
