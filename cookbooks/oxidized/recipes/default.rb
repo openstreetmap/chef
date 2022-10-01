@@ -78,6 +78,12 @@ git "/opt/oxidized/daemon" do
   notifies :run, "bundle_install[/opt/oxidized/daemon]"
 end
 
+directory "/opt/oxidized/.ssh" do
+  owner "oxidized"
+  group "oxidized"
+  mode "700"
+end
+
 # Key is set as a deployment key in github repo
 file "/opt/oxidized/.ssh/id_rsa" do
   content keys["git"].join("\n")
