@@ -74,7 +74,7 @@ end
 
 execute "/opt/oxidized/.ssh/id_rsa.pub" do
   command "ssh-keygen -f /opt/oxidized/.ssh/id_rsa -y > /opt/oxidized/.ssh/id_rsa.pub"
-  owner "oxidized"
+  user "oxidized"
   group "oxidized"
   creates "/opt/oxidized/.ssh/id_rsa.pub"
   notifies :restart, "service[oxidized]"
