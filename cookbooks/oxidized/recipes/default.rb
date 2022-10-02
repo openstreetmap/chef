@@ -141,6 +141,7 @@ systemd_service "oxidized" do
   after "network.target"
   user "oxidized"
   working_directory "/opt/oxidized/daemon"
+  runtime_directory "oxidized"
   exec_start "#{node[:ruby][:bundle]} exec oxidized"
   environment "OXIDIZED_HOME" => "/etc/oxidized",
               "OXIDIZED_LOGS" => "/var/log/oxidized"
