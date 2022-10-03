@@ -107,7 +107,8 @@ execute "/opt/oxidized/.ssh/id_rsa.pub" do
   notifies :restart, "service[oxidized]"
 end
 
-ssh_known_hosts_entry 'github.com' do
+ssh_known_hosts_entry "github.com" do
+  action :flush
   file_location "/opt/oxidized/.ssh/known_hosts"
   owner "oxidized"
   group "oxidized"
