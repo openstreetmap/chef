@@ -75,7 +75,7 @@ git "/opt/oxidized/daemon" do
   depth 1
   user "oxidized"
   group "oxidized"
-  notifies :run, "bundle_install[/opt/oxidized/daemon]"
+  notifies :run, "bundle_install[/opt/oxidized/daemon]", :immediately
 end
 
 directory "/opt/oxidized/.ssh" do
@@ -85,25 +85,25 @@ directory "/opt/oxidized/.ssh" do
 end
 
 # Key is set as a deployment key in github repo
-file "/opt/oxidized/.ssh/id_rsa" do
+file "/opt/oxidized/.ssh/id_ed25519" do
   content keys["git"].join("\n")
   owner "oxidized"
   group "oxidized"
   mode "400"
-  notifies :delete, "file[/opt/oxidized/.ssh/id_rsa.pub]", :immediately
+  notifies :delete, "file[/opt/oxidized/.ssh/id_ed25519.pub]", :immediately
   notifies :restart, "service[oxidized]"
 end
 
 # Ensure public key is deleted if private key is changed. Trigged by notify
-file "/opt/oxidized/.ssh/id_rsa.pub" do
+file "/opt/oxidized/.ssh/id_ed25519.pub" do
   action :nothing
 end
 
-execute "/opt/oxidized/.ssh/id_rsa.pub" do
-  command "ssh-keygen -f /opt/oxidized/.ssh/id_rsa -y > /opt/oxidized/.ssh/id_rsa.pub"
+execute "/opt/oxidized/.ssh/id_ed25519.pub" do
+  command "ssh-keygen -f /opt/oxidized/.ssh/id_ed25519 -y > /opt/oxidized/.ssh/id_ed25519.pub"
   user "oxidized"
   group "oxidized"
-  creates "/opt/oxidized/.ssh/id_rsa.pub"
+  creates "/opt/oxidized/.ssh/id_ed25519.pub"
   notifies :restart, "service[oxidized]"
 end
 
