@@ -38,6 +38,5 @@ run_list(
   "role[chef-repository]",
   "role[letsencrypt]",
   "role[git]",
-  "role[dns]",
-  "recipe[serverinfo]"
+  "role[dns]"
 )
