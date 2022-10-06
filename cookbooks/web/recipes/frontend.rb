@@ -33,6 +33,7 @@ apache_module "proxy"
 apache_module "proxy_fcgi"
 apache_module "lbmethod_byrequests"
 apache_module "lbmethod_bybusyness"
+apache_module "reqtimeout"
 apache_module "rewrite"
 apache_module "unique_id"
 
