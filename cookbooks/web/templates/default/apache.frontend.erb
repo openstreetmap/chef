@@ -30,6 +30,11 @@
   RewriteEngine on
 
   #
+  # Configure timeouts
+  #
+  RequestReadTimeout handshake=20-40,MinRate=500 header=20-40,MinRate=500 body=20,MinRate=500
+
+  #
   # Add the unique ID to the request headers
   #
   RequestHeader set X-Request-Id %{UNIQUE_ID}e
