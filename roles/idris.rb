@@ -35,5 +35,6 @@ default_attributes(
 run_list(
   "role[equinix-dub]",
   "role[hp-g9]",
-  "role[oxidized]"
+  "role[oxidized]",
+  "recipe[serverinfo]"
 )
