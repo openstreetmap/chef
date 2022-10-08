@@ -36,7 +36,6 @@ run_list(
   "role[ucl]",
   "role[chef-server]",
   "role[chef-repository]",
-  "role[letsencrypt]",
   "role[git]",
   "role[dns]"
 )
