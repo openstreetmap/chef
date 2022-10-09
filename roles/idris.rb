@@ -37,6 +37,7 @@ run_list(
   "role[hp-g9]",
   "role[chef-server]",
   "role[chef-repository]",
+  "role[dns]",
   "role[git]",
   "role[letsencrypt]",
   "role[oxidized]",

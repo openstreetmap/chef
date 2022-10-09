@@ -33,9 +33,5 @@ default_attributes(
 )
 
 run_list(
-  "role[ucl]",
-  "role[chef-server]",
-  "role[chef-repository]",
-  "role[git]",
-  "role[dns]"
+  "role[ucl]"
 )
