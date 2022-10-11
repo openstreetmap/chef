@@ -214,6 +214,10 @@ search(:accounts, "*:*").each do |account|
   end
 end
 
+node[:postgresql][:versions].each do |version|
+  package "postgresql-#{version}-postgis-3"
+end
+
 if node[:postgresql][:clusters][:"14/main"]
   postgresql_user "apis" do
     cluster "14/main"
