@@ -34,6 +34,10 @@ include_recipe "python"
 include_recipe "ruby"
 
 package %w[
+  ant
+  default-jdk-headless
+  default-jre-headless
+  golang
   composer
   php-apcu
   php-cgi
@@ -54,12 +58,20 @@ package %w[
   pngcrush
   pngquant
   python3
+  python3-brotli
   python3-bs4
   python3-cheetah
   python3-dateutil
+  python3-dev
+  python3-dotenv
+  python3-lxml
+  python3-lz4
   python3-magic
+  python3-pil
   python3-psycopg2
+  python3-pyproj
   python3-gdal
+  gdal-bin
   g++
   gcc
   make
@@ -70,6 +82,7 @@ package %w[
   libfcgi-dev
   libxml2-dev
   libmemcached-dev
+  libboost-dev
   libboost-regex-dev
   libboost-system-dev
   libboost-program-options-dev
@@ -83,6 +96,33 @@ package %w[
   zlib1g-dev
   nano
   osm2pgsql
+  osmosis
+  at
+  awscli
+  mailutils
+  lua-any
+  luajit
+  fonts-dejavu
+  fonts-dejavu-core
+  fonts-dejavu-extra
+  fonts-droid-fallback
+  fonts-liberation
+  fonts-noto-mono
+  gnuplot-nox
+  graphviz
+  irssi
+  jq
+  lz4
+  lzip
+  lzop
+  pbzip2
+  pigz
+  unrar
+  unzip
+  zip
+  netcat
+  tmux
+  whois
 ]
 
 nodejs_package "svgo"
