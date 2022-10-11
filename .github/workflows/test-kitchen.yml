@@ -11,7 +11,7 @@ concurrency:
 jobs:
   kitchen:
     name: Test Kitchen
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     strategy:
       matrix:
         suite:
@@ -110,7 +110,17 @@ jobs:
           - wordpress
           - wiki
         os:
-          - ubuntu-2004
+          - ubuntu-2204
+        include:
+          - os: ubuntu-2004
+            suite: mailman
+          - os: ubuntu-2004
+            suite: osqa
+        exclude:
+          - suite: mailman
+            os: ubuntu-2204
+          - suite: osqa
+            os: ubuntu-2204
       fail-fast: false
     steps:
     - name: Check out code
@@ -118,6 +128,7 @@ jobs:
     - name: Setup ruby
       uses: ruby/setup-ruby@v1
       with:
+        ruby-version: 3.1
         bundler-cache: true
     - name: Run kitchen test ${{ matrix.suite }}-${{ matrix.os }}
       run: bundle exec kitchen test ${{ matrix.suite }}-${{ matrix.os }}
