@@ -31,6 +31,13 @@ package "exim4-daemon-heavy" do
   only_if { ::File.exist?("/var/run/clamav/clamd.ctl") }
 end
 
+group "Debian-exim" do
+  action :modify
+  members "clamav"
+  append true
+  only_if { ::File.exist?("/var/run/clamav/clamd.ctl") }
+end
+
 group "ssl-cert" do
   action :modify
   members "Debian-exim"
