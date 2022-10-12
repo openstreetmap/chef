@@ -1,6 +1,9 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
 option arch code 93 = unsigned integer 16;
+# ilo5 expects TZ data per rfc4833
+option PCode code 100 = text;
+option TCode code 101 = text;
 
 default-lease-time 600;
 max-lease-time 7200;
@@ -14,7 +17,12 @@ subnet <%= interface[:network] %> netmask <%= interface[:netmask] %> {
   option domain-name "<%= @domain %>";
   option domain-name-servers <%= interface[:gateway] %>;
   option ntp-servers <%= node[:ntp][:servers].first %>;
+
   option time-offset 0;
+  option PCode "UTC";
+  option TCode "Etc/UTC";
+
+  next-server <%= interface[:gateway] %>;
 
   # See https://netboot.xyz/docs/docker/#dhcp-configurations
   if exists user-class and ( option user-class = "iPXE" ) {
