@@ -36,5 +36,6 @@ default_attributes(
 run_list(
   "role[equinix-ams]",
   "role[hp-g9]",
+  "role[wiki]",
   "recipe[dhcpd]"
 )
