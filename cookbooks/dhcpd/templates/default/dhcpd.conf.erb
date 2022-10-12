@@ -19,7 +19,7 @@ subnet <%= interface[:network] %> netmask <%= interface[:netmask] %> {
   option ntp-servers <%= node[:ntp][:servers].first %>;
 
   option time-offset 0;
-  option PCode "UTC";
+  option PCode "UTC0";
   option TCode "Etc/UTC";
 
   next-server <%= interface[:gateway] %>;
