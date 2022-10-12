@@ -43,8 +43,14 @@ cache_dir = Chef::Config[:file_cache_path]
 
 dnscontrol_version = "3.20.0"
 
-remote_file "#{cache_dir}/dnscontrol_amd64.deb" do
-  source "https://github.com/StackExchange/dnscontrol/releases/download/v#{dnscontrol_version}/dnscontrol_#{dnscontrol_version}_amd64.deb"
+if arm?
+  dnscontrol_arch = "arm64"
+else
+  dnscontrol_arch = "amd64"
+end
+
+remote_file "#{cache_dir}/dnscontrol-#{dnscontrol_version}.deb" do
+  source "https://github.com/StackExchange/dnscontrol/releases/download/v#{dnscontrol_version}/dnscontrol-#{dnscontrol_version}.#{dnscontrol_arch}.deb"
   owner "root"
   group "root"
   mode "644"
@@ -53,12 +59,8 @@ end
 
 dpkg_package "dnscontrol" do
   action :nothing
-  source "#{cache_dir}/dnscontrol_amd64.deb"
-  subscribes :install, "remote_file[#{cache_dir}/dnscontrol_amd64.deb]"
-end
-
-file "/usr/local/bin/dnscontrol" do
-  action :delete
+  source "#{cache_dir}/dnscontrol-#{dnscontrol_version}.deb"
+  subscribes :install, "remote_file[#{cache_dir}/dnscontrol-#{dnscontrol_version}.deb]"
 end
 
 directory "/srv/dns.openstreetmap.org" do
