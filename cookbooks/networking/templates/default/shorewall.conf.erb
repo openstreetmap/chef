@@ -7,7 +7,7 @@
 STARTUP_ENABLED=Yes
 
 ###############################################################################
-#		              V E R B O S I T Y
+#			     V E R B O S I T Y
 ###############################################################################
 
 VERBOSITY=1
@@ -92,7 +92,7 @@ MODULESDIR=
 
 NFACCT=
 
-PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin:/usr/local/sbin
+PATH="/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin:/usr/local/sbin"
 
 PERL=/usr/bin/perl
 
@@ -116,7 +116,7 @@ QUEUE_DEFAULT="none"
 REJECT_DEFAULT="Broadcast(DROP),Multicast(DROP)"
 
 ###############################################################################
-#                        R S H / R C P  C O M M A N D S
+#			 R S H / R C P	C O M M A N D S
 ###############################################################################
 
 RCP_COMMAND='scp ${files} ${root}@${system}:${destination}'
