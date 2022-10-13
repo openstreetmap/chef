@@ -55,6 +55,7 @@ property :oauth_key, String
 property :oauth_application, String
 property :nominatim_url, String
 property :overpass_url, String
+property :overpass_credentials, [true, false], :default => false
 property :google_auth_id, String
 property :google_auth_secret, String
 property :google_openid_realm, String
@@ -306,6 +307,7 @@ action :create do
     "oauth_application",
     "nominatim_url",
     "overpass_url",
+    "overpass_credentials",
     "google_auth_id",
     "google_auth_secret",
     "google_openid_realm",
