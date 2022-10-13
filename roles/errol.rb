@@ -44,6 +44,5 @@ default_attributes(
 
 run_list(
   "role[ucl]",
-  "role[tyan-s7010]",
-  "role[dev]"
+  "role[tyan-s7010]"
 )
