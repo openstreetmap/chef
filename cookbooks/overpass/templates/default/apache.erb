@@ -32,7 +32,7 @@
         RewriteEngine on
         RewriteMap totp prg:/srv/query.openstreetmap.org/apache/totp-filter
         RewriteCond ${totp:%{HTTP_COOKIE}} =0
-        RewriteRule ^.*$ - [F,L]
+        RewriteRule ^/query-features - [F,L]
 
 <% if node[:overpass][:restricted_api] -%>
         ScriptAlias /query-features <%= @script_directory %>/interpreter
