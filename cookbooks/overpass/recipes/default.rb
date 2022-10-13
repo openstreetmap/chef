@@ -20,6 +20,7 @@
 include_recipe "accounts"
 include_recipe "apache"
 include_recipe "munin"
+include_recipe "prometheus"
 include_recipe "ruby"
 
 username = "overpass"
@@ -238,4 +239,12 @@ end
     conf "munin.erb"
     conf_variables :user => username
   end
+end
+
+prometheus_exporter "overpass" do
+  port 9898
+  user username
+  options [
+    "--overpass.base-directory=#{basedir}"
+  ]
 end
