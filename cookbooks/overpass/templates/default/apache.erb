@@ -29,6 +29,7 @@
 
         DocumentRoot <%= @directory %>
 
+        RewriteEngine on
         RewriteMap totp prg:/srv/query.openstreetmap.org/apache/totp-filter
         RewriteCond ${totp:%{HTTP_COOKIE}} =0
         RewriteRule ^.*$ - [F,L]
@@ -39,6 +40,7 @@
         # Remove Origin so Overpass does not interfere.
         RequestHeader unset Origin
         Header always add Access-Control-Allow-Origin %{AccessControlAllowOrigin}e env=AccessControlAllowOrigin
+        Header always add Access-Control-Allow-Credentials true
 <% else -%>
         ScriptAlias /api/ <%= @script_directory %>/
 <% end -%>
