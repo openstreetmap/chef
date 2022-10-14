@@ -43,7 +43,11 @@ cache_dir = Chef::Config[:file_cache_path]
 
 dnscontrol_version = "3.20.0"
 
-dnscontrol_arch = arm? ? "arm64" : "amd64"
+dnscontrol_arch = if arm?
+                    "arm64"
+                  else
+                    "amd64"
+                  end
 
 remote_file "#{cache_dir}/dnscontrol-#{dnscontrol_version}.deb" do
   source "https://github.com/StackExchange/dnscontrol/releases/download/v#{dnscontrol_version}/dnscontrol-#{dnscontrol_version}.#{dnscontrol_arch}.deb"
