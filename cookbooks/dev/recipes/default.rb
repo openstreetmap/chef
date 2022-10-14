@@ -123,6 +123,8 @@ package %w[
   netcat
   tmux
   whois
+  redis
+  r-base
 ]
 
 nodejs_package "svgo"
