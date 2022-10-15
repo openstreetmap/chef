@@ -125,6 +125,7 @@ package %w[
   whois
   redis
   r-base
+  pandoc
 ]
 
 nodejs_package "svgo"
