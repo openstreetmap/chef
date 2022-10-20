@@ -10,6 +10,9 @@ default_attributes(
         :family => :inet,
         :address => "10.0.48.13",
         :bond => {
+          :mode => "802.3ad",
+          :lacprate => "fast",
+          :xmithashpolicy => "layer3+4",
           :slaves => %w[eno1 eno2]
         }
       },
