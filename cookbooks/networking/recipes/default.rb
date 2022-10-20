@@ -94,12 +94,12 @@ node[:networking][:interfaces].each do |name, interface|
 
       deviceplan["parameters"] = {
         "mode" => interface[:bond][:mode] || "active-backup",
-        "primary" => interface[:bond][:slaves].first,
         "mii-monitor-interval" => interface[:bond][:miimon] || 100,
         "down-delay" => interface[:bond][:downdelay] || 200,
         "up-delay" => interface[:bond][:updelay] || 200
       }
 
+      deviceplan["parameters"]["primary"] = interface[:bond][:slaves].first if deviceplan["parameters"]["mode"] == "active-backup"
       deviceplan["parameters"]["transmit-hash-policy"] = interface[:bond][:xmithashpolicy] if interface[:bond][:xmithashpolicy]
       deviceplan["parameters"]["lacp-rate"] = interface[:bond][:lacprate] if interface[:bond][:lacprate]
     end
