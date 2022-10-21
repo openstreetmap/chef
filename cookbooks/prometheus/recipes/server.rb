@@ -302,6 +302,10 @@ systemd_service "prometheus-alertmanager-executable" do
   notifies :restart, "service[prometheus-alertmanager]"
 end
 
+link "/usr/local/bin/promtool" do
+  to "/opt/prometheus-server/prometheus/promtool"
+end
+
 template "/etc/prometheus/alertmanager.yml" do
   source "alertmanager.yml.erb"
   owner "root"
@@ -315,11 +319,21 @@ service "prometheus-alertmanager" do
   subscribes :restart, "archive_file[#{cache_dir}/alertmanager.linux-amd64.tar.gz]"
 end
 
-template "/etc/prometheus/amtool.yml" do
+directory "/etc/amtool" do
+  owner "root"
+  group "root"
+  mode "755"
+end
+
+template "/etc/amtool/config.yml" do
   source "amtool.yml.erb"
   owner "root"
   group "root"
   mode "644"
+end
+
+link "/usr/local/bin/amtool" do
+  to "/opt/prometheus-server/alertmanager/amtool"
 end
 
 template "/etc/prometheus/karma.yml" do
