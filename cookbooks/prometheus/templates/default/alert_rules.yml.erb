@@ -341,6 +341,22 @@ groups:
           alertgroup: "{{ $labels.instance }}"
         annotations:
           entries_used: "{{ $value | humanizePercentage }}"
+  - name: overpass
+    rules:
+      - alert: overpass osm database age
+        expr: overpass_database_age_seconds{database="osm"} > 5m
+        for: 5m
+        labels:
+          alertgroup: overpass
+        annotations:
+          age: "{{ $value | humanizeDuration }}"
+      - alert: overpass area database age
+        expr: overpass_database_age_seconds{database="area"} > 24h
+        for: 1h
+        labels:
+          alertgroup: overpass
+        annotations:
+          age: "{{ $value | humanizeDuration }}"
   - name: planet
     rules:
       - alert: planet dump overdue
