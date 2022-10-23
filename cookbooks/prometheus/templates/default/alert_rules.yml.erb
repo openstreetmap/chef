@@ -344,7 +344,7 @@ groups:
   - name: nominatim
     rules:
       - alert: nominatim replication delay
-        expr: nominatim_replication_delay > 3h
+        expr: nominatim_replication_delay > 10800
         for: 1h
         labels:
           alertgroup: nominatim
@@ -353,14 +353,14 @@ groups:
   - name: overpass
     rules:
       - alert: overpass osm database age
-        expr: overpass_database_age_seconds{database="osm"} > 5m
+        expr: overpass_database_age_seconds{database="osm"} > 300
         for: 5m
         labels:
           alertgroup: overpass
         annotations:
           age: "{{ $value | humanizeDuration }}"
       - alert: overpass area database age
-        expr: overpass_database_age_seconds{database="area"} > 24h
+        expr: overpass_database_age_seconds{database="area"} > 86400
         for: 1h
         labels:
           alertgroup: overpass
