@@ -341,6 +341,15 @@ groups:
           alertgroup: "{{ $labels.instance }}"
         annotations:
           entries_used: "{{ $value | humanizePercentage }}"
+  - name: nominatim
+    rules:
+      - alert: nominatim replication delay
+        expr: nominatim_replication_delay > 3h
+        for: 1h
+        labels:
+          alertgroup: nominatim
+        annotations:
+          delay: "{{ $value | humanizeDuration }}"
   - name: overpass
     rules:
       - alert: overpass osm database age
