@@ -38,7 +38,7 @@ end
 
 ## Install overpass from source
 
-srcdir = "#{basedir}/src/osm-3s_v#{node[:overpass][:full_version]}"
+srcdir = "#{basedir}/src/osm-3s_v#{node[:overpass][:version]}"
 
 package %w[
   build-essential
@@ -70,6 +70,8 @@ execute "install_overpass" do
   user username
   cwd srcdir
   command "./configure --enable-lz4 --prefix=#{basedir} && make install"
+  notifies :restart, "service[overpass-dispatcher]"
+  notifies :restart, "service[overpass-area-dispatcher]"
 end
 
 ## Setup Apache
