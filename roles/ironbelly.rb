@@ -62,7 +62,7 @@ default_attributes(
     :snmp => {
       "pdu1" => { :address => "10.0.48.100", :modules => %w[apcups], :labels => { "site" => "amsterdam" } },
       "pdu2" => { :address => "10.0.48.101", :modules => %w[apcups], :labels => { "site" => "amsterdam" } },
-      "switch1" => { :address => "130.117.76.4", :modules => %w[if_mib juniper_ex4300], :labels => { "site" => "amsterdam" } }
+      "switch1" => { :address => "130.117.76.2", :modules => %w[if_mib juniper_ex4300], :labels => { "site" => "amsterdam" } }
     },
     :metrics => {
       :uplink_interface => {
