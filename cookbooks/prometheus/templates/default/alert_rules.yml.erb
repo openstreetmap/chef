@@ -217,12 +217,12 @@ groups:
   - name: juniper
     rules:
       - alert: juniper fan alarm
-        expr: jnxOperatingState{jnxOperatingContentsIndex="4",jnxOperatingState!="running"} > 0
+        expr: sum_over_time(jnxOperatingState{jnxOperatingContentsIndex="4",jnxOperatingState!="running"}[5m]) > 0
         for: 5m
         labels:
           alertgroup: "{{ $labels.site }}"
       - alert: juniper power alarm
-        expr: jnxOperatingState{jnxOperatingContentsIndex="2",jnxOperatingState!="running"} > 0
+        expr: sum_over_time(jnxOperatingState{jnxOperatingContentsIndex="2",jnxOperatingState!="running"}[5m]) > 0
         for: 5m
         labels:
           alertgroup: "{{ $labels.site }}"
