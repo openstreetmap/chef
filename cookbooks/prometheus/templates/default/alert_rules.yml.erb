@@ -119,7 +119,7 @@ groups:
         for: 15m
         labels:
           alertgroup: fastly
-      - alert: fastly healthcheck failing
+      - alert: multipe fastly healthchecks failing
         expr: count(fastly_healthcheck_status == 0) > 4
         for: 5m
         labels:
@@ -320,7 +320,7 @@ groups:
           alertgroup: "{{ $labels.instance }}"
         annotations:
           error_rate: "{{ $value | humanizePercentage }}"
-      - alert: interface transmit errors
+      - alert: wireguard interface transmit errors
         expr: rate(node_network_transmit_errs_total{device=~"wg.*"}[1m]) / rate(node_network_transmit_packets_total{device=~"wg.*"}[1m]) > 0.05
         for: 1h
         labels:
@@ -537,7 +537,7 @@ groups:
         for: 5m
         labels:
           alertgroup: "{{ $labels.instance }}"
-      - alert: systemd failed service
+      - alert: systemd failed chef client service
         expr: node_systemd_unit_state{state="failed",name="chef-client.service"} == 1
         for: 6h
         labels:
