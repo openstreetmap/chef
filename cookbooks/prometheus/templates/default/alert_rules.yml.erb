@@ -105,6 +105,36 @@ groups:
           alertgroup: database
         annotations:
           delay: "{{ $value | humanizeDuration }}"
+  - name: dublin
+    rules:
+      - alert: pdu current draw
+        expr: rPDU2PhaseStatusCurrent{site="dublin",rPDU2PhaseStatusIndex="1"} / 10 > 13
+        for: 5m
+        labels:
+          alertgroup: "dublin"
+        annotations:
+          current: "{{ $value | humanize }}A"
+      - alert: site current draw
+        expr: sum(rPDU2PhaseStatusCurrent{site="dublin",rPDU2PhaseStatusIndex="1"} / 10) > 17
+        for: 5m
+        labels:
+          alertgroup: "dublin"
+        annotations:
+          current: "{{ $value | humanize }}A"
+      - alert: site temperature
+        expr: min(rPDU2SensorTempHumidityStatusTempC{site="dublin"}) / 10 < 18 or min(rPDU2SensorTempHumidityStatusTempC{site="dublin"}) / 10 > 25
+        for: 5m
+        labels:
+          alertgroup: "dublin"
+        annotations:
+          temperature: "{{ $value | humanize }}C"
+      - alert: site humidity
+        expr: max(rPDU2SensorTempHumidityStatusRelativeHumidity{site="dublin"}) / 100 < 0.25 or max(rPDU2SensorTempHumidityStatusRelativeHumidity{site="dublin"}) / 100 > 0.65
+        for: 5m
+        labels:
+          alertgroup: "dublin"
+        annotations:
+          humidity: "{{ $value | humanizePercentage }}"
   - name: fastly
     rules:
       - alert: fastly error rate
