@@ -169,9 +169,23 @@ template "/usr/local/bin/dns-check" do
   variables :passwords => passwords, :geoservers => geoservers
 end
 
-cron_d "dns" do
-  minute "*/3"
+systemd_service "dns-check" do
+  description "Rebuild DNS zones with GeoDNS changes"
+  exec_start "/usr/local/bin/dns-check"
   user "git"
-  command "/usr/local/bin/dns-check"
-  mailto "admins@openstreetmap.org"
+  private_tmp true
+  private_devices true
+  protect_system "strict"
+  protect_home true
+  read_write_paths "/var/lib/dns"
+end
+
+systemd_timer "dns-check" do
+  description "Rebuild DNS zones with GeoDNS changes"
+  on_boot_sec "3m"
+  on_unit_active_sec "3m"
+end
+
+service "dns-check.timer" do
+  action [:enable, :start]
 end
