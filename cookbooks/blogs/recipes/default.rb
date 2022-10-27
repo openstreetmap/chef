@@ -78,11 +78,25 @@ template "/usr/local/bin/blogs-update" do
   mode "0755"
 end
 
-cron_d "blogs" do
-  minute "*/30"
+systemd_service "blogs-update" do
+  description "Update blog aggregator"
+  exec_start "/usr/local/bin/blogs-update"
   user "blogs"
-  command "/usr/local/bin/blogs-update"
-  mailto "admins@openstreetmap.org"
+  private_tmp true
+  private_devices true
+  protect_system "strict"
+  protect_home true
+  read_write_paths "/srv/blogs.openstreetmap.org"
+end
+
+systemd_timer "blogs-update" do
+  description "Update blog aggregator"
+  on_boot_sec "15m"
+  on_unit_inactive_sec "30m"
+end
+
+service "blogs-update.timer" do
+  action [:enable, :start]
 end
 
 template "/etc/cron.daily/blogs-backup" do
