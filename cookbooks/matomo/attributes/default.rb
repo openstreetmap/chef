@@ -1,4 +1,4 @@
-default[:matomo][:version] = "4.12.2"
+default[:matomo][:version] = "4.12.3"
 default[:matomo][:plugins] = {
   "Actions" => nil,
   "Annotations" => nil,
