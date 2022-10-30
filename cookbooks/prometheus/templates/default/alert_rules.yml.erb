@@ -383,7 +383,7 @@ groups:
   - name: overpass
     rules:
       - alert: overpass osm database age
-        expr: overpass_database_age_seconds{database="osm"} > 300
+        expr: overpass_database_age_seconds{database="osm"} > 1800
         for: 5m
         labels:
           alertgroup: overpass
