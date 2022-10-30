@@ -185,6 +185,7 @@ systemd_service "overpass-update" do
   exec_start "#{basedir}/bin/overpass-update-db"
   standard_output "append:#{logdir}/update.log"
   user username
+  restart "on-success"
 end
 
 if node[:overpass][:meta_mode] == "attic"
