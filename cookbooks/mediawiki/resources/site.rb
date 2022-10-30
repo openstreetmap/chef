@@ -195,19 +195,20 @@ action :create do
     comment "Run mediawiki jobs"
     minute "*/3"
     user node[:mediawiki][:user]
-    command "/usr/bin/nice /usr/bin/php -d memory_limit=2048M -d error_reporting=22517 #{site_directory}/w/maintenance/runJobs.php --server=https://#{new_resource.site} --maxtime=160 --memory-limit=2048M --procs=8 --quiet"
+    command "/usr/bin/nice /usr/bin/php -d memory_limit=2048M -d error_reporting=22517 #{site_directory}/w/maintenance/runJobs.php --server=https://#{new_resource.site} --maxtime=175 --memory-limit=2048M --procs=8 --nothrottle --quiet"
   end
 
   cron_d "mediawiki-#{cron_name}-email-jobs" do
     comment "Run mediawiki email jobs"
     user node[:mediawiki][:user]
-    command "/usr/bin/nice /usr/bin/php -d memory_limit=2048M -d error_reporting=22517 #{site_directory}/w/maintenance/runJobs.php --server=https://#{new_resource.site} --maxtime=30 --type=enotifNotify --memory-limit=2048M --procs=4 --quiet"
+    command "/usr/bin/nice /usr/bin/php -d memory_limit=2048M -d error_reporting=22517 #{site_directory}/w/maintenance/runJobs.php --server=https://#{new_resource.site} --maxtime=55 --type=enotifNotify --memory-limit=2048M --procs=4 --nothrottle --quiet"
   end
 
   cron_d "mediawiki-#{cron_name}-refresh-links" do
-    comment "Run mediawiki refresh links table daily"
+    comment "Run mediawiki refresh links table weekly"
     minute "5"
     hour "0"
+    weekday "6"
     user node[:mediawiki][:user]
     command "/usr/bin/nice /usr/bin/php -d memory_limit=2048M -d error_reporting=22517 #{site_directory}/w/maintenance/refreshLinks.php --server=https://#{new_resource.site} --memory-limit=2048M --quiet"
   end
