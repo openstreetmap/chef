@@ -72,6 +72,7 @@ package %w[
   python3-pyproj
   python3-gdal
   gdal-bin
+  proj-bin
   g++
   gcc
   make
@@ -127,6 +128,12 @@ package %w[
   r-base
   pandoc
 ]
+
+# Add uk_os_OSTN15_NTv2_OSGBtoETRS.tif used for reprojecting OS data
+execute "uk_os_OSTN15_NTv2_OSGBtoETRS.tif" do
+  command "projsync --file uk_os_OSTN15_NTv2_OSGBtoETRS.tif --system-directory"
+  not_if { ::File.exist?("/usr/share/proj/uk_os_OSTN15_NTv2_OSGBtoETRS.tif") }
+end
 
 nodejs_package "svgo"
 
