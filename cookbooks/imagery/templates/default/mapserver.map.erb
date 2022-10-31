@@ -44,10 +44,7 @@ MAP
   <% end -%>
   IMAGETYPE <%= @extension %>
     PROJECTION
-    <% if @projection == "EPSG:27700" -%>
-      <%# Override EPSG:27700 to use accurate nadgrid %>
-      "+proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +ellps=airy +datum=OSGB36 +units=m +no_defs +nadgrids=/srv/imagery/common/ostn02-ntv2-data/OSTN02_NTv2.gsb"
-    <% elsif @projection == "namibia_aerial" -%>
+    <% if @projection == "namibia_aerial" -%>
       "+proj=tmerc +lat_0=0 +lon_0=17 +k=1 +x_0=600000 +y_0=10000000 +ellps=WGS84 +units=m +no_defs"
     <% else -%>
       "init=<%= @projection.downcase %>"
@@ -58,10 +55,7 @@ MAP
     NAME "<%= @layer %>"
     DATA "<%= @source %>"
     PROJECTION
-    <% if @projection == "EPSG:27700" -%>
-      <%# Override EPSG:27700 to use accurate nadgrid %>
-      "+proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +ellps=airy +datum=OSGB36 +units=m +no_defs +nadgrids=/srv/imagery/common/ostn02-ntv2-data/OSTN02_NTv2.gsb"
-    <% elsif @projection == "namibia_aerial" -%>
+    <% if @projection == "namibia_aerial" -%>
       "+proj=tmerc +lat_0=0 +lon_0=17 +k=1 +x_0=600000 +y_0=10000000 +ellps=WGS84 +units=m +no_defs"
     <% else -%>
       "init=<%= @projection.downcase %>"

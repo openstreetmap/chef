@@ -64,26 +64,14 @@ directory "/srv/imagery/common" do
 end
 
 directory "/srv/imagery/common/ostn02-ntv2-data" do
-  owner "root"
-  group "root"
-  mode "755"
+  recursive true
+  action :delete
 end
 
+# Pre-download uk_os_OSTN15_NTv2_OSGBtoETRS.tif used for EPSG:27700 conversions
 execute "uk_os_OSTN15_NTv2_OSGBtoETRS.tif" do
   command "projsync --file uk_os_OSTN15_NTv2_OSGBtoETRS.tif --system-directory"
   not_if { ::File.exist?("/usr/share/proj/uk_os_OSTN15_NTv2_OSGBtoETRS.tif") }
-end
-
-remote_file "#{Chef::Config[:file_cache_path]}/ostn02-ntv2-data.zip" do
-  source "https://www.ordnancesurvey.co.uk/documents/resources/ostn02-ntv2-data.zip"
-  not_if { ::File.exist?("/srv/imagery/common/ostn02-ntv2-data/OSTN02_NTv2.gsb") }
-end
-
-archive_file "#{Chef::Config[:file_cache_path]}/ostn02-ntv2-data.zip" do
-  destination "/srv/imagery/common/ostn02-ntv2-data"
-  owner "root"
-  group "root"
-  not_if { ::File.exist?("/srv/imagery/common/ostn02-ntv2-data/OSTN02_NTv2.gsb") }
 end
 
 nginx_site "default" do
