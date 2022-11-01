@@ -63,3 +63,10 @@ cookbook_file "/srv/wiki.osmfoundation.org/Wiki.png" do
   group node[:mediawiki][:group]
   mode "644"
 end
+
+template "/srv/wiki.osmfoundation.org/robots.txt" do
+  owner node[:mediawiki][:user]
+  group node[:mediawiki][:group]
+  mode "644"
+  source "robots.txt.erb"
+end
