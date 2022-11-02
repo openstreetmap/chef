@@ -116,6 +116,7 @@ systemd_service "planetdump@" do
   exec_start "/usr/local/bin/planetdump %i"
   memory_max "64G"
   private_tmp true
+  private_devices true
   protect_system "full"
   protect_home true
   read_write_paths "/var/log/exim4"

@@ -159,6 +159,7 @@ systemd_service "promscale" do
   exec_start "/opt/promscale/bin/promscale --db.uri postgresql:///promscale?host=/run/postgresql&port=5432 --db.connections-max 400"
   limit_nofile 16384
   private_tmp true
+  protect_devices true
   protect_system "strict"
   protect_home true
   no_new_privileges true
