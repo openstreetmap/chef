@@ -350,7 +350,7 @@ systemd_service "prometheus-karma" do
   exec_start "/opt/prometheus-server/karma/karma-linux-amd64 --config.file=/etc/prometheus/karma.yml"
   private_tmp true
   private_devices true
-  protect_system "full"
+  protect_system "strict"
   protect_home true
   no_new_privileges true
   restart "on-failure"

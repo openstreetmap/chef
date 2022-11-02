@@ -96,8 +96,9 @@ systemd_service "gps-update" do
   nice 10
   private_tmp true
   private_devices true
-  protect_system "full"
+  protect_system "strict"
   protect_home true
+  read_write_directories "/srv/gps-tile.openstreetmap.org"
   no_new_privileges true
   restart "on-failure"
 end

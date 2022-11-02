@@ -76,7 +76,7 @@ systemd_service "gdnsd-reload" do
   standard_output "null"
   private_tmp true
   private_devices true
-  protect_system "full"
+  protect_system "strict"
   protect_home true
   no_new_privileges true
 end

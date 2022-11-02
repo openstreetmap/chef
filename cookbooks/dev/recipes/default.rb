@@ -292,8 +292,9 @@ if node[:postgresql][:clusters][:"14/main"]
     nice 10
     private_tmp true
     private_devices true
-    protect_system "full"
+    protect_system "strict"
     protect_home true
+    read_write_directories "/srv/%i.apis.dev.openstreetmap.org/logs"
     no_new_privileges true
   end
 
@@ -306,8 +307,9 @@ if node[:postgresql][:clusters][:"14/main"]
     exec_reload "/bin/kill -HUP $MAINPID"
     private_tmp true
     private_devices true
-    protect_system "full"
+    protect_system "strict"
     protect_home true
+    read_write_directories ["/srv/%i.apis.dev.openstreetmap.org/logs", "/srv/%i.apis.dev.openstreetmap.org/rails/tmp"]
     no_new_privileges true
     restart "on-failure"
   end
