@@ -60,6 +60,7 @@ systemd_service "tilelog" do
   protect_system "strict"
   protect_home true
   read_write_paths tilelog_output_directory
+  no_new_privileges true
 end
 
 systemd_timer "tilelog" do

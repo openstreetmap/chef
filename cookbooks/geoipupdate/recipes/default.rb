@@ -47,6 +47,7 @@ systemd_service "geoipupdate" do
   protect_system "strict"
   protect_home true
   read_write_paths node[:geoipupdate][:directory]
+  no_new_privileges true
 end
 
 systemd_timer "geoipupdate" do

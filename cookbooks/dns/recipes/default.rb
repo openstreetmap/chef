@@ -178,6 +178,7 @@ systemd_service "dns-check" do
   protect_system "strict"
   protect_home true
   read_write_paths "/var/lib/dns"
+  no_new_privileges true
 end
 
 systemd_timer "dns-check" do

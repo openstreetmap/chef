@@ -87,6 +87,7 @@ systemd_service "blogs-update" do
   protect_system "strict"
   protect_home true
   read_write_paths "/srv/blogs.openstreetmap.org"
+  no_new_privileges true
 end
 
 systemd_timer "blogs-update" do
