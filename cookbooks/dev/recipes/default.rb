@@ -294,7 +294,7 @@ if node[:postgresql][:clusters][:"14/main"]
     private_devices true
     protect_system "strict"
     protect_home true
-    read_write_directories "/srv/%i.apis.dev.openstreetmap.org/logs"
+    read_write_paths "/srv/%i.apis.dev.openstreetmap.org/logs"
     no_new_privileges true
   end
 
@@ -309,7 +309,7 @@ if node[:postgresql][:clusters][:"14/main"]
     private_devices true
     protect_system "strict"
     protect_home true
-    read_write_directories ["/srv/%i.apis.dev.openstreetmap.org/logs", "/srv/%i.apis.dev.openstreetmap.org/rails/tmp"]
+    read_write_paths ["/srv/%i.apis.dev.openstreetmap.org/logs", "/srv/%i.apis.dev.openstreetmap.org/rails/tmp"]
     no_new_privileges true
     restart "on-failure"
   end
