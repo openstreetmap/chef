@@ -383,8 +383,8 @@ groups:
   - name: overpass
     rules:
       - alert: overpass osm database age
-        expr: overpass_database_age_seconds{database="osm"} > 1800
-        for: 5m
+        expr: overpass_database_age_seconds{database="osm"} > 3600
+        for: 1h
         labels:
           alertgroup: overpass
         annotations:
