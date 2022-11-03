@@ -602,7 +602,8 @@ systemd_service "expire-tiles" do
   protect_system "strict"
   protect_home true
   read_write_paths [
-    "/srv/tile.openstreetmap.org/tiles/%i",
+    "/store/database/nodes",
+    "/store/tiles/%i",
     "/var/lib/replicate/expire-queue",
     "/var/log/tile"
   ]
