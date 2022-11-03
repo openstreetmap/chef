@@ -286,8 +286,7 @@ systemd_service "replication-minutely" do
   protect_home true
   read_write_paths [
     "/run/replication",
-    "/store/replication/minute",
-    "/store/planet/replication/minute",
+    "/store",
     "/var/lib/replication/minute"
   ]
   restrict_address_families %w[AF_INET AF_INET6]
