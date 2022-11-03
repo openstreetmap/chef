@@ -164,8 +164,9 @@ systemd_service "users-agreed" do
   nice 10
   private_tmp true
   private_devices true
-  protect_system "full"
+  protect_system "strict"
   protect_home true
+  read_write_paths "/store/planet/users_agreed"
   restrict_address_families %w[AF_INET AF_INET6]
   no_new_privileges true
 end
@@ -182,8 +183,9 @@ systemd_service "users-deleted" do
   nice 10
   private_tmp true
   private_devices true
-  protect_system "full"
+  protect_system "strict"
   protect_home true
+  read_write_paths "/store/planet/users_deleted"
   restrict_address_families %w[AF_INET AF_INET6]
   no_new_privileges true
 end
@@ -215,8 +217,12 @@ systemd_service "replication-changesets" do
   exec_start "/usr/local/bin/replicate-changesets /etc/replication/changesets.conf"
   private_tmp true
   private_devices true
-  protect_system "full"
+  protect_system "strict"
   protect_home true
+  read_write_paths [
+    "/run/replication",
+    "/store/planet/replication/changesets"
+  ]
   restrict_address_families %w[AF_INET AF_INET6]
   no_new_privileges true
 end
@@ -276,8 +282,14 @@ systemd_service "replication-minutely" do
   exec_start "/usr/local/bin/replicate-minute"
   private_tmp true
   private_devices true
-  protect_system "full"
+  protect_system "strict"
   protect_home true
+  read_write_paths [
+    "/run/replication",
+    "/store/replication/minute",
+    "/store/planet/replication/minute",
+    "/var/lib/replication/minute"
+  ]
   restrict_address_families %w[AF_INET AF_INET6]
   no_new_privileges true
 end
@@ -322,8 +334,12 @@ systemd_service "replication-hourly" do
   environment "LD_PRELOAD" => "/opt/flush/flush.so"
   private_tmp true
   private_devices true
-  protect_system "full"
+  protect_system "strict"
   protect_home true
+  read_write_paths [
+    "/store/planet/replication/hour",
+    "/var/lib/replication/hour"
+  ]
   restrict_address_families %w[AF_INET AF_INET6]
   no_new_privileges true
 end
@@ -366,8 +382,12 @@ systemd_service "replication-daily" do
   environment "LD_PRELOAD" => "/opt/flush/flush.so"
   private_tmp true
   private_devices true
-  protect_system "full"
+  protect_system "strict"
   protect_home true
+  read_write_paths [
+    "/store/planet/replication/day",
+    "/var/lib/replication/day"
+  ]
   restrict_address_families %w[AF_INET AF_INET6]
   no_new_privileges true
 end
@@ -386,8 +406,9 @@ systemd_service "replication-cleanup" do
   private_tmp true
   private_devices true
   private_network true
-  protect_system "full"
+  protect_system "strict"
   protect_home true
+  read_write_paths "/var/lib/replication"
   no_new_privileges true
 end
 
