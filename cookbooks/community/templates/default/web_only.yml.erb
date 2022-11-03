@@ -21,7 +21,7 @@ links:
 
 # Workaround bug: https://github.com/discourse/discourse_docker/pull/505
 # params:
-#  version: v2.8.9
+#  version: v2.8.10
 
 env:
   LC_ALL: en_US.UTF-8
@@ -99,8 +99,8 @@ hooks:
     - exec:
         cd: $home
         cmd:
-          - git fetch --depth=1 origin tag v2.8.9 --no-tags
-          - git checkout v2.8.9
+          - git fetch --depth=1 origin tag v2.8.10 --no-tags
+          - git checkout v2.8.10
   after_ssl:
     - replace:
         filename: "/etc/nginx/conf.d/discourse.conf"
