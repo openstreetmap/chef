@@ -284,8 +284,12 @@ systemd_service "update-lowzoom@" do
   private_tmp true
   private_devices true
   private_network true
-  protect_system "full"
+  protect_system "strict"
   protect_home true
+  read_write_paths [
+    "/srv/tile.openstreetmap.org/tiles/%i",
+    "/var/log/tile"
+  ]
   no_new_privileges true
   restart "on-failure"
 end
@@ -546,7 +550,7 @@ systemd_service "tile-ratelimit" do
   private_tmp true
   private_devices true
   private_network true
-  protect_system "full"
+  protect_system "strict"
   protect_home true
   read_write_paths "/srv/tile.openstreetmap.org/conf"
   no_new_privileges true
@@ -595,8 +599,13 @@ systemd_service "expire-tiles" do
   standard_output "null"
   private_tmp true
   private_devices true
-  protect_system "full"
+  protect_system "strict"
   protect_home true
+  read_write_paths [
+    "/srv/tile.openstreetmap.org/tiles/%i",
+    "/var/lib/replicate/expire-queue",
+    "/var/log/tile"
+  ]
   no_new_privileges true
 end
 
@@ -618,8 +627,13 @@ systemd_service "replicate" do
   exec_start "/usr/local/bin/replicate"
   private_tmp true
   private_devices true
-  protect_system "full"
+  protect_system "strict"
   protect_home true
+  read_write_paths [
+    "/store/database/nodes",
+    "/var/lib/replicate",
+    "/var/log/tile"
+  ]
   no_new_privileges true
   restart "on-failure"
 end
@@ -652,8 +666,9 @@ systemd_service "render-lowzoom" do
   private_tmp true
   private_devices true
   private_network true
-  protect_system "full"
+  protect_system "strict"
   protect_home true
+  read_write_paths "/var/log/tile"
   no_new_privileges true
 end
 
