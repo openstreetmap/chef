@@ -63,11 +63,6 @@ directory "/srv/imagery/common" do
   recursive true
 end
 
-directory "/srv/imagery/common/ostn02-ntv2-data" do
-  recursive true
-  action :delete
-end
-
 # Pre-download uk_os_OSTN15_NTv2_OSGBtoETRS.tif used for EPSG:27700 conversions
 execute "uk_os_OSTN15_NTv2_OSGBtoETRS.tif" do
   command "projsync --file uk_os_OSTN15_NTv2_OSGBtoETRS.tif --system-directory"
