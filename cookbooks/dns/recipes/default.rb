@@ -174,12 +174,9 @@ systemd_service "dns-check" do
   description "Rebuild DNS zones with GeoDNS changes"
   exec_start "/usr/local/bin/dns-check"
   user "git"
-  private_tmp true
-  private_devices true
-  protect_system "strict"
-  protect_home true
+  sandbox :enable_network => true
+  proc_subset "all"
   read_write_paths "/var/lib/dns"
-  no_new_privileges true
 end
 
 systemd_timer "dns-check" do
