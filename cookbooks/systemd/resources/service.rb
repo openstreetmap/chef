@@ -100,12 +100,47 @@ property :io_scheduling_class, [Integer, String]
 property :io_scheduling_priority, Integer
 property :kill_mode, String,
          :is => %w[control-group process mixed none]
+property :sandbox, [true, false, Hash]
 
 action :create do
   service_variables = new_resource.to_hash
 
   unless new_resource.dropin
     service_variables[:type] ||= "simple"
+  end
+
+  if new_resource.sandbox
+    service_variables[:protect_proc] = "invisible" unless property_is_set?(:protect_proc)
+    service_variables[:proc_subset] = "pid" unless property_is_set?(:proc_subset)
+    service_variables[:capability_bounding_set] = [] unless property_is_set?(:capability_bounding_set)
+    service_variables[:no_new_privileges] = true unless property_is_set?(:no_new_privileges)
+    service_variables[:protect_system] = "strict" unless property_is_set?(:protect_system)
+    service_variables[:protect_home] = true unless property_is_set?(:protect_home)
+    service_variables[:private_tmp] = true unless property_is_set?(:private_tmp)
+    service_variables[:private_devices] = true unless property_is_set?(:private_devices)
+    service_variables[:private_network] = true unless property_is_set?(:private_network)
+    service_variables[:private_ipc] = true unless property_is_set?(:private_ipc)
+    service_variables[:private_users] = true unless property_is_set?(:private_users)
+    service_variables[:protect_hostname] = true unless property_is_set?(:protect_hostname)
+    service_variables[:protect_clock] = true unless property_is_set?(:protect_clock)
+    service_variables[:protect_kernel_tunables] = true unless property_is_set?(:protect_kernel_tunables)
+    service_variables[:protect_kernel_modules] = true unless property_is_set?(:protect_kernel_modules)
+    service_variables[:protect_kernel_logs] = true unless property_is_set?(:protect_kernel_logs)
+    service_variables[:protect_control_groups] = true unless property_is_set?(:protect_control_groups)
+    service_variables[:restrict_address_families] = "none" unless property_is_set?(:restrict_address_families)
+    service_variables[:restrict_namespaces] = true unless property_is_set?(:restrict_namespaces)
+    service_variables[:lock_personality] = true unless property_is_set?(:lock_personality)
+    service_variables[:memory_deny_write_execute] = true unless property_is_set?(:memory_deny_write_execute)
+    service_variables[:restrict_realtime] = true unless property_is_set?(:restrict_realtime)
+    service_variables[:restrict_suid_sgid] = true unless property_is_set?(:restrict_suid_sgid)
+    service_variables[:remove_ipc] = true unless property_is_set?(:remove_ipc)
+    service_variables[:system_call_filter] = "@system-service" unless property_is_set?(:system_call_filter)
+    service_variables[:system_call_architectures] = "native" unless property_is_set?(:system_call_architectures)
+
+    if sandbox_option(:enable_network)
+      service_variables[:private_network] = false
+      service_variables[:restrict_address_families] = Array(service_variables[:restrict_address_families]).append("AF_INET", "AF_INET6").reject { |f| f == "none" }
+    end
   end
 
   if new_resource.environment_file.is_a?(Hash)
@@ -167,6 +202,10 @@ action :delete do
 end
 
 action_class do
+  def sandbox_option(option)
+    new_resource.sandbox[option] if new_resource.sandbox.is_a?(Hash)
+  end
+
   def dropin_directory
     "/etc/systemd/system/#{new_resource.service}.service.d"
   end
