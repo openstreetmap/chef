@@ -118,7 +118,13 @@ systemd_service "planetdump@" do
   private_tmp true
   protect_system "strict"
   protect_home true
-  read_write_paths ["/var/log/exim4", "/var/spool/exim4"]
+  read_write_paths [
+    "/store/planetdump",
+    "/store/planet/pbf",
+    "/store/planet/planet",
+    "/var/log/exim4",
+    "/var/spool/exim4"
+  ]
 end
 
 cron_d "planet-dump-mirror" do
