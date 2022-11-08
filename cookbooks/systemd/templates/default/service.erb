@@ -115,7 +115,7 @@ ProcSubset=<%= @proc_subset %>
 NoNewPrivileges=<%= @no_new_privileges %>
 <% end -%>
 <% if @capability_bounding_set -%>
-CapabilityBoundingSet=<%= Array(@capability_bounding_set).join(" ") %>
+CapabilityBoundingSet=<%= Array(@capability_bounding_set).sort.uniq.join(" ") %>
 <% end -%>
 <% if @protect_system -%>
 ProtectSystem=<%= @protect_system %>
@@ -124,13 +124,13 @@ ProtectSystem=<%= @protect_system %>
 ProtectHome=<%= @protect_home %>
 <% end -%>
 <% if @read_write_paths -%>
-ReadWritePaths=<%= Array(@read_write_paths).join(" ") %>
+ReadWritePaths=<%= Array(@read_write_paths).sort.uniq.join(" ") %>
 <% end -%>
 <% if @read_only_paths -%>
-ReadOnlyPaths=<%= Array(@read_only_paths).join(" ") %>
+ReadOnlyPaths=<%= Array(@read_only_paths).sort.uniq.join(" ") %>
 <% end -%>
 <% if @inaccessible_paths -%>
-InaccessiblePaths=<%= Array(@inaccessible_paths).join(" ") %>
+InaccessiblePaths=<%= Array(@inaccessible_paths).sort.uniq.join(" ") %>
 <% end -%>
 <% if @private_tmp -%>
 PrivateTmp=<%= @private_tmp %>
@@ -166,10 +166,10 @@ ProtectKernelLogs=<%= @protect_kernel_logs %>
 ProtectControlGroups=<%= @protect_control_groups %>
 <% end -%>
 <% if @restrict_address_families -%>
-RestrictAddressFamilies=<%= Array(@restrict_address_families).join(" ") %>
+RestrictAddressFamilies=<%= Array(@restrict_address_families).sort.uniq.join(" ") %>
 <% end -%>
 <% if @restrict_namespaces -%>
-RestrictNamespaces=<%= Array(@restrict_namespaces).join(" ") %>
+RestrictNamespaces=<%= Array(@restrict_namespaces).sort.uniq.join(" ") %>
 <% end -%>
 <% if @lock_personality -%>
 LockPersonality=<%= @lock_personality %>
@@ -190,7 +190,7 @@ RemoveIPC=<%= @remove_ipc %>
 SystemCallFilter=<%= Array(@system_call_filter).join(" ") %>
 <% end -%>
 <% if @system_call_architectures -%>
-SystemCallArchitectures=<%= Array(@system_call_architectures).join(" ") %>
+SystemCallArchitectures=<%= Array(@system_call_architectures).sort.uniq.join(" ") %>
 <% end -%>
 <% if @tasks_max -%>
 TasksMax=<%= @tasks_max %>
