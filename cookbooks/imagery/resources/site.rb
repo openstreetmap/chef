@@ -86,7 +86,7 @@ action :create do
   end
 
   layers = Dir.glob("/srv/imagery/layers/#{new_resource.site}/*.yml").collect do |path|
-    YAML.safe_load(::File.read(path), [Symbol])
+    YAML.safe_load(::File.read(path), :permitted_classes => [Symbol])
   end
 
   declare_resource :template, "/srv/#{new_resource.site}/imagery.js" do
