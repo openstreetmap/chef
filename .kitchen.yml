@@ -1,7 +1,7 @@
 ---
 driver:
   name: dokken
-  chef_version: 17
+  chef_version: 18
   volumes:
     - /var/lib/docker
   env:
