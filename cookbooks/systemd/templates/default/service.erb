@@ -105,14 +105,17 @@ StandardOutput=<%= @standard_output %>
 <% if @standard_error -%>
 StandardError=<%= @standard_error %>
 <% end -%>
-<% if @private_tmp -%>
-PrivateTmp=<%= @private_tmp %>
+<% if @protect_proc -%>
+ProtectProc=<%= @protect_proc %>
 <% end -%>
-<% if @private_devices -%>
-PrivateDevices=<%= @private_devices %>
+<% if @proc_subset -%>
+ProcSubset=<%= @proc_subset %>
 <% end -%>
-<% if @private_network -%>
-PrivateNetwork=<%= @private_network %>
+<% if @no_new_privileges -%>
+NoNewPrivileges=<%= @no_new_privileges %>
+<% end -%>
+<% if @capability_bounding_set -%>
+CapabilityBoundingSet=<%= Array(@capability_bounding_set).join(" ") %>
 <% end -%>
 <% if @protect_system -%>
 ProtectSystem=<%= @protect_system %>
@@ -129,11 +132,65 @@ ReadOnlyPaths=<%= Array(@read_only_paths).join(" ") %>
 <% if @inaccessible_paths -%>
 InaccessiblePaths=<%= Array(@inaccessible_paths).join(" ") %>
 <% end -%>
+<% if @private_tmp -%>
+PrivateTmp=<%= @private_tmp %>
+<% end -%>
+<% if @private_devices -%>
+PrivateDevices=<%= @private_devices %>
+<% end -%>
+<% if @private_network -%>
+PrivateNetwork=<%= @private_network %>
+<% end -%>
+<% if @private_ipc -%>
+PrivateIPC=<%= @private_ipc %>
+<% end -%>
+<% if @private_users -%>
+PrivateUsers=<%= @private_users %>
+<% end -%>
+<% if @protect_hostname -%>
+ProtectHostname=<%= @protect_hostname %>
+<% end -%>
+<% if @protect_clock -%>
+ProtectClock=<%= @protect_clock %>
+<% end -%>
+<% if @protect_kernel_tunables -%>
+ProtectKernelTunables=<%= @protect_kernel_tunables %>
+<% end -%>
+<% if @protect_kernel_modules -%>
+ProtectKernelModules=<%= @protect_kernel_modules %>
+<% end -%>
+<% if @protect_kernel_logs -%>
+ProtectKernelLogs=<%= @protect_kernel_logs %>
+<% end -%>
+<% if @protect_control_groups -%>
+ProtectControlGroups=<%= @protect_control_groups %>
+<% end -%>
 <% if @restrict_address_families -%>
 RestrictAddressFamilies=<%= Array(@restrict_address_families).join(" ") %>
 <% end -%>
-<% if @no_new_privileges -%>
-NoNewPrivileges=<%= @no_new_privileges %>
+<% if @restrict_namespaces -%>
+RestrictNamespaces=<%= Array(@restrict_namespaces).join(" ") %>
+<% end -%>
+<% if @lock_personality -%>
+LockPersonality=<%= @lock_personality %>
+<% end -%>
+<% if @memory_deny_write_execute -%>
+MemoryDenyWriteExecute=<%= @memory_deny_write_execute %>
+<% end -%>
+<% if @restrict_realtime -%>
+RestrictRealtime=<%= @restrict_realtime %>
+<% end -%>
+<% if @restrict_suid_sgid -%>
+RestrictSUIDSGID=<%= @restrict_suid_sgid %>
+<% end -%>
+<% if @remove_ipc -%>
+RemoveIPC=<%= @remove_ipc %>
+<% end -%>
+<% if @system_call_filter -%>
+SystemCallFilter=<%= Array(@system_call_filter).join(" ") %>
+<% end -%>
+<% if @system_call_architectures -%>
+SystemCallArchitectures=<%= Array(@system_call_architectures).join(" ") %>
 <% end -%>
 <% if @tasks_max -%>
 TasksMax=<%= @tasks_max %>
