@@ -35,6 +35,7 @@ package %w[
   libwww-perl
   libxml-treebuilder-perl
   libxml-writer-perl
+  libyaml-perl
   libyaml-libyaml-perl
   lockfile-progs
 ]
