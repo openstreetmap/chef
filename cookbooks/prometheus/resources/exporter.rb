@@ -109,7 +109,23 @@ action_class do
   end
 
   def executable_path
-    "/opt/prometheus-exporters/exporters/#{new_resource.exporter}/#{new_resource.exporter}_exporter"
+    if ::File.exist?("#{executable_directory}/#{executable_name}_#{executable_architecture}")
+      "#{executable_directory}/#{executable_name}_#{executable_architecture}"
+    else
+      "#{executable_directory}/#{executable_name}"
+    end
+  end
+
+  def executable_directory
+    "/opt/prometheus-exporters/exporters/#{new_resource.exporter}"
+  end
+
+  def executable_name
+    "#{new_resource.exporter}_exporter"
+  end
+
+  def executable_architecture
+    node[:cpu][:architecture]
   end
 
   def executable_options
