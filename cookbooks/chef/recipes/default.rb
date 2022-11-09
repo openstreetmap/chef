@@ -36,11 +36,7 @@ Dir.glob("#{cache_dir}/chef_*.deb").each do |deb|
   end
 end
 
-ubuntu_release = if node[:lsb][:release].to_f < 22.04
-                   node[:lsb][:release]
-                 else
-                   "20.04"
-                 end
+ubuntu_release = node[:lsb][:release]
 
 remote_file "#{cache_dir}/#{chef_package}" do
   source "https://packages.chef.io/files/stable/chef/#{chef_version}/ubuntu/#{ubuntu_release}/#{chef_package}"
