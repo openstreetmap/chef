@@ -82,12 +82,8 @@ systemd_service "blogs-update" do
   description "Update blog aggregator"
   exec_start "/usr/local/bin/blogs-update"
   user "blogs"
-  private_tmp true
-  private_devices true
-  protect_system "strict"
-  protect_home true
+  sandbox :enable_network => true
   read_write_paths "/srv/blogs.openstreetmap.org"
-  no_new_privileges true
 end
 
 systemd_timer "blogs-update" do
