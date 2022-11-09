@@ -10,7 +10,8 @@ default_attributes(
         :family => :inet,
         :address => "172.31.37.101",
         :prefix => "20",
-        :gateway => "172.31.32.1"
+        :gateway => "172.31.32.1",
+        :public_address => "3.144.0.72"
       }
     }
   }
