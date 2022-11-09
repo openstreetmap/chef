@@ -123,21 +123,6 @@ pg_statio_user_tables:
         description: "Number of buffer hits in this table's TOAST table indexes (if any)"
 <% end -%>
 
-pg_database:
-  query: "SELECT pg_database.oid AS datid, pg_database.datname, pg_database_size(pg_database.datname) AS size_bytes FROM pg_database"
-  master: true
-  cache_seconds: 30
-  metrics:
-    - datid:
-        usage: "LABEL"
-        description: "ID of the database"
-    - datname:
-        usage: "LABEL"
-        description: "Name of the database"
-    - size_bytes:
-        usage: "GAUGE"
-        description: "Disk space used by the database"
-
 pg_unfrozen_ids:
   query: "SELECT current_database() AS datname, max(age(relfrozenxid)) AS xid_age, max(mxid_age(relminmxid)) AS mxid_age FROM pg_class WHERE relkind IN ('r', 'm')"
   metrics:
