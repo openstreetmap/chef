@@ -16,9 +16,13 @@ default_attributes(
         :status => :user,
         :shell => "/usr/bin/git-shell"
       },
+      :stereo => {
+        :status => :user,
+        :shell => "/usr/bin/git-shell"
+      },
       :git => {
         :status => :role,
-        :members => [:tomh, :grant, :matt, :lonvia, :yellowbkpk]
+        :members => [:tomh, :grant, :matt, :lonvia, :yellowbkpk, :stereo]
       }
     }
   },
