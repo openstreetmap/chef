@@ -74,11 +74,8 @@ systemd_service "gdnsd-reload" do
   user "root"
   exec_start "/bin/systemctl reload-or-restart gdnsd"
   standard_output "null"
-  private_tmp true
-  private_devices true
-  protect_system "strict"
-  protect_home true
-  no_new_privileges true
+  sandbox true
+  restrict_address_families "AF_UNIX"
 end
 
 systemd_path "gdnsd-reload" do
