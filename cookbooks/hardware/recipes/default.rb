@@ -585,7 +585,7 @@ if File.exist?("/etc/mdadm/mdadm.conf")
     content mdadm_conf
   end
 
-  service "mdadm" do
+  service "mdmonitor" do
     action :nothing
     subscribes :restart, "file[/etc/mdadm/mdadm.conf]"
   end
