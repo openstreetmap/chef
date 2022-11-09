@@ -199,7 +199,11 @@ directory "/srv/tile.openstreetmap.org/data" do
   mode "755"
 end
 
-package "mapnik-utils"
+package %w[
+  mapnik-utils
+  tar
+  unzip
+]
 
 node[:tile][:data].each_value do |data|
   url = data[:url]
@@ -218,8 +222,6 @@ node[:tile][:data].each_value do |data|
   end
 
   if file =~ /\.tgz$/
-    package "tar"
-
     execute file do
       action :nothing
       command "tar -zxf #{file} -C #{directory}"
@@ -227,8 +229,6 @@ node[:tile][:data].each_value do |data|
       group "tile"
     end
   elsif file =~ /\.tar\.bz2$/
-    package "tar"
-
     execute file do
       action :nothing
       command "tar -jxf #{file} -C #{directory}"
@@ -236,8 +236,6 @@ node[:tile][:data].each_value do |data|
       group "tile"
     end
   elsif file =~ /\.zip$/
-    package "unzip"
-
     execute file do
       action :nothing
       command "unzip -qq -o #{file} -d #{directory}"
