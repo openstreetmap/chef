@@ -4,7 +4,7 @@ description "Role applied to all tile servers"
 default_attributes(
   :accounts => {
     :users => {
-      :pnorman => { :status => :user },
+      :pnorman => { :status => :administrator },
       :tile => {
         :members => [:jburgess, :tomh, :pnorman]
       }
