@@ -149,7 +149,7 @@ groups:
         for: 15m
         labels:
           alertgroup: fastly
-      - alert: multipe fastly healthchecks failing
+      - alert: multiple fastly healthchecks failing
         expr: count(fastly_healthcheck_status == 0) > 4
         for: 5m
         labels:
