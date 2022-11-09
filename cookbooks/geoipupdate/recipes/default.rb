@@ -42,12 +42,8 @@ systemd_service "geoipupdate" do
   description "Update GeoIP databases"
   user "root"
   exec_start "/usr/bin/geoipupdate"
-  private_tmp true
-  private_devices true
-  protect_system "strict"
-  protect_home true
+  sandbox :enable_network => true
   read_write_paths node[:geoipupdate][:directory]
-  no_new_privileges true
 end
 
 systemd_timer "geoipupdate" do
