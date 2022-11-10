@@ -174,6 +174,8 @@ end
 
 prometheus_exporter "postgres" do
   port 9187
+  scrape_interval "30s"
+  scrape_timeout "30s"
   user "postgres"
   options "--extend.query-path=/etc/prometheus/exporters/postgres_queries.yml"
   environment "DATA_SOURCE_URI" => uris.sort.uniq.first,
