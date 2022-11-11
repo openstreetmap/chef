@@ -16,6 +16,11 @@ default_attributes(
     :meta_mode => "no",
     :compression_mode => "no",
     :restricted_api => true
+  },
+  :prometheus => {
+    :files => %w[
+      /srv/query.openstreetmap.org/diffs/latest.osc
+    ]
   }
 )
 
