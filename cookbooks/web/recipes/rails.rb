@@ -146,8 +146,8 @@ rails_port "www.openstreetmap.org" do
   trace_icon_storage "gps_images"
   avatar_storage_url "https://openstreetmap-user-avatars.s3.dualstack.eu-west-1.amazonaws.com"
   trace_image_storage_url "https://openstreetmap-gps-images.s3.dualstack.eu-west-1.amazonaws.com"
-  overpass_url "https://query.openstreetmap.org/query-features"
-  overpass_credentials true
+  # overpass_url "https://query.openstreetmap.org/query-features"
+  # overpass_credentials true
 end
 
 systemd_service "rails-jobs@" do
