@@ -14,7 +14,7 @@ default_attributes(
   :overpass => {
     :fqdn => "query.openstreetmap.org",
     :meta_mode => "no",
-    :compression_mode => "no",
+    :compression_mode => "lz4",
     :restricted_api => true
   },
   :prometheus => {
