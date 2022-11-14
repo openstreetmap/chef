@@ -94,12 +94,8 @@ systemd_service "gps-update" do
   working_directory "/srv/gps-tile.openstreetmap.org"
   exec_start "/srv/gps-tile.openstreetmap.org/updater/update"
   nice 10
-  private_tmp true
-  private_devices true
-  protect_system "strict"
-  protect_home true
+  sandbox :enable_network => true
   read_write_paths "/srv/gps-tile.openstreetmap.org"
-  no_new_privileges true
   restart "on-failure"
 end
 
