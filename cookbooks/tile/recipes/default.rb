@@ -275,8 +275,8 @@ nodejs_package "carto"
 
 systemd_service "update-lowzoom@" do
   description "Low zoom tile update service for %i layer"
-  conflicts "render-lowzoom.service"
   user "tile"
+  exec_start_pre "+/bin/systemctl stop render-lowzoom.service"
   exec_start "/bin/bash /usr/local/bin/update-lowzoom-%i"
   runtime_directory "update-lowzoom-%i"
   private_tmp true
