@@ -409,11 +409,11 @@ intel_nvmes = nvmes.select { |pci| pci[:vendor_name] == "Intel Corporation" }
 if !intel_ssds.empty? || !intel_nvmes.empty?
   package "unzip"
 
-  sst_tool_version = "2.1"
-  sst_package_version = "#{sst_tool_version}.352-0"
+  sst_tool_version = "1.3"
+  sst_package_version = "#{sst_tool_version}.208-0"
 
   remote_file "#{Chef::Config[:file_cache_path]}/SST_CLI_Linux_#{sst_tool_version}.zip" do
-    source "https://downloadmirror.intel.com/737923/SST_CLI_Linux_#{sst_tool_version}.zip"
+    source "https://downloadmirror.intel.com/743764/SST_CLI_Linux_#{sst_tool_version}.zip"
   end
 
   execute "#{Chef::Config[:file_cache_path]}/SST_CLI_Linux_#{sst_tool_version}.zip" do
