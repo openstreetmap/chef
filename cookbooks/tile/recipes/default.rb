@@ -97,6 +97,10 @@ file "/srv/tile.openstreetmap.org/conf/ip.map" do
   mode "644"
 end
 
+tile_directories = node[:tile][:styles].collect do |_, style|
+  style[:tile_directories].collect { |directory| directory[:name] }
+end.flatten.sort.uniq
+
 package "renderd"
 
 systemd_service "renderd" do
@@ -106,7 +110,7 @@ systemd_service "renderd" do
   limit_nofile 4096
   sandbox true
   restrict_address_families "AF_UNIX"
-  read_write_paths "/store/tiles"
+  read_write_paths tile_directories
   restart "on-failure"
 end
 
@@ -584,9 +588,8 @@ systemd_service "expire-tiles" do
   nice 10
   standard_output "null"
   sandbox true
-  read_write_paths [
+  read_write_paths tile_directories + [
     "/store/database/nodes",
-    "/store/tiles/%i",
     "/var/lib/replicate/expire-queue",
     "/var/log/tile"
   ]
@@ -666,10 +669,6 @@ template "/usr/local/bin/cleanup-tiles" do
   group "root"
   mode "755"
 end
-
-tile_directories = node[:tile][:styles].collect do |_, style|
-  style[:tile_directories].collect { |directory| directory[:name] }
-end.flatten.sort.uniq
 
 tile_directories.each do |directory|
   label = directory.gsub("/", "-")
