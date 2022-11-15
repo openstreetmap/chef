@@ -302,6 +302,7 @@ if node[:postgresql][:clusters][:"14/main"]
     exec_start "/srv/%i.apis.dev.openstreetmap.org/cgimap/openstreetmap-cgimap --daemon --port $CGIMAP_PORT --instances 5"
     exec_reload "/bin/kill -HUP $MAINPID"
     sandbox :enable_network => true
+    restrict_address_families "AF_UNIX"
     read_write_paths ["/srv/%i.apis.dev.openstreetmap.org/logs", "/srv/%i.apis.dev.openstreetmap.org/rails/tmp"]
     restart "on-failure"
   end
