@@ -312,6 +312,7 @@ systemd_service "replication-hourly" do
   exec_start "/usr/local/bin/osmosis -q --merge-replication-files workingDirectory=/var/lib/replication/hour"
   environment "LD_PRELOAD" => "/opt/flush/flush.so"
   sandbox :enable_network => true
+  memory_deny_write_execute false
   read_write_paths [
     "/store/planet/replication/hour",
     "/var/lib/replication/hour"
@@ -355,6 +356,7 @@ systemd_service "replication-daily" do
   exec_start "/usr/local/bin/osmosis -q --merge-replication-files workingDirectory=/var/lib/replication/day"
   environment "LD_PRELOAD" => "/opt/flush/flush.so"
   sandbox :enable_network => true
+  memory_deny_write_execute false
   read_write_paths [
     "/store/planet/replication/day",
     "/var/lib/replication/day"
