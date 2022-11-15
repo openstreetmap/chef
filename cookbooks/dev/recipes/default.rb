@@ -290,12 +290,8 @@ if node[:postgresql][:clusters][:"14/main"]
     exec_start "#{node[:ruby][:bundle]} exec rails jobs:work"
     restart "on-failure"
     nice 10
-    private_tmp true
-    private_devices true
-    protect_system "strict"
-    protect_home true
+    sandbox :enable_network => true
     read_write_paths "/srv/%i.apis.dev.openstreetmap.org/logs"
-    no_new_privileges true
   end
 
   systemd_service "cgimap@" do
@@ -305,12 +301,8 @@ if node[:postgresql][:clusters][:"14/main"]
     user "apis"
     exec_start "/srv/%i.apis.dev.openstreetmap.org/cgimap/openstreetmap-cgimap --daemon --port $CGIMAP_PORT --instances 5"
     exec_reload "/bin/kill -HUP $MAINPID"
-    private_tmp true
-    private_devices true
-    protect_system "strict"
-    protect_home true
+    sandbox :enable_network => true
     read_write_paths ["/srv/%i.apis.dev.openstreetmap.org/logs", "/srv/%i.apis.dev.openstreetmap.org/rails/tmp"]
-    no_new_privileges true
     restart "on-failure"
   end
 
