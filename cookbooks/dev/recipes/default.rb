@@ -291,6 +291,8 @@ if node[:postgresql][:clusters][:"14/main"]
     restart "on-failure"
     nice 10
     sandbox :enable_network => true
+    restrict_address_families "AF_UNIX"
+    memory_deny_write_execute false
     read_write_paths "/srv/%i.apis.dev.openstreetmap.org/logs"
   end
 
