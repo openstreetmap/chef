@@ -110,6 +110,9 @@ scrape_configs:
         regex: "[^/]+/([^/]+)/.*"
         target_label: __param_module
       - source_labels: [__address__]
+        regex: "[^/]+/([^/]+)/.*"
+        target_label: module
+      - source_labels: [__address__]
         regex: "[^/]+/[^/]+/(.*)"
         target_label: __address__
 
