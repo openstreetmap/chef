@@ -106,6 +106,7 @@ systemd_service "renderd" do
   limit_nofile 4096
   sandbox true
   restrict_address_families "AF_UNIX"
+  read_write_paths "/store/tiles"
   restart "on-failure"
 end
 
@@ -608,6 +609,7 @@ systemd_service "replicate" do
   user "tile"
   exec_start "/usr/local/bin/replicate"
   sandbox :enable_network => true
+  restrict_address_families "AF_UNIX"
   read_write_paths [
     "/store/database/nodes",
     "/var/lib/replicate",
