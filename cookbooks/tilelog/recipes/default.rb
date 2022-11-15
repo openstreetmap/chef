@@ -55,12 +55,8 @@ systemd_service "tilelog" do
   user "www-data"
   exec_start "/usr/local/bin/tilelog"
   nice 10
-  private_tmp true
-  private_devices true
-  protect_system "strict"
-  protect_home true
+  sandbox :enable_network => true
   read_write_paths tilelog_output_directory
-  no_new_privileges true
 end
 
 systemd_timer "tilelog" do
