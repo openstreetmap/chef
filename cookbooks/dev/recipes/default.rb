@@ -398,7 +398,7 @@ if node[:postgresql][:clusters][:"14/main"]
         action [:enable, :start]
         supports :restart => true
         subscribes :restart, "rails_port[#{site_name}]"
-        subscribes :restart, "systemd_service[#{name}]"
+        subscribes :restart, "systemd_service[rails-jobs@]"
         only_if "fgrep -q delayed_job #{rails_directory}/Gemfile.lock"
       end
 
@@ -436,7 +436,6 @@ if node[:postgresql][:clusters][:"14/main"]
           user "apis"
           group "apis"
           subscribes :run, "execute[#{cgimap_directory}/configure]", :immediately
-          notifies :restart, "service[cgimap@#{name}]"
         end
 
         template "/etc/default/cgimap-#{name}" do
@@ -448,11 +447,13 @@ if node[:postgresql][:clusters][:"14/main"]
                     :database_port => node[:postgresql][:clusters][:"14/main"][:port],
                     :database_name => database_name,
                     :log_directory => log_directory
-          notifies :restart, "service[cgimap@#{name}]"
         end
 
         service "cgimap@#{name}" do
           action [:start, :enable]
+          subscribes :restart, "execute[#{cgimap_directory}/Makefile]"
+          subscribes :restart, "template[/etc/default/cgimap-#{name}]"
+          subscribes :restart, "systemd_service[cgimap@]"
         end
       end
 
