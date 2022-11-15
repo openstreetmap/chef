@@ -104,12 +104,8 @@ systemd_service "renderd" do
   after "postgresql.service"
   wants "postgresql.service"
   limit_nofile 4096
-  private_tmp true
-  private_devices true
-  private_network true
-  protect_system "full"
-  protect_home true
-  no_new_privileges true
+  sandbox true
+  restrict_address_families "AF_UNIX"
   restart "on-failure"
 end
 
@@ -279,16 +275,12 @@ systemd_service "update-lowzoom@" do
   exec_start_pre "+/bin/systemctl stop render-lowzoom.service"
   exec_start "/bin/bash /usr/local/bin/update-lowzoom-%i"
   runtime_directory "update-lowzoom-%i"
-  private_tmp true
-  private_devices true
-  private_network true
-  protect_system "strict"
-  protect_home true
+  sandbox true
+  restrict_address_families "AF_UNIX"
   read_write_paths [
     "/srv/tile.openstreetmap.org/tiles/%i",
     "/var/log/tile"
   ]
-  no_new_privileges true
   restart "on-failure"
 end
 
@@ -545,13 +537,8 @@ systemd_service "tile-ratelimit" do
   group "adm"
   exec_start "/usr/local/bin/tile-ratelimit"
   nice 10
-  private_tmp true
-  private_devices true
-  private_network true
-  protect_system "strict"
-  protect_home true
+  sandbox true
   read_write_paths "/srv/tile.openstreetmap.org/conf"
-  no_new_privileges true
   restart "on-failure"
 end
 
@@ -595,17 +582,13 @@ systemd_service "expire-tiles" do
   exec_start "/usr/local/bin/expire-tiles"
   nice 10
   standard_output "null"
-  private_tmp true
-  private_devices true
-  protect_system "strict"
-  protect_home true
+  sandbox true
   read_write_paths [
     "/store/database/nodes",
     "/store/tiles/%i",
     "/var/lib/replicate/expire-queue",
     "/var/log/tile"
   ]
-  no_new_privileges true
 end
 
 systemd_path "expire-tiles" do
@@ -624,16 +607,12 @@ systemd_service "replicate" do
   wants "postgresql.service"
   user "tile"
   exec_start "/usr/local/bin/replicate"
-  private_tmp true
-  private_devices true
-  protect_system "strict"
-  protect_home true
+  sandbox :enable_network => true
   read_write_paths [
     "/store/database/nodes",
     "/var/lib/replicate",
     "/var/log/tile"
   ]
-  no_new_privileges true
   restart "on-failure"
 end
 
@@ -662,13 +641,9 @@ systemd_service "render-lowzoom" do
   condition_path_exists_glob "!/run/update-lowzoom-*"
   user "tile"
   exec_start "/usr/local/bin/render-lowzoom"
-  private_tmp true
-  private_devices true
-  private_network true
-  protect_system "strict"
-  protect_home true
+  sandbox true
+  restrict_address_families "AF_UNIX"
   read_write_paths "/var/log/tile"
-  no_new_privileges true
 end
 
 systemd_timer "render-lowzoom" do
