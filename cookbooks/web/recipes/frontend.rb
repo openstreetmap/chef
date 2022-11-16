@@ -68,19 +68,19 @@ service "rails-jobs@mailers" do
   action [:enable, :start]
   supports :restart => true
   subscribes :restart, "rails_port[www.openstreetmap.org]"
-  subscribes :restart, "systemd_service[rails-jobs]"
+  subscribes :restart, "systemd_service[rails-jobs@]"
 end
 
 service "rails-jobs@storage" do
   action [:enable, :start]
   supports :restart => true
   subscribes :restart, "rails_port[www.openstreetmap.org]"
-  subscribes :restart, "systemd_service[rails-jobs]"
+  subscribes :restart, "systemd_service[rails-jobs@]"
 end
 
 service "rails-jobs@traces" do
   action [:enable, :start]
   supports :restart => true
   subscribes :restart, "rails_port[www.openstreetmap.org]"
-  subscribes :restart, "systemd_service[rails-jobs]"
+  subscribes :restart, "systemd_service[rails-jobs@]"
 end
