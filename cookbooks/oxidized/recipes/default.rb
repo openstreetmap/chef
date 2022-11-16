@@ -147,11 +147,8 @@ systemd_service "oxidized" do
   environment "OXIDIZED_HOME" => "/etc/oxidized",
               "OXIDIZED_LOGS" => "/var/log/oxidized"
   nice 10
-  private_tmp true
-  private_devices true
-  protect_system "full"
-  protect_home true
-  no_new_privileges true
+  sandbox :enable_network => true
+  read_write_paths ["/run/oxidized", "/var/lib/oxidized", "/var/log/oxidized"]
   restart "on-failure"
   notifies :restart, "service[oxidized]"
 end
