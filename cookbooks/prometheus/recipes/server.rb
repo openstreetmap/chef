@@ -158,11 +158,8 @@ systemd_service "promscale" do
   user "prometheus"
   exec_start "/opt/promscale/bin/promscale --db.uri postgresql:///promscale?host=/run/postgresql&port=5432 --db.connections-max 400"
   limit_nofile 16384
-  private_tmp true
-  private_devices true
-  protect_system "strict"
-  protect_home true
-  no_new_privileges true
+  sandbox :enable_network => true
+  restrict_address_families "AF_UNIX"
 end
 
 if node[:prometheus][:promscale]
@@ -348,11 +345,7 @@ systemd_service "prometheus-karma" do
   description "Alert dashboard for Prometheus Alertmanager"
   user "prometheus"
   exec_start "/opt/prometheus-server/karma/karma-linux-amd64 --config.file=/etc/prometheus/karma.yml"
-  private_tmp true
-  private_devices true
-  protect_system "strict"
-  protect_home true
-  no_new_privileges true
+  sandbox :enable_network => true
   restart "on-failure"
 end
 
