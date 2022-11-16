@@ -353,6 +353,7 @@ service "prometheus-karma" do
   action [:enable, :start]
   subscribes :reload, "template[/etc/prometheus/karma.yml]"
   subscribes :restart, "archive_file[#{cache_dir}/karma-linux-amd64.tar.gz]"
+  subscribes :restart, "systemd_service[prometheus-karma]"
 end
 
 package "grafana-enterprise"
