@@ -159,11 +159,9 @@ systemd_service "rails-jobs@" do
   exec_start "#{node[:ruby][:bundle]} exec rails jobs:work"
   restart "on-failure"
   nice 10
-  private_tmp true
-  private_devices true
-  protect_system "full"
-  protect_home true
-  no_new_privileges true
+  sandbox :enable_network => true
+  memory_deny_write_execute false
+  read_write_paths "/var/log/web"
 end
 
 package "libjson-xs-perl"
@@ -196,12 +194,11 @@ systemd_service "api-statistics" do
   group "adm"
   exec_start "/usr/local/bin/api-statistics"
   nice 10
-  private_tmp true
-  private_devices true
-  private_network true
-  protect_system "full"
-  protect_home true
-  no_new_privileges true
+  sandbox true
+  read_write_paths [
+    "/srv/www.openstreetmap.org/rails/tmp",
+    "/var/lib/prometheus/node-exporter"
+  ]
   restart "on-failure"
 end
 
