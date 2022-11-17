@@ -113,12 +113,8 @@ action :create do
     group "imagery"
     exec_start "/usr/bin/multiwatch -f 8 --signal=TERM -- /usr/lib/cgi-bin/mapserv"
     standard_input "socket"
-    private_tmp true
-    private_devices true
-    private_network true
-    protect_system "full"
-    protect_home true
-    no_new_privileges true
+    sandbox true
+    restrict_address_families "AF_UNIX"
     # Terminate service after 30mins. Service is socket activated
     runtime_max_sec 1800
   end
