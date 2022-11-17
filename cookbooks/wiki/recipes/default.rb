@@ -140,3 +140,10 @@ cron_d "wiki-dump" do
   user "wiki"
   command "cd /srv/wiki.openstreetmap.org && php w/maintenance/dumpBackup.php --full --quiet --output=gzip:dump/dump.xml.gz"
 end
+
+cron_d "wiki-rdf-dump" do
+  minute "0"
+  hour "4"
+  user "wiki"
+  command "cd /srv/wiki.openstreetmap.org && php w/extensions/Wikibase/repo/maintenance/dumpRdf.php --wiki wiki --format ttl --flavor full-dump --entity-type item --entity-type property --no-cache --output /tmp/wikibase-rdf.ttl && gzip -9 /tmp/wikibase-rdf.ttl && mv /tmp/wikibase-rdf.ttl.gz /srv/wiki.openstreetmap.org/dump/wikibase-rdf.ttl.gz"
+end
