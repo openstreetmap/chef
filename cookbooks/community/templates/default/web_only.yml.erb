@@ -47,6 +47,7 @@ env:
 
   DISCOURSE_SMTP_ADDRESS: <%= node[:exim][:smarthost_via].split(":", 2)[0] %>
   DISCOURSE_SMTP_PORT: <%= node[:exim][:smarthost_via].split(":", 2)[1] || "25" %>
+  DISCOURSE_SMTP_OPENSSL_VERIFY_MODE: none
   DISCOURSE_SMTP_USER_NAME:
   DISCOURSE_SMTP_PASSWORD:
   DISCOURSE_SMTP_DOMAIN: community.openstreetmap.org
