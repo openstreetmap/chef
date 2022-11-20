@@ -58,6 +58,16 @@ remote_directory node[:planet][:dump][:xml_history_directory] do
   files_mode "755"
 end
 
+remote_directory "/store/planet/cc-by-sa" do
+  source "ccbysa_cgi"
+  owner "www-data"
+  group "planet"
+  mode "775"
+  files_owner "root"
+  files_group "root"
+  files_mode "755"
+end
+
 remote_directory "/store/planet/cc-by-sa/full-experimental" do
   source "ccbysa_history_cgi"
   owner "www-data"
