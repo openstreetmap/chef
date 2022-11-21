@@ -131,6 +131,8 @@ package %w[
   libbz2-dev
   libpq-dev
   libproj-dev
+  liblua5.3-dev
+  lua5.3
   python3-pyosmium
   python3-psycopg2
   python3-dotenv
