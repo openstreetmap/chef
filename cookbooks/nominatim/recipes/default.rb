@@ -226,7 +226,8 @@ template "#{project_directory}/.env" do
             :dbname => node[:nominatim][:dbname],
             :flatnode_file => node[:nominatim][:flatnode_file],
             :log_file => "#{node[:nominatim][:logdir]}/query.log",
-            :tokenizer => node[:nominatim][:config][:tokenizer]
+            :tokenizer => node[:nominatim][:config][:tokenizer],
+            :forward_dependencies => node[:nominatim][:config][:forward_dependencies]
 end
 
 %w[wikimedia-importance.sql.gz gb_postcodes.csv.gz us_postcodes.csv.gz].each do |fname|

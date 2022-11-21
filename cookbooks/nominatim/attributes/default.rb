@@ -24,7 +24,8 @@ default[:nominatim][:fpm_pools] = {
 }
 
 default[:nominatim][:config] = {
-  :tokenizer => "icu"
+  :tokenizer => "icu",
+  :forward_dependencies => "no"
 }
 
 default[:nominatim][:redirects] = {}
