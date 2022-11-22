@@ -79,16 +79,6 @@ apache_module "deflate" do
   conf "deflate.conf.erb"
 end
 
-if node[:apache][:reqtimeout]
-  apache_module "reqtimeout" do
-    action [:enable]
-  end
-else
-  apache_module "reqtimeout" do
-    action [:disable]
-  end
-end
-
 apache_module "headers"
 apache_module "ssl"
 
