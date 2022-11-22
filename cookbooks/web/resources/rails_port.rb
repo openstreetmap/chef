@@ -405,10 +405,6 @@ action :create do
     only_if { new_resource.run_migrations }
   end
 
-  package "yarnpkg" do
-    only_if { new_resource.build_assets }
-  end
-
   bundle_exec "#{rails_directory}/package.json" do
     action :nothing
     directory rails_directory

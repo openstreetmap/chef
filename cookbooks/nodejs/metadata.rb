@@ -6,3 +6,4 @@ description       "Installs and configures Node.js"
 
 version           "1.0.0"
 supports          "ubuntu"
+depends           "apt"

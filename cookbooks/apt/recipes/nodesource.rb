@@ -1,8 +1,8 @@
 #
-# Cookbook:: nodejs
-# Recipe:: default
+# Cookbook:: apt
+# Recipe:: nodesource
 #
-# Copyright:: 2013, OpenStreetMap Foundation
+# Copyright:: 2022, Tom Hughes
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,16 +17,10 @@
 # limitations under the License.
 #
 
-include_recipe "apt::nodesource"
-include_recipe "apt::yarn"
+include_recipe "apt"
 
-package %w[libnode72 npm yarnpkg] do
-  action :purge
+apt_repository "nodesource" do
+  uri "https://deb.nodesource.com/node_18.x"
+  components ["main"]
+  key "1655A0AB68576280"
 end
-
-package %w[
-  nodejs
-  yarn
-  g++
-  make
-]
