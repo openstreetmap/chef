@@ -20,10 +20,6 @@
 include_recipe "apt::nodesource"
 include_recipe "apt::yarn"
 
-package %w[libnode72 npm yarnpkg] do
-  action :purge
-end
-
 package %w[
   nodejs
   yarn
