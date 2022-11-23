@@ -687,13 +687,9 @@ systemd_timer "cleanup-tiles@" do
 end
 
 tile_directories.each do |directory|
-  label = directory.gsub("/", "-")
+  label = directory[1..].gsub("/", "-")
 
-  cron_d "cleanup-tiles#{label}" do
-    action :delete
-  end
-
-  service "cleanup-tiles@#{label[1..]}.timer" do
+  service "cleanup-tiles@#{label}.timer" do
     action [:enable, :start]
   end
 end

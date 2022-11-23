@@ -43,10 +43,6 @@ systemd_timer "web-statistics" do
   on_calendar "00:00:00"
 end
 
-cron_d "statistics" do
-  action :delete
-end
-
 service "web-statistics.timer" do
   action [:enable, :start]
 end

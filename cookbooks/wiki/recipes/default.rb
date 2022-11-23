@@ -151,10 +151,6 @@ systemd_timer "wiki-dump" do
   on_calendar "02:00"
 end
 
-cron_d "wiki-dump" do
-  action :delete
-end
-
 service "wiki-dump.timer" do
   action [:enable, :start]
 end
@@ -178,10 +174,6 @@ end
 systemd_timer "wiki-rdf-dump" do
   description "Wiki RDF dump"
   on_calendar "04:00"
-end
-
-cron_d "wiki-rdf-dump" do
-  action :delete
 end
 
 service "wiki-rdf-dump.timer" do
