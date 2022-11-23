@@ -670,14 +670,31 @@ template "/usr/local/bin/cleanup-tiles" do
   mode "755"
 end
 
+systemd_service "cleanup-tiles@" do
+  description "Cleanup old tiles for /%I"
+  exec_start "/usr/local/bin/cleanup-tiles /%I"
+  user "_renderd"
+  io_scheduling_class "idle"
+  sandbox true
+  read_write_paths "/%I"
+end
+
+systemd_timer "cleanup-tiles@" do
+  description "Cleanup old tiles for /%I"
+  on_boot_sec "30m"
+  on_unit_inactive_sec "60m"
+  randomized_delay_sec "10m"
+end
+
 tile_directories.each do |directory|
   label = directory.gsub("/", "-")
 
   cron_d "cleanup-tiles#{label}" do
-    minute "0"
-    user "_renderd"
-    command "ionice -c 3 /usr/local/bin/cleanup-tiles #{directory}"
-    mailto "admins@openstreetmap.org"
+    action :delete
+  end
+
+  service "cleanup-tiles@#{label[1..]}.timer" do
+    action [:enable, :start]
   end
 end
 
