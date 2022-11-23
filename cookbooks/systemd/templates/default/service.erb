@@ -61,19 +61,25 @@ WorkingDirectory=<%= @working_directory %>
 <% if @dropin -%>
 ExecStartPre=
 <% end -%>
-ExecStartPre=<%= @exec_start_pre %>
+<% Array(@exec_start_pre).each do |exec_start_pre| -%>
+ExecStartPre=<%= exec_start_pre %>
+<% end -%>
 <% end -%>
 <% if @exec_start -%>
 <% if @dropin -%>
 ExecStart=
 <% end -%>
-ExecStart=<%= @exec_start %>
+<% Array(@exec_start).each do |exec_start| -%>
+ExecStart=<%= exec_start %>
+<% end -%>
 <% end -%>
 <% if @exec_start_post -%>
 <% if @dropin -%>
 ExecStartPost=
 <% end -%>
-ExecStartPost=<%= @exec_start_post %>
+<% Array(@exec_start_post).each do |exec_start_post| -%>
+ExecStartPost=<%= exec_start_post %>
+<% end -%>
 <% end -%>
 <% if @exec_stop -%>
 <% if @dropin -%>

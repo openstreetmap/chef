@@ -41,9 +41,9 @@ property :environment_file, [String, Hash]
 property :user, String
 property :group, String
 property :working_directory, String
-property :exec_start_pre, String
-property :exec_start, String
-property :exec_start_post, String
+property :exec_start_pre, [String, Array]
+property :exec_start, [String, Array]
+property :exec_start_post, [String, Array]
 property :exec_stop, String
 property :exec_reload, String
 property :runtime_directory, String

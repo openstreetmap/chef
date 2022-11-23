@@ -134,16 +134,56 @@ directory "/srv/wiki.openstreetmap.org/dump" do
   mode "0775"
 end
 
-cron_d "wiki-dump" do
-  minute "0"
-  hour "2"
+systemd_service "wiki-dump" do
+  description "Wiki dump"
+  type "oneshot"
+  exec_start "/usr/bin/php w/maintenance/dumpBackup.php --full --quiet --output=gzip:dump/dump.xml.gz"
+  working_directory "/srv/wiki.openstreetmap.org"
   user "wiki"
-  command "cd /srv/wiki.openstreetmap.org && php w/maintenance/dumpBackup.php --full --quiet --output=gzip:dump/dump.xml.gz"
+  sandbox :enable_network => true
+  memory_deny_write_execute false
+  restrict_address_families "AF_UNIX"
+  read_write_paths "/srv/wiki.openstreetmap.org/dump"
+end
+
+systemd_timer "wiki-dump" do
+  description "Wiki dump"
+  on_calendar "02:00"
+end
+
+cron_d "wiki-dump" do
+  action :delete
+end
+
+service "wiki-dump.timer" do
+  action [:enable, :start]
+end
+
+systemd_service "wiki-rdf-dump" do
+  description "Wiki RDF dump"
+  type "oneshot"
+  exec_start [
+    "/usr/bin/php w/extensions/Wikibase/repo/maintenance/dumpRdf.php --wiki wiki --format ttl --flavor full-dump --entity-type item --entity-type property --no-cache --output /tmp/wikibase-rdf.ttl",
+    "/usr/bin/gzip -9 /tmp/wikibase-rdf.ttl",
+    "/usr/bin/mv /tmp/wikibase-rdf.ttl.gz /srv/wiki.openstreetmap.org/dump/wikibase-rdf.ttl.gz"
+  ]
+  working_directory "/srv/wiki.openstreetmap.org"
+  user "wiki"
+  sandbox :enable_network => true
+  memory_deny_write_execute false
+  restrict_address_families "AF_UNIX"
+  read_write_paths "/srv/wiki.openstreetmap.org/dump"
+end
+
+systemd_timer "wiki-rdf-dump" do
+  description "Wiki RDF dump"
+  on_calendar "04:00"
 end
 
 cron_d "wiki-rdf-dump" do
-  minute "0"
-  hour "4"
-  user "wiki"
-  command "cd /srv/wiki.openstreetmap.org && php w/extensions/Wikibase/repo/maintenance/dumpRdf.php --wiki wiki --format ttl --flavor full-dump --entity-type item --entity-type property --no-cache --output /tmp/wikibase-rdf.ttl && gzip -9 /tmp/wikibase-rdf.ttl && mv /tmp/wikibase-rdf.ttl.gz /srv/wiki.openstreetmap.org/dump/wikibase-rdf.ttl.gz"
+  action :delete
+end
+
+service "wiki-rdf-dump.timer" do
+  action [:enable, :start]
 end
