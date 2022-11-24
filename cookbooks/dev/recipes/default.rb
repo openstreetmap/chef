@@ -239,7 +239,7 @@ search(:accounts, "*:*").each do |account|
                "memory_limit" => "128M",
                "post_max_size" => "32M",
                "upload_max_filesize" => "32M"
-    php_admin_values "sendmail_path" => "/usr/sbin/sendmail -t -i -f #{name}@errol.openstreetmap.org",
+    php_admin_values "sendmail_path" => "/usr/sbin/sendmail -t -i -f #{name}@dev.openstreetmap.org",
                      "open_basedir" => "/home/#{name}/:/tmp/:/usr/share/php/"
     php_flags "display_errors" => "on"
   end
