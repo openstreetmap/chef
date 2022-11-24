@@ -160,7 +160,7 @@ systemd_service "wiki-rdf-dump" do
   type "oneshot"
   exec_start [
     "/usr/bin/php w/extensions/Wikibase/repo/maintenance/dumpRdf.php --wiki wiki --format ttl --flavor full-dump --entity-type item --entity-type property --no-cache --output /tmp/wikibase-rdf.ttl",
-    "/usr/bin/gzip -9 /tmp/wikibase-rdf.ttl",
+    "/bin/gzip -9 /tmp/wikibase-rdf.ttl",
     "/usr/bin/mv /tmp/wikibase-rdf.ttl.gz /srv/wiki.openstreetmap.org/dump/wikibase-rdf.ttl.gz"
   ]
   working_directory "/srv/wiki.openstreetmap.org"
