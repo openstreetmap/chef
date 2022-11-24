@@ -25,6 +25,7 @@ package %w[
   exim4
   openssl
   ssl-cert
+  mailutils
 ]
 
 package "exim4-daemon-heavy" do
@@ -209,6 +210,13 @@ remote_directory "/etc/exim4/noreply" do
   files_group "Debian-exim"
   files_mode "755"
   purge true
+end
+
+template "/etc/mail.rc" do
+  source "mail.rc.erb"
+  owner "root"
+  group "root"
+  mode "644"
 end
 
 munin_plugin "exim_mailqueue"
