@@ -199,8 +199,21 @@ apache_site "matomo.openstreetmap.org" do
   template "apache.erb"
 end
 
-cron_d "matomo" do
-  minute "5"
+systemd_service "matomo-archive" do
+  description "Matomo report archiving"
+  exec_start "/usr/bin/php /srv/matomo.openstreetmap.org/console core:archive --quiet --url=https://matomo.openstreetmap.org/"
   user "www-data"
-  command "/usr/bin/php /srv/matomo.openstreetmap.org/console core:archive --quiet --url=https://matomo.openstreetmap.org/"
+  sandbox true
+  memory_deny_write_execute false
+  restrict_address_families "AF_UNIX"
+  read_write_paths "/opt/matomo-#{version}/matomo/tmp"
+end
+
+systemd_timer "matomo-archive" do
+  description "Matomo report archiving"
+  on_calendar "00:05"
+end
+
+service "matomo-archive.timer" do
+  action [:enable, :start]
 end
