@@ -16,7 +16,7 @@ subnet <%= interface[:network] %> netmask <%= interface[:netmask] %> {
   option routers <%= interface[:gateway] %>;
   option domain-name "<%= @domain %>";
   option domain-name-servers <%= interface[:gateway] %>;
-  option ntp-servers <%= node[:ntp][:servers].first %>;
+  option ntp-servers <%= node[:ntp][:servers].join(", ") %>;
 
   option time-offset 0;
   option PCode "UTC0";

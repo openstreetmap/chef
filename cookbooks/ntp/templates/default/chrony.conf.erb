@@ -19,7 +19,8 @@ allow 127.0.0.1/32
 allow ::1/128
 
 # Run an initial NTP sync on daemon startup
-initstepslew 30 time.cloudflare.com time.google.com <%= node[:ntp][:servers].join(" ") %>
+# Use a few IPs here to workaround DNSSEC failure if time is wrong: https://github.com/openstreetmap/operations/issues/654
+initstepslew 30 216.239.35.0 216.239.35.4 216.239.35.8 216.239.35.12 time.google.com time.cloudflare.com <%= node[:ntp][:servers].join(" ") %>
 
 <% if node[:lsb][:release].to_f >= 22.04 -%>
 # Use NTP sources found in /etc/chrony/sources.d.
