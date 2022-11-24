@@ -32,10 +32,13 @@ end
 
 systemd_service "web-statistics" do
   description "Generate web statistics"
-  exec_start "/usr/local/bin/statistics"
+  environment "RAILS_ENV" => "production"
   user "rails"
+  working_directory rails_directory
+  exec_start "/usr/local/bin/statistics"
   sandbox :enable_network => true
-  read_write_paths "#{rails_directory}/tmp"
+  memory_deny_write_execute false
+  read_write_paths ["#{rails_directory}/tmp", "/var/log/web"]
 end
 
 systemd_timer "web-statistics" do
