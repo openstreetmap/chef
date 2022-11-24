@@ -44,6 +44,9 @@ default_attributes(
     :tablespaces => {
       "daux" => "/data/tablespaces/daux",
       "iaux" => "/data/tablespaces/iaux"
+    },
+    :config => {
+      :forward_dependencies => "yes"
     }
 
   }
