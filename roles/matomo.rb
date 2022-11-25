@@ -5,10 +5,11 @@ default_attributes(
   :apache => {
     :mpm => "event",
     :event => {
-      :server_limit => 18,
-      :max_request_workers => 450,
-      :min_spare_threads => 50,
-      :max_spare_threads => 150,
+      :server_limit => 30,
+      :max_request_workers => 1000,
+      :threads_per_child => 50,
+      :min_spare_threads => 75,
+      :max_spare_threads => 175,
       :listen_cores_buckets_ratio => 4
     }
   },
