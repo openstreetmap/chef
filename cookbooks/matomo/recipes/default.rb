@@ -212,7 +212,8 @@ end
 
 systemd_timer "matomo-archive" do
   description "Matomo report archiving"
-  on_calendar "*:05"
+  on_boot_sec "30m"
+  on_unit_inactive_sec "30m"
 end
 
 service "matomo-archive.timer" do
