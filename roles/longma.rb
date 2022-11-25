@@ -52,6 +52,9 @@ default_attributes(
       "nominatim.openstreetmap.org" => {
         :max_children => 200
       }
+    },
+    :config => {
+      :forward_dependencies => "yes"
     }
   }
 )
