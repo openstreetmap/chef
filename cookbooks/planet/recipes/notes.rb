@@ -50,19 +50,43 @@ template "/usr/local/bin/planet-notes-dump" do
   variables :password => db_passwords["planetdump"]
 end
 
-cron_d "planet-notes-dump" do
-  minute "0"
-  hour "3"
+systemd_service "planet-notes-dump" do
+  description "Create notes dump"
+  exec_start "/usr/local/bin/planet-notes-dump"
   user "www-data"
-  command "/usr/local/bin/planet-notes-dump"
-  mailto "grant-smaug@firefishy.com"
+  sandbox :enable_network => true
+  read_write_paths "/store/planet/notes"
 end
 
-cron_d "planet-notes-cleanup" do
-  comment "Delete Planet Notes dump files older than 8 days"
-  minute "10"
-  hour "8"
+systemd_timer "planet-notes-dump" do
+  description "Create notes dump"
+  on_calendar "03:00"
+end
+
+service "planet-notes-dump.timer" do
+  action [:enable, :start]
+end
+
+template "/usr/local/bin/planet-notes-cleanup" do
+  source "planet-notes-cleanup.erb"
+  owner "root"
+  group "root"
+  mode "755"
+end
+
+systemd_service "planet-notes-cleanup" do
+  description "Delete old notes dumps"
+  exec_start "/usr/local/bin/planet-notes-cleanup"
   user "www-data"
-  command "find /store/planet/notes/20??/ -maxdepth 1 -type f -iname 'planet-notes-??????.osn*' -printf '\%T@ \%p\n' | sort -k 1nr | sed 's/^[^ ]* //' | tail -n +17 | xargs -r rm -f"
-  mailto "grant-smaug@firefishy.com"
+  sandbox true
+  read_write_paths "/store/planet/notes"
+end
+
+systemd_timer "planet-notes-cleanup" do
+  description "Delete old notes dumps"
+  on_calendar "08:10"
+end
+
+service "planet-notes-cleanup.timer" do
+  action [:enable, :start]
 end
