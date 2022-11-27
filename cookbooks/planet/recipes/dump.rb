@@ -125,9 +125,20 @@ systemd_service "planetdump@" do
   ]
 end
 
-cron_d "planet-dump-mirror" do
-  minute "*/10"
+systemd_service "planet-dump-mirror" do
+  description "Update planet dump mirrors"
+  exec_start "/usr/local/bin/planet-mirror-redirect-update"
   user "www-data"
-  command "/usr/local/bin/planet-mirror-redirect-update"
-  mailto "horntail-www-data-cron@firefishy.com"
+  sandbox :enable_network => true
+  read_write_paths "/store/planet/.htaccess"
+end
+
+systemd_timer "planet-dump-mirror" do
+  description "Update planet dump mirrors"
+  on_boot_sec "10min"
+  on_unit_inactive_sec "10min"
+end
+
+service "planet-dump-mirror.timer" do
+  action [:enable, :start]
 end
