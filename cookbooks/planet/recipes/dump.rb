@@ -130,6 +130,7 @@ systemd_service "planet-dump-mirror" do
   exec_start "/usr/local/bin/planet-mirror-redirect-update"
   user "www-data"
   sandbox :enable_network => true
+  memory_deny_write_execute false
   read_write_paths "/store/planet/.htaccess"
 end
 
