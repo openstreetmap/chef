@@ -115,9 +115,7 @@ systemd_service "planetdump@" do
   user "www-data"
   exec_start "/usr/local/bin/planetdump %i"
   memory_max "64G"
-  private_tmp true
-  protect_system "strict"
-  protect_home true
+  sandbox true
   read_write_paths [
     "/store/planetdump",
     "/store/planet/pbf",
