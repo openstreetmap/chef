@@ -23,6 +23,7 @@ include_recipe "accounts"
 include_recipe "apache"
 include_recipe "git"
 include_recipe "passenger"
+include_recipe "planet::current"
 include_recipe "ruby"
 
 package %w[
@@ -66,6 +67,25 @@ template "/etc/sudoers.d/taginfo" do
   owner "root"
   group "root"
   mode "440"
+end
+
+systemd_service "taginfo-update@" do
+  description "Taginfo update for %i"
+  wants "planet-update.service"
+  after "planet-update.service"
+  exec_start "/srv/%i/bin/update"
+  user "taginfo"
+  sandbox :enable_network => true
+  read_write_paths [
+    "/srv/%i/data",
+    "/srv/%i/sources",
+    "/var/log/taginfo/%i"
+  ]
+end
+
+systemd_timer "taginfo-update@" do
+  description "Taginfo update for %i"
+  on_calendar "01:37"
 end
 
 node[:taginfo][:sites].each do |site|
@@ -193,12 +213,8 @@ node[:taginfo][:sites].each do |site|
     directory "#{directory}/taginfo/web/public"
     variables :aliases => site_aliases
   end
-end
 
-template "/usr/local/bin/taginfo-update" do
-  source "taginfo-update.erb"
-  owner "root"
-  group "root"
-  mode "755"
-  variables :sites => node[:taginfo][:sites]
+  service "taginfo-update@#{site_name}.timer" do
+    action [:enable, :start]
+  end
 end

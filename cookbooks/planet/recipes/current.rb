@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+node.default[:accounts][:users][:planet][:status] = :role
+
 include_recipe "accounts"
 
 package %w[
@@ -25,13 +27,6 @@ package %w[
 
 template "/usr/local/bin/planet-update" do
   source "planet-update.erb"
-  owner "root"
-  group "root"
-  mode "755"
-end
-
-template "/usr/local/bin/planet-update-file" do
-  source "planet-update-file.erb"
   owner "root"
   group "root"
   mode "755"
@@ -52,16 +47,11 @@ remote_file "/var/lib/planet/planet.osh.pbf" do
   not_if { kitchen? }
 end
 
-cron_d "planet-update" do
-  minute "37"
-  hour "1"
-  user "root"
-  command "/usr/local/bin/planet-update"
-end
-
-template "/etc/logrotate.d/planet-update" do
-  source "planet-update.logrotate.erb"
-  owner "root"
-  group "root"
-  mode "644"
+systemd_service "planet-update" do
+  description "Planet file update"
+  type "oneshot"
+  exec_start "/usr/local/bin/planet-update"
+  user "planet"
+  sandbox :enable_network => true
+  read_write_paths "/var/lib/planet"
 end
