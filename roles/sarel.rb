@@ -33,5 +33,6 @@ default_attributes(
 )
 
 run_list(
-  "role[ucl]"
+  "role[ucl]",
+  "role[community]"
 )
