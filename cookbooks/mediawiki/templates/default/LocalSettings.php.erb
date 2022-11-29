@@ -54,6 +54,16 @@ $wgEmailAuthentication = true;
 
 $wgEnotifUseJobQ       = true;
 
+$wgSMTP = [
+  "host" => "localhost",
+  "localhost" => "<%= node[:fqdn] %>",
+  "socket_options" => [
+    "ssl" => [
+      "verify_peer_name" => false
+    ]
+  ]
+];
+
 ## Database settings
 $wgDBtype           = "mysql";
 $wgDBserver         = "<%= @database_params[:host] %>";
