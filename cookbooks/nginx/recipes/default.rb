@@ -74,9 +74,26 @@ template "/usr/local/bin/nginx-old-cache-cleanup" do
   mode "755"
 end
 
-cron_d "nginx-old-cache-cleanup" do
-  minute "15"
-  hour "23"
+systemd_service "nginx-old-cache-cleanup" do
+  description "Cleanup nginx cache"
+  exec_start "/usr/local/bin/nginx-old-cache-cleanup"
   user "www-data"
-  command "/usr/bin/timeout 6h /usr/local/bin/nginx-old-cache-cleanup"
+  nice 19
+  io_scheduling_class "idle"
+  runtime_max_sec 6 * 60 * 60
+  sandbox true
+  read_write_paths "/var/cache/nginx"
+end
+
+systemd_timer "nginx-old-cache-cleanup" do
+  description "Cleanup nginx cache"
+  on_calendar "23:15"
+end
+
+service "nginx-old-cache-cleanup.timer" do
+  action [:enable, :start]
+end
+
+cron_d "nginx-old-cache-cleanup" do
+  action :delete
 end
