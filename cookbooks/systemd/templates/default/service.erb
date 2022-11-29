@@ -111,10 +111,10 @@ StandardOutput=<%= @standard_output %>
 <% if @standard_error -%>
 StandardError=<%= @standard_error %>
 <% end -%>
-<% if @protect_proc -%>
+<% if @protect_proc && node[:lsb][:release].to_f >= 22.04  -%>
 ProtectProc=<%= @protect_proc %>
 <% end -%>
-<% if @proc_subset -%>
+<% if @proc_subset && node[:lsb][:release].to_f >= 22.04 -%>
 ProcSubset=<%= @proc_subset %>
 <% end -%>
 <% if @no_new_privileges -%>
@@ -147,7 +147,7 @@ PrivateDevices=<%= @private_devices %>
 <% if @private_network -%>
 PrivateNetwork=<%= @private_network %>
 <% end -%>
-<% if @private_ipc -%>
+<% if @private_ipc && node[:lsb][:release].to_f >= 22.04 -%>
 PrivateIPC=<%= @private_ipc %>
 <% end -%>
 <% if @private_users -%>

@@ -127,7 +127,7 @@ action :create do
     service_variables[:protect_kernel_modules] = true unless property_is_set?(:protect_kernel_modules)
     service_variables[:protect_kernel_logs] = true unless property_is_set?(:protect_kernel_logs)
     service_variables[:protect_control_groups] = true unless property_is_set?(:protect_control_groups)
-    service_variables[:restrict_address_families] = "none" unless property_is_set?(:restrict_address_families)
+    service_variables[:restrict_address_families] = [] unless property_is_set?(:restrict_address_families)
     service_variables[:restrict_namespaces] = true unless property_is_set?(:restrict_namespaces)
     service_variables[:lock_personality] = true unless property_is_set?(:lock_personality)
     service_variables[:memory_deny_write_execute] = true unless property_is_set?(:memory_deny_write_execute)
