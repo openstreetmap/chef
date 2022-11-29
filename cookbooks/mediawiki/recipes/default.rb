@@ -79,3 +79,95 @@ end
 apache_module "proxy"
 apache_module "proxy_fcgi"
 apache_module "rewrite"
+
+systemd_service "mediawiki-sitemap@" do
+  description "Generate sitemap.xml for %i"
+  exec_start "/usr/bin/nice /usr/bin/php -d memory_limit=2048M -d error_reporting=22517 /srv/%i/w/maintenance/generateSitemap.php --server=https://%i --urlpath=https://%i/ --fspath=/srv/%i --quiet --skip-redirects"
+  user node[:mediawiki][:user]
+  sandbox true
+  memory_deny_write_execute false
+  restrict_address_families "AF_UNIX"
+  read_write_paths "/srv/%i"
+end
+
+systemd_timer "mediawiki-sitemap@" do
+  description "Generate sitemap.xml for %i"
+  on_calendar "00:30"
+end
+
+systemd_service "mediawiki-jobs@" do
+  description "Run mediawiki jobs for %i"
+  exec_start "/usr/bin/nice /usr/bin/php -d memory_limit=2048M -d error_reporting=22517 /srv/%i/w/maintenance/runJobs.php --server=https://%i --maxtime=175 --memory-limit=2048M --procs=8 --nothrottle --quiet"
+  user node[:mediawiki][:user]
+  sandbox true
+  memory_deny_write_execute false
+  restrict_address_families "AF_UNIX"
+  read_write_paths "/srv/%i"
+end
+
+systemd_timer "mediawiki-jobs@" do
+  description "Run mediawiki jobs for %i"
+  on_boot_sec "3m"
+  on_unit_inactive_sec "3m"
+end
+
+systemd_service "mediawiki-email-jobs@" do
+  description "Run mediawiki email jobs for %i"
+  exec_start "/usr/bin/nice /usr/bin/php -d memory_limit=2048M -d error_reporting=22517 /srv/%i/w/maintenance/runJobs.php --server=https://%i --maxtime=55 --type=enotifNotify --memory-limit=2048M --procs=4 --nothrottle --quiet"
+  user node[:mediawiki][:user]
+  sandbox :enable_network => true
+  memory_deny_write_execute false
+  restrict_address_families "AF_UNIX"
+end
+
+systemd_timer "mediawiki-email-jobs@" do
+  description "Run mediawiki email jobs for %i"
+  on_boot_sec "1m"
+  on_unit_inactive_sec "1m"
+end
+
+systemd_service "mediawiki-refresh-links@" do
+  description "Refresh mediawiki links for %i"
+  exec_start "/usr/bin/nice /usr/bin/php -d memory_limit=2048M -d error_reporting=22517 /srv/%i/w/maintenance/refreshLinks.php --server=https://%i --memory-limit=2048M --quiet"
+  user node[:mediawiki][:user]
+  sandbox true
+  memory_deny_write_execute false
+  restrict_address_families "AF_UNIX"
+end
+
+systemd_timer "mediawiki-refresh-links@" do
+  description "Refresh mediawiki links for %i"
+  on_calendar "Sat 00:05"
+end
+
+systemd_service "mediawiki-cleanup-gs" do
+  description "Clean up imagemagick gs_* files"
+  exec_start "/usr/bin/find /tmp -maxdepth 1 -type f -user www-data -mmin +90 -name 'gs_*' -delete"
+  user node[:mediawiki][:user]
+  sandbox true
+end
+
+systemd_timer "mediawiki-cleanup-gs" do
+  description "Clean up imagemagick gs_* files"
+  on_calendar "02:10"
+end
+
+service "mediawiki-cleanup-gs.timer" do
+  action [:enable, :start]
+end
+
+systemd_service "mediawiki-cleanup-magick" do
+  description "Clean up imagemagick magick-* files"
+  exec_start "/usr/bin/find /tmp -maxdepth 1 -type f -user www-data -mmin +90 -name 'magick-*' -delete"
+  user node[:mediawiki][:user]
+  sandbox true
+end
+
+systemd_timer "mediawiki-cleanup-magick" do
+  description "Clean up imagemagick magick-* files"
+  on_calendar "02:20"
+end
+
+service "mediawiki-cleanup-magick.timer" do
+  action [:enable, :start]
+end
