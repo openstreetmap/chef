@@ -78,6 +78,7 @@ systemd_service "taginfo-update@" do
   sandbox :enable_network => true
   read_write_paths [
     "/srv/%i/data",
+    "/srv/%i/download",
     "/srv/%i/sources",
     "/var/log/taginfo/%i"
   ]
