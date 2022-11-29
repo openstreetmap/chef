@@ -90,10 +90,25 @@ apache_site "donate.openstreetmap.org" do
   template "apache.erb"
 end
 
-cron_d "osmf-donate" do
-  minute "*/2"
+systemd_service "osmf-donate" do
+  description "Update donation list"
+  exec_start "/usr/bin/php /srv/donate.openstreetmap.org/scripts/update_csv_donate2016.php"
+  working_directory "/srv/donate.openstreetmap.org/scripts"
   user "donate"
-  command "cd /srv/donate.openstreetmap.org/scripts/; /usr/bin/php /srv/donate.openstreetmap.org/scripts/update_csv_donate2016.php"
+  sandbox true
+  memory_deny_write_execute true
+  restrict_address_families "AF_UNIX"
+  read_write_paths "/srv/donate.openstreetmap.org/data"
+end
+
+systemd_timer "osmf-donate" do
+  description "Update donation list"
+  on_boot_sec "2m"
+  on_unit_inactive_sec "2m"
+end
+
+service "osmf-donate.timer" do
+  action [:enable, :start]
 end
 
 template "/etc/cron.daily/osmf-donate-backup" do
