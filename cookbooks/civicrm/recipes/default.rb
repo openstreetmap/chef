@@ -173,11 +173,23 @@ file "#{civicrm_directory}/civicrm.settings.php" do
   content settings
 end
 
-cron_d "osmf-crm" do
-  minute "*/15"
+systemd_service "osmf-crm-jobs" do
+  description "Run CRM jobs"
+  exec_start "/usr/bin/php #{civicrm_directory}/civicrm/bin/cli.php -s join.osmfoundation.org -u batch -p \"#{passwords['batch']}\" -e Job -a execute"
   user "www-data"
-  command "php #{civicrm_directory}/civicrm/bin/cli.php -s join.osmfoundation.org -u batch -p \"#{passwords['batch']}\" -e Job -a execute 2>&1 | egrep -v '^PHP (Deprecated|Warning):'"
-  mailto "admins@openstreetmap.org"
+  sandbox :enable_network => true
+  memory_deny_write_execute false
+  restrict_address_families "AF_UNIX"
+end
+
+systemd_timer "osmf-crm-jobs" do
+  description "Run CRM jobs"
+  on_boot_sec "15m"
+  on_unit_inactive_sec "15m"
+end
+
+service "osmf-crm-jobs.timer" do
+  action [:enable, :start]
 end
 
 template "/etc/cron.daily/osmf-crm-backup" do
