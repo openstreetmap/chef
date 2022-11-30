@@ -57,6 +57,7 @@ package %w[
   php-xml
   pngcrush
   pngquant
+  python-is-python3
   python3
   python3-brotli
   python3-bs4
@@ -69,6 +70,7 @@ package %w[
   python3-magic
   python3-pil
   python3-psycopg2
+  python3-venv
   python3-pyproj
   python3-gdal
   gdal-bin
