@@ -67,31 +67,21 @@ prometheus_exporter "nginx" do
   options "--nginx.scrape-uri=http://localhost:8050/nginx_status"
 end
 
-template "/usr/local/bin/nginx-old-cache-cleanup" do
-  source "nginx-old-cache-cleanup.erb"
-  owner "root"
-  group "root"
-  mode "755"
-end
-
-systemd_service "nginx-old-cache-cleanup" do
-  description "Cleanup nginx cache"
-  exec_start "/usr/local/bin/nginx-old-cache-cleanup"
-  user "www-data"
-  nice 19
-  io_scheduling_class "idle"
-  runtime_max_sec 6 * 60 * 60
-  sandbox true
-  read_write_paths "/var/cache/nginx"
+# Remove old nginx cleanup script
+service "nginx-old-cache-cleanup.timer" do
+  action [:stop, :disable]
 end
 
 systemd_timer "nginx-old-cache-cleanup" do
-  description "Cleanup nginx cache"
-  on_calendar "23:15"
+  action :delete
 end
 
-service "nginx-old-cache-cleanup.timer" do
-  action [:enable, :start]
+systemd_service "nginx-old-cache-cleanup" do
+  action :delete
+end
+
+file "/usr/local/bin/nginx-old-cache-cleanup" do
+  action :delete
 end
 
 cron_d "nginx-old-cache-cleanup" do
