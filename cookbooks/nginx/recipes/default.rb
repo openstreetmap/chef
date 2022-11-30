@@ -66,24 +66,3 @@ prometheus_exporter "nginx" do
   port 9113
   options "--nginx.scrape-uri=http://localhost:8050/nginx_status"
 end
-
-# Remove old nginx cleanup script
-service "nginx-old-cache-cleanup.timer" do
-  action [:stop, :disable]
-end
-
-systemd_timer "nginx-old-cache-cleanup" do
-  action :delete
-end
-
-systemd_service "nginx-old-cache-cleanup" do
-  action :delete
-end
-
-file "/usr/local/bin/nginx-old-cache-cleanup" do
-  action :delete
-end
-
-cron_d "nginx-old-cache-cleanup" do
-  action :delete
-end
