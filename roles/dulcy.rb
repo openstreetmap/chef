@@ -45,7 +45,10 @@ default_attributes(
     :dbcluster => "14/main",
     :postgis => "3",
     :flatnode_file => "/ssd/nominatim/nodes.store",
-    :logdir => "/ssd/nominatim/log"
+    :logdir => "/ssd/nominatim/log",
+    :config => {
+      :forward_dependencies => "yes"
+    }
   }
 )
 
