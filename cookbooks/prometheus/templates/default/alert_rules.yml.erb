@@ -246,6 +246,11 @@ groups:
           alertgroup: "{{ $labels.instance }}"
   - name: juniper
     rules:
+      - alert: juniper cpu alarm
+        expr: jnxOperatingCPU{jnxOperatingContentsIndex="7"} > 30
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.site }}"
       - alert: juniper fan alarm
         expr: jnxOperatingState{jnxOperatingContentsIndex="4",jnxOperatingState!~"running.*"} > 0
         for: 5m
