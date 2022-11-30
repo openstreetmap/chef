@@ -180,6 +180,7 @@ systemd_service "osmf-crm-jobs" do
   sandbox :enable_network => true
   memory_deny_write_execute false
   restrict_address_families "AF_UNIX"
+  read_write_paths "/srv/join.osmfoundation.org/wp-content/uploads/civicrm"
 end
 
 systemd_timer "osmf-crm-jobs" do
