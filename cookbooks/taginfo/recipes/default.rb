@@ -76,6 +76,7 @@ systemd_service "taginfo-update@" do
   exec_start "/srv/%i/bin/update"
   user "taginfo"
   sandbox :enable_network => true
+  restrict_address_families "AF_UNIX"
   read_write_paths [
     "/srv/%i/data",
     "/srv/%i/download",
