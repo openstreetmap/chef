@@ -19,9 +19,15 @@
 
 include_recipe "apt"
 
+docker_arch = if arm?
+                "arm64"
+              else
+                "amd64"
+              end
+
 apt_repository "docker" do
   uri "https://download.docker.com/linux/ubuntu"
-  arch "amd64"
+  arch docker_arch
   components ["stable"]
   key "https://download.docker.com/linux/ubuntu/gpg"
 end
