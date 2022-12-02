@@ -58,7 +58,7 @@ apache_module "rewrite"
 
   bundle_install "/srv/#{year}.stateofthemap.org" do
     action :nothing
-    options "--deployment --jobs #{node[:cpu][:total]}"
+    options "--deployment --jobs #{[4, node.dig('cpu', 'total').to_i, node.dig('cpu', 'cores').to_i].max}"
     user "root"
     group "root"
     notifies :run, "bundle_exec[/srv/#{year}.stateofthemap.org]"
