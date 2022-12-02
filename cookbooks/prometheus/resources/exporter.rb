@@ -125,7 +125,7 @@ action_class do
   end
 
   def executable_architecture
-    node[:cpu][:architecture]
+    node[:kernel][:machine]
   end
 
   def executable_options
