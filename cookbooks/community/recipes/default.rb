@@ -19,12 +19,16 @@
 
 include_recipe "accounts"
 include_recipe "docker"
-include_recipe "geoipupdate"
 include_recipe "git"
 include_recipe "ssl"
 
 passwords = data_bag_item("community", "passwords")
 license_keys = data_bag_item("geoipupdate", "license-keys") unless kitchen?
+
+# Disable any default installed apache2 service. Web server is embedded within the discourse docker container
+service "apache2" do
+  action [:disable, :stop]
+end
 
 directory "/srv/community.openstreetmap.org" do
   owner "root"
