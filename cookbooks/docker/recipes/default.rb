@@ -60,3 +60,7 @@ systemd_timer "docker-system-prune" do
   on_unit_active_sec "7d"
   randomized_delay_sec "4h"
 end
+
+service "docker-system-prune.timer" do
+  action [:enable, :start]
+end
