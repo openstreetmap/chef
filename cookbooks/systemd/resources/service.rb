@@ -40,6 +40,7 @@ property :environment, Hash, :default => {}
 property :environment_file, [String, Hash]
 property :user, String
 property :group, String
+property :dynamic_user, [true, false]
 property :working_directory, String
 property :exec_start_pre, [String, Array]
 property :exec_start, [String, Array]

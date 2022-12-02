@@ -512,6 +512,7 @@ end
 prometheus_exporter "nominatim" do
   port 8082
   user "www-data"
+  restrict_address_families "AF_UNIX"
   options [
     "--nominatim.query-log=#{node[:nominatim][:logdir]}/query.log",
     "--nominatim.database-name=#{node[:nominatim][:dbname]}"

@@ -26,10 +26,15 @@ property :address, :kind_of => String
 property :port, :kind_of => Integer, :required => [:create]
 property :listen_switch, :kind_of => String, :default => "web.listen-address"
 property :listen_type, :kind_of => String, :default => "address"
-property :user, :kind_of => String, :default => "root"
+property :user, :kind_of => String
 property :command, :kind_of => String
 property :options, :kind_of => [String, Array]
 property :environment, :kind_of => Hash, :default => {}
+property :proc_subset, String
+property :private_devices, [true, false]
+property :protect_clock, [true, false]
+property :restrict_address_families, [String, Array]
+property :system_call_filter, [String, Array]
 property :service, :kind_of => String
 property :scrape_interval, :kind_of => String
 property :scrape_timeout, :kind_of => String
@@ -43,12 +48,15 @@ action :create do
     description "Prometheus #{new_resource.exporter} exporter"
     type "simple"
     user new_resource.user
+    dynamic_user new_resource.user.nil?
     environment new_resource.environment
     exec_start "#{executable_path} #{new_resource.command} #{executable_options}"
-    private_tmp true
-    protect_system "strict"
-    protect_home true
-    no_new_privileges true
+    sandbox :enable_network => true
+    proc_subset new_resource.proc_subset if new_resource.property_is_set?(:proc_subset)
+    private_devices new_resource.private_devices if new_resource.property_is_set?(:private_devices)
+    protect_clock new_resource.protect_clock if new_resource.property_is_set?(:protect_clock)
+    restrict_address_families new_resource.restrict_address_families if new_resource.property_is_set?(:restrict_address_families)
+    system_call_filter new_resource.system_call_filter if new_resource.property_is_set?(:system_call_filter)
   end
 
   service service_name do
@@ -140,7 +148,9 @@ action_class do
   end
 
   def listen_address
-    if new_resource.address
+    if true
+      "127.0.0.1:#{new_resource.port}"
+    elsif new_resource.address
       "#{new_resource.address}:#{new_resource.port}"
     elsif node[:prometheus][:mode] == "wireguard"
       "[#{node[:prometheus][:address]}]:#{new_resource.port}"

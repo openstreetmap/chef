@@ -219,6 +219,10 @@ if node[:kernel][:modules].include?("ipmi_si")
 
   prometheus_exporter "ipmi" do
     port 9290
+    user "root"
+    private_devices false
+    protect_clock false
+    system_call_filter ["@system-service", "@raw-io"]
     options "--config.file=/etc/prometheus/ipmi_local.yml"
     subscribes :restart, "template[/etc/prometheus/ipmi_local.yml]"
   end
@@ -253,6 +257,7 @@ end
 
 prometheus_exporter "rasdaemon" do
   port 9797
+  user "root"
 end
 
 tools_packages = []
@@ -530,6 +535,11 @@ if disks.count.positive?
 
   prometheus_collector "smart" do
     interval "15m"
+    user "root"
+    capability_bounding_set "CAP_SYS_ADMIN"
+    private_devices false
+    private_users false
+    protect_clock false
   end
 
   # Don't try and do munin monitoring of disks behind
@@ -688,4 +698,10 @@ end
 
 prometheus_collector "ohai" do
   interval "15m"
+  user "root"
+  proc_subset "all"
+  capability_bounding_set "CAP_SYS_ADMIN"
+  private_devices false
+  private_users false
+  protect_clock false
 end

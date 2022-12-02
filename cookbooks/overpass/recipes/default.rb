@@ -250,6 +250,7 @@ end
 prometheus_exporter "overpass" do
   port 9898
   user username
+  restrict_address_families "AF_UNIX"
   options [
     "--overpass.base-directory=#{basedir}"
   ]

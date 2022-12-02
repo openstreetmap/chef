@@ -53,6 +53,7 @@ action :create do
   if new_resource.prometheus_port
     prometheus_exporter "phpfpm" do
       port new_resource.prometheus_port
+      restrict_address_families "AF_UNIX"
       service service_name
       command "server"
       options "--phpfpm.scrape-uri=#{scrape_uri}"
