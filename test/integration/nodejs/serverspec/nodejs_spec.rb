@@ -7,6 +7,6 @@ describe package("nodejs") do
   it { should be_installed }
 end
 
-describe package("npm") do
+describe package("yarn") do
   it { should be_installed }
 end
