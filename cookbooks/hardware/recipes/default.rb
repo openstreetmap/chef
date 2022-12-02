@@ -63,6 +63,7 @@ when "HP", "HPE"
   execute "update-ilo" do
     action :nothing
     command "/usr/sbin/hponcfg -f /etc/ilo-defaults.xml"
+    not_if { kitchen? }
   end
 
   template "/etc/ilo-defaults.xml" do
@@ -145,6 +146,7 @@ end
 units.sort.uniq.each do |unit|
   service "serial-getty@ttyS#{unit}" do
     action [:enable, :start]
+    not_if { kitchen? }
   end
 end
 
