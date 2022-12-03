@@ -53,5 +53,6 @@ munin_plugin "passenger_requests"
 
 prometheus_exporter "passenger" do
   port 9149
+  user "root"
   environment "PASSENGER_INSTANCE_REGISTRY_DIR" => node[:passenger][:instance_registry_dir]
 end
