@@ -263,6 +263,11 @@ groups:
           alertgroup: "{{ $labels.site }}"
   - name: mail
     rules:
+      - alert: exim down
+        expr: exim_up == 0
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
       - alert: exim queue length
         expr: exim_queue > exim_queue_limit
         for: 60m
