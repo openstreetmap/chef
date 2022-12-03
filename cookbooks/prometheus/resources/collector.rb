@@ -31,6 +31,7 @@ property :capability_bounding_set, [String, Array]
 property :private_devices, [true, false]
 property :private_users, [true, false]
 property :protect_clock, [true, false]
+property :protect_kernel_modules, [true, false]
 
 action :create do
   systemd_service service_name do
@@ -49,6 +50,7 @@ action :create do
     private_devices new_resource.private_devices if new_resource.property_is_set?(:private_devices)
     private_users new_resource.private_users if new_resource.property_is_set?(:private_users)
     protect_clock new_resource.protect_clock if new_resource.property_is_set?(:protect_clock)
+    protect_kernel_modules new_resource.protect_kernel_modules if new_resource.property_is_set?(:protect_kernel_modules)
     read_write_paths ["/var/lib/prometheus/node-exporter", "/var/lock", "/var/log"]
   end
 

@@ -704,4 +704,5 @@ prometheus_collector "ohai" do
   private_devices false
   private_users false
   protect_clock false
+  protect_kernel_modules false
 end
