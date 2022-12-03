@@ -536,7 +536,7 @@ if disks.count.positive?
   prometheus_collector "smart" do
     interval "15m"
     user "root"
-    capability_bounding_set "CAP_SYS_ADMIN"
+    capability_bounding_set %w[CAP_SYS_ADMIN CAP_SYS_RAWIO]
     private_devices false
     private_users false
     protect_clock false
