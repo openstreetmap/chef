@@ -401,6 +401,23 @@ groups:
           alertgroup: overpass
         annotations:
           age: "{{ $value | humanizeDuration }}"
+  - name: passenger
+    rules:
+      - alert: passenger down
+        expr: passenger_up == 0
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+      - alert: passenger queuing
+        expr: passenger_top_level_request_queue > 0
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+      - alert: passenger application queuing
+        expr: passenger_app_request_queue > 0
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
   - name: planet
     rules:
       - alert: planet dump overdue
