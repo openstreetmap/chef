@@ -484,7 +484,7 @@ action :restart do
 end
 
 action_class do
-  include Chef::Mixin::EditFile
+  include OpenStreetMap::Mixin::EditFile
 
   def rails_directory
     new_resource.directory || "/srv/#{new_resource.site}"

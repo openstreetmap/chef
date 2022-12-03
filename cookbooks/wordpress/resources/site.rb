@@ -217,8 +217,8 @@ action :delete do
 end
 
 action_class do
-  include Chef::Mixin::EditFile
-  include Chef::Mixin::PersistentToken
+  include OpenStreetMap::Mixin::EditFile
+  include OpenStreetMap::Mixin::PersistentToken
 
   def site_directory
     new_resource.directory || "/srv/#{new_resource.site}"
