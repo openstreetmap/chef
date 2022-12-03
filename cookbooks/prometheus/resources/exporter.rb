@@ -148,9 +148,7 @@ action_class do
   end
 
   def listen_address
-    if true
-      "127.0.0.1:#{new_resource.port}"
-    elsif new_resource.address
+    if new_resource.address
       "#{new_resource.address}:#{new_resource.port}"
     elsif node[:prometheus][:mode] == "wireguard"
       "[#{node[:prometheus][:address]}]:#{new_resource.port}"
