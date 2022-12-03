@@ -30,6 +30,7 @@ property :user, :kind_of => String
 property :command, :kind_of => String
 property :options, :kind_of => [String, Array]
 property :environment, :kind_of => Hash, :default => {}
+property :protect_proc, String
 property :proc_subset, String
 property :private_devices, [true, false]
 property :protect_clock, [true, false]
@@ -52,6 +53,7 @@ action :create do
     environment new_resource.environment
     exec_start "#{executable_path} #{new_resource.command} #{executable_options}"
     sandbox :enable_network => true
+    protect_proc new_resource.protect_proc if new_resource.property_is_set?(:protect_proc)
     proc_subset new_resource.proc_subset if new_resource.property_is_set?(:proc_subset)
     private_devices new_resource.private_devices if new_resource.property_is_set?(:private_devices)
     protect_clock new_resource.protect_clock if new_resource.property_is_set?(:protect_clock)

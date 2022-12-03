@@ -225,6 +225,7 @@ munin_plugin "exim_mailstats"
 prometheus_exporter "exim" do
   port 9636
   user "Debian-exim"
+  protect_proc "default"
 end
 
 if node[:exim][:smarthost_name]
