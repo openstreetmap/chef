@@ -12,7 +12,7 @@ function update_tiles
     --timestamp=$(stat -c %Y "/srv/tile.openstreetmap.org/styles/<%= @style %>/project.xml") \
     --tile-dir=/srv/tile.openstreetmap.org/tiles \
     --socket=/var/run/renderd/renderd.sock \
-    --num-threads=<%= node[:cpu][:total] - 1 %> \
+    --num-threads=<%= [4, node.dig('cpu', 'total').to_i - 1, node.dig('cpu', 'cores').to_i - 1].max %> \
     --map="<%= @style %>" \
     --max-load=<%= node[:cpu][:total] %> \
     --min-zoom=0 --max-zoom=12

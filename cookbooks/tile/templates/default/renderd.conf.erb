@@ -2,7 +2,7 @@
 
 [renderd]
 socketname=/var/run/renderd/renderd.sock
-num_threads=<%= node[:cpu][:total] - 1 %>
+num_threads=<%= [4, node.dig('cpu', 'total').to_i - 1, node.dig('cpu', 'cores').to_i - 1].max %>
 tile_dir=/srv/tile.openstreetmap.org/tiles
 stats_file=/var/run/renderd/renderd.stats
 
