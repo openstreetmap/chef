@@ -117,18 +117,6 @@ else
   end
 end
 
-munin_plugin "hpasmcli_temp" do
-  action :delete
-end
-
-munin_plugin "hpasmcli_fans" do
-  action :delete
-end
-
-munin_plugin "http_loadtime" do
-  action :delete
-end
-
 node[:network][:interfaces].each do |ifname, ifattr|
   if ifattr[:flags]&.include?("UP") && !ifattr[:flags].include?("LOOPBACK")
     if node[:hardware] &&
