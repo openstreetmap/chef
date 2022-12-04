@@ -15,4 +15,4 @@ module OpenStreetMap
   end
 end
 
-Chef::Recipe.include(OpenStreetMap::Mixin::PersistentToken)
+Chef::DSL::Recipe.include(OpenStreetMap::Mixin::PersistentToken)
