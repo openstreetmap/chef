@@ -28,6 +28,8 @@ platforms:
       pid_one_command: /bin/systemd
       intermediate_instructions:
         - RUN /usr/bin/apt-get update -y
+        # Pre-cache common required system packages
+        - RUN /usr/bin/apt-get install --download-only -y apache2 libwww-perl munin-node shorewall unattended-upgrades wireguard-tools zsh
   - name: ubuntu-22.04
     driver:
       image: dokken/ubuntu-22.04
@@ -35,6 +37,8 @@ platforms:
       pid_one_command: /bin/systemd
       intermediate_instructions:
         - RUN /usr/bin/apt-get update -y
+        # Pre-cache common required system packages
+        - RUN /usr/bin/apt-get install --download-only -y apache2 libwww-perl munin-node shorewall unattended-upgrades wireguard-tools zsh
 
 suites:
   - name: accounts
