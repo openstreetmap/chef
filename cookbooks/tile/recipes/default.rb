@@ -187,11 +187,26 @@ template "/srv/tile.openstreetmap.org/cgi-bin/debug" do
   mode "755"
 end
 
-template "/etc/cron.hourly/export" do
-  source "export.cron.erb"
-  owner "root"
-  group "root"
-  mode "755"
+systemd_service "export-cleanup" do
+  description "Cleanup stale export temporary files"
+  joins_namespace_of "apache2.service"
+  exec_start "find /tmp -ignore_readdir_race -name 'export??????' -mmin +60 -delete"
+  user "www-data"
+  sandbox true
+end
+
+systemd_timer "export-cleanup" do
+  description "Cleanup stale export temporary files"
+  on_boot_sec "60m"
+  on_unit_inactive_sec "60m"
+end
+
+service "export-cleanup.timer" do
+  action [:enable, :start]
+end
+
+file "/etc/cron.hourly/export" do
+  action :delete
 end
 
 directory "/srv/tile.openstreetmap.org/data" do

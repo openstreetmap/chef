@@ -1,6 +1,0 @@
-#!/bin/sh
-
-# DO NOT EDIT - This file is being maintained by Chef
-
-# Removes stale tmp files from the export tab
-exec find /tmp -ignore_readdir_race -name 'export??????' -mmin +60 -delete
