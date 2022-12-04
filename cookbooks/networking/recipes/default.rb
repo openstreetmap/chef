@@ -196,6 +196,7 @@ if node[:networking][:wireguard][:enabled]
 
   package "wireguard-tools" do
     compile_time true
+    options "--no-install-recommends"
   end
 
   directory "/var/lib/systemd/wireguard" do
