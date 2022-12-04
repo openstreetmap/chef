@@ -24,11 +24,20 @@ template "/usr/local/bin/backup-db" do
   mode "755"
 end
 
-cron_d "backup-db" do
-  minute "00"
-  hour "02"
-  weekday "1"
+systemd_service "backup-db" do
+  description "Database backup"
+  exec_start "/usr/local/bin/backup-db"
   user "osmbackup"
-  command "/usr/local/bin/backup-db"
-  mailto "admins@openstreetmap.org"
+  sandbox :enable_network => true
+  restrict_address_families "AF_UNIX"
+  read_write_paths "/store/backup"
+end
+
+systemd_timer "backup-db" do
+  description "Database backup"
+  on_calendar "Mon 02:00 #{node[:timezone]}"
+end
+
+service "backup-db.timer" do
+  action [:enable, :start]
 end
