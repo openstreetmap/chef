@@ -186,6 +186,8 @@ if File.exist?("/etc/default/grub")
   end
 end
 
+package "initramfs-tools"
+
 execute "update-initramfs" do
   action :nothing
   command "update-initramfs -u -k all"
