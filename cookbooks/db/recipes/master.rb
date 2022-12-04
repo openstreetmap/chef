@@ -83,7 +83,3 @@ postgresql_extension "btree_gist" do
   database "openstreetmap"
   only_if { node[:postgresql][:clusters][node[:db][:cluster]] && node[:postgresql][:clusters][node[:db][:cluster]][:version] >= 9.0 }
 end
-
-file "/etc/cron.daily/rails-db" do
-  action :delete
-end
