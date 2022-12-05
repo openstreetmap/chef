@@ -129,6 +129,18 @@ jobs:
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
 
+    - name: Build and push
+      uses: docker/build-push-action@v3
+      with:
+        context: .
+        file: Dockerfile.kitchen
+        push: false
+        build-args: |
+          "BASE_IMAGE=dokken/ubuntu-22.04:latest"
+        tags: "ignore-cache-only-${{ matrix.os }}:latest"
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+
     - name: Setup ruby
       uses: ruby/setup-ruby@v1
       with:

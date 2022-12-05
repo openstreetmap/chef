@@ -1,0 +1,5 @@
+ARG BASE_IMAGE
+FROM ${BASE_IMAGE}
+CMD ["/bin/systemd"]
+LABEL X-Built-By=kitchen-dokken X-Built-From=$BASE_IMAGE
+RUN /usr/bin/apt-get update -y
