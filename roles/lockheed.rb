@@ -34,9 +34,5 @@ default_attributes(
 )
 
 run_list(
-  "role[equinix-ams]",
-  "role[subversion]",
-  "role[trac]",
-  "role[irc]",
-  "role[blogs]"
+  "role[equinix-ams]"
 )

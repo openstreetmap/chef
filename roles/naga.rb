@@ -34,5 +34,9 @@ default_attributes(
 
 run_list(
   "role[equinix-dub]",
-  "role[hp-g9]"
+  "role[hp-g9]",
+  "role[subversion]",
+  "role[trac]",
+  "role[irc]",
+  "role[blogs]"
 )
