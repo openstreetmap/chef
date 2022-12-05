@@ -25,7 +25,6 @@ include_recipe "passenger"
 include_recipe "geoipupdate"
 include_recipe "git"
 include_recipe "memcached"
-include_recipe "munin"
 include_recipe "mysql"
 include_recipe "nodejs"
 include_recipe "php::fpm"
@@ -545,12 +544,6 @@ if node[:postgresql][:clusters][:"14/main"]
     template "apache.apis.erb"
   end
 
-  node[:postgresql][:clusters].each_key do |name|
-    postgresql_munin name do
-      cluster name
-      database "ALL"
-    end
-  end
 end
 
 directory "/srv/ooc.openstreetmap.org" do

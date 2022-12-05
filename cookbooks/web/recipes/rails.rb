@@ -21,7 +21,6 @@ include_recipe "apache"
 include_recipe "apt"
 include_recipe "git"
 include_recipe "geoipupdate"
-include_recipe "munin"
 include_recipe "nodejs"
 include_recipe "passenger"
 include_recipe "ruby"
@@ -211,15 +210,4 @@ end
 
 gem_package "hpricot" do
   gem_binary node[:ruby][:gem]
-end
-
-munin_plugin "api_calls_status"
-munin_plugin "api_calls_num"
-
-munin_plugin "api_calls_#{node[:hostname]}" do
-  target "api_calls_"
-end
-
-munin_plugin "api_waits_#{node[:hostname]}" do
-  target "api_waits_"
 end

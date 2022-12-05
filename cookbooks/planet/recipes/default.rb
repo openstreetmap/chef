@@ -19,7 +19,6 @@
 
 include_recipe "accounts"
 include_recipe "apache"
-include_recipe "munin"
 
 package %w[
   perl
@@ -127,8 +126,6 @@ template "/etc/logrotate.d/apache2" do
   group "root"
   mode "644"
 end
-
-munin_plugin "planet_age"
 
 template "/usr/local/bin/planet-file-cleanup" do
   source "planet-file-cleanup.erb"

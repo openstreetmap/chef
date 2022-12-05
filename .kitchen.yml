@@ -201,15 +201,6 @@ suites:
   - name: memcached
     run_list:
       - recipe[memcached::default]
-  - name: munin
-    run_list:
-      - recipe[munin::default]
-  - name: munin-plugins
-    run_list:
-      - recipe[munin::plugins]
-  - name: munin-server
-    run_list:
-      - recipe[munin::server]
   - name: mysql
     run_list:
       - recipe[mysql::default]

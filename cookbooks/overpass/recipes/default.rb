@@ -19,7 +19,6 @@
 
 include_recipe "accounts"
 include_recipe "apache"
-include_recipe "munin"
 include_recipe "prometheus"
 include_recipe "ruby"
 
@@ -227,24 +226,6 @@ template "/etc/logrotate.d/overpass" do
   group "root"
   mode "644"
   variables :logdir => logdir
-end
-
-# Munin scripts
-
-%w[db_lag request_count].each do |name|
-  template "#{basedir}/munin/overpass_#{name}" do
-    source "munin_#{name}.erb"
-    owner username
-    group username
-    mode "755"
-    variables :basedir => basedir
-  end
-
-  munin_plugin "overpass_#{name}" do
-    target "#{basedir}/munin/overpass_#{name}"
-    conf "munin.erb"
-    conf_variables :user => username
-  end
 end
 
 prometheus_exporter "overpass" do

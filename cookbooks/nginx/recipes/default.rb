@@ -18,7 +18,6 @@
 #
 
 include_recipe "apt::nginx"
-include_recipe "munin"
 include_recipe "prometheus"
 include_recipe "ssl"
 
@@ -53,14 +52,7 @@ service "nginx" do
   subscribes :restart, "template[/etc/nginx/nginx.conf]"
 end
 
-munin_plugin_conf "nginx" do
-  template "munin.erb"
-end
-
 package "libwww-perl"
-
-munin_plugin "nginx_request"
-munin_plugin "nginx_status"
 
 prometheus_exporter "nginx" do
   port 9113

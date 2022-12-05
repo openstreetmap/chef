@@ -19,7 +19,6 @@
 
 include_recipe "apache"
 include_recipe "chef::knife"
-include_recipe "munin"
 
 # cache_dir = Chef::Config[:file_cache_path]
 #
@@ -101,5 +100,3 @@ template "/etc/cron.daily/chef-server-backup" do
   group "root"
   mode "755"
 end
-
-munin_plugin "chef_status"

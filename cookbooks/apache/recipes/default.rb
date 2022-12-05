@@ -17,7 +17,6 @@
 # limitations under the License.
 #
 
-include_recipe "munin"
 include_recipe "prometheus"
 include_recipe "ssl"
 
@@ -85,10 +84,6 @@ apache_module "ssl"
 apache_conf "ssl" do
   template "ssl.erb"
 end
-
-munin_plugin "apache_accesses"
-munin_plugin "apache_processes"
-munin_plugin "apache_volume"
 
 prometheus_exporter "apache" do
   port 9117

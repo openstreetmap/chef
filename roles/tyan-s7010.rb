@@ -45,35 +45,5 @@ default_attributes(
         }
       }
     }
-  },
-  :munin => {
-    :plugins => {
-      :ipmi_fans => {
-        :Sys3Front1 => { :graph => "no", :warning => "0:" },
-        :Sys4Front2 => { :graph => "no", :warning => "0:" },
-        :Sys5Rear1 => { :graph => "no", :warning => "0:" },
-        :Sys6 => { :graph => "no", :warning => "0:" },
-        :Sys7 => { :graph => "no", :warning => "0:" },
-        :Sys8 => { :graph => "no", :warning => "0:" },
-        :Sys9 => { :graph => "no", :warning => "0:" },
-        :Sys10 => { :graph => "no", :warning => "0:" }
-      },
-      :ipmi_temp => {
-        :CPU0belowTmax => { :critical => "10:" },
-        :CPU1belowTmax => { :critical => "10:" }
-      },
-      :sensors_volt => {
-        "VCoreA" => { :warning => "0.70:1.42", :critical => "0.70:1.42" },
-        "VCoreB" => { :warning => "0.70:1.42", :critical => "0.70:1.42" },
-        "in2" => { :warning => "0.00:2.05", :critical => "0.00:2.05" },
-        "in3" => { :warning => "0.00:4.08", :critical => "0.00:4.08" },
-        "in4" => { :warning => "0.00:4.08", :critical => "0.00:4.08" },
-        "in5" => { :warning => "2.99:3.54", :critical => "2.99:3.54" },
-        "in6" => { :warning => "0.00:2.04", :critical => "0.00:2.04" },
-        "+5V" => { :warning => "4.52:5.50", :critical => "4.52:5.50" },
-        "5VSB" => { :warning => "4.52:5.50", :critical => "4.52:5.50" },
-        "Vbat" => { :warning => "2.70:3.30", :critical => "2.70:3.30" }
-      }
-    }
   }
 )

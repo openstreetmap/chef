@@ -17,7 +17,6 @@
 # limitations under the License.
 #
 
-include_recipe "munin"
 include_recipe "prometheus"
 
 package "memcached"
@@ -33,16 +32,6 @@ template "/etc/memcached.conf" do
   group "root"
   mode "644"
   notifies :restart, "service[memcached]"
-end
-
-munin_plugin_conf "memcached_multi" do
-  template "munin.erb"
-end
-
-%w[bytes commands conns evictions items memory].each do |stat|
-  munin_plugin "memcached_multi_#{stat}" do
-    target "memcached_multi_"
-  end
 end
 
 prometheus_exporter "memcached" do

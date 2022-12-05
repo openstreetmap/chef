@@ -17,7 +17,6 @@
 # limitations under the License.
 #
 
-include_recipe "munin"
 include_recipe "networking"
 include_recipe "prometheus"
 
@@ -218,9 +217,6 @@ template "/etc/mail.rc" do
   group "root"
   mode "644"
 end
-
-munin_plugin "exim_mailqueue"
-munin_plugin "exim_mailstats"
 
 prometheus_exporter "exim" do
   port 9636

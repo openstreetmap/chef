@@ -17,7 +17,6 @@
 # limitations under the License.
 #
 
-include_recipe "munin"
 include_recipe "prometheus"
 
 package %w[
@@ -44,8 +43,6 @@ end
 service "fail2ban" do
   action [:enable, :start]
 end
-
-munin_plugin "fail2ban"
 
 prometheus_exporter "fail2ban" do
   port 9635

@@ -17,8 +17,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include_recipe "munin"
-
 package %w[
   chrony
   tzdata
@@ -60,8 +58,6 @@ end
 service "chrony" do
   action [:enable, :start]
 end
-
-munin_plugin "chrony"
 
 # chrony occasionally marks all servers offline during a network outage.
 # force online all sources during a chef run

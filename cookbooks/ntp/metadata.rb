@@ -6,5 +6,4 @@ description       "Installs and configures ntp as a client or server"
 
 version           "0.8.2"
 supports          "ubuntu"
-depends           "munin"
 depends           "systemd"

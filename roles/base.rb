@@ -10,13 +10,6 @@ default_attributes(
       :jburgess => { :status => :administrator }
     }
   },
-  :munin => {
-    :plugins => {
-      :chrony => {
-        :systime => { :warning => "100", :critical => "250" }
-      }
-    }
-  },
   :networking => {
     :roles => {
       :internal => { :metric => 200, :zone => "loc" },
@@ -95,7 +88,6 @@ run_list(
   "recipe[devices]",
   "recipe[hardware]",
   "recipe[prometheus]",
-  "recipe[munin::plugins]",
   "recipe[networking]",
   "recipe[exim]",
   "recipe[ntp]",

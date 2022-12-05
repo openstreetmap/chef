@@ -18,7 +18,6 @@
 #
 
 include_recipe "apt::postgresql"
-include_recipe "munin"
 include_recipe "prometheus"
 
 package "locales-all"
@@ -118,48 +117,6 @@ package "pgtop"
 package "libdbd-pg-perl"
 
 clusters = node[:postgresql][:clusters] || []
-
-clusters.each do |name, details|
-  suffix = name.tr("/", ":")
-
-  munin_plugin "postgres_bgwriter_#{suffix}" do
-    target "postgres_bgwriter"
-    conf "munin.erb"
-    conf_variables :port => details[:port]
-  end
-
-  munin_plugin "postgres_checkpoints_#{suffix}" do
-    target "postgres_checkpoints"
-    conf "munin.erb"
-    conf_variables :port => details[:port]
-  end
-
-  munin_plugin "postgres_connections_db_#{suffix}" do
-    target "postgres_connections_db"
-    conf "munin.erb"
-    conf_variables :port => details[:port]
-  end
-
-  munin_plugin "postgres_users_#{suffix}" do
-    target "postgres_users"
-    conf "munin.erb"
-    conf_variables :port => details[:port]
-  end
-
-  munin_plugin "postgres_xlog_#{suffix}" do
-    target "postgres_xlog"
-    conf "munin.erb"
-    conf_variables :port => details[:port]
-  end
-
-  next unless File.exist?("/var/lib/postgresql/#{details[:version]}/main/recovery.conf")
-
-  munin_plugin "postgres_replication_#{suffix}" do
-    target "postgres_replication"
-    conf "munin.erb"
-    conf_variables :port => details[:port]
-  end
-end
 
 uris = clusters.collect do |_, details|
   "postgres@:#{details[:port]}/postgres?host=/run/postgresql"

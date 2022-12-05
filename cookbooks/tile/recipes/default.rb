@@ -20,7 +20,6 @@
 include_recipe "accounts"
 include_recipe "apache"
 include_recipe "git"
-include_recipe "munin"
 include_recipe "nodejs"
 include_recipe "postgresql"
 include_recipe "prometheus"
@@ -490,11 +489,6 @@ if node[:tile][:database][:external_data_script]
   end
 end
 
-postgresql_munin "gis" do
-  cluster node[:tile][:database][:cluster]
-  database "gis"
-end
-
 directory File.dirname(node[:tile][:database][:node_file]) do
   owner "root"
   group "root"
@@ -708,19 +702,6 @@ tile_directories.each do |directory|
     action [:enable, :start]
   end
 end
-
-munin_plugin "mod_tile_fresh"
-munin_plugin "mod_tile_latency"
-munin_plugin "mod_tile_response"
-munin_plugin "mod_tile_zoom"
-
-munin_plugin "renderd_processed"
-munin_plugin "renderd_queue"
-munin_plugin "renderd_queue_time"
-munin_plugin "renderd_zoom"
-munin_plugin "renderd_zoom_time"
-
-munin_plugin "replication_delay"
 
 package "ruby-webrick"
 

@@ -86,16 +86,6 @@ default_attributes(
     },
     :private_aliases => "mail"
   },
-  :munin => {
-    :plugins => {
-      :exim_mailqueue => {
-        :mails => {
-          :warning => 500,
-          :critical => 1000
-        }
-      }
-    }
-  },
   :prometheus => {
     :metrics => {
       :exim_queue_limit => { :metric => 250 }

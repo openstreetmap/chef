@@ -1,0 +1,8 @@
+#!/bin/sh
+lsof -i:80 -sTCP:LISTEN | awk '{print $1}' | grep -q squid && service squid restart
+sleep 20
+lsof -i:80 -sTCP:LISTEN | awk '{print $1}' | grep -q nginx || service nginx restart
+sleep 20
+lsof -i:80 -sTCP:LISTEN | awk '{print $1}' | grep -q squid && service squid restart
+sleep 20
+lsof -i:80 -sTCP:LISTEN | awk '{print $1}' | grep -q nginx || service nginx restart

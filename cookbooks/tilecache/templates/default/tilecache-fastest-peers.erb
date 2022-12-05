@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# Find performance reports for last few minutes
+# Add up total time taken to download tile grouped by remote server
+# Remove 1 second per successful time report (de-prioritise new servers)
+# Add 10 seconds per failed time report request
+# Sort time reports
+
+/usr/bin/find /srv/tilecache/data/ -type f -iname 'tilecache-*.txt' -mmin -10 -print0 \
+ | /usr/bin/xargs -0 --no-run-if-empty /bin/cat \
+ | /usr/bin/awk -F ',' '$2 == 200 {time[$3] += $1; time[$3] -= 1} $2 != 200 {time[$3] +=10} END{for (i in time) print time[i], i}' \
+ | /usr/bin/sort -k1n

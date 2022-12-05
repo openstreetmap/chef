@@ -18,7 +18,6 @@
 #
 
 include_recipe "git"
-include_recipe "munin"
 include_recipe "prometheus"
 include_recipe "sysfs"
 include_recipe "tools"
@@ -544,44 +543,9 @@ if disks.count.positive?
     protect_clock false
   end
 
-  # Don't try and do munin monitoring of disks behind
-  # an Areca controller as they only allow one thing to
-  # talk to the controller at a time and smartd will
-  # throw errors if it clashes with munin
-  disks = disks.reject { |disk| disk[:smart]&.start_with?("areca,") }
-
-  disks.each do |disk|
-    munin_plugin "smart_#{disk[:munin]}" do
-      target "smart_"
-      conf "munin.smart.erb"
-      conf_variables :disk => disk
-    end
-  end
 else
   service "smartd" do
     action [:stop, :disable]
-  end
-end
-
-if disks.count.positive?
-  munin_plugin "hddtemp_smartctl" do
-    conf "munin.hddtemp.erb"
-    conf_variables :disks => disks
-  end
-else
-  munin_plugin "hddtemp_smartctl" do
-    action :delete
-    conf "munin.hddtemp.erb"
-  end
-end
-
-plugins = Dir.glob("/etc/munin/plugins/smart_*").map { |p| File.basename(p) } -
-          disks.map { |d| "smart_#{d[:munin]}" }
-
-plugins.each do |plugin|
-  munin_plugin plugin do
-    action :delete
-    conf "munin.smart.erb"
   end
 end
 
