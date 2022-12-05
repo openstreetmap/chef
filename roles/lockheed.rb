@@ -38,5 +38,5 @@ run_list(
   "role[subversion]",
   "role[trac]",
   "role[irc]",
-  "recipe[blogs]"
+  "role[blogs]"
 )
