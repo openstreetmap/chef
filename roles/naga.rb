@@ -38,5 +38,6 @@ run_list(
   "role[subversion]",
   "role[trac]",
   "role[irc]",
-  "role[blogs]"
+  "role[blogs]",
+  "role[munin]"
 )
