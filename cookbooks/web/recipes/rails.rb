@@ -42,12 +42,8 @@ end
 
 nodejs_package "svgo"
 
-template "/etc/cron.hourly/passenger" do
-  cookbook "web"
-  source "passenger.cron.erb"
-  owner "root"
-  group "root"
-  mode "755"
+file "/etc/cron.hourly/passenger" do
+  action :delete
 end
 
 rails_directory = "#{node[:web][:base_directory]}/rails"
