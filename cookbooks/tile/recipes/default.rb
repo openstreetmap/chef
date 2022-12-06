@@ -205,10 +205,6 @@ service "export-cleanup.timer" do
   action [:enable, :start]
 end
 
-file "/etc/cron.hourly/export" do
-  action :delete
-end
-
 directory "/srv/tile.openstreetmap.org/data" do
   owner "tile"
   group "tile"
