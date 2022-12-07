@@ -42,10 +42,6 @@ end
 
 nodejs_package "svgo"
 
-file "/etc/cron.hourly/passenger" do
-  action :delete
-end
-
 rails_directory = "#{node[:web][:base_directory]}/rails"
 
 matomo = data_bag_item("web", "matomo")

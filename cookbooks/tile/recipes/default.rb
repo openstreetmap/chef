@@ -114,10 +114,6 @@ systemd_service "renderd" do
   restart "on-failure"
 end
 
-systemd_service "renderd" do
-  action :delete
-end
-
 service "renderd" do
   action [:enable, :start]
   subscribes :restart, "systemd_service[renderd]"
