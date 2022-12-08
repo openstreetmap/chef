@@ -55,6 +55,7 @@ action :create do
       port new_resource.prometheus_port
       restrict_address_families "AF_UNIX"
       service service_name
+      group "www-data"
       command "server"
       options "--phpfpm.scrape-uri=#{scrape_uri}"
     end

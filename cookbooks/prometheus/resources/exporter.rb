@@ -27,6 +27,7 @@ property :port, :kind_of => Integer, :required => [:create]
 property :listen_switch, :kind_of => String, :default => "web.listen-address"
 property :listen_type, :kind_of => String, :default => "address"
 property :user, :kind_of => String
+property :group, :kind_of => String
 property :command, :kind_of => String
 property :options, :kind_of => [String, Array]
 property :environment, :kind_of => Hash, :default => {}
@@ -50,6 +51,7 @@ action :create do
     type "simple"
     user new_resource.user
     dynamic_user new_resource.user.nil?
+    group new_resource.group
     environment new_resource.environment
     exec_start "#{executable_path} #{new_resource.command} #{executable_options}"
     sandbox :enable_network => true
