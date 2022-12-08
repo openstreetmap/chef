@@ -57,7 +57,7 @@ action :create do
       service service_name
       group "www-data"
       command "server"
-      options "--phpfpm.scrape-uri=#{scrape_uri}"
+      options "--phpfpm.scrape-uri=#{scrape_uri} --phpfpm.fix-process-count"
     end
   else
     prometheus_exporter "phpfpm" do
