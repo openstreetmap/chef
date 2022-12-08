@@ -183,6 +183,7 @@ systemd_service "letsencrypt-renew" do
   sandbox :enable_network => true
   read_write_paths [
     "/srv/acme.openstreetmap.org/config",
+    "/srv/acme.openstreetmap.org/html",
     "/srv/acme.openstreetmap.org/logs",
     "/srv/acme.openstreetmap.org/work"
   ]
