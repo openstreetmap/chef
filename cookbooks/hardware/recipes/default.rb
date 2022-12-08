@@ -538,7 +538,7 @@ if disks.count.positive?
   prometheus_collector "smart" do
     interval "15m"
     user "root"
-    capability_bounding_set %w[CAP_SYS_ADMIN CAP_SYS_RAWIO]
+    capability_bounding_set %w[CAP_DAC_OVERRIDE CAP_SYS_ADMIN CAP_SYS_RAWIO]
     private_devices false
     private_users false
     protect_clock false
@@ -702,7 +702,7 @@ prometheus_collector "ohai" do
   interval "15m"
   user "root"
   proc_subset "all"
-  capability_bounding_set %w[CAP_SYS_ADMIN CAP_DAC_OVERRIDE]
+  capability_bounding_set %w[CAP_DAC_OVERRIDE CAP_SYS_ADMIN]
   private_devices false
   private_users false
   protect_clock false
