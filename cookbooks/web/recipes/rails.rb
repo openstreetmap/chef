@@ -114,6 +114,9 @@ rails_port "www.openstreetmap.org" do
   oauth_application web_passwords["oauth_application"]
   matomo_configuration "location" => matomo[:location],
                        "site" => matomo[:site],
+                       "visitor_cookie_timeout" => matomo[:visitor_cookie_timeout],
+                       "referral_cookie_timeout" => matomo[:referral_cookie_timeout],
+                       "session_cookie_timeout" => matomo[:session_cookie_timeout],
                        "goals" => matomo[:goals].to_hash
   google_auth_id "651529786092-6c5ahcu0tpp95emiec8uibg11asmk34t.apps.googleusercontent.com"
   google_auth_secret web_passwords["google_auth_secret"]
