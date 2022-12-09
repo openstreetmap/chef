@@ -3,6 +3,7 @@ description "Role applied to all OTRS servers"
 
 default_attributes(
   :exim => {
+    :smarthost_via => "fafnir.openstreetmap.org:26",
     :local_domains => ["otrs.openstreetmap.org"],
     :routes => {
       :otrs_otrs => {
