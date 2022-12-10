@@ -157,7 +157,7 @@ groups:
   - name: filesystem
     rules:
       - alert: readonly filesystem
-        expr: node_filesystem_readonly == 1
+        expr: node_filesystem_readonly > min_over_time(node_filesystem_readonly[7d])
         for: 0m
         labels:
           alertgroup: "{{ $labels.instance }}"
