@@ -68,12 +68,15 @@
   # Restrict tile access to CDN nodes and admins
   <LocationMatch ^/default/\d+/\d+/\d+\.png$>
     Require expr "%{CONN_REMOTE_ADDR} != %{REMOTE_ADDR}"
+    # Fastly POPs
 <% @fastly.sort.each do |address| -%>
     Require ip <%= address %>
 <% end -%>
+    # StatusCake monitoring
 <% @statuscake.sort.reject { |address| address.empty? }.each do |address| -%>
     Require ip <%= address %>
 <% end -%>
+    # Administrators
 <% @admins.sort.each do |address| -%>
     Require ip <%= address %>
 <% end -%>
