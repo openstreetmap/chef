@@ -390,3 +390,29 @@ template "/etc/cron.daily/prometheus-backup" do
   group "root"
   mode "750"
 end
+
+# Add a few jobs to check job status
+
+chef_sleep "wait for the service to start" do
+  seconds 30
+end
+
+execute "service-status-prometheus-alertmanager" do
+  command "systemctl status prometheus-alertmanager"
+  ignore_failure true
+end
+
+execute "service-logs-prometheus-alertmanager" do
+  command "journalctl -u prometheus-alertmanager.service"
+  ignore_failure true
+end
+
+execute "service-status-prometheus" do
+  command "systemctl status prometheus"
+  ignore_failure true
+end
+
+execute "service-logs-prometheus" do
+  command "journalctl -u prometheus.service"
+  ignore_failure true
+end
