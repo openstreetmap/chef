@@ -144,7 +144,7 @@ node[:osqa][:sites].each do |site|
     line.gsub!(/^CACHE_BACKEND = .*/, "CACHE_BACKEND = 'memcached://127.0.0.1:11211/'")
     line.gsub!(%r{^APP_URL = 'http://'}, "APP_URL = 'https://#{site_name}'")
     line.gsub!(%r{^TIME_ZONE = 'America/New_York'}, "TIME_ZONE = 'Europe/London'")
-    line.gsub!(/^DISABLED_MODULES = \[([^\]]+)\]/, "DISABLED_MODULES = [\\1, 'localauth', 'facebookauth', 'oauthauth']")
+    line.gsub!(/^DISABLED_MODULES = \[([^\]]+)\]/, "DISABLED_MODULES = [\\1, 'localauth', 'facebookauth', 'oauthauth', 'mysqlfulltext']")
 
     line
   end
