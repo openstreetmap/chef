@@ -1,7 +1,9 @@
 templates:
   - "templates/web.template.yml"
-  - "templates/web.ratelimited.template.yml"
   - "templates/web.ssl.template.yml"
+
+# Disable rate limiting for the moment.
+#  - "templates/web.ratelimited.template.yml"
 
 ## which TCP/IP ports should this container expose?
 ## If you want Discourse to share a port with another webserver like Apache or nginx,
