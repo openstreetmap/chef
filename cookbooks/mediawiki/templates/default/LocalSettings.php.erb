@@ -392,7 +392,8 @@ $wgForceUIMsgAsContentMsg = array( 'mainpage-url', 'mapfeatures-url', 'contribut
 <% end -%>
 
 <% if @name == "wiki.openstreetmap.org" -%>
-# Placeholder for the wiki.openstreetmap.org specific config
+# wiki.openstreetmap.org specific config loaded after extensions
+$wgRCWatchCategoryMembership = true;
 <% end -%>
 
 <% if not(@mediawiki[:private_accounts]) and not(@mediawiki[:private_site]) -%>
