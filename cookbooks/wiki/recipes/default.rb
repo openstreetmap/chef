@@ -107,6 +107,19 @@ mediawiki_extension "MultiMaps" do
   template "mw-ext-MultiMaps.inc.php.erb"
   template_cookbook "wiki"
   variables :thunderforest_key => passwords["thunderforest"]
+  action :delete
+end
+
+mediawiki_extension "JsonConfig" do
+  site "wiki.openstreetmap.org"
+  template "mw-ext-JsonConfig.inc.php.erb"
+  template_cookbook "wiki"
+end
+
+mediawiki_extension "Kartographer" do
+  site "wiki.openstreetmap.org"
+  template "mw-ext-Kartographer.inc.php.erb"
+  template_cookbook "wiki"
 end
 
 cookbook_file "/srv/wiki.openstreetmap.org/osm_logo_wiki.png" do
