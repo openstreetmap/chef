@@ -18,7 +18,7 @@ groups:
         annotations:
           current: "{{ $value | humanize }}A"
       - alert: site temperature
-        expr: min(rPDU2SensorTempHumidityStatusTempC{site="amsterdam"}) / 10 < 18 or min(rPDU2SensorTempHumidityStatusTempC{site="amsterdam"}) / 10 > 25.5
+        expr: min(rPDU2SensorTempHumidityStatusTempC{site="amsterdam"}) / 10 < 18 or min(rPDU2SensorTempHumidityStatusTempC{site="amsterdam"}) / 10 > 26
         for: 6m
         labels:
           alertgroup: "amsterdam"
@@ -122,7 +122,7 @@ groups:
         annotations:
           current: "{{ $value | humanize }}A"
       - alert: site temperature
-        expr: min(rPDU2SensorTempHumidityStatusTempC{site="dublin"}) / 10 < 18 or min(rPDU2SensorTempHumidityStatusTempC{site="dublin"}) / 10 > 25.5
+        expr: min(rPDU2SensorTempHumidityStatusTempC{site="dublin"}) / 10 < 18 or min(rPDU2SensorTempHumidityStatusTempC{site="dublin"}) / 10 > 26
         for: 6m
         labels:
           alertgroup: "dublin"
