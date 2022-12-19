@@ -232,7 +232,15 @@ template "#{project_directory}/.env" do
             :forward_dependencies => node[:nominatim][:config][:forward_dependencies]
 end
 
-%w[wikimedia-importance.sql.gz gb_postcodes.csv.gz us_postcodes.csv.gz].each do |fname|
+remote_file "#{project_directory}/wikimedia-importance.sql.gz" do
+  action :create_if_missing
+  source "https://www.nominatim.org/data/wikimedia-importance.sql.gz"
+  owner "nominatim"
+  group "nominatim"
+  mode "644"
+end
+
+%w[gb_postcodes.csv.gz us_postcodes.csv.gz].each do |fname|
   remote_file "#{project_directory}/#{fname}" do
     action :create
     source "https://www.nominatim.org/data/#{fname}"
