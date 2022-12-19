@@ -197,7 +197,7 @@ end
 
 remote_file "#{source_directory}/data/country_osm_grid.sql.gz" do
   action :create_if_missing
-  source "https://www.nominatim.org/data/country_grid.sql.gz"
+  source "https://nominatim.org/data/country_grid.sql.gz"
   owner "nominatim"
   group "nominatim"
   mode "644"
@@ -234,7 +234,7 @@ end
 
 remote_file "#{project_directory}/wikimedia-importance.sql.gz" do
   action :create_if_missing
-  source "https://www.nominatim.org/data/wikimedia-importance.sql.gz"
+  source "https://nominatim.org/data/wikimedia-importance.sql.gz"
   owner "nominatim"
   group "nominatim"
   mode "644"
@@ -243,7 +243,7 @@ end
 %w[gb_postcodes.csv.gz us_postcodes.csv.gz].each do |fname|
   remote_file "#{project_directory}/#{fname}" do
     action :create
-    source "https://www.nominatim.org/data/#{fname}"
+    source "https://nominatim.org/data/#{fname}"
     owner "nominatim"
     group "nominatim"
     mode "644"
