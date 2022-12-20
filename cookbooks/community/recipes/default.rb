@@ -58,7 +58,7 @@ template "/srv/community.openstreetmap.org/docker/containers/data.yml" do
   source "data.yml.erb"
   owner "root"
   group "root"
-  mode "644"
+  mode "640"
   variables :passwords => passwords
   notifies :run, "execute[discourse_container_data_rebuild]"
 end
@@ -67,7 +67,7 @@ template "/srv/community.openstreetmap.org/docker/containers/web_only.yml" do
   source "web_only.yml.erb"
   owner "root"
   group "root"
-  mode "644"
+  mode "640"
   variables :license_keys => license_keys, :passwords => passwords
   notifies :run, "execute[discourse_container_web_only_bootstrap]"
 end
@@ -76,7 +76,7 @@ template "/srv/community.openstreetmap.org/docker/containers/mail-receiver.yml" 
   source "mail-receiver.yml.erb"
   owner "root"
   group "root"
-  mode "644"
+  mode "640"
   variables :passwords => passwords
   notifies :run, "execute[discourse_container_mail_receiver_rebuild]"
 end
