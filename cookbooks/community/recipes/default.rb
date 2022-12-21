@@ -49,9 +49,9 @@ git "/srv/community.openstreetmap.org/docker" do
   depth 1
   user "root"
   group "root"
-  notifies :run, "execute[discourse_container_data_rebuild]"
-  notifies :run, "execute[discourse_container_web_only_bootstrap]"
-  notifies :run, "execute[discourse_container_mail_receiver_rebuild]"
+  notifies :run, "notify_group[discourse_container_new_data]"
+  notifies :run, "notify_group[discourse_container_new_web_only]"
+  notifies :run, "notify_group[discourse_container_new_mail_receiver]"
 end
 
 template "/srv/community.openstreetmap.org/docker/containers/data.yml" do
@@ -60,7 +60,7 @@ template "/srv/community.openstreetmap.org/docker/containers/data.yml" do
   group "root"
   mode "640"
   variables :passwords => passwords
-  notifies :run, "execute[discourse_container_data_rebuild]"
+  notifies :run, "notify_group[discourse_container_new_data]"
 end
 
 template "/srv/community.openstreetmap.org/docker/containers/web_only.yml" do
@@ -69,7 +69,7 @@ template "/srv/community.openstreetmap.org/docker/containers/web_only.yml" do
   group "root"
   mode "640"
   variables :license_keys => license_keys, :passwords => passwords
-  notifies :run, "execute[discourse_container_web_only_bootstrap]"
+  notifies :run, "notify_group[discourse_container_new_web_only]"
 end
 
 template "/srv/community.openstreetmap.org/docker/containers/mail-receiver.yml" do
@@ -78,26 +78,52 @@ template "/srv/community.openstreetmap.org/docker/containers/mail-receiver.yml" 
   group "root"
   mode "640"
   variables :passwords => passwords
-  notifies :run, "execute[discourse_container_mail_receiver_rebuild]"
+  notifies :run, "notify_group[discourse_container_new_mail_receiver]"
 end
 
-# Destroy Bootstap Start
-execute "discourse_container_data_rebuild" do
+ssl_certificate "community.openstreetmap.org" do
+  domains ["community.openstreetmap.org", "community.osm.org", "communities.openstreetmap.org", "communities.osm.org"]
+  notifies :run, "notify_group[discourse_container_new_web_only]"
+  notifies :run, "notify_group[discourse_container_new_mail_receiver]"
+end
+
+notify_group "discourse_container_new_web_only" do
+  notifies :run, "execute[discourse_container_data_start]", :immediately # noop if site up
+  notifies :run, "execute[discourse_container_web_only_bootstrap]", :immediately # site up but runs in parallel. Slow
+  notifies :run, "execute[discourse_container_web_only_destroy]", :immediately # site down
+  notifies :run, "execute[discourse_container_data_rebuild]", :immediately # site down
+  notifies :run, "execute[discourse_container_web_only_start]", :immediately # site restore
+end
+
+notify_group "discourse_container_new_data" do
+  notifies :run, "execute[discourse_container_web_only_destroy]", :immediately # site down
+  notifies :run, "execute[discourse_container_data_rebuild]", :immediately # site down
+  notifies :run, "execute[discourse_container_web_only_start]", :immediately # site restore
+end
+
+notify_group "discourse_container_new_mail_receiver" do
+  notifies :run, "execute[discourse_container_mail_receiver_rebuild]", :immediately
+end
+
+# Attempt at a failsafe to ensure all containers are running
+notify_group "discourse_container_ensure_all_running" do
+  action :run
+  notifies :run, "execute[discourse_container_data_start]", :delayed
+  notifies :run, "execute[discourse_container_web_only_start]", :delayed
+  notifies :run, "execute[discourse_container_mail_receiver_start]", :delayed
+end
+
+execute "discourse_container_data_start" do
   action :nothing
-  command "./launcher rebuild data"
+  command "./launcher start data"
   cwd "/srv/community.openstreetmap.org/docker/"
   user "root"
   group "root"
 end
 
-ssl_certificate "community.openstreetmap.org" do
-  domains ["community.openstreetmap.org", "community.osm.org", "communities.openstreetmap.org", "communities.osm.org"]
-  notifies :run, "execute[discourse_container_web_only_bootstrap]"
-end
-
-execute "discourse_container_data_start" do
-  action :run
-  command "./launcher start data"
+execute "discourse_container_data_rebuild" do
+  action :nothing
+  command "./launcher rebuild data"
   cwd "/srv/community.openstreetmap.org/docker/"
   user "root"
   group "root"
@@ -109,7 +135,6 @@ execute "discourse_container_web_only_bootstrap" do
   cwd "/srv/community.openstreetmap.org/docker/"
   user "root"
   group "root"
-  notifies :run, "execute[discourse_container_web_only_destroy]", :immediately
 end
 
 execute "discourse_container_web_only_destroy" do
@@ -118,22 +143,28 @@ execute "discourse_container_web_only_destroy" do
   cwd "/srv/community.openstreetmap.org/docker/"
   user "root"
   group "root"
-  notifies :run, "execute[discourse_container_web_only_start]", :immediately
 end
 
 execute "discourse_container_web_only_start" do
-  action :run
+  action :nothing
   command "./launcher start web_only"
   cwd "/srv/community.openstreetmap.org/docker/"
   user "root"
   group "root"
-  notifies :run, "execute[discourse_container_data_start]", :before
 end
 
-# Destroy Bootstap Start
+# Rebuild: Stop Destroy Bootstap Start
 execute "discourse_container_mail_receiver_rebuild" do
   action :nothing
   command "./launcher rebuild mail-receiver"
+  cwd "/srv/community.openstreetmap.org/docker/"
+  user "root"
+  group "root"
+end
+
+execute "discourse_container_mail_receiver_start" do
+  action :nothing
+  command "./launcher start mail-receiver"
   cwd "/srv/community.openstreetmap.org/docker/"
   user "root"
   group "root"
