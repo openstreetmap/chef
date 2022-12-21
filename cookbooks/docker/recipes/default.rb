@@ -23,6 +23,7 @@ package %w[
   docker-ce
   docker-ce-cli
   containerd.io
+  docker-compose-plugin
 ]
 
 directory "/etc/docker" do
