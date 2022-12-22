@@ -403,9 +403,11 @@ Ohai.plugin(:Hardware) do
     end
 
     devices[:disks].each do |disk|
-      if location = disks.find_index(disk[:location])
-        disk[:smart_device] = "cciss,#{location}"
-      end
+      controller = disk[:controller]
+
+      next unless devices[:controllers][controller][:type] == "hp"
+
+      disk[:smart_device] = "cciss,#{disks.find_index(disk[:location])}"
 
       if disk[:status] == "Failed"
         disk[:status] = "failed"
