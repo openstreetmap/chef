@@ -87,7 +87,6 @@ systemd_service "mediawiki-sitemap@" do
   nice 10
   sandbox true
   memory_deny_write_execute false
-  restrict_address_families "AF_UNIX"
   read_write_paths "/srv/%i"
 end
 
@@ -103,7 +102,6 @@ systemd_service "mediawiki-jobs@" do
   nice 10
   sandbox true
   memory_deny_write_execute false
-  restrict_address_families "AF_UNIX"
   read_write_paths "/srv/%i"
 end
 
@@ -120,7 +118,6 @@ systemd_service "mediawiki-email-jobs@" do
   nice 10
   sandbox :enable_network => true
   memory_deny_write_execute false
-  restrict_address_families "AF_UNIX"
 end
 
 systemd_timer "mediawiki-email-jobs@" do
@@ -134,9 +131,8 @@ systemd_service "mediawiki-refresh-links@" do
   exec_start "/usr/bin/php -d memory_limit=2048M -d error_reporting=22517 /srv/%i/w/maintenance/refreshLinks.php --server=https://%i --memory-limit=2048M --quiet"
   user node[:mediawiki][:user]
   nice 10
-  sandbox true
+  sandbox :enable_network => true
   memory_deny_write_execute false
-  restrict_address_families "AF_UNIX"
 end
 
 systemd_timer "mediawiki-refresh-links@" do
