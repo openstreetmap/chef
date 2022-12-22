@@ -85,7 +85,7 @@ systemd_service "mediawiki-sitemap@" do
   exec_start "/usr/bin/php -d memory_limit=2048M -d error_reporting=22517 /srv/%i/w/maintenance/generateSitemap.php --server=https://%i --urlpath=https://%i/ --fspath=/srv/%i --quiet --skip-redirects"
   user node[:mediawiki][:user]
   nice 10
-  sandbox true
+  sandbox :enable_network => true
   memory_deny_write_execute false
   read_write_paths "/srv/%i"
 end
@@ -100,7 +100,7 @@ systemd_service "mediawiki-jobs@" do
   exec_start "/usr/bin/php -d memory_limit=2048M -d error_reporting=22517 /srv/%i/w/maintenance/runJobs.php --server=https://%i --maxtime=175 --memory-limit=2048M --procs=8 --nothrottle --quiet"
   user node[:mediawiki][:user]
   nice 10
-  sandbox true
+  sandbox :enable_network => true
   memory_deny_write_execute false
   read_write_paths "/srv/%i"
 end
