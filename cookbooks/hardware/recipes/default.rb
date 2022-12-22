@@ -477,7 +477,7 @@ disks = disks.map do |disk|
     munin = device
   end
 
-  next if device.nil?
+  next if device.nil? || munin.nil?
 
   Hash[
     :device => device,
