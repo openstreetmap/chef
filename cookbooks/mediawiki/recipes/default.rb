@@ -87,6 +87,7 @@ systemd_service "mediawiki-sitemap@" do
   nice 10
   sandbox :enable_network => true
   memory_deny_write_execute false
+  restrict_address_families "AF_UNIX"
   read_write_paths "/srv/%i"
 end
 
@@ -102,6 +103,7 @@ systemd_service "mediawiki-jobs@" do
   nice 10
   sandbox :enable_network => true
   memory_deny_write_execute false
+  restrict_address_families "AF_UNIX"
   read_write_paths "/srv/%i"
 end
 
@@ -118,6 +120,8 @@ systemd_service "mediawiki-email-jobs@" do
   nice 10
   sandbox :enable_network => true
   memory_deny_write_execute false
+  restrict_address_families "AF_UNIX"
+  read_write_paths "/srv/%i"
 end
 
 systemd_timer "mediawiki-email-jobs@" do
@@ -133,6 +137,8 @@ systemd_service "mediawiki-refresh-links@" do
   nice 10
   sandbox :enable_network => true
   memory_deny_write_execute false
+  restrict_address_families "AF_UNIX"
+  read_write_paths "/srv/%i"
 end
 
 systemd_timer "mediawiki-refresh-links@" do
