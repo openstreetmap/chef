@@ -294,5 +294,8 @@ begin
   rep.save!
 rescue StandardError => e
   warn "ERROR: #{e.message}"
+  e.backtrace.each do |frame|
+    warn "ERROR: #{frame}"
+  end
   exit 1
 end
