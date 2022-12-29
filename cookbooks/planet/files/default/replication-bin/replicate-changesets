@@ -216,9 +216,7 @@ class Replicator
     Zlib::GzipWriter.open(tmp_data) do |fh|
       fh.write(changeset_dump(changesets))
     end
-    File.open(tmp_state, "w") do |fh|
-      fh.write(YAML.dump(@state))
-    end
+    File.write(tmp_state, YAML.dump(@state))
 
     # fsync the files in their old locations.
     fsync(tmp_data)
@@ -267,7 +265,7 @@ class Replicator
       # of processes queueing on the lock and causing weirdness if/when they
       # get woken up in a random order.
       got_lock = fl.flock(File::LOCK_EX | File::LOCK_NB)
-      return unless got_lock
+      break unless got_lock
 
       # try and write the files to tmp locations and then
       # move them into place later, to avoid in-progress
