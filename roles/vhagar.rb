@@ -29,6 +29,15 @@ default_attributes(
         :address => "2001:978:2:2C::172:5"
       }
     }
+  },
+  :nominatim => {
+    :state => "standalone",
+    :flatnode_file => "/srv/nominatim.openstreetmap.org/planet-project/nodes.store",
+    :fpm_pools => {
+      "nominatim.openstreetmap.org" => {
+        :max_children => 200
+      }
+    }
   }
 )
 
