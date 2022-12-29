@@ -132,6 +132,7 @@ package %w[
   libpq-dev
   libproj-dev
   liblua5.3-dev
+  libluajit-5.1-dev
   lua5.3
   python3-pyosmium
   python3-psycopg2
@@ -207,7 +208,7 @@ execute "compile_nominatim" do
   action :nothing
   user "nominatim"
   cwd build_directory
-  command "cmake #{source_directory} && make"
+  command "cmake -D WITH_LUAJIT=ON #{source_directory} && make"
   notifies :run, "execute[install_nominatim]"
 end
 
