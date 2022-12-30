@@ -37,6 +37,14 @@ remote_file "/srv/tftp/netboot.xyz.efi" do
   mode "644"
 end
 
+remote_file "/srv/tftp/netboot.xyz-snp.efi" do
+  action :create
+  source "https://boot.netboot.xyz/ipxe/netboot.xyz-snp.efi"
+  owner "root"
+  group "root"
+  mode "644"
+end
+
 remote_file "/srv/tftp/netboot.xyz.kpxe" do
   action :create
   source "https://boot.netboot.xyz/ipxe/netboot.xyz.kpxe"

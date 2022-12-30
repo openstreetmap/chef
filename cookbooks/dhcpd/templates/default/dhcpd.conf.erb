@@ -33,7 +33,7 @@ subnet <%= interface[:network] %> netmask <%= interface[:netmask] %> {
   } elsif option arch = 00:07 {
     filename "netboot.xyz.efi";
   } else {
-    filename "netboot.xyz.kpxe";
+    filename "netboot.xyz-undionly.kpxe";
   }
 }
 <% end -%>
