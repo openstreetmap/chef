@@ -37,6 +37,8 @@ package %w[
 ]
 
 apache_module "expires"
+apache_module "proxy"
+apache_module "proxy_fcgi"
 apache_module "rewrite"
 
 version = node[:matomo][:version]
