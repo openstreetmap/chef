@@ -90,7 +90,7 @@ hooks:
           - git clone --depth 1 https://github.com/discourse/discourse-solved.git
           - git clone --depth 1 https://github.com/discourse/discourse-canned-replies.git
           - git clone --depth 1 https://github.com/discourse/discourse-reactions.git
-          - git clone --depth 1 https://github.com/discourse/discourse-prometheus.git
+          - git clone https://github.com/discourse/discourse-prometheus.git && cd discourse-prometheus && git checkout 72fff206ba18ad5ca3112fed2f5f0ce6a17ca6f8
           - git clone --depth 1 https://github.com/discourse/discourse-translator.git
   after_ssl:
     - replace:
