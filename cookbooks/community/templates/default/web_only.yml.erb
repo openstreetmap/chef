@@ -18,9 +18,9 @@ links:
 # any extra arguments for Docker?
 # docker_args:
 
-# Workaround bug: https://github.com/discourse/discourse_docker/pull/505
-# params:
-#  version: v2.8.13 - NOT USED HERE. UPDATE THE EXEC GIT ACTIONS BELOW WITH VERSION
+# Latest Version v2.8.13
+params:
+  version: stable
 
 env:
   LC_ALL: en_US.UTF-8
@@ -92,11 +92,6 @@ hooks:
           - git clone --depth 1 https://github.com/discourse/discourse-reactions.git
           - git clone --depth 1 https://github.com/discourse/discourse-prometheus.git
           - git clone --depth 1 https://github.com/discourse/discourse-translator.git
-    - exec:
-        cd: $home
-        cmd:
-          - git fetch --depth=1 origin tag v2.8.13 --no-tags
-          - git checkout v2.8.13
   after_ssl:
     - replace:
         filename: "/etc/nginx/conf.d/discourse.conf"
