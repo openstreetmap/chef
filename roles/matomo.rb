@@ -16,12 +16,13 @@ default_attributes(
   :mysql => {
     :settings => {
       :mysqld => {
-        :innodb_buffer_pool_instances => "64",
-        :innodb_buffer_pool_size => "64GB",
+        :innodb_buffer_pool_instances => "128",
+        :innodb_buffer_pool_size => "128GB",
         :innodb_flush_log_at_trx_commit => "2",
-        :innodb_log_file_size => "8GB",
-        :join_buffer_size => "256KB",
-        :key_buffer_size => "0"
+        :innodb_log_file_size => "16GB",
+        :join_buffer_size => "1GB",
+        :key_buffer_size => "0",
+        :max_connections => "64"
       }
     }
   }
