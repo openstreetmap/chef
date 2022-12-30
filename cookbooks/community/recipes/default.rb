@@ -45,7 +45,7 @@ end
 git "/srv/community.openstreetmap.org/docker" do
   action :sync
   repository "https://github.com/discourse/discourse_docker.git"
-  revision "main"
+  revision "13bfcd2517c743e1bc313b8d89631772702ae112"
   depth 1
   user "root"
   group "root"
