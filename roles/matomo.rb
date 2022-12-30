@@ -16,9 +16,11 @@ default_attributes(
   :mysql => {
     :settings => {
       :mysqld => {
-        :innodb_buffer_pool_instances => "8",
-        :innodb_buffer_pool_size => "16GB",
-        :innodb_flush_log_at_trx_commit => "2"
+        :innodb_buffer_pool_instances => "16",
+        :innodb_buffer_pool_size => "64GB",
+        :innodb_flush_log_at_trx_commit => "2",
+        :innodb_log_file_size => "2GB",
+        :key_buffer_size => "0"
       }
     }
   }
