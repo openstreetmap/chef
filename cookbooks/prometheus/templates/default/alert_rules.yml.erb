@@ -570,6 +570,15 @@ groups:
           alertgroup: "{{ $labels.instance }}"
         annotations:
           percentage_used: "{{ $value | humanizePercentage }}"
+  - name: snmp
+    rules:
+      - alert: snmp pdus missing
+        expr: max_over_time(snmp_scrape_pdus_returned[1d]) - snmp_scrape_pdus_returned > 0
+        for: 15m
+        labels:
+          alertgroup: snmp
+        annotations:
+          missing_pdus: "{{ $value }}"
   - name: ssl
     rules:
       - alert: ssl certificate probe failed
