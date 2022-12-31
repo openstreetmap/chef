@@ -86,6 +86,18 @@ git "/srv/gps-tile.openstreetmap.org/updater" do
   group "gpstile"
 end
 
+directory "/srv/gps-tile.openstreetmap.org/tracks" do
+  owner "gpstile"
+  group "gpstile"
+  mode "755"
+end
+
+directory "/srv/gps-tile.openstreetmap.org/shapes" do
+  owner "gpstile"
+  group "gpstile"
+  mode "755"
+end
+
 systemd_service "gps-update" do
   description "GPS tile update daemon"
   after ["network.target", "memcached.service"]
