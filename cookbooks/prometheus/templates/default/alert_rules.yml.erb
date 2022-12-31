@@ -555,7 +555,7 @@ groups:
         labels:
           alertgroup: "{{ $labels.instance }}"
         annotations:
-          new_ercrors: "{{ $value }}"
+          new_errors: "{{ $value }}"
   - name: smart
     rules:
       - alert: smart failure
