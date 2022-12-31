@@ -337,6 +337,20 @@ groups:
           alertgroup: "{{ $labels.instance }}"
         annotations:
           new_oom_kills: "{{ $value }}"
+  - name: mysql
+    rules:
+      - alert: mysql down
+        expr: mysql_up == 0
+        for: 1m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+      - alert: mysql connection limit
+        expr: mysql_global_status_max_used_connections / mysql_global_variables_max_connections > 0.8
+        for: 1m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+        annotations:
+          connections_used: "{{ $value | humanizePercentage }}"
   - name: network
     rules:
       - alert: interface transmit rate
