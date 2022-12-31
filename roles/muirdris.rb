@@ -2,6 +2,9 @@ name "muirdris"
 description "Master role applied to muirdris"
 
 default_attributes(
+  :memcached => {
+    :memory_limit => 128 * 1024
+  },
   :networking => {
     :interfaces => {
       :internal_ipv4 => {

@@ -2,6 +2,9 @@ name "noquiklos"
 description "Master role applied to noquiklos"
 
 default_attributes(
+  :memcached => {
+    :memory_limit => 24 * 1024
+  },
   :networking => {
     :interfaces => {
       :internal_ipv4 => {
