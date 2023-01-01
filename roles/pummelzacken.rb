@@ -23,36 +23,9 @@ default_attributes(
         :address => "193.60.236.18"
       }
     }
-  },
-  :postgresql => {
-    :versions => ["14"],
-    :settings => {
-      :defaults => {
-        :listen_addresses => "10.0.0.20",
-        :work_mem => "160MB",
-        :effective_io_concurrency => "256",
-        :fsync => "on"
-      }
-    }
-  },
-  :nominatim => {
-    :state => "standalone",
-    :dbcluster => "14/main",
-    :postgis => "3",
-    :enable_backup => true,
-    :flatnode_file => "/ssd/nominatim/nodes.store",
-    :tablespaces => {
-      "daux" => "/data/tablespaces/daux",
-      "iaux" => "/data/tablespaces/iaux"
-    },
-    :config => {
-      :forward_dependencies => "yes"
-    }
-
   }
 )
 
 run_list(
-  "role[ucl]",
-  "role[nominatim]"
+  "role[ucl]"
 )
