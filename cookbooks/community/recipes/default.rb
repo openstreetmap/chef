@@ -82,7 +82,7 @@ template "/srv/community.openstreetmap.org/docker/containers/mail-receiver.yml" 
 end
 
 ssl_certificate "community.openstreetmap.org" do
-  domains ["community.openstreetmap.org", "community.osm.org", "communities.openstreetmap.org", "communities.osm.org","c.openstreetmap.org", "c.osm.org"]
+  domains ["community.openstreetmap.org", "community.osm.org", "communities.openstreetmap.org", "communities.osm.org", "c.openstreetmap.org", "c.osm.org"]
   notifies :run, "notify_group[discourse_container_new_web_only]"
   notifies :run, "notify_group[discourse_container_new_mail_receiver]"
 end
