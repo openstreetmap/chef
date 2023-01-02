@@ -6,8 +6,3 @@
 # Vaccum all tables with indices on integer arrays.
 # Agressive vacuuming seems to help against index bloat.
 psql -q -d <%= @db %> -c 'VACUUM ANALYSE search_name'
-
-for i in `seq 0 250`; do
-  psql -q -d <%= @db %> -c "VACUUM ANALYSE search_name_${i}"
-done
-
