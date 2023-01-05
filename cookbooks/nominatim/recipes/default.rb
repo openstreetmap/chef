@@ -142,6 +142,8 @@ package %w[
   python3-icu
   python3-datrie
   python3-yaml
+  python3-sqlalchemy-ext
+  python3-asyncpg
   php-pgsql
   php-intl
   ruby
