@@ -59,8 +59,6 @@ action :create do
     :version => new_resource.version
   }
 
-  secret_key = persistent_token("mediawiki", new_resource.site, "wgSecretKey")
-
   mysql_user "#{new_resource.database_user}@localhost" do
     password new_resource.database_password
   end
@@ -70,13 +68,6 @@ action :create do
   end
 
   mediawiki_directory = "#{site_directory}/w"
-
-  ruby_block "rename-installer-localsettings" do
-    action :nothing
-    block do
-      ::File.rename("#{mediawiki_directory}/LocalSettings.php", "#{mediawiki_directory}/LocalSettings-install.php")
-    end
-  end
 
   declare_resource :directory, site_directory do
     owner node[:mediawiki][:user]
@@ -97,9 +88,6 @@ action :create do
     depth 1
     user node[:mediawiki][:user]
     group node[:mediawiki][:group]
-    notifies :run, "execute[#{mediawiki_directory}/composer.json]", :immediately
-    notifies :run, "execute[#{mediawiki_directory}/maintenance/install.php]", :immediately
-    notifies :run, "execute[#{mediawiki_directory}/maintenance/update.php]"
   end
 
   template "#{mediawiki_directory}/composer.local.json" do
@@ -111,44 +99,21 @@ action :create do
   end
 
   execute "#{mediawiki_directory}/composer.json" do
-    action :nothing
     command "composer update --no-dev"
     cwd mediawiki_directory
     user node[:mediawiki][:user]
     group node[:mediawiki][:group]
     environment "COMPOSER_HOME" => site_directory
+    not_if { ::File.exist?("#{mediawiki_directory}/composer.lock") }
   end
 
   execute "#{mediawiki_directory}/maintenance/install.php" do
-    action :nothing
     # Use metanamespace as Site Name to ensure correct set namespace
     command "php maintenance/install.php --server '#{name}' --dbtype 'mysql' --dbname '#{new_resource.database_name}' --dbuser '#{new_resource.database_user}' --dbpass '#{new_resource.database_password}' --dbserver 'localhost' --scriptpath /w --pass '#{new_resource.admin_password}' '#{new_resource.metanamespace}' '#{new_resource.admin_user}'"
     cwd mediawiki_directory
     user node[:mediawiki][:user]
     group node[:mediawiki][:group]
-    not_if do
-      ::File.exist?("#{mediawiki_directory}/LocalSettings-install.php")
-    end
-    notifies :run, "ruby_block[rename-installer-localsettings]", :immediately
-  end
-
-  execute "#{mediawiki_directory}/maintenance/update.php" do
-    action :nothing
-    command "php maintenance/update.php --quick"
-    cwd mediawiki_directory
-    user node[:mediawiki][:user]
-    group node[:mediawiki][:group]
-  end
-
-  # Safety catch if git doesn't update but install.php hasn't run
-  ruby_block "catch-installer-localsettings-run" do
-    action :run
-    block do
-    end
-    not_if do
-      ::File.exist?("#{mediawiki_directory}/LocalSettings-install.php")
-    end
-    notifies :run, "execute[#{mediawiki_directory}/maintenance/install.php]", :immediately
+    not_if { ::File.exist?("#{mediawiki_directory}/LocalSettings.php") }
   end
 
   declare_resource :directory, "#{mediawiki_directory}/images" do
@@ -180,23 +145,26 @@ action :create do
               :database_params => database_params,
               :mediawiki => mediawiki_params,
               :secret_key => secret_key
-    notifies :run, "execute[#{mediawiki_directory}/maintenance/update.php]"
   end
 
   service "mediawiki-sitemap@#{new_resource.site}.timer" do
     action [:enable, :start]
+    only_if { ::File.exist?("#{mediawiki_directory}/LocalSettings.php") }
   end
 
   service "mediawiki-jobs@#{new_resource.site}.timer" do
     action [:enable, :start]
+    only_if { ::File.exist?("#{mediawiki_directory}/LocalSettings.php") }
   end
 
   service "mediawiki-email-jobs@#{new_resource.site}.timer" do
     action [:enable, :start]
+    only_if { ::File.exist?("#{mediawiki_directory}/LocalSettings.php") }
   end
 
   service "mediawiki-refresh-links@#{new_resource.site}.timer" do
     action [:enable, :start]
+    only_if { ::File.exist?("#{mediawiki_directory}/LocalSettings.php") }
   end
 
   template "/etc/cron.daily/mediawiki-#{cron_name}-backup" do
@@ -208,12 +176,14 @@ action :create do
     variables :name => new_resource.site,
               :directory => site_directory,
               :database_params => database_params
+    only_if { ::File.exist?("#{mediawiki_directory}/LocalSettings.php") }
   end
 
   # MobileFrontend extension is required by MinervaNeue skin
   mediawiki_extension "MobileFrontend" do
     site new_resource.site
     template "mw-ext-MobileFrontend.inc.php.erb"
+    update_site false
   end
 
   # MobileFrontend extension is required by MinervaNeue skin
@@ -534,6 +504,14 @@ end
 action :update do
   mediawiki_directory = "#{site_directory}/w"
 
+  execute "#{mediawiki_directory}/composer.json" do
+    command "composer update --no-dev"
+    cwd mediawiki_directory
+    user node[:mediawiki][:user]
+    group node[:mediawiki][:group]
+    environment "COMPOSER_HOME" => site_directory
+  end
+
   template "#{mediawiki_directory}/LocalSettings.php" do
     cookbook "mediawiki"
     source "LocalSettings.php.erb"
@@ -543,8 +521,8 @@ action :update do
     variables :name => new_resource.site,
               :directory => mediawiki_directory,
               :database_params => database_params,
-              :mediawiki => mediawiki_params
-    notifies :run, "execute[#{mediawiki_directory}/maintenance/update.php]"
+              :mediawiki => mediawiki_params,
+              :secret_key => secret_key
   end
 
   execute "#{mediawiki_directory}/maintenance/update.php" do
@@ -624,8 +602,13 @@ action_class do
       :private_site => new_resource.private_site
     }
   end
+
+  def secret_key
+    persistent_token("mediawiki", new_resource.site, "wgSecretKey")
+  end
 end
 
 def after_created
+  notifies :update, "mediawiki_site[#{site}]"
   notifies :reload, "service[apache2]" if reload_apache
 end

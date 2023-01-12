@@ -84,17 +84,6 @@ action :create do
       mode "664"
     end
   end
-
-  execute "#{extension_directory}/composer.json" do
-    action :nothing
-    command "composer update --no-dev"
-    cwd mediawiki_directory
-    user node[:mediawiki][:user]
-    group node[:mediawiki][:group]
-    environment "COMPOSER_HOME" => site_directory
-    only_if { ::File.exist?("#{extension_directory}/composer.json") }
-    subscribes :run, "git[#{extension_directory}]"
-  end
 end
 
 action :delete do
@@ -131,12 +120,5 @@ action_class do
 end
 
 def after_created
-  if update_site
-    notifies :update, "mediawiki_site[#{site}]"
-  else
-    site_directory = node[:mediawiki][:sites][site][:directory]
-
-    notifies :create, "template[#{site_directory}/w/LocalSettings.php]"
-    notifies :run, "execute[#{site_directory}/w/maintenance/update.php]"
-  end
+  notifies :update, "mediawiki_site[#{site}]" if update_site
 end
