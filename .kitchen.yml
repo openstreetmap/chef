@@ -127,6 +127,21 @@ suites:
   - name: forum
     run_list:
       - recipe[forum::default]
+  - name: foundation-board
+    run_list:
+      - recipe[foundation::board]
+  - name: foundation-dwg
+    run_list:
+      - recipe[foundation::dwg]
+  - name: foundation-mwg
+    run_list:
+      - recipe[foundation::mwg]
+  - name: foundation-owg
+    run_list:
+      - recipe[foundation::owg]
+  - name: foundation-wiki
+    run_list:
+      - recipe[foundation::wiki]
   - name: ftp
     run_list:
       - recipe[ftp::default]

@@ -39,6 +39,11 @@ jobs:
           - exim
           - fail2ban
           - forum
+          - foundation-board
+          - foundation-dwg
+          - foundation-mwg
+          - foundation-owg
+          - foundation-wiki
           - ftp
           - geodns
           - geoipupdate
