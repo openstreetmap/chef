@@ -20,7 +20,12 @@
 cache_dir = Chef::Config[:file_cache_path]
 
 chef_version = node[:chef][:client][:version]
-chef_package = "chef_#{chef_version}-1_amd64.deb"
+chef_arch = if arm?
+              "arm64"
+            else
+              "amd64"
+            end
+chef_package = "chef_#{chef_version}-1_#{chef_arch}.deb"
 
 directory "/var/cache/chef" do
   action :delete
