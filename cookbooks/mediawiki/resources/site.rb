@@ -531,6 +531,7 @@ action :update do
     cwd mediawiki_directory
     user node[:mediawiki][:user]
     group node[:mediawiki][:group]
+    timeout 86400
   end
 end
 
