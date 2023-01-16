@@ -3,7 +3,7 @@ description "Role applied to all OSMF servers"
 
 default_attributes(
   :elasticsearch => {
-    :version => "6.x",
+    :version => "7.x",
     :cluster => {
       :name => "foundation"
     }
