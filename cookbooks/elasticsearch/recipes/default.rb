@@ -19,6 +19,7 @@
 
 case node[:elasticsearch][:version]
 when "6.x" then include_recipe "apt::elasticsearch6"
+when "7.x" then include_recipe "apt::elasticsearch7"
 when "8.x" then include_recipe "apt::elasticsearch8"
 end
 
