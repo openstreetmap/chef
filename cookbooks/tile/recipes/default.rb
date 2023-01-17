@@ -645,11 +645,9 @@ service "replicate" do
   subscribes :restart, "systemd_service[replicate]"
 end
 
-template "/etc/logrotate.d/replicate" do
-  source "replicate.logrotate.erb"
-  owner "root"
-  group "root"
-  mode "644"
+# FIXME: cleanup old replicate logrotate
+file "/etc/logrotate.d/replicate" do
+  action :delete
 end
 
 template "/usr/local/bin/render-lowzoom" do
