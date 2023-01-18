@@ -24,7 +24,6 @@ default_attributes(
     }
   },
   :exim => {
-    :smarthost_via => "fafnir.openstreetmap.org:26",
     :trusted_users => %w[www-data wiki],
     :aliases => {
       :root => "grant"

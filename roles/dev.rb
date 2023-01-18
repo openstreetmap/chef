@@ -126,9 +126,6 @@ default_attributes(
       }
     }
   },
-  :exim => {
-    :smarthost_via => "fafnir.openstreetmap.org:26"
-  },
   :postgresql => {
     :versions => ["14"],
     :settings => {

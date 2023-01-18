@@ -9,9 +9,6 @@ default_attributes(
         :members => [:grant, :tomh]
       }
     }
-  },
-  :exim => {
-    :smarthost_via => "fafnir.openstreetmap.org:26"
   }
 )
 
