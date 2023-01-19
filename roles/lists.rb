@@ -5,7 +5,10 @@ default_attributes(
   :exim => {
     :aliases => {
       "mailman-loop" => "/dev/null"
-    }
+    },
+    :local_domain => [
+      "openstreetmap.org"
+    ]
   }
 )
 

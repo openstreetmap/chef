@@ -49,7 +49,6 @@ override_attributes(
 
 run_list(
   "role[bytemark]",
-  "role[mail]",
   "role[lists]",
   "role[osqa]"
 )
