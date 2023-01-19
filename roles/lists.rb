@@ -6,7 +6,7 @@ default_attributes(
     :aliases => {
       "mailman-loop" => "/dev/null"
     },
-    :local_domain => [
+    :local_domains => [
       "openstreetmap.org"
     ]
   }
