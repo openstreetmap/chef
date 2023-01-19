@@ -27,10 +27,6 @@ default_attributes(
         }
       }
     }
-  },
-  :web => {
-    :fileserver => "grisu",
-    :readonly_database_host => "snap-02.ucl.openstreetmap.org"
   }
 )
 
