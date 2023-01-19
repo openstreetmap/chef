@@ -41,8 +41,7 @@ override_attributes(
         :prefix => "64",
         :gateway => "fe80::1"
       }
-    },
-    :private_address => "10.0.16.100"
+    }
   }
 )
 

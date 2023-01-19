@@ -241,7 +241,7 @@ if node[:networking][:wireguard][:enabled]
       }
     end
 
-    search(:node, "roles:shenron OR roles:prometheus") do |server|
+    search(:node, "roles:prometheus") do |server|
       allowed_ips = server.interfaces(:role => :internal).map do |interface|
         "#{interface[:network]}/#{interface[:prefix]}"
       end
