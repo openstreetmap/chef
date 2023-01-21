@@ -45,7 +45,8 @@ end
 git "/srv/community.openstreetmap.org/docker" do
   action :sync
   repository "https://github.com/discourse/discourse_docker.git"
-  revision "e6cb71cd55cfad1c64b0a4b40676cbcaedbc918f"
+  # Revision pin not possible as launch wrapper automatically updates git repo.
+  revision "main"
   depth 1
   user "root"
   group "root"
