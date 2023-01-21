@@ -132,7 +132,7 @@ end
 
 systemd_service "mediawiki-refresh-links@" do
   description "Refresh mediawiki links for %i"
-  exec_start "/usr/bin/php -d memory_limit=2048M -d error_reporting=22517 /srv/%i/w/maintenance/refreshLinks.php --server=https://%i --memory-limit=2048M --quiet"
+  exec_start "/usr/bin/php -d memory_limit=4096M -d error_reporting=22517 /srv/%i/w/maintenance/refreshLinks.php --server=https://%i --memory-limit=2048M --quiet"
   user node[:mediawiki][:user]
   nice 10
   sandbox :enable_network => true
