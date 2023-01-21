@@ -22,8 +22,7 @@ default_attributes(
         :effective_io_concurrency => "256",
         :random_page_cost => "1.1"
       }
-    },
-    :versions => ["15"]
+    }
   },
   :sysctl => {
     :postgres => {
