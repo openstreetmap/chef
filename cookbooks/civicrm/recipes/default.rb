@@ -34,7 +34,9 @@ cache_dir = Chef::Config[:file_cache_path]
 passwords = data_bag_item("civicrm", "passwords")
 
 database_password = passwords["database"]
-site_key = passwords["key"]
+site_key = passwords["site_key"]
+cred_keys = passwords["cred_keys"]
+sign_keys = passwords["sign_keys"]
 
 mysql_user "civicrm@localhost" do
   password database_password
@@ -161,6 +163,8 @@ settings = edit_file "#{civicrm_directory}/civicrm/templates/CRM/common/civicrm.
   line.gsub!(/%%templateCompileDir%%/, "/srv/join.osmfoundation.org/wp-content/uploads/civicrm/templates_c/")
   line.gsub!(/%%baseURL%%/, "http://join.osmfoundation.org/")
   line.gsub!(/%%siteKey%%/, site_key)
+  line.gsub!(/%%credKeys%%/, cred_keys)
+  line.gsub!(/%%signKeys%%/, sign_keys)
   line.gsub!(%r{// *define\('CIVICRM_CMSDIR', '/path/to/install/root/'\);}, "define('CIVICRM_CMSDIR', '/srv/join.osmfoundation.org');")
 
   line
