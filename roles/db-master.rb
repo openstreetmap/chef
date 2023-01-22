@@ -5,7 +5,6 @@ default_attributes(
   :postgresql => {
     :settings => {
       :defaults => {
-        :wal_level => "logical",
         :archive_mode => "on",
         :archive_command => "/usr/local/bin/openstreetmap-wal-g wal-push %p --walg-prevent-wal-overwrite=true",
         :max_replication_slots => "1",
