@@ -138,7 +138,9 @@ log_line_prefix = '%t '
 # - Query/Index Statistics Collector -
 
 track_activity_query_size = <%= @settings[:track_activity_query_size] || @defaults[:track_activity_query_size] %>
+<% if @version.to_f < 15 -%>
 stats_temp_directory = '/run/postgresql/<%= @version %>-main.pg_stat_tmp'
+<% end -%>
 
 #------------------------------------------------------------------------------
 # AUTOVACUUM PARAMETERS
