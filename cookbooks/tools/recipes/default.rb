@@ -38,6 +38,7 @@ package %w[
   cron
   locales-all
   systemd-coredump
+  vim
 ]
 
 service "rsyslog" do
