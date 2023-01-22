@@ -64,23 +64,37 @@ template "/etc/logrotate.d/apache2" do
   mode "644"
 end
 
-service "rails-jobs@mailers" do
-  action [:enable, :start]
-  supports :restart => true
-  subscribes :restart, "rails_port[www.openstreetmap.org]"
-  subscribes :restart, "systemd_service[rails-jobs@]"
-end
+if %w[database_offline database_readonly].include?(node[:web][:status])
+  service "rails-jobs@mailers" do
+    action :stop
+  end
 
-service "rails-jobs@storage" do
-  action [:enable, :start]
-  supports :restart => true
-  subscribes :restart, "rails_port[www.openstreetmap.org]"
-  subscribes :restart, "systemd_service[rails-jobs@]"
-end
+  service "rails-jobs@storage" do
+    action :stop
+  end
 
-service "rails-jobs@traces" do
-  action [:enable, :start]
-  supports :restart => true
-  subscribes :restart, "rails_port[www.openstreetmap.org]"
-  subscribes :restart, "systemd_service[rails-jobs@]"
+  service "rails-jobs@traces" do
+    action :stop
+  end
+else
+  service "rails-jobs@mailers" do
+    action [:enable, :start]
+    supports :restart => true
+    subscribes :restart, "rails_port[www.openstreetmap.org]"
+    subscribes :restart, "systemd_service[rails-jobs@]"
+  end
+
+  service "rails-jobs@storage" do
+    action [:enable, :start]
+    supports :restart => true
+    subscribes :restart, "rails_port[www.openstreetmap.org]"
+    subscribes :restart, "systemd_service[rails-jobs@]"
+  end
+
+  service "rails-jobs@traces" do
+    action [:enable, :start]
+    supports :restart => true
+    subscribes :restart, "rails_port[www.openstreetmap.org]"
+    subscribes :restart, "systemd_service[rails-jobs@]"
+  end
 end
