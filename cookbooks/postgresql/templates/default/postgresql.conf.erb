@@ -91,7 +91,7 @@ archive_command = '<%= @settings[:archive_command] || @defaults[:archive_command
 # These are only used in recovery mode.
 
 <% if @settings[:restore_command] || @defaults[:restore_command] -%>
-restore_command = '<%= if @settings[:restore_command] || @defaults[:restore_command] %>'
+restore_command = '<%= @settings[:restore_command] || @defaults[:restore_command] %>'
 <% end -%>
 
 #------------------------------------------------------------------------------
