@@ -86,6 +86,14 @@ archive_mode = <%= @settings[:archive_mode] || @defaults[:archive_mode] %>
 archive_command = '<%= @settings[:archive_command] || @defaults[:archive_command] %>'
 <% end -%>
 
+# - Archive Recovery -
+
+# These are only used in recovery mode.
+
+<% if @settings[:restore_command] || @defaults[:restore_command] -%>
+restore_command = '<%= if @settings[:restore_command] || @defaults[:restore_command] %>'
+<% end -%>
+
 #------------------------------------------------------------------------------
 # REPLICATION
 #------------------------------------------------------------------------------
@@ -99,6 +107,9 @@ max_replication_slots = <%= @settings[:max_replication_slots] || @defaults[:max_
 
 # - Standby Servers -
 
+<% if @primary_conninfo -%>
+primary_conninfo = 'host=<%= @primary_conninfo[:host] %> port=<%= @primary_conninfo[:port] %> user=<%= @primary_conninfo[:user] %> password=<%= @passwords[@primary_conninfo[:user]] %>'
+<% end -%>
 hot_standby = <%= @settings[:hot_standby] || @defaults[:hot_standby] %>
 hot_standby_feedback = <%= @settings[:hot_standby_feedback] || @defaults[:hot_standby_feedback] %>
 

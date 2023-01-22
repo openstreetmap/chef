@@ -33,12 +33,25 @@ node[:postgresql][:versions].each do |version|
   defaults = node[:postgresql][:settings][:defaults] || {}
   settings = node[:postgresql][:settings][version] || {}
 
+  standby_mode = settings[:standby_mode] || defaults[:standby_mode]
+  primary_conninfo = settings[:primary_conninfo] || defaults[:primary_conninfo]
+  restore_command = settings[:restore_command] || defaults[:restore_command]
+
+  passwords = if primary_conninfo
+                data_bag_item(primary_conninfo[:passwords][:bag],
+                              primary_conninfo[:passwords][:item])
+              end
+
   template "/etc/postgresql/#{version}/main/postgresql.conf" do
     source "postgresql.conf.erb"
     owner "postgres"
     group "postgres"
     mode "644"
-    variables :version => version, :defaults => defaults, :settings => settings
+    variables :version => version,
+              :defaults => defaults,
+              :settings => settings,
+              :primary_conninfo => primary_conninfo,
+              :passwords => passwords
     notifies :reload, "service[postgresql]"
     only_if { ::Dir.exist?("/etc/postgresql/#{version}/main") }
   end
@@ -74,16 +87,7 @@ node[:postgresql][:versions].each do |version|
     only_if { ::Dir.exist?("/var/lib/postgresql/#{version}/main") }
   end
 
-  standby_mode = settings[:standby_mode] || defaults[:standby_mode]
-  primary_conninfo = settings[:primary_conninfo] || defaults[:primary_conninfo]
-  restore_command = settings[:restore_command] || defaults[:restore_command]
-
-  if restore_command || standby_mode == "on"
-    passwords = if primary_conninfo
-                  data_bag_item(primary_conninfo[:passwords][:bag],
-                                primary_conninfo[:passwords][:item])
-                end
-
+  if version.to_f < 12 && (restore_command || standby_mode == "on")
     template "/var/lib/postgresql/#{version}/main/recovery.conf" do
       source "recovery.conf.erb"
       owner "postgres"
@@ -101,6 +105,18 @@ node[:postgresql][:versions].each do |version|
       action :delete
       notifies :reload, "service[postgresql]"
       only_if { ::Dir.exist?("/var/lib/postgresql/#{version}/main") }
+    end
+  end
+
+  if version.to_f > 11 && standby_mode == "on"
+    file "/var/lib/postgresql/#{version}/main/standby.signal" do
+      owner "postgres"
+      group "postgres"
+      mode "640"
+    end
+  else
+    file "/var/lib/postgresql/#{version}/main/standby.signal" do
+      action :delete
     end
   end
 end
