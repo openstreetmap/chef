@@ -112,7 +112,7 @@ archive_file "#{cache_dir}/karma-linux-amd64.tar.gz" do
 end
 
 promscale_version = "0.17.0"
-promscale_extension_version = "0.8.0"
+promscale_extension_version = "0.8.0-1"
 
 database_version = node[:timescaledb][:database_version]
 database_cluster = "#{database_version}/main"
