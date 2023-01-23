@@ -111,7 +111,7 @@ archive_file "#{cache_dir}/karma-linux-amd64.tar.gz" do
   subscribes :extract, "remote_file[#{cache_dir}/karma-linux-amd64.tar.gz]"
 end
 
-promscale_version = "0.16.0"
+promscale_version = "0.17.0"
 
 database_version = node[:timescaledb][:database_version]
 database_cluster = "#{database_version}/main"
