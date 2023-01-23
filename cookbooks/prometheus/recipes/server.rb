@@ -112,6 +112,7 @@ archive_file "#{cache_dir}/karma-linux-amd64.tar.gz" do
 end
 
 promscale_version = "0.17.0"
+promscale_extension_version = "0.8.0"
 
 database_version = node[:timescaledb][:database_version]
 database_cluster = "#{database_version}/main"
@@ -121,6 +122,15 @@ package %W[
   prometheus-alertmanager
   promscale-extension-postgresql-#{database_version}
 ]
+
+package "promscale-extension-postgresql-#{database_version}" do
+  version promscale_extension_version
+end
+
+apt_preference "promscale-extension-postgresql" do
+  pin "version #{promscale_extension_version}"
+  pin_priority "1100"
+end
 
 postgresql_user "prometheus" do
   cluster database_cluster
