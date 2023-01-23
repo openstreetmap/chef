@@ -198,5 +198,6 @@ prometheus_exporter "postgres" do
               "PG_EXPORTER_AUTO_DISCOVER_DATABASES" => "true",
               "PG_EXPORTER_EXCLUDE_DATABASES" => "postgres,template0,template1"
   restrict_address_families "AF_UNIX"
+  remove_ipc false
   subscribes :restart, "template[/etc/prometheus/exporters/postgres_queries.yml]"
 end

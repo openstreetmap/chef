@@ -36,6 +36,7 @@ property :proc_subset, String
 property :private_devices, [true, false]
 property :protect_clock, [true, false]
 property :restrict_address_families, [String, Array]
+property :remove_ipc, [true, false]
 property :system_call_filter, [String, Array]
 property :service, :kind_of => String
 property :scrape_interval, :kind_of => String
@@ -60,6 +61,7 @@ action :create do
     private_devices new_resource.private_devices if new_resource.property_is_set?(:private_devices)
     protect_clock new_resource.protect_clock if new_resource.property_is_set?(:protect_clock)
     restrict_address_families new_resource.restrict_address_families if new_resource.property_is_set?(:restrict_address_families)
+    remove_ipc new_resource.remove_ipc if new_resource.property_is_set?(:remove_ipc)
     system_call_filter new_resource.system_call_filter if new_resource.property_is_set?(:system_call_filter)
   end
 
