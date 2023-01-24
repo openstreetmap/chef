@@ -42,7 +42,6 @@ default_attributes(
         :max_connections => "1500",
         :max_stack_depth => "7MB",
         :wal_level => "logical",
-        :checkpoint_segments => "32",
         :max_wal_size => "1536MB",
         :checkpoint_completion_target => "0.8",
         :max_wal_senders => "10",

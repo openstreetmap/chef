@@ -43,7 +43,6 @@ default_attributes(
         :wal_buffers => "1024kB",
         :wal_writer_delay => "500ms",
         :commit_delay => "10000",
-        :checkpoint_segments => "60",
         :max_wal_size => "2880MB",
         :random_page_cost => "1.1",
         :jit => "off",

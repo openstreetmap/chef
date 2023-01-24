@@ -35,7 +35,6 @@ node[:postgresql][:versions].each do |version|
 
   standby_mode = settings[:standby_mode] || defaults[:standby_mode]
   primary_conninfo = settings[:primary_conninfo] || defaults[:primary_conninfo]
-  restore_command = settings[:restore_command] || defaults[:restore_command]
 
   passwords = if primary_conninfo
                 data_bag_item(primary_conninfo[:passwords][:bag],
@@ -87,28 +86,7 @@ node[:postgresql][:versions].each do |version|
     only_if { ::Dir.exist?("/var/lib/postgresql/#{version}/main") }
   end
 
-  if version.to_f < 12 && (restore_command || standby_mode == "on")
-    template "/var/lib/postgresql/#{version}/main/recovery.conf" do
-      source "recovery.conf.erb"
-      owner "postgres"
-      group "postgres"
-      mode "640"
-      variables :standby_mode => standby_mode,
-                :primary_conninfo => primary_conninfo,
-                :restore_command => restore_command,
-                :passwords => passwords
-      notifies :reload, "service[postgresql]"
-      only_if { ::Dir.exist?("/var/lib/postgresql/#{version}/main") }
-    end
-  else
-    template "/var/lib/postgresql/#{version}/main/recovery.conf" do
-      action :delete
-      notifies :reload, "service[postgresql]"
-      only_if { ::Dir.exist?("/var/lib/postgresql/#{version}/main") }
-    end
-  end
-
-  if version.to_f > 11 && standby_mode == "on"
+  if standby_mode == "on"
     file "/var/lib/postgresql/#{version}/main/standby.signal" do
       owner "postgres"
       group "postgres"
