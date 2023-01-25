@@ -50,7 +50,12 @@ default_attributes(
         :log_min_duration_statement => "1000",
         :late_authentication_rules => [
           { :address => "10.0.48.0/20" }, # amsterdam
-          { :address => "10.0.64.0/20" }  # dublin
+          { :address => "10.0.64.0/20" }, # dublin
+          { :database => "replication", :user => "replication", :address => "10.0.0.4/32" },   # snap-02
+          { :database => "replication", :user => "replication", :address => "10.0.0.10/32" },  # eddie
+          { :database => "replication", :user => "replication", :address => "10.0.48.49/32" }, # snap-01
+          { :database => "replication", :user => "replication", :address => "10.0.48.50/32" }, # karm
+          { :database => "replication", :user => "replication", :address => "10.0.64.50/32" }  # snap-03
         ]
       }
     }

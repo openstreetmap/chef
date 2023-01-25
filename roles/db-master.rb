@@ -7,14 +7,7 @@ default_attributes(
       :defaults => {
         :archive_mode => "on",
         :archive_command => "/usr/local/bin/openstreetmap-wal-g wal-push %p --walg-prevent-wal-overwrite=true",
-        :max_replication_slots => "1",
-        :late_authentication_rules => [
-          { :database => "replication", :user => "replication", :address => "10.0.0.4/32" },   # snap-02
-          { :database => "replication", :user => "replication", :address => "10.0.0.10/32" },  # eddie
-          { :database => "replication", :user => "replication", :address => "10.0.48.49/32" }, # snap-01
-          { :database => "replication", :user => "replication", :address => "10.0.48.50/32" }, # karm
-          { :database => "replication", :user => "replication", :address => "10.0.64.50/32" }  # snap-03
-        ]
+        :max_replication_slots => "1"
       }
     }
   }
