@@ -62,9 +62,9 @@ commit_delay = <%= @settings[:commit_delay] || @defaults[:commit_delay] %>
 # - Checkpoints -
 
 checkpoint_timeout = <%= @settings[:checkpoint_timeout] || @defaults[:checkpoint_timeout] %>
+checkpoint_completion_target = <%= @settings[:checkpoint_completion_target] || @defaults[:checkpoint_completion_target] %>
 max_wal_size = <%= @settings[:max_wal_size] || @defaults[:max_wal_size] %>
 min_wal_size = <%= @settings[:min_wal_size] || @defaults[:min_wal_size] %>
-checkpoint_completion_target = <%= @settings[:checkpoint_completion_target] || @defaults[:checkpoint_completion_target] %>
 
 # - Archiving -
 
@@ -123,6 +123,7 @@ log_min_duration_statement = <%= @settings[:log_min_duration_statement] || @defa
 
 # - What to Log -
 
+log_autovacuum_min_duration = <%= @settings[:log_autovacuum_min_duration] || @defaults[:log_autovacuum_min_duration] %>
 log_line_prefix = '%t '
 
 #------------------------------------------------------------------------------
@@ -140,7 +141,6 @@ stats_temp_directory = '/run/postgresql/<%= @version %>-main.pg_stat_tmp'
 # AUTOVACUUM PARAMETERS
 #------------------------------------------------------------------------------
 
-log_autovacuum_min_duration = <%= @settings[:log_autovacuum_min_duration] || @defaults[:log_autovacuum_min_duration] %>
 autovacuum_max_workers = <%= @settings[:autovacuum_max_workers] || @defaults[:autovacuum_max_workers] %>
 autovacuum_naptime = <%= @settings[:autovacuum_naptime] || @defaults[:autovacuum_naptime] %>
 autovacuum_vacuum_scale_factor = <%= @settings[:autovacuum_vacuum_scale_factor] || @defaults[:autovacuum_vacuum_scale_factor] %>
