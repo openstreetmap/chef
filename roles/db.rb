@@ -46,6 +46,7 @@ default_attributes(
         :checkpoint_completion_target => "0.8",
         :max_wal_senders => "10",
         :cpu_tuple_cost => "0.1",
+        :jit => "off",
         :log_min_duration_statement => "1000",
         :late_authentication_rules => [
           { :address => "10.0.32.0/20" },
