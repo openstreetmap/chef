@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+include_recipe "prometheus"
+
 case node[:elasticsearch][:version]
 when "6.x" then include_recipe "apt::elasticsearch6"
 when "7.x" then include_recipe "apt::elasticsearch7"
@@ -37,4 +39,8 @@ end
 service "elasticsearch" do
   action [:enable, :start]
   supports :status => true, :restart => true
+end
+
+prometheus_exporter "elasticsearch" do
+  port 9114
 end
