@@ -47,8 +47,7 @@ end
 
 mediawiki_skin "osmf" do
   site "wiki.osmfoundation.org"
-  repository "https://github.com/openstreetmap/mediawiki-skins-osmf.git"
-  revision "master"
+  action :delete
 end
 
 mediawiki_skin "OSMFoundation" do
