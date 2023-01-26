@@ -98,7 +98,7 @@ end
 
 systemd_service "mediawiki-jobs@" do
   description "Run mediawiki jobs for %i"
-  exec_start "/usr/bin/php -d memory_limit=2048M -d error_reporting=22517 /srv/%i/w/maintenance/runJobs.php --server=https://%i --maxtime=175 --memory-limit=2048M --procs=8 --nothrottle --quiet"
+  exec_start "/usr/bin/php -d memory_limit=2048M -d error_reporting=22517 /srv/%i/w/maintenance/runJobs.php --server=https://%i --maxtime=175 --memory-limit=2048M --procs=8"
   user node[:mediawiki][:user]
   nice 10
   sandbox :enable_network => true
@@ -115,7 +115,7 @@ end
 
 systemd_service "mediawiki-email-jobs@" do
   description "Run mediawiki email jobs for %i"
-  exec_start "/usr/bin/php -d memory_limit=2048M -d error_reporting=22517 /srv/%i/w/maintenance/runJobs.php --server=https://%i --maxtime=55 --type=enotifNotify --memory-limit=2048M --procs=4 --nothrottle --quiet"
+  exec_start "/usr/bin/php -d memory_limit=2048M -d error_reporting=22517 /srv/%i/w/maintenance/runJobs.php --server=https://%i --maxtime=55 --type=enotifNotify --memory-limit=2048M --procs=4"
   user node[:mediawiki][:user]
   nice 10
   sandbox :enable_network => true
@@ -132,7 +132,7 @@ end
 
 systemd_service "mediawiki-refresh-links@" do
   description "Refresh mediawiki links for %i"
-  exec_start "/usr/bin/php -d memory_limit=4096M -d error_reporting=22517 /srv/%i/w/maintenance/refreshLinks.php --server=https://%i --memory-limit=2048M --quiet"
+  exec_start "/usr/bin/php -d memory_limit=4096M -d error_reporting=22517 /srv/%i/w/maintenance/refreshLinks.php --server=https://%i --memory-limit=2048M"
   user node[:mediawiki][:user]
   nice 10
   sandbox :enable_network => true
