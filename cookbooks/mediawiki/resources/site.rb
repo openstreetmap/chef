@@ -61,6 +61,7 @@ action :create do
 
   mysql_user "#{new_resource.database_user}@localhost" do
     password new_resource.database_password
+    reload true
   end
 
   mysql_database new_resource.database_name do
