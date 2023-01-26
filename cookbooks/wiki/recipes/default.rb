@@ -82,8 +82,9 @@ end
 
 mediawiki_extension "OsmWikibase" do
   site "wiki.openstreetmap.org"
-  repository "https://github.com/nyurik/OsmWikibase.git"
-  reference "master"
+  # FIXME: switch back to upstream once https://github.com/nyurik/OsmWikibase/issues/1 is fixed
+  repository "https://github.com/Firefishy/OsmWikibase.git"
+  reference "blind-hack-normalizePageName"
 end
 
 mediawiki_extension "Echo" do
