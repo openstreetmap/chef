@@ -45,11 +45,6 @@ mediawiki_site "wiki.osmfoundation.org" do
   version "1.39"
 end
 
-mediawiki_skin "osmf" do
-  site "wiki.osmfoundation.org"
-  action :delete
-end
-
 mediawiki_skin "OSMFoundation" do
   site "wiki.osmfoundation.org"
   repository "https://github.com/osmfoundation/osmf-mediawiki-skin.git"
