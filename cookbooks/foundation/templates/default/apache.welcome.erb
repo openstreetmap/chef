@@ -1,0 +1,38 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+<VirtualHost *:443>
+   ServerName <%= @name %>
+<% @aliases.each do |alias_name| -%>
+   ServerAlias <%= alias_name %>
+<% end -%>
+   ServerAdmin webmaster@openstreetmap.org
+
+   CustomLog /var/log/apache2/<%= @name %>-access.log combined
+   ErrorLog /var/log/apache2/<%= @name %>-error.log
+
+   SSLEngine on
+   SSLCertificateFile /etc/ssl/certs/<%= @name %>.pem
+   SSLCertificateKeyFile /etc/ssl/private/<%= @name %>.key
+
+   # Let the backend know we are using HTTPS
+   RequestHeader set X-Forwarded-Proto “https”
+   RequestHeader set X-Forwarded-Port “443”
+
+   ProxyPass / http://localhost:<%= @docker_external_port %>/
+   ProxyPreserveHost on
+
+</VirtualHost>
+
+<VirtualHost *:80>
+   ServerName <%= @name %>
+<% @aliases.each do |alias_name| -%>
+   ServerAlias <%= alias_name %>
+<% end -%>
+   ServerAdmin webmaster@openstreetmap.org
+
+   CustomLog /var/log/apache2/<%= @name %>-access.log combined
+   ErrorLog /var/log/apache2/<%= @name %>-error.log
+
+   RedirectPermanent /.well-known/acme-challenge/ http://acme.openstreetmap.org/.well-known/acme-challenge/
+   RedirectPermanent / https://<%= @name %>/
+</VirtualHost>

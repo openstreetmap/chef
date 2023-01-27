@@ -139,6 +139,9 @@ suites:
   - name: foundation-owg
     run_list:
       - recipe[foundation::owg]
+  - name: foundation-welcome
+    run_list:
+      - recipe[foundation::welcome]
   - name: foundation-wiki
     run_list:
       - recipe[foundation::wiki]
