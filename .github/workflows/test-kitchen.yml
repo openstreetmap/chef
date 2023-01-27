@@ -43,6 +43,7 @@ jobs:
           - foundation-dwg
           - foundation-mwg
           - foundation-owg
+          - foundation-welcome
           - foundation-wiki
           - ftp
           - geodns
