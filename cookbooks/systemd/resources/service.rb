@@ -29,6 +29,7 @@ property :condition_path_exists_glob, [String, Array]
 property :after, [String, Array]
 property :conflicts, [String, Array]
 property :wants, [String, Array]
+property :requires, [String, Array]
 property :joins_namespace_of, [String, Array]
 property :type, String, :is => %w[simple forking oneshot dbus notify idle]
 property :limit_nofile, Integer
@@ -46,7 +47,7 @@ property :working_directory, String
 property :exec_start_pre, [String, Array]
 property :exec_start, [String, Array]
 property :exec_start_post, [String, Array]
-property :exec_stop, String
+property :exec_stop, [String, Array]
 property :exec_reload, String
 property :runtime_directory, String
 property :runtime_directory_mode, Integer

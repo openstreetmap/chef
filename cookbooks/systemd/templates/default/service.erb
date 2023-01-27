@@ -19,6 +19,9 @@ Conflicts=<%= Array(@conflicts).join(" ") %>
 <% if @wants -%>
 Wants=<%= Array(@wants).join(" ") %>
 <% end -%>
+<% if @requires -%>
+Requires=<%= Array(@requires).join(" ") %>
+<% end -%>
 <% if @joins_namespace_of -%>
 JoinsNamespaceOf=<%= Array(@joins_namespace_of).join(" ") %>
 <% end -%>
@@ -91,7 +94,9 @@ ExecStartPost=<%= exec_start_post %>
 <% if @dropin -%>
 ExecStop=
 <% end -%>
+<% Array(@exec_stop).each do |exec_stop| -%>
 ExecStop=<%= @exec_stop %>
+<% end -%>
 <% end -%>
 <% if @exec_reload -%>
 <% if @dropin -%>
