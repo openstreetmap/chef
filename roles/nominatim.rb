@@ -29,7 +29,9 @@ default_attributes(
         :max_parallel_workers_per_gather => "0",
         :maintenance_work_mem => "10GB",
         :random_page_cost => "1.5",
-        :effective_cache_size => "60GB"
+        :effective_cache_size => "60GB",
+        :wal_level => "minimal",
+        :max_wal_senders => "0"
       }
     }
   },
