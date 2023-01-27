@@ -638,6 +638,13 @@ groups:
           alertgroup: tile
         annotations:
           miss_rate: "{{ $value | humanizePercentage }}"
+      - alert: tile render rate
+        expr: sum(rate(renderd_zoom_metatiles_total[5m])) by (instance) < 1
+        for: 5m
+        labels:
+          alertgroup: tile
+        annotations:
+          render_rate: "{{ $value }} tiles/s"
   - name: time
     rules:
       - alert: clock not synchronising
