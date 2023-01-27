@@ -297,7 +297,7 @@ suites:
     attributes:
       postgresql:
         versions:
-          - 10
+          - 15
   - name: prometheus
     run_list:
       - recipe[prometheus::default]
