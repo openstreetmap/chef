@@ -95,7 +95,7 @@ ExecStartPost=<%= exec_start_post %>
 ExecStop=
 <% end -%>
 <% Array(@exec_stop).each do |exec_stop| -%>
-ExecStop=<%= @exec_stop %>
+ExecStop=<%= exec_stop %>
 <% end -%>
 <% end -%>
 <% if @exec_reload -%>
