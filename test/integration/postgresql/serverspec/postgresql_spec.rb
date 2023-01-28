@@ -3,11 +3,11 @@ require "serverspec"
 # Required by serverspec
 set :backend, :exec
 
-describe package("postgresql-10") do
+describe package("postgresql-15") do
   it { should be_installed }
 end
 
-describe service("postgresql@10-main") do
+describe service("postgresql@15-main") do
   it { should be_enabled }
   it { should be_running }
 end
