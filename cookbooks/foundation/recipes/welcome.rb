@@ -25,11 +25,13 @@ docker_external_port = 8090
 systemd_service "docker_welcome-mat" do
   description "Docker service for welcome.openstreetmap.org"
   requires "docker.service"
+  # Ensure Container is completely stopped and removed before starting it again
   exec_start_pre [
     "-/usr/bin/docker kill welcome-mat",
     "-/usr/bin/docker rm welcome-mat"
   ]
-  exec_start "/usr/bin/docker run --rm --name=welcome-mat -p #{docker_external_port}:80 ghcr.io/osmfoundation/welcome-mat:latest"
+  exec_start "/usr/bin/docker run --rm --name=welcome-mat -p #{docker_external_port}:8080 ghcr.io/osmfoundation/welcome-mat:latest"
+  # Ensure Container is completely stopped and removed
   exec_stop [
     "-/usr/bin/docker kill welcome-mat",
     "-/usr/bin/docker rm welcome-mat"
