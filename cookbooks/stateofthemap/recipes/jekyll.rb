@@ -48,14 +48,6 @@ apache_module "rewrite"
     group "nogroup"
   end
 
-  # FIXME: fix the the vendor directory permissions from prior root installs
-  directory "/srv/#{year}.stateofthemap.org/vendor" do
-    action :create
-    recursive true
-    owner "nobody"
-    group "nogroup"
-  end
-
   bundle_install "/srv/#{year}.stateofthemap.org" do
     action :nothing
     user "nobody"
