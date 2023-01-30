@@ -48,29 +48,35 @@ apache_module "rewrite"
     group "nogroup"
   end
 
-  # Workaround https://github.com/jekyll/jekyll/issues/7804
-  # by creating a .jekyll-cache folder
-  directory "/srv/#{year}.stateofthemap.org/.jekyll-cache" do
-    mode "755"
+  # FIXME: fix the the vendor directory permissions from prior root installs
+  directory "/srv/#{year}.stateofthemap.org/vendor" do
+    action :create
+    recursive true
     owner "nobody"
     group "nogroup"
   end
 
   bundle_install "/srv/#{year}.stateofthemap.org" do
     action :nothing
-    options "--deployment --jobs #{node.cpu_cores}"
-    user "root"
-    group "root"
+    user "nobody"
+    group "nogroup"
+    environment "BUNDLE_FROZEN" => "true",
+                "BUNDLE_WITHOUT" => "development:test",
+                "BUNDLE_PATH" => "vendor/bundle",
+                "BUNDLE_DEPLOYMENT" => "1",
+                "BUNDLE_JOBS" => node.cpu_cores.to_s
     notifies :run, "bundle_exec[/srv/#{year}.stateofthemap.org]"
     only_if { ::File.exist?("/srv/#{year}.stateofthemap.org/Gemfile") }
   end
 
   bundle_exec "/srv/#{year}.stateofthemap.org" do
     action :nothing
-    command "jekyll build --trace --baseurl=https://#{year}.stateofthemap.org"
+    command "jekyll build --trace --disable-disk-cache --baseurl=https://#{year}.stateofthemap.org"
     user "nobody"
     group "nogroup"
-    environment "LANG" => "C.UTF-8"
+    environment "LANG" => "C.UTF-8",
+                "BUNDLE_PATH" => "vendor/bundle",
+                "BUNDLE_DEPLOYMENT" => "1"
   end
 
   ssl_certificate "#{year}.stateofthemap.org" do
