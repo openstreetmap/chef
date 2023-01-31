@@ -30,6 +30,9 @@ JoinsNamespaceOf=<%= Array(@joins_namespace_of).join(" ") %>
 <% if @type -%>
 Type=<%= @type %>
 <% end -%>
+<% if @notify_access -%>
+NotifyAccess=<%= @notify_access %>
+<% end -%>
 <% if @limit_nofile -%>
 LimitNOFILE=<%= @limit_nofile %>
 <% end -%>
@@ -96,6 +99,14 @@ ExecStop=
 <% end -%>
 <% Array(@exec_stop).each do |exec_stop| -%>
 ExecStop=<%= exec_stop %>
+<% end -%>
+<% end -%>
+<% if @exec_stop_post -%>
+<% if @dropin -%>
+ExecStopPost=
+<% end -%>
+<% Array(@exec_stop_post).each do |exec_stop_post| -%>
+ExecStopPost=<%= exec_stop_post %>
 <% end -%>
 <% end -%>
 <% if @exec_reload -%>
