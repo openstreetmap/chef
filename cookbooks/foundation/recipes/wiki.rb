@@ -41,7 +41,7 @@ mediawiki_site "wiki.osmfoundation.org" do
   email_sender "webmaster@openstreetmap.org"
   email_sender_name "OSMF Wiki"
   private_accounts true
-  extra_file_extensions ["mp3", "pptx"]
+  extra_file_extensions %w[mp3 pptx]
   version "1.39"
 end
 
