@@ -21,6 +21,7 @@ include_recipe "apache"
 include_recipe "docker"
 
 docker_external_port = 8090
+docker_image = "ghcr.io/osmfoundation/welcome-mat:latest"
 
 systemd_service "docker_welcome-mat" do
   description "Docker service for welcome.openstreetmap.org"
@@ -30,7 +31,7 @@ systemd_service "docker_welcome-mat" do
     "-/usr/bin/docker kill welcome-mat",
     "-/usr/bin/docker rm welcome-mat"
   ]
-  exec_start "/usr/bin/docker run --rm --name=welcome-mat -p #{docker_external_port}:8080 ghcr.io/osmfoundation/welcome-mat:latest"
+  exec_start "/usr/bin/docker run --rm --name=welcome-mat --user 33:33 -p #{docker_external_port}:8080 #{docker_image}"
   # Ensure Container is completely stopped and removed
   exec_stop [
     "-/usr/bin/docker kill welcome-mat",
@@ -40,9 +41,9 @@ systemd_service "docker_welcome-mat" do
 end
 
 # FIXME: this should be a docker_image resource
-# The image pull is handled by the service but tests will fail if the pull delays the container start
+# The image pull is handled by the service but container test will fail if the container startup is delayed by slow pull
 execute "docker_pull_welcome_mat" do
-  command "/usr/bin/docker pull ghcr.io/osmfoundation/welcome-mat:latest"
+  command "/usr/bin/docker pull #{docker_image}"
   action :nothing
   subscribes :run, "systemd_service[docker_welcome-mat]"
 end
