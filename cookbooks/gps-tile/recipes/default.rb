@@ -127,6 +127,7 @@ remote_directory "/srv/gps-tile.openstreetmap.org/html" do
   files_mode "644"
 end
 
+apache_module "cgid"
 apache_module "headers"
 apache_module "rewrite"
 
