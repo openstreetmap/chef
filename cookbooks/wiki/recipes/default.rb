@@ -122,6 +122,12 @@ mediawiki_extension "Kartographer" do
   template_cookbook "wiki"
 end
 
+mediawiki_extension "Translate" do
+  site "wiki.openstreetmap.org"
+  template "mw-ext-Translate.inc.php.erb"
+  template_cookbook "wiki"
+end
+
 cookbook_file "/srv/wiki.openstreetmap.org/osm_logo_wiki.png" do
   owner node[:mediawiki][:user]
   group node[:mediawiki][:group]
