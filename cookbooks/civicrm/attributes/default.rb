@@ -1,4 +1,4 @@
-default[:civicrm][:version] = "5.57.1"
+default[:civicrm][:version] = "5.58.0"
 
 default[:civicrm][:extensions][:cividiscount][:name] = "org.civicrm.module.cividiscount"
 default[:civicrm][:extensions][:cividiscount][:repository] = "https://lab.civicrm.org/extensions/cividiscount.git"
@@ -34,7 +34,7 @@ default[:civicrm][:extensions][:donotsendreportemail][:revision] = "3b31c2e0c621
 
 default[:civicrm][:extensions][:shoreditch][:name] = "org.civicrm.shoreditch"
 default[:civicrm][:extensions][:shoreditch][:repository] = "https://github.com/civicrm/org.civicrm.shoreditch.git"
-default[:civicrm][:extensions][:shoreditch][:revision] = "1.0.0-beta.11"
+default[:civicrm][:extensions][:shoreditch][:revision] = "1.0.0-beta.12"
 
 default[:civicrm][:extensions][:membershipextra][:name] = "com.skvare.membershipextra"
 default[:civicrm][:extensions][:membershipextra][:repository] = "https://github.com/lemniscus/com.skvare.membershipextra.git"
