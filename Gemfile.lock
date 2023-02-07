@@ -4,9 +4,9 @@ GEM
     ast (2.4.2)
     bcrypt_pbkdf (1.1.0)
     builder (3.2.4)
-    chef-utils (18.0.185)
+    chef-utils (18.1.0)
       concurrent-ruby
-    concurrent-ruby (1.1.10)
+    concurrent-ruby (1.2.0)
     cookstyle (7.32.1)
       rubocop (= 1.25.1)
     diff-lcs (1.5.0)
@@ -15,7 +15,7 @@ GEM
       multi_json
     ed25519 (1.3.0)
     erubi (1.12.0)
-    excon (0.95.0)
+    excon (0.99.0)
     ffi (1.15.5)
     gssapi (1.3.1)
       ffi (>= 1.0.1)
@@ -23,7 +23,7 @@ GEM
       builder (>= 2.1.2)
       rexml (~> 3.0)
     httpclient (2.8.3)
-    kitchen-dokken (2.19.0)
+    kitchen-dokken (2.19.1)
       docker-api (>= 1.33, < 3)
       lockfile (~> 2.1)
       test-kitchen (>= 1.15, < 4)
@@ -37,7 +37,7 @@ GEM
     logging (2.3.1)
       little-plugger (~> 1.1)
       multi_json (~> 1.14)
-    mixlib-install (3.12.24)
+    mixlib-install (3.12.27)
       mixlib-shellout
       mixlib-versioning
       thor
@@ -136,7 +136,7 @@ GEM
       tty-screen (~> 0.8)
       wisper (~> 2.0)
     tty-screen (0.8.1)
-    unicode-display_width (2.3.0)
+    unicode-display_width (2.4.2)
     unicode_utils (1.4.0)
     winrm (2.3.6)
       builder (>= 2.1.2)
