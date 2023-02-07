@@ -48,6 +48,12 @@ apache_module "rewrite"
     group "nogroup"
   end
 
+  directory "/srv/#{year}.stateofthemap.org/vendor" do
+    mode "755"
+    owner "nobody"
+    group "nogroup"
+  end
+
   bundle_install "/srv/#{year}.stateofthemap.org" do
     action :nothing
     user "nobody"
