@@ -137,3 +137,6 @@ jobs:
         bundler-cache: true
     - name: Run kitchen test ${{ matrix.suite }}-${{ matrix.os }}
       run: bundle exec kitchen test ${{ matrix.suite }}-${{ matrix.os }}
+    - name: Gather journal output
+      run: bundle exec kitchen exec ${{ matrix.suite }}-${{ matrix.os }} -c journalctl --since=yesterday
+      if: ${{ failure() }}
