@@ -73,7 +73,7 @@ archive_file "#{cache_dir}/prometheus.linux-amd64.tar.gz" do
   strip_components 1
   owner "root"
   group "root"
-  subscribes :extract, "remote_file[#{cache_dir}/prometheus.linux-amd64.tar.gz]"
+  subscribes :extract, "remote_file[#{cache_dir}/prometheus.linux-amd64.tar.gz]", :immediately
 end
 
 remote_file "#{cache_dir}/alertmanager.linux-amd64.tar.gz" do
@@ -91,7 +91,7 @@ archive_file "#{cache_dir}/alertmanager.linux-amd64.tar.gz" do
   strip_components 1
   owner "root"
   group "root"
-  subscribes :extract, "remote_file[#{cache_dir}/alertmanager.linux-amd64.tar.gz]"
+  subscribes :extract, "remote_file[#{cache_dir}/alertmanager.linux-amd64.tar.gz]", :immediately
 end
 
 remote_file "#{cache_dir}/karma-linux-amd64.tar.gz" do
@@ -108,7 +108,7 @@ archive_file "#{cache_dir}/karma-linux-amd64.tar.gz" do
   overwrite true
   owner "root"
   group "root"
-  subscribes :extract, "remote_file[#{cache_dir}/karma-linux-amd64.tar.gz]"
+  subscribes :extract, "remote_file[#{cache_dir}/karma-linux-amd64.tar.gz]", :immediately
 end
 
 promscale_version = "0.17.0"
@@ -119,7 +119,6 @@ database_cluster = "#{database_version}/main"
 
 package %W[
   prometheus
-  prometheus-alertmanager
   promscale-extension-postgresql-#{database_version}
 ]
 
@@ -303,10 +302,14 @@ service "prometheus" do
   subscribes :restart, "archive_file[#{cache_dir}/prometheus.linux-amd64.tar.gz]"
 end
 
-systemd_service "prometheus-alertmanager-executable" do
-  service "prometheus-alertmanager"
-  dropin "executable"
+systemd_service "prometheus-alertmanager" do
+  description "Prometheus alert manager"
+  type "simple"
+  user "prometheus"
   exec_start "/opt/prometheus-server/alertmanager/alertmanager --config.file=/etc/prometheus/alertmanager.yml --storage.path=/var/lib/prometheus/alertmanager --web.external-url=https://prometheus.openstreetmap.org/alertmanager"
+  exec_reload "/bin/kill -HUP $MAINPID"
+  timeout_stop_sec 20
+  restart "on-failure"
   notifies :restart, "service[prometheus-alertmanager]"
 end
 
@@ -321,9 +324,16 @@ template "/etc/prometheus/alertmanager.yml" do
   mode "644"
 end
 
+directory "/var/lib/prometheus/alertmanager" do
+  owner "prometheus"
+  group "prometheus"
+  mode "755"
+end
+
 service "prometheus-alertmanager" do
   action [:enable, :start]
   subscribes :reload, "template[/etc/prometheus/alertmanager.yml]"
+  subscribes :restart, "systemd_service[prometheus-alertmanager]"
   subscribes :restart, "archive_file[#{cache_dir}/alertmanager.linux-amd64.tar.gz]"
 end
 
@@ -361,7 +371,7 @@ end
 
 service "prometheus-karma" do
   action [:enable, :start]
-  subscribes :reload, "template[/etc/prometheus/karma.yml]"
+  subscribes :restart, "template[/etc/prometheus/karma.yml]"
   subscribes :restart, "archive_file[#{cache_dir}/karma-linux-amd64.tar.gz]"
   subscribes :restart, "systemd_service[prometheus-karma]"
 end
