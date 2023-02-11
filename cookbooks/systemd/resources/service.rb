@@ -32,6 +32,7 @@ property :wants, [String, Array]
 property :requires, [String, Array]
 property :joins_namespace_of, [String, Array]
 property :type, String, :is => %w[simple forking oneshot dbus notify idle]
+property :notify_access, String, :is => %w[none main exec all]
 property :limit_nofile, Integer
 property :limit_as, [Integer, String]
 property :limit_cpu, [Integer, String]
@@ -48,6 +49,7 @@ property :exec_start_pre, [String, Array]
 property :exec_start, [String, Array]
 property :exec_start_post, [String, Array]
 property :exec_stop, [String, Array]
+property :exec_stop_post, [String, Array]
 property :exec_reload, String
 property :runtime_directory, String
 property :runtime_directory_mode, Integer
