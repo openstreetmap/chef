@@ -39,5 +39,6 @@ run_list(
   "role[trac]",
   "role[irc]",
   "role[blogs]",
-  "role[munin]"
+  "role[munin]",
+  "recipe[foundation::welcome]"
 )
