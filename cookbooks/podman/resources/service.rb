@@ -33,7 +33,7 @@ action :create do
     notify_access "all"
     environment "PODMAN_SYSTEMD_UNIT" => "%n"
     exec_start_pre "/bin/rm --force %t/%n.ctr-id"
-    exec_start "/usr/bin/podman run --cidfile=%t/%n.ctr-id --cgroups=no-conmon --userns=auto --label=io.containers.autoupdate=registry --network=slirp4netns #{publish_options} --rm --sdnotify=conmon --detach --replace --name=%N #{new_resource.image}"
+    exec_start "/usr/bin/podman run --cidfile=%t/%n.ctr-id --cgroups=no-conmon --userns=auto --label=io.containers.autoupdate=registry --network=slirp4netns:mtu=1500 #{publish_options} --rm --sdnotify=conmon --detach --replace --name=%N #{new_resource.image}"
     exec_stop "/usr/bin/podman stop --ignore --time=10 --cidfile=%t/%n.ctr-id"
     exec_stop_post "/usr/bin/podman rm --force --ignore --cidfile=%t/%n.ctr-id"
     timeout_stop_sec 70
