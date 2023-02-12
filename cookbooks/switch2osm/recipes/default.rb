@@ -18,57 +18,14 @@
 #
 
 include_recipe "apache"
-include_recipe "git"
-include_recipe "ruby"
+include_recipe "podman"
 
-package %w[
-  gcc
-  g++
-  make
-  libssl-dev
-  zlib1g-dev
-  pkg-config
-]
+docker_external_port = 8093
 
-apache_module "expires"
-apache_module "rewrite"
-
-git "/srv/switch2osm.org" do
-  action :sync
-  repository "https://github.com/switch2osm/switch2osm.github.io.git"
-  depth 1
-  user "root"
-  group "root"
-  notifies :run, "bundle_install[/srv/switch2osm.org]"
-end
-
-directory "/srv/switch2osm.org/_site" do
-  mode "755"
-  owner "nobody"
-  group "nogroup"
-end
-
-# Workaround https://github.com/jekyll/jekyll/issues/7804
-# by creating a .jekyll-cache folder
-directory "/srv/switch2osm.org/.jekyll-cache" do
-  mode "755"
-  owner "nobody"
-  group "nogroup"
-end
-
-bundle_install "/srv/switch2osm.org" do
-  action :nothing
-  options "--deployment"
-  user "root"
-  group "root"
-  notifies :run, "bundle_exec[/srv/switch2osm.org]"
-end
-
-bundle_exec "/srv/switch2osm.org" do
-  action :nothing
-  command "jekyll build --trace --config _config.yml,_config_osm.yml"
-  user "nobody"
-  group "nogroup"
+podman_service "switch2osm.org" do
+  description "Container service for switch2osm.org"
+  image "ghcr.io/switch2osm/switch2osm:latest"
+  ports docker_external_port => "8080"
 end
 
 ssl_certificate "switch2osm.org" do
@@ -77,7 +34,9 @@ ssl_certificate "switch2osm.org" do
   notifies :reload, "service[apache2]"
 end
 
+apache_module "proxy_http"
+
 apache_site "switch2osm.org" do
   template "apache.erb"
-  directory "/srv/switch2osm.org/_site"
+  variables :docker_external_port => docker_external_port, :aliases => ["www.switch2osm.org", "switch2osm.com", "www.switch2osm.com"]
 end

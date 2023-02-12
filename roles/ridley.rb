@@ -43,7 +43,6 @@ run_list(
   "role[gateway]",
   "role[foundation]",
   "role[stateofthemap]",
-  "role[switch2osm]",
   "role[blog]",
   "role[otrs]",
   "role[donate]",
