@@ -47,11 +47,6 @@
   # Enable the rewrite engine
   RewriteEngine on
 
-  # Enforce rate limits
-  RewriteMap ipmap txt:/srv/tile.openstreetmap.org/conf/ip.map
-  RewriteCond ${ipmap:%{REMOTE_ADDR}} ^.+$
-  RewriteRule ^.*$ /${ipmap:%{REMOTE_ADDR}} [PT]
-
   # Rewrite tile requests to the default style
   RewriteRule ^/(\d+)/(\d+)/(\d+)\.png$ /default/$1/$2/$3.png [PT,T=image/png,L]
   RewriteRule ^/(\d+)/(\d+)/(\d+)\.png/status/?$  /default/$1/$2/$3.png/status [PT,T=text/plain,L]
@@ -91,12 +86,6 @@
     # OSM UCL IPv4
     Require ip 193.60.236.0/24
   </LocationMatch>
-
-  # Internal endpoint for blocked users
-  <Location /blocked>
-    Header always set Cache-Control private
-    Redirect 429
-  </Location>
 </VirtualHost>
 
 <VirtualHost *:80>

@@ -67,10 +67,6 @@ default_attributes(
         ]
       }
     },
-    :ratelimit => {
-      :requests_per_second => 30,
-      :maximum_backlog => 3600
-    }
   }
 )
 

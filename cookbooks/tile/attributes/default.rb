@@ -13,9 +13,6 @@ default[:tile][:replication][:url] = "https://planet.openstreetmap.org/replicati
 default[:tile][:data] = {}
 default[:tile][:styles] = {}
 
-default[:tile][:ratelimit][:requests_per_second] = 15
-default[:tile][:ratelimit][:maximum_backlog] = 1800
-
 default[:postgresql][:versions] |= [node[:tile][:database][:cluster].split("/").first]
 
 default[:accounts][:users][:tile][:status] = :role
