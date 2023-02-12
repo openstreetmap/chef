@@ -40,5 +40,6 @@ run_list(
   "role[irc]",
   "role[blogs]",
   "role[munin]",
-  "recipe[foundation::welcome]"
+  "recipe[foundation::welcome]",
+  "recipe[stateofthemap::jekyll]"
 )
