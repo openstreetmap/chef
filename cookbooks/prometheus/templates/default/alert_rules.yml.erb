@@ -639,8 +639,8 @@ groups:
         annotations:
           miss_rate: "{{ $value | humanizePercentage }}"
       - alert: tile render rate
-        expr: sum(rate(renderd_zoom_metatiles_total[5m])) by (instance) < 1
-        for: 5m
+        expr: sum(rate(renderd_zoom_metatiles_total[5m])) by (instance) == 0
+        for: 15m
         labels:
           alertgroup: tile
         annotations:
