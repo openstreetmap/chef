@@ -340,12 +340,9 @@ suites:
   - name: stateofthemap
     run_list:
       - recipe[stateofthemap::default]
-  - name: stateofthemap-static
+  - name: stateofthemap-container
     run_list:
-      - recipe[stateofthemap::static]
-  - name: stateofthemap-jekyll
-    run_list:
-      - recipe[stateofthemap::jekyll]
+      - recipe[stateofthemap::container]
   - name: stateofthemap-wordpress
     run_list:
       - recipe[stateofthemap::wordpress]

@@ -1,6 +1,6 @@
 #
 # Cookbook:: stateofthemap
-# Recipe:: static
+# Recipe:: container
 #
 # Copyright:: 2022, OpenStreetMap Foundation
 #
@@ -17,16 +17,18 @@
 # limitations under the License.
 #
 
-include_recipe "stateofthemap"
+include_recipe "apache"
+include_recipe "podman"
 
-%w[2013].each do |year|
-  git "/srv/#{year}.stateofthemap.org" do
-    action :sync
-    repository "https://git.openstreetmap.org/public/stateofthemap.git"
-    revision "site-#{year}"
-    depth 1
-    user "root"
-    group "root"
+apache_module "proxy_http"
+
+%w[2013 2016 2017 2018 2019 2020 2021 2022].each do |year|
+  docker_external_port = 6080 + year.to_i # 8093+
+
+  podman_service "#{year}.stateofthemap.org" do
+    description "Container service for #{year}.stateofthemap.org"
+    image "ghcr.io/openstreetmap/stateofthemap-#{year}:latest"
+    ports docker_external_port => "8080"
   end
 
   ssl_certificate "#{year}.stateofthemap.org" do
@@ -35,8 +37,7 @@ include_recipe "stateofthemap"
   end
 
   apache_site "#{year}.stateofthemap.org" do
-    template "apache.static.erb"
-    directory "/srv/#{year}.stateofthemap.org"
-    variables :year => year
+    template "apache.container.erb"
+    variables :docker_external_port => docker_external_port, :aliases => ["#{year}.stateofthemap.com", "#{year}.sotm.org"]
   end
 end
