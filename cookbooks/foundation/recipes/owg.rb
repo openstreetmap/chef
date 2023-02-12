@@ -18,62 +18,24 @@
 #
 
 include_recipe "apache"
-include_recipe "git"
-include_recipe "ruby"
+include_recipe "podman"
 
-package %W[
-  gcc
-  g++
-  make
-  libssl-dev
-  zlib1g-dev
-  pkg-config
-]
+docker_external_port = 8091
 
-git "/srv/operations.osmfoundation.org" do
-  action :sync
-  repository "https://github.com/openstreetmap/owg-website.git"
-  depth 1
-  user "root"
-  group "root"
-  notifies :run, "bundle_install[/srv/operations.osmfoundation.org]"
-end
-
-directory "/srv/operations.osmfoundation.org/_site" do
-  mode "755"
-  owner "nobody"
-  group "nogroup"
-end
-
-# Workaround https://github.com/jekyll/jekyll/issues/7804
-# by creating a .jekyll-cache folder
-directory "/srv/operations.osmfoundation.org/.jekyll-cache" do
-  mode "755"
-  owner "nobody"
-  group "nogroup"
-end
-
-bundle_install "/srv/operations.osmfoundation.org" do
-  action :nothing
-  options "--deployment"
-  user "root"
-  group "root"
-  notifies :run, "bundle_exec[/srv/operations.osmfoundation.org]"
-end
-
-bundle_exec "/srv/operations.osmfoundation.org" do
-  action :nothing
-  command "jekyll build --trace"
-  user "nobody"
-  group "nogroup"
+podman_service "operations.osmfoundation.org" do
+  description "Container service for operations.osmfoundation.org"
+  image "ghcr.io/openstreetmap/owg-website:latest"
+  ports docker_external_port => "8080"
 end
 
 ssl_certificate "operations.osmfoundation.org" do
-  domains "operations.osmfoundation.org"
+  domains ["operations.osmfoundation.org", "operations.openstreetmap.org", "operations.osm.org"]
   notifies :reload, "service[apache2]"
 end
 
+apache_module "proxy_http"
+
 apache_site "operations.osmfoundation.org" do
   template "apache.owg.erb"
-  directory "/srv/operations.osmfoundation.org/_site"
+  variables :docker_external_port => docker_external_port, :aliases => ["operations.openstreetmap.org", "operations.osm.org"]
 end
