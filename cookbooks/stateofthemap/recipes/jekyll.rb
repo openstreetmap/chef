@@ -17,64 +17,18 @@
 # limitations under the License.
 #
 
-include_recipe "stateofthemap"
-include_recipe "ruby"
+include_recipe "apache"
+include_recipe "podman"
 
-package %w[
-  gcc
-  g++
-  make
-  libssl-dev
-  zlib1g-dev
-  pkg-config
-]
-
-apache_module "expires"
-apache_module "rewrite"
+apache_module "proxy_http"
 
 %w[2016 2017 2018 2019 2020 2021 2022].each do |year|
-  git "/srv/#{year}.stateofthemap.org" do
-    action :sync
-    repository "https://github.com/openstreetmap/stateofthemap-#{year}.git"
-    depth 1
-    user "root"
-    group "root"
-    notifies :run, "bundle_install[/srv/#{year}.stateofthemap.org]"
-  end
+  docker_external_port = 6080 + year.to_i # 8096+
 
-  directory "/srv/#{year}.stateofthemap.org/_site" do
-    mode "755"
-    owner "nobody"
-    group "nogroup"
-  end
-
-  directory "/srv/#{year}.stateofthemap.org/vendor" do
-    mode "755"
-    owner "nobody"
-    group "nogroup"
-  end
-
-  bundle_install "/srv/#{year}.stateofthemap.org" do
-    action :nothing
-    user "nobody"
-    group "nogroup"
-    environment "BUNDLE_FROZEN" => "true",
-                "BUNDLE_WITHOUT" => "development:test",
-                "BUNDLE_PATH" => "vendor/bundle",
-                "BUNDLE_DEPLOYMENT" => "1",
-                "BUNDLE_JOBS" => node.cpu_cores.to_s
-    notifies :run, "bundle_exec[/srv/#{year}.stateofthemap.org]"
-    only_if { ::File.exist?("/srv/#{year}.stateofthemap.org/Gemfile") }
-  end
-
-  bundle_exec "/srv/#{year}.stateofthemap.org" do
-    action :nothing
-    command "jekyll build --trace --disable-disk-cache --baseurl=https://#{year}.stateofthemap.org"
-    user "nobody"
-    group "nogroup"
-    environment "LANG" => "C.UTF-8",
-                "BUNDLE_PATH" => "vendor/bundle",
-                "BUNDLE_DEPLOYMENT" => "1"
+  podman_service "#{year}.stateofthemap.org" do
+    description "Container service for #{year}.stateofthemap.org"
+    image "ghcr.io/openstreetmap/stateofthemap-#{year}:latest"
+    ports docker_external_port => "8080"
   end
 
   ssl_certificate "#{year}.stateofthemap.org" do
@@ -84,7 +38,6 @@ apache_module "rewrite"
 
   apache_site "#{year}.stateofthemap.org" do
     template "apache.jekyll.erb"
-    directory "/srv/#{year}.stateofthemap.org/_site"
-    variables :year => year
+    variables :docker_external_port => docker_external_port, :aliases => ["#{year}.stateofthemap.com", "#{year}.sotm.org"]
   end
 end
