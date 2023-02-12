@@ -1,22 +1,54 @@
-body,
-table#about tr *
-{
+body {
     font-family: sans-serif;
     line-height: 1.25em;
+    margin: 2em;
+    min-width: 350px;
 }
 
-body { margin: 2em; }
 img#logo { float: left; }
 img#logo, h1 { margin: 0 1em 0 0; }
-a { white-space: nowrap; }
 
 li { margin-bottom: 1em; }
-body>p { width: 42em; }
+body>p { max-width: 42em; }
 
-table#about
-{
-    clear: left;
-    margin: 3em 0 2em 0;
+p, li {color: #333;}
+
+p.aside {
+  font-size: 0.8em;
+}
+
+#about {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+#about > div {
+  padding-right: 2em;
+  flex: 1;
+}
+
+@media(max-width: 1000px) {
+  body {
+    margin: 10px;
+  }
+
+  #about {
+    flex-direction: column;
+  }
+
+  #about > div {
+    padding-right: 0;
+  }
+
+  pre {
+    width: 100%;
+    overflow: scroll;
+  }
+}
+
+ul {
+  padding-left: 1em;
 }
 
 table tr th { text-align: left; }
@@ -43,19 +75,12 @@ table tr td + td + td + td
     white-space: pre;
 }
 
-/* override a bunch of the stuff above */
-table#about tr th,
-table#about tr td
-{
-    width: 20em;
-    padding: 0 1em 0 0;
-    font-size: 100%;
-    white-space: normal;
-}
-
 .alert {
+  clear: both;
   padding: 20px;
   background-color: #ff9800; /* Orange */
   color: white;
-  margin-bottom: 15px;
+  margin: 15px auto;
+  max-width: 42em;
+  border-radius: 4px;
 }

@@ -56,81 +56,82 @@ changesets_link = file_info('planet/changesets-latest.osm.bz2', 'planet/changese
 planet_pbf_link = file_info('pbf/planet-latest.osm.pbf', 'pbf/planet-pbf-rss.xml', 'Latest Weekly Planet PBF File')
 
 print("""
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
-<html>
+<!DOCTYPE html>
+<html lang="en">
  <head>
-  <title>Index of /</title>
+  <title>Planet OSM</title>
   <link href="https://planet.openstreetmap.org/style.css" rel="stylesheet" type="text/css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
  </head>
  <body>
 <img id="logo" src="https://planet.openstreetmap.org/logo.png" alt="OSM logo" width="128" height="128">
 <h1>Planet OSM</h1>
-
 <p>
-The files found here are regularly-updated, complete copies of the OpenStreetMap.org
-database, and those published before the 12 September 2012 are distributed under a Creative Commons Attribution-ShareAlike 2.0 license, those published after are  Open Data Commons Open Database License 1.0 licensed. For more information, <a href="https://wiki.openstreetmap.org/wiki/Planet.osm">see the project wiki</a>.
+The files found here are regularly-updated, complete copies of the <a href="https://openstreetmap.org">OpenStreetMap</a> database.
 </p>
-<p><div class="alert"><strong>WARNING</strong> Download speeds are currently restricted to 4096 KB/s due to limited available capacity on our Internet connection. <a href="https://wiki.openstreetmap.org/wiki/Planet.osm#BitTorrent">Please use torrents</a> or <a href="https://wiki.openstreetmap.org/wiki/Planet.osm#Planet.osm_mirrors">a mirror</a> if possible.</div></p>
-<table id="about">
-  <tr>
-    <th>
-        <h2>Complete OSM Data</h2>
-    </th>
-    <th>
-        <h2>Using The Data</h2>
-    </th>
-    <th>
-        <h2>Extracts &amp; Mirrors</h2>
-    </th>
-  </tr>
-  <tr>
-    <td>
-        <p>%(planet_link)s</p>
-        <p>%(changesets_link)s</p>
-        <p>%(planet_pbf_link)s</p>
-        <p>
-        Each week, a new and complete copy of all data in OpenStreetMap is made
-        available as both a compressed XML file and a custom PBF format file.
-        Also available is the <a href="planet/full-history">'history'</a> file
-        which contains not only up-to-date data but also older versions of data
-        and deleted data items.
-        <p>
-        </p>
-        A smaller file with complete metadata for all changes ('changesets') in
-        XML format is also available.
-        </p>
-    </td>
-    <td>
-        <p>
-        You are granted permission to use OpenStreetMap data by
-        <a href="https://osm.org/copyright">the OpenStreetMap License</a>, which also describes
-        your obligations.
-        </p>
-        <p>
-        You can <a href="https://wiki.openstreetmap.org/wiki/Planet.osm#Processing_the_file">process the file</a>
-        or extracts with a variety of tools. <a href="https://wiki.openstreetmap.org/wiki/Osmosis">Osmosis</a>
-        is a general-purpose command-line tool for converting the data among different formats
-        and databases, and <a href="https://wiki.openstreetmap.org/wiki/Osm2pgsql">Osm2pgsql</a>
-        is a tool for importing the data into a Postgis database for rendering maps.
-        </p>
-        <p>
-        <a href="https://osmdata.openstreetmap.de/">Processed coastline data</a>
-        derived from OSM data is also needed for rendering usable maps.
-        </p>
-    </td>
-    <td>
-        <p>
-        The complete planet is very large, so you may prefer to use one of
-        <a href="https://wiki.openstreetmap.org/wiki/Planet.osm#Downloading">several periodic extracts</a>
-        (individual countries or states) from third parties. <a href="https://download.geofabrik.de/openstreetmap/">GeoFabrik.de</a>
-        and <a href="https://download.bbbike.org/osm/">BBBike.org</a> are two providers
-        of extracts with up-to-date worldwide coverage.
-        </p>
-    </td>
-  </tr>
-</table>
+<p><div class="alert"><strong>Warning:</strong> Download speeds are currently restricted to 4096 KB/s due to limited available capacity on our Internet connection. Please <a href="https://wiki.openstreetmap.org/wiki/Planet.osm#BitTorrent">use torrents</a> or <a href="https://wiki.openstreetmap.org/wiki/Planet.osm#Planet.osm_mirrors">a mirror</a> if possible.</div></p>
+<div id="about">
+  <div>
+    <h2>Latest Exports</h2>
+    <p>%(planet_link)s</p>
+    <p>%(changesets_link)s</p>
+    <p>%(planet_pbf_link)s</p>
+    <p>
+    Each week, a new and complete copy of all data in OpenStreetMap is made
+    available as both a compressed XML file and a more compact
+    <a href="https://wiki.openstreetmap.org/wiki/PBF_Format">custom PBF format</a> file.
+    Also available is the <a href="planet/full-history">'history'</a> file
+    which contains not only up-to-date data but also older versions of data
+    and deleted data items.
+    </p>
+    <p>
+    A smaller file with complete metadata for all changes ('changesets') in
+    XML format is also available.
+    </p>
+  </div>
+  <div>
+    <h2>Using the Data</h2>
+    <p>
+    This open data is <a href="https://osm.org/copyright">copyright &copy; OpenStreetMap</a>.
+    You are granted permission to use the data under the
+    <a href="https://opendatacommons.org/licenses/odbl/">Open Database License 1.0</a>.
+    <a href="https://wiki.osmfoundation.org/wiki/Licence/Licence_and_Legal_FAQ">
+        More information on licensing
+    </a>.
+    </p>
+    <p class="aside">
+      (For exports published before 12 September 2012, the Creative Commons
+      Attribution-ShareAlike 2.0 license applies instead.) 
+    </p>
+    <p>
+    You can <a href="https://wiki.openstreetmap.org/wiki/Planet.osm#Processing_the_file">
+    process OpenStreetMap data</a> with a variety of tools, including:</p>
+    <ul>
+      <li><a href="https://wiki.openstreetmap.org/wiki/Osmosis">Osmosis</a>,
+        a general-purpose command-line tool for converting the data between different formats.</li>
+      <li><a href="https://wiki.openstreetmap.org/wiki/Osm2pgsql">Osm2pgsql</a>,
+        a tool for importing the data into a PostGIS database for rendering maps.</li>
+    </ul>
+    <p>
+    <a href="https://osmdata.openstreetmap.de/">Processed coastlines</a>
+    derived from OSM data are also needed for rendering usable maps.
+    </p>
+  </div>
+  <div>
+    <h2>Extracts &amp; Mirrors</h2>
+    <p>
+    The complete planet is very large, so you may prefer to use one of
+    <a href="https://wiki.openstreetmap.org/wiki/Planet.osm#Downloading">several periodic extracts</a>
+    (individual countries or states) from third parties.
+    <a href="https://download.geofabrik.de/openstreetmap/">GeoFabrik.de</a>
+    and <a href="https://download.bbbike.org/osm/">BBBike.org</a> are two providers
+    of extracts with up-to-date worldwide coverage.
+    </p>
+  </div>
+</div>
 
 <p>
 If you find data within OpenStreetMap that you believe is an infringement of someone else's copyright, then please make contact with the <a href="https://wiki.openstreetmap.org/wiki/Data_working_group">OpenStreetMap Data Working Group</a>.
 </p>
+<h2>Other Data</h2>
 """ % locals())
