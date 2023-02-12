@@ -23,7 +23,7 @@ include_recipe "podman"
 apache_module "proxy_http"
 
 %w[2013 2016 2017 2018 2019 2020 2021 2022].each do |year|
-  docker_external_port = 6080 + year.to_i # 8093+
+  docker_external_port = 6180 + year.to_i # 8193+
 
   podman_service "#{year}.stateofthemap.org" do
     description "Container service for #{year}.stateofthemap.org"
