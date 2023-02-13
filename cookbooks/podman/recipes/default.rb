@@ -41,19 +41,14 @@ ruby_block "subgid-containers" do
   not_if "grep -q '^containers:' /etc/subgid"
 end
 
-service "podman-auto-update.timer" do
-  action [:enable, :start]
-end
-
-# Increase the frequency of podman auto updates
 systemd_timer "podman-auto-update-frequency" do
-  description "Increased podman auto update frequency"
-  unit "podman-auto-update.service"
+  timer "podman-auto-update"
+  dropin "frequency"
   on_boot_sec "5m"
   on_unit_inactive_sec "20m"
   randomized_delay_sec "5m"
 end
 
-service "podman-auto-update-frequency.timer" do
+service "podman-auto-update.timer" do
   action [:enable, :start]
 end
