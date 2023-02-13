@@ -3,7 +3,7 @@ inherit_from: .rubocop_todo.yml
 AllCops:
   TargetRubyVersion: 3.1
 
-ChefModernize/IncludingAptDefaultRecipe:
+Chef/Modernize/IncludingAptDefaultRecipe:
   Enabled: false
   
 Chef/Modernize/CronDFileOrTemplate:
