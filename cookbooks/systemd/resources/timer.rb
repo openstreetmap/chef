@@ -23,7 +23,7 @@ default_action :create
 
 property :timer, String, :name_property => true
 property :dropin, String
-property :description, String, :required => [:create]
+property :description, String
 property :after, [String, Array]
 property :wants, [String, Array]
 property :on_active_sec, [Integer, String]
