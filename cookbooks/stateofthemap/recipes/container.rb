@@ -22,6 +22,26 @@ include_recipe "podman"
 
 apache_module "proxy_http"
 
+docker_external_port = 8096
+
+podman_service "www.stateofthemap.org" do
+  description "Container service for www.stateofthemap.org"
+  image "ghcr.io/openstreetmap/stateofthemap-website:latest"
+  ports docker_external_port => "8080"
+end
+
+ssl_certificate "stateofthemap.org" do
+  domains ["stateofthemap.org", "www.stateofthemap.org",
+           "stateofthemap.com", "www.stateofthemap.com",
+           "sotm.org", "www.sotm.org"]
+  notifies :reload, "service[apache2]"
+end
+
+apache_site "stateofthemap.org" do
+  template "apache.container.erb"
+  variables :docker_external_port => docker_external_port, :aliases => ["www.stateofthemap.org", "stateofthemap.com", "www.stateofthemap.com", "sotm.org", "www.sotm.org"]
+end
+
 %w[2013 2016 2017 2018 2019 2020 2021 2022].each do |year|
   docker_external_port = 6180 + year.to_i # 8193+
 

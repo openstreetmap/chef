@@ -96,7 +96,6 @@ jobs:
           - snmpd
           - spamassassin
           - ssl
-          - stateofthemap
           - stateofthemap-container
           - stateofthemap-wordpress
           - subversion
