@@ -18,15 +18,24 @@
 #
 
 include_recipe "apache"
+include_recipe "podman"
 
-apache_module "rewrite"
+docker_external_port = 8095
+
+podman_service "svn.openstreetmap.org" do
+  description "Container service for svn.openstreetmap.org"
+  image "ghcr.io/openstreetmap/svn-website:latest"
+  ports docker_external_port => "8080"
+end
 
 ssl_certificate "svn.openstreetmap.org" do
   domains ["svn.openstreetmap.org", "svn.osm.org"]
   notifies :reload, "service[apache2]"
 end
 
+apache_module "proxy_http"
+
 apache_site "svn.openstreetmap.org" do
   template "apache.erb"
-  variables :aliases => ["svn.osm.org"]
+  variables :docker_external_port => docker_external_port, :aliases => ["svn.osm.org"]
 end
