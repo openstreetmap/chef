@@ -44,3 +44,16 @@ end
 service "podman-auto-update.timer" do
   action [:enable, :start]
 end
+
+# Increase the frequency of podman auto updates
+systemd_timer "podman-auto-update-frequency" do
+  description "Increased podman auto update frequency"
+  unit "podman-auto-update.service"
+  on_boot_sec "5m"
+  on_unit_inactive_sec "20m"
+  randomized_delay_sec "5m"
+end
+
+service "podman-auto-update-frequency.timer" do
+  action [:enable, :start]
+end
