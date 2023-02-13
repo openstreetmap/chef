@@ -18,19 +18,14 @@
 #
 
 include_recipe "apache"
+include_recipe "podman"
 
-apache_module "rewrite"
+docker_external_port = 8094
 
-directory "/srv/trac.openstreetmap.org" do
-  owner "root"
-  group "root"
-  mode "0755"
-end
-
-cookbook_file "/srv/trac.openstreetmap.org/tickets.map" do
-  owner "root"
-  group "root"
-  mode "0644"
+podman_service "trac.openstreetmap.org" do
+  description "Container service for trac.openstreetmap.org"
+  image "ghcr.io/openstreetmap/trac-website:latest"
+  ports docker_external_port => "8080"
 end
 
 ssl_certificate "trac.openstreetmap.org" do
@@ -38,7 +33,9 @@ ssl_certificate "trac.openstreetmap.org" do
   notifies :reload, "service[apache2]"
 end
 
+apache_module "proxy_http"
+
 apache_site "trac.openstreetmap.org" do
   template "apache.erb"
-  variables :user => "trac", :group => "trac", :aliases => ["trac.osm.org"]
+  variables :docker_external_port => docker_external_port, :aliases => ["trac.osm.org"]
 end
