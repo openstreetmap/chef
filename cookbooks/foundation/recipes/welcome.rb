@@ -17,25 +17,9 @@
 # limitations under the License.
 #
 
-include_recipe "apache"
-include_recipe "podman"
+include_recipe "podman::apache"
 
-docker_external_port = 8090
-
-podman_service "welcome-mat" do
-  description "Container service for welcome.openstreetmap.org"
+podman_site "welcome.openstreetmap.org" do
   image "ghcr.io/osmfoundation/welcome-mat:latest"
-  ports docker_external_port => "8080"
-end
-
-ssl_certificate "welcome.openstreetmap.org" do
-  domains ["welcome.openstreetmap.org", "welcome.osm.org"]
-  notifies :reload, "service[apache2]"
-end
-
-apache_module "proxy_http"
-
-apache_site "welcome.openstreetmap.org" do
-  template "apache.welcome.erb"
-  variables :docker_external_port => docker_external_port, :aliases => ["welcome.osm.org"]
+  aliases ["welcome.osm.org"]
 end

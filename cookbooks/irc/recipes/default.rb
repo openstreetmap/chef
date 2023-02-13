@@ -17,25 +17,9 @@
 # limitations under the License.
 #
 
-include_recipe "apache"
-include_recipe "podman"
+include_recipe "podman::apache"
 
-docker_external_port = 8092
-
-podman_service "irc.openstreetmap.org" do
-  description "Container service for irc.openstreetmap.org"
+podman_site "irc.openstreetmap.org" do
   image "ghcr.io/openstreetmap/irc:latest"
-  ports docker_external_port => "8080"
-end
-
-ssl_certificate "irc.openstreetmap.org" do
-  domains ["irc.openstreetmap.org", "irc.osm.org"]
-  notifies :reload, "service[apache2]"
-end
-
-apache_module "proxy_http"
-
-apache_site "irc.openstreetmap.org" do
-  template "apache.erb"
-  variables :docker_external_port => docker_external_port, :aliases => ["irc.osm.org"]
+  aliases ["irc.osm.org"]
 end
