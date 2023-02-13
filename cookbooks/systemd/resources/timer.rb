@@ -22,6 +22,7 @@ unified_mode true
 default_action :create
 
 property :timer, String, :name_property => true
+property :dropin, String
 property :description, String, :required => [:create]
 property :after, [String, Array]
 property :wants, [String, Array]
@@ -41,7 +42,15 @@ property :remain_after_elapse, [true, false]
 action :create do
   timer_variables = new_resource.to_hash
 
-  template "/etc/systemd/system/#{new_resource.timer}.timer" do
+  if new_resource.dropin
+    directory dropin_directory do
+      owner "root"
+      group "root"
+      mode "755"
+    end
+  end
+
+  template config_name do
     cookbook "systemd"
     source "timer.erb"
     owner "root"
@@ -60,7 +69,7 @@ action :create do
 end
 
 action :delete do
-  file "/etc/systemd/system/#{new_resource.timer}.timer" do
+  file config_name do
     action :delete
   end
 
@@ -70,5 +79,19 @@ action :delete do
     user "root"
     group "root"
     subscribes :run, "file[/etc/systemd/system/#{new_resource.timer}.timer]"
+  end
+end
+
+action_class do
+  def dropin_directory
+    "/etc/systemd/system/#{new_resource.timer}.timer.d"
+  end
+
+  def config_name
+    if new_resource.dropin
+      "#{dropin_directory}/#{new_resource.dropin}.conf"
+    else
+      "/etc/systemd/system/#{new_resource.timer}.timer"
+    end
   end
 end
