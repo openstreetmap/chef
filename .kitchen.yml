@@ -337,9 +337,6 @@ suites:
   - name: ssl
     run_list:
       - recipe[ssl::default]
-  - name: stateofthemap
-    run_list:
-      - recipe[stateofthemap::default]
   - name: stateofthemap-container
     run_list:
       - recipe[stateofthemap::container]

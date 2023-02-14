@@ -16,29 +16,3 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
-include_recipe "apache"
-include_recipe "git"
-
-apache_module "expires"
-
-git "/srv/stateofthemap.org" do
-  action :sync
-  repository "https://git.openstreetmap.org/public/stateofthemap.git"
-  revision "chooser"
-  depth 1
-  user "root"
-  group "root"
-end
-
-ssl_certificate "stateofthemap.org" do
-  domains ["stateofthemap.org", "www.stateofthemap.org",
-           "stateofthemap.com", "www.stateofthemap.com",
-           "sotm.org", "www.sotm.org"]
-  notifies :reload, "service[apache2]"
-end
-
-apache_site "stateofthemap.org" do
-  template "apache.erb"
-  directory "/srv/stateofthemap.org"
-end
