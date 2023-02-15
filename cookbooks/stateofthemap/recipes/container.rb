@@ -19,7 +19,7 @@
 
 include_recipe "podman::apache"
 
-podman_site "www.stateofthemap.org" do
+podman_site "stateofthemap.org" do
   image "ghcr.io/openstreetmap/stateofthemap-website:latest"
   aliases ["www.stateofthemap.org", "stateofthemap.com", "www.stateofthemap.com", "sotm.org", "www.sotm.org"]
 end
