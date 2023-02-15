@@ -53,9 +53,9 @@ end
 energy_perf_bias = Dir.glob("/sys/devices/system/cpu/cpu*/power/energy_perf_bias")
 
 unless energy_perf_bias.empty?
-  default[:sysfs][:cpu_power_energy_perf_bias][:comment] = "Set CPU Energy-Performance Bias Preference to performance"
+  default[:sysfs][:cpu_power_energy_perf_bias][:comment] = "Set CPU Energy-Performance Bias Preference to balance-performance"
 
   energy_perf_bias.sort.each do |path|
-    default[:sysfs][:cpu_power_energy_perf_bias][:parameters][path.sub(%r{^/sys/}, "")] = "0"
+    default[:sysfs][:cpu_power_energy_perf_bias][:parameters][path.sub(%r{^/sys/}, "")] = "4"
   end
 end
