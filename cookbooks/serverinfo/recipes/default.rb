@@ -64,27 +64,34 @@ directory "/srv/hardware.openstreetmap.org/_site" do
   group "nogroup"
 end
 
-# Workaround https://github.com/jekyll/jekyll/issues/7804
-# by creating a .jekyll-cache folder
-directory "/srv/hardware.openstreetmap.org/.jekyll-cache" do
-  mode "755"
+# FIXME: fix the the vendor directory permissions from prior root installs
+directory "/srv/hardware.openstreetmap.org/vendor" do
+  action :create
+  recursive true
   owner "nobody"
   group "nogroup"
 end
 
 bundle_install "/srv/hardware.openstreetmap.org" do
   action :nothing
-  options "--deployment"
-  user "root"
-  group "root"
+  user "nobody"
+  group "nogroup"
+  environment "BUNDLE_FROZEN" => "true",
+              "BUNDLE_WITHOUT" => "development:test",
+              "BUNDLE_PATH" => "vendor/bundle",
+              "BUNDLE_DEPLOYMENT" => "1",
+              "BUNDLE_JOBS" => node.cpu_cores.to_s
   notifies :run, "bundle_exec[/srv/hardware.openstreetmap.org]"
 end
 
 bundle_exec "/srv/hardware.openstreetmap.org" do
   action :nothing
-  command "jekyll build --trace --baseurl=https://hardware.openstreetmap.org"
+  command "jekyll build --trace --disable-disk-cache --baseurl=https://hardware.openstreetmap.org"
   user "nobody"
   group "nogroup"
+  environment "LANG" => "C.UTF-8",
+              "BUNDLE_PATH" => "vendor/bundle",
+              "BUNDLE_DEPLOYMENT" => "1"
 end
 
 ssl_certificate "hardware.openstreetmap.org" do
