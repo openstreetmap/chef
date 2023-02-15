@@ -1,6 +1,6 @@
 #
-# Cookbook:: foundation
-# Recipe:: welcome
+# Cookbook:: podman
+# Recipe:: apache
 #
 # Copyright:: 2023, OpenStreetMap Foundation
 #
@@ -17,9 +17,7 @@
 # limitations under the License.
 #
 
-include_recipe "podman::apache"
+include_recipe "podman"
+include_recipe "apache"
 
-podman_site "welcome.openstreetmap.org" do
-  image "ghcr.io/osmfoundation/welcome-mat:latest"
-  aliases ["welcome.osm.org"]
-end
+apache_module "proxy_http"

@@ -6,4 +6,5 @@ description       "Installs and configures podman"
 
 version           "1.0.0"
 supports          "ubuntu"
+depends           "apache"
 depends           "systemd"

@@ -17,25 +17,9 @@
 # limitations under the License.
 #
 
-include_recipe "apache"
-include_recipe "podman"
+include_recipe "podman::apache"
 
-docker_external_port = 8094
-
-podman_service "trac.openstreetmap.org" do
-  description "Container service for trac.openstreetmap.org"
+podman_site "trac.openstreetmap.org" do
   image "ghcr.io/openstreetmap/trac-website:latest"
-  ports docker_external_port => "8080"
-end
-
-ssl_certificate "trac.openstreetmap.org" do
-  domains ["trac.openstreetmap.org", "trac.osm.org"]
-  notifies :reload, "service[apache2]"
-end
-
-apache_module "proxy_http"
-
-apache_site "trac.openstreetmap.org" do
-  template "apache.erb"
-  variables :docker_external_port => docker_external_port, :aliases => ["trac.osm.org"]
+  aliases ["trac.osm.org"]
 end

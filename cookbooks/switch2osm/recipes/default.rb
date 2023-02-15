@@ -17,26 +17,9 @@
 # limitations under the License.
 #
 
-include_recipe "apache"
-include_recipe "podman"
+include_recipe "podman::apache"
 
-docker_external_port = 8093
-
-podman_service "switch2osm.org" do
-  description "Container service for switch2osm.org"
+podman_site "switch2osm.org" do
   image "ghcr.io/switch2osm/switch2osm:latest"
-  ports docker_external_port => "8080"
-end
-
-ssl_certificate "switch2osm.org" do
-  domains ["switch2osm.org",
-           "www.switch2osm.org", "switch2osm.com", "www.switch2osm.com"]
-  notifies :reload, "service[apache2]"
-end
-
-apache_module "proxy_http"
-
-apache_site "switch2osm.org" do
-  template "apache.erb"
-  variables :docker_external_port => docker_external_port, :aliases => ["www.switch2osm.org", "switch2osm.com", "www.switch2osm.com"]
+  aliases ["www.switch2osm.org", "switch2osm.com", "www.switch2osm.com"]
 end
