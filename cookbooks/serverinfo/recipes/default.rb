@@ -64,12 +64,11 @@ directory "/srv/hardware.openstreetmap.org/_site" do
   group "nogroup"
 end
 
-# FIXME: fix the the vendor directory permissions from prior root installs
 directory "/srv/hardware.openstreetmap.org/vendor" do
   action :create
-  recursive true
   owner "nobody"
   group "nogroup"
+  notifies :run, "bundle_install[/srv/hardware.openstreetmap.org]"
 end
 
 bundle_install "/srv/hardware.openstreetmap.org" do
