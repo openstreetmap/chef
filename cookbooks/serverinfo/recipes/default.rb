@@ -68,7 +68,7 @@ directory "/srv/hardware.openstreetmap.org/vendor" do
   action :create
   owner "nobody"
   group "nogroup"
-  notifies :run, "bundle_install[/srv/hardware.openstreetmap.org]"
+  notifies :run, "bundle_install[/srv/hardware.openstreetmap.org]", :immediately
 end
 
 bundle_install "/srv/hardware.openstreetmap.org" do
