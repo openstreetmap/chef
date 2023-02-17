@@ -96,12 +96,6 @@ directory "/srv/tile.openstreetmap.org" do
   mode "755"
 end
 
-# Old directory for IP rate limiting, now on the CDN
-directory "/srv/tile.openstreetmap.org/conf" do
-  action :delete
-  recursive true
-end
-
 tile_directories = node[:tile][:styles].collect do |_, style|
   style[:tile_directories].collect { |directory| directory[:name] }
 end.flatten.sort.uniq
@@ -528,18 +522,6 @@ remote_directory "/usr/local/bin" do
   files_mode "755"
 end
 
-file "/usr/local/bin/tile-ratelimit" do
-  action :delete
-end
-
-service "tile-ratelimit" do
-  action [:stop, :disable]
-end
-
-systemd_service "tile-ratelimit" do
-  action :delete
-end
-
 template "/usr/local/bin/expire-tiles" do
   source "expire-tiles.erb"
   owner "root"
@@ -612,11 +594,6 @@ service "replicate" do
   action [:enable, :start]
   subscribes :restart, "template[/usr/local/bin/replicate]"
   subscribes :restart, "systemd_service[replicate]"
-end
-
-# FIXME: cleanup old replicate logrotate
-file "/etc/logrotate.d/replicate" do
-  action :delete
 end
 
 template "/usr/local/bin/render-lowzoom" do
