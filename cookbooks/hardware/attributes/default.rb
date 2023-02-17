@@ -48,6 +48,7 @@ if File.exist?("/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor") &&
   default[:sysfs][:cpufreq_ondemand][:comment] = "Tune the ondemand CPU frequency governor"
   default[:sysfs][:cpufreq_ondemand][:parameters][:"devices/system/cpu/cpufreq/ondemand/up_threshold"] = "25"
   default[:sysfs][:cpufreq_ondemand][:parameters][:"devices/system/cpu/cpufreq/ondemand/sampling_down_factor"] = "100"
+  default[:sysfs][:cpufreq_ondemand][:parameters][:"devices/system/cpu/cpufreq/ondemand/ignore_nice_load"] = "1"
 end
 
 energy_perf_bias = Dir.glob("/sys/devices/system/cpu/cpu*/power/energy_perf_bias")
