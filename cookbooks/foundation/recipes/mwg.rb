@@ -32,7 +32,7 @@ mediawiki_site "mwg.osmfoundation.org" do
   admin_password passwords["mwg"]["admin"]
   logo "/Wiki.png"
   email_contact "webmaster@openstreetmap.org"
-  email_sender "webmaster@openstreetmap.org"
+  email_sender "wiki@noreply.openstreetmap.org"
   email_sender_name "OSMF Board Wiki"
   private_site true
   version "1.39"
