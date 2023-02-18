@@ -183,6 +183,17 @@ if node[:nominatim][:flatnode_file]
   end
 end
 
+remote_directory "#{project_directory}/website" do
+  source "website"
+  owner "nominatim"
+  group "nominatim"
+  mode "755"
+  files_owner "nominatim"
+  files_group "nominatim"
+  files_mode "644"
+  purge false
+end
+
 # Normally syncing via chef is a bad idea because syncing might involve
 # an update of database functions which should not be done while an update
 # is ongoing. Therefore we sync in between update cycles. There is an
