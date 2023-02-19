@@ -105,7 +105,6 @@ run_list(
   "role[equinix-ams]",
   "role[gateway]",
   "role[supybot]",
-  "role[backup]",
   "role[planet]",
   "role[planetdump]",
   "recipe[rsyncd]",
