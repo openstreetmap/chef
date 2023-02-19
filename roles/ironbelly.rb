@@ -106,7 +106,6 @@ run_list(
   "role[gateway]",
   "role[supybot]",
   "role[planet]",
-  "role[planetdump]",
   "recipe[rsyncd]",
   "recipe[dhcpd]",
   "recipe[tilelog]"

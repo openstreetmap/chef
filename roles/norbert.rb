@@ -37,5 +37,6 @@ run_list(
   "role[equinix-ams]",
   "role[geodns]",
   "role[backup]",
-  "role[planet]"
+  "role[planet]",
+  "role[planetdump]"
 )
