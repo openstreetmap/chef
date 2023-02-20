@@ -55,9 +55,6 @@ default_attributes(
       }
     }
   },
-  :planet => {
-    :replication => "enabled"
-  },
   :prometheus => {
     :snmp => {
       "pdu1" => { :address => "10.0.48.100", :modules => %w[apcups], :labels => { "site" => "amsterdam" } },
@@ -105,8 +102,6 @@ run_list(
   "role[equinix-ams]",
   "role[gateway]",
   "role[supybot]",
-  "role[planet]",
   "recipe[rsyncd]",
-  "recipe[dhcpd]",
-  "recipe[tilelog]"
+  "recipe[dhcpd]"
 )

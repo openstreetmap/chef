@@ -30,6 +30,9 @@ default_attributes(
       }
 
     }
+  },
+  :planet => {
+    :replication => "enabled"
   }
 )
 
@@ -38,5 +41,6 @@ run_list(
   "role[geodns]",
   "role[backup]",
   "role[planet]",
-  "role[planetdump]"
+  "role[planetdump]",
+  "recipe[tilelog]"
 )
