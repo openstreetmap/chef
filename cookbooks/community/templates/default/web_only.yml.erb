@@ -86,12 +86,12 @@ hooks:
     - exec:
         cd: $home/plugins
         cmd:
-          - git clone --depth 1 https://github.com/discourse/discourse-oauth2-basic.git
-          - git clone --depth 1 https://github.com/discourse/discourse-solved.git
-          - git clone --depth 1 https://github.com/discourse/discourse-canned-replies.git
-          - git clone --depth 1 https://github.com/discourse/discourse-reactions.git
-          - git clone https://github.com/discourse/discourse-prometheus.git && cd discourse-prometheus && git checkout 72fff206ba18ad5ca3112fed2f5f0ce6a17ca6f8
-          - git clone --depth 1 https://github.com/discourse/discourse-translator.git
+          - sudo -H -E -u discourse git clone --depth 1 https://github.com/discourse/discourse-oauth2-basic.git
+          - sudo -H -E -u discourse git clone --depth 1 https://github.com/discourse/discourse-solved.git
+          - sudo -H -E -u discourse git clone --depth 1 https://github.com/discourse/discourse-canned-replies.git
+          - sudo -H -E -u discourse git clone --depth 1 https://github.com/discourse/discourse-reactions.git
+          - sudo -H -E -u discourse git clone --depth 1 https://github.com/discourse/discourse-prometheus.git
+          - sudo -H -E -u discourse git clone --depth 1 https://github.com/discourse/discourse-translator.git
   after_ssl:
     - replace:
         filename: "/etc/nginx/conf.d/discourse.conf"
