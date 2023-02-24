@@ -36,6 +36,7 @@ property :protect_kernel_modules, [true, false]
 action :create do
   systemd_service service_name do
     description "Prometheus #{new_resource.collector} collector"
+    type "oneshot"
     user new_resource.user
     dynamic_user new_resource.user.nil?
     group "adm"
