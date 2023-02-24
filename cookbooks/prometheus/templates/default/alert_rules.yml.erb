@@ -530,6 +530,11 @@ groups:
           alertgroup: "prometheus"
   - name: raid
     rules:
+      - alert: raid controller battery failed
+        expr: ohai_controller_info{battery_status="failed"} > 0
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
       - alert: raid array degraded
         expr: ohai_array_info{status="degraded"} > 0
         for: 5m
