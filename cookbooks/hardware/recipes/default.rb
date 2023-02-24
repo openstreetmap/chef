@@ -702,7 +702,7 @@ prometheus_collector "ohai" do
   interval "15m"
   user "root"
   proc_subset "all"
-  capability_bounding_set %w[CAP_DAC_OVERRIDE CAP_SYS_ADMIN]
+  capability_bounding_set %w[CAP_DAC_OVERRIDE CAP_SYS_ADMIN CAP_SYS_RAWIO]
   private_devices false
   private_users false
   protect_clock false
