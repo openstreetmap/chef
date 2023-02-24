@@ -331,6 +331,7 @@ Ohai.plugin(:Hardware) do
         when "Hardware Revision" then controller[:hardware_version] = Regexp.last_match(2)
         when "Firmware Version" then controller[:firmware_version] = Regexp.last_match(2)
         when "PCI Address (Domain:Bus:Device.Function)" then controller[:pci_slot] = Regexp.last_match(2)
+        when "Battery/Capacitor Status" then controller[:battery_status] = Regexp.last_match(2).split.first.downcase
         end
       elsif controller && line =~ /^      Logical Drive: (\d+)$/
         array = {
