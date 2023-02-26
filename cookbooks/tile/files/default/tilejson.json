@@ -1,0 +1,10 @@
+{
+    "tilejson": "3.0.0",
+    "attribution": "© <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors",
+    "name": "OpenStreetMap Standard",
+    "tiles": [
+        "https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+    ],
+    "minzoom": 0,
+    "maxzoom": 19
+}
