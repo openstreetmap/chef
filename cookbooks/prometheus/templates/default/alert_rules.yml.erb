@@ -623,7 +623,7 @@ groups:
         labels:
           alertgroup: "{{ $labels.instance }}"
       - alert: systemd failed chef client service
-        expr: node_systemd_unit_state{state="inactive",name="chef-client.service"}[6h] == 0
+        expr: sum_over_time(node_systemd_unit_state{state="inactive",name="chef-client.service"}[6h]) == 0
         for: 0m
         labels:
           alertgroup: "{{ $labels.instance }}"
