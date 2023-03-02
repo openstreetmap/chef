@@ -59,9 +59,8 @@ remote_file "#{cache_dir}/dnscontrol-#{dnscontrol_version}.deb" do
 end
 
 dpkg_package "dnscontrol" do
-  action :nothing
   source "#{cache_dir}/dnscontrol-#{dnscontrol_version}.deb"
-  subscribes :install, "remote_file[#{cache_dir}/dnscontrol-#{dnscontrol_version}.deb]"
+  version "#{dnscontrol_version}"
 end
 
 directory "/srv/dns.openstreetmap.org" do
