@@ -1,0 +1,118 @@
+#!/usr/sbin/nft -f
+
+define external-interfaces = { <%= @interfaces.sort.uniq.join(", ") %> }
+
+define ip-private-addresses = { 10.0.0.0/8, 127.0.0.0/8, 169.254.0.0/16, 172.16.0.0/12, 192.0.2.0/24, 192.168.0.0/16 }
+define ip6-private-addresses = { 2001:db8::/32, fc00::/7 }
+
+define ip-osm-addresses = { <%= Array(@hosts[:inet]).sort.join(", ") %> }
+define ip6-osm-addresses = { <%= Array(@hosts[:inet6]).sort.join(", ") %> }
+
+flush ruleset
+
+table inet filter {
+  set ip-blacklist {
+    type ipv4_addr
+    flags dynamic
+  }
+
+  set ip6-blacklist {
+    type ipv6_addr
+    flags dynamic
+  }
+
+<%- node[:networking][:firewall][:sets].each do |set| %>
+  set <%= set %> {
+<%- if set.end_with?("-ip") %>
+    type ipv4_addr
+<%- elsif set.end_with?("-ip6") %>
+    type ipv6_addr
+<%- end %>
+    flags dynamic
+  }
+
+<%- end %>
+  chain log-and-drop {
+    limit rate 1/second log
+    drop
+  }
+
+  chain log-and-reject {
+    limit rate 1/second log
+    reject
+  }
+
+  chain incoming {
+    ip saddr { $ip-private-addresses } jump log-and-drop
+    ip6 saddr { $ip6-private-addresses } jump log-and-drop
+
+    ip saddr @ip-blacklist jump log-and-drop
+    ip6 saddr @ip6-blacklist jump log-and-drop
+
+    ct state { established, related } accept
+
+    icmp type { destination-unreachable } accept
+    icmpv6 type { nd-neighbor-solicit, nd-neighbor-advert, nd-router-solicit, nd-router-advert } accept
+
+    icmp type { echo-request } limit rate 1/second accept
+    icmpv6 type { echo-request } limit rate 1/second accept
+
+    meta l4proto { icmp, icmpv6 } jump log-and-drop
+
+<%- node[:networking][:firewall][:incoming].uniq.each do |rule| %>
+    <%= rule %>
+<%- end %>
+
+    jump log-and-drop
+  }
+
+  chain outgoing {
+    ip daddr { $ip-private-addresses } jump log-and-drop
+    ip6 daddr { $ip6-private-addresses } jump log-and-drop
+
+<%- node[:networking][:firewall][:outgoing].each do |rule| %>
+    <%= rule %>
+<%- end %>
+
+    accept
+  }
+
+  chain input {
+    type filter hook input priority filter;
+
+    iif { $external-interfaces } jump incoming
+
+    accept
+  }
+
+  chain forward {
+    type filter hook forward priority filter;
+
+    iif { $external-interfaces } jump incoming
+    oif { $external-interfaces } jump outgoing
+
+    accept
+  }
+
+  chain output {
+    type filter hook output priority filter;
+
+    oif { $external-interfaces } jump outgoing
+
+    accept
+  }
+}
+<%- if node[:roles].include?("gateway") %>
+
+table ip nat {
+  chain postrouting {
+    type nat hook postrouting priority srcnat;
+
+<%- node.interfaces(:role => :external).each do |external| %>
+<%- node.interfaces(:role => :internal).each do |internal| %>
+    oif { < %= external[:interface] %> } ip saddr { <%= internal[:network] %>/<%= internal[:prefix] %> } snat <%= external[:address] %>
+<%- end %>
+<%- end %>
+  }
+}
+<%- end %>

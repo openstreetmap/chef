@@ -51,6 +51,21 @@ end
 
 action_class do
   def add_rule(action)
+    if node[:networking][:firewall][:engine] == "shorewall"
+      add_shorewall_rule(action)
+    elsif node[:networking][:firewall][:engine] == "nftables"
+      if new_resource.family.nil?
+        add_nftables_rule(action, "inet")
+        add_nftables_rule(action, "inet6")
+      elsif new_resource.family.to_s == "inet"
+        add_nftables_rule(action, "inet")
+      elsif new_resource.family.to_s == "inet6"
+        add_nftables_rule(action, "inet6")
+      end
+    end
+  end
+
+  def add_shorewall_rule(action)
     rule = {
       :action => action.to_s.upcase,
       :source => new_resource.source,
@@ -74,6 +89,74 @@ action_class do
       log "Unsupported network family" do
         level :error
       end
+    end
+  end
+
+  def add_nftables_rule(action, family)
+    rule = []
+
+    ip = case family
+         when "inet" then "ip"
+         when "inet6" then "ip6"
+         end
+
+    proto = case new_resource.proto
+            when "udp" then "udp"
+            when "tcp", "tcp:syn" then "tcp"
+            end
+
+    if new_resource.source_ports != "-"
+      rule << "#{proto} sport { #{new_resource.source_ports} }"
+    end
+
+    if new_resource.dest_ports != "-"
+      rule << "#{proto} dport { #{new_resource.dest_ports} }"
+    end
+
+    if new_resource.source == "osm"
+      rule << "#{ip} saddr { $#{ip}-osm-addresses }"
+    elsif new_resource.source =~ /^net:(.*)$/
+      addresses = Regexp.last_match(1).split(",").join(", ")
+
+      rule << "#{ip} saddr { #{addresses} }"
+    end
+
+    if new_resource.dest == "osm"
+      rule << "#{ip} daddr $#{ip}-osm-addresses"
+    elsif new_resource.dest =~ /^net:(.*)$/
+      addresses = Regexp.last_match(1).split(",").join(", ")
+
+      rule << "#{ip} daddr { #{addresses} }"
+    end
+
+    if new_resource.proto == "tcp:syn"
+      rule << "ct state new"
+    end
+
+    if new_resource.connection_limit != "-"
+      rule << "ct count #{new_resource.connection_limit}"
+    end
+
+    if new_resource.rate_limit =~ %r{^s:(\d+)/sec:(\d+)$}
+      set = "#{new_resource.rule}-#{ip}"
+      rate = Regexp.last_match(1)
+      burst = Regexp.last_match(2)
+
+      node.default[:networking][:firewall][:sets] << set
+
+      rule << "add @#{set} { #{ip} saddr limit rate #{rate}/second burst #{burst} packets }"
+    end
+
+    rule << case action
+            when :accept then "accept"
+            when :drop then "jump log-and-drop"
+            when :reject then "jump log-and-reject"
+            end
+
+    if new_resource.source == "fw"
+      node.default[:networking][:firewall][:outcoming] << rule.join(" ")
+    elsif new_resource.dest == "fw"
+      node.default[:networking][:firewall][:incoming] << rule.join(" ")
     end
   end
 end

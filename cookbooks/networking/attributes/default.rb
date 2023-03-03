@@ -1,6 +1,10 @@
+default[:networking][:firewall][:engine] = "shorewall"
 default[:networking][:firewall][:enabled] = true
 default[:networking][:firewall][:inet] = []
 default[:networking][:firewall][:inet6] = []
+default[:networking][:firewall][:sets] = []
+default[:networking][:firewall][:incoming] = []
+default[:networking][:firewall][:outgoing] = []
 default[:networking][:firewall][:http_rate_limit] = "-"
 default[:networking][:firewall][:http_connection_limit] = "-"
 default[:networking][:firewall][:log] = true

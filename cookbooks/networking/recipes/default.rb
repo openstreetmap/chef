@@ -383,6 +383,7 @@ link "/etc/resolv.conf" do
   to "../run/systemd/resolve/stub-resolv.conf"
 end
 
+hosts = { :inet => [], :inet6 => [] }
 zones = {}
 
 search(:node, "networking:interfaces").collect do |n|
@@ -391,129 +392,316 @@ search(:node, "networking:interfaces").collect do |n|
   n.interfaces.each do |interface|
     next unless interface[:role] == "external" && interface[:zone]
 
+    hosts[interface[:family]] << interface[:address]
+
     zones[interface[:zone]] ||= {}
     zones[interface[:zone]][interface[:family]] ||= []
     zones[interface[:zone]][interface[:family]] << interface[:address]
   end
 end
 
-package "shorewall"
+hosts[:inet] << "127.0.0.1" if hosts[:inet].empty?
+hosts[:inet6] << "::1" if hosts[:inet6].empty?
 
-systemd_service "shorewall-docker" do
-  service "shorewall"
-  dropin "docker"
-  exec_stop "/sbin/shorewall $OPTIONS stop"
-  notifies :restart, "service[shorewall]"
-end
+if node[:networking][:firewall][:engine] == "shorewall"
+  package "shorewall"
 
-template "/etc/default/shorewall" do
-  source "shorewall-default.erb"
-  owner "root"
-  group "root"
-  mode "644"
-  notifies :restart, "service[shorewall]"
-end
-
-template "/etc/shorewall/shorewall.conf" do
-  source "shorewall.conf.erb"
-  owner "root"
-  group "root"
-  mode "644"
-  notifies :restart, "service[shorewall]"
-end
-
-template "/etc/shorewall/zones" do
-  source "shorewall-zones.erb"
-  owner "root"
-  group "root"
-  mode "644"
-  variables :type => "ipv4"
-  notifies :restart, "service[shorewall]"
-end
-
-template "/etc/shorewall/interfaces" do
-  source "shorewall-interfaces.erb"
-  owner "root"
-  group "root"
-  mode "644"
-  notifies :restart, "service[shorewall]"
-end
-
-template "/etc/shorewall/hosts" do
-  source "shorewall-hosts.erb"
-  owner "root"
-  group "root"
-  mode "644"
-  variables :zones => zones
-  notifies :restart, "service[shorewall]"
-end
-
-template "/etc/shorewall/conntrack" do
-  source "shorewall-conntrack.erb"
-  owner "root"
-  group "root"
-  mode "644"
-  notifies :restart, "service[shorewall]"
-  only_if { node[:networking][:firewall][:raw] }
-end
-
-template "/etc/shorewall/policy" do
-  source "shorewall-policy.erb"
-  owner "root"
-  group "root"
-  mode "644"
-  notifies :restart, "service[shorewall]"
-end
-
-template "/etc/shorewall/rules" do
-  source "shorewall-rules.erb"
-  owner "root"
-  group "root"
-  mode "644"
-  variables :family => "inet"
-  notifies :restart, "service[shorewall]"
-end
-
-template "/etc/shorewall/stoppedrules" do
-  source "shorewall-stoppedrules.erb"
-  owner "root"
-  group "root"
-  mode "644"
-  notifies :restart, "service[shorewall]"
-end
-
-if node[:networking][:firewall][:enabled]
-  service "shorewall" do
-    action [:enable, :start]
-    supports :restart => true
-    status_command "shorewall status"
-    ignore_failure true
+  systemd_service "shorewall-docker" do
+    service "shorewall"
+    dropin "docker"
+    exec_stop "/sbin/shorewall $OPTIONS stop"
+    notifies :restart, "service[shorewall]"
   end
-else
+
+  template "/etc/default/shorewall" do
+    source "shorewall-default.erb"
+    owner "root"
+    group "root"
+    mode "644"
+    notifies :restart, "service[shorewall]"
+  end
+
+  template "/etc/shorewall/shorewall.conf" do
+    source "shorewall.conf.erb"
+    owner "root"
+    group "root"
+    mode "644"
+    notifies :restart, "service[shorewall]"
+  end
+
+  template "/etc/shorewall/zones" do
+    source "shorewall-zones.erb"
+    owner "root"
+    group "root"
+    mode "644"
+    variables :type => "ipv4"
+    notifies :restart, "service[shorewall]"
+  end
+
+  template "/etc/shorewall/interfaces" do
+    source "shorewall-interfaces.erb"
+    owner "root"
+    group "root"
+    mode "644"
+    notifies :restart, "service[shorewall]"
+  end
+
+  template "/etc/shorewall/hosts" do
+    source "shorewall-hosts.erb"
+    owner "root"
+    group "root"
+    mode "644"
+    variables :zones => zones
+    notifies :restart, "service[shorewall]"
+  end
+
+  template "/etc/shorewall/conntrack" do
+    source "shorewall-conntrack.erb"
+    owner "root"
+    group "root"
+    mode "644"
+    notifies :restart, "service[shorewall]"
+    only_if { node[:networking][:firewall][:raw] }
+  end
+
+  template "/etc/shorewall/policy" do
+    source "shorewall-policy.erb"
+    owner "root"
+    group "root"
+    mode "644"
+    notifies :restart, "service[shorewall]"
+  end
+
+  template "/etc/shorewall/rules" do
+    source "shorewall-rules.erb"
+    owner "root"
+    group "root"
+    mode "644"
+    variables :family => "inet"
+    notifies :restart, "service[shorewall]"
+  end
+
+  template "/etc/shorewall/stoppedrules" do
+    source "shorewall-stoppedrules.erb"
+    owner "root"
+    group "root"
+    mode "644"
+    notifies :restart, "service[shorewall]"
+  end
+
+  if node[:networking][:firewall][:enabled]
+    service "shorewall" do
+      action [:enable, :start]
+      supports :restart => true
+      status_command "shorewall status"
+      ignore_failure true
+    end
+  else
+    service "shorewall" do
+      action [:disable, :stop]
+      supports :restart => true
+      status_command "shorewall status"
+      ignore_failure true
+    end
+  end
+
+  template "/etc/logrotate.d/shorewall" do
+    source "logrotate.shorewall.erb"
+    owner "root"
+    group "root"
+    mode "644"
+    variables :name => "shorewall"
+  end
+
+  firewall_rule "limit-icmp-echo" do
+    action :accept
+    family :inet
+    source "net"
+    dest "fw"
+    proto "icmp"
+    dest_ports "echo-request"
+    rate_limit "s:1/sec:5"
+  end
+
+  file "/etc/shorewall/masq" do
+    action :delete
+  end
+
+  file "/etc/shorewall/masq.bak" do
+    action :delete
+  end
+
+  if node[:roles].include?("gateway")
+    template "/etc/shorewall/snat" do
+      source "shorewall-snat.erb"
+      owner "root"
+      group "root"
+      mode "644"
+      notifies :restart, "service[shorewall]"
+    end
+  else
+    file "/etc/shorewall/snat" do
+      action :delete
+      notifies :restart, "service[shorewall]"
+    end
+  end
+
+  unless node.interfaces(:family => :inet6).empty?
+    package "shorewall6"
+
+    template "/etc/default/shorewall6" do
+      source "shorewall-default.erb"
+      owner "root"
+      group "root"
+      mode "644"
+      notifies :restart, "service[shorewall6]"
+    end
+
+    template "/etc/shorewall6/shorewall6.conf" do
+      source "shorewall6.conf.erb"
+      owner "root"
+      group "root"
+      mode "644"
+      notifies :restart, "service[shorewall6]"
+    end
+
+    template "/etc/shorewall6/zones" do
+      source "shorewall-zones.erb"
+      owner "root"
+      group "root"
+      mode "644"
+      variables :type => "ipv6"
+      notifies :restart, "service[shorewall6]"
+    end
+
+    template "/etc/shorewall6/interfaces" do
+      source "shorewall6-interfaces.erb"
+      owner "root"
+      group "root"
+      mode "644"
+      notifies :restart, "service[shorewall6]"
+    end
+
+    template "/etc/shorewall6/hosts" do
+      source "shorewall6-hosts.erb"
+      owner "root"
+      group "root"
+      mode "644"
+      variables :zones => zones
+      notifies :restart, "service[shorewall6]"
+    end
+
+    template "/etc/shorewall6/conntrack" do
+      source "shorewall-conntrack.erb"
+      owner "root"
+      group "root"
+      mode "644"
+      notifies :restart, "service[shorewall6]"
+      only_if { node[:networking][:firewall][:raw] }
+    end
+
+    template "/etc/shorewall6/policy" do
+      source "shorewall-policy.erb"
+      owner "root"
+      group "root"
+      mode "644"
+      notifies :restart, "service[shorewall6]"
+    end
+
+    template "/etc/shorewall6/rules" do
+      source "shorewall-rules.erb"
+      owner "root"
+      group "root"
+      mode "644"
+      variables :family => "inet6"
+      notifies :restart, "service[shorewall6]"
+    end
+
+    if node[:networking][:firewall][:enabled]
+      service "shorewall6" do
+        action [:enable, :start]
+        supports :restart => true
+        status_command "shorewall6 status"
+        ignore_failure true
+      end
+    else
+      service "shorewall6" do
+        action [:disable, :stop]
+        supports :restart => true
+        status_command "shorewall6 status"
+        ignore_failure true
+      end
+    end
+
+    template "/etc/logrotate.d/shorewall6" do
+      source "logrotate.shorewall.erb"
+      owner "root"
+      group "root"
+      mode "644"
+      variables :name => "shorewall6"
+    end
+
+    firewall_rule "limit-icmp6-echo" do
+      action :accept
+      family :inet6
+      source "net"
+      dest "fw"
+      proto "ipv6-icmp"
+      dest_ports "echo-request"
+      rate_limit "s:1/sec:5"
+    end
+  end
+elsif node[:networking][:firewall][:engine] == "nftables"
+  service "shorewall6" do
+    action [:disable, :stop]
+  end
+
+  package "shorewall6" do
+    action :purge
+  end
+
   service "shorewall" do
     action [:disable, :stop]
-    supports :restart => true
-    status_command "shorewall status"
-    ignore_failure true
   end
-end
 
-template "/etc/logrotate.d/shorewall" do
-  source "logrotate.shorewall.erb"
-  owner "root"
-  group "root"
-  mode "644"
-  variables :name => "shorewall"
-end
+  systemd_service "shorewall-docker" do
+    action :delete
+    service "shorewall"
+    dropin "docker"
+  end
 
-firewall_rule "limit-icmp-echo" do
-  action :accept
-  family :inet
-  source "net"
-  dest "fw"
-  proto "icmp"
-  dest_ports "echo-request"
-  rate_limit "s:1/sec:5"
+  package "shorewall" do
+    action :purge
+  end
+
+  package "nftables"
+
+  interfaces = []
+
+  node.interfaces(:role => :external).each do |interface|
+    interfaces << interface[:interface]
+  end
+
+  interfaces << "eth0" if kitchen? && interfaces.empty?
+
+  template "/etc/nftables.conf" do
+    source "nftables.conf.erb"
+    owner "root"
+    group "root"
+    mode "755"
+    variables :interfaces => interfaces, :hosts => hosts
+    notifies :restart, "service[nftables]"
+  end
+
+  if node[:networking][:firewall][:enabled]
+    service "nftables" do
+      action [:enable, :start]
+    end
+  else
+    service "nftables" do
+      action [:disable, :stop]
+    end
+  end
 end
 
 if node[:networking][:wireguard][:enabled]
@@ -530,135 +718,6 @@ if node[:networking][:wireguard][:enabled]
     proto "udp"
     dest_ports "51820"
     source_ports "51820"
-  end
-end
-
-file "/etc/shorewall/masq" do
-  action :delete
-end
-
-file "/etc/shorewall/masq.bak" do
-  action :delete
-end
-
-if node[:roles].include?("gateway")
-  template "/etc/shorewall/snat" do
-    source "shorewall-snat.erb"
-    owner "root"
-    group "root"
-    mode "644"
-    notifies :restart, "service[shorewall]"
-  end
-else
-  file "/etc/shorewall/snat" do
-    action :delete
-    notifies :restart, "service[shorewall]"
-  end
-end
-
-unless node.interfaces(:family => :inet6).empty?
-  package "shorewall6"
-
-  template "/etc/default/shorewall6" do
-    source "shorewall-default.erb"
-    owner "root"
-    group "root"
-    mode "644"
-    notifies :restart, "service[shorewall6]"
-  end
-
-  template "/etc/shorewall6/shorewall6.conf" do
-    source "shorewall6.conf.erb"
-    owner "root"
-    group "root"
-    mode "644"
-    notifies :restart, "service[shorewall6]"
-  end
-
-  template "/etc/shorewall6/zones" do
-    source "shorewall-zones.erb"
-    owner "root"
-    group "root"
-    mode "644"
-    variables :type => "ipv6"
-    notifies :restart, "service[shorewall6]"
-  end
-
-  template "/etc/shorewall6/interfaces" do
-    source "shorewall6-interfaces.erb"
-    owner "root"
-    group "root"
-    mode "644"
-    notifies :restart, "service[shorewall6]"
-  end
-
-  template "/etc/shorewall6/hosts" do
-    source "shorewall6-hosts.erb"
-    owner "root"
-    group "root"
-    mode "644"
-    variables :zones => zones
-    notifies :restart, "service[shorewall6]"
-  end
-
-  template "/etc/shorewall6/conntrack" do
-    source "shorewall-conntrack.erb"
-    owner "root"
-    group "root"
-    mode "644"
-    notifies :restart, "service[shorewall6]"
-    only_if { node[:networking][:firewall][:raw] }
-  end
-
-  template "/etc/shorewall6/policy" do
-    source "shorewall-policy.erb"
-    owner "root"
-    group "root"
-    mode "644"
-    notifies :restart, "service[shorewall6]"
-  end
-
-  template "/etc/shorewall6/rules" do
-    source "shorewall-rules.erb"
-    owner "root"
-    group "root"
-    mode "644"
-    variables :family => "inet6"
-    notifies :restart, "service[shorewall6]"
-  end
-
-  if node[:networking][:firewall][:enabled]
-    service "shorewall6" do
-      action [:enable, :start]
-      supports :restart => true
-      status_command "shorewall6 status"
-      ignore_failure true
-    end
-  else
-    service "shorewall6" do
-      action [:disable, :stop]
-      supports :restart => true
-      status_command "shorewall6 status"
-      ignore_failure true
-    end
-  end
-
-  template "/etc/logrotate.d/shorewall6" do
-    source "logrotate.shorewall.erb"
-    owner "root"
-    group "root"
-    mode "644"
-    variables :name => "shorewall6"
-  end
-
-  firewall_rule "limit-icmp6-echo" do
-    action :accept
-    family :inet6
-    source "net"
-    dest "fw"
-    proto "ipv6-icmp"
-    dest_ports "echo-request"
-    rate_limit "s:1/sec:5"
   end
 end
 
