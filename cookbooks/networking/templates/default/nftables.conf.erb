@@ -5,8 +5,6 @@ define external-interfaces = { <%= @interfaces.sort.uniq.join(", ") %> }
 define ip-private-addresses = { 10.0.0.0/8, 127.0.0.0/8, 169.254.0.0/16, 172.16.0.0/12, 192.0.2.0/24, 192.168.0.0/16 }
 define ip6-private-addresses = { 2001:db8::/32, fc00::/7 }
 
-flush ruleset
-
 table inet filter {
   set ip-osm-addresses {
     type ipv4_addr

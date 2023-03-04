@@ -690,6 +690,19 @@ elsif node[:networking][:firewall][:engine] == "nftables"
     notifies :restart, "service[nftables]"
   end
 
+  stop_commands = [
+    "/usr/sbin/nft delete table inet filter"
+  ]
+
+  stop_commands << "/usr/sbin/nft delete table ip nat" if node[:roles].include?("gateway")
+
+  systemd_service "nftables-stop" do
+    service "nftables"
+    dropin "stop"
+    exec_reload ""
+    exec_stop stop_commands
+  end
+
   if node[:networking][:firewall][:enabled]
     service "nftables" do
       action [:enable, :start]
