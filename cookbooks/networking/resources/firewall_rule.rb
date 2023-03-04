@@ -154,7 +154,7 @@ action_class do
             end
 
     if new_resource.source == "fw"
-      node.default[:networking][:firewall][:outcoming] << rule.join(" ")
+      node.default[:networking][:firewall][:outgoing] << rule.join(" ")
     elsif new_resource.dest == "fw"
       node.default[:networking][:firewall][:incoming] << rule.join(" ")
     end
