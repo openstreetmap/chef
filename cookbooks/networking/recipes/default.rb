@@ -653,7 +653,7 @@ if node[:networking][:firewall][:engine] == "shorewall"
   end
 elsif node[:networking][:firewall][:engine] == "nftables"
   service "shorewall6" do
-    action [:disable, :stop]
+    action :stop
   end
 
   package "shorewall6" do
@@ -661,7 +661,7 @@ elsif node[:networking][:firewall][:engine] == "nftables"
   end
 
   service "shorewall" do
-    action [:disable, :stop]
+    action :stop
   end
 
   systemd_service "shorewall-docker" do
