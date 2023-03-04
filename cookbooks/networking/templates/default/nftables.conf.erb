@@ -70,6 +70,14 @@ table inet filter {
 
     meta l4proto { icmp, icmpv6 } jump log-and-drop
 
+    tcp flags fin,psh,urg / fin,syn,rst,psh,ack,urg jump log-and-drop
+    tcp flags ! fin,syn,rst,psh,ack,urg jump log-and-drop
+    tcp flags syn,rst / syn,rst jump log-and-drop
+    tcp flags fin,rst / fin,rst jump log-and-drop
+    tcp flags fin,syn / fin,syn jump log-and-drop
+    tcp flags fin,psh / fin,psh,ack jump log-and-drop
+    tcp sport 0 tcp flags syn / fin,syn,rst,ack jump log-and-drop
+
 <%- node[:networking][:firewall][:incoming].uniq.each do |rule| %>
     <%= rule %>
 <%- end %>
