@@ -6,9 +6,6 @@ default_attributes(
     :memory_limit => 24 * 1024
   },
   :networking => {
-    :firewall => {
-      :engine => "nftables"
-    },
     :interfaces => {
       :internal_ipv4 => {
         :interface => "eth0.2801",

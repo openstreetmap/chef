@@ -4,6 +4,9 @@ description "Role applied to all servers at UCL"
 default_attributes(
   :location => "Slough, England",
   :networking => {
+    :firewall => {
+      :engine => "nftables"
+    },
     :roles => {
       :internal => {
         :inet => {
