@@ -114,7 +114,7 @@ action_class do
     end
 
     if new_resource.source == "osm"
-      rule << "#{ip} saddr { $#{ip}-osm-addresses }"
+      rule << "#{ip} saddr @#{ip}-osm-addresses"
     elsif new_resource.source =~ /^net:(.*)$/
       addresses = Regexp.last_match(1).split(",").join(", ")
 
@@ -122,7 +122,7 @@ action_class do
     end
 
     if new_resource.dest == "osm"
-      rule << "#{ip} daddr $#{ip}-osm-addresses"
+      rule << "#{ip} daddr @#{ip}-osm-addresses"
     elsif new_resource.dest =~ /^net:(.*)$/
       addresses = Regexp.last_match(1).split(",").join(", ")
 
