@@ -106,11 +106,11 @@ action_class do
             end
 
     if new_resource.source_ports != "-"
-      rule << "#{proto} sport { #{new_resource.source_ports} }"
+      rule << "#{proto} sport { #{nftables_source_ports} }"
     end
 
     if new_resource.dest_ports != "-"
-      rule << "#{proto} dport { #{new_resource.dest_ports} }"
+      rule << "#{proto} dport { #{nftables_dest_ports} }"
     end
 
     if new_resource.source == "osm"
@@ -158,5 +158,13 @@ action_class do
     elsif new_resource.dest == "fw"
       node.default[:networking][:firewall][:incoming] << rule.join(" ")
     end
+  end
+
+  def nftables_source_ports
+    new_resource.source_ports.to_s.sub(/:$/, "-65535").gsub(":", "-")
+  end
+
+  def nftables_dest_ports
+    new_resource.dest_ports.to_s.sub(/:$/, "-65535").gsub(":", "-")
   end
 end
