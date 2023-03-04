@@ -61,10 +61,12 @@ table inet filter {
     ct state { established, related } accept
 
     icmp type { destination-unreachable } accept
-    icmpv6 type { nd-neighbor-solicit, nd-neighbor-advert, nd-router-solicit, nd-router-advert } accept
-
     icmp type { echo-request } limit rate 1/second accept
+    icmp type { echo-request } drop
+
+    icmpv6 type { nd-neighbor-solicit, nd-neighbor-advert, nd-router-solicit, nd-router-advert } accept
     icmpv6 type { echo-request } limit rate 1/second accept
+    icmpv6 type { echo-request } drop
 
     meta l4proto { icmp, icmpv6 } jump log-and-drop
 
