@@ -29,7 +29,7 @@ default_attributes(
     :queue_run_max => 25,
     :smtp_accept_max => 200,
     :smarthost_name => "mail.openstreetmap.org",
-    :smarthost_via => false,
+    :smarthost_via => nil,
     :dns_blacklists => ["zen.spamhaus.org!&0.255.255.0"],
     :routes => {
       :messages => {

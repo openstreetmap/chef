@@ -85,7 +85,7 @@ end
 relay_from_hosts = node[:exim][:relay_from_hosts]
 
 if node[:exim][:smarthost_name]
-  search(:node, "exim_smarthost_via:#{node[:exim][:smarthost_name]}\\:*").each do |host|
+  search(:node, "exim_smarthost_via:*?").each do |host|
     relay_from_hosts |= host.ipaddresses(:role => :external)
   end
 
