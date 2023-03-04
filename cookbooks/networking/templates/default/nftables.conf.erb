@@ -1,6 +1,8 @@
 #!/usr/sbin/nft -f
 
+<%- unless @interfaces.empty? %>
 define external-interfaces = { <%= @interfaces.sort.uniq.join(", ") %> }
+<%- end %>
 
 define ip-private-addresses = { 0.0.0.0, 10.0.0.0/8, 127.0.0.0/8, 169.254.0.0/16, 172.16.0.0/12, 192.0.2.0/24, 192.168.0.0/16, 224.0.0.0/4 }
 define ip6-private-addresses = { 2001:db8::/32, fc00::/7, ff00::/8 }
@@ -109,7 +111,9 @@ table inet filter {
   chain input {
     type filter hook input priority filter;
 
+<%- unless @interfaces.empty? %>
     iif { $external-interfaces } jump incoming
+<%- end %>
 
     accept
   }
@@ -117,8 +121,10 @@ table inet filter {
   chain forward {
     type filter hook forward priority filter;
 
+<%- unless @interfaces.empty? %>
     iif { $external-interfaces } jump incoming
     oif { $external-interfaces } jump outgoing
+<%- end %>
 
     accept
   }
@@ -126,7 +132,9 @@ table inet filter {
   chain output {
     type filter hook output priority filter;
 
+<%- unless @interfaces.empty? %>
     oif { $external-interfaces } jump outgoing
+<%- end %>
 
     accept
   }
