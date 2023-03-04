@@ -240,10 +240,29 @@ if node[:exim][:smarthost_name]
     end
   end
 else
+  smarthosts_inet = []
+  smarthosts_inet6 = []
+
+  search(:node, "exim_smarthost_name:*?").each do |host|
+    smarthosts_inet |= host.ipaddresses(:role => :external, :family => :inet)
+    smarthosts_inet6 |= host.ipaddresses(:role => :external, :family => :inet6)
+  end
+
   node[:exim][:daemon_smtp_ports].each do |port|
     firewall_rule "accept-inbound-smtp-#{port}" do
       action :accept
-      source "bm:mail.openstreetmap.org"
+      family :inet
+      source "net:#{smarthosts_inet.sort.join(',')}"
+      dest "fw"
+      proto "tcp:syn"
+      dest_ports port
+      source_ports "1024:"
+    end
+
+    firewall_rule "accept-inbound-smtp-#{port}" do
+      action :accept
+      family :inet6
+      source "net:#{smarthosts_inet6.sort.join(',')}"
       dest "fw"
       proto "tcp:syn"
       dest_ports port
