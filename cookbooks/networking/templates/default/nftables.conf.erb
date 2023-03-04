@@ -10,12 +10,16 @@ flush ruleset
 table inet filter {
   set ip-osm-addresses {
     type ipv4_addr
+<%- unless Array(@hosts["inet"]).empty? %>
     elements = { <%= Array(@hosts["inet"]).sort.join(", ") %> }
+<%- end %>
   }
 
   set ip6-osm-addresses {
     type ipv6_addr
+<%- unless Array(@hosts["inet"]).empty? %>
     elements = { <%= Array(@hosts["inet6"]).sort.join(", ") %> }
+<%- end %>
   }
 
   set ip-blacklist {

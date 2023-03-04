@@ -400,9 +400,6 @@ search(:node, "networking:interfaces").collect do |n|
   end
 end
 
-hosts["inet"] << "127.0.0.1" if hosts["inet"].empty?
-hosts["inet6"] << "::1" if hosts["inet6"].empty?
-
 if node[:networking][:firewall][:engine] == "shorewall"
   package "shorewall"
 
