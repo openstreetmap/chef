@@ -133,19 +133,19 @@ action_class do
       rule << "ct state new"
     end
 
-    if new_resource.connection_limit != "-"
-      rule << "ct count #{new_resource.connection_limit}"
-    end
+    # if new_resource.connection_limit != "-"
+    #   rule << "ct count #{new_resource.connection_limit}"
+    # end
 
-    if new_resource.rate_limit =~ %r{^s:(\d+)/sec:(\d+)$}
-      set = "#{new_resource.rule}-#{ip}"
-      rate = Regexp.last_match(1)
-      burst = Regexp.last_match(2)
-
-      node.default[:networking][:firewall][:sets] << set
-
-      rule << "add @#{set} { #{ip} saddr limit rate #{rate}/second burst #{burst} packets }"
-    end
+    # if new_resource.rate_limit =~ %r{^s:(\d+)/sec:(\d+)$}
+    #   set = "#{new_resource.rule}-#{ip}"
+    #   rate = Regexp.last_match(1)
+    #   burst = Regexp.last_match(2)
+    #
+    #   node.default[:networking][:firewall][:sets] << set
+    #
+    #   rule << "add @#{set} { #{ip} saddr limit rate #{rate}/second burst #{burst} packets }"
+    # end
 
     rule << case action
             when :accept then "accept"
