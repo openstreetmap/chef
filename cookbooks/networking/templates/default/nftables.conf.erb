@@ -32,12 +32,12 @@ table inet filter {
     flags dynamic
   }
 
-  set limit-icmp-echo-ip {
+  set ratelimit-icmp-echo-ip {
     type ipv4_addr
     flags dynamic
   }
 
-  set limit-icmp-echo-ip6 {
+  set ratelimit-icmp-echo-ip6 {
     type ipv6_addr
     flags dynamic
   }
@@ -77,11 +77,11 @@ table inet filter {
     ct state { established, related } accept
 
     icmp type { destination-unreachable } accept
-    icmp type { echo-request } add @limit-icmp-echo-ip { ip saddr limit rate 1/second } accept
+    icmp type { echo-request } add @ratelimit-icmp-echo-ip { ip saddr limit rate 1/second } accept
     icmp type { echo-request } drop
 
     icmpv6 type { nd-neighbor-solicit, nd-neighbor-advert, nd-router-solicit, nd-router-advert } accept
-    icmpv6 type { echo-request } add @limit-icmp-echo-ip6 { ip6 saddr limit rate 1/second } accept
+    icmpv6 type { echo-request } add @ratelimit-icmp-echo-ip6 { ip6 saddr limit rate 1/second } accept
     icmpv6 type { echo-request } drop
 
     meta l4proto { icmp, icmpv6 } jump log-and-drop
