@@ -145,8 +145,8 @@ table ip nat {
   chain postrouting {
     type nat hook postrouting priority srcnat;
 
-<%- node.interfaces(:role => :external).each do |external| %>
-<%- node.interfaces(:role => :internal).each do |internal| %>
+<%- node.interfaces(:role => :external, :family => :inet).each do |external| %>
+<%- node.interfaces(:role => :internal, :family => :inet).each do |internal| %>
     oif { <%= external[:interface] %> } ip saddr { <%= internal[:network] %>/<%= internal[:prefix] %> } snat <%= external[:address] %>
 <%- end %>
 <%- end %>
