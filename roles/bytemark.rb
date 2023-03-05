@@ -16,7 +16,6 @@ default_attributes(
         }
       },
       :external => {
-        :zone => "bm",
         :inet => {
           :prefix => "28",
           :gateway => "89.16.162.17"

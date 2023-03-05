@@ -81,7 +81,7 @@ forwarders.sort_by { |n| n[:fqdn] }.each do |forwarder|
     firewall_rule "accept-lumberjack-#{forwarder}" do
       action :accept
       family interface[:family]
-      source "#{interface[:zone]}:#{interface[:address]}"
+      source "net:#{interface[:address]}"
       dest "fw"
       proto "tcp:syn"
       dest_ports "5043"
@@ -91,7 +91,7 @@ forwarders.sort_by { |n| n[:fqdn] }.each do |forwarder|
     firewall_rule "accept-beats-#{forwarder}" do
       action :accept
       family interface[:family]
-      source "#{interface[:zone]}:#{interface[:address]}"
+      source "net:#{interface[:address]}"
       dest "fw"
       proto "tcp:syn"
       dest_ports "5044"
@@ -107,7 +107,7 @@ gateways.sort_by { |n| n[:fqdn] }.each do |gateway|
     firewall_rule "accept-lumberjack-#{gateway}" do
       action :accept
       family interface[:family]
-      source "#{interface[:zone]}:#{interface[:address]}"
+      source "net:#{interface[:address]}"
       dest "fw"
       proto "tcp:syn"
       dest_ports "5043"
@@ -117,7 +117,7 @@ gateways.sort_by { |n| n[:fqdn] }.each do |gateway|
     firewall_rule "accept-beats-#{gateway}" do
       action :accept
       family interface[:family]
-      source "#{interface[:zone]}:#{interface[:address]}"
+      source "net:#{interface[:address]}"
       dest "fw"
       proto "tcp:syn"
       dest_ports "5044"

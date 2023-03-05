@@ -31,7 +31,7 @@ servers.each do |server|
     firewall_rule "accept-munin-#{server}" do
       action :accept
       family interface[:family]
-      source "#{interface[:zone]}:#{interface[:address]}"
+      source "net:#{interface[:address]}"
       dest "fw"
       proto "tcp:syn"
       dest_ports "munin"

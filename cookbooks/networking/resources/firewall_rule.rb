@@ -51,44 +51,13 @@ end
 
 action_class do
   def add_rule(action)
-    if node[:networking][:firewall][:engine] == "shorewall"
-      add_shorewall_rule(action)
-    elsif node[:networking][:firewall][:engine] == "nftables"
-      if new_resource.family.nil?
-        add_nftables_rule(action, "inet")
-        add_nftables_rule(action, "inet6")
-      elsif new_resource.family.to_s == "inet"
-        add_nftables_rule(action, "inet")
-      elsif new_resource.family.to_s == "inet6"
-        add_nftables_rule(action, "inet6")
-      end
-    end
-  end
-
-  def add_shorewall_rule(action)
-    rule = {
-      :action => action.to_s.upcase,
-      :source => new_resource.source,
-      :dest => new_resource.dest,
-      :proto => new_resource.proto,
-      :dest_ports => new_resource.dest_ports.to_s,
-      :source_ports => new_resource.source_ports.to_s,
-      :rate_limit => new_resource.rate_limit,
-      :connection_limit => new_resource.connection_limit.to_s,
-      :helper => new_resource.helper
-    }
-
     if new_resource.family.nil?
-      node.default[:networking][:firewall][:inet] << rule
-      node.default[:networking][:firewall][:inet6] << rule
+      add_nftables_rule(action, "inet")
+      add_nftables_rule(action, "inet6")
     elsif new_resource.family.to_s == "inet"
-      node.default[:networking][:firewall][:inet] << rule
+      add_nftables_rule(action, "inet")
     elsif new_resource.family.to_s == "inet6"
-      node.default[:networking][:firewall][:inet6] << rule
-    else
-      log "Unsupported network family" do
-        level :error
-      end
+      add_nftables_rule(action, "inet6")
     end
   end
 

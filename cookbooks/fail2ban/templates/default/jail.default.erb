@@ -2,10 +2,6 @@
 
 [DEFAULT]
 destemail = admins@openstreetmap.org
-<%- if node[:networking][:firewall][:engine] == "shorewall" %>
-banaction = shorewall
-<%- elsif node[:networking][:firewall][:engine] == "nftables" %>
 banaction = nftables[type=multiport]
 banaction_allports = nftables[type=allports]
-<%- end %>
 bantime = 14400

@@ -1,16 +1,9 @@
-default[:networking][:firewall][:engine] = "nftables"
 default[:networking][:firewall][:enabled] = true
-default[:networking][:firewall][:inet] = []
-default[:networking][:firewall][:inet6] = []
 default[:networking][:firewall][:sets] = []
 default[:networking][:firewall][:incoming] = []
 default[:networking][:firewall][:outgoing] = []
 default[:networking][:firewall][:http_rate_limit] = "-"
 default[:networking][:firewall][:http_connection_limit] = "-"
-default[:networking][:firewall][:log] = true
-default[:networking][:firewall][:mark] = true
-default[:networking][:firewall][:raw] = true
-default[:networking][:firewall][:mangle] = true
 default[:networking][:firewall][:whitelist] = []
 default[:networking][:roles] = {}
 default[:networking][:interfaces] = {}
