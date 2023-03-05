@@ -112,7 +112,7 @@ table inet filter {
     type filter hook input priority filter;
 
 <%- unless @interfaces.empty? %>
-    iif { $external-interfaces } jump incoming
+    iifname { $external-interfaces } jump incoming
 <%- end %>
 
     accept
@@ -122,8 +122,8 @@ table inet filter {
     type filter hook forward priority filter;
 
 <%- unless @interfaces.empty? %>
-    iif { $external-interfaces } jump incoming
-    oif { $external-interfaces } jump outgoing
+    iifname { $external-interfaces } jump incoming
+    oifname { $external-interfaces } jump outgoing
 <%- end %>
 
     accept
@@ -133,7 +133,7 @@ table inet filter {
     type filter hook output priority filter;
 
 <%- unless @interfaces.empty? %>
-    oif { $external-interfaces } jump outgoing
+    oifname { $external-interfaces } jump outgoing
 <%- end %>
 
     accept
@@ -147,7 +147,7 @@ table ip nat {
 
 <%- node.interfaces(:role => :external, :family => :inet).each do |external| %>
 <%- node.interfaces(:role => :internal, :family => :inet).each do |internal| %>
-    oif { <%= external[:interface] %> } ip saddr { <%= internal[:network] %>/<%= internal[:prefix] %> } snat <%= external[:address] %>
+    oifname { <%= external[:interface] %> } ip saddr { <%= internal[:network] %>/<%= internal[:prefix] %> } snat <%= external[:address] %>
 <%- end %>
 <%- end %>
   }
