@@ -3,6 +3,9 @@ description "Role applied to all servers at Equinix Amsterdam"
 
 default_attributes(
   :networking => {
+    :firewall => {
+      :engine => "nftables"
+    },
     :roles => {
       :internal => {
         :inet => {
