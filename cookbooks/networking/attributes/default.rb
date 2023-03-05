@@ -11,6 +11,7 @@ default[:networking][:firewall][:log] = true
 default[:networking][:firewall][:mark] = true
 default[:networking][:firewall][:raw] = true
 default[:networking][:firewall][:mangle] = true
+default[:networking][:firewall][:whitelist] = []
 default[:networking][:roles] = {}
 default[:networking][:interfaces] = {}
 default[:networking][:nameservers] = %w[8.8.8.8 8.8.4.4 2001:4860:4860::8888 2001:4860:4860::8844]

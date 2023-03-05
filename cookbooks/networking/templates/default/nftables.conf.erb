@@ -64,7 +64,11 @@ table inet filter {
   }
 
   chain incoming {
+<%- if node[:networking][:firewall][:whitelist].empty? %>
     ip saddr { $ip-private-addresses } jump log-and-drop
+<%- else %>
+    ip saddr { $ip-private-addresses } ip saddr != { <%= node[:networking][:firewall][:whitelist].sort.join(", ") %> } jump log-and-drop
+<%- end %>
     ip6 saddr { $ip6-private-addresses } jump log-and-drop
 
     ip saddr @ip-blacklist jump log-and-drop
@@ -98,7 +102,11 @@ table inet filter {
   }
 
   chain outgoing {
+<%- if node[:networking][:firewall][:whitelist].empty? %>
     ip daddr { $ip-private-addresses } jump log-and-drop
+<%- else %>
+    ip daddr { $ip-private-addresses } ip daddr != { <%= node[:networking][:firewall][:whitelist].sort.join(", ") %> } jump log-and-drop
+<%- end %>
     ip6 daddr { $ip6-private-addresses } jump log-and-drop
 
 <%- node[:networking][:firewall][:outgoing].each do |rule| %>
