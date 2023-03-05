@@ -403,8 +403,6 @@ node.interfaces(:role => :external).each do |interface|
   interfaces << interface[:interface]
 end
 
-interfaces << "eth0" if kitchen? && interfaces.empty?
-
 template "/etc/nftables.conf" do
   source "nftables.conf.erb"
   owner "root"
