@@ -1,4 +1,4 @@
-default[:networking][:firewall][:engine] = "shorewall"
+default[:networking][:firewall][:engine] = "nftables"
 default[:networking][:firewall][:enabled] = true
 default[:networking][:firewall][:inet] = []
 default[:networking][:firewall][:inet6] = []

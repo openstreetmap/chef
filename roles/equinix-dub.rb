@@ -12,9 +12,6 @@ default_attributes(
     }
   },
   :networking => {
-    :firewall => {
-      :engine => "nftables"
-    },
     :roles => {
       :internal => {
         :inet => {
