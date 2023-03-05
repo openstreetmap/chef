@@ -52,7 +52,9 @@ table inet filter {
     type ipv6_addr
 <%- end %>
     flags dynamic
+<%- unless set.start_with?("connlimit-") %>
     timeout 120s
+<%- end %>
   }
 
 <%- end %>
