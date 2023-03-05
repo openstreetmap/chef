@@ -25,21 +25,25 @@ table inet filter {
   set ip-blacklist {
     type ipv4_addr
     flags dynamic
+    size 0
   }
 
   set ip6-blacklist {
     type ipv6_addr
     flags dynamic
+    size 0
   }
 
   set ratelimit-icmp-echo-ip {
     type ipv4_addr
     flags dynamic
+    size 0
   }
 
   set ratelimit-icmp-echo-ip6 {
     type ipv6_addr
     flags dynamic
+    size 0
   }
 
 <%- node[:networking][:firewall][:sets].each do |set| %>
@@ -50,6 +54,7 @@ table inet filter {
     type ipv6_addr
 <%- end %>
     flags dynamic
+    size 0
   }
 
 <%- end %>
