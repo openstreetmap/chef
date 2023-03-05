@@ -148,7 +148,7 @@ action_class do
 
       node.default[:networking][:firewall][:sets] << set
 
-      rule << "add @#{set} { #{ip} saddr limit rate #{rate}/second burst #{burst} packets }"
+      rule << "update @#{set} { #{ip} saddr limit rate #{rate}/second burst #{burst} packets }"
     end
 
     rule << case action

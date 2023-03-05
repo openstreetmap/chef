@@ -25,25 +25,23 @@ table inet filter {
   set ip-blacklist {
     type ipv4_addr
     flags dynamic
-    size 0
   }
 
   set ip6-blacklist {
     type ipv6_addr
     flags dynamic
-    size 0
   }
 
   set ratelimit-icmp-echo-ip {
     type ipv4_addr
     flags dynamic
-    size 0
+    timeout 120s
   }
 
   set ratelimit-icmp-echo-ip6 {
     type ipv6_addr
     flags dynamic
-    size 0
+    timeout 120s
   }
 
 <%- node[:networking][:firewall][:sets].each do |set| %>
@@ -54,7 +52,7 @@ table inet filter {
     type ipv6_addr
 <%- end %>
     flags dynamic
-    size 0
+    timeout 120s
   }
 
 <%- end %>
@@ -82,11 +80,11 @@ table inet filter {
     ct state { established, related } accept
 
     icmp type { destination-unreachable } accept
-    icmp type { echo-request } add @ratelimit-icmp-echo-ip { ip saddr limit rate 1/second } accept
+    icmp type { echo-request } update @ratelimit-icmp-echo-ip { ip saddr limit rate 1/second } accept
     icmp type { echo-request } drop
 
     icmpv6 type { nd-neighbor-solicit, nd-neighbor-advert, nd-router-solicit, nd-router-advert } accept
-    icmpv6 type { echo-request } add @ratelimit-icmp-echo-ip6 { ip6 saddr limit rate 1/second } accept
+    icmpv6 type { echo-request } update @ratelimit-icmp-echo-ip6 { ip6 saddr limit rate 1/second } accept
     icmpv6 type { echo-request } drop
 
     meta l4proto { icmp, icmpv6 } jump log-and-drop
