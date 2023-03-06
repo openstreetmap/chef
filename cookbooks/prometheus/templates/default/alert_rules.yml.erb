@@ -611,7 +611,7 @@ groups:
   - name: statuscake
     rules:
       - alert: statuscake uptime check failing
-        expr: statuscake_uptime{status="down",paused="false"} > 0
+        expr: statuscake_paused == 0 and statuscake_up == 0
         for: 10m
         labels:
           alertgroup: statuscake
