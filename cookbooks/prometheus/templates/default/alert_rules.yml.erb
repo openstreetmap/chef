@@ -105,6 +105,15 @@ groups:
           alertgroup: database
         annotations:
           delay: "{{ $value | humanizeDuration }}"
+  - name: discourse
+    rules:
+      - alert: discourse job failure rate
+        expr: rate(discourse_job_failures[5m]) > 0
+        for: 5m
+        labels:
+          alertgroup: discourse
+        annotations:
+          failure_rate: "{{ $value }} jobs/s"
   - name: dublin
     rules:
       - alert: pdu current draw
