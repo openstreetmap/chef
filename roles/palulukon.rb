@@ -4,7 +4,7 @@ description "Master role applied to palulukon"
 default_attributes(
   :networking => {
     :firewall => {
-      :whitelist => ["172.31.0.2"]
+      :allowlist => ["172.31.0.2"]
     },
     :interfaces => {
       :external_ipv4 => {

@@ -413,10 +413,12 @@ template "/etc/nftables.conf" do
 end
 
 stop_commands = [
-  "/usr/sbin/nft delete table inet filter"
+  "-/usr/sbin/nft delete table inet filter",
+  "-/usr/sbin/nft delete table inet chef-filter"
 ]
 
-stop_commands << "/usr/sbin/nft delete table ip nat" if node[:roles].include?("gateway")
+stop_commands << "-/usr/sbin/nft delete table ip nat" if node[:roles].include?("gateway")
+stop_commands << "-/usr/sbin/nft delete table ip chef-nat" if node[:roles].include?("gateway")
 
 systemd_service "nftables-stop" do
   service "nftables"
