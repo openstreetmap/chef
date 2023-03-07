@@ -234,7 +234,7 @@ if node[:exim][:smarthost_name]
       action :accept
       source "net"
       dest "fw"
-      proto "tcp:syn"
+      proto "tcp"
       dest_ports port
       source_ports "1024-65535"
     end
@@ -254,7 +254,7 @@ else
       family :inet
       source "net:#{smarthosts_inet.sort.join(',')}"
       dest "fw"
-      proto "tcp:syn"
+      proto "tcp"
       dest_ports port
       source_ports "1024-65535"
     end
@@ -264,7 +264,7 @@ else
       family :inet6
       source "net:#{smarthosts_inet6.sort.join(',')}"
       dest "fw"
-      proto "tcp:syn"
+      proto "tcp"
       dest_ports port
       source_ports "1024-65535"
     end
@@ -276,7 +276,7 @@ if node[:exim][:smarthost_via]
     action :reject
     source "fw"
     dest "net"
-    proto "tcp:syn"
+    proto "tcp"
     dest_ports "smtp"
   end
 end

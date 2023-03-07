@@ -33,7 +33,7 @@ servers.each do |server|
       family interface[:family]
       source "net:#{interface[:address]}"
       dest "fw"
-      proto "tcp:syn"
+      proto "tcp"
       dest_ports "munin"
       source_ports "1024-65535"
     end

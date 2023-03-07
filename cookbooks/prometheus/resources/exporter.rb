@@ -74,7 +74,7 @@ action :create do
     action :accept
     source "osm"
     dest "fw"
-    proto "tcp:syn"
+    proto "tcp"
     dest_ports new_resource.port
     only_if { node[:prometheus][:mode] == "external" }
   end

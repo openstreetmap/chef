@@ -100,6 +100,6 @@ firewall_rule "accept-dns-tcp" do
   action :accept
   source "net"
   dest "fw"
-  proto "tcp:syn"
+  proto "tcp"
   dest_ports "domain"
 end

@@ -458,7 +458,7 @@ firewall_rule "accept-http" do
   action :accept
   source "net"
   dest "fw"
-  proto "tcp:syn"
+  proto "tcp"
   dest_ports %w[http https]
   rate_limit node[:networking][:firewall][:http_rate_limit]
   connection_limit node[:networking][:firewall][:http_connection_limit]

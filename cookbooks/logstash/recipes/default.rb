@@ -83,7 +83,7 @@ forwarders.sort_by { |n| n[:fqdn] }.each do |forwarder|
       family interface[:family]
       source "net:#{interface[:address]}"
       dest "fw"
-      proto "tcp:syn"
+      proto "tcp"
       dest_ports "5043"
       source_ports "1024-65535"
     end
@@ -93,7 +93,7 @@ forwarders.sort_by { |n| n[:fqdn] }.each do |forwarder|
       family interface[:family]
       source "net:#{interface[:address]}"
       dest "fw"
-      proto "tcp:syn"
+      proto "tcp"
       dest_ports "5044"
       source_ports "1024-65535"
     end
@@ -109,7 +109,7 @@ gateways.sort_by { |n| n[:fqdn] }.each do |gateway|
       family interface[:family]
       source "net:#{interface[:address]}"
       dest "fw"
-      proto "tcp:syn"
+      proto "tcp"
       dest_ports "5043"
       source_ports "1024-65535"
     end
@@ -119,7 +119,7 @@ gateways.sort_by { |n| n[:fqdn] }.each do |gateway|
       family interface[:family]
       source "net:#{interface[:address]}"
       dest "fw"
-      proto "tcp:syn"
+      proto "tcp"
       dest_ports "5044"
       source_ports "1024-65535"
     end

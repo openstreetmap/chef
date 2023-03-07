@@ -69,10 +69,7 @@ action_class do
          when "inet6" then "ip6"
          end
 
-    proto = case new_resource.proto
-            when "udp" then "udp"
-            when "tcp", "tcp:syn" then "tcp"
-            end
+    proto = new_resource.proto
 
     if new_resource.source_ports
       rule << "#{proto} sport { #{nftables_source_ports} }"
@@ -98,9 +95,7 @@ action_class do
       rule << "#{ip} daddr { #{addresses} }"
     end
 
-    if new_resource.proto == "tcp:syn"
-      rule << "ct state new"
-    end
+    rule << "ct state new" if new_resource.proto == "tcp"
 
     if new_resource.connection_limit != "-"
       set = "connlimit-#{new_resource.rule}-#{ip}"
