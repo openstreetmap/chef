@@ -1,5 +1,6 @@
 default[:networking][:firewall][:enabled] = true
 default[:networking][:firewall][:sets] = []
+default[:networking][:firewall][:helpers] = []
 default[:networking][:firewall][:incoming] = []
 default[:networking][:firewall][:outgoing] = []
 default[:networking][:firewall][:http_rate_limit] = nil

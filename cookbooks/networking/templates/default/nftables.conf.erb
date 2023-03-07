@@ -58,6 +58,13 @@ table inet chef-filter {
   }
 
 <%- end %>
+
+<%- node[:networking][:firewall][:helpers].each do |helper| %>
+  ct helper <%= helper[:name] %> {
+    type "<%= helper[:helper] %>" protocol <%= helper[:protocol] %>
+  }
+
+<%- end %>
   chain log-and-drop {
     limit rate 1/second log
     drop

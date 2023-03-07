@@ -33,6 +33,7 @@ property :dest_ports, :kind_of => [String, Integer, Array]
 property :source_ports, :kind_of => [String, Integer, Array]
 property :rate_limit, :kind_of => String
 property :connection_limit, :kind_of => [String, Integer]
+property :helper, :kind_of => String
 
 property :compile_time, TrueClass, :default => true
 
@@ -112,6 +113,16 @@ action_class do
       node.default[:networking][:firewall][:sets] << set
 
       rule << "update @#{set} { #{ip} saddr limit rate #{rate}/second burst #{burst} packets }"
+    end
+
+    if new_resource.helper
+      helper = "#{new_resource.rule}-#{new_resource.helper}"
+
+      node.default[:networking][:firewall][:helpers] << {
+        :name => helper, :helper => new_resource.helper, :protocol => proto
+      }
+
+      rule << "ct helper set #{helper}"
     end
 
     rule << case action
