@@ -257,6 +257,7 @@ else
       proto "tcp"
       dest_ports port
       source_ports "1024-65535"
+      not_if { smarthosts_inet.empty? }
     end
 
     firewall_rule "accept-inbound-smtp-#{port}" do
@@ -267,6 +268,7 @@ else
       proto "tcp"
       dest_ports port
       source_ports "1024-65535"
+      not_if { smarthosts_inet6.empty? }
     end
   end
 end
