@@ -29,8 +29,8 @@ property :family, :kind_of => [String, Symbol]
 property :source, :kind_of => String, :required => true
 property :dest, :kind_of => String, :required => true
 property :proto, :kind_of => String, :required => true
-property :dest_ports, :kind_of => [String, Integer], :default => "-"
-property :source_ports, :kind_of => [String, Integer], :default => "-"
+property :dest_ports, :kind_of => [String, Integer, Array]
+property :source_ports, :kind_of => [String, Integer, Array]
 property :rate_limit, :kind_of => String, :default => "-"
 property :connection_limit, :kind_of => [String, Integer], :default => "-"
 property :helper, :kind_of => String, :default => "-"
@@ -74,11 +74,11 @@ action_class do
             when "tcp", "tcp:syn" then "tcp"
             end
 
-    if new_resource.source_ports != "-"
+    if new_resource.source_ports
       rule << "#{proto} sport { #{nftables_source_ports} }"
     end
 
-    if new_resource.dest_ports != "-"
+    if new_resource.dest_ports
       rule << "#{proto} dport { #{nftables_dest_ports} }"
     end
 
@@ -134,10 +134,10 @@ action_class do
   end
 
   def nftables_source_ports
-    new_resource.source_ports.to_s.sub(/:$/, "-65535").gsub(":", "-")
+    Array(new_resource.source_ports).map(&:to_s).join(",")
   end
 
   def nftables_dest_ports
-    new_resource.dest_ports.to_s.sub(/:$/, "-65535").gsub(":", "-")
+    Array(new_resource.dest_ports).map(&:to_s).join(",")
   end
 end

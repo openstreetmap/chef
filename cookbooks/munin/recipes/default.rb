@@ -35,7 +35,7 @@ servers.each do |server|
       dest "fw"
       proto "tcp:syn"
       dest_ports "munin"
-      source_ports "1024:"
+      source_ports "1024-65535"
     end
   end
 end

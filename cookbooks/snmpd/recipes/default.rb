@@ -46,7 +46,7 @@ if node[:snmpd][:clients]
       dest "fw"
       proto "udp"
       dest_ports "snmp"
-      source_ports "1024:"
+      source_ports "1024-65535"
     end
   end
 else
@@ -57,7 +57,7 @@ else
     dest "fw"
     proto "udp"
     dest_ports "snmp"
-    source_ports "1024:"
+    source_ports "1024-65535"
   end
 end
 
@@ -70,7 +70,7 @@ if node[:snmpd][:clients6]
       dest "fw"
       proto "udp"
       dest_ports "snmp"
-      source_ports "1024:"
+      source_ports "1024-65535"
     end
   end
 else
@@ -81,6 +81,6 @@ else
     dest "fw"
     proto "udp"
     dest_ports "snmp"
-    source_ports "1024:"
+    source_ports "1024-65535"
   end
 end

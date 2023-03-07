@@ -81,5 +81,5 @@ firewall_rule "accept-rsync" do
   dest "fw"
   proto "tcp:syn"
   dest_ports "rsync"
-  source_ports "1024:"
+  source_ports "1024-65535"
 end

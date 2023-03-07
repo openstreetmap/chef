@@ -236,7 +236,7 @@ if node[:exim][:smarthost_name]
       dest "fw"
       proto "tcp:syn"
       dest_ports port
-      source_ports "1024:"
+      source_ports "1024-65535"
     end
   end
 else
@@ -256,7 +256,7 @@ else
       dest "fw"
       proto "tcp:syn"
       dest_ports port
-      source_ports "1024:"
+      source_ports "1024-65535"
     end
 
     firewall_rule "accept-inbound-smtp-#{port}" do
@@ -266,7 +266,7 @@ else
       dest "fw"
       proto "tcp:syn"
       dest_ports port
-      source_ports "1024:"
+      source_ports "1024-65535"
     end
   end
 end

@@ -66,7 +66,6 @@ firewall_rule "accept-dns-udp" do
   dest "fw"
   proto "udp"
   dest_ports "domain"
-  source_ports "-"
 end
 
 firewall_rule "accept-dns-tcp" do
@@ -75,5 +74,4 @@ firewall_rule "accept-dns-tcp" do
   dest "fw"
   proto "tcp:syn"
   dest_ports "domain"
-  source_ports "-"
 end

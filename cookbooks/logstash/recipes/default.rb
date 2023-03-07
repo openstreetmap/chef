@@ -85,7 +85,7 @@ forwarders.sort_by { |n| n[:fqdn] }.each do |forwarder|
       dest "fw"
       proto "tcp:syn"
       dest_ports "5043"
-      source_ports "1024:"
+      source_ports "1024-65535"
     end
 
     firewall_rule "accept-beats-#{forwarder}" do
@@ -95,7 +95,7 @@ forwarders.sort_by { |n| n[:fqdn] }.each do |forwarder|
       dest "fw"
       proto "tcp:syn"
       dest_ports "5044"
-      source_ports "1024:"
+      source_ports "1024-65535"
     end
   end
 end
@@ -111,7 +111,7 @@ gateways.sort_by { |n| n[:fqdn] }.each do |gateway|
       dest "fw"
       proto "tcp:syn"
       dest_ports "5043"
-      source_ports "1024:"
+      source_ports "1024-65535"
     end
 
     firewall_rule "accept-beats-#{gateway}" do
@@ -121,7 +121,7 @@ gateways.sort_by { |n| n[:fqdn] }.each do |gateway|
       dest "fw"
       proto "tcp:syn"
       dest_ports "5044"
-      source_ports "1024:"
+      source_ports "1024-65535"
     end
   end
 end
