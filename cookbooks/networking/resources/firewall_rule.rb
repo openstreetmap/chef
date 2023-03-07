@@ -31,8 +31,8 @@ property :dest, :kind_of => String, :required => true
 property :proto, :kind_of => String, :required => true
 property :dest_ports, :kind_of => [String, Integer, Array]
 property :source_ports, :kind_of => [String, Integer, Array]
-property :rate_limit, :kind_of => String, :default => "-"
-property :connection_limit, :kind_of => [String, Integer], :default => "-"
+property :rate_limit, :kind_of => String
+property :connection_limit, :kind_of => [String, Integer]
 
 property :compile_time, TrueClass, :default => true
 
@@ -96,7 +96,7 @@ action_class do
 
     rule << "ct state new" if new_resource.proto == "tcp"
 
-    if new_resource.connection_limit != "-"
+    if new_resource.connection_limit
       set = "connlimit-#{new_resource.rule}-#{ip}"
 
       node.default[:networking][:firewall][:sets] << set
