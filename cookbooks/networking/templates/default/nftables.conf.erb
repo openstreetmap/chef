@@ -86,15 +86,14 @@ table inet chef-filter {
     ip saddr @ip-blocklist jump log-and-drop
     ip6 saddr @ip6-blocklist jump log-and-drop
 
-    ct state { established, related } accept
-
-    icmp type { destination-unreachable } accept
     icmp type { echo-request } update @ratelimit-icmp-echo-ip { ip saddr limit rate 1/second } accept
     icmp type { echo-request } drop
 
     icmpv6 type { nd-neighbor-solicit, nd-neighbor-advert, nd-router-solicit, nd-router-advert } accept
     icmpv6 type { echo-request } update @ratelimit-icmp-echo-ip6 { ip6 saddr limit rate 1/second } accept
     icmpv6 type { echo-request } drop
+
+    ct state { established, related } accept
 
     meta l4proto { icmp, icmpv6 } jump log-and-drop
 
