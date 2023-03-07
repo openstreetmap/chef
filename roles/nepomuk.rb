@@ -4,17 +4,8 @@ description "Master role applied to nepomuk"
 default_attributes(
   :networking => {
     :firewall => {
-      :inet => [
-        {
-          :action => "ACCEPT",
-          :source => "net:77.95.64.120,77.95.64.131,77.95.64.139",
-          :dest => "fw",
-          :proto => "tcp",
-          :dest_ports => "5666",
-          :source_ports => "1024:",
-          :rate_limit => "-",
-          :connection_limit => "-"
-        }
+      :incoming => [
+        "tcp sport { 1024-65535 } tcp dport { 5666 } ip saddr { 77.95.64.120, 77.95.64.131, 77.95.64.139 } ct state new accept"
       ]
     },
     :interfaces => {
