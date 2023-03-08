@@ -584,6 +584,15 @@ groups:
           alertgroup: "{{ $labels.instance }}"
         annotations:
           percentage_used: "{{ $value | humanizePercentage }}"
+  - name: smokeping
+    rules:
+      - alert: packet loss
+        expr: 100 - (rate(smokeping_response_duration_seconds_count[5m]) * 100 / rate(smokeping_requests_total[5m])) > 0
+        for: 5m
+        labels:
+          alertgroup: smokeping
+        annotations:
+          loss_rate: "{{ $value | humanizePercentage }}"
   - name: snmp
     rules:
       - alert: snmp pdus missing
