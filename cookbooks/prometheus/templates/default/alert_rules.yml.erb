@@ -578,7 +578,7 @@ groups:
         labels:
           alertgroup: "{{ $labels.instance }}"
       - alert: smart ssd wearout approaching
-        expr: smart_percentage_used >= 80
+        expr: smart_percentage_used / 100 >= 0.8
         for: 60m
         labels:
           alertgroup: "{{ $labels.instance }}"
@@ -587,7 +587,7 @@ groups:
   - name: smokeping
     rules:
       - alert: packet loss
-        expr: 100 - (rate(smokeping_response_duration_seconds_count[5m]) * 100 / rate(smokeping_requests_total[5m])) > 0
+        expr: 1 - (rate(smokeping_response_duration_seconds_count[5m]) / rate(smokeping_requests_total[5m])) > 0
         for: 5m
         labels:
           alertgroup: smokeping
