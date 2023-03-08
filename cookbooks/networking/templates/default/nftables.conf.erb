@@ -4,8 +4,10 @@
 define external-interfaces = { <%= @interfaces.sort.uniq.join(", ") %> }
 <%- end %>
 
-define ip-private-addresses = { 0.0.0.0, 10.0.0.0/8, 127.0.0.0/8, 169.254.0.0/16, 172.16.0.0/12, 192.0.2.0/24, 192.168.0.0/16, 224.0.0.0/4 }
-define ip6-private-addresses = { 2001:db8::/32, fc00::/7, ff00::/8 }
+define ip-private-addresses = { 0.0.0.0, 10.0.0.0/8, 127.0.0.0/8, 169.254.0.0/16, 172.16.0.0/12, 192.0.2.0/24, 192.168.0.0/16 }
+define ip-multicast-addresses = { 224.0.0.0/4 }
+define ip6-private-addresses = { 2001:db8::/32, fc00::/7 }
+define ip6-multicast-addresses = { ff00::/8 }
 
 table inet chef-filter {
   set ip-osm-addresses {
@@ -77,11 +79,11 @@ table inet chef-filter {
 
   chain incoming {
 <%- if node[:networking][:firewall][:allowlist].empty? %>
-    ip saddr { $ip-private-addresses } jump log-and-drop
+    ip saddr { $ip-private-addresses, $ip-multicast-addresses } jump log-and-drop
 <%- else %>
-    ip saddr { $ip-private-addresses } ip saddr != { <%= node[:networking][:firewall][:allowlist].sort.join(", ") %> } jump log-and-drop
+    ip saddr { $ip-private-addresses, $ip-multicast-addresses } ip saddr != { <%= node[:networking][:firewall][:allowlist].sort.join(", ") %> } jump log-and-drop
 <%- end %>
-    ip6 saddr { $ip6-private-addresses } jump log-and-drop
+    ip6 saddr { $ip6-private-addresses, $ip6-multicast-addresses } jump log-and-drop
 
     ip saddr @ip-blocklist jump log-and-drop
     ip6 saddr @ip6-blocklist jump log-and-drop
