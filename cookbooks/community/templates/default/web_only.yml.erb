@@ -81,9 +81,9 @@ volumes:
   - volume:
       host: /etc/ssl/private/community.openstreetmap.org.key
       guest: /shared/ssl/ssl.key
-  - volume:
-      host: /srv/community.openstreetmap.org/files/update-feeds.atom
-      guest: /var/www/discourse/public/update-feeds.atom
+  # - volume:
+  #     host: /srv/community.openstreetmap.org/files/update-feeds.atom
+  #     guest: /var/www/discourse/public/update-feeds.atom
 
 ## Plugins go here
 ## see https://meta.discourse.org/t/19157 for details
