@@ -42,6 +42,19 @@ directory "/srv/community.openstreetmap.org/shared" do
   mode "755"
 end
 
+directory "/srv/community.openstreetmap.org/files" do
+  owner "community"
+  group "community"
+  mode "755"
+end
+
+template "/srv/community.openstreetmap.org/files/update-feeds.atom" do
+  source "update-feeds.atom.erb"
+  owner "community"
+  group "community"
+  mode "644"
+end
+
 git "/srv/community.openstreetmap.org/docker" do
   action :sync
   repository "https://github.com/discourse/discourse_docker.git"

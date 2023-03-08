@@ -65,6 +65,9 @@ env:
   DISCOURSE_MAXMIND_LICENSE_KEY: '<%= @license_keys[node[:geoipupdate][:account]] %>'
 <% end -%>
 
+  # Increase base SIDEKIQ memory limit to 1GB
+  UNICORN_SIDEKIQ_MAX_RSS: 1000
+
 volumes:
   - volume:
       host: /srv/community.openstreetmap.org/shared/web-only
@@ -78,6 +81,9 @@ volumes:
   - volume:
       host: /etc/ssl/private/community.openstreetmap.org.key
       guest: /shared/ssl/ssl.key
+  - volume:
+      host: /srv/community.openstreetmap.org/files/update-feeds.atom
+      guest: /var/www/discourse/public/update-feeds.atom
 
 ## Plugins go here
 ## see https://meta.discourse.org/t/19157 for details
