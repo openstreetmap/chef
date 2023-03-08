@@ -2,15 +2,6 @@ name "clifford"
 description "Master role applied to clifford"
 
 default_attributes(
-  :exim => {
-    :rewrites => [
-      {
-        :pattern => "www-data@openstreetmap.org",
-        :replacement => "forum@noreply.openstreetmap.org",
-        :flags => "F"
-      }
-    ]
-  },
   :networking => {
     :interfaces => {
       :internal_ipv4 => {
@@ -31,6 +22,5 @@ default_attributes(
 
 run_list(
   "role[ucl]",
-  "role[hp-dl360-g6]",
-  "role[forum]"
+  "role[hp-dl360-g6]"
 )

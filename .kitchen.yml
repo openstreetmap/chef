@@ -124,9 +124,6 @@ suites:
   - name: fail2ban
     run_list:
       - recipe[fail2ban::default]
-  - name: forum
-    run_list:
-      - recipe[forum::default]
   - name: foundation-board
     run_list:
       - recipe[foundation::board]
