@@ -14,5 +14,6 @@ default_attributes(
 )
 
 run_list(
-  "recipe[bind]"
+  "recipe[bind]",
+  "recipe[prometheus::smokeping]"
 )
