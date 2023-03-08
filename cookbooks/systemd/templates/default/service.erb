@@ -145,6 +145,9 @@ NoNewPrivileges=<%= @no_new_privileges %>
 <% if @capability_bounding_set -%>
 CapabilityBoundingSet=<%= Array(@capability_bounding_set).sort.uniq.join(" ") %>
 <% end -%>
+<% if @ambient_capabilities -%>
+AmbientCapabilities=<%= Array(@ambient_capabilities).sort.uniq.join(" ") %>
+<% end -%>
 <% if @protect_system -%>
 ProtectSystem=<%= @protect_system %>
 <% end -%>

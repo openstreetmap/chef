@@ -68,6 +68,7 @@ property :protect_proc, String,
 property :proc_subset, String,
          :is => %w[all pid]
 property :capability_bounding_set, [String, Array]
+property :ambient_capabilities, [String, Array]
 property :no_new_privileges, [true, false]
 property :protect_system, [true, false, String]
 property :protect_home, [true, false, String]
@@ -118,6 +119,7 @@ action :create do
     service_variables[:protect_proc] = "invisible" unless property_is_set?(:protect_proc)
     service_variables[:proc_subset] = "pid" unless property_is_set?(:proc_subset)
     service_variables[:capability_bounding_set] = [] unless property_is_set?(:capability_bounding_set)
+    service_variables[:ambient_capabilities] = [] unless property_is_set?(:ambient_capabilities)
     service_variables[:no_new_privileges] = true unless property_is_set?(:no_new_privileges)
     service_variables[:protect_system] = "strict" unless property_is_set?(:protect_system)
     service_variables[:protect_home] = true unless property_is_set?(:protect_home)

@@ -40,4 +40,7 @@ end
 prometheus_exporter "smokeping" do
   port 9374
   options "--config.file=/etc/prometheus/exporters/smokeping.yml"
+  capability_bounding_set "CAP_NET_RAW"
+  ambient_capabilities "CAP_NET_RAW"
+  private_users false
 end
