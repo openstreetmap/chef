@@ -34,7 +34,7 @@ statistics = {
 
 File::Tail::Logfile.tail("/var/log/apache2/access.log") do |line|
   begin
-    hash = parser.parse(line)
+    hash = parser.parse!(line)
 
     uri = categorise_uri(hash["%r"])
     status = hash["%>s"]
@@ -51,8 +51,8 @@ File::Tail::Logfile.tail("/var/log/apache2/access.log") do |line|
     statistics[:seconds][[uri, status]] += seconds
     statistics[:ssl][[protocol, cipher]] += 1 unless protocol == "-"
     statistics[:auth][auth] += 1 unless auth == "-"
-  rescue ApacheLogRegex::ParseError
-    # nil
+  rescue ApacheLogRegex::ParseError => ex
+    STDERR.puts ex.to_s
   end
 
   if Time.now - last_write > 10
