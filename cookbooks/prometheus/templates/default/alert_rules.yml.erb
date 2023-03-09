@@ -587,8 +587,8 @@ groups:
   - name: smokeping
     rules:
       - alert: packet loss
-        expr: 1 - (rate(smokeping_response_duration_seconds_count[5m]) / rate(smokeping_requests_total[5m])) > 0
-        for: 5m
+        expr: 1 - (rate(smokeping_response_duration_seconds_count[5m]) / rate(smokeping_requests_total[5m])) > 0.02
+        for: 10m
         labels:
           alertgroup: smokeping
         annotations:
