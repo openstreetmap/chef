@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+require "ipaddr"
+
 resource_name :firewall_rule
 provides :firewall_rule
 
@@ -25,10 +27,10 @@ unified_mode true
 default_action :nothing
 
 property :rule, :kind_of => String, :name_property => true
-property :family, :kind_of => [String, Symbol]
-property :source, :kind_of => String, :required => true
-property :dest, :kind_of => String, :required => true
-property :proto, :kind_of => String, :required => true
+property :context, :kind_of => Symbol, :required => true, :is => [:incoming, :outgoing]
+property :protocol, :kind_of => Symbol, :required => true, :is => [:udp, :tcp]
+property :source, :kind_of => [String, Symbol, Array]
+property :dest, :kind_of => [String, Symbol, Array]
 property :dest_ports, :kind_of => [String, Integer, Array]
 property :source_ports, :kind_of => [String, Integer, Array]
 property :rate_limit, :kind_of => String
@@ -38,64 +40,37 @@ property :helper, :kind_of => String
 property :compile_time, TrueClass, :default => true
 
 action :accept do
-  add_rule :accept
+  add_rule(:accept, "ip")
+  add_rule(:accept, "ip6")
 end
 
 action :drop do
-  add_rule :drop
+  add_rule(:drop, "ip")
+  add_rule(:drop, "ip6")
 end
 
 action :reject do
-  add_rule :reject
+  add_rule(:reject, "ip")
+  add_rule(:reject, "ip6")
 end
 
 action_class do
-  def add_rule(action)
-    if new_resource.family.nil?
-      add_nftables_rule(action, "inet")
-      add_nftables_rule(action, "inet6")
-    elsif new_resource.family.to_s == "inet"
-      add_nftables_rule(action, "inet")
-    elsif new_resource.family.to_s == "inet6"
-      add_nftables_rule(action, "inet6")
-    end
-  end
-
-  def add_nftables_rule(action, family)
+  def add_rule(action, ip)
     rule = []
 
-    ip = case family
-         when "inet" then "ip"
-         when "inet6" then "ip6"
-         end
+    protocol = new_resource.protocol.to_s
 
-    proto = new_resource.proto
+    source = addresses(new_resource.source, ip)
+    dest = addresses(new_resource.dest, ip)
 
-    if new_resource.source_ports
-      rule << "#{proto} sport { #{nftables_source_ports} }"
-    end
+    return if new_resource.source && source.empty?
+    return if new_resource.dest && dest.empty?
 
-    if new_resource.dest_ports
-      rule << "#{proto} dport { #{nftables_dest_ports} }"
-    end
-
-    if new_resource.source == "osm"
-      rule << "#{ip} saddr @#{ip}-osm-addresses"
-    elsif new_resource.source =~ /^net:(.*)$/
-      addresses = Regexp.last_match(1).split(",").join(", ")
-
-      rule << "#{ip} saddr { #{addresses} }"
-    end
-
-    if new_resource.dest == "osm"
-      rule << "#{ip} daddr @#{ip}-osm-addresses"
-    elsif new_resource.dest =~ /^net:(.*)$/
-      addresses = Regexp.last_match(1).split(",").join(", ")
-
-      rule << "#{ip} daddr { #{addresses} }"
-    end
-
-    rule << "ct state new" if new_resource.proto == "tcp"
+    rule << "#{protocol} sport #{format_ports(new_resource.source_ports)}"  if new_resource.source_ports
+    rule << "#{protocol} dport #{format_ports(new_resource.dest_ports)}" if new_resource.dest_ports
+    rule << "#{ip} saddr #{format_addresses(source, ip)}" if new_resource.source
+    rule << "#{ip} daddr #{format_addresses(dest, ip)}" if new_resource.dest
+    rule << "ct state new" if new_resource.protocol == :tcp
 
     if new_resource.connection_limit
       set = "connlimit-#{new_resource.rule}-#{ip}"
@@ -119,7 +94,7 @@ action_class do
       helper = "#{new_resource.rule}-#{new_resource.helper}"
 
       node.default[:networking][:firewall][:helpers] << {
-        :name => helper, :helper => new_resource.helper, :protocol => proto
+        :name => helper, :helper => new_resource.helper, :protocol => protocol
       }
 
       rule << "ct helper set #{helper}"
@@ -131,18 +106,32 @@ action_class do
             when :reject then "jump log-and-reject"
             end
 
-    if new_resource.source == "fw"
-      node.default[:networking][:firewall][:outgoing] << rule.join(" ")
-    elsif new_resource.dest == "fw"
-      node.default[:networking][:firewall][:incoming] << rule.join(" ")
+    node.default[:networking][:firewall][new_resource.context] << rule.join(" ")
+  end
+
+  def addresses(addresses, ip)
+    if addresses.is_a?(Symbol)
+      addresses
+    else
+      Array(addresses).map do |address|
+        if ip == "ip" && IPAddr.new(address).ipv4?
+          address
+        elsif ip == "ip6" && IPAddr.new(address).ipv6?
+          address
+        end
+      end.compact
     end
   end
 
-  def nftables_source_ports
-    Array(new_resource.source_ports).map(&:to_s).join(",")
+  def format_ports(ports)
+    "{ #{Array(ports).map(&:to_s).join(', ')} }"
   end
 
-  def nftables_dest_ports
-    Array(new_resource.dest_ports).map(&:to_s).join(",")
+  def format_addresses(addresses, ip)
+    if addresses.is_a?(Symbol)
+      "@#{ip}-#{addresses}-addresses"
+    else
+      "{ #{Array(addresses).map(&:to_s).join(', ')} }"
+    end
   end
 end

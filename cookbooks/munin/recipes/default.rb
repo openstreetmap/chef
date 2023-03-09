@@ -24,20 +24,22 @@ service "munin-node" do
   supports :status => true, :restart => true, :reload => true
 end
 
-servers = search(:node, "recipes:munin\\:\\:server")
+servers = []
 
-servers.each do |server|
+search(:node, "recipes:munin\\:\\:server").each do |server|
   server.interfaces(:role => :external) do |interface|
-    firewall_rule "accept-munin-#{server}" do
-      action :accept
-      family interface[:family]
-      source "net:#{interface[:address]}"
-      dest "fw"
-      proto "tcp"
-      dest_ports "munin"
-      source_ports "1024-65535"
-    end
+    servers << interface[:address]
   end
+end
+
+firewall_rule "accept-munin" do
+  action :accept
+  context :incoming
+  protocol :tcp
+  source servers
+  dest_ports "munin"
+  source_ports "1024-65535"
+  not_if { servers.empty? }
 end
 
 template "/etc/munin/munin-node.conf" do

@@ -229,56 +229,36 @@ prometheus_exporter "exim" do
 end
 
 if node[:exim][:smarthost_name]
-  node[:exim][:daemon_smtp_ports].each do |port|
-    firewall_rule "accept-inbound-smtp-#{port}" do
-      action :accept
-      source "net"
-      dest "fw"
-      proto "tcp"
-      dest_ports port
-      source_ports "1024-65535"
-    end
+  firewall_rule "accept-inbound-smtp" do
+    action :accept
+    context :incoming
+    protocol :tcp
+    dest_ports node[:exim][:daemon_smtp_ports]
+    source_ports "1024-65535"
   end
 else
-  smarthosts_inet = []
-  smarthosts_inet6 = []
+  smarthosts = []
 
   search(:node, "exim_smarthost_name:*?").each do |host|
-    smarthosts_inet |= host.ipaddresses(:role => :external, :family => :inet)
-    smarthosts_inet6 |= host.ipaddresses(:role => :external, :family => :inet6)
+    smarthosts |= host.ipaddresses(:role => :external)
   end
 
-  node[:exim][:daemon_smtp_ports].each do |port|
-    firewall_rule "accept-inbound-smtp-#{port}" do
-      action :accept
-      family :inet
-      source "net:#{smarthosts_inet.sort.join(',')}"
-      dest "fw"
-      proto "tcp"
-      dest_ports port
-      source_ports "1024-65535"
-      not_if { smarthosts_inet.empty? }
-    end
-
-    firewall_rule "accept-inbound-smtp-#{port}" do
-      action :accept
-      family :inet6
-      source "net:#{smarthosts_inet6.sort.join(',')}"
-      dest "fw"
-      proto "tcp"
-      dest_ports port
-      source_ports "1024-65535"
-      not_if { smarthosts_inet6.empty? }
-    end
+  firewall_rule "accept-inbound-smtp" do
+    action :accept
+    context :incoming
+    protocol :tcp
+    source smarthosts
+    dest_ports node[:exim][:daemon_smtp_ports]
+    source_ports "1024-65535"
+    not_if { smarthosts.empty? }
   end
 end
 
 if node[:exim][:smarthost_via]
   firewall_rule "deny-outbound-smtp" do
     action :reject
-    source "fw"
-    dest "net"
-    proto "tcp"
+    context :outgoing
+    protocol :tcp
     dest_ports "smtp"
   end
 end

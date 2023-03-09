@@ -438,17 +438,11 @@ else
 end
 
 if node[:networking][:wireguard][:enabled]
-  wireguard_source = if node[:roles].include?("gateway")
-                       "net"
-                     else
-                       "osm"
-                     end
-
   firewall_rule "accept-wireguard" do
     action :accept
-    source wireguard_source
-    dest "fw"
-    proto "udp"
+    context :incoming
+    protocol :udp
+    source :osm unless node[:roles].include?("gateway")
     dest_ports "51820"
     source_ports "51820"
   end
@@ -456,9 +450,8 @@ end
 
 firewall_rule "accept-http" do
   action :accept
-  source "net"
-  dest "fw"
-  proto "tcp"
+  context :incoming
+  protocol :tcp
   dest_ports %w[http https]
   rate_limit node[:networking][:firewall][:http_rate_limit]
   connection_limit node[:networking][:firewall][:http_connection_limit]

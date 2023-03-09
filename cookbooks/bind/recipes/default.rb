@@ -62,16 +62,14 @@ end
 
 firewall_rule "accept-dns-udp" do
   action :accept
-  source "net"
-  dest "fw"
-  proto "udp"
+  context :incoming
+  protocol :udp
   dest_ports "domain"
 end
 
 firewall_rule "accept-dns-tcp" do
   action :accept
-  source "net"
-  dest "fw"
-  proto "tcp"
+  context :incoming
+  protocol :tcp
   dest_ports "domain"
 end

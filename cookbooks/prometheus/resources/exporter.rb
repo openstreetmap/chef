@@ -78,9 +78,9 @@ action :create do
 
   firewall_rule "accept-prometheus-#{new_resource.exporter}" do
     action :accept
-    source "osm"
-    dest "fw"
-    proto "tcp"
+    context :incoming
+    protocol :tcp
+    source :osm
     dest_ports new_resource.port
     only_if { node[:prometheus][:mode] == "external" }
   end

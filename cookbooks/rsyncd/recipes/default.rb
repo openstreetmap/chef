@@ -77,9 +77,8 @@ end
 
 firewall_rule "accept-rsync" do
   action :accept
-  source "net"
-  dest "fw"
-  proto "tcp"
+  context :incoming
+  protocol :tcp
   dest_ports "rsync"
   source_ports "1024-65535"
 end

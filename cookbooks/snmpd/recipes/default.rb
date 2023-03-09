@@ -37,50 +37,11 @@ service "snmpd" do
   supports :status => true, :restart => true
 end
 
-if node[:snmpd][:clients]
-  node[:snmpd][:clients].each do |address|
-    firewall_rule "accept-snmp" do
-      action :accept
-      family "inet"
-      source "net:#{address}"
-      dest "fw"
-      proto "udp"
-      dest_ports "snmp"
-      source_ports "1024-65535"
-    end
-  end
-else
-  firewall_rule "accept-snmp" do
-    action :accept
-    family "inet"
-    source "net"
-    dest "fw"
-    proto "udp"
-    dest_ports "snmp"
-    source_ports "1024-65535"
-  end
-end
-
-if node[:snmpd][:clients6]
-  node[:snmpd][:clients6].each do |address|
-    firewall_rule "accept-snmp" do
-      action :accept
-      family "inet6"
-      source "net:#{address}"
-      dest "fw"
-      proto "udp"
-      dest_ports "snmp"
-      source_ports "1024-65535"
-    end
-  end
-else
-  firewall_rule "accept-snmp" do
-    action :accept
-    family "inet6"
-    source "net"
-    dest "fw"
-    proto "udp"
-    dest_ports "snmp"
-    source_ports "1024-65535"
-  end
+firewall_rule "accept-snmp" do
+  action :accept
+  context :incoming
+  protocol :udp
+  source node[:snmpd][:clients] if node[:snmpd][:clients]
+  dest_ports "snmp"
+  source_ports "1024-65535"
 end

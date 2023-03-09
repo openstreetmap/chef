@@ -74,54 +74,26 @@ template "/etc/cron.daily/expire-logstash" do
   mode "755"
 end
 
-forwarders = search(:node, "recipes:logstash\\:\\:forwarder")
+forwarders = []
 
-forwarders.sort_by { |n| n[:fqdn] }.each do |forwarder|
-  forwarder.interfaces(:role => :external) do |interface|
-    firewall_rule "accept-lumberjack-#{forwarder}" do
-      action :accept
-      family interface[:family]
-      source "net:#{interface[:address]}"
-      dest "fw"
-      proto "tcp"
-      dest_ports "5043"
-      source_ports "1024-65535"
-    end
-
-    firewall_rule "accept-beats-#{forwarder}" do
-      action :accept
-      family interface[:family]
-      source "net:#{interface[:address]}"
-      dest "fw"
-      proto "tcp"
-      dest_ports "5044"
-      source_ports "1024-65535"
-    end
+search(:node, "recipes:logstash\\:\\:forwarder").each do |forwarder|
+  forwarder.interfaces(:role => :external).map do |interface|
+    forwarders << interface[:address]
   end
 end
 
-gateways = search(:node, "roles:gateway")
-
-gateways.sort_by { |n| n[:fqdn] }.each do |gateway|
-  gateway.interfaces(:role => :external) do |interface|
-    firewall_rule "accept-lumberjack-#{gateway}" do
-      action :accept
-      family interface[:family]
-      source "net:#{interface[:address]}"
-      dest "fw"
-      proto "tcp"
-      dest_ports "5043"
-      source_ports "1024-65535"
-    end
-
-    firewall_rule "accept-beats-#{gateway}" do
-      action :accept
-      family interface[:family]
-      source "net:#{interface[:address]}"
-      dest "fw"
-      proto "tcp"
-      dest_ports "5044"
-      source_ports "1024-65535"
-    end
+search(:node, "roles:gateway").each do |forwarder|
+  forwarder.interfaces(:role => :external).map do |interface|
+    forwarders << interface[:address]
   end
+end
+
+firewall_rule "accept-logstash" do
+  action :accept
+  context :incoming
+  protocol :tcp
+  source forwarders
+  dest_ports %w[5043 5044]
+  source_ports "1024-65535"
+  not_if { forwarders.empty? }
 end
