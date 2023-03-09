@@ -43,4 +43,5 @@ prometheus_exporter "smokeping" do
   capability_bounding_set "CAP_NET_RAW"
   ambient_capabilities "CAP_NET_RAW"
   private_users false
+  subscribes :restart, "template[/etc/prometheus/exporters/smokeping.yml]"
 end
