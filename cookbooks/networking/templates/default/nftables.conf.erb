@@ -47,15 +47,13 @@ table inet chef-filter {
   }
 
 <% node[:networking][:firewall][:sets].each do |set| -%>
-  set <%= set %> {
-<% if set.end_with?("-ip") -%>
-    type ipv4_addr
-<% elsif set.end_with?("-ip6") -%>
-    type ipv6_addr
+  set <%= set[:name] %> {
+    type <%= set[:type] %>
+<% if set[:flags] -%>
+    flags <%= set[:flags].join(", ") %>
 <% end -%>
-    flags dynamic
-<% unless set.start_with?("connlimit-") -%>
-    timeout 120s
+<% if set[:timeout] -%>
+    timeout <%= set[:timeout] %>s
 <% end -%>
   }
 

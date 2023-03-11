@@ -75,7 +75,9 @@ action_class do
     if new_resource.connection_limit
       set = "connlimit-#{new_resource.rule}-#{ip}"
 
-      node.default[:networking][:firewall][:sets] << set
+      node.default[:networking][:firewall][:sets] << {
+        :name => set, :type => set_type(ip), :flags => %w[dynamic]
+      }
 
       rule << "add @#{set} { #{ip} saddr ct count #{new_resource.connection_limit} }"
     end
@@ -85,7 +87,9 @@ action_class do
       rate = Regexp.last_match(1)
       burst = Regexp.last_match(2)
 
-      node.default[:networking][:firewall][:sets] << set
+      node.default[:networking][:firewall][:sets] << {
+        :name => set, :type => set_type(ip), :flags => %w[dynamic], :timeout => 120
+      }
 
       rule << "update @#{set} { #{ip} saddr limit rate #{rate}/second burst #{burst} packets }"
     end
@@ -132,6 +136,13 @@ action_class do
       "@#{ip}-#{addresses}-addresses"
     else
       "{ #{Array(addresses).map(&:to_s).join(', ')} }"
+    end
+  end
+
+  def set_type(ip)
+    case ip
+    when "ip" then "ipv4_addr"
+    when "ip6" then "ipv6_addr"
     end
   end
 end
