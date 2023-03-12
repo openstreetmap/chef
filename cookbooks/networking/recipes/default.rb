@@ -409,22 +409,34 @@ template "/etc/nftables.conf" do
   group "root"
   mode "755"
   variables :interfaces => interfaces, :hosts => hosts
-  notifies :restart, "service[nftables]"
+  notifies :reload, "service[nftables]"
 end
 
-stop_commands = [
-  "-/usr/sbin/nft delete table inet filter",
-  "-/usr/sbin/nft delete table inet chef-filter"
-]
+directory "/var/lib/nftables" do
+  owner "root"
+  group "root"
+  mode "755"
+end
 
-stop_commands << "-/usr/sbin/nft delete table ip nat" if node[:roles].include?("gateway")
-stop_commands << "-/usr/sbin/nft delete table ip chef-nat" if node[:roles].include?("gateway")
+template "/usr/local/bin/nftables" do
+  source "nftables.erb"
+  owner "root"
+  group "root"
+  mode "755"
+end
 
 systemd_service "nftables-stop" do
+  action :delete
   service "nftables"
   dropin "stop"
-  exec_reload ""
-  exec_stop stop_commands
+end
+
+systemd_service "nftables-chef" do
+  service "nftables"
+  dropin "chef"
+  exec_start "/usr/local/bin/nftables start"
+  exec_reload "/usr/local/bin/nftables reload"
+  exec_stop "/usr/local/bin/nftables stop"
 end
 
 if node[:networking][:firewall][:enabled]
