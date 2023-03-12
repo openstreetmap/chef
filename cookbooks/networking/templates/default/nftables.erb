@@ -20,10 +20,35 @@ reload() {
   start
 }
 
-case "$1" in
+block() {
+  for address in "$@"
+  do
+    case "$address" in
+      *.*) /usr/sbin/nft add element inet chef-filter ip-blocklist "{ $address }";;
+      *:*) /usr/sbin/nft add element inet chef-filter ip6-blocklist "{ $address }";;
+    esac
+  done
+}
+
+unblock() {
+  for address in "$@"
+  do
+    case "$address" in
+      *.*) /usr/sbin/nft delete element inet chef-filter ip-blocklist "{ $address }";;
+      *:*) /usr/sbin/nft delete element inet chef-filter ip6-blocklist "{ $address }";;
+    esac
+  done
+}
+
+command=$1
+shift
+
+case "$command" in
   start) start;;
   stop) stop;;
   reload) reload;;
+  block) block "$@";;
+  unblock) unblock "$@";;
 esac
 
 exit 0
