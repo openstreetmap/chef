@@ -24,13 +24,9 @@ service "munin-node" do
   supports :status => true, :restart => true, :reload => true
 end
 
-servers = []
-
-search(:node, "recipes:munin\\:\\:server").each do |server|
-  server.interfaces(:role => :external) do |interface|
-    servers << interface[:address]
-  end
-end
+servers = search(:node, "recipes:munin\\:\\:server").collect do |server|
+  server.ipaddresses(:role => :external)
+end.flatten
 
 firewall_rule "accept-munin" do
   action :accept

@@ -76,17 +76,13 @@ end
 
 forwarders = []
 
-search(:node, "recipes:logstash\\:\\:forwarder").each do |forwarder|
-  forwarder.interfaces(:role => :external).map do |interface|
-    forwarders << interface[:address]
-  end
-end
+forwarders << search(:node, "recipes:logstash\\:\\:forwarder").collect do |forwarder|
+  forwarder.ipaddresses(:role => :external)
+end.flatten
 
-search(:node, "roles:gateway").each do |forwarder|
-  forwarder.interfaces(:role => :external).map do |interface|
-    forwarders << interface[:address]
-  end
-end
+forwarders << search(:node, "roles:gateway").collect do |forwarder|
+  forwarder.ipaddresses(:role => :external)
+end.flatten
 
 firewall_rule "accept-logstash" do
   action :accept
