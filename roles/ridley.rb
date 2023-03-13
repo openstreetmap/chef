@@ -12,9 +12,6 @@ default_attributes(
       :max_connections_per_child => 10000
     }
   },
-  :bind => {
-    :clients => "ucl"
-  },
   :dhcpd => {
     :first_address => "10.0.15.1",
     :last_address => "10.0.15.254"

@@ -2,9 +2,6 @@ name "fafnir"
 description "Master role applied to fafnir"
 
 default_attributes(
-  :bind => {
-    :clients => "equinix-dub"
-  },
   :dhcpd => {
     :first_address => "10.0.79.1",
     :last_address => "10.0.79.254"

@@ -2,9 +2,6 @@ name "ironbelly"
 description "Master role applied to ironbelly"
 
 default_attributes(
-  :bind => {
-    :clients => "equinix-ams"
-  },
   :dhcpd => {
     :first_address => "10.0.63.1",
     :last_address => "10.0.63.254"

@@ -6,4 +6,3 @@ description       "Configures bind"
 
 version           "1.0.0"
 supports          "ubuntu"
-depends           "networking"
