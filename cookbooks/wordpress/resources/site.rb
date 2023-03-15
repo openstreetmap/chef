@@ -102,6 +102,7 @@ action :create do
       line += "define( 'AUTOMATIC_UPDATER_DISABLED', true);\r\n"
       line += "define( 'FORCE_SSL_LOGIN', true);\r\n"
       line += "define( 'FORCE_SSL_ADMIN', true);\r\n"
+      line += "define( 'WP_FAIL2BAN_SITE_HEALTH_SKIP_FILTERS', true);\r\n"
     end
 
     line
