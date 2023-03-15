@@ -60,6 +60,9 @@
 
     Require all granted
 
+    # https://www.wp-pay.org/http-authorization-header-missing/
+    CGIPassAuth on
+
     <FilesMatch ".+\.ph(ar|p|tml)$">
       SetHandler "proxy:unix:/run/php/php-<%= @name %>-fpm.sock|fcgi://127.0.0.1"
     </FilesMatch>
