@@ -89,7 +89,7 @@
     Require all denied
   </Directory>
 
-  <Files ~ "\.(txt|md)$">
+  <Files ~ "(?<!robots|ads|security|humans)\.(txt|md)$">
     Require all denied
   </Files>
 
