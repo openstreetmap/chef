@@ -51,6 +51,7 @@
     RewriteRule ^wp-includes/js/tinymce/langs/.+\.php - [F,L]
     RewriteRule ^wp-includes/theme-compat/ - [F,L]
     RewriteRule ^readme\.html$ [F,L]
+    RewriteRule ^index\.php$ - [L]
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteRule . /index.php [L]
