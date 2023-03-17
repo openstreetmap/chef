@@ -71,6 +71,8 @@ default_attributes(
       :stereo => { :status => :user },
       :dmlu => { :status => :user },
       :antonkh => { :status => :user },
+      :gmoncrieff => { :status => :user },
+      :zander => { :status => :user },
       :ooc => {
         :status => :role,
         :members => [:tomh, :blackadder, :timsc, :ollie]
