@@ -129,6 +129,7 @@ package %w[
   redis
   r-base
   pandoc
+  aria2
 ]
 
 # Add uk_os_OSTN15_NTv2_OSGBtoETRS.tif used for reprojecting OS data
