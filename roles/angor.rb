@@ -21,6 +21,17 @@ default_attributes(
         :gateway => "2001:43f8:1f4:b00::1"
       }
     }
+  },
+  :accounts => {
+    :users => {
+      :htonl => { :status => :user },
+      :gmoncrieff => { :status => :user },
+      :zander => { :status => :user },
+      :za-imagery => {
+          :status => :role,
+          :members => [:grant, :htonl, :gmoncrieff, :zander]
+      }
+    }
   }
 )
 

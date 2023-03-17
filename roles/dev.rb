@@ -88,6 +88,10 @@ default_attributes(
       :gpsmid => {
         :status => :role,
         :members => [:apmon, :maba]
+      },
+      :za-imagery => {
+          :status => :role,
+          :members => [:grant, :htonl, :gmoncrieff, :zander]
       }
     }
   },
