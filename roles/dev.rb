@@ -89,7 +89,7 @@ default_attributes(
         :status => :role,
         :members => [:apmon, :maba]
       },
-      :za-imagery => {
+      :"za-imagery" => {
           :status => :role,
           :members => [:grant, :htonl, :gmoncrieff, :zander]
       }
