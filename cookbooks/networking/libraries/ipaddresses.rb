@@ -17,6 +17,10 @@ module OpenStreetMap
           @netmask = ip.netmask
         end
 
+        def <=>(other)
+          address <=> other.address
+        end
+
         def to_s
           address
         end
