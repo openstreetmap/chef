@@ -118,9 +118,9 @@ action_class do
       addresses
     else
       Array(addresses).map do |address|
-        if ip == "ip" && IPAddr.new(address).ipv4?
+        if ip == "ip" && IPAddr.new(address.to_s).ipv4?
           address
-        elsif ip == "ip6" && IPAddr.new(address).ipv6?
+        elsif ip == "ip6" && IPAddr.new(address.to_s).ipv6?
           address
         end
       end.compact
