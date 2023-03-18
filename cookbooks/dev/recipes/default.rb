@@ -35,10 +35,59 @@ include_recipe "ruby"
 
 package %w[
   ant
+  aria2
+  at
+  autoconf
+  automake
+  awscli
+  composer
   default-jdk-headless
   default-jre-headless
+  fonts-dejavu
+  fonts-dejavu-core
+  fonts-dejavu-extra
+  fonts-droid-fallback
+  fonts-liberation
+  fonts-noto-mono
+  g++
+  gcc
+  gdal-bin
+  gnuplot-nox
   golang
-  composer
+  graphviz
+  irssi
+  jq
+  libargon2-dev
+  libboost-date-time-dev
+  libboost-dev
+  libboost-filesystem-dev
+  libboost-locale-dev
+  libboost-program-options-dev
+  libboost-regex-dev
+  libboost-system-dev
+  libcrypto++-dev
+  libfcgi-dev
+  libfmt-dev
+  libjson-xs-perl
+  libmemcached-dev
+  libpqxx-dev
+  libtool
+  libxml2-dev
+  libyajl-dev
+  lua-any
+  luajit
+  lz4
+  lzip
+  lzop
+  mailutils
+  make
+  nano
+  netcat
+  osm2pgsql
+  osmosis
+  pandoc
+  pandoc
+  pbzip2
   php-apcu
   php-cgi
   php-cli
@@ -55,8 +104,10 @@ package %w[
   php-pgsql
   php-sqlite3
   php-xml
+  pigz
   pngcrush
   pngquant
+  proj-bin
   python-is-python3
   python3
   python3-brotli
@@ -65,71 +116,22 @@ package %w[
   python3-dateutil
   python3-dev
   python3-dotenv
+  python3-gdal
   python3-lxml
   python3-lz4
   python3-magic
   python3-pil
   python3-psycopg2
-  python3-venv
   python3-pyproj
-  python3-gdal
-  gdal-bin
-  proj-bin
-  g++
-  gcc
-  make
-  autoconf
-  automake
-  libtool
-  libargon2-dev
-  libfcgi-dev
-  libxml2-dev
-  libmemcached-dev
-  libboost-dev
-  libboost-regex-dev
-  libboost-system-dev
-  libboost-program-options-dev
-  libboost-date-time-dev
-  libboost-filesystem-dev
-  libboost-locale-dev
-  libpqxx-dev
-  libcrypto++-dev
-  libyajl-dev
-  libfmt-dev
-  zlib1g-dev
-  nano
-  osm2pgsql
-  osmosis
-  at
-  awscli
-  mailutils
-  lua-any
-  luajit
-  fonts-dejavu
-  fonts-dejavu-core
-  fonts-dejavu-extra
-  fonts-droid-fallback
-  fonts-liberation
-  fonts-noto-mono
-  gnuplot-nox
-  graphviz
-  irssi
-  jq
-  lz4
-  lzip
-  lzop
-  pbzip2
-  pigz
+  python3-venv
+  r-base
+  redis
+  tmux
   unrar
   unzip
-  zip
-  netcat
-  tmux
   whois
-  redis
-  r-base
-  pandoc
-  aria2
+  zip
+  zlib1g-dev
 ]
 
 # Add uk_os_OSTN15_NTv2_OSGBtoETRS.tif used for reprojecting OS data
