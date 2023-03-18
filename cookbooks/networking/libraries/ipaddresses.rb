@@ -25,6 +25,10 @@ module OpenStreetMap
           address
         end
 
+        def to_str
+          address
+        end
+
         def subnet
           "#{@network}/#{@prefix}"
         end
