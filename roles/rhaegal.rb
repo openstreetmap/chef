@@ -28,14 +28,15 @@ default_attributes(
   },
   :networking => {
     :interfaces => {
-      :external_ipv4 => {
+      :external => {
         :interface => "eno1",
         :role => :external,
-        :family => :inet,
-        :address => "10.5.0.77",
-        :prefix => "16",
-        :gateway => "10.5.0.1",
-        :public_address => "161.53.248.77"
+        :inet => {
+          :address => "10.5.0.77",
+          :prefix => "16",
+          :gateway => "10.5.0.1",
+          :public_address => "161.53.248.77"
+        }
       }
     }
   }

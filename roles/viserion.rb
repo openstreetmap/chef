@@ -13,21 +13,19 @@ default_attributes(
   },
   :networking => {
     :interfaces => {
-      :external_ipv4 => {
+      :external => {
         :interface => "eth0",
         :role => :external,
-        :family => :inet,
-        :address => "193.198.233.211",
-        :prefix => "29",
-        :gateway => "193.198.233.209"
-      },
-      :external_ipv6 => {
-        :interface => "eth0",
-        :role => :external,
-        :family => :inet6,
-        :address => "2001:b68:4cff:3::3",
-        :prefix => "64",
-        :gateway => "2001:b68:4cff:3::1"
+        :inet => {
+          :address => "193.198.233.211",
+          :prefix => "29",
+          :gateway => "193.198.233.209"
+        },
+        :inet6 => {
+          :address => "2001:b68:4cff:3::3",
+          :prefix => "64",
+          :gateway => "2001:b68:4cff:3::1"
+        }
       }
     }
   }

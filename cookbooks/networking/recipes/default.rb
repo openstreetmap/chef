@@ -40,21 +40,20 @@ netplan = {
 node[:networking][:interfaces].each do |name, interface|
   if interface[:interface]
     if interface[:role] && (role = node[:networking][:roles][interface[:role]])
-      if role[interface[:family]]
-        node.default[:networking][:interfaces][name][:prefix] = role[interface[:family]][:prefix]
-        node.default[:networking][:interfaces][name][:gateway] = role[interface[:family]][:gateway]
-        node.default[:networking][:interfaces][name][:routes] = role[interface[:family]][:routes]
+      if interface[:inet] && role[:inet]
+        node.default[:networking][:interfaces][name][:inet][:prefix] = role[:inet][:prefix]
+        node.default[:networking][:interfaces][name][:inet][:gateway] = role[:inet][:gateway]
+        node.default[:networking][:interfaces][name][:inet][:routes] = role[:inet][:routes]
+      end
+
+      if interface[:inet6] && role[:inet6]
+        node.default[:networking][:interfaces][name][:inet6][:prefix] = role[:inet6][:prefix]
+        node.default[:networking][:interfaces][name][:inet6][:gateway] = role[:inet6][:gateway]
+        node.default[:networking][:interfaces][name][:inet6][:routes] = role[:inet6][:routes]
       end
 
       node.default[:networking][:interfaces][name][:metric] = role[:metric]
       node.default[:networking][:interfaces][name][:zone] = role[:zone]
-    end
-
-    if interface[:address]
-      prefix = node[:networking][:interfaces][name][:prefix]
-
-      node.default[:networking][:interfaces][name][:netmask] = (~IPAddr.new(interface[:address]).mask(0)).mask(prefix)
-      node.default[:networking][:interfaces][name][:network] = IPAddr.new(interface[:address]).mask(prefix)
     end
 
     interface = node[:networking][:interfaces][name]
@@ -81,8 +80,12 @@ node[:networking][:interfaces].each do |name, interface|
                    }
                  end
 
-    if interface[:address]
-      deviceplan["addresses"].push("#{interface[:address]}/#{prefix}")
+    if interface[:inet]
+      deviceplan["addresses"].push("#{interface[:inet][:address]}/#{interface[:inet][:prefix]}")
+    end
+
+    if interface[:inet6]
+      deviceplan["addresses"].push("#{interface[:inet6][:address]}/#{interface[:inet6][:prefix]}")
     end
 
     if interface[:mtu]
@@ -104,49 +107,71 @@ node[:networking][:interfaces].each do |name, interface|
       deviceplan["parameters"]["lacp-rate"] = interface[:bond][:lacprate] if interface[:bond][:lacprate]
     end
 
-    if interface[:gateway] && interface[:gateway] != interface[:address]
-      if interface[:family] == "inet"
-        default_route = "0.0.0.0/0"
-      elsif interface[:family] == "inet6"
-        default_route = "::/0"
+    if interface[:inet]
+      if interface[:inet][:gateway] && interface[:inet][:gateway] != interface[:inet][:address]
+        deviceplan["routes"].push(
+          "to" => "0.0.0.0/0",
+          "via" => interface[:inet][:gateway],
+          "metric" => interface[:metric],
+          "on-link" => true
+        )
       end
 
-      deviceplan["routes"].push(
-        "to" => default_route,
-        "via" => interface[:gateway],
-        "metric" => interface[:metric],
-        "on-link" => true
-      )
+      if interface[:inet][:routes]
+        interface[:inet][:routes].each do |to, parameters|
+          next if parameters[:via] == interface[:inet][:address]
 
-      # This ordering relies on systemd-networkd adding routes
-      # in reverse order and will need moving before the previous
-      # route once that is fixed:
-      #
-      # https://github.com/systemd/systemd/issues/5430
-      # https://github.com/systemd/systemd/pull/10938
-      if interface[:family] == "inet6" &&
-         !interface[:network].include?(interface[:gateway]) &&
-         !IPAddr.new("fe80::/64").include?(interface[:gateway])
-        deviceplan["routes"].push(
-          "to" => interface[:gateway],
-          "scope" => "link"
-        )
+          route = {
+            "to" => to
+          }
+
+          route["type"] = parameters[:type] if parameters[:type]
+          route["via"] = parameters[:via] if parameters[:via]
+          route["metric"] = parameters[:metric] if parameters[:metric]
+
+          deviceplan["routes"].push(route)
+        end
       end
     end
 
-    if interface[:routes]
-      interface[:routes].each do |to, parameters|
-        next if parameters[:via] == interface[:address]
+    if interface[:inet6]
+      if interface[:inet6][:gateway] && interface[:inet6][:gateway] != interface[:inet6][:address]
+        deviceplan["routes"].push(
+          "to" => "::/0",
+          "via" => interface[:inet6][:gateway],
+          "metric" => interface[:metric],
+          "on-link" => true
+        )
 
-        route = {
-          "to" => to
-        }
+        # This ordering relies on systemd-networkd adding routes
+        # in reverse order and will need moving before the previous
+        # route once that is fixed:
+        #
+        # https://github.com/systemd/systemd/issues/5430
+        # https://github.com/systemd/systemd/pull/10938
+        if !IPAddr.new(interface[:inet6][:address]).mask(interface[:inet6][:prefix]).include?(interface[:inet6][:gateway]) &&
+           !IPAddr.new("fe80::/64").include?(interface[:inet6][:gateway])
+          deviceplan["routes"].push(
+            "to" => interface[:inet6][:gateway],
+            "scope" => "link"
+          )
+        end
+      end
 
-        route["type"] = parameters[:type] if parameters[:type]
-        route["via"] = parameters[:via] if parameters[:via]
-        route["metric"] = parameters[:metric] if parameters[:metric]
+      if interface[:inet6][:routes]
+        interface[:inet6][:routes].each do |to, parameters|
+          next if parameters[:via] == interface[:inet6][:address]
 
-        deviceplan["routes"].push(route)
+          route = {
+            "to" => to
+          }
+
+          route["type"] = parameters[:type] if parameters[:type]
+          route["via"] = parameters[:via] if parameters[:via]
+          route["metric"] = parameters[:metric] if parameters[:metric]
+
+          deviceplan["routes"].push(route)
+        end
       end
     end
   else
@@ -230,9 +255,7 @@ if node[:networking][:wireguard][:enabled]
       next if gateway.name == node.name
       next unless gateway[:networking][:wireguard] && gateway[:networking][:wireguard][:enabled]
 
-      allowed_ips = gateway.interfaces(:role => :internal).map do |interface|
-        "#{interface[:network]}/#{interface[:prefix]}"
-      end
+      allowed_ips = gateway.ipaddresses(:role => :internal).map(&:subnet)
 
       node.default[:networking][:wireguard][:peers] << {
         :public_key => gateway[:networking][:wireguard][:public_key],
@@ -242,9 +265,7 @@ if node[:networking][:wireguard][:enabled]
     end
 
     search(:node, "roles:prometheus") do |server|
-      allowed_ips = server.interfaces(:role => :internal).map do |interface|
-        "#{interface[:network]}/#{interface[:prefix]}"
-      end
+      allowed_ips = server.ipaddresses(:role => :internal).map(&:subnet)
 
       if server[:networking][:private_address]
         allowed_ips << "#{server[:networking][:private_address]}/32"
@@ -278,9 +299,7 @@ if node[:networking][:wireguard][:enabled]
     }
   elsif node[:roles].include?("shenron")
     search(:node, "roles:gateway") do |gateway|
-      allowed_ips = gateway.interfaces(:role => :internal).map do |interface|
-        "#{interface[:network]}/#{interface[:prefix]}"
-      end
+      allowed_ips = gateway.ipaddresses(:role => :internal).map(&:subnet)
 
       node.default[:networking][:wireguard][:peers] << {
         :public_key => gateway[:networking][:wireguard][:public_key],
@@ -383,7 +402,7 @@ link "/etc/resolv.conf" do
   to "../run/systemd/resolve/stub-resolv.conf"
 end
 
-hosts = { "inet" => [], "inet6" => [] }
+hosts = { :inet => [], :inet6 => [] }
 
 search(:node, "networking:interfaces").collect do |n|
   next if n[:fqdn] == node[:fqdn]
@@ -391,7 +410,8 @@ search(:node, "networking:interfaces").collect do |n|
   n.interfaces.each do |interface|
     next unless interface[:role] == "external"
 
-    hosts[interface[:family]] << interface[:address]
+    hosts[:inet] << interface[:inet][:address] if interface[:inet]
+    hosts[:inet6] << interface[:inet6][:address] if interface[:inet6]
   end
 end
 

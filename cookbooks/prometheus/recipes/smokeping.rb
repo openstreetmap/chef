@@ -25,8 +25,8 @@ ip6_hosts = []
 search(:node, "networking:interfaces") do |host|
   next if host.name == node.name
 
-  ip4_hosts << host[:fqdn] unless host.interfaces(:role => :external, :family => :inet).empty?
-  ip6_hosts << host[:fqdn] unless host.interfaces(:role => :external, :family => :inet6).empty?
+  ip4_hosts << host[:fqdn] unless host.ipaddresses(:role => :external, :family => :inet).empty?
+  ip6_hosts << host[:fqdn] unless host.ipaddresses(:role => :external, :family => :inet6).empty?
 end
 
 template "/etc/prometheus/exporters/smokeping.yml" do

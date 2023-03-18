@@ -4,13 +4,14 @@ description "Master role applied to balerion"
 default_attributes(
   :networking => {
     :interfaces => {
-      :external_ipv4 => {
+      :external => {
         :interface => "bond0",
         :role => :external,
-        :family => :inet,
-        :address => "138.44.68.134",
-        :prefix => "30",
-        :gateway => "138.44.68.133",
+        :inet => {
+          :address => "138.44.68.134",
+          :prefix => "30",
+          :gateway => "138.44.68.133"
+        },
         :bond => {
           :slaves => %w[ens14f0np0 ens14f1np1]
         }

@@ -97,9 +97,10 @@ suites:
           test:
             interface: eth0
             role: internal
-            address: 172.18.0.2
-            prefix: 16
-            gateway: 172.18.0.1
+            inet:
+              address: 172.18.0.2
+              prefix: 16
+              gateway: 172.18.0.1
         roles:
           external:
             zone: test
@@ -153,7 +154,9 @@ suites:
         interfaces:
           test:
             role: external
-            address: 172.18.0.2
+            inet:
+              address: 172.18.0.2
+              prefix: 16
   - name: geoipupdate
     run_list:
       - recipe[geoipupdate::default]
@@ -307,9 +310,10 @@ suites:
           test:
             interface: eth0
             role: internal
-            address: 172.18.0.2
-            prefix: 16
-            gateway: 172.18.0.1
+            inet:
+              address: 172.18.0.2
+              prefix: 16
+              gateway: 172.18.0.1
   - name: prometheus-server
     run_list:
       - recipe[prometheus::server]

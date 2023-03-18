@@ -7,14 +7,15 @@ default_attributes(
       :allowlist => ["172.31.0.2"]
     },
     :interfaces => {
-      :external_ipv4 => {
+      :external => {
         :interface => "ens5",
         :role => :external,
-        :family => :inet,
-        :address => "172.31.37.101",
-        :prefix => "20",
-        :gateway => "172.31.32.1",
-        :public_address => "3.144.0.72"
+        :inet => {
+          :address => "172.31.37.101",
+          :prefix => "20",
+          :gateway => "172.31.32.1",
+          :public_address => "3.144.0.72"
+        }
       }
     }
   },

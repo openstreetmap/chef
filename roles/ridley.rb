@@ -18,17 +18,19 @@ default_attributes(
   },
   :networking => {
     :interfaces => {
-      :external_ipv4 => {
+      :external => {
         :interface => "eth0.2800",
         :role => :external,
-        :family => :inet,
-        :address => "193.60.236.19"
+        :inet => {
+          :address => "193.60.236.19"
+        }
       },
-      :internal_ipv4 => {
+      :internal => {
         :interface => "eth0.2801",
         :role => :internal,
-        :family => :inet,
-        :address => "10.0.0.3"
+        :inet => {
+          :address => "10.0.0.3"
+        }
       }
     }
   }

@@ -4,11 +4,12 @@ description "Master role applied to karm"
 default_attributes(
   :networking => {
     :interfaces => {
-      :internal_ipv4 => {
+      :internal => {
         :interface => "bond0",
         :role => :internal,
-        :family => :inet,
-        :address => "10.0.48.50",
+        :inet => {
+          :address => "10.0.48.50"
+        },
         :bond => {
           :mode => "802.3ad",
           :lacprate => "fast",

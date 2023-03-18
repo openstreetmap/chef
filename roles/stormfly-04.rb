@@ -7,20 +7,18 @@ default_attributes(
   },
   :networking => {
     :interfaces => {
-      :external_ipv4 => {
+      :external => {
         :interface => "bond0",
         :role => :external,
-        :family => :inet,
-        :address => "140.211.167.100",
+        :inet => {
+          :address => "140.211.167.100"
+        },
+        :inet6 => {
+          :address => "2605:bc80:3010:700::8cd3:a764"
+        },
         :bond => {
           :slaves => %w[eno1 eno2 eno3 eno4 eno49 eno50]
         }
-      },
-      :external_ipv6 => {
-        :interface => "bond0",
-        :role => :external,
-        :family => :inet6,
-        :address => "2605:bc80:3010:700::8cd3:a764"
       }
     }
   },

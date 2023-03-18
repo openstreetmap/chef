@@ -7,22 +7,21 @@ option TCode code 101 = text;
 
 default-lease-time 600;
 max-lease-time 7200;
-<% node.interfaces(:role => :internal).each do |interface| -%>
+<% node.ipaddresses(:role => :internal, :family => :inet).each do |address| -%>
 
-subnet <%= interface[:network] %> netmask <%= interface[:netmask] %> {
+subnet <%= address.network %> netmask <%= address.netmask %> {
   authoritative;
   range dynamic-bootp <%= node[:dhcpd][:first_address] %> <%= node[:dhcpd][:last_address] %>;
-  # option broadcast-address <%= interface[:broadcast] %>;
-  option routers <%= interface[:gateway] %>;
+  option routers <%= address.gateway %>;
   option domain-name "<%= @domain %>";
-  option domain-name-servers <%= interface[:gateway] %>;
+  option domain-name-servers <%= address.gateway %>;
   option ntp-servers <%= node[:ntp][:servers].join(", ") %>;
 
   option time-offset 0;
   option PCode "UTC0";
   option TCode "Etc/UTC";
 
-  next-server <%= interface[:gateway] %>;
+  next-server <%= address.gateway %>;
 
   # See https://netboot.xyz/docs/docker/#dhcp-configurations
   if exists user-class and ( option user-class = "iPXE" ) {

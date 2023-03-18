@@ -184,9 +184,7 @@ else
 end
 
 search(:node, "roles:gateway") do |gateway|
-  allowed_ips = gateway.interfaces(:role => :internal).map do |interface|
-    "#{interface[:network]}/#{interface[:prefix]}"
-  end
+  allowed_ips = gateway.ipaddresses(:role => :internal).map(&:subnet)
 
   node.default[:networking][:wireguard][:peers] << {
     :public_key => gateway[:networking][:wireguard][:public_key],

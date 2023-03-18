@@ -25,21 +25,19 @@ override_attributes(
   :networking => {
     :dnssec => "false",
     :interfaces => {
-      :external_ipv4 => {
+      :external => {
         :interface => "eth0",
         :role => :external,
-        :family => :inet,
-        :address => "212.110.172.32",
-        :prefix => "26",
-        :gateway => "212.110.172.1"
-      },
-      :external_ipv6 => {
-        :interface => "eth0",
-        :role => :external,
-        :family => :inet6,
-        :address => "2001:41c9:1:400::32",
-        :prefix => "64",
-        :gateway => "fe80::1"
+        :inet => {
+          :address => "212.110.172.32",
+          :prefix => "26",
+          :gateway => "212.110.172.1"
+        },
+        :inet6 => {
+          :address => "2001:41c9:1:400::32",
+          :prefix => "64",
+          :gateway => "fe80::1"
+        }
       }
     }
   }

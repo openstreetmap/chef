@@ -4,11 +4,12 @@ description "Master role applied to dulcy"
 default_attributes(
   :networking => {
     :interfaces => {
-      :internal_ipv4 => {
+      :internal => {
         :interface => "bond0",
         :role => :internal,
-        :family => :inet,
-        :address => "10.0.48.9",
+        :inet => {
+          :address => "10.0.48.9"
+        },
         :bond => {
           :mode => "802.3ad",
           :lacprate => "fast",
@@ -16,17 +17,15 @@ default_attributes(
           :slaves => %w[ens18f0 ens18f1]
         }
       },
-      :external_ipv4 => {
+      :external => {
         :interface => "bond0.2",
         :role => :external,
-        :family => :inet,
-        :address => "130.117.76.9"
-      },
-      :external_ipv6 => {
-        :interface => "bond0.2",
-        :role => :external,
-        :family => :inet6,
-        :address => "2001:978:2:2C::172:9"
+        :inet => {
+          :address => "130.117.76.9"
+        },
+        :inet6 => {
+          :address => "2001:978:2:2c::172:9"
+        }
       }
     }
   },

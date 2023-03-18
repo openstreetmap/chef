@@ -26,11 +26,12 @@ default_attributes(
   },
   :networking => {
     :interfaces => {
-      :internal_ipv4 => {
+      :internal => {
         :interface => "bond0",
         :role => :internal,
-        :family => :inet,
-        :address => "10.0.48.10",
+        :inet => {
+          :address => "10.0.48.10"
+        },
         :bond => {
           :mode => "802.3ad",
           :lacprate => "fast",
@@ -38,17 +39,15 @@ default_attributes(
           :slaves => %w[eth0 eth1]
         }
       },
-      :external_ipv4 => {
+      :external => {
         :interface => "bond0.2",
         :role => :external,
-        :family => :inet,
-        :address => "130.117.76.10"
-      },
-      :external_ipv6 => {
-        :interface => "bond0.2",
-        :role => :external,
-        :family => :inet6,
-        :address => "2001:978:2:2C::172:A"
+        :inet => {
+          :address => "130.117.76.10"
+        },
+        :inet6 => {
+          :address => "2001:978:2:2c::172:a"
+        }
       }
     }
   },
@@ -80,7 +79,7 @@ default_attributes(
           "193.60.236.0/24",          # ucl external
           "10.0.48.0/20",             # amsterdam internal
           "130.117.76.0/27",          # amsterdam external
-          "2001:978:2:2C::172:0/112", # amsterdam external
+          "2001:978:2:2c::172:0/112", # amsterdam external
           "10.0.64.0/20",             # dublin internal
           "184.104.226.96/27",        # dublin external
           "2001:470:1:b3b::/64",      # dublin external

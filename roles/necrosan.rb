@@ -4,27 +4,25 @@ description "Master role applied to necrosan"
 default_attributes(
   :networking => {
     :interfaces => {
-      :external_ipv4 => {
+      :external => {
         :interface => "bond0",
         :mtu => 9000,
         :role => :external,
-        :family => :inet,
-        :address => "45.85.134.91",
-        :prefix => "31",
-        :gateway => "45.85.134.90",
+        :inet => {
+          :address => "45.85.134.91",
+          :prefix => "31",
+          :gateway => "45.85.134.90"
+        },
+        :inet6 => {
+          :address => "2a05:46c0:100:1004:ffff:ffff:ffff:ffff",
+          :prefix => "64",
+          :gateway => "2a05:46c0:100:1004::"
+        },
         :bond => {
           :slaves => %w[eno1 eno2],
           :mode => "802.3ad",
           :lacprate => "fast"
         }
-      },
-      :external_ipv6 => {
-        :interface => "bond0",
-        :role => :external,
-        :family => :inet6,
-        :address => "2a05:46c0:100:1004:ffff:ffff:ffff:ffff",
-        :prefix => "64",
-        :gateway => "2a05:46c0:100:1004::"
       }
     }
   },

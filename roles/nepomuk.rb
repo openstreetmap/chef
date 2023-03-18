@@ -9,21 +9,19 @@ default_attributes(
       ]
     },
     :interfaces => {
-      :external_ipv4 => {
+      :external => {
         :interface => "eth0",
         :role => :external,
-        :family => :inet,
-        :address => "77.95.65.39",
-        :prefix => "27",
-        :gateway => "77.95.65.33"
-      },
-      :external_ipv6 => {
-        :interface => "eth0",
-        :role => :external,
-        :family => :inet6,
-        :address => "2a03:9180:0:100::7",
-        :prefix => "64",
-        :gateway => "2a03:9180:0:100::1"
+        :inet => {
+          :address => "77.95.65.39",
+          :prefix => "27",
+          :gateway => "77.95.65.33"
+        },
+        :inet6 => {
+          :address => "2a03:9180:0:100::7",
+          :prefix => "64",
+          :gateway => "2a03:9180:0:100::1"
+        }
       }
     }
   },

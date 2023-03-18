@@ -4,17 +4,19 @@ description "Master role applied to ysera"
 default_attributes(
   :networking => {
     :interfaces => {
-      :internal_ipv4 => {
+      :internal => {
         :interface => "eno1.2801",
         :role => :internal,
-        :family => :inet,
-        :address => "10.0.0.15"
+        :inet => {
+          :address => "10.0.0.15"
+        }
       },
-      :external_ipv4 => {
+      :external => {
         :interface => "eno1.2800",
         :role => :external,
-        :family => :inet,
-        :address => "193.60.236.22"
+        :inet => {
+          :address => "193.60.236.22"
+        }
       }
     }
   },

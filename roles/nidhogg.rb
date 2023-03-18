@@ -4,27 +4,25 @@ description "Master role applied to nidhogg"
 default_attributes(
   :networking => {
     :interfaces => {
-      :internal_ipv4 => {
+      :external => {
         :interface => "bond0",
         :role => :external,
-        :family => :inet,
-        :address => "194.71.11.111",
-        :prefix => "25",
-        :gateway => "194.71.11.1",
+        :inet => {
+          :address => "194.71.11.111",
+          :prefix => "25",
+          :gateway => "194.71.11.1"
+        },
+        :inet6 => {
+          :address => "2001:6b0:19:2::111",
+          :prefix => "64",
+          :gateway => "2001:6b0:19:2::1"
+        },
         :bond => {
           :mode => "802.3ad",
           :lacprate => "fast",
           :xmithashpolicy => "layer3+4",
           :slaves => %w[enp68s0f0 enp68s0f1 enp68s0f2 enp68s0f3]
         }
-      },
-      :external_ipv6 => {
-        :interface => "bond0",
-        :role => :external,
-        :family => :inet6,
-        :address => "2001:6b0:19:2::111",
-        :prefix => "64",
-        :gateway => "2001:6b0:19:2::1"
       }
     }
   },

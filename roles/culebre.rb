@@ -4,11 +4,12 @@ description "Master role applied to culebre"
 default_attributes(
   :networking => {
     :interfaces => {
-      :internal_ipv4 => {
+      :internal => {
         :interface => "bond0",
         :role => :internal,
-        :family => :inet,
-        :address => "10.0.64.9",
+        :inet => {
+          :address => "10.0.64.9"
+        },
         :bond => {
           :mode => "802.3ad",
           :lacprate => "fast",
@@ -16,17 +17,15 @@ default_attributes(
           :slaves => %w[enp68s0f0 enp68s0f1 enp68s0f2 enp68s0f3]
         }
       },
-      :external_ipv4 => {
+      :external => {
         :interface => "bond0.101",
         :role => :external,
-        :family => :inet,
-        :address => "184.104.226.105"
-      },
-      :external_ipv6 => {
-        :interface => "bond0.101",
-        :role => :external,
-        :family => :inet6,
-        :address => "2001:470:1:b3b::9"
+        :inet => {
+          :address => "184.104.226.105"
+        },
+        :inet6 => {
+          :address => "2001:470:1:b3b::9"
+        }
       }
     }
   },

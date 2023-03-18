@@ -12,15 +12,15 @@ define ip6-multicast-addresses = { ff00::/8 }
 table inet chef-filter {
   set ip-osm-addresses {
     type ipv4_addr
-<% unless Array(@hosts["inet"]).empty? -%>
-    elements = { <%= Array(@hosts["inet"]).sort.join(", ") %> }
+<% unless Array(@hosts[:inet]).empty? -%>
+    elements = { <%= Array(@hosts[:inet]).sort.join(", ") %> }
 <% end -%>
   }
 
   set ip6-osm-addresses {
     type ipv6_addr
-<% unless Array(@hosts["inet"]).empty? -%>
-    elements = { <%= Array(@hosts["inet6"]).sort.join(", ") %> }
+<% unless Array(@hosts[:inet6]).empty? -%>
+    elements = { <%= Array(@hosts[:inet6]).sort.join(", ") %> }
 <% end -%>
   }
 
@@ -164,9 +164,9 @@ table ip chef-nat {
   chain postrouting {
     type nat hook postrouting priority srcnat;
 
-<% node.interfaces(:role => :external, :family => :inet).each do |external| -%>
-<% node.interfaces(:role => :internal, :family => :inet).each do |internal| -%>
-    oifname { <%= external[:interface] %> } ip saddr { <%= internal[:network] %>/<%= internal[:prefix] %> } snat <%= external[:address] %>
+<% node.interfaces(:role => :external).each do |external| -%>
+<% node.ipaddresses(:role => :internal, :family => :inet).each do |internal| -%>
+    oifname { <%= external[:interface] %> } ip saddr { <%= internal.subnet %> } snat <%= external[:inet][:address] %>
 <% end -%>
 <% end -%>
   }
