@@ -14,7 +14,7 @@ ln -s /srv/community.openstreetmap.org/shared/data/postgres_backup $T/community-
 
 export RSYNC_RSH="ssh -ax"
 
-nice tar --create --numeric-owner --dereference --directory=$T community-$D | nice gzip --rsyncable -9 > $T/$B
+nice tar --create --numeric-owner --dereference --directory=$T --warning=no-file-changed community-$D | nice gzip --rsyncable -9 > $T/$B
 nice rsync --preallocate --fuzzy $T/$B backup::backup
 
 rm -rf $T
