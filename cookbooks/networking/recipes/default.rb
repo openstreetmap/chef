@@ -25,189 +25,306 @@ require "yaml"
 
 keys = data_bag_item("networking", "keys")
 
-package "netplan.io"
+if node[:networking][:engine] == "netplan"
+  package "netplan.io"
 
-netplan = {
-  "network" => {
-    "version" => 2,
-    "renderer" => "networkd",
-    "ethernets" => {},
-    "bonds" => {},
-    "vlans" => {}
+  netplan = {
+    "network" => {
+      "version" => 2,
+      "renderer" => "networkd",
+      "ethernets" => {},
+      "bonds" => {},
+      "vlans" => {}
+    }
   }
-}
 
-node[:networking][:interfaces].each do |name, interface|
-  if interface[:interface]
-    if interface[:role] && (role = node[:networking][:roles][interface[:role]])
-      if interface[:inet] && role[:inet]
-        node.default[:networking][:interfaces][name][:inet][:prefix] = role[:inet][:prefix]
-        node.default[:networking][:interfaces][name][:inet][:gateway] = role[:inet][:gateway]
-        node.default[:networking][:interfaces][name][:inet][:routes] = role[:inet][:routes]
-      end
-
-      if interface[:inet6] && role[:inet6]
-        node.default[:networking][:interfaces][name][:inet6][:prefix] = role[:inet6][:prefix]
-        node.default[:networking][:interfaces][name][:inet6][:gateway] = role[:inet6][:gateway]
-        node.default[:networking][:interfaces][name][:inet6][:routes] = role[:inet6][:routes]
-      end
-
-      node.default[:networking][:interfaces][name][:metric] = role[:metric]
-      node.default[:networking][:interfaces][name][:zone] = role[:zone]
-    end
-
-    interface = node[:networking][:interfaces][name]
-
-    deviceplan = if interface[:interface] =~ /^(.*)\.(\d+)$/
-                   netplan["network"]["vlans"][interface[:interface]] ||= {
-                     "id" => Regexp.last_match(2).to_i,
-                     "link" => Regexp.last_match(1),
-                     "accept-ra" => false,
-                     "addresses" => [],
-                     "routes" => []
-                   }
-                 elsif interface[:interface] =~ /^bond\d+$/
-                   netplan["network"]["bonds"][interface[:interface]] ||= {
-                     "accept-ra" => false,
-                     "addresses" => [],
-                     "routes" => []
-                   }
-                 else
-                   netplan["network"]["ethernets"][interface[:interface]] ||= {
-                     "accept-ra" => false,
-                     "addresses" => [],
-                     "routes" => []
-                   }
-                 end
-
-    if interface[:inet]
-      deviceplan["addresses"].push("#{interface[:inet][:address]}/#{interface[:inet][:prefix]}")
-    end
-
-    if interface[:inet6]
-      deviceplan["addresses"].push("#{interface[:inet6][:address]}/#{interface[:inet6][:prefix]}")
-    end
-
-    if interface[:mtu]
-      deviceplan["mtu"] = interface[:mtu]
-    end
-
-    if interface[:bond]
-      deviceplan["interfaces"] = interface[:bond][:slaves].to_a
-
-      deviceplan["parameters"] = {
-        "mode" => interface[:bond][:mode] || "active-backup",
-        "mii-monitor-interval" => interface[:bond][:miimon] || 100,
-        "down-delay" => interface[:bond][:downdelay] || 200,
-        "up-delay" => interface[:bond][:updelay] || 200
-      }
-
-      deviceplan["parameters"]["primary"] = interface[:bond][:slaves].first if deviceplan["parameters"]["mode"] == "active-backup"
-      deviceplan["parameters"]["transmit-hash-policy"] = interface[:bond][:xmithashpolicy] if interface[:bond][:xmithashpolicy]
-      deviceplan["parameters"]["lacp-rate"] = interface[:bond][:lacprate] if interface[:bond][:lacprate]
-    end
-
-    if interface[:inet]
-      if interface[:inet][:gateway] && interface[:inet][:gateway] != interface[:inet][:address]
-        deviceplan["routes"].push(
-          "to" => "0.0.0.0/0",
-          "via" => interface[:inet][:gateway],
-          "metric" => interface[:metric],
-          "on-link" => true
-        )
-      end
-
-      if interface[:inet][:routes]
-        interface[:inet][:routes].each do |to, parameters|
-          next if parameters[:via] == interface[:inet][:address]
-
-          route = {
-            "to" => to
-          }
-
-          route["type"] = parameters[:type] if parameters[:type]
-          route["via"] = parameters[:via] if parameters[:via]
-          route["metric"] = parameters[:metric] if parameters[:metric]
-
-          deviceplan["routes"].push(route)
+  node[:networking][:interfaces].each do |name, interface|
+    if interface[:interface]
+      if interface[:role] && (role = node[:networking][:roles][interface[:role]])
+        if interface[:inet] && role[:inet]
+          node.default[:networking][:interfaces][name][:inet][:prefix] = role[:inet][:prefix]
+          node.default[:networking][:interfaces][name][:inet][:gateway] = role[:inet][:gateway]
+          node.default[:networking][:interfaces][name][:inet][:routes] = role[:inet][:routes]
         end
+
+        if interface[:inet6] && role[:inet6]
+          node.default[:networking][:interfaces][name][:inet6][:prefix] = role[:inet6][:prefix]
+          node.default[:networking][:interfaces][name][:inet6][:gateway] = role[:inet6][:gateway]
+          node.default[:networking][:interfaces][name][:inet6][:routes] = role[:inet6][:routes]
+        end
+
+        node.default[:networking][:interfaces][name][:metric] = role[:metric]
+        node.default[:networking][:interfaces][name][:zone] = role[:zone]
       end
-    end
 
-    if interface[:inet6]
-      if interface[:inet6][:gateway] && interface[:inet6][:gateway] != interface[:inet6][:address]
-        deviceplan["routes"].push(
-          "to" => "::/0",
-          "via" => interface[:inet6][:gateway],
-          "metric" => interface[:metric],
-          "on-link" => true
-        )
+      interface = node[:networking][:interfaces][name]
 
-        # This ordering relies on systemd-networkd adding routes
-        # in reverse order and will need moving before the previous
-        # route once that is fixed:
-        #
-        # https://github.com/systemd/systemd/issues/5430
-        # https://github.com/systemd/systemd/pull/10938
-        if !IPAddr.new(interface[:inet6][:address]).mask(interface[:inet6][:prefix]).include?(interface[:inet6][:gateway]) &&
-           !IPAddr.new("fe80::/64").include?(interface[:inet6][:gateway])
+      deviceplan = if interface[:interface] =~ /^(.*)\.(\d+)$/
+                     netplan["network"]["vlans"][interface[:interface]] ||= {
+                       "id" => Regexp.last_match(2).to_i,
+                       "link" => Regexp.last_match(1),
+                       "accept-ra" => false,
+                       "addresses" => [],
+                       "routes" => []
+                     }
+                   elsif interface[:interface] =~ /^bond\d+$/
+                     netplan["network"]["bonds"][interface[:interface]] ||= {
+                       "accept-ra" => false,
+                       "addresses" => [],
+                       "routes" => []
+                     }
+                   else
+                     netplan["network"]["ethernets"][interface[:interface]] ||= {
+                       "accept-ra" => false,
+                       "addresses" => [],
+                       "routes" => []
+                     }
+                   end
+
+      if interface[:inet]
+        deviceplan["addresses"].push("#{interface[:inet][:address]}/#{interface[:inet][:prefix]}")
+      end
+
+      if interface[:inet6]
+        deviceplan["addresses"].push("#{interface[:inet6][:address]}/#{interface[:inet6][:prefix]}")
+      end
+
+      if interface[:mtu]
+        deviceplan["mtu"] = interface[:mtu]
+      end
+
+      if interface[:bond]
+        deviceplan["interfaces"] = interface[:bond][:slaves].to_a
+
+        deviceplan["parameters"] = {
+          "mode" => interface[:bond][:mode] || "active-backup",
+          "mii-monitor-interval" => interface[:bond][:miimon] || 100,
+          "down-delay" => interface[:bond][:downdelay] || 200,
+          "up-delay" => interface[:bond][:updelay] || 200
+        }
+
+        deviceplan["parameters"]["primary"] = interface[:bond][:slaves].first if deviceplan["parameters"]["mode"] == "active-backup"
+        deviceplan["parameters"]["transmit-hash-policy"] = interface[:bond][:xmithashpolicy] if interface[:bond][:xmithashpolicy]
+        deviceplan["parameters"]["lacp-rate"] = interface[:bond][:lacprate] if interface[:bond][:lacprate]
+      end
+
+      if interface[:inet]
+        if interface[:inet][:gateway] && interface[:inet][:gateway] != interface[:inet][:address]
           deviceplan["routes"].push(
-            "to" => interface[:inet6][:gateway],
-            "scope" => "link"
+            "to" => "0.0.0.0/0",
+            "via" => interface[:inet][:gateway],
+            "metric" => interface[:metric],
+            "on-link" => true
           )
         end
+
+        if interface[:inet][:routes]
+          interface[:inet][:routes].each do |to, parameters|
+            next if parameters[:via] == interface[:inet][:address]
+
+            route = {
+              "to" => to
+            }
+
+            route["type"] = parameters[:type] if parameters[:type]
+            route["via"] = parameters[:via] if parameters[:via]
+            route["metric"] = parameters[:metric] if parameters[:metric]
+
+            deviceplan["routes"].push(route)
+          end
+        end
       end
 
-      if interface[:inet6][:routes]
-        interface[:inet6][:routes].each do |to, parameters|
-          next if parameters[:via] == interface[:inet6][:address]
+      if interface[:inet6]
+        if interface[:inet6][:gateway] && interface[:inet6][:gateway] != interface[:inet6][:address]
+          deviceplan["routes"].push(
+            "to" => "::/0",
+            "via" => interface[:inet6][:gateway],
+            "metric" => interface[:metric],
+            "on-link" => true
+          )
 
-          route = {
-            "to" => to
-          }
+          # This ordering relies on systemd-networkd adding routes
+          # in reverse order and will need moving before the previous
+          # route once that is fixed:
+          #
+          # https://github.com/systemd/systemd/issues/5430
+          # https://github.com/systemd/systemd/pull/10938
+          if !IPAddr.new(interface[:inet6][:address]).mask(interface[:inet6][:prefix]).include?(interface[:inet6][:gateway]) &&
+             !IPAddr.new("fe80::/64").include?(interface[:inet6][:gateway])
+            deviceplan["routes"].push(
+              "to" => interface[:inet6][:gateway],
+              "scope" => "link"
+            )
+          end
+        end
 
-          route["type"] = parameters[:type] if parameters[:type]
-          route["via"] = parameters[:via] if parameters[:via]
-          route["metric"] = parameters[:metric] if parameters[:metric]
+        if interface[:inet6][:routes]
+          interface[:inet6][:routes].each do |to, parameters|
+            next if parameters[:via] == interface[:inet6][:address]
 
-          deviceplan["routes"].push(route)
+            route = {
+              "to" => to
+            }
+
+            route["type"] = parameters[:type] if parameters[:type]
+            route["via"] = parameters[:via] if parameters[:via]
+            route["metric"] = parameters[:metric] if parameters[:metric]
+
+            deviceplan["routes"].push(route)
+          end
+        end
+      end
+    else
+      node.rm(:networking, :interfaces, name)
+    end
+  end
+
+  netplan["network"]["bonds"].each_value do |bond|
+    bond["interfaces"].each do |interface|
+      netplan["network"]["ethernets"][interface] ||= { "accept-ra" => false, "optional" => true }
+    end
+  end
+
+  netplan["network"]["vlans"].each_value do |vlan|
+    unless vlan["link"] =~ /^bond\d+$/
+      netplan["network"]["ethernets"][vlan["link"]] ||= { "accept-ra" => false }
+    end
+  end
+
+  file "/etc/netplan/00-installer-config.yaml" do
+    action :delete
+  end
+
+  file "/etc/netplan/01-netcfg.yaml" do
+    action :delete
+  end
+
+  file "/etc/netplan/50-cloud-init.yaml" do
+    action :delete
+  end
+
+  file "/etc/netplan/99-chef.yaml" do
+    owner "root"
+    group "root"
+    mode "644"
+    content YAML.dump(netplan)
+  end
+elsif node[:networking][:engine] == "systemd-networkd"
+  file "/etc/netplan/99-chef.yaml" do
+    action :delete
+  end
+
+  package "netplan.io" do
+    action :purge
+  end
+
+  interfaces = node[:networking][:interfaces].collect do |name, interface|
+    [interface[:interface], name]
+  end.to_h
+
+  node[:networking][:interfaces].each do |name, interface|
+    if interface[:interface] =~ /^(.*)\.(\d+)$/
+      vlan_interface = Regexp.last_match(1)
+      vlan_id = Regexp.last_match(2)
+
+      parent = interfaces[vlan_interface] || "vlans_#{vlan_interface}"
+
+      node.default_unless[:networking][:interfaces][parent][:interface] = vlan_interface,
+      node.default_unless[:networking][:interfaces][parent][:vlans] = []
+
+      node.default[:networking][:interfaces][parent][:vlans] << vlan_id
+    end
+
+    next unless interface[:role] && (role = node[:networking][:roles][interface[:role]])
+
+    if interface[:inet] && role[:inet]
+      node.default[:networking][:interfaces][name][:inet][:prefix] = role[:inet][:prefix]
+      node.default[:networking][:interfaces][name][:inet][:gateway] = role[:inet][:gateway]
+      node.default[:networking][:interfaces][name][:inet][:routes] = role[:inet][:routes]
+    end
+
+    if interface[:inet6] && role[:inet6]
+      node.default[:networking][:interfaces][name][:inet6][:prefix] = role[:inet6][:prefix]
+      node.default[:networking][:interfaces][name][:inet6][:gateway] = role[:inet6][:gateway]
+      node.default[:networking][:interfaces][name][:inet6][:routes] = role[:inet6][:routes]
+    end
+
+    node.default[:networking][:interfaces][name][:metric] = role[:metric]
+    node.default[:networking][:interfaces][name][:zone] = role[:zone]
+  end
+
+  node[:networking][:interfaces].each do |_, interface|
+    file "/run/systemd/network/10-netplan-#{interface[:interface]}.netdev" do
+      action :delete
+    end
+
+    if interface[:interface] =~ /^.*\.(\d+)$/
+      template "/etc/systemd/network/10-#{interface[:interface]}.netdev" do
+        source "vlan.netdev.erb"
+        owner "root"
+        group "root"
+        mode "644"
+        variables :interface => interface, :vlan => Regexp.last_match(1)
+        notifies :run, "execute[networkctl-delete-#{interface[:interface]}]"
+        notifies :run, "notify_group[networkctl-reload]"
+      end
+
+      execute "networkctl-delete-#{interface[:interface]}" do
+        action :nothing
+        command "networkctl delete #{interface[:interface]}"
+        only_if { ::File.exist?("/sys/class/net/#{interface[:interface]}") }
+      end
+    elsif interface[:interface] =~ /^bond\d+$/
+      template "/etc/systemd/network/10-#{interface[:interface]}.netdev" do
+        source "bond.netdev.erb"
+        owner "root"
+        group "root"
+        mode "644"
+        variables :interface => interface
+        notifies :run, "execute[networkctl-delete-#{interface[:interface]}]"
+        notifies :run, "notify_group[networkctl-reload]"
+      end
+
+      execute "networkctl-delete-#{interface[:interface]}" do
+        action :nothing
+        command "networkctl delete #{interface[:interface]}"
+        only_if { ::File.exist?("/sys/class/net/#{interface[:interface]}") }
+      end
+
+      interface[:bond][:slaves].each do |slave|
+        file "/run/systemd/network/10-netplan-#{slave}.network" do
+          action :delete
+        end
+
+        template "/etc/systemd/network/10-#{slave}.network" do
+          source "slave.network.erb"
+          owner "root"
+          group "root"
+          mode "644"
+          variables :master => interface, :slave => slave
+          notifies :run, "notify_group[networkctl-reload]"
         end
       end
     end
-  else
-    node.rm(:networking, :interfaces, name)
+
+    file "/run/systemd/network/10-netplan-#{interface[:interface]}.network" do
+      action :delete
+    end
+
+    template "/etc/systemd/network/10-#{interface[:interface]}.network" do
+      source "network.erb"
+      owner "root"
+      group "root"
+      mode "644"
+      variables :interface => interface
+      notifies :run, "notify_group[networkctl-reload]"
+    end
   end
-end
 
-netplan["network"]["bonds"].each_value do |bond|
-  bond["interfaces"].each do |interface|
-    netplan["network"]["ethernets"][interface] ||= { "accept-ra" => false, "optional" => true }
+  service "systemd-networkd" do
+    action [:enable, :start]
   end
-end
-
-netplan["network"]["vlans"].each_value do |vlan|
-  unless vlan["link"] =~ /^bond\d+$/
-    netplan["network"]["ethernets"][vlan["link"]] ||= { "accept-ra" => false }
-  end
-end
-
-file "/etc/netplan/00-installer-config.yaml" do
-  action :delete
-end
-
-file "/etc/netplan/01-netcfg.yaml" do
-  action :delete
-end
-
-file "/etc/netplan/50-cloud-init.yaml" do
-  action :delete
-end
-
-file "/etc/netplan/99-chef.yaml" do
-  owner "root"
-  group "root"
-  mode "644"
-  content YAML.dump(netplan)
 end
 
 package "cloud-init" do
@@ -319,7 +436,7 @@ if node[:networking][:wireguard][:enabled]
     group "systemd-network"
     mode "640"
     notifies :run, "execute[networkctl-delete-wg0]"
-    notifies :run, "execute[networkctl-reload]"
+    notifies :run, "notify_group[networkctl-reload]"
   end
 
   file "/etc/systemd/network/wireguard.network" do
@@ -339,12 +456,15 @@ if node[:networking][:wireguard][:enabled]
     command "networkctl delete wg0"
     only_if { ::File.exist?("/sys/class/net/wg0") }
   end
+end
 
-  execute "networkctl-reload" do
-    action :nothing
-    command "networkctl reload"
-    not_if { kitchen? }
-  end
+notify_group "networkctl-reload"
+
+execute "networkctl-reload" do
+  action :nothing
+  command "networkctl reload"
+  subscribes :run, "notify_group[networkctl-reload]"
+  not_if { kitchen? && node[:networking][:engine] == "netplan" }
 end
 
 ohai "reload-hostname" do

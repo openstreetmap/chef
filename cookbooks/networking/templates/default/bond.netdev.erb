@@ -1,0 +1,15 @@
+[NetDev]
+Name=<%= @interface[:interface] %>
+Kind=bond
+
+[Bond]
+Mode=<%= @interface[:bond][:mode] || "active-backup" %>
+<% if @interface[:bond][:xmithashpolicy] -%>
+TransmitHashPolicy=<%= @interface[:bond][:xmithashpolicy] %>
+<% end -%>
+<% if @interface[:bond][:lacprate] -%>
+LACPTransmitRate=<%= @interface[:bond][:lacprate] %>
+<% end -%>
+MIIMonitorSec=<%= @interface[:bond][:miimon] || "100ms" %>
+UpDelaySec=<%= @interface[:bond][:updelay] || "200ms" %>
+DownDelaySec=<%= @interface[:bond][:downdelay] || "200ms" %>

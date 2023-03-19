@@ -1,0 +1,60 @@
+[Match]
+Name=<%= @interface[:interface] %>
+
+[Network]
+<% if @interface[:inet] -%>
+Address=<%= @interface[:inet][:address] %>/<%== @interface[:inet][:prefix] %>
+<% end -%>
+<% if @interface[:inet6] -%>
+Address=<%= @interface[:inet6][:address] %>/<%== @interface[:inet6][:prefix] %>
+<% end -%>
+IPv6AcceptRA=no
+<% Array(@interface[:vlans]).sort.uniq.each do |vlan| -%>
+VLAN=<%= @interface[:interface] %>.<%= vlan %>
+<% end -%>
+<% if @interface.dig(:inet, :gateway) && @interface[:inet][:gateway] != @interface[:inet][:address] -%>
+
+[Route]
+Gateway=<%= @interface[:inet][:gateway] %>
+GatewayOnLink=true
+<% if @interface[:metric] -%>
+Metric=<%= @interface[:metric] %>
+<% end -%>
+<% end -%>
+<% if @interface.dig(:inet6, :gateway) && @interface[:inet6][:gateway] != @interface[:inet6][:address] -%>
+
+[Route]
+Gateway=<%= @interface[:inet6][:gateway] %>
+GatewayOnLink=true
+<% if @interface[:metric] -%>
+Metric=<%= @interface[:metric] %>
+<% end -%>
+<% end -%>
+<% Hash(@interface.dig(:inet, :routes)).sort.each do |destination, details| -%>
+
+[Route]
+<% if details[:gateway] -%>
+Gateway=<%= details[:gateway] %>
+<% end -%>
+Destination=<%= destination %>
+<% if details[:metric] -%>
+Metric=<%= details[:metric] %>
+<% end -%>
+<% if details[:type] -%>
+Type=<%= details[:type] %>
+<% end -%>
+<% end -%>
+<% Hash(@interface.dig(:inet6, :routes)).sort.each do |destination, details| -%>
+
+[Route]
+<% if details[:gateway] -%>
+Gateway=<%= details[:gateway] %>
+<% end -%>
+Destination=<%= destination %>
+<% if details[:metric] -%>
+Metric=<%= details[:metric] %>
+<% end -%>
+<% if details[:type] -%>
+Type=<%= details[:type] %>
+<% end -%>
+<% end -%>

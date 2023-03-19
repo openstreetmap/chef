@@ -1,3 +1,4 @@
+default[:networking][:engine] = "netplan"
 default[:networking][:firewall][:enabled] = true
 default[:networking][:firewall][:sets] = []
 default[:networking][:firewall][:helpers] = []
