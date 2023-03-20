@@ -230,7 +230,7 @@ elsif node[:networking][:engine] == "systemd-networkd"
 
       parent = interfaces[vlan_interface] || "vlans_#{vlan_interface}"
 
-      node.default_unless[:networking][:interfaces][parent][:interface] = vlan_interface,
+      node.default_unless[:networking][:interfaces][parent][:interface] = vlan_interface
       node.default_unless[:networking][:interfaces][parent][:vlans] = []
 
       node.default[:networking][:interfaces][parent][:vlans] << vlan_id
