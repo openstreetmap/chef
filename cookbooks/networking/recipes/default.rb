@@ -266,14 +266,7 @@ elsif node[:networking][:engine] == "systemd-networkd"
         group "root"
         mode "644"
         variables :interface => interface, :vlan => Regexp.last_match(1)
-        notifies :run, "execute[networkctl-delete-#{interface[:interface]}]"
         notifies :run, "notify_group[networkctl-reload]"
-      end
-
-      execute "networkctl-delete-#{interface[:interface]}" do
-        action :nothing
-        command "networkctl delete #{interface[:interface]}"
-        only_if { ::File.exist?("/sys/class/net/#{interface[:interface]}") }
       end
     elsif interface[:interface] =~ /^bond\d+$/
       template "/etc/systemd/network/10-#{interface[:interface]}.netdev" do
@@ -282,14 +275,7 @@ elsif node[:networking][:engine] == "systemd-networkd"
         group "root"
         mode "644"
         variables :interface => interface
-        notifies :run, "execute[networkctl-delete-#{interface[:interface]}]"
         notifies :run, "notify_group[networkctl-reload]"
-      end
-
-      execute "networkctl-delete-#{interface[:interface]}" do
-        action :nothing
-        command "networkctl delete #{interface[:interface]}"
-        only_if { ::File.exist?("/sys/class/net/#{interface[:interface]}") }
       end
 
       interface[:bond][:slaves].each do |slave|
