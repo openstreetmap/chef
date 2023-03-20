@@ -309,32 +309,40 @@ if node[:networking][:wireguard][:enabled]
     end
   end
 
-  template "/etc/systemd/network/wireguard.netdev" do
+  file "/etc/systemd/network/wireguard.netdev" do
+    action :delete
+  end
+
+  template "/etc/systemd/network/10-wg0.netdev" do
     source "wireguard.netdev.erb"
     owner "root"
     group "systemd-network"
     mode "640"
+    notifies :run, "execute[networkctl-delete-wg0]"
+    notifies :run, "execute[networkctl-reload]"
   end
 
-  template "/etc/systemd/network/wireguard.network" do
+  file "/etc/systemd/network/wireguard.network" do
+    action :delete
+  end
+
+  template "/etc/systemd/network/10-wg0.network" do
     source "wireguard.network.erb"
     owner "root"
     group "root"
     mode "644"
+    notifies :run, "execute[networkctl-reload]"
   end
 
   execute "networkctl-delete-wg0" do
     action :nothing
     command "networkctl delete wg0"
-    subscribes :run, "template[/etc/systemd/network/wireguard.netdev]"
     only_if { ::File.exist?("/sys/class/net/wg0") }
   end
 
   execute "networkctl-reload" do
     action :nothing
     command "networkctl reload"
-    subscribes :run, "template[/etc/systemd/network/wireguard.netdev]"
-    subscribes :run, "template[/etc/systemd/network/wireguard.network]"
     not_if { kitchen? }
   end
 end
