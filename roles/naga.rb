@@ -3,7 +3,6 @@ description "Master role applied to naga"
 
 default_attributes(
   :networking => {
-    :engine => "systemd-networkd",
     :interfaces => {
       :internal => {
         :interface => "bond0",
