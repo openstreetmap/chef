@@ -3,6 +3,7 @@ description "Master role applied to horntail"
 
 default_attributes(
   :networking => {
+    :engine => "systemd-networkd",
     :interfaces => {
       :internal => {
         :interface => "bond0",
