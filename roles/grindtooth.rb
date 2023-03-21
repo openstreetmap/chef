@@ -3,7 +3,6 @@ description "Master role applied to grindtooth"
 
 default_attributes(
   :networking => {
-    :engine => "systemd-networkd",
     :interfaces => {
       :internal => {
         :interface => "enp3s0f0.2801",
