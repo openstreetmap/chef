@@ -31,6 +31,7 @@ Metric=<%= @interface[:metric] %>
 <% end -%>
 <% end -%>
 <% Hash(@interface.dig(:inet, :routes)).sort.each do |destination, details| -%>
+<% unless details[:via] == @interface[:inet][:address] -%>
 
 [Route]
 <% if details[:via] -%>
@@ -42,9 +43,11 @@ Metric=<%= details[:metric] %>
 <% end -%>
 <% if details[:type] -%>
 Type=<%= details[:type] %>
+<% end -%>
 <% end -%>
 <% end -%>
 <% Hash(@interface.dig(:inet6, :routes)).sort.each do |destination, details| -%>
+<% unless details[:via] == @interface[:inet6][:address] -%>
 
 [Route]
 <% if details[:via] -%>
@@ -56,5 +59,6 @@ Metric=<%= details[:metric] %>
 <% end -%>
 <% if details[:type] -%>
 Type=<%= details[:type] %>
+<% end -%>
 <% end -%>
 <% end -%>
