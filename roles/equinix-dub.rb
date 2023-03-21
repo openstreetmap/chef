@@ -12,7 +12,6 @@ default_attributes(
     }
   },
   :networking => {
-    :engine => "systemd-networkd",
     :roles => {
       :internal => {
         :inet => {

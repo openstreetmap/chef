@@ -3,7 +3,6 @@ description "Role applied to all servers at Equinix Amsterdam"
 
 default_attributes(
   :networking => {
-    :engine => "systemd-networkd",
     :roles => {
       :internal => {
         :inet => {

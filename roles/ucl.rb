@@ -4,7 +4,6 @@ description "Role applied to all servers at UCL"
 default_attributes(
   :location => "Slough, England",
   :networking => {
-    :engine => "systemd-networkd",
     :roles => {
       :internal => {
         :inet => {

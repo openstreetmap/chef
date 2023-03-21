@@ -1,4 +1,4 @@
-default[:networking][:engine] = "netplan"
+default[:networking][:engine] = "systemd-networkd"
 default[:networking][:firewall][:enabled] = true
 default[:networking][:firewall][:sets] = []
 default[:networking][:firewall][:helpers] = []
