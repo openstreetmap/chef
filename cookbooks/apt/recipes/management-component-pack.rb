@@ -23,25 +23,43 @@ apt_repository "management-component-pack" do
   action :remove
 end
 
-if node[:dmi][:system][:product_name].end_with?("Gen10")
-  apt_repository "mcp-jammy" do
-    uri "https://downloads.linux.hpe.com/SDR/repo/mcp"
-    distribution "jammy/current"
-    components ["non-free"]
-    key "C208ADDE26C2B797"
+if platform?("debian")
+  if node[:dmi][:system][:product_name].end_with?("Gen10")
+    apt_repository "mcp-gen10" do
+      uri "https://downloads.linux.hpe.com/SDR/repo/mcp"
+      distribution "#{node[:lsb][:codename]}/current-gen10"
+      components ["non-free"]
+      key "C208ADDE26C2B797"
+    end
+  else
+    apt_repository "mcp" do
+      uri "https://downloads.linux.hpe.com/SDR/repo/mcp"
+      distribution "#{node[:lsb][:codename]}/current"
+      components ["non-free"]
+      key "C208ADDE26C2B797"
+    end
   end
+elsif platform?("ubuntu")
+  if node[:dmi][:system][:product_name].end_with?("Gen10")
+    apt_repository "mcp-jammy" do
+      uri "https://downloads.linux.hpe.com/SDR/repo/mcp"
+      distribution "jammy/current"
+      components ["non-free"]
+      key "C208ADDE26C2B797"
+    end
 
-  apt_repository "mcp-focal-gen10" do
-    uri "https://downloads.linux.hpe.com/SDR/repo/mcp"
-    distribution "focal/current-gen10"
-    components ["non-free"]
-    key "C208ADDE26C2B797"
-  end
-else
-  apt_repository "mcp-bionic-gen9" do
-    uri "https://downloads.linux.hpe.com/SDR/repo/mcp"
-    distribution "bionic/current-gen9"
-    components ["non-free"]
-    key "C208ADDE26C2B797"
+    apt_repository "mcp-focal-gen10" do
+      uri "https://downloads.linux.hpe.com/SDR/repo/mcp"
+      distribution "focal/current-gen10"
+      components ["non-free"]
+      key "C208ADDE26C2B797"
+    end
+  else
+    apt_repository "mcp-bionic-gen9" do
+      uri "https://downloads.linux.hpe.com/SDR/repo/mcp"
+      distribution "bionic/current-gen9"
+      components ["non-free"]
+      key "C208ADDE26C2B797"
+    end
   end
 end

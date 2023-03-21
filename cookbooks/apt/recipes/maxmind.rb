@@ -21,4 +21,5 @@ include_recipe "apt"
 
 apt_repository "maxmind" do
   uri "ppa:maxmind/ppa"
+  only_if { platform?("ubuntu") }
 end

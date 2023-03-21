@@ -20,8 +20,14 @@
 include_recipe "apt"
 include_recipe "apt::postgresql"
 
+platform_name = if platform?("debian")
+                  "debian"
+                else
+                  "ubuntu"
+                end
+
 apt_repository "timescaledb" do
-  uri "https://packagecloud.io/timescale/timescaledb/ubuntu"
+  uri "https://packagecloud.io/timescale/timescaledb/#{platform_name}"
   components ["main"]
   key "https://packagecloud.io/timescale/timescaledb/gpgkey"
 end

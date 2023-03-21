@@ -19,9 +19,15 @@
 
 include_recipe "apt"
 
+platform_name = if platform?("debian")
+                  "debian"
+                else
+                  "ubuntu"
+                end
+
 apt_repository "nginx" do
   arch "amd64"
-  uri "https://nginx.org/packages/ubuntu"
+  uri "https://nginx.org/packages/#{platform_name}"
   components ["nginx"]
   key "ABF5BD827BD9BF62"
 end

@@ -19,9 +19,21 @@
 
 include_recipe "apt"
 
+platform_name = if platform?("debian")
+                  "debian"
+                else
+                  "ubuntu"
+                end
+
+distribution_name = if platform?("debian")
+                      "buster"
+                    else
+                      "precise"
+                    end
+
 apt_repository "hwraid" do
-  uri "https://hwraid.le-vert.net/ubuntu"
-  distribution "precise"
+  uri "https://hwraid.le-vert.net/#{platform_name}"
+  distribution distribution_name
   components ["main"]
   key "6005210E23B3D3B4"
 end

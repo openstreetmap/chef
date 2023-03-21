@@ -21,8 +21,9 @@ package %w[
   apt
   apt-transport-https
   gnupg
-  update-notifier-common
 ]
+
+package "update-notifier-common" if platform?("ubuntu")
 
 file "/etc/motd.tail" do
   action :delete
@@ -42,7 +43,14 @@ apt_update "/etc/apt/sources.list" do
   action :nothing
 end
 
-if intel?
+if platform?("debian")
+  archive_host = "deb.debian.org"
+  archive_security_host = archive_host
+  archive_distro = "debian"
+  archive_security_distro = "debian-security"
+  archive_suites = %w[main updates security]
+  archive_components = %w[main contrib non-free]
+elsif intel?
   archive_host = if node[:country]
                    "#{node[:country]}.archive.ubuntu.com"
                  else
@@ -50,10 +58,16 @@ if intel?
                  end
   archive_security_host = "security.ubuntu.com"
   archive_distro = "ubuntu"
+  archive_security_distro = archive_distro
+  archive_suites = %w[main updates backports security]
+  archive_components = %w[main restricted universe multiverse]
 else
   archive_host = "ports.ubuntu.com"
   archive_security_host = archive_host
   archive_distro = "ubuntu-ports"
+  archive_security_distro = archive_distro
+  archive_suites = %w[main updates backports security]
+  archive_components = %w[main restricted universe multiverse]
 end
 
 template "/etc/apt/sources.list" do
@@ -61,12 +75,19 @@ template "/etc/apt/sources.list" do
   owner "root"
   group "root"
   mode "644"
-  variables :archive_host => archive_host, :archive_security_host => archive_security_host, :archive_distro => archive_distro, :codename => node[:lsb][:codename]
+  variables :archive_host => archive_host,
+            :archive_security_host => archive_security_host,
+            :archive_distro => archive_distro,
+            :archive_security_distro => archive_security_distro,
+            :archive_suites => archive_suites,
+            :archive_components => archive_components,
+            :codename => node[:lsb][:codename]
   notifies :update, "apt_update[/etc/apt/sources.list]", :immediately
 end
 
 apt_repository "openstreetmap" do
   uri "ppa:osmadmins/ppa"
+  only_if { platform?("ubuntu") }
 end
 
 package "unattended-upgrades"

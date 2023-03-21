@@ -19,6 +19,12 @@
 
 include_recipe "apt"
 
+docker_platform = if platform?("debian")
+                    "debian"
+                  else
+                    "ubuntu"
+                  end
+
 docker_arch = if arm?
                 "arm64"
               else
@@ -26,8 +32,8 @@ docker_arch = if arm?
               end
 
 apt_repository "docker" do
-  uri "https://download.docker.com/linux/ubuntu"
+  uri "https://download.docker.com/linux/#{docker_platform}"
   arch docker_arch
   components ["stable"]
-  key "https://download.docker.com/linux/ubuntu/gpg"
+  key "https://download.docker.com/linux/#{docker_platform}/gpg"
 end
