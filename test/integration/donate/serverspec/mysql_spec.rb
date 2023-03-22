@@ -3,11 +3,17 @@ require "serverspec"
 # Required by serverspec
 set :backend, :exec
 
-describe package("mysql-server") do
+mysql_variant = if os[:family] == "ubuntu"
+                  "mysql"
+                else
+                  "mariadb"
+                end
+
+describe package("#{mysql_variant}-server") do
   it { should be_installed }
 end
 
-describe service("mysql") do
+describe service("#{mysql_variant}") do
   it { should be_enabled }
   it { should be_running }
 end
