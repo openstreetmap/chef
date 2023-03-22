@@ -20,11 +20,19 @@
 cache_dir = Chef::Config[:file_cache_path]
 
 chef_version = node[:chef][:client][:version]
+
+chef_platform = if platform?("debian")
+                  "debian"
+                else
+                  "ubuntu"
+                end
+
 chef_arch = if arm?
               "arm64"
             else
               "amd64"
             end
+
 chef_package = "chef_#{chef_version}-1_#{chef_arch}.deb"
 
 directory "/var/cache/chef" do
@@ -41,10 +49,10 @@ Dir.glob("#{cache_dir}/chef_*.deb").each do |deb|
   end
 end
 
-ubuntu_release = node[:lsb][:release]
+os_release = node[:lsb][:release]
 
 remote_file "#{cache_dir}/#{chef_package}" do
-  source "https://packages.chef.io/files/stable/chef/#{chef_version}/ubuntu/#{ubuntu_release}/#{chef_package}"
+  source "https://packages.chef.io/files/stable/chef/#{chef_version}/#{chef_platform}/#{os_release}/#{chef_package}"
   owner "root"
   group "root"
   mode "644"
