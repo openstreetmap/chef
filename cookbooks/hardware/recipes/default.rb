@@ -17,6 +17,7 @@
 # limitations under the License.
 #
 
+include_recipe "apt"
 include_recipe "git"
 include_recipe "munin"
 include_recipe "prometheus"
@@ -77,13 +78,13 @@ when "HP", "HPE"
   package "hp-health" do
     action :install
     notifies :restart, "service[hp-health]"
-    only_if { node[:lsb][:release].to_f < 22.04 }
+    only_if { platform?("ubuntu") && node[:lsb][:release].to_f < 22.04 }
   end
 
   service "hp-health" do
     action [:enable, :start]
     supports :status => true, :restart => true
-    only_if { node[:lsb][:release].to_f < 22.04 }
+    only_if { platform?("ubuntu") && node[:lsb][:release].to_f < 22.04 }
   end
 
   if product.end_with?("Gen8", "Gen9")
