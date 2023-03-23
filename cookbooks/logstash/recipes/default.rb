@@ -23,7 +23,7 @@ include_recipe "networking"
 keys = data_bag_item("logstash", "keys")
 
 package %w[
-  openjdk-8-jre-headless
+  openjdk-11-jre-headless
   logstash
 ]
 
