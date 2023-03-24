@@ -2,6 +2,9 @@
 Name=<%= @interface[:interface] %>
 
 [Network]
+<% if @interface.dig(:inet6, :dhcp) -%>
+DHCP=ipv6
+<% end -%>
 <% if @interface[:inet] -%>
 Address=<%= @interface[:inet][:address] %>/<%== @interface[:inet][:prefix] %>
 <% end -%>
@@ -11,6 +14,17 @@ Address=<%= @interface[:inet6][:address] %>/<%== @interface[:inet6][:prefix] %>
 IPv6AcceptRA=no
 <% Array(@interface[:vlans]).sort.uniq.each do |vlan| -%>
 VLAN=<%= @interface[:interface] %>.<%= vlan %>
+<% end -%>
+<% if @interface.dig(:inet6, :dhcp) -%>
+
+[DHCPv6]
+<% if @interface[:inet6][:dhcp][:duidtype] -%>
+DUIDType=<%= @interface[:inet6][:dhcp][:duidtype] %>
+<% end -%>
+<% if @interface[:inet6][:dhcp][:duidrawdata] -%>
+DUIDRawData=<%= @interface[:inet6][:dhcp][:duidrawdata] %>
+<% end -%>
+WithoutRA=solicit
 <% end -%>
 <% if @interface.dig(:inet, :gateway) && @interface[:inet][:gateway] != @interface[:inet][:address] -%>
 

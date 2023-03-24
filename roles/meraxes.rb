@@ -15,7 +15,11 @@ default_attributes(
         :inet6 => {
           :address => "2001:bc8:2d57:100:aa1e:84ff:fe72:e660",
           :prefix => "48",
-          :gateway => "2001:bc8:2::2:258:1"
+          :gateway => "2001:bc8:2::2:258:1",
+          :dhcp => {
+            :duidtype => "link-layer",
+            :duidrawdata => "00:01:14:e9:19:1c:49:e0"
+          }
         }
       }
     }
