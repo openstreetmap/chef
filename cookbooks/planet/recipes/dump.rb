@@ -94,7 +94,7 @@ directory "/store/planetdump" do
   recursive true
 end
 
-%w[planetdump planet-mirror-redirect-update].each do |program|
+%w[planetdump planetdump-trigger planet-mirror-redirect-update].each do |program|
   template "/usr/local/bin/#{program}" do
     source "#{program}.erb"
     owner "root"
@@ -128,6 +128,7 @@ end
 
 service "planetdump-trigger" do
   action [:enable, :start]
+  subscribes :restart, "template[/usr/local/bin/planetdump-trigger]"
 end
 
 systemd_service "planet-dump-mirror" do
