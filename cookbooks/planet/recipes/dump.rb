@@ -17,15 +17,7 @@
 # limitations under the License.
 #
 
-node.default[:incron][:planetdump] = {
-  :user => "root",
-  :path => "/store/backup",
-  :events => %w[IN_CREATE IN_MOVED_TO],
-  :command => "/bin/systemctl start planetdump@$#"
-}
-
 include_recipe "git"
-include_recipe "incron"
 
 package %w[
   gcc
@@ -50,6 +42,7 @@ package %w[
   mktorrent
   xmlstarlet
   libxml2-utils
+  inotify-tools
 ]
 
 directory "/opt/planet-dump-ng" do
@@ -123,6 +116,18 @@ systemd_service "planetdump@" do
     "/var/log/exim4",
     "/var/spool/exim4"
   ]
+end
+
+systemd_service "planetdump-trigger" do
+  description "Planet dump trigger"
+  user "root"
+  exec_start "/usr/local/bin/planetdump-trigger"
+  sandbox true
+  restrict_address_families "AF_UNIX"
+end
+
+service "planetdump-trigger" do
+  action [:enable, :start]
 end
 
 systemd_service "planet-dump-mirror" do
