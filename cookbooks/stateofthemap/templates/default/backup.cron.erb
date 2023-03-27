@@ -25,7 +25,7 @@ ln -s /srv/2016.stateofthemap.org $T/sotm-$D/www2016
 
 export RSYNC_RSH="ssh -ax"
 
-nice tar --create --dereference --directory=$T sotm-$D | nice gzip --rsyncable -9 > $T/$B
+nice tar --create --dereference --directory=$T --warning=no-file-changed sotm-$D | nice gzip --rsyncable -9 > $T/$B
 nice rsync --preallocate --fuzzy $T/$B backup::backup
 
 rm -rf $T
