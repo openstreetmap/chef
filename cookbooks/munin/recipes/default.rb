@@ -24,9 +24,7 @@ service "munin-node" do
   supports :status => true, :restart => true, :reload => true
 end
 
-servers = search(:node, "recipes:munin\\:\\:server").collect do |server|
-  server.ipaddresses(:role => :external)
-end.flatten
+servers = search(:node, "recipes:munin\\:\\:server").map(&:ipaddresses).flatten
 
 firewall_rule "accept-munin" do
   action :accept

@@ -31,7 +31,7 @@ port 4949
 
 # List the addresses that are allowed to connect
 allow ^127\.0\.0\.1$
-<% @servers.each do |server| -%>
+<% @servers.sort.each do |server| -%>
 allow ^<%= Regexp.quote(server) %>$
 <% end -%>
 <% node[:munin][:allow].each do |address| -%>
