@@ -17,13 +17,8 @@
 # limitations under the License.
 #
 
-include_recipe "apache"
+include_recipe "podman::apache"
 
-ssl_certificate "preview.ideditor.com" do
-  domains ["preview.ideditor.com"]
-  notifies :reload, "service[apache2]"
-end
-
-apache_site "preview.ideditor.com" do
-  template "apache.erb"
+podman_site "preview.ideditor.com" do
+  image "ghcr.io/openstreetmap/preview.ideditor.com-website:latest"
 end

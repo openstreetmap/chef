@@ -17,13 +17,9 @@
 # limitations under the License.
 #
 
-include_recipe "apache"
+include_recipe "podman::apache"
 
-ssl_certificate "hot.openstreetmap.org" do
-  domains ["hot.openstreetmap.org", "hot.osm.org"]
-  notifies :reload, "service[apache2]"
-end
-
-apache_site "hot.openstreetmap.org" do
-  template "apache.erb"
+podman_site "hot.openstreetmap.org" do
+  image "ghcr.io/openstreetmap/hot.openstreetmap.org-website:latest"
+  aliases ["hot.osm.org"]
 end

@@ -53,6 +53,7 @@ jobs:
           - gps-tile
           - hardware
           - hot
+          - ideditor
           - irc
           - kibana
           - letsencrypt

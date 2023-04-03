@@ -185,6 +185,9 @@ suites:
   - name: hot
     run_list:
       - recipe[hot::default]
+  - name: ideditor
+    run_list:
+      - recipe[ideditor::default]
   - name: irc
     run_list:
       - recipe[irc::default]

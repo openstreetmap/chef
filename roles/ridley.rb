@@ -45,8 +45,6 @@ run_list(
   "role[blog]",
   "role[otrs]",
   "role[donate]",
-  "recipe[hot]",
   "recipe[dmca]",
-  "recipe[dhcpd]",
-  "recipe[ideditor]"
+  "recipe[dhcpd]"
 )

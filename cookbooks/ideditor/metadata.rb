@@ -6,4 +6,4 @@ description       "Configures ideditor.com web site"
 
 version           "1.0.0"
 supports          "ubuntu"
-depends           "apache"
+depends           "podman"

@@ -42,5 +42,7 @@ run_list(
   "role[switch2osm]",
   "recipe[foundation::owg]",
   "recipe[foundation::welcome]",
-  "recipe[stateofthemap::container]"
+  "recipe[stateofthemap::container]",
+  "recipe[hot]",
+  "recipe[ideditor]"
 )

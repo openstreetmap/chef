@@ -6,4 +6,4 @@ description       "Configures hot web site"
 
 version           "1.0.0"
 supports          "ubuntu"
-depends           "apache"
+depends           "podman"
