@@ -298,7 +298,10 @@ if node[:postgresql][:clusters][:"15/main"]
     sandbox :enable_network => true
     restrict_address_families "AF_UNIX"
     memory_deny_write_execute false
-    read_write_paths "/srv/%i.apis.dev.openstreetmap.org/logs"
+    read_write_paths [
+      "/srv/%i.apis.dev.openstreetmap.org/logs",
+      "/srv/%i.apis.dev.openstreetmap.org/storage"
+    ]
   end
 
   systemd_service "cgimap@" do
