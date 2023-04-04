@@ -300,7 +300,7 @@ if node[:postgresql][:clusters][:"15/main"]
     memory_deny_write_execute false
     read_write_paths [
       "/srv/%i.apis.dev.openstreetmap.org/logs",
-      "/srv/%i.apis.dev.openstreetmap.org/storage"
+      "/srv/%i.apis.dev.openstreetmap.org/rails/storage"
     ]
   end
 
