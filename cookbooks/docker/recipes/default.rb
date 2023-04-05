@@ -39,6 +39,11 @@ template "/etc/docker/daemon.json" do
   mode "644"
 end
 
+service "containerd" do
+  action [:enable, :start]
+  subscribes :restart, "template[/etc/docker/daemon.json]"
+end
+
 service "docker" do
   action [:enable, :start]
   subscribes :restart, "template[/etc/docker/daemon.json]"
