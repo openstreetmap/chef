@@ -28,6 +28,11 @@ default_attributes(
         }
       }
     }
+  },
+  :accounts => {
+    :users => {
+      :msbarry => { :status => :user }
+    }
   }
 )
 

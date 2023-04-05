@@ -73,6 +73,7 @@ default_attributes(
       :antonkh => { :status => :user },
       :gmoncrieff => { :status => :user },
       :zander => { :status => :user },
+      :msbarry => { :status => :user },
       :ooc => {
         :status => :role,
         :members => [:tomh, :blackadder, :timsc, :ollie]
