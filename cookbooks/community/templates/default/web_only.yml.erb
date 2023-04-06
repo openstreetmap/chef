@@ -66,6 +66,9 @@ env:
   DISCOURSE_MAXMIND_LICENSE_KEY: '<%= @license_keys[node[:geoipupdate][:account]] %>'
 <% end -%>
 
+  # FIXME: hardcoded IPs should be replaced by chef node search
+  DISCOURSE_PROMETHEUS_TRUSTED_IP_ALLOWLIST_REGEX: '^(140\.211\.167\.99|2605:bc80:3010:700::8cd3:a763)$'
+
   # Increase base SIDEKIQ memory limit to 1GB
   UNICORN_SIDEKIQ_MAX_RSS: 1000
 
