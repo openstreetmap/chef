@@ -558,6 +558,11 @@ groups:
         for: 5m
         labels:
           alertgroup: "{{ $labels.instance }}"
+      - alert: raid controller battery recharging
+        expr: ohai_controller_info{battery_status="recharging"} > 0
+        for: 4h
+        labels:
+          alertgroup: "{{ $labels.instance }}"
       - alert: raid array degraded
         expr: ohai_array_info{status="degraded"} > 0
         for: 5m
