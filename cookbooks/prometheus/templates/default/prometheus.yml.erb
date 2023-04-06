@@ -116,20 +116,5 @@ scrape_configs:
         regex: "[^/]+/[^/]+/(.*)"
         target_label: __address__
 
-remote_write:
-  - url: "http://localhost:9201/write"
-    write_relabel_configs:
-      - source_labels: [__name__]
-        regex: "go_.*"
-        action: drop
-      - source_labels: [__name__]
-        regex: "promhttp_.*"
-        action: drop
-    queue_config:
-      capacity: 10000
-      min_shards: 4
-      batch_send_deadline: 30s
-      max_backoff: 1s
-
 remote_read:
   - url: "http://localhost:9201/read"
