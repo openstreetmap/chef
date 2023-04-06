@@ -17,6 +17,13 @@ groups:
           alertgroup: "amsterdam"
         annotations:
           current: "{{ $value | humanize }}A"
+      - alert: site power
+        expr: sum(rPDU2PhaseStatusApparentPower{site="amsterdam",rPDU2PhaseStatusIndex="1"} / 100) > 3
+        for: 0m
+        labels:
+          alertgroup: "amsterdam"
+        annotations:
+          current: "{{ $value | humanize }}kVA"
       - alert: site temperature
         expr: min(rPDU2SensorTempHumidityStatusTempC{site="amsterdam"}) / 10 < 18 or min(rPDU2SensorTempHumidityStatusTempC{site="amsterdam"}) / 10 > 26
         for: 6m
@@ -130,6 +137,13 @@ groups:
           alertgroup: "dublin"
         annotations:
           current: "{{ $value | humanize }}A"
+      - alert: site power
+        expr: sum(rPDU2PhaseStatusApparentPower{site="dublin",rPDU2PhaseStatusIndex="1"} / 100) > 4
+        for: 0m
+        labels:
+          alertgroup: "dublin"
+        annotations:
+          current: "{{ $value | humanize }}kVA"
       - alert: site temperature
         expr: min(rPDU2SensorTempHumidityStatusTempC{site="dublin"}) / 10 < 18 or min(rPDU2SensorTempHumidityStatusTempC{site="dublin"}) / 10 > 26
         for: 6m
