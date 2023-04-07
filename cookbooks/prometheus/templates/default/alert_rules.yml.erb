@@ -19,7 +19,7 @@ groups:
           current: "{{ $value | humanize }}A"
       - alert: site power
         expr: sum(rPDU2PhaseStatusApparentPower{site="amsterdam",rPDU2PhaseStatusIndex="1"} / 100) > 3
-        for: 0m
+        for: 6m
         labels:
           alertgroup: "amsterdam"
         annotations:
@@ -139,7 +139,7 @@ groups:
           current: "{{ $value | humanize }}A"
       - alert: site power
         expr: sum(rPDU2PhaseStatusApparentPower{site="dublin",rPDU2PhaseStatusIndex="1"} / 100) > 4
-        for: 0m
+        for: 6m
         labels:
           alertgroup: "dublin"
         annotations:
