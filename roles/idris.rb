@@ -40,5 +40,6 @@ run_list(
   "role[git]",
   "role[letsencrypt]",
   "role[oxidized]",
+  "role[supybot]",
   "recipe[serverinfo]"
 )

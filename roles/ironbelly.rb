@@ -97,7 +97,6 @@ default_attributes(
 run_list(
   "role[equinix-ams]",
   "role[gateway]",
-  "role[supybot]",
   "recipe[rsyncd]",
   "recipe[dhcpd]"
 )
