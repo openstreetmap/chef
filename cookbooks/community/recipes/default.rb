@@ -25,6 +25,10 @@ include_recipe "ssl"
 passwords = data_bag_item("community", "passwords")
 license_keys = data_bag_item("geoipupdate", "license-keys") unless kitchen?
 
+prometheus_servers = search(:node, "recipes:prometheus\\:\\:server").map do |server|
+  server.ipaddresses(:role => :external)
+end.flatten
+
 # Disable any default installed apache2 service. Web server is embedded within the discourse docker container
 service "apache2" do
   action [:disable, :stop]
@@ -82,7 +86,8 @@ template "/srv/community.openstreetmap.org/docker/containers/web_only.yml" do
   owner "root"
   group "root"
   mode "640"
-  variables :license_keys => license_keys, :passwords => passwords
+  variables :license_keys => license_keys, :passwords => passwords,
+            :prometheus_servers => prometheus_servers
   notifies :run, "notify_group[discourse_container_new_web_only]"
 end
 
