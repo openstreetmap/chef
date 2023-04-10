@@ -4,14 +4,7 @@ groups:
   - name: amsterdam
     rules:
       - alert: pdu current draw
-        expr: rPDU2PhaseStatusCurrent{site="amsterdam",rPDU2PhaseStatusIndex="1"} / 10 > 10
-        for: 6m
-        labels:
-          alertgroup: "amsterdam"
-        annotations:
-          current: "{{ $value | humanize }}A"
-      - alert: site current draw
-        expr: sum(rPDU2PhaseStatusCurrent{site="amsterdam",rPDU2PhaseStatusIndex="1"} / 10) > 13
+        expr: rPDU2PhaseStatusCurrent{site="amsterdam",rPDU2PhaseStatusIndex="1"} / 10 > 28
         for: 6m
         labels:
           alertgroup: "amsterdam"
@@ -124,14 +117,7 @@ groups:
   - name: dublin
     rules:
       - alert: pdu current draw
-        expr: rPDU2PhaseStatusCurrent{site="dublin",rPDU2PhaseStatusIndex="1"} / 10 > 13
-        for: 6m
-        labels:
-          alertgroup: "dublin"
-        annotations:
-          current: "{{ $value | humanize }}A"
-      - alert: site current draw
-        expr: sum(rPDU2PhaseStatusCurrent{site="dublin",rPDU2PhaseStatusIndex="1"} / 10) > 17
+        expr: rPDU2PhaseStatusCurrent{site="dublin",rPDU2PhaseStatusIndex="1"} / 10 > 28
         for: 6m
         labels:
           alertgroup: "dublin"
