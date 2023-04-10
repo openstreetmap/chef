@@ -11,7 +11,7 @@ groups:
         annotations:
           current: "{{ $value | humanize }}A"
       - alert: site power
-        expr: sum(rPDU2PhaseStatusApparentPower{site="amsterdam",rPDU2PhaseStatusIndex="1"} / 100) > 3
+        expr: sum(avg_over_time(rPDU2PhaseStatusApparentPower{site="amsterdam",rPDU2PhaseStatusIndex="1"}[1h]) / 100) > 3
         for: 6m
         labels:
           alertgroup: "amsterdam"
@@ -124,7 +124,7 @@ groups:
         annotations:
           current: "{{ $value | humanize }}A"
       - alert: site power
-        expr: sum(rPDU2PhaseStatusApparentPower{site="dublin",rPDU2PhaseStatusIndex="1"} / 100) > 4
+        expr: sum(avg_over_time(rPDU2PhaseStatusApparentPower{site="dublin",rPDU2PhaseStatusIndex="1"}[1h]) / 100) > 4
         for: 6m
         labels:
           alertgroup: "dublin"
