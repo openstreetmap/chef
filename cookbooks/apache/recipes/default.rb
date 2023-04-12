@@ -54,6 +54,13 @@ template "/etc/apache2/ports.conf" do
   mode "644"
 end
 
+systemd_service "apache2" do
+  dropin "chef"
+  memory_high "50%"
+  memory_max "75%"
+  notifies :restart, "service[apache2]"
+end
+
 service "apache2" do
   action [:enable, :start]
   retries 2
