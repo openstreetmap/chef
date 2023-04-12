@@ -339,61 +339,30 @@ end
 
 include_recipe "apt::hwraid" unless status_packages.empty?
 
-if status_packages.include?("cciss-vol-status")
-  template "/usr/local/bin/cciss-vol-statusd" do
-    source "cciss-vol-statusd.erb"
-    owner "root"
-    group "root"
-    mode "755"
-    notifies :restart, "service[cciss-vol-statusd]"
-  end
-
-  systemd_service "cciss-vol-statusd" do
-    description "Check cciss_vol_status values in the background"
-    exec_start "/usr/local/bin/cciss-vol-statusd"
-    nice 10
-    private_tmp true
-    protect_system "full"
-    protect_home true
-    no_new_privileges true
-    notifies :restart, "service[cciss-vol-statusd]"
-  end
-else
-  systemd_service "cciss-vol-statusd" do
-    action :delete
-  end
-
-  template "/usr/local/bin/cciss-vol-statusd" do
-    action :delete
-  end
-end
-
 %w[cciss-vol-status mpt-status sas2ircu-status megaclisas-status aacraid-status].each do |status_package|
   if status_packages.include?(status_package)
     package status_package
 
-    template "/etc/default/#{status_package}d" do
-      source "raid.default.erb"
-      owner "root"
-      group "root"
-      mode "644"
-      variables :devices => status_packages[status_package]
-    end
-
     service "#{status_package}d" do
-      action [:start, :enable]
-      supports :status => false, :restart => true, :reload => false
-      subscribes :restart, "template[/etc/default/#{status_package}d]"
-    end
-  else
-    package status_package do
-      action :purge
+      action [:stop, :disable]
     end
 
     file "/etc/default/#{status_package}d" do
       action :delete
     end
+  else
+    package status_package do
+      action :purge
+    end
   end
+end
+
+systemd_service "cciss-vol-statusd" do
+  action :delete
+end
+
+template "/usr/local/bin/cciss-vol-statusd" do
+  action :delete
 end
 
 disks = if node[:hardware][:disk]
