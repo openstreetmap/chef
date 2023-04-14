@@ -3,3 +3,4 @@
 AccountID <%= node[:geoipupdate][:account] %>
 LicenseKey <%= @license_keys[node[:geoipupdate][:account]] %>
 EditionIDs <%= Array(node[:geoipupdate][:editions]).join(" ") %>
+DatabaseDirectory <%= node[:geoipupdate][:directory] %>
