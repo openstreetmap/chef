@@ -24,6 +24,7 @@ default_action :create
 property :collector, :kind_of => String, :name_property => true
 property :interval, :kind_of => [Integer, String], :required => [:create]
 property :user, :kind_of => String
+property :path, :kind_of => String
 property :options, :kind_of => [String, Array]
 property :environment, :kind_of => Hash, :default => {}
 property :proc_subset, String
@@ -91,7 +92,7 @@ action_class do
   end
 
   def executable_path
-    "/opt/prometheus-exporters/collectors/#{new_resource.collector}/#{new_resource.collector}_collector"
+    new_resource.path || "/opt/prometheus-exporters/collectors/#{new_resource.collector}/#{new_resource.collector}_collector"
   end
 
   def executable_options

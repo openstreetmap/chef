@@ -24,6 +24,7 @@ include_recipe "apache"
 include_recipe "git"
 include_recipe "passenger"
 include_recipe "planet::current"
+include_recipe "prometheus"
 include_recipe "ruby"
 
 package %w[
@@ -218,5 +219,12 @@ node[:taginfo][:sites].each do |site|
 
   service "taginfo-update@#{site_name}.timer" do
     action [:enable, :start]
+  end
+
+  prometheus_collector "taginfo-#{site_name}" do
+    interval "15m"
+    user "taginfo"
+    path "#{directory}/taginfo/sources/metrics.rb"
+    options "#{directory}/data"
   end
 end
