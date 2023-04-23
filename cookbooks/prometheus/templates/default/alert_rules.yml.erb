@@ -650,6 +650,29 @@ groups:
         for: 0m
         labels:
           alertgroup: "{{ $labels.instance }}"
+  - name: taginfo
+    rules:
+      - alert: taginfo planet age
+        expr: time() - taginfo_data_from_seconds > 129600
+        for: 0m
+        labels:
+          alertgroup: taginfo
+        annotations:
+          age: "{{ $value | humanizeDuration }}"
+      - alert: taginfo database age
+        expr: time() - taginfo_database_update_finish_seconds > 129600
+        for: 0m
+        labels:
+          alertgroup: taginfo
+        annotations:
+          age: "{{ $value | humanizeDuration }}"
+      - alert: taginfo database size
+        expr: abs(delta(taginfo_database_size_bytes[30m])) / taginfo_database_size_bytes > 0.1
+        for: 0m
+        labels:
+          alertgroup: taginfo
+        annotations:
+          size_change: "{{ $value | humanizePercentage }}"
   - name: tile
     rules:
       - alert: renderd replication delay
