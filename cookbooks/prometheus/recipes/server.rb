@@ -391,6 +391,7 @@ end
 
 apache_module "alias"
 apache_module "proxy_http"
+apache_module "proxy_wstunnel"
 
 ssl_certificate "prometheus.openstreetmap.org" do
   domains ["prometheus.openstreetmap.org", "prometheus.osm.org"]
