@@ -135,3 +135,11 @@ pg_unfrozen_ids:
     - mxid_age:
         usage: "GAUGE"
         description: "Age of the oldest unfrozen multixact ID in this database"
+
+pg_wal:
+  query: "SELECT count(*) AS segment_count FROM pg_ls_waldir() WHERE name ~ '^[0-9A-Z]{24}$'"
+  master: true
+  metrics:
+    - segment_count:
+        usage: "GAUGE"
+        description: "Number of WAL segments"
