@@ -123,6 +123,57 @@ pg_statio_user_tables:
         description: "Number of buffer hits in this table's TOAST table indexes (if any)"
 <% end -%>
 
+pg_process_idle:
+  query: |
+    WITH
+      metrics AS (
+        SELECT
+          state,
+          application_name,
+          SUM(EXTRACT(EPOCH FROM (CURRENT_TIMESTAMP - state_change))::bigint)::float AS process_idle_seconds_sum,
+          COUNT(*) AS process_idle_seconds_count
+        FROM pg_stat_activity
+        WHERE state ~ '^idle'
+        GROUP BY state, application_name
+      ),
+      buckets AS (
+        SELECT
+          state,
+          application_name,
+          le,
+          SUM(
+            CASE WHEN EXTRACT(EPOCH FROM (CURRENT_TIMESTAMP - state_change)) <= le
+              THEN 1
+              ELSE 0
+            END
+          )::bigint AS bucket
+        FROM
+          pg_stat_activity,
+          UNNEST(ARRAY[1, 2, 5, 15, 30, 60, 90, 120, 300]) AS le
+        GROUP BY state, application_name, le
+        ORDER BY state, application_name, le
+      )
+    SELECT
+      state,
+      application_name,
+      process_idle_seconds_sum as seconds_sum,
+      process_idle_seconds_count as seconds_count,
+      ARRAY_AGG(le) AS seconds,
+      ARRAY_AGG(bucket) AS seconds_bucket
+    FROM metrics JOIN buckets USING (state, application_name)
+    GROUP BY 1, 2, 3, 4
+  master: true
+  metrics:
+    - state:
+        usage: "LABEL"
+        description: "State"
+    - application_name:
+        usage: "LABEL"
+        description: "Application Name"
+    - seconds:
+        usage: "HISTOGRAM"
+        description: "Idle time of server processes"
+
 pg_unfrozen_ids:
   query: "SELECT current_database() AS datname, max(age(relfrozenxid)) AS xid_age, max(mxid_age(relminmxid)) AS mxid_age FROM pg_class WHERE relkind IN ('r', 'm')"
   metrics:
