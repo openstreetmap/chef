@@ -525,6 +525,13 @@ groups:
           alertgroup: "{{ $labels.instance }}"
         annotations:
           queries: "{{ $value }}"
+      - alert: postgresql idle transactions
+        expr: sum(pg_process_idle_seconds_count{state="idle in transaction"}) by (instance, server) > sum(pg_process_idle_seconds_bucket{state="idle in transaction",le="120"}) by (instance, server)
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+        annotations:
+          queries: "{{ $value }}"
   - name: prometheus
     rules:
       - alert: prometheus configuration error
