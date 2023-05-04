@@ -108,7 +108,7 @@ package "lzop"
 
 remote_file "/usr/local/bin/wal-g" do
   action :create
-  source "https://github.com/wal-g/wal-g/releases/download/v1.1/wal-g-pg-ubuntu-20.04-amd64"
+  source "https://github.com/wal-g/wal-g/releases/download/v2.0.1/wal-g-pg-ubuntu-20.04-amd64"
   owner "root"
   group "root"
   mode "755"
