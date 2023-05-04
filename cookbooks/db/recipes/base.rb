@@ -106,22 +106,6 @@ end
 
 package "lzop"
 
-python_package "wal-e" do
-  python_version "3"
-end
-
-python_package "boto" do
-  python_version "3"
-end
-
-template "/usr/local/bin/openstreetmap-wal-e" do
-  source "wal-e.erb"
-  owner "root"
-  group "postgres"
-  mode "750"
-  variables :s3_key => wal_secrets["s3_key"]
-end
-
 remote_file "/usr/local/bin/wal-g" do
   action :create
   source "https://github.com/wal-g/wal-g/releases/download/v1.1/wal-g-pg-ubuntu-20.04-amd64"
