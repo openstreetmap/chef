@@ -15,8 +15,19 @@ fi
 
 $ROOT/taginfo/sources/update_all.sh $ROOT/sources
 
-mv $ROOT/data/taginfo-* $ROOT/data/old
-mv $ROOT/sources/taginfo-*.db $ROOT/sources/*/taginfo-*.db $ROOT/data
+rm -f $ROOT/data/old/*
+for db in $ROOT/data/taginfo-*.db
+do
+    name=$(basename $db)
+    ln $db $ROOT/data/old/$name
+done
+
+for db in $ROOT/sources/taginfo-*.db $ROOT/sources/*/taginfo-*.db
+do
+    name=$(basename $db)
+    mv $db $ROOT/data/$name
+done
+
 mv $ROOT/sources/download/* $ROOT/download
 
 PASSENGER_INSTANCE_REGISTRY_DIR=<%= node[:passenger][:instance_registry_dir] %> /usr/bin/passenger-config restart-app $ROOT/taginfo/web > /dev/null
