@@ -675,7 +675,7 @@ groups:
           age: "{{ $value | humanizeDuration }}"
       - alert: taginfo database size
         expr: abs(delta(taginfo_database_size_bytes[30m])) / taginfo_database_size_bytes > 0.1
-        for: 0m
+        for: 30m
         labels:
           alertgroup: taginfo
         annotations:
