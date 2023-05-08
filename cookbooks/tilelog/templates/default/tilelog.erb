@@ -18,10 +18,11 @@ export AWS_REGION="eu-west-1"
 TILEFILE="tiles-${DATE}.txt.xz"
 HOSTFILE="hosts-${DATE}.csv"
 APPFILE="apps-${DATE}.csv"
+COUNTRYFILE="countries-${DATE}.csv"
 
 nice -n 19 /opt/tilelog/bin/tilelog --date "${DATE}" --generate-success \
-  --tile "${TILEFILE}" --host "${HOSTFILE}" --app "${APPFILE}"
+  --tile "${TILEFILE}" --host "${HOSTFILE}" --app "${APPFILE}" --country "${COUNTRYFILE}"
 
-mv "${TILEFILE}" "${HOSTFILE}" "${APPFILE}" "${OUTDIR}"
+mv "${TILEFILE}" "${HOSTFILE}" "${APPFILE}" "${COUNTRYFILE}" "${OUTDIR}"
 
 rm -rf "$TMPDIR"
