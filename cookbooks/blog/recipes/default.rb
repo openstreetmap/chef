@@ -97,6 +97,7 @@ end
 git "/srv/blog.openstreetmap.org/casts" do
   action :sync
   repository "https://github.com/openstreetmap/opengeodata-podcasts.git"
+  revision "master"
   depth 1
   user "wordpress"
   group "wordpress"
@@ -105,6 +106,7 @@ end
 git "/srv/blog.openstreetmap.org/images" do
   action :sync
   repository "https://github.com/openstreetmap/opengeodata-images.git"
+  revision "master"
   depth 1
   user "wordpress"
   group "wordpress"
@@ -113,6 +115,7 @@ end
 git "/srv/blog.openstreetmap.org/static" do
   action :sync
   repository "https://github.com/openstreetmap/opengeodata-static.git"
+  revision "master"
   depth 1
   user "wordpress"
   group "wordpress"
