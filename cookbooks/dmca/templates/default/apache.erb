@@ -56,3 +56,7 @@
     SetHandler "proxy:unix:/run/php/php-<%= @name %>-fpm.sock|fcgi://127.0.0.1"
   </FilesMatch>
 </Directory>
+
+<Directory ~ "\.git">
+  Require all denied
+</Directory>
