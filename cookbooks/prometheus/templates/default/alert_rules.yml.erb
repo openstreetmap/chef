@@ -363,14 +363,14 @@ groups:
   - name: network
     rules:
       - alert: interface transmit rate
-        expr: rate(node_network_transmit_bytes_total[1m]) / node_network_speed_bytes > 0.98
+        expr: rate(node_network_transmit_bytes_total[1m]) / node_network_speed_bytes > 0.99
         for: 5m
         labels:
           alertgroup: "{{ $labels.instance }}"
         annotations:
           bandwidth_used: "{{ $value | humanizePercentage }}"
       - alert: interface receive rate
-        expr: rate(node_network_receive_bytes_total[1m]) / node_network_speed_bytes > 0.98
+        expr: rate(node_network_receive_bytes_total[1m]) / node_network_speed_bytes > 0.99
         for: 5m
         labels:
           alertgroup: "{{ $labels.instance }}"
