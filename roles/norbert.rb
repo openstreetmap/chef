@@ -21,10 +21,17 @@ default_attributes(
         :interface => "bond0.2",
         :role => :external,
         :inet => {
-          :address => "130.117.76.17"
+          :address => "130.117.76.17",
+          :prefix => "27",
+          :gateway => "130.117.76.1"
         },
         :inet6 => {
-          :address => "2001:978:2:2c::172:11"
+          :address => "2001:978:2:2c::172:11",
+          :prefix => "64",
+          :gateway => "2001:978:2:2c::172:1",
+          :routes => {
+            "2001:470:1:b3b::/64" => { :type => "unreachable" }
+          }
         }
       }
     }
