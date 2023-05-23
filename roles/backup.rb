@@ -16,8 +16,10 @@ default_attributes(
         :hosts_allow => [
           "193.60.236.0/24",                     # ucl external
           "10.0.48.0/20",                        # amsterdam internal
-          "130.117.76.0/27",                     # amsterdam external
-          "2001:978:2:2c::172:0/112",            # amsterdam external
+          "130.117.76.0/27",                     # amsterdam external (cogent)
+          "2001:978:2:2c::172:0/112",            # amsterdam external (cogent)
+          "184.104.179.128/27",                  # amsterdam external (he)
+          "2001:470:1:fa1::/64",                 # amsterdam external (he)
           "10.0.64.0/20",                        # dublin internal
           "184.104.226.96/27",                   # dublin external
           "2001:470:1:b3b::/64",                 # dublin external
