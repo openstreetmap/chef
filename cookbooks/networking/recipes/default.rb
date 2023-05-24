@@ -69,19 +69,19 @@ node[:networking][:interfaces].each do |name, interface|
   next unless interface[:role] && (role = node[:networking][:roles][interface[:role]])
 
   if interface[:inet] && role[:inet]
-    node.default[:networking][:interfaces][name][:inet][:prefix] = role[:inet][:prefix]
-    node.default[:networking][:interfaces][name][:inet][:gateway] = role[:inet][:gateway]
-    node.default[:networking][:interfaces][name][:inet][:routes] = role[:inet][:routes]
+    node.default_unless[:networking][:interfaces][name][:inet][:prefix] = role[:inet][:prefix]
+    node.default_unless[:networking][:interfaces][name][:inet][:gateway] = role[:inet][:gateway]
+    node.default_unless[:networking][:interfaces][name][:inet][:routes] = role[:inet][:routes]
   end
 
   if interface[:inet6] && role[:inet6]
-    node.default[:networking][:interfaces][name][:inet6][:prefix] = role[:inet6][:prefix]
-    node.default[:networking][:interfaces][name][:inet6][:gateway] = role[:inet6][:gateway]
-    node.default[:networking][:interfaces][name][:inet6][:routes] = role[:inet6][:routes]
+    node.default_unless[:networking][:interfaces][name][:inet6][:prefix] = role[:inet6][:prefix]
+    node.default_unless[:networking][:interfaces][name][:inet6][:gateway] = role[:inet6][:gateway]
+    node.default_unless[:networking][:interfaces][name][:inet6][:routes] = role[:inet6][:routes]
   end
 
-  node.default[:networking][:interfaces][name][:metric] = role[:metric]
-  node.default[:networking][:interfaces][name][:zone] = role[:zone]
+  node.default_unless[:networking][:interfaces][name][:metric] = role[:metric]
+  node.default_unless[:networking][:interfaces][name][:zone] = role[:zone]
 end
 
 node[:networking][:interfaces].each do |_, interface|
