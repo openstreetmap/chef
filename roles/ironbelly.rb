@@ -39,9 +39,10 @@ default_attributes(
           :slaves => %w[eth0 eth1]
         }
       },
-      :external => {
+      :external_cogent => {
         :interface => "bond0.2",
         :role => :external,
+        :source_route_table => 100,
         :inet => {
           :address => "130.117.76.10",
           :prefix => "27",
@@ -54,6 +55,22 @@ default_attributes(
           :routes => {
             "2001:470:1:b3b::/64" => { :type => "unreachable" }
           }
+        }
+      },
+      :external => {
+        :interface => "bond0.3",
+        :role => :external,
+        :metric => 150,
+        :source_route_table => 150,
+        :inet => {
+          :address => "184.104.179.138",
+          :prefix => "27",
+          :gateway => "184.104.179.129"
+        },
+        :inet6 => {
+          :address => "2001:470:1:fa1::a",
+          :prefix => "64",
+          :gateway => "2001:470:1:fa1::1"
         }
       }
     }
