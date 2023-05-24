@@ -17,7 +17,7 @@ default_attributes(
           :slaves => %w[eno1 eno2 eno3 eno4 eno5 eno6]
         }
       },
-      :external => {
+      :external_cogent => {
         :interface => "bond0.2",
         :role => :external,
         :inet => {
@@ -32,6 +32,21 @@ default_attributes(
           :routes => {
             "2001:470:1:b3b::/64" => { :type => "unreachable" }
           }
+        }
+      },
+      :external => {
+        :interface => "bond0.3",
+        :role => :external,
+        :metric => 150,
+        :inet => {
+          :address => "184.104.179.131",
+          :prefix => "27",
+          :gateway => "184.104.179.129"
+        },
+        :inet6 => {
+          :address => "2001:470:1:fa1::3",
+          :prefix => "64",
+          :gateway => "2001:470:1:fa1::1"
         }
       }
     }
