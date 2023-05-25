@@ -51,7 +51,7 @@ default_attributes(
     :metrics => {
       :uplink_interface => {
         :help => "Site uplink interface name",
-        :labels => { :site => "dublin", :name => "ae50" }
+        :labels => { :site => "dublin", :name => "ae50|ae60" }
       }
     }
   }
