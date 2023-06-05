@@ -104,6 +104,7 @@ action :create do
       line += "define( 'FORCE_SSL_ADMIN', true);\r\n"
       line += "define( 'WP_FAIL2BAN_SITE_HEALTH_SKIP_FILTERS', true);\r\n"
       line += "define( 'WP_ENVIRONMENT_TYPE', 'production');\r\n"
+      line += "define( 'WP_MEMORY_LIMIT', '128M');\r\n"
     end
 
     line
