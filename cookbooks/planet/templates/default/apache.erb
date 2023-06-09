@@ -65,8 +65,8 @@
         # Temporary download rate limit due to upstream fibre connection issues. - 13 Jan 2020
         <FilesMatch ".+\.(7z|bz2|gz|pbf|tgz|xz)$">
           SetOutputFilter RATE_LIMIT
-          SetEnv rate-limit 4096
-          SetEnv rate-initial-burst 8192
+          SetEnv rate-limit 16384
+          SetEnv rate-initial-burst 32768
         </FilesMatch>
 </VirtualHost>
 
