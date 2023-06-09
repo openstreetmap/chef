@@ -41,7 +41,7 @@ default_attributes(
         :metric => 150,
         :source_route_table => 150,
         :inet => {
-          :address => "184.104.179.139",
+          :address => "184.104.179.145",
           :prefix => "27",
           :gateway => "184.104.179.129"
         },
