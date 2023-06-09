@@ -20,6 +20,7 @@ default_attributes(
       :external_cogent => {
         :interface => "bond0.2",
         :role => :external,
+        :metric => 150,
         :source_route_table => 100,
         :inet => {
           :address => "130.117.76.15",
@@ -38,7 +39,6 @@ default_attributes(
       :external => {
         :interface => "bond0.3",
         :role => :external,
-        :metric => 150,
         :source_route_table => 150,
         :inet => {
           :address => "184.104.179.143",
