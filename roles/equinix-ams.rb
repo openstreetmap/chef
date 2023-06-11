@@ -14,7 +14,15 @@ default_attributes(
         }
       },
       :external => {
-        :zone => "ams"
+        :zone => "ams",
+        :inet => {
+          :prefix => "27",
+          :gateway => "184.104.179.129"
+        },
+        :inet6 => {
+          :prefix => "64",
+          :gateway => "2001:470:1:fa1::1"
+        }
       }
     }
   },
