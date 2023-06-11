@@ -18,6 +18,11 @@ default_attributes(
     :modules => [
       "it87"
     ]
+  },
+  :prometheus => {
+    :metrics => {
+      :exim_queue_limit => { :metric => 250 }
+    }
   }
 )
 
