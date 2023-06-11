@@ -271,7 +271,7 @@ groups:
         labels:
           alertgroup: "{{ $labels.instance }}"
       - alert: exim queue length
-        expr: exim_queue > exim_queue_limit
+        expr: exim_queue > ignoring(job) exim_queue_limit
         for: 60m
         labels:
           alertgroup: mail
