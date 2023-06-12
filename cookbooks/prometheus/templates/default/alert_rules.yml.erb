@@ -249,10 +249,12 @@ groups:
   - name: juniper
     rules:
       - alert: juniper cpu alarm
-        expr: jnxOperating5MinLoadAvg{jnxOperatingContentsIndex="9"} > 50
+        expr: jnxOperating5MinLoadAvg{jnxOperatingContentsIndex="9"} / 200 > 0.5
         for: 5m
         labels:
           alertgroup: "{{ $labels.site }}"
+        annotations:
+          load_average: "{{ $value | humanizePercentage }}"
       - alert: juniper fan alarm
         expr: jnxOperatingState{jnxOperatingContentsIndex="4",jnxOperatingState!~"running.*"} > 0
         for: 5m
