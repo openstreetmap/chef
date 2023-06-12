@@ -249,7 +249,7 @@ groups:
   - name: juniper
     rules:
       - alert: juniper cpu alarm
-        expr: jnxOperatingCPU{jnxOperatingContentsIndex="7"} > 30
+        expr: jnxOperating5MinLoadAvg{jnxOperatingContentsIndex="9"} > 50
         for: 5m
         labels:
           alertgroup: "{{ $labels.site }}"
