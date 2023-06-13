@@ -19,9 +19,7 @@
 
 include_recipe "apache"
 include_recipe "apt::grafana"
-include_recipe "apt::timescaledb"
 include_recipe "networking"
-include_recipe "timescaledb"
 
 passwords = data_bag_item("prometheus", "passwords")
 tokens = data_bag_item("prometheus", "tokens")
@@ -109,78 +107,6 @@ archive_file "#{cache_dir}/karma-linux-amd64.tar.gz" do
   owner "root"
   group "root"
   subscribes :extract, "remote_file[#{cache_dir}/karma-linux-amd64.tar.gz]", :immediately
-end
-
-promscale_version = "0.17.0"
-promscale_extension_version = "0.8.0-1"
-
-database_version = node[:timescaledb][:database_version]
-database_cluster = "#{database_version}/main"
-
-package %W[
-  prometheus
-  promscale-extension-postgresql-#{database_version}
-]
-
-package "promscale-extension-postgresql-#{database_version}" do
-  version promscale_extension_version
-end
-
-apt_preference "promscale-extension-postgresql" do
-  pin "version #{promscale_extension_version}"
-  pin_priority "1100"
-end
-
-postgresql_user "prometheus" do
-  cluster database_cluster
-  superuser true
-end
-
-postgresql_database "promscale" do
-  cluster database_cluster
-  owner "prometheus"
-end
-
-directory "/opt/promscale" do
-  owner "root"
-  group "root"
-  mode "755"
-end
-
-directory "/opt/promscale/bin" do
-  owner "root"
-  group "root"
-  mode "755"
-end
-
-remote_file "/opt/promscale/bin/promscale" do
-  action :create
-  source "https://github.com/timescale/promscale/releases/download/#{promscale_version}/promscale_#{promscale_version}_Linux_x86_64"
-  owner "root"
-  group "root"
-  mode "755"
-end
-
-systemd_service "promscale" do
-  description "Promscale Connector"
-  type "simple"
-  user "prometheus"
-  exec_start "/opt/promscale/bin/promscale --db.uri postgresql:///promscale?host=/run/postgresql&port=5432 --db.connections-max 400"
-  limit_nofile 16384
-  sandbox :enable_network => true
-  restrict_address_families "AF_UNIX"
-end
-
-if node[:prometheus][:promscale]
-  service "promscale" do
-    action [:enable, :start]
-    subscribes :restart, "remote_file[/opt/promscale/bin/promscale]"
-    subscribes :restart, "systemd_service[promscale]"
-  end
-else
-  service "promscale" do
-    action [:disable, :stop]
-  end
 end
 
 search(:node, "roles:gateway") do |gateway|

@@ -27,10 +27,6 @@ scrape_configs:
     static_configs:
       - targets:
           - localhost:9093
-  - job_name: promscale
-    static_configs:
-      - targets:
-          - localhost:9201
   - job_name: ssl
     scrape_interval: 15m
     metrics_path: /probe
@@ -115,6 +111,3 @@ scrape_configs:
       - source_labels: [__address__]
         regex: "[^/]+/[^/]+/(.*)"
         target_label: __address__
-
-remote_read:
-  - url: "http://localhost:9201/read"
