@@ -196,6 +196,8 @@ prometheus_exporter "ssl" do
   register_target false
 end
 
+package "prometheus"
+
 systemd_service "prometheus-executable" do
   service "prometheus"
   dropin "executable"
