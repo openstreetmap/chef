@@ -63,6 +63,10 @@ end
 
 munin_plugin "chrony"
 
+prometheus_exporter "chrony" do
+  port 9123
+end
+
 # chrony occasionally marks all servers offline during a network outage.
 # force online all sources during a chef run
 execute "chronyc-online" do
