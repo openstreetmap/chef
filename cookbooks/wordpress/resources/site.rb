@@ -192,9 +192,31 @@ action :create do
     WP_FAIL2BAN
     subscribes :run, "wordpress_plugin[wp-fail2ban]"
   end
+
+  wordpress_plugin "wp-2fa" do
+    site new_resource.site
+    reload_apache false
+  end
+
+  wordpress_plugin "wp-last-login" do
+    site new_resource.site
+    reload_apache false
+  end
 end
 
 action :delete do
+  wordpress_plugin "wp-last-login" do
+    action :delete
+    site new_resource.site
+    reload_apache false
+  end
+
+  wordpress_plugin "wp-2fa" do
+    action :delete
+    site new_resource.site
+    reload_apache false
+  end
+
   wordpress_plugin "wp-fail2ban" do
     action :delete
     site new_resource.site
