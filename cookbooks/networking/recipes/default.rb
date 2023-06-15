@@ -126,6 +126,11 @@ node[:networking][:interfaces].each do |_, interface|
   end
 end
 
+package "systemd-resolved" do
+  action :install
+  only_if { platform?("ubuntu") && node[:lsb][:release].to_f > 22.04 || platform?("debian") && node[:lsb][:release].to_f > 11.0 }
+end
+
 service "systemd-networkd" do
   action [:enable, :start]
 end
