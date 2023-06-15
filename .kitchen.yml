@@ -6,6 +6,8 @@ driver:
     - /var/lib/docker
   env:
     - container=dokken
+  ipv6: true
+  ipv6_subnet: "2001:db8:1::/64"
 
 transport:
   name: dokken
