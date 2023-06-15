@@ -7,7 +7,7 @@ driver:
   env:
     - container=dokken
   ipv6: true
-  ipv6_subnet: "2001:db8:1::/64"
+  ipv6_subnet: "fd95:8552:964c::/64"
 
 transport:
   name: dokken
