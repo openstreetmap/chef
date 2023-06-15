@@ -62,9 +62,23 @@ action :create do
       end
     end
   end
+
+  execute "wp-cli plugin activate #{new_resource.plugin}" do
+    command "/opt/wp-cli/wp --path=#{site_directory} plugin activate #{new_resource.plugin}"
+    user node[:wordpress][:user]
+    group node[:wordpress][:group]
+    only_if { ::File.exist?("#{site_directory}/wp-config.php") }
+  end
 end
 
 action :delete do
+  execute "wp-cli plugin deactivate #{new_resource.plugin}" do
+    command "/opt/wp-cli/wp --path=#{site_directory} plugin deactivate #{new_resource.plugin}"
+    user node[:wordpress][:user]
+    group node[:wordpress][:group]
+    only_if { ::File.exist?("#{site_directory}/wp-config.php") }
+  end
+
   directory plugin_directory do
     action :delete
     recursive true
