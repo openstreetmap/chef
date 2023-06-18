@@ -72,31 +72,6 @@ git "/opt/osmdbt" do
 end
 
 node[:postgresql][:versions].each do |db_version|
-  pg_config = "/usr/lib/postgresql/#{db_version}/bin/pg_config"
-  function_directory = "/srv/www.openstreetmap.org/rails/db/functions/#{db_version}"
-
-  directory function_directory do
-    owner "rails"
-    group "rails"
-    mode "755"
-  end
-
-  execute function_directory do
-    action :nothing
-    command "make BUNDLE=#{node[:ruby][:bundle]} PG_CONFIG=#{pg_config} DESTDIR=#{function_directory}"
-    cwd "/srv/www.openstreetmap.org/rails/db/functions"
-    user "rails"
-    group "rails"
-    subscribes :run, "directory[#{function_directory}]"
-    subscribes :run, "git[/srv/www.openstreetmap.org/rails]"
-  end
-
-  link "/usr/lib/postgresql/#{db_version}/lib/libpgosm.so" do
-    to "#{function_directory}/libpgosm.so"
-    owner "root"
-    group "root"
-  end
-
   directory "/opt/osmdbt/build-#{db_version}" do
     owner "root"
     group "root"
@@ -131,25 +106,9 @@ end
 
 package "lzop"
 
-python_package "wal-e" do
-  python_version "3"
-end
-
-python_package "boto" do
-  python_version "3"
-end
-
-template "/usr/local/bin/openstreetmap-wal-e" do
-  source "wal-e.erb"
-  owner "root"
-  group "postgres"
-  mode "750"
-  variables :s3_key => wal_secrets["s3_key"]
-end
-
 remote_file "/usr/local/bin/wal-g" do
   action :create
-  source "https://github.com/wal-g/wal-g/releases/download/v1.1/wal-g-pg-ubuntu-20.04-amd64"
+  source "https://github.com/wal-g/wal-g/releases/download/v2.0.1/wal-g-pg-ubuntu-20.04-amd64"
   owner "root"
   group "root"
   mode "755"

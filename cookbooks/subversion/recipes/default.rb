@@ -17,16 +17,9 @@
 # limitations under the License.
 #
 
-include_recipe "apache"
+include_recipe "podman::apache"
 
-apache_module "rewrite"
-
-ssl_certificate "svn.openstreetmap.org" do
-  domains ["svn.openstreetmap.org", "svn.osm.org"]
-  notifies :reload, "service[apache2]"
-end
-
-apache_site "svn.openstreetmap.org" do
-  template "apache.erb"
-  variables :aliases => ["svn.osm.org"]
+podman_site "svn.openstreetmap.org" do
+  image "ghcr.io/openstreetmap/svn-website:latest"
+  aliases ["svn.osm.org"]
 end

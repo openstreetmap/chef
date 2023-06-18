@@ -4,35 +4,24 @@ description "Master role applied to nepomuk"
 default_attributes(
   :networking => {
     :firewall => {
-      :inet => [
-        {
-          :action => "ACCEPT",
-          :source => "net:77.95.64.120,77.95.64.131,77.95.64.139",
-          :dest => "fw",
-          :proto => "tcp",
-          :dest_ports => "5666",
-          :source_ports => "1024:",
-          :rate_limit => "-",
-          :connection_limit => "-"
-        }
+      :incoming => [
+        "tcp sport { 1024-65535 } tcp dport { 5666 } ip saddr { 77.95.64.120, 77.95.64.131, 77.95.64.139 } ct state new accept"
       ]
     },
     :interfaces => {
-      :external_ipv4 => {
+      :external => {
         :interface => "eth0",
         :role => :external,
-        :family => :inet,
-        :address => "77.95.65.39",
-        :prefix => "27",
-        :gateway => "77.95.65.33"
-      },
-      :external_ipv6 => {
-        :interface => "eth0",
-        :role => :external,
-        :family => :inet6,
-        :address => "2a03:9180:0:100::7",
-        :prefix => "64",
-        :gateway => "2a03:9180:0:100::1"
+        :inet => {
+          :address => "77.95.65.39",
+          :prefix => "27",
+          :gateway => "77.95.65.33"
+        },
+        :inet6 => {
+          :address => "2a03:9180:0:100::7",
+          :prefix => "64",
+          :gateway => "2a03:9180:0:100::1"
+        }
       }
     }
   },

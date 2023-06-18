@@ -32,10 +32,11 @@ mediawiki_site "dwg.osmfoundation.org" do
   admin_password passwords["dwg"]["admin"]
   logo "/Wiki.png"
   email_contact "webmaster@openstreetmap.org"
-  email_sender "webmaster@openstreetmap.org"
+  email_sender "wiki@noreply.openstreetmap.org"
   email_sender_name "OSMF Board Wiki"
   private_site true
-  version "1.37"
+  extra_file_extensions %w[pptx]
+  version "1.39"
 end
 
 cookbook_file "/srv/dwg.osmfoundation.org/Wiki.png" do

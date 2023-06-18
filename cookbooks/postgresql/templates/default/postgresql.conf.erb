@@ -20,11 +20,7 @@ listen_addresses = '<%= @settings[:listen_addresses] || @defaults[:listen_addres
 <% end -%>
 port = <%= @settings[:port] || @defaults[:port] %>
 max_connections = <%= @settings[:max_connections] || @defaults[:max_connections] %>
-<% if @version.to_f >= 9.3 %>
 unix_socket_directories = '/var/run/postgresql'
-<% else -%>
-unix_socket_directory = '/var/run/postgresql'
-<% end -%>
 
 # - Security and Authentication -
 
@@ -47,12 +43,8 @@ max_stack_depth = <%= @settings[:max_stack_depth] || @defaults[:max_stack_depth]
 
 effective_io_concurrency = <%= @settings[:effective_io_concurrency] || @defaults[:effective_io_concurrency] %>
 max_worker_processes = <%= @settings[:max_worker_processes] || @defaults[:max_worker_processes] %>
-<% if @version.to_f >= 9.6 -%>
 max_parallel_workers_per_gather = <%= @settings[:max_parallel_workers_per_gather] || @defaults[:max_parallel_workers_per_gather] %>
-<% end -%>
-<% if @version.to_f >= 10 -%>
 max_parallel_workers = <%= @settings[:max_parallel_workers] || @defaults[:max_parallel_workers] %>
-<% end -%>
 
 #------------------------------------------------------------------------------
 # WRITE AHEAD LOG
@@ -69,21 +61,24 @@ commit_delay = <%= @settings[:commit_delay] || @defaults[:commit_delay] %>
 
 # - Checkpoints -
 
-<% if @version.to_f < 9.5 -%>
-checkpoint_segments = <%= @settings[:checkpoint_segments] || @defaults[:checkpoint_segments] %>
-<% end -%>
 checkpoint_timeout = <%= @settings[:checkpoint_timeout] || @defaults[:checkpoint_timeout] %>
-<% if @version.to_f >= 9.5 -%>
+checkpoint_completion_target = <%= @settings[:checkpoint_completion_target] || @defaults[:checkpoint_completion_target] %>
 max_wal_size = <%= @settings[:max_wal_size] || @defaults[:max_wal_size] %>
 min_wal_size = <%= @settings[:min_wal_size] || @defaults[:min_wal_size] %>
-<% end -%>
-checkpoint_completion_target = <%= @settings[:checkpoint_completion_target] || @defaults[:checkpoint_completion_target] %>
 
 # - Archiving -
 
 archive_mode = <%= @settings[:archive_mode] || @defaults[:archive_mode] %>
 <% if @settings[:archive_command] || @defaults[:archive_command] -%>
 archive_command = '<%= @settings[:archive_command] || @defaults[:archive_command] %>'
+<% end -%>
+
+# - Archive Recovery -
+
+# These are only used in recovery mode.
+
+<% if @settings[:restore_command] || @defaults[:restore_command] -%>
+restore_command = '<%= @settings[:restore_command] || @defaults[:restore_command] %>'
 <% end -%>
 
 #------------------------------------------------------------------------------
@@ -93,12 +88,13 @@ archive_command = '<%= @settings[:archive_command] || @defaults[:archive_command
 # - Sending Server(s) -
 
 max_wal_senders = <%= @settings[:max_wal_senders] || @defaults[:max_wal_senders] %>
-<% if @version.to_f >= 9.4 -%>
 max_replication_slots = <%= @settings[:max_replication_slots] || @defaults[:max_replication_slots] %>
-<% end -%>
 
 # - Standby Servers -
 
+<% if @primary_conninfo -%>
+primary_conninfo = 'host=<%= @primary_conninfo[:host] %> port=<%= @primary_conninfo[:port] %> user=<%= @primary_conninfo[:user] %> password=<%= @passwords[@primary_conninfo[:user]] %>'
+<% end -%>
 hot_standby = <%= @settings[:hot_standby] || @defaults[:hot_standby] %>
 hot_standby_feedback = <%= @settings[:hot_standby_feedback] || @defaults[:hot_standby_feedback] %>
 
@@ -115,9 +111,7 @@ effective_cache_size = <%= @settings[:effective_cache_size] || @defaults[:effect
 # - Other Planner Options -
 
 default_statistics_target = <%= @settings[:default_statistics_target] || @defaults[:default_statistics_target] %>
-<% if @version.to_f >= 12 -%>
 jit = <%= @settings[:jit] || @defaults[:jit] %>
-<% end -%>
 
 #------------------------------------------------------------------------------
 # REPORTING AND LOGGING
@@ -129,6 +123,7 @@ log_min_duration_statement = <%= @settings[:log_min_duration_statement] || @defa
 
 # - What to Log -
 
+log_autovacuum_min_duration = <%= @settings[:log_autovacuum_min_duration] || @defaults[:log_autovacuum_min_duration] %>
 log_line_prefix = '%t '
 
 #------------------------------------------------------------------------------
@@ -138,13 +133,14 @@ log_line_prefix = '%t '
 # - Query/Index Statistics Collector -
 
 track_activity_query_size = <%= @settings[:track_activity_query_size] || @defaults[:track_activity_query_size] %>
+<% if @version.to_f < 15 -%>
 stats_temp_directory = '/run/postgresql/<%= @version %>-main.pg_stat_tmp'
+<% end -%>
 
 #------------------------------------------------------------------------------
 # AUTOVACUUM PARAMETERS
 #------------------------------------------------------------------------------
 
-log_autovacuum_min_duration = <%= @settings[:log_autovacuum_min_duration] || @defaults[:log_autovacuum_min_duration] %>
 autovacuum_max_workers = <%= @settings[:autovacuum_max_workers] || @defaults[:autovacuum_max_workers] %>
 autovacuum_naptime = <%= @settings[:autovacuum_naptime] || @defaults[:autovacuum_naptime] %>
 autovacuum_vacuum_scale_factor = <%= @settings[:autovacuum_vacuum_scale_factor] || @defaults[:autovacuum_vacuum_scale_factor] %>

@@ -131,6 +131,9 @@ package %w[
   libbz2-dev
   libpq-dev
   libproj-dev
+  liblua5.3-dev
+  libluajit-5.1-dev
+  lua5.3
   python3-pyosmium
   python3-psycopg2
   python3-dotenv
@@ -139,6 +142,9 @@ package %w[
   python3-icu
   python3-datrie
   python3-yaml
+  python3-sqlalchemy-ext
+  python3-geoalchemy2
+  python3-asyncpg
   php-pgsql
   php-intl
   ruby
@@ -177,6 +183,17 @@ if node[:nominatim][:flatnode_file]
   end
 end
 
+remote_directory "#{project_directory}/website" do
+  source "website"
+  owner "nominatim"
+  group "nominatim"
+  mode "755"
+  files_owner "nominatim"
+  files_group "nominatim"
+  files_mode "644"
+  purge false
+end
+
 # Normally syncing via chef is a bad idea because syncing might involve
 # an update of database functions which should not be done while an update
 # is ongoing. Therefore we sync in between update cycles. There is an
@@ -195,7 +212,7 @@ end
 
 remote_file "#{source_directory}/data/country_osm_grid.sql.gz" do
   action :create_if_missing
-  source "https://www.nominatim.org/data/country_grid.sql.gz"
+  source "https://nominatim.org/data/country_grid.sql.gz"
   owner "nominatim"
   group "nominatim"
   mode "644"
@@ -205,7 +222,7 @@ execute "compile_nominatim" do
   action :nothing
   user "nominatim"
   cwd build_directory
-  command "cmake #{source_directory} && make"
+  command "cmake -D WITH_LUAJIT=ON #{source_directory} && make"
   notifies :run, "execute[install_nominatim]"
 end
 
@@ -226,13 +243,22 @@ template "#{project_directory}/.env" do
             :dbname => node[:nominatim][:dbname],
             :flatnode_file => node[:nominatim][:flatnode_file],
             :log_file => "#{node[:nominatim][:logdir]}/query.log",
-            :tokenizer => node[:nominatim][:config][:tokenizer]
+            :tokenizer => node[:nominatim][:config][:tokenizer],
+            :forward_dependencies => node[:nominatim][:config][:forward_dependencies]
 end
 
-%w[wikimedia-importance.sql.gz gb_postcodes.csv.gz us_postcodes.csv.gz].each do |fname|
+remote_file "#{project_directory}/wikimedia-importance.sql.gz" do
+  action :create_if_missing
+  source "https://nominatim.org/data/wikimedia-importance.sql.gz"
+  owner "nominatim"
+  group "nominatim"
+  mode "644"
+end
+
+%w[gb_postcodes.csv.gz us_postcodes.csv.gz].each do |fname|
   remote_file "#{project_directory}/#{fname}" do
     action :create
-    source "https://www.nominatim.org/data/#{fname}"
+    source "https://nominatim.org/data/#{fname}"
     owner "nominatim"
     group "nominatim"
     mode "644"
@@ -509,6 +535,7 @@ end
 prometheus_exporter "nominatim" do
   port 8082
   user "www-data"
+  restrict_address_families "AF_UNIX"
   options [
     "--nominatim.query-log=#{node[:nominatim][:logdir]}/query.log",
     "--nominatim.database-name=#{node[:nominatim][:dbname]}"

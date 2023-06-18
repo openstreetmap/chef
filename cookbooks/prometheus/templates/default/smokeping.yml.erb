@@ -1,0 +1,16 @@
+---
+targets:
+- hosts:
+<% @ip4_hosts.sort.each do |host| -%>
+  - <%= host %>
+<% end -%>
+  interval: 5s
+  network: ip4
+  size: 24
+- hosts:
+<% @ip6_hosts.sort.each do |host| -%>
+  - <%= host %>
+<% end -%>
+  interval: 5s
+  network: ip6
+  size: 24

@@ -86,7 +86,7 @@ action :create do
   end
 
   layers = Dir.glob("/srv/imagery/layers/#{new_resource.site}/*.yml").collect do |path|
-    YAML.safe_load(::File.read(path), [Symbol])
+    YAML.safe_load(::File.read(path), :permitted_classes => [Symbol])
   end
 
   declare_resource :template, "/srv/#{new_resource.site}/imagery.js" do
@@ -103,24 +103,20 @@ action :create do
   systemd_service "mapserv-fcgi-#{new_resource.site}" do
     description "Map server for #{new_resource.site} layer"
     environment "MS_MAP_PATTERN" => "^/srv/imagery/mapserver/",
-                "=" => "0",
+                "MS_DEBUGLEVEL" => "0",
                 "MS_ERRORFILE" => "stderr",
                 "GDAL_CACHEMAX" => "512"
     limit_nofile 16384
     memory_high "1G"
-    memory_max "2G"
+    memory_max "4G"
     user "imagery"
     group "imagery"
-    exec_start "/usr/bin/multiwatch -f 12 --signal=TERM -- /usr/lib/cgi-bin/mapserv"
+    exec_start "/usr/bin/multiwatch -f 8 --signal=TERM -- /usr/lib/cgi-bin/mapserv"
     standard_input "socket"
-    private_tmp true
-    private_devices true
-    private_network true
-    protect_system "full"
-    protect_home true
-    no_new_privileges true
-    # Terminate service after 5mins. Service is socket activated
-    runtime_max_sec 300
+    sandbox true
+    restrict_address_families "AF_UNIX"
+    # Terminate service after 30mins. Service is socket activated
+    runtime_max_sec 1800
   end
 
   systemd_socket "mapserv-fcgi-#{new_resource.site}" do

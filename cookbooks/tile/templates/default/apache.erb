@@ -47,11 +47,6 @@
   # Enable the rewrite engine
   RewriteEngine on
 
-  # Enforce rate limits
-  RewriteMap ipmap txt:/srv/tile.openstreetmap.org/conf/ip.map
-  RewriteCond ${ipmap:%{REMOTE_ADDR}} ^.+$
-  RewriteRule ^.*$ /${ipmap:%{REMOTE_ADDR}} [PT]
-
   # Rewrite tile requests to the default style
   RewriteRule ^/(\d+)/(\d+)/(\d+)\.png$ /default/$1/$2/$3.png [PT,T=image/png,L]
   RewriteRule ^/(\d+)/(\d+)/(\d+)\.png/status/?$  /default/$1/$2/$3.png/status [PT,T=text/plain,L]
@@ -65,11 +60,32 @@
   # Redirect ACME certificate challenges
   RedirectPermanent /.well-known/acme-challenge/ http://acme.openstreetmap.org/.well-known/acme-challenge/
 
-  # Internal endpoint for blocked users
-  <Location /blocked>
-    Header always set Cache-Control private
-    Redirect 429
-  </Location>
+  # Restrict tile access to CDN nodes and admins
+  <LocationMatch ^/default/\d+/\d+/\d+\.png$>
+    Require expr "%{CONN_REMOTE_ADDR} != %{REMOTE_ADDR}"
+    # Fastly POPs
+<% @fastly.sort.each do |address| -%>
+    Require ip <%= address %>
+<% end -%>
+    # StatusCake monitoring
+<% @statuscake.sort.reject { |address| address.empty? }.each do |address| -%>
+    Require ip <%= address %>
+<% end -%>
+    # Administrators
+<% @admins.sort.each do |address| -%>
+    Require ip <%= address %>
+<% end -%>
+    # OSM Amsterdam IPv4
+    Require ip 184.104.179.128/27
+    # OSM Amsterdam IPv6
+    Require ip 2001:470:1:fa1::/64
+    # OSM Dublin IPv4
+    Require ip 184.104.226.96/27
+    # OSM Dublin IPv6
+    Require ip 2001:470:1:b3b::/64
+    # OSM UCL IPv4
+    Require ip 193.60.236.0/24
+  </LocationMatch>
 </VirtualHost>
 
 <VirtualHost *:80>

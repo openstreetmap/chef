@@ -1,5 +1,5 @@
 upstream nominatim_service {
-  server unix:/run/php/nominatim.openstreetmap.org.sock;
+  server unix:/run/php/php-nominatim.openstreetmap.org-fpm.sock;
 }
 
 map $uri $nominatim_script_name {
@@ -60,6 +60,9 @@ geo $whitelisted {
     8.43.85.3 1; # gnome
     8.43.85.4 1; # gnome
     8.43.85.5 1; # gnome
+    2620:52:3:1:5054:ff:fe0a:75a4 1; # gnome
+    2620:52:3:1:5054:ff:fe0a:75a2 1; # gnome
+    2620:52:3:1:5054:ff:fe0a:75aa 1; # gnome
 }
 
 map $missing_email$missing_referer$http_user_agent $blocked_user_agent {

@@ -161,12 +161,9 @@ systemd_service "users-agreed" do
   description "Update list of users accepting CTs"
   user "planet"
   exec_start "/usr/local/bin/users-agreed"
-  private_tmp true
-  private_devices true
-  protect_system "full"
-  protect_home true
-  restrict_address_families %w[AF_INET AF_INET6]
-  no_new_privileges true
+  nice 10
+  sandbox :enable_network => true
+  read_write_paths "/store/planet/users_agreed"
 end
 
 systemd_timer "users-agreed" do
@@ -178,12 +175,9 @@ systemd_service "users-deleted" do
   description "Update list of deleted users"
   user "planet"
   exec_start "/usr/local/bin/users-deleted"
-  private_tmp true
-  private_devices true
-  protect_system "full"
-  protect_home true
-  restrict_address_families %w[AF_INET AF_INET6]
-  no_new_privileges true
+  nice 10
+  sandbox :enable_network => true
+  read_write_paths "/store/planet/users_deleted"
 end
 
 systemd_timer "users-deleted" do
@@ -211,12 +205,11 @@ systemd_service "replication-changesets" do
   description "Changesets replication"
   user "planet"
   exec_start "/usr/local/bin/replicate-changesets /etc/replication/changesets.conf"
-  private_tmp true
-  private_devices true
-  protect_system "full"
-  protect_home true
-  restrict_address_families %w[AF_INET AF_INET6]
-  no_new_privileges true
+  sandbox :enable_network => true
+  read_write_paths [
+    "/run/replication",
+    "/store/planet/replication/changesets"
+  ]
 end
 
 systemd_timer "replication-changesets" do
@@ -272,12 +265,12 @@ systemd_service "replication-minutely" do
   user "planet"
   working_directory "/etc/replication"
   exec_start "/usr/local/bin/replicate-minute"
-  private_tmp true
-  private_devices true
-  protect_system "full"
-  protect_home true
-  restrict_address_families %w[AF_INET AF_INET6]
-  no_new_privileges true
+  sandbox :enable_network => true
+  read_write_paths [
+    "/run/replication",
+    "/store",
+    "/var/lib/replication/minute"
+  ]
 end
 
 systemd_timer "replication-minutely" do
@@ -318,12 +311,12 @@ systemd_service "replication-hourly" do
   user "planet"
   exec_start "/usr/local/bin/osmosis -q --merge-replication-files workingDirectory=/var/lib/replication/hour"
   environment "LD_PRELOAD" => "/opt/flush/flush.so"
-  private_tmp true
-  private_devices true
-  protect_system "full"
-  protect_home true
-  restrict_address_families %w[AF_INET AF_INET6]
-  no_new_privileges true
+  sandbox :enable_network => true
+  memory_deny_write_execute false
+  read_write_paths [
+    "/store/planet/replication/hour",
+    "/var/lib/replication/hour"
+  ]
 end
 
 systemd_timer "replication-hourly" do
@@ -362,12 +355,12 @@ systemd_service "replication-daily" do
   user "planet"
   exec_start "/usr/local/bin/osmosis -q --merge-replication-files workingDirectory=/var/lib/replication/day"
   environment "LD_PRELOAD" => "/opt/flush/flush.so"
-  private_tmp true
-  private_devices true
-  protect_system "full"
-  protect_home true
-  restrict_address_families %w[AF_INET AF_INET6]
-  no_new_privileges true
+  sandbox :enable_network => true
+  memory_deny_write_execute false
+  read_write_paths [
+    "/store/planet/replication/day",
+    "/var/lib/replication/day"
+  ]
 end
 
 systemd_timer "replication-daily" do
@@ -381,12 +374,8 @@ systemd_service "replication-cleanup" do
   description "Cleanup replication"
   user "planet"
   exec_start "/usr/local/bin/replicate-cleanup"
-  private_tmp true
-  private_devices true
-  private_network true
-  protect_system "full"
-  protect_home true
-  no_new_privileges true
+  sandbox true
+  read_write_paths "/var/lib/replication"
 end
 
 systemd_timer "replication-cleanup" do

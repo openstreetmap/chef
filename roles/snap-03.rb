@@ -4,11 +4,12 @@ description "Master role applied to snap-03"
 default_attributes(
   :networking => {
     :interfaces => {
-      :internal_ipv4 => {
+      :internal => {
         :interface => "bond0",
         :role => :internal,
-        :family => :inet,
-        :address => "10.0.64.50",
+        :inet => {
+          :address => "10.0.64.50"
+        },
         :bond => {
           :mode => "802.3ad",
           :lacprate => "fast",

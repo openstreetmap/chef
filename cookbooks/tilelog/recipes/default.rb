@@ -31,7 +31,7 @@ end
 python_package "tilelog" do
   python_virtualenv tilelog_directory
   python_version "3"
-  version "1.4.0"
+  version "1.5.0"
 end
 
 directory tilelog_output_directory do
@@ -54,10 +54,8 @@ systemd_service "tilelog" do
   description "Tile log analysis"
   user "www-data"
   exec_start "/usr/local/bin/tilelog"
-  private_tmp true
-  private_devices true
-  protect_system "strict"
-  protect_home true
+  nice 10
+  sandbox :enable_network => true
   read_write_paths tilelog_output_directory
 end
 

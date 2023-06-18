@@ -86,6 +86,18 @@ git "/srv/gps-tile.openstreetmap.org/updater" do
   group "gpstile"
 end
 
+directory "/srv/gps-tile.openstreetmap.org/tracks" do
+  owner "gpstile"
+  group "gpstile"
+  mode "755"
+end
+
+directory "/srv/gps-tile.openstreetmap.org/shapes" do
+  owner "gpstile"
+  group "gpstile"
+  mode "755"
+end
+
 systemd_service "gps-update" do
   description "GPS tile update daemon"
   after ["network.target", "memcached.service"]
@@ -93,11 +105,9 @@ systemd_service "gps-update" do
   user "gpstile"
   working_directory "/srv/gps-tile.openstreetmap.org"
   exec_start "/srv/gps-tile.openstreetmap.org/updater/update"
-  private_tmp true
-  private_devices true
-  protect_system "full"
-  protect_home true
-  no_new_privileges true
+  nice 10
+  sandbox :enable_network => true
+  read_write_paths "/srv/gps-tile.openstreetmap.org"
   restart "on-failure"
 end
 
@@ -117,6 +127,7 @@ remote_directory "/srv/gps-tile.openstreetmap.org/html" do
   files_mode "644"
 end
 
+apache_module "cgid"
 apache_module "headers"
 apache_module "rewrite"
 

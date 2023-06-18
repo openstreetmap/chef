@@ -1,6 +1,6 @@
 require "digest"
 
-class Chef
+module OpenStreetMap
   module Mixin
     module PersistentToken
       def persistent_token(*args)
@@ -13,8 +13,6 @@ class Chef
       end
     end
   end
-
-  class Recipe
-    include Chef::Mixin::PersistentToken
-  end
 end
+
+Chef::DSL::Recipe.include(OpenStreetMap::Mixin::PersistentToken)

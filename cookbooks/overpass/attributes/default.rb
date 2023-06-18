@@ -1,6 +1,5 @@
 default[:overpass][:fqdn] = "overpass.openstreetmap.org"
-default[:overpass][:version] = "0.7.57"
-default[:overpass][:full_version] = "0.7.57.2"
+default[:overpass][:version] = "0.7.59.1"
 # One of: no, meta, attic
 default[:overpass][:meta_mode] = "attic"
 # One of: no, gz, lz4

@@ -121,12 +121,5 @@ action_class do
 end
 
 def after_created
-  if update_site
-    notifies :update, "mediawiki_site[#{site}]"
-  else
-    site_directory = node[:mediawiki][:sites][site][:directory]
-
-    notifies :create, "template[#{site_directory}/w/LocalSettings.php]"
-    notifies :run, "execute[#{site_directory}/w/maintenance/update.php]"
-  end
+  notifies :update, "mediawiki_site[#{site}]" if update_site
 end

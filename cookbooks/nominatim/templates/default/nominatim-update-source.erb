@@ -19,5 +19,5 @@ git merge origin/<%= node[:nominatim][:revision] %>
 git submodule update
 
 cd <%= @builddir %>
-cmake .
+cmake -D WITH_LUAJIT=ON .
 make

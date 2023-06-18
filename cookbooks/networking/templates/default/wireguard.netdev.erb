@@ -3,21 +3,13 @@ Name=wg0
 Kind=wireguard
 
 [WireGuard]
-<% if node[:lsb][:release].to_f < 20.04 -%>
-PrivateKey=<%= IO.read("/var/lib/systemd/wireguard/private.key").chomp %>
-<% else -%>
 PrivateKeyFile=/var/lib/systemd/wireguard/private.key
-<% end -%>
 ListenPort=51820
 <% node[:networking][:wireguard][:peers].sort_by { |p| p[:public_key] }.each do |peer| -%>
 
 [WireGuardPeer]
 PublicKey=<%= peer[:public_key] %>
-<% if node[:lsb][:release].to_f < 20.04 -%>
-PresharedKey=<%= IO.read("/var/lib/systemd/wireguard/preshared.key").chomp %>
-<% else -%>
 PresharedKeyFile=/var/lib/systemd/wireguard/preshared.key
-<% end -%>
 AllowedIPs=<%= Array(peer[:allowed_ips]).sort.join(",") %>
 <% if peer[:endpoint] -%>
 Endpoint=<%= peer[:endpoint] %>

@@ -18,9 +18,12 @@
   #
   # Setup logging
   #
-  LogFormat "%h %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\" %Dus %{UNIQUE_ID}e %{SSL_PROTOCOL}x %{SSL_CIPHER}x" combined_with_time
+  SetEnvIfNoCase Authorization "^Basic " AUTH_METHOD=basic
+  SetEnvIfNoCase Authorization "^OAuth " AUTH_METHOD=oauth1
+  SetEnvIfNoCase Authorization "^Bearer " AUTH_METHOD=oauth2
+  SetEnvIfExpr "%{QUERY_STRING} =~ /(^|&)oauth_signature=/" AUTH_METHOD=oauth1
+  LogFormat "%h %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\" %Dus %{UNIQUE_ID}e %{SSL_PROTOCOL}x %{SSL_CIPHER}x %{AUTH_METHOD}e" combined_with_time
   CustomLog /var/log/apache2/access.log combined_with_time
-  CustomLog /var/log/apache2/basic.log combined_with_time "expr=%{HTTP:WWW-Authenticate} =~ /^Basic/i"
   ErrorLog /var/log/apache2/error.log
 
   #
@@ -28,6 +31,11 @@
   #
   ExpiresActive On
   RewriteEngine on
+
+  #
+  # Configure timeouts
+  #
+  RequestReadTimeout handshake=20-40,MinRate=500 header=20-40,MinRate=500 body=20,MinRate=500
 
   #
   # Add the unique ID to the request headers

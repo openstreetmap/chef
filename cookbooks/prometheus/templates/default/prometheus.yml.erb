@@ -27,10 +27,6 @@ scrape_configs:
     static_configs:
       - targets:
           - localhost:9093
-  - job_name: promscale
-    static_configs:
-      - targets:
-          - localhost:9201
   - job_name: ssl
     scrape_interval: 15m
     metrics_path: /probe
@@ -59,6 +55,9 @@ scrape_configs:
   - job_name: <%= name %>
 <% if targets.first[:scrape_interval] -%>
     scrape_interval: <%= targets.first[:scrape_interval] %>
+<% end -%>
+<% if targets.first[:scrape_timeout] -%>
+    scrape_timeout: <%= targets.first[:scrape_timeout] %>
 <% end -%>
 <% if targets.first[:sni] -%>
     tls_config:
@@ -107,20 +106,8 @@ scrape_configs:
         regex: "[^/]+/([^/]+)/.*"
         target_label: __param_module
       - source_labels: [__address__]
+        regex: "[^/]+/([^/]+)/.*"
+        target_label: module
+      - source_labels: [__address__]
         regex: "[^/]+/[^/]+/(.*)"
         target_label: __address__
-
-remote_write:
-  - url: "http://localhost:9201/write"
-    write_relabel_configs:
-      - source_labels: [__name__]
-        regex: "go_.*"
-        action: drop
-      - source_labels: [__name__]
-        regex: "promhttp_.*"
-        action: drop
-    queue_config:
-      capacity: 10000
-      min_shards: 4
-      batch_send_deadline: 30s
-      max_backoff: 1s

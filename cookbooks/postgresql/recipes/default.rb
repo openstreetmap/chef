@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-include_recipe "apt"
+include_recipe "apt::postgresql"
 include_recipe "munin"
 include_recipe "prometheus"
 
@@ -33,12 +33,24 @@ node[:postgresql][:versions].each do |version|
   defaults = node[:postgresql][:settings][:defaults] || {}
   settings = node[:postgresql][:settings][version] || {}
 
+  standby_mode = settings[:standby_mode] || defaults[:standby_mode]
+  primary_conninfo = settings[:primary_conninfo] || defaults[:primary_conninfo]
+
+  passwords = if primary_conninfo
+                data_bag_item(primary_conninfo[:passwords][:bag],
+                              primary_conninfo[:passwords][:item])
+              end
+
   template "/etc/postgresql/#{version}/main/postgresql.conf" do
     source "postgresql.conf.erb"
     owner "postgres"
     group "postgres"
     mode "644"
-    variables :version => version, :defaults => defaults, :settings => settings
+    variables :version => version,
+              :defaults => defaults,
+              :settings => settings,
+              :primary_conninfo => primary_conninfo,
+              :passwords => passwords
     notifies :reload, "service[postgresql]"
     only_if { ::Dir.exist?("/etc/postgresql/#{version}/main") }
   end
@@ -74,33 +86,15 @@ node[:postgresql][:versions].each do |version|
     only_if { ::Dir.exist?("/var/lib/postgresql/#{version}/main") }
   end
 
-  standby_mode = settings[:standby_mode] || defaults[:standby_mode]
-  primary_conninfo = settings[:primary_conninfo] || defaults[:primary_conninfo]
-  restore_command = settings[:restore_command] || defaults[:restore_command]
-
-  if restore_command || standby_mode == "on"
-    passwords = if primary_conninfo
-                  data_bag_item(primary_conninfo[:passwords][:bag],
-                                primary_conninfo[:passwords][:item])
-                end
-
-    template "/var/lib/postgresql/#{version}/main/recovery.conf" do
-      source "recovery.conf.erb"
+  if standby_mode == "on"
+    file "/var/lib/postgresql/#{version}/main/standby.signal" do
       owner "postgres"
       group "postgres"
       mode "640"
-      variables :standby_mode => standby_mode,
-                :primary_conninfo => primary_conninfo,
-                :restore_command => restore_command,
-                :passwords => passwords
-      notifies :reload, "service[postgresql]"
-      only_if { ::Dir.exist?("/var/lib/postgresql/#{version}/main") }
     end
   else
-    template "/var/lib/postgresql/#{version}/main/recovery.conf" do
+    file "/var/lib/postgresql/#{version}/main/standby.signal" do
       action :delete
-      notifies :reload, "service[postgresql]"
-      only_if { ::Dir.exist?("/var/lib/postgresql/#{version}/main") }
     end
   end
 end
@@ -174,10 +168,14 @@ end
 
 prometheus_exporter "postgres" do
   port 9187
+  scrape_interval "1m"
+  scrape_timeout "1m"
   user "postgres"
   options "--extend.query-path=/etc/prometheus/exporters/postgres_queries.yml"
   environment "DATA_SOURCE_URI" => uris.sort.uniq.first,
               "PG_EXPORTER_AUTO_DISCOVER_DATABASES" => "true",
               "PG_EXPORTER_EXCLUDE_DATABASES" => "postgres,template0,template1"
+  restrict_address_families "AF_UNIX"
+  remove_ipc false
   subscribes :restart, "template[/etc/prometheus/exporters/postgres_queries.yml]"
 end

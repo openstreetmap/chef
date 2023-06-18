@@ -30,9 +30,22 @@ template "/usr/local/bin/statistics" do
   variables :ruby => ruby, :directory => rails_directory
 end
 
-cron_d "statistics" do
-  minute "0"
-  hour "0"
+systemd_service "web-statistics" do
+  description "Generate web statistics"
+  environment "RAILS_ENV" => "production"
   user "rails"
-  command "/usr/local/bin/statistics"
+  working_directory rails_directory
+  exec_start "/usr/local/bin/statistics"
+  sandbox :enable_network => true
+  memory_deny_write_execute false
+  read_write_paths ["#{rails_directory}/tmp", "/var/log/web"]
+end
+
+systemd_timer "web-statistics" do
+  description "Generate web statistics"
+  on_calendar "00:00:00"
+end
+
+service "web-statistics.timer" do
+  action [:enable, :start]
 end

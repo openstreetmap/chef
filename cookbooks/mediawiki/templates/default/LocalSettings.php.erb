@@ -54,6 +54,15 @@ $wgEmailAuthentication = true;
 
 $wgEnotifUseJobQ       = true;
 
+$wgSMTP = [
+  "host" => "localhost",
+  "socket_options" => [
+    "ssl" => [
+      "verify_peer_name" => false
+    ]
+  ]
+];
+
 ## Database settings
 $wgDBtype           = "mysql";
 $wgDBserver         = "<%= @database_params[:host] %>";
@@ -72,6 +81,9 @@ $wgDBmysql5 = false;
 
 ## Shared memory settings
 $wgMainCacheType    = CACHE_MEMCACHED;
+$wgParserCacheType  = CACHE_MEMCACHED;
+$wgMessageCacheType = CACHE_MEMCACHED;
+$wgSessionCacheType = CACHE_MEMCACHED;
 $wgMemCachedServers = array('127.0.0.1:11211');
 $wgSessionsInObjectCache = TRUE;
 
@@ -112,22 +124,6 @@ $wgSVGConverters = array( 'rsvg' => '/usr/bin/rsvg-convert -w $width -h $height 
 $wgSVGConverter = 'rsvg';
 $wgSVGMaxSize = 2000;
 
-<% if @mediawiki[:commons] -%>
-# Enable use of images from https://commons.wikimedia.org
-$wgForeignFileRepos[] = [
-  'class' => ForeignAPIRepo::class,
-  'name' => 'wikimediacommons',
-  'apibase' => 'https://commons.wikimedia.org/w/api.php',
-  'url' => 'https://upload.wikimedia.org/wikipedia/commons',
-  'thumbUrl' => 'https://upload.wikimedia.org/wikipedia/commons/thumb',
-  'hashLevels' => 2,
-  'transformVia404' => true,
-  'fetchDescription' => true,
-  'descriptionCacheExpiry' => 604800,
-  'apiThumbCacheExpiry' => 604800,
-];
-<% end -%>
-
 ## If you use ImageMagick (or any other shell command) on a
 ## Linux server, this will need to be set to the name of an
 ## available UTF-8 locale
@@ -142,7 +138,7 @@ $wgShellLocale = "en_US.utf8";
 ## Set $wgCacheDirectory to a writable directory on the web server
 ## to make your wiki go slightly faster. The directory should not
 ## be publically accessible from the web.
-#$wgCacheDirectory = "$IP/cache";
+$wgCacheDirectory = "$IP/cache";
 
 # Site language code, should be one of the list in ./languages/Names.php
 $wgLanguageCode = "en";
@@ -234,7 +230,12 @@ $wgNamespacesWithSubpages[NS_MAIN] = true;
 
 # DNS Blacklists to use
 $wgEnableDnsBlacklist = true;
-$wgDnsBlacklistUrls = array( 'proxies.dnsbl.sorbs.net.', 'opm.tornevall.org.', 'xbl.spamhaus.org.', 'dnsbl-2.uceprotect.net.' );
+$wgDnsBlacklistUrls = [
+  'proxies.dnsbl.sorbs.net.',
+  'opm.tornevall.org.',
+  'xbl.spamhaus.org.',
+  'dnsbl-2.uceprotect.net.'
+];
 
 # Require validated email to edit
 $wgEmailConfirmToEdit = true;
@@ -247,16 +248,38 @@ $wgDisableCounters = TRUE;
 # Disable IP in Header to avoid cache issue
 $wgShowIPinHeader = FALSE;
 
-# Job Runs mostly by cron
-$wgJobRunRate = 0.01;
+# Job Runs by cron
+$wgJobRunRate = 0;
 
 # dissolves double redirects automatically
 $wgFixDoubleRedirects = TRUE;
 
 # Allow external images from a few sites
-$wgAllowExternalImagesFrom = array( 'http://tile.openstreetmap.org/', 'https://tile.openstreetmap.org', 'http://josm.openstreetmap.de/', 'http://trac.openstreetmap.org/', 'http://rweait.dev.openstreetmap.org/' );
+$wgAllowExternalImagesFrom = [
+  'http://tile.openstreetmap.org/',
+  'https://tile.openstreetmap.org',
+  'http://josm.openstreetmap.de/'
+];
 
-$wgNoFollowDomainExceptions = array( 'www.openstreetmap.org', 'josm.openstreetmap.de', 'taginfo.openstreetmap.org', 'blog.openstreetmap.org', 'wiki.osmfoundation.org' );
+$wgNoFollowDomainExceptions = [
+  'www.openstreetmap.org',
+  'josm.openstreetmap.de',
+  'taginfo.openstreetmap.org',
+  'blog.openstreetmap.org',
+  'forum.openstreetmap.org',
+  'community.openstreetmap.org',
+  'lists.openstreetmap.org',
+  'help.openstreetmap.org',
+  'switch2osm.org',
+  'wiki.osmfoundation.org',
+  'www.openstreetmap.us',
+  'learnosm.org',
+  'nominatim.org',
+  'openstreetmap.community',
+  'www.openstreetbrowser.org',
+  'openinframap.org',
+  'leafletjs.com'
+];
 
 # FIXME - move to specific
 $wgAllowUserJs = TRUE;
@@ -347,7 +370,7 @@ $wgExtraNamespaces[NS_PROPOSAL] = 'Proposal';
 $wgNamespacesWithSubpages[NS_PROPOSAL] = TRUE;
 $wgContentNamespaces[] = NS_PROPOSAL;
 define('NS_PROPOSAL_TALK', 3001);
-$wgExtraNamespaces[NS_PROPOSAL_TALK] = 'Proposal talk';
+$wgExtraNamespaces[NS_PROPOSAL_TALK] = 'Proposal_talk';
 $wgNamespacesWithSubpages[NS_PROPOSAL_TALK] = TRUE;
 
 $wgNamespacesToBeSearchedDefault[NS_LANG_DE] = TRUE;
@@ -369,10 +392,8 @@ $wgForceUIMsgAsContentMsg = array( 'mainpage-url', 'mapfeatures-url', 'contribut
 <% end -%>
 
 <% if @name == "wiki.openstreetmap.org" -%>
-# setting the search weight of the main wiki's proposal namespace lower then general talk pages (0.2), but
-# higher then wiki project namespace (0.1)
-# Documentation at https://phabricator.wikimedia.org/source/extension-cirrussearch/browse/master/docs/settings.txt$693
-$wgCirrusSearchNamespaceWeights = array_merge ( $wgCirrusSearchNamespaceWeights, array ( NS_PROPOSAL => 0.15 ));
+# wiki.openstreetmap.org specific config loaded after extensions
+$wgRCWatchCategoryMembership = true;
 <% end -%>
 
 <% if not(@mediawiki[:private_accounts]) and not(@mediawiki[:private_site]) -%>
@@ -408,3 +429,8 @@ unset( $wgRemoveGroups['autoconfirmed'] );
 unset( $wgGroupsAddToSelf['autoconfirmed'] );
 unset( $wgGroupsRemoveFromSelf['autoconfirmed'] );
 <% end -%>
+
+# Increase curl timeout to allow parsoid requests to heavy pages like Map Features
+# Mediawiki 1.38 has fix to allow this to be set by $wgVirtualRestConfig
+# https://phabricator.wikimedia.org/T285478
+$wgHTTPTimeout = 240;

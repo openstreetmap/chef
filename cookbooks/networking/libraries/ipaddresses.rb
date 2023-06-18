@@ -1,29 +1,55 @@
-class Chef
-  class Node
-    def ipaddresses(options = {}, &block)
-      addresses = []
+require "ipaddr"
 
-      interfaces(options).each do |interface|
-        address = interface[:public_address] || interface[:address]
+module OpenStreetMap
+  module Mixin
+    module IPAddresses
+      class Address
+        attr_reader :address, :prefix, :gateway, :network, :netmask
 
-        next if address.nil?
+        def initialize(address)
+          @address = address[:public_address] || address[:address]
+          @prefix = address[:prefix]
+          @gateway = address[:gateway]
 
-        if block.nil?
-          addresses << address
-        else
-          yield address
+          ip = IPAddr.new(address[:address]).mask(address[:prefix])
+
+          @network = ip.to_s
+          @netmask = ip.netmask
+        end
+
+        def <=>(other)
+          address <=> other.address
+        end
+
+        def to_s
+          address
+        end
+
+        def to_str
+          address
+        end
+
+        def subnet
+          "#{@network}/#{@prefix}"
         end
       end
 
-      addresses
-    end
+      def ipaddresses(role: nil, family: nil)
+        interfaces(:role => role).each_with_object([]) do |interface, addresses|
+          addresses << Address.new(interface[:inet]) if interface[:inet] && (family.nil? || family == :inet)
+          addresses << Address.new(interface[:inet6]) if interface[:inet6] && (family.nil? || family == :inet6)
+        end
+      end
 
-    def internal_ipaddress(options = {})
-      ipaddresses(options.merge(:role => :internal)).first
-    end
+      def internal_ipaddress(family: nil)
+        ipaddresses(:role => :internal, :family => family).first
+      end
 
-    def external_ipaddress(options = {})
-      ipaddresses(options.merge(:role => :external)).first
+      def external_ipaddress(family: nil)
+        ipaddresses(:role => :external, :family => family).first
+      end
     end
   end
 end
+
+Chef::Node.include(OpenStreetMap::Mixin::IPAddresses)

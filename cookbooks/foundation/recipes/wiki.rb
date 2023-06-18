@@ -38,17 +38,11 @@ mediawiki_site "wiki.osmfoundation.org" do
   skin "OSMFoundation"
   logo "/w/skins/OSMFoundation/img/logo.png"
   email_contact "webmaster@openstreetmap.org"
-  email_sender "webmaster@openstreetmap.org"
+  email_sender "wiki@noreply.openstreetmap.org"
   email_sender_name "OSMF Wiki"
   private_accounts true
-  extra_file_extensions ["mp3"]
-  version "1.37"
-end
-
-mediawiki_skin "osmf" do
-  site "wiki.osmfoundation.org"
-  repository "https://github.com/openstreetmap/mediawiki-skins-osmf.git"
-  revision "master"
+  extra_file_extensions %w[mp3 pptx]
+  version "1.39"
 end
 
 mediawiki_skin "OSMFoundation" do
@@ -62,4 +56,11 @@ cookbook_file "/srv/wiki.osmfoundation.org/Wiki.png" do
   owner node[:mediawiki][:user]
   group node[:mediawiki][:group]
   mode "644"
+end
+
+template "/srv/wiki.osmfoundation.org/robots.txt" do
+  owner node[:mediawiki][:user]
+  group node[:mediawiki][:group]
+  mode "644"
+  source "robots.txt.erb"
 end

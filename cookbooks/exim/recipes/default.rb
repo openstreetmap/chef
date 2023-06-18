@@ -25,9 +25,17 @@ package %w[
   exim4
   openssl
   ssl-cert
+  mailutils
 ]
 
 package "exim4-daemon-heavy" do
+  only_if { ::File.exist?("/var/run/clamav/clamd.ctl") }
+end
+
+group "Debian-exim" do
+  action :modify
+  members "clamav"
+  append true
   only_if { ::File.exist?("/var/run/clamav/clamd.ctl") }
 end
 
@@ -77,19 +85,7 @@ end
 relay_from_hosts = node[:exim][:relay_from_hosts]
 
 if node[:exim][:smarthost_name]
-  search(:node, "roles:gateway") do |gateway|
-    allowed_ips = gateway.interfaces(:role => :internal).map do |interface|
-      "#{interface[:network]}/#{interface[:prefix]}"
-    end
-
-    node.default[:networking][:wireguard][:peers] << {
-      :public_key => gateway[:networking][:wireguard][:public_key],
-      :allowed_ips => allowed_ips,
-      :endpoint => "#{gateway.name}:51820"
-    }
-  end
-
-  search(:node, "exim_smarthost_via:#{node[:exim][:smarthost_name]}\\:*").each do |host|
+  search(:node, "exim_smarthost_via:*?").each do |host|
     relay_from_hosts |= host.ipaddresses(:role => :external)
   end
 
@@ -216,43 +212,53 @@ remote_directory "/etc/exim4/noreply" do
   purge true
 end
 
+template "/etc/mail.rc" do
+  source "mail.rc.erb"
+  owner "root"
+  group "root"
+  mode "644"
+end
+
 munin_plugin "exim_mailqueue"
 munin_plugin "exim_mailstats"
 
 prometheus_exporter "exim" do
   port 9636
+  user "Debian-exim"
+  protect_proc "default"
 end
 
 if node[:exim][:smarthost_name]
-  node[:exim][:daemon_smtp_ports].each do |port|
-    firewall_rule "accept-inbound-smtp-#{port}" do
-      action :accept
-      source "net"
-      dest "fw"
-      proto "tcp:syn"
-      dest_ports port
-      source_ports "1024:"
-    end
+  firewall_rule "accept-inbound-smtp" do
+    action :accept
+    context :incoming
+    protocol :tcp
+    dest_ports node[:exim][:daemon_smtp_ports]
+    source_ports "1024-65535"
   end
 else
-  node[:exim][:daemon_smtp_ports].each do |port|
-    firewall_rule "accept-inbound-smtp-#{port}" do
-      action :accept
-      source "bm:mail.openstreetmap.org"
-      dest "fw"
-      proto "tcp:syn"
-      dest_ports port
-      source_ports "1024:"
-    end
+  smarthosts = []
+
+  search(:node, "exim_smarthost_name:*?").each do |host|
+    smarthosts |= host.ipaddresses(:role => :external)
+  end
+
+  firewall_rule "accept-inbound-smtp" do
+    action :accept
+    context :incoming
+    protocol :tcp
+    source smarthosts
+    dest_ports node[:exim][:daemon_smtp_ports]
+    source_ports "1024-65535"
+    not_if { smarthosts.empty? }
   end
 end
 
 if node[:exim][:smarthost_via]
   firewall_rule "deny-outbound-smtp" do
     action :reject
-    source "fw"
-    dest "net"
-    proto "tcp:syn"
+    context :outgoing
+    protocol :tcp
     dest_ports "smtp"
   end
 end

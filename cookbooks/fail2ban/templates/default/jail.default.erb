@@ -2,5 +2,6 @@
 
 [DEFAULT]
 destemail = admins@openstreetmap.org
-banaction = shorewall
+banaction = nftables[type=multiport]
+banaction_allports = nftables[type=allports]
 bantime = 14400

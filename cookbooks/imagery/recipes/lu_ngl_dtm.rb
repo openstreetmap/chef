@@ -26,20 +26,12 @@ end
 
 imagery_layer "ana_dtm_2017" do
   site "ana-dtm-2017.openstreetmap.lu"
-  projection "EPSG:3857"
-  source "/data/imagery/lu/LUREF_NGL/lu_color_relief-epsg3857-compress.tif"
-  max_zoom 21
-  title "DTM"
-  copyright '&copy; 2017 <a href="https://data.public.lu/fr/datasets/digital-terrain-model-high-dem-resolution/">Administration de la Navigation A&eacute;rienne Luxembourg</a>, CC0'
+  action :delete
 end
 
 imagery_layer "ana_dtm_2017_hillshading" do
   site "ana-dtm-2017.openstreetmap.lu"
-  projection "EPSG:3857"
-  source "/data/imagery/lu/LUREF_NGL/lu_hillshade_2017-epsg-3857-compress.tif"
-  max_zoom 21
-  title "DTM Hillshading (single light source)"
-  copyright '&copy; 2017 <a href="https://data.public.lu/fr/datasets/digital-terrain-model-high-dem-resolution/">Administration de la Navigation A&eacute;rienne Luxembourg</a>, CC0'
+  action :delete
 end
 
 imagery_layer "ana_dtm_2017_hillshading_multi" do

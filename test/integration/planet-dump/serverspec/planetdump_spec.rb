@@ -18,6 +18,7 @@ describe file("/usr/local/bin/planet-mirror-redirect-update") do
   it { should be_executable }
 end
 
-describe file("/etc/cron.d/planet-dump-mirror") do
-  it { should be_file }
+describe service("planet-dump-mirror.timer") do
+  it { should be_enabled }
+  it { should be_running }
 end

@@ -19,7 +19,7 @@ def categorise_uri(line)
   end
 end
 
-parser = ApacheLogRegex.new('%h %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\" %Dus %{UNIQUE_ID}e %{SSL_PROTOCOL}x %{SSL_CIPHER}x')
+parser = ApacheLogRegex.new('%h %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\" %Dus %{UNIQUE_ID}e %{SSL_PROTOCOL}x %{SSL_CIPHER}x %{AUTH_METHOD}e')
 last_write = Time.now
 
 statistics = {
@@ -28,12 +28,13 @@ statistics = {
   :count => Hash.new(0),
   :bytes => Hash.new(0),
   :seconds => Hash.new(0.0),
-  :ssl => Hash.new(0)
+  :ssl => Hash.new(0),
+  :auth => Hash.new(0)
 }
 
 File::Tail::Logfile.tail("/var/log/apache2/access.log") do |line|
   begin
-    hash = parser.parse(line)
+    hash = parser.parse!(line)
 
     uri = categorise_uri(hash["%r"])
     status = hash["%>s"]
@@ -41,6 +42,7 @@ File::Tail::Logfile.tail("/var/log/apache2/access.log") do |line|
     seconds = hash["%Dus"].to_f / 1000000
     protocol = hash["%{SSL_PROTOCOL}x"]
     cipher = hash["%{SSL_CIPHER}x"]
+    auth = hash["%{AUTH_METHOD}e"]
 
     statistics[:status][status] += 1
     statistics[:uri][uri] += 1
@@ -48,8 +50,9 @@ File::Tail::Logfile.tail("/var/log/apache2/access.log") do |line|
     statistics[:bytes][[uri, status]] += bytes
     statistics[:seconds][[uri, status]] += seconds
     statistics[:ssl][[protocol, cipher]] += 1 unless protocol == "-"
-  rescue ApacheLogRegex::ParseError
-    # nil
+    statistics[:auth][auth] += 1 unless auth == "-"
+  rescue ApacheLogRegex::ParseError => ex
+    STDERR.puts ex.to_s
   end
 
   if Time.now - last_write > 10
@@ -90,6 +93,13 @@ File::Tail::Logfile.tail("/var/log/apache2/access.log") do |line|
         protocol, cipher = key
 
         file.puts "api_call_ssl_total{protocol=\"#{protocol}\",cipher=\"#{cipher}\"} #{value}"
+      end
+
+      file.puts "# HELP api_call_auth_method_total Number of calls by authentication method"
+      file.puts "# TYPE api_call_auth_method_total counter"
+
+      statistics[:auth].each do |method, value|
+        file.puts "api_call_auth_method_total{method=\"#{method}\"} #{value}"
       end
     end
 

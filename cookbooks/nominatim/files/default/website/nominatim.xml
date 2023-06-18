@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/"
+                       xmlns:moz="http://www.mozilla.org/2006/browser/search/">
+	<ShortName>Nominatim</ShortName>
+	<LongName>Nominatim OSM Search</LongName>
+	<Description>Search for a place in OpenStreetMap Nominatim</Description>
+	<InputEncoding>UTF-8</InputEncoding>
+	<OutputEncoding>UTF-8</OutputEncoding>
+	<Url type="text/html" method="get" template="http://nominatim.openstreetmap.org/search/?q={searchTerms}" />
+	<Query role="example" searchTerms="Reigate" />
+	<Developer>Sarah Hoffmann</Developer>
+	<AdultContent>false</AdultContent>
+	<Attribution>Data &amp;copy; OpenStreetMap contributors. ODbL, http://www.osm.org/copyright.</Attribution>
+</OpenSearchDescription>
+

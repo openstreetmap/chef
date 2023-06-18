@@ -24,7 +24,7 @@ default_action :create
 property :site, :kind_of => String, :name_property => true
 property :aliases, :kind_of => [String, Array]
 property :directory, :kind_of => String
-property :version, :kind_of => String, :default => "1.37"
+property :version, :kind_of => String, :default => "1.39"
 property :database_name, :kind_of => String, :required => true
 property :database_user, :kind_of => String, :required => [:create, :update]
 property :database_password, :kind_of => String, :required => [:create, :update]
@@ -59,10 +59,9 @@ action :create do
     :version => new_resource.version
   }
 
-  secret_key = persistent_token("mediawiki", new_resource.site, "wgSecretKey")
-
   mysql_user "#{new_resource.database_user}@localhost" do
     password new_resource.database_password
+    reload true
   end
 
   mysql_database new_resource.database_name do
@@ -70,13 +69,6 @@ action :create do
   end
 
   mediawiki_directory = "#{site_directory}/w"
-
-  ruby_block "rename-installer-localsettings" do
-    action :nothing
-    block do
-      ::File.rename("#{mediawiki_directory}/LocalSettings.php", "#{mediawiki_directory}/LocalSettings-install.php")
-    end
-  end
 
   declare_resource :directory, site_directory do
     owner node[:mediawiki][:user]
@@ -97,9 +89,6 @@ action :create do
     depth 1
     user node[:mediawiki][:user]
     group node[:mediawiki][:group]
-    notifies :run, "execute[#{mediawiki_directory}/composer.json]", :immediately
-    notifies :run, "execute[#{mediawiki_directory}/maintenance/install.php]", :immediately
-    notifies :run, "execute[#{mediawiki_directory}/maintenance/update.php]"
   end
 
   template "#{mediawiki_directory}/composer.local.json" do
@@ -111,44 +100,21 @@ action :create do
   end
 
   execute "#{mediawiki_directory}/composer.json" do
-    action :nothing
     command "composer update --no-dev"
     cwd mediawiki_directory
     user node[:mediawiki][:user]
     group node[:mediawiki][:group]
     environment "COMPOSER_HOME" => site_directory
+    not_if { ::File.exist?("#{mediawiki_directory}/composer.lock") }
   end
 
   execute "#{mediawiki_directory}/maintenance/install.php" do
-    action :nothing
     # Use metanamespace as Site Name to ensure correct set namespace
     command "php maintenance/install.php --server '#{name}' --dbtype 'mysql' --dbname '#{new_resource.database_name}' --dbuser '#{new_resource.database_user}' --dbpass '#{new_resource.database_password}' --dbserver 'localhost' --scriptpath /w --pass '#{new_resource.admin_password}' '#{new_resource.metanamespace}' '#{new_resource.admin_user}'"
     cwd mediawiki_directory
     user node[:mediawiki][:user]
     group node[:mediawiki][:group]
-    not_if do
-      ::File.exist?("#{mediawiki_directory}/LocalSettings-install.php")
-    end
-    notifies :run, "ruby_block[rename-installer-localsettings]", :immediately
-  end
-
-  execute "#{mediawiki_directory}/maintenance/update.php" do
-    action :nothing
-    command "php maintenance/update.php --quick"
-    cwd mediawiki_directory
-    user node[:mediawiki][:user]
-    group node[:mediawiki][:group]
-  end
-
-  # Safety catch if git doesn't update but install.php hasn't run
-  ruby_block "catch-installer-localsettings-run" do
-    action :run
-    block do
-    end
-    not_if do
-      ::File.exist?("#{mediawiki_directory}/LocalSettings-install.php")
-    end
-    notifies :run, "execute[#{mediawiki_directory}/maintenance/install.php]", :immediately
+    not_if { ::File.exist?("#{mediawiki_directory}/LocalSettings.php") }
   end
 
   declare_resource :directory, "#{mediawiki_directory}/images" do
@@ -180,53 +146,26 @@ action :create do
               :database_params => database_params,
               :mediawiki => mediawiki_params,
               :secret_key => secret_key
-    notifies :run, "execute[#{mediawiki_directory}/maintenance/update.php]"
   end
 
-  cron_d "mediawiki-#{cron_name}-sitemap" do
-    comment "Generate sitemap.xml daily"
-    minute "30"
-    hour "0"
-    user node[:mediawiki][:user]
-    command "/usr/bin/nice /usr/bin/php -d memory_limit=2048M -d error_reporting=22517 #{site_directory}/w/maintenance/generateSitemap.php --server=https://#{new_resource.site} --urlpath=https://#{new_resource.site}/ --fspath=#{site_directory} --quiet --skip-redirects"
+  service "mediawiki-sitemap@#{new_resource.site}.timer" do
+    action [:enable, :start]
+    only_if { ::File.exist?("#{mediawiki_directory}/LocalSettings.php") }
   end
 
-  cron_d "mediawiki-#{cron_name}-jobs" do
-    comment "Run mediawiki jobs"
-    minute "*/3"
-    user node[:mediawiki][:user]
-    command "/usr/bin/nice /usr/bin/php -d memory_limit=2048M -d error_reporting=22517 #{site_directory}/w/maintenance/runJobs.php --server=https://#{new_resource.site} --maxtime=160 --memory-limit=2048M --procs=8 --quiet"
+  service "mediawiki-jobs@#{new_resource.site}.timer" do
+    action [:enable, :start]
+    only_if { ::File.exist?("#{mediawiki_directory}/LocalSettings.php") }
   end
 
-  cron_d "mediawiki-#{cron_name}-email-jobs" do
-    comment "Run mediawiki email jobs"
-    user node[:mediawiki][:user]
-    command "/usr/bin/nice /usr/bin/php -d memory_limit=2048M -d error_reporting=22517 #{site_directory}/w/maintenance/runJobs.php --server=https://#{new_resource.site} --maxtime=30 --type=enotifNotify --memory-limit=2048M --procs=4 --quiet"
+  service "mediawiki-email-jobs@#{new_resource.site}.timer" do
+    action [:enable, :start]
+    only_if { ::File.exist?("#{mediawiki_directory}/LocalSettings.php") }
   end
 
-  cron_d "mediawiki-#{cron_name}-refresh-links" do
-    comment "Run mediawiki refresh links table weekly"
-    minute "5"
-    hour "0"
-    weekday "0"
-    user node[:mediawiki][:user]
-    command "/usr/bin/nice /usr/bin/php -d memory_limit=2048M -d error_reporting=22517 #{site_directory}/w/maintenance/refreshLinks.php --server=https://#{new_resource.site} --memory-limit=2048M --quiet"
-  end
-
-  cron_d "mediawiki-#{cron_name}-cleanup-gs" do
-    comment "Clean up imagemagick garbage"
-    minute "10"
-    hour "2"
-    user node[:mediawiki][:user]
-    command "/usr/bin/find /tmp/ -maxdepth 1 -type f -user www-data -mmin +90 -name 'gs_*' -delete"
-  end
-
-  cron_d "mediawiki-#{cron_name}-cleanup-magick" do
-    comment "Clean up imagemagick garbage"
-    minute "20"
-    hour "2"
-    user node[:mediawiki][:user]
-    command "/usr/bin/find /tmp/ -maxdepth 1 -type f -user www-data -mmin +90 -name 'magick-*' -delete"
+  service "mediawiki-refresh-links@#{new_resource.site}.timer" do
+    action [:enable, :start]
+    only_if { ::File.exist?("#{mediawiki_directory}/LocalSettings.php") }
   end
 
   template "/etc/cron.daily/mediawiki-#{cron_name}-backup" do
@@ -238,12 +177,14 @@ action :create do
     variables :name => new_resource.site,
               :directory => site_directory,
               :database_params => database_params
+    only_if { ::File.exist?("#{mediawiki_directory}/LocalSettings.php") }
   end
 
   # MobileFrontend extension is required by MinervaNeue skin
   mediawiki_extension "MobileFrontend" do
     site new_resource.site
     template "mw-ext-MobileFrontend.inc.php.erb"
+    update_site false
   end
 
   # MobileFrontend extension is required by MinervaNeue skin
@@ -457,7 +398,7 @@ action :create do
 
   mediawiki_extension "osmtaginfo" do
     site new_resource.site
-    repository "https://github.com/Firefishy/osmtaginfo.git"
+    repository "https://github.com/openstreetmap/osmtaginfo.git"
     tag "live"
     update_site false
   end
@@ -467,27 +408,6 @@ action :create do
     repository "https://github.com/thomersch/OSMCALWikiWidget.git"
     tag "live"
     update_site false
-  end
-
-  mediawiki_extension "SimpleMap" do
-    site new_resource.site
-    template "mw-ext-SimpleMap.inc.php.erb"
-    repository "https://github.com/Firefishy/SimpleMap.git"
-    tag "live"
-    update_site false
-    action :delete
-  end
-
-  mediawiki_extension "SlippyMap" do
-    site new_resource.site
-    update_site false
-    action :delete
-  end
-
-  mediawiki_extension "Mantle" do
-    site new_resource.site
-    update_site false
-    action :delete
   end
 
   mediawiki_extension "DisableAccount" do
@@ -508,11 +428,17 @@ action :create do
     update_site false
   end
 
-  # Broken Extension - 3 April 2022 - Remove. See https://github.com/openstreetmap/chef/pull/491#issuecomment-1086759504
-  mediawiki_extension "QuickInstantCommons" do
-    site new_resource.site
-    update_site false
-    action :delete
+  if new_resource.commons
+    mediawiki_extension "QuickInstantCommons" do
+      site new_resource.site
+      update_site false
+    end
+  else
+    mediawiki_extension "QuickInstantCommons" do
+      site new_resource.site
+      update_site false
+      action :delete
+    end
   end
 
   cookbook_file "#{site_directory}/cc-wiki.png" do
@@ -579,6 +505,14 @@ end
 action :update do
   mediawiki_directory = "#{site_directory}/w"
 
+  execute "#{mediawiki_directory}/composer.json" do
+    command "composer update --no-dev"
+    cwd mediawiki_directory
+    user node[:mediawiki][:user]
+    group node[:mediawiki][:group]
+    environment "COMPOSER_HOME" => site_directory
+  end
+
   template "#{mediawiki_directory}/LocalSettings.php" do
     cookbook "mediawiki"
     source "LocalSettings.php.erb"
@@ -588,8 +522,8 @@ action :update do
     variables :name => new_resource.site,
               :directory => mediawiki_directory,
               :database_params => database_params,
-              :mediawiki => mediawiki_params
-    notifies :run, "execute[#{mediawiki_directory}/maintenance/update.php]"
+              :mediawiki => mediawiki_params,
+              :secret_key => secret_key
   end
 
   execute "#{mediawiki_directory}/maintenance/update.php" do
@@ -598,6 +532,7 @@ action :update do
     cwd mediawiki_directory
     user node[:mediawiki][:user]
     group node[:mediawiki][:group]
+    timeout 86400
   end
 end
 
@@ -622,7 +557,7 @@ action :delete do
 end
 
 action_class do
-  include Chef::Mixin::PersistentToken
+  include OpenStreetMap::Mixin::PersistentToken
 
   def site_directory
     new_resource.directory || "/srv/#{new_resource.site}"
@@ -669,8 +604,13 @@ action_class do
       :private_site => new_resource.private_site
     }
   end
+
+  def secret_key
+    persistent_token("mediawiki", new_resource.site, "wgSecretKey")
+  end
 end
 
 def after_created
+  notifies :update, "mediawiki_site[#{site}]"
   notifies :reload, "service[apache2]" if reload_apache
 end

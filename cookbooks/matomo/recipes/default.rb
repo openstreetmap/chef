@@ -25,6 +25,8 @@ include_recipe "php::fpm"
 passwords = data_bag_item("matomo", "passwords")
 
 package %w[
+  brotli
+  gzip
   php-cli
   php-curl
   php-mbstring
@@ -35,29 +37,20 @@ package %w[
 ]
 
 apache_module "expires"
+apache_module "proxy"
+apache_module "proxy_fcgi"
 apache_module "rewrite"
 
 version = node[:matomo][:version]
 
 geoip_directory = node[:geoipupdate][:directory]
 
-directory "/opt/matomo-#{version}" do
-  owner "root"
-  group "root"
-  mode "0755"
-end
-
 remote_file "#{Chef::Config[:file_cache_path]}/matomo-#{version}.zip" do
   source "https://builds.matomo.org/matomo-#{version}.zip"
 end
 
 archive_file "#{Chef::Config[:file_cache_path]}/matomo-#{version}.zip" do
-  action :nothing
   destination "/opt/matomo-#{version}"
-  overwrite true
-  owner "root"
-  group "root"
-  subscribes :extract, "remote_file[#{Chef::Config[:file_cache_path]}/matomo-#{version}.zip]", :immediately
   notifies :run, "notify_group[matomo-updated]"
 end
 
@@ -69,12 +62,11 @@ node[:matomo][:plugins].each do |plugin_name, plugin_version|
   end
 
   archive_file "#{Chef::Config[:file_cache_path]}/matomo-#{plugin_name}-#{plugin_version}.zip" do
-    action :nothing
-    destination "/opt/matomo-#{version}/matomo/plugins"
-    overwrite true
-    owner "root"
-    group "root"
-    subscribes :extract, "remote_file[#{Chef::Config[:file_cache_path]}/matomo-#{plugin_name}-#{plugin_version}.zip]", :immediately
+    destination "/opt/matomo-#{plugin_name}-#{plugin_version}"
+  end
+
+  link "/opt/matomo-#{version}/matomo/plugins/#{plugin_name}" do
+    to "/opt/matomo-#{plugin_name}-#{plugin_version}/#{plugin_name}"
     notifies :run, "notify_group[matomo-updated]"
   end
 end
@@ -153,9 +145,27 @@ if File.symlink?("/srv/matomo.openstreetmap.org")
     subscribes :run, "execute[core:update]"
   end
 
+  execute "/opt/matomo-#{version}/matomo/matomo.br" do
+    action :nothing
+    command "brotli --keep --force --best /opt/matomo-#{version}/matomo/matomo.js"
+    cwd "/opt/matomo-#{version}"
+    user "root"
+    group "root"
+    subscribes :run, "execute[custom-matomo-js:update]"
+  end
+
   execute "/opt/matomo-#{version}/matomo/matomo.js" do
     action :nothing
-    command "gzip -k -9 /opt/matomo-#{version}/matomo/matomo.js"
+    command "gzip --keep --force --best /opt/matomo-#{version}/matomo/matomo.js"
+    cwd "/opt/matomo-#{version}"
+    user "root"
+    group "root"
+    subscribes :run, "execute[custom-matomo-js:update]"
+  end
+
+  execute "/opt/matomo-#{version}/matomo/piwik.br" do
+    action :nothing
+    command "brotli --keep --force --best /opt/matomo-#{version}/matomo/piwik.js"
     cwd "/opt/matomo-#{version}"
     user "root"
     group "root"
@@ -164,7 +174,7 @@ if File.symlink?("/srv/matomo.openstreetmap.org")
 
   execute "/opt/matomo-#{version}/matomo/piwik.js" do
     action :nothing
-    command "gzip -k -9 /opt/matomo-#{version}/matomo/piwik.js"
+    command "gzip --keep --force --best /opt/matomo-#{version}/matomo/piwik.js"
     cwd "/opt/matomo-#{version}"
     user "root"
     group "root"
@@ -191,8 +201,23 @@ apache_site "matomo.openstreetmap.org" do
   template "apache.erb"
 end
 
-cron_d "matomo" do
-  minute "5"
+systemd_service "matomo-archive" do
+  description "Matomo report archiving"
+  exec_start "/usr/bin/php /srv/matomo.openstreetmap.org/console core:archive --url=https://matomo.openstreetmap.org/"
   user "www-data"
-  command "/usr/bin/php /srv/matomo.openstreetmap.org/console core:archive --quiet --url=https://matomo.openstreetmap.org/"
+  sandbox true
+  proc_subset "all"
+  memory_deny_write_execute false
+  restrict_address_families "AF_UNIX"
+  read_write_paths "/opt/matomo-#{version}/matomo/tmp"
+end
+
+systemd_timer "matomo-archive" do
+  description "Matomo report archiving"
+  on_boot_sec "30m"
+  on_unit_inactive_sec "30m"
+end
+
+service "matomo-archive.timer" do
+  action [:enable, :start]
 end

@@ -34,48 +34,111 @@ include_recipe "python"
 include_recipe "ruby"
 
 package %w[
+  ant
+  aria2
+  at
+  autoconf
+  automake
+  awscli
+  composer
+  default-jdk-headless
+  default-jre-headless
+  fonts-dejavu
+  fonts-dejavu-core
+  fonts-dejavu-extra
+  fonts-droid-fallback
+  fonts-liberation
+  fonts-noto-mono
+  g++
+  gcc
+  gdal-bin
+  gnuplot-nox
+  golang
+  graphviz
+  irssi
+  jq
+  libargon2-dev
+  libboost-date-time-dev
+  libboost-dev
+  libboost-filesystem-dev
+  libboost-locale-dev
+  libboost-program-options-dev
+  libboost-regex-dev
+  libboost-system-dev
+  libcrypto++-dev
+  libfcgi-dev
+  libfmt-dev
+  libjson-xs-perl
+  libmemcached-dev
+  libpqxx-dev
+  libtool
+  libxml2-dev
+  libyajl-dev
+  lua-any
+  luajit
+  lz4
+  lzip
+  lzop
+  mailutils
+  make
+  nano
+  netcat
+  osm2pgsql
+  osmosis
+  pandoc
+  pandoc
+  pbzip2
+  php-apcu
   php-cgi
   php-cli
   php-curl
   php-db
+  php-gd
+  php-igbinary
   php-imagick
+  php-intl
+  php-mbstring
+  php-memcache
   php-mysql
   php-pear
   php-pgsql
   php-sqlite3
+  php-xml
+  pigz
   pngcrush
   pngquant
+  proj-bin
+  python-is-python3
   python3
+  python3-brotli
   python3-bs4
   python3-cheetah
   python3-dateutil
-  python3-magic
-  python3-psycopg2
+  python3-dev
+  python3-dotenv
   python3-gdal
-  g++
-  gcc
-  make
-  autoconf
-  automake
-  libtool
-  libargon2-dev
-  libfcgi-dev
-  libxml2-dev
-  libmemcached-dev
-  libboost-regex-dev
-  libboost-system-dev
-  libboost-program-options-dev
-  libboost-date-time-dev
-  libboost-filesystem-dev
-  libboost-locale-dev
-  libpqxx-dev
-  libcrypto++-dev
-  libyajl-dev
-  libfmt-dev
+  python3-lxml
+  python3-lz4
+  python3-magic
+  python3-pil
+  python3-psycopg2
+  python3-pyproj
+  python3-venv
+  r-base
+  redis
+  tmux
+  unrar
+  unzip
+  whois
+  zip
   zlib1g-dev
-  nano
-  osm2pgsql
 ]
+
+# Add uk_os_OSTN15_NTv2_OSGBtoETRS.tif used for reprojecting OS data
+execute "uk_os_OSTN15_NTv2_OSGBtoETRS.tif" do
+  command "projsync --file uk_os_OSTN15_NTv2_OSGBtoETRS.tif --system-directory"
+  not_if { ::File.exist?("/usr/share/proj/uk_os_OSTN15_NTv2_OSGBtoETRS.tif") }
+end
 
 nodejs_package "svgo"
 
@@ -181,7 +244,7 @@ search(:accounts, "*:*").each do |account|
                "memory_limit" => "128M",
                "post_max_size" => "32M",
                "upload_max_filesize" => "32M"
-    php_admin_values "sendmail_path" => "/usr/sbin/sendmail -t -i -f #{name}@errol.openstreetmap.org",
+    php_admin_values "sendmail_path" => "/usr/sbin/sendmail -t -i -f #{name}@dev.openstreetmap.org",
                      "open_basedir" => "/home/#{name}/:/tmp/:/usr/share/php/"
     php_flags "display_errors" => "on"
   end
@@ -206,9 +269,13 @@ search(:accounts, "*:*").each do |account|
   end
 end
 
-if node[:postgresql][:clusters][:"14/main"]
+node[:postgresql][:versions].each do |version|
+  package "postgresql-#{version}-postgis-3"
+end
+
+if node[:postgresql][:clusters][:"15/main"]
   postgresql_user "apis" do
-    cluster "14/main"
+    cluster "15/main"
   end
 
   template "/usr/local/bin/cleanup-rails-assets" do
@@ -222,15 +289,19 @@ if node[:postgresql][:clusters][:"14/main"]
   systemd_service "rails-jobs@" do
     description "Rails job queue runner"
     type "simple"
+    environment "RAILS_ENV" => "production", "SLEEP_DELAY" => "60"
     user "apis"
     working_directory "/srv/%i.apis.dev.openstreetmap.org/rails"
     exec_start "#{node[:ruby][:bundle]} exec rails jobs:work"
     restart "on-failure"
-    private_tmp true
-    private_devices true
-    protect_system "full"
-    protect_home true
-    no_new_privileges true
+    nice 10
+    sandbox :enable_network => true
+    restrict_address_families "AF_UNIX"
+    memory_deny_write_execute false
+    read_write_paths [
+      "/srv/%i.apis.dev.openstreetmap.org/logs",
+      "/srv/%i.apis.dev.openstreetmap.org/rails/storage"
+    ]
   end
 
   systemd_service "cgimap@" do
@@ -240,11 +311,9 @@ if node[:postgresql][:clusters][:"14/main"]
     user "apis"
     exec_start "/srv/%i.apis.dev.openstreetmap.org/cgimap/openstreetmap-cgimap --daemon --port $CGIMAP_PORT --instances 5"
     exec_reload "/bin/kill -HUP $MAINPID"
-    private_tmp true
-    private_devices true
-    protect_system "full"
-    protect_home true
-    no_new_privileges true
+    sandbox :enable_network => true
+    restrict_address_families "AF_UNIX"
+    read_write_paths ["/srv/%i.apis.dev.openstreetmap.org/logs", "/srv/%i.apis.dev.openstreetmap.org/rails/tmp"]
     restart "on-failure"
   end
 
@@ -268,12 +337,12 @@ if node[:postgresql][:clusters][:"14/main"]
       secret_key_base = persistent_token("dev", "rails", name, "secret_key_base")
 
       postgresql_database database_name do
-        cluster "14/main"
+        cluster "15/main"
         owner "apis"
       end
 
       postgresql_extension "#{database_name}_btree_gist" do
-        cluster "14/main"
+        cluster "15/main"
         database database_name
         extension "btree_gist"
       end
@@ -314,7 +383,7 @@ if node[:postgresql][:clusters][:"14/main"]
         group "apis"
         repository details[:repository]
         revision details[:revision]
-        database_port node[:postgresql][:clusters][:"14/main"][:port]
+        database_port node[:postgresql][:clusters][:"15/main"][:port]
         database_name database_name
         database_username "apis"
         email_from "OpenStreetMap <web@noreply.openstreetmap.org>"
@@ -339,7 +408,7 @@ if node[:postgresql][:clusters][:"14/main"]
         action [:enable, :start]
         supports :restart => true
         subscribes :restart, "rails_port[#{site_name}]"
-        subscribes :restart, "systemd_service[#{name}]"
+        subscribes :restart, "systemd_service[rails-jobs@]"
         only_if "fgrep -q delayed_job #{rails_directory}/Gemfile.lock"
       end
 
@@ -377,7 +446,6 @@ if node[:postgresql][:clusters][:"14/main"]
           user "apis"
           group "apis"
           subscribes :run, "execute[#{cgimap_directory}/configure]", :immediately
-          notifies :restart, "service[cgimap@#{name}]"
         end
 
         template "/etc/default/cgimap-#{name}" do
@@ -386,14 +454,16 @@ if node[:postgresql][:clusters][:"14/main"]
           group "root"
           mode "640"
           variables :cgimap_port => cgimap_port,
-                    :database_port => node[:postgresql][:clusters][:"14/main"][:port],
+                    :database_port => node[:postgresql][:clusters][:"15/main"][:port],
                     :database_name => database_name,
                     :log_directory => log_directory
-          notifies :restart, "service[cgimap@#{name}]"
         end
 
         service "cgimap@#{name}" do
           action [:start, :enable]
+          subscribes :restart, "execute[#{cgimap_directory}/Makefile]"
+          subscribes :restart, "template[/etc/default/cgimap-#{name}]"
+          subscribes :restart, "systemd_service[cgimap@]"
         end
       end
 
@@ -454,7 +524,7 @@ if node[:postgresql][:clusters][:"14/main"]
 
       postgresql_database database_name do
         action :drop
-        cluster "14/main"
+        cluster "15/main"
       end
     end
   end

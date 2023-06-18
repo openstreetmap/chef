@@ -17,7 +17,13 @@
 # limitations under the License.
 #
 
-include_recipe "apt"
+include_recipe "prometheus"
+
+case node[:elasticsearch][:version]
+when "6.x" then include_recipe "apt::elasticsearch6"
+when "7.x" then include_recipe "apt::elasticsearch7"
+when "8.x" then include_recipe "apt::elasticsearch8"
+end
 
 package "default-jre-headless"
 package "elasticsearch"
@@ -33,4 +39,8 @@ end
 service "elasticsearch" do
   action [:enable, :start]
   supports :status => true, :restart => true
+end
+
+prometheus_exporter "elasticsearch" do
+  port 9114
 end

@@ -20,7 +20,20 @@
 cache_dir = Chef::Config[:file_cache_path]
 
 chef_version = node[:chef][:client][:version]
-chef_package = "chef_#{chef_version}-1_amd64.deb"
+
+chef_platform = if platform?("debian")
+                  "debian"
+                else
+                  "ubuntu"
+                end
+
+chef_arch = if arm?
+              "arm64"
+            else
+              "amd64"
+            end
+
+chef_package = "chef_#{chef_version}-1_#{chef_arch}.deb"
 
 directory "/var/cache/chef" do
   action :delete
@@ -36,14 +49,10 @@ Dir.glob("#{cache_dir}/chef_*.deb").each do |deb|
   end
 end
 
-ubuntu_release = if node[:lsb][:release].to_f < 22.04
-                   node[:lsb][:release]
-                 else
-                   "20.04"
-                 end
+os_release = node[:lsb][:release]
 
 remote_file "#{cache_dir}/#{chef_package}" do
-  source "https://packages.chef.io/files/stable/chef/#{chef_version}/ubuntu/#{ubuntu_release}/#{chef_package}"
+  source "https://packages.chef.io/files/stable/chef/#{chef_version}/#{chef_platform}/#{os_release}/#{chef_package}"
   owner "root"
   group "root"
   mode "644"
@@ -117,6 +126,7 @@ end
 systemd_service "chef-client" do
   description "Chef client"
   exec_start "/usr/bin/chef-client"
+  nice 10
 end
 
 systemd_timer "chef-client" do

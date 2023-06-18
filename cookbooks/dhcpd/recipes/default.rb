@@ -37,6 +37,14 @@ remote_file "/srv/tftp/netboot.xyz.efi" do
   mode "644"
 end
 
+remote_file "/srv/tftp/netboot.xyz-snp.efi" do
+  action :create
+  source "https://boot.netboot.xyz/ipxe/netboot.xyz-snp.efi"
+  owner "root"
+  group "root"
+  mode "644"
+end
+
 remote_file "/srv/tftp/netboot.xyz.kpxe" do
   action :create
   source "https://boot.netboot.xyz/ipxe/netboot.xyz.kpxe"
@@ -55,10 +63,18 @@ template "/etc/dhcp/dhcpd.conf" do
   variables :domain => domain
 end
 
+template "/etc/default/isc-dhcp-server" do
+  source "default.erb"
+  owner "root"
+  group "root"
+  mode "644"
+end
+
 service "isc-dhcp-server" do
   action [:enable, :start]
   supports :status => true, :restart => true
   subscribes :restart, "template[/etc/dhcp/dhcpd.conf]"
+  subscribes :restart, "template[/etc/default/isc-dhcp-server]"
 end
 
 service "isc-dhcp-server6" do

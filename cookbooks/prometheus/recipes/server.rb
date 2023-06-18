@@ -18,9 +18,8 @@
 #
 
 include_recipe "apache"
-include_recipe "apt"
+include_recipe "apt::grafana"
 include_recipe "networking"
-include_recipe "timescaledb"
 
 passwords = data_bag_item("prometheus", "passwords")
 tokens = data_bag_item("prometheus", "tokens")
@@ -40,14 +39,16 @@ end
 
 prometheus_exporter "statuscake" do
   port 9595
+  scrape_interval "5m"
+  scrape_timeout "2m"
   environment "STATUSCAKE_APIKEY" => tokens["statuscake"]
 end
 
 cache_dir = Chef::Config[:file_cache_path]
 
-prometheus_version = "2.31.1"
-alertmanager_version = "0.23.0"
-karma_version = "0.105"
+prometheus_version = "2.44.0"
+alertmanager_version = "0.25.0"
+karma_version = "0.114"
 
 directory "/opt/prometheus-server" do
   owner "root"
@@ -70,7 +71,7 @@ archive_file "#{cache_dir}/prometheus.linux-amd64.tar.gz" do
   strip_components 1
   owner "root"
   group "root"
-  subscribes :extract, "remote_file[#{cache_dir}/prometheus.linux-amd64.tar.gz]"
+  subscribes :extract, "remote_file[#{cache_dir}/prometheus.linux-amd64.tar.gz]", :immediately
 end
 
 remote_file "#{cache_dir}/alertmanager.linux-amd64.tar.gz" do
@@ -88,7 +89,7 @@ archive_file "#{cache_dir}/alertmanager.linux-amd64.tar.gz" do
   strip_components 1
   owner "root"
   group "root"
-  subscribes :extract, "remote_file[#{cache_dir}/alertmanager.linux-amd64.tar.gz]"
+  subscribes :extract, "remote_file[#{cache_dir}/alertmanager.linux-amd64.tar.gz]", :immediately
 end
 
 remote_file "#{cache_dir}/karma-linux-amd64.tar.gz" do
@@ -105,78 +106,11 @@ archive_file "#{cache_dir}/karma-linux-amd64.tar.gz" do
   overwrite true
   owner "root"
   group "root"
-  subscribes :extract, "remote_file[#{cache_dir}/karma-linux-amd64.tar.gz]"
-end
-
-promscale_version = "0.11.0"
-
-database_version = node[:timescaledb][:database_version]
-database_cluster = "#{database_version}/main"
-
-package %W[
-  prometheus
-  prometheus-alertmanager
-  promscale-extension-postgresql-#{database_version}
-]
-
-postgresql_user "prometheus" do
-  cluster database_cluster
-  superuser true
-end
-
-postgresql_database "promscale" do
-  cluster database_cluster
-  owner "prometheus"
-end
-
-directory "/opt/promscale" do
-  owner "root"
-  group "root"
-  mode "755"
-end
-
-directory "/opt/promscale/bin" do
-  owner "root"
-  group "root"
-  mode "755"
-end
-
-remote_file "/opt/promscale/bin/promscale" do
-  action :create
-  source "https://github.com/timescale/promscale/releases/download/#{promscale_version}/promscale_#{promscale_version}_Linux_x86_64"
-  owner "root"
-  group "root"
-  mode "755"
-end
-
-systemd_service "promscale" do
-  description "Promscale Connector"
-  type "simple"
-  user "prometheus"
-  exec_start "/opt/promscale/bin/promscale --db.uri postgresql:///promscale?host=/run/postgresql&port=5432 --db.connections-max 400"
-  limit_nofile 16384
-  private_tmp true
-  protect_system "strict"
-  protect_home true
-  no_new_privileges true
-end
-
-if node[:prometheus][:promscale]
-  service "promscale" do
-    action [:enable, :start]
-    subscribes :restart, "remote_file[/opt/promscale/bin/promscale]"
-    subscribes :restart, "systemd_service[promscale]"
-  end
-else
-  service "promscale" do
-    action [:disable, :stop]
-  end
+  subscribes :extract, "remote_file[#{cache_dir}/karma-linux-amd64.tar.gz]", :immediately
 end
 
 search(:node, "roles:gateway") do |gateway|
-  allowed_ips = gateway.interfaces(:role => :internal).map do |interface|
-    "#{interface[:network]}/#{interface[:prefix]}"
-  end
+  allowed_ips = gateway.ipaddresses(:role => :internal).map(&:subnet)
 
   node.default[:networking][:wireguard][:peers] << {
     :public_key => gateway[:networking][:wireguard][:public_key],
@@ -203,12 +137,14 @@ search(:node, "recipes:prometheus\\:\\:default").sort_by(&:name).each do |client
       address = exporter[:address]
       sni = exporter[:sni]
       scrape_interval = exporter[:scrape_interval]
+      scrape_timeout = exporter[:scrape_timeout]
       metric_relabel = exporter[:metric_relabel] || []
     else
       name = key
       address = exporter
       sni = nil
       scrape_interval = nil
+      scrape_timeout = nil
       metric_relabel = []
     end
 
@@ -218,6 +154,7 @@ search(:node, "recipes:prometheus\\:\\:default").sort_by(&:name).each do |client
       :sni => sni,
       :instance => client.name.split(".").first,
       :scrape_interval => scrape_interval,
+      :scrape_timeout => scrape_timeout,
       :metric_relabel => metric_relabel
     }
   end
@@ -259,10 +196,12 @@ prometheus_exporter "ssl" do
   register_target false
 end
 
+package "prometheus"
+
 systemd_service "prometheus-executable" do
   service "prometheus"
   dropin "executable"
-  exec_start "/opt/prometheus-server/prometheus/prometheus --config.file=/etc/prometheus/prometheus.yml --web.external-url=https://prometheus.openstreetmap.org/prometheus --storage.tsdb.path=/var/lib/prometheus/metrics2 --storage.tsdb.retention.time=30d"
+  exec_start "/opt/prometheus-server/prometheus/prometheus --config.file=/etc/prometheus/prometheus.yml --web.external-url=https://prometheus.openstreetmap.org/prometheus --storage.tsdb.path=/var/lib/prometheus/metrics2 --storage.tsdb.retention.time=540d"
   timeout_stop_sec 300
   notifies :restart, "service[prometheus]"
 end
@@ -289,11 +228,19 @@ service "prometheus" do
   subscribes :restart, "archive_file[#{cache_dir}/prometheus.linux-amd64.tar.gz]"
 end
 
-systemd_service "prometheus-alertmanager-executable" do
-  service "prometheus-alertmanager"
-  dropin "executable"
+systemd_service "prometheus-alertmanager" do
+  description "Prometheus alert manager"
+  type "simple"
+  user "prometheus"
   exec_start "/opt/prometheus-server/alertmanager/alertmanager --config.file=/etc/prometheus/alertmanager.yml --storage.path=/var/lib/prometheus/alertmanager --web.external-url=https://prometheus.openstreetmap.org/alertmanager"
+  exec_reload "/bin/kill -HUP $MAINPID"
+  timeout_stop_sec 20
+  restart "on-failure"
   notifies :restart, "service[prometheus-alertmanager]"
+end
+
+link "/usr/local/bin/promtool" do
+  to "/opt/prometheus-server/prometheus/promtool"
 end
 
 template "/etc/prometheus/alertmanager.yml" do
@@ -303,17 +250,34 @@ template "/etc/prometheus/alertmanager.yml" do
   mode "644"
 end
 
+directory "/var/lib/prometheus/alertmanager" do
+  owner "prometheus"
+  group "prometheus"
+  mode "755"
+end
+
 service "prometheus-alertmanager" do
   action [:enable, :start]
   subscribes :reload, "template[/etc/prometheus/alertmanager.yml]"
+  subscribes :restart, "systemd_service[prometheus-alertmanager]"
   subscribes :restart, "archive_file[#{cache_dir}/alertmanager.linux-amd64.tar.gz]"
 end
 
-template "/etc/prometheus/amtool.yml" do
+directory "/etc/amtool" do
+  owner "root"
+  group "root"
+  mode "755"
+end
+
+template "/etc/amtool/config.yml" do
   source "amtool.yml.erb"
   owner "root"
   group "root"
   mode "644"
+end
+
+link "/usr/local/bin/amtool" do
+  to "/opt/prometheus-server/alertmanager/amtool"
 end
 
 template "/etc/prometheus/karma.yml" do
@@ -327,18 +291,15 @@ systemd_service "prometheus-karma" do
   description "Alert dashboard for Prometheus Alertmanager"
   user "prometheus"
   exec_start "/opt/prometheus-server/karma/karma-linux-amd64 --config.file=/etc/prometheus/karma.yml"
-  private_tmp true
-  private_devices true
-  protect_system "full"
-  protect_home true
-  no_new_privileges true
+  sandbox :enable_network => true
   restart "on-failure"
 end
 
 service "prometheus-karma" do
   action [:enable, :start]
-  subscribes :reload, "template[/etc/prometheus/karma.yml]"
+  subscribes :restart, "template[/etc/prometheus/karma.yml]"
   subscribes :restart, "archive_file[#{cache_dir}/karma-linux-amd64.tar.gz]"
+  subscribes :restart, "systemd_service[prometheus-karma]"
 end
 
 package "grafana-enterprise"
@@ -358,6 +319,7 @@ end
 
 apache_module "alias"
 apache_module "proxy_http"
+apache_module "proxy_wstunnel"
 
 ssl_certificate "prometheus.openstreetmap.org" do
   domains ["prometheus.openstreetmap.org", "prometheus.osm.org"]

@@ -26,13 +26,6 @@ if [ -f /tmp/planetdump.lock ]; then
     fi
 fi
 
-# Redirect this shell's output to a file. This is so that it
-# can be emailed later, since this script is run from incron
-# and incron doesn't yet support MAILTO like cron does. The
-# command below appears to work in bash as well as dash.
-logfile="/tmp/planetdump.log.$$"
-exec > "${logfile}" 2>&1
-
 # Create lock file
 echo $$ > /tmp/planetdump.lock
 
@@ -40,16 +33,6 @@ echo $$ > /tmp/planetdump.lock
 function cleanup {
     # Remove the lock file
     rm /tmp/planetdump.lock
-
-    # Send an email with the output, since incron doesn't yet
-    # support doing this in the incrontab
-    if [[ -s "$logfile" ]]
-    then
-        mailx -s "Planet dump output: ${file}" admins@openstreetmap.org zerebubuth@gmail.com < "${logfile}"
-    fi
-
-    # Remove the log file
-    rm -f "${logfile}"
 }
 
 # Remove lock on exit
@@ -99,10 +82,8 @@ function mk_torrent {
      -w "https://ftp5.gwdg.de/pub/misc/openstreetmap/planet.openstreetmap.org/${web_path}" \
      -w "https://ftpmirror.your.org/pub/openstreetmap/${web_path}" \
      -w "https://mirror.init7.net/openstreetmap/${web_path}" \
-     -w "https://free.nchc.org.tw/osm.planet/${web_path}" \
      -w "https://ftp.fau.de/osm-planet/${web_path}" \
      -w "https://ftp.spline.de/pub/openstreetmap/${web_path}" \
-     -w "https://osm.openarchive.site/${name}" \
      -w "https://downloads.opencagedata.com/planet/${name}" \
      -w "https://planet.osm-hr.org/${web_path}" \
      -w "https://planet.maps.mail.ru/${web_path}" \

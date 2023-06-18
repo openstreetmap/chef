@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-include_recipe "apt"
+include_recipe "apt::maxmind"
 
 license_keys = data_bag_item("geoipupdate", "license-keys")
 
@@ -42,10 +42,7 @@ systemd_service "geoipupdate" do
   description "Update GeoIP databases"
   user "root"
   exec_start "/usr/bin/geoipupdate"
-  private_tmp true
-  private_devices true
-  protect_system "strict"
-  protect_home true
+  sandbox :enable_network => true
   read_write_paths node[:geoipupdate][:directory]
 end
 

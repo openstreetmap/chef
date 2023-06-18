@@ -20,20 +20,26 @@
 include_recipe "munin"
 include_recipe "prometheus"
 
-package "mysql-server"
-package "mysql-client"
+mysql_variant = if platform?("ubuntu")
+                  "mysql"
+                else
+                  "mariadb"
+                end
 
-service "mysql" do
+package "#{mysql_variant}-server"
+package "#{mysql_variant}-client"
+
+service "#{mysql_variant}" do
   action [:enable, :start]
   supports :status => true, :restart => true
 end
 
-template "/etc/mysql/mysql.conf.d/zzz-chef.cnf" do
+template "/etc/mysql/#{mysql_variant}.conf.d/zzz-chef.cnf" do
   source "my.cnf.erb"
   owner "root"
   group "root"
   mode "644"
-  notifies :restart, "service[mysql]"
+  notifies :restart, "service[#{mysql_variant}]"
 end
 
 service "apparmor" do

@@ -20,18 +20,21 @@
 include_recipe "nginx"
 include_recipe "git"
 
-# Imagery gdal Requirements
-package "gdal-bin"
-# python-gdal - disable while broken in gis unstable repo
+# Imagery gdal and proj requirements
+package %w[
+  gdal-bin
+  python3-gdal
+  proj-bin
+]
 
-# Imagery MapServer + Mapcache Requirements
+# Imagery MapServer + Mapcache requirements
 package %w[
   cgi-mapserver
   mapcache-cgi
   mapcache-tools
 ]
 
-# Mapserver via Nginx requires as fastcgi spawner
+# Mapserver via nginx requires as fastcgi spawner
 package %w[
   spawn-fcgi
   multiwatch
@@ -60,22 +63,10 @@ directory "/srv/imagery/common" do
   recursive true
 end
 
-directory "/srv/imagery/common/ostn02-ntv2-data" do
-  owner "root"
-  group "root"
-  mode "755"
-end
-
-remote_file "#{Chef::Config[:file_cache_path]}/ostn02-ntv2-data.zip" do
-  source "https://www.ordnancesurvey.co.uk/docs/gps/ostn02-ntv2-data.zip"
-  not_if { ::File.exist?("/srv/imagery/common/ostn02-ntv2-data/OSTN02_NTv2.gsb") }
-end
-
-archive_file "#{Chef::Config[:file_cache_path]}/ostn02-ntv2-data.zip" do
-  destination "/srv/imagery/common/ostn02-ntv2-data"
-  owner "root"
-  group "root"
-  not_if { ::File.exist?("/srv/imagery/common/ostn02-ntv2-data/OSTN02_NTv2.gsb") }
+# Pre-download uk_os_OSTN15_NTv2_OSGBtoETRS.tif used for EPSG:27700 conversions
+execute "uk_os_OSTN15_NTv2_OSGBtoETRS.tif" do
+  command "projsync --file uk_os_OSTN15_NTv2_OSGBtoETRS.tif --system-directory"
+  not_if { ::File.exist?("/usr/share/proj/uk_os_OSTN15_NTv2_OSGBtoETRS.tif") }
 end
 
 nginx_site "default" do

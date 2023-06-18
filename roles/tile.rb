@@ -4,8 +4,9 @@ description "Role applied to all tile servers"
 default_attributes(
   :accounts => {
     :users => {
+      :pnorman => { :status => :administrator },
       :tile => {
-        :members => [:jburgess, :tomh]
+        :members => [:jburgess, :tomh, :pnorman]
       }
     }
   },
@@ -39,11 +40,12 @@ default_attributes(
         :temp_buffers => "32MB",
         :work_mem => "128MB",
         :max_parallel_workers_per_gather => "0",
+        :wal_level => "minimal",
         :wal_buffers => "1024kB",
         :wal_writer_delay => "500ms",
         :commit_delay => "10000",
-        :checkpoint_segments => "60",
         :max_wal_size => "2880MB",
+        :max_wal_senders => "0",
         :random_page_cost => "1.1",
         :jit => "off",
         :track_activity_query_size => "16384",
@@ -104,7 +106,8 @@ default_attributes(
     :styles => {
       :default => {
         :repository => "https://github.com/gravitystorm/openstreetmap-carto.git",
-        :revision => "v5.5.1",
+        :revision => "v5.7.0",
+        :fonts_script => "/srv/tile.openstreetmap.org/styles/default/scripts/get-fonts.sh",
         :max_zoom => 19
       }
     }

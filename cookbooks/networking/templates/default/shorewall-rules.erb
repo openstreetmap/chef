@@ -1,9 +1,0 @@
-# DO NOT EDIT - This file is being maintained by Chef
-
-?SECTION NEW
-
-# ACTION       SOURCE    DEST  PROTO           DEST            SOURCE  ORIGINAL        RATE    USER/   MARK    CONNLIMIT  TIME  HEADERS  SWITCH  HELPER
-#                                              PORTS           PORTS   DEST            LIMIT   GROUP
-<% node[:networking][:firewall][@family].each do |r| # ~FC034 -%>
-<%= r[:action] %>		<%= r[:source] %>	<%= r[:dest] %>	<%= r[:proto] %>		<%= r[:dest_ports] %>	<%= r[:source_ports] %>	-	<%= r[:rate_limit] %>	-	-	<%= r[:connection_limit] %> -	-	- <%= r[:helper] %>
-<% end -%>

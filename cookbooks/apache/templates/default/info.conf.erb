@@ -4,7 +4,7 @@
 
 <Location /server-info>
     SetHandler server-info
-<% node.ipaddresses do |address| -%>
+<% node.ipaddresses.sort.each do |address| -%>
     Require ip <%= address %>
 <% end -%>
     Require ip 127.0.1.1

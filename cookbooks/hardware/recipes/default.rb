@@ -56,12 +56,15 @@ if node[:roles].include?("bytemark") || node[:roles].include?("exonetric") || no
 end
 
 case manufacturer
-when "HP"
+when "HP", "HPE"
+  include_recipe "apt::management-component-pack"
+
   package "hponcfg"
 
   execute "update-ilo" do
     action :nothing
     command "/usr/sbin/hponcfg -f /etc/ilo-defaults.xml"
+    not_if { kitchen? }
   end
 
   template "/etc/ilo-defaults.xml" do
@@ -75,13 +78,13 @@ when "HP"
   package "hp-health" do
     action :install
     notifies :restart, "service[hp-health]"
-    only_if { node[:lsb][:release].to_f < 22.04 }
+    only_if { platform?("ubuntu") && node[:lsb][:release].to_f < 22.04 }
   end
 
   service "hp-health" do
     action [:enable, :start]
     supports :status => true, :restart => true
-    only_if { node[:lsb][:release].to_f < 22.04 }
+    only_if { platform?("ubuntu") && node[:lsb][:release].to_f < 22.04 }
   end
 
   if product.end_with?("Gen8", "Gen9")
@@ -94,9 +97,23 @@ when "HP"
       action [:enable, :start]
       supports :status => true, :restart => true
     end
+  elsif product.end_with?("Gen10")
+    package "amsd" do
+      action :install
+      notifies :restart, "service[amsd]"
+    end
+
+    service "amsd" do
+      action [:enable, :start]
+      supports :status => true, :restart => true
+    end
   end
 
-  units << "1"
+  units << if product.end_with?("Gen10")
+             "0"
+           else
+             "1"
+           end
 when "TYAN"
   units << "0"
 when "TYAN Computer Corporation"
@@ -130,6 +147,7 @@ end
 units.sort.uniq.each do |unit|
   service "serial-getty@ttyS#{unit}" do
     action [:enable, :start]
+    not_if { kitchen? }
   end
 end
 
@@ -169,6 +187,8 @@ if File.exist?("/etc/default/grub")
   end
 end
 
+package "initramfs-tools"
+
 execute "update-initramfs" do
   action :nothing
   command "update-initramfs -u -k all"
@@ -202,6 +222,10 @@ if node[:kernel][:modules].include?("ipmi_si")
 
   prometheus_exporter "ipmi" do
     port 9290
+    user "root"
+    private_devices false
+    protect_clock false
+    system_call_filter ["@system-service", "@raw-io"]
     options "--config.file=/etc/prometheus/ipmi_local.yml"
     subscribes :restart, "template[/etc/prometheus/ipmi_local.yml]"
   end
@@ -223,6 +247,20 @@ end
 
 ohai_plugin "lldp" do
   template "lldp.rb.erb"
+end
+
+package %w[
+  rasdaemon
+  ruby-sqlite3
+]
+
+service "rasdaemon" do
+  action [:enable, :start]
+end
+
+prometheus_exporter "rasdaemon" do
+  port 9797
+  user "root"
 end
 
 tools_packages = []
@@ -299,60 +337,32 @@ else
   end
 end
 
-if status_packages.include?("cciss-vol-status")
-  template "/usr/local/bin/cciss-vol-statusd" do
-    source "cciss-vol-statusd.erb"
-    owner "root"
-    group "root"
-    mode "755"
-    notifies :restart, "service[cciss-vol-statusd]"
-  end
-
-  systemd_service "cciss-vol-statusd" do
-    description "Check cciss_vol_status values in the background"
-    exec_start "/usr/local/bin/cciss-vol-statusd"
-    private_tmp true
-    protect_system "full"
-    protect_home true
-    no_new_privileges true
-    notifies :restart, "service[cciss-vol-statusd]"
-  end
-else
-  systemd_service "cciss-vol-statusd" do
-    action :delete
-  end
-
-  template "/usr/local/bin/cciss-vol-statusd" do
-    action :delete
-  end
-end
+include_recipe "apt::hwraid" unless status_packages.empty?
 
 %w[cciss-vol-status mpt-status sas2ircu-status megaclisas-status aacraid-status].each do |status_package|
   if status_packages.include?(status_package)
     package status_package
 
-    template "/etc/default/#{status_package}d" do
-      source "raid.default.erb"
-      owner "root"
-      group "root"
-      mode "644"
-      variables :devices => status_packages[status_package]
-    end
-
     service "#{status_package}d" do
-      action [:start, :enable]
-      supports :status => false, :restart => true, :reload => false
-      subscribes :restart, "template[/etc/default/#{status_package}d]"
-    end
-  else
-    package status_package do
-      action :purge
+      action [:stop, :disable]
     end
 
     file "/etc/default/#{status_package}d" do
       action :delete
     end
+  else
+    package status_package do
+      action :purge
+    end
   end
+end
+
+systemd_service "cciss-vol-statusd" do
+  action :delete
+end
+
+template "/usr/local/bin/cciss-vol-statusd" do
+  action :delete
 end
 
 disks = if node[:hardware][:disk]
@@ -378,27 +388,27 @@ intel_nvmes = nvmes.select { |pci| pci[:vendor_name] == "Intel Corporation" }
 if !intel_ssds.empty? || !intel_nvmes.empty?
   package "unzip"
 
-  intel_mas_tool_version = "1.10"
-  intel_mas_package_version = "#{intel_mas_tool_version}.155-0"
+  sst_tool_version = "1.3"
+  sst_package_version = "#{sst_tool_version}.208-0"
 
-  remote_file "#{Chef::Config[:file_cache_path]}/Intel_MAS_CLI_Tool_#{intel_mas_tool_version}_Linux.zip" do
-    source "https://downloadmirror.intel.com/646992/Intel_MAS_CLI_Tool_Linux_#{intel_mas_tool_version}-v2.zip"
-  end
+  # remote_file "#{Chef::Config[:file_cache_path]}/SST_CLI_Linux_#{sst_tool_version}.zip" do
+  #   source "https://downloadmirror.intel.com/743764/SST_CLI_Linux_#{sst_tool_version}.zip"
+  # end
 
-  execute "#{Chef::Config[:file_cache_path]}/Intel_MAS_CLI_Tool_#{intel_mas_tool_version}_Linux.zip" do
-    command "unzip Intel_MAS_CLI_Tool_#{intel_mas_tool_version}_Linux.zip intelmas_#{intel_mas_package_version}_amd64.deb"
+  execute "#{Chef::Config[:file_cache_path]}/SST_CLI_Linux_#{sst_tool_version}.zip" do
+    command "unzip SST_CLI_Linux_#{sst_tool_version}.zip sst_#{sst_package_version}_amd64.deb"
     cwd Chef::Config[:file_cache_path]
     user "root"
     group "root"
-    not_if { ::File.exist?("#{Chef::Config[:file_cache_path]}/intelmas_#{intel_mas_package_version}_amd64.deb") }
+    not_if { ::File.exist?("#{Chef::Config[:file_cache_path]}/sst_#{sst_package_version}_amd64.deb") }
+  end
+
+  dpkg_package "sst" do
+    version "#{sst_package_version}"
+    source "#{Chef::Config[:file_cache_path]}/sst_#{sst_package_version}_amd64.deb"
   end
 
   dpkg_package "intelmas" do
-    version "#{intel_mas_package_version}"
-    source "#{Chef::Config[:file_cache_path]}/intelmas_#{intel_mas_package_version}_amd64.deb"
-  end
-
-  dpkg_package "isdct" do
     action :purge
   end
 end
@@ -437,7 +447,7 @@ disks = disks.map do |disk|
     munin = device
   end
 
-  next if device.nil?
+  next if device.nil? || munin.nil?
 
   Hash[
     :device => device,
@@ -497,6 +507,11 @@ if disks.count.positive?
 
   prometheus_collector "smart" do
     interval "15m"
+    user "root"
+    capability_bounding_set %w[CAP_DAC_OVERRIDE CAP_SYS_ADMIN CAP_SYS_RAWIO]
+    private_devices false
+    private_users false
+    protect_clock false
   end
 
   # Don't try and do munin monitoring of disks behind
@@ -554,7 +569,7 @@ if File.exist?("/etc/mdadm/mdadm.conf")
     content mdadm_conf
   end
 
-  service "mdadm" do
+  service "mdmonitor" do
     action :nothing
     subscribes :restart, "file[/etc/mdadm/mdadm.conf]"
   end
@@ -655,4 +670,11 @@ end
 
 prometheus_collector "ohai" do
   interval "15m"
+  user "root"
+  proc_subset "all"
+  capability_bounding_set %w[CAP_DAC_OVERRIDE CAP_SYS_ADMIN CAP_SYS_RAWIO]
+  private_devices false
+  private_users false
+  protect_clock false
+  protect_kernel_modules false
 end

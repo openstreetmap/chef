@@ -17,16 +17,12 @@
 # limitations under the License.
 #
 
+include_recipe "apt::nodesource"
+include_recipe "apt::yarn"
+
 package %w[
   nodejs
-  npm
+  yarn
   g++
   make
 ]
-
-template "/usr/local/bin/yarn" do
-  source "yarn.erb"
-  owner "root"
-  group "root"
-  mode "755"
-end

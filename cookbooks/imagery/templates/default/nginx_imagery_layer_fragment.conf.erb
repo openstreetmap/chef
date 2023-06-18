@@ -3,8 +3,6 @@ location ~* "^/layer/<%= @layer %>/(\d+)/(\d+)/(\d+)\.(png|jpg|jpeg)$" {
   # Override QUERY_STRING to force mapserver query parameters
   fastcgi_param QUERY_STRING "map=/srv/imagery/mapserver/layer-<%= @layer %>.map&mode=tile&layers=<%= @layer %>&tilemode=gmap&tile=$2+$3+$1";
   fastcgi_pass "<%= @site %>_fastcgi";
-  fastcgi_buffers 8 64k;
-  fastcgi_busy_buffers_size 64k;
   include fastcgi_params;
   fastcgi_param REQUEST_METHOD "GET";
   fastcgi_param HTTP_PROXY "";
@@ -27,9 +25,6 @@ location ~* "^/layer/<%= @layer %>/(\d+)/(\d+)/(\d+)\.(png|jpg|jpeg)$" {
   fastcgi_cache_revalidate on;
 
   keepalive_requests 0;
-
-  # Ignore client abort as it causes issues with the pipeline
-  fastcgi_ignore_client_abort on;
 
   fastcgi_catch_stderr "Image handling error";
 

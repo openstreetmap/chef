@@ -34,7 +34,9 @@ cache_dir = Chef::Config[:file_cache_path]
 passwords = data_bag_item("civicrm", "passwords")
 
 database_password = passwords["database"]
-site_key = passwords["key"]
+site_key = passwords["site_key"]
+cred_keys = passwords["cred_keys"]
+sign_keys = passwords["sign_keys"]
 
 mysql_user "civicrm@localhost" do
   password database_password
@@ -54,7 +56,7 @@ end
 
 wordpress_theme "osmblog-wp-theme" do
   site "join.osmfoundation.org"
-  repository "https://github.com/harry-wood/osmblog-wp-theme.git"
+  repository "https://github.com/osmfoundation/osmblog-wp-theme.git"
 end
 
 wordpress_plugin "registration-honeypot" do
@@ -161,6 +163,8 @@ settings = edit_file "#{civicrm_directory}/civicrm/templates/CRM/common/civicrm.
   line.gsub!(/%%templateCompileDir%%/, "/srv/join.osmfoundation.org/wp-content/uploads/civicrm/templates_c/")
   line.gsub!(/%%baseURL%%/, "http://join.osmfoundation.org/")
   line.gsub!(/%%siteKey%%/, site_key)
+  line.gsub!(/%%credKeys%%/, cred_keys)
+  line.gsub!(/%%signKeys%%/, sign_keys)
   line.gsub!(%r{// *define\('CIVICRM_CMSDIR', '/path/to/install/root/'\);}, "define('CIVICRM_CMSDIR', '/srv/join.osmfoundation.org');")
 
   line
@@ -173,11 +177,24 @@ file "#{civicrm_directory}/civicrm.settings.php" do
   content settings
 end
 
-cron_d "osmf-crm" do
-  minute "*/15"
+systemd_service "osmf-crm-jobs" do
+  description "Run CRM jobs"
+  exec_start "/usr/bin/php #{civicrm_directory}/civicrm/bin/cli.php -s join.osmfoundation.org -u batch -p \"#{passwords['batch']}\" -e Job -a execute"
   user "www-data"
-  command "php #{civicrm_directory}/civicrm/bin/cli.php -s join.osmfoundation.org -u batch -p \"#{passwords['batch']}\" -e Job -a execute 2>&1 | egrep -v '^PHP (Deprecated|Warning):'"
-  mailto "admins@openstreetmap.org"
+  sandbox :enable_network => true
+  memory_deny_write_execute false
+  restrict_address_families "AF_UNIX"
+  read_write_paths "/srv/join.osmfoundation.org/wp-content/uploads/civicrm"
+end
+
+systemd_timer "osmf-crm-jobs" do
+  description "Run CRM jobs"
+  on_boot_sec "15m"
+  on_unit_inactive_sec "15m"
+end
+
+service "osmf-crm-jobs.timer" do
+  action [:enable, :start]
 end
 
 template "/etc/cron.daily/osmf-crm-backup" do

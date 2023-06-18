@@ -20,6 +20,7 @@
 include_recipe "accounts"
 include_recipe "apache"
 include_recipe "memcached"
+include_recipe "postgresql"
 include_recipe "python"
 include_recipe "tools"
 
@@ -79,10 +80,21 @@ node[:osqa][:sites].each do |site|
   site_user = Etc.getpwuid(site_user).name if site_user.is_a?(Integer)
   site_group = site[:group] || node[:osqa][:group] || Etc.getpwnam(site_user).gid
   site_group = Etc.getgrgid(site_group).name if site_group.is_a?(Integer)
+  database_cluster = site[:database_cluster] || node[:osqa][:database_cluster]
   database_name = site[:database_name] || node[:osqa][:database_name]
   database_user = site[:database_user] || node[:osqa][:database_user]
   database_password = site[:database_user] || node[:osqa][:database_password]
   backup_name = site[:backup]
+
+  postgresql_user database_user do
+    cluster database_cluster
+    password database_password
+  end
+
+  postgresql_database database_name do
+    cluster database_cluster
+    owner database_user
+  end
 
   ssl_certificate site_name do
     domains [site_name] + site_aliases
@@ -144,7 +156,7 @@ node[:osqa][:sites].each do |site|
     line.gsub!(/^CACHE_BACKEND = .*/, "CACHE_BACKEND = 'memcached://127.0.0.1:11211/'")
     line.gsub!(%r{^APP_URL = 'http://'}, "APP_URL = 'https://#{site_name}'")
     line.gsub!(%r{^TIME_ZONE = 'America/New_York'}, "TIME_ZONE = 'Europe/London'")
-    line.gsub!(/^DISABLED_MODULES = \[([^\]]+)\]/, "DISABLED_MODULES = [\\1, 'localauth', 'facebookauth', 'oauthauth']")
+    line.gsub!(/^DISABLED_MODULES = \[([^\]]+)\]/, "DISABLED_MODULES = [\\1, 'localauth', 'facebookauth', 'oauthauth', 'mysqlfulltext']")
 
     line
   end

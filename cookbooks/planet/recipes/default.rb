@@ -58,6 +58,16 @@ remote_directory node[:planet][:dump][:xml_history_directory] do
   files_mode "755"
 end
 
+remote_directory "/store/planet/cc-by-sa" do
+  source "ccbysa_cgi"
+  owner "www-data"
+  group "planet"
+  mode "775"
+  files_owner "root"
+  files_group "root"
+  files_mode "755"
+end
+
 remote_directory "/store/planet/cc-by-sa/full-experimental" do
   source "ccbysa_history_cgi"
   owner "www-data"
@@ -120,19 +130,29 @@ end
 
 munin_plugin "planet_age"
 
-template "/usr/local/bin/old-planet-file-cleanup" do
-  source "old-planet-file-cleanup.erb"
+template "/usr/local/bin/planet-file-cleanup" do
+  source "planet-file-cleanup.erb"
   owner "root"
   group "root"
   mode "755"
 end
 
-cron_d "old-planet-file-cleanup" do
-  comment "run this on the first monday of the month at 3:44am"
-  minute "44"
-  hour "3"
-  day "1-7"
+systemd_service "planet-file-cleanup" do
+  description "Cleanup old planet files"
+  exec_start "/usr/local/bin/planet-file-cleanup --debug"
   user "www-data"
-  command "test $(date +\\%u) -eq 1 && /usr/local/bin/old-planet-file-cleanup --debug"
-  mailto "zerebubuth@gmail.com"
+  sandbox true
+  read_write_paths [
+    node[:planet][:dump][:xml_directory],
+    node[:planet][:dump][:pbf_directory]
+  ]
+end
+
+systemd_timer "planet-file-cleanup" do
+  description "Cleanup old planet files"
+  on_calendar "Mon *-*-1..7 03:44"
+end
+
+service "planet-file-cleanup.timer" do
+  action [:enable, :start]
 end

@@ -54,6 +54,13 @@ template "/etc/apache2/ports.conf" do
   mode "644"
 end
 
+systemd_service "apache2" do
+  dropin "chef"
+  memory_high "50%"
+  memory_max "75%"
+  notifies :restart, "service[apache2]"
+end
+
 service "apache2" do
   action [:enable, :start]
   retries 2
@@ -77,16 +84,6 @@ end
 
 apache_module "deflate" do
   conf "deflate.conf.erb"
-end
-
-if node[:apache][:reqtimeout]
-  apache_module "reqtimeout" do
-    action [:enable]
-  end
-else
-  apache_module "reqtimeout" do
-    action [:disable]
-  end
 end
 
 apache_module "headers"

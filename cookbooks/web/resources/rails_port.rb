@@ -55,6 +55,7 @@ property :oauth_key, String
 property :oauth_application, String
 property :nominatim_url, String
 property :overpass_url, String
+property :overpass_credentials, [true, false], :default => false
 property :google_auth_id, String
 property :google_auth_secret, String
 property :google_openid_realm, String
@@ -306,6 +307,7 @@ action :create do
     "oauth_application",
     "nominatim_url",
     "overpass_url",
+    "overpass_credentials",
     "google_auth_id",
     "google_auth_secret",
     "google_openid_realm",
@@ -339,7 +341,7 @@ action :create do
     "support_email" => "support@openstreetmap.org",
     "email_return_path" => "bounces@openstreetmap.org",
     "geonames_username" => "openstreetmap",
-    "maxmind_database" => "/usr/share/GeoIP/GeoLite2-Country.mmdb",
+    "maxmind_database" => "#{node[:geoipupdate][:directory]}/GeoLite2-Country.mmdb",
     "max_request_area" => node[:web][:max_request_area],
     "max_number_of_nodes" => node[:web][:max_number_of_nodes],
     "max_number_of_way_nodes" => node[:web][:max_number_of_way_nodes],
@@ -401,10 +403,6 @@ action :create do
     group new_resource.group
     subscribes :run, "git[#{rails_directory}]"
     only_if { new_resource.run_migrations }
-  end
-
-  package "yarnpkg" do
-    only_if { new_resource.build_assets }
   end
 
   bundle_exec "#{rails_directory}/package.json" do
@@ -486,7 +484,7 @@ action :restart do
 end
 
 action_class do
-  include Chef::Mixin::EditFile
+  include OpenStreetMap::Mixin::EditFile
 
   def rails_directory
     new_resource.directory || "/srv/#{new_resource.site}"

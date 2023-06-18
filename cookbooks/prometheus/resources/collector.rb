@@ -23,23 +23,37 @@ default_action :create
 
 property :collector, :kind_of => String, :name_property => true
 property :interval, :kind_of => [Integer, String], :required => [:create]
+property :user, :kind_of => String
+property :path, :kind_of => String
 property :options, :kind_of => [String, Array]
 property :environment, :kind_of => Hash, :default => {}
+property :proc_subset, String
+property :capability_bounding_set, [String, Array]
+property :private_devices, [true, false]
+property :private_users, [true, false]
+property :protect_clock, [true, false]
+property :protect_kernel_modules, [true, false]
 
 action :create do
   systemd_service service_name do
     description "Prometheus #{new_resource.collector} collector"
-    user "root"
+    type "oneshot"
+    user new_resource.user
+    dynamic_user new_resource.user.nil?
+    group "adm"
     environment new_resource.environment
     standard_output "file:/var/lib/prometheus/node-exporter/#{new_resource.collector}.new"
     standard_error "journal"
     exec_start "#{executable_path} #{executable_options}"
     exec_start_post "/bin/mv /var/lib/prometheus/node-exporter/#{new_resource.collector}.new /var/lib/prometheus/node-exporter/#{new_resource.collector}.prom"
-    private_tmp true
-    protect_system "strict"
-    protect_home true
+    sandbox true
+    proc_subset new_resource.proc_subset if new_resource.property_is_set?(:proc_subset)
+    capability_bounding_set new_resource.capability_bounding_set if new_resource.property_is_set?(:capability_bounding_set)
+    private_devices new_resource.private_devices if new_resource.property_is_set?(:private_devices)
+    private_users new_resource.private_users if new_resource.property_is_set?(:private_users)
+    protect_clock new_resource.protect_clock if new_resource.property_is_set?(:protect_clock)
+    protect_kernel_modules new_resource.protect_kernel_modules if new_resource.property_is_set?(:protect_kernel_modules)
     read_write_paths ["/var/lib/prometheus/node-exporter", "/var/lock", "/var/log"]
-    no_new_privileges true
   end
 
   systemd_timer service_name do
@@ -78,7 +92,7 @@ action_class do
   end
 
   def executable_path
-    "/opt/prometheus-exporters/collectors/#{new_resource.collector}/#{new_resource.collector}_collector"
+    new_resource.path || "/opt/prometheus-exporters/collectors/#{new_resource.collector}/#{new_resource.collector}_collector"
   end
 
   def executable_options

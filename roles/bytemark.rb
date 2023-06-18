@@ -16,7 +16,6 @@ default_attributes(
         }
       },
       :external => {
-        :zone => "bm",
         :inet => {
           :prefix => "28",
           :gateway => "89.16.162.17"
@@ -27,16 +26,12 @@ default_attributes(
         }
       }
     }
-  },
-  :web => {
-    :fileserver => "grisu",
-    :readonly_database_host => "snap-02.ucl.openstreetmap.org"
   }
 )
 
 override_attributes(
   :networking => {
-    :nameservers => ["10.0.32.20"],
+    :nameservers => ["8.8.8.8", "8.8.4.4"],
     :search => ["bm.openstreetmap.org", "openstreetmap.org"]
   },
   :ntp => {

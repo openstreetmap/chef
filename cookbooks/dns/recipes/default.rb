@@ -35,16 +35,32 @@ package %w[
   libwww-perl
   libxml-treebuilder-perl
   libxml-writer-perl
+  libyaml-perl
   libyaml-libyaml-perl
   lockfile-progs
 ]
 
-remote_file "/usr/local/bin/dnscontrol" do
-  action :create
-  source "https://github.com/StackExchange/dnscontrol/releases/download/v3.12.0/dnscontrol-Linux"
+cache_dir = Chef::Config[:file_cache_path]
+
+dnscontrol_version = "4.1.0"
+
+dnscontrol_arch = if arm?
+                    "arm64"
+                  else
+                    "amd64"
+                  end
+
+remote_file "#{cache_dir}/dnscontrol-#{dnscontrol_version}.deb" do
+  source "https://github.com/StackExchange/dnscontrol/releases/download/v#{dnscontrol_version}/dnscontrol-#{dnscontrol_version}.#{dnscontrol_arch}.deb"
   owner "root"
   group "root"
-  mode "755"
+  mode "644"
+  backup false
+end
+
+dpkg_package "dnscontrol" do
+  source "#{cache_dir}/dnscontrol-#{dnscontrol_version}.deb"
+  version "#{dnscontrol_version}"
 end
 
 directory "/srv/dns.openstreetmap.org" do
@@ -153,9 +169,21 @@ template "/usr/local/bin/dns-check" do
   variables :passwords => passwords, :geoservers => geoservers
 end
 
-cron_d "dns" do
-  minute "*/3"
+systemd_service "dns-check" do
+  description "Rebuild DNS zones with GeoDNS changes"
+  exec_start "/usr/local/bin/dns-check"
   user "git"
-  command "/usr/local/bin/dns-check"
-  mailto "admins@openstreetmap.org"
+  sandbox :enable_network => true
+  proc_subset "all"
+  read_write_paths "/var/lib/dns"
+end
+
+systemd_timer "dns-check" do
+  description "Rebuild DNS zones with GeoDNS changes"
+  on_boot_sec "3m"
+  on_unit_active_sec "3m"
+end
+
+service "dns-check.timer" do
+  action [:enable, :start]
 end

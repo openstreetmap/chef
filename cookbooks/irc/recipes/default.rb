@@ -17,31 +17,9 @@
 # limitations under the License.
 #
 
-include_recipe "apache"
+include_recipe "podman::apache"
 
-ssl_certificate "irc.openstreetmap.org" do
-  domains ["irc.openstreetmap.org", "irc.osm.org"]
-  notifies :reload, "service[apache2]"
-end
-
-directory "/srv/irc.openstreetmap.org" do
-  owner "root"
-  group "root"
-  mode "755"
-end
-
-remote_directory "/srv/irc.openstreetmap.org/html" do
-  source "html"
-  owner "root"
-  group "root"
-  mode "755"
-  files_owner "root"
-  files_group "root"
-  files_mode "644"
-end
-
-apache_site "irc.openstreetmap.org" do
-  template "apache.erb"
-  directory "/srv/irc.openstreetmap.org/html"
-  variables :aliases => ["irc.osm.org"]
+podman_site "irc.openstreetmap.org" do
+  image "ghcr.io/openstreetmap/irc:latest"
+  aliases ["irc.osm.org"]
 end

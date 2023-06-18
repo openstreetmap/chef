@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-include_recipe "apt"
+include_recipe "apt::nginx"
 include_recipe "munin"
 include_recipe "prometheus"
 include_recipe "ssl"
@@ -65,18 +65,4 @@ munin_plugin "nginx_status"
 prometheus_exporter "nginx" do
   port 9113
   options "--nginx.scrape-uri=http://localhost:8050/nginx_status"
-end
-
-template "/usr/local/bin/nginx-old-cache-cleanup" do
-  source "nginx-old-cache-cleanup.erb"
-  owner "root"
-  group "root"
-  mode "755"
-end
-
-cron_d "nginx-old-cache-cleanup" do
-  minute "15"
-  hour "23"
-  user "www-data"
-  command "/usr/bin/timeout 6h /usr/local/bin/nginx-old-cache-cleanup"
 end

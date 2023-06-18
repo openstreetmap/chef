@@ -1,0 +1,10 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+/var/log/oxidized/*.log {
+    rotate 12
+    weekly
+    size 10M
+    compress
+    delaycompress
+    missingok
+}

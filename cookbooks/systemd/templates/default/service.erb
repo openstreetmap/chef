@@ -19,10 +19,19 @@ Conflicts=<%= Array(@conflicts).join(" ") %>
 <% if @wants -%>
 Wants=<%= Array(@wants).join(" ") %>
 <% end -%>
+<% if @requires -%>
+Requires=<%= Array(@requires).join(" ") %>
+<% end -%>
+<% if @joins_namespace_of -%>
+JoinsNamespaceOf=<%= Array(@joins_namespace_of).join(" ") %>
+<% end -%>
 
 [Service]
 <% if @type -%>
 Type=<%= @type %>
+<% end -%>
+<% if @notify_access -%>
+NotifyAccess=<%= @notify_access %>
 <% end -%>
 <% if @limit_nofile -%>
 LimitNOFILE=<%= @limit_nofile %>
@@ -54,6 +63,9 @@ User=<%= @user %>
 <% if @group -%>
 Group=<%= @group %>
 <% end -%>
+<% if @dynamic_user -%>
+DynamicUser=<%= @dynamic_user %>
+<% end -%>
 <% if @working_directory -%>
 WorkingDirectory=<%= @working_directory %>
 <% end -%>
@@ -61,25 +73,41 @@ WorkingDirectory=<%= @working_directory %>
 <% if @dropin -%>
 ExecStartPre=
 <% end -%>
-ExecStartPre=<%= @exec_start_pre %>
+<% Array(@exec_start_pre).each do |exec_start_pre| -%>
+ExecStartPre=<%= exec_start_pre %>
+<% end -%>
 <% end -%>
 <% if @exec_start -%>
 <% if @dropin -%>
 ExecStart=
 <% end -%>
-ExecStart=<%= @exec_start %>
+<% Array(@exec_start).each do |exec_start| -%>
+ExecStart=<%= exec_start %>
+<% end -%>
 <% end -%>
 <% if @exec_start_post -%>
 <% if @dropin -%>
 ExecStartPost=
 <% end -%>
-ExecStartPost=<%= @exec_start_post %>
+<% Array(@exec_start_post).each do |exec_start_post| -%>
+ExecStartPost=<%= exec_start_post %>
+<% end -%>
 <% end -%>
 <% if @exec_stop -%>
 <% if @dropin -%>
 ExecStop=
 <% end -%>
-ExecStop=<%= @exec_stop %>
+<% Array(@exec_stop).each do |exec_stop| -%>
+ExecStop=<%= exec_stop %>
+<% end -%>
+<% end -%>
+<% if @exec_stop_post -%>
+<% if @dropin -%>
+ExecStopPost=
+<% end -%>
+<% Array(@exec_stop_post).each do |exec_stop_post| -%>
+ExecStopPost=<%= exec_stop_post %>
+<% end -%>
 <% end -%>
 <% if @exec_reload -%>
 <% if @dropin -%>
@@ -105,6 +133,36 @@ StandardOutput=<%= @standard_output %>
 <% if @standard_error -%>
 StandardError=<%= @standard_error %>
 <% end -%>
+<% if @protect_proc && node[:lsb][:release].to_f >= 22.04  -%>
+ProtectProc=<%= @protect_proc %>
+<% end -%>
+<% if @proc_subset && node[:lsb][:release].to_f >= 22.04 -%>
+ProcSubset=<%= @proc_subset %>
+<% end -%>
+<% if @no_new_privileges -%>
+NoNewPrivileges=<%= @no_new_privileges %>
+<% end -%>
+<% if @capability_bounding_set -%>
+CapabilityBoundingSet=<%= Array(@capability_bounding_set).sort.uniq.join(" ") %>
+<% end -%>
+<% if @ambient_capabilities -%>
+AmbientCapabilities=<%= Array(@ambient_capabilities).sort.uniq.join(" ") %>
+<% end -%>
+<% if @protect_system -%>
+ProtectSystem=<%= @protect_system %>
+<% end -%>
+<% if @protect_home -%>
+ProtectHome=<%= @protect_home %>
+<% end -%>
+<% if @read_write_paths -%>
+ReadWritePaths=<%= Array(@read_write_paths).sort.uniq.join(" ") %>
+<% end -%>
+<% if @read_only_paths -%>
+ReadOnlyPaths=<%= Array(@read_only_paths).sort.uniq.join(" ") %>
+<% end -%>
+<% if @inaccessible_paths -%>
+InaccessiblePaths=<%= Array(@inaccessible_paths).sort.uniq.join(" ") %>
+<% end -%>
 <% if @private_tmp -%>
 PrivateTmp=<%= @private_tmp %>
 <% end -%>
@@ -114,26 +172,56 @@ PrivateDevices=<%= @private_devices %>
 <% if @private_network -%>
 PrivateNetwork=<%= @private_network %>
 <% end -%>
-<% if @protect_system -%>
-ProtectSystem=<%= @protect_system %>
+<% if @private_ipc && node[:lsb][:release].to_f >= 22.04 -%>
+PrivateIPC=<%= @private_ipc %>
 <% end -%>
-<% if @protect_home -%>
-ProtectHome=<%= @protect_home %>
+<% if @private_users -%>
+PrivateUsers=<%= @private_users %>
 <% end -%>
-<% if @read_write_paths -%>
-ReadWritePaths=<%= Array(@read_write_paths).join(" ") %>
+<% if @protect_hostname -%>
+ProtectHostname=<%= @protect_hostname %>
 <% end -%>
-<% if @read_only_paths -%>
-ReadOnlyPaths=<%= Array(@read_only_paths).join(" ") %>
+<% if @protect_clock -%>
+ProtectClock=<%= @protect_clock %>
 <% end -%>
-<% if @inaccessible_paths -%>
-InaccessiblePaths=<%= Array(@inaccessible_paths).join(" ") %>
+<% if @protect_kernel_tunables -%>
+ProtectKernelTunables=<%= @protect_kernel_tunables %>
+<% end -%>
+<% if @protect_kernel_modules -%>
+ProtectKernelModules=<%= @protect_kernel_modules %>
+<% end -%>
+<% if @protect_kernel_logs -%>
+ProtectKernelLogs=<%= @protect_kernel_logs %>
+<% end -%>
+<% if @protect_control_groups -%>
+ProtectControlGroups=<%= @protect_control_groups %>
 <% end -%>
 <% if @restrict_address_families -%>
-RestrictAddressFamilies=<%= Array(@restrict_address_families).join(" ") %>
+RestrictAddressFamilies=<%= Array(@restrict_address_families).sort.uniq.join(" ") %>
 <% end -%>
-<% if @no_new_privileges -%>
-NoNewPrivileges=<%= @no_new_privileges %>
+<% if @restrict_namespaces -%>
+RestrictNamespaces=<%= Array(@restrict_namespaces).sort.uniq.join(" ") %>
+<% end -%>
+<% if @lock_personality -%>
+LockPersonality=<%= @lock_personality %>
+<% end -%>
+<% if @memory_deny_write_execute -%>
+MemoryDenyWriteExecute=<%= @memory_deny_write_execute %>
+<% end -%>
+<% if @restrict_realtime -%>
+RestrictRealtime=<%= @restrict_realtime %>
+<% end -%>
+<% if @restrict_suid_sgid -%>
+RestrictSUIDSGID=<%= @restrict_suid_sgid %>
+<% end -%>
+<% if @remove_ipc -%>
+RemoveIPC=<%= @remove_ipc %>
+<% end -%>
+<% if @system_call_filter -%>
+SystemCallFilter=<%= Array(@system_call_filter).join(" ") %>
+<% end -%>
+<% if @system_call_architectures -%>
+SystemCallArchitectures=<%= Array(@system_call_architectures).sort.uniq.join(" ") %>
 <% end -%>
 <% if @tasks_max -%>
 TasksMax=<%= @tasks_max %>

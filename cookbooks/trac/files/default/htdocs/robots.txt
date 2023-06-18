@@ -1,3 +1,0 @@
-# This trac is no more. It has ceased to be.
-User-agent: *
-Disallow: /

@@ -22,17 +22,15 @@ default_attributes(
   },
   :networking => {
     :interfaces => {
-      :external_ipv4 => {
+      :external => {
         :interface => "eno1",
         :role => :external,
-        :family => :inet,
-        :address => "140.211.167.98"
-      },
-      :external_ipv6 => {
-        :interface => "eno1",
-        :role => :external,
-        :family => :inet6,
-        :address => "2605:bc80:3010:700::8cd3:a762"
+        :inet => {
+          :address => "140.211.167.98"
+        },
+        :inet6 => {
+          :address => "2605:bc80:3010:700::8cd3:a762"
+        }
       }
     }
   },
@@ -67,10 +65,6 @@ default_attributes(
         ]
       }
     },
-    :ratelimit => {
-      :requests_per_second => 30,
-      :maximum_backlog => 3600
-    }
   }
 )
 

@@ -74,11 +74,8 @@ systemd_service "gdnsd-reload" do
   user "root"
   exec_start "/bin/systemctl reload-or-restart gdnsd"
   standard_output "null"
-  private_tmp true
-  private_devices true
-  protect_system "full"
-  protect_home true
-  no_new_privileges true
+  sandbox true
+  restrict_address_families "AF_UNIX"
 end
 
 systemd_path "gdnsd-reload" do
@@ -93,16 +90,14 @@ end
 
 firewall_rule "accept-dns-udp" do
   action :accept
-  source "net"
-  dest "fw"
-  proto "udp"
+  context :incoming
+  protocol :udp
   dest_ports "domain"
 end
 
 firewall_rule "accept-dns-tcp" do
   action :accept
-  source "net"
-  dest "fw"
-  proto "tcp:syn"
+  context :incoming
+  protocol :tcp
   dest_ports "domain"
 end

@@ -5,13 +5,13 @@ on:
   - pull_request
 
 concurrency:
-  group: ${{ github.workflow }}-{{ github.head_ref || github.ref }}
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
   cancel-in-progress: true
 
 jobs:
   kitchen:
     name: Test Kitchen
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     strategy:
       matrix:
         suite:
@@ -38,7 +38,12 @@ jobs:
           - elasticsearch
           - exim
           - fail2ban
-          - forum
+          - foundation-board
+          - foundation-dwg
+          - foundation-mwg
+          - foundation-owg
+          - foundation-welcome
+          - foundation-wiki
           - ftp
           - geodns
           - geoipupdate
@@ -48,7 +53,7 @@ jobs:
           - gps-tile
           - hardware
           - hot
-          - incron
+          - ideditor
           - irc
           - kibana
           - letsencrypt
@@ -90,7 +95,8 @@ jobs:
           - snmpd
           - spamassassin
           - ssl
-          - stateofthemap
+          - stateofthemap-container
+          - stateofthemap-wordpress
           - subversion
           - supybot
           - switch2osm
@@ -107,7 +113,17 @@ jobs:
           - wordpress
           - wiki
         os:
-          - ubuntu-2004
+          - ubuntu-2204
+        include:
+          - os: ubuntu-2004
+            suite: mailman
+          - os: ubuntu-2004
+            suite: osqa
+        exclude:
+          - suite: mailman
+            os: ubuntu-2204
+          - suite: osqa
+            os: ubuntu-2204
       fail-fast: false
     steps:
     - name: Check out code
@@ -115,6 +131,10 @@ jobs:
     - name: Setup ruby
       uses: ruby/setup-ruby@v1
       with:
+        ruby-version: 3.1
         bundler-cache: true
     - name: Run kitchen test ${{ matrix.suite }}-${{ matrix.os }}
       run: bundle exec kitchen test ${{ matrix.suite }}-${{ matrix.os }}
+    - name: Gather journal output
+      run: bundle exec kitchen exec ${{ matrix.suite }}-${{ matrix.os }} -c journalctl --since=yesterday
+      if: ${{ failure() }}

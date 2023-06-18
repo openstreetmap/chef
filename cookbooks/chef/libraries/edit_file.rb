@@ -1,4 +1,4 @@
-class Chef
+module OpenStreetMap
   module Mixin
     module EditFile
       def edit_file(file, &_block)
@@ -10,8 +10,6 @@ class Chef
       end
     end
   end
-
-  class Recipe
-    include Chef::Mixin::EditFile
-  end
 end
+
+Chef::DSL::Recipe.include(OpenStreetMap::Mixin::EditFile)

@@ -21,6 +21,7 @@ include_recipe "apache"
 
 package "gitweb"
 
+apache_module "cgid"
 apache_module "rewrite"
 
 git_site = node[:git][:host]

@@ -17,18 +17,6 @@
 # limitations under the License.
 #
 
-include_recipe "networking"
-
-clients = search(:node, "roles:#{node[:bind][:clients]}")
-
-ipv4_clients = clients.collect do |client|
-  client.ipaddresses(:family => :inet)
-end.flatten
-
-ipv6_clients = clients.collect do |client|
-  client.ipaddresses(:family => :inet6)
-end.flatten
-
 package "bind9"
 
 service "named" do
@@ -48,7 +36,6 @@ template "/etc/bind/named.conf.options" do
   owner "root"
   group "root"
   mode "644"
-  variables :ipv4_clients => ipv4_clients, :ipv6_clients => ipv6_clients
   notifies :restart, "service[named]"
 end
 
@@ -62,18 +49,14 @@ end
 
 firewall_rule "accept-dns-udp" do
   action :accept
-  source "net"
-  dest "fw"
-  proto "udp"
+  context :incoming
+  protocol :udp
   dest_ports "domain"
-  source_ports "-"
 end
 
 firewall_rule "accept-dns-tcp" do
   action :accept
-  source "net"
-  dest "fw"
-  proto "tcp:syn"
+  context :incoming
+  protocol :tcp
   dest_ports "domain"
-  source_ports "-"
 end

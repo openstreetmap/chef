@@ -4,11 +4,12 @@ description "Master role applied to eddie"
 default_attributes(
   :networking => {
     :interfaces => {
-      :internal_ipv4 => {
+      :internal => {
         :interface => "enp1s0f0.2801",
         :role => :internal,
-        :family => :inet,
-        :address => "10.0.0.10"
+        :inet => {
+          :address => "10.0.0.10"
+        }
       }
     }
   },

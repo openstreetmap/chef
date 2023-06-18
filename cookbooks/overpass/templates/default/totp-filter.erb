@@ -1,17 +1,21 @@
 #!/usr/bin/ruby
 
-requrie "cgi"
+require "cgi"
 require "rotp"
 
 totp = ROTP::TOTP.new("<%= @totp_key %>", :interval => 3600)
 
 STDIN.each_line do |header|
-  cookies = CGI::Cookie.parse(header)
+  cookies = CGI::Cookie.parse(header.chomp)
 
-  if totp.verify(cookies["_osm_totp_token"], :drift_behind => 3600, :drift_ahead => 3600)
-    puts "1"
+  if cookie = cookies.fetch("_osm_totp_token", nil)
+    if totp.verify(cookie.value.first, :drift_behind => 3600, :drift_ahead => 3600)
+      STDOUT.syswrite("1\n")
+    else
+      STDOUT.syswrite("0\n")
+    end
   else
-    puts "0"
+    STDOUT.syswrite("0\n")
   end
 end
 

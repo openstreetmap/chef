@@ -49,4 +49,6 @@ munin_plugin "fail2ban"
 
 prometheus_exporter "fail2ban" do
   port 9635
+  user "root"
+  restrict_address_families "AF_UNIX"
 end

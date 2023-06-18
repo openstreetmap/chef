@@ -25,147 +25,6 @@ require "yaml"
 
 keys = data_bag_item("networking", "keys")
 
-package "netplan.io"
-
-netplan = {
-  "network" => {
-    "version" => 2,
-    "renderer" => "networkd",
-    "ethernets" => {},
-    "bonds" => {},
-    "vlans" => {}
-  }
-}
-
-node[:networking][:interfaces].each do |name, interface|
-  if interface[:interface]
-    if interface[:role] && (role = node[:networking][:roles][interface[:role]])
-      if role[interface[:family]]
-        node.default[:networking][:interfaces][name][:prefix] = role[interface[:family]][:prefix]
-        node.default[:networking][:interfaces][name][:gateway] = role[interface[:family]][:gateway]
-        node.default[:networking][:interfaces][name][:routes] = role[interface[:family]][:routes]
-      end
-
-      node.default[:networking][:interfaces][name][:metric] = role[:metric]
-      node.default[:networking][:interfaces][name][:zone] = role[:zone]
-    end
-
-    if interface[:address]
-      prefix = node[:networking][:interfaces][name][:prefix]
-
-      node.default[:networking][:interfaces][name][:netmask] = (~IPAddr.new(interface[:address]).mask(0)).mask(prefix)
-      node.default[:networking][:interfaces][name][:network] = IPAddr.new(interface[:address]).mask(prefix)
-    end
-
-    interface = node[:networking][:interfaces][name]
-
-    deviceplan = if interface[:interface] =~ /^(.*)\.(\d+)$/
-                   netplan["network"]["vlans"][interface[:interface]] ||= {
-                     "id" => Regexp.last_match(2).to_i,
-                     "link" => Regexp.last_match(1),
-                     "accept-ra" => false,
-                     "addresses" => [],
-                     "routes" => []
-                   }
-                 elsif interface[:interface] =~ /^bond\d+$/
-                   netplan["network"]["bonds"][interface[:interface]] ||= {
-                     "accept-ra" => false,
-                     "addresses" => [],
-                     "routes" => []
-                   }
-                 else
-                   netplan["network"]["ethernets"][interface[:interface]] ||= {
-                     "accept-ra" => false,
-                     "addresses" => [],
-                     "routes" => []
-                   }
-                 end
-
-    if interface[:address]
-      deviceplan["addresses"].push("#{interface[:address]}/#{prefix}")
-    end
-
-    if interface[:mtu]
-      deviceplan["mtu"] = interface[:mtu]
-    end
-
-    if interface[:bond]
-      deviceplan["interfaces"] = interface[:bond][:slaves].to_a
-
-      deviceplan["parameters"] = {
-        "mode" => interface[:bond][:mode] || "active-backup",
-        "primary" => interface[:bond][:slaves].first,
-        "mii-monitor-interval" => interface[:bond][:miimon] || 100,
-        "down-delay" => interface[:bond][:downdelay] || 200,
-        "up-delay" => interface[:bond][:updelay] || 200
-      }
-
-      deviceplan["parameters"]["transmit-hash-policy"] = interface[:bond][:xmithashpolicy] if interface[:bond][:xmithashpolicy]
-      deviceplan["parameters"]["lacp-rate"] = interface[:bond][:lacprate] if interface[:bond][:lacprate]
-    end
-
-    if interface[:gateway] && interface[:gateway] != interface[:address]
-      if interface[:family] == "inet"
-        default_route = "0.0.0.0/0"
-      elsif interface[:family] == "inet6"
-        default_route = "::/0"
-      end
-
-      deviceplan["routes"].push(
-        "to" => default_route,
-        "via" => interface[:gateway],
-        "metric" => interface[:metric],
-        "on-link" => true
-      )
-
-      # This ordering relies on systemd-networkd adding routes
-      # in reverse order and will need moving before the previous
-      # route once that is fixed:
-      #
-      # https://github.com/systemd/systemd/issues/5430
-      # https://github.com/systemd/systemd/pull/10938
-      if interface[:family] == "inet6" &&
-         !interface[:network].include?(interface[:gateway]) &&
-         !IPAddr.new("fe80::/64").include?(interface[:gateway])
-        deviceplan["routes"].push(
-          "to" => interface[:gateway],
-          "scope" => "link"
-        )
-      end
-    end
-
-    if interface[:routes]
-      interface[:routes].each do |to, parameters|
-        next if parameters[:via] == interface[:address]
-
-        route = {
-          "to" => to
-        }
-
-        route["type"] = parameters[:type] if parameters[:type]
-        route["via"] = parameters[:via] if parameters[:via]
-        route["metric"] = parameters[:metric] if parameters[:metric]
-
-        deviceplan["routes"].push(route)
-      end
-    end
-  else
-    node.rm(:networking, :interfaces, name)
-  end
-end
-
-netplan["network"]["bonds"].each_value do |bond|
-  bond["interfaces"].each do |interface|
-    netplan["network"]["ethernets"][interface] ||= { "accept-ra" => false, "optional" => true }
-  end
-end
-
-netplan["network"]["vlans"].each_value do |vlan|
-  unless vlan["link"] =~ /^bond\d+$/
-    netplan["network"]["ethernets"][vlan["link"]] ||= { "accept-ra" => false }
-  end
-end
-
 file "/etc/netplan/00-installer-config.yaml" do
   action :delete
 end
@@ -179,14 +38,101 @@ file "/etc/netplan/50-cloud-init.yaml" do
 end
 
 file "/etc/netplan/99-chef.yaml" do
-  owner "root"
-  group "root"
-  mode "644"
-  content YAML.dump(netplan)
+  action :delete
+end
+
+package "netplan.io" do
+  action :purge
 end
 
 package "cloud-init" do
   action :purge
+end
+
+interfaces = node[:networking][:interfaces].collect do |name, interface|
+  [interface[:interface], name]
+end.to_h
+
+node[:networking][:interfaces].each do |name, interface|
+  if interface[:interface] =~ /^(.*)\.(\d+)$/
+    vlan_interface = Regexp.last_match(1)
+    vlan_id = Regexp.last_match(2)
+
+    parent = interfaces[vlan_interface] || "vlans_#{vlan_interface}"
+
+    node.default_unless[:networking][:interfaces][parent][:interface] = vlan_interface
+    node.default_unless[:networking][:interfaces][parent][:vlans] = []
+
+    node.default[:networking][:interfaces][parent][:vlans] << vlan_id
+  end
+
+  next unless interface[:role] && (role = node[:networking][:roles][interface[:role]])
+
+  if interface[:inet] && role[:inet]
+    node.default_unless[:networking][:interfaces][name][:inet][:prefix] = role[:inet][:prefix]
+    node.default_unless[:networking][:interfaces][name][:inet][:gateway] = role[:inet][:gateway]
+    node.default_unless[:networking][:interfaces][name][:inet][:routes] = role[:inet][:routes]
+  end
+
+  if interface[:inet6] && role[:inet6]
+    node.default_unless[:networking][:interfaces][name][:inet6][:prefix] = role[:inet6][:prefix]
+    node.default_unless[:networking][:interfaces][name][:inet6][:gateway] = role[:inet6][:gateway]
+    node.default_unless[:networking][:interfaces][name][:inet6][:routes] = role[:inet6][:routes]
+  end
+
+  node.default_unless[:networking][:interfaces][name][:metric] = role[:metric]
+  node.default_unless[:networking][:interfaces][name][:zone] = role[:zone]
+end
+
+node[:networking][:interfaces].each do |_, interface|
+  if interface[:interface] =~ /^.*\.(\d+)$/
+    template "/etc/systemd/network/10-#{interface[:interface]}.netdev" do
+      source "vlan.netdev.erb"
+      owner "root"
+      group "root"
+      mode "644"
+      variables :interface => interface, :vlan => Regexp.last_match(1)
+      notifies :run, "notify_group[networkctl-reload]"
+    end
+  elsif interface[:interface] =~ /^bond\d+$/
+    template "/etc/systemd/network/10-#{interface[:interface]}.netdev" do
+      source "bond.netdev.erb"
+      owner "root"
+      group "root"
+      mode "644"
+      variables :interface => interface
+      notifies :run, "notify_group[networkctl-reload]"
+    end
+
+    interface[:bond][:slaves].each do |slave|
+      template "/etc/systemd/network/10-#{slave}.network" do
+        source "slave.network.erb"
+        owner "root"
+        group "root"
+        mode "644"
+        variables :master => interface, :slave => slave
+        notifies :run, "notify_group[networkctl-reload]"
+      end
+    end
+  end
+
+  template "/etc/systemd/network/10-#{interface[:interface]}.network" do
+    source "network.erb"
+    owner "root"
+    group "root"
+    mode "644"
+    variables :interface => interface
+    notifies :run, "notify_group[networkctl-reload]"
+  end
+end
+
+package "systemd-resolved" do
+  action :install
+  only_if { platform?("ubuntu") && node[:lsb][:release].to_f > 22.04 || platform?("debian") && node[:lsb][:release].to_f > 11.0 }
+end
+
+service "systemd-networkd" do
+  action [:enable, :start]
 end
 
 if node[:networking][:wireguard][:enabled]
@@ -196,6 +142,7 @@ if node[:networking][:wireguard][:enabled]
 
   package "wireguard-tools" do
     compile_time true
+    options "--no-install-recommends"
   end
 
   directory "/var/lib/systemd/wireguard" do
@@ -229,9 +176,7 @@ if node[:networking][:wireguard][:enabled]
       next if gateway.name == node.name
       next unless gateway[:networking][:wireguard] && gateway[:networking][:wireguard][:enabled]
 
-      allowed_ips = gateway.interfaces(:role => :internal).map do |interface|
-        "#{interface[:network]}/#{interface[:prefix]}"
-      end
+      allowed_ips = gateway.ipaddresses(:role => :internal).map(&:subnet)
 
       node.default[:networking][:wireguard][:peers] << {
         :public_key => gateway[:networking][:wireguard][:public_key],
@@ -240,10 +185,8 @@ if node[:networking][:wireguard][:enabled]
       }
     end
 
-    search(:node, "roles:mail OR roles:prometheus") do |server|
-      allowed_ips = server.interfaces(:role => :internal).map do |interface|
-        "#{interface[:network]}/#{interface[:prefix]}"
-      end
+    search(:node, "roles:prometheus") do |server|
+      allowed_ips = server.ipaddresses(:role => :internal).map(&:subnet)
 
       if server[:networking][:private_address]
         allowed_ips << "#{server[:networking][:private_address]}/32"
@@ -275,52 +218,56 @@ if node[:networking][:wireguard][:enabled]
       :allowed_ips => "10.89.123.1/32",
       :endpoint => "roaming.firefishy.com:51820"
     }
+  elsif node[:roles].include?("shenron")
+    search(:node, "roles:gateway") do |gateway|
+      allowed_ips = gateway.ipaddresses(:role => :internal).map(&:subnet)
+
+      node.default[:networking][:wireguard][:peers] << {
+        :public_key => gateway[:networking][:wireguard][:public_key],
+        :allowed_ips => allowed_ips,
+        :endpoint => "#{gateway.name}:51820"
+      }
+    end
   end
 
-  template "/etc/systemd/network/wireguard.netdev" do
+  file "/etc/systemd/network/wireguard.netdev" do
+    action :delete
+  end
+
+  template "/etc/systemd/network/10-wg0.netdev" do
     source "wireguard.netdev.erb"
     owner "root"
     group "systemd-network"
     mode "640"
+    notifies :run, "execute[networkctl-delete-wg0]"
+    notifies :run, "notify_group[networkctl-reload]"
   end
 
-  template "/etc/systemd/network/wireguard.network" do
+  file "/etc/systemd/network/wireguard.network" do
+    action :delete
+  end
+
+  template "/etc/systemd/network/10-wg0.network" do
     source "wireguard.network.erb"
     owner "root"
     group "root"
     mode "644"
+    notifies :run, "execute[networkctl-reload]"
   end
 
-  if node[:lsb][:release].to_f < 20.04
-    execute "ip-link-delete-wg0" do
-      action :nothing
-      command "ip link delete wg0"
-      subscribes :run, "template[/etc/systemd/network/wireguard.netdev]"
-      only_if { ::File.exist?("/sys/class/net/wg0") }
-    end
-
-    service "systemd-networkd" do
-      action :nothing
-      subscribes :restart, "template[/etc/systemd/network/wireguard.netdev]"
-      subscribes :restart, "template[/etc/systemd/network/wireguard.network]"
-      not_if { kitchen? }
-    end
-  else
-    execute "networkctl-delete-wg0" do
-      action :nothing
-      command "networkctl delete wg0"
-      subscribes :run, "template[/etc/systemd/network/wireguard.netdev]"
-      only_if { ::File.exist?("/sys/class/net/wg0") }
-    end
-
-    execute "networkctl-reload" do
-      action :nothing
-      command "networkctl reload"
-      subscribes :run, "template[/etc/systemd/network/wireguard.netdev]"
-      subscribes :run, "template[/etc/systemd/network/wireguard.network]"
-      not_if { kitchen? }
-    end
+  execute "networkctl-delete-wg0" do
+    action :nothing
+    command "networkctl delete wg0"
+    only_if { ::File.exist?("/sys/class/net/wg0") }
   end
+end
+
+notify_group "networkctl-reload"
+
+execute "networkctl-reload" do
+  action :nothing
+  command "networkctl reload"
+  subscribes :run, "notify_group[networkctl-reload]"
 end
 
 ohai "reload-hostname" do
@@ -370,301 +317,89 @@ link "/etc/resolv.conf" do
   to "../run/systemd/resolve/stub-resolv.conf"
 end
 
-zones = {}
+hosts = { :inet => [], :inet6 => [] }
 
 search(:node, "networking:interfaces").collect do |n|
   next if n[:fqdn] == node[:fqdn]
 
   n.interfaces.each do |interface|
-    next unless interface[:role] == "external" && interface[:zone]
+    next unless interface[:role] == "external"
 
-    zones[interface[:zone]] ||= {}
-    zones[interface[:zone]][interface[:family]] ||= []
-    zones[interface[:zone]][interface[:family]] << interface[:address]
+    hosts[:inet] << interface[:inet][:address] if interface[:inet]
+    hosts[:inet6] << interface[:inet6][:address] if interface[:inet6]
   end
 end
 
-package "shorewall"
+package "nftables"
 
-systemd_service "shorewall-docker" do
-  service "shorewall"
-  dropin "docker"
-  exec_stop "/sbin/shorewall $OPTIONS stop"
-  notifies :restart, "service[shorewall]"
+interfaces = []
+
+node.interfaces(:role => :external).each do |interface|
+  interfaces << interface[:interface]
 end
 
-template "/etc/default/shorewall" do
-  source "shorewall-default.erb"
+template "/etc/nftables.conf" do
+  source "nftables.conf.erb"
   owner "root"
   group "root"
-  mode "644"
-  notifies :restart, "service[shorewall]"
+  mode "755"
+  variables :interfaces => interfaces, :hosts => hosts
+  notifies :reload, "service[nftables]"
 end
 
-template "/etc/shorewall/shorewall.conf" do
-  source "shorewall.conf.erb"
+directory "/var/lib/nftables" do
   owner "root"
   group "root"
-  mode "644"
-  notifies :restart, "service[shorewall]"
+  mode "755"
 end
 
-template "/etc/shorewall/zones" do
-  source "shorewall-zones.erb"
+template "/usr/local/bin/nftables" do
+  source "nftables.erb"
   owner "root"
   group "root"
-  mode "644"
-  variables :type => "ipv4"
-  notifies :restart, "service[shorewall]"
+  mode "755"
 end
 
-template "/etc/shorewall/interfaces" do
-  source "shorewall-interfaces.erb"
-  owner "root"
-  group "root"
-  mode "644"
-  notifies :restart, "service[shorewall]"
+systemd_service "nftables-stop" do
+  action :delete
+  service "nftables"
+  dropin "stop"
 end
 
-template "/etc/shorewall/hosts" do
-  source "shorewall-hosts.erb"
-  owner "root"
-  group "root"
-  mode "644"
-  variables :zones => zones
-  notifies :restart, "service[shorewall]"
-end
-
-template "/etc/shorewall/conntrack" do
-  source "shorewall-conntrack.erb"
-  owner "root"
-  group "root"
-  mode "644"
-  notifies :restart, "service[shorewall]"
-  only_if { node[:networking][:firewall][:raw] }
-end
-
-template "/etc/shorewall/policy" do
-  source "shorewall-policy.erb"
-  owner "root"
-  group "root"
-  mode "644"
-  notifies :restart, "service[shorewall]"
-end
-
-template "/etc/shorewall/rules" do
-  source "shorewall-rules.erb"
-  owner "root"
-  group "root"
-  mode "644"
-  variables :family => "inet"
-  notifies :restart, "service[shorewall]"
-end
-
-template "/etc/shorewall/stoppedrules" do
-  source "shorewall-stoppedrules.erb"
-  owner "root"
-  group "root"
-  mode "644"
-  notifies :restart, "service[shorewall]"
+systemd_service "nftables-chef" do
+  service "nftables"
+  dropin "chef"
+  exec_start "/usr/local/bin/nftables start"
+  exec_reload "/usr/local/bin/nftables reload"
+  exec_stop "/usr/local/bin/nftables stop"
 end
 
 if node[:networking][:firewall][:enabled]
-  service "shorewall" do
+  service "nftables" do
     action [:enable, :start]
-    supports :restart => true
-    status_command "shorewall status"
-    ignore_failure true
   end
 else
-  service "shorewall" do
+  service "nftables" do
     action [:disable, :stop]
-    supports :restart => true
-    status_command "shorewall status"
-    ignore_failure true
   end
-end
-
-template "/etc/logrotate.d/shorewall" do
-  source "logrotate.shorewall.erb"
-  owner "root"
-  group "root"
-  mode "644"
-  variables :name => "shorewall"
-end
-
-firewall_rule "limit-icmp-echo" do
-  action :accept
-  family :inet
-  source "net"
-  dest "fw"
-  proto "icmp"
-  dest_ports "echo-request"
-  rate_limit "s:1/sec:5"
 end
 
 if node[:networking][:wireguard][:enabled]
-  wireguard_source = if node[:roles].include?("gateway")
-                       "net"
-                     else
-                       "osm"
-                     end
-
   firewall_rule "accept-wireguard" do
     action :accept
-    source wireguard_source
-    dest "fw"
-    proto "udp"
+    context :incoming
+    protocol :udp
+    source :osm unless node[:roles].include?("gateway")
     dest_ports "51820"
     source_ports "51820"
   end
 end
 
-file "/etc/shorewall/masq" do
-  action :delete
-end
-
-file "/etc/shorewall/masq.bak" do
-  action :delete
-end
-
-if node[:roles].include?("gateway")
-  template "/etc/shorewall/snat" do
-    source "shorewall-snat.erb"
-    owner "root"
-    group "root"
-    mode "644"
-    notifies :restart, "service[shorewall]"
-  end
-else
-  file "/etc/shorewall/snat" do
-    action :delete
-    notifies :restart, "service[shorewall]"
-  end
-end
-
-unless node.interfaces(:family => :inet6).empty?
-  package "shorewall6"
-
-  template "/etc/default/shorewall6" do
-    source "shorewall-default.erb"
-    owner "root"
-    group "root"
-    mode "644"
-    notifies :restart, "service[shorewall6]"
-  end
-
-  template "/etc/shorewall6/shorewall6.conf" do
-    source "shorewall6.conf.erb"
-    owner "root"
-    group "root"
-    mode "644"
-    notifies :restart, "service[shorewall6]"
-  end
-
-  template "/etc/shorewall6/zones" do
-    source "shorewall-zones.erb"
-    owner "root"
-    group "root"
-    mode "644"
-    variables :type => "ipv6"
-    notifies :restart, "service[shorewall6]"
-  end
-
-  template "/etc/shorewall6/interfaces" do
-    source "shorewall6-interfaces.erb"
-    owner "root"
-    group "root"
-    mode "644"
-    notifies :restart, "service[shorewall6]"
-  end
-
-  template "/etc/shorewall6/hosts" do
-    source "shorewall6-hosts.erb"
-    owner "root"
-    group "root"
-    mode "644"
-    variables :zones => zones
-    notifies :restart, "service[shorewall6]"
-  end
-
-  template "/etc/shorewall6/conntrack" do
-    source "shorewall-conntrack.erb"
-    owner "root"
-    group "root"
-    mode "644"
-    notifies :restart, "service[shorewall6]"
-    only_if { node[:networking][:firewall][:raw] }
-  end
-
-  template "/etc/shorewall6/policy" do
-    source "shorewall-policy.erb"
-    owner "root"
-    group "root"
-    mode "644"
-    notifies :restart, "service[shorewall6]"
-  end
-
-  template "/etc/shorewall6/rules" do
-    source "shorewall-rules.erb"
-    owner "root"
-    group "root"
-    mode "644"
-    variables :family => "inet6"
-    notifies :restart, "service[shorewall6]"
-  end
-
-  if node[:networking][:firewall][:enabled]
-    service "shorewall6" do
-      action [:enable, :start]
-      supports :restart => true
-      status_command "shorewall6 status"
-      ignore_failure true
-    end
-  else
-    service "shorewall6" do
-      action [:disable, :stop]
-      supports :restart => true
-      status_command "shorewall6 status"
-      ignore_failure true
-    end
-  end
-
-  template "/etc/logrotate.d/shorewall6" do
-    source "logrotate.shorewall.erb"
-    owner "root"
-    group "root"
-    mode "644"
-    variables :name => "shorewall6"
-  end
-
-  firewall_rule "limit-icmp6-echo" do
-    action :accept
-    family :inet6
-    source "net"
-    dest "fw"
-    proto "ipv6-icmp"
-    dest_ports "echo-request"
-    rate_limit "s:1/sec:5"
-  end
-end
-
 firewall_rule "accept-http" do
   action :accept
-  source "net"
-  dest "fw"
-  proto "tcp:syn"
-  dest_ports "http"
-  rate_limit node[:networking][:firewall][:http_rate_limit]
-  connection_limit node[:networking][:firewall][:http_connection_limit]
-end
-
-firewall_rule "accept-https" do
-  action :accept
-  source "net"
-  dest "fw"
-  proto "tcp:syn"
-  dest_ports "https"
+  context :incoming
+  protocol :tcp
+  dest_ports %w[http https]
   rate_limit node[:networking][:firewall][:http_rate_limit]
   connection_limit node[:networking][:firewall][:http_connection_limit]
 end

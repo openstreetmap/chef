@@ -176,20 +176,44 @@ template "/srv/acme.openstreetmap.org/bin/check-certificates" do
   variables :certificates => certificates
 end
 
-cron_d "letencrypt-renew" do
-  minute "00"
-  hour "*/12"
+systemd_service "letsencrypt-renew" do
+  description "Renew letsencrypt certificates"
+  exec_start "/srv/acme.openstreetmap.org/bin/renew"
   user "letsencrypt"
-  command "/srv/acme.openstreetmap.org/bin/renew"
-  mailto "admins@openstreetmap.org"
+  sandbox :enable_network => true
+  read_write_paths [
+    "/srv/acme.openstreetmap.org/config",
+    "/srv/acme.openstreetmap.org/html",
+    "/srv/acme.openstreetmap.org/logs",
+    "/srv/acme.openstreetmap.org/work"
+  ]
 end
 
-cron_d "letencrypt-check" do
-  minute "30"
-  hour "*/12"
+systemd_timer "letsencrypt-renew" do
+  description "Renew letsencrypt certificates"
+  on_boot_sec "1h"
+  on_unit_inactive_sec "12h"
+end
+
+service "letsencrypt-renew.timer" do
+  action [:enable, :start]
+end
+
+systemd_service "letsencrypt-check" do
+  description "Check letsencrypt certificates"
+  exec_start "/srv/acme.openstreetmap.org/bin/check-certificates"
   user "letsencrypt"
-  command "/srv/acme.openstreetmap.org/bin/check-certificates"
-  mailto "admins@openstreetmap.org"
+  sandbox :enable_network => true
+end
+
+systemd_timer "letsencrypt-check" do
+  description "Check letsencrypt certificates"
+  on_boot_sec "2h"
+  on_unit_inactive_sec "12h"
+end
+
+service "letsencrypt-check.timer" do
+  action [:enable, :start]
 end
 
 template "/etc/logrotate.d/letsencrypt" do

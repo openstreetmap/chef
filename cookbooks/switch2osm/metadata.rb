@@ -6,6 +6,4 @@ description       "Installs and configures servers for switch2osm"
 
 version           "1.0.0"
 supports          "ubuntu"
-depends           "apache"
-depends           "git"
-depends           "ruby"
+depends           "podman"

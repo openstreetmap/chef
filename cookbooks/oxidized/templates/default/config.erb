@@ -1,0 +1,39 @@
+---
+# DO NOT EDIT - This file is being maintained by Chef
+rest: false
+timeout: 60
+vars:
+  remove_secret: true
+pid: "/run/oxidized/oxidized.pid"
+crash:
+  directory: /var/lib/oxidized/crashes
+input:
+  default: ssh
+output:
+  default: git
+  git:
+    single_repo: true
+    user: oxidized
+    email: oxidized@openstreetmap.org
+    repo: "/var/lib/oxidized/configs.git"
+hooks:
+  push_to_remote:
+    type: githubrepo
+    events: [post_store]
+    remote_repo: git@github.com:openstreetmap/oxidized-configs.git
+    privatekey: /opt/oxidized/.ssh/id_ed25519
+source:
+  default: csv
+  csv:
+    file: "/etc/oxidized/routers.db"
+    delimiter: !ruby/regexp /:/
+    map:
+      name: 0
+      model: 1
+      input: 2
+      username: 3
+      password: 4
+model_map:
+  juniper: junos
+  apc: apc_aos
+  ciscocmb: ciscosmb

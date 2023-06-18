@@ -42,7 +42,7 @@
     Require all granted
 
     <FilesMatch ".+\.ph(ar|p|tml)$">
-      SetHandler "proxy:unix:/run/php/donate.openstreetmap.org.sock|fcgi://127.0.0.1"
+      SetHandler "proxy:unix:/run/php/php-donate.openstreetmap.org-fpm.sock|fcgi://127.0.0.1"
     </FilesMatch>
   </Directory>
 

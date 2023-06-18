@@ -131,11 +131,8 @@ systemd_service "supybot" do
   after "network.target"
   user "supybot"
   exec_start "/usr/bin/supybot /etc/supybot/supybot.conf"
-  private_tmp true
-  private_devices true
-  protect_system true
-  protect_home true
-  no_new_privileges true
+  sandbox :enable_network => true
+  read_write_paths ["/etc/supybot", "/var/lib/supybot", "/var/log/supybot"]
   restart "on-failure"
 end
 

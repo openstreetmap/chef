@@ -6,4 +6,4 @@ description       "Installs and configures subversion servers"
 
 version           "1.0.0"
 supports          "ubuntu"
-depends           "apache"
+depends           "podman"

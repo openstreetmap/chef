@@ -1,7 +1,7 @@
 ---
 driver:
   name: dokken
-  chef_version: 17
+  chef_version: 18
   volumes:
     - /var/lib/docker
   env:
@@ -14,6 +14,7 @@ provisioner:
   name: dokken
   chef_license: accept
   data_bags_path: test/data_bags
+  slow_resource_report: true
 
 verifier:
   root_path: /opt/verifier
@@ -23,6 +24,20 @@ platforms:
   - name: ubuntu-20.04
     driver:
       image: dokken/ubuntu-20.04
+      privileged: true
+      pid_one_command: /bin/systemd
+      intermediate_instructions:
+        - RUN /usr/bin/apt-get update -y
+  - name: ubuntu-22.04
+    driver:
+      image: dokken/ubuntu-22.04
+      privileged: true
+      pid_one_command: /bin/systemd
+      intermediate_instructions:
+        - RUN /usr/bin/apt-get update -y
+  - name: debian-12
+    driver:
+      image: dokken/debian-12
       privileged: true
       pid_one_command: /bin/systemd
       intermediate_instructions:
@@ -89,9 +104,10 @@ suites:
           test:
             interface: eth0
             role: internal
-            address: 172.18.0.2
-            prefix: 16
-            gateway: 172.18.0.1
+            inet:
+              address: 172.18.0.2
+              prefix: 16
+              gateway: 172.18.0.1
         roles:
           external:
             zone: test
@@ -116,9 +132,24 @@ suites:
   - name: fail2ban
     run_list:
       - recipe[fail2ban::default]
-  - name: forum
+  - name: foundation-board
     run_list:
-      - recipe[forum::default]
+      - recipe[foundation::board]
+  - name: foundation-dwg
+    run_list:
+      - recipe[foundation::dwg]
+  - name: foundation-mwg
+    run_list:
+      - recipe[foundation::mwg]
+  - name: foundation-owg
+    run_list:
+      - recipe[foundation::owg]
+  - name: foundation-welcome
+    run_list:
+      - recipe[foundation::welcome]
+  - name: foundation-wiki
+    run_list:
+      - recipe[foundation::wiki]
   - name: ftp
     run_list:
       - recipe[ftp::default]
@@ -130,7 +161,9 @@ suites:
         interfaces:
           test:
             role: external
-            address: 172.18.0.2
+            inet:
+              address: 172.18.0.2
+              prefix: 16
   - name: geoipupdate
     run_list:
       - recipe[geoipupdate::default]
@@ -152,9 +185,9 @@ suites:
   - name: hot
     run_list:
       - recipe[hot::default]
-  - name: incron
+  - name: ideditor
     run_list:
-      - recipe[incron::default]
+      - recipe[ideditor::default]
   - name: irc
     run_list:
       - recipe[irc::default]
@@ -164,10 +197,6 @@ suites:
   - name: letsencrypt
     run_list:
       - recipe[letsencrypt::default]
-    attributes:
-      apt:
-        sources:
-          - openstreetmap
   - name: logstash
     run_list:
       - recipe[logstash::default]
@@ -278,7 +307,7 @@ suites:
     attributes:
       postgresql:
         versions:
-          - 10
+          - 15
   - name: prometheus
     run_list:
       - recipe[prometheus::default]
@@ -288,15 +317,13 @@ suites:
           test:
             interface: eth0
             role: internal
-            address: 172.18.0.2
-            prefix: 16
-            gateway: 172.18.0.1
+            inet:
+              address: 172.18.0.2
+              prefix: 16
+              gateway: 172.18.0.1
   - name: prometheus-server
     run_list:
       - recipe[prometheus::server]
-    attributes:
-      prometheus:
-        promscale: true
   - name: python
     run_list:
       - recipe[python::default]
@@ -315,9 +342,12 @@ suites:
   - name: ssl
     run_list:
       - recipe[ssl::default]
-  - name: stateofthemap
+  - name: stateofthemap-container
     run_list:
-      - recipe[stateofthemap::default]
+      - recipe[stateofthemap::container]
+  - name: stateofthemap-wordpress
+    run_list:
+      - recipe[stateofthemap::wordpress]
   - name: subversion
     run_list:
       - recipe[subversion::default]
@@ -346,9 +376,6 @@ suites:
   - name: tilelog
     run_list:
       - recipe[tilelog::default]
-  - name: timescaledb
-    run_list:
-      - recipe[timescaledb::default]
   - name: tools
     run_list:
       - recipe[tools::default]

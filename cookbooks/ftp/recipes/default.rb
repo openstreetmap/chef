@@ -45,10 +45,8 @@ end
 
 firewall_rule "accept-ftp-tcp" do
   action :accept
-  source "net"
-  dest "fw"
-  proto "tcp"
+  context :incoming
+  protocol :tcp
   dest_ports "ftp"
-  source_ports "-"
   helper "ftp"
 end

@@ -4,34 +4,41 @@ description "Master role applied to norbert"
 default_attributes(
   :networking => {
     :interfaces => {
-      :internal_ipv4 => {
+      :internal => {
         :interface => "bond0",
         :role => :internal,
-        :family => :inet,
-        :address => "10.0.48.17",
+        :inet => {
+          :address => "10.0.48.17"
+        },
         :bond => {
+          :mode => "802.3ad",
+          :lacprate => "fast",
+          :xmithashpolicy => "layer3+4",
           :slaves => %w[enp25s0f0 enp25s0f1]
         }
       },
-      :external_ipv4 => {
-        :interface => "bond0.2",
+      :external => {
+        :interface => "bond0.3",
         :role => :external,
-        :family => :inet,
-        :address => "130.117.76.17"
-      },
-      :external_ipv6 => {
-        :interface => "bond0.2",
-        :role => :external,
-        :family => :inet6,
-        :address => "2001:978:2:2C::172:11"
+        :inet => {
+          :address => "184.104.179.145"
+        },
+        :inet6 => {
+          :address => "2001:470:1:fa1::11"
+        }
       }
-
     }
+  },
+  :planet => {
+    :replication => "enabled"
   }
 )
 
 run_list(
   "role[equinix-ams]",
   "role[geodns]",
-  "role[planet]"
+  "role[backup]",
+  "role[planet]",
+  "role[planetdump]",
+  "recipe[tilelog]"
 )

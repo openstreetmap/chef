@@ -17,6 +17,4 @@
 # limitations under the License.
 #
 
-include_recipe "apt"
-
 package "git"

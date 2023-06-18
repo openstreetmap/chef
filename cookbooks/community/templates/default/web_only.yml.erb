@@ -1,6 +1,6 @@
 templates:
   - "templates/web.template.yml"
-  - "templates/web.ratelimited.template.yml"
+  - "templates/web.ipv6.template.yml"
   - "templates/web.ssl.template.yml"
 
 ## which TCP/IP ports should this container expose?
@@ -19,23 +19,23 @@ links:
 # any extra arguments for Docker?
 # docker_args:
 
-# Workaround bug: https://github.com/discourse/discourse_docker/pull/505
-# params:
-#  version: v2.8.7
+# Latest Version v3.0.3
+params:
+  version: stable
 
 env:
   LC_ALL: en_US.UTF-8
   LANG: en_US.UTF-8
   LANGUAGE: en_US.UTF-8
-  EMBER_CLI_PROD_ASSETS: 1
   DISCOURSE_FORCE_HTTPS: true
 
   ## How many concurrent web requests are supported? Depends on memory and CPU cores.
   ## will be set automatically by bootstrap based on detected CPUs, or you can override
-  UNICORN_WORKERS: 8
+  UNICORN_WORKERS: <%= node.cpu_cores %>
 
   ## TODO: The domain name this Discourse instance will respond to
   DISCOURSE_HOSTNAME: community.openstreetmap.org
+  DISCOURSE_CDN_URL: https://community-cdn.openstreetmap.org
 
   ## Uncomment if you want the container to be started with the same
   ## hostname (-h option) as specified above (default "$hostname-$config")
@@ -45,14 +45,11 @@ env:
   ## on initial signup example 'user1@example.com,user2@example.com'
   DISCOURSE_DEVELOPER_EMAILS: 'operations@openstreetmap.org'
 
-  ## TODO: The SMTP mail server used to validate new accounts and send notifications
-  # SMTP ADDRESS, username, and password are required
-  # WARNING the char '#' in SMTP password can cause problems!
-  DISCOURSE_SMTP_ADDRESS: mail.openstreetmap.org
-  DISCOURSE_SMTP_PORT: 26
+  DISCOURSE_SMTP_ADDRESS: <%= node[:exim][:smarthost_via].split(":", 2)[0] %>
+  DISCOURSE_SMTP_PORT: <%= node[:exim][:smarthost_via].split(":", 2)[1] || "25" %>
+  DISCOURSE_SMTP_OPENSSL_VERIFY_MODE: none
   DISCOURSE_SMTP_USER_NAME:
   DISCOURSE_SMTP_PASSWORD:
-  # DISCOURSE_SMTP_ENABLE_START_TLS: true           # (optional, default true)
   DISCOURSE_SMTP_DOMAIN: community.openstreetmap.org
   DISCOURSE_NOTIFICATION_EMAIL: community@noreply.openstreetmap.org
 
@@ -69,6 +66,12 @@ env:
   DISCOURSE_MAXMIND_LICENSE_KEY: '<%= @license_keys[node[:geoipupdate][:account]] %>'
 <% end -%>
 
+  # Allow list for prometheus metric collection
+  DISCOURSE_PROMETHEUS_TRUSTED_IP_ALLOWLIST_REGEX: '^<%= @prometheus_servers.map { |a| Regexp.escape(a) }.join("|") %>$'
+
+  # Increase base SIDEKIQ memory limit to 1GB
+  UNICORN_SIDEKIQ_MAX_RSS: 1000
+
 volumes:
   - volume:
       host: /srv/community.openstreetmap.org/shared/web-only
@@ -82,6 +85,12 @@ volumes:
   - volume:
       host: /etc/ssl/private/community.openstreetmap.org.key
       guest: /shared/ssl/ssl.key
+  - volume:
+      host: /etc/ssl/certs/dhparam.pem
+      guest: /shared/ssl/dhparam.pem
+  - volume:
+      host: /srv/community.openstreetmap.org/files/update-feeds.atom
+      guest: /shared/feeds/update-feeds.atom
 
 ## Plugins go here
 ## see https://meta.discourse.org/t/19157 for details
@@ -90,27 +99,34 @@ hooks:
     - exec:
         cd: $home/plugins
         cmd:
-          - git clone --depth 1 https://github.com/discourse/discourse-oauth2-basic.git
-          - git clone --depth 1 https://github.com/discourse/discourse-solved.git
-          - git clone --depth 1 https://github.com/discourse/discourse-canned-replies.git
-          - git clone --depth 1 https://github.com/discourse/discourse-reactions.git
-          - git clone --depth 1 https://github.com/discourse/discourse-prometheus.git
-          - git clone --depth 1 https://github.com/discourse/discourse-translator.git
+          - sudo -H -E -u discourse git clone --depth 1 https://github.com/discourse/discourse-oauth2-basic.git
+          - sudo -H -E -u discourse git clone --depth 1 https://github.com/discourse/discourse-solved.git
+          - sudo -H -E -u discourse git clone --depth 1 https://github.com/discourse/discourse-canned-replies.git
+          - sudo -H -E -u discourse git clone --depth 1 https://github.com/discourse/discourse-reactions.git
+          - sudo -H -E -u discourse git clone --depth 1 https://github.com/discourse/discourse-prometheus.git
+          # FIXME revert to upstream once PR has been merged: https://github.com/discourse/discourse-translator/pull/103
+          - sudo -H -E -u discourse git clone --depth 1 --branch serbian-digraphic-fix https://github.com/Firefishy/discourse-translator.git
+          - sudo -H -E -u discourse git clone --depth 1 https://github.com/discourse/discourse-saved-searches.git
     - exec:
+        # Needs to be copied in else builtin git cleanup fails
         cd: $home
         cmd:
-          - git fetch --depth=1 origin tag v2.8.7 --no-tags
-          - git checkout v2.8.7
+          - sudo -H -E -u discourse cp /shared/feeds/update-feeds.atom public/update-feeds.atom
   after_ssl:
     - replace:
         filename: "/etc/nginx/conf.d/discourse.conf"
         from: /listen 80;/
         to: |
           listen 80;
+          listen [::]:80;
           rewrite ^/\.well-known/acme-challenge/(.*)$ http://acme.openstreetmap.org/.well-known/acme-challenge/$1 permanent;
 
     - replace:
         filename: "/etc/nginx/conf.d/discourse.conf"
         from: /add_header.+/
         to: |
-          add_header Strict-Transport-Security 'max-age=63072000';
+          add_header Strict-Transport-Security 'max-age=31536000; preload';
+          ssl_stapling on;
+          resolver <%= node[:networking][:nameservers].join(" ") %>;
+          resolver_timeout 5s;
+          ssl_dhparam /shared/ssl/dhparam.pem;

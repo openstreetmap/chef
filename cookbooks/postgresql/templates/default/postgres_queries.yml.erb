@@ -1,5 +1,5 @@
 pg_replication:
-  query: "SELECT EXTRACT(EPOCH FROM (now() - pg_last_xact_replay_timestamp())) AS lag_seconds"
+  query: "SELECT CASE WHEN NOT pg_is_in_recovery() THEN 0 ELSE GREATEST (0, EXTRACT(EPOCH FROM (now() - pg_last_xact_replay_timestamp()))) END AS lag_seconds"
   master: true
   metrics:
     - lag_seconds:
@@ -16,7 +16,7 @@ pg_postmaster:
 <% if node[:postgresql][:monitor_tables] -%>
 
 pg_stat_user_tables:
-  query: "SELECT current_database() datname, schemaname, relname, seq_scan, seq_tup_read, idx_scan, idx_tup_fetch, n_tup_ins, n_tup_upd, n_tup_del, n_tup_hot_upd, n_live_tup, n_dead_tup, n_mod_since_analyze, COALESCE(last_vacuum, '1970-01-01Z'), COALESCE(last_vacuum, '1970-01-01Z') as last_vacuum, COALESCE(last_autovacuum, '1970-01-01Z') as last_autovacuum, COALESCE(last_analyze, '1970-01-01Z') as last_analyze, COALESCE(last_autoanalyze, '1970-01-01Z') as last_autoanalyze, vacuum_count, autovacuum_count, analyze_count, autoanalyze_count FROM pg_stat_user_tables"
+  query: "SELECT current_database() datname, schemaname, relname, seq_scan, seq_tup_read, idx_scan, idx_tup_fetch, n_tup_ins, n_tup_upd, n_tup_del, n_tup_hot_upd, n_live_tup, n_dead_tup, n_mod_since_analyze, COALESCE(last_vacuum, '1970-01-01Z') as last_vacuum, COALESCE(last_autovacuum, '1970-01-01Z') as last_autovacuum, COALESCE(last_analyze, '1970-01-01Z') as last_analyze, COALESCE(last_autoanalyze, '1970-01-01Z') as last_autoanalyze, vacuum_count, autovacuum_count, analyze_count, autoanalyze_count FROM pg_stat_user_tables"
   metrics:
     - datname:
         usage: "LABEL"
@@ -123,20 +123,56 @@ pg_statio_user_tables:
         description: "Number of buffer hits in this table's TOAST table indexes (if any)"
 <% end -%>
 
-pg_database:
-  query: "SELECT pg_database.oid AS datid, pg_database.datname, pg_database_size(pg_database.datname) AS size_bytes FROM pg_database"
+pg_process_idle:
+  query: |
+    WITH
+      metrics AS (
+        SELECT
+          state,
+          application_name,
+          SUM(EXTRACT(EPOCH FROM (CURRENT_TIMESTAMP - state_change))::bigint)::float AS process_idle_seconds_sum,
+          COUNT(*) AS process_idle_seconds_count
+        FROM pg_stat_activity
+        WHERE state ~ '^idle'
+        GROUP BY state, application_name
+      ),
+      buckets AS (
+        SELECT
+          state,
+          application_name,
+          le,
+          SUM(
+            CASE WHEN EXTRACT(EPOCH FROM (CURRENT_TIMESTAMP - state_change)) <= le
+              THEN 1
+              ELSE 0
+            END
+          )::bigint AS bucket
+        FROM
+          pg_stat_activity,
+          UNNEST(ARRAY[1, 2, 5, 15, 30, 60, 90, 120, 300]) AS le
+        GROUP BY state, application_name, le
+        ORDER BY state, application_name, le
+      )
+    SELECT
+      state,
+      application_name,
+      process_idle_seconds_sum as seconds_sum,
+      process_idle_seconds_count as seconds_count,
+      ARRAY_AGG(le) AS seconds,
+      ARRAY_AGG(bucket) AS seconds_bucket
+    FROM metrics JOIN buckets USING (state, application_name)
+    GROUP BY 1, 2, 3, 4
   master: true
-  cache_seconds: 30
   metrics:
-    - datid:
+    - state:
         usage: "LABEL"
-        description: "ID of the database"
-    - datname:
+        description: "State"
+    - application_name:
         usage: "LABEL"
-        description: "Name of the database"
-    - size_bytes:
-        usage: "GAUGE"
-        description: "Disk space used by the database"
+        description: "Application Name"
+    - seconds:
+        usage: "HISTOGRAM"
+        description: "Idle time of server processes"
 
 pg_unfrozen_ids:
   query: "SELECT current_database() AS datname, max(age(relfrozenxid)) AS xid_age, max(mxid_age(relminmxid)) AS mxid_age FROM pg_class WHERE relkind IN ('r', 'm')"
@@ -150,3 +186,11 @@ pg_unfrozen_ids:
     - mxid_age:
         usage: "GAUGE"
         description: "Age of the oldest unfrozen multixact ID in this database"
+
+pg_wal:
+  query: "SELECT count(*) AS segment_count FROM pg_ls_waldir() WHERE name ~ '^[0-9A-Z]{24}$'"
+  master: true
+  metrics:
+    - segment_count:
+        usage: "GAUGE"
+        description: "Number of WAL segments"

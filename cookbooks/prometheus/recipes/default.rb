@@ -99,10 +99,14 @@ end
 
 prometheus_exporter "node" do
   port 9100
+  user "root"
+  proc_subset "all"
+  protect_clock false
+  restrict_address_families %w[AF_UNIX AF_NETLINK]
+  system_call_filter ["@system-service", "@clock"]
   options %w[
     --collector.textfile.directory=/var/lib/prometheus/node-exporter
     --collector.interrupts
-    --collector.ntp
     --collector.processes
     --collector.rapl.enable-zone-label
     --collector.systemd

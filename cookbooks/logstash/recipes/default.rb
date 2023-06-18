@@ -23,7 +23,7 @@ include_recipe "networking"
 keys = data_bag_item("logstash", "keys")
 
 package %w[
-  openjdk-8-jre-headless
+  openjdk-11-jre-headless
   logstash
 ]
 
@@ -74,54 +74,22 @@ template "/etc/cron.daily/expire-logstash" do
   mode "755"
 end
 
-forwarders = search(:node, "recipes:logstash\\:\\:forwarder")
+forwarders = []
 
-forwarders.sort_by { |n| n[:fqdn] }.each do |forwarder|
-  forwarder.interfaces(:role => :external) do |interface|
-    firewall_rule "accept-lumberjack-#{forwarder}" do
-      action :accept
-      family interface[:family]
-      source "#{interface[:zone]}:#{interface[:address]}"
-      dest "fw"
-      proto "tcp:syn"
-      dest_ports "5043"
-      source_ports "1024:"
-    end
-
-    firewall_rule "accept-beats-#{forwarder}" do
-      action :accept
-      family interface[:family]
-      source "#{interface[:zone]}:#{interface[:address]}"
-      dest "fw"
-      proto "tcp:syn"
-      dest_ports "5044"
-      source_ports "1024:"
-    end
-  end
+search(:node, "recipes:logstash\\:\\:forwarder").each do |forwarder|
+  forwarders.append(forwarder.ipaddresses(:role => :external))
 end
 
-gateways = search(:node, "roles:gateway")
+search(:node, "roles:gateway").each do |forwarder|
+  forwarders.append(forwarder.ipaddresses(:role => :external))
+end
 
-gateways.sort_by { |n| n[:fqdn] }.each do |gateway|
-  gateway.interfaces(:role => :external) do |interface|
-    firewall_rule "accept-lumberjack-#{gateway}" do
-      action :accept
-      family interface[:family]
-      source "#{interface[:zone]}:#{interface[:address]}"
-      dest "fw"
-      proto "tcp:syn"
-      dest_ports "5043"
-      source_ports "1024:"
-    end
-
-    firewall_rule "accept-beats-#{gateway}" do
-      action :accept
-      family interface[:family]
-      source "#{interface[:zone]}:#{interface[:address]}"
-      dest "fw"
-      proto "tcp:syn"
-      dest_ports "5044"
-      source_ports "1024:"
-    end
-  end
+firewall_rule "accept-logstash" do
+  action :accept
+  context :incoming
+  protocol :tcp
+  source forwarders
+  dest_ports %w[5043 5044]
+  source_ports "1024-65535"
+  not_if { forwarders.empty? }
 end

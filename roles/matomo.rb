@@ -5,19 +5,24 @@ default_attributes(
   :apache => {
     :mpm => "event",
     :event => {
-      :server_limit => 18,
-      :max_request_workers => 450,
-      :min_spare_threads => 50,
-      :max_spare_threads => 150,
+      :server_limit => 30,
+      :max_request_workers => 1000,
+      :threads_per_child => 50,
+      :min_spare_threads => 75,
+      :max_spare_threads => 175,
       :listen_cores_buckets_ratio => 4
     }
   },
   :mysql => {
     :settings => {
       :mysqld => {
-        :innodb_buffer_pool_instances => "8",
-        :innodb_buffer_pool_size => "16GB",
-        :innodb_flush_log_at_trx_commit => "2"
+        :innodb_buffer_pool_instances => "128",
+        :innodb_buffer_pool_size => "128GB",
+        :innodb_flush_log_at_trx_commit => "2",
+        :innodb_log_file_size => "16GB",
+        :join_buffer_size => "1GB",
+        :key_buffer_size => "0",
+        :max_connections => "64"
       }
     }
   }

@@ -1,5 +1,10 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
+<% if node[:lsb][:release].to_f >= 22.04 -%>
+# Include configuration files found in /etc/chrony/conf.d.
+confdir /etc/chrony/conf.d
+<% end -%>
+
 # Servers
 <% node[:ntp][:servers].each do |server| -%>
 pool <%= server %> iburst
@@ -14,7 +19,13 @@ allow 127.0.0.1/32
 allow ::1/128
 
 # Run an initial NTP sync on daemon startup
-initstepslew 30 time.cloudflare.com time.google.com <%= node[:ntp][:servers].join(" ") %>
+# Use a few IPs here to workaround DNSSEC failure if time is wrong: https://github.com/openstreetmap/operations/issues/654
+initstepslew 30 216.239.35.0 216.239.35.4 216.239.35.8 216.239.35.12 time.google.com time.cloudflare.com <%= node[:ntp][:servers].join(" ") %>
+
+<% if node[:lsb][:release].to_f >= 22.04 -%>
+# Use NTP sources found in /etc/chrony/sources.d.
+sourcedir /etc/chrony/sources.d
+<% end -%>
 
 # This directive specify the location of the file containing ID/key pairs for
 # NTP authentication.
@@ -23,6 +34,11 @@ keyfile /etc/chrony/chrony.keys
 # This directive specify the file into which chronyd will store the rate
 # information.
 driftfile /var/lib/chrony/chrony.drift
+
+<% if node[:lsb][:release].to_f >= 22.04 -%>
+# Save NTS keys and cookies.
+ntsdumpdir /var/lib/chrony
+<% end -%>
 
 # Uncomment the following line to turn logging on.
 #log tracking measurements statistics

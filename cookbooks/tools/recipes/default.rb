@@ -38,6 +38,7 @@ package %w[
   cron
   locales-all
   systemd-coredump
+  vim
 ]
 
 service "rsyslog" do
@@ -46,7 +47,7 @@ service "rsyslog" do
 end
 
 # Remove some unused and unwanted packages
-package %w[mlocate nano whoopsie] do
+package %w[mlocate whoopsie] do
   action :purge
 end
 

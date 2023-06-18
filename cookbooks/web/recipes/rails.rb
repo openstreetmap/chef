@@ -42,14 +42,6 @@ end
 
 nodejs_package "svgo"
 
-template "/etc/cron.hourly/passenger" do
-  cookbook "web"
-  source "passenger.cron.erb"
-  owner "root"
-  group "root"
-  mode "755"
-end
-
 rails_directory = "#{node[:web][:base_directory]}/rails"
 
 matomo = data_bag_item("web", "matomo")
@@ -122,6 +114,9 @@ rails_port "www.openstreetmap.org" do
   oauth_application web_passwords["oauth_application"]
   matomo_configuration "location" => matomo[:location],
                        "site" => matomo[:site],
+                       "visitor_cookie_timeout" => matomo[:visitor_cookie_timeout],
+                       "referral_cookie_timeout" => matomo[:referral_cookie_timeout],
+                       "session_cookie_timeout" => matomo[:session_cookie_timeout],
                        "goals" => matomo[:goals].to_hash
   google_auth_id "651529786092-6c5ahcu0tpp95emiec8uibg11asmk34t.apps.googleusercontent.com"
   google_auth_secret web_passwords["google_auth_secret"]
@@ -147,21 +142,21 @@ rails_port "www.openstreetmap.org" do
   avatar_storage_url "https://openstreetmap-user-avatars.s3.dualstack.eu-west-1.amazonaws.com"
   trace_image_storage_url "https://openstreetmap-gps-images.s3.dualstack.eu-west-1.amazonaws.com"
   overpass_url "https://query.openstreetmap.org/query-features"
+  overpass_credentials true
 end
 
 systemd_service "rails-jobs@" do
   description "Rails job queue runner"
   type "simple"
-  environment "RAILS_ENV" => "production", "QUEUE" => "%I"
+  environment "RAILS_ENV" => "production", "QUEUE" => "%I", "SLEEP_DELAY" => "60"
   user "rails"
   working_directory rails_directory
   exec_start "#{node[:ruby][:bundle]} exec rails jobs:work"
   restart "on-failure"
-  private_tmp true
-  private_devices true
-  protect_system "full"
-  protect_home true
-  no_new_privileges true
+  nice 10
+  sandbox :enable_network => true
+  memory_deny_write_execute false
+  read_write_paths "/var/log/web"
 end
 
 package "libjson-xs-perl"
@@ -193,12 +188,12 @@ systemd_service "api-statistics" do
   user "rails"
   group "adm"
   exec_start "/usr/local/bin/api-statistics"
-  private_tmp true
-  private_devices true
-  private_network true
-  protect_system "full"
-  protect_home true
-  no_new_privileges true
+  nice 10
+  sandbox true
+  read_write_paths [
+    "/srv/www.openstreetmap.org/rails/tmp",
+    "/var/lib/prometheus/node-exporter"
+  ]
   restart "on-failure"
 end
 

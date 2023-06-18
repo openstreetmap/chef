@@ -53,9 +53,11 @@ action :create do
   if new_resource.prometheus_port
     prometheus_exporter "phpfpm" do
       port new_resource.prometheus_port
+      restrict_address_families "AF_UNIX"
       service service_name
+      group "www-data"
       command "server"
-      options "--phpfpm.scrape-uri=#{scrape_uri}"
+      options "--phpfpm.scrape-uri=#{scrape_uri} --phpfpm.fix-process-count"
     end
   else
     prometheus_exporter "phpfpm" do
@@ -93,7 +95,7 @@ action_class do
     if new_resource.port
       "tcp://127.0.0.1:#{new_resource.port}/status"
     else
-      "unix:///run/php/#{new_resource.pool}.sock;/status"
+      "unix:///run/php/php-#{new_resource.pool}-fpm.sock;/status"
     end
   end
 end

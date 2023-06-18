@@ -6,5 +6,6 @@ description       "Installs and configures State of the Map services"
 
 version           "1.0.0"
 supports          "ubuntu"
-depends           "ruby"
+depends           "apache"
+depends           "podman"
 depends           "wordpress"

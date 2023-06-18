@@ -44,10 +44,11 @@ end
 wordpress_theme "blog.openstreetmap.org-osmblog-wp-theme" do
   theme "osmblog-wp-theme"
   site "blog.openstreetmap.org"
-  repository "https://github.com/harry-wood/osmblog-wp-theme.git"
+  repository "https://github.com/osmfoundation/osmblog-wp-theme.git"
 end
 
 wordpress_plugin "blog.openstreetmap.org-google-analytics-for-wordpress" do
+  action :delete
   plugin "google-analytics-for-wordpress"
   site "blog.openstreetmap.org"
 end
@@ -64,7 +65,13 @@ end
 # end
 
 wordpress_plugin "blog.openstreetmap.org-shareadraft" do
+  action :delete
   plugin "shareadraft"
+  site "blog.openstreetmap.org"
+end
+
+wordpress_plugin "blog.openstreetmap.org-public-post-preview" do
+  plugin "public-post-preview"
   site "blog.openstreetmap.org"
 end
 
@@ -77,6 +84,7 @@ wordpress_plugin "blog.openstreetmap.org-sitepress-multilingual-cms" do
 end
 
 wordpress_plugin "blog.openstreetmap.org-wordpress-importer" do
+  action :delete
   plugin "wordpress-importer"
   site "blog.openstreetmap.org"
 end
@@ -89,6 +97,7 @@ end
 git "/srv/blog.openstreetmap.org/casts" do
   action :sync
   repository "https://github.com/openstreetmap/opengeodata-podcasts.git"
+  revision "master"
   depth 1
   user "wordpress"
   group "wordpress"
@@ -97,6 +106,7 @@ end
 git "/srv/blog.openstreetmap.org/images" do
   action :sync
   repository "https://github.com/openstreetmap/opengeodata-images.git"
+  revision "master"
   depth 1
   user "wordpress"
   group "wordpress"
@@ -105,6 +115,7 @@ end
 git "/srv/blog.openstreetmap.org/static" do
   action :sync
   repository "https://github.com/openstreetmap/opengeodata-static.git"
+  revision "master"
   depth 1
   user "wordpress"
   group "wordpress"

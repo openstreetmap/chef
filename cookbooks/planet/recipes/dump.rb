@@ -17,15 +17,7 @@
 # limitations under the License.
 #
 
-node.default[:incron][:planetdump] = {
-  :user => "root",
-  :path => "/store/backup",
-  :events => %w[IN_CREATE IN_MOVED_TO],
-  :command => "/bin/systemctl start planetdump@$#"
-}
-
 include_recipe "git"
-include_recipe "incron"
 
 package %w[
   gcc
@@ -50,6 +42,7 @@ package %w[
   mktorrent
   xmlstarlet
   libxml2-utils
+  inotify-tools
 ]
 
 directory "/opt/planet-dump-ng" do
@@ -61,7 +54,7 @@ end
 git "/opt/planet-dump-ng" do
   action :sync
   repository "https://github.com/zerebubuth/planet-dump-ng.git"
-  revision "v1.2.4"
+  revision "v1.2.7"
   depth 1
   user "root"
   group "root"
@@ -101,7 +94,7 @@ directory "/store/planetdump" do
   recursive true
 end
 
-%w[planetdump planet-mirror-redirect-update].each do |program|
+%w[planetdump planetdump-trigger planet-mirror-redirect-update].each do |program|
   template "/usr/local/bin/#{program}" do
     source "#{program}.erb"
     owner "root"
@@ -115,15 +108,44 @@ systemd_service "planetdump@" do
   user "www-data"
   exec_start "/usr/local/bin/planetdump %i"
   memory_max "64G"
-  private_tmp true
-  protect_system "full"
-  protect_home true
-  read_write_paths "/var/log/exim4"
+  sandbox true
+  read_write_paths [
+    "/store/planetdump",
+    "/store/planet/pbf",
+    "/store/planet/planet",
+    "/var/log/exim4",
+    "/var/spool/exim4"
+  ]
 end
 
-cron_d "planet-dump-mirror" do
-  minute "*/10"
+systemd_service "planetdump-trigger" do
+  description "Planet dump trigger"
+  user "root"
+  exec_start "/usr/local/bin/planetdump-trigger"
+  sandbox true
+  restrict_address_families "AF_UNIX"
+end
+
+service "planetdump-trigger" do
+  action [:enable, :start]
+  subscribes :restart, "template[/usr/local/bin/planetdump-trigger]"
+end
+
+systemd_service "planet-dump-mirror" do
+  description "Update planet dump mirrors"
+  exec_start "/usr/local/bin/planet-mirror-redirect-update"
   user "www-data"
-  command "/usr/local/bin/planet-mirror-redirect-update"
-  mailto "horntail-www-data-cron@firefishy.com"
+  sandbox :enable_network => true
+  memory_deny_write_execute false
+  read_write_paths "/store/planet/.htaccess"
+end
+
+systemd_timer "planet-dump-mirror" do
+  description "Update planet dump mirrors"
+  on_boot_sec "10min"
+  on_unit_inactive_sec "10min"
+end
+
+service "planet-dump-mirror.timer" do
+  action [:enable, :start]
 end

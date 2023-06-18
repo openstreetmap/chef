@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+include_recipe "accounts"
+
 package %w[
   clamav-daemon
   clamav-freshclam

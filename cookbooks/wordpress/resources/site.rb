@@ -102,6 +102,9 @@ action :create do
       line += "define( 'AUTOMATIC_UPDATER_DISABLED', true);\r\n"
       line += "define( 'FORCE_SSL_LOGIN', true);\r\n"
       line += "define( 'FORCE_SSL_ADMIN', true);\r\n"
+      line += "define( 'WP_FAIL2BAN_SITE_HEALTH_SKIP_FILTERS', true);\r\n"
+      line += "define( 'WP_ENVIRONMENT_TYPE', 'production');\r\n"
+      line += "define( 'WP_MEMORY_LIMIT', '128M');\r\n"
     end
 
     line
@@ -149,7 +152,8 @@ action :create do
     php_admin_values "open_basedir" => "#{site_directory}/:/usr/share/php/:/tmp/",
                      "disable_functions" => "exec,shell_exec,system,passthru,popen,proc_open"
     php_values "upload_max_filesize" => "70M",
-               "post_max_size" => "100M"
+               "post_max_size" => "100M",
+               "memory_limit" => "368M"
     prometheus_port new_resource.fpm_prometheus_port
   end
 
@@ -217,8 +221,8 @@ action :delete do
 end
 
 action_class do
-  include Chef::Mixin::EditFile
-  include Chef::Mixin::PersistentToken
+  include OpenStreetMap::Mixin::EditFile
+  include OpenStreetMap::Mixin::PersistentToken
 
   def site_directory
     new_resource.directory || "/srv/#{new_resource.site}"

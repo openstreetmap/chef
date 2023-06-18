@@ -21,144 +21,73 @@ package %w[
   apt
   apt-transport-https
   gnupg
-  update-notifier-common
 ]
+
+package "update-notifier-common" if platform?("ubuntu")
 
 file "/etc/motd.tail" do
   action :delete
 end
 
-template "/etc/apt/preferences.d/99-chef" do
-  source "preferences.erb"
-  owner "root"
-  group "root"
-  mode "644"
+# FIXME: cleanup old package pin method for cciss-vol-status
+file "/etc/apt/preferences.d/99-chef" do
+  action :delete
+end
+
+apt_preference "cciss-vol-status" do
+  pin          "origin *.ubuntu.com"
+  pin_priority "1100"
 end
 
 apt_update "/etc/apt/sources.list" do
   action :nothing
 end
 
-archive_host = if node[:country]
-                 "#{node[:country]}.archive.ubuntu.com"
-               else
-                 "archive.ubuntu.com"
-               end
+if platform?("debian")
+  archive_host = "deb.debian.org"
+  archive_security_host = archive_host
+  archive_distro = "debian"
+  archive_security_distro = "debian-security"
+  archive_suites = %w[main updates security]
+  archive_components = %w[main contrib non-free]
+elsif intel?
+  archive_host = if node[:country]
+                   "#{node[:country]}.archive.ubuntu.com"
+                 else
+                   "archive.ubuntu.com"
+                 end
+  archive_security_host = "security.ubuntu.com"
+  archive_distro = "ubuntu"
+  archive_security_distro = archive_distro
+  archive_suites = %w[main updates backports security]
+  archive_components = %w[main restricted universe multiverse]
+else
+  archive_host = "ports.ubuntu.com"
+  archive_security_host = archive_host
+  archive_distro = "ubuntu-ports"
+  archive_security_distro = archive_distro
+  archive_suites = %w[main updates backports security]
+  archive_components = %w[main restricted universe multiverse]
+end
 
 template "/etc/apt/sources.list" do
   source "sources.list.erb"
   owner "root"
   group "root"
   mode "644"
-  variables :archive_host => archive_host, :codename => node[:lsb][:codename]
+  variables :archive_host => archive_host,
+            :archive_security_host => archive_security_host,
+            :archive_distro => archive_distro,
+            :archive_security_distro => archive_security_distro,
+            :archive_suites => archive_suites,
+            :archive_components => archive_components,
+            :codename => node[:lsb][:codename]
   notifies :update, "apt_update[/etc/apt/sources.list]", :immediately
 end
 
-repository_actions = Hash.new do |_, repository|
-  node[:apt][:sources].include?(repository) ? :add : :remove
-end
-
-apt_repository "ubuntugis-stable" do
-  action repository_actions["ubuntugis-stable"]
-  uri "ppa:ubuntugis/ppa"
-end
-
-apt_repository "ubuntugis-unstable" do
-  action repository_actions["ubuntugis-unstable"]
-  uri "ppa:ubuntugis/ubuntugis-unstable"
-end
-
-apt_repository "git-core" do
-  action repository_actions["git-core"]
-  uri "ppa:git-core/ppa"
-end
-
-apt_repository "maxmind" do
-  action repository_actions["maxmind"]
-  uri "ppa:maxmind/ppa"
-end
-
 apt_repository "openstreetmap" do
-  action repository_actions["openstreetmap"]
   uri "ppa:osmadmins/ppa"
-end
-
-apt_repository "management-component-pack" do
-  action repository_actions["management-component-pack"]
-  uri "https://downloads.linux.hpe.com/SDR/repo/mcp"
-  distribution "bionic/current-gen9"
-  components ["non-free"]
-  key "C208ADDE26C2B797"
-end
-
-apt_repository "hwraid" do
-  action repository_actions["hwraid"]
-  uri "https://hwraid.le-vert.net/ubuntu"
-  distribution "precise"
-  components ["main"]
-  key "6005210E23B3D3B4"
-end
-
-apt_repository "nginx" do
-  action repository_actions["nginx"]
-  arch "amd64"
-  uri "https://nginx.org/packages/ubuntu"
-  components ["nginx"]
-  key "ABF5BD827BD9BF62"
-end
-
-apt_repository "elasticsearch6.x" do
-  action repository_actions["elasticsearch6.x"]
-  uri "https://artifacts.elastic.co/packages/6.x/apt"
-  distribution "stable"
-  components ["main"]
-  key "D27D666CD88E42B4"
-end
-
-apt_repository "elasticsearch8.x" do
-  action repository_actions["elasticsearch8.x"]
-  uri "https://artifacts.elastic.co/packages/8.x/apt"
-  distribution "stable"
-  components ["main"]
-  key "D27D666CD88E42B4"
-end
-
-apt_repository "passenger" do
-  action repository_actions["passenger"]
-  uri "https://oss-binaries.phusionpassenger.com/apt/passenger"
-  components ["main"]
-  key "561F9B9CAC40B2F7"
-end
-
-apt_repository "postgresql" do
-  action repository_actions["postgresql"]
-  uri "https://apt.postgresql.org/pub/repos/apt"
-  distribution "#{node[:lsb][:codename]}-pgdg"
-  components ["main"]
-  key "7FCC7D46ACCC4CF8"
-end
-
-apt_repository "docker" do
-  action repository_actions["docker"]
-  uri "https://download.docker.com/linux/ubuntu"
-  arch "amd64"
-  components ["stable"]
-  key "https://download.docker.com/linux/ubuntu/gpg"
-end
-
-apt_repository "grafana" do
-  action repository_actions["grafana"]
-  uri "https://packages.grafana.com/enterprise/deb"
-  distribution "stable"
-  components ["main"]
-  key "https://packages.grafana.com/gpg.key"
-end
-
-apt_repository "timescaledb" do
-  action repository_actions["timescaledb"]
-  uri "https://packagecloud.io/timescale/timescaledb/ubuntu"
-  components ["main"]
-  key "https://packagecloud.io/timescale/timescaledb/gpgkey"
+  only_if { platform?("ubuntu") }
 end
 
 package "unattended-upgrades"

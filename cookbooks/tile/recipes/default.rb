@@ -29,6 +29,7 @@ include_recipe "ruby"
 include_recipe "tools"
 
 blocks = data_bag_item("tile", "blocks")
+admins = data_bag_item("apache", "admins")
 web_passwords = data_bag_item("web", "passwords")
 
 apache_module "alias"
@@ -59,6 +60,14 @@ end
 
 fastlyips = JSON.parse(IO.read("#{Chef::Config[:file_cache_path]}/fastly-ip-list.json"))
 
+remote_file "#{Chef::Config[:file_cache_path]}/statuscake-locations.json" do
+  source "https://app.statuscake.com/Workfloor/Locations.php?format=json"
+  compile_time true
+  ignore_failure true
+end
+
+statuscakelocations = JSON.parse(IO.read("#{Chef::Config[:file_cache_path]}/statuscake-locations.json"))
+
 apache_site "default" do
   action :disable
 end
@@ -69,7 +78,9 @@ end
 
 apache_site "tile.openstreetmap.org" do
   template "apache.erb"
-  variables :fastly => fastlyips["addresses"]
+  variables :fastly => fastlyips["addresses"] + fastlyips["ipv6_addresses"],
+            :statuscake => statuscakelocations.flat_map { |_, v| [v["ip"], v["ipv6"]] },
+            :admins => admins["hosts"]
 end
 
 template "/etc/logrotate.d/apache2" do
@@ -85,17 +96,9 @@ directory "/srv/tile.openstreetmap.org" do
   mode "755"
 end
 
-directory "/srv/tile.openstreetmap.org/conf" do
-  owner "tile"
-  group "tile"
-  mode "755"
-end
-
-file "/srv/tile.openstreetmap.org/conf/ip.map" do
-  owner "tile"
-  group "adm"
-  mode "644"
-end
+tile_directories = node[:tile][:styles].collect do |_, style|
+  style[:tile_directories].collect { |directory| directory[:name] }
+end.flatten.sort.uniq
 
 package "renderd"
 
@@ -104,17 +107,10 @@ systemd_service "renderd" do
   after "postgresql.service"
   wants "postgresql.service"
   limit_nofile 4096
-  private_tmp true
-  private_devices true
-  private_network true
-  protect_system "full"
-  protect_home true
-  no_new_privileges true
+  sandbox true
+  restrict_address_families "AF_UNIX"
+  read_write_paths tile_directories
   restart "on-failure"
-end
-
-systemd_service "renderd" do
-  action :delete
 end
 
 service "renderd" do
@@ -165,30 +161,6 @@ python_package "pyotp" do
   python_version "3"
 end
 
-unifont = if node[:lsb][:release].to_f < 22.04
-            "ttf-unifont"
-          else
-            "fonts-unifont"
-          end
-
-package %W[
-  fonts-noto-cjk
-  fonts-noto-hinted
-  fonts-noto-unhinted
-  fonts-hanazono
-  #{unifont}
-]
-
-["NotoSansArabicUI-Regular.ttf", "NotoSansArabicUI-Bold.ttf"].each do |font|
-  remote_file "/usr/share/fonts/truetype/noto/#{font}" do
-    action :create_if_missing
-    source "https://github.com/googlei18n/noto-fonts/raw/master/hinted/#{font}"
-    owner "root"
-    group "root"
-    mode "644"
-  end
-end
-
 directory "/srv/tile.openstreetmap.org/cgi-bin" do
   owner "tile"
   group "tile"
@@ -210,11 +182,22 @@ template "/srv/tile.openstreetmap.org/cgi-bin/debug" do
   mode "755"
 end
 
-template "/etc/cron.hourly/export" do
-  source "export.cron.erb"
-  owner "root"
-  group "root"
-  mode "755"
+systemd_service "export-cleanup" do
+  description "Cleanup stale export temporary files"
+  joins_namespace_of "apache2.service"
+  exec_start "find /tmp -ignore_readdir_race -name 'export??????' -mmin +60 -delete"
+  user "www-data"
+  sandbox true
+end
+
+systemd_timer "export-cleanup" do
+  description "Cleanup stale export temporary files"
+  on_boot_sec "60m"
+  on_unit_inactive_sec "60m"
+end
+
+service "export-cleanup.timer" do
+  action [:enable, :start]
 end
 
 directory "/srv/tile.openstreetmap.org/data" do
@@ -223,7 +206,11 @@ directory "/srv/tile.openstreetmap.org/data" do
   mode "755"
 end
 
-package "mapnik-utils"
+package %w[
+  mapnik-utils
+  tar
+  unzip
+]
 
 node[:tile][:data].each_value do |data|
   url = data[:url]
@@ -242,8 +229,6 @@ node[:tile][:data].each_value do |data|
   end
 
   if file =~ /\.tgz$/
-    package "tar"
-
     execute file do
       action :nothing
       command "tar -zxf #{file} -C #{directory}"
@@ -251,8 +236,6 @@ node[:tile][:data].each_value do |data|
       group "tile"
     end
   elsif file =~ /\.tar\.bz2$/
-    package "tar"
-
     execute file do
       action :nothing
       command "tar -jxf #{file} -C #{directory}"
@@ -260,8 +243,6 @@ node[:tile][:data].each_value do |data|
       group "tile"
     end
   elsif file =~ /\.zip$/
-    package "unzip"
-
     execute file do
       action :nothing
       command "unzip -qq -o #{file} -d #{directory}"
@@ -301,16 +282,16 @@ nodejs_package "carto"
 
 systemd_service "update-lowzoom@" do
   description "Low zoom tile update service for %i layer"
-  conflicts "render-lowzoom.service"
   user "tile"
+  exec_start_pre "+/bin/systemctl stop render-lowzoom.service"
   exec_start "/bin/bash /usr/local/bin/update-lowzoom-%i"
   runtime_directory "update-lowzoom-%i"
-  private_tmp true
-  private_devices true
-  private_network true
-  protect_system "full"
-  protect_home true
-  no_new_privileges true
+  sandbox true
+  restrict_address_families "AF_UNIX"
+  read_write_paths [
+    "/srv/tile.openstreetmap.org/tiles/%i",
+    "/var/log/tile"
+  ]
   restart "on-failure"
 end
 
@@ -386,9 +367,20 @@ node[:tile][:styles].each do |name, details|
     group "tile"
   end
 
+  if details[:fonts_script]
+    execute details[:fonts_script] do
+      action :nothing
+      command details[:fonts_script]
+      cwd style_directory
+      user "tile"
+      group "tile"
+      subscribes :run, "git[#{style_directory}]"
+    end
+  end
+
   execute "#{style_directory}/project.mml" do
     action :nothing
-    command "carto -a 3.0.0 project.mml > project.xml"
+    command "carto -a 3.0.22 project.mml > project.xml"
     cwd style_directory
     user "tile"
     group "tile"
@@ -409,6 +401,11 @@ postgresql_user "jburgess" do
 end
 
 postgresql_user "tomh" do
+  cluster node[:tile][:database][:cluster]
+  superuser true
+end
+
+postgresql_user "pnorman" do
   cluster node[:tile][:database][:cluster]
   superuser true
 end
@@ -441,7 +438,7 @@ postgresql_extension "hstore" do
   only_if { node[:tile][:database][:hstore] }
 end
 
-%w[geography_columns planet_osm_nodes planet_osm_rels planet_osm_ways raster_columns raster_overviews spatial_ref_sys].each do |table|
+%w[geography_columns planet_osm_nodes planet_osm_rels planet_osm_ways raster_columns raster_overviews].each do |table|
   postgresql_table table do
     cluster node[:tile][:database][:cluster]
     database "gis"
@@ -450,7 +447,7 @@ end
   end
 end
 
-%w[geometry_columns planet_osm_line planet_osm_point planet_osm_polygon planet_osm_roads].each do |table|
+%w[geometry_columns planet_osm_line planet_osm_point planet_osm_polygon planet_osm_roads spatial_ref_sys].each do |table|
   postgresql_table table do
     cluster node[:tile][:database][:cluster]
     database "gis"
@@ -515,18 +512,6 @@ package %w[
   python3-pyproj
 ]
 
-gem_package "apachelogregex" do
-  gem_binary node[:ruby][:gem]
-end
-
-gem_package "file-tail" do
-  gem_binary node[:ruby][:gem]
-end
-
-gem_package "lru_redux" do
-  gem_binary node[:ruby][:gem]
-end
-
 remote_directory "/usr/local/bin" do
   source "bin"
   owner "root"
@@ -535,35 +520,6 @@ remote_directory "/usr/local/bin" do
   files_owner "root"
   files_group "root"
   files_mode "755"
-end
-
-template "/usr/local/bin/tile-ratelimit" do
-  source "tile-ratelimit.erb"
-  owner "root"
-  group "root"
-  mode "755"
-end
-
-systemd_service "tile-ratelimit" do
-  description "Monitor tile requests and enforce rate limits"
-  after "apache2.service"
-  user "tile"
-  group "adm"
-  exec_start "/usr/local/bin/tile-ratelimit"
-  private_tmp true
-  private_devices true
-  private_network true
-  protect_system "full"
-  protect_home true
-  read_write_paths "/srv/tile.openstreetmap.org/conf"
-  no_new_privileges true
-  restart "on-failure"
-end
-
-service "tile-ratelimit" do
-  action [:enable, :start]
-  subscribes :restart, "file[/usr/local/bin/tile-ratelimit]"
-  subscribes :restart, "systemd_service[tile-ratelimit]"
 end
 
 template "/usr/local/bin/expire-tiles" do
@@ -598,12 +554,14 @@ systemd_service "expire-tiles" do
   type "simple"
   user "_renderd"
   exec_start "/usr/local/bin/expire-tiles"
+  nice 10
   standard_output "null"
-  private_tmp true
-  private_devices true
-  protect_system "full"
-  protect_home true
-  no_new_privileges true
+  sandbox true
+  read_write_paths tile_directories + [
+    "/store/database/nodes",
+    "/var/lib/replicate/expire-queue",
+    "/var/log/tile"
+  ]
 end
 
 systemd_path "expire-tiles" do
@@ -622,11 +580,13 @@ systemd_service "replicate" do
   wants "postgresql.service"
   user "tile"
   exec_start "/usr/local/bin/replicate"
-  private_tmp true
-  private_devices true
-  protect_system "full"
-  protect_home true
-  no_new_privileges true
+  sandbox :enable_network => true
+  restrict_address_families "AF_UNIX"
+  read_write_paths [
+    "/store/database/nodes",
+    "/var/lib/replicate",
+    "/var/log/tile"
+  ]
   restart "on-failure"
 end
 
@@ -634,13 +594,6 @@ service "replicate" do
   action [:enable, :start]
   subscribes :restart, "template[/usr/local/bin/replicate]"
   subscribes :restart, "systemd_service[replicate]"
-end
-
-template "/etc/logrotate.d/replicate" do
-  source "replicate.logrotate.erb"
-  owner "root"
-  group "root"
-  mode "644"
 end
 
 template "/usr/local/bin/render-lowzoom" do
@@ -655,12 +608,9 @@ systemd_service "render-lowzoom" do
   condition_path_exists_glob "!/run/update-lowzoom-*"
   user "tile"
   exec_start "/usr/local/bin/render-lowzoom"
-  private_tmp true
-  private_devices true
-  private_network true
-  protect_system "full"
-  protect_home true
-  no_new_privileges true
+  sandbox true
+  restrict_address_families "AF_UNIX"
+  read_write_paths "/var/log/tile"
 end
 
 systemd_timer "render-lowzoom" do
@@ -682,18 +632,27 @@ template "/usr/local/bin/cleanup-tiles" do
   mode "755"
 end
 
-tile_directories = node[:tile][:styles].collect do |_, style|
-  style[:tile_directories].collect { |directory| directory[:name] }
-end.flatten.sort.uniq
+systemd_service "cleanup-tiles@" do
+  description "Cleanup old tiles for /%I"
+  exec_start "/usr/local/bin/cleanup-tiles /%I"
+  user "_renderd"
+  io_scheduling_class "idle"
+  sandbox true
+  read_write_paths "/%I"
+end
+
+systemd_timer "cleanup-tiles@" do
+  description "Cleanup old tiles for /%I"
+  on_boot_sec "30m"
+  on_unit_inactive_sec "60m"
+  randomized_delay_sec "10m"
+end
 
 tile_directories.each do |directory|
-  label = directory.gsub("/", "-")
+  label = directory[1..].gsub("/", "-")
 
-  cron_d "cleanup-tiles#{label}" do
-    minute "0"
-    user "_renderd"
-    command "ionice -c 3 /usr/local/bin/cleanup-tiles #{directory}"
-    mailto "admins@openstreetmap.org"
+  service "cleanup-tiles@#{label}.timer" do
+    action [:enable, :start]
   end
 end
 

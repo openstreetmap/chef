@@ -51,6 +51,7 @@
     RewriteRule ^wp-includes/js/tinymce/langs/.+\.php - [F,L]
     RewriteRule ^wp-includes/theme-compat/ - [F,L]
     RewriteRule ^readme\.html$ [F,L]
+    RewriteRule ^index\.php$ - [L]
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteRule . /index.php [L]
@@ -60,8 +61,11 @@
 
     Require all granted
 
+    # https://www.wp-pay.org/http-authorization-header-missing/
+    CGIPassAuth on
+
     <FilesMatch ".+\.ph(ar|p|tml)$">
-      SetHandler "proxy:unix:/run/php/<%= @name %>.sock|fcgi://127.0.0.1"
+      SetHandler "proxy:unix:/run/php/php-<%= @name %>-fpm.sock|fcgi://127.0.0.1"
     </FilesMatch>
   </Directory>
 
@@ -85,11 +89,16 @@
     Require all denied
   </Directory>
 
-  <Files ~ "\.(txt|md)$">
+  <Files ~ "(?<!robots|ads|security|humans)\.(txt|md)$">
     Require all denied
   </Files>
 
   <Files ~ "~$">
     Require all denied
   </Files>
+
+  <Files "xmlrpc.php">
+    Require all denied
+  </Files>
+
 </VirtualHost>

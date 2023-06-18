@@ -22,6 +22,7 @@ include_recipe "accounts"
 package %w[
   perl
   libdate-calc-perl
+  awscli
 ]
 
 directory "/store/backup" do

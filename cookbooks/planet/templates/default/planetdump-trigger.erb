@@ -1,0 +1,4 @@
+#!/bin/sh
+
+inotifywait --quiet --monitor --event CREATE --event MOVED_TO --include "/osm-[0-9]{4}-[0-9]{2}-[0-9]{2}\\.dmp\$" --format %f /store/backup | \
+  xargs -I %file% systemctl start planetdump@%file%.service

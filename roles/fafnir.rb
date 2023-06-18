@@ -2,20 +2,27 @@ name "fafnir"
 description "Master role applied to fafnir"
 
 default_attributes(
-  :bind => {
-    :clients => "equinix-dub"
-  },
   :dhcpd => {
     :first_address => "10.0.79.1",
     :last_address => "10.0.79.254"
   },
+  :exim => {
+    :routes => {
+      :openstreetmap => {
+        :comment => "openstreetmap.org",
+        :domains => ["openstreetmap.org"],
+        :host => ["shenron.openstreetmap.org"]
+      }
+    }
+  },
   :networking => {
     :interfaces => {
-      :internal_ipv4 => {
+      :internal => {
         :interface => "bond0",
         :role => :internal,
-        :family => :inet,
-        :address => "10.0.64.2",
+        :inet => {
+          :address => "10.0.64.2"
+        },
         :bond => {
           :mode => "802.3ad",
           :lacprate => "fast",
@@ -23,17 +30,15 @@ default_attributes(
           :slaves => %w[eno1 eno2 eno3 eno4 eno49 eno50]
         }
       },
-      :external_ipv4 => {
+      :external => {
         :interface => "bond0.101",
         :role => :external,
-        :family => :inet,
-        :address => "184.104.226.98"
-      },
-      :external_ipv6 => {
-        :interface => "bond0.101",
-        :role => :external,
-        :family => :inet6,
-        :address => "2001:470:1:b3b::2"
+        :inet => {
+          :address => "184.104.226.98"
+        },
+        :inet6 => {
+          :address => "2001:470:1:b3b::2"
+        }
       }
     }
   },
@@ -46,7 +51,7 @@ default_attributes(
     :metrics => {
       :uplink_interface => {
         :help => "Site uplink interface name",
-        :labels => { :site => "dublin", :name => "ae50" }
+        :labels => { :site => "dublin", :name => "xe-[01]/2/[01]|ge-[01]/2/2" }
       }
     }
   }
@@ -56,5 +61,6 @@ run_list(
   "role[equinix-dub]",
   "role[hp-g9]",
   "role[gateway]",
+  "role[mail]",
   "recipe[dhcpd]"
 )

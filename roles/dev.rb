@@ -59,6 +59,8 @@ default_attributes(
       :ppawel => { :status => :user },
       :simon04 => { :status => :user },
       :jfire => { :status => false },
+      :jeslop => { :status => :user },
+      :jfire => { :status => :user },
       :malenki => { :status => :user },
       :lonvia => { :status => false },
       :nicolas17 => { :status => :user },
@@ -70,6 +72,9 @@ default_attributes(
       :stereo => { :status => :user },
       :dmlu => { :status => :user },
       :antonkh => { :status => :user },
+      :gmoncrieff => { :status => :user },
+      :zander => { :status => :user },
+      :msbarry => { :status => :user },
       :ooc => {
         :status => :role,
         :members => [:tomh, :blackadder, :timsc, :ollie]
@@ -85,6 +90,10 @@ default_attributes(
       :gpsmid => {
         :status => :role,
         :members => [:apmon, :maba]
+      },
+      :"za-imagery" => {
+          :status => :role,
+          :members => [:grant, :htonl, :gmoncrieff, :zander]
       }
     }
   },
@@ -126,7 +135,7 @@ default_attributes(
     }
   },
   :postgresql => {
-    :versions => ["14"],
+    :versions => ["15"],
     :settings => {
       :defaults => {
         :max_connections => "500",
@@ -136,10 +145,9 @@ default_attributes(
         :max_stack_depth => "4MB",
         :effective_cache_size => "4GB"
       },
-      "14" => {
+      "15" => {
         :port => "5432",
-        :wal_level => "logical",
-        :max_replication_slots => "1"
+        :wal_level => "logical"
       }
     }
   },

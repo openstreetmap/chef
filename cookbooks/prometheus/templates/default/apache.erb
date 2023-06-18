@@ -27,6 +27,7 @@
 	Redirect 403 /alertmanager/api
 	ProxyPass /alertmanager http://localhost:9093/alertmanager
 	ProxyPass /karma http://localhost:8081/karma
+	ProxyPass /api/live/ws ws://localhost:3000/api/live/ws
 	ProxyPass / http://localhost:3000/
 	ProxyPreserveHost on
 

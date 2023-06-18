@@ -15,11 +15,11 @@ fi
 
 $ROOT/taginfo/sources/update_all.sh $ROOT/sources
 
-mv $ROOT/data/taginfo-* $ROOT/data/old
-mv $ROOT/sources/taginfo-*.db $ROOT/sources/*/taginfo-*.db $ROOT/data
+ln -f $ROOT/data/taginfo-* $ROOT/data/old
+mv -f $ROOT/sources/taginfo-*.db $ROOT/sources/*/taginfo-*.db $ROOT/data
 mv $ROOT/sources/download/* $ROOT/download
 
-sudo PASSENGER_INSTANCE_REGISTRY_DIR=<%= node[:passenger][:instance_registry_dir] %> /usr/bin/passenger-config restart-app $ROOT/taginfo/web > /dev/null
+PASSENGER_INSTANCE_REGISTRY_DIR=<%= node[:passenger][:instance_registry_dir] %> /usr/bin/passenger-config restart-app $ROOT/taginfo/web > /dev/null
 
 find $ROOT/sources/log -mtime +28 -delete
 

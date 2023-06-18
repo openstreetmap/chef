@@ -57,23 +57,32 @@
 	ExpiresActive On
 	RewriteEngine on
 
-	RewriteCond "%{HTTP:Accept-encoding}" "gzip"
+	RewriteCond "%{HTTP:Accept-Encoding}" "br"
+	RewriteCond "%{REQUEST_FILENAME}\.br" -s
+	RewriteRule "^(.*)\.js" "$1\.js\.br" [QSA]
+
+	RewriteCond "%{HTTP:Accept-Encoding}" "gzip"
 	RewriteCond "%{REQUEST_FILENAME}\.gz" -s
 	RewriteRule "^(.*)\.js" "$1\.js\.gz" [QSA]
 
-	RewriteRule "\.js\.gz$"  "-" [T=text/javascript,E=no-gzip:1]
+	RewriteRule "\.js\.(br|gz)$"  "-" [T=text/javascript,E=no-gzip:1,E=no-brotli:1]
+
+	<FilesMatch "\.js\.br$">
+		Header append Content-Encoding br
+		Header append Vary Accept-Encoding
+	</FilesMatch>
 
 	<FilesMatch "\.js\.gz$">
 		Header append Content-Encoding gzip
 		Header append Vary Accept-Encoding
 	</FilesMatch>
 
-	<FilesMatch "(\.js|\.js\.gz)$">
+	<FilesMatch "(\.js|\.js\.gz|\.js\.br)$">
 		ExpiresDefault "access plus 1 week"
 		Header set Cache-Control "max-age=604800"
 	</FilesMatch>
 
         <FilesMatch ".+\.ph(ar|p|tml)$">
-                SetHandler "proxy:unix:/run/php/matomo.openstreetmap.org.sock|fcgi://127.0.0.1"
+                SetHandler "proxy:unix:/run/php/php-matomo.openstreetmap.org-fpm.sock|fcgi://127.0.0.1"
         </FilesMatch>
 </Directory>

@@ -1,0 +1,15 @@
+[Match]
+Name=<%= @slave %>
+
+[Link]
+RequiredForOnline=no
+
+[Network]
+LinkLocalAddressing=no
+IPv6AcceptRA=no
+Bond=<%= @master[:interface] %>
+<% if @master[:bond][:mode].nil? || @master[:bond][:mode] == "active-backup" -%>
+<% if @master[:bond][:slaves].first == @slave -%>
+PrimarySlave=true
+<% end -%>
+<% end -%>

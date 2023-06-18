@@ -17,28 +17,9 @@
 # limitations under the License.
 #
 
-include_recipe "apache"
+include_recipe "podman::apache"
 
-apache_module "rewrite"
-
-directory "/srv/trac.openstreetmap.org" do
-  owner "root"
-  group "root"
-  mode "0755"
-end
-
-cookbook_file "/srv/trac.openstreetmap.org/tickets.map" do
-  owner "root"
-  group "root"
-  mode "0644"
-end
-
-ssl_certificate "trac.openstreetmap.org" do
-  domains ["trac.openstreetmap.org", "trac.osm.org"]
-  notifies :reload, "service[apache2]"
-end
-
-apache_site "trac.openstreetmap.org" do
-  template "apache.erb"
-  variables :user => "trac", :group => "trac", :aliases => ["trac.osm.org"]
+podman_site "trac.openstreetmap.org" do
+  image "ghcr.io/openstreetmap/trac-website:latest"
+  aliases ["trac.osm.org"]
 end

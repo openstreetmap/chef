@@ -12,26 +12,25 @@ default_attributes(
       :max_connections_per_child => 10000
     }
   },
-  :bind => {
-    :clients => "ucl"
-  },
   :dhcpd => {
     :first_address => "10.0.15.1",
     :last_address => "10.0.15.254"
   },
   :networking => {
     :interfaces => {
-      :external_ipv4 => {
+      :external => {
         :interface => "eth0.2800",
         :role => :external,
-        :family => :inet,
-        :address => "193.60.236.19"
+        :inet => {
+          :address => "193.60.236.19"
+        }
       },
-      :internal_ipv4 => {
+      :internal => {
         :interface => "eth0.2801",
         :role => :internal,
-        :family => :inet,
-        :address => "10.0.0.3"
+        :inet => {
+          :address => "10.0.0.3"
+        }
       }
     }
   }
@@ -43,11 +42,9 @@ run_list(
   "role[gateway]",
   "role[foundation]",
   "role[stateofthemap]",
-  "role[switch2osm]",
   "role[blog]",
   "role[otrs]",
   "role[donate]",
-  "recipe[hot]",
   "recipe[dmca]",
   "recipe[dhcpd]"
 )
