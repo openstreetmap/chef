@@ -26,12 +26,12 @@ end
 
 imagery_layer "ana_dtm_2017" do
   site "ana-dtm-2017.openstreetmap.lu"
-  action: delete
+  action :delete
 end
 
 imagery_layer "ana_dtm_2017_hillshading" do
   site "ana-dtm-2017.openstreetmap.lu"
-  action: delete
+  action :delete
 end
 
 imagery_layer "ana_dtm_2017_hillshading_multi" do
