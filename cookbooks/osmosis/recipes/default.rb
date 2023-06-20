@@ -17,8 +17,6 @@
 # limitations under the License.
 #
 
-include_recipe "chef"
-
 package "default-jre"
 
 cache_dir = Chef::Config[:file_cache_path]

@@ -6,4 +6,3 @@ description       "Installs and configures osmosis"
 
 version           "1.0.0"
 supports          "ubuntu"
-depends           "chef"
