@@ -7,3 +7,7 @@ Unattended-Upgrade::Remove-Unused-Dependencies "<%= node[:apt][:unattended_upgra
 // Don't install recommended packages as we don't want to get
 // new postgres versions automatically
 APT::Install-Recommends "false";
+
+// Briefly wait for lock on dpkg/apt
+// to avoid concurrent issues with unattended-upgrades and apt daily
+DPkg::lock::timeout 90;
