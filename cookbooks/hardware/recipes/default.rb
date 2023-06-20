@@ -28,11 +28,13 @@ ohai_plugin "hardware" do
   template "ohai.rb.erb"
 end
 
-case node[:cpu][:"0"][:vendor_id]
-when "GenuineIntel"
-  package "intel-microcode"
-when "AuthenticAMD"
-  package "amd64-microcode"
+if node[:cpu] && node[:cpu][:"0"] && node[:cpu][:"0"][:vendor_id]
+  case node[:cpu][:"0"][:vendor_id]
+  when "GenuineIntel"
+    package "intel-microcode"
+  when "AuthenticAMD"
+    package "amd64-microcode"
+  end
 end
 
 if node[:dmi] && node[:dmi][:system]
@@ -204,9 +206,20 @@ template "/etc/initramfs-tools/conf.d/mdadm" do
   notifies :run, "execute[update-initramfs]"
 end
 
-package "haveged"
-service "haveged" do
-  action [:enable, :start]
+# haveged is only required on older kernels
+# /dev/random is not blocking anymore in 5.15+
+if Chef::Util.compare_versions(node[:kernel][:release], [5, 15]).negative?
+  package "haveged"
+  service "haveged" do
+    action [:enable, :start]
+  end
+else
+  service "haveged" do
+    action [:stop, :disable]
+  end
+  package "haveged" do
+    action :remove
+  end
 end
 
 if node[:kernel][:modules].include?("ipmi_si")
