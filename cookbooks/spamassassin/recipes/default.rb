@@ -19,7 +19,13 @@
 
 package "spamassassin"
 
-service "spamassassin" do
+service_name = if platform?("debian")
+                 "spamd"
+               else
+                 "spamassassin"
+               end
+
+service service_name do
   action [:enable, :start]
   supports :status => true, :restart => true, :reload => true
 end
@@ -35,7 +41,7 @@ template "/etc/default/spamassassin" do
   owner "root"
   group "root"
   mode "644"
-  notifies :restart, "service[spamassassin]"
+  notifies :restart, "service[#{service_name}]"
 end
 
 trusted_networks = node[:exim][:relay_from_hosts]
@@ -54,5 +60,5 @@ template "/etc/spamassassin/local.cf" do
   group "root"
   mode "644"
   variables :trusted_networks => trusted_networks.sort
-  notifies :restart, "service[spamassassin]"
+  notifies :restart, "service[#{service_name}]"
 end
