@@ -3,6 +3,13 @@
 groups:
   - name: amsterdam
     rules:
+      - alert: uplink
+        expr: ifOperStatus{site="amsterdam",ifName=~"ge-[01]/2/2"} != 1
+        for: 6m
+        labels:
+          alertgroup: "amsterdam"
+        annotations:
+          status: "{{ $value }}"
       - alert: pdu current draw
         expr: rPDU2PhaseStatusCurrent{site="amsterdam",rPDU2PhaseStatusIndex="1"} / 10 > 28
         for: 6m
@@ -109,6 +116,13 @@ groups:
           failure_rate: "{{ $value }} jobs/s"
   - name: dublin
     rules:
+      - alert: uplink
+        expr: ifOperStatus{site="dublin",ifName=~"ge-[01]/2/2"} != 1
+        for: 6m
+        labels:
+          alertgroup: "dublin"
+        annotations:
+          status: "{{ $value }}"
       - alert: pdu current draw
         expr: rPDU2PhaseStatusCurrent{site="dublin",rPDU2PhaseStatusIndex="1"} / 10 > 28
         for: 6m
