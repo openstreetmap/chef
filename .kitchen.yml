@@ -8,6 +8,11 @@ driver:
     - container=dokken
   ipv6: true
   ipv6_subnet: "fd95:8552:964c::/64"
+  dns:
+    - 1.1.1.1
+    - 8.8.8.8
+    - 8.8.4.4
+    - 1.0.0.1
 
 transport:
   name: dokken
