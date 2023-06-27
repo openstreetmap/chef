@@ -67,7 +67,7 @@ action :create do
     command "/opt/wp-cli/wp --path=#{site_directory} plugin activate #{new_resource.plugin}"
     user node[:wordpress][:user]
     group node[:wordpress][:group]
-    only_if { ::File.exist?("#{site_directory}/wp-config.php") }
+    not_if "/opt/wp-cli/wp --path=#{site_directory} plugin is-active #{new_resource.plugin}"
   end
 end
 
@@ -76,7 +76,7 @@ action :delete do
     command "/opt/wp-cli/wp --path=#{site_directory} plugin deactivate #{new_resource.plugin}"
     user node[:wordpress][:user]
     group node[:wordpress][:group]
-    only_if { ::File.exist?("#{site_directory}/wp-config.php") }
+    only_if "/opt/wp-cli/wp --path=#{site_directory} plugin is-active #{new_resource.plugin}"
   end
 
   directory plugin_directory do
