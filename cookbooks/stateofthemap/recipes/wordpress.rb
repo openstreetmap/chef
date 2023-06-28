@@ -21,7 +21,7 @@ include_recipe "stateofthemap"
 include_recipe "wordpress"
 
 passwords = data_bag_item("stateofthemap", "passwords")
-wp2fa_encrypt_keys = data_bag_item("blog", "wp2fa_encrypt_keys")
+wp2fa_encrypt_keys = data_bag_item("stateofthemap", "wp2fa_encrypt_keys")
 
 directory "/srv/2007.stateofthemap.org" do
   owner "wordpress"
