@@ -189,22 +189,6 @@ action :create do
     reload_apache false
   end
 
-  script "#{site_directory}/wp-content/plugins/wp-fail2ban" do
-    action :nothing
-    interpreter "php"
-    cwd site_directory
-    user "wordpress"
-    code <<-WP_FAIL2BAN
-    <?php
-    @include "wp-config.php";
-    @include_once "wp-includes/functions.php";
-    @include_once "wp-admin/includes/plugin.php";
-    activate_plugin("wp-fail2ban/wp-fail2ban.php", '', false, false);
-    ?>
-    WP_FAIL2BAN
-    subscribes :run, "wordpress_plugin[wp-fail2ban]"
-  end
-
   wordpress_plugin "wp-2fa" do
     site new_resource.site
     reload_apache false
