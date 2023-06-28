@@ -20,6 +20,7 @@
 include_recipe "wordpress"
 
 passwords = data_bag_item("blog", "passwords")
+wp2fa_encrypt_keys = data_bag_item("blog", "wp2fa_encrypt_keys")
 
 directory "/srv/blog.openstreetmap.org" do
   owner "wordpress"
@@ -35,6 +36,7 @@ wordpress_site "blog.openstreetmap.org" do
   database_name "osm-blog"
   database_user "osm-blog-user"
   database_password passwords["osm-blog-user"]
+  wp2fa_encrypt_key wp2fa_encrypt_keys["key"]
   urls "/casts" => "/srv/blog.openstreetmap.org/casts",
        "/images" => "/srv/blog.openstreetmap.org/images",
        "/static" => "/srv/blog.openstreetmap.org/static"

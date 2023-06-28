@@ -32,6 +32,7 @@ package %w[
 cache_dir = Chef::Config[:file_cache_path]
 
 passwords = data_bag_item("civicrm", "passwords")
+wp2fa_encrypt_keys = data_bag_item("civicrm", "wp2fa_encrypt_keys")
 
 database_password = passwords["database"]
 site_key = passwords["site_key"]
@@ -51,6 +52,7 @@ wordpress_site "join.osmfoundation.org" do
   database_name "civicrm"
   database_user "civicrm"
   database_password database_password
+  wp2fa_encrypt_key wp2fa_encrypt_keys["key"]
   fpm_prometheus_port 11301
 end
 

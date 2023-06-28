@@ -21,6 +21,7 @@ include_recipe "stateofthemap"
 include_recipe "wordpress"
 
 passwords = data_bag_item("stateofthemap", "passwords")
+wp2fa_encrypt_keys = data_bag_item("blog", "wp2fa_encrypt_keys")
 
 directory "/srv/2007.stateofthemap.org" do
   owner "wordpress"
@@ -35,6 +36,7 @@ wordpress_site "2007.stateofthemap.org" do
   database_user "sotm2007"
   database_password passwords["sotm2007"]
   database_prefix "wp_sotm_"
+  wp2fa_encrypt_key wp2fa_encrypt_keys["sotm2007"]
   fpm_prometheus_port 12007
 end
 
@@ -63,6 +65,7 @@ wordpress_site "2008.stateofthemap.org" do
   database_user "sotm2008"
   database_password passwords["sotm2008"]
   database_prefix "wp_sotm08_"
+  wp2fa_encrypt_key wp2fa_encrypt_keys["sotm2008"]
   fpm_prometheus_port 12008
 end
 
@@ -99,6 +102,7 @@ wordpress_site "2009.stateofthemap.org" do
   database_name "sotm2009"
   database_user "sotm2009"
   database_password passwords["sotm2009"]
+  wp2fa_encrypt_key wp2fa_encrypt_keys["sotm2009"]
   urls "/register" => "/srv/2009.stateofthemap.org/register",
        "/register-pro-user" => "/srv/2009.stateofthemap.org/register-pro-user",
        "/podcasts" => "/srv/2009.stateofthemap.org/podcasts"
@@ -138,6 +142,7 @@ wordpress_site "2010.stateofthemap.org" do
   database_name "sotm2010"
   database_user "sotm2010"
   database_password passwords["sotm2010"]
+  wp2fa_encrypt_key wp2fa_encrypt_keys["sotm2010"]
   urls "/register" => "/srv/2010.stateofthemap.org/register"
   fpm_prometheus_port 12010
 end
@@ -183,6 +188,7 @@ wordpress_site "2011.stateofthemap.org" do
   database_name "sotm2011"
   database_user "sotm2011"
   database_password passwords["sotm2011"]
+  wp2fa_encrypt_key wp2fa_encrypt_keys["sotm2011"]
   urls "/register" => "/srv/2011.stateofthemap.org/register"
   fpm_prometheus_port 12011
 end
@@ -228,6 +234,7 @@ wordpress_site "2012.stateofthemap.org" do
   database_name "sotm2012"
   database_user "sotm2012"
   database_password passwords["sotm2012"]
+  wp2fa_encrypt_key wp2fa_encrypt_keys["sotm2012"]
   urls "/register" => "/srv/2012.stateofthemap.org/register"
   fpm_prometheus_port 12012
 end

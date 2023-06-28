@@ -33,6 +33,7 @@ property :database_name, :kind_of => String, :required => true
 property :database_user, :kind_of => String, :required => [:create]
 property :database_password, :kind_of => String, :required => [:create]
 property :database_prefix, :kind_of => String, :default => "wp_"
+property :wp2fa_encrypt_key, :kind_of => String, :required => true
 property :urls, :kind_of => Hash, :default => {}
 property :fpm_max_children, :kind_of => Integer, :default => 10
 property :fpm_start_servers, :kind_of => Integer, :default => 4
@@ -108,6 +109,7 @@ action :create do
       line += "define( 'WP_FAIL2BAN_SITE_HEALTH_SKIP_FILTERS', true);\r\n"
       line += "define( 'WP_ENVIRONMENT_TYPE', 'production');\r\n"
       line += "define( 'WP_MEMORY_LIMIT', '128M');\r\n"
+      line += "define( 'WP2FA_ENCRYPT_KEY', '#{new_resource.wp2fa_encrypt_key}');\r\n"
     end
 
     line
