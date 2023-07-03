@@ -136,6 +136,7 @@ search(:node, "recipes:prometheus\\:\\:default").sort_by(&:name).each do |client
       name = exporter[:name]
       address = exporter[:address]
       sni = exporter[:sni]
+      labels = Array(exporter[:labels])
       scrape_interval = exporter[:scrape_interval]
       scrape_timeout = exporter[:scrape_timeout]
       metric_relabel = exporter[:metric_relabel] || []
@@ -143,6 +144,7 @@ search(:node, "recipes:prometheus\\:\\:default").sort_by(&:name).each do |client
       name = key
       address = exporter
       sni = nil
+      labels = []
       scrape_interval = nil
       scrape_timeout = nil
       metric_relabel = []
@@ -153,6 +155,7 @@ search(:node, "recipes:prometheus\\:\\:default").sort_by(&:name).each do |client
       :address => address,
       :sni => sni,
       :instance => client.name.split(".").first,
+      :labels => labels,
       :scrape_interval => scrape_interval,
       :scrape_timeout => scrape_timeout,
       :metric_relabel => metric_relabel
