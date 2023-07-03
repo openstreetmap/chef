@@ -90,5 +90,6 @@ end
 
 prometheus_exporter "mysqld" do
   port 9104
-  environment "DATA_SOURCE_NAME" => "prometheus:#{mysql_password}@(localhost:3306)/"
+  options "--mysqld.username=prometheus"
+  environment "MYSQLD_EXPORTER_PASSWORD" => mysql_password
 end
