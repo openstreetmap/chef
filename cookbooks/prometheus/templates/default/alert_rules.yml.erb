@@ -99,7 +99,7 @@ groups:
   - name: database
     rules:
       - alert: postgres replication delay
-        expr: pg_replication_lag_seconds > 30
+        expr: pg_replication_lag > 30
         for: 15m
         labels:
           alertgroup: database
@@ -507,7 +507,7 @@ groups:
         labels:
           alertgroup: "{{ $labels.instance }}"
       - alert: postgresql replication delay
-        expr: pg_replication_lag_seconds > 30
+        expr: pg_replication_lag > 30
         for: 15m
         labels:
           alertgroup: "{{ $labels.instance }}"

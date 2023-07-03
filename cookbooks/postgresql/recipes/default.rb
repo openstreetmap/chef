@@ -166,12 +166,14 @@ template "/etc/prometheus/exporters/postgres_queries.yml" do
   mode "644"
 end
 
+# lag / lag_seconds
+# process_idle missing state
 prometheus_exporter "postgres" do
   port 9187
   scrape_interval "1m"
   scrape_timeout "1m"
   user "postgres"
-  options "--extend.query-path=/etc/prometheus/exporters/postgres_queries.yml"
+  options "--no-collector.process_idle --extend.query-path=/etc/prometheus/exporters/postgres_queries.yml"
   environment "DATA_SOURCE_URI" => uris.sort.uniq.first,
               "PG_EXPORTER_AUTO_DISCOVER_DATABASES" => "true",
               "PG_EXPORTER_EXCLUDE_DATABASES" => "postgres,template0,template1"
