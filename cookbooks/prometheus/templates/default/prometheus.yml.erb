@@ -72,6 +72,9 @@ scrape_configs:
           - "<%= target[:address] %>"
         labels:
           instance: <%= target[:instance] %>
+<% Hash(target[:labels]).sort.each do |name, value| -%>
+          <%= name %>: <%= value %>
+<% end -%>
 <% end -%>
     metric_relabel_configs:
 <% targets.each do |target| -%>

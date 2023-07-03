@@ -58,6 +58,7 @@ action :create do
       group "www-data"
       command "server"
       options "--phpfpm.scrape-uri=#{scrape_uri} --phpfpm.fix-process-count"
+      labels "pool" => new_resource.pool
     end
   else
     prometheus_exporter "phpfpm" do
