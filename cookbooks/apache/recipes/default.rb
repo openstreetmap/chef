@@ -99,6 +99,5 @@ munin_plugin "apache_volume"
 
 prometheus_exporter "apache" do
   port 9117
-  listen_switch "telemetry.address"
   options "--scrape_uri=http://localhost/server-status?auto"
 end
