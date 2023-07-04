@@ -14,5 +14,6 @@ default[:tile][:data] = {}
 default[:tile][:styles] = {}
 
 default[:postgresql][:versions] |= [node[:tile][:database][:cluster].split("/").first]
+default[:postgresql][:monitor_database] = "gis"
 
 default[:accounts][:users][:tile][:status] = :role

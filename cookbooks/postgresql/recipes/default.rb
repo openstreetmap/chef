@@ -108,57 +108,6 @@ ohai_plugin "postgresql" do
   template "ohai.rb.erb"
 end
 
-package "pgtop"
-package "libdbd-pg-perl"
-
-clusters = node[:postgresql][:clusters] || []
-
-clusters.each do |name, details|
-  suffix = name.tr("/", ":")
-
-  munin_plugin "postgres_bgwriter_#{suffix}" do
-    target "postgres_bgwriter"
-    conf "munin.erb"
-    conf_variables :port => details[:port]
-  end
-
-  munin_plugin "postgres_checkpoints_#{suffix}" do
-    target "postgres_checkpoints"
-    conf "munin.erb"
-    conf_variables :port => details[:port]
-  end
-
-  munin_plugin "postgres_connections_db_#{suffix}" do
-    target "postgres_connections_db"
-    conf "munin.erb"
-    conf_variables :port => details[:port]
-  end
-
-  munin_plugin "postgres_users_#{suffix}" do
-    target "postgres_users"
-    conf "munin.erb"
-    conf_variables :port => details[:port]
-  end
-
-  munin_plugin "postgres_xlog_#{suffix}" do
-    target "postgres_xlog"
-    conf "munin.erb"
-    conf_variables :port => details[:port]
-  end
-
-  next unless File.exist?("/var/lib/postgresql/#{details[:version]}/main/recovery.conf")
-
-  munin_plugin "postgres_replication_#{suffix}" do
-    target "postgres_replication"
-    conf "munin.erb"
-    conf_variables :port => details[:port]
-  end
-end
-
-uris = clusters.collect do |_, details|
-  "postgres@:#{details[:port]}/postgres?host=/run/postgresql"
-end
-
 template "/etc/prometheus/exporters/postgres_queries.yml" do
   source "postgres_queries.yml.erb"
   owner "root"
@@ -166,18 +115,74 @@ template "/etc/prometheus/exporters/postgres_queries.yml" do
   mode "644"
 end
 
-# lag / lag_seconds
-# process_idle missing state
-prometheus_exporter "postgres" do
-  port 9187
-  scrape_interval "1m"
-  scrape_timeout "1m"
-  user "postgres"
-  options "--no-collector.process_idle --extend.query-path=/etc/prometheus/exporters/postgres_queries.yml"
-  environment "DATA_SOURCE_URI" => uris.sort.uniq.first,
-              "PG_EXPORTER_AUTO_DISCOVER_DATABASES" => "true",
-              "PG_EXPORTER_EXCLUDE_DATABASES" => "postgres,template0,template1"
-  restrict_address_families "AF_UNIX"
-  remove_ipc false
-  subscribes :restart, "template[/etc/prometheus/exporters/postgres_queries.yml]"
+package "pgtop"
+package "libdbd-pg-perl"
+
+clusters = node[:postgresql][:clusters] || []
+
+clusters.each do |name, details|
+  prometheus_suffix = name.tr("/", "-")
+  prometheus_database = node[:postgresql][:monitor_database]
+
+  prometheus_exporter "postgres" do
+    port 10000 + details[:port].to_i
+    service "postgres-#{prometheus_suffix}"
+    labels "cluster" => name
+    scrape_interval "1m"
+    scrape_timeout "1m"
+    user "postgres"
+    options "--no-collector.process_idle --extend.query-path=/etc/prometheus/exporters/postgres_queries.yml"
+    environment "DATA_SOURCE_NAME" => "postgres:///#{prometheus_database}?host=/run/postgresql&port=#{details[:port]}"
+    restrict_address_families "AF_UNIX"
+    remove_ipc false
+    subscribes :restart, "template[/etc/prometheus/exporters/postgres_queries.yml]"
+  end
+
+  munin_suffix = name.tr("/", ":")
+
+  munin_plugin "postgres_bgwriter_#{munin_suffix}" do
+    target "postgres_bgwriter"
+    conf "munin.erb"
+    conf_variables :port => details[:port]
+  end
+
+  munin_plugin "postgres_checkpoints_#{munin_suffix}" do
+    target "postgres_checkpoints"
+    conf "munin.erb"
+    conf_variables :port => details[:port]
+  end
+
+  munin_plugin "postgres_connections_db_#{munin_suffix}" do
+    target "postgres_connections_db"
+    conf "munin.erb"
+    conf_variables :port => details[:port]
+  end
+
+  munin_plugin "postgres_users_#{munin_suffix}" do
+    target "postgres_users"
+    conf "munin.erb"
+    conf_variables :port => details[:port]
+  end
+
+  munin_plugin "postgres_xlog_#{munin_suffix}" do
+    target "postgres_xlog"
+    conf "munin.erb"
+    conf_variables :port => details[:port]
+  end
+
+  next unless File.exist?("/var/lib/postgresql/#{details[:version]}/main/recovery.conf")
+
+  munin_plugin "postgres_replication_#{munin_suffix}" do
+    target "postgres_replication"
+    conf "munin.erb"
+    conf_variables :port => details[:port]
+  end
+end
+
+service "prometheus-postgres-exporter" do
+  action [:stop, :disable]
+end
+
+systemd_service "prometheus-postgres-exporter" do
+  action :delete
 end

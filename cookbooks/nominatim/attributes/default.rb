@@ -31,5 +31,6 @@ default[:nominatim][:config] = {
 default[:nominatim][:redirects] = {}
 
 default[:postgresql][:versions] |= [node[:nominatim][:dbcluster].split("/").first]
+default[:postgresql][:monitor_database] = "nominatim"
 
 default[:accounts][:users][:nominatim][:status] = :role
