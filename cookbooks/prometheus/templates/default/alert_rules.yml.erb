@@ -160,13 +160,23 @@ groups:
           alertgroup: fastly
         annotations:
           error_rate: "{{ $value | humanizePercentage }}"
-      - alert: fastly healthcheck failing
-        expr: count(fastly_healthcheck_status == 0) by (service) > 0
+      - alert: fastly frontend healthcheck warning
+        expr: count(fastly_healthcheck_status == 0) by (service, datacenter) > 2
         for: 15m
         labels:
           alertgroup: fastly
-      - alert: multiple fastly healthchecks failing
-        expr: count(fastly_healthcheck_status == 0) by (service) > 4
+      - alert: fastly frontend healthcheck critical
+        expr: count(fastly_healthcheck_status == 0) by (service, datacenter) == count(fastly_healthcheck_status) by (service, datacenter)
+        for: 5m
+        labels:
+          alertgroup: fastly
+      - alert: fastly backend healthcheck warning
+        expr: count(fastly_healthcheck_status == 0) by (service, backend) > 10
+        for: 15m
+        labels:
+          alertgroup: fastly
+      - alert: fastly backend healthcheck critical
+        expr: count(fastly_healthcheck_status == 0) by (service, backend) == count(fastly_healthcheck_status) by (service, backend)
         for: 5m
         labels:
           alertgroup: fastly
