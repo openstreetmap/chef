@@ -66,6 +66,12 @@
   RewriteRule . - [F,L]
 
   #
+  # Block trace scraper
+  #
+  RewriteCond %{HTTP_USER_AGENT} "python-httpx/0.24.1"
+  RewriteRule . - [F,L]
+
+  #
   # Block attempts to access old API versions
   #
   RewriteRule ^/api/0.[12345]/ - [G,L]
