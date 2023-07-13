@@ -85,6 +85,7 @@ property :avatar_storage_url, String
 property :trace_image_storage_url, String
 property :trace_icon_storage_url, String
 property :tile_cdn_url, String
+property :imagery_blacklist, Array
 
 action :create do
   package %W[
@@ -334,7 +335,8 @@ action :create do
     "avatar_storage_url",
     "trace_image_storage_url",
     "trace_icon_storage_url",
-    "tile_cdn_url"
+    "tile_cdn_url",
+    "imagery_blacklist"
   ).compact.merge(
     "server_protocol" => "https",
     "server_url" => new_resource.site,

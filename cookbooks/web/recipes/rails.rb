@@ -143,6 +143,16 @@ rails_port "www.openstreetmap.org" do
   trace_image_storage_url "https://openstreetmap-gps-images.s3.dualstack.eu-west-1.amazonaws.com"
   overpass_url "https://query.openstreetmap.org/query-features"
   overpass_credentials true
+  imagery_blacklist [
+    # Current Google imagery URLs have google or googleapis in the domain
+    ".*\\.google(apis)?\\..*/.*",
+    # Blacklist VWorld
+    "http://xdworld\\.vworld\\.kr:8080/.*",
+    # Blacklist here
+    ".*\\.here\\.com[/:].*",
+    # Blacklist Mapy.cz
+    ".*\\.mapy\\.cz.*"
+  ]
 end
 
 systemd_service "rails-jobs@" do
