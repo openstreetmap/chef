@@ -47,10 +47,12 @@ wordpress_theme "2007.stateofthemap.org-refreshwp-11" do
   revision "theme-2007"
 end
 
-# wordpress_plugin "2007.stateofthemap.org-geopress" do
-#   plugin "geopress"
-#   site "2007.stateofthemap.org"
-# end
+# Remove broken geopress plugin
+wordpress_plugin "2007.stateofthemap.org-geopress" do
+  action :delete
+  plugin "geopress"
+  site "2007.stateofthemap.org"
+end
 
 directory "/srv/2008.stateofthemap.org" do
   owner "wordpress"
@@ -76,10 +78,12 @@ wordpress_theme "2008.stateofthemap.org-refreshwp-11" do
   revision "theme-2008"
 end
 
-# wordpress_plugin "2008.stateofthemap.org-geopress" do
-#   plugin "geopress"
-#   site "2008.stateofthemap.org"
-# end
+# Remove broken geopress plugin
+wordpress_plugin "2008.stateofthemap.org-geopress" do
+  action :delete
+  plugin "geopress"
+  site "2008.stateofthemap.org"
+end
 
 directory "/srv/2009.stateofthemap.org" do
   owner "wordpress"
