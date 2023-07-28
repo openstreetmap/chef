@@ -147,8 +147,8 @@ action :create do
   # Setup wordpress database and create admin user with random password
   execute "wp core install" do
     command "/opt/wp-cli/wp --path=#{site_directory} core install --url=#{new_resource.site} --title='#{new_resource.title}' --admin_user=#{new_resource.admin_user} --admin_email=#{new_resource.admin_email} --skip-email"
-    user node[:wordpress][:user]
-    group node[:wordpress][:group]
+    user "www-data"
+    group "www-data"
     only_if { ::File.exist?("#{site_directory}/wp-config.php") }
     not_if "/opt/wp-cli/wp  --path=#{site_directory} core is-installed"
   end

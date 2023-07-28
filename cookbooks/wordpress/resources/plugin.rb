@@ -65,8 +65,8 @@ action :create do
 
   execute "wp-cli plugin activate #{new_resource.plugin}" do
     command "/opt/wp-cli/wp --path=#{site_directory} plugin activate #{new_resource.plugin}"
-    user node[:wordpress][:user]
-    group node[:wordpress][:group]
+    user "www-data"
+    group "www-data"
     not_if "/opt/wp-cli/wp --path=#{site_directory} plugin is-active #{new_resource.plugin}"
   end
 end
@@ -74,8 +74,8 @@ end
 action :delete do
   execute "wp-cli plugin deactivate #{new_resource.plugin}" do
     command "/opt/wp-cli/wp --path=#{site_directory} plugin deactivate #{new_resource.plugin}"
-    user node[:wordpress][:user]
-    group node[:wordpress][:group]
+    user "www-data"
+    group "www-data"
     only_if "/opt/wp-cli/wp --path=#{site_directory} plugin is-active #{new_resource.plugin}"
   end
 
