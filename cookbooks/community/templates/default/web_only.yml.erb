@@ -19,7 +19,7 @@ links:
 # any extra arguments for Docker?
 # docker_args:
 
-# Latest Version v3.0.5
+# Latest Version v3.0.6
 params:
   version: stable
 
@@ -124,7 +124,7 @@ hooks:
         filename: "/etc/nginx/conf.d/discourse.conf"
         from: /add_header.+/
         to: |
-          add_header Strict-Transport-Security 'max-age=31536000; preload';
+          add_header Strict-Transport-Security 'max-age=63072000' always;
           ssl_stapling on;
           resolver <%= node[:networking][:nameservers].join(" ") %>;
           resolver_timeout 5s;
