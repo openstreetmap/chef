@@ -146,11 +146,19 @@ action :create do
 
   # Setup wordpress database and create admin user with random password
   execute "wp core install" do
-    command "/opt/wp-cli/wp --path=#{site_directory} core install --url=#{new_resource.site} --title='#{new_resource.title}' --admin_user=#{new_resource.admin_user} --admin_email=#{new_resource.admin_email} --skip-email"
+    command "/opt/wp-cli/wp --path='#{site_directory}' core install --url='#{new_resource.site}' --title='#{new_resource.title}' --admin_user='#{new_resource.admin_user}' --admin_email='#{new_resource.admin_email}' --skip-email"
     user "www-data"
     group "www-data"
     only_if { ::File.exist?("#{site_directory}/wp-config.php") }
-    not_if "/opt/wp-cli/wp  --path=#{site_directory} core is-installed"
+    not_if "/opt/wp-cli/wp  --path='#{site_directory}' core is-installed"
+  end
+
+  execute "wp core update-db" do
+    command "/opt/wp-cli/wp --path='#{site_directory}' core update-db"
+    user "www-data"
+    group "www-data"
+    only_if { ::File.exist?("#{site_directory}/wp-config.php") }
+    subscribes :run, "subversion[#{site_directory}]"
   end
 
   ssl_certificate new_resource.site do
@@ -178,12 +186,6 @@ action :create do
     variables :aliases => Array(new_resource.aliases),
               :urls => new_resource.urls
     reload_apache false
-  end
-
-  http_request "https://#{new_resource.site}/wp-admin/upgrade.php" do
-    action :nothing
-    url "https://#{new_resource.site}/wp-admin/upgrade.php?step=1"
-    subscribes :get, "subversion[#{site_directory}]"
   end
 
   wordpress_plugin "wp-fail2ban" do
