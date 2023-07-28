@@ -1,8 +1,8 @@
-default[:civicrm][:version] = "5.61.4"
+default[:civicrm][:version] = "5.63.2"
 
 default[:civicrm][:extensions][:cividiscount][:name] = "org.civicrm.module.cividiscount"
 default[:civicrm][:extensions][:cividiscount][:repository] = "https://lab.civicrm.org/extensions/cividiscount.git"
-default[:civicrm][:extensions][:cividiscount][:revision] = "3.8.7"
+default[:civicrm][:extensions][:cividiscount][:revision] = "3.8.8"
 
 default[:civicrm][:extensions][:osm][:name] = "de.systopia.osm"
 default[:civicrm][:extensions][:osm][:repository] = "https://github.com/systopia/de.systopia.osm.git"
@@ -18,7 +18,7 @@ default[:civicrm][:extensions][:civiruleshttppost][:revision] = "e2c7de5f0fee319
 
 default[:civicrm][:extensions][:civirules][:name] = "org.civicoop.civirules"
 default[:civicrm][:extensions][:civirules][:repository] = "https://lab.civicrm.org/extensions/civirules.git"
-default[:civicrm][:extensions][:civirules][:revision] = "2.47"
+default[:civicrm][:extensions][:civirules][:revision] = "2.49"
 
 default[:civicrm][:extensions][:mailchimp][:name] = "uk.co.vedaconsulting.mailchimp"
 default[:civicrm][:extensions][:mailchimp][:repository] = "https://github.com/veda-consulting/uk.co.vedaconsulting.mailchimp.git"
