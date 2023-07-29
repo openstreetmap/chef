@@ -30,7 +30,7 @@ directory "/srv/2007.stateofthemap.org" do
 end
 
 wordpress_site "2007.stateofthemap.org" do
-  aliases "2007.stateofthemap.com"
+  aliases ["2007.stateofthemap.com", "2007.sotm.org"]
   directory "/srv/2007.stateofthemap.org/wp"
   database_name "sotm2007"
   database_user "sotm2007"
@@ -61,7 +61,7 @@ directory "/srv/2008.stateofthemap.org" do
 end
 
 wordpress_site "2008.stateofthemap.org" do
-  aliases "2008.stateofthemap.com"
+  aliases ["2008.stateofthemap.com", "2008.sotm.org"]
   directory "/srv/2008.stateofthemap.org/wp"
   database_name "sotm2008"
   database_user "sotm2008"
@@ -101,7 +101,7 @@ git "/srv/2009.stateofthemap.org" do
 end
 
 wordpress_site "2009.stateofthemap.org" do
-  aliases "2009.stateofthemap.com"
+  aliases ["2009.stateofthemap.com", "2009.sotm.org"]
   directory "/srv/2009.stateofthemap.org/wp"
   database_name "sotm2009"
   database_user "sotm2009"
@@ -141,7 +141,7 @@ git "/srv/2010.stateofthemap.org" do
 end
 
 wordpress_site "2010.stateofthemap.org" do
-  aliases "2010.stateofthemap.com"
+  aliases ["2010.stateofthemap.com", "2010.sotm.org"]
   directory "/srv/2010.stateofthemap.org/wp"
   database_name "sotm2010"
   database_user "sotm2010"
@@ -187,7 +187,7 @@ git "/srv/2011.stateofthemap.org" do
 end
 
 wordpress_site "2011.stateofthemap.org" do
-  aliases "2011.stateofthemap.com"
+  aliases ["2011.stateofthemap.com", "2011.sotm.org"]
   directory "/srv/2011.stateofthemap.org/wp"
   database_name "sotm2011"
   database_user "sotm2011"
@@ -233,7 +233,7 @@ git "/srv/2012.stateofthemap.org" do
 end
 
 wordpress_site "2012.stateofthemap.org" do
-  aliases "2012.stateofthemap.com"
+  aliases ["2012.stateofthemap.com", "2012.sotm.org"]
   directory "/srv/2012.stateofthemap.org/wp"
   database_name "sotm2012"
   database_user "sotm2012"
