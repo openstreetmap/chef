@@ -14,6 +14,7 @@ default[:nominatim][:ui_repository] = "https://git.openstreetmap.org/public/nomi
 default[:nominatim][:ui_revision] = "master"
 default[:nominatim][:qa_repository] = "https://github.com/osm-search/Nominatim-Data-Analyser"
 default[:nominatim][:qa_revision] = "main"
+default[:nominatim][:api_flavour] = "php"
 
 default[:nominatim][:fpm_pools] = {
   "nominatim.openstreetmap.org" => {

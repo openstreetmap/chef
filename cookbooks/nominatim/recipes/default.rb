@@ -19,8 +19,11 @@
 
 include_recipe "accounts"
 include_recipe "munin"
-include_recipe "php::fpm"
 include_recipe "prometheus"
+
+if node[:nominatim][:api_flavour] == "php"
+  include_recipe "php::fpm"
+end
 
 basedir = data_bag_item("accounts", "nominatim")["home"]
 email_errors = data_bag_item("accounts", "lonvia")["email"]
@@ -145,13 +148,24 @@ package %w[
   python3-sqlalchemy-ext
   python3-geoalchemy2
   python3-asyncpg
-  php-pgsql
-  php-intl
   ruby
   ruby-file-tail
   ruby-pg
   ruby-webrick
 ]
+
+if node[:nominatim][:api_flavour] == "php"
+  package %w[
+    php-pgsql
+    php-intl
+  ]
+elsif node[:nominatim][:api_flavour] == "python"
+  package %w[
+    gunicorn
+    uvicorn
+    python3-starlette
+  ]
+end
 
 source_directory = "#{basedir}/src/nominatim"
 build_directory = "#{basedir}/src/build"
@@ -183,7 +197,7 @@ if node[:nominatim][:flatnode_file]
   end
 end
 
-remote_directory "#{project_directory}/website" do
+remote_directory "#{project_directory}/static-website" do
   source "website"
   owner "nominatim"
   group "nominatim"
@@ -276,16 +290,41 @@ end
   end
 end
 
-node[:nominatim][:fpm_pools].each do |name, data|
-  php_fpm name do
-    port data[:port]
-    pm data[:pm]
-    pm_max_children data[:max_children]
-    pm_start_servers 20
-    pm_min_spare_servers 10
-    pm_max_spare_servers 20
-    pm_max_requests 10000
-    prometheus_port data[:prometheus_port]
+if node[:nominatim][:api_flavour] == "php"
+  node[:nominatim][:fpm_pools].each do |name, data|
+    php_fpm name do
+      port data[:port]
+      pm data[:pm]
+      pm_max_children data[:max_children]
+      pm_start_servers 20
+      pm_min_spare_servers 10
+      pm_max_spare_servers 20
+      pm_max_requests 10000
+      prometheus_port data[:prometheus_port]
+    end
+  end
+elsif node[:nominatim][:api_flavour] == "python"
+  systemd_service "nominatim" do
+    description "Nominatim running as a gunicorn application"
+    user "www-data"
+    group "www-data"
+    working_directory project_directory
+    standard_output "append:#{node[:nominatim][:logdir]}/gunicorn.log"
+    standard_error "inherit"
+    exec_start "/usr/bin/gunicorn -b unix:/run/gunicorn-nominatim.openstreetmap.org.sock -w 10 -k uvicorn.workers.UvicornWorker nominatim.server.starlette.server:run_wsgi"
+    exec_reload "/bin/kill -s HUP $MAINPID"
+    environment :PYTHONPATH => "/usr/local/lib/nominatim/lib-python/"
+    kill_mode "mixed"
+    timeout_stop_sec 5
+    private_tmp true
+    requires "nominatim.socket"
+    after "network.target"
+  end
+
+  systemd_socket "nominatim" do
+    description "Gunicorn socket for Nominatim"
+    listen_stream "/run/gunicorn-nominatim.openstreetmap.org.sock"
+    socket_user "www-data"
   end
 end
 
