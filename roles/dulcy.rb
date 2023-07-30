@@ -45,6 +45,7 @@ default_attributes(
     :postgis => "3",
     :flatnode_file => "/ssd/nominatim/nodes.store",
     :logdir => "/ssd/nominatim/log",
+    :api_flavour => "python",
     :config => {
       :forward_dependencies => "yes"
     }
