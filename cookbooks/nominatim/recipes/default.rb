@@ -258,7 +258,8 @@ template "#{project_directory}/.env" do
             :flatnode_file => node[:nominatim][:flatnode_file],
             :log_file => "#{node[:nominatim][:logdir]}/query.log",
             :tokenizer => node[:nominatim][:config][:tokenizer],
-            :forward_dependencies => node[:nominatim][:config][:forward_dependencies]
+            :forward_dependencies => node[:nominatim][:config][:forward_dependencies],
+            :pool_size => node[:nominatim][:api_pool_size]
 end
 
 remote_file "#{project_directory}/wikimedia-importance.sql.gz" do
@@ -311,7 +312,7 @@ elsif node[:nominatim][:api_flavour] == "python"
     working_directory project_directory
     standard_output "append:#{node[:nominatim][:logdir]}/gunicorn.log"
     standard_error "inherit"
-    exec_start "/usr/bin/gunicorn -b unix:/run/gunicorn-nominatim.openstreetmap.org.sock -w 10 -k uvicorn.workers.UvicornWorker nominatim.server.starlette.server:run_wsgi"
+    exec_start "/usr/bin/gunicorn -b unix:/run/gunicorn-nominatim.openstreetmap.org.sock -w #{node[:nominatim][:api_workers]} -k uvicorn.workers.UvicornWorker nominatim.server.starlette.server:run_wsgi"
     exec_reload "/bin/kill -s HUP $MAINPID"
     environment :PYTHONPATH => "/usr/local/lib/nominatim/lib-python/"
     kill_mode "mixed"
