@@ -145,7 +145,11 @@ server {
     ssl_certificate /etc/ssl/certs/<%= node[:fqdn] %>.pem;
     ssl_certificate_key /etc/ssl/private/<%= node[:fqdn] %>.key;
 
+<% if node[:nominatim][:api_flavour] == "php" %>
+    root <%= @directory %>/website;
+<% else -%>
     root <%= @directory %>/static-website;
+<% end -%>
     index search.php;
 
     access_log <%= node[:nominatim][:logdir] %>/nominatim.openstreetmap.org-access.log combined;
