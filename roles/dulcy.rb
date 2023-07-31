@@ -46,6 +46,8 @@ default_attributes(
     :flatnode_file => "/ssd/nominatim/nodes.store",
     :logdir => "/ssd/nominatim/log",
     :api_flavour => "python",
+    :api_workers => 14,
+    :api_pool_size => 10,
     :config => {
       :forward_dependencies => "yes"
     }
