@@ -163,7 +163,7 @@ elsif node[:nominatim][:api_flavour] == "python"
   package %w[
     gunicorn
     uvicorn
-    python3-starlette
+    python3-falcon
   ]
 end
 
@@ -312,7 +312,7 @@ elsif node[:nominatim][:api_flavour] == "python"
     working_directory project_directory
     standard_output "append:#{node[:nominatim][:logdir]}/gunicorn.log"
     standard_error "inherit"
-    exec_start "/usr/bin/gunicorn -b unix:/run/gunicorn-nominatim.openstreetmap.org.sock -w #{node[:nominatim][:api_workers]} -k uvicorn.workers.UvicornWorker nominatim.server.starlette.server:run_wsgi"
+    exec_start "/usr/bin/gunicorn -b unix:/run/gunicorn-nominatim.openstreetmap.org.sock -w #{node[:nominatim][:api_workers]} -k uvicorn.workers.UvicornWorker nominatim.server.falcon.server:run_wsgi"
     exec_reload "/bin/kill -s HUP $MAINPID"
     environment :PYTHONPATH => "/usr/local/lib/nominatim/lib-python/"
     kill_mode "mixed"
