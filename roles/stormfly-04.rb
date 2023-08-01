@@ -40,7 +40,7 @@ default_attributes(
     :logdir => "/ssd/nominatim/log",
     :fpm_pools => {
       "nominatim.openstreetmap.org" => {
-        :max_children => 100
+        :max_children => 80
       }
     }
   }
