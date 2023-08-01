@@ -22,6 +22,7 @@ provisioner:
   chef_license: accept
   data_bags_path: test/data_bags
   slow_resource_report: true
+  clean_dokken_sandbox: true
 
 verifier:
   root_path: /opt/verifier
@@ -81,6 +82,9 @@ suites:
   - name: civicrm
     run_list:
       - recipe[civicrm::default]
+  - name: civicrm-staging
+    run_list:
+      - recipe[civicrm-staging::default]
   - name: clamav
     run_list:
       - recipe[clamav::default]
