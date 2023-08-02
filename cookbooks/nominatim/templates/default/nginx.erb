@@ -182,6 +182,11 @@ server {
         add_header Access-Control-Allow-Origin "*" always;
     }
 
+    location ~* ^/(search|reverse)(\.php)?/ {
+        error_page 404 /404-old-search-syntax.html;
+        return 404;
+    }
+
     location @php {
         if ($blocked_user_agent ~ ^2$)
         { return 403; }
