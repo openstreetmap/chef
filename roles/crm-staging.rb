@@ -8,7 +8,6 @@ default_attributes(
     }
   },
   :exim => {
-    :smarthost_name => "no-such-domain.openstreetmap.org",
     # :local_domains => ["join.osmfoundation.org"],
     # :routes => {
     #   :join_return => {
