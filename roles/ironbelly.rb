@@ -52,6 +52,9 @@ default_attributes(
     }
   },
   :prometheus => {
+    :junos => {
+      "switch1" => { :address => "184.104.179.129", :labels => { "site" => "amsterdam" } }
+    },
     :snmp => {
       "pdu1" => { :address => "10.0.48.100", :modules => %w[apcups], :labels => { "site" => "amsterdam" } },
       "pdu2" => { :address => "10.0.48.101", :modules => %w[apcups], :labels => { "site" => "amsterdam" } },

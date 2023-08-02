@@ -115,6 +115,23 @@ prometheus_exporter "node" do
   metric_relabel metric_relabel
 end
 
+unless node[:prometheus][:junos].empty?
+  targets = node[:prometheus][:junos].collect { |_, details| details[:address] }.sort.join(",")
+
+  prometheus_exporter "junos" do
+    port 9326
+    options %W[
+      --ssh.user=prometheus
+      --ssh.keyfile=/var/lib/prometheus/junos-exporter/id_rsa
+      --ssh.targets=#{targets}
+      --lacp.enabled=true
+      --power.enabled=false
+    ]
+    ssh true
+    register_target false
+  end
+end
+
 unless node[:prometheus][:snmp].empty?
   prometheus_exporter "snmp" do
     port 9116

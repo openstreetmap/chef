@@ -47,8 +47,27 @@ property :scrape_interval, :kind_of => String
 property :scrape_timeout, :kind_of => String
 property :metric_relabel, :kind_of => Array
 property :register_target, :kind_of => [TrueClass, FalseClass], :default => true
+property :ssh, [true, false]
 
 action :create do
+  if new_resource.ssh && new_resource.user.nil?
+    keys = data_bag_item("prometheus", "keys")
+
+    directory "/var/lib/private/prometheus/#{new_resource.exporter}-exporter" do
+      mode "700"
+      recursive true
+    end
+
+    file "/var/lib/private/prometheus/#{new_resource.exporter}-exporter/id_rsa" do
+      content keys["ssh"].join("\n")
+      mode "400"
+    end
+
+    cookbook_file "/var/lib/private/prometheus/#{new_resource.exporter}-exporter/id_rsa.pub" do
+      mode "644"
+    end
+  end
+
   systemd_service service_name do
     after "network-online.target"
     wants "network-online.target"
@@ -60,6 +79,7 @@ action :create do
     environment new_resource.environment
     exec_start "#{executable_path} #{new_resource.command} #{executable_options}"
     sandbox :enable_network => true
+    state_directory "prometheus/#{new_resource.exporter}-exporter" if new_resource.ssh && new_resource.user.nil?
     protect_proc new_resource.protect_proc if new_resource.property_is_set?(:protect_proc)
     proc_subset new_resource.proc_subset if new_resource.property_is_set?(:proc_subset)
     capability_bounding_set new_resource.capability_bounding_set if new_resource.property_is_set?(:capability_bounding_set)

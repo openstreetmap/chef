@@ -120,6 +120,7 @@ search(:node, "roles:gateway") do |gateway|
 end
 
 jobs = {}
+junos_targets = []
 snmp_targets = []
 
 search(:node, "recipes:prometheus\\:\\:default").sort_by(&:name).each do |client|
@@ -159,6 +160,15 @@ search(:node, "recipes:prometheus\\:\\:default").sort_by(&:name).each do |client
       :scrape_interval => scrape_interval,
       :scrape_timeout => scrape_timeout,
       :metric_relabel => metric_relabel
+    }
+  end
+
+  Hash(client[:prometheus][:junos]).each do |instance, details|
+    junos_targets << {
+      :instance => instance,
+      :target => details[:address],
+      :address => client[:prometheus][:addresses]["junos"],
+      :labels => Array(details[:labels])
     }
   end
 
@@ -214,7 +224,7 @@ template "/etc/prometheus/prometheus.yml" do
   owner "root"
   group "root"
   mode "644"
-  variables :jobs => jobs, :snmp_targets => snmp_targets, :certificates => certificates
+  variables :jobs => jobs, :junos_targets => junos_targets, :snmp_targets => snmp_targets, :certificates => certificates
 end
 
 template "/etc/prometheus/alert_rules.yml" do
