@@ -31,13 +31,11 @@ default_attributes(
   },
   :accounts => {
     :users => {
-      :msbarry => { :status => :user },
       :kevin => { :status => :user }
     }
   }
 )
 
 run_list(
-  "role[equinix-ams]",
-  "role[crm-staging]"
+  "role[equinix-ams]"
 )
