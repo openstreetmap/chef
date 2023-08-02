@@ -31,6 +31,7 @@ default_attributes(
   },
   :accounts => {
     :users => {
+      :stereo => { :status => :administrator },
       :kevin => { :status => :user }
     }
   }
