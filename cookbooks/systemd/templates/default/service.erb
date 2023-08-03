@@ -115,14 +115,38 @@ ExecReload=
 <% end -%>
 ExecReload=<%= @exec_reload %>
 <% end -%>
+<% if @runtime_max_sec -%>
+RuntimeMaxSec=<%= @runtime_max_sec %>
+<% end -%>
 <% if @runtime_directory -%>
 RuntimeDirectory=<%= @runtime_directory %>
 <% end -%>
 <% if @runtime_directory_mode -%>
 RuntimeDirectoryMode=<%= sprintf("0%o", @runtime_directory_mode) %>
 <% end -%>
-<% if @runtime_max_sec -%>
-RuntimeMaxSec=<%= @runtime_max_sec %>
+<% if @state_directory -%>
+StateDirectory=<%= @state_directory %>
+<% end -%>
+<% if @state_directory_mode -%>
+StateDirectoryMode=<%= sprintf("0%o", @state_directory_mode) %>
+<% end -%>
+<% if @cache_directory -%>
+CacheDirectory=<%= @cache_directory %>
+<% end -%>
+<% if @cache_directory_mode -%>
+CacheDirectoryMode=<%= sprintf("0%o", @cache_directory_mode) %>
+<% end -%>
+<% if @logs_directory -%>
+LogsDirectory=<%= @logs_directory %>
+<% end -%>
+<% if @logs_directory_mode -%>
+LogsDirectoryMode=<%= sprintf("0%o", @logs_directory_mode) %>
+<% end -%>
+<% if @configuration_directory -%>
+ConfigurationDirectory=<%= @configuration_directory %>
+<% end -%>
+<% if @configuration_directory_mode -%>
+ConfigurationDirectoryMode=<%= sprintf("0%o", @configuration_directory_mode) %>
 <% end -%>
 <% if @standard_input -%>
 StandardInput=<%= @standard_input %>

@@ -51,9 +51,17 @@ property :exec_start_post, [String, Array]
 property :exec_stop, [String, Array]
 property :exec_stop_post, [String, Array]
 property :exec_reload, String
+property :runtime_max_sec, Integer
 property :runtime_directory, String
 property :runtime_directory_mode, Integer
-property :runtime_max_sec, Integer
+property :state_directory, String
+property :state_directory_mode, Integer
+property :cache_directory, String
+property :cache_directory_mode, Integer
+property :logs_directory, String
+property :logs_directory_mode, Integer
+property :configuration_directory, String
+property :configuration_directory_mode, Integer
 property :standard_input, String,
          :is => %w[null tty tty-force tty-fail socket]
 property :standard_output, String,
