@@ -4,7 +4,7 @@ groups:
   - name: amsterdam
     rules:
       - alert: uplink
-        expr: ifOperStatus{site="amsterdam",ifName=~"ge-[01]/2/2"} != 1
+        expr: junos_interface_up{site="amsterdam",name=~"ge-[01]/2/2"} != 1
         for: 6m
         labels:
           alertgroup: "amsterdam"
@@ -117,7 +117,7 @@ groups:
   - name: dublin
     rules:
       - alert: uplink
-        expr: ifOperStatus{site="dublin",ifName=~"ge-[01]/2/2"} != 1
+        expr: junos_interface_up{site="dublin",name=~"ge-[01]/2/2"} != 1
         for: 6m
         labels:
           alertgroup: "dublin"
@@ -273,7 +273,7 @@ groups:
   - name: juniper
     rules:
       - alert: juniper cpu alarm
-        expr: jnxOperating5MinLoadAvg{jnxOperatingContentsIndex="9"} / 200 > 0.5
+        expr: junos_route_engine_load_average_five > 0.5
         for: 5m
         labels:
           alertgroup: "{{ $labels.site }}"
@@ -285,7 +285,7 @@ groups:
         labels:
           alertgroup: "{{ $labels.site }}"
       - alert: juniper power alarm
-        expr: jnxOperatingState{jnxOperatingContentsIndex="2",jnxOperatingState!~"running.*"} > 0
+        expr: junos_environment_power_up != 1
         for: 5m
         labels:
           alertgroup: "{{ $labels.site }}"
