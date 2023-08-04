@@ -124,7 +124,10 @@ unless node[:prometheus][:junos].empty?
       --ssh.user=prometheus
       --ssh.keyfile=/var/lib/prometheus/junos-exporter/id_rsa
       --ssh.targets=#{targets}
+      --bgp.enabled=false
       --lacp.enabled=true
+      --ldp.enabled=false
+      --ospf.enabled=false
       --power.enabled=false
     ]
     ssh true
