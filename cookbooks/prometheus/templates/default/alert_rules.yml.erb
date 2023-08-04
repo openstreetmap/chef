@@ -280,7 +280,7 @@ groups:
         annotations:
           load_average: "{{ $value | humanizePercentage }}"
       - alert: juniper fan alarm
-        expr: jnxOperatingState{jnxOperatingContentsIndex="4",jnxOperatingState!~"running.*"} > 0
+        expr: junos_environment_fan_up != 1
         for: 5m
         labels:
           alertgroup: "{{ $labels.site }}"
