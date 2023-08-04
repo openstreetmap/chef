@@ -272,6 +272,20 @@ groups:
           alertgroup: "{{ $labels.instance }}"
   - name: juniper
     rules:
+      - alert: juniper red alarms
+        expr: juniper_alarms_red_count > 0
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.site }}"
+        annotations:
+          alarm_count: "{{ $value }} alarms"
+      - alert: juniper yellow alarms
+        expr: juniper_alarms_yellow_count > 0
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.site }}"
+        annotations:
+          alarm_count: "{{ $value }} alarms"
       - alert: juniper cpu alarm
         expr: junos_route_engine_load_average_five / 2 > 0.5
         for: 5m
