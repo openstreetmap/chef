@@ -273,7 +273,7 @@ groups:
   - name: juniper
     rules:
       - alert: juniper cpu alarm
-        expr: junos_route_engine_load_average_five > 0.5
+        expr: junos_route_engine_load_average_five / 2 > 0.5
         for: 5m
         labels:
           alertgroup: "{{ $labels.site }}"
