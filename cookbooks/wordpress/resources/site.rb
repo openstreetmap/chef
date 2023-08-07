@@ -101,6 +101,8 @@ action :create do
       line += "/**\r\n"
       line += " * Don't allow file editing.\r\n"
       line += " */\r\n"
+      line += "define( 'WP_HOME', 'https://#{new_resource.site}');\r\n"
+      line += "define( 'WP_SITEURL', 'https://#{new_resource.site}');\r\n"
       line += "define( 'DISALLOW_FILE_EDIT', true);\r\n"
       line += "define( 'DISALLOW_FILE_MODS', true);\r\n"
       line += "define( 'AUTOMATIC_UPDATER_DISABLED', true);\r\n"
