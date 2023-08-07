@@ -32,7 +32,11 @@ action :create do
     type "notify"
     notify_access "all"
     environment "PODMAN_SYSTEMD_UNIT" => "%n"
-    exec_start_pre "/bin/rm --force %t/%n.ctr-id"
+    # The exec_start_pre "podman pull" is to workaround the occasional 502 error returned from the registry.
+    exec_start_pre [
+      "/bin/rm --force %t/%n.ctr-id",
+      "-/usr/bin/podman pull #{new_resource.image}"
+    ]
     exec_start "/usr/bin/podman run --cidfile=%t/%n.ctr-id --cgroups=no-conmon --userns=auto --label=io.containers.autoupdate=registry --network=slirp4netns:mtu=1500 #{publish_options} --rm --sdnotify=conmon --detach --replace --name=%N #{new_resource.image}"
     exec_stop "/usr/bin/podman stop --ignore --time=10 --cidfile=%t/%n.ctr-id"
     exec_stop_post "/usr/bin/podman rm --force --ignore --cidfile=%t/%n.ctr-id"
