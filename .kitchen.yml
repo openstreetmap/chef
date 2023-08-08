@@ -36,6 +36,8 @@ platforms:
       pid_one_command: /bin/systemd
       intermediate_instructions:
         - RUN /usr/bin/apt-get update -y
+        - RUN /usr/bin/apt-get install -y eatmydata
+        - RUN echo libeatmydata.so >>/etc/ld.so.preload
   - name: ubuntu-22.04
     driver:
       image: dokken/ubuntu-22.04
@@ -43,6 +45,8 @@ platforms:
       pid_one_command: /bin/systemd
       intermediate_instructions:
         - RUN /usr/bin/apt-get update -y
+        - RUN /usr/bin/apt-get install -y eatmydata
+        - RUN echo libeatmydata.so >>/etc/ld.so.preload
   - name: debian-12
     driver:
       image: dokken/debian-12
@@ -50,6 +54,8 @@ platforms:
       pid_one_command: /bin/systemd
       intermediate_instructions:
         - RUN /usr/bin/apt-get update -y
+        - RUN /usr/bin/apt-get install -y eatmydata
+        - RUN echo libeatmydata.so >>/etc/ld.so.preload
 
 suites:
   - name: accounts
