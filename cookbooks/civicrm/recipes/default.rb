@@ -47,8 +47,12 @@ mysql_database "civicrm" do
   permissions "civicrm@localhost" => :all
 end
 
-wordpress_site "join.osmfoundation.org" do
-  aliases "crm.osmfoundation.org"
+apache_site "join.osmfoundation.org" do
+  action :disable
+end
+
+wordpress_site "supporting.openstreetmap.org" do
+  aliases ["join.osmfoundation.org", "crm.osmfoundation.org", "supporting.osmfoundation.org", "support.osmfoundation.org", "support.openstreetmap.org", "supporting.osm.org", "support.osm.org"]
   database_name "civicrm"
   database_user "civicrm"
   database_password database_password
@@ -57,24 +61,24 @@ wordpress_site "join.osmfoundation.org" do
 end
 
 wordpress_theme "osmblog-wp-theme" do
-  site "join.osmfoundation.org"
+  site "supporting.openstreetmap.org"
   repository "https://github.com/osmfoundation/osmblog-wp-theme.git"
 end
 
 wordpress_plugin "registration-honeypot" do
-  site "join.osmfoundation.org"
+  site "supporting.openstreetmap.org"
 end
 
 wordpress_plugin "contact-form-7" do
-  site "join.osmfoundation.org"
+  site "supporting.openstreetmap.org"
 end
 
 wordpress_plugin "civicrm-admin-utilities" do
-  site "join.osmfoundation.org"
+  site "supporting.openstreetmap.org"
 end
 
 civicrm_version = node[:civicrm][:version]
-civicrm_directory = "/srv/join.osmfoundation.org/wp-content/plugins/civicrm"
+civicrm_directory = "/srv/supporting.openstreetmap.org/wp-content/plugins/civicrm"
 
 directory "/opt/civicrm-#{civicrm_version}" do
   owner "wordpress"
@@ -127,13 +131,13 @@ execute "/opt/civicrm-#{civicrm_version}/civicrm" do
   subscribes :run, "archive_file[#{cache_dir}/civicrm-#{civicrm_version}-l10n.tar.gz]", :immediately
 end
 
-directory "/srv/join.osmfoundation.org/wp-content/uploads" do
+directory "/srv/supporting.openstreetmap.org/wp-content/uploads" do
   owner "www-data"
   group "www-data"
   mode "755"
 end
 
-extensions_directory = "/srv/join.osmfoundation.org/wp-content/plugins/civicrm-extensions"
+extensions_directory = "/srv/supporting.openstreetmap.org/wp-content/plugins/civicrm-extensions"
 
 directory extensions_directory do
   owner "wordpress"
@@ -162,12 +166,12 @@ settings = edit_file "#{civicrm_directory}/civicrm/templates/CRM/common/civicrm.
   line.gsub!(/%%dbHost%%/, "localhost")
   line.gsub!(/%%dbName%%/, "civicrm")
   line.gsub!(/%%crmRoot%%/, "#{civicrm_directory}/civicrm/")
-  line.gsub!(/%%templateCompileDir%%/, "/srv/join.osmfoundation.org/wp-content/uploads/civicrm/templates_c/")
-  line.gsub!(/%%baseURL%%/, "http://join.osmfoundation.org/")
+  line.gsub!(/%%templateCompileDir%%/, "/srv/supporting.openstreetmap.org/wp-content/uploads/civicrm/templates_c/")
+  line.gsub!(/%%baseURL%%/, "http://supporting.openstreetmap.org/")
   line.gsub!(/%%siteKey%%/, site_key)
   line.gsub!(/%%credKeys%%/, cred_keys)
   line.gsub!(/%%signKeys%%/, sign_keys)
-  line.gsub!(%r{// *define\('CIVICRM_CMSDIR', '/path/to/install/root/'\);}, "define('CIVICRM_CMSDIR', '/srv/join.osmfoundation.org');")
+  line.gsub!(%r{// *define\('CIVICRM_CMSDIR', '/path/to/install/root/'\);}, "define('CIVICRM_CMSDIR', '/srv/supporting.openstreetmap.org');")
 
   line
 end
@@ -181,12 +185,12 @@ end
 
 systemd_service "osmf-crm-jobs" do
   description "Run CRM jobs"
-  exec_start "/usr/bin/php #{civicrm_directory}/civicrm/bin/cli.php -s join.osmfoundation.org -u batch -p \"#{passwords['batch']}\" -e Job -a execute"
+  exec_start "/usr/bin/php #{civicrm_directory}/civicrm/bin/cli.php -s supporting.openstreetmap.org -u batch -p \"#{passwords['batch']}\" -e Job -a execute"
   user "www-data"
   sandbox :enable_network => true
   memory_deny_write_execute false
   restrict_address_families "AF_UNIX"
-  read_write_paths "/srv/join.osmfoundation.org/wp-content/uploads/civicrm"
+  read_write_paths "/srv/supporting.openstreetmap.org/wp-content/uploads/civicrm"
 end
 
 systemd_timer "osmf-crm-jobs" do
