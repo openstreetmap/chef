@@ -395,6 +395,14 @@ if node[:networking][:wireguard][:enabled]
   end
 end
 
+firewall_rule "accept-http-osm" do
+  action :accept
+  context :incoming
+  protocol :tcp
+  source :osm
+  dest_ports %w[http https]
+end
+
 firewall_rule "accept-http" do
   action :accept
   context :incoming
