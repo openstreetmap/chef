@@ -8,7 +8,7 @@ default_attributes(
     }
   },
   :exim => {
-    :local_domains => ["join.osmfoundation.org"],
+    :local_domains => ["join.osmfoundation.org", "supporting.openstreetmap.org"],
     :routes => {
       :join_return => {
         :comment => "return@join.osmfoundation.org",
@@ -21,6 +21,22 @@ default_attributes(
       :join_mail => {
         :comment => "mail@join.osmfoundation.org",
         :domains => ["join.osmfoundation.org"],
+        :local_parts => ["mail"],
+        :maildir => "/var/mail/crm-mail",
+        :user => "www-data",
+        :group => "mail"
+      },
+      :supporting_return => {
+        :comment => "return@supporting.openstreetmap.org",
+        :domains => ["supporting.osmfoundation.org"],
+        :local_parts => ["return"],
+        :maildir => "/var/mail/crm-return",
+        :user => "www-data",
+        :group => "mail"
+      },
+      :supporting_mail => {
+        :comment => "mail@supporting.openstreetmap.org",
+        :domains => ["supporting.openstreetmap.org"],
         :local_parts => ["mail"],
         :maildir => "/var/mail/crm-mail",
         :user => "www-data",
