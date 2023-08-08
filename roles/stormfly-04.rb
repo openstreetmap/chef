@@ -38,6 +38,9 @@ default_attributes(
     :postgis => "3",
     :flatnode_file => "/ssd/nominatim/nodes.store",
     :logdir => "/ssd/nominatim/log",
+    :api_flavour => "python",
+    :api_workers => 18,
+    :api_pool_size => 8,
     :fpm_pools => {
       "nominatim.openstreetmap.org" => {
         :max_children => 80
