@@ -1,8 +1,0 @@
-<?php
-$_DB_H = new mysqli('localhost','donate','<%= @passwords['database'] %>','donate');
-if ($_DB_H->connect_errno) {
-    die('DB Connect Error: ' . $_DB_H->connect_errno);
-}
-$_DB_H->report_mode = MYSQLI_REPORT_ERROR;
-$_DB_H->query('set @@sql_mode = \'\'');
-$_DB_H->query('SET NAMES \'utf8\'');

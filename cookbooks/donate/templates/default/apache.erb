@@ -18,61 +18,13 @@
   SSLEngine on
   SSLCertificateFile /etc/ssl/certs/donate.openstreetmap.org.pem
   SSLCertificateKeyFile /etc/ssl/private/donate.openstreetmap.org.key
-<% end -%>
+
+  RedirectMatch . https://supporting.openstreetmap.org/donate/
+  <% end -%>
 
   CustomLog /var/log/apache2/donate.openstreetmap.org-access.log combined
   ErrorLog /var/log/apache2/donate.openstreetmap.org-error.log
 
-  Options -Indexes
-
-  DocumentRoot /srv/donate.openstreetmap.org
-
-  # Alias Dynamic Content to data folder to avoid serving dummy git content
-  Alias /donors-eur.csv /srv/donate.openstreetmap.org/data/donors-eur.csv
-  Alias /donors.csv /srv/donate.openstreetmap.org/data/donors.csv
-
-  # Redirect previous compaigns to homepage
-  Redirect permanent /domain https://donate.openstreetmap.org/
-  Redirect permanent /memorial https://donate.openstreetmap.org/
-  Redirect permanent /server2011 https://donate.openstreetmap.org/
-  Redirect permanent /server2013 https://donate.openstreetmap.org/
-  Redirect permanent /server2015 https://donate.openstreetmap.org/
-
-  <Directory /srv/donate.openstreetmap.org>
-    Require all granted
-
-    <FilesMatch ".+\.ph(ar|p|tml)$">
-      SetHandler "proxy:unix:/run/php/php-donate.openstreetmap.org-fpm.sock|fcgi://127.0.0.1"
-    </FilesMatch>
-  </Directory>
-
-  <Directory /srv/donate.openstreetmap.org/scripts>
-    Require all denied
-  </Directory>
-
-  <Directory ~ "\.svn">
-    Require all denied
-  </Directory>
-
-  <Directory ~ "\.git">
-    Require all denied
-  </Directory>
-
-  <Files ~ "~$">
-    Require all denied
-  </Files>
-
-  # Enable deflate compression on .csv files if possible
-  <IfModule mod_deflate.c>
-    DeflateCompressionLevel 9
-    AddOutputFilterByType DEFLATE text/csv
-  </IfModule>
-
-  <IfModule mod_expires.c>
-    ExpiresDefault "access plus 15 minutes"
-    ExpiresByType text/html "access plus 5 minutes"
-    ExpiresByType text/csv "access plus 1 minute"
-  </IfModule>
 </VirtualHost>
 
 <% end -%>

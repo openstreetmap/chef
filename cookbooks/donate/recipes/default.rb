@@ -19,60 +19,9 @@
 
 include_recipe "accounts"
 include_recipe "apache"
-include_recipe "git"
-include_recipe "mysql"
 include_recipe "php::fpm"
 
-package %w[
-  php-cli
-  php-curl
-  php-mysql
-  php-gd
-]
-
 apache_module "headers"
-apache_module "proxy"
-apache_module "proxy_fcgi"
-
-passwords = data_bag_item("donate", "passwords")
-
-database_password = passwords["database"]
-
-mysql_user "donate@localhost" do
-  password database_password
-end
-
-mysql_database "donate" do
-  permissions "donate@localhost" => :all
-end
-
-directory "/srv/donate.openstreetmap.org" do
-  owner "donate"
-  group "donate"
-  mode "755"
-end
-
-git "/srv/donate.openstreetmap.org" do
-  action :sync
-  repository "https://github.com/osmfoundation/donation-drive.git"
-  depth 1
-  user "donate"
-  group "donate"
-end
-
-directory "/srv/donate.openstreetmap.org/data" do
-  owner "donate"
-  group "donate"
-  mode "755"
-end
-
-template "/srv/donate.openstreetmap.org/scripts/db-connect.inc.php" do
-  source "db-connect.inc.php.erb"
-  owner "root"
-  group "donate"
-  mode "644"
-  variables :passwords => passwords
-end
 
 ssl_certificate "donate.openstreetmap.org" do
   domains ["donate.openstreetmap.org", "donate.openstreetmap.com",
@@ -81,40 +30,21 @@ ssl_certificate "donate.openstreetmap.org" do
 end
 
 php_fpm "donate.openstreetmap.org" do
-  php_admin_values "open_basedir" => "/srv/donate.openstreetmap.org/:/usr/share/php/:/tmp/",
-                   "disable_functions" => "exec,shell_exec,system,passthru,popen,proc_open"
-  prometheus_port 11101
+  action :delete
 end
 
 apache_site "donate.openstreetmap.org" do
   template "apache.erb"
 end
 
-systemd_service "osmf-donate" do
-  description "Update donation list"
-  exec_start "/usr/bin/php /srv/donate.openstreetmap.org/scripts/update_csv_donate2016.php"
-  working_directory "/srv/donate.openstreetmap.org/scripts"
-  user "donate"
-  sandbox true
-  memory_deny_write_execute true
-  restrict_address_families "AF_UNIX"
-  read_write_paths "/srv/donate.openstreetmap.org/data"
-end
-
-systemd_timer "osmf-donate" do
-  description "Update donation list"
-  on_boot_sec "2m"
-  on_unit_inactive_sec "2m"
-end
-
 service "osmf-donate.timer" do
-  action [:enable, :start]
+  action [:stop, :disable]
 end
 
-template "/etc/cron.daily/osmf-donate-backup" do
-  source "backup.cron.erb"
-  owner "root"
-  group "root"
-  mode "750"
-  variables :passwords => passwords
+systemd_service "osmf-donate" do
+  action :delete
+end
+
+file "/etc/cron.daily/osmf-donate-backup" do
+  action :delete
 end
