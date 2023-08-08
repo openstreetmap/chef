@@ -49,7 +49,7 @@ default_attributes(
     :logdir => "/ssd/nominatim/log",
     :api_flavour => "python",
     :api_workers => 45,
-    :api_pool_size => 15,
+    :api_pool_size => 10,
     :fpm_pools => {
       "nominatim.openstreetmap.org" => {
         :max_children => 200
