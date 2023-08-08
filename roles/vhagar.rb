@@ -32,6 +32,9 @@ default_attributes(
   :nominatim => {
     :state => "standalone",
     :flatnode_file => "/srv/nominatim.openstreetmap.org/planet-project/nodes.store",
+    :api_flavour => "python",
+    :api_workers => 38,
+    :api_pool_size => 10,
     :fpm_pools => {
       "nominatim.openstreetmap.org" => {
         :max_children => 200
