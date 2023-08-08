@@ -48,7 +48,7 @@ default_attributes(
     :flatnode_file => "/ssd/nominatim/nodes.store",
     :logdir => "/ssd/nominatim/log",
     :api_flavour => "python",
-    :api_workers => 45,
+    :api_workers => 24,
     :api_pool_size => 10,
     :fpm_pools => {
       "nominatim.openstreetmap.org" => {
