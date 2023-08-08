@@ -47,6 +47,9 @@ default_attributes(
     :enable_qa_tiles => true,
     :flatnode_file => "/ssd/nominatim/nodes.store",
     :logdir => "/ssd/nominatim/log",
+    :api_flavour => "python",
+    :api_workers => 45,
+    :api_pool_size => 15,
     :fpm_pools => {
       "nominatim.openstreetmap.org" => {
         :max_children => 200
