@@ -2,5 +2,5 @@ source "https://rubygems.org"
 
 gem "cookstyle"
 gem "kitchen-dokken"
-gem "serverspec"
+gem "kitchen-inspec"
 gem "test-kitchen"

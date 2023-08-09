@@ -25,6 +25,7 @@ provisioner:
   clean_dokken_sandbox: true
 
 verifier:
+  name: inspec
   root_path: /opt/verifier
   sudo: false
 
