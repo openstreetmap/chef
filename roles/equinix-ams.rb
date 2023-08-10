@@ -26,6 +26,14 @@ default_attributes(
       }
     }
   },
+  :prometheus => {
+    :metrics => {
+      :host_location => {
+        :help => "Host location",
+        :labels => { :site => "amsterdam" }
+      }
+    }
+  },
   :web => {
     :fileserver => "ironbelly",
     :readonly_database_host => "snap-01.ams.openstreetmap.org",

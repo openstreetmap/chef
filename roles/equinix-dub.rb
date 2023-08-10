@@ -35,6 +35,14 @@ default_attributes(
       }
     }
   },
+  :prometheus => {
+    :metrics => {
+      :host_location => {
+        :help => "Host location",
+        :labels => { :site => "dublin" }
+      }
+    }
+  },
   :web => {
     :fileserver => "fafnir",
     :readonly_database_host => "snap-03.dub.openstreetmap.org"
