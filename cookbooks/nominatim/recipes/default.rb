@@ -121,6 +121,9 @@ end
 ## Nominatim backend
 
 include_recipe "git"
+include_recipe "python"
+
+python_directory = "#{basedir}/venv"
 
 package %w[
   build-essential
@@ -136,6 +139,7 @@ package %w[
   libproj-dev
   liblua5.3-dev
   libluajit-5.1-dev
+  libicu-dev
   lua5.3
   python3-pyosmium
   python3-psycopg2
@@ -148,6 +152,8 @@ package %w[
   python3-sqlalchemy-ext
   python3-geoalchemy2
   python3-asyncpg
+  python3-dev
+  pkg-config
   ruby
   ruby-file-tail
   ruby-pg
@@ -160,11 +166,55 @@ if node[:nominatim][:api_flavour] == "php"
     php-intl
   ]
 elsif node[:nominatim][:api_flavour] == "python"
-  package %w[
-    gunicorn
-    uvicorn
-    python3-falcon
-  ]
+
+  python_virtualenv python_directory do
+    interpreter "/usr/bin/python3"
+  end
+
+  python_package "SQLAlchemy" do
+    python_virtualenv python_directory
+    version "2.0.19"
+  end
+
+  python_package "PyICU" do
+    python_virtualenv python_directory
+    version "2.10.2"
+  end
+
+  python_package "psycopg[binary]" do
+    python_virtualenv python_directory
+    version "3.1.10"
+  end
+
+  python_package "psycopg2-binary" do
+    python_virtualenv python_directory
+    version "2.9.7"
+  end
+
+  python_package "python-dotenv" do
+    python_virtualenv python_directory
+    version "0.21.0"
+  end
+
+  python_package "PyYAML" do
+    python_virtualenv python_directory
+    version "6.0.1"
+  end
+
+  python_package "falcon" do
+    python_virtualenv python_directory
+    version "3.1.1"
+  end
+
+  python_package "uvicorn" do
+    python_virtualenv python_directory
+    version "0.23.2"
+  end
+
+  python_package "gunicorn" do
+    python_virtualenv python_directory
+    version "21.0.1"
+  end
 end
 
 source_directory = "#{basedir}/src/nominatim"
@@ -312,7 +362,7 @@ elsif node[:nominatim][:api_flavour] == "python"
     working_directory project_directory
     standard_output "append:#{node[:nominatim][:logdir]}/gunicorn.log"
     standard_error "inherit"
-    exec_start "/usr/bin/gunicorn -b unix:/run/gunicorn-nominatim.openstreetmap.org.sock -w #{node[:nominatim][:api_workers]} -k uvicorn.workers.UvicornWorker nominatim.server.falcon.server:run_wsgi"
+    exec_start "#{python_directory}/bin/gunicorn -b unix:/run/gunicorn-nominatim.openstreetmap.org.sock -w #{node[:nominatim][:api_workers]} -k uvicorn.workers.UvicornWorker nominatim.server.falcon.server:run_wsgi"
     exec_reload "/bin/kill -s HUP $MAINPID"
     environment :PYTHONPATH => "/usr/local/lib/nominatim/lib-python/"
     kill_mode "mixed"
