@@ -102,10 +102,11 @@ hooks:
           - sudo -H -E -u discourse git clone --depth 1 --branch main https://github.com/discourse/discourse-oauth2-basic.git
           - sudo -H -E -u discourse git clone --depth 1 --branch main https://github.com/discourse/discourse-solved.git
           - sudo -H -E -u discourse git clone --depth 1 --branch main https://github.com/discourse/discourse-canned-replies.git
-          - sudo -H -E -u discourse git clone --depth 1 --branch main https://github.com/discourse/discourse-reactions.git
+          - sudo -H -E -u discourse git clone --depth 1 --branch main https://github.com/Firefishy/discourse-reactions.git
           - sudo -H -E -u discourse git clone --depth 1 --branch main https://github.com/discourse/discourse-prometheus.git
           - sudo -H -E -u discourse git clone --depth 1 --branch main https://github.com/discourse/discourse-translator.git
           - sudo -H -E -u discourse git clone --depth 1 --branch main https://github.com/discourse/discourse-saved-searches.git
+          - sudo -H -E -u discourse git clone --depth 1 --branch main https://github.com/discourse/discourse-post-voting.git
     - exec:
         # Needs to be copied in else builtin git cleanup fails
         cd: $home
