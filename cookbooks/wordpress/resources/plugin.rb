@@ -68,6 +68,7 @@ action :create do
     user "www-data"
     group "www-data"
     not_if "/opt/wp-cli/wp --path='#{site_directory}' plugin is-active '#{new_resource.plugin}'"
+    ignore_failure plugin_repository.start_with?("https://plugins.svn.wordpress.org/")
   end
 end
 
