@@ -47,12 +47,20 @@ mysql_database "civicrm" do
   permissions "civicrm@localhost" => :all
 end
 
+ssl_certificate "join.osmfoundation.org" do
+  domains [ "join.osmfoundation.org", "crm.osmfoundation.org",
+            "supporting.osmfoundation.org", "support.osmfoundation.org",
+            "support.openstreetmap.org", "supporting.osm.org",
+            "support.osm.org"]
+  notifies :reload, "service[apache2]"
+end
+
 apache_site "join.osmfoundation.org" do
-  action :disable
+  template "apache.erb"
 end
 
 wordpress_site "supporting.openstreetmap.org" do
-  aliases ["join.osmfoundation.org", "crm.osmfoundation.org", "supporting.osmfoundation.org", "support.osmfoundation.org", "support.openstreetmap.org", "supporting.osm.org", "support.osm.org"]
+  # Do not add aliases as this causes issues with civicrm PHP sessions
   database_name "civicrm"
   database_user "civicrm"
   database_password database_password
