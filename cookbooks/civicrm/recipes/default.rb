@@ -60,7 +60,8 @@ apache_site "join.osmfoundation.org" do
 end
 
 wordpress_site "supporting.openstreetmap.org" do
-  # Do not add aliases as this causes issues with civicrm PHP sessions
+  # Do not add extra aliases as this causes issues with civicrm PHP sessions
+  aliases ["supporting.osmfoundation.org"]
   database_name "civicrm"
   database_user "civicrm"
   database_password database_password
