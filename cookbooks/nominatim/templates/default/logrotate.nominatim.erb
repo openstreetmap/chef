@@ -20,6 +20,7 @@
 <% if node[:nominatim][:api_flavour] == "python" %>
   postrotate
         systemctl reload nominatim.service
+  endscript
 <% end -%>
   create 640 www-data adm
 }
