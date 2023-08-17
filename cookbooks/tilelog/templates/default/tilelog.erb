@@ -20,7 +20,8 @@ HOSTFILE="hosts-${DATE}.csv"
 APPFILE="apps-${DATE}.csv"
 COUNTRYFILE="countries-${DATE}.csv"
 
-nice -n 19 /opt/tilelog/bin/tilelog --date "${DATE}" --generate-success \
+nice -n 19 /opt/tilelog/bin/tilelog --date "${DATE}" \
+  --generate-success --generate-minimise --generate-location \
   --tile "${TILEFILE}" --host "${HOSTFILE}" --app "${APPFILE}" --country "${COUNTRYFILE}"
 
 mv "${TILEFILE}" "${HOSTFILE}" "${APPFILE}" "${COUNTRYFILE}" "${OUTDIR}"
