@@ -320,7 +320,7 @@ systemd_service "replication-hourly" do
 end
 
 systemd_timer "replication-hourly" do
-  description "Daily replication"
+  description "Hourly replication"
   on_calendar "*-*-* *:02/15:00"
 end
 
