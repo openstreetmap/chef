@@ -49,21 +49,20 @@ mysql_database "civicrm" do
   permissions "civicrm@localhost" => :all
 end
 
-ssl_certificate "join.osmfoundation.org" do
-  domains [ "join.osmfoundation.org", "crm.osmfoundation.org",
-            "supporting.osmfoundation.org", "support.osmfoundation.org",
-            "support.openstreetmap.org", "supporting.osm.org",
-            "support.osm.org"]
-  notifies :reload, "service[apache2]"
-end
-
-apache_site "join.osmfoundation.org" do
-  template "apache.erb"
-end
-
 wordpress_site "supporting.openstreetmap.org" do
-  # Do not add aliases these can causes issues with civicrm PHP sessions
-  # Use redirects instead
+  aliases %w[
+    crm.osmfoundation.org
+    donate.openstreetmap.org
+    donate.openstreetmap.com
+    donate.openstreetmap.net
+    donate.osm.org
+    join.osmfoundation.org
+    supporting.osmfoundation.org
+    support.osmfoundation.org
+    support.openstreetmap.org
+    supporting.osm.org
+    support.osm.org
+  ]
   database_name "civicrm"
   database_user "civicrm"
   database_password database_password
