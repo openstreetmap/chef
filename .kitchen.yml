@@ -138,9 +138,6 @@ suites:
   - name: docker
     run_list:
       - recipe[docker::default]
-  - name: donate
-    run_list:
-      - recipe[donate::default]
   - name: elasticsearch
     run_list:
       - recipe[elasticsearch::default]

@@ -34,7 +34,6 @@ jobs:
           - dmca
           - dns
           - docker
-          - donate
           - elasticsearch
           - exim
           - fail2ban
