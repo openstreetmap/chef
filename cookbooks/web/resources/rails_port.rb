@@ -61,8 +61,8 @@ property :google_auth_secret, String
 property :google_openid_realm, String
 property :facebook_auth_id, String
 property :facebook_auth_secret, String
-property :windowslive_auth_id, String
-property :windowslive_auth_secret, String
+property :microsoft_auth_id, String
+property :microsoft_auth_secret, String
 property :github_auth_id, String
 property :github_auth_secret, String
 property :wikipedia_auth_id, String
@@ -241,9 +241,9 @@ action :create do
       line.gsub!(/^( *)#facebook_auth_secret:.*$/, "\\1facebook_auth_secret: \"#{new_resource.facebook_auth_secret}\"")
     end
 
-    if new_resource.windowslive_auth_id
-      line.gsub!(/^( *)#windowslive_auth_id:.*$/, "\\1windowslive_auth_id: \"#{new_resource.windowslive_auth_id}\"")
-      line.gsub!(/^( *)#windowslive_auth_secret:.*$/, "\\1windowslive_auth_secret: \"#{new_resource.windowslive_auth_secret}\"")
+    if new_resource.microsoft_auth_id
+      line.gsub!(/^( *)#microsoft_auth_id:.*$/, "\\1microsoft_auth_id: \"#{new_resource.microsoft_auth_id}\"")
+      line.gsub!(/^( *)#microsoft_auth_secret:.*$/, "\\1microsoft_auth_secret: \"#{new_resource.microsoft_auth_secret}\"")
     end
 
     if new_resource.github_auth_id
@@ -314,8 +314,8 @@ action :create do
     "google_openid_realm",
     "facebook_auth_id",
     "facebook_auth_secret",
-    "windowslive_auth_id",
-    "windowslive_auth_secret",
+    "microsoft_auth_id",
+    "microsoft_auth_secret",
     "github_auth_id",
     "github_auth_secret",
     "wikipedia_auth_id",
