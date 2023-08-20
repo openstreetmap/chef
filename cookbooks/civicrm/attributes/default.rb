@@ -46,4 +46,4 @@ default[:civicrm][:extensions][:osmfverifycontributor][:revision] = "bb0cd617830
 
 default[:civicrm][:extensions][:civisualize][:name] = "org.civicoop.civisualize"
 default[:civicrm][:extensions][:civisualize][:repository] = "https://lab.civicrm.org/extensions/civisualize.git"
-default[:civicrm][:extensions][:civisualize][:revision] = "6.1"
+default[:civicrm][:extensions][:civisualize][:revision] = "v6.1"
