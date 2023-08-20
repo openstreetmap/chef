@@ -43,3 +43,7 @@ default[:civicrm][:extensions][:membershipextra][:revision] = "1593911d6bfe184b4
 default[:civicrm][:extensions][:osmfverifycontributor][:name] = "osmf-verify-contributor"
 default[:civicrm][:extensions][:osmfverifycontributor][:repository] = "https://github.com/openstreetmap/osmf-verify-contributor.git"
 default[:civicrm][:extensions][:osmfverifycontributor][:revision] = "bb0cd61783033fb2e108c30e47224e5a818987f8"
+
+default[:civicrm][:extensions][:civisualize][:name] = "org.civicoop.civisualize"
+default[:civicrm][:extensions][:civisualize][:repository] = "https://lab.civicrm.org/extensions/civisualize.git"
+default[:civicrm][:extensions][:civisualize][:revision] = "6.1"
