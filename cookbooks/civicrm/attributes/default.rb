@@ -1,4 +1,4 @@
-default[:civicrm][:version] = "5.64.0"
+default[:civicrm][:version] = "5.64.1"
 
 default[:civicrm][:extensions][:cividiscount][:name] = "org.civicrm.module.cividiscount"
 default[:civicrm][:extensions][:cividiscount][:repository] = "https://lab.civicrm.org/extensions/cividiscount.git"
