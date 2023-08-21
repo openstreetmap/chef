@@ -44,6 +44,5 @@ run_list(
   "role[stateofthemap]",
   "role[blog]",
   "role[otrs]",
-  "recipe[dmca]",
   "recipe[dhcpd]"
 )

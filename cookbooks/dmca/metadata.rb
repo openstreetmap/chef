@@ -6,5 +6,4 @@ description       "Configure DMCA form"
 
 version           "1.0.0"
 supports          "ubuntu"
-depends           "apache"
-depends           "php"
+depends           "podman"

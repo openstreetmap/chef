@@ -44,5 +44,6 @@ run_list(
   "recipe[foundation::welcome]",
   "recipe[stateofthemap::container]",
   "recipe[hot]",
-  "recipe[ideditor]"
+  "recipe[ideditor]",
+  "recipe[dmca]"
 )
