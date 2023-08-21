@@ -22,7 +22,7 @@ default_attributes(
     }
   },
   :memcached => {
-    :memory_limit => 4096
+    :memory_limit => 8192
   },
   :passenger => {
     :max_pool_size => 50
