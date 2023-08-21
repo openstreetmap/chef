@@ -31,7 +31,10 @@ end
 wordpress_site "blog.openstreetmap.org" do
   aliases ["blog.osm.org", "blog.openstreetmap.com",
            "blog.openstreetmap.net", "blog.openstreetmaps.org",
-           "blog.osmfoundation.org"]
+           "blog.osmfoundation.org",
+           "opengeodata.org", "www.opengeodata.org",
+           "old.opengeodata.org" # https://blog.openstreetmap.org/2010/02/25/old-opengeodata-posts-now-up-at-old-opengeodata-org/
+          ]
   directory "/srv/blog.openstreetmap.org/wp"
   database_name "osm-blog"
   database_user "osm-blog-user"
@@ -124,13 +127,7 @@ git "/srv/blog.openstreetmap.org/static" do
 end
 
 ssl_certificate "opengeodata.org" do
-  domains ["opengeodata.org", "www.opengeodata.org", "old.opengeodata.org"]
-  notifies :reload, "service[apache2]"
-end
-
-apache_site "opengeodata.org" do
-  template "opengeodata.erb"
-  directory "/srv/opengeodata.org"
+  action :delete
 end
 
 template "/etc/cron.daily/blog-backup" do
