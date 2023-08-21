@@ -693,14 +693,14 @@ groups:
   - name: taginfo
     rules:
       - alert: taginfo planet age
-        expr: time() - taginfo_data_from_seconds > 129600
+        expr: time() - taginfo_data_from_seconds > 129600 and on (instance) chef_role{name="taginfo"}
         for: 0m
         labels:
           alertgroup: taginfo
         annotations:
           age: "{{ $value | humanizeDuration }}"
       - alert: taginfo database age
-        expr: time() - taginfo_database_update_finish_seconds > 129600
+        expr: time() - taginfo_database_update_finish_seconds > 129600 and on (instance) chef_role{name="taginfo"}
         for: 0m
         labels:
           alertgroup: taginfo
