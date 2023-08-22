@@ -75,6 +75,11 @@ wordpress_theme "osmblog-wp-theme" do
   repository "https://github.com/osmfoundation/osmblog-wp-theme.git"
 end
 
+wordpress_plugin "civicrm-wp-piwik" do
+  plugin "wp-piwik"
+  site "supporting.openstreetmap.org"
+end
+
 wordpress_plugin "registration-honeypot" do
   site "supporting.openstreetmap.org"
 end
