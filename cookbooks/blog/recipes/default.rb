@@ -126,10 +126,6 @@ git "/srv/blog.openstreetmap.org/static" do
   group "wordpress"
 end
 
-ssl_certificate "opengeodata.org" do
-  action :delete
-end
-
 template "/etc/cron.daily/blog-backup" do
   source "backup.cron.erb"
   owner "root"
