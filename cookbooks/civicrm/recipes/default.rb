@@ -72,7 +72,7 @@ end
 
 wordpress_theme "osmblog-wp-theme" do
   site "supporting.openstreetmap.org"
-  repository "https://github.com/osmfoundation/osmblog-wp-theme.git"
+  action :delete
 end
 
 wordpress_plugin "civicrm-wp-piwik" do
