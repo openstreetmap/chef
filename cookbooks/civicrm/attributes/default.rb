@@ -44,6 +44,6 @@ default[:civicrm][:extensions][:osmfverifycontributor][:name] = "osmf-verify-con
 default[:civicrm][:extensions][:osmfverifycontributor][:repository] = "https://github.com/openstreetmap/osmf-verify-contributor.git"
 default[:civicrm][:extensions][:osmfverifycontributor][:revision] = "bb0cd61783033fb2e108c30e47224e5a818987f8"
 
-default[:civicrm][:extensions][:civisualize][:name] = "nz.co.fuzion.omnipaymultiprocessor
-default[:civicrm][:extensions][:civisualize][:repository] = "https://github.com/eileenmcnaughton/nz.co.fuzion.omnipaymultiprocessor.git"
-default[:civicrm][:extensions][:civisualize][:revision] = "3.19"
+default[:civicrm][:extensions][:civisualize][:name] = "org.civicoop.civisualize"
+default[:civicrm][:extensions][:civisualize][:repository] = "https://lab.civicrm.org/extensions/civisualize.git"
+default[:civicrm][:extensions][:civisualize][:revision] = "v6.1"
