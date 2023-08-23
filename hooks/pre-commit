@@ -15,11 +15,7 @@ if IO.popen(["git", "ls-files", "--unmerged"]).read.empty?
     file =~ /\.rb$/ || (file !~ /\.erb$/ && %x(file --brief --mime-type #{file}) == "text/x-ruby\n")
   end
 
-  ok &&= system("bundle", "exec", "rubocop", *ruby_files) unless ruby_files.empty?
-
-  cookbooks = files.grep(%r{(cookbooks/[^/]+)/}) { Regexp.last_match(1) }.uniq
-
-  ok &&= system("bundle", "exec", "foodcritic", *cookbooks) unless cookbooks.empty?
+  ok &&= system("bundle", "exec", "cookstyle", *ruby_files) unless ruby_files.empty?
 
   system("git", "stash", "pop", "--quiet") if need_stash
 else
