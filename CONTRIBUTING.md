@@ -18,7 +18,7 @@ Your pull requests will then be reviewed and discussed.
 The following guidelines are to help set up and run these checks locally:
 
 #### **1. Install Docker**
-- Visit [Docker's official site](https://www.docker.com/products/docker-desktop) to download and install Docker Desktop for Mac.
+- Visit [Docker's official site](https://www.docker.com/products/docker-desktop) to download and install Docker.
 
 #### **2. Install Homebrew (Apple MacOS only)**
 - Install Homebrew by following the instructions [here](https://brew.sh/).
