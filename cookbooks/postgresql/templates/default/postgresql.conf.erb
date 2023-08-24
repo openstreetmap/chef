@@ -89,6 +89,7 @@ restore_command = '<%= @settings[:restore_command] || @defaults[:restore_command
 
 max_wal_senders = <%= @settings[:max_wal_senders] || @defaults[:max_wal_senders] %>
 max_replication_slots = <%= @settings[:max_replication_slots] || @defaults[:max_replication_slots] %>
+wal_keep_size = <%= @settings[:wal_keep_size] || @defaults[:wal_keep_size] %>
 
 # - Standby Servers -
 
