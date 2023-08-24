@@ -37,9 +37,10 @@ We use the 'Organization Repository' approach, where we have all our cookbooks i
 
 # Contributing
 
-Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for more details.
+Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for more details. The guide also includes details on how to run the tests locally.
 
 # Contact Us
 
 * Twitter: [@OSM_Tech](https://twitter.com/OSM_Tech)
+* Mastodon / Fediverse: [@OSM_Tech](https://en.osm.town/@osm_tech)
 * IRC: [#OSM-Dev on irc.oftc.net](https://irc.openstreetmap.org/)
