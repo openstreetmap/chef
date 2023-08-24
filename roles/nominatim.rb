@@ -28,7 +28,7 @@ default_attributes(
         :autovacuum_max_workers => "1",
         :max_parallel_workers_per_gather => "0",
         :maintenance_work_mem => "10GB",
-        :seq_page_cost => "2.0",
+        :seq_page_cost => "3.0",
         :random_page_cost => "3.0",
         :effective_cache_size => "60GB",
         :wal_level => "minimal",
