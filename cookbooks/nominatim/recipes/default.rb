@@ -140,6 +140,7 @@ package %w[
   liblua5.3-dev
   libluajit-5.1-dev
   libicu-dev
+  nlohmann-json3-dev
   lua5.3
   python3-pyosmium
   python3-psycopg2
