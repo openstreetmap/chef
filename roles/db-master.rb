@@ -6,7 +6,8 @@ default_attributes(
     :settings => {
       :defaults => {
         :archive_mode => "on",
-        :archive_command => "/usr/local/bin/openstreetmap-wal-g wal-push %p --walg-prevent-wal-overwrite=true"
+        :archive_command => "/usr/local/bin/openstreetmap-wal-g wal-push %p --walg-prevent-wal-overwrite=true",
+        :wal_keep_size => "16384"
       }
     }
   }
