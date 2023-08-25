@@ -17,6 +17,8 @@ default[:nominatim][:qa_revision] = "main"
 default[:nominatim][:api_flavour] = "php"
 default[:nominatim][:api_workers] = 10
 default[:nominatim][:api_pool_size] = 10
+default[:nominatim][:api_query_timeout] = 5
+default[:nominatim][:api_request_timeout] = 20
 
 default[:nominatim][:fpm_pools] = {
   "nominatim.openstreetmap.org" => {

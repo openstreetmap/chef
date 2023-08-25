@@ -310,7 +310,9 @@ template "#{project_directory}/.env" do
             :log_file => "#{node[:nominatim][:logdir]}/query.log",
             :tokenizer => node[:nominatim][:config][:tokenizer],
             :forward_dependencies => node[:nominatim][:config][:forward_dependencies],
-            :pool_size => node[:nominatim][:api_pool_size]
+            :pool_size => node[:nominatim][:api_pool_size],
+            :query_timeout => node[:nominatim][:api_query_timeout],
+            :request_timeout => node[:nominatim][:api_request_timeout]
 end
 
 remote_file "#{project_directory}/wikimedia-importance.sql.gz" do
