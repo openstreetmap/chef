@@ -56,57 +56,63 @@ directory "/opt/prometheus-server" do
   mode "755"
 end
 
-remote_file "#{cache_dir}/prometheus.linux-amd64.tar.gz" do
-  source "https://github.com/prometheus/prometheus/releases/download/v#{prometheus_version}/prometheus-#{prometheus_version}.linux-amd64.tar.gz"
+prometheus_arch = if arm?
+                    "arm64"
+                  else
+                    "amd64"
+                  end
+
+remote_file "#{cache_dir}/prometheus.linux.tar.gz" do
+  source "https://github.com/prometheus/prometheus/releases/download/v#{prometheus_version}/prometheus-#{prometheus_version}.linux-#{prometheus_arch}.tar.gz"
   owner "root"
   group "root"
   mode "644"
   backup false
 end
 
-archive_file "#{cache_dir}/prometheus.linux-amd64.tar.gz" do
+archive_file "#{cache_dir}/prometheus.linux.tar.gz" do
   action :nothing
   destination "/opt/prometheus-server/prometheus"
   overwrite true
   strip_components 1
   owner "root"
   group "root"
-  subscribes :extract, "remote_file[#{cache_dir}/prometheus.linux-amd64.tar.gz]", :immediately
+  subscribes :extract, "remote_file[#{cache_dir}/prometheus.linux.tar.gz]", :immediately
 end
 
-remote_file "#{cache_dir}/alertmanager.linux-amd64.tar.gz" do
-  source "https://github.com/prometheus/alertmanager/releases/download/v#{alertmanager_version}/alertmanager-#{alertmanager_version}.linux-amd64.tar.gz"
+remote_file "#{cache_dir}/alertmanager.linux.tar.gz" do
+  source "https://github.com/prometheus/alertmanager/releases/download/v#{alertmanager_version}/alertmanager-#{alertmanager_version}.linux-#{prometheus_arch}.tar.gz"
   owner "root"
   group "root"
   mode "644"
   backup false
 end
 
-archive_file "#{cache_dir}/alertmanager.linux-amd64.tar.gz" do
+archive_file "#{cache_dir}/alertmanager.linux.tar.gz" do
   action :nothing
   destination "/opt/prometheus-server/alertmanager"
   overwrite true
   strip_components 1
   owner "root"
   group "root"
-  subscribes :extract, "remote_file[#{cache_dir}/alertmanager.linux-amd64.tar.gz]", :immediately
+  subscribes :extract, "remote_file[#{cache_dir}/alertmanager.linux.tar.gz]", :immediately
 end
 
-remote_file "#{cache_dir}/karma-linux-amd64.tar.gz" do
-  source "https://github.com/prymitive/karma/releases/download/v#{karma_version}/karma-linux-amd64.tar.gz"
+remote_file "#{cache_dir}/karma-linux.tar.gz" do
+  source "https://github.com/prymitive/karma/releases/download/v#{karma_version}/karma-linux-#{prometheus_arch}.tar.gz"
   owner "root"
   group "root"
   mode "644"
   backup false
 end
 
-archive_file "#{cache_dir}/karma-linux-amd64.tar.gz" do
+archive_file "#{cache_dir}/karma-linux.tar.gz" do
   action :nothing
   destination "/opt/prometheus-server/karma"
   overwrite true
   owner "root"
   group "root"
-  subscribes :extract, "remote_file[#{cache_dir}/karma-linux-amd64.tar.gz]", :immediately
+  subscribes :extract, "remote_file[#{cache_dir}/karma-linux.tar.gz]", :immediately
 end
 
 search(:node, "roles:gateway") do |gateway|
@@ -238,7 +244,7 @@ service "prometheus" do
   action [:enable, :start]
   subscribes :reload, "template[/etc/prometheus/prometheus.yml]"
   subscribes :reload, "template[/etc/prometheus/alert_rules.yml]"
-  subscribes :restart, "archive_file[#{cache_dir}/prometheus.linux-amd64.tar.gz]"
+  subscribes :restart, "archive_file[#{cache_dir}/prometheus.linux.tar.gz]"
 end
 
 systemd_service "prometheus-alertmanager" do
@@ -273,7 +279,7 @@ service "prometheus-alertmanager" do
   action [:enable, :start]
   subscribes :reload, "template[/etc/prometheus/alertmanager.yml]"
   subscribes :restart, "systemd_service[prometheus-alertmanager]"
-  subscribes :restart, "archive_file[#{cache_dir}/alertmanager.linux-amd64.tar.gz]"
+  subscribes :restart, "archive_file[#{cache_dir}/alertmanager.linux.tar.gz]"
 end
 
 directory "/etc/amtool" do
@@ -303,7 +309,7 @@ end
 systemd_service "prometheus-karma" do
   description "Alert dashboard for Prometheus Alertmanager"
   user "prometheus"
-  exec_start "/opt/prometheus-server/karma/karma-linux-amd64 --config.file=/etc/prometheus/karma.yml"
+  exec_start "/opt/prometheus-server/karma/karma-linux-#{prometheus_arch} --config.file=/etc/prometheus/karma.yml"
   sandbox :enable_network => true
   restart "on-failure"
 end
@@ -311,7 +317,7 @@ end
 service "prometheus-karma" do
   action [:enable, :start]
   subscribes :restart, "template[/etc/prometheus/karma.yml]"
-  subscribes :restart, "archive_file[#{cache_dir}/karma-linux-amd64.tar.gz]"
+  subscribes :restart, "archive_file[#{cache_dir}/karma-linux.tar.gz]"
   subscribes :restart, "systemd_service[prometheus-karma]"
 end
 
