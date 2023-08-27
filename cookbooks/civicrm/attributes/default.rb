@@ -1,4 +1,4 @@
-default[:civicrm][:version] = "5.64.1"
+default[:civicrm][:version] = "5.64.2"
 
 # was used for SotM
 default[:civicrm][:extensions][:cividiscount][:name] = "org.civicrm.module.cividiscount"
@@ -11,9 +11,10 @@ default[:civicrm][:extensions][:emailapi][:repository] = "https://lab.civicrm.or
 default[:civicrm][:extensions][:emailapi][:revision] = "2.9"
 
 # fancy email templates
-default[:civicrm][:extensions][:mosaico][:name] = "uk.co.vedaconsulting.mosaico"
-default[:civicrm][:extensions][:mosaico][:repository] = "https://github.com/veda-consulting-company/uk.co.vedaconsulting.mosaico.git"
-default[:civicrm][:extensions][:mosaico][:revision] = "3.2"
+# Do not update from git! See https://civicrm.stackexchange.com/questions/25763/mosaico-packages-are-missing-beta-4
+#default[:civicrm][:extensions][:mosaico][:name] = "uk.co.vedaconsulting.mosaico"
+#default[:civicrm][:extensions][:mosaico][:repository] = "https://github.com/veda-consulting-company/uk.co.vedaconsulting.mosaico.git"
+#default[:civicrm][:extensions][:mosaico][:revision] = "3.2"
 
 # validate that osm username exists, simple check
 default[:civicrm][:extensions][:username][:name] = "org.openstreetmap.username"
