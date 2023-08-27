@@ -161,12 +161,32 @@ directory extensions_directory do
 end
 
 node[:civicrm][:extensions].each_value do |details|
-  git "#{extensions_directory}/#{details[:name]}" do
-    action :sync
-    repository details[:repository]
-    revision details[:revision]
-    user "wordpress"
-    group "wordpress"
+  if details[:repository]
+    git "#{extensions_directory}/#{details[:name]}" do
+      action :sync
+      repository details[:repository]
+      revision details[:revision]
+      user "wordpress"
+      group "wordpress"
+    end
+  elsif details[:zip]
+    remote_file "#{cache_dir}/#{details[:name]}.zip" do
+      source details[:zip]
+      owner "root"
+      group "root"
+      mode "644"
+      backup false
+    end
+
+    archive_file "#{cache_dir}/#{details[:name]}.zip" do
+      action :nothing
+      destination "#{extensions_directory}/#{details[:name]}"
+      strip_components 1
+      owner "wordpress"
+      group "wordpress"
+      overwrite true
+      subscribes :extract, "remote_file[#{cache_dir}/#{details[:name]}.zip]", :immediately
+    end
   end
 end
 
