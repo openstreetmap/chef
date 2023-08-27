@@ -86,6 +86,10 @@ property :trace_image_storage_url, String
 property :trace_icon_storage_url, String
 property :tile_cdn_url, String
 property :imagery_blacklist, Array
+property :signup_ip_per_day, Integer
+property :signup_ip_max_burst, Integer
+property :signup_email_per_day, Integer
+property :signup_email_max_burst, Integer
 
 action :create do
   package %W[
@@ -336,7 +340,11 @@ action :create do
     "trace_image_storage_url",
     "trace_icon_storage_url",
     "tile_cdn_url",
-    "imagery_blacklist"
+    "imagery_blacklist",
+    "signup_ip_per_day",
+    "signup_ip_max_burst",
+    "signup_email_per_day",
+    "signup_email_max_burst"
   ).compact.merge(
     "server_protocol" => "https",
     "server_url" => new_resource.site,

@@ -143,6 +143,10 @@ rails_port "www.openstreetmap.org" do
   trace_image_storage_url "https://openstreetmap-gps-images.s3.dualstack.eu-west-1.amazonaws.com"
   overpass_url "https://query.openstreetmap.org/query-features"
   overpass_credentials true
+  signup_ip_per_day 24
+  signup_ip_max_burst 48
+  signup_email_per_day 1
+  signup_email_max_burst 2
   imagery_blacklist [
     # Current Google imagery URLs have google or googleapis in the domain
     ".*\\.google(apis)?\\..*/.*",
