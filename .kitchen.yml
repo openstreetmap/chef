@@ -32,7 +32,7 @@ verifier:
 platforms:
   - name: ubuntu-20.04
     driver:
-      image: dokken/ubuntu-20.04
+      image: ghcr.io/test-kitchen/dokken/ubuntu-20.04:latest
       privileged: true
       pid_one_command: /bin/systemd
       intermediate_instructions:
@@ -41,7 +41,7 @@ platforms:
         - RUN echo libeatmydata.so >>/etc/ld.so.preload
   - name: ubuntu-22.04
     driver:
-      image: dokken/ubuntu-22.04
+      image: ghcr.io/test-kitchen/dokken/ubuntu-22.04:latest
       privileged: true
       pid_one_command: /bin/systemd
       intermediate_instructions:
@@ -50,7 +50,7 @@ platforms:
         - RUN echo libeatmydata.so >>/etc/ld.so.preload
   - name: debian-12
     driver:
-      image: dokken/debian-12
+      image: ghcr.io/test-kitchen/dokken/debian-12:latest
       privileged: true
       pid_one_command: /bin/systemd
       intermediate_instructions:
