@@ -83,3 +83,26 @@ postgresql_extension "btree_gist" do
   database "openstreetmap"
   only_if { node[:postgresql][:clusters][node[:db][:cluster]] && node[:postgresql][:clusters][node[:db][:cluster]][:version] >= 9.0 }
 end
+
+cookbook_file "/usr/local/share/monthly-reindex.sql" do
+  owner "root"
+  group "root"
+  mode "644"
+end
+
+systemd_service "monthly-reindex" do
+  description "Monthly database reindex"
+  exec_start "/usr/bin/psql -f /usr/local/share/monthly-reindex.sql openstreetmap"
+  user "postgres"
+  sandbox true
+  restrict_address_families "AF_UNIX"
+end
+
+systemd_timer "monthly-reindex" do
+  description "Monthly database reindex"
+  on_calendar "Sun *-*-1..7 02:00"
+end
+
+service "monthly-reindex.timer" do
+  action [:enable, :start]
+end

@@ -18,3 +18,7 @@
 #
 
 include_recipe "db::base"
+
+service "monthly-reindex.timer" do
+  action [:disable, :stop]
+end
