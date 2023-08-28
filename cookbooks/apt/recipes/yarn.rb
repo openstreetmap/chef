@@ -23,5 +23,5 @@ apt_repository "yarn" do
   uri "https://dl.yarnpkg.com/debian"
   distribution "stable"
   components ["main"]
-  key "23E7166788B63E1E"
+  key "1646B01B86E50310"
 end
