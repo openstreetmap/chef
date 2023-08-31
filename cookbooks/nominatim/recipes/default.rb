@@ -174,7 +174,7 @@ elsif node[:nominatim][:api_flavour] == "python"
 
   python_package "SQLAlchemy" do
     python_virtualenv python_directory
-    version "2.0.19"
+    version "2.0.20"
   end
 
   python_package "PyICU" do
@@ -195,6 +195,11 @@ elsif node[:nominatim][:api_flavour] == "python"
   python_package "python-dotenv" do
     python_virtualenv python_directory
     version "0.21.0"
+  end
+
+  python_package "pygments" do
+    python_virtualenv python_directory
+    version "2.16.1"
   end
 
   python_package "PyYAML" do
