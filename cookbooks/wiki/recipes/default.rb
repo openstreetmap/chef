@@ -30,7 +30,8 @@ end
 mediawiki_site "wiki.openstreetmap.org" do
   aliases ["wiki.osm.org", "wiki.openstreetmap.com", "wiki.openstreetmap.net",
            "wiki.openstreetmap.ca", "wiki.openstreetmap.eu",
-           "wiki.openstreetmap.pro", "wiki.openstreetmaps.org"]
+           "wiki.openstreetmap.pro", "wiki.openstreetmaps.org",
+           "osm.wiki", "www.osm.wiki", "wiki.osm.wiki"]
   directory "/srv/wiki.openstreetmap.org"
 
   fpm_max_children 50
