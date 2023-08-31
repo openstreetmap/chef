@@ -35,6 +35,8 @@ default_attributes(
     :api_flavour => "python",
     :api_workers => 24,
     :api_pool_size => 10,
+    :api_query_timeout => 3,
+    :api_request_timeout => 10,
     :fpm_pools => {
       "nominatim.openstreetmap.org" => {
         :max_children => 200
