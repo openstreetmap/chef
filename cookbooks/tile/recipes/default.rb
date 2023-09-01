@@ -555,7 +555,6 @@ systemd_service "expire-tiles" do
   user "_renderd"
   exec_start "/usr/local/bin/expire-tiles"
   nice 10
-  standard_output "null"
   sandbox true
   read_write_paths tile_directories + [
     "/store/database/nodes",

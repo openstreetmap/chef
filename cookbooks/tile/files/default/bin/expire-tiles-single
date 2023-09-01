@@ -80,9 +80,10 @@ def xyz_to_meta(x, y, z, meta_size):
 def expire_meta(meta):
     """Expire the meta tile by setting the modified time back.
     """
-    if os.path.exists(meta):
-        print("Expiring " + meta)
+    exists = os.path.exists(meta)
+    if exists:
         os.utime(meta, (EXPIRY_TIME, EXPIRY_TIME))
+    return exists
 
 
 def expire_meta_tiles(options):
@@ -106,8 +107,11 @@ def expire_meta_tiles(options):
             new_set.add((int(xy[0]/2), int(xy[1]/2), xy[2] - 1))
 
         # expire all meta tiles
+        expired = 0
         for meta in meta_set:
-            expire_meta(meta)
+            if expire_meta(meta):
+                expired += 1
+        print("Expired {0} tiles at zoom {1}".format(expired, z))
 
         # continue with parent tiles
         tile_set = new_set
