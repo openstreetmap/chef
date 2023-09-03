@@ -30,18 +30,17 @@ default_attributes(
     }
   },
   :postgresql => {
-    :versions => ["14"],
+    :versions => ["15"],
     :settings => {
       :defaults => {
         :work_mem => "240MB",
-        :fsync => "on",
         :effective_io_concurrency => "500"
       }
     }
   },
   :nominatim => {
     :state => "standalone",
-    :dbcluster => "14/main",
+    :dbcluster => "15/main",
     :postgis => "3",
     :flatnode_file => "/ssd/nominatim/nodes.store",
     :logdir => "/ssd/nominatim/log",
