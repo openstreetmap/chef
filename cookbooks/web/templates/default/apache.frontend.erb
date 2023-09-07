@@ -72,6 +72,12 @@
   RewriteRule . - [F,L]
 
   #
+  # Block out of control spider
+  #
+  RewriteCond %{HTTP_USER_AGENT} "Bytespider"
+  RewriteRule . - [F,L]
+
+  #
   # Block attempts to access old API versions
   #
   RewriteRule ^/api/0.[12345]/ - [G,L]
