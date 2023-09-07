@@ -97,6 +97,13 @@ munin_plugin "apache_accesses"
 munin_plugin "apache_processes"
 munin_plugin "apache_volume"
 
+template "/var/lib/prometheus/node-exporter/apache.prom" do
+  source "apache.prom.erb"
+  owner "root"
+  group "root"
+  mode "644"
+end
+
 prometheus_exporter "apache" do
   port 9117
   options "--scrape_uri=http://localhost/server-status?auto"

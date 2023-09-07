@@ -1,0 +1,27 @@
+# HELP apache_server_limit Value of ServerLimit directive
+# TYPE apache_server_limit gauge
+<% if node[:apache][:mpm] == "prefork" -%>
+apache_server_limit{} <%= node[:apache][:prefork][:server_limit] || 256 %>
+<% elsif node[:apache][:mpm] == "worker" -%>
+apache_server_limit{} <%= node[:apache][:worker][:server_limit] || 16 %>
+<% elsif node[:apache][:mpm] == "event" -%>
+apache_server_limit{} <%= node[:apache][:event][:server_limit] || 16 %>
+<% end -%>
+# HELP apache_threads_per_child Value of ThreadsPerChild directive
+# TYPE apache_threads_per_child gauge
+<% if node[:apache][:mpm] == "prefork" -%>
+apache_threads_per_child{} 1
+<% elsif node[:apache][:mpm] == "worker" -%>
+apache_threads_per_child{} <%= node[:apache][:worker][:threads_per_child] || 25 %>
+<% elsif node[:apache][:mpm] == "event" -%>
+apache_threads_per_child{} <%= node[:apache][:event][:threads_per_child] || 25 %>
+<% end -%>
+# HELP apache_async_request_worker_factor Value of AsyncRequestWorkerFactor directive
+# TYPE apache_async_request_worker_factor gauge
+<% if node[:apache][:mpm] == "prefork" -%>
+apache_async_request_worker_factor{} 0
+<% elsif node[:apache][:mpm] == "worker" -%>
+apache_async_request_worker_factor{} 0
+<% elsif node[:apache][:mpm] == "event" -%>
+apache_async_request_worker_factor{} <%= node[:apache][:event][:async_request_worker_factor] || 2 %>
+<% end -%>
