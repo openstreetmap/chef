@@ -52,6 +52,13 @@ groups:
           alertgroup: "{{ $labels.instance }}"
         annotations:
           busy_workers: "{{ $value | humanizePercentage }}"
+      - alert: apache connection limit
+        expr: (apache_connections{state="total"} - on (instance) apache_connections{state="closing"}) / on (instance) (apache_server_limit * on (instance) (apache_threads_per_child + on (instance) (apache_async_request_worker_factor * on (instance) apache_workers{state="idle"} / on(instance) apache_processes{state="all"}))) > 0.8
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+        annotations:
+          connections: "{{ $value | humanizePercentage }}"
   - name: chef
     rules:
       - alert: chef client not running
