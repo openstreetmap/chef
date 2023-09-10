@@ -39,7 +39,7 @@ default_attributes(
   },
   :tile => {
     :database => {
-      :cluster => "14/main",
+      :cluster => "15/main",
       :postgis => "3"
     },
     :mapnik => "3.1",
