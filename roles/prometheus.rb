@@ -9,7 +9,6 @@ default_attributes(
         :shared_buffers => "48GB",
         :work_mem => "8MB",
         :maintenance_work_mem => "2GB",
-        :effective_io_concurrency => "200",
         :max_worker_processes => "67",
         :max_parallel_workers_per_gather => "28",
         :max_parallel_workers => "56",

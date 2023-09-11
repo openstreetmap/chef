@@ -46,7 +46,6 @@ default_attributes(
         :commit_delay => "10000",
         :max_wal_size => "2880MB",
         :max_wal_senders => "0",
-        :random_page_cost => "1.1",
         :jit => "off",
         :track_activity_query_size => "16384",
         :autovacuum_vacuum_scale_factor => "0.05",
