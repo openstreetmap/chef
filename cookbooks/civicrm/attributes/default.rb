@@ -58,3 +58,8 @@ default[:civicrm][:extensions][:mjwshared][:revision] = "1.2.15"
 default[:civicrm][:extensions][:sweetalert][:name] = "org.civicrm.sweetalert"
 default[:civicrm][:extensions][:sweetalert][:repository] = "https://lab.civicrm.org/extensions/sweetalert.git"
 default[:civicrm][:extensions][:sweetalert][:revision] = "1.5"
+
+# Stripe requires firewall
+default[:civicrm][:extensions][:firewall][:name] = "org.civicrm.firewall"
+default[:civicrm][:extensions][:firewall][:repository] = "https://lab.civicrm.org/extensions/firewall.git"
+default[:civicrm][:extensions][:firewall][:revision] = "1.5.9"
