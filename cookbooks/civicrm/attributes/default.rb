@@ -53,3 +53,8 @@ default[:civicrm][:extensions][:stripe][:revision] = "6.9.3"
 default[:civicrm][:extensions][:mjwshared][:name] = "com.mjwconsult.mjwshared"
 default[:civicrm][:extensions][:mjwshared][:repository] = "https://lab.civicrm.org/extensions/mjwshared.git"
 default[:civicrm][:extensions][:mjwshared][:revision] = "1.2.15"
+
+# Stripe requires sweetalert
+default[:civicrm][:extensions][:sweetalert][:name] = "org.civicrm.sweetalert"
+default[:civicrm][:extensions][:sweetalert][:repository] = "https://lab.civicrm.org/extensions/sweetalert.git"
+default[:civicrm][:extensions][:sweetalert][:revision] = "1.5"
