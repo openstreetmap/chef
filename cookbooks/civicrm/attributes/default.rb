@@ -1,16 +1,16 @@
 default[:civicrm][:version] = "5.65.1"
 
 # was used for SotM
-default[:civicrm][:extensions][:cividiscount][:name] = "org.civicrm.module.cividiscount"
-default[:civicrm][:extensions][:cividiscount][:repository] = "https://lab.civicrm.org/extensions/cividiscount.git"
-default[:civicrm][:extensions][:cividiscount][:revision] = "3.8.8"
+# default[:civicrm][:extensions][:cividiscount][:name] = "org.civicrm.module.cividiscount"
+# default[:civicrm][:extensions][:cividiscount][:repository] = "https://lab.civicrm.org/extensions/cividiscount.git"
+# default[:civicrm][:extensions][:cividiscount][:revision] = "3.8.8"
 
 # used to email people from civicrm
 default[:civicrm][:extensions][:emailapi][:name] = "org.civicoop.emailapi"
 default[:civicrm][:extensions][:emailapi][:repository] = "https://lab.civicrm.org/extensions/emailapi.git"
 default[:civicrm][:extensions][:emailapi][:revision] = "2.9"
 
-# fancy email templates
+# fancy email templates - INSTALL MANUALLY, NOT FROM GIT
 default[:civicrm][:extensions][:mosaico][:name] = "uk.co.vedaconsulting.mosaico"
 default[:civicrm][:extensions][:mosaico][:zip] = "https://download.civicrm.org/extension/uk.co.vedaconsulting.mosaico/3.2.1691060437/uk.co.vedaconsulting.mosaico-3.2.1691060437.zip"
 
@@ -43,3 +43,8 @@ default[:civicrm][:extensions][:osmfverifycontributor][:revision] = "bb0cd617830
 default[:civicrm][:extensions][:omnipay][:name] = "nz.co.fuzion.omnipaymultiprocessor"
 default[:civicrm][:extensions][:omnipay][:repository] = "https://github.com/eileenmcnaughton/nz.co.fuzion.omnipaymultiprocessor.git"
 default[:civicrm][:extensions][:omnipay][:revision] = "3.19"
+
+# Pay with Stripe
+default[:civicrm][:extensions][:stripe][:name] = "stripe"
+default[:civicrm][:extensions][:stripe][:repository] = "https://lab.civicrm.org/extensions/stripe.git"
+default[:civicrm][:extensions][:stripe][:revision] = "6.9.3"
