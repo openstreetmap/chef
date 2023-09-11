@@ -45,6 +45,11 @@ default[:civicrm][:extensions][:omnipay][:repository] = "https://github.com/eile
 default[:civicrm][:extensions][:omnipay][:revision] = "3.19"
 
 # Pay with Stripe
-default[:civicrm][:extensions][:stripe][:name] = "stripe"
+default[:civicrm][:extensions][:stripe][:name] = "com.drastikbydesign.stripe"
 default[:civicrm][:extensions][:stripe][:repository] = "https://lab.civicrm.org/extensions/stripe.git"
 default[:civicrm][:extensions][:stripe][:revision] = "6.9.3"
+
+# Stripe requires mjwshared
+default[:civicrm][:extensions][:mjwshared][:name] = "com.mjwconsult.mjwshared"
+default[:civicrm][:extensions][:mjwshared][:repository] = "https://lab.civicrm.org/extensions/mjwshared.git"
+default[:civicrm][:extensions][:mjwshared][:revision] = "1.2.15"
