@@ -17,3 +17,7 @@ default[:postgresql][:versions] |= [node[:tile][:database][:cluster].split("/").
 default[:postgresql][:monitor_database] = "gis"
 
 default[:accounts][:users][:tile][:status] = :role
+
+default[:apache][:event][:server_limit] = node.cpu_cores * 5 / 4
+default[:apache][:event][:max_request_workers] = node.cpu_cores * node[:apache][:event][:threads_per_child]
+default[:apache][:event][:max_spare_threads] = node.cpu_cores * node[:apache][:event][:threads_per_child]
