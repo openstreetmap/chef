@@ -22,8 +22,6 @@ default_attributes(
   :postgresql => {
     :settings => {
       :defaults => {
-        :shared_buffers => "8GB",
-        :maintenance_work_mem => "7144MB",
         :effective_cache_size => "16GB"
       }
     }
