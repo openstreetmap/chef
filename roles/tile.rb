@@ -41,7 +41,7 @@ default_attributes(
         :wal_level => "minimal",
         :wal_buffers => "1024kB",
         :wal_writer_delay => "500ms",
-        :checkpoint_timeout => "60min"
+        :checkpoint_timeout => "60min",
         :commit_delay => "10000",
         :max_wal_size => "10GB",
         :max_wal_senders => "0",
