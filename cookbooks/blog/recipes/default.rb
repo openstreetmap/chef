@@ -99,6 +99,13 @@ wordpress_plugin "blog.openstreetmap.org-wp-piwik" do
   site "blog.openstreetmap.org"
 end
 
+wordpress_plugin "blog.openstreetmap.org-contact-form-7" do
+  plugin "contact-form-7"
+  site "blog.openstreetmap.org"
+end
+
+wordpress_plugin "blog.openstreetmap.org-civicrm" do
+
 git "/srv/blog.openstreetmap.org/casts" do
   action :sync
   repository "https://github.com/openstreetmap/opengeodata-podcasts.git"
