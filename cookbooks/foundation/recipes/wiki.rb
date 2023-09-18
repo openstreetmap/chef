@@ -21,8 +21,8 @@ include_recipe "mediawiki"
 
 passwords = data_bag_item("foundation", "passwords")
 
-mediawiki_site "wiki.osmfoundation.org" do
-  aliases ["www.osmfoundation.org", "osmfoundation.org",
+mediawiki_site "osmfoundation.org" do
+  aliases ["wiki.osmfoundation.org", "www.osmfoundation.org",
            "foundation.openstreetmap.org", "foundation.osm.org"]
   sitename "OpenStreetMap Foundation"
   directory "/srv/wiki.osmfoundation.org"
