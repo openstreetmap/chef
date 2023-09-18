@@ -35,11 +35,13 @@ include_recipe "ruby"
 
 package %w[
   ant
+  apache2-dev
   aria2
   at
   autoconf
   automake
   awscli
+  cmake
   composer
   default-jdk-headless
   default-jre-headless
@@ -65,10 +67,15 @@ package %w[
   libboost-program-options-dev
   libboost-regex-dev
   libboost-system-dev
+  libcairo2-dev
   libcrypto++-dev
+  libcurl4-openssl-dev
   libfcgi-dev
   libfmt-dev
+  libglib2.0-dev
+  libiniparser-dev
   libjson-xs-perl
+  libmapnik-dev
   libmemcached-dev
   libpqxx-dev
   libtool
