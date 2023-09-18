@@ -30,19 +30,18 @@ default_attributes(
     }
   },
   :postgresql => {
-    :versions => ["14"],
+    :versions => ["16"],
     :settings => {
       :defaults => {
         :max_connections => "550",
         :work_mem => "240MB",
-        :fsync => "on",
         :effective_io_concurrency => "500"
       }
     }
   },
   :nominatim => {
     :state => "standalone",
-    :dbcluster => "14/main",
+    :dbcluster => "16/main",
     :postgis => "3",
     :enable_qa_tiles => true,
     :flatnode_file => "/ssd/nominatim/nodes.store",
