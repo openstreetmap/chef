@@ -46,7 +46,7 @@ mediawiki_site "osmfoundation.org" do
 end
 
 mediawiki_skin "OSMFoundation" do
-  site "wiki.osmfoundation.org"
+  site "osmfoundation.org"
   repository "https://github.com/osmfoundation/osmf-mediawiki-skin.git"
   revision "master"
   legacy false
