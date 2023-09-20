@@ -24,7 +24,6 @@ passwords = data_bag_item("foundation", "passwords")
 mediawiki_site "board.osmfoundation.org" do
   sitename "OSMF Board Wiki"
   metanamespace "OSMFBoard"
-  directory "/srv/board.osmfoundation.org"
   fpm_prometheus_port 11004
   database_name "board-wiki"
   database_user "board-wikiuser"

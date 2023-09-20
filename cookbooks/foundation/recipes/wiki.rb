@@ -25,7 +25,6 @@ mediawiki_site "osmfoundation.org" do
   aliases ["wiki.osmfoundation.org", "www.osmfoundation.org",
            "foundation.openstreetmap.org", "foundation.osm.org"]
   sitename "OpenStreetMap Foundation"
-  directory "/srv/wiki.osmfoundation.org"
   fpm_max_children 20
   fpm_start_servers 5
   fpm_min_spare_servers 5

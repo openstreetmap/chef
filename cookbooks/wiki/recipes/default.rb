@@ -32,7 +32,6 @@ mediawiki_site "wiki.openstreetmap.org" do
            "wiki.openstreetmap.ca", "wiki.openstreetmap.eu",
            "wiki.openstreetmap.pro", "wiki.openstreetmaps.org",
            "osm.wiki", "www.osm.wiki", "wiki.osm.wiki"]
-  directory "/srv/wiki.openstreetmap.org"
 
   fpm_max_children 50
   fpm_start_servers 10

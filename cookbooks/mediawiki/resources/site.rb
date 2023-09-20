@@ -23,7 +23,6 @@ default_action :create
 
 property :site, :kind_of => String, :name_property => true
 property :aliases, :kind_of => [String, Array]
-property :directory, :kind_of => String
 property :version, :kind_of => String, :default => "1.39"
 property :database_name, :kind_of => String, :required => true
 property :database_user, :kind_of => String, :required => [:create, :update]
@@ -560,7 +559,7 @@ action_class do
   include OpenStreetMap::Mixin::PersistentToken
 
   def site_directory
-    new_resource.directory || "/srv/#{new_resource.site}"
+    "/srv/#{new_resource.site}"
   end
 
   def mediawiki_reference
