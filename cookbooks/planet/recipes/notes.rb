@@ -18,6 +18,7 @@
 #
 
 include_recipe "git"
+include_recipe "awscli"
 
 db_passwords = data_bag_item("db", "passwords")
 
