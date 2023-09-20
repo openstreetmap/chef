@@ -51,13 +51,13 @@ mediawiki_skin "OSMFoundation" do
   legacy false
 end
 
-cookbook_file "/srv/wiki.osmfoundation.org/Wiki.png" do
+cookbook_file "/srv/osmfoundation.org/Wiki.png" do
   owner node[:mediawiki][:user]
   group node[:mediawiki][:group]
   mode "644"
 end
 
-template "/srv/wiki.osmfoundation.org/robots.txt" do
+template "/srv/osmfoundation.org/robots.txt" do
   owner node[:mediawiki][:user]
   group node[:mediawiki][:group]
   mode "644"
