@@ -24,6 +24,7 @@ include_recipe "apt"
 include_recipe "osmosis"
 include_recipe "ruby"
 include_recipe "tools"
+include_recipe "awscli"
 
 db_passwords = data_bag_item("db", "passwords")
 

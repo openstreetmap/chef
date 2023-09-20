@@ -20,6 +20,7 @@
 include_recipe "accounts"
 include_recipe "apache"
 include_recipe "munin"
+include_recipe "awscli"
 
 package %w[
   perl
