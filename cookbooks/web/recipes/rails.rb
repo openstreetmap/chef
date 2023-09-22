@@ -130,6 +130,7 @@ rails_port "www.openstreetmap.org" do
   wikipedia_auth_id "e4fe0c2c5855d23ed7e1f1c0fa1f1c58"
   wikipedia_auth_secret web_passwords["wikipedia_auth_secret"]
   thunderforest_key web_passwords["thunderforest_key"]
+  tracestrack_key web_passwords["tracestrack_key"]
   totp_key web_passwords["totp_key"]
   csp_enforce true
   trace_use_job_queue true
