@@ -35,8 +35,8 @@ python_package "tilelog" do
 end
 
 directory tilelog_output_directory do
-  user "www-data"
-  group "www-data"
+  user "planet"
+  group "planet"
   mode "755"
   recursive true
 end
@@ -52,7 +52,7 @@ end
 
 systemd_service "tilelog" do
   description "Tile log analysis"
-  user "www-data"
+  user "planet"
   exec_start "/usr/local/bin/tilelog"
   nice 10
   sandbox :enable_network => true
