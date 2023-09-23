@@ -17,8 +17,8 @@
 # limitations under the License.
 #
 
-include_recipe "git"
 include_recipe "awscli"
+include_recipe "git"
 
 db_passwords = data_bag_item("db", "passwords")
 
