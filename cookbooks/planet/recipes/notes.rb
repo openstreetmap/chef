@@ -54,7 +54,7 @@ end
 systemd_service "planet-notes-dump" do
   description "Create notes dump"
   exec_start "/usr/local/bin/planet-notes-dump"
-  user "www-data"
+  user "planet"
   sandbox :enable_network => true
   read_write_paths "/store/planet/notes"
 end
@@ -78,7 +78,7 @@ end
 systemd_service "planet-notes-cleanup" do
   description "Delete old notes dumps"
   exec_start "/usr/local/bin/planet-notes-cleanup"
-  user "www-data"
+  user "planet"
   sandbox true
   read_write_paths "/store/planet/notes"
 end

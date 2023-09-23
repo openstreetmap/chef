@@ -88,8 +88,8 @@ execute "/opt/planet-dump-ng/Makefile" do
 end
 
 directory "/store/planetdump" do
-  owner "www-data"
-  group "www-data"
+  owner "planet"
+  group "planet"
   mode "755"
   recursive true
 end
@@ -105,7 +105,7 @@ end
 
 systemd_service "planetdump@" do
   description "Planet dump for %i"
-  user "www-data"
+  user "planet"
   exec_start "/usr/local/bin/planetdump %i"
   memory_max "64G"
   sandbox true
@@ -134,7 +134,7 @@ end
 systemd_service "planet-dump-mirror" do
   description "Update planet dump mirrors"
   exec_start "/usr/local/bin/planet-mirror-redirect-update"
-  user "www-data"
+  user "planet"
   sandbox :enable_network => true
   memory_deny_write_execute false
   read_write_paths "/store/planet/.htaccess"

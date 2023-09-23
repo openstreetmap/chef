@@ -51,7 +51,7 @@ end
 
 remote_directory node[:planet][:dump][:xml_history_directory] do
   source "history_cgi"
-  owner "www-data"
+  owner "planet"
   group "planet"
   mode "775"
   files_owner "root"
@@ -61,7 +61,7 @@ end
 
 remote_directory "/store/planet/cc-by-sa" do
   source "ccbysa_cgi"
-  owner "www-data"
+  owner "planet"
   group "planet"
   mode "775"
   files_owner "root"
@@ -71,7 +71,7 @@ end
 
 remote_directory "/store/planet/cc-by-sa/full-experimental" do
   source "ccbysa_history_cgi"
-  owner "www-data"
+  owner "planet"
   group "planet"
   mode "775"
   files_owner "root"
@@ -82,20 +82,20 @@ end
 [:xml_directory, :xml_history_directory,
  :pbf_directory, :pbf_history_directory].each do |dir|
   directory node[:planet][:dump][dir] do
-    owner "www-data"
+    owner "planet"
     group "planet"
     mode "775"
   end
 end
 
 directory "/store/planet/notes" do
-  owner "www-data"
+  owner "planet"
   group "planet"
   mode "775"
 end
 
 directory "/store/planet/statistics" do
-  owner "www-data"
+  owner "planet"
   group "planet"
   mode "775"
 end
@@ -141,7 +141,7 @@ end
 systemd_service "planet-file-cleanup" do
   description "Cleanup old planet files"
   exec_start "/usr/local/bin/planet-file-cleanup --debug"
-  user "www-data"
+  user "planet"
   sandbox true
   read_write_paths [
     node[:planet][:dump][:xml_directory],
