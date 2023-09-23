@@ -55,4 +55,7 @@ rm -f planet-notes-latest.osn.bz2.md5
 
 sed -e "s/${cur_planet_notes}.bz2/planet-notes-latest.osn.bz2/" "${cur_year}/${cur_planet_notes}.bz2.md5" > planet-notes-latest.osn.bz2.md5
 
+/opt/awscli/v2/current/bin/aws --profile osm-pds-upload s3 cp --storage-class INTELLIGENT_TIERING "${cur_year}/${cur_planet_notes}.bz2.md5" "s3://osm-planet-eu-central-1/notes/osn/${cur_year}/${cur_planet_notes}.bz2.md5"
+/opt/awscli/v2/current/bin/aws --profile osm-pds-upload s3 cp --storage-class INTELLIGENT_TIERING "${cur_year}/${cur_planet_notes}.bz2" "s3://osm-planet-eu-central-1/notes/osn/${cur_year}/${cur_planet_notes}.bz2"
+
 rm /tmp/planet-notes-dump.lock
