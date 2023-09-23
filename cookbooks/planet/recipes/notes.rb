@@ -17,6 +17,7 @@
 # limitations under the License.
 #
 
+include_recipe "accounts"
 include_recipe "awscli"
 include_recipe "git"
 

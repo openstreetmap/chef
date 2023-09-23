@@ -17,6 +17,7 @@
 # limitations under the License.
 #
 
+include_recipe "accounts"
 include_recipe "python"
 
 passwords = data_bag_item("tilelog", "passwords")
