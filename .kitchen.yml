@@ -298,6 +298,9 @@ suites:
   - name: planet
     run_list:
       - recipe[planet::default]
+  - name: planet-aws
+    run_list:
+      - recipe[planet::aws]
   - name: planet-current
     run_list:
       - recipe[planet::current]
