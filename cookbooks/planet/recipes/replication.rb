@@ -22,9 +22,9 @@ require "yaml"
 include_recipe "accounts"
 include_recipe "apt"
 include_recipe "osmosis"
+include_recipe "planet::aws"
 include_recipe "ruby"
 include_recipe "tools"
-include_recipe "awscli"
 
 db_passwords = data_bag_item("db", "passwords")
 

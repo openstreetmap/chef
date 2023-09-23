@@ -18,8 +18,8 @@
 #
 
 include_recipe "accounts"
-include_recipe "awscli"
 include_recipe "git"
+include_recipe "planet::aws"
 
 db_passwords = data_bag_item("db", "passwords")
 
