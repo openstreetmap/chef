@@ -128,7 +128,14 @@ clusters.each do |name, details|
     scrape_interval "1m"
     scrape_timeout "1m"
     user "postgres"
-    options "--collector.process_idle"
+    options %w[
+      --collector.database_wraparound
+      --collector.long_running_transactions
+      --collector.process_idle
+      --collector.stat_activity_autovacuum
+      --collector.stat_wal_receiver
+      --collector.statio_user_indexes
+    ]
     environment "DATA_SOURCE_NAME" => "postgres:///#{prometheus_database}?host=/run/postgresql&port=#{details[:port]}"
     restrict_address_families "AF_UNIX"
     remove_ipc false
