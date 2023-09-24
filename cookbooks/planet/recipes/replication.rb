@@ -314,10 +314,12 @@ end
 systemd_service "replication-hourly" do
   description "Hourly replication"
   user "planet"
-  exec_start "/usr/local/bin/osmosis -q --merge-replication-files workingDirectory=/var/lib/replication/hour"
+  exec_start "/usr/local/bin/replicate-hour"
   environment "LD_PRELOAD" => "/opt/flush/flush.so"
   sandbox :enable_network => true
   memory_deny_write_execute false
+  protect_home "tmpfs"
+  bind_paths "/home/planet"
   read_write_paths [
     "/store/planet/replication/hour",
     "/var/lib/replication/hour"
@@ -358,10 +360,12 @@ end
 systemd_service "replication-daily" do
   description "Daily replication"
   user "planet"
-  exec_start "/usr/local/bin/osmosis -q --merge-replication-files workingDirectory=/var/lib/replication/day"
+  exec_start "/usr/local/bin/replicate-day"
   environment "LD_PRELOAD" => "/opt/flush/flush.so"
   sandbox :enable_network => true
   memory_deny_write_execute false
+  protect_home "tmpfs"
+  bind_paths "/home/planet"
   read_write_paths [
     "/store/planet/replication/day",
     "/var/lib/replication/day"
