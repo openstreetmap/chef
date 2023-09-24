@@ -57,7 +57,7 @@ systemd_service "planet-notes-dump" do
   exec_start "/usr/local/bin/planet-notes-dump"
   user "planet"
   sandbox :enable_network => true
-  read_write_paths "/store/planet/notes"
+  read_write_paths ["/store/planet/notes", "/home/planet/.aws"]
 end
 
 systemd_timer "planet-notes-dump" do
