@@ -9,15 +9,13 @@ osmdbt-get-log --quiet
 osmdbt-catchup --quiet
 osmdbt-create-diff --quiet --with-comment --max-changes=50000
 
-cd /store/planet/replication/minute
-
-. state.txt
+. /store/planet/replication/minute/state.txt
 
 sequencePart1=$(($sequenceNumber / 1000000 % 1000))
 sequencePart2=$(($sequenceNumber / 1000 % 1000))
 sequencePart3=$(($sequenceNumber % 1000))
 diffPath=$(printf "%03d/%03d/%03d" $sequencePart1 $sequencePart2 $sequencePart3)
 
-/opt/awscli/v2/current/bin/aws --profile=osm-pds-upload s3 cp --storage-class=INTELLIGENT_TIERING "${diffPath}.osc.gz" "s3://osm-planet-eu-central-1/planet/replication/minute/${diffPath}.osc.gz"
-/opt/awscli/v2/current/bin/aws --profile=osm-pds-upload s3 cp --storage-class=INTELLIGENT_TIERING "${diffPath}.state.txt" "s3://osm-planet-eu-central-1/planet/replication/minute/${diffPath}.state.txt"
-/opt/awscli/v2/current/bin/aws --profile=osm-pds-upload s3 cp --storage-class=INTELLIGENT_TIERING "state.txt" "s3://osm-planet-eu-central-1/planet/replication/minute/state.txt"
+/opt/awscli/v2/current/bin/aws --profile=osm-pds-upload s3 cp --storage-class=INTELLIGENT_TIERING "/store/planet/replication/minute/${diffPath}.osc.gz" "s3://osm-planet-eu-central-1/planet/replication/minute/${diffPath}.osc.gz"
+/opt/awscli/v2/current/bin/aws --profile=osm-pds-upload s3 cp --storage-class=INTELLIGENT_TIERING "/store/planet/replication/minute/${diffPath}.state.txt" "s3://osm-planet-eu-central-1/planet/replication/minute/${diffPath}.state.txt"
+/opt/awscli/v2/current/bin/aws --profile=osm-pds-upload s3 cp --storage-class=INTELLIGENT_TIERING "/store/planet/replication/minute/state.txt" "s3://osm-planet-eu-central-1/planet/replication/minute/state.txt"
