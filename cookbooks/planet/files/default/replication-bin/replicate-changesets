@@ -207,6 +207,10 @@ class Replicator
     @config["data_dir"] + format("/%03d/%03d/%03d", sequence / 1000000, (sequence / 1000) % 1000, (sequence % 1000))
   end
 
+  def s3_stem
+    @config["s3_dir"] + format("/%03d/%03d/%03d", sequence / 1000000, (sequence / 1000) % 1000, (sequence % 1000))
+  end
+
   def write_tmp_files!(changesets)
     data_file = data_stem + ".osm.gz"
     tmp_state = @config["state_file"] + ".tmp"
@@ -255,6 +259,14 @@ class Replicator
     # from the dirent and has been updated to account for any allocations.
     fdirsync(File.dirname(data_file))
     fdirsync(File.dirname(@config["state_file"]))
+
+    if @config["s3_dir"]
+      s3_file = s3_stem + ".osm.gz"
+      s3_state_file = s3_stem + ".state.txt"
+
+      system("/opt/awscli/v2/current/bin/aws", "--profile=osm-pds-upload", "s3", "cp", "--storage-class=INTELLIGENT_TIERING", data_file, s3_file)
+      system("/opt/awscli/v2/current/bin/aws", "--profile=osm-pds-upload", "s3", "cp", "--storage-class=INTELLIGENT_TIERING", data_state_file, s3_state_file)
+    end
   end
 
   # saves new state (including the changeset dump xml)

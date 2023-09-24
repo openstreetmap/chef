@@ -208,6 +208,7 @@ systemd_service "replication-changesets" do
   exec_start "/usr/local/bin/replicate-changesets /etc/replication/changesets.conf"
   sandbox :enable_network => true
   read_write_paths [
+    "/home/planet/.aws",
     "/run/replication",
     "/store/planet/replication/changesets"
   ]

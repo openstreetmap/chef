@@ -1,4 +1,5 @@
 state_file: /store/planet/replication/changesets/state.yaml
 db: host=<%= node[:web][:database_host] %> dbname=openstreetmap user=planetdiff password=<%= @password %>
 data_dir: /store/planet/replication/changesets
+s3_dir: s3://osm-planet-eu-central-1/changesets/replication/minute
 lock_file: /run/replication/changesets.lock
