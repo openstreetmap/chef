@@ -163,6 +163,12 @@ ProtectProc=<%= @protect_proc %>
 <% if @proc_subset && node[:lsb][:release].to_f >= 22.04 -%>
 ProcSubset=<%= @proc_subset %>
 <% end -%>
+<% if @bind_paths -%>
+BindPaths=<%= Array(@bind_paths).sort.uniq.join(" ") %>
+<% end -%>
+<% if @bind_read_only_paths -%>
+BindReadOnlyPaths=<%= Array(@bind_read_only_paths).sort.uniq.join(" ") %>
+<% end -%>
 <% if @no_new_privileges -%>
 NoNewPrivileges=<%= @no_new_privileges %>
 <% end -%>

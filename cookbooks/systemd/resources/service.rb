@@ -75,6 +75,8 @@ property :protect_proc, String,
          :is => %w[noaccess invisible ptraceable default]
 property :proc_subset, String,
          :is => %w[all pid]
+property :bind_paths, [String, Array]
+property :bind_read_only_paths, [String, Array]
 property :capability_bounding_set, [String, Array]
 property :ambient_capabilities, [String, Array]
 property :no_new_privileges, [true, false]
