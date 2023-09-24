@@ -108,11 +108,8 @@ ohai_plugin "postgresql" do
   template "ohai.rb.erb"
 end
 
-template "/etc/prometheus/exporters/postgres_queries.yml" do
-  source "postgres_queries.yml.erb"
-  owner "root"
-  group "root"
-  mode "644"
+file "/etc/prometheus/exporters/postgres_queries.yml" do
+  action :delete
 end
 
 package "pgtop"
@@ -131,7 +128,7 @@ clusters.each do |name, details|
     scrape_interval "1m"
     scrape_timeout "1m"
     user "postgres"
-    options "--no-collector.process_idle --extend.query-path=/etc/prometheus/exporters/postgres_queries.yml"
+    options "--collector.process_idle"
     environment "DATA_SOURCE_NAME" => "postgres:///#{prometheus_database}?host=/run/postgresql&port=#{details[:port]}"
     restrict_address_families "AF_UNIX"
     remove_ipc false
