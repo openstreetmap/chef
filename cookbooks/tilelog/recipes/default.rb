@@ -18,6 +18,7 @@
 #
 
 include_recipe "accounts"
+include_recipe "planet::aws"
 include_recipe "python"
 
 passwords = data_bag_item("tilelog", "passwords")
@@ -57,6 +58,8 @@ systemd_service "tilelog" do
   exec_start "/usr/local/bin/tilelog"
   nice 10
   sandbox :enable_network => true
+  protect_home "tmpfs"
+  bind_paths "/home/planet"
   read_write_paths tilelog_output_directory
 end
 
