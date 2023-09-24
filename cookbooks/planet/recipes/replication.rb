@@ -207,8 +207,9 @@ systemd_service "replication-changesets" do
   user "planet"
   exec_start "/usr/local/bin/replicate-changesets /etc/replication/changesets.conf"
   sandbox :enable_network => true
+  protect_home "tmpfs"
+  bind_paths "/home/planet"
   read_write_paths [
-    "/home/planet/.aws",
     "/run/replication",
     "/store/planet/replication/changesets"
   ]
