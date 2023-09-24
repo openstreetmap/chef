@@ -269,6 +269,8 @@ systemd_service "replication-minutely" do
   working_directory "/etc/replication"
   exec_start "/usr/local/bin/replicate-minute"
   sandbox :enable_network => true
+  protect_home "tmpfs"
+  bind_paths "/home/planet"
   read_write_paths [
     "/run/replication",
     "/store",
