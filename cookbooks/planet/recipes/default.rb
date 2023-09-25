@@ -24,8 +24,9 @@ include_recipe "planet::aws"
 include_recipe "munin"
 
 package %w[
-  perl
   php-cli
+  python3
+  python3-geoip2
 ]
 
 remote_directory "/store/planet#html" do
@@ -103,6 +104,14 @@ end
 
 template "/usr/local/bin/apache-latest-planet-filename" do
   source "apache-latest-planet-filename.erb"
+  owner "root"
+  group "root"
+  mode "755"
+  notifies :restart, "service[apache2]"
+end
+
+template "/usr/local/bin/apache-s3-ip2region" do
+  source "apache-s3-ip2region.erb"
   owner "root"
   group "root"
   mode "755"
