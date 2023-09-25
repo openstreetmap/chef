@@ -1,26 +1,28 @@
-#!/usr/bin/perl
+#!/usr/bin/python3
 
 # DO NOT EDIT - This file is being maintained by Chef
 
-use strict;
-use warnings;
+import os
+import sys
 
-use Cwd qw(abs_path);
+def main():
+    for line in sys.stdin:
+        path = line.strip()
 
-$| = 1;
+        # Construct the file path and resolve its real path,
+        # which will consider any symbolic links
+        file = os.path.realpath(f"/store/planet{path}")
 
-while (my $path = <STDIN>)
-{
-    chomp $path;
+        # Check if the constructed file path starts with '/store/planet'
+        # and if the file actually exists
+        if file.startswith('/store/planet') and os.path.isfile(file):
+            # Print the portion of the path after '/store/planet'
+            # and immediately flush the output
+            print(file[len('/store/planet'):], flush=True)
+        else:
+            # If the file does not exist or the path does not start with
+            # the expected prefix, print "NULL" and flush the output
+            print("NULL", flush=True)
 
-    my $file = abs_path("/store/planet${path}");
-
-    if ($file && $file =~ m|^/store/planet(/.*)$| && -f $file)
-    {
-        print "$1\n";
-    }
-    else
-    {
-        print "NULL\n";
-    }
-}
+if __name__ == "__main__":
+    main()
