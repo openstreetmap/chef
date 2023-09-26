@@ -38,8 +38,6 @@ package %w[
   libprotobuf-dev
   osmpbf-bin
   pbzip2
-  php-cli
-  php-curl
   mktorrent
   xmlstarlet
   libxml2-utils
@@ -95,7 +93,7 @@ directory "/store/planetdump" do
   recursive true
 end
 
-%w[planetdump planetdump-trigger planet-mirror-redirect-update].each do |program|
+%w[planetdump planetdump-trigger].each do |program|
   template "/usr/local/bin/#{program}" do
     source "#{program}.erb"
     owner "root"
@@ -135,20 +133,13 @@ service "planetdump-trigger" do
 end
 
 systemd_service "planet-dump-mirror" do
-  description "Update planet dump mirrors"
-  exec_start "/usr/local/bin/planet-mirror-redirect-update"
-  user "planet"
-  sandbox :enable_network => true
-  memory_deny_write_execute false
-  read_write_paths "/store/planet/.htaccess"
-end
-
-systemd_timer "planet-dump-mirror" do
-  description "Update planet dump mirrors"
-  on_boot_sec "10min"
-  on_unit_inactive_sec "10min"
+  action :delete
 end
 
 service "planet-dump-mirror.timer" do
-  action [:enable, :start]
+  action [:disable, :stop]
+end
+
+systemd_timer "planet-dump-mirror" do
+  action :delete
 end

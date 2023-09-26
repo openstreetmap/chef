@@ -24,7 +24,6 @@ include_recipe "planet::aws"
 include_recipe "munin"
 
 package %w[
-  php-cli
   python3
   python3-geoip2
 ]
