@@ -131,15 +131,3 @@ service "planetdump-trigger" do
   action [:enable, :start]
   subscribes :restart, "template[/usr/local/bin/planetdump-trigger]"
 end
-
-systemd_service "planet-dump-mirror" do
-  action :delete
-end
-
-service "planet-dump-mirror.timer" do
-  action [:disable, :stop]
-end
-
-systemd_timer "planet-dump-mirror" do
-  action :delete
-end
