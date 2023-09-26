@@ -82,13 +82,6 @@
         RewriteRule ^/planet/<%= year %>/full\-history/(history\-<%= year_two %>[0-1][0-9][0-3][0-9]\.osm\.bz2(\.torrent|\.md5)?)$ https://osm-planet-${ip2region:%{REMOTE_ADDR}|eu-central-1}.s3.amazonaws.com/planet-full-history/osm/<%= year %>/$1 [R,L]
           <% end %>
         <% end %>
-
-        # Temporary download rate limit due to upstream fibre connection issues. - 13 Jan 2020
-        <FilesMatch ".+\.(7z|bz2|gz|pbf|tgz|xz)$">
-          SetOutputFilter RATE_LIMIT
-          SetEnv rate-limit 16384
-          SetEnv rate-initial-burst 32768
-        </FilesMatch>
 </VirtualHost>
 
 <VirtualHost *:80>
