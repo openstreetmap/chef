@@ -72,14 +72,14 @@
         RewriteRule ^/planet/<%= year %>/(planet\-<%= year_two %>[0-1][0-9][0-3][0-9]\.osm\.bz2(\.torrent|\.md5)?)$ https://osm-planet-eu-central-1.s3.amazonaws.com/planet/osm/<%= year %>/$1 [R,L]
         RewriteRule ^/planet/<%= year %>/(changesets\-<%= year_two %>[0-1][0-9][0-3][0-9]\.osm\.bz2(\.torrent|\.md5)?)$ https://osm-planet-eu-central-1.s3.amazonaws.com/changesets/osm/<%= year %>/$1 [R,L]
         RewriteRule ^/planet/<%= year %>/(discussions\-<%= year_two %>[0-1][0-9][0-3][0-9]\.osm\.bz2(\.torrent|\.md5)?)$ https://osm-planet-eu-central-1.s3.amazonaws.com/discussions/osm/<%= year %>/$1 [R,L]
-        RewriteRule ^/planet/<%= year %>/full\-history/(history\-<%= year_two %>[0-1][0-9][0-3][0-9]\.osm\.bz2(\.torrent|\.md5)?)$ https://osm-planet-eu-central-1.s3.amazonaws.com/planet-full-history/osm/<%= year %>/$1 [R,L]
+        RewriteRule ^/planet/full\-history/<%= year %>/(history\-<%= year_two %>[0-1][0-9][0-3][0-9]\.osm\.bz2(\.torrent|\.md5)?)$ https://osm-planet-eu-central-1.s3.amazonaws.com/planet-full-history/osm/<%= year %>/$1 [R,L]
           <% else %>
         RewriteRule ^/pbf/(planet\-<%= year_two %>[0-1][0-9][0-3][0-9]\.osm\.pbf(\.torrent|\.md5)?)$ https://osm-planet-${ip2region:%{REMOTE_ADDR}|eu-central-1}.s3.amazonaws.com/planet/pbf/<%= year %>/$1 [R,L]
         RewriteRule ^/pbf/full\-history/(history\-<%= year_two %>[0-1][0-9][0-3][0-9]\.osm\.pbf(\.torrent|\.md5)?)$ https://osm-planet-${ip2region:%{REMOTE_ADDR}|eu-central-1}.s3.amazonaws.com/planet-full-history/pbf/<%= year %>/$1 [R,L]
         RewriteRule ^/planet/<%= year %>/(planet\-<%= year_two %>[0-1][0-9][0-3][0-9]\.osm\.bz2(\.torrent|\.md5)?)$ https://osm-planet-${ip2region:%{REMOTE_ADDR}|eu-central-1}.s3.amazonaws.com/planet/osm/<%= year %>/$1 [R,L]
         RewriteRule ^/planet/<%= year %>/(changesets\-<%= year_two %>[0-1][0-9][0-3][0-9]\.osm\.bz2(\.torrent|\.md5)?)$ https://osm-planet-${ip2region:%{REMOTE_ADDR}|eu-central-1}.s3.amazonaws.com/changesets/osm/<%= year %>/$1 [R,L]
         RewriteRule ^/planet/<%= year %>/(discussions\-<%= year_two %>[0-1][0-9][0-3][0-9]\.osm\.bz2(\.torrent|\.md5)?)$ https://osm-planet-${ip2region:%{REMOTE_ADDR}|eu-central-1}.s3.amazonaws.com/discussions/osm/<%= year %>/$1 [R,L]
-        RewriteRule ^/planet/<%= year %>/full\-history/(history\-<%= year_two %>[0-1][0-9][0-3][0-9]\.osm\.bz2(\.torrent|\.md5)?)$ https://osm-planet-${ip2region:%{REMOTE_ADDR}|eu-central-1}.s3.amazonaws.com/planet-full-history/osm/<%= year %>/$1 [R,L]
+        RewriteRule ^/planet//full\-history/<%= year %>/(history\-<%= year_two %>[0-1][0-9][0-3][0-9]\.osm\.bz2(\.torrent|\.md5)?)$ https://osm-planet-${ip2region:%{REMOTE_ADDR}|eu-central-1}.s3.amazonaws.com/planet-full-history/osm/<%= year %>/$1 [R,L]
           <% end %>
         <% end %>
 </VirtualHost>
