@@ -127,10 +127,15 @@ end
 # sync a directory to guarantee it's on disk. have to recurse to the root
 # to guarantee sync for newly created directories.
 def fdirsync(d)
+  d = File.realpath(d)
   while d != "/"
-    Dir.open(d) do |dh|
-      io = IO.for_fd(dh.fileno)
-      io.fsync
+    begin
+      Dir.open(d) do |dh|
+        io = IO.for_fd(dh.fileno)
+        io.fsync
+      end
+    rescue SystemCallError => e
+      warn "Error! syncing directory #{d}: #{e.message}"
     end
     d = File.dirname(d)
   end
