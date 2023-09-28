@@ -157,9 +157,9 @@ function install_dump {
   rm -f "${dir}/${latest}.md5"
   sed -e "s/${name}/${latest}/" "${dir}/${year}/${name}.md5" > "${dir}/${latest}.md5"
 
-  /opt/awscli/v2/current/bin/aws --profile=osm-pds-upload s3 cp --storage-class=INTELLIGENT_TIERING "${dir}/${year}/${name}.md5" "${s3dir}/${name}.md5"
-  /opt/awscli/v2/current/bin/aws --profile=osm-pds-upload s3 cp --storage-class=INTELLIGENT_TIERING "${dir}/${year}/${name}" "${s3dir}/${name}"
-  /opt/awscli/v2/current/bin/aws --profile=osm-pds-upload s3 cp --storage-class=INTELLIGENT_TIERING "${dir}/${year}/${name}.torrent" "${s3dir}/${name}.torrent"
+  /opt/awscli/v2/current/bin/aws --profile=osm-pds-upload s3 cp --storage-class=INTELLIGENT_TIERING  --no-progress "${dir}/${year}/${name}.md5" "${s3dir}/${name}.md5"
+  /opt/awscli/v2/current/bin/aws --profile=osm-pds-upload s3 cp --storage-class=INTELLIGENT_TIERING  --no-progress "${dir}/${year}/${name}" "${s3dir}/${name}"
+  /opt/awscli/v2/current/bin/aws --profile=osm-pds-upload s3 cp --storage-class=INTELLIGENT_TIERING  --no-progress "${dir}/${year}/${name}.torrent" "${s3dir}/${name}.torrent"
 }
 
 # Create *.torrent files
