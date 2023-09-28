@@ -106,3 +106,26 @@ end
 service "monthly-reindex.timer" do
   action [:enable, :start]
 end
+
+cookbook_file "/usr/local/share/yearly-reindex.sql" do
+  owner "root"
+  group "root"
+  mode "644"
+end
+
+systemd_service "yearly-reindex" do
+  description "Yearly database reindex"
+  exec_start "/usr/bin/psql -f /usr/local/share/yearly-reindex.sql openstreetmap"
+  user "postgres"
+  sandbox true
+  restrict_address_families "AF_UNIX"
+end
+
+systemd_timer "yearly-reindex" do
+  description "Yearly database reindex"
+  on_calendar "Fri *-1-8..14 02:00"
+end
+
+service "yearly-reindex.timer" do
+  action [:enable, :start]
+end
