@@ -13,7 +13,7 @@ default_attributes(
           :gateway => "138.44.68.105"
         },
         :bond => {
-          :slaves => %w[ens14f0np0 ens14f0np1]
+          :slaves => %w[ens14f0np0 ens14f1np1]
         }
       }
     }
