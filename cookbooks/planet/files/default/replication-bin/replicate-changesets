@@ -128,10 +128,7 @@ end
 # to guarantee sync for newly created directories.
 def fdirsync(d)
   while d != "/"
-    Dir.open(d) do |dh|
-      io = IO.for_fd(dh.fileno)
-      io.fsync
-    end
+    fsync(d)
     d = File.dirname(d)
   end
 end
