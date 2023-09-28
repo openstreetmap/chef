@@ -11,6 +11,6 @@ sequencePart2=$(($sequenceNumber / 1000 % 1000))
 sequencePart3=$(($sequenceNumber % 1000))
 diffPath=$(printf "%03d/%03d/%03d" $sequencePart1 $sequencePart2 $sequencePart3)
 
-/opt/awscli/v2/current/bin/aws --profile=osm-pds-upload s3 cp --storage-class=INTELLIGENT_TIERING "/store/planet/replication/hour/${diffPath}.osc.gz" "s3://osm-planet-eu-central-1/planet/replication/hour/${diffPath}.osc.gz"
-/opt/awscli/v2/current/bin/aws --profile=osm-pds-upload s3 cp --storage-class=INTELLIGENT_TIERING "/store/planet/replication/hour/${diffPath}.state.txt" "s3://osm-planet-eu-central-1/planet/replication/hour/${diffPath}.state.txt"
-/opt/awscli/v2/current/bin/aws --profile=osm-pds-upload s3 cp --storage-class=INTELLIGENT_TIERING "/store/planet/replication/hour/state.txt" "s3://osm-planet-eu-central-1/planet/replication/hour/state.txt"
+/opt/awscli/v2/current/bin/aws --profile=osm-pds-upload s3 cp --storage-class=INTELLIGENT_TIERING --no-progress "/store/planet/replication/hour/${diffPath}.osc.gz" "s3://osm-planet-eu-central-1/planet/replication/hour/${diffPath}.osc.gz"
+/opt/awscli/v2/current/bin/aws --profile=osm-pds-upload s3 cp --storage-class=INTELLIGENT_TIERING --no-progress "/store/planet/replication/hour/${diffPath}.state.txt" "s3://osm-planet-eu-central-1/planet/replication/hour/${diffPath}.state.txt"
+/opt/awscli/v2/current/bin/aws --profile=osm-pds-upload s3 cp --storage-class=INTELLIGENT_TIERING --no-progress "/store/planet/replication/hour/state.txt" "s3://osm-planet-eu-central-1/planet/replication/hour/state.txt"
