@@ -107,7 +107,7 @@ systemd_service "planetdump@" do
   user "planet"
   exec_start "/usr/local/bin/planetdump %i"
   memory_max "64G"
-  sandbox true
+  sandbox :enable_network => true
   protect_home "tmpfs"
   bind_paths "/home/planet"
   read_write_paths [
