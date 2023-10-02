@@ -310,6 +310,20 @@ groups:
         for: 5m
         labels:
           alertgroup: "{{ $labels.site }}"
+      - alert: juniper laser receive power
+        expr: junos_interface_diagnostics_laser_rx_dbm < -12 and on (site, instance, name) junos_interface_admin_up == 1
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.site }}"
+        annotations:
+          power: "{{ $value }} dBm"
+      - alert: juniper laser transmit power
+        expr: junos_interface_diagnostics_laser_output_dbm < -8 and on (site, instance, name) junos_interface_admin_up == 1
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.site }}"
+        annotations:
+          power: "{{ $value }} dBm"
   - name: mail
     rules:
       - alert: exim down
