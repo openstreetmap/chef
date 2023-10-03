@@ -91,6 +91,7 @@ property :signup_ip_per_day, Integer
 property :signup_ip_max_burst, Integer
 property :signup_email_per_day, Integer
 property :signup_email_max_burst, Integer
+property :doorkeeper_signing_key, String
 
 action :create do
   package %W[
@@ -346,7 +347,8 @@ action :create do
     "signup_ip_per_day",
     "signup_ip_max_burst",
     "signup_email_per_day",
-    "signup_email_max_burst"
+    "signup_email_max_burst",
+    "doorkeeper_signing_key"
   ).compact.merge(
     "server_protocol" => "https",
     "server_url" => new_resource.site,
