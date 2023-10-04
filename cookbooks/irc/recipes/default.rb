@@ -20,6 +20,6 @@
 include_recipe "podman::apache"
 
 podman_site "irc.openstreetmap.org" do
-  image "ghcr.io/openstreetmap/irc:latest"
+  image "ghcr.io/openstreetmap/irc-website:latest"
   aliases ["irc.osm.org"]
 end
