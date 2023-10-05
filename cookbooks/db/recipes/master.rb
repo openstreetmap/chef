@@ -84,6 +84,243 @@ postgresql_extension "btree_gist" do
   only_if { node[:postgresql][:clusters][node[:db][:cluster]] && node[:postgresql][:clusters][node[:db][:cluster]][:version] >= 9.0 }
 end
 
+%w[
+  active_storage_attachments
+  active_storage_blobs
+  active_storage_variant_records
+  ar_internal_metadata
+  delayed_jobs
+  issue_comments
+  issues
+  oauth_openid_requests
+  reports
+].each do |table|
+  postgresql_table table do
+    cluster node[:db][:cluster]
+    database "openstreetmap"
+    owner "openstreetmap"
+    permissions "openstreetmap" => [:all],
+                "rails" => [:select, :insert, :update, :delete],
+                "backup" => [:select]
+  end
+end
+
+%w[
+  acls
+  changesets_subscribers
+  diary_comments
+  diary_entries
+  diary_entry_subscriptions
+  friends
+  gps_points
+  gpx_file_tags
+  gpx_files
+  languages
+  messages
+  note_comments
+  notes
+  redactions
+  schema_migrations
+  user_preferences
+  user_tokens
+].each do |table|
+  postgresql_table table do
+    cluster node[:db][:cluster]
+    database "openstreetmap"
+    owner "openstreetmap"
+    permissions "openstreetmap" => [:all],
+                "rails" => [:select, :insert, :update, :delete],
+                "planetdump" => [:select],
+                "planetdiff" => [:select],
+                "backup" => [:select]
+  end
+end
+
+%w[
+  changeset_comments
+  changeset_tags
+  client_applications
+  user_blocks
+  user_roles
+  users
+].each do |table|
+  postgresql_table table do
+    cluster node[:db][:cluster]
+    database "openstreetmap"
+    owner "openstreetmap"
+    permissions "openstreetmap" => [:all],
+                "rails" => [:select, :insert, :update, :delete],
+                "cgimap" => [:select],
+                "planetdump" => [:select],
+                "planetdiff" => [:select],
+                "backup" => [:select]
+  end
+end
+
+%w[changesets].each do |table|
+  postgresql_table table do
+    cluster node[:db][:cluster]
+    database "openstreetmap"
+    owner "openstreetmap"
+    permissions "openstreetmap" => [:all],
+                "rails" => [:select, :insert, :update, :delete],
+                "cgimap" => [:select, :update],
+                "planetdump" => [:select],
+                "planetdiff" => [:select],
+                "backup" => [:select]
+  end
+end
+
+%w[
+  current_nodes
+  current_relations
+  current_ways
+].each do |table|
+  postgresql_table table do
+    cluster node[:db][:cluster]
+    database "openstreetmap"
+    owner "openstreetmap"
+    permissions "openstreetmap" => [:all],
+                "rails" => [:select, :insert, :update, :delete],
+                "cgimap" => [:select, :insert, :update],
+                "planetdump" => [:select],
+                "planetdiff" => [:select],
+                "backup" => [:select]
+  end
+end
+
+%w[
+  current_node_tags
+  current_relation_members
+  current_relation_tags
+  current_way_nodes
+  current_way_tags
+].each do |table|
+  postgresql_table table do
+    cluster node[:db][:cluster]
+    database "openstreetmap"
+    owner "openstreetmap"
+    permissions "openstreetmap" => [:all],
+                "rails" => [:select, :insert, :update, :delete],
+                "cgimap" => [:select, :insert, :delete],
+                "planetdump" => [:select],
+                "planetdiff" => [:select],
+                "backup" => [:select]
+  end
+end
+
+%w[
+  node_tags
+  nodes
+  relation_members
+  relation_tags
+  relations
+  way_nodes
+  way_tags
+  ways
+].each do |table|
+  postgresql_table table do
+    cluster node[:db][:cluster]
+    database "openstreetmap"
+    owner "openstreetmap"
+    permissions "openstreetmap" => [:all],
+                "rails" => [:select, :insert, :update, :delete],
+                "cgimap" => [:select, :insert],
+                "planetdump" => [:select],
+                "planetdiff" => [:select],
+                "backup" => [:select]
+  end
+end
+
+%w[
+  oauth_access_grants
+  oauth_access_tokens
+  oauth_applications
+  oauth_tokens
+].each do |table|
+  postgresql_table table do
+    cluster node[:db][:cluster]
+    database "openstreetmap"
+    owner "openstreetmap"
+    permissions "openstreetmap" => [:all],
+                "rails" => [:select, :insert, :update, :delete],
+                "cgimap" => [:select],
+                "backup" => [:select]
+  end
+end
+
+%w[
+  oauth_nonces
+].each do |table|
+  postgresql_table table do
+    cluster node[:db][:cluster]
+    database "openstreetmap"
+    owner "openstreetmap"
+    permissions "openstreetmap" => [:all],
+                "rails" => [:select, :insert, :update, :delete],
+                "cgimap" => [:select, :insert],
+                "backup" => [:select]
+  end
+end
+
+%w[
+  acls_id_seq
+  active_storage_attachments_id_seq
+  active_storage_blobs_id_seq
+  active_storage_variant_records_id_seq
+  changeset_comments_id_seq
+  changesets_id_seq
+  client_applications_id_seq
+  delayed_jobs_id_seq
+  diary_comments_id_seq
+  diary_entries_id_seq
+  friends_id_seq
+  gpx_file_tags_id_seq
+  gpx_files_id_seq
+  issue_comments_id_seq
+  issues_id_seq
+  messages_id_seq
+  note_comments_id_seq
+  notes_id_seq
+  oauth_access_grants_id_seq
+  oauth_access_tokens_id_seq
+  oauth_applications_id_seq
+  oauth_openid_requests_id_seq
+  oauth_tokens_id_seq
+  redactions_id_seq
+  reports_id_seq
+  user_blocks_id_seq
+  user_roles_id_seq
+  user_tokens_id_seq
+  users_id_seq
+].each do |sequence|
+  postgresql_sequence sequence do
+    cluster node[:db][:cluster]
+    database "openstreetmap"
+    owner "openstreetmap"
+    permissions "openstreetmap" => [:all],
+                "rails" => [:usage],
+                "backup" => [:select]
+  end
+end
+
+%w[
+  current_nodes_id_seq
+  current_relations_id_seq
+  current_ways_id_seq
+  oauth_nonces_id_seq
+].each do |sequence|
+  postgresql_sequence sequence do
+    cluster node[:db][:cluster]
+    database "openstreetmap"
+    owner "openstreetmap"
+    permissions "openstreetmap" => [:all],
+                "rails" => [:usage],
+                "cgimap" => [:update],
+                "backup" => [:select]
+  end
+end
+
 cookbook_file "/usr/local/share/monthly-reindex.sql" do
   owner "root"
   group "root"
