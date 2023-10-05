@@ -112,7 +112,7 @@ module OpenStreetMap
 
     def tables(database)
       @tables ||= {}
-      @tables[database] ||= query("SELECT n.nspname, c.relname, u.usename, c.relacl FROM pg_class AS c INNER JOIN pg_user AS u ON c.relowner = u.usesysid INNER JOIN pg_namespace AS n ON c.relnamespace = n.oid", :database => database).each_with_object({}) do |table, tables|
+      @tables[database] ||= query("SELECT n.nspname, c.relname, u.usename, c.relacl FROM pg_class AS c INNER JOIN pg_user AS u ON c.relowner = u.usesysid INNER JOIN pg_namespace AS n ON c.relnamespace = n.oid WHERE c.relkind = 'r'", :database => database).each_with_object({}) do |table, tables|
         name = "#{table[:nspname]}.#{table[:relname]}"
 
         tables[name] = {

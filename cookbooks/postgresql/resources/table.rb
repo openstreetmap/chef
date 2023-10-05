@@ -42,7 +42,7 @@ action :create do
 
       converge_by("revoke all for #{user} on #{new_resource}") do
         Chef::Log.info("Revoking all for #{user} on #{new_resource}")
-        cluster.execute(:command => "REVOKE ALL ON #{qualified_name} FROM \"#{user}\"", :database => new_resource.database)
+        cluster.execute(:command => "REVOKE ALL ON TABLE #{qualified_name} FROM \"#{user}\"", :database => new_resource.database)
       end
     end
 
@@ -59,13 +59,13 @@ action :create do
           unless current_privileges.include?(privilege)
             converge_by("grant #{privilege} for #{user} on #{new_resource}") do
               Chef::Log.info("Granting #{privilege} for #{user} on #{new_resource}")
-              cluster.execute(:command => "GRANT #{privilege.to_s.upcase} ON #{qualified_name} TO \"#{user}\"", :database => new_resource.database)
+              cluster.execute(:command => "GRANT #{privilege.to_s.upcase} ON TABLE #{qualified_name} TO \"#{user}\"", :database => new_resource.database)
             end
           end
         elsif current_privileges.include?(privilege)
           converge_by("revoke #{privilege} for #{user} on #{new_resource}") do
             Chef::Log.info("Revoking #{privilege} for #{user} on #{new_resource}")
-            cluster.execute(:command => "REVOKE #{privilege.to_s.upcase} ON #{qualified_name} FROM \"#{user}\"", :database => new_resource.database)
+            cluster.execute(:command => "REVOKE #{privilege.to_s.upcase} ON TABLE #{qualified_name} FROM \"#{user}\"", :database => new_resource.database)
           end
         end
       end
