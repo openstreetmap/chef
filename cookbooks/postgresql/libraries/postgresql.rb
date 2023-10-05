@@ -149,8 +149,10 @@ module OpenStreetMap
         user = "public" if user == ""
 
         permissions[user] = {
-          "a" => :insert, "r" => :select, "w" => :update, "d" => :delete,
-          "D" => :truncate, "x" => :references, "t" => :trigger
+          "r" => :select, "a" => :insert, "w" => :update, "d" => :delete,
+          "D" => :truncate, "x" => :references, "t" => :trigger,
+          "C" => :create, "c" => :connect, "T" => :temporary,
+          "X" => :execute, "U" => :usage, "s" => :set, "A" => :alter_system
         }.values_at(*privileges.chars).compact
       end
     end
