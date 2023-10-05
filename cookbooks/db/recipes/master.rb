@@ -57,11 +57,6 @@ postgresql_user "backup" do
   password passwords["backup"]
 end
 
-postgresql_user "gpximport" do
-  cluster node[:db][:cluster]
-  password passwords["gpximport"]
-end
-
 postgresql_user "munin" do
   cluster node[:db][:cluster]
   password passwords["munin"]
