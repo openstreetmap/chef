@@ -41,6 +41,11 @@ postgresql_user "rails" do
   password passwords["rails"]
 end
 
+postgresql_user "cgimap" do
+  cluster node[:db][:cluster]
+  password passwords["cgimap"]
+end
+
 postgresql_user "planetdump" do
   cluster node[:db][:cluster]
   password passwords["planetdump"]
