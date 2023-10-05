@@ -8,6 +8,10 @@ module OpenStreetMap
       :select, :insert, :update, :delete, :truncate, :references, :trigger
     ].freeze
 
+    SEQUENCE_PRIVILEGES = [
+      :usage, :select, :update
+    ].freeze
+
     def initialize(cluster)
       @cluster = cluster
     end
@@ -118,6 +122,18 @@ module OpenStreetMap
         tables[name] = {
           :owner => table[:usename],
           :permissions => parse_acl(table[:relacl] || "{}")
+        }
+      end
+    end
+
+    def sequences(database)
+      @sequences ||= {}
+      @sequences[database] ||= query("SELECT n.nspname, c.relname, u.usename, c.relacl FROM pg_class AS c INNER JOIN pg_user AS u ON c.relowner = u.usesysid INNER JOIN pg_namespace AS n ON c.relnamespace = n.oid WHERE c.relkind = 'S'", :database => database).each_with_object({}) do |sequence, sequences|
+        name = "#{sequence[:nspname]}.#{sequence[:relname]}"
+
+        sequences[name] = {
+          :owner => sequence[:usename],
+          :permissions => parse_acl(sequence[:relacl] || "{}")
         }
       end
     end
