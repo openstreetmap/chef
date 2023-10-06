@@ -70,11 +70,6 @@ wordpress_site "supporting.openstreetmap.org" do
   fpm_prometheus_port 11301
 end
 
-wordpress_theme "osmblog-wp-theme" do
-  site "supporting.openstreetmap.org"
-  action :delete
-end
-
 wordpress_plugin "civicrm-wp-piwik" do
   plugin "wp-piwik"
   site "supporting.openstreetmap.org"
@@ -89,6 +84,10 @@ wordpress_plugin "contact-form-7" do
 end
 
 wordpress_plugin "civicrm-admin-utilities" do
+  site "supporting.openstreetmap.org"
+end
+
+wordpress_plugin "host-webfonts-local" do
   site "supporting.openstreetmap.org"
 end
 
