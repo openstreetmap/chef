@@ -16,7 +16,7 @@ class Chef
           c = scm :update, new_resource.svn_arguments, verbose, authentication, proxy, "-r#{revision_int}", new_resource.destination
           Chef::Log.debug "#{new_resource} updated working copy #{new_resource.destination} to revision #{new_resource.revision}"
         else
-          c = scm :switch, new_resource.svn_arguments, verbose, authentication, proxy, "-r#{revision_int}", new_resource.repository, new_resource.destination
+          c = scm :switch, new_resource.svn_arguments, verbose, authentication, proxy, "-r#{revision_int}", "--ignore-ancestry", new_resource.repository, new_resource.destination
           Chef::Log.debug "#{new_resource} updated working copy #{new_resource.destination} to #{new_resource.repository} revision #{new_resource.revision}"
         end
         c
