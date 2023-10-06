@@ -84,30 +84,82 @@ postgresql_extension "btree_gist" do
   only_if { node[:postgresql][:clusters][node[:db][:cluster]] && node[:postgresql][:clusters][node[:db][:cluster]][:version] >= 9.0 }
 end
 
+CGIMAP_PERMISSIONS = {
+  "changeset_comments" => [:select],
+  "changeset_tags" => [:select],
+  "changesets" => [:select, :update],
+  "client_applications" => [:select],
+  "current_node_tags" => [:select, :insert, :delete],
+  "current_nodes" => [:select, :insert, :update],
+  "current_nodes_id_seq" => [:update],
+  "current_relation_members" => [:select, :insert, :delete],
+  "current_relation_tags" => [:select, :insert, :delete],
+  "current_relations" => [:select, :insert, :update],
+  "current_relations_id_seq" => [:update],
+  "current_way_nodes" => [:select, :insert, :delete],
+  "current_way_tags" => [:select, :insert, :delete],
+  "current_ways" => [:select, :insert, :update],
+  "current_ways_id_seq" => [:update],
+  "node_tags" => [:select, :insert],
+  "nodes" => [:select, :insert],
+  "oauth_access_grants" => [:select],
+  "oauth_access_tokens" => [:select],
+  "oauth_applications" => [:select],
+  "oauth_nonces" => [:select, :insert],
+  "oauth_nonces_id_seq" => [:update],
+  "oauth_tokens" => [:select],
+  "relation_members" => [:select, :insert],
+  "relation_tags" => [:select, :insert],
+  "relations" => [:select, :insert],
+  "user_blocks" => [:select],
+  "user_roles" => [:select],
+  "users" => [:select],
+  "way_nodes" => [:select, :insert],
+  "way_tags" => [:select, :insert],
+  "ways" => [:select, :insert]
+}
+
+PLANETDUMP_PERMISSIONS = {
+  "note_comments" => :select,
+  "notes" => :select,
+  "users" => :select
+}
+
+PLANETDIFF_PERMISSIONS = {
+  "changeset_comments" => :select,
+  "changeset_tags" => :select,
+  "changesets" => :select,
+  "node_tags" => :select,
+  "nodes" => :select,
+  "relation_members" => :select,
+  "relation_tags" => :select,
+  "relations" => :select,
+  "users" => :select,
+  "way_nodes" => :select,
+  "way_tags" => :select,
+  "ways" => :select
+}
+
 %w[
+  acls
   active_storage_attachments
   active_storage_blobs
   active_storage_variant_records
   ar_internal_metadata
-  delayed_jobs
-  issue_comments
-  issues
-  oauth_openid_requests
-  reports
-].each do |table|
-  postgresql_table table do
-    cluster node[:db][:cluster]
-    database "openstreetmap"
-    owner "openstreetmap"
-    permissions "openstreetmap" => [:all],
-                "rails" => [:select, :insert, :update, :delete],
-                "backup" => [:select]
-  end
-end
-
-%w[
-  acls
+  changeset_comments
+  changeset_tags
+  changesets
   changesets_subscribers
+  client_applications
+  current_node_tags
+  current_nodes
+  current_relation_members
+  current_relation_tags
+  current_relations
+  current_way_nodes
+  current_way_tags
+  current_ways
+  delayed_jobs
   diary_comments
   diary_entries
   diary_entry_subscriptions
@@ -115,123 +167,31 @@ end
   gps_points
   gpx_file_tags
   gpx_files
+  issue_comments
+  issues
   languages
   messages
-  redactions
-  schema_migrations
-  user_preferences
-  user_tokens
-].each do |table|
-  postgresql_table table do
-    cluster node[:db][:cluster]
-    database "openstreetmap"
-    owner "openstreetmap"
-    permissions "openstreetmap" => [:all],
-                "rails" => [:select, :insert, :update, :delete],
-                "backup" => [:select]
-  end
-end
-
-%w[
-  note_comments
-  notes
-].each do |table|
-  postgresql_table table do
-    cluster node[:db][:cluster]
-    database "openstreetmap"
-    owner "openstreetmap"
-    permissions "openstreetmap" => [:all],
-                "rails" => [:select, :insert, :update, :delete],
-                "planetdump" => [:select],
-                "backup" => [:select]
-  end
-end
-
-%w[
-  changeset_comments
-  changeset_tags
-].each do |table|
-  postgresql_table table do
-    cluster node[:db][:cluster]
-    database "openstreetmap"
-    owner "openstreetmap"
-    permissions "openstreetmap" => [:all],
-                "rails" => [:select, :insert, :update, :delete],
-                "cgimap" => [:select],
-                "planetdiff" => [:select],
-                "backup" => [:select]
-  end
-end
-
-%w[
-  users
-].each do |table|
-  postgresql_table table do
-    cluster node[:db][:cluster]
-    database "openstreetmap"
-    owner "openstreetmap"
-    permissions "openstreetmap" => [:all],
-                "rails" => [:select, :insert, :update, :delete],
-                "cgimap" => [:select],
-                "planetdump" => [:select],
-                "planetdiff" => [:select],
-                "backup" => [:select]
-  end
-end
-
-%w[changesets].each do |table|
-  postgresql_table table do
-    cluster node[:db][:cluster]
-    database "openstreetmap"
-    owner "openstreetmap"
-    permissions "openstreetmap" => [:all],
-                "rails" => [:select, :insert, :update, :delete],
-                "cgimap" => [:select, :update],
-                "planetdiff" => [:select],
-                "backup" => [:select]
-  end
-end
-
-%w[
-  current_nodes
-  current_relations
-  current_ways
-].each do |table|
-  postgresql_table table do
-    cluster node[:db][:cluster]
-    database "openstreetmap"
-    owner "openstreetmap"
-    permissions "openstreetmap" => [:all],
-                "rails" => [:select, :insert, :update, :delete],
-                "cgimap" => [:select, :insert, :update],
-                "backup" => [:select]
-  end
-end
-
-%w[
-  current_node_tags
-  current_relation_members
-  current_relation_tags
-  current_way_nodes
-  current_way_tags
-].each do |table|
-  postgresql_table table do
-    cluster node[:db][:cluster]
-    database "openstreetmap"
-    owner "openstreetmap"
-    permissions "openstreetmap" => [:all],
-                "rails" => [:select, :insert, :update, :delete],
-                "cgimap" => [:select, :insert, :delete],
-                "backup" => [:select]
-  end
-end
-
-%w[
   node_tags
   nodes
+  note_comments
+  notes
+  oauth_access_grants
+  oauth_access_tokens
+  oauth_applications
+  oauth_nonces
+  oauth_openid_requests
+  oauth_tokens
+  redactions
   relation_members
   relation_tags
   relations
+  reports
+  schema_migrations
+  user_blocks
+  user_preferences
+  user_roles
+  user_tokens
+  users
   way_nodes
   way_tags
   ways
@@ -242,42 +202,9 @@ end
     owner "openstreetmap"
     permissions "openstreetmap" => [:all],
                 "rails" => [:select, :insert, :update, :delete],
-                "cgimap" => [:select, :insert],
-                "planetdiff" => [:select],
-                "backup" => [:select]
-  end
-end
-
-%w[
-  client_applications
-  oauth_access_grants
-  oauth_access_tokens
-  oauth_applications
-  oauth_tokens
-  user_blocks
-  user_roles
-].each do |table|
-  postgresql_table table do
-    cluster node[:db][:cluster]
-    database "openstreetmap"
-    owner "openstreetmap"
-    permissions "openstreetmap" => [:all],
-                "rails" => [:select, :insert, :update, :delete],
-                "cgimap" => [:select],
-                "backup" => [:select]
-  end
-end
-
-%w[
-  oauth_nonces
-].each do |table|
-  postgresql_table table do
-    cluster node[:db][:cluster]
-    database "openstreetmap"
-    owner "openstreetmap"
-    permissions "openstreetmap" => [:all],
-                "rails" => [:select, :insert, :update, :delete],
-                "cgimap" => [:select, :insert],
+                "cgimap" => CGIMAP_PERMISSIONS[table],
+                "planetdump" => PLANETDUMP_PERMISSIONS[table],
+                "planetdiff" => PLANETDIFF_PERMISSIONS[table],
                 "backup" => [:select]
   end
 end
@@ -290,6 +217,9 @@ end
   changeset_comments_id_seq
   changesets_id_seq
   client_applications_id_seq
+  current_nodes_id_seq
+  current_relations_id_seq
+  current_ways_id_seq
   delayed_jobs_id_seq
   diary_comments_id_seq
   diary_entries_id_seq
@@ -304,6 +234,7 @@ end
   oauth_access_grants_id_seq
   oauth_access_tokens_id_seq
   oauth_applications_id_seq
+  oauth_nonces_id_seq
   oauth_openid_requests_id_seq
   oauth_tokens_id_seq
   redactions_id_seq
@@ -319,23 +250,7 @@ end
     owner "openstreetmap"
     permissions "openstreetmap" => [:all],
                 "rails" => [:usage],
-                "backup" => [:select]
-  end
-end
-
-%w[
-  current_nodes_id_seq
-  current_relations_id_seq
-  current_ways_id_seq
-  oauth_nonces_id_seq
-].each do |sequence|
-  postgresql_sequence sequence do
-    cluster node[:db][:cluster]
-    database "openstreetmap"
-    owner "openstreetmap"
-    permissions "openstreetmap" => [:all],
-                "rails" => [:usage],
-                "cgimap" => [:update],
+                "cgimap" => CGIMAP_PERMISSIONS[sequence],
                 "backup" => [:select]
   end
 end
