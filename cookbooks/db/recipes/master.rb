@@ -117,13 +117,13 @@ CGIMAP_PERMISSIONS = {
   "way_nodes" => [:select, :insert],
   "way_tags" => [:select, :insert],
   "ways" => [:select, :insert]
-}
+}.freeze
 
 PLANETDUMP_PERMISSIONS = {
   "note_comments" => :select,
   "notes" => :select,
   "users" => :select
-}
+}.freeze
 
 PLANETDIFF_PERMISSIONS = {
   "changeset_comments" => :select,
@@ -138,7 +138,7 @@ PLANETDIFF_PERMISSIONS = {
   "way_nodes" => :select,
   "way_tags" => :select,
   "ways" => :select
-}
+}.freeze
 
 %w[
   acls
