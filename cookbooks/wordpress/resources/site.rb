@@ -192,7 +192,6 @@ action :create do
 
   wordpress_plugin "wp-fail2ban" do
     site new_resource.site
-    version "5.1.1"
     reload_apache false
   end
 
