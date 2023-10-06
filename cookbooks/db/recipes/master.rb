@@ -117,8 +117,6 @@ end
   gpx_files
   languages
   messages
-  note_comments
-  notes
   redactions
   schema_migrations
   user_preferences
@@ -130,8 +128,21 @@ end
     owner "openstreetmap"
     permissions "openstreetmap" => [:all],
                 "rails" => [:select, :insert, :update, :delete],
+                "backup" => [:select]
+  end
+end
+
+%w[
+  note_comments
+  notes
+].each do |table|
+  postgresql_table table do
+    cluster node[:db][:cluster]
+    database "openstreetmap"
+    owner "openstreetmap"
+    permissions "openstreetmap" => [:all],
+                "rails" => [:select, :insert, :update, :delete],
                 "planetdump" => [:select],
-                "planetdiff" => [:select],
                 "backup" => [:select]
   end
 end
@@ -139,9 +150,20 @@ end
 %w[
   changeset_comments
   changeset_tags
-  client_applications
-  user_blocks
-  user_roles
+].each do |table|
+  postgresql_table table do
+    cluster node[:db][:cluster]
+    database "openstreetmap"
+    owner "openstreetmap"
+    permissions "openstreetmap" => [:all],
+                "rails" => [:select, :insert, :update, :delete],
+                "cgimap" => [:select],
+                "planetdiff" => [:select],
+                "backup" => [:select]
+  end
+end
+
+%w[
   users
 ].each do |table|
   postgresql_table table do
@@ -165,7 +187,6 @@ end
     permissions "openstreetmap" => [:all],
                 "rails" => [:select, :insert, :update, :delete],
                 "cgimap" => [:select, :update],
-                "planetdump" => [:select],
                 "planetdiff" => [:select],
                 "backup" => [:select]
   end
@@ -183,8 +204,6 @@ end
     permissions "openstreetmap" => [:all],
                 "rails" => [:select, :insert, :update, :delete],
                 "cgimap" => [:select, :insert, :update],
-                "planetdump" => [:select],
-                "planetdiff" => [:select],
                 "backup" => [:select]
   end
 end
@@ -203,8 +222,6 @@ end
     permissions "openstreetmap" => [:all],
                 "rails" => [:select, :insert, :update, :delete],
                 "cgimap" => [:select, :insert, :delete],
-                "planetdump" => [:select],
-                "planetdiff" => [:select],
                 "backup" => [:select]
   end
 end
@@ -226,17 +243,19 @@ end
     permissions "openstreetmap" => [:all],
                 "rails" => [:select, :insert, :update, :delete],
                 "cgimap" => [:select, :insert],
-                "planetdump" => [:select],
                 "planetdiff" => [:select],
                 "backup" => [:select]
   end
 end
 
 %w[
+  client_applications
   oauth_access_grants
   oauth_access_tokens
   oauth_applications
   oauth_tokens
+  user_blocks
+  user_roles
 ].each do |table|
   postgresql_table table do
     cluster node[:db][:cluster]
