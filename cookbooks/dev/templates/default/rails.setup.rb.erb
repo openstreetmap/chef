@@ -1,14 +1,14 @@
 OpenStreetMap::Application.config.after_initialize do
-  if ActiveRecord::Base.connection.table_exists?(:client_applications)
-    unless webmaster = User.find_by_email("webmaster@openstreetmap.org")
-      webmaster = User.new
-      webmaster.display_name = "OpenStreetMap Webmaster"
-      webmaster.email = "webmaster@openstreetmap.org"
-      webmaster.pass_crypt = SecureRandom.hex
-      webmaster.status = "active"
-      webmaster.save!
-    end
+  unless webmaster = User.find_by_email("webmaster@openstreetmap.org")
+    webmaster = User.new
+    webmaster.display_name = "OpenStreetMap Webmaster"
+    webmaster.email = "webmaster@openstreetmap.org"
+    webmaster.pass_crypt = SecureRandom.hex
+    webmaster.activate
+    webmaster.save!
+  end
 
+  if ActiveRecord::Base.connection.table_exists?(:client_applications)
     unless id = webmaster.client_applications.find_by_name("iD")
       id = webmaster.client_applications.new
       id.name = "iD"
