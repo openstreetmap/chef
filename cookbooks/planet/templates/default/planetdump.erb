@@ -59,17 +59,17 @@ time nice -n 19 /opt/planet-dump-ng/planet-dump-ng \
 
 # Function to create bittorrent files
 function mk_torrent {
-  type="$1"
-  format="$2"
-  dir="$3"
-  s_year="$4"
-  web_dir="${dir}${s_year}"
-  name="${type}-${date}.osm.${format}"
-  web_path="${web_dir}/${name}"
-  rss_web_dir="https://planet.openstreetmap.org/${dir}"
-  rss_file="${type}-${format}-rss.xml"
-  torrent_file="${name}.torrent"
-  torrent_url="${rss_web_dir}${s_year}/${torrent_file}"
+  local type="$1"
+  local format="$2"
+  local dir="$3"
+  local s_year="$4"
+  local web_dir="${dir}${s_year}"
+  local name="${type}-${date}.osm.${format}"
+  local web_path="${web_dir}/${name}"
+  local rss_web_dir="https://planet.openstreetmap.org/${dir}"
+  local rss_file="${type}-${format}-rss.xml"
+  local torrent_file="${name}.torrent"
+  local torrent_url="${rss_web_dir}${s_year}/${torrent_file}"
 
   # create .torrent file
   mktorrent -l 22 "${name}" \
@@ -139,14 +139,14 @@ function mk_torrent {
 
 # Function to install a dump in place
 function install_dump {
-  type="$1"
-  format="$2"
-  dir="$3"
-  s3dir="$4"
-  year="$5"
-  name="${type}-${date}.osm.${format}"
-  latest="${type}-latest.osm.${format}"
-  rss_file="${type}-${format}-rss.xml"
+  local type="$1"
+  local format="$2"
+  local dir="$3"
+  local s3dir="$4"
+  local year="$5"
+  local name="${type}-${date}.osm.${format}"
+  local latest="${type}-latest.osm.${format}"
+  local rss_file="${type}-${format}-rss.xml"
 
   md5sum "${name}" > "${name}.md5"
   mkdir -p "${dir}/${year}"
