@@ -130,6 +130,10 @@ default_attributes(
       :microcosms => {
         :repository => "https://github.com/openbrian/osm-microcosms.git",
         :revision => "microcosms"
+      },
+      :rails71 => {
+        :repository => "https://github.com/tomhughes/openstreetmap-website.git",
+        :revision => "rails71"
       }
     }
   },
