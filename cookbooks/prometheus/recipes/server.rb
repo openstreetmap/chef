@@ -58,6 +58,7 @@ prometheus_exporter "cloudwatch" do
   options "--config.file=/etc/prometheus/cloudwatch.yml"
   environment "AWS_ACCESS_KEY_ID" => "AKIASQUXHPE7JHG37EA6",
               "AWS_SECRET_ACCESS_KEY" => tokens["cloudwatch"]
+  subscribes :restart, "template[/etc/prometheus/cloudwatch.yml]"
 end
 
 cache_dir = Chef::Config[:file_cache_path]
