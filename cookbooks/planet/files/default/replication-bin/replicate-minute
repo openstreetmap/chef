@@ -6,6 +6,9 @@ cd /etc/replication
 
 osmdbt-catchup --quiet
 osmdbt-get-log --quiet
+
+/opt/awscli/v2/current/bin/aws --profile=osm-osmdbt-state-upload s3 sync --storage-class=INTELLIGENT_TIERING --no-progress --exclude='*' --include='osm-repl-*.log' /var/lib/replication/minute s3://openstreetmap-osmdbt-state
+
 osmdbt-catchup --quiet
 osmdbt-create-diff --quiet --with-comment --max-changes=50000
 
