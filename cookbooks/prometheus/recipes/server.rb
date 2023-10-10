@@ -44,6 +44,22 @@ prometheus_exporter "statuscake" do
   environment "STATUSCAKE_APIKEY" => tokens["statuscake"]
 end
 
+template "/etc/prometheus/cloudwatch.yml" do
+  source "cloudwatch.yml.erb"
+  owner "root"
+  group "root"
+  mode "644"
+end
+
+prometheus_exporter "cloudwatch" do
+  address "127.0.0.1"
+  port 5000
+  listen_switch "listen-address"
+  options "--config.file=/etc/prometheus/cloudwatch.yml"
+  environment "AWS_ACCESS_KEY_ID" => "AKIASQUXHPE7JHG37EA6",
+              "AWS_SECRET_ACCESS_KEY" => tokens["cloudwatch"]
+end
+
 cache_dir = Chef::Config[:file_cache_path]
 
 prometheus_version = "2.45.0"

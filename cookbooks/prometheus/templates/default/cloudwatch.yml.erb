@@ -1,0 +1,50 @@
+apiVersion: v1alpha1
+discovery:
+  jobs:
+    - type: AWS/S3
+      regions:
+        - eu-west-1
+        - eu-west-2
+      roles:
+        - roleArn: "arn:aws:iam::173189593406:role/osm-cloudwatch-export-role"
+      period: 300
+      length: 300
+      metrics:
+        - name: BucketSizeBytes
+          statistics: [Average]
+        - name: NumberOfObjects
+          statistics: [Average]
+        - name: AllRequests
+          statistics: [Sum]
+        - name: GetRequests
+          statistics: [Sum]
+        - name: PutRequests
+          statistics: [Sum]
+        - name: DeleteRequests
+          statistics: [Sum]
+        - name: HeadRequests
+          statistics: [Sum]
+        - name: PostRequests
+          statistics: [Sum]
+        - name: ListRequests
+          statistics: [Sum]
+        - name: BytesDownloaded
+          statistics: [Sum]
+        - name: BytesUploaded
+          statistics: [Sum]
+        - name: 4xxErrors
+          statistics: [Sum]
+        - name: 5xxErrors
+          statistics: [Sum]
+        - name: FirstByteLatency
+          statistics: [Minimum, Maximum, Average]
+        - name: TotalRequestLatency
+          statistics: [Minimum, Maximum, Average]
+        - name: ReplicationLatency
+          statistics: [Maximum]
+        - name: BytesPendingReplication
+          statistics: [Maximum]
+        - name: OperationsPendingReplication
+          statistics: [Maximum]
+        - name: OperationsFailedReplication
+          statistics: [Sum]
