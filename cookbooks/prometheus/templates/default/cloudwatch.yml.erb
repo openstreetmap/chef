@@ -12,8 +12,12 @@ discovery:
       metrics:
         - name: BucketSizeBytes
           statistics: [Average]
+          period: 86400
+          length: 86400
         - name: NumberOfObjects
           statistics: [Average]
+          period: 86400
+          length: 86400
         - name: AllRequests
           statistics: [Sum]
         - name: GetRequests
