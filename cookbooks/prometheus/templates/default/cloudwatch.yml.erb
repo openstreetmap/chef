@@ -154,3 +154,29 @@ discovery:
           statistics: [Maximum]
         - name: OperationsFailedReplication
           statistics: [Sum]
+    - type: AWS/EC2
+      regions:
+        - us-east-2
+      roles:
+        - roleArn: "arn:aws:iam::683740446523:role/osm-cloudwatch-export-role" # osm-render
+      period: 300
+      length: 300
+      metrics:
+        - name: CPUUtilization
+          statistics: [Average]
+        - name: DiskReadOps
+          statistics: [Sum]
+        - name: DiskWriteOps
+          statistics: [Sum]
+        - name: DiskReadBytes
+          statistics: [Sum]
+        - name: DiskWriteBytes
+          statistics: [Sum]
+        - name: NetworkIn
+          statistics: [Sum]
+        - name: NetworkOut
+          statistics: [Sum]
+        - name: NetworkPacketsIn
+          statistics: [Sum]
+        - name: NetworkPacketsOut
+          statistics: [Sum]
