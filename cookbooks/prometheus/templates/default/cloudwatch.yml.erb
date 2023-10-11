@@ -188,8 +188,8 @@ discovery:
         - roleArn: "arn:aws:iam::674083635870:role/osm-cloudwatch-export-role" # osm-backup
         - roleArn: "arn:aws:iam::683740446523:role/osm-cloudwatch-export-role" # osm-render
         # Note osm-planet is billed direct to AWS Open Data Program
-      period: 300
-      length: 300
+      period: 21600
+      length: 21600
       metrics:
         - name: EstimatedCharges
           statistics: [Sum]
