@@ -55,7 +55,11 @@ prometheus_exporter "cloudwatch" do
   address "127.0.0.1"
   port 5000
   listen_switch "listen-address"
-  options "--config.file=/etc/prometheus/cloudwatch.yml"
+  options %w[
+    --config.file=/etc/prometheus/cloudwatch.yml
+    --enable-feature=aws-sdk-v2
+    --enable-feature=always-return-info-metrics
+  ]
   environment "AWS_ACCESS_KEY_ID" => "AKIASQUXHPE7JHG37EA6",
               "AWS_SECRET_ACCESS_KEY" => tokens["cloudwatch"]
   subscribes :restart, "template[/etc/prometheus/cloudwatch.yml]"
