@@ -180,3 +180,13 @@ discovery:
           statistics: [Sum]
         - name: NetworkPacketsOut
           statistics: [Sum]
+    - type: AWS/Billing
+      regions:
+        - us-east-1
+      roles:
+        - roleArn: "arn:aws:iam::683740446523:role/osm-cloudwatch-export-role" # osm-render
+      period: 300
+      length: 300
+      metrics:
+        - name: EstimatedCharges
+          statistics: [Sum]
