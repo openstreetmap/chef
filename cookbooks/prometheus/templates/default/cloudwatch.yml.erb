@@ -7,7 +7,7 @@ discovery:
         - eu-west-1
         - eu-west-2
       roles:
-        - roleArn: "arn:aws:iam::173189593406:role/osm-cloudwatch-export-role"
+        - roleArn: "arn:aws:iam::173189593406:role/osm-cloudwatch-export-role" # osm-main
       period: 300
       length: 300
       metrics:
@@ -58,7 +58,7 @@ discovery:
         - eu-central-1
         - us-west-2
       roles:
-        - roleArn: "arn:aws:iam::630658470130:role/osm-cloudwatch-export-role"
+        - roleArn: "arn:aws:iam::630658470130:role/osm-cloudwatch-export-role" # osm-planet (pds)
       period: 300
       length: 300
       metrics:
@@ -108,7 +108,7 @@ discovery:
       regions:
         - eu-north-1
       roles:
-        - roleArn: "arn:aws:iam::674083635870:role/osm-cloudwatch-export-role"
+        - roleArn: "arn:aws:iam::674083635870:role/osm-cloudwatch-export-role" # osm-backup
       period: 300
       length: 300
       metrics:
