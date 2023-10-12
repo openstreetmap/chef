@@ -215,3 +215,108 @@ discovery:
       metrics:
         - name: EstimatedCharges
           statistics: [Sum]
+static:
+  - namespace: AWS/S3
+    name: gps-images-replication
+    regions:
+      - eu-north-1
+    roles:
+      - roleArn: "arn:aws:iam::173189593406:role/osm-cloudwatch-export-role" # osm-main
+    dimensions:
+      - name: RuleId
+        value: full-bucket-replication
+      - name: SourceBucket
+        value: openstreetmap-gps-images
+      - name: DestinationBucket
+        value: openstreetmap-gps-images-replicate
+    metrics:
+      - name: ReplicationLatency
+        statistics: [Maximum]
+        period: 300
+        length: 300
+      - name: BytesPendingReplication
+        statistics: [Maximum]
+        period: 300
+        length: 300
+      - name: OperationsPendingReplication
+        statistics: [Maximum]
+        period: 300
+        length: 300
+  - namespace: AWS/S3
+    name: gps-traces-replication
+    regions:
+      - eu-north-1
+    roles:
+      - roleArn: "arn:aws:iam::173189593406:role/osm-cloudwatch-export-role" # osm-main
+    dimensions:
+      - name: RuleId
+        value: full-bucket-replication
+      - name: SourceBucket
+        value: openstreetmap-gps-traces
+      - name: DestinationBucket
+        value: openstreetmap-gps-traces-replicate
+    metrics:
+      - name: ReplicationLatency
+        statistics: [Maximum]
+        period: 300
+        length: 300
+      - name: BytesPendingReplication
+        statistics: [Maximum]
+        period: 300
+        length: 300
+      - name: OperationsPendingReplication
+        statistics: [Maximum]
+        period: 300
+        length: 300
+  - namespace: AWS/S3
+    name: user-avatars-replication
+    regions:
+      - eu-north-1
+    roles:
+      - roleArn: "arn:aws:iam::173189593406:role/osm-cloudwatch-export-role" # osm-main
+    dimensions:
+      - name: RuleId
+        value: full-bucket-replication
+      - name: SourceBucket
+        value: openstreetmap-user-avatars
+      - name: DestinationBucket
+        value: openstreetmap-user-avatars-replicate
+    metrics:
+      - name: ReplicationLatency
+        statistics: [Maximum]
+        period: 300
+        length: 300
+      - name: BytesPendingReplication
+        statistics: [Maximum]
+        period: 300
+        length: 300
+      - name: OperationsPendingReplication
+        statistics: [Maximum]
+        period: 300
+        length: 300
+  - namespace: AWS/S3
+    name: aws-cloudtrail-replication
+    regions:
+      - eu-north-1
+    roles:
+      - roleArn: "arn:aws:iam::173189593406:role/osm-cloudwatch-export-role" # osm-main
+    dimensions:
+      - name: RuleId
+        value: full-bucket-replication
+      - name: SourceBucket
+        value: openstreetmap-aws-cloudtrail
+      - name: DestinationBucket
+        value: openstreetmap-aws-cloudtrail-replicate
+    metrics:
+      - name: ReplicationLatency
+        statistics: [Maximum]
+        period: 300
+        length: 300
+      - name: BytesPendingReplication
+        statistics: [Maximum]
+        period: 300
+        length: 300
+      - name: OperationsPendingReplication
+        statistics: [Maximum]
+        period: 300
+        length: 300
