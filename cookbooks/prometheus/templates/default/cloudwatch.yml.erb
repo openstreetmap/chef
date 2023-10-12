@@ -8,6 +8,7 @@ discovery:
         - eu-west-2
       roles:
         - roleArn: "arn:aws:iam::173189593406:role/osm-cloudwatch-export-role" # osm-main
+      roundingPeriod: 86400
       period: 86400
       length: 86400
       metrics:
@@ -21,6 +22,7 @@ discovery:
         - eu-west-2
       roles:
         - roleArn: "arn:aws:iam::173189593406:role/osm-cloudwatch-export-role" # osm-main
+      roundingPeriod: 300
       period: 300
       length: 300
       metrics:
@@ -64,6 +66,7 @@ discovery:
         - us-west-2
       roles:
         - roleArn: "arn:aws:iam::630658470130:role/osm-cloudwatch-export-role" # osm-planet (pds)
+      roundingPeriod: 86400
       period: 86400
       length: 86400
       metrics:
@@ -77,6 +80,7 @@ discovery:
         - us-west-2
       roles:
         - roleArn: "arn:aws:iam::630658470130:role/osm-cloudwatch-export-role" # osm-planet (pds)
+      roundingPeriod: 300
       period: 300
       length: 300
       metrics:
@@ -119,6 +123,7 @@ discovery:
         - eu-north-1
       roles:
         - roleArn: "arn:aws:iam::674083635870:role/osm-cloudwatch-export-role" # osm-backup
+      roundingPeriod: 86400
       period: 86400
       length: 86400
       metrics:
@@ -131,6 +136,7 @@ discovery:
         - eu-north-1
       roles:
         - roleArn: "arn:aws:iam::674083635870:role/osm-cloudwatch-export-role" # osm-backup
+      roundingPeriod: 300
       period: 300
       length: 300
       metrics:
@@ -173,6 +179,7 @@ discovery:
         - us-east-2
       roles:
         - roleArn: "arn:aws:iam::683740446523:role/osm-cloudwatch-export-role" # osm-render
+      roundingPeriod: 300
       period: 300
       length: 300
       metrics:
@@ -202,6 +209,7 @@ discovery:
         - roleArn: "arn:aws:iam::674083635870:role/osm-cloudwatch-export-role" # osm-backup
         - roleArn: "arn:aws:iam::683740446523:role/osm-cloudwatch-export-role" # osm-render
         # Note osm-planet is billed direct to AWS Open Data Program
+      roundingPeriod: 21600
       period: 21600
       length: 21600
       metrics:
