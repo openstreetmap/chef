@@ -6,6 +6,7 @@ discovery:
       regions:
         - eu-west-1
         - eu-west-2
+        - eu-north-1
       roles:
         - roleArn: "arn:aws:iam::173189593406:role/osm-cloudwatch-export-role" # osm-main
       period: 300
@@ -45,22 +46,14 @@ discovery:
           statistics: [Minimum, Maximum, Average]
         - name: TotalRequestLatency
           statistics: [Minimum, Maximum, Average]
-        - name: OperationsFailedReplication
-          statistics: [Sum]
-    - type: AWS/S3
-      regions:
-        - eu-north-1
-      roles:
-        - roleArn: "arn:aws:iam::173189593406:role/osm-cloudwatch-export-role" # osm-main
-      period: 300
-      length: 300
-      metrics:
         - name: ReplicationLatency
           statistics: [Maximum]
         - name: BytesPendingReplication
           statistics: [Maximum]
         - name: OperationsPendingReplication
           statistics: [Maximum]
+        - name: OperationsFailedReplication
+          statistics: [Sum]
     - type: AWS/S3
       regions:
         - eu-central-1
@@ -154,6 +147,14 @@ discovery:
           statistics: [Minimum, Maximum, Average]
         - name: TotalRequestLatency
           statistics: [Minimum, Maximum, Average]
+        - name: ReplicationLatency
+          statistics: [Maximum]
+        - name: BytesPendingReplication
+          statistics: [Maximum]
+        - name: OperationsPendingReplication
+          statistics: [Maximum]
+        - name: OperationsFailedReplication
+          statistics: [Sum]
     - type: AWS/EC2
       regions:
         - us-east-2
