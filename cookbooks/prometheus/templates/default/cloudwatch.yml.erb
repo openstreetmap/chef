@@ -8,17 +8,22 @@ discovery:
         - eu-west-2
       roles:
         - roleArn: "arn:aws:iam::173189593406:role/osm-cloudwatch-export-role" # osm-main
-      period: 300
-      length: 300
+      period: 86400
+      length: 86400
       metrics:
         - name: BucketSizeBytes
           statistics: [Average]
-          period: 86400
-          length: 172800
         - name: NumberOfObjects
           statistics: [Average]
-          period: 86400
-          length: 172800
+    - type: AWS/S3
+      regions:
+        - eu-west-1
+        - eu-west-2
+      roles:
+        - roleArn: "arn:aws:iam::173189593406:role/osm-cloudwatch-export-role" # osm-main
+      period: 300
+      length: 300
+      metrics:
         - name: AllRequests
           statistics: [Sum]
         - name: GetRequests
@@ -59,17 +64,22 @@ discovery:
         - us-west-2
       roles:
         - roleArn: "arn:aws:iam::630658470130:role/osm-cloudwatch-export-role" # osm-planet (pds)
-      period: 300
-      length: 300
+      period: 86400
+      length: 86400
       metrics:
         - name: BucketSizeBytes
           statistics: [Average]
-          period: 86400
-          length: 172800
         - name: NumberOfObjects
           statistics: [Average]
-          period: 86400
-          length: 172800
+    - type: AWS/S3
+      regions:
+        - eu-central-1
+        - us-west-2
+      roles:
+        - roleArn: "arn:aws:iam::630658470130:role/osm-cloudwatch-export-role" # osm-planet (pds)
+      period: 300
+      length: 300
+      metrics:
         - name: AllRequests
           statistics: [Sum]
         - name: GetRequests
@@ -109,17 +119,21 @@ discovery:
         - eu-north-1
       roles:
         - roleArn: "arn:aws:iam::674083635870:role/osm-cloudwatch-export-role" # osm-backup
-      period: 300
-      length: 300
+      period: 86400
+      length: 86400
       metrics:
         - name: BucketSizeBytes
           statistics: [Average]
-          period: 86400
-          length: 172800
         - name: NumberOfObjects
           statistics: [Average]
-          period: 86400
-          length: 172800
+    - type: AWS/S3
+      regions:
+        - eu-north-1
+      roles:
+        - roleArn: "arn:aws:iam::674083635870:role/osm-cloudwatch-export-role" # osm-backup
+      period: 300
+      length: 300
+      metrics:
         - name: AllRequests
           statistics: [Sum]
         - name: GetRequests
