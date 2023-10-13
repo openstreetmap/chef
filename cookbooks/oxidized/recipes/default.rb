@@ -29,6 +29,7 @@ package %w[
   libssh2-1-dev
   zlib1g-dev
   pkg-config
+  libyaml-dev
 ]
 
 keys = data_bag_item("oxidized", "keys")
