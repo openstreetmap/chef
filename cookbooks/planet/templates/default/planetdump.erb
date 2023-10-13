@@ -177,13 +177,10 @@ function install_dump {
   # Generate the MD5 checksum for the dump
   md5sum "${name}" > "${name}.md5"
 
-  # Start parallel uploads to S3 in the background
-  /opt/awscli/v2/current/bin/aws --profile=osm-pds-upload s3 cp --storage-class=INTELLIGENT_TIERING --no-progress "${name}.md5" "${s3dir}/${name}.md5" &
-  /opt/awscli/v2/current/bin/aws --profile=osm-pds-upload s3 cp --storage-class=INTELLIGENT_TIERING --no-progress "${name}" "${s3dir}/${name}" &
-  /opt/awscli/v2/current/bin/aws --profile=osm-pds-upload s3 cp --storage-class=INTELLIGENT_TIERING --no-progress "${name}.torrent" "${s3dir}/${name}.torrent" &
-
-  # Wait for all background uploads to finish
-  wait
+  # Upload all files to S3
+  /opt/awscli/v2/current/bin/aws --profile=osm-pds-upload s3 cp --storage-class=INTELLIGENT_TIERING --no-progress "${name}.md5" "${s3dir}/${name}.md5"
+  /opt/awscli/v2/current/bin/aws --profile=osm-pds-upload s3 cp --storage-class=INTELLIGENT_TIERING --no-progress "${name}.torrent" "${s3dir}/${name}.torrent"
+  /opt/awscli/v2/current/bin/aws --profile=osm-pds-upload s3 cp --storage-class=INTELLIGENT_TIERING --no-progress "${name}" "${s3dir}/${name}"
 
   # Wait for the replication of each uploaded file on S3
   replication_status_check "https://osm-planet-eu-central-1.s3.amazonaws.com/${s3dir}/${name}.md5"
