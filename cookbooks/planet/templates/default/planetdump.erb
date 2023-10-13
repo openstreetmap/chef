@@ -2,8 +2,8 @@
 
 # DO NOT EDIT - This file is being maintained by Chef
 
-# Exit on error
-set -e
+# Exit on errors
+set -euo pipefail
 
 # Get the name of the file and the expected pattern
 file="$1"
@@ -137,6 +137,27 @@ function mk_torrent {
 	"${rss_file}"
 }
 
+function replication_status_check {
+  local s3_url="$1"
+  local retries=100
+  local sleep_duration=10  # 10 seconds, adjust as needed
+
+  for ((i=1; i<=retries; i++)); do
+    local replication_status=$(curl -sI "${s3_url}" | grep -F 'x-amz-replication-status' | awk '{print $2}' | tr -d '\r\n')
+    
+    if [[ "$replication_status" == "COMPLETED" ]]; then
+      return 0
+    fi
+
+    if [[ "$i" -lt "$retries" ]]; then
+      sleep "$sleep_duration"
+    fi
+  done
+
+  echo "Error: Replication status check for ${s3_url} failed after ${retries} retries."
+  exit 1
+}
+
 # Function to install a dump in place
 function install_dump {
   local type="$1"
@@ -146,20 +167,44 @@ function install_dump {
   local year="$5"
   local name="${type}-${date}.osm.${format}"
   local latest="${type}-latest.osm.${format}"
-  local rss_file="${type}-${format}-rss.xml"
+  local rss_file="${type}-${format}-rss.xml"  
 
+  # Check if the files exist before proceeding
+  test -f "${name}" || { echo "Error: File ${name} not found!"; exit 1; }
+  test -f "${name}.torrent" || { echo "Error: File ${name}.torrent not found!"; exit 1; }
+  test -f "${rss_file}" || { echo "Error: RSS file ${rss_file} not found!"; exit 1; }
+
+  # Generate the MD5 checksum for the dump
   md5sum "${name}" > "${name}.md5"
-  mkdir -p "${dir}/${year}"
-  mv "${name}" "${name}.md5" "${dir}/${year}"
-  ln -sf "${year:-.}/${name}" "${dir}/${latest}"
-  test -f "${name}.torrent" && mv "${name}.torrent" "${dir}/${year}" && ln -sf "${year:-.}/${name}.torrent" "${dir}/${latest}.torrent"
-  test -f "${rss_file}" && xmllint --noout "${rss_file}" && cp -f "${rss_file}" "${dir}"
-  rm -f "${dir}/${latest}.md5"
-  sed -e "s/${name}/${latest}/" "${dir}/${year}/${name}.md5" > "${dir}/${latest}.md5"
 
-  /opt/awscli/v2/current/bin/aws --profile=osm-pds-upload s3 cp --storage-class=INTELLIGENT_TIERING --no-progress "${dir}/${year}/${name}.md5" "${s3dir}/${name}.md5"
-  /opt/awscli/v2/current/bin/aws --profile=osm-pds-upload s3 cp --storage-class=INTELLIGENT_TIERING --no-progress "${dir}/${year}/${name}" "${s3dir}/${name}"
-  /opt/awscli/v2/current/bin/aws --profile=osm-pds-upload s3 cp --storage-class=INTELLIGENT_TIERING --no-progress "${dir}/${year}/${name}.torrent" "${s3dir}/${name}.torrent"
+  # Start parallel uploads to S3 in the background
+  /opt/awscli/v2/current/bin/aws --profile=osm-pds-upload s3 cp --storage-class=INTELLIGENT_TIERING --no-progress "${name}.md5" "${s3dir}/${name}.md5" &
+  /opt/awscli/v2/current/bin/aws --profile=osm-pds-upload s3 cp --storage-class=INTELLIGENT_TIERING --no-progress "${name}" "${s3dir}/${name}" &
+  /opt/awscli/v2/current/bin/aws --profile=osm-pds-upload s3 cp --storage-class=INTELLIGENT_TIERING --no-progress "${name}.torrent" "${s3dir}/${name}.torrent" &
+
+  # Wait for all background uploads to finish
+  wait
+
+  # Wait for the replication of each uploaded file on S3
+  replication_status_check "https://osm-planet-eu-central-1.s3.amazonaws.com/${s3dir}/${name}.md5"
+  replication_status_check "https://osm-planet-eu-central-1.s3.amazonaws.com/${s3dir}/${name}.torrent"
+  # the dump is expected to take longer than the md5 and torrent, and gets checked last.
+  replication_status_check "https://osm-planet-eu-central-1.s3.amazonaws.com/${s3dir}/${name}"
+
+  # Ensure the target directory exists
+  mkdir -p "${dir}/${year}"
+  # Move the dump and its MD5 checksum to the target directory
+  mv "${name}" "${name}.md5" "${dir}/${year}" || { echo "Error moving files to ${dir}/${year}"; exit 1; }
+  # Create or update the symbolic link for the latest dump
+  ln -sf "${name}" "${dir}/${latest}" || { echo "Error creating symbolic link for ${name}"; exit 1; }
+  # Move torrent file and update its symbolic link
+  mv "${name}.torrent" "${dir}/${year}" || { echo "Error moving ${name}.torrent"; exit 1; }
+  ln -sf "${year:-.}/${name}.torrent" "${dir}/${latest}.torrent" || { echo "Error creating symbolic link for ${name}.torrent"; exit 1; }
+  # Check the structure of the RSS file, then move it to the target directory
+  xmllint --noout "${rss_file}" && cp -f "${rss_file}" "${dir}" || { echo "Error copying RSS file"; exit 1; }
+  # Update the MD5 file with the latest dump's name and remove any old MD5 file
+  rm -f "${dir}/${latest}.md5"
+  sed -e "s/${name}/${latest}/" "${dir}/${year}/${name}.md5" > "${dir}/${latest}.md5" || { echo "Error updating MD5 file"; exit 1; }
 }
 
 # Create *.torrent files
