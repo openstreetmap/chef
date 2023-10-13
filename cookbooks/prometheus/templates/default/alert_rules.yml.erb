@@ -416,6 +416,13 @@ groups:
           connections_used: "{{ $value | humanizePercentage }}"
   - name: network
     rules:
+      - alert: interface redundancy lost
+        expr: node_bonding_active < 2 and on (instance, master) label_replace(chef_network_interface{bond_mode="802.3ad"}, "master", "$1", "name", "(.*)")
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+        annotations:
+          link_count: "{{ $value }}"
       - alert: interface transmit rate
         expr: rate(node_network_transmit_bytes_total[1m]) / node_network_speed_bytes > 0.99
         for: 5m
