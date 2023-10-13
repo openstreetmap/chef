@@ -1,7 +1,5 @@
 #!/bin/bash
 
-domains=($RENEWED_DOMAINS)
-
 exec 2>&1
 
-exec /srv/acme.openstreetmap.org/bin/upload "${domains[0]}" "$RENEWED_LINEAGE"
+exec /srv/acme.openstreetmap.org/bin/upload "$(basename $RENEWED_LINEAGE)" "$RENEWED_LINEAGE"
