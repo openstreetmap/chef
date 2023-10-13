@@ -1,7 +1,11 @@
 # HELP chef_network_interface Information about network interfaces
 # TYPE chef_network_interface gauge
 <% node.interfaces.each do |interface| -%>
+<% if interface[:interface] =~ /^bond\d+$/ -%>
+chef_network_interface{name="<%= interface[:interface] %>",role="<%= interface[:role].to_s %>",bond_mode="<%= interface[:bond][:mode] || 'active-backup' %>"} 1
+<% else -%>
 chef_network_interface{name="<%= interface[:interface] %>",role="<%= interface[:role].to_s %>"} 1
+<% end -%>
 <% end -%>
 # HELP chef_role Information about chef roles
 # TYPE chef_role gauge
