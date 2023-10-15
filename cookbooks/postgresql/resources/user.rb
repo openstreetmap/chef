@@ -43,6 +43,12 @@ action :create do
     converge_by "create role #{new_resource.user}" do
       cluster.execute(:command => "CREATE ROLE \"#{new_resource.user}\" LOGIN #{password} #{superuser} #{createdb} #{createrole}")
     end
+
+    Array(new_resource.roles).each do |role|
+      converge_by "grant #{role} to #{new_resource.user}" do
+        cluster.execute(:command => "GRANT \"#{role}\" TO \"#{new_resource.user}\"")
+      end
+    end
   else
     current_user = cluster.users[new_resource.user]
 
