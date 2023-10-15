@@ -108,10 +108,6 @@ ohai_plugin "postgresql" do
   template "ohai.rb.erb"
 end
 
-file "/etc/prometheus/exporters/postgres_queries.yml" do
-  action :delete
-end
-
 package "pgtop"
 package "libdbd-pg-perl"
 
@@ -189,12 +185,4 @@ clusters.each do |name, details|
     conf "munin.erb"
     conf_variables :port => details[:port]
   end
-end
-
-service "prometheus-postgres-exporter" do
-  action [:stop, :disable]
-end
-
-systemd_service "prometheus-postgres-exporter" do
-  action :delete
 end
