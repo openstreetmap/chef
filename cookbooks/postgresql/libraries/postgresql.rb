@@ -76,12 +76,13 @@ module OpenStreetMap
     end
 
     def users
-      @users ||= query("SELECT * FROM pg_user").each_with_object({}) do |user, users|
+      @users ||= query("SELECT *, ARRAY(SELECT groname FROM pg_group WHERE usesysid = ANY(grolist)) AS roles FROM pg_user").each_with_object({}) do |user, users|
         users[user[:usename]] = {
           :superuser => user[:usesuper] == "t",
           :createdb => user[:usercreatedb] == "t",
           :createrole => user[:usecatupd] == "t",
-          :replication => user[:userepl] == "t"
+          :replication => user[:userepl] == "t",
+          :roles => parse_array(user[:roles] || "{}")
         }
       end
     end
@@ -140,8 +141,12 @@ module OpenStreetMap
 
     private
 
+    def parse_array(array)
+      array.sub(/^\{(.*)\}$/, "\\1").split(",")
+    end
+
     def parse_acl(acl)
-      acl.sub(/^\{(.*)\}$/, "\\1").split(",").each_with_object({}) do |entry, permissions|
+      parse_array(acl).each_with_object({}) do |entry, permissions|
         entry = entry.sub(/^"(.*)"$/) { Regexp.last_match[1].gsub(/\\"/, '"') }.sub(%r{/.*$}, "")
         user, privileges = entry.split("=")
 
