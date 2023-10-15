@@ -116,10 +116,18 @@ package "pgtop"
 package "libdbd-pg-perl"
 
 clusters = node[:postgresql][:clusters] || []
+passwords = data_bag_item("postgresql", "passwords")
 
 clusters.each do |name, details|
   prometheus_suffix = name.tr("/", "-")
   prometheus_database = node[:postgresql][:monitor_database]
+
+  postgresql_user "prometheus" do
+    cluster name
+    password passwords["prometheus"]
+    roles "pg_monitor"
+    not_if { ::File.exist?("/var/lib/postgresql/#{name}/standby.signal") }
+  end
 
   prometheus_exporter "postgres" do
     port 10000 + details[:port].to_i
