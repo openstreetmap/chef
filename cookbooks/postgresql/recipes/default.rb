@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+require "uri"
+
 include_recipe "apt::postgresql"
 include_recipe "munin"
 include_recipe "prometheus"
@@ -131,7 +133,6 @@ clusters.each do |name, details|
     labels "cluster" => name
     scrape_interval "1m"
     scrape_timeout "1m"
-    user "postgres"
     options %w[
       --collector.database_wraparound
       --collector.long_running_transactions
@@ -140,9 +141,8 @@ clusters.each do |name, details|
       --collector.stat_wal_receiver
       --collector.statio_user_indexes
     ]
-    environment "DATA_SOURCE_NAME" => "postgres:///#{prometheus_database}?host=/run/postgresql&port=#{details[:port]}"
+    environment "DATA_SOURCE_NAME" => "postgres:///#{prometheus_database}?host=/run/postgresql&port=#{details[:port]}&user=prometheus&password=#{URI.encode_www_form_component(passwords['prometheus'])}"
     restrict_address_families "AF_UNIX"
-    remove_ipc false
     subscribes :restart, "template[/etc/prometheus/exporters/postgres_queries.yml]"
   end
 
