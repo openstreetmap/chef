@@ -12,7 +12,7 @@ default[:civicrm][:extensions][:emailapi][:revision] = "2.11"
 
 # fancy email templates - INSTALL MANUALLY, NOT FROM GIT
 default[:civicrm][:extensions][:mosaico][:name] = "uk.co.vedaconsulting.mosaico"
-default[:civicrm][:extensions][:mosaico][:zip] = "https://download.civicrm.org/extension/uk.co.vedaconsulting.mosaico/3.2.1691060437/uk.co.vedaconsulting.mosaico-3.2.1691060437.zip"
+default[:civicrm][:extensions][:mosaico][:zip] = "https://download.civicrm.org/extension/uk.co.vedaconsulting.mosaico/3.3.1697392242/uk.co.vedaconsulting.mosaico-3.3.1697392242.zip"
 
 # validate that osm username exists, simple check
 default[:civicrm][:extensions][:username][:name] = "org.openstreetmap.username"
@@ -25,9 +25,9 @@ default[:civicrm][:extensions][:donotsendreportemail][:repository] = "https://gi
 default[:civicrm][:extensions][:donotsendreportemail][:revision] = "3b31c2e0c62183872c7ecd244395fb8dcfbd5dbb"
 
 # make civicrm look nicer
-default[:civicrm][:extensions][:shoreditch][:name] = "theisland"
-default[:civicrm][:extensions][:shoreditch][:repository] = "https://lab.civicrm.org/extensions/theisland.git"
-default[:civicrm][:extensions][:shoreditch][:revision] = "2.1.0"
+default[:civicrm][:extensions][:theisland][:name] = "theisland"
+default[:civicrm][:extensions][:theisland][:repository] = "https://lab.civicrm.org/extensions/theisland.git"
+default[:civicrm][:extensions][:theisland][:revision] = "2.1.0"
 
 # civiprospect
 default[:civicrm][:extensions][:civiprospect][:name] = "uk.co.compucorp.civicrm.prospect"
