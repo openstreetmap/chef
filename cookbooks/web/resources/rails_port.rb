@@ -114,6 +114,7 @@ action :create do
     libgd-dev
     libarchive-dev
     libbz2-dev
+    libyaml-dev
   ]
 
   package %w[
