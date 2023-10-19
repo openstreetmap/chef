@@ -23,19 +23,25 @@
 	SSLCertificateFile /etc/ssl/certs/prometheus.openstreetmap.org.pem
 	SSLCertificateKeyFile /etc/ssl/private/prometheus.openstreetmap.org.key
 
-	Redirect 403 /prometheus/api/v1/admin
 	ProxyPass /prometheus http://localhost:9090/prometheus
-	Redirect 403 /alertmanager/api
 	ProxyPass /alertmanager http://localhost:9093/alertmanager
 	ProxyPass /karma http://localhost:8081/karma
 	ProxyPass /api/live/ws ws://localhost:3000/api/live/ws
 	ProxyPass / http://localhost:3000/
 	ProxyPreserveHost on
 
+	<Location /prometheus/api/v1/admin>
+		Require all denied
+	</Location>
+
 	<Location /alertmanager>
 <% @admin_hosts.each do |host| -%>
 		Require ip <%= host %>
 <% end -%>
+	</Location>
+
+	<Location /alertmanager/api>
+		Require all denied
 	</Location>
 
 	<Location /karma>
