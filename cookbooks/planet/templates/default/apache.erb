@@ -37,10 +37,12 @@
         RewriteMap ip2region prg:/usr/local/bin/apache-s3-ip2region
 
         # Direct, no redirect for the following
-        RewriteCond %{REMOTE_ADDR}  ^127\.			     [OR]
-        RewriteCond %{REMOTE_ADDR}  ^10\.			       [OR]
+        RewriteCond %{REMOTE_ADDR} ^(127\.|10\.|192\.168\.) 
         RewriteCond %{QUERY_STRING} nomirror
         RewriteRule	.* - [L]
+
+        # Set ENV:REGION to AWS region closest to the user 
+        RewriteRule .* - [E=REGION:${ip2region:%{REMOTE_ADDR}|eu-central-1}]
 
         # Use RewriteMap latestplanet to redirect -latest symlink to resolved file eg: planet-latest.osm.bz2 -> 2023/planet-230918.osm.bz2
         RewriteRule ^(/planet/planet\-latest\.osm\.bz2(\.torrent)?)$                ${latestplanet:$1} [R,L]
@@ -78,16 +80,16 @@
         RewriteRule ^/tile_logs/(apps\-<%= year %>\-[01][0-9]\-[0-3][0-9]\.csv) https://osm-planet-eu-central-1.s3.dualstack.eu-central-1.amazonaws.com/tile_logs/standard_layer/apps/<%= year %>/$1 [R,L]
         RewriteRule ^/tile_logs/(tiles\-<%= year %>\-[01][0-9]\-[0-3][0-9]\.txt\.xz) https://osm-planet-eu-central-1.s3.dualstack.eu-central-1.amazonaws.com/tile_logs/standard_layer/tiles/<%= year %>/$1 [R,L]
           <% else %>
-        RewriteRule ^/pbf/(planet\-<%= year_two %>[0-1][0-9][0-3][0-9]\.osm\.pbf(\.torrent|\.md5)?)$ https://osm-planet-${ip2region:%{REMOTE_ADDR}|eu-central-1}.s3.dualstack.${ip2region:%{REMOTE_ADDR}|eu-central-1}.amazonaws.com/planet/pbf/<%= year %>/$1 [R,L]
-        RewriteRule ^/pbf/full\-history/(history\-<%= year_two %>[0-1][0-9][0-3][0-9]\.osm\.pbf(\.torrent|\.md5)?)$ https://osm-planet-${ip2region:%{REMOTE_ADDR}|eu-central-1}.s3.dualstack.${ip2region:%{REMOTE_ADDR}|eu-central-1}.amazonaws.com/planet-full-history/pbf/<%= year %>/$1 [R,L]
-        RewriteRule ^/planet/<%= year %>/(planet\-<%= year_two %>[0-1][0-9][0-3][0-9]\.osm\.bz2(\.torrent|\.md5)?)$ https://osm-planet-${ip2region:%{REMOTE_ADDR}|eu-central-1}.s3.dualstack.${ip2region:%{REMOTE_ADDR}|eu-central-1}.amazonaws.com/planet/osm/<%= year %>/$1 [R,L]
-        RewriteRule ^/planet/<%= year %>/(changesets\-<%= year_two %>[0-1][0-9][0-3][0-9]\.osm\.bz2(\.torrent|\.md5)?)$ https://osm-planet-${ip2region:%{REMOTE_ADDR}|eu-central-1}.s3.dualstack.${ip2region:%{REMOTE_ADDR}|eu-central-1}.amazonaws.com/changesets/osm/<%= year %>/$1 [R,L]
-        RewriteRule ^/planet/<%= year %>/(discussions\-<%= year_two %>[0-1][0-9][0-3][0-9]\.osm\.bz2(\.torrent|\.md5)?)$ https://osm-planet-${ip2region:%{REMOTE_ADDR}|eu-central-1}.s3.dualstack.${ip2region:%{REMOTE_ADDR}|eu-central-1}.amazonaws.com/discussions/osm/<%= year %>/$1 [R,L]
-        RewriteRule ^/planet/full\-history/<%= year %>/(history\-<%= year_two %>[0-1][0-9][0-3][0-9]\.osm\.bz2(\.torrent|\.md5)?)$ https://osm-planet-${ip2region:%{REMOTE_ADDR}|eu-central-1}.s3.dualstack.${ip2region:%{REMOTE_ADDR}|eu-central-1}.amazonaws.com/planet-full-history/osm/<%= year %>/$1 [R,L]
-        RewriteRule ^/tile_logs/(hosts\-<%= year %>\-[01][0-9]\-[0-3][0-9]\.csv) https://osm-planet-${ip2region:%{REMOTE_ADDR}|eu-central-1}.s3.dualstack.${ip2region:%{REMOTE_ADDR}|eu-central-1}.amazonaws.com/tile_logs/standard_layer/hosts/<%= year %>/$1 [R,L]
-        RewriteRule ^/tile_logs/(countries\-<%= year %>\-[01][0-9]\-[0-3][0-9]\.csv) https://osm-planet-${ip2region:%{REMOTE_ADDR}|eu-central-1}.s3.dualstack.${ip2region:%{REMOTE_ADDR}|eu-central-1}.amazonaws.com/tile_logs/standard_layer/countries/<%= year %>/$1 [R,L]
-        RewriteRule ^/tile_logs/(apps\-<%= year %>\-[01][0-9]\-[0-3][0-9]\.csv) https://osm-planet-${ip2region:%{REMOTE_ADDR}|eu-central-1}.s3.dualstack.${ip2region:%{REMOTE_ADDR}|eu-central-1}.amazonaws.com/tile_logs/standard_layer/apps/<%= year %>/$1 [R,L]
-        RewriteRule ^/tile_logs/(tiles\-<%= year %>\-[01][0-9]\-[0-3][0-9]\.txt\.xz) https://osm-planet-${ip2region:%{REMOTE_ADDR}|eu-central-1}.s3.dualstack.${ip2region:%{REMOTE_ADDR}|eu-central-1}.amazonaws.com/tile_logs/standard_layer/tiles/<%= year %>/$1 [R,L]
+        RewriteRule ^/pbf/(planet\-<%= year_two %>[0-1][0-9][0-3][0-9]\.osm\.pbf(\.torrent|\.md5)?)$ https://osm-planet-%{ENV:REGION}.s3.dualstack.%{ENV:REGION}.amazonaws.com/planet/pbf/<%= year %>/$1 [R,L]
+        RewriteRule ^/pbf/full\-history/(history\-<%= year_two %>[0-1][0-9][0-3][0-9]\.osm\.pbf(\.torrent|\.md5)?)$ https://osm-planet-%{ENV:REGION}.s3.dualstack.%{ENV:REGION}.amazonaws.com/planet-full-history/pbf/<%= year %>/$1 [R,L]
+        RewriteRule ^/planet/<%= year %>/(planet\-<%= year_two %>[0-1][0-9][0-3][0-9]\.osm\.bz2(\.torrent|\.md5)?)$ https://osm-planet-%{ENV:REGION}.s3.dualstack.%{ENV:REGION}.amazonaws.com/planet/osm/<%= year %>/$1 [R,L]
+        RewriteRule ^/planet/<%= year %>/(changesets\-<%= year_two %>[0-1][0-9][0-3][0-9]\.osm\.bz2(\.torrent|\.md5)?)$ https://osm-planet-%{ENV:REGION}.s3.dualstack.%{ENV:REGION}.amazonaws.com/changesets/osm/<%= year %>/$1 [R,L]
+        RewriteRule ^/planet/<%= year %>/(discussions\-<%= year_two %>[0-1][0-9][0-3][0-9]\.osm\.bz2(\.torrent|\.md5)?)$ https://osm-planet-%{ENV:REGION}.s3.dualstack.%{ENV:REGION}.amazonaws.com/discussions/osm/<%= year %>/$1 [R,L]
+        RewriteRule ^/planet/full\-history/<%= year %>/(history\-<%= year_two %>[0-1][0-9][0-3][0-9]\.osm\.bz2(\.torrent|\.md5)?)$ https://osm-planet-%{ENV:REGION}.s3.dualstack.%{ENV:REGION}.amazonaws.com/planet-full-history/osm/<%= year %>/$1 [R,L]
+        RewriteRule ^/tile_logs/(hosts\-<%= year %>\-[01][0-9]\-[0-3][0-9]\.csv) https://osm-planet-%{ENV:REGION}.s3.dualstack.%{ENV:REGION}.amazonaws.com/tile_logs/standard_layer/hosts/<%= year %>/$1 [R,L]
+        RewriteRule ^/tile_logs/(countries\-<%= year %>\-[01][0-9]\-[0-3][0-9]\.csv) https://osm-planet-%{ENV:REGION}.s3.dualstack.%{ENV:REGION}.amazonaws.com/tile_logs/standard_layer/countries/<%= year %>/$1 [R,L]
+        RewriteRule ^/tile_logs/(apps\-<%= year %>\-[01][0-9]\-[0-3][0-9]\.csv) https://osm-planet-%{ENV:REGION}.s3.dualstack.%{ENV:REGION}.amazonaws.com/tile_logs/standard_layer/apps/<%= year %>/$1 [R,L]
+        RewriteRule ^/tile_logs/(tiles\-<%= year %>\-[01][0-9]\-[0-3][0-9]\.txt\.xz) https://osm-planet-%{ENV:REGION}.s3.dualstack.%{ENV:REGION}.amazonaws.com/tile_logs/standard_layer/tiles/<%= year %>/$1 [R,L]
           <% end %>
         <% end %>
 </VirtualHost>
