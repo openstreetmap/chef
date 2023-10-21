@@ -409,7 +409,10 @@ systemd_service "prometheus-backup-data" do
   description "Backup prometheus data to S3"
   user "prometheus"
   exec_start "/usr/local/bin/prometheus-backup-data"
-  read_write_paths "/var/lib/prometheus/metrics2/snapshots"
+  read_write_paths %w[
+    /var/lib/prometheus/.aws
+    /var/lib/prometheus/metrics2/snapshots
+  ]
   sandbox :enable_network => true
 end
 
