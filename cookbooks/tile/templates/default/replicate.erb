@@ -43,7 +43,7 @@ do
         echo "Fetched new data from $(cat sequence-prev.txt) to $(cat sequence.txt) into ${file}"
 
         # Apply the changes to the database
-        osm2pgsql --database gis --slim --append --number-processes=1 \
+        osm2pgsql --database gis --slim --append --number-processes=1 --log-progress=false \
 <% if node[:tile][:database][:node_file] -%>
                   --flat-nodes=<%= node[:tile][:database][:node_file] %> \
 <% end -%>
