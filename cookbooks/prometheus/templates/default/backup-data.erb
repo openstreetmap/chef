@@ -2,7 +2,7 @@
 
 # DO NOT EDIT - This file is being maintained by Chef
 
-SNAPSHOT=$(curl -XPOST http://localhost:9090/prometheus/api/v1/admin/tsdb/snapshot | jq -r .data.name)
+SNAPSHOT=$(curl -s -XPOST http://localhost:9090/prometheus/api/v1/admin/tsdb/snapshot | jq -r .data.name)
 
 /opt/awscli/v2/current/bin/aws --profile osm-prometheus-data-upload s3 sync --storage-class=INTELLIGENT_TIERING --no-progress /var/lib/prometheus/metrics2/snapshots/${SNAPSHOT} s3://openstreetmap-prometheus-data
 
