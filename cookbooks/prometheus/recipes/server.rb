@@ -19,6 +19,7 @@
 
 include_recipe "apache"
 include_recipe "apt::grafana"
+include_recipe "awscli"
 include_recipe "networking"
 
 passwords = data_bag_item("prometheus", "passwords")
@@ -376,4 +377,43 @@ template "/etc/cron.daily/prometheus-backup" do
   owner "root"
   group "root"
   mode "750"
+end
+
+package %w[
+  curl
+  jq
+]
+
+directory "/var/lib/prometheus/.aws" do
+  user "prometheus"
+  group "prometheus"
+  mode "755"
+end
+
+template "/var/lib/prometheus/.aws/credentials" do
+  source "aws-credentials.erb"
+  user "prometheus"
+  group "prometheus"
+  mode "600"
+  variables :passwords => passwords
+end
+
+template "/usr/local/bin/prometheus-backup-data" do
+  source "backup-data.erb"
+  owner "root"
+  group "root"
+  mode "755"
+end
+
+systemd_service "prometheus-backup-data" do
+  description "Backup prometheus data to S3"
+  user "prometheus"
+  exec_start "/usr/local/bin/prometheus-backup-data"
+  read_write_paths "/var/lib/prometheus/metrics2/snapshots"
+  sandbox :enable_network => true
+end
+
+systemd_timer "prometheus-backup-data" do
+  description "Backup prometheus data to S3"
+  on_calendar "03:11"
 end
