@@ -417,3 +417,7 @@ systemd_timer "prometheus-backup-data" do
   description "Backup prometheus data to S3"
   on_calendar "03:11"
 end
+
+service "prometheus-backup-data.timer" do
+  action [:enable, :start]
+end
