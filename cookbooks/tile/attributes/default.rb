@@ -8,7 +8,7 @@ default[:tile][:database][:tag_transform_script] = nil
 
 default[:tile][:mapnik] = "3.1"
 
-default[:tile][:replication][:url] = "https://planet.openstreetmap.org/replication/minute/"
+default[:tile][:replication][:url] = "https://osm-planet-eu-central-1.s3.dualstack.eu-central-1.amazonaws.com/planet/replication/minute"
 
 default[:tile][:data] = {}
 default[:tile][:styles] = {}
