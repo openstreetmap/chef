@@ -259,9 +259,11 @@ class Replicator
 
     if @config["s3_dir"]
       s3_file = s3_stem + ".osm.gz"
+      s3_state_config_file = @config["s3_dir"] + "/state.yaml"
       s3_state_file = s3_stem + ".state.txt"
 
       system("/opt/awscli/v2/current/bin/aws", "--profile=osm-pds-upload", "s3", "cp", "--storage-class=INTELLIGENT_TIERING", "--no-progress", data_file, s3_file)
+      system("/opt/awscli/v2/current/bin/aws", "--profile=osm-pds-upload", "s3", "cp", "--storage-class=INTELLIGENT_TIERING", "--no-progress", @config["state_file"], s3_state_config_file)
       system("/opt/awscli/v2/current/bin/aws", "--profile=osm-pds-upload", "s3", "cp", "--storage-class=INTELLIGENT_TIERING", "--no-progress", data_state_file, s3_state_file)
     end
   end
