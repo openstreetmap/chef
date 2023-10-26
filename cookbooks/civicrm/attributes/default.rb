@@ -1,4 +1,4 @@
-default[:civicrm][:version] = "5.66.0"
+default[:civicrm][:version] = "5.66.1"
 
 # was used for SotM
 # default[:civicrm][:extensions][:cividiscount][:name] = "org.civicrm.module.cividiscount"
@@ -62,17 +62,17 @@ default[:civicrm][:extensions][:osmfverifycontributor][:revision] = "bb0cd617830
 # Pay with Mollie
 default[:civicrm][:extensions][:omnipay][:name] = "nz.co.fuzion.omnipaymultiprocessor"
 default[:civicrm][:extensions][:omnipay][:repository] = "https://github.com/eileenmcnaughton/nz.co.fuzion.omnipaymultiprocessor.git"
-default[:civicrm][:extensions][:omnipay][:revision] = "3.19"
+default[:civicrm][:extensions][:omnipay][:revision] = "3.21"
 
 # Pay with Stripe
 default[:civicrm][:extensions][:stripe][:name] = "com.drastikbydesign.stripe"
 default[:civicrm][:extensions][:stripe][:repository] = "https://lab.civicrm.org/extensions/stripe.git"
 default[:civicrm][:extensions][:stripe][:revision] = "6.9.4"
 
-# Stripe requires mjwshared
+# Stripe requires mjwshared ("payment shared")
 default[:civicrm][:extensions][:mjwshared][:name] = "com.mjwconsult.mjwshared"
 default[:civicrm][:extensions][:mjwshared][:repository] = "https://lab.civicrm.org/extensions/mjwshared.git"
-default[:civicrm][:extensions][:mjwshared][:revision] = "1.2.15"
+default[:civicrm][:extensions][:mjwshared][:revision] = "1.2.17"
 
 # Stripe requires sweetalert
 default[:civicrm][:extensions][:sweetalert][:name] = "org.civicrm.sweetalert"
