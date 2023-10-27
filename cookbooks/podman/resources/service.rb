@@ -41,9 +41,16 @@ action :create do
     restart "on-failure"
   end
 
+  # No action :start here to avoid a start and then immediate :restart, due to subscribe, on first run
   service new_resource.service do
-    action [:enable, :start]
-    subscribes :restart, "systemd_service[#{new_resource.service}]"
+    action :enable
+    subscribes :restart, "systemd_service[#{new_resource.service}]", :immediately
+  end
+
+  # Ensure the service is started if not running, replies on status of service resource
+  notify_group new_resource.service do
+    action :run
+    notifies :start, "service[#{new_resource.service}]", :immediately
   end
 end
 
