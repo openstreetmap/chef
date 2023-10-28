@@ -42,9 +42,12 @@ action :create do
   end
 
   # No action :start here to avoid a start and then immediate :restart, due to subscribe, on first run
+  # FIXME: Ubuntu 22.04 podman/crun bug workaround "retries"
   service new_resource.service do
     action :enable
     subscribes :restart, "systemd_service[#{new_resource.service}]", :immediately
+    retries 4 # Workaround https://github.com/containers/podman/issues/9752
+    retry_delay 5
   end
 
   # Ensure the service is started if not running, replies on status of service resource
