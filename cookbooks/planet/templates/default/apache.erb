@@ -73,19 +73,7 @@
         <% start_year = 2008 %>
         <% current_year = Time.now.year %>
         <% (start_year..current_year).each do |year| %>
-          <% year_two = sprintf('%02d', year % 100) %>
-          <% if year == current_year %>
-        RewriteRule ^/pbf/(planet\-<%= year_two %>[0-1][0-9][0-3][0-9]\.osm\.pbf(\.torrent|\.md5)?)$ https://osm-planet-eu-central-1.s3.dualstack.eu-central-1.amazonaws.com/planet/pbf/<%= year %>/$1 [R,L]
-        RewriteRule ^/pbf/full\-history/(history\-<%= year_two %>[0-1][0-9][0-3][0-9]\.osm\.pbf(\.torrent|\.md5)?)$ https://osm-planet-eu-central-1.s3.dualstack.eu-central-1.amazonaws.com/planet-full-history/pbf/<%= year %>/$1 [R,L]
-        RewriteRule ^/planet/<%= year %>/(planet\-<%= year_two %>[0-1][0-9][0-3][0-9]\.osm\.bz2(\.torrent|\.md5)?)$ https://osm-planet-eu-central-1.s3.dualstack.eu-central-1.amazonaws.com/planet/osm/<%= year %>/$1 [R,L]
-        RewriteRule ^/planet/<%= year %>/(changesets\-<%= year_two %>[0-1][0-9][0-3][0-9]\.osm\.bz2(\.torrent|\.md5)?)$ https://osm-planet-eu-central-1.s3.dualstack.eu-central-1.amazonaws.com/changesets/osm/<%= year %>/$1 [R,L]
-        RewriteRule ^/planet/<%= year %>/(discussions\-<%= year_two %>[0-1][0-9][0-3][0-9]\.osm\.bz2(\.torrent|\.md5)?)$ https://osm-planet-eu-central-1.s3.dualstack.eu-central-1.amazonaws.com/discussions/osm/<%= year %>/$1 [R,L]
-        RewriteRule ^/planet/full\-history/<%= year %>/(history\-<%= year_two %>[0-1][0-9][0-3][0-9]\.osm\.bz2(\.torrent|\.md5)?)$ https://osm-planet-eu-central-1.s3.dualstack.eu-central-1.amazonaws.com/planet-full-history/osm/<%= year %>/$1 [R,L]
-        RewriteRule ^/tile_logs/(hosts\-<%= year %>\-[01][0-9]\-[0-3][0-9]\.csv) https://osm-planet-eu-central-1.s3.dualstack.eu-central-1.amazonaws.com/tile_logs/standard_layer/hosts/<%= year %>/$1 [R,L]
-        RewriteRule ^/tile_logs/(countries\-<%= year %>\-[01][0-9]\-[0-3][0-9]\.csv) https://osm-planet-eu-central-1.s3.dualstack.eu-central-1.amazonaws.com/tile_logs/standard_layer/countries/<%= year %>/$1 [R,L]
-        RewriteRule ^/tile_logs/(apps\-<%= year %>\-[01][0-9]\-[0-3][0-9]\.csv) https://osm-planet-eu-central-1.s3.dualstack.eu-central-1.amazonaws.com/tile_logs/standard_layer/apps/<%= year %>/$1 [R,L]
-        RewriteRule ^/tile_logs/(tiles\-<%= year %>\-[01][0-9]\-[0-3][0-9]\.txt\.xz) https://osm-planet-eu-central-1.s3.dualstack.eu-central-1.amazonaws.com/tile_logs/standard_layer/tiles/<%= year %>/$1 [R,L]
-          <% else %>
+        <% year_two = sprintf('%02d', year % 100) %>
         RewriteRule ^/pbf/(planet\-<%= year_two %>[0-1][0-9][0-3][0-9]\.osm\.pbf(\.torrent|\.md5)?)$ https://osm-planet-%{ENV:REGION}.s3.dualstack.%{ENV:REGION}.amazonaws.com/planet/pbf/<%= year %>/$1 [R,L]
         RewriteRule ^/pbf/full\-history/(history\-<%= year_two %>[0-1][0-9][0-3][0-9]\.osm\.pbf(\.torrent|\.md5)?)$ https://osm-planet-%{ENV:REGION}.s3.dualstack.%{ENV:REGION}.amazonaws.com/planet-full-history/pbf/<%= year %>/$1 [R,L]
         RewriteRule ^/planet/<%= year %>/(planet\-<%= year_two %>[0-1][0-9][0-3][0-9]\.osm\.bz2(\.torrent|\.md5)?)$ https://osm-planet-%{ENV:REGION}.s3.dualstack.%{ENV:REGION}.amazonaws.com/planet/osm/<%= year %>/$1 [R,L]
@@ -96,7 +84,6 @@
         RewriteRule ^/tile_logs/(countries\-<%= year %>\-[01][0-9]\-[0-3][0-9]\.csv)$ https://osm-planet-%{ENV:REGION}.s3.dualstack.%{ENV:REGION}.amazonaws.com/tile_logs/standard_layer/countries/<%= year %>/$1 [R,L]
         RewriteRule ^/tile_logs/(apps\-<%= year %>\-[01][0-9]\-[0-3][0-9]\.csv)$ https://osm-planet-%{ENV:REGION}.s3.dualstack.%{ENV:REGION}.amazonaws.com/tile_logs/standard_layer/apps/<%= year %>/$1 [R,L]
         RewriteRule ^/tile_logs/(tiles\-<%= year %>\-[01][0-9]\-[0-3][0-9]\.txt\.xz)$ https://osm-planet-%{ENV:REGION}.s3.dualstack.%{ENV:REGION}.amazonaws.com/tile_logs/standard_layer/tiles/<%= year %>/$1 [R,L]
-          <% end %>
         <% end %>
 </VirtualHost>
 
