@@ -141,6 +141,20 @@ function mk_torrent {
 	"${rss_file}"
 }
 
+function replication_status_wait {
+  local s3_url="$1"
+  for i in {1..3600}; do
+    local replication_status=$(curl -sI --location "${s3_url}" | grep -F 'x-amz-replication-status' | awk '{print $2}' |  tr -d '\r' )
+
+    if [[ "${replication_status}" == "COMPLETED" ]]; then
+      return 0 # success
+    fi
+
+    sleep 1
+  done
+  echo "Timeout waiting for ${s3_url} to complete replication status: ${replication_status}"
+}
+
 # Function to install a dump in place
 function install_dump {
   local type="$1"
@@ -155,9 +169,14 @@ function install_dump {
   md5sum "${name}" > "${name}.md5"
 
   # Upload all files to S3
-  /opt/awscli/v2/current/bin/aws --profile=osm-pds-upload s3 cp --storage-class=INTELLIGENT_TIERING --no-progress "${name}.md5" "${s3dir}/${name}.md5"
-  /opt/awscli/v2/current/bin/aws --profile=osm-pds-upload s3 cp --storage-class=INTELLIGENT_TIERING --no-progress "${name}.torrent" "${s3dir}/${name}.torrent"
-  /opt/awscli/v2/current/bin/aws --profile=osm-pds-upload s3 cp --storage-class=INTELLIGENT_TIERING --no-progress "${name}" "${s3dir}/${name}"
+  /opt/awscli/v2/current/bin/aws --profile=osm-pds-upload s3 cp --storage-class=INTELLIGENT_TIERING --no-progress "${name}.md5" "s3://osm-planet-eu-central-1/${s3dir}/${name}.md5"
+  /opt/awscli/v2/current/bin/aws --profile=osm-pds-upload s3 cp --storage-class=INTELLIGENT_TIERING --no-progress "${name}.torrent" "s3://osm-planet-eu-central-1/${s3dir}/${name}.torrent"
+  /opt/awscli/v2/current/bin/aws --profile=osm-pds-upload s3 cp --storage-class=INTELLIGENT_TIERING --no-progress "${name}" "s3://osm-planet-eu-central-1/${s3dir}/${name}"
+
+  # Waiting for S3 replication to complete
+  replication_status_wait "https://osm-planet-eu-central-1.s3.dualstack.eu-central-1.amazonaws.com/${s3dir}/${name}.md5"
+  replication_status_wait "https://osm-planet-eu-central-1.s3.dualstack.eu-central-1.amazonaws.com/${s3dir}/${name}.torrent"
+  replication_status_wait "https://osm-planet-eu-central-1.s3.dualstack.eu-central-1.amazonaws.com/${s3dir}/${name}"
 
   mkdir -p "${dir}/${year}"
   mv "${name}" "${name}.md5" "${dir}/${year}"
@@ -177,9 +196,9 @@ mk_torrent "planet" "pbf" "pbf" "planet/pbf/${year}"
 mk_torrent "history" "pbf" "pbf/full-history" "planet-full-history/pbf/${year}"
 
 # Move dumps into place
-install_dump "changesets" "bz2" "<%= node[:planet][:dump][:xml_directory] %>" "s3://osm-planet-eu-central-1/changesets/osm/${year}" "${year}"
-install_dump "discussions" "bz2" "<%= node[:planet][:dump][:xml_directory] %>" "s3://osm-planet-eu-central-1/discussions/osm/${year}" "${year}"
-install_dump "planet" "bz2" "<%= node[:planet][:dump][:xml_directory] %>" "s3://osm-planet-eu-central-1/planet/osm/${year}" "${year}"
-install_dump "history" "bz2" "<%= node[:planet][:dump][:xml_history_directory] %>" "s3://osm-planet-eu-central-1/planet-full-history/osm/${year}" "${year}"
-install_dump "planet" "pbf" "<%= node[:planet][:dump][:pbf_directory] %>" "s3://osm-planet-eu-central-1/planet/pbf/${year}"
-install_dump "history" "pbf" "<%= node[:planet][:dump][:pbf_history_directory] %>" "s3://osm-planet-eu-central-1/planet-full-history/pbf/${year}"
+install_dump "changesets" "bz2" "<%= node[:planet][:dump][:xml_directory] %>" "changesets/osm/${year}" "${year}"
+install_dump "discussions" "bz2" "<%= node[:planet][:dump][:xml_directory] %>" "discussions/osm/${year}" "${year}"
+install_dump "planet" "bz2" "<%= node[:planet][:dump][:xml_directory] %>" "planet/osm/${year}" "${year}"
+install_dump "history" "bz2" "<%= node[:planet][:dump][:xml_history_directory] %>" "planet-full-history/osm/${year}" "${year}"
+install_dump "planet" "pbf" "<%= node[:planet][:dump][:pbf_directory] %>" "planet/pbf/${year}"
+install_dump "history" "pbf" "<%= node[:planet][:dump][:pbf_history_directory] %>" "planet-full-history/pbf/${year}"
