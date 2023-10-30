@@ -62,10 +62,12 @@ function mk_torrent {
   local type="$1"
   local format="$2"
   local dir="$3"
-  local s_year="$4"
+  local s3path="$4"
+  local s_year="$5"
   local web_dir="${dir}${s_year}"
   local name="${type}-${date}.osm.${format}"
   local web_path="${web_dir}/${name}"
+  local s3_web_path="${s3path}/${name}"
   local rss_web_dir="https://planet.openstreetmap.org/${dir}"
   local rss_file="${type}-${format}-rss.xml"
   local torrent_file="${name}.torrent"
@@ -79,6 +81,8 @@ function mk_torrent {
      -a udp://tracker-udp.gbitt.info:80/announce,http://tracker.gbitt.info/announce,https://tracker.gbitt.info/announce \
      -a http://retracker.local/announce \
      -w "https://planet.openstreetmap.org/${web_path}" \
+     -w "https://osm-planet-eu-central-1.s3.dualstack.eu-central-1.amazonaws.com/${s3_web_path}" \
+     -w "https://osm-planet-us-west-2.s3.dualstack.us-west-2.amazonaws.com/${s3_web_path}" \
      -w "https://ftp5.gwdg.de/pub/misc/openstreetmap/planet.openstreetmap.org/${web_path}" \
      -w "https://ftpmirror.your.org/pub/openstreetmap/${web_path}" \
      -w "https://mirror.init7.net/openstreetmap/${web_path}" \
@@ -165,12 +169,12 @@ function install_dump {
 }
 
 # Create *.torrent files
-mk_torrent "changesets" "bz2" "planet" "/${year}"
-mk_torrent "discussions" "bz2" "planet" "/${year}"
-mk_torrent "planet" "bz2" "planet" "/${year}"
-mk_torrent "history" "bz2" "planet/full-history" "/${year}"
-mk_torrent "planet" "pbf" "pbf"
-mk_torrent "history" "pbf" "pbf/full-history"
+mk_torrent "changesets" "bz2" "planet" "changesets/osm/${year}" "/${year}"
+mk_torrent "discussions" "bz2" "planet" "discussions/osm/${year}" "/${year}"
+mk_torrent "planet" "bz2" "planet" "planet/osm/${year}" "/${year}"
+mk_torrent "history" "bz2" "planet/full-history" "planet-full-history/osm/${year}" "/${year}"
+mk_torrent "planet" "pbf" "pbf" "planet/pbf/${year}"
+mk_torrent "history" "pbf" "pbf/full-history" "planet-full-history/pbf/${year}"
 
 # Move dumps into place
 install_dump "changesets" "bz2" "<%= node[:planet][:dump][:xml_directory] %>" "s3://osm-planet-eu-central-1/changesets/osm/${year}" "${year}"
