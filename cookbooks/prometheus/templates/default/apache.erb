@@ -40,10 +40,6 @@
 <% end -%>
 	</Location>
 
-	<Location /alertmanager/api>
-		Require all denied
-	</Location>
-
 	<Location /karma>
 <% @admin_hosts.each do |host| -%>
 		Require ip <%= host %>
