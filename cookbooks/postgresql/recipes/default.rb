@@ -144,6 +144,36 @@ clusters.each do |name, details|
     subscribes :restart, "template[/etc/prometheus/exporters/postgres_queries.yml]"
   end
 
+  if node[:postgresql][:monitor_queries]
+    template "/etc/prometheus/exporters/sql_exporter.yml" do
+      source "sql_exporter.yml.erb"
+      owner "root"
+      group "root"
+      mode "644"
+    end
+
+    prometheus_exporter "sql" do
+      port 20000 + details[:port].to_i
+      service "sql-#{prometheus_suffix}"
+      labels "cluster" => name
+      scrape_interval "1m"
+      scrape_timeout "1m"
+      options "--config.file=/etc/prometheus/exporters/sql_exporter.yml"
+      environment "SQLEXPORTER_TARGET_DSN" => "postgres://prometheus:#{passwords['prometheus']}@/run/postgresql:#{details[:port]}/#{prometheus_database}"
+      restrict_address_families "AF_UNIX"
+      subscribes :restart, "template[/etc/prometheus/exporters/sql_exporter.yml]"
+    end
+  else
+    prometheus_exporter "sql" do
+      action :delete
+      service "sql-#{prometheus_suffix}"
+    end
+
+    file "/etc/prometheus/exporters/sql_exporter.yml" do
+      action :delete
+    end
+  end
+
   munin_suffix = name.tr("/", ":")
 
   munin_plugin "postgres_bgwriter_#{munin_suffix}" do

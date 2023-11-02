@@ -1,6 +1,7 @@
 default[:postgresql][:versions] = []
 default[:postgresql][:clusters] = {}
 default[:postgresql][:monitor_database] = "postgres"
+default[:postgresql][:monitor_queries] = false
 default[:postgresql][:settings][:defaults][:port] = "5432"
 default[:postgresql][:settings][:defaults][:max_connections] = "100"
 default[:postgresql][:settings][:defaults][:ssl] = "true"
