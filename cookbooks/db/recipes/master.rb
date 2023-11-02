@@ -140,6 +140,10 @@ PLANETDIFF_PERMISSIONS = {
   "ways" => :select
 }.freeze
 
+PROMETHEUS_PERMISSIONS = {
+  "delayed_jobs" => :select
+}.freeze
+
 %w[
   acls
   active_storage_attachments
@@ -205,6 +209,7 @@ PLANETDIFF_PERMISSIONS = {
                 "cgimap" => CGIMAP_PERMISSIONS[table],
                 "planetdump" => PLANETDUMP_PERMISSIONS[table],
                 "planetdiff" => PLANETDIFF_PERMISSIONS[table],
+                "prometheus" => PROMETHEUS_PERMISSIONS[table],
                 "backup" => [:select]
   end
 end
@@ -299,4 +304,11 @@ end
 
 service "yearly-reindex.timer" do
   action [:enable, :start]
+end
+
+template "/etc/prometheus/exporters/sql_rails.collector.yml" do
+  source "sql_rails.yml.erb"
+  owner "root"
+  group "root"
+  mode "0644"
 end

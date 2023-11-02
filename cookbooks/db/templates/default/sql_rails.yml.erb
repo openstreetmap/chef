@@ -1,0 +1,25 @@
+collector_name: sql_rails
+
+metrics:
+  - metric_name: rails_queue_length
+    type: gauge
+    help: Rails job queue length
+    key_labels:
+      - queue
+      - status
+    values: [length]
+    query: |
+      SELECT
+        queue,
+        CASE
+        WHEN failed_at IS NOT NULL THEN 'failed'
+        WHEN locked_at IS NOT NULL THEN 'running'
+        WHEN attempts > 0 THEN 'retry'
+        ELSE 'pending'
+        END AS status,
+        COUNT(*) AS length
+      FROM
+        delayed_jobs
+      GROUP BY
+        queue,
+        status

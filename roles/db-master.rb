@@ -3,6 +3,7 @@ description "Role applied to all the master database server"
 
 default_attributes(
   :postgresql => {
+    :monitor_queries => true,
     :settings => {
       :defaults => {
         :archive_mode => "on",
