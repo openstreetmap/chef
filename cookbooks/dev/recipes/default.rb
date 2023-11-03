@@ -80,6 +80,7 @@ package %w[
   libmemcached-dev
   libpqxx-dev
   libtool
+  libxml-twig-perl
   libxml2-dev
   libyajl-dev
   lua-any
