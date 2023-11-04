@@ -465,7 +465,8 @@ if node[:postgresql][:clusters][:"15/main"]
           variables :cgimap_port => cgimap_port,
                     :database_port => node[:postgresql][:clusters][:"15/main"][:port],
                     :database_name => database_name,
-                    :log_directory => log_directory
+                    :log_directory => log_directory,
+                    :options => details[:cgimap_options]
         end
 
         service "cgimap@#{name}" do
