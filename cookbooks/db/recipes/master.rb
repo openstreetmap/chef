@@ -272,6 +272,7 @@ systemd_service "monthly-reindex" do
   user "postgres"
   sandbox true
   restrict_address_families "AF_UNIX"
+  remove_ipc false
 end
 
 systemd_timer "monthly-reindex" do
@@ -295,6 +296,7 @@ systemd_service "yearly-reindex" do
   user "postgres"
   sandbox true
   restrict_address_families "AF_UNIX"
+  remove_ipc false
 end
 
 systemd_timer "yearly-reindex" do
