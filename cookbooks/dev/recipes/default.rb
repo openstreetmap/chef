@@ -596,3 +596,16 @@ end
 apache_site "ooc.openstreetmap.org" do
   template "apache.ooc.erb"
 end
+
+directory "/etc/systemd/system/user-.slice.d" do
+  owner "root"
+  group "root"
+  mode "0755"
+end
+
+template "/etc/systemd/system/user-.slice.d/99-chef.conf" do
+  source "user-slice.conf.erb"
+  owner "root"
+  group "root"
+  mode "0644"
+end
