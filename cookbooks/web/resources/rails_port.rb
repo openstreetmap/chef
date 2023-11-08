@@ -425,7 +425,8 @@ action :create do
     directory rails_directory
     command "rails yarn:install"
     environment "HOME" => rails_directory,
-                "RAILS_ENV" => "production"
+                "RAILS_ENV" => "production",
+                "SECRET_KEY_BASE_DUMMY" => "1"
     user new_resource.user
     group new_resource.group
     subscribes :run, "git[#{rails_directory}]"
@@ -437,7 +438,8 @@ action :create do
     directory rails_directory
     command "rails i18n:js:export"
     environment "HOME" => rails_directory,
-                "RAILS_ENV" => "production"
+                "RAILS_ENV" => "production",
+                "SECRET_KEY_BASE_DUMMY" => "1"
     user new_resource.user
     group new_resource.group
     subscribes :run, "git[#{rails_directory}]"
@@ -449,7 +451,8 @@ action :create do
     directory rails_directory
     command "rails assets:precompile"
     environment "HOME" => rails_directory,
-                "RAILS_ENV" => "production"
+                "RAILS_ENV" => "production",
+                "SECRET_KEY_BASE_DUMMY" => "1"
     user new_resource.user
     group new_resource.group
     subscribes :run, "git[#{rails_directory}]"
