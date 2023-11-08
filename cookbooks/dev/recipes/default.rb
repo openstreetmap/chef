@@ -298,7 +298,7 @@ if node[:postgresql][:clusters][:"15/main"]
   systemd_service "rails-jobs@" do
     description "Rails job queue runner"
     type "simple"
-    environment "RAILS_ENV" => "production", "SLEEP_DELAY" => "60"
+    environment_file "/etc/default/rails-%i"
     user "apis"
     working_directory "/srv/%i.apis.dev.openstreetmap.org/rails"
     exec_start "#{node[:ruby][:bundle]} exec rails jobs:work"
@@ -411,6 +411,14 @@ if node[:postgresql][:clusters][:"15/main"]
         mode "644"
         variables :site => site_name
         notifies :restart, "rails_port[#{site_name}]"
+      end
+
+      template "/etc/default/rails-#{name}" do
+        source "rails.environment.erb"
+        owner "root"
+        group "root"
+        mode "0600"
+        variables :secret_key_base => secret_key_base
       end
 
       service "rails-jobs@#{name}" do

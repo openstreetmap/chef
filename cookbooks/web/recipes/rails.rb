@@ -165,7 +165,10 @@ end
 systemd_service "rails-jobs@" do
   description "Rails job queue runner"
   type "simple"
-  environment "RAILS_ENV" => "production", "QUEUE" => "%I", "SLEEP_DELAY" => "60"
+  environment "RAILS_ENV" => "production",
+              "QUEUE" => "%I",
+              "SLEEP_DELAY" => "60",
+              "SECRET_KEY_BASE" => web_passwords["secret_key_base"]
   user "rails"
   working_directory rails_directory
   exec_start "#{node[:ruby][:bundle]} exec rails jobs:work"
