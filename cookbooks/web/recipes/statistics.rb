@@ -32,7 +32,8 @@ end
 
 systemd_service "web-statistics" do
   description "Generate web statistics"
-  environment "RAILS_ENV" => "production"
+  environment "RAILS_ENV" => "production",
+              "SECRET_KEY_BASE_DUMMY" => "1"
   user "rails"
   working_directory rails_directory
   exec_start "/usr/local/bin/statistics"
