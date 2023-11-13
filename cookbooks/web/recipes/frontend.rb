@@ -98,3 +98,11 @@ else
     subscribes :restart, "systemd_service[rails-jobs@]"
   end
 end
+
+template "/usr/local/bin/deliver-message" do
+  source "deliver-message.erb"
+  owner "rails"
+  group "rails"
+  mode "0700"
+  variables :secret_key_base => web_passwords["secret_key_base"]
+end

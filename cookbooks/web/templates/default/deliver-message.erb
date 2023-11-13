@@ -1,0 +1,6 @@
+#!/bin/sh
+
+export RAILS_ENV="production"
+export SECRET_KEY_BASE="<%= @secret_key_base %>"
+
+exec /usr/local/bin/passenger-ruby /srv/www.openstreetmap.org/rails/script/deliver-message "$@"

@@ -33,14 +33,11 @@ default_attributes(
       :messages => {
         :comment => "messages.openstreetmap.org",
         :domains => ["messages.openstreetmap.org"],
-        :command => "/usr/local/bin/passenger-ruby /srv/www.openstreetmap.org/rails/script/deliver-message $local_part",
+        :command => "/usr/local/bin/deliver-message $local_part",
         :user => "rails",
         :group => "rails",
         :home_directory => "/srv/www.openstreetmap.org/rails",
-        :path => "/bin:/usr/bin:/usr/local/bin",
-        :environment => {
-          "RAILS_ENV" => "production"
-        }
+        :path => "/bin:/usr/bin:/usr/local/bin"
       }
     }
   }
