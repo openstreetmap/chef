@@ -48,7 +48,8 @@ cgimap_options = {
   "CGIMAP_MAP_AREA" => node[:web][:max_request_area],
   "CGIMAP_MAP_NODES" => node[:web][:max_number_of_nodes],
   "CGIMAP_MAX_WAY_NODES" => node[:web][:max_number_of_way_nodes],
-  "CGIMAP_MAX_RELATION_MEMBERS" => node[:web][:max_number_of_relation_members]
+  "CGIMAP_MAX_RELATION_MEMBERS" => node[:web][:max_number_of_relation_members],
+  "CGIMAP_RATELIMIT_UPLOAD" => "true"
 }
 
 if %w[database_readonly api_readonly].include?(node[:web][:status])
