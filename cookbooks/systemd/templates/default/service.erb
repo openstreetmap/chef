@@ -262,6 +262,9 @@ SuccessExitStatus=<%= Array(@success_exit_status).join(" ") %>
 <% if @restart -%>
 Restart=<%= @restart %>
 <% end -%>
+<% if @restart_sec -%>
+RestartSec=<%= @restart_sec %>
+<% end -%>
 <% if @timeout_start_sec -%>
 TimeoutStartSec=<%= @timeout_start_sec %>
 <% end -%>
