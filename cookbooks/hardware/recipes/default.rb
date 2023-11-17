@@ -28,6 +28,10 @@ ohai_plugin "hardware" do
   template "ohai.rb.erb"
 end
 
+if platform?("debian")
+  package "firmware-linux"
+end
+
 if node[:cpu] && node[:cpu][:"0"] && node[:cpu][:"0"][:vendor_id]
   case node[:cpu][:"0"][:vendor_id]
   when "GenuineIntel"
