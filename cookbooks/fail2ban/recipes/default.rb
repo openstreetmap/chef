@@ -22,10 +22,15 @@ include_recipe "prometheus"
 
 package %w[
   fail2ban
-  python3-inotify
   python3-systemd
   ruby-webrick
 ]
+
+if platform?("debian")
+  package "python3-inotify"
+else
+  package "gamin"
+end
 
 template "/etc/fail2ban/jail.d/00-default.conf" do
   source "jail.default.erb"
