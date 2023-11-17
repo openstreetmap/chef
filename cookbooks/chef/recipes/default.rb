@@ -49,7 +49,11 @@ Dir.glob("#{cache_dir}/chef_*.deb").each do |deb|
   end
 end
 
-os_release = node[:lsb][:release]
+os_release = if platform?("debian") && node[:lsb][:release].to_f > 11
+               11
+             else
+               node[:lsb][:release]
+             end
 
 remote_file "#{cache_dir}/#{chef_package}" do
   source "https://packages.chef.io/files/stable/chef/#{chef_version}/#{chef_platform}/#{os_release}/#{chef_package}"
