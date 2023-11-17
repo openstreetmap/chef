@@ -49,7 +49,7 @@ if platform?("debian")
   archive_distro = "debian"
   archive_security_distro = "debian-security"
   archive_suites = %w[main updates security]
-  archive_components = %w[main contrib non-free]
+  archive_components = %w[main contrib non-free non-free-firmware]
 elsif intel?
   archive_host = if node[:country]
                    "#{node[:country]}.archive.ubuntu.com"
