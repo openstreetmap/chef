@@ -22,6 +22,8 @@ include_recipe "prometheus"
 
 package %w[
   fail2ban
+  python3-inotify
+  python3-systemd
   ruby-webrick
 ]
 
