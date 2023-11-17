@@ -24,20 +24,11 @@ apt_repository "management-component-pack" do
 end
 
 if platform?("debian")
-  if node[:dmi][:system][:product_name].end_with?("Gen10")
-    apt_repository "mcp-gen10" do
-      uri "https://downloads.linux.hpe.com/SDR/repo/mcp"
-      distribution "#{node[:lsb][:codename]}/current-gen10"
-      components ["non-free"]
-      key "C208ADDE26C2B797"
-    end
-  else
-    apt_repository "mcp" do
-      uri "https://downloads.linux.hpe.com/SDR/repo/mcp"
-      distribution "#{node[:lsb][:codename]}/current"
-      components ["non-free"]
-      key "C208ADDE26C2B797"
-    end
+  apt_repository "mcp" do
+    uri "https://downloads.linux.hpe.com/SDR/repo/mcp"
+    distribution "#{node[:lsb][:codename]}/current"
+    components ["non-free"]
+    key "C208ADDE26C2B797"
   end
 elsif platform?("ubuntu")
   if node[:dmi][:system][:product_name].end_with?("Gen10")
