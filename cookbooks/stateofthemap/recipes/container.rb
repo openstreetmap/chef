@@ -24,7 +24,7 @@ podman_site "stateofthemap.org" do
   aliases ["www.stateofthemap.org", "stateofthemap.com", "www.stateofthemap.com", "sotm.org", "www.sotm.org"]
 end
 
-%w[2013 2016 2017 2018 2019 2020 2021 2022].each do |year|
+%w[2013 2016 2017 2018 2019 2020 2021 2022 2024].each do |year|
   podman_site "#{year}.stateofthemap.org" do
     image "ghcr.io/openstreetmap/stateofthemap-#{year}:latest"
     aliases ["#{year}.stateofthemap.com", "#{year}.sotm.org"]
