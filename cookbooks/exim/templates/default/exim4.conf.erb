@@ -506,7 +506,11 @@ acl_check_rcpt:
   # relay domains is to use a callout (add /callout), but please read the
   # documentation about callouts before doing this.
 
-  require verify = recipient
+  deny    domains = +relay_to_domains
+         !verify  = recipient/callout=use_sender
+
+  deny    domains = !+relay_to_domains
+         !verify  = recipient
 
 <% if node[:exim][:dns_blacklists] -%>
   # Deny any messages from hosts in certain blacklists.
