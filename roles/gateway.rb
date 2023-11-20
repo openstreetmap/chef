@@ -7,9 +7,6 @@ default_attributes(
       :comment => "Enable forwarding",
       :parameters => { "net.ipv4.ip_forward" => "1" }
     }
-  },
-  :exim => {
-    :relay_from_hosts => ["10.0.0.0/8"]
   }
 )
 
