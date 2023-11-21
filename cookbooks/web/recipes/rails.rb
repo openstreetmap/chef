@@ -123,7 +123,7 @@ rails_port "www.openstreetmap.org" do
   google_openid_realm "https://www.openstreetmap.org"
   facebook_auth_id "427915424036881"
   facebook_auth_secret web_passwords["facebook_auth_secret"]
-  microsoft_auth_id "45ef48fb-6a13-4239-b842-133608b8edd7"
+  microsoft_auth_id "e34f14f1-f790-40f3-9fa4-3c5f1a027c38"
   microsoft_auth_secret web_passwords["microsoft_auth_secret"]
   github_auth_id "acf7da34edee99e35499"
   github_auth_secret web_passwords["github_auth_secret"]
