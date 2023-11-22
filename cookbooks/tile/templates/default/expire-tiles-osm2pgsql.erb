@@ -2,6 +2,9 @@
 
 # DO NOT EDIT - This file is being maintained by Chef
 
+sequence="$1"
+timestamp="$2"
+
 render_expired \
   --map=default \
   --socket=/var/run/renderd/renderd.sock \
@@ -10,3 +13,6 @@ render_expired \
   --touch-from=13 < /var/lib/replicate/dirty-tiles.txt
 
 rm -f /var/lib/replicate/dirty-tiles.txt
+
+echo "$sequence" > /var/log/replicate/sequence.txt
+echo "$timestamp" > /var/log/replicate/timestamp.txt
