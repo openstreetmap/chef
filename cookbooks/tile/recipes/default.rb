@@ -638,7 +638,8 @@ elsif node[:tile][:replication][:engine] == "osm2pgsql"
     exec_start "/bin/osm2pgsql-replication update --database gis --post-processing /usr/local/bin/expire-tiles -- #{osm2pgsql_arguments.join(' ')}"
     sandbox :enable_network => true
     restrict_address_families "AF_UNIX"
-    read_write_paths [
+    read_write_paths tile_directories + [
+      "/srv/tile.openstreetmap.org/tiles",
       "/store/database/nodes",
       "/var/lib/replicate"
     ]
