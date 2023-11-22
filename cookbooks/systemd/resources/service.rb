@@ -71,6 +71,7 @@ property :standard_error, String,
 property :success_exit_status, [Integer, String, Array]
 property :restart, String,
          :is => %w[on-success on-failure on-abnormal on-watchdog on-abort always]
+property :restart_sec, [Integer, String]
 property :protect_proc, String,
          :is => %w[noaccess invisible ptraceable default]
 property :proc_subset, String,
