@@ -5,7 +5,7 @@
 render_expired \
   --map=default \
   --socket=/var/run/renderd/renderd.sock \
-  --tiledir=/srv/tile.openstreetmap.org/tiles \
+  --tile-dir=/srv/tile.openstreetmap.org/tiles \
   --min-zoom=13 --max-zoom=19 \
   --touch-from=13 < /var/lib/replicate/dirty-tiles.txt
 
