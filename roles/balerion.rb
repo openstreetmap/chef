@@ -40,6 +40,9 @@ default_attributes(
       :postgis => "3"
     },
     :mapnik => "3.1",
+    :replication => {
+      :engine => "osm2pgsql"
+    },
     :styles => {
       :default => {
         :tile_directories => [
