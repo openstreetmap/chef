@@ -543,7 +543,7 @@ if node[:tile][:replication][:engine] == "custom"
   end
 
   template "/usr/local/bin/replicate" do
-    source "replicate.erb"
+    source "replicate-custom.erb"
     owner "root"
     group "root"
     mode "755"
@@ -609,6 +609,13 @@ elsif node[:tile][:replication][:engine] == "osm2pgsql"
     mode "775"
   end
 
+  template "/usr/local/bin/replicate" do
+    source "replicate-osm2pgsql.erb"
+    owner "root"
+    group "root"
+    mode "755"
+  end
+
   systemd_service "expire-tiles" do
     description "Tile dirtying service"
     type "simple"
@@ -655,19 +662,19 @@ elsif node[:tile][:replication][:engine] == "osm2pgsql"
     after "postgresql.service"
     wants "postgresql.service"
     user "tile"
-    exec_start "/bin/osm2pgsql-replication update --database gis --post-processing /usr/local/bin/replicate-post -- #{osm2pgsql_arguments.join(' ')}"
+    exec_start "/usr/local/bin/replicate"
     sandbox :enable_network => true
     restrict_address_families "AF_UNIX"
     read_write_paths [
       "/store/database/nodes",
       "/var/lib/replicate"
     ]
-    restart "always"
-    restart_sec 30
+    restart "on-failure"
   end
 
   service "replicate" do
     action [:enable, :start]
+    subscribes :restart, "template[/usr/local/bin/replicate]"
     subscribes :restart, "systemd_service[replicate]"
   end
 end

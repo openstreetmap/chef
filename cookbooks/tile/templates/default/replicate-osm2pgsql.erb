@@ -1,0 +1,26 @@
+#!/bin/sh
+
+# DO NOT EDIT - This file is being maintained by Chef
+
+while [ 1 = 1 ]
+do
+  /bin/osm2pgsql-replication update \
+    --database gis \
+    --post-processing /usr/local/bin/replicate-post \
+    -- \
+    --number-processes=1 \
+    --log-progress=false \
+    --expire-tiles=13-19 \
+    --expire-output=/var/lib/replicate/dirty-tiles.txt \
+<% if node[:tile][:database][:multi_geometry] -%>
+    --multi-geometry \
+<% end -%>
+<% if node[:tile][:database][:hstore] -%>
+    --hstore \
+<% end -%>
+<% if node[:tile][:database][:tag_transform_script] -%>
+    --tag-transform-script=<%= node[:tile][:database][:tag_transform_script] %>
+<% end -%>
+
+    sleep 30
+done
