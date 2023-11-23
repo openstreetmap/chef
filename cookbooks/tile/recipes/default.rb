@@ -596,24 +596,44 @@ if node[:tile][:replication][:engine] == "custom"
     subscribes :restart, "systemd_service[replicate]"
   end
 elsif node[:tile][:replication][:engine] == "osm2pgsql"
-  service "expire-tiles.path" do
-    action [:disable, :stop]
+  template "/usr/local/bin/expire-tiles" do
+    source "expire-tiles-osm2pgsql.erb"
+    owner "root"
+    group "root"
+    mode "755"
   end
 
-  systemd_path "expire-tiles" do
-    action :delete
-  end
-
-  service "expire-tiles" do
-    action :stop
+  directory "/var/lib/replicate/expire-queue" do
+    owner "tile"
+    group "_renderd"
+    mode "775"
   end
 
   systemd_service "expire-tiles" do
-    action :delete
+    description "Tile dirtying service"
+    type "simple"
+    user "_renderd"
+    exec_start "/usr/local/bin/expire-tiles"
+    nice 10
+    sandbox true
+    restrict_address_families "AF_UNIX"
+    read_write_paths tile_directories + [
+                       "/var/lib/replicate/expire-queue"
+                     ]
   end
 
-  template "/usr/local/bin/expire-tiles" do
-    source "expire-tiles-osm2pgsql.erb"
+  systemd_path "expire-tiles" do
+    description "Tile dirtying trigger"
+    directory_not_empty "/var/lib/replicate/expire-queue"
+  end
+
+  service "expire-tiles.path" do
+    action [:enable, :start]
+    subscribes :restart, "systemd_path[expire-tiles]"
+  end
+
+  template "/usr/local/bin/replicate-post" do
+    source "replicate-post.erb"
     owner "root"
     group "root"
     mode "755"
@@ -635,11 +655,10 @@ elsif node[:tile][:replication][:engine] == "osm2pgsql"
     after "postgresql.service"
     wants "postgresql.service"
     user "tile"
-    exec_start "/bin/osm2pgsql-replication update --database gis --post-processing /usr/local/bin/expire-tiles -- #{osm2pgsql_arguments.join(' ')}"
+    exec_start "/bin/osm2pgsql-replication update --database gis --post-processing /usr/local/bin/replicate-post -- #{osm2pgsql_arguments.join(' ')}"
     sandbox :enable_network => true
     restrict_address_families "AF_UNIX"
-    read_write_paths tile_directories + [
-      "/srv/tile.openstreetmap.org/tiles",
+    read_write_paths [
       "/store/database/nodes",
       "/var/lib/replicate"
     ]

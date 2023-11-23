@@ -1,0 +1,11 @@
+#!/bin/sh -e
+
+# DO NOT EDIT - This file is being maintained by Chef
+
+sequence="$1"
+timestamp="$2"
+
+mv /var/lib/replicate/dirty-tiles.txt /var/lib/replicate/expire-queue/changes-${sequence}.txt
+
+echo "$sequence" > /var/lib/replicate/sequence.txt
+echo "$timestamp" > /var/lib/replicate/timestamp.txt

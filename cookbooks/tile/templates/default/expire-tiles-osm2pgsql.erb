@@ -1,18 +1,17 @@
-#!/bin/sh -e
+#!/usr/bin/ruby
 
 # DO NOT EDIT - This file is being maintained by Chef
 
-sequence="$1"
-timestamp="$2"
+args = [
+  "--socket=/var/run/renderd/renderd.sock",
+  "--tile-dir=/srv/tile.openstreetmap.org/tiles",
+  "--touch-from=13",
+  "--min-zoom=13"
+]
 
-render_expired \
-  --map=default \
-  --socket=/var/run/renderd/renderd.sock \
-  --tile-dir=/srv/tile.openstreetmap.org/tiles \
-  --min-zoom=13 --max-zoom=19 \
-  --touch-from=13 < /var/lib/replicate/dirty-tiles.txt
-
-rm -f /var/lib/replicate/dirty-tiles.txt
-
-echo "$sequence" > /var/log/replicate/sequence.txt
-echo "$timestamp" > /var/log/replicate/timestamp.txt
+Dir.glob("/var/lib/replicate/expire-queue/changes-*.txt").sort.each do |f|
+  <% node[:tile][:styles].each do |name,details| -%>
+  system("/usr/bin/render_expired", "--map=<%= name %>", *args, "--max-zoom=<%= details[:max_zoom] %>", :in=> f) &&
+  <% end -%>
+  File::unlink(f)
+end
