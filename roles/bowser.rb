@@ -39,9 +39,6 @@ default_attributes(
       :cluster => "16/main",
       :postgis => "3"
     },
-    :replication => {
-      :engine => "osm2pgsql"
-    },
     :mapnik => "3.1",
     :styles => {
       :default => {
