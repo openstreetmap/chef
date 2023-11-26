@@ -19,6 +19,7 @@
 
 package %w[
   gcc
+  g++
   libc6-dev
   make
 ]
