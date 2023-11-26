@@ -509,18 +509,7 @@ package %w[
   osm2pgsql
   osmium-tool
   pyosmium
-  python3-pyproj
 ]
-
-remote_directory "/usr/local/bin" do
-  source "bin"
-  owner "root"
-  group "root"
-  mode "755"
-  files_owner "root"
-  files_group "root"
-  files_mode "755"
-end
 
 directory "/var/lib/replicate" do
   owner "tile"
@@ -528,155 +517,86 @@ directory "/var/lib/replicate" do
   mode "755"
 end
 
-if node[:tile][:replication][:engine] == "custom"
-  template "/usr/local/bin/expire-tiles" do
-    source "expire-tiles-custom.erb"
-    owner "root"
-    group "root"
-    mode "755"
-  end
+template "/usr/local/bin/expire-tiles" do
+  source "expire-tiles.erb"
+  owner "root"
+  group "root"
+  mode "755"
+end
 
-  directory "/var/lib/replicate/expire-queue" do
-    owner "tile"
-    group "_renderd"
-    mode "775"
-  end
+directory "/var/lib/replicate/expire-queue" do
+  owner "tile"
+  group "_renderd"
+  mode "775"
+end
 
-  template "/usr/local/bin/replicate" do
-    source "replicate-custom.erb"
-    owner "root"
-    group "root"
-    mode "755"
-    variables :postgresql_version => postgresql_version.to_f
-  end
+template "/usr/local/bin/replicate" do
+  source "replicate.erb"
+  owner "root"
+  group "root"
+  mode "755"
+end
 
-  systemd_service "expire-tiles" do
-    description "Tile dirtying service"
-    type "simple"
-    user "_renderd"
-    exec_start "/usr/local/bin/expire-tiles"
-    nice 10
-    sandbox true
-    read_write_paths tile_directories + [
-                       "/store/database/nodes",
-                       "/var/lib/replicate/expire-queue",
-                       "/var/log/tile"
-                     ]
-  end
+systemd_service "expire-tiles" do
+  description "Tile dirtying service"
+  type "simple"
+  user "_renderd"
+  exec_start "/usr/local/bin/expire-tiles"
+  nice 10
+  sandbox true
+  restrict_address_families "AF_UNIX"
+  read_write_paths tile_directories + [
+                     "/var/lib/replicate/expire-queue"
+                   ]
+end
 
-  systemd_path "expire-tiles" do
-    description "Tile dirtying trigger"
-    directory_not_empty "/var/lib/replicate/expire-queue"
-  end
+systemd_path "expire-tiles" do
+  description "Tile dirtying trigger"
+  directory_not_empty "/var/lib/replicate/expire-queue"
+end
 
-  service "expire-tiles.path" do
-    action [:enable, :start]
-    subscribes :restart, "systemd_path[expire-tiles]"
-  end
+service "expire-tiles.path" do
+  action [:enable, :start]
+  subscribes :restart, "systemd_path[expire-tiles]"
+end
 
-  systemd_service "replicate" do
-    description "Rendering database replication service"
-    after "postgresql.service"
-    wants "postgresql.service"
-    user "tile"
-    exec_start "/usr/local/bin/replicate"
-    sandbox :enable_network => true
-    restrict_address_families "AF_UNIX"
-    read_write_paths [
-      "/store/database/nodes",
-      "/var/lib/replicate",
-      "/var/log/tile"
-    ]
-    restart "on-failure"
-  end
+template "/usr/local/bin/replicate-post" do
+  source "replicate-post.erb"
+  owner "root"
+  group "root"
+  mode "755"
+end
 
-  service "replicate" do
-    action [:enable, :start]
-    subscribes :restart, "template[/usr/local/bin/replicate]"
-    subscribes :restart, "systemd_service[replicate]"
-  end
-elsif node[:tile][:replication][:engine] == "osm2pgsql"
-  template "/usr/local/bin/expire-tiles" do
-    source "expire-tiles-osm2pgsql.erb"
-    owner "root"
-    group "root"
-    mode "755"
-  end
-
-  directory "/var/lib/replicate/expire-queue" do
-    owner "tile"
-    group "_renderd"
-    mode "775"
-  end
-
-  template "/usr/local/bin/replicate" do
-    source "replicate-osm2pgsql.erb"
-    owner "root"
-    group "root"
-    mode "755"
-  end
-
-  systemd_service "expire-tiles" do
-    description "Tile dirtying service"
-    type "simple"
-    user "_renderd"
-    exec_start "/usr/local/bin/expire-tiles"
-    nice 10
-    sandbox true
-    restrict_address_families "AF_UNIX"
-    read_write_paths tile_directories + [
-                       "/var/lib/replicate/expire-queue"
-                     ]
-  end
-
-  systemd_path "expire-tiles" do
-    description "Tile dirtying trigger"
-    directory_not_empty "/var/lib/replicate/expire-queue"
-  end
-
-  service "expire-tiles.path" do
-    action [:enable, :start]
-    subscribes :restart, "systemd_path[expire-tiles]"
-  end
-
-  template "/usr/local/bin/replicate-post" do
-    source "replicate-post.erb"
-    owner "root"
-    group "root"
-    mode "755"
-  end
-
-  osm2pgsql_arguments = %w[
+osm2pgsql_arguments = %w[
     --number-processes=1
     --log-progress=false
     --expire-tiles=13-19
     --expire-output=/var/lib/replicate/dirty-tiles.txt
   ]
 
-  osm2pgsql_arguments.append("--multi-geometry") if node[:tile][:database][:multi_geometry]
-  osm2pgsql_arguments.append("--hstore") if node[:tile][:database][:hstore]
-  osm2pgsql_arguments.append("--tag-transform-script=#{node[:tile][:database][:tag_transform_script]}") if node[:tile][:database][:tag_transform_script]
+osm2pgsql_arguments.append("--multi-geometry") if node[:tile][:database][:multi_geometry]
+osm2pgsql_arguments.append("--hstore") if node[:tile][:database][:hstore]
+osm2pgsql_arguments.append("--tag-transform-script=#{node[:tile][:database][:tag_transform_script]}") if node[:tile][:database][:tag_transform_script]
 
-  systemd_service "replicate" do
-    description "Rendering database replication service"
-    after "postgresql.service"
-    wants "postgresql.service"
-    user "tile"
-    exec_start "/usr/local/bin/replicate"
-    sandbox :enable_network => true
-    restrict_address_families "AF_UNIX"
-    read_write_paths [
-      "/store/database/nodes",
-      "/var/lib/replicate"
-    ]
-    restart "on-failure"
-  end
+systemd_service "replicate" do
+  description "Rendering database replication service"
+  after "postgresql.service"
+  wants "postgresql.service"
+  user "tile"
+  exec_start "/usr/local/bin/replicate"
+  sandbox :enable_network => true
+  restrict_address_families "AF_UNIX"
+  read_write_paths [
+    "/store/database/nodes",
+    "/var/lib/replicate"
+  ]
+  restart "on-failure"
+end
 
-  service "replicate" do
-    action [:enable, :start]
-    subscribes :restart, "template[/usr/local/bin/replicate]"
-    subscribes :restart, "systemd_service[replicate]"
-  end
+service "replicate" do
+  action [:enable, :start]
+  subscribes :restart, "template[/usr/local/bin/replicate]"
+  subscribes :restart, "systemd_service[replicate]"
 end
 
 template "/usr/local/bin/render-lowzoom" do
