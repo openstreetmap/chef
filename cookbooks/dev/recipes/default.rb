@@ -386,6 +386,12 @@ if node[:postgresql][:clusters][:"15/main"]
         mode "755"
       end
 
+      openssl_rsa_private_key "#{site_directory}/doorkeeper.key" do
+        owner "root"
+        group "root"
+        mode "0400"
+      end
+
       rails_port site_name do
         directory rails_directory
         user "apis"
@@ -402,6 +408,7 @@ if node[:postgresql][:clusters][:"15/main"]
         csp_enforce true
         run_migrations true
         trace_use_job_queue true
+        doorkeeper_signing_key lazy { File.read("#{site_directory}/doorkeeper.key") }
       end
 
       template "#{rails_directory}/config/initializers/setup.rb" do
