@@ -25,6 +25,7 @@ jobs:
           - bind
           - blog
           - blogs
+          - chef
           - civicrm
           - clamav
           - community
