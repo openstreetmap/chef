@@ -20,6 +20,5 @@
 include_recipe "podman::apache"
 
 podman_site "en.openstreetmap.town" do
-  image "ghcr.io/openstreetmap/owg-website:latest"
-  aliases ["operations.openstreetmap.org", "operations.osm.org"]
+  image "ghcr.io/openstreetmap/en.openstreetmap.town-website:latest"
 end
