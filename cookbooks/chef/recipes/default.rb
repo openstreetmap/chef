@@ -102,17 +102,9 @@ template "/etc/logrotate.d/chef" do
   mode "644"
 end
 
-directory "/etc/chef/trusted_certs" do
-  owner "root"
-  group "root"
-  mode "755"
-end
-
-template "/etc/chef/trusted_certs/verisign.pem" do
-  source "verisign.pem.erb"
-  owner "root"
-  group "root"
-  mode "644"
+# Remove the ancient verisign certificate workaround
+file "/etc/chef/trusted_certs/verisign.pem" do
+  action :delete
 end
 
 directory node[:ohai][:plugin_dir] do
