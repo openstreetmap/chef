@@ -33,6 +33,18 @@ chef_arch = if arm?
               "amd64"
             end
 
+os_release = if platform?("debian") && node[:lsb][:release].to_f > 11
+               11
+             else
+               node[:lsb][:release]
+             end
+
+# Chef is currently not available for Debian 11 on arm64.
+if chef_platform == "debian" && os_release == 11 && chef_arch == "arm64"
+  chef_platform = "ubuntu"
+  os_release = "22.04"
+end
+
 chef_package = "chef_#{chef_version}-1_#{chef_arch}.deb"
 
 directory "/var/cache/chef" do
@@ -48,12 +60,6 @@ Dir.glob("#{cache_dir}/chef_*.deb").each do |deb|
     backup false
   end
 end
-
-os_release = if platform?("debian") && node[:lsb][:release].to_f > 11
-               11
-             else
-               node[:lsb][:release]
-             end
 
 remote_file "#{cache_dir}/#{chef_package}" do
   source "https://packages.chef.io/files/stable/chef/#{chef_version}/#{chef_platform}/#{os_release}/#{chef_package}"
