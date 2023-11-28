@@ -86,9 +86,6 @@ suites:
   - name: blogs
     run_list:
       - recipe[blogs::default]
-  - name: chef
-    run_list:
-      - recipe[chef::default]
   - name: civicrm
     run_list:
       - recipe[civicrm::default]
