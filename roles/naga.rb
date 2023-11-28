@@ -40,6 +40,7 @@ run_list(
   "role[blogs]",
   "role[munin]",
   "role[switch2osm]",
+  "recipe[foundation::mastodon]",
   "recipe[foundation::owg]",
   "recipe[foundation::welcome]",
   "recipe[stateofthemap::container]",

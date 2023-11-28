@@ -42,6 +42,7 @@ jobs:
           - fail2ban
           - foundation-board
           - foundation-dwg
+          - foundation-mastodon
           - foundation-mwg
           - foundation-owg
           - foundation-welcome
