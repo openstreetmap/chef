@@ -1,4 +1,4 @@
-default[:civicrm][:version] = "5.66.1"
+default[:civicrm][:version] = "5.67.2"
 
 # was used for SotM
 # default[:civicrm][:extensions][:cividiscount][:name] = "org.civicrm.module.cividiscount"
@@ -72,7 +72,7 @@ default[:civicrm][:extensions][:stripe][:revision] = "6.9.4"
 # Stripe requires mjwshared ("payment shared")
 default[:civicrm][:extensions][:mjwshared][:name] = "com.mjwconsult.mjwshared"
 default[:civicrm][:extensions][:mjwshared][:repository] = "https://lab.civicrm.org/extensions/mjwshared.git"
-default[:civicrm][:extensions][:mjwshared][:revision] = "1.2.17"
+default[:civicrm][:extensions][:mjwshared][:revision] = "1.2.18"
 
 # Stripe requires sweetalert
 default[:civicrm][:extensions][:sweetalert][:name] = "org.civicrm.sweetalert"
