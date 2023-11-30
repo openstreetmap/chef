@@ -32,6 +32,7 @@ database_host = node[:web][:readonly_database_host] || node[:web][:database_host
 memcached_servers = node[:web][:memcached_servers] || []
 
 cgimap_options = {
+  "CGIMAP_SOCKET" => "/run/cgimap/socket",
   "CGIMAP_HOST" => database_host,
   "CGIMAP_DBNAME" => "openstreetmap",
   "CGIMAP_USERNAME" => "cgimap",
@@ -61,8 +62,11 @@ systemd_service "cgimap" do
   type "forking"
   environment_file cgimap_options
   user "rails"
-  exec_start "/usr/bin/openstreetmap-cgimap --daemon --port 8000 --instances 30"
+  group "www-data"
+  umask "0002"
+  exec_start "/usr/bin/openstreetmap-cgimap --daemon --instances 30"
   exec_reload "/bin/kill -HUP $MAINPID"
+  runtime_directory "cgimap"
   private_tmp true
   private_devices true
   protect_system "full"
