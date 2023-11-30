@@ -142,8 +142,3 @@ end
 service "chef-client.timer" do
   action [:enable, :start]
 end
-
-service "chef-client.service" do
-  action :disable
-  subscribes :stop, "service[chef-client.timer]"
-end
