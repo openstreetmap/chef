@@ -69,6 +69,9 @@ DynamicUser=<%= @dynamic_user %>
 <% if @working_directory -%>
 WorkingDirectory=<%= @working_directory %>
 <% end -%>
+<% if @umask -%>
+UMask=<%= @umask %>
+<% end -%>
 <% if @exec_start_pre -%>
 <% if @dropin -%>
 ExecStartPre=

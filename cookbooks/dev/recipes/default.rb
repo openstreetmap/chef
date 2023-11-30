@@ -318,15 +318,16 @@ if node[:postgresql][:clusters][:"15/main"]
     type "forking"
     environment_file "/etc/default/cgimap-%i"
     user "apis"
-    exec_start "/srv/%i.apis.dev.openstreetmap.org/cgimap/openstreetmap-cgimap --daemon --port $CGIMAP_PORT --instances 5"
+    group "www-data"
+    umask "0002"
+    exec_start "/srv/%i.apis.dev.openstreetmap.org/cgimap/openstreetmap-cgimap --daemon --instances 5"
     exec_reload "/bin/kill -HUP $MAINPID"
+    runtime_directory "cgimap-%i"
     sandbox :enable_network => true
     restrict_address_families "AF_UNIX"
     read_write_paths ["/srv/%i.apis.dev.openstreetmap.org/logs", "/srv/%i.apis.dev.openstreetmap.org/rails/tmp"]
     restart "on-failure"
   end
-
-  cgimap_port = 9000
 
   Dir.glob("/srv/*.apis.dev.openstreetmap.org").each do |dir|
     node.default_unless[:dev][:rails][File.basename(dir).split(".").first] = {}
@@ -477,7 +478,7 @@ if node[:postgresql][:clusters][:"15/main"]
           owner "root"
           group "root"
           mode "640"
-          variables :cgimap_port => cgimap_port,
+          variables :cgimap_socket => "/run/cgimap-#{name}/socket",
                     :database_port => node[:postgresql][:clusters][:"15/main"][:port],
                     :database_name => database_name,
                     :log_directory => log_directory,
@@ -503,7 +504,7 @@ if node[:postgresql][:clusters][:"15/main"]
                   :aliases => site_aliases,
                   :secret_key_base => secret_key_base,
                   :cgimap_enabled => details.key?(:cgimap_repository),
-                  :cgimap_port => cgimap_port
+                  :cgimap_socket => "/run/cgimap-#{name}/socket"
       end
 
       template "/etc/logrotate.d/apis-#{name}" do
@@ -515,8 +516,6 @@ if node[:postgresql][:clusters][:"15/main"]
                   :log_directory => log_directory,
                   :rails_directory => rails_directory
       end
-
-      cgimap_port += 1
     else
       file "/etc/logrotate.d/apis-#{name}" do
         action :delete
