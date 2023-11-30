@@ -174,22 +174,22 @@ elsif node[:nominatim][:api_flavour] == "python"
 
   python_package "SQLAlchemy" do
     python_virtualenv python_directory
-    version "2.0.20"
+    version "2.0.23"
   end
 
   python_package "PyICU" do
     python_virtualenv python_directory
-    version "2.10.2"
+    version "2.12"
   end
 
   python_package "psycopg[binary]" do
     python_virtualenv python_directory
-    version "3.1.10"
+    version "3.1.13"
   end
 
   python_package "psycopg2-binary" do
     python_virtualenv python_directory
-    version "2.9.7"
+    version "2.9.9"
   end
 
   python_package "python-dotenv" do
@@ -199,7 +199,7 @@ elsif node[:nominatim][:api_flavour] == "python"
 
   python_package "pygments" do
     python_virtualenv python_directory
-    version "2.16.1"
+    version "2.17.2"
   end
 
   python_package "PyYAML" do
@@ -214,7 +214,7 @@ elsif node[:nominatim][:api_flavour] == "python"
 
   python_package "uvicorn" do
     python_virtualenv python_directory
-    version "0.23.2"
+    version "0.24.0.post1"
   end
 
   python_package "gunicorn" do
