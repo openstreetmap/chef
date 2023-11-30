@@ -108,11 +108,6 @@ template "/etc/logrotate.d/chef" do
   mode "644"
 end
 
-# Remove the ancient verisign certificate workaround
-file "/etc/chef/trusted_certs/verisign.pem" do
-  action :delete
-end
-
 directory node[:ohai][:plugin_dir] do
   owner "root"
   group "root"
