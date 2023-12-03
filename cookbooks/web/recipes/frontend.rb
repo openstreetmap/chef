@@ -21,6 +21,7 @@ node.default[:memcached][:ip_address] = node.internal_ipaddress || "127.0.0.1"
 
 include_recipe "memcached"
 include_recipe "apache"
+include_recipe "fail2ban"
 include_recipe "web::rails"
 include_recipe "web::cgimap"
 
@@ -62,6 +63,16 @@ template "/etc/logrotate.d/apache2" do
   owner "root"
   group "root"
   mode "644"
+end
+
+fail2ban_filter "apache-request-timeout" do
+  failregex '^<ADDR> .* "-" 408 .*$'
+end
+
+fail2ban_jail "apache-request-timeout" do
+  filter "apache-request-timeout"
+  logpath "/var/log/apache2/access.log"
+  ports [80, 443]
 end
 
 if %w[database_offline database_readonly].include?(node[:web][:status])
