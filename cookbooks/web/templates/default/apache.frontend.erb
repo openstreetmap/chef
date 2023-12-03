@@ -1,5 +1,16 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
+#
+# Setup logging
+# 
+SetEnvIfNoCase Authorization "^Basic " AUTH_METHOD=basic
+SetEnvIfNoCase Authorization "^OAuth " AUTH_METHOD=oauth1
+SetEnvIfNoCase Authorization "^Bearer " AUTH_METHOD=oauth2
+SetEnvIfExpr "%{QUERY_STRING} =~ /(^|&)oauth_signature=/" AUTH_METHOD=oauth1
+LogFormat "%h %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\" %Dus %{UNIQUE_ID}e %{SSL_PROTOCOL}x %{SSL_CIPHER}x %{AUTH_METHOD}e" combined_with_time
+CustomLog /var/log/apache2/access.log combined_with_time
+ErrorLog /var/log/apache2/error.log
+
 <VirtualHost *:443>
   #
   # Basic server configuration
@@ -14,17 +25,6 @@
   SSLEngine on
   SSLCertificateFile /etc/ssl/certs/www.openstreetmap.org.pem
   SSLCertificateKeyFile /etc/ssl/private/www.openstreetmap.org.key
-
-  #
-  # Setup logging
-  #
-  SetEnvIfNoCase Authorization "^Basic " AUTH_METHOD=basic
-  SetEnvIfNoCase Authorization "^OAuth " AUTH_METHOD=oauth1
-  SetEnvIfNoCase Authorization "^Bearer " AUTH_METHOD=oauth2
-  SetEnvIfExpr "%{QUERY_STRING} =~ /(^|&)oauth_signature=/" AUTH_METHOD=oauth1
-  LogFormat "%h %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\" %Dus %{UNIQUE_ID}e %{SSL_PROTOCOL}x %{SSL_CIPHER}x %{AUTH_METHOD}e" combined_with_time
-  CustomLog /var/log/apache2/access.log combined_with_time
-  ErrorLog /var/log/apache2/error.log
 
   #
   # Turn on various features
