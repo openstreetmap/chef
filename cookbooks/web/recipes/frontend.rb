@@ -75,6 +75,16 @@ fail2ban_jail "apache-request-timeout" do
   ports [80, 443]
 end
 
+fail2ban_filter "apache-notes-search" do
+  failregex '^<ADDR> .* "GET /api/0\.6/notes/search\?q=abcde&.*$'
+end
+
+fail2ban_jail "apache-notes-search" do
+  filter "apache-notes-search"
+  logpath "/var/log/apache2/access.log"
+  ports [80, 443]
+end
+
 if %w[database_offline database_readonly].include?(node[:web][:status])
   service "rails-jobs@mailers" do
     action :stop
