@@ -38,8 +38,8 @@ default_attributes(
     :postgis => "3",
     :flatnode_file => "/srv/nominatim.openstreetmap.org/planet-project/nodes.store",
     :api_flavour => "python",
-    :api_workers => 18,
-    :api_pool_size => 8
+    :api_workers => 19,
+    :api_pool_size => 7
   }
 )
 
