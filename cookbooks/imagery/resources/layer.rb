@@ -49,7 +49,7 @@ action :create do
     mode "644"
     content YAML.dump(:name => new_resource.layer,
                       :title => new_resource.title || new_resource.layer,
-                      :url => "//{s}.#{new_resource.site}/layer/#{new_resource.layer}/{z}/{x}/{y}.png",
+                      :url => "//#{new_resource.site}/layer/#{new_resource.layer}/{z}/{x}/{y}.png",
                       :attribution => new_resource.copyright,
                       :default => new_resource.default_layer,
                       :maxZoom => new_resource.max_zoom,
