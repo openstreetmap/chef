@@ -149,6 +149,7 @@ rails_port "www.openstreetmap.org" do
   signup_email_per_day 1
   signup_email_max_burst 2
   doorkeeper_signing_key web_passwords["openid_connect_key"].join("\n")
+  user_account_deletion_delay 7 * 24
   # Requests to modify the imagery blacklist should come from the DWG only
   imagery_blacklist [
     # Current Google imagery URLs have google or googleapis in the domain
