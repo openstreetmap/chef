@@ -102,7 +102,6 @@ systemd_service "mediawiki-jobs@" do
   user node[:mediawiki][:user]
   nice 10
   runtime_max_sec 3600
-  restart "on-failure"
   sandbox :enable_network => true
   memory_deny_write_execute false
   restrict_address_families "AF_UNIX"
@@ -121,7 +120,6 @@ systemd_service "mediawiki-email-jobs@" do
   user node[:mediawiki][:user]
   nice 10
   runtime_max_sec 3600
-  restart "on-failure"
   sandbox :enable_network => true
   memory_deny_write_execute false
   restrict_address_families "AF_UNIX"
@@ -140,7 +138,6 @@ systemd_service "mediawiki-refresh-links@" do
   user node[:mediawiki][:user]
   nice 10
   runtime_max_sec 43200
-  restart "on-failure"
   sandbox :enable_network => true
   memory_deny_write_execute false
   restrict_address_families "AF_UNIX"
