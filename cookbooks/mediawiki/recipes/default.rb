@@ -137,7 +137,7 @@ systemd_service "mediawiki-refresh-links@" do
   exec_start "/usr/bin/php -d memory_limit=16G -d error_reporting=22517 /srv/%i/w/maintenance/refreshLinks.php --server=https://%i --memory-limit=16G"
   user node[:mediawiki][:user]
   nice 10
-  runtime_max_sec 86400
+  runtime_max_sec 259200
   sandbox :enable_network => true
   memory_deny_write_execute false
   restrict_address_families "AF_UNIX"
