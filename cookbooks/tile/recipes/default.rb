@@ -107,6 +107,8 @@ systemd_service "renderd" do
   after "postgresql.service"
   wants "postgresql.service"
   limit_nofile 4096
+  memory_high "80%"
+  memory_max "90%"
   sandbox true
   restrict_address_families "AF_UNIX"
   read_write_paths tile_directories
