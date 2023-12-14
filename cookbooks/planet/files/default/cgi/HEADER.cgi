@@ -125,6 +125,25 @@ database, and those published before the 12 September 2012 are distributed under
         and <a href="https://download.bbbike.org/osm/">BBBike.org</a> are two providers
         of extracts with up-to-date worldwide coverage.
         </p>
+        <h3 id="supporting-osm">Supporting OSM</h3>
+        <p>OSM data is free to use, but is not free to make or host. The
+        stability and accuracy of OSM.org depends on its volunteers and
+        donations from its users. Please consider 
+        <a href="https://supporting.openstreetmap.org">making an annual
+        recurring gift</a> to OSM to support the infrastructure,
+        tools, working groups, and other incentives needed to
+        create the map.</p>
+        <p>Donations can be made at supporting.openstreetmap.org/donate.
+        Suggestions assume $US or equivalent.</p>
+        <ul>
+        <li>individual user, revenue &lt; $5k/yr, $50-$100</li>
+        <li>small organization, revenue $5-10k/yr, $250-$500</li>
+        <li>medium organization, revenue $10-100k/yr, $500-$1000</li>
+        </ul>
+        <p>Large businesses with revenue in the hundreds of thousands to
+        millions should <a
+        href="https://osmfoundation.org/wiki/Join_as_a_corporate_member">join as
+        a corporate members</a> to receive additional benefits.</p>
     </td>
   </tr>
 </table>
