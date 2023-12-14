@@ -282,6 +282,8 @@ end
 
 nodejs_package "carto"
 
+lowzoom_threads = [node.cpu_cores - 1, node[:memory][:total].to_f / 4194304].min.floor
+
 systemd_service "update-lowzoom@" do
   description "Low zoom tile update service for %i layer"
   user "tile"
@@ -312,7 +314,7 @@ node[:tile][:styles].each do |name, details|
     owner "root"
     group "root"
     mode "755"
-    variables :style => name
+    variables :style => name, :threads => lowzoom_threads
   end
 
   service "update-lowzoom@#{name}" do
@@ -606,6 +608,7 @@ template "/usr/local/bin/render-lowzoom" do
   owner "root"
   group "root"
   mode "755"
+  variables :threads => lowzoom_threads
 end
 
 systemd_service "render-lowzoom" do

@@ -16,7 +16,7 @@ function update_<%= style %>
     --timestamp=${timestamp} \
     --tile-dir=/srv/tile.openstreetmap.org/tiles \
     --socket=/var/run/renderd/renderd.sock \
-    --num-threads=<%= node.cpu_cores - 1 %> \
+    --num-threads=<%= @threads %> \
     --map="<%= style %>" \
     --max-load=<%= node.cpu_cores - 1 %> \
     --min-zoom=0 --max-zoom=12
