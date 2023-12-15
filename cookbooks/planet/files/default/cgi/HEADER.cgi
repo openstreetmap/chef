@@ -59,47 +59,41 @@ print("""
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
 <html>
  <head>
-  <title>Index of /</title>
+  <title>Planet OSM</title>
   <link href="https://planet.openstreetmap.org/style.css" rel="stylesheet" type="text/css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
  </head>
  <body>
 <img id="logo" src="https://planet.openstreetmap.org/logo.png" alt="OSM logo" width="128" height="128">
 <h1>Planet OSM</h1>
 
 <p>
-The files found here are regularly-updated, complete copies of the OpenStreetMap.org
-database, and those published before the 12 September 2012 are distributed under a Creative Commons Attribution-ShareAlike 2.0 license, those published after are  Open Data Commons Open Database License 1.0 licensed. For more information, <a href="https://wiki.openstreetmap.org/wiki/Planet.osm">see the project wiki</a>.
+The files found here are regularly-updated, complete copies of the <a href="https://openstreetmap.org">OpenStreetMap</a> database.
 </p>
-<table id="about">
-  <tr>
-    <th>
-        <h2>Complete OSM Data</h2>
-    </th>
-    <th>
-        <h2>Using The Data</h2>
-    </th>
-    <th>
-        <h2 id="supporting-osm">Supporting OSM</h2>
-    </th>
-  </tr>
-  <tr>
-    <td>
-        <p>%(planet_link)s</p>
-        <p>%(changesets_link)s</p>
-        <p>%(planet_pbf_link)s</p>
-        <p>
-        Each week, a new and complete copy of all data in OpenStreetMap is made
-        available as both a compressed XML file and a custom PBF format file.
-        Also available is the <a href="planet/full-history">'history'</a> file
-        which contains not only up-to-date data but also older versions of data
-        and deleted data items.
-        <p>
-        </p>
-        A smaller file with complete metadata for all changes ('changesets') in
-        XML format is also available.
-        </p>
-    </td>
-    <td>
+<p>
+Files published before the 12 September 2012 are distributed under a Creative Commons Attribution-ShareAlike 2.0 license, those
+published after are Open Data Commons Open Database License 1.0 licensed. For more information, <a href="https://wiki.openstreetmap.org/wiki/Planet.osm">see the project wiki</a>.
+</p>
+<div id="about">
+  <div>
+    <h2>Latest Exports</h2>
+      <p>%(planet_link)s</p>
+      <p>%(changesets_link)s</p>
+      <p>%(planet_pbf_link)s</p>
+      <p>
+      Each week, a new and complete copy of all data in OpenStreetMap is made
+      available as both a compressed XML file and a custom PBF format file.
+      Also available is the <a href="planet/full-history">'history'</a> file
+      which contains not only up-to-date data but also older versions of data
+      and deleted data items.
+      <p>
+      </p>
+      A smaller file with complete metadata for all changes ('changesets') in
+      XML format is also available.
+      </p>
+    </div>
+    <div>
+      <h2>Using the Data</h2>
         <p>
         You are granted permission to use OpenStreetMap data by
         <a href="https://osm.org/copyright">the OpenStreetMap License</a>, which also describes
@@ -124,11 +118,12 @@ database, and those published before the 12 September 2012 are distributed under
         and <a href="https://download.bbbike.org/osm/">BBBike.org</a> are two providers
         of extracts with up-to-date worldwide coverage.
         </p>
-    </td>
-    <td>
+    </div>
+    <div>
+        <h2 id="supporting-osm">Supporting OSM</h2>
         <p>OSM data is free to use, but is not free to make or host. The
         stability and accuracy of OSM.org depends on its volunteers and
-        donations from its users. Please consider 
+        donations from its users. Please consider
         <a href="https://supporting.openstreetmap.org">making an annual
         recurring gift</a> to OSM to support the infrastructure,
         tools, working groups, and other incentives needed to
@@ -144,11 +139,11 @@ database, and those published before the 12 September 2012 are distributed under
         millions should <a
         href="https://osmfoundation.org/wiki/Join_as_a_corporate_member">join as
         a corporate members</a> to receive additional benefits.</p>
-    </td>
-  </tr>
-</table>
+    </div>
+</div>
 
 <p>
 If you find data within OpenStreetMap that you believe is an infringement of someone else's copyright, then please make contact with the <a href="https://wiki.openstreetmap.org/wiki/Data_working_group">OpenStreetMap Data Working Group</a>.
 </p>
+<h2>Files</h2>
 """ % locals())
