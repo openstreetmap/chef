@@ -133,7 +133,7 @@ database, and those published before the 12 September 2012 are distributed under
         recurring gift</a> to OSM to support the infrastructure,
         tools, working groups, and other incentives needed to
         create the map.</p>
-        <p>Donations can be made at <a href="supporting.openstreetmap.org/donate">supporting.openstreetmap.org/donate</a>.
+        <p>Donations can be made at <a href="https://supporting.openstreetmap.org/donate">supporting.openstreetmap.org/donate</a>.
         Suggestions assume $US or equivalent.</p>
         <ul>
         <li>individual user, revenue &lt; $5k/yr, $50-$100</li>
