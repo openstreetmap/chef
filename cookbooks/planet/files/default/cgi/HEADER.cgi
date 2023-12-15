@@ -79,7 +79,7 @@ database, and those published before the 12 September 2012 are distributed under
         <h2>Using The Data</h2>
     </th>
     <th>
-        <h2>Extracts &amp; Mirrors</h2>
+        <h2 id="supporting-osm">Supporting OSM</h2>
     </th>
   </tr>
   <tr>
@@ -116,8 +116,7 @@ database, and those published before the 12 September 2012 are distributed under
         <a href="https://osmdata.openstreetmap.de/">Processed coastline data</a>
         derived from OSM data is also needed for rendering usable maps.
         </p>
-    </td>
-    <td>
+        <h3>Extracts &amp; Mirrors</h3>
         <p>
         The complete planet is very large, so you may prefer to use one of
         <a href="https://wiki.openstreetmap.org/wiki/Planet.osm#Downloading">several periodic extracts</a>
@@ -125,7 +124,8 @@ database, and those published before the 12 September 2012 are distributed under
         and <a href="https://download.bbbike.org/osm/">BBBike.org</a> are two providers
         of extracts with up-to-date worldwide coverage.
         </p>
-        <h3 id="supporting-osm">Supporting OSM</h3>
+    </td>
+    <td>
         <p>OSM data is free to use, but is not free to make or host. The
         stability and accuracy of OSM.org depends on its volunteers and
         donations from its users. Please consider 
