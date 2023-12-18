@@ -282,7 +282,7 @@ end
 
 nodejs_package "carto"
 
-lowzoom_threads = [node.cpu_cores - 1, node[:memory][:total].to_f / 4194304].min.floor
+lowzoom_threads = [node.cpu_cores - 1, node[:memory][:total].to_f / 6291456].min.floor
 
 systemd_service "update-lowzoom@" do
   description "Low zoom tile update service for %i layer"
