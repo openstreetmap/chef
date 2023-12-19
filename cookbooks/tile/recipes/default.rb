@@ -623,7 +623,7 @@ end
 
 systemd_timer "render-lowzoom" do
   description "Render low zoom tiles"
-  on_calendar "*-*-* 23:00:00 UTC"
+  on_calendar "Fri *-*-* 23:00:00 UTC"
 end
 
 service "render-lowzoom.timer" do
