@@ -116,7 +116,7 @@ systemd_service "renderd" do
   sandbox true
   restrict_address_families "AF_UNIX"
   read_write_paths tile_directories
-  system_call_filter ["@known"]
+  system_call_filter ["@system-service", "mincore"]
   restart "on-failure"
 end
 
