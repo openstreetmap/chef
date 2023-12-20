@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+include_recipe "imagery"
+
 imagery_site "ea.openstreetmap.org.uk" do
   title "OpenStreetMap - Environment Agency OpenData"
   bbox [[51.35, -2.2], [52.65, 0.10]]
