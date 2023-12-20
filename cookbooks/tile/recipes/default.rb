@@ -100,12 +100,16 @@ tile_directories = node[:tile][:styles].collect do |_, style|
   style[:tile_directories].collect { |directory| directory[:name] }
 end.flatten.sort.uniq
 
-package "renderd"
+package %w[
+  renderd
+  libgoogle-perftools4
+]
 
 systemd_service "renderd" do
   dropin "chef"
   after "postgresql.service"
   wants "postgresql.service"
+  environment "LD_PRELOAD" => "libtcmalloc.so.4"
   limit_nofile 4096
   memory_high "80%"
   memory_max "90%"
