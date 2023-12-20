@@ -27,12 +27,14 @@ property :site, String, :name_property => true
 property :image, String, :required => true
 property :port, Integer, :default => 8080
 property :aliases, :kind_of => Array, :default => []
+property :environment, Hash, :default => {}
 
 action :create do
   podman_service new_resource.site do
     description "Container service for #{new_resource.site}"
     image new_resource.image
     ports external_port => new_resource.port
+    environment new_resource.environment
   end
 
   ssl_certificate new_resource.site do
