@@ -173,6 +173,7 @@ systemd_service "dns-check" do
   description "Rebuild DNS zones with GeoDNS changes"
   exec_start "/usr/local/bin/dns-check"
   user "git"
+  runtime_max_sec 90
   sandbox :enable_network => true
   proc_subset "all"
   read_write_paths "/var/lib/dns"
