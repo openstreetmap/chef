@@ -10,12 +10,12 @@ cd <%= @srcdir %>
 
 git fetch origin
 
-if git diff --exit-code origin/<%= node[:nominatim][:revision] %> >/dev/null; then
+if git diff --exit-code <%= node[:nominatim][:revision] %> >/dev/null; then
   # signal that there are no new updates
   exit 99
 fi
 
-git merge origin/<%= node[:nominatim][:revision] %>
+git checkout --detach <%= node[:nominatim][:revision] %>
 git submodule update
 
 cd <%= @builddir %>
