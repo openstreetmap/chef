@@ -167,6 +167,22 @@ describe http("https://127.0.0.1/pbf/full-history/history-231016.osm.pbf",
   its("headers.Location") { should eq "https://osm-planet-eu-central-1.s3.dualstack.eu-central-1.amazonaws.com/planet-full-history/pbf/2023/history-231016.osm.pbf" }
 end
 
+# Notes file
+
+describe http("https://127.0.0.1/notes/2023/planet-notes-231222.osn.bz2",
+              :headers => { "Host" => "planet.openstreetmap.org" },
+              :ssl_verify => false) do
+  its("status") { should eq 302 }
+  its("headers.Location") { should eq "https://osm-planet-eu-central-1.s3.dualstack.eu-central-1.amazonaws.com/notes/osn/2023/planet-notes-231222.osn.bz2" }
+end
+
+describe http("https://127.0.0.1/notes/2023/planet-notes-231222.osn.bz2.md5",
+              :headers => { "Host" => "planet.openstreetmap.org" },
+              :ssl_verify => false) do
+  its("status") { should eq 302 }
+  its("headers.Location") { should eq "https://osm-planet-eu-central-1.s3.dualstack.eu-central-1.amazonaws.com/notes/osn/2023/planet-notes-231222.osn.bz2.md5" }
+end
+
 # Tiles log
 
 describe http("https://127.0.0.1/tile_logs/tiles-2023-10-21.txt.xz",

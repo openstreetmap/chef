@@ -80,6 +80,7 @@
         RewriteRule ^/planet/<%= year %>/(changesets\-<%= year_two %>[0-1][0-9][0-3][0-9]\.osm\.bz2(\.torrent|\.md5)?)$ https://osm-planet-%{ENV:REGION}.s3.dualstack.%{ENV:REGION}.amazonaws.com/changesets/osm/<%= year %>/$1 [R,L]
         RewriteRule ^/planet/<%= year %>/(discussions\-<%= year_two %>[0-1][0-9][0-3][0-9]\.osm\.bz2(\.torrent|\.md5)?)$ https://osm-planet-%{ENV:REGION}.s3.dualstack.%{ENV:REGION}.amazonaws.com/discussions/osm/<%= year %>/$1 [R,L]
         RewriteRule ^/planet/full\-history/<%= year %>/(history\-<%= year_two %>[0-1][0-9][0-3][0-9]\.osm\.bz2(\.torrent|\.md5)?)$ https://osm-planet-%{ENV:REGION}.s3.dualstack.%{ENV:REGION}.amazonaws.com/planet-full-history/osm/<%= year %>/$1 [R,L]
+        RewriteRule ^/notes/<%= year %>/(planet\-notes\-<%= year_two %>[0-1][0-9][0-3][0-9]\.osn\.bz2(\.md5)?)$ https://osm-planet-%{ENV:REGION}.s3.dualstack.%{ENV:REGION}.amazonaws.com/notes/osn/<%= year %>/$1 [R,L]
         RewriteRule ^/tile_logs/(hosts\-<%= year %>\-[01][0-9]\-[0-3][0-9]\.csv)$ https://osm-planet-%{ENV:REGION}.s3.dualstack.%{ENV:REGION}.amazonaws.com/tile_logs/standard_layer/hosts/<%= year %>/$1 [R,L]
         RewriteRule ^/tile_logs/(countries\-<%= year %>\-[01][0-9]\-[0-3][0-9]\.csv)$ https://osm-planet-%{ENV:REGION}.s3.dualstack.%{ENV:REGION}.amazonaws.com/tile_logs/standard_layer/countries/<%= year %>/$1 [R,L]
         RewriteRule ^/tile_logs/(apps\-<%= year %>\-[01][0-9]\-[0-3][0-9]\.csv)$ https://osm-planet-%{ENV:REGION}.s3.dualstack.%{ENV:REGION}.amazonaws.com/tile_logs/standard_layer/apps/<%= year %>/$1 [R,L]
