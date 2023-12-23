@@ -65,7 +65,6 @@ default_attributes(
   },
   :nominatim => {
     :dbadmins => %w[lonvia tomh],
-    :revision => "deploy",
     :tablespaces => {
       "dosm" => "/ssd/tablespaces/dosm",
       "iosm" => "/ssd/tablespaces/iosm",
