@@ -21,8 +21,8 @@ default[:civicrm][:extensions][:username][:revision] = "9d67583bd3e0342a9770cde4
 
 # do not send report emails if daily report is empty (mwg)
 default[:civicrm][:extensions][:donotsendreportemail][:name] = "org.civicrm.donotsendreportemail"
-default[:civicrm][:extensions][:donotsendreportemail][:repository] = "https://github.com/grischard/org.civicrm.donotsendreportemail.git"
-default[:civicrm][:extensions][:donotsendreportemail][:revision] = "fbafa37f4bb432239191aa8f807919371a9cd714"
+default[:civicrm][:extensions][:donotsendreportemail][:repository] = "https://github.com/pradpnayak/org.civicrm.donotsendreportemail.git"
+default[:civicrm][:extensions][:donotsendreportemail][:revision] = "1.0"
 
 # make civicrm look nicer
 default[:civicrm][:extensions][:theisland][:name] = "theisland"
