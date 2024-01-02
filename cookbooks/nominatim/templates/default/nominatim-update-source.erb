@@ -9,6 +9,7 @@ date "+%c === Checking for new versions of Nominatim"
 cd <%= @srcdir %>
 
 git fetch origin
+git fetch origin -tf
 
 if git diff --exit-code <%= node[:nominatim][:revision] %> >/dev/null; then
   # signal that there are no new updates
