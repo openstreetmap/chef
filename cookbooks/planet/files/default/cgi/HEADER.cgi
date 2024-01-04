@@ -71,7 +71,7 @@ print("""
 The files found here are regularly-updated, complete copies of the <a href="https://openstreetmap.org">OpenStreetMap</a> database.
 </p>
 <p>
-Files published before the 12 September 2012 are distributed under a Creative Commons Attribution-ShareAlike 2.0 license, those
+Files published before 12 September 2012 are distributed under a Creative Commons Attribution-ShareAlike 2.0 license, those
 published after are Open Data Commons Open Database License 1.0 licensed. For more information, <a href="https://wiki.openstreetmap.org/wiki/Planet.osm">see the project wiki</a>.
 </p>
 <div id="about">
@@ -138,7 +138,7 @@ published after are Open Data Commons Open Database License 1.0 licensed. For mo
         <p>Large businesses with revenue in the hundreds of thousands to
         millions should <a
         href="https://osmfoundation.org/wiki/Join_as_a_corporate_member">join as
-        a corporate members</a> to receive additional benefits.</p>
+        corporate members</a> to receive additional benefits.</p>
     </div>
 </div>
 
