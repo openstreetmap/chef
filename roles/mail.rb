@@ -35,7 +35,14 @@ default_attributes(
       :messages => {
         :comment => "messages.openstreetmap.org",
         :domains => ["messages.openstreetmap.org"],
-        :host => ["spike-06.openstreetmap.org", "spike-07.openstreetmap.org", "spike-08.openstreetmap.org"]
+        :host => [
+          "spike-01.openstreetmap.org",
+          "spike-02.openstreetmap.org",
+          "spike-03.openstreetmap.org",
+          "spike-06.openstreetmap.org",
+          "spike-07.openstreetmap.org",
+          "spike-08.openstreetmap.org"
+        ]
       },
       :otrs => {
         :comment => "otrs.openstreetmap.org",
