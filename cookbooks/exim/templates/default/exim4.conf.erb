@@ -670,6 +670,9 @@ noreply:
 <% else -%>
   transport = <%= name %>
 <% end -%>
+<% if details[:case_sensitive] -%>
+  caseful_local_part
+<% end -%>
 
 <% end -%>
 
