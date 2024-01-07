@@ -320,7 +320,7 @@ if node[:postgresql][:clusters][:"15/main"]
     user "apis"
     group "www-data"
     umask "0002"
-    exec_start "/srv/%i.apis.dev.openstreetmap.org/cgimap/openstreetmap-cgimap --daemon --instances 5"
+    exec_start "/srv/%i.apis.dev.openstreetmap.org/cgimap/build/openstreetmap-cgimap --daemon --instances 5"
     exec_reload "/bin/kill -HUP $MAINPID"
     runtime_directory "cgimap-%i"
     sandbox :enable_network => true
@@ -446,31 +446,28 @@ if node[:postgresql][:clusters][:"15/main"]
           group "apis"
         end
 
-        execute "#{cgimap_directory}/autogen.sh" do
+        directory "#{cgimap_directory}/build" do
+          user "apis"
+          group "apis"
+          mode "0755"
+        end
+
+        execute "#{cgimap_directory}/CMakeLists.txt" do
           action :nothing
-          command "./autogen.sh"
-          cwd cgimap_directory
+          command "cmake .."
+          cwd "#{cgimap_directory}/build"
           user "apis"
           group "apis"
           subscribes :run, "git[#{cgimap_directory}]", :immediately
         end
 
-        execute "#{cgimap_directory}/configure" do
-          action :nothing
-          command "./configure --with-fcgi=/usr --with-boost-libdir=/usr/lib/x86_64-linux-gnu --enable-yajl"
-          cwd cgimap_directory
-          user "apis"
-          group "apis"
-          subscribes :run, "execute[#{cgimap_directory}/autogen.sh]", :immediately
-        end
-
-        execute "#{cgimap_directory}/Makefile" do
+        execute "#{cgimap_directory}/build/Makefile" do
           action :nothing
           command "make -j"
-          cwd cgimap_directory
+          cwd "#{cgimap_directory}/build"
           user "apis"
           group "apis"
-          subscribes :run, "execute[#{cgimap_directory}/configure]", :immediately
+          subscribes :run, "execute[#{cgimap_directory}/CMakeLists.txt]", :immediately
         end
 
         template "/etc/default/cgimap-#{name}" do
