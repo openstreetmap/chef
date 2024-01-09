@@ -100,5 +100,6 @@ run_list(
   "role[equinix-ams]",
   "role[gateway]",
   "recipe[rsyncd]",
-  "recipe[dhcpd]"
+  "recipe[dhcpd]",
+  "recipe[imagery::tiler]",
 )
