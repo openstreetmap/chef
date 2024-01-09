@@ -209,6 +209,9 @@ suites:
   - name: ideditor
     run_list:
       - recipe[ideditor::default]
+  - name: imagery-tiler
+    run_list:
+      - recipe[imagery::tiler]
   - name: irc
     run_list:
       - recipe[irc::default]

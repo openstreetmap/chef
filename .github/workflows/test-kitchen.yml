@@ -58,6 +58,7 @@ jobs:
           - hardware
           - hot
           - ideditor
+          - imagery-tiler
           - irc
           - kibana
           - letsencrypt
