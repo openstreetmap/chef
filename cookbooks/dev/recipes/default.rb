@@ -484,7 +484,7 @@ if node[:postgresql][:clusters][:"15/main"]
 
         service "cgimap@#{name}" do
           action [:start, :enable]
-          subscribes :restart, "execute[#{cgimap_directory}/Makefile]"
+          subscribes :restart, "execute[#{cgimap_directory}/build/Makefile]"
           subscribes :restart, "template[/etc/default/cgimap-#{name}]"
           subscribes :restart, "systemd_service[cgimap@]"
         end
