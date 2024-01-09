@@ -40,5 +40,6 @@ server {
       proxy_set_header Referer $http_referer;
       proxy_set_header X-Forwarded-For $remote_addr;
       proxy_set_header X-Forwarded-Proto $scheme;
+      proxy_redirect off;
     }
 }
