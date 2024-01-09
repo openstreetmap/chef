@@ -33,12 +33,12 @@ server {
     gzip_comp_level 9;
     gzip_vary on;
 
-    location /api/v1/titiler {
+    location / {
       rewrite ^/api/v1/titiler(.*)$ $1 break;
       proxy_pass http://localhost:8080;
       proxy_set_header HOST $host;
       proxy_set_header Referer $http_referer;
       proxy_set_header X-Forwarded-For $remote_addr;
-      proxy_set_header X-Forwarded-Proto $scheme;
+      proxy_set_header X-Forwarded-Proto https;
     }
 }

@@ -70,10 +70,10 @@ execute "uk_os_OSTN15_NTv2_OSGBtoETRS.tif" do
   not_if { ::File.exist?("/usr/share/proj/uk_os_OSTN15_NTv2_OSGBtoETRS.tif") }
 end
 
-nginx_site "default" do
-  template "nginx_default.conf.erb"
-  directory "/srv/imagery/default"
-end
+# nginx_site "default" do
+#   template "nginx_default.conf.erb"
+#   directory "/srv/imagery/default"
+# end
 
 systemd_tmpfile "/run/mapserver-fastcgi" do
   type "d"
