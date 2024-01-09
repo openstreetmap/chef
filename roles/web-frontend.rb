@@ -24,6 +24,11 @@ default_attributes(
   :memcached => {
     :memory_limit => 8192
   },
+  :networking => {
+    :firewall => {
+      :http_rate_limit => "s:5/sec:30"
+    }
+  },
   :passenger => {
     :max_pool_size => 50
   },
