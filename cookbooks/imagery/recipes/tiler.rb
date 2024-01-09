@@ -31,7 +31,7 @@ podman_service "titiler" do
   description "Container service for titiler"
   image container_image
   ports 8080 => 8080
-  environment :PORT => 8080, :WORKERS_PER_CORE => 1, :GDAL_INGESTED_BYTES_AT_OPEN => 32768, :GDAL_DISABLE_READDIR_ON_OPEN => "EMPTY_DIR", :GDAL_HTTP_MERGE_CONSECUTIVE_RANGES => "YES", :GDAL_HTTP_MULTIPLEX => "YES", :GDAL_HTTP_VERSION => 2, :TITILER_API_ROOT_PATH => "/api/v1/titiler"
+  environment :PORT => 8080, :WORKERS_PER_CORE => "1.5", :GDAL_INGESTED_BYTES_AT_OPEN => 32768, :GDAL_DISABLE_READDIR_ON_OPEN => "EMPTY_DIR", :GDAL_HTTP_MERGE_CONSECUTIVE_RANGES => "YES", :GDAL_HTTP_MULTIPLEX => "YES", :GDAL_HTTP_VERSION => 2, :TITILER_API_ROOT_PATH => "/api/v1/titiler"
 end
 
 ssl_certificate "tiler.openstreetmap.org" do
