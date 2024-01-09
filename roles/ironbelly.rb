@@ -101,5 +101,5 @@ run_list(
   "role[gateway]",
   "recipe[rsyncd]",
   "recipe[dhcpd]",
-  "recipe[imagery::tiler]",
+  "recipe[imagery::tiler]"
 )
