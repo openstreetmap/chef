@@ -305,7 +305,7 @@ end
 
 systemd_timer "yearly-reindex" do
   description "Yearly database reindex"
-  on_calendar "Fri *-1-8..14 02:00"
+  on_calendar "Thu *-1-8..14 02:00"
 end
 
 service "yearly-reindex.timer" do
