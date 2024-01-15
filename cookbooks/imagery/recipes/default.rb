@@ -80,4 +80,5 @@ systemd_tmpfile "/run/mapserver-fastcgi" do
   owner "imagery"
   group "imagery"
   mode "0755"
+  not_if { kitchen? }
 end
