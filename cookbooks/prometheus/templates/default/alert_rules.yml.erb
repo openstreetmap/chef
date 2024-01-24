@@ -106,14 +106,14 @@ groups:
   - name: database
     rules:
       - alert: active rails queries
-        expr: sum(pg_stat_activity_count{instance="snap-01",datname="openstreetmap",usename="rails",state="active"}) > 50 and on (instance) chef_role{name="db-master"}
+        expr: sum(pg_stat_activity_count{datname="openstreetmap",usename="rails",state="active"}) by (instance) > 50 and on (instance) chef_role{name="db-master"}
         for: 5m
         labels:
           alertgroup: database
         annotations:
           queries: "{{ $value }}"
       - alert: active cgimap queries
-        expr: sum(pg_stat_activity_count{instance="snap-01",datname="openstreetmap",usename="cgimap",state="active"}) > 30 and on (instance) chef_role{name="db-master"}
+        expr: sum(pg_stat_activity_count{datname="openstreetmap",usename="cgimap",state="active"}) by (instance) > 30 and on (instance) chef_role{name="db-master"}
         for: 5m
         labels:
           alertgroup: database
