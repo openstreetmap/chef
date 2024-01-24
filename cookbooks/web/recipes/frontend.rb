@@ -83,6 +83,8 @@ fail2ban_jail "apache-trackpoints-timeout" do
   filter "apache-trackpoints-timeout"
   logpath "/var/log/apache2/access.log"
   ports [80, 443]
+  bantime "12h"
+  findtime "30m"
 end
 
 fail2ban_filter "apache-notes-search" do

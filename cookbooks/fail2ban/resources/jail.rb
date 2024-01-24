@@ -26,6 +26,8 @@ property :filter, :kind_of => String
 property :logpath, :kind_of => String
 property :protocol, :kind_of => String
 property :ports, :kind_of => Array, :default => []
+property :bantime, :kind_of => [Integer, String]
+property :findtime, :kind_of => [Integer, String]
 property :maxretry, :kind_of => Integer
 property :ignoreips, :kind_of => Array
 
