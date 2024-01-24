@@ -75,6 +75,16 @@ fail2ban_jail "apache-request-timeout" do
   ports [80, 443]
 end
 
+fail2ban_filter "apache-trackpoints-timeout" do
+  failregex '^<ADDR> .* "GET /api/0\.6/trackpoints\?.*" 408 .*$'
+end
+
+fail2ban_jail "apache-trackpoints-timeout" do
+  filter "apache-trackpoints-timeout"
+  logpath "/var/log/apache2/access.log"
+  ports [80, 443]
+end
+
 fail2ban_filter "apache-notes-search" do
   failregex '^<ADDR> .* "GET /api/0\.6/notes/search\?q=abcde&.*$'
 end
