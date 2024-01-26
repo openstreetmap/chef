@@ -135,6 +135,10 @@ default_attributes(
       :microcosms => {
         :repository => "https://github.com/openbrian/osm-microcosms.git",
         :revision => "microcosms"
+      },
+      :signup => {
+        :repository => "https://github.com/milan-cvetkovic/openstreetmap-website.git",
+        :revision => "issue_4128_login_signup"
       }
     }
   },
