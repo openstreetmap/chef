@@ -119,10 +119,7 @@ default_attributes(
         :repository => "https://github.com/tomhughes/openstreetmap-website.git",
         :revision => "next",
         :cgimap_repository => "https://github.com/zerebubuth/openstreetmap-cgimap.git",
-        :cgimap_revision => "master",
-        :cgimap_options => {
-          :ratelimit_upload => true
-        }
+        :cgimap_revision => "master"
       },
       :comments => {
         :repository => "https://github.com/ukasiu/openstreetmap-website.git",
