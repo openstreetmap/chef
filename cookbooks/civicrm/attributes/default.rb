@@ -8,7 +8,7 @@ default[:civicrm][:version] = "5.69.4"
 # used to email people from civicrm
 default[:civicrm][:extensions][:emailapi][:name] = "org.civicoop.emailapi"
 default[:civicrm][:extensions][:emailapi][:repository] = "https://lab.civicrm.org/extensions/emailapi.git"
-default[:civicrm][:extensions][:emailapi][:revision] = "2.11"
+default[:civicrm][:extensions][:emailapi][:revision] = "2.12"
 
 # fancy email templates - INSTALL MANUALLY, NOT FROM GIT
 default[:civicrm][:extensions][:mosaico][:name] = "uk.co.vedaconsulting.mosaico"
@@ -27,7 +27,7 @@ default[:civicrm][:extensions][:donotsendreportemail][:revision] = "1.0"
 # make civicrm look nicer
 default[:civicrm][:extensions][:theisland][:name] = "theisland"
 default[:civicrm][:extensions][:theisland][:repository] = "https://lab.civicrm.org/extensions/theisland.git"
-default[:civicrm][:extensions][:theisland][:revision] = "2.1.0"
+default[:civicrm][:extensions][:theisland][:revision] = "2.3.1"
 
 # civiprospect
 default[:civicrm][:extensions][:civiprospect][:name] = "uk.co.compucorp.civicrm.prospect"
@@ -62,7 +62,7 @@ default[:civicrm][:extensions][:osmfverifycontributor][:revision] = "bb0cd617830
 # Pay with Mollie
 default[:civicrm][:extensions][:omnipay][:name] = "nz.co.fuzion.omnipaymultiprocessor"
 default[:civicrm][:extensions][:omnipay][:repository] = "https://github.com/eileenmcnaughton/nz.co.fuzion.omnipaymultiprocessor.git"
-default[:civicrm][:extensions][:omnipay][:revision] = "3.22"
+default[:civicrm][:extensions][:omnipay][:revision] = "3.23"
 
 # Pay with Stripe
 default[:civicrm][:extensions][:stripe][:name] = "com.drastikbydesign.stripe"
@@ -72,7 +72,7 @@ default[:civicrm][:extensions][:stripe][:revision] = "6.9.4"
 # Stripe requires mjwshared ("payment shared")
 default[:civicrm][:extensions][:mjwshared][:name] = "com.mjwconsult.mjwshared"
 default[:civicrm][:extensions][:mjwshared][:repository] = "https://lab.civicrm.org/extensions/mjwshared.git"
-default[:civicrm][:extensions][:mjwshared][:revision] = "1.2.18"
+default[:civicrm][:extensions][:mjwshared][:revision] = "1.2.20"
 
 # Stripe requires sweetalert
 default[:civicrm][:extensions][:sweetalert][:name] = "org.civicrm.sweetalert"
