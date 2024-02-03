@@ -1,4 +1,4 @@
-default[:civicrm][:version] = "5.67.2"
+default[:civicrm][:version] = "5.69.4"
 
 # was used for SotM
 # default[:civicrm][:extensions][:cividiscount][:name] = "org.civicrm.module.cividiscount"
