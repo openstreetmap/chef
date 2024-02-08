@@ -362,7 +362,8 @@ action :create do
     "max_request_area" => node[:web][:max_request_area],
     "max_number_of_nodes" => node[:web][:max_number_of_nodes],
     "max_number_of_way_nodes" => node[:web][:max_number_of_way_nodes],
-    "max_number_of_relation_members" => node[:web][:max_number_of_relation_members]
+    "max_number_of_relation_members" => node[:web][:max_number_of_relation_members],
+    "oauth_10_support" => false
   )
 
   if new_resource.memcache_servers
