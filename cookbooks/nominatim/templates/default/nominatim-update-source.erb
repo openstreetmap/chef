@@ -20,5 +20,5 @@ git checkout --detach <%= node[:nominatim][:revision] %>
 git submodule update
 
 cd <%= @builddir %>
-cmake -D WITH_LUAJIT=ON .
+cmake .
 make

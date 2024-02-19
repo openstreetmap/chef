@@ -292,7 +292,7 @@ execute "compile_nominatim" do
   action :nothing
   user "nominatim"
   cwd build_directory
-  command "cmake -D WITH_LUAJIT=ON #{source_directory} && make"
+  command "cmake #{source_directory} && make"
   notifies :run, "execute[install_nominatim]"
 end
 
