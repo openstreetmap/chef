@@ -159,7 +159,10 @@ rails_port "www.openstreetmap.org" do
     # Blacklist here
     ".*\\.here\\.com[/:].*",
     # Blacklist Mapy.cz
-    ".*\\.mapy\\.cz.*"
+    ".*\\.mapy\\.cz.*",
+    # Blacklist Yandex
+    ".*\\.api-maps\\.yandex\\.ru/.*",
+    ".*\\.maps\\.yandex\\.net/.*"
   ]
 end
 
