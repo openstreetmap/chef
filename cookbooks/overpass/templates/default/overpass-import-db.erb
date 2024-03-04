@@ -3,7 +3,7 @@
 FNAME=$1
 
 if [[ "x$FNAME" == "x" ]]; then
-  echo "Usage: overpass-import-db.sh <OSM file>"
+  echo "Usage: overpass-import-db <OSM file>"
   exit 1
 fi
 
@@ -21,10 +21,10 @@ META=--keep-attic
 META=
 <% end -%>
 
-sudo systemctl stop overpass-area-processor.timer
-sudo systemctl stop overpass-update
-sudo systemctl stop overpass-area-dispatcher
-sudo systemctl stop overpass-dispatcher
+sudo systemctl stop overpass-area-processor.timer || true
+sudo systemctl stop overpass-update || true
+sudo systemctl stop overpass-area-dispatcher || true
+sudo systemctl stop overpass-dispatcher || true
 
 sleep 2
 
