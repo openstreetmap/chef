@@ -120,6 +120,8 @@ when "HP", "HPE"
            else
              "1"
            end
+
+  watchdog_module = "hpwdt"
 when "TYAN"
   units << "0"
 when "TYAN Computer Corporation"
@@ -609,19 +611,30 @@ node[:hardware][:blacklisted_modules].each do |module_name|
   end
 end
 
-if node[:hardware][:watchdog]
-  package "watchdog"
+if watchdog_module
+  kernel_module watchdog_module do
+    action :install
+  end
 
-  template "/etc/default/watchdog" do
-    source "watchdog.erb"
+  execute "systemctl-reload" do
+    action :nothing
+    command "systemctl daemon-reload"
+    user "root"
+    group "root"
+  end
+
+  directory "/etc/systemd/system.conf.d" do
+    owner "root"
+    group "root"
+    mode "755"
+  end
+
+  template "/etc/systemd/system.conf.d/watchdog.conf" do
+    source "watchdog.conf.erb"
     owner "root"
     group "root"
     mode "644"
-    variables :module => node[:hardware][:watchdog]
-  end
-
-  service "watchdog" do
-    action [:enable, :start]
+    notifies :run, "execute[systemctl-reload]"
   end
 end
 
