@@ -120,8 +120,6 @@ when "HP", "HPE"
            else
              "1"
            end
-
-  watchdog_module = "hpwdt"
 when "TYAN"
   units << "0"
 when "TYAN Computer Corporation"
@@ -228,6 +226,10 @@ else
   end
 end
 
+watchdog_module = %w[hpwdt sp5100_tco].find do |module_name|
+  node[:hardware][:pci].any? { |_, pci| pci[:modules]&.any?(module_name) }
+end
+
 if node[:kernel][:modules].include?("ipmi_si")
   package "ipmitool"
   package "freeipmi-tools"
@@ -248,6 +250,8 @@ if node[:kernel][:modules].include?("ipmi_si")
     options "--config.file=/etc/prometheus/ipmi_local.yml"
     subscribes :restart, "template[/etc/prometheus/ipmi_local.yml]"
   end
+
+  watchdog_module ||= "ipmi_watchdog"
 end
 
 package "irqbalance"
