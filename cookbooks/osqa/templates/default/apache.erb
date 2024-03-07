@@ -53,6 +53,19 @@ WSGIDaemonProcess <%= @name %> user=<%= @user %> group=<%= @group %> processes=4
   WSGIScriptAlias / <%= @directory %>/osqa/osqa.wsgi
 
   WSGIProcessGroup <%= @name %>
+
+  # Site is now closed. Block access to login page and other pages.
+  <Location /account>
+    Require all denied
+    ErrorDocument 403 "help.openstreetmap.org is closed. Use community.openstreetmap.org instead."
+  </Location>
+  <Location /questions/ask/>
+    Require all denied
+    ErrorDocument 403 "help.openstreetmap.org is closed. Use community.openstreetmap.org instead."
+  </Location>
+  RewriteEngine on
+  RewriteCond %{REQUEST_METHOD} POST
+  RewriteRule ^/questions - [F,NC]
 </VirtualHost>
 
 <Directory <%= @directory %>/osqa>
