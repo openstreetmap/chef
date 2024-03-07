@@ -197,7 +197,6 @@ PROMETHEUS_PERMISSIONS = {
   user_mutes
   user_preferences
   user_roles
-  user_tokens
   users
   way_nodes
   way_tags
@@ -250,7 +249,6 @@ end
   user_blocks_id_seq
   user_mutes_id_seq
   user_roles_id_seq
-  user_tokens_id_seq
   users_id_seq
 ].each do |sequence|
   postgresql_sequence sequence do
