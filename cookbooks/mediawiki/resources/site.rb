@@ -163,8 +163,7 @@ action :create do
   end
 
   service "mediawiki-refresh-links@#{new_resource.site}.timer" do
-    action [:enable, :start]
-    only_if { ::File.exist?("#{mediawiki_directory}/LocalSettings.php") }
+    action [:disable, :stop]
   end
 
   template "/etc/cron.daily/mediawiki-#{cron_name}-backup" do
