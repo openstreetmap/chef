@@ -132,14 +132,6 @@ systemd_timer "mediawiki-email-jobs@" do
   on_unit_inactive_sec "1m"
 end
 
-systemd_service "mediawiki-refresh-links@" do
-  action :delete
-end
-
-systemd_timer "mediawiki-refresh-links@" do
-  action :delete
-end
-
 systemd_service "mediawiki-cleanup-gs" do
   description "Clean up imagemagick gs_* files"
   exec_start "/usr/bin/find /tmp -maxdepth 1 -type f -user www-data -mmin +90 -name 'gs_*' -delete"
