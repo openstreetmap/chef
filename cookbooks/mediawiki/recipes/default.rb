@@ -133,20 +133,11 @@ systemd_timer "mediawiki-email-jobs@" do
 end
 
 systemd_service "mediawiki-refresh-links@" do
-  description "Refresh mediawiki links for %i"
-  exec_start "/usr/bin/php -d memory_limit=16G -d error_reporting=22517 /srv/%i/w/maintenance/refreshLinks.php --server=https://%i --memory-limit=16G"
-  user node[:mediawiki][:user]
-  nice 10
-  runtime_max_sec 259200
-  sandbox :enable_network => true
-  memory_deny_write_execute false
-  restrict_address_families "AF_UNIX"
-  read_write_paths "/srv/%i"
+  action :delete
 end
 
 systemd_timer "mediawiki-refresh-links@" do
-  description "Refresh mediawiki links for %i"
-  on_calendar "Sat 00:05"
+  action :delete
 end
 
 systemd_service "mediawiki-cleanup-gs" do
