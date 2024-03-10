@@ -41,6 +41,10 @@ file "/etc/netplan/99-chef.yaml" do
   action :delete
 end
 
+package "ifupdown" do
+  action :purge
+end
+
 package "netplan.io" do
   action :purge
 end
