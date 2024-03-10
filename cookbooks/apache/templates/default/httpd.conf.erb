@@ -63,3 +63,6 @@ AddType application/x-xz .xz
 
 # Configure logging
 BufferedLogs <%= node[:apache][:buffered_logs] ? "On" : "Off" %>
+
+# Define an extended log format that includes request time and SSL details
+LogFormat "%h %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\" %Dus %{SSL_PROTOCOL}x %{SSL_CIPHER}x" combined_extended
