@@ -7,7 +7,7 @@
 <% end -%>
   ServerAdmin webmaster@openstreetmap.org
 
-  CustomLog /var/log/apache2/<%= @name %>-access.log combined
+  CustomLog /var/log/apache2/<%= @name %>-access.log combined_extended
   ErrorLog /var/log/apache2/<%= @name %>-error.log
 
   RedirectPermanent /.well-known/acme-challenge/ http://acme.openstreetmap.org/.well-known/acme-challenge/
@@ -26,7 +26,7 @@
   SSLCertificateFile /etc/ssl/certs/<%= @name %>.pem
   SSLCertificateKeyFile /etc/ssl/private/<%= @name %>.key
 
-  CustomLog /var/log/apache2/<%= @name %>-access.log combined
+  CustomLog /var/log/apache2/<%= @name %>-access.log combined_extended
   ErrorLog /var/log/apache2/<%= @name %>-error.log
 
   RedirectPermanent / https://<%= @name %>/
@@ -41,7 +41,7 @@
   SSLCertificateFile /etc/ssl/certs/<%= @name %>.pem
   SSLCertificateKeyFile /etc/ssl/private/<%= @name %>.key
 
-  CustomLog /var/log/apache2/<%= @name %>-access.log combined
+  CustomLog /var/log/apache2/<%= @name %>-access.log combined_extended
   ErrorLog /var/log/apache2/<%= @name %>-error.log
 
   DocumentRoot <%= @directory %>

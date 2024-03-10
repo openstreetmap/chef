@@ -11,7 +11,7 @@
 	SSLCertificateFile /etc/ssl/certs/ooc.openstreetmap.org.pem
 	SSLCertificateKeyFile /etc/ssl/private/ooc.openstreetmap.org.key
 
-	CustomLog /var/log/apache2/ooc.openstreetmap.org-access.log combined
+	CustomLog /var/log/apache2/ooc.openstreetmap.org-access.log combined_extended
 	ErrorLog /var/log/apache2/ooc.openstreetmap.org-error.log
 
 	DocumentRoot /srv/ooc.openstreetmap.org/html
@@ -28,7 +28,7 @@
 	ServerAlias c.ooc.openstreetmap.org
 	ServerAdmin webmaster@openstreetmap.org
 
-	CustomLog /var/log/apache2/ooc.openstreetmap.org-access.log combined
+	CustomLog /var/log/apache2/ooc.openstreetmap.org-access.log combined_extended
 	ErrorLog /var/log/apache2/ooc.openstreetmap.org-error.log
 
 	RedirectPermanent /.well-known/acme-challenge/ http://acme.openstreetmap.org/.well-known/acme-challenge/
@@ -39,7 +39,7 @@
 	ServerName npe.openstreetmap.org
 	ServerAdmin webmaster@openstreetmap.org
 
-	CustomLog /var/log/apache2/npe.openstreetmap.org-access.log combined
+	CustomLog /var/log/apache2/npe.openstreetmap.org-access.log combined_extended
 	ErrorLog /var/log/apache2/npe.openstreetmap.org-error.log
 
 	RewriteEngine on

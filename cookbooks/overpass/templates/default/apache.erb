@@ -5,7 +5,7 @@
         ServerAlias <%= node[:overpass][:fqdn] %>
         ServerAdmin webmaster@openstreetmap.org
 
-        CustomLog /var/log/apache2/<%= node[:overpass][:fqdn] %>-access.log combined
+        CustomLog /var/log/apache2/<%= node[:overpass][:fqdn] %>-access.log combined_extended
         ErrorLog /var/log/apache2/<%= node[:overpass][:fqdn] %>-error.log
 
         DocumentRoot <%= @directory %>
@@ -20,7 +20,7 @@
         ServerAlias <%= node[:overpass][:fqdn] %>
         ServerAdmin webmaster@openstreetmap.org
 
-        CustomLog /var/log/apache2/<%= node[:overpass][:fqdn] %>-access.log combined
+        CustomLog /var/log/apache2/<%= node[:overpass][:fqdn] %>-access.log combined_extended
         ErrorLog /var/log/apache2/<%= node[:overpass][:fqdn] %>-error.log
 
         SSLEngine on

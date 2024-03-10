@@ -4,7 +4,7 @@
    ServerName <%= @site %>
    ServerAdmin webmaster@openstreetmap.org
 
-   CustomLog /var/log/apache2/<%= @site %>-access.log combined
+   CustomLog /var/log/apache2/<%= @site %>-access.log combined_extended
    ErrorLog /var/log/apache2/<%= @site %>-error.log
 
    RedirectPermanent /.well-known/acme-challenge/ http://acme.openstreetmap.org/.well-known/acme-challenge/
@@ -15,7 +15,7 @@
    ServerName <%= @site %>
    ServerAdmin webmaster@openstreetmap.org
 
-   CustomLog /var/log/apache2/<%= @site %>-access.log combined
+   CustomLog /var/log/apache2/<%= @site %>-access.log combined_extended
    ErrorLog /var/log/apache2/<%= @site %>-error.log
 
    SSLEngine on

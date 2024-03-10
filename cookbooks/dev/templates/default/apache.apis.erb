@@ -8,7 +8,7 @@
 	SSLCertificateFile /etc/ssl/certs/apis.dev.openstreetmap.org.pem
 	SSLCertificateKeyFile /etc/ssl/private/apis.dev.openstreetmap.org.key
 
-	CustomLog /var/log/apache2/apis.dev.openstreetmap.org-access.log combined
+	CustomLog /var/log/apache2/apis.dev.openstreetmap.org-access.log combined_extended
 	ErrorLog /var/log/apache2/apis.dev.openstreetmap.org-error.log
 
 	DocumentRoot /srv/apis.dev.openstreetmap.org
@@ -18,7 +18,7 @@
 	ServerName apis.dev.openstreetmap.org
 	ServerAdmin webmaster@openstreetmap.org
 
-	CustomLog /var/log/apache2/apis.dev.openstreetmap.org-access.log combined
+	CustomLog /var/log/apache2/apis.dev.openstreetmap.org-access.log combined_extended
 	ErrorLog /var/log/apache2/apis.dev.openstreetmap.org-error.log
 
 	RedirectPermanent /.well-known/acme-challenge/ http://acme.openstreetmap.org/.well-known/acme-challenge/

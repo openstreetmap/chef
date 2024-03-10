@@ -23,7 +23,7 @@ WSGIDaemonProcess <%= @user %>.dev.openstreetmap.org user=<%= @user %> processes
 	RewriteEngine on
 	#LogLevel rewrite:trace2
 
-	CustomLog /var/log/apache2/<%= @user %>.dev.openstreetmap.org-access.log combined
+	CustomLog /var/log/apache2/<%= @user %>.dev.openstreetmap.org-access.log combined_extended
 	ErrorLog /var/log/apache2/<%= @user %>.dev.openstreetmap.org-error.log
 
 	RewriteCond <%= @directory %>%{REQUEST_FILENAME} -f
@@ -39,7 +39,7 @@ WSGIDaemonProcess <%= @user %>.dev.openstreetmap.org user=<%= @user %> processes
 	ServerAdmin webmaster@openstreetmap.org
 	ServerAlias <%= @user %>.dev.osm.org
 
-	CustomLog /var/log/apache2/<%= @user %>.dev.openstreetmap.org-access.log combined
+	CustomLog /var/log/apache2/<%= @user %>.dev.openstreetmap.org-access.log combined_extended
 	ErrorLog /var/log/apache2/<%= @user %>.dev.openstreetmap.org-error.log
 
 	RedirectPermanent /.well-known/acme-challenge/ http://acme.openstreetmap.org/.well-known/acme-challenge/

@@ -8,7 +8,7 @@
 	SSLCertificateFile /etc/ssl/certs/matomo.openstreetmap.org.pem
 	SSLCertificateKeyFile /etc/ssl/private/matomo.openstreetmap.org.key
 
-	CustomLog /var/log/apache2/matomo.openstreetmap.org-access.log combined
+	CustomLog /var/log/apache2/matomo.openstreetmap.org-access.log combined_extended
 	ErrorLog /var/log/apache2/matomo.openstreetmap.org-error.log
 
 	Options -Indexes
@@ -31,7 +31,7 @@
 	SSLCertificateFile /etc/ssl/certs/matomo.openstreetmap.org.pem
 	SSLCertificateKeyFile /etc/ssl/private/matomo.openstreetmap.org.key
 
-	CustomLog /var/log/apache2/matomo.openstreetmap.org-access.log combined
+	CustomLog /var/log/apache2/matomo.openstreetmap.org-access.log combined_extended
 	ErrorLog /var/log/apache2/matomo.openstreetmap.org-error.log
 
 	RedirectPermanent / https://matomo.openstreetmap.org/
@@ -44,7 +44,7 @@
 	ServerAlias piwik.osm.org
 	ServerAdmin webmaster@openstreetmap.org
 
-	CustomLog /var/log/apache2/matomo.openstreetmap.org-access.log combined
+	CustomLog /var/log/apache2/matomo.openstreetmap.org-access.log combined_extended
 	ErrorLog /var/log/apache2/matomo.openstreetmap.org-error.log
 
 	RedirectPermanent /.well-known/acme-challenge/ http://acme.openstreetmap.org/.well-known/acme-challenge/

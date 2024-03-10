@@ -23,7 +23,7 @@
   RedirectPermanent /gps-lines/tile /lines
 
   # Setup logging
-  CustomLog /var/log/apache2/access.log combined
+  CustomLog /var/log/apache2/access.log combined_extended
   ErrorLog /var/log/apache2/error.log
   BufferedLogs on
 
@@ -50,7 +50,7 @@
   RewriteRule (.*) https://%{SERVER_NAME}/$1 [R=permanent,L]
 
   # Setup logging
-  CustomLog /var/log/apache2/access.log combined
+  CustomLog /var/log/apache2/access.log combined_extended
   ErrorLog /var/log/apache2/error.log
   BufferedLogs on
 </VirtualHost>

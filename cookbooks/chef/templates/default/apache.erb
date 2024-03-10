@@ -5,7 +5,7 @@
 	ServerAlias chef.osm.org
 	ServerAdmin webmaster@openstreetmap.org
 
-	CustomLog /var/log/apache2/chef.openstreetmap.org-access.log combined
+	CustomLog /var/log/apache2/chef.openstreetmap.org-access.log combined_extended
 	ErrorLog /var/log/apache2/chef.openstreetmap.org-error.log
 
 	RedirectPermanent /.well-known/acme-challenge/ http://acme.openstreetmap.org/.well-known/acme-challenge/
@@ -16,7 +16,7 @@
 	ServerName chef.openstreetmap.org
 	ServerAdmin webmaster@openstreetmap.org
 
-	CustomLog /var/log/apache2/chef.openstreetmap.org-access.log combined
+	CustomLog /var/log/apache2/chef.openstreetmap.org-access.log combined_extended
 	ErrorLog /var/log/apache2/chef.openstreetmap.org-error.log
 
 	SSLEngine on
