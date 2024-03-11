@@ -421,6 +421,13 @@ groups:
           alertgroup: "{{ $labels.instance }}"
         annotations:
           connections_used: "{{ $value | humanizePercentage }}"
+      - alert: mysql connection errors
+        expr: increase(mysql_global_status_connection_errors_total[1m]) > 0
+        for: 0m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+        annotations:
+          error_count: "{{ $value }}"
   - name: network
     rules:
       - alert: interface redundancy lost
