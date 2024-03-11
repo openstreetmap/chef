@@ -43,6 +43,8 @@ action :create do
               :logpath => new_resource.logpath,
               :protocol => new_resource.protocol,
               :ports => new_resource.ports,
+              :bantime => new_resource.bantime,
+              :findtime => new_resource.findtime,
               :maxretry => new_resource.maxretry,
               :ignoreips => new_resource.ignoreips
   end
