@@ -13,6 +13,7 @@ default_attributes(
   :apache => {
     :mpm => "event",
     :timeout => 60,
+    :evasive => false,
     :event => {
       :threads_per_child => 20,
       :min_spare_threads => 300,
