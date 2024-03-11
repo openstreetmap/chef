@@ -112,6 +112,7 @@ fail2ban_jail "apache-forbidden" do
   filter "apache-forbidden"
   logpath "/var/log/apache2/access.log"
   ports [80, 443]
+  findtime "1m"
   maxretry 50
 end
 
