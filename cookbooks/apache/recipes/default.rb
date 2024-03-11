@@ -79,9 +79,14 @@ apache_module "status" do
   variables :hosts => admins["hosts"]
 end
 
-apache_module "evasive" do
-  conf "evasive.conf.erb"
-  only_if { node[:apache][:evasive] }
+if node[:apache][:evasive]
+  apache_module "evasive" do
+    conf "evasive.conf.erb"
+  end
+else
+  apache_module "evasive" do
+    action :disable
+  end
 end
 
 apache_module "brotli" do
