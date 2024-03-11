@@ -55,7 +55,7 @@ default_attributes(
       :mysqld => {
         :innodb_buffer_pool_size => "4G",
         :key_buffer_size => "64M",
-        :max_connections => "200",
+        :max_connections => "500",
         :sort_buffer_size => "8M",
         :tmp_table_size => "128M"
       }
