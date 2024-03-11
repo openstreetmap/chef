@@ -17,6 +17,7 @@
 # limitations under the License.
 #
 
+include_recipe "fail2ban"
 include_recipe "munin"
 include_recipe "prometheus"
 include_recipe "ssl"
@@ -96,6 +97,17 @@ apache_module "ssl"
 
 apache_conf "ssl" do
   template "ssl.erb"
+end
+
+fail2ban_filter "apache-forbidden" do
+  failregex '^<ADDR> .* "[^"]*" 403 .*$'
+end
+
+fail2ban_jail "apache-forbidden" do
+  filter "apache-forbidden"
+  logpath "/var/log/apache2/access.log"
+  ports [80, 443]
+  maxretry 50
 end
 
 munin_plugin "apache_accesses"
