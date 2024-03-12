@@ -31,9 +31,9 @@ default[:apache][:listen_address] = "*"
 default[:apache][:buffered_logs] = true
 
 default[:apache][:evasive][:enable] = true
-default[:apache][:evasive][:dos_hash_table_size] =  65536
-default[:apache][:evasive][:dos_page_count]      =  50
-default[:apache][:evasive][:dos_site_count]      =  250
-default[:apache][:evasive][:dos_page_interval]   =  1
-default[:apache][:evasive][:dos_site_interval]   =  1
-default[:apache][:evasive][:dos_blocking_period] =  60
+default[:apache][:evasive][:hash_table_size] = 65536
+default[:apache][:evasive][:page_count] = 50
+default[:apache][:evasive][:site_count] = 250
+default[:apache][:evasive][:page_interval] = 1
+default[:apache][:evasive][:site_interval] = 1
+default[:apache][:evasive][:blocking_period] = 60

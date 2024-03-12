@@ -17,8 +17,8 @@ default_attributes(
       :max_connections_per_child => 10000
     },
     :evasive => {
-      :dos_page_count =>  250,
-      :dos_site_count =>  500
+      :page_count => 250,
+      :site_count => 500
     }
   },
   :elasticsearch => {
