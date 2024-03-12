@@ -119,10 +119,10 @@ end
 fail2ban_jail "apache-evasive" do
   filter "apache-evasive"
   backend "systemd"
-  journalmatch "SYSLOG_IDENTIFIER=mod_evasive"
+  journalmatch "_SYSTEMD_UNIT=apache2.service SYSLOG_IDENTIFIER=mod_evasive"
   ports [80, 443]
-  findtime "1m"
-  maxretry 50
+  findtime "10m"
+  maxretry 3
 end
 
 munin_plugin "apache_accesses"
