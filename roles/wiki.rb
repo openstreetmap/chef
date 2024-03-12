@@ -15,6 +15,10 @@ default_attributes(
       :max_request_workers => 800,
       :threads_per_child => 50,
       :max_connections_per_child => 10000
+    },
+    :evasive => {
+      :dos_page_count =>  250,
+      :dos_site_count =>  500
     }
   },
   :elasticsearch => {
