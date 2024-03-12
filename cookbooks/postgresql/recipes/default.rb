@@ -173,44 +173,4 @@ clusters.each do |name, details|
       action :delete
     end
   end
-
-  munin_suffix = name.tr("/", ":")
-
-  munin_plugin "postgres_bgwriter_#{munin_suffix}" do
-    target "postgres_bgwriter"
-    conf "munin.erb"
-    conf_variables :port => details[:port]
-  end
-
-  munin_plugin "postgres_checkpoints_#{munin_suffix}" do
-    target "postgres_checkpoints"
-    conf "munin.erb"
-    conf_variables :port => details[:port]
-  end
-
-  munin_plugin "postgres_connections_db_#{munin_suffix}" do
-    target "postgres_connections_db"
-    conf "munin.erb"
-    conf_variables :port => details[:port]
-  end
-
-  munin_plugin "postgres_users_#{munin_suffix}" do
-    target "postgres_users"
-    conf "munin.erb"
-    conf_variables :port => details[:port]
-  end
-
-  munin_plugin "postgres_xlog_#{munin_suffix}" do
-    target "postgres_xlog"
-    conf "munin.erb"
-    conf_variables :port => details[:port]
-  end
-
-  next unless File.exist?("/var/lib/postgresql/#{details[:version]}/main/recovery.conf")
-
-  munin_plugin "postgres_replication_#{munin_suffix}" do
-    target "postgres_replication"
-    conf "munin.erb"
-    conf_variables :port => details[:port]
-  end
 end

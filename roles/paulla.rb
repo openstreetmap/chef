@@ -9,10 +9,7 @@ default_attributes(
     }
   },
   :hosted_by => "Université de Pau et des Pays de l'Adour",
-  :location => "Pau, France",
-  :munin => {
-    :allow => ["10.64.1.11"]
-  }
+  :location => "Pau, France"
 )
 
 override_attributes(

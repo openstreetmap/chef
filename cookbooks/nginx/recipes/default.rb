@@ -53,14 +53,10 @@ service "nginx" do
   subscribes :restart, "template[/etc/nginx/nginx.conf]"
 end
 
-munin_plugin_conf "nginx" do
-  template "munin.erb"
+# FIXME: Remove purge post munin removal
+package "libwww-perl" do
+  action :purge
 end
-
-package "libwww-perl"
-
-munin_plugin "nginx_request"
-munin_plugin "nginx_status"
 
 prometheus_exporter "nginx" do
   port 9113

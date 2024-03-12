@@ -225,9 +225,6 @@ template "/etc/mail.rc" do
   mode "644"
 end
 
-munin_plugin "exim_mailqueue"
-munin_plugin "exim_mailstats"
-
 prometheus_exporter "exim" do
   port 9636
   user "Debian-exim"

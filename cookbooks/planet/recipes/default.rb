@@ -138,8 +138,6 @@ template "/etc/logrotate.d/apache2" do
   mode "644"
 end
 
-munin_plugin "planet_age"
-
 template "/usr/local/bin/planet-file-cleanup" do
   source "planet-file-cleanup.erb"
   owner "root"

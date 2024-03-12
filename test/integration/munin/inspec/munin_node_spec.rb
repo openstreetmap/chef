@@ -1,13 +1,12 @@
 describe package("munin-node") do
-  it { should be_installed }
+  it { should_not be_installed }
 end
 
 describe service("munin-node") do
-  it { should be_enabled }
-  it { should be_running }
+  it { should_not be_enabled }
+  it { should_not be_running }
 end
 
 describe port(4949) do
-  it { should be_listening }
-  its("protocols") { should cmp "tcp" }
+  it { should_not be_listening }
 end

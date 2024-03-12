@@ -126,10 +126,6 @@ fail2ban_jail "apache-evasive" do
   maxretry 3
 end
 
-munin_plugin "apache_accesses"
-munin_plugin "apache_processes"
-munin_plugin "apache_volume"
-
 template "/var/lib/prometheus/node-exporter/apache.prom" do
   source "apache.prom.erb"
   owner "root"

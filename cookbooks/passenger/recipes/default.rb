@@ -42,15 +42,6 @@ apache_module "passenger" do
   conf "passenger.conf.erb"
 end
 
-munin_plugin_conf "passenger" do
-  template "munin.erb"
-end
-
-munin_plugin "passenger_memory"
-munin_plugin "passenger_processes"
-munin_plugin "passenger_queues"
-munin_plugin "passenger_requests"
-
 prometheus_exporter "passenger" do
   port 9149
   user "root"

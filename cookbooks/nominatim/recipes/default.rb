@@ -86,11 +86,6 @@ postgresql_user "www-data" do
   only_if { node[:nominatim][:state] != "slave" }
 end
 
-postgresql_munin "nominatim" do
-  cluster node[:nominatim][:dbcluster]
-  database node[:nominatim][:dbname]
-end
-
 directory "#{basedir}/tablespaces" do
   owner "postgres"
   group "postgres"
@@ -611,25 +606,6 @@ template "/etc/logrotate.d/nominatim" do
 end
 
 # Monitoring
-
-munin_plugin_conf "nominatim" do
-  template "munin.erb"
-  variables :db => node[:nominatim][:dbname],
-            :querylog => "#{node[:nominatim][:logdir]}/query.log"
-end
-
-munin_plugin "nominatim_importlag" do
-  target "#{source_directory}/munin/nominatim_importlag"
-end
-
-munin_plugin "nominatim_query_speed" do
-  target "#{source_directory}/munin/nominatim_query_speed_querylog"
-end
-
-munin_plugin "nominatim_requests" do
-  target "#{source_directory}/munin/nominatim_requests_querylog"
-end
-
 prometheus_exporter "nominatim" do
   port 8082
   user "www-data"

@@ -571,13 +571,6 @@ if node[:postgresql][:clusters][:"15/main"]
   apache_site "apis.dev.openstreetmap.org" do
     template "apache.apis.erb"
   end
-
-  node[:postgresql][:clusters].each_key do |name|
-    postgresql_munin name do
-      cluster name
-      database "ALL"
-    end
-  end
 end
 
 directory "/srv/ooc.openstreetmap.org" do

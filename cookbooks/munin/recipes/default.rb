@@ -17,30 +17,14 @@
 # limitations under the License.
 #
 
-package "munin-node"
-
 service "munin-node" do
-  action [:enable, :start]
-  supports :status => true, :restart => true, :reload => true
+  action [:stop, :disable]
 end
 
-servers = search(:node, "recipes:munin\\:\\:server").map(&:ipaddresses).flatten
-
-firewall_rule "accept-munin" do
-  action :accept
-  context :incoming
-  protocol :tcp
-  source servers
-  dest_ports "munin"
-  source_ports "1024-65535"
-  not_if { servers.empty? }
+file "/etc/munin/munin-node.conf" do
+  action :delete
 end
 
-template "/etc/munin/munin-node.conf" do
-  source "munin-node.conf.erb"
-  owner "root"
-  group "root"
-  mode "644"
-  variables :servers => servers
-  notifies :restart, "service[munin-node]"
+package "munin-node" do
+  action :purge
 end

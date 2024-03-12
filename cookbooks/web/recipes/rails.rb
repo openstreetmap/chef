@@ -231,14 +231,3 @@ end
 gem_package "hpricot" do
   gem_binary node[:ruby][:gem]
 end
-
-munin_plugin "api_calls_status"
-munin_plugin "api_calls_num"
-
-munin_plugin "api_calls_#{node[:hostname]}" do
-  target "api_calls_"
-end
-
-munin_plugin "api_waits_#{node[:hostname]}" do
-  target "api_waits_"
-end
