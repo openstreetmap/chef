@@ -62,13 +62,6 @@ systemd_service "apache2" do
   notifies :restart, "service[apache2]"
 end
 
-service "apache2" do
-  action [:enable, :start]
-  retries 2
-  retry_delay 10
-  supports :status => true, :restart => true, :reload => true
-end
-
 apache_module "info" do
   conf "info.conf.erb"
   variables :hosts => admins["hosts"]
@@ -79,7 +72,7 @@ apache_module "status" do
   variables :hosts => admins["hosts"]
 end
 
-if node[:apache][:evasive]
+if node[:apache][:evasive][:enable]
   apache_module "evasive" do
     conf "evasive.conf.erb"
   end
@@ -102,6 +95,14 @@ apache_module "ssl"
 
 apache_conf "ssl" do
   template "ssl.erb"
+end
+
+# Apache should only be started after modules enabled
+service "apache2" do
+  action [:enable, :start]
+  retries 2
+  retry_delay 10
+  supports :status => true, :restart => true, :reload => true
 end
 
 fail2ban_filter "apache-forbidden" do

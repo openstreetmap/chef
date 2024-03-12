@@ -1,10 +1,10 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
 <IfModule mod_evasive20.c>
-    DOSHashTableSize    65536
-    DOSPageCount        50
-    DOSSiteCount        250
-    DOSPageInterval     1
-    DOSSiteInterval     1
-    DOSBlockingPeriod   60
+    DOSHashTableSize <%= node[:apache][:evasive][:dos_hash_table_size] %>
+    DOSPageCount <%= node[:apache][:evasive][:dos_page_count] %>
+    DOSSiteCount <%= node[:apache][:evasive][:dos_site_count] %>
+    DOSPageInterval <%= node[:apache][:evasive][:dos_page_interval] %>
+    DOSSiteInterval <%= node[:apache][:evasive][:dos_site_interval] %>
+    DOSBlockingPeriod <%= node[:apache][:evasive][:dos_blocking_period] %>
 </IfModule>

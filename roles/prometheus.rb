@@ -3,7 +3,9 @@ description "Role applied to all prometheus servers"
 
 default_attributes(
   :apache => {
-    :evasive => false
+    :evasive => {
+      :enable => false
+    }
   }
 )
 
