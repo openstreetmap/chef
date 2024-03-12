@@ -8,16 +8,18 @@ starttime=`date +%s`
 
 <% if node[:nominatim][:enable_git_updates] -%>
 if /sbin/runuser -u nominatim -- <%= @bindir %>/nominatim-update-source; then
-  pushd <%= @builddir %>
-  make install
-<% if node[:nominatim][:api_flavour] == "python" -%>
-  systemctl reload nominatim
-<% end -%>
 
   if ! /sbin/runuser -u nominatim -- <%= @bindir %>/nominatim-update-refresh-db; then
     date "+%c === Database refresh failed. Stopping updates."
     exit 1
   fi
+
+  pushd <%= @builddir %>
+  make install
+
+<% if node[:nominatim][:api_flavour] == "python" -%>
+  systemctl reload nominatim
+<% end -%>
 fi
 <% end -%>
 
