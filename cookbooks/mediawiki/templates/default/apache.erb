@@ -85,6 +85,7 @@
   RewriteCond %{REQUEST_URI} !^/prop/
   RewriteCond %{REQUEST_URI} !^/dump/
   RewriteCond %{REQUEST_URI} !^/server-status
+  RewriteCond %{REQUEST_URI} !^/server-info
   RewriteCond %{REQUEST_URI} !^/.well-known/
   RewriteCond %{LA-U:REQUEST_FILENAME} !-f
   RewriteCond %{LA-U:REQUEST_FILENAME} !-d
