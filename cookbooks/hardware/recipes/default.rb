@@ -227,7 +227,7 @@ else
 end
 
 watchdog_module = %w[hpwdt sp5100_tco].find do |module_name|
-  node[:hardware][:pci].any? { |_, pci| pci[:modules]&.any?(module_name) }
+  node[:hardware][:pci]&.any? { |_, pci| pci[:modules]&.any?(module_name) }
 end
 
 if node[:kernel][:modules].include?("ipmi_si")
