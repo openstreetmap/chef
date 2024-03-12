@@ -24,15 +24,6 @@ default_attributes(
       :listen_cores_buckets_ratio => 8
     }
   },
-  :munin => {
-    :plugins => {
-      :renderd_processed => {
-        :graph_order => "reqPrio req reqLow dirty reqBulk dropped",
-        :reqPrio => { :draw => "AREA" },
-        :req => { :draw => "STACK" }
-      }
-    }
-  },
   :postgresql => {
     :settings => {
       :defaults => {

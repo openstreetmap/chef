@@ -101,5 +101,3 @@ template "/etc/cron.daily/chef-server-backup" do
   group "root"
   mode "755"
 end
-
-munin_plugin "chef_status"

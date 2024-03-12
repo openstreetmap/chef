@@ -64,7 +64,7 @@ end
 
 postgresql_user "munin" do
   cluster node[:db][:cluster]
-  password passwords["munin"]
+  action :drop
 end
 
 postgresql_user "replication" do

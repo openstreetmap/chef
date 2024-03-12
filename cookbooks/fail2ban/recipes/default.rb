@@ -52,8 +52,6 @@ service "fail2ban" do
   action [:enable, :start]
 end
 
-munin_plugin "fail2ban"
-
 prometheus_exporter "fail2ban" do
   port 9635
   user "root"

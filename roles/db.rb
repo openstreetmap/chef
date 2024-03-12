@@ -15,26 +15,6 @@ default_attributes(
       :enable => false
     }
   },
-  :munin => {
-    :plugins => {
-      :postgres_connections_openstreetmap => {
-        :waiting => {
-          :warning => 10,
-          :critical => 20
-        }
-      },
-      :postgres_locks_openstreetmap => {
-        :accesssharelock => {
-          :warning => 900,
-          :critical => 1000
-        },
-        :rowexclusivelock => {
-          :warning => 250,
-          :critical => 300
-        }
-      }
-    }
-  },
   :postgresql => {
     :settings => {
       :defaults => {

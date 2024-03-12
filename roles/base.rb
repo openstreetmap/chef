@@ -10,13 +10,6 @@ default_attributes(
       :jburgess => { :status => :administrator }
     }
   },
-  :munin => {
-    :plugins => {
-      :chrony => {
-        :systime => { :warning => "100", :critical => "250" }
-      }
-    }
-  },
   :networking => {
     :roles => {
       :internal => { :metric => 200 },

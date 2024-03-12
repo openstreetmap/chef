@@ -55,29 +55,13 @@ template "/etc/apparmor.d/local/usr.sbin.mysqld" do
   only_if { ::Dir.exist?("/sys/kernel/security/apparmor") }
 end
 
-package "libdbd-mysql-perl"
-package "libcache-cache-perl"
-
-%w[
-  commands connections files handler_read handler_tmp handler_transaction
-  handler_write innodb_bpool innodb_bpool_act innodb_history_list_length
-  innodb_insert_buf innodb_io innodb_io_pend innodb_log innodb_queries
-  innodb_read_views innodb_rows innodb_semaphores innodb_srv_master_thread
-  innodb_tnx max_mem mrr myisam_indexes network_traffic performance
-  qcache qcache_mem select_types slow sorts table_definitions table_locks
-  tmp_tables
-].each do |stat|
-  munin_plugin "mysql_#{stat}" do
-    target "mysql_"
-  end
+# FIXME: Remove purge post munin removal
+package "libdbd-mysql-perl" do
+  action :purge
 end
 
-%w[
-  bin_relay_log files_tables replication
-].each do |stat|
-  munin_plugin "mysql_#{stat}" do
-    action :delete
-  end
+package "libcache-cache-perl" do
+  action :purge
 end
 
 mysql_password = persistent_token("mysql", "prometheus", "password")

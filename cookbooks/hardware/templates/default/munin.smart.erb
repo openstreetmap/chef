@@ -1,9 +1,0 @@
-# DO NOT EDIT - This file is being maintained by Chef
-
-[smart_<%= @disk[:munin] %>]
-<% if @disk[:smart] -%>
-env.smartargs -H -d <%= @disk[:smart] %>
-<% else -%>
-env.smartargs -H
-<% end -%>
-env.ignoreexit 4

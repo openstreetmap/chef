@@ -57,7 +57,7 @@ http {
     proxy_cache_path <%= node['nginx']['cache']['proxy']['directory'] %> levels=2:2:2 use_temp_path=off keys_zone=<%= node['nginx']['cache']['proxy']['keys_zone'] %> inactive=<%= node['nginx']['cache']['proxy']['inactive'] %> max_size=<%= node['nginx']['cache']['proxy']['max_size'] %>;
     <% end -%>
 
-    # Internal site for munin monitoring
+    # Internal site for stats monitoring
     server {
       listen 127.0.0.1:8050;
       server_name localhost;

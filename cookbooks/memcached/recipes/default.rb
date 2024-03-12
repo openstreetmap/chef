@@ -35,16 +35,6 @@ template "/etc/memcached.conf" do
   notifies :restart, "service[memcached]"
 end
 
-munin_plugin_conf "memcached_multi" do
-  template "munin.erb"
-end
-
-%w[bytes commands conns evictions items memory].each do |stat|
-  munin_plugin "memcached_multi_#{stat}" do
-    target "memcached_multi_"
-  end
-end
-
 prometheus_exporter "memcached" do
   port 9150
   options "--memcached.address=#{node[:memcached][:ip_address]}:#{node[:memcached][:tcp_port]} --memcached.pid-file=/run/memcached/memcached.pid"

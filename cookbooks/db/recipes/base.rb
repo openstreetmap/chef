@@ -26,11 +26,6 @@ include_recipe "ruby"
 passwords = data_bag_item("db", "passwords")
 wal_secrets = data_bag_item("db", "wal-secrets")
 
-postgresql_munin "openstreetmap" do
-  cluster node[:db][:cluster]
-  database "openstreetmap"
-end
-
 directory "/srv/www.openstreetmap.org" do
   group "rails"
   mode "2775"

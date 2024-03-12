@@ -61,8 +61,6 @@ service "chrony" do
   action [:enable, :start]
 end
 
-munin_plugin "chrony"
-
 prometheus_exporter "chrony" do
   port 9123
 end
