@@ -21,7 +21,7 @@ META=--keep-attic
 META=
 <% end -%>
 
-sudo systemctl stop overpass-area-processor.timer || true
+sudo systemctl stop overpass-area-processor || true
 sudo systemctl stop overpass-update || true
 sudo systemctl stop overpass-area-dispatcher || true
 sudo systemctl stop overpass-dispatcher || true
@@ -70,5 +70,3 @@ echo "DB up-to-date. Processing areas."
 sudo -u <%= @username %> <%= @basedir %>/bin/osm3s_query --progress --rules <<%= @srcdir %>/rules/areas.osm3s
 
 echo "All updates done."
-
-sudo systemctl start overpass-area-processor.timer
