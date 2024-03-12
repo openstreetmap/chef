@@ -338,10 +338,9 @@ action :create do
     update_site false
   end
 
+  # Extension has been archived: https://www.mediawiki.org/wiki/Extension:LocalisationUpdate
   mediawiki_extension "LocalisationUpdate" do
-    site new_resource.site
-    template "mw-ext-LocalisationUpdate.inc.php.erb"
-    update_site false
+    action :delete
   end
 
   # mediawiki_extension "Translate" do
