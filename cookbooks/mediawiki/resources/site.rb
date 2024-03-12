@@ -340,6 +340,7 @@ action :create do
 
   # Extension has been archived: https://www.mediawiki.org/wiki/Extension:LocalisationUpdate
   mediawiki_extension "LocalisationUpdate" do
+    site new_resource.site
     action :delete
   end
 
