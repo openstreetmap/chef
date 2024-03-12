@@ -23,6 +23,8 @@ default_action :create
 
 property :jail, :kind_of => String, :name_property => true
 property :filter, :kind_of => String
+property :backend, :kind_of => String
+property :journalmatch, :kind_of => String
 property :logpath, :kind_of => String
 property :protocol, :kind_of => String
 property :ports, :kind_of => Array, :default => []
@@ -40,6 +42,8 @@ action :create do
     mode "644"
     variables :name => new_resource.jail,
               :filter => new_resource.filter,
+              :backend => new_resource.backend,
+              :journalmatch => new_resource.journalmatch,
               :logpath => new_resource.logpath,
               :protocol => new_resource.protocol,
               :ports => new_resource.ports,

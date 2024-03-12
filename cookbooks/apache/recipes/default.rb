@@ -105,12 +105,21 @@ apache_conf "ssl" do
 end
 
 fail2ban_filter "apache-forbidden" do
-  failregex '^<ADDR> .* "[^"]*" 403 .*$'
+  action :delete
 end
 
 fail2ban_jail "apache-forbidden" do
-  filter "apache-forbidden"
-  logpath "/var/log/apache2/access.log"
+  action :delete
+end
+
+fail2ban_filter "apache-evasive" do
+  failregex "^Blacklisting address <ADDR>: possible DoS attack\.$"
+end
+
+fail2ban_jail "apache-evasive" do
+  filter "apache-evasive"
+  backend "systemd"
+  journalmatch "SYSLOG_IDENTIFIER=mod_evasive"
   ports [80, 443]
   findtime "1m"
   maxretry 50
