@@ -70,7 +70,6 @@ jobs:
           - memcached
           - munin
           - munin-plugins
-          - munin-server
           - mysql
           - networking
           - nginx
