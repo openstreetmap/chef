@@ -46,3 +46,30 @@
 <% end -%>
 	</Location>
 </VirtualHost>
+
+<VirtualHost *:80>
+  ServerName munin.openstreetmap.org
+  ServerAlias munin.osm.org
+  ServerAdmin webmaster@openstreetmap.org
+
+  CustomLog /var/log/apache2/munin.openstreetmap.org-access.log combined_extended
+  ErrorLog /var/log/apache2/munin.openstreetmap.org-error.log
+
+  RedirectPermanent /.well-known/acme-challenge/ http://acme.openstreetmap.org/.well-known/acme-challenge/
+  Redirect permanent / https://prometheus.openstreetmap.org/
+</VirtualHost>
+
+<VirtualHost *:443>
+  ServerName munin.openstreetmap.org
+  ServerAlias munin.osm.org
+  ServerAdmin webmaster@openstreetmap.org
+
+  CustomLog /var/log/apache2/munin.openstreetmap.org-access.log combined_extended
+  ErrorLog /var/log/apache2/munin.openstreetmap.org-error.log
+
+  SSLEngine on
+  SSLCertificateFile /etc/ssl/certs/prometheus.openstreetmap.org.pem
+  SSLCertificateKeyFile /etc/ssl/private/prometheus.openstreetmap.org.key
+
+  Redirect permanent / https://prometheus.openstreetmap.org/
+</VirtualHost>

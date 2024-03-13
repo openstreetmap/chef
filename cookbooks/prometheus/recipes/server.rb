@@ -363,7 +363,7 @@ apache_module "proxy_http"
 apache_module "proxy_wstunnel"
 
 ssl_certificate "prometheus.openstreetmap.org" do
-  domains ["prometheus.openstreetmap.org", "prometheus.osm.org"]
+  domains ["prometheus.openstreetmap.org", "prometheus.osm.org", "munin.openstreetmap.org", "munin.osm.org"]
   notifies :reload, "service[apache2]"
 end
 
