@@ -19,7 +19,6 @@
 
 include_recipe "accounts"
 include_recipe "apache"
-include_recipe "munin"
 include_recipe "prometheus"
 include_recipe "ruby"
 
@@ -34,12 +33,6 @@ web_passwords = data_bag_item("web", "passwords")
     mode "755"
     recursive true
   end
-end
-
-# FIXME: Remove purge post munin removal
-directory "#{basedir}/munin" do
-  action :delete
-  recursive true
 end
 
 ## Install overpass from source

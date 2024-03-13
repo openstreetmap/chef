@@ -18,7 +18,6 @@
 #
 
 include_recipe "apt::nginx"
-include_recipe "munin"
 include_recipe "prometheus"
 include_recipe "ssl"
 
@@ -51,11 +50,6 @@ service "nginx" do
   action [:enable] # Do not start the service as config may be broken from failed chef run
   supports :status => true, :restart => true, :reload => true
   subscribes :restart, "template[/etc/nginx/nginx.conf]"
-end
-
-# FIXME: Remove purge post munin removal
-package "libwww-perl" do
-  action :purge
 end
 
 prometheus_exporter "nginx" do

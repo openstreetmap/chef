@@ -6,5 +6,4 @@ description       "Installs and configures memcached"
 
 version           "1.0.0"
 supports          "ubuntu"
-depends           "munin"
 depends           "prometheus"

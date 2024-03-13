@@ -18,7 +18,6 @@
 #
 
 include_recipe "accounts"
-include_recipe "munin"
 include_recipe "prometheus"
 
 if node[:nominatim][:api_flavour] == "php"

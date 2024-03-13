@@ -19,7 +19,6 @@
 
 include_recipe "apache"
 include_recipe "apt::passenger"
-include_recipe "munin"
 include_recipe "prometheus"
 include_recipe "ruby"
 

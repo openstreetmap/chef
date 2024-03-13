@@ -20,7 +20,6 @@
 include_recipe "accounts"
 include_recipe "apache"
 include_recipe "git"
-include_recipe "munin"
 include_recipe "nodejs"
 include_recipe "postgresql"
 include_recipe "prometheus"

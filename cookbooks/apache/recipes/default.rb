@@ -18,7 +18,6 @@
 #
 
 include_recipe "fail2ban"
-include_recipe "munin"
 include_recipe "prometheus"
 include_recipe "ssl"
 
