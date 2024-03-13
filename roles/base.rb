@@ -88,7 +88,6 @@ run_list(
   "recipe[devices]",
   "recipe[hardware]",
   "recipe[prometheus]",
-  "recipe[munin::plugins]",
   "recipe[networking]",
   "recipe[exim]",
   "recipe[ntp]",

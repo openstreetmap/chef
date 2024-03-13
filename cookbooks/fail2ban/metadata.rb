@@ -6,5 +6,4 @@ description       "Configures fail2ban"
 
 version           "1.0.0"
 supports          "ubuntu"
-depends           "munin"
 depends           "prometheus"

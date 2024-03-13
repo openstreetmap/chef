@@ -62,11 +62,6 @@ postgresql_user "backup" do
   password passwords["backup"]
 end
 
-postgresql_user "munin" do
-  cluster node[:db][:cluster]
-  action :drop
-end
-
 postgresql_user "replication" do
   cluster node[:db][:cluster]
   password passwords["replication"]

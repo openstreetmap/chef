@@ -17,7 +17,6 @@
 # limitations under the License.
 #
 
-include_recipe "munin"
 include_recipe "prometheus"
 
 mysql_variant = if platform?("ubuntu")
@@ -53,15 +52,6 @@ template "/etc/apparmor.d/local/usr.sbin.mysqld" do
   mode "644"
   notifies :restart, "service[apparmor]"
   only_if { ::Dir.exist?("/sys/kernel/security/apparmor") }
-end
-
-# FIXME: Remove purge post munin removal
-package "libdbd-mysql-perl" do
-  action :purge
-end
-
-package "libcache-cache-perl" do
-  action :purge
 end
 
 mysql_password = persistent_token("mysql", "prometheus", "password")

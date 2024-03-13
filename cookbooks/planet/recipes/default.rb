@@ -21,7 +21,6 @@ include_recipe "accounts"
 include_recipe "apache"
 include_recipe "geoipupdate"
 include_recipe "planet::aws"
-include_recipe "munin"
 
 package %w[
   python3

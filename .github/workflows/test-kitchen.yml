@@ -68,8 +68,6 @@ jobs:
           - mailman
           - matomo
           - memcached
-          - munin
-          - munin-plugins
           - mysql
           - networking
           - nginx

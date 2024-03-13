@@ -18,7 +18,6 @@
 #
 
 include_recipe "apt::postgresql"
-include_recipe "munin"
 include_recipe "prometheus"
 
 package "locales-all"

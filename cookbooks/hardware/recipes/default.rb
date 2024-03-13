@@ -19,7 +19,6 @@
 
 include_recipe "apt"
 include_recipe "git"
-include_recipe "munin"
 include_recipe "prometheus"
 include_recipe "sysfs"
 include_recipe "tools"
