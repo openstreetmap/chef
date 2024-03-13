@@ -6,5 +6,4 @@ description       "Installs and configures munin"
 
 version           "1.0.0"
 supports          "ubuntu"
-depends           "apache"
 depends           "networking"

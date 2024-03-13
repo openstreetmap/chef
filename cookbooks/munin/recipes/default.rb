@@ -28,3 +28,8 @@ end
 package "munin-node" do
   action :purge
 end
+
+directory "/etc/munin" do
+  action :delete
+  recursive true
+end

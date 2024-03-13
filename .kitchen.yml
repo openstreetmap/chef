@@ -256,9 +256,6 @@ suites:
   - name: munin-plugins
     run_list:
       - recipe[munin::plugins]
-  - name: munin-server
-    run_list:
-      - recipe[munin::server]
   - name: mysql
     run_list:
       - recipe[mysql::default]

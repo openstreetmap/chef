@@ -76,7 +76,6 @@ default_attributes(
       "clamav" => "root",
       "rails" => "root",
       "trac" => "root",
-      "munin" => "root",
       "prometheus" => "root",
       "www-data" => "root",
       "osmbackup" => "root",

@@ -38,7 +38,6 @@ run_list(
   "role[trac]",
   "role[irc]",
   "role[blogs]",
-  "role[munin]",
   "role[switch2osm]",
   "recipe[foundation::mastodon]",
   "recipe[foundation::owg]",
