@@ -107,6 +107,7 @@ hostlist   relay_from_hosts = <; <%= @relay_from_hosts.join(" ; ") %>
 # manual for details. The lists above are used in the access control lists for
 # checking incoming messages. The names of these ACLs are defined here:
 
+acl_smtp_mail = acl_check_mail
 acl_smtp_rcpt = acl_check_rcpt
 acl_smtp_data = acl_check_data
 
@@ -376,6 +377,23 @@ smtp_accept_max = <%= node[:exim][:smtp_accept_max] %>
 ######################################################################
 
 begin acl
+
+# This access control list is used for the MAIL command in an incoming
+# SMTP message.
+
+acl_check_mail:
+<% if node[:exim][:smarthost_name] -%>
+
+  # Reject mail that fails SPF checks
+
+  deny    spf           = fail
+          message       = $sender_host_address is not allowed to send mail from \
+                          ${if def:sender_address_domain \
+                               {$sender_address_domain}{$sender_helo_name}}.
+          !hosts        = +relay_from_hosts
+<% end -%>
+
+  accept
 
 # This access control list is used for every RCPT command in an incoming
 # SMTP message. The tests are run in order until the address is either
