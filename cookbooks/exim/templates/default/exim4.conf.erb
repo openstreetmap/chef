@@ -382,17 +382,6 @@ begin acl
 # SMTP message.
 
 acl_check_mail:
-<% if node[:exim][:smarthost_name] -%>
-
-  # Reject mail that fails SPF checks
-
-  deny    spf           = fail
-          condition     = ${if eq {${lookup{postmaster@osmfoundation.org}spf{$sender_host_address}}}{fail}}
-          message       = $sender_host_address is not allowed to send mail from \
-                          ${if def:sender_address_domain \
-                               {$sender_address_domain}{$sender_helo_name}}.
-          !hosts        = +relay_from_hosts
-<% end -%>
 
   accept
 
