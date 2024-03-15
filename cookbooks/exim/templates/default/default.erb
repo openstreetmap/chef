@@ -1,5 +1,11 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
+<% if node.platform?("ubuntu") && node[:lsb][:release].to_f >= 22.04 -%>
+# options for update-exim4.conf
+UPEX4OPTS=''
+# options for exim4
+EXIMSERVICE='-bdf -q30s'
+<% else -%>
 # 'combined' -   one daemon running queue and listening on SMTP port
 # 'no'       -   no daemon running the queue
 # 'separate' -   two separate daemons
@@ -19,5 +25,6 @@ QUEUERUNNEROPTIONS=''
 QFLAGS=''
 # options for daemon listening on port 25
 SMTPLISTENEROPTIONS=''
+<% end -%>
 # only warn once about each error
 E4BCD_WATCH_PANICLOG='once'
