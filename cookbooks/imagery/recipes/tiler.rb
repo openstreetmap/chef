@@ -45,6 +45,12 @@ podman_service "titiler" do
               :FORWARDED_ALLOW_IPS                 => "*" # https://docs.gunicorn.org/en/latest/settings.html#forwarded-allow-ips
 end
 
+directory "/var/cache/nginx-cache" do
+  owner "www-data"
+  group "www-data"
+  mode "755"
+end
+
 ssl_certificate "tiler.openstreetmap.org" do
   domains "tiler.openstreetmap.org"
   notifies :reload, "service[nginx]"
