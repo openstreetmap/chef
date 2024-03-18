@@ -68,7 +68,7 @@ server {
 
     location /ngi-aerial {
       set $args "";
-      rewrite ^/ngi-aerial/(\d+)/(\d+)/(\d+)\.jpg  /mosaicjson/tiles/WebMercatorQuad/$1/$2/$3@1x?url=http%3A%2F%2Ftiler.openstreetmap.org%2Fza-25cm%2Fmosaic-tiler.json&pixel_selection=first&tile_format=jpeg break;
+      rewrite ^/ngi-aerial/(\d+)/(\d+)/(\d+)\.jpg  /mosaicjson/tiles/WebMercatorQuad/$1/$2/$3@1x?url=https%3A%2F%2Ftiler.openstreetmap.org%2Fza-25cm%2Fmosaic-tiler-https.json&pixel_selection=first&tile_format=jpeg break;
       proxy_pass http://tiler_backend;
       proxy_set_header Host $host;
       proxy_set_header Referer $http_referer;
