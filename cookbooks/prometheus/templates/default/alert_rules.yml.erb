@@ -612,6 +612,11 @@ groups:
         for: 10m
         labels:
           alertgroup: "prometheus"
+      - alert: node exporter text file scrape error
+        expr: node_textfile_scrape_error > 0
+        for: 10m
+        labels:
+          alertgroup: "prometheus"
   - name: raid
     rules:
       - alert: raid controller battery failed
