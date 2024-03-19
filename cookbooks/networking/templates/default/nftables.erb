@@ -40,6 +40,11 @@ unblock() {
   done
 }
 
+flush() {
+  /usr/sbin/nft flush set inet chef-filter ip-blocklist
+  /usr/sbin/nft flush set inet chef-filter ip6-blocklist
+}
+
 command=$1
 shift
 
@@ -49,6 +54,7 @@ case "$command" in
   reload) reload;;
   block) block "$@";;
   unblock) unblock "$@";;
+  flush) flush;;
 esac
 
 exit 0
