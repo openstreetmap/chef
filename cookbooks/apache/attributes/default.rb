@@ -30,7 +30,7 @@ default[:apache][:listen_address] = "*"
 
 default[:apache][:buffered_logs] = true
 
-default[:apache][:evasive][:enable] = true
+default[:apache][:evasive][:enable] = false
 default[:apache][:evasive][:hash_table_size] = 65536
 default[:apache][:evasive][:page_count] = 50
 default[:apache][:evasive][:site_count] = 250
