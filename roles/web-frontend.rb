@@ -38,7 +38,7 @@ default_attributes(
       :messages => {
         :comment => "messages.openstreetmap.org",
         :domains => ["messages.openstreetmap.org"],
-        :local_parts => ["^c-(\\\\d+)-(\\\\d+)-(.*)\\$", "^m-(\\\\d+)-(.*)\\$"],
+        :local_parts => ["${lookup{$local_part}lsearch*,ret=key{/etc/exim4/detaint}}"],
         :command => "/usr/local/bin/deliver-message $local_part_data",
         :user => "rails",
         :group => "rails",

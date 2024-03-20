@@ -131,6 +131,13 @@ file "/etc/exim4/blocked-sender-domains" do
   mode "644"
 end
 
+file "/etc/exim4/detaint" do
+  owner "root"
+  group "Debian-exim"
+  mode "644"
+  content "*"
+end
+
 if node[:exim][:dkim_selectors]
   keys = data_bag_item("exim", "dkim")
 
