@@ -24,8 +24,8 @@ block() {
   for address in "$@"
   do
     case "$address" in
-      *.*) /usr/sbin/nft add element inet chef-filter ip-blocklist "{ $address }";;
-      *:*) /usr/sbin/nft add element inet chef-filter ip6-blocklist "{ $address }";;
+      *.*) /usr/sbin/nft --check add element inet chef-filter ip-blocklist "{ $address }" && /usr/sbin/nft add element inet chef-filter ip-blocklist "{ $address }" ;;
+      *:*) /usr/sbin/nft --check add element inet chef-filter ip6-blocklist "{ $address }" && /usr/sbin/nft add element inet chef-filter ip6-blocklist "{ $address }" ;;
     esac
   done
 }
@@ -34,15 +34,15 @@ unblock() {
   for address in "$@"
   do
     case "$address" in
-      *.*) /usr/sbin/nft delete element inet chef-filter ip-blocklist "{ $address }";;
-      *:*) /usr/sbin/nft delete element inet chef-filter ip6-blocklist "{ $address }";;
+      *.*) /usr/sbin/nft --check delete element inet chef-filter ip-blocklist "{ $address }" && /usr/sbin/nft delete element inet chef-filter ip-blocklist "{ $address }" ;;
+      *:*) /usr/sbin/nft --check delete element inet chef-filter ip6-blocklist "{ $address }" && /usr/sbin/nft delete element inet chef-filter ip6-blocklist "{ $address }" ;;
     esac
   done
 }
 
 flush() {
-  /usr/sbin/nft flush set inet chef-filter ip-blocklist
-  /usr/sbin/nft flush set inet chef-filter ip6-blocklist
+  /usr/sbin/nft --check flush set inet chef-filter ip-blocklist && /usr/sbin/nft flush set inet chef-filter ip-blocklist
+  /usr/sbin/nft --check flush set inet chef-filter ip6-blocklist && /usr/sbin/nft flush set inet chef-filter ip6-blocklist
 }
 
 command=$1
