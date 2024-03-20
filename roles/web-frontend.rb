@@ -38,7 +38,8 @@ default_attributes(
       :messages => {
         :comment => "messages.openstreetmap.org",
         :domains => ["messages.openstreetmap.org"],
-        :command => "/usr/local/bin/deliver-message $local_part",
+        :local_parts => ["^c-(\\\\d+)-(\\\\d+)-(.*)\\$", "^m-(\\\\d+)-(.*)\\$"],
+        :command => "/usr/local/bin/deliver-message $local_part_data",
         :user => "rails",
         :group => "rails",
         :home_directory => "/srv/www.openstreetmap.org/rails",
