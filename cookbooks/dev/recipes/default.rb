@@ -66,6 +66,7 @@ package %w[
   libboost-program-options-dev
   libboost-regex-dev
   libboost-system-dev
+  libbrotli-dev
   libbytes-random-secure-perl
   libcairo2-dev
   libcrypto++-dev
