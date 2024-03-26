@@ -58,7 +58,6 @@ jobs:
           - hardware
           - hot
           - ideditor
-          - imagery-tiler
           - irc
           - kibana
           - letsencrypt
@@ -122,6 +121,8 @@ jobs:
             suite: mailman
           - os: ubuntu-2004
             suite: osqa
+          - os: debian-12
+            suite: imagery-tiler
         exclude:
           - suite: mailman
             os: ubuntu-2204
