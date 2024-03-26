@@ -74,6 +74,7 @@ default_attributes(
       :gmoncrieff => { :status => :user },
       :zander => { :status => :user },
       :msbarry => { :status => :user },
+      :ligfietser => { :status => :user },
       :ooc => {
         :status => :role,
         :members => [:tomh, :blackadder, :timsc, :ollie]
