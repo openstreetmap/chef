@@ -7,9 +7,9 @@ upstream nominatim_service {
 }
 
 map $uri $nominatim_script_name {
-    ~^(.+?\.php)         $1;
-    ~^/([^/]+)           $1.php;
-    ^$                   search.php;
+    ~^/*(.+?)\.php        $1;
+    ~^/*([^/]+)           $1;
+    ^$                   search;
 }
 
 map $uri $nominatim_path_info {
@@ -83,6 +83,11 @@ map $missing_email$missing_ua$http_referer $blocked_referrer {
 map $missing_referer$missing_ua$email_id $blocked_email {
    default 0;
    include <%= @confdir %>/nginx_blocked_email.conf;
+}
+
+map $nominatim_script_name$missing_referer $blocked_path {
+   default 0;
+   "details1" 1;
 }
 
 map $whitelisted $limit_www {
@@ -193,6 +198,8 @@ server {
         if ($blocked_referrer)
         { return 403; }
         if ($blocked_email)
+        { return 403; }
+        if ($blocked_path)
         { return 403; }
         include <%= @confdir %>/nginx_blocked_generic.conf;
 
