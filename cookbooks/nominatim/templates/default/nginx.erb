@@ -201,6 +201,8 @@ server {
         { return 403; }
         if ($blocked_path)
         { return 403; }
+        if ($args ~* "q=[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+[ &]")
+        { return 418; }
         include <%= @confdir %>/nginx_blocked_generic.conf;
 
         limit_req zone=www burst=10;
