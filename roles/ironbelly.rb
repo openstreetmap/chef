@@ -67,11 +67,13 @@ default_attributes(
     }
   },
   :nginx => {
-    :proxy => {
-        :enable => true,
-        :keys_zone => "proxy_cache_zone:256M",
-        :inactive => "180d",
-        :max_size => "51200M"
+    :cache => {
+      :proxy => {
+          :enable => true,
+          :keys_zone => "proxy_cache_zone:256M",
+          :inactive => "180d",
+          :max_size => "51200M"
+      }
     }
   },
   :rsyncd => {
