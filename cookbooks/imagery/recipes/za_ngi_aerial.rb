@@ -33,7 +33,7 @@ imagery_layer "ngi-aerial" do
   source "https://tiler.openstreetmap.org/za-25cm/mosaic-tiler-https.json"
   copyright 'State Copyright &copy; 2024 <a href="http://www.ngi.gov.za/">Chief Directorate: National Geo-spatial Information</a>'
   max_zoom 20
-  extension jpg
+  extension "jpg"
   default_layer true
   url_aliases ["/ngi-aerial"]
 end
