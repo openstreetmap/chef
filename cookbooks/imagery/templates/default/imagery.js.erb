@@ -1,3 +1,4 @@
+<% require 'uri' %>
 function createMap(divName) {
   // Create a map
   var map = L.map(divName, {
@@ -15,21 +16,21 @@ function createMap(divName) {
   <% @layers.sort_by { |layer| layer[:name] }.each do |layer| -%>
 
   // Create <%= layer[:name] %> layer
-  var <%= layer[:name] %> = L.tileLayer(<%= layer[:url].to_json %>, {
+  var <%= layer[:name].gsub("-", "_") %> = L.tileLayer(<%= layer[:url].to_json %>, {
     attribution: <%= layer[:attribution].to_json %>,
     maxZoom: <%= layer[:maxZoom].to_json %>
   });
 
   // Add <%= layer[:name] %> to layer switcher
   <% if layer[:overlay] -%>
-  layers.addOverlay(<%= layer[:name] %>, <%= layer[:title].to_json %>);
+  layers.addOverlay(<%= layer[:name].gsub("-", "_") %>, <%= layer[:title].to_json %>);
   <% else %>
-  layers.addBaseLayer(<%= layer[:name] %>, <%= layer[:title].to_json %>);
+  layers.addBaseLayer(<%= layer[:name].gsub("-", "_") %>, <%= layer[:title].to_json %>);
   <% end -%>
 
   <% if layer[:default] -%>
   // Add <%= layer[:name] %> to map
-  <%= layer[:name] %>.addTo(map);
+  <%= layer[:name].gsub("-", "_") %>.addTo(map);
   <% end -%>
   <% end -%>
 
