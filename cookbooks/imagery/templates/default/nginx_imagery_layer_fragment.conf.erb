@@ -1,5 +1,29 @@
+<% require 'uri' %>
 # DO NOT EDIT - This file is being maintained by Chef
 location ~* "^/layer/<%= @layer %>/(\d+)/(\d+)/(\d+)\.(png|jpg|jpeg)$" {
+<% if @uses_tiler -%>
+  set $args "";
+  rewrite ^/layer/<%= @layer %>/(\d+)/(\d+)/(\d+)\.jpg /mosaicjson/tiles/WebMercatorQuad/$1/$2/$3@1x?url=<%= URI.encode_www_form_component(@source) %>&pixel_selection=first&tile_format=jpeg break;
+  rewrite ^/layer/<%= @layer %>/(\d+)/(\d+)/(\d+)\.jpeg /mosaicjson/tiles/WebMercatorQuad/$1/$2/$3@1x?url=<%= URI.encode_www_form_component(@source) %>&pixel_selection=first&tile_format=jpeg break;
+  rewrite ^/layer/<%= @layer %>/(\d+)/(\d+)/(\d+)\.png /mosaicjson/tiles/WebMercatorQuad/$1/$2/$3@1x?url=<%= URI.encode_www_form_component(@source) %>&pixel_selection=first&tile_format=png break;
+  proxy_pass http://tiler_backend;
+  proxy_set_header Host $host;
+  proxy_set_header Referer $http_referer;
+  proxy_set_header X-Forwarded-For $remote_addr;
+  proxy_set_header X-Forwarded-Proto https;
+  proxy_set_header X-Forwarded-SSL on;
+  proxy_http_version 1.1;
+  proxy_set_header Connection "";
+  proxy_set_header Cache-Control "";
+  proxy_set_header Pragma "";
+  proxy_redirect off;
+  proxy_cache_key "<%= @layer %><%= @revision %> $request_method $1 $2 $3";
+  proxy_cache proxy_cache_zone;
+  proxy_cache_valid 200 204 180d;
+  proxy_cache_use_stale error timeout updating http_502 http_503 http_504;
+  proxy_cache_background_update on;
+
+<% else -%>
   # Override QUERY_STRING to force mapserver query parameters
   fastcgi_param QUERY_STRING "map=/srv/imagery/mapserver/layer-<%= @layer %>.map&mode=tile&layers=<%= @layer %>&tilemode=gmap&tile=$2+$3+$1";
   fastcgi_pass "<%= @site %>_fastcgi";
@@ -30,6 +54,7 @@ location ~* "^/layer/<%= @layer %>/(\d+)/(\d+)/(\d+)\.(png|jpg|jpeg)$" {
 
   fastcgi_next_upstream error timeout invalid_header http_500 http_503;
   fastcgi_next_upstream_tries 8;
+<% end -%>
 
   # Do not GZIP tiles
   gzip off;

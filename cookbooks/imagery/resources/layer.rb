@@ -41,6 +41,7 @@ property :url_aliases, [String, Array], :default => []
 property :revision, Integer, :default => 0
 property :overlay, [true, false], :default => false
 property :default_layer, [true, false], :default => false
+property :uses_tiler, [true, false], :default => false
 
 action :create do
   file "/srv/imagery/layers/#{new_resource.site}/#{new_resource.layer}.yml" do
@@ -49,7 +50,7 @@ action :create do
     mode "644"
     content YAML.dump(:name => new_resource.layer,
                       :title => new_resource.title || new_resource.layer,
-                      :url => "//#{new_resource.site}/layer/#{new_resource.layer}/{z}/{x}/{y}.png",
+                      :url => "//#{new_resource.site}/layer/#{new_resource.layer}/{z}/{x}/{y}.#{new_resource.extension}",
                       :attribution => new_resource.copyright,
                       :default => new_resource.default_layer,
                       :maxZoom => new_resource.max_zoom,
@@ -63,6 +64,7 @@ action :create do
     group "root"
     mode "644"
     variables new_resource.to_hash
+    not_if { new_resource.uses_tiler }
   end
 
   directory "/srv/imagery/nginx/#{new_resource.site}" do

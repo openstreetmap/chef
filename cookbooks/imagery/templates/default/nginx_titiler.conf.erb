@@ -15,14 +15,6 @@ server {
     }
 }
 
-upstream tiler_backend {
-    server 127.0.0.1:8080;
-
-    keepalive 32;
-}
-
-proxy_cache_path /var/cache/nginx-cache levels=1:2 keys_zone=ngi-aerial:64m;
-
 server {
     listen 443 ssl http2;
     listen [::]:443 ssl http2;
@@ -63,30 +55,7 @@ server {
       proxy_set_header X-Forwarded-Proto https;
       proxy_set_header X-Forwarded-SSL on;
       proxy_http_version 1.1;
-      proxy_set_header "Connection" "";
+      proxy_set_header Connection "";
       proxy_redirect off;
-    }
-
-    location /ngi-aerial {
-      set $args "";
-      rewrite ^/ngi-aerial/(\d+)/(\d+)/(\d+)\.jpg  /mosaicjson/tiles/WebMercatorQuad/$1/$2/$3@1x?url=https%3A%2F%2Ftiler.openstreetmap.org%2Fza-25cm%2Fmosaic-tiler-https.json&pixel_selection=first&tile_format=jpeg break;
-      proxy_pass http://tiler_backend;
-      proxy_set_header Host $host;
-      proxy_set_header Referer $http_referer;
-      proxy_set_header X-Forwarded-For $remote_addr;
-      proxy_set_header X-Forwarded-Proto https;
-      proxy_set_header X-Forwarded-SSL on;
-      proxy_http_version 1.1;
-      proxy_set_header "Connection" "";
-      proxy_redirect off;
-      proxy_cache_key "$scheme$proxy_host$uri";
-      proxy_cache ngi-aerial;
-      proxy_cache_valid 200 204 180d;
-      proxy_cache_use_stale error timeout updating http_502 http_503 http_504;
-      proxy_cache_background_update on;
-      proxy_ignore_headers Cache-Control;
-      expires max;
-      add_header X-Proxy-Cache $upstream_cache_status;
-
     }
 }

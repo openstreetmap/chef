@@ -27,6 +27,7 @@ property :site, String, :name_property => true
 property :title, String, :required => [:create]
 property :aliases, [String, Array], :default => []
 property :bbox, Array, :required => [:create]
+property :uses_tiler, [true, false], :default => false
 
 action :create do
   directory "/srv/#{new_resource.site}" do
@@ -117,6 +118,7 @@ action :create do
     restrict_address_families "AF_UNIX"
     # Terminate service after 30mins. Service is socket activated
     runtime_max_sec 1800
+    not_if { new_resource.uses_tiler }
   end
 
   systemd_socket "mapserv-fcgi-#{new_resource.site}" do
@@ -124,6 +126,7 @@ action :create do
     socket_user "imagery"
     socket_group "imagery"
     listen_stream "/run/mapserver-fastcgi/layer-#{new_resource.site}.socket"
+    not_if { new_resource.uses_tiler }
   end
 
   # Ensure service is stopped because otherwise the socket cannot reload
@@ -132,11 +135,13 @@ action :create do
     action :nothing
     subscribes :stop, "systemd_service[mapserv-fcgi-#{new_resource.site}]"
     subscribes :stop, "systemd_socket[mapserv-fcgi-#{new_resource.site}]"
+    not_if { new_resource.uses_tiler }
   end
 
   systemd_unit "mapserv-fcgi-#{new_resource.site}.socket" do
     action [:enable, :start]
     subscribes :restart, "systemd_socket[mapserv-fcgi-#{new_resource.site}]"
+    not_if { new_resource.uses_tiler }
   end
 
   ssl_certificate new_resource.site do
@@ -154,10 +159,12 @@ action :delete do
   service "mapserv-fcgi-#{new_resource.site}" do
     provider Chef::Provider::Service::Systemd
     action [:stop, :disable]
+    not_if { new_resource.uses_tiler }
   end
 
   systemd_service "mapserv-fcgi-#{new_resource.site}" do
     action :delete
+    not_if { new_resource.uses_tiler }
   end
 
   nginx_site new_resource.site do
