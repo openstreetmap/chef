@@ -155,7 +155,7 @@ Ohai.plugin(:Hardware) do
     find_adaptec_disks(disk) if File.exist?("/usr/sbin/arcconf")
     find_areca_disks(disk) if File.exist?("/opt/areca/x86_64/cli64")
 
-    find_md_arrays(disk)
+    find_md_arrays(disk) if File.exist?("/prod/mdstat")
 
     disk[:disks].each do |disk|
       if disk[:vendor] =~ /^(BTWA|CVPR|PHDV)/ && disk[:model] == "INTEL"
