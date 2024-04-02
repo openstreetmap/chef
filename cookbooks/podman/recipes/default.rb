@@ -21,6 +21,7 @@ package %w[
   podman
   slirp4netns
   uidmap
+  fuse-overlayfs
 ]
 
 ruby_block "subuid-containers" do

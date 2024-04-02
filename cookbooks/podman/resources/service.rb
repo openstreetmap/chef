@@ -26,6 +26,7 @@ property :description, String, :required => true
 property :image, String, :required => true
 property :ports, Hash
 property :environment, Hash, :default => {}
+property :volume, Hash, :default => {}
 
 action :create do
   systemd_service new_resource.service do
@@ -34,7 +35,7 @@ action :create do
     notify_access "all"
     environment "PODMAN_SYSTEMD_UNIT" => "%n"
     exec_start_pre "/bin/rm --force %t/%n.ctr-id"
-    exec_start "/usr/bin/podman run --cidfile=%t/%n.ctr-id --cgroups=no-conmon --userns=auto --label=io.containers.autoupdate=registry --pids-limit=-1 #{publish_options} #{environment_options} --rm --sdnotify=conmon --detach --replace --name=%N #{new_resource.image}"
+    exec_start "/usr/bin/podman run --cidfile=%t/%n.ctr-id --cgroups=no-conmon --userns=auto --label=io.containers.autoupdate=registry --pids-limit=-1 #{publish_options} #{environment_options} #{volume_options} --rm --sdnotify=conmon --detach --replace --name=%N #{new_resource.image}"
     exec_stop "/usr/bin/podman stop --ignore --time=10 --cidfile=%t/%n.ctr-id"
     exec_stop_post "/usr/bin/podman rm --force --ignore --cidfile=%t/%n.ctr-id"
     timeout_start_sec 180
@@ -78,6 +79,12 @@ action_class do
   def environment_options
     new_resource.environment.collect do |key, value|
       "-e '#{key}=#{value}'"
+    end.join(" ")
+  end
+
+  def volume_options
+    new_resource.volume.collect do |key, value|
+      "-v '#{key}:#{value}'"
     end.join(" ")
   end
 end
