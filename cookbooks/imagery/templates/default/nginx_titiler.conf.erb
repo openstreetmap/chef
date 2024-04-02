@@ -21,6 +21,7 @@ server {
     server_name <%= @name %> <% @aliases.each do |alias_name| %> <%= alias_name %><%- end -%>;
 
     http2_max_concurrent_streams 512;
+    keepalive_timeout 10s;
 
     ssl_certificate /etc/ssl/certs/<%= @name %>.pem;
     ssl_certificate_key /etc/ssl/private/<%= @name %>.key;

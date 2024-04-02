@@ -32,7 +32,7 @@ podman_service "titiler" do
   image container_image
   ports 8080 => 8080
   environment :PORT                                => 8080,
-              :WORKERS_PER_CORE                    => 2,
+              :WORKERS_PER_CORE                    => 1,
               :GDAL_CACHEMAX                       => 200,
               :GDAL_DISABLE_READDIR_ON_OPEN        => "EMPTY_DIR",
               :GDAL_INGESTED_BYTES_AT_OPEN         => 32768,
