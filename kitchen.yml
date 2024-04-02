@@ -1,6 +1,13 @@
+<%
+podman_host = "/run/user/#{Process.uid}/podman/podman.sock"
+podman = File.socket?(podman_host) && !File.socket?("/run/docker.sock")
+%>
 ---
 driver:
   name: dokken
+<% if podman %>
+  docker_host_url: unix://<%= podman_host %>
+<% end %>
   chef_version: 18
   volumes:
     - /var/lib/docker
@@ -16,9 +23,16 @@ driver:
 
 transport:
   name: dokken
+<% if podman %>
+  docker_host_url: unix://<%= podman_host %>
+  login_command: podman
+<% end %>
 
 provisioner:
   name: dokken
+<% if podman %>
+  docker_host_url: unix://<%= podman_host %>
+<% end %>
   chef_license: accept
   data_bags_path: test/data_bags
   slow_resource_report: true
@@ -28,6 +42,15 @@ verifier:
   name: inspec
   root_path: /opt/verifier
   sudo: false
+
+<% if podman %>
+lifecycle:
+  pre_create:
+    - podman create --name chef-18 --replace docker.io/chef/chef:18 sh
+    - podman start chef-18
+  post_destroy:
+    - podman volume prune -f
+<% end %>
 
 platforms:
   - name: ubuntu-20.04
