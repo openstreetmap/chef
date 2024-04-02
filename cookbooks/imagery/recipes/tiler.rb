@@ -20,6 +20,13 @@
 include_recipe "imagery"
 include_recipe "podman"
 
+directory "/store/imagery" do
+  owner "root"
+  group "root"
+  mode "755"
+  recursive true
+end
+
 # FIXME: until upstream supports arm64 images: https://github.com/developmentseed/titiler/pull/740
 container_image = if arm?
                     "ghcr.io/firefishy/titiler:latest"
@@ -31,6 +38,7 @@ podman_service "titiler" do
   description "Container service for titiler"
   image container_image
   ports 8080 => 8080
+  volume "/store/imagery" => "/store/imagery"
   environment :PORT                                => 8080,
               :WORKERS_PER_CORE                    => 1,
               :GDAL_CACHEMAX                       => 200,
