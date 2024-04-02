@@ -9,7 +9,7 @@ server {
 
 <% if @uses_tiler -%>
 upstream tiler_backend {
-    server 127.0.0.1:8080;
+    server 127.0.0.1:8080 max_fails=0;
 
     keepalive 32;
 }
@@ -28,6 +28,7 @@ server {
     server_name <%= @name %> a.<%= @name %> b.<%= @name %> c.<%= @name %><% @aliases.each do |alias_name| %> <%= alias_name %> a.<%= alias_name %> b.<%= alias_name %> c.<%= alias_name %><%- end -%>;
 
     http2_max_concurrent_streams 512;
+    keepalive_timeout 10s;
 
     ssl_certificate /etc/ssl/certs/<%= @name %>.pem;
     ssl_certificate_key /etc/ssl/private/<%= @name %>.key;
