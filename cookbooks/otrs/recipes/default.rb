@@ -139,11 +139,6 @@ apache_site site do
   variables :aliases => site_aliases
 end
 
-# FIXME: Remove old otrs sudoers file
-file "/etc/sudoers.d/otrs" do
-  action :delete
-end
-
 template "/etc/cron.daily/otrs-backup" do
   source "backup.cron.erb"
   owner "root"
