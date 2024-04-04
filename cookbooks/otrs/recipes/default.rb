@@ -67,20 +67,20 @@ postgresql_database database_name do
   owner database_user
 end
 
-remote_file "#{Chef::Config[:file_cache_path]}/otrs-#{version}.tar.bz2" do
-  source "https://download.znuny.org/releases/otrs-#{version}.tar.bz2"
-  not_if { ::File.exist?("/opt/otrs-#{version}") }
+remote_file "#{Chef::Config[:file_cache_path]}/znuny-#{version}.tar.bz2" do
+  source "https://download.znuny.org/releases/znuny-#{version}.tar.bz2"
+  not_if { ::File.exist?("/opt/znuny-#{version}") }
 end
 
-execute "untar-otrs-#{version}" do
-  command "tar jxf #{Chef::Config[:file_cache_path]}/otrs-#{version}.tar.bz2"
+execute "untar-znuny-#{version}" do
+  command "tar jxf #{Chef::Config[:file_cache_path]}/znuny-#{version}.tar.bz2"
   cwd "/opt"
   user "root"
   group "root"
-  not_if { ::File.exist?("/opt/otrs-#{version}") }
+  not_if { ::File.exist?("/opt/znuny-#{version}") }
 end
 
-config = edit_file "/opt/otrs-#{version}/Kernel/Config.pm.dist" do |line|
+config = edit_file "/opt/znuny-#{version}/Kernel/Config.pm.dist" do |line|
   line.gsub!(/^( *)\$Self->{Database} = 'otrs'/, "\\1$Self->{Database} = '#{database_name}'")
   line.gsub!(/^( *)\$Self->{DatabaseUser} = 'otrs'/, "\\1$Self->{DatabaseUser} = '#{database_user}'")
   line.gsub!(/^( *)\$Self->{DatabasePw} = 'some-pass'/, "\\1$Self->{DatabasePw} = '#{database_password}'")
@@ -93,7 +93,7 @@ config = edit_file "/opt/otrs-#{version}/Kernel/Config.pm.dist" do |line|
   line
 end
 
-file "/opt/otrs-#{version}/Kernel/Config.pm" do
+file "/opt/znuny-#{version}/Kernel/Config.pm" do
   owner user
   group "www-data"
   mode "664"
@@ -101,7 +101,7 @@ file "/opt/otrs-#{version}/Kernel/Config.pm" do
 end
 
 link "/opt/otrs" do
-  to "/opt/otrs-#{version}"
+  to "/opt/znuny-#{version}"
 end
 
 execute "/opt/otrs/bin/otrs.SetPermissions.pl" do
@@ -121,7 +121,7 @@ systemd_service "otrs" do
   private_tmp true
   protect_system "strict"
   protect_home true
-  read_write_paths ["/opt/otrs-#{version}/var", "/var/log/exim4", "/var/spool/exim4"]
+  read_write_paths ["/opt/znuny-#{version}/var", "/var/log/exim4", "/var/spool/exim4"]
 end
 
 service "otrs" do
@@ -139,11 +139,9 @@ apache_site site do
   variables :aliases => site_aliases
 end
 
-template "/etc/sudoers.d/otrs" do
-  source "sudoers.erb"
-  owner "root"
-  group "root"
-  mode "440"
+# FIXME: Remove old otrs sudoers file
+file "/etc/sudoers.d/otrs" do
+  action :delete
 end
 
 template "/etc/cron.daily/otrs-backup" do
