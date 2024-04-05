@@ -31,19 +31,44 @@ package "libapache2-reload-perl"
 package %w[
   tar
   bzip2
+  libapache-dbi-perl
+  libarchive-zip-perl
+  libauthen-ntlm-perl
+  libauthen-sasl-perl
   libcrypt-eksblowfish-perl
+  libcss-minifier-xs-perl
   libdatetime-perl
+  libdbd-mysql-perl
+  libencode-hanextra-perl
+  libexcel-writer-xlsx-perl
   libgd-gd2-perl
   libgd-graph-perl
   libgd-text-perl
+  libhtml-parser-perl
+  libio-socket-ssl-perl
+  libjavascript-minifier-xs-perl
+  libjson-perl
   libjson-xs-perl
+  liblocale-codes-perl
   libmail-imapclient-perl
   libmoo-perl
+  libnet-dns-perl
   libnet-ldap-perl
   libpdf-api2-perl
+  libsisimai-perl
   libsoap-lite-perl
+  libspreadsheet-xlsx-perl
   libtemplate-perl
+  libtext-csv-xs-perl
+  libtext-diff-perl
+  libtimedate-perl
+  libxml-libxml-perl
+  libxml-libxml-simple-perl
+  libxml-libxslt-perl
+  libxml-parser-perl
+  libxml-simple-perl
   libyaml-libyaml-perl
+  libyaml-perl
 ]
 
 apache_module "headers"
