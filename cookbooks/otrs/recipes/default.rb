@@ -71,7 +71,10 @@ package %w[
   libyaml-perl
 ]
 
+apache_module "perl"
+apache_module "rewrite"
 apache_module "headers"
+apache_module "deflate"
 
 version = node[:otrs][:version]
 user = node[:otrs][:user]
