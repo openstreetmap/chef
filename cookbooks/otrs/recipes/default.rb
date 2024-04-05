@@ -25,13 +25,11 @@ include_recipe "tools"
 
 passwords = data_bag_item("otrs", "passwords")
 
-package "libapache2-mod-perl2"
-package "libapache2-reload-perl"
-
 package %w[
   tar
   bzip2
   libapache-dbi-perl
+  libapache2-reload-perl
   libarchive-zip-perl
   libauthen-ntlm-perl
   libauthen-sasl-perl
@@ -71,10 +69,13 @@ package %w[
   libyaml-perl
 ]
 
-apache_module "perl"
-apache_module "rewrite"
-apache_module "headers"
+apache_module "perl" do
+  package "libapache2-mod-perl2"
+end
+
 apache_module "deflate"
+apache_module "headers"
+apache_module "rewrite"
 
 version = node[:otrs][:version]
 user = node[:otrs][:user]
