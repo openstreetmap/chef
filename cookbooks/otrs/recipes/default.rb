@@ -126,18 +126,19 @@ file "/opt/znuny-#{version}/Kernel/Config.pm" do
   group "www-data"
   mode "664"
   content config
+  notifies :restart, "service[otrs]"
+end
+
+execute "/opt/znuny-#{version}/bin/otrs.SetPermissions.pl" do
+  action :nothing
+  command "/opt/znuny-#{version}/bin/otrs.SetPermissions.pl --otrs-user=#{user} --web-group=www-data /opt/znuny-#{version}"
+  user "root"
+  group "root"
+  subscribes :run, "execute[untar-znuny-#{version}]"
 end
 
 link "/opt/otrs" do
   to "/opt/znuny-#{version}"
-end
-
-execute "/opt/otrs/bin/otrs.SetPermissions.pl" do
-  action :run
-  command "/opt/otrs/bin/otrs.SetPermissions.pl --otrs-user=#{user} --web-group=www-data /opt/otrs-#{version}"
-  user "root"
-  group "root"
-  only_if { File.stat("/opt/otrs/README.md").uid != Etc.getpwnam("otrs").uid }
 end
 
 systemd_service "otrs" do
@@ -154,6 +155,7 @@ end
 
 service "otrs" do
   action [:enable, :start]
+  subscribes :restart, "link[/opt/otrs]"
   subscribes :restart, "systemd_service[otrs]"
 end
 
