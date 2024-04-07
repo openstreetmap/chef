@@ -21,6 +21,7 @@ include_recipe "apt"
 
 apt_repository "nodesource" do
   uri "https://deb.nodesource.com/node_20.x"
+  distribution "nodistro"
   components ["main"]
-  key "1655A0AB68576280"
+  key "https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key"
 end
