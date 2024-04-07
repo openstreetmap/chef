@@ -20,7 +20,7 @@
 include_recipe "apt"
 
 apt_repository "nodesource" do
-  uri "https://deb.nodesource.com/node_18.x"
+  uri "https://deb.nodesource.com/node_20.x"
   components ["main"]
   key "1655A0AB68576280"
 end
