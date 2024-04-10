@@ -67,6 +67,10 @@ WSGIDaemonProcess <%= @name %> user=<%= @user %> group=<%= @group %> processes=4
     Require all denied
     ErrorDocument 403 "help.openstreetmap.org is closed. Use community.openstreetmap.org instead."
   </Location>
+  <Location /search/>
+    Require all denied
+    ErrorDocument 403 "help.openstreetmap.org is closed. Use community.openstreetmap.org instead."
+  </Location>
   RewriteEngine on
   RewriteCond %{REQUEST_METHOD} POST
   RewriteRule ^/questions - [F,NC]
