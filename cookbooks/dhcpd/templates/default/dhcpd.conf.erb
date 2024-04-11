@@ -21,6 +21,9 @@ subnet <%= address.network %> netmask <%= address.netmask %> {
   option PCode "UTC0";
   option TCode "Etc/UTC";
 
+  # Ensure PXE and systemd-networkd are given the same IP address
+  ignore-client-uids true;
+
   next-server <%= address.gateway %>;
 
   # See https://netboot.xyz/docs/docker/#dhcp-configurations
