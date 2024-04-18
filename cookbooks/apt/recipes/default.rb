@@ -48,7 +48,7 @@ if platform?("debian")
   archive_security_host = archive_host
   archive_distro = "debian"
   archive_security_distro = "debian-security"
-  archive_suites = %w[main updates security]
+  archive_suites = %w[main updates backports security]
   archive_components = %w[main contrib non-free non-free-firmware]
 elsif intel?
   archive_host = if node[:country]
