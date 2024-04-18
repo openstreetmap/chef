@@ -188,6 +188,9 @@ server {
     }
 
     location @php {
+        if ($forward_to_ui) {
+            rewrite ^(/[^/]*) https://$host/ui$1.html redirect;
+        }
         if ($blocked_user_agent ~ ^2$)
         { return 403; }
         if ($blocked_referrer)
@@ -225,9 +228,6 @@ server {
         proxy_redirect off;
         proxy_pass http://nominatim_service;
 <% end -%>
-        if ($forward_to_ui) {
-            rewrite ^(/[^/]*) https://$host/ui$1.html redirect;
-        }
     }
 
 <% if node[:nominatim][:api_flavour] == "php" %>
