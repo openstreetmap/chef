@@ -280,6 +280,9 @@ suites:
   - name: otrs
     run_list:
       - recipe[otrs::default]
+  - name: otrs-debian
+    run_list:
+      - recipe[otrs::debian]
   - name: overpass
     run_list:
       - recipe[overpass::default]
