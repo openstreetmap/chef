@@ -35,3 +35,17 @@ template "/etc/udev/rules.d/99-chef.rules" do
   mode "644"
   notifies :run, "execute[udevadm-trigger]"
 end
+
+template "/etc/modprobe.d/nvme.conf" do
+  source "nvme.conf.erb"
+  owner "root"
+  group "root"
+  mode "644"
+  only_if { File.exist?("/sys/module/nvme/parameters/poll_queues") }
+end
+
+execute "update-initramfs" do
+  action :nothing
+  command "/usr/sbin/update-initramfs -u"
+  subscribes :run, "template[/etc/modprobe.d/nvme.conf]"
+end
