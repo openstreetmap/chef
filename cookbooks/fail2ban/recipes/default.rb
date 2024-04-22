@@ -25,7 +25,7 @@ package %w[
   ruby-webrick
 ]
 
-if platform?("debian")
+if platform?("debian") || (platform?("ubuntu") && node[:lsb][:release].to_f >= 24.04 )
   package "python3-inotify"
 else
   package "gamin"
