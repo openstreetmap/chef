@@ -44,6 +44,8 @@ template "/etc/modprobe.d/nvme.conf" do
   only_if { ::File.exist?("/sys/module/nvme/parameters/poll_queues") }
 end
 
+package "initramfs-tools"
+
 execute "update-initramfs" do
   action :nothing
   command "/usr/sbin/update-initramfs -u"
