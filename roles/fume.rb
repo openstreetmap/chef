@@ -32,5 +32,6 @@ default_attributes(
 )
 
 run_list(
-  "role[equinix-dub]"
+  "role[equinix-dub]",
+  "recipe[blog::staging]"
 )

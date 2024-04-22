@@ -1,0 +1,21 @@
+#!/bin/sh
+
+# DO NOT EDIT - This file is being maintained by Chef
+
+T=$(mktemp -d -t -p /var/tmp osm-blog-staging.XXXXXXXXXX)
+D=$(date +%Y-%m-%d)
+B=osm-blog-staging-$D.tar.gz
+
+mkdir $T/osm-blog-staging-$D
+echo '[mysqldump]' > $T/mysqldump.opts
+echo 'user=osm-blog-staging-user' >> $T/mysqldump.opts
+echo 'password=<%= @passwords["osm-blog-staging-user"] %>' >> $T/mysqldump.opts
+mysqldump --defaults-file=$T/mysqldump.opts --opt --no-tablespaces osm-blog-staging > $T/osm-blog-staging-$D/osm-blog-staging.sql
+ln -s /srv/staging.blog.openstreetmap.org $T/osm-blog-staging-$D/www
+
+export RSYNC_RSH="ssh -ax"
+
+nice tar --create --dereference --directory=$T --warning=no-file-changed osm-blog-staging-$D | nice gzip --rsyncable -9 > $T/$B
+nice rsync --preallocate --fuzzy $T/$B backup::backup
+
+rm -rf $T
