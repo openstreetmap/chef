@@ -1,16 +1,23 @@
 default[:ruby][:fullstaq] = true
 
 default[:ruby][:system_version] = if platform?("debian")
-                                    if node[:platform_version].to_i >= 13
+                                    case node[:platform_version].to_i
+                                    when 13
                                       "3.3"
-                                    else
+                                    when 12
                                       "3.1"
                                     end
-                                  elsif node[:lsb][:release].to_f < 22.04
-                                    "2.7"
-                                  else
-                                    "3.0"
+                                  elsif platform?("ubuntu")
+                                    case node[:lsb][:release].to_f
+                                    when 24.04
+                                      "3.2"  # ruby version for Ubuntu 24.04
+                                    when 22.04
+                                      "3.0"  # ruby version for Ubuntu 22.04
+                                    when 20.04
+                                      "2.7"  # ruby version for Ubuntu 20.04
+                                    end
                                   end
+
 default[:ruby][:system_interpreter] = "/usr/bin/ruby#{node[:ruby][:system_version]}"
 default[:ruby][:system_gem] = "/usr/bin/gem#{node[:ruby][:system_version]}"
 default[:ruby][:system_bundle] = "/usr/bin/bundle#{node[:ruby][:system_version]}"

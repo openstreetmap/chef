@@ -15,4 +15,5 @@ default[:php][:version] = if platform?("debian")
                               "7.4"  # PHP version for Ubuntu 20.04
                             end
                           end
+
 default[:php][:fpm][:options] = {}
