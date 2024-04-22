@@ -26,8 +26,12 @@ include_recipe "php::fpm"
 
 package %w[
   subversion
+  php-mbstring
   php-mysql
+  php-igbinary
   php-imagick
+  php-intl
+  php-xml
 ]
 
 apache_module "proxy"
