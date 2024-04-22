@@ -35,6 +35,8 @@ chef_arch = if arm?
 
 os_release = if platform?("debian") && node[:lsb][:release].to_f > 11
                11
+             elsif platform?("ubuntu") && node[:lsb][:release].to_f > 22.04
+               22.04
              else
                node[:lsb][:release]
              end
