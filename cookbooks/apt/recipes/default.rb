@@ -87,7 +87,7 @@ end
 
 apt_repository "openstreetmap" do
   uri "ppa:osmadmins/ppa"
-  only_if { platform?("ubuntu") && node[:lsb][:release].to_f < 22.04 }
+  only_if { platform?("ubuntu") && node[:lsb][:release].to_f < 24.04 }
 end
 
 package "unattended-upgrades"
