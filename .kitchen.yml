@@ -52,6 +52,15 @@ platforms:
         - RUN /usr/bin/apt-get update -y
         - RUN /usr/bin/apt-get install -y eatmydata
         - RUN echo /usr/lib/$(uname -m)-linux-gnu/libeatmydata.so >>/etc/ld.so.preload
+  - name: ubuntu-24.04
+    driver:
+      image: ghcr.io/test-kitchen/dokken/ubuntu-24.04
+      privileged: true
+      pid_one_command: /bin/systemd
+      intermediate_instructions:
+        - RUN /usr/bin/apt-get update -y
+        - RUN /usr/bin/apt-get install -y eatmydata
+        - RUN echo /usr/lib/$(uname -m)-linux-gnu/libeatmydata.so >>/etc/ld.so.preload
   - name: debian-12
     driver:
       image: ghcr.io/test-kitchen/dokken/debian-12
