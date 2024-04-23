@@ -61,6 +61,7 @@ default_attributes(
       :ppawel => { :status => :user },
       :random => { :status => :user },
       :richard => { :status => :user },
+      :rtnf => { :status => :user },
       :ris => { :status => :user },
       :russ => { :status => :user },
       :rweait => { :status => :user },
