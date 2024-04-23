@@ -62,10 +62,11 @@ action :create do
 
       archive_file zip_path do
         destination theme_directory
-        action :extract
+        action :nothing
         overwrite true
         group node[:wordpress][:group]
         owner node[:wordpress][:user]
+        subscribes :extract, "remote_file[#{zip_path}]", :immediately
       end
     else
       subversion theme_directory do
