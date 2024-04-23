@@ -52,6 +52,22 @@ action :create do
         user node[:wordpress][:user]
         group node[:wordpress][:group]
       end
+    elsif theme_repository.end_with?(".zip")
+      zip_path = "#{Chef::Config[:file_cache_path]}/#{new_resource.theme}.zip"
+
+      remote_file zip_path do
+        source theme_repository
+        action :create
+      end
+
+      archive_file zip_path do
+        destination theme_directory
+        action :nothing
+        overwrite true
+        group node[:wordpress][:group]
+        owner node[:wordpress][:user]
+        subscribes :extract, "remote_file[#{zip_path}]", :immediately
+      end
     else
       subversion theme_directory do
         action :sync
