@@ -91,6 +91,18 @@ wordpress_plugin "host-webfonts-local" do
   site "supporting.openstreetmap.org"
 end
 
+wordpress_theme "morden" do
+  theme "morden"
+  site "supporting.openstreetmap.org"
+  repository https://public-api.wordpress.com/rest/v1/themes/download/morden.zip
+end
+
+wordpress_theme "varia" do
+  theme "varia"
+  site "supporting.openstreetmap.org"
+  repository https://public-api.wordpress.com/rest/v1/themes/download/varia.zip
+end
+
 civicrm_version = node[:civicrm][:version]
 civicrm_directory = "/srv/supporting.openstreetmap.org/wp-content/plugins/civicrm"
 
