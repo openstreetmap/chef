@@ -93,12 +93,12 @@ end
 
 wordpress_theme "morden" do
   site "supporting.openstreetmap.org"
-  repository https://public-api.wordpress.com/rest/v1/themes/download/morden.zip
+  repository "https://public-api.wordpress.com/rest/v1/themes/download/morden.zip"
 end
 
 wordpress_theme "varia" do
   site "supporting.openstreetmap.org"
-  repository https://public-api.wordpress.com/rest/v1/themes/download/varia.zip
+  repository "https://public-api.wordpress.com/rest/v1/themes/download/varia.zip"
 end
 
 civicrm_version = node[:civicrm][:version]
