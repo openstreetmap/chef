@@ -159,13 +159,10 @@ end
 package %w[
   python3-cairo
   python3-mapnik
+  python3-pyotp
   python3-pyproj
   python3-setuptools
 ]
-
-python_package "pyotp" do
-  python_version "3"
-end
 
 directory "/srv/tile.openstreetmap.org/cgi-bin" do
   owner "tile"
