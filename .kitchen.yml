@@ -38,7 +38,7 @@ platforms:
       intermediate_instructions:
         - RUN /usr/bin/apt-get update -y
         - RUN /usr/bin/apt-get install -y eatmydata
-        - RUN echo libeatmydata.so >>/etc/ld.so.preload
+        - RUN echo /usr/lib/$(uname -m)-linux-gnu/libeatmydata.so >>/etc/ld.so.preload
   - name: ubuntu-22.04
     driver:
       image: ghcr.io/test-kitchen/dokken/ubuntu-22.04
@@ -47,7 +47,7 @@ platforms:
       intermediate_instructions:
         - RUN /usr/bin/apt-get update -y
         - RUN /usr/bin/apt-get install -y eatmydata
-        - RUN echo libeatmydata.so >>/etc/ld.so.preload
+        - RUN echo /usr/lib/$(uname -m)-linux-gnu/libeatmydata.so >>/etc/ld.so.preload
   - name: debian-12
     driver:
       image: ghcr.io/test-kitchen/dokken/debian-12
@@ -56,7 +56,7 @@ platforms:
       intermediate_instructions:
         - RUN /usr/bin/apt-get update -y
         - RUN /usr/bin/apt-get install -y eatmydata
-        - RUN echo libeatmydata.so >>/etc/ld.so.preload
+        - RUN echo /usr/lib/$(uname -m)-linux-gnu/libeatmydata.so >>/etc/ld.so.preload
 
 suites:
   - name: accounts
