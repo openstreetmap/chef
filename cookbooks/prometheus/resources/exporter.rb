@@ -68,6 +68,14 @@ action :create do
     end
   end
 
+  execute "git-sparse-checkout-#{new_resource.exporter}-exporters" do
+    command "git sparse-checkout add exporters/#{new_resource.exporter}"
+    cwd "/opt/prometheus-exporters"
+    user "root"
+    group "root"
+    not_if { (platform?("ubuntu") && node[:lsb][:release].to_f < 22.04) || ::File.exist?("/opt/prometheus-exporters/exporters/#{new_resource.exporter}") }
+  end
+
   systemd_service service_name do
     after "network-online.target"
     wants "network-online.target"

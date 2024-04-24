@@ -46,6 +46,13 @@ directory "/opt/prometheus" do
   recursive true
 end
 
+execute "git-sparse-clone-prometheus-exporters" do
+  command "git clone --depth 1 --filter=blob:none --sparse https://github.com/openstreetmap/prometheus-exporters.git /opt/prometheus-exporters"
+  user "root"
+  group "root"
+  not_if { (platform?("ubuntu") && node[:lsb][:release].to_f < 22.04) || ::File.exist?("/opt/prometheus-exporters") }
+end
+
 git "/opt/prometheus-exporters" do
   action :sync
   repository "https://github.com/openstreetmap/prometheus-exporters.git"

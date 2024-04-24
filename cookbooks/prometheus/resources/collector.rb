@@ -35,6 +35,14 @@ property :protect_clock, [true, false]
 property :protect_kernel_modules, [true, false]
 
 action :create do
+  execute "git-sparse-checkout-#{new_resource.collector}-collectors" do
+    command "git sparse-checkout add collectors/#{new_resource.collector}"
+    cwd "/opt/prometheus-exporters"
+    user "root"
+    group "root"
+    not_if { (platform?("ubuntu") && node[:lsb][:release].to_f < 22.04) || ::File.exist?("/opt/prometheus-exporters/collectors/#{new_resource.collector}") }
+  end
+
   systemd_service service_name do
     description "Prometheus #{new_resource.collector} collector"
     type "oneshot"
