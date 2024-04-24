@@ -266,6 +266,16 @@ if node[:networking][:wireguard][:enabled]
   end
 end
 
+# Setup dokken network in systemd-networkd to avoid systemd-networkd-wait-online delay
+template "/etc/systemd/network/dokken.network" do
+  source "dokken.network.erb"
+  owner "root"
+  group "root"
+  mode "644"
+  notifies :run, "execute[networkctl-reload]", :immediately
+  only_if { kitchen? }
+end
+
 notify_group "networkctl-reload"
 
 execute "networkctl-reload" do
