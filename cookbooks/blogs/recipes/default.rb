@@ -42,22 +42,24 @@ git "/srv/blogs.openstreetmap.org" do
   depth 1
   user "blogs"
   group "blogs"
-  notifies :run, "bundle_install[/srv/blogs.openstreetmap.org]", :immediately
 end
 
 bundle_install "/srv/blogs.openstreetmap.org" do
   action :nothing
-  options "--deployment"
+  options "--deployment --without development test"
+  environment "BUNDLE_PATH" => "vendor/bundle"
   user "blogs"
   group "blogs"
-  notifies :run, "bundle_exec[/srv/blogs.openstreetmap.org]", :immediately
+  subscribes :run, "git[/srv/blogs.openstreetmap.org]", :immediate
 end
 
 bundle_exec "/srv/blogs.openstreetmap.org" do
   action :nothing
   command "pluto build -t osm -o build"
+  environment "BUNDLE_PATH" => "vendor/bundle"
   user "blogs"
   group "blogs"
+  subscribes :run, "git[/srv/blogs.openstreetmap.org]", :immediate
 end
 
 ssl_certificate "blogs.openstreetmap.org" do
