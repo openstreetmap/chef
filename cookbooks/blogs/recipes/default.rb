@@ -48,8 +48,8 @@ end
 bundle_install "/srv/blogs.openstreetmap.org" do
   action :nothing
   options "--deployment"
-  user "root"
-  group "root"
+  user "blogs"
+  group "blogs"
   notifies :run, "bundle_exec[/srv/blogs.openstreetmap.org]", :immediately
 end
 
