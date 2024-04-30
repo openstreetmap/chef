@@ -307,6 +307,20 @@ service "systemd-resolved" do
   action [:enable, :start]
 end
 
+directory "/etc/dnssec-trust-anchors.d" do
+  owner "root"
+  group "root"
+  mode "755"
+end
+
+template "/etc/dnssec-trust-anchors.d/chef.negative" do
+  source "dnssec-trust-anchors-negative.erb"
+  owner "root"
+  group "root"
+  mode "644"
+  notifies :restart, "service[systemd-resolved]", :immediately
+end
+
 directory "/etc/systemd/resolved.conf.d" do
   owner "root"
   group "root"
