@@ -21,10 +21,7 @@ default_attributes(
         },
         :inet6 => {
           :prefix => "64",
-          :gateway => "2001:470:1:fa1::1",
-          :routes => {
-            "2600:9000::/28" => { :type => "unreachable" }
-          }
+          :gateway => "2001:470:1:fa1::1"
         }
       }
     }
