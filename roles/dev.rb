@@ -13,6 +13,7 @@ default_attributes(
       :bsupnik => { :status => :user },
       :chippy => { :status => :user },
       :cobra => { :status => :user },
+      :contrapunctus => { :status => :user },
       :csmale => { :status => :user },
       :dan => { :status => :user },
       :daveh => { :status => :user },
