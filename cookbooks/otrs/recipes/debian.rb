@@ -94,7 +94,7 @@ systemd_service "otrs" do
   private_tmp true
   protect_system "strict"
   protect_home true
-  read_write_paths ["/var/lib/otrs", "/var/log/exim4", "/var/spool/exim4"]
+  read_write_paths ["/var/lib/otrs", "/run/otrs", "/var/log/exim4", "/var/spool/exim4"]
 end
 
 service "otrs" do
