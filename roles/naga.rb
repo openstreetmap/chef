@@ -28,19 +28,6 @@ default_attributes(
         }
       }
     }
-  },
-  :otrs => {
-    :site => "test.otrs.openstreetmap.org",
-    :site_aliases => ["test.otrs.osm.org"],
-    :database_cluster => "16/main"
-  },
-  :postgresql => {
-    :versions => ["16"],
-    :settings => {
-      "16" => {
-        :port => 5433
-      }
-    }
   }
 )
 
@@ -58,6 +45,5 @@ run_list(
   "recipe[stateofthemap::container]",
   "recipe[hot]",
   "recipe[ideditor]",
-  "recipe[dmca]",
-  "recipe[otrs::debian]"
+  "recipe[dmca]"
 )
