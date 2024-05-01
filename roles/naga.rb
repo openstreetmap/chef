@@ -35,7 +35,12 @@ default_attributes(
     :database_cluster => "16/main"
   },
   :postgresql => {
-    :versions => ["16"]
+    :versions => ["16"],
+    :settings => {
+      "16" => {
+        :port => 5433
+      }
+    }
   }
 )
 
