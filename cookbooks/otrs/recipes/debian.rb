@@ -62,9 +62,13 @@ template "/etc/dbconfig-common/otrs2.conf" do
             :database_password => database_password
 end
 
-apt_package "otrs2" do
-  options "-t #{node[:lsb][:codename]}-backports"
+# Ensure the OTRS package in backports has a priority preference.
+apt_preference "otrs2" do
+  pin "release o=Debian Backports"
+  pin_priority "600"
 end
+
+apt_package "otrs2"
 
 # Ensure debconf is repopulated on a dbconfig change
 execute "dpkg-reconfigure-otrs2" do
