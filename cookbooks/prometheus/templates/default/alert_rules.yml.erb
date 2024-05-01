@@ -25,14 +25,14 @@ groups:
         annotations:
           current: "{{ $value | humanize }}kVA"
       - alert: site temperature
-        expr: min(rPDU2SensorTempHumidityStatusTempC{site="amsterdam"}) / 10 < 18 or min(rPDU2SensorTempHumidityStatusTempC{site="amsterdam"}) / 10 > 26
+        expr: min(rPDU2SensorTempHumidityStatusTempC{site="amsterdam"}) / 10 < 15 or min(rPDU2SensorTempHumidityStatusTempC{site="amsterdam"}) / 10 > 32
         for: 6m
         labels:
           alertgroup: "amsterdam"
         annotations:
           temperature: "{{ $value | humanize }}C"
       - alert: site humidity
-        expr: max(rPDU2SensorTempHumidityStatusRelativeHumidity{site="amsterdam"}) / 100 < 0.25 or max(rPDU2SensorTempHumidityStatusRelativeHumidity{site="amsterdam"}) / 100 > 0.65
+        expr: max(rPDU2SensorTempHumidityStatusRelativeHumidity{site="amsterdam"}) / 100 < 0.08 or max(rPDU2SensorTempHumidityStatusRelativeHumidity{site="amsterdam"}) / 100 > 0.8
         for: 6m
         labels:
           alertgroup: "amsterdam"
