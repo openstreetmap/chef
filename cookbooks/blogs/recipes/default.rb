@@ -50,7 +50,7 @@ bundle_install "/srv/blogs.openstreetmap.org" do
   environment "BUNDLE_PATH" => "vendor/bundle"
   user "blogs"
   group "blogs"
-  subscribes :run, "git[/srv/blogs.openstreetmap.org]", :immediate
+  subscribes :run, "git[/srv/blogs.openstreetmap.org]", :immediately
 end
 
 bundle_exec "/srv/blogs.openstreetmap.org" do
@@ -59,7 +59,7 @@ bundle_exec "/srv/blogs.openstreetmap.org" do
   environment "BUNDLE_PATH" => "vendor/bundle"
   user "blogs"
   group "blogs"
-  subscribes :run, "git[/srv/blogs.openstreetmap.org]", :immediate
+  subscribes :run, "git[/srv/blogs.openstreetmap.org]", :immediately
 end
 
 ssl_certificate "blogs.openstreetmap.org" do
