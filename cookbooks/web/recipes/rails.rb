@@ -31,11 +31,11 @@ web_passwords = data_bag_item("web", "passwords")
 db_passwords = data_bag_item("db", "passwords")
 
 ssl_certificate "www.openstreetmap.org" do
-  domains ["www.openstreetmap.org", "www.osm.org",
+  domains ["www.openstreetmap.org", "www.osm.org", "www.openstreetmap.com",
            "api.openstreetmap.org", "api.osm.org",
            "maps.openstreetmap.org", "maps.osm.org",
            "mapz.openstreetmap.org", "mapz.osm.org",
-           "openstreetmap.org", "osm.org"]
+           "openstreetmap.org", "osm.org", "openstreetmap.com"]
   notifies :reload, "service[apache2]"
 end
 
