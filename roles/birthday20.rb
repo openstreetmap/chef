@@ -14,6 +14,6 @@ default_attributes(
 )
 
 # FIXME: Disable while site under development
-run_list(
-  "recipe[blog::birthday]"
-)
+# run_list(
+#   "recipe[blog::birthday]"
+# )
