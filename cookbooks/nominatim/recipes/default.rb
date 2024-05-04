@@ -314,6 +314,14 @@ template "#{project_directory}/.env" do
             :request_timeout => node[:nominatim][:api_request_timeout]
 end
 
+remote_file "#{project_directory}/secondary_importance.sql.gz" do
+  action :create_if_missing
+  source "https://nominatim.org/data/wikimedia-secondary-importance.sql.gz"
+  owner "nominatim"
+  group "nominatim"
+  mode "644"
+end
+
 remote_file "#{project_directory}/wikimedia-importance.sql.gz" do
   action :create_if_missing
   source "https://nominatim.org/data/wikimedia-importance.sql.gz"
