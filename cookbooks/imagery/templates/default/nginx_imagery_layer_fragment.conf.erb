@@ -24,6 +24,7 @@ location ~* "^/layer/<%= @layer %>/(\d+)/(\d+)/(\d+)\.(png|jpg|jpeg)$" {
   proxy_cache_background_update on;
   proxy_next_upstream error timeout invalid_header http_500 http_503;
   proxy_next_upstream_tries 3;
+  proxy_intercept_errors on;
   proxy_next_upstream_timeout 30s;
 
 <% else -%>
