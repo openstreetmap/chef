@@ -53,6 +53,19 @@ podman_service "titiler" do
               :FORWARDED_ALLOW_IPS                 => "*" # https://docs.gunicorn.org/en/latest/settings.html#forwarded-allow-ips
 end
 
+systemd_service "titiler-restart" do
+  type "simple"
+  user "root"
+  exec_start "/bin/systemctl try-restart titiler.service"
+  sandbox true
+  restrict_address_families "AF_UNIX"
+end
+
+systemd_timer "titiler-restart" do
+  on_boot_sec "6h"
+  on_unit_inactive_sec "12h"
+end
+
 directory "/var/cache/nginx-cache" do
   owner "www-data"
   group "www-data"
