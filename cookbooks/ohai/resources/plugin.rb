@@ -36,12 +36,6 @@ action :create do
     recursive true
   end
 
-  # FIXME: Cleanup of plugins in the old location
-  declare_resource :file, plugin_old_path do
-    action :delete
-    notifies :reload, "ohai[#{new_resource.plugin}]"
-  end
-
   declare_resource :template, plugin_path do
     source new_resource.template
     owner "root"
@@ -58,10 +52,6 @@ action :delete do
 end
 
 action_class do
-  def plugin_old_path
-    "/etc/chef/ohai/#{new_resource.plugin}.rb"
-  end
-
   def plugin_path
     "/etc/chef/ohai/plugins/#{new_resource.plugin}.rb"
   end
