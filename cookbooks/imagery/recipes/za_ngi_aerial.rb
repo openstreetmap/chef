@@ -31,7 +31,7 @@ imagery_layer "ngi-aerial" do
   uses_tiler true
   title "NGI Aerial 25cm/50cm"
   source "file:///store/imagery/za/za-25cm/mosaic-tiler-file.json"
-  copyright 'State Copyright &copy; 2024 <a href="http://www.ngi.gov.za/">Chief Directorate: National Geo-spatial Information</a>'
+  copyright 'State Copyright &copy; 2024 <a href="https://ngi.dalrrd.gov.za/">Chief Directorate: National Geo-spatial Information</a>'
   max_zoom 20
   extension "jpg"
   default_layer true
