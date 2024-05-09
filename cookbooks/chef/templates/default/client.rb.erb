@@ -33,10 +33,6 @@ ssl_verify_mode :verify_peer
 
 chef_server_url "https://chef.openstreetmap.org/organizations/openstreetmap"
 
-# Make our plugins visible to ohai
-
-ohai.plugin_path << "<%= node[:ohai][:plugin_dir] %>"
-
 # Enable some optional ohai plugins
 
 ohai.optional_plugins = %w[Passwd]
