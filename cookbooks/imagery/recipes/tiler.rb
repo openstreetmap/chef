@@ -66,6 +66,10 @@ systemd_timer "titiler-restart" do
   on_unit_inactive_sec "12h"
 end
 
+service "titiler-restart.timer" do
+  action [:enable, :start]
+end
+
 directory "/var/cache/nginx-cache" do
   owner "www-data"
   group "www-data"
