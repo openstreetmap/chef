@@ -55,6 +55,7 @@ property :exec_reload, String
 property :runtime_max_sec, Integer
 property :runtime_directory, String
 property :runtime_directory_mode, Integer
+property :runtime_directory_preserve, [true, false, String]
 property :state_directory, String
 property :state_directory_mode, Integer
 property :cache_directory, String

@@ -127,6 +127,9 @@ RuntimeDirectory=<%= @runtime_directory %>
 <% if @runtime_directory_mode -%>
 RuntimeDirectoryMode=<%= sprintf("0%o", @runtime_directory_mode) %>
 <% end -%>
+<% if @runtime_directory_preserve -%>
+RuntimeDirectoryPreserve=<%= @runtime_directory_preserve %>
+<% end -%>
 <% if @state_directory -%>
 StateDirectory=<%= @state_directory %>
 <% end -%>
