@@ -92,12 +92,15 @@ systemd_service "otrs" do
   description "OTRS Daemon"
   type "forking"
   user "otrs"
-  group "otrs"
+  group "www-data"
   exec_start_pre "-/usr/share/otrs/bin/otrs.Daemon.pl stop" # Stop if race with deb cron
   exec_start "/usr/share/otrs/bin/otrs.Daemon.pl start"
   private_tmp true
   protect_system "strict"
   protect_home true
+  runtime_directory "otrs"
+  runtime_directory_mode 0o770
+  runtime_directory_preserve true
   read_write_paths ["/var/lib/otrs", "/run/otrs", "/var/log/exim4", "/var/spool/exim4"]
 end
 
