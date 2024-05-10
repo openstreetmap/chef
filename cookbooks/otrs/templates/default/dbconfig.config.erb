@@ -45,7 +45,8 @@ dbc_dbserver='localhost'
 # dbc_dbport: remote database port
 #	leave unset to use the default.  only applicable if you are
 #	using a remote database.
-dbc_dbport=''
+# <%= @database_cluster %>
+dbc_dbport='<%= node[:postgresql][:clusters][@database_cluster][:port] %>'
 
 # dbc_dbname: name of database
 #	this is the name of your application's database.

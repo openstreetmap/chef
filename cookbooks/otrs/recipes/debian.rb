@@ -59,7 +59,8 @@ template "/etc/dbconfig-common/otrs2.conf" do
   mode "600"
   variables :database_name => database_name,
             :database_user => database_user,
-            :database_password => database_password
+            :database_password => database_password,
+            :database_cluster => database_cluster
 end
 
 # Ensure the OTRS package in backports has a priority preference.
