@@ -146,5 +146,8 @@ jobs:
     - name: Run kitchen test ${{ matrix.suite }}-${{ matrix.os }}
       run: bundle exec kitchen test ${{ matrix.suite }}-${{ matrix.os }}
     - name: Gather journal output
-      run: bundle exec kitchen exec ${{ matrix.suite }}-${{ matrix.os }} -c journalctl --since=yesterday
+      run: |
+        bundle exec kitchen exec ${{ matrix.suite }}-${{ matrix.os }} -c "journalctl --since=yesterday"
+        bundle exec kitchen exec ${{ matrix.suite }}-${{ matrix.os }} -c "networkctl status --all"
+        bundle exec kitchen exec ${{ matrix.suite }}-${{ matrix.os }} -c "resolvectl status" || true
       if: ${{ failure() }}
