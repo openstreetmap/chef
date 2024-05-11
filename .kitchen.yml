@@ -9,9 +9,9 @@ driver:
   ipv6: true
   ipv6_subnet: "fd95:8552:964c::/64"
   dns:
-    - 1.1.1.1
     - 8.8.8.8
     - 8.8.4.4
+    - 1.1.1.1
     - 1.0.0.1
 
 transport:
@@ -23,6 +23,9 @@ provisioner:
   data_bags_path: test/data_bags
   slow_resource_report: true
   clean_dokken_sandbox: true
+  attributes:
+    networking:
+      dnssec: "false" # Disable DNSSEC as occasionally unreliable in GitHub Actions
 
 verifier:
   name: inspec
