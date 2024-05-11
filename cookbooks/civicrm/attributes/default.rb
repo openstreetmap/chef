@@ -1,4 +1,4 @@
-default[:civicrm][:version] = "5.69.4"
+default[:civicrm][:version] = "5.73.1"
 
 # was used for SotM
 # default[:civicrm][:extensions][:cividiscount][:name] = "org.civicrm.module.cividiscount"
@@ -8,11 +8,11 @@ default[:civicrm][:version] = "5.69.4"
 # used to email people from civicrm
 default[:civicrm][:extensions][:emailapi][:name] = "org.civicoop.emailapi"
 default[:civicrm][:extensions][:emailapi][:repository] = "https://lab.civicrm.org/extensions/emailapi.git"
-default[:civicrm][:extensions][:emailapi][:revision] = "2.12"
+default[:civicrm][:extensions][:emailapi][:revision] = "2.14"
 
 # fancy email templates - INSTALL MANUALLY, NOT FROM GIT
 default[:civicrm][:extensions][:mosaico][:name] = "uk.co.vedaconsulting.mosaico"
-default[:civicrm][:extensions][:mosaico][:zip] = "https://download.civicrm.org/extension/uk.co.vedaconsulting.mosaico/3.3.1697392242/uk.co.vedaconsulting.mosaico-3.3.1697392242.zip"
+default[:civicrm][:extensions][:mosaico][:zip] = "https://download.civicrm.org/extension/uk.co.vedaconsulting.mosaico/3.5.1709296836/uk.co.vedaconsulting.mosaico-3.5.1709296836.zip"
 
 # validate that osm username exists, simple check
 default[:civicrm][:extensions][:username][:name] = "org.openstreetmap.username"
@@ -27,7 +27,7 @@ default[:civicrm][:extensions][:donotsendreportemail][:revision] = "1.0"
 # make civicrm look nicer
 default[:civicrm][:extensions][:theisland][:name] = "theisland"
 default[:civicrm][:extensions][:theisland][:repository] = "https://lab.civicrm.org/extensions/theisland.git"
-default[:civicrm][:extensions][:theisland][:revision] = "2.3.1"
+default[:civicrm][:extensions][:theisland][:revision] = "2.3.2"
 
 # civiprospect
 default[:civicrm][:extensions][:civiprospect][:name] = "uk.co.compucorp.civicrm.prospect"
@@ -72,14 +72,14 @@ default[:civicrm][:extensions][:stripe][:revision] = "6.9.4"
 # Stripe requires mjwshared ("payment shared")
 default[:civicrm][:extensions][:mjwshared][:name] = "com.mjwconsult.mjwshared"
 default[:civicrm][:extensions][:mjwshared][:repository] = "https://lab.civicrm.org/extensions/mjwshared.git"
-default[:civicrm][:extensions][:mjwshared][:revision] = "1.2.20"
+default[:civicrm][:extensions][:mjwshared][:revision] = "1.2.22"
 
 # Stripe requires sweetalert
 default[:civicrm][:extensions][:sweetalert][:name] = "org.civicrm.sweetalert"
 default[:civicrm][:extensions][:sweetalert][:repository] = "https://lab.civicrm.org/extensions/sweetalert.git"
-default[:civicrm][:extensions][:sweetalert][:revision] = "1.5"
+default[:civicrm][:extensions][:sweetalert][:revision] = "1.6"
 
 # Stripe requires firewall
 default[:civicrm][:extensions][:firewall][:name] = "org.civicrm.firewall"
 default[:civicrm][:extensions][:firewall][:repository] = "https://lab.civicrm.org/extensions/firewall.git"
-default[:civicrm][:extensions][:firewall][:revision] = "1.5.9"
+default[:civicrm][:extensions][:firewall][:revision] = "1.5.10"
