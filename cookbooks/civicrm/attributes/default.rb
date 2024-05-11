@@ -1,3 +1,4 @@
+# Don't upgrade ta 5.75 before upgrading ridley to php 8!
 default[:civicrm][:version] = "5.73.1"
 
 # was used for SotM
@@ -27,7 +28,7 @@ default[:civicrm][:extensions][:donotsendreportemail][:revision] = "1.0"
 # make civicrm look nicer
 default[:civicrm][:extensions][:theisland][:name] = "theisland"
 default[:civicrm][:extensions][:theisland][:repository] = "https://lab.civicrm.org/extensions/theisland.git"
-default[:civicrm][:extensions][:theisland][:revision] = "2.3.2"
+default[:civicrm][:extensions][:theisland][:revision] = "2.3.3"
 
 # civiprospect
 default[:civicrm][:extensions][:civiprospect][:name] = "uk.co.compucorp.civicrm.prospect"
