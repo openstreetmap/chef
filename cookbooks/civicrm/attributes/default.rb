@@ -1,4 +1,4 @@
-# Don't upgrade ta 5.75 before upgrading ridley to php 8!
+# See https://docs.civicrm.org/installation/en/latest/general/requirements/ for required php versions
 default[:civicrm][:version] = "5.73.1"
 
 # was used for SotM
