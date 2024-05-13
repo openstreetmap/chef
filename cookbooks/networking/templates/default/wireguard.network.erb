@@ -1,6 +1,9 @@
 [Match]
 Name=wg0
 
+[Link]
+RequiredForOnline=no
+
 [Network]
 <% if node.internal_ipaddress -%>
 Address=<%= node.internal_ipaddress %>/32
