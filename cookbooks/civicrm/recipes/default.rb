@@ -217,9 +217,9 @@ settings = edit_file "#{civicrm_directory}/civicrm/templates/CRM/common/civicrm.
   line.gsub!(/%%signKeys%%/, sign_keys)
   line.gsub!(%r{// *define\('CIVICRM_CMSDIR', '/path/to/install/root/'\);}, "define('CIVICRM_CMSDIR', '/srv/supporting.openstreetmap.org');")
   # Don't recompile smarty templates on every call https://docs.civicrm.org/sysadmin/en/latest/setup/optimizations/#disable-compile-check
-  line.gsub!(%r{//  define\('CIVICRM_TEMPLATE_COMPILE_CHECK', FALSE\);},"define('CIVICRM_TEMPLATE_COMPILE_CHECK', FALSE);")
+  line.gsub!(%r{//  define\('CIVICRM_TEMPLATE_COMPILE_CHECK', FALSE\);}, "define('CIVICRM_TEMPLATE_COMPILE_CHECK', FALSE);")
   # Upgrade smarty 2 to smarty 4
-  line.gsub!(%r{if \(strpos\(CIVICRM_UF_BASEURL, 'localhost'\) !== FALSE \|\| strpos\(CIVICRM_UF_BASEURL, 'demo\.civicrm\.org'\) !== FALSE\) \{}, "if (true) {")
+  line.gsub!(/if \(strpos\(CIVICRM_UF_BASEURL, 'localhost'\) !== FALSE \|\| strpos\(CIVICRM_UF_BASEURL, 'demo\.civicrm\.org'\) !== FALSE\) \{/, "if (true) {")
 
   line
 end
