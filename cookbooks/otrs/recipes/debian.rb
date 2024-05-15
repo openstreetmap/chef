@@ -98,7 +98,7 @@ systemd_service "otrs" do
   exec_start "/usr/share/otrs/bin/otrs.Daemon.pl start"
   private_tmp true
   protect_system "strict"
-  protect_home true
+  protect_home "read-only"
   runtime_directory "otrs"
   runtime_directory_mode 0o770
   runtime_directory_preserve true
