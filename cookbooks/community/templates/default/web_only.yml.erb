@@ -65,6 +65,7 @@ env:
   ## The maxmind geolocation IP address key for IP address lookup
   ## see https://meta.discourse.org/t/-/137387/23 for details
 <% if @license_keys -%>
+  DISCOURSE_MAXMIND_ACCOUNT_ID: '<%= node[:geoipupdate][:account] %>'
   DISCOURSE_MAXMIND_LICENSE_KEY: '<%= @license_keys[node[:geoipupdate][:account]] %>'
 <% end -%>
 
