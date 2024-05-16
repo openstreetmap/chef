@@ -102,7 +102,7 @@ systemd_service "otrs" do
   runtime_directory "otrs"
   runtime_directory_mode 0o770
   runtime_directory_preserve true
-  read_write_paths ["/var/lib/otrs", "/usr/share/otrs/var", "/run/otrs", "/var/log/exim4", "/var/spool/exim4"]
+  read_write_paths ["/var/lib/otrs", "/run/otrs", "/var/log/exim4", "/var/spool/exim4"]
 end
 
 service "otrs" do
