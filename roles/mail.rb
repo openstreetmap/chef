@@ -47,7 +47,7 @@ default_attributes(
       :otrs => {
         :comment => "otrs.openstreetmap.org",
         :domains => ["otrs.openstreetmap.org"],
-        :host => "ridley.ucl.openstreetmap.org"
+        :host => "naga.dub.openstreetmap.org"
       },
       :join => {
         :comment => "join.osmfoundation.org",

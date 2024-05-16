@@ -11,7 +11,7 @@
   ErrorLog /var/log/apache2/<%= @name %>-error.log
 
   RedirectPermanent /.well-known/acme-challenge/ http://acme.openstreetmap.org/.well-known/acme-challenge/
-  RedirectPermanent / https://otrs.openstreetmap.org/
+  RedirectPermanent / https://<%= @name %>/
 </VirtualHost>
 <% unless @aliases.empty? -%>
 
@@ -44,15 +44,14 @@
   SSLCertificateFile /etc/ssl/certs/<%= @name %>.pem
   SSLCertificateKeyFile /etc/ssl/private/<%= @name %>.key
 
-  ScriptAlias /otrs/ /opt/otrs/bin/cgi-bin/
-  Alias /otrs-web/ /opt/otrs/var/httpd/htdocs/
+  ScriptAlias /otrs "/usr/share/otrs/bin/cgi-bin/"
+  Alias /otrs-web "/usr/share/otrs/var/httpd/htdocs/"
   RedirectMatch ^/$ /otrs/index.pl
 
-  PerlRequire /opt/otrs/scripts/apache2-perl-startup.pl
+  Perlrequire /usr/share/otrs/scripts/apache2-perl-startup.pl
 
   PerlModule Apache2::Reload
   PerlInitHandler Apache2::Reload
-  PerlModule Apache2::RequestRec
 
   <Location /otrs>
     ErrorDocument 403 /otrs/index.pl
@@ -70,25 +69,45 @@
   </Location>
 </VirtualHost>
 
-<Directory /opt/otrs/bin/cgi-bin>
+<Directory "/usr/share/otrs/bin/cgi-bin/">
+    AllowOverride None
+    Options +ExecCGI -Includes
+    Require all granted
+</Directory>
+
+<Directory "/usr/share/otrs/var/httpd/htdocs/">
   AllowOverride None
-  Options +ExecCGI -Includes
   Require all granted
+
+  # Make sure CSS and JS files are read as UTF8 by the browsers.
+  AddCharset UTF-8 .css
+  AddCharset UTF-8 .js
+
+  # Set explicit mime type for woff fonts since it is relatively new and apache may not know about it.
+  AddType application/font-woff .woff
 </Directory>
 
-<Directory /opt/otrs/var/httpd/htdocs>
-  AllowOverride None
-  Require all granted
+# Cache css-cache for 30 days
+<Directory "/usr/share/otrs/var/httpd/htdocs/skins/*/*/css-cache">
+    <FilesMatch "\.(css|CSS)$">
+        Header set Cache-Control "max-age=2592000, must-revalidate"
+    </FilesMatch>
 </Directory>
 
-<Directory /opt/otrs/var/httpd/htdocs/skins/*/*/css-cache>
-  <FilesMatch "\.(css|CSS)$">
-    Header set Cache-Control "max-age=2592000 must-revalidate"
-  </FilesMatch>
+<Directory "/usr/share/otrs/var/httpd/htdocs/skins/*/*/css/thirdparty">
+    <FilesMatch "\.(css|CSS|woff|svg)$">
+        Header set Cache-Control "max-age=14400, must-revalidate"
+    </FilesMatch>
 </Directory>
 
-<Directory /opt/otrs/var/httpd/htdocs/js/js-cache>
-  <FilesMatch "\.(js|JS)$">
-    Header set Cache-Control "max-age=2592000 must-revalidate"
-  </FilesMatch>
+<Directory "/usr/share/otrs/var/httpd/htdocs/js/js-cache">
+    <FilesMatch "\.(js|JS)$">
+        Header set Cache-Control "max-age=2592000, must-revalidate"
+    </FilesMatch>
+</Directory>
+
+<Directory "/usr/share/otrs/var/httpd/htdocs/js/thirdparty/">
+    <FilesMatch "\.(js|JS)$">
+        Header set Cache-Control "max-age=14400, must-revalidate"
+    </FilesMatch>
 </Directory>

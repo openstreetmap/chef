@@ -123,10 +123,14 @@ jobs:
             suite: osqa
           - os: debian-12
             suite: imagery-tiler
+          - os: debian-12
+            suite: otrs
         exclude:
           - suite: mailman
             os: ubuntu-2204
           - suite: osqa
+            os: ubuntu-2204
+          - suite: otrs
             os: ubuntu-2204
       fail-fast: false
     steps:

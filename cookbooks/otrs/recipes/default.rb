@@ -2,7 +2,7 @@
 # Cookbook:: otrs
 # Recipe:: default
 #
-# Copyright:: 2012, OpenStreetMap Foundation
+# Copyright:: 2024, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -25,50 +25,6 @@ include_recipe "tools"
 
 passwords = data_bag_item("otrs", "passwords")
 
-package %w[
-  tar
-  bzip2
-  libapache-dbi-perl
-  libapache2-reload-perl
-  libarchive-zip-perl
-  libauthen-ntlm-perl
-  libauthen-sasl-perl
-  libcrypt-eksblowfish-perl
-  libcss-minifier-xs-perl
-  libdatetime-perl
-  libdbd-mysql-perl
-  libencode-hanextra-perl
-  libexcel-writer-xlsx-perl
-  libgd-gd2-perl
-  libgd-graph-perl
-  libgd-text-perl
-  libhtml-parser-perl
-  libio-socket-ssl-perl
-  libjavascript-minifier-xs-perl
-  libjson-perl
-  libjson-xs-perl
-  liblocale-codes-perl
-  libmail-imapclient-perl
-  libmoo-perl
-  libnet-dns-perl
-  libnet-ldap-perl
-  libpdf-api2-perl
-  libsisimai-perl
-  libsoap-lite-perl
-  libspreadsheet-xlsx-perl
-  libtemplate-perl
-  libtext-csv-xs-perl
-  libtext-diff-perl
-  libtimedate-perl
-  libxml-libxml-perl
-  libxml-libxml-simple-perl
-  libxml-libxslt-perl
-  libxml-parser-perl
-  libxml-simple-perl
-  libyaml-libyaml-perl
-  libyaml-perl
-]
-
 apache_module "perl" do
   package "libapache2-mod-perl2"
 end
@@ -77,8 +33,6 @@ apache_module "deflate"
 apache_module "headers"
 apache_module "rewrite"
 
-version = node[:otrs][:version]
-user = node[:otrs][:user]
 database_cluster = node[:otrs][:database_cluster]
 database_name = node[:otrs][:database_name]
 database_user = node[:otrs][:database_user]
@@ -96,67 +50,64 @@ postgresql_database database_name do
   owner database_user
 end
 
-remote_file "#{Chef::Config[:file_cache_path]}/znuny-#{version}.tar.bz2" do
-  source "https://download.znuny.org/releases/znuny-#{version}.tar.bz2"
-  not_if { ::File.exist?("/opt/znuny-#{version}") }
-end
+package "dbconfig-common"
 
-execute "untar-znuny-#{version}" do
-  command "tar jxf #{Chef::Config[:file_cache_path]}/znuny-#{version}.tar.bz2"
-  cwd "/opt"
-  user "root"
+template "/etc/dbconfig-common/otrs2.conf" do
+  source "dbconfig.config.erb"
+  owner "root"
   group "root"
-  not_if { ::File.exist?("/opt/znuny-#{version}") }
+  mode "600"
+  variables :database_name => database_name,
+            :database_user => database_user,
+            :database_password => database_password,
+            :database_cluster => database_cluster
 end
 
-config = edit_file "/opt/znuny-#{version}/Kernel/Config.pm.dist" do |line|
-  line.gsub!(/^( *)\$Self->{Database} = 'otrs'/, "\\1$Self->{Database} = '#{database_name}'")
-  line.gsub!(/^( *)\$Self->{DatabaseUser} = 'otrs'/, "\\1$Self->{DatabaseUser} = '#{database_user}'")
-  line.gsub!(/^( *)\$Self->{DatabasePw} = 'some-pass'/, "\\1$Self->{DatabasePw} = '#{database_password}'")
-  line.gsub!(/^( *)\$Self->{Database} = 'otrs'/, "\\1$Self->{Database} = '#{database_name}'")
-  line.gsub!(/^( *\$Self->{DatabaseDSN} = "DBI:mysql:)/, "#\\1")
-  line.gsub!(/^#( *\$Self->{DatabaseDSN} = "DBI:Pg:.*;host=)/, "\\1")
-  line.gsub!(/^( *)# (\$Self->{CheckMXRecord} = 0)/, "\\1\\2")
-  line.gsub!(/^( *)# \$Self->{SessionUseCookie} = 0/, "\\1$Self->{SessionCheckRemoteIP} = 0")
-
-  line
+# Ensure the OTRS package in backports has a priority preference.
+apt_preference "otrs2" do
+  pin "release o=Debian Backports"
+  pin_priority "600"
 end
 
-file "/opt/znuny-#{version}/Kernel/Config.pm" do
-  owner user
-  group "www-data"
-  mode "664"
-  content config
-  notifies :restart, "service[otrs]"
-end
+apt_package "otrs2"
 
-execute "/opt/znuny-#{version}/bin/otrs.SetPermissions.pl" do
+# Ensure debconf is repopulated on a dbconfig change
+execute "dpkg-reconfigure-otrs2" do
   action :nothing
-  command "/opt/znuny-#{version}/bin/otrs.SetPermissions.pl --otrs-user=#{user} --web-group=www-data /opt/znuny-#{version}"
-  user "root"
-  group "root"
-  subscribes :run, "execute[untar-znuny-#{version}]"
+  command "dpkg-reconfigure -fnoninteractive otrs2"
+  subscribes :run, "template[/etc/dbconfig-common/otrs2.conf]"
 end
 
-link "/opt/otrs" do
-  to "/opt/znuny-#{version}"
+# Disable deb otrs2 apache config
+apache_conf "otrs2" do
+  action :disable
+end
+
+# Disable deb otrs2 cron job
+file "/etc/cron.d/otrs2" do
+  action :delete
+  manage_symlink_source true
 end
 
 systemd_service "otrs" do
   description "OTRS Daemon"
   type "forking"
   user "otrs"
-  group "otrs"
-  exec_start "/opt/otrs/bin/otrs.Daemon.pl start"
+  group "www-data"
+  exec_start_pre "-/usr/share/otrs/bin/otrs.Daemon.pl stop" # Stop if race with deb cron
+  exec_start "/usr/share/otrs/bin/otrs.Daemon.pl start"
   private_tmp true
   protect_system "strict"
-  protect_home true
-  read_write_paths ["/opt/znuny-#{version}/var", "/var/log/exim4", "/var/spool/exim4"]
+  protect_home "read-only"
+  runtime_directory "otrs"
+  runtime_directory_mode 0o770
+  runtime_directory_preserve true
+  read_write_paths ["/var/lib/otrs", "/run/otrs", "/var/log/exim4", "/var/spool/exim4"]
 end
 
 service "otrs" do
   action [:enable, :start]
-  subscribes :restart, "link[/opt/otrs]"
+  subscribes :restart, "apt_package[otrs2]"
   subscribes :restart, "systemd_service[otrs]"
 end
 
