@@ -114,6 +114,11 @@ hooks:
         cd: $home
         cmd:
           - sudo -H -E -u discourse cp /shared/feeds/update-feeds.atom public/update-feeds.atom
+    - exec:
+        # FIXME: Workaround until https://github.com/discourse/discourse/pull/27040 merged
+        cd: $home
+        cmd:
+          - sudo -H -E -u discourse sed -i 's/follow_redirect: false,/follow_redirect: true,/' lib/discourse_ip_info.rb
   after_ssl:
     - replace:
         filename: "/etc/nginx/conf.d/discourse.conf"
