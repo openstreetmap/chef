@@ -10,7 +10,7 @@ mkdir $T/otrs-$D
 chown otrs $T
 chown otrs $T/otrs-$D
 sudo -u otrs pg_dump --file=$T/otrs-$D/otrs.dmp otrs
-ln -s /opt/otrs $T/otrs-$D/otrs
+ln -s /var/lib/otrs $T/otrs-$D/otrs-var
 ln -s /etc/apache2/sites-available/otrs.openstreetmap.org.conf $T/otrs-$D/apache2-otrs.openstreetmap.org.conf
 
 export RSYNC_RSH="ssh -ax"
