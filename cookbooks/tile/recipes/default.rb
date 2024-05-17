@@ -514,10 +514,17 @@ package %w[
   pyosmium
 ]
 
-directory "/var/lib/replicate" do
+directory node[:tile][:replication][:directory] do
   owner "tile"
   group "tile"
   mode "755"
+end
+
+link "/var/lib/replicate" do
+  to node[:tile][:replication][:directory]
+  owner "tile"
+  group "tile"
+  not_if { node[:tile][:replication][:directory] == "/var/lib/replicate" }
 end
 
 template "/usr/local/bin/expire-tiles" do
