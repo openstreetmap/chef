@@ -505,7 +505,7 @@ GEM
     options (2.3.2)
     os (1.1.4)
     parallel (1.24.0)
-    parser (3.3.0.5)
+    parser (3.3.1.0)
       ast (~> 2.4.1)
       racc
     parslet (2.0.0)
@@ -518,7 +518,7 @@ GEM
       coderay (~> 1.1)
       method_source (~> 1.0)
     public_suffix (5.0.5)
-    racc (1.7.3)
+    racc (1.8.0)
     rainbow (3.1.1)
     rake (13.2.1)
     recursive-open-struct (1.1.3)
@@ -760,7 +760,7 @@ DEPENDENCIES
   cookstyle
   kitchen-dokken
   kitchen-inspec
-  parser (!= 3.3.1.0)
+  parser
   test-kitchen
 
 BUNDLED WITH
