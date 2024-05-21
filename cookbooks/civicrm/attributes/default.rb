@@ -68,7 +68,7 @@ default[:civicrm][:extensions][:omnipay][:revision] = "3.23"
 # Pay with Stripe
 default[:civicrm][:extensions][:stripe][:name] = "com.drastikbydesign.stripe"
 default[:civicrm][:extensions][:stripe][:repository] = "https://lab.civicrm.org/extensions/stripe.git"
-default[:civicrm][:extensions][:stripe][:revision] = "6.9.4"
+default[:civicrm][:extensions][:stripe][:revision] = "6.10.2"
 
 # Stripe requires mjwshared ("payment shared")
 default[:civicrm][:extensions][:mjwshared][:name] = "com.mjwconsult.mjwshared"
