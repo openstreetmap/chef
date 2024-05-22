@@ -118,7 +118,7 @@ groups:
         labels:
           alertgroup: database
         annotations:
-          delay: "{{ $value }}"
+          queries: "{{ $value }}"
   - name: discourse
     rules:
       - alert: discourse job failure rate
