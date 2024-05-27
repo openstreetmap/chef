@@ -64,7 +64,7 @@ systemd_service "cgimap" do
   user "rails"
   group "www-data"
   umask "0002"
-  exec_start "/usr/bin/openstreetmap-cgimap --daemon --instances 30 --basic_auth_support false --oauth_10_support falsE"
+  exec_start "/usr/bin/openstreetmap-cgimap --daemon --instances 30"
   exec_reload "/bin/kill -HUP $MAINPID"
   runtime_directory "cgimap"
   private_tmp true
