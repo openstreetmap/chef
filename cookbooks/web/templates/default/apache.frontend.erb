@@ -35,8 +35,7 @@ ErrorLog /var/log/apache2/error.log
   #
   # Configure timeouts
   #
-  TimeOut 10
-  RequestReadTimeout handshake=10-20,MinRate=500 header=10-20,MinRate=500 body=10-120,MinRate=500
+  RequestReadTimeout handshake=20-40,MinRate=500 header=20-40,MinRate=500 body=20-120,MinRate=500
   LogLevel reqtimeout:info
 
   #
