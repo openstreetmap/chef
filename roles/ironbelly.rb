@@ -36,7 +36,7 @@ default_attributes(
           :mode => "802.3ad",
           :lacprate => "fast",
           :xmithashpolicy => "layer3+4",
-          :slaves => %w[eth0 eth1]
+          :slaves => %w[enp2s0f0 enp2s0f1]
         }
       },
       :external => {
