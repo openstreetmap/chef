@@ -108,7 +108,6 @@ default_attributes(
 
 run_list(
   "role[equinix-ams]",
-  "role[gateway]",
   "recipe[rsyncd]",
   "recipe[dhcpd]",
   "recipe[imagery::za_ngi_aerial]"

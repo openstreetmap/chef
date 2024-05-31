@@ -2,6 +2,10 @@ name "norbert"
 description "Master role applied to norbert"
 
 default_attributes(
+  :dhcpd => {
+    :first_address => "10.0.63.1",
+    :last_address => "10.0.63.254"
+  },
   :networking => {
     :interfaces => {
       :internal => {
@@ -36,9 +40,11 @@ default_attributes(
 
 run_list(
   "role[equinix-ams]",
+  "role[gateway]",
   "role[geodns]",
   "role[backup]",
   "role[planet]",
   "role[planetdump]",
+  "recipe[dhcpd]",
   "recipe[tilelog]"
 )
