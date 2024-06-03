@@ -14,10 +14,9 @@ default_attributes(
         :interface => "eno1",
         :role => :external,
         :inet => {
-          :address => "10.5.0.77",
-          :prefix => "16",
-          :gateway => "10.5.0.1",
-          :public_address => "161.53.248.77"
+          :address => "193.198.233.218",
+          :prefix => "29",
+          :gateway => "193.198.233.217"
         }
       }
     }
