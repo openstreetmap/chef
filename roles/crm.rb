@@ -4,7 +4,8 @@ description "Role applied to CRM server"
 default_attributes(
   :accounts => {
     :users => {
-      :stereo => { :status => :administrator }
+      :stereo => { :status => :administrator },
+      :jon => { :status => :user }
     }
   },
   :exim => {
