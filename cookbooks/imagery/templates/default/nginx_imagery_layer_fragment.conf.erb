@@ -26,9 +26,11 @@ location ~* "^/layer/<%= @layer %>/(\d+)/(\d+)/(\d+)\.(png|jpg|jpeg)$" {
   proxy_next_upstream_timeout 30s;
   proxy_next_upstream_tries 3;
   proxy_intercept_errors on;
-  proxy_ignore_headers Cache-Control;
-  proxy_ignore_headers Expires;
-  proxy_ignore_headers Access-Control-Allow-Origin;
+  proxy_ignore_headers "Cache-Control";
+  proxy_ignore_headers "Expires";
+  proxy_hide_header "Cache-Control";
+  proxy_hide_header "Expires";
+  proxy_hide_header "Access-Control-Allow-Origin";
 <% else -%>
   # Override QUERY_STRING to force mapserver query parameters
   fastcgi_param QUERY_STRING "map=/srv/imagery/mapserver/layer-<%= @layer %>.map&mode=tile&layers=<%= @layer %>&tilemode=gmap&tile=$2+$3+$1";
