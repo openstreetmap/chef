@@ -44,6 +44,8 @@
   SSLCertificateFile /etc/ssl/certs/<%= @name %>.pem
   SSLCertificateKeyFile /etc/ssl/private/<%= @name %>.key
 
+  Protocols http/1.1
+
   ScriptAlias /otrs "/usr/share/otrs/bin/cgi-bin/"
   Alias /otrs-web "/usr/share/otrs/var/httpd/htdocs/"
   RedirectMatch ^/$ /otrs/index.pl
