@@ -6,7 +6,7 @@ location ~* "^/layer/<%= @layer %>/(\d+)/(\d+)/(\d+)\.(png|jpg|jpeg)$" {
   rewrite ^/layer/<%= @layer %>/(\d+)/(\d+)/(\d+)\.jpg /mosaicjson/tiles/WebMercatorQuad/$1/$2/$3@1x?url=<%= URI.encode_www_form_component(@source) %>&pixel_selection=first&tile_format=jpeg break;
   rewrite ^/layer/<%= @layer %>/(\d+)/(\d+)/(\d+)\.jpeg /mosaicjson/tiles/WebMercatorQuad/$1/$2/$3@1x?url=<%= URI.encode_www_form_component(@source) %>&pixel_selection=first&tile_format=jpeg break;
   rewrite ^/layer/<%= @layer %>/(\d+)/(\d+)/(\d+)\.png /mosaicjson/tiles/WebMercatorQuad/$1/$2/$3@1x?url=<%= URI.encode_www_form_component(@source) %>&pixel_selection=first&tile_format=png break;
-  proxy_pass http://tiler_backend;
+  proxy_pass http://<%= @site %>_tiler_backend;
   proxy_set_header Host $host;
   proxy_set_header Referer $http_referer;
   proxy_set_header X-Forwarded-For $remote_addr;

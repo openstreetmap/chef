@@ -8,7 +8,7 @@ server {
 }
 
 <% if @uses_tiler -%>
-upstream tiler_backend {
+upstream <%= @name %>_tiler_backend {
     server 127.0.0.1:8080 max_fails=0;
 
     keepalive 32;
