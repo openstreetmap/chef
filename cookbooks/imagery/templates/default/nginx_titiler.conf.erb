@@ -44,11 +44,6 @@ server {
     gzip_comp_level 9;
     gzip_vary on;
 
-    location /za-25cm {
-      root "/store/imagery/za";
-      expires max;
-    }
-
     location /api/v1/titiler {
       rewrite ^/api/v1/titiler(.*)$ $1 break;
       proxy_pass http://localhost:8080;
