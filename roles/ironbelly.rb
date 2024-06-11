@@ -111,5 +111,6 @@ run_list(
   "role[gateway]",
   "recipe[rsyncd]",
   "recipe[dhcpd]",
-  "recipe[imagery::za_ngi_aerial]"
+  "recipe[imagery::za_ngi_aerial]",
+  "recipe[imagery::us_imagery]"
 )

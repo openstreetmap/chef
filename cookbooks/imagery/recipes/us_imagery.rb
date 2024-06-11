@@ -1,6 +1,6 @@
 #
 # Cookbook:: imagery
-# Recipe:: us_capcog
+# Recipe:: us_imagery
 #
 # Copyright:: 2024, OpenStreetMap Foundation
 #
