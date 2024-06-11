@@ -31,7 +31,7 @@ imagery_layer "capcog-2022" do
   uses_tiler true
   title "US CAPCOG 2022"
   source "file:///store/imagery/us/capcog-2022-nc-cir-12in/tiles/mosaic-tiler-file.json"
-  copyright "© 2022 CAPCOG"
+  copyright "(c) 2022 CAPCOG"
   max_zoom 20
   extension "jpg"
   default_layer true
