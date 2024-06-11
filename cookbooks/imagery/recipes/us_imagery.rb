@@ -29,7 +29,7 @@ end
 imagery_layer "capcog-2022" do
   site "us-imagery.openstreetmap.org"
   uses_tiler true
-  title "CAPCOG 2022"
+  title "US CAPCOG 2022"
   source "file:///store/imagery/us/capcog-2022-nc-cir-12in/tiles/mosaic-tiler-file.json"
   copyright "© 2022 CAPCOG"
   max_zoom 20
