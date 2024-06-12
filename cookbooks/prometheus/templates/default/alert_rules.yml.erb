@@ -488,6 +488,11 @@ groups:
           alertgroup: nominatim
         annotations:
           delay: "{{ $value | humanizeDuration }}"
+      - alert: nominatim connections
+        expr: sum(nginx_connections_writing and on (instance) chef_role{name="nominatim"}) > 2500
+        for: 15m
+        labels:
+          alertgroup: nominatim
   - name: overpass
     rules:
       - alert: overpass osm database age
