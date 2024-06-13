@@ -4,6 +4,11 @@ description "Role applied to all web/api frontend servers"
 default_attributes(
   :apache => {
     :mpm => "event",
+    :evasive => {
+      :page_count => 30,
+      :site_count => 100,
+      :blocking_period => 30
+    },
     :event => {
       :server_limit => 20,
       :max_request_workers => 1000,
