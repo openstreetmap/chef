@@ -581,6 +581,7 @@ osm2pgsql_arguments = %w[
     --number-processes=1
     --log-progress=false
     --expire-tiles=13-19
+    --expire-segment-length=90000
     --expire-output=/var/lib/replicate/dirty-tiles.txt
   ]
 
