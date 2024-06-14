@@ -577,18 +577,6 @@ template "/usr/local/bin/replicate-post" do
   mode "755"
 end
 
-osm2pgsql_arguments = %w[
-    --number-processes=1
-    --log-progress=false
-    --expire-tiles=13-19
-    --expire-segment-length=90000
-    --expire-output=/var/lib/replicate/dirty-tiles.txt
-  ]
-
-osm2pgsql_arguments.append("--multi-geometry") if node[:tile][:database][:multi_geometry]
-osm2pgsql_arguments.append("--hstore") if node[:tile][:database][:hstore]
-osm2pgsql_arguments.append("--tag-transform-script=#{node[:tile][:database][:tag_transform_script]}") if node[:tile][:database][:tag_transform_script]
-
 systemd_service "replicate" do
   description "Rendering database replication service"
   after "postgresql.service"
