@@ -5,7 +5,7 @@ default_attributes(
   :apache => {
     :mpm => "event",
     :evasive => {
-      :page_count => 30,
+      :page_count => 100,
       :site_count => 100,
       :blocking_period => 30
     },
