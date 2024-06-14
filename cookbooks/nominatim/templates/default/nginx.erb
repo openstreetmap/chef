@@ -69,7 +69,12 @@ geo $whitelisted {
     2620:52:3:1:5054:ff:fe0a:75aa 1; # gnome
 }
 
-map $missing_email$missing_referer$http_user_agent $blocked_user_agent {
+map $server_protocol$http_user_agent $cleaned_user_agent {
+    default $http_user_agent;
+    "~^HTTP/1..Mozilla/" Script$http_user_agent;
+}
+
+map $missing_email$missing_referer$cleaned_user_agent $blocked_user_agent {
    default 0;
    "11" 2; # block any requests without identifier
    include <%= @confdir %>/nginx_blocked_user_agent.conf;
