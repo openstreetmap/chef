@@ -2,16 +2,53 @@
 
 # DO NOT EDIT - This file is being maintained by Chef
 
-args = [
-  "--socket=/var/run/renderd/renderd.sock",
-  "--tile-dir=/srv/tile.openstreetmap.org/tiles",
-  "--touch-from=13",
-  "--min-zoom=13"
+require "fileutils"
+
+tileDirs = [
+<% node[:tile][:styles].each_key do |name| -%>
+  "/srv/tile.openstreetmap.org/tiles/<%= name %>",
+<% end -%>
 ]
 
+tilesExpired = 0
+tilesIgnored = 0
+
+expiredTime = Time.new(2000, 1, 1)
+
 Dir.glob("/var/lib/replicate/expire-queue/changes-*.txt").sort.each do |f|
-  <% node[:tile][:styles].each do |name,details| -%>
-  system("/usr/bin/render_expired", "--map=<%= name %>", *args, "--max-zoom=<%= details[:max_zoom] %>", :in=> f) &&
-  <% end -%>
+  File.open(f, "r") do |file|
+    file.each do |line|
+      z, y, x = line.split("/")
+
+      z = z.to_i + 3
+      y = y.to_i * 8
+      x = x.to_i * 8
+
+      hash = []
+
+      1.upto(5) do
+        hash.push(((x & 0xf) << 4) | (y & 0xf))
+
+        x = x >> 4
+        y = y >> 4
+      end
+
+      tileName = "#{z}/#{hash[4]}/#{hash[3]}/#{hash[2]}/#{hash[1]}/#{hash[0]}.meta"
+
+      tileDirs.each do |tileDir|
+        if File.exist?("#{tileDir}/#{tileName}")
+          FileUtils.touch("#{tileDir}/#{tileName}", :mtime => expiredTime)
+
+          tilesExpired = tilesExpired + 1
+        else
+          tilesIgnored = tilesIgnored + 1
+        end
+      end
+    end
+  end
+
   File::unlink(f)
 end
+
+puts "Meta tiles expired: #{tilesExpired}"
+puts "Meta tiles not present: #{tilesIgnored}"
