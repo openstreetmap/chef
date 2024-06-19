@@ -18,11 +18,11 @@ expiredTime = Time.new(2000, 1, 1)
 Dir.glob("/var/lib/replicate/expire-queue/changes-*.txt").sort.each do |f|
   File.open(f, "r") do |file|
     file.each do |line|
-      z, y, x = line.split("/")
+      z, x, y = line.split("/")
 
       z = z.to_i + 3
-      y = y.to_i * 8
       x = x.to_i * 8
+      y = y.to_i * 8
 
       hash = []
 
