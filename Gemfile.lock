@@ -1,7 +1,7 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (7.1.3.3)
+    activesupport (7.1.3.4)
       base64
       bigdecimal
       concurrent-ruby (~> 1.0, >= 1.0.2)
@@ -391,8 +391,8 @@ GEM
       rexml (~> 3.0)
     hashdiff (1.0.1)
     hashie (5.0.0)
-    highline (2.1.0)
-    http-cookie (1.0.5)
+    highline (3.0.1)
+    http-cookie (1.0.6)
       domain_name (~> 0.5)
     httpclient (2.8.3)
     i18n (1.14.5)
@@ -438,7 +438,7 @@ GEM
     json (2.7.2)
     jsonpath (1.1.5)
       multi_json
-    jwt (2.8.1)
+    jwt (2.8.2)
       base64
     k8s-ruby (0.16.0)
       dry-configurable
@@ -470,7 +470,7 @@ GEM
       multi_json (~> 1.14)
     method_source (1.1.0)
     mini_mime (1.1.5)
-    minitest (5.23.1)
+    minitest (5.24.0)
     mixlib-config (3.0.27)
       tomlrb
     mixlib-install (3.12.30)
@@ -504,20 +504,20 @@ GEM
       bigdecimal
     options (2.3.2)
     os (1.1.4)
-    parallel (1.24.0)
-    parser (3.3.1.0)
+    parallel (1.25.1)
+    parser (3.3.3.0)
       ast (~> 2.4.1)
       racc
     parslet (2.0.0)
     pastel (0.8.0)
       tty-color (~> 0.5)
-    progress_bar (1.3.3)
-      highline (>= 1.6, < 3)
+    progress_bar (1.3.4)
+      highline (>= 1.6)
       options (~> 2.3.0)
     pry (0.14.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
-    public_suffix (5.0.5)
+    public_suffix (5.1.1)
     racc (1.8.0)
     rainbow (3.1.1)
     rake (13.2.1)
@@ -752,7 +752,7 @@ GEM
     wisper (2.0.1)
     yajl-ruby (1.4.3)
     yaml-safe_load_stream3 (0.1.2)
-    zeitwerk (2.6.14)
+    zeitwerk (2.6.16)
 
 PLATFORMS
   ruby
