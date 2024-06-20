@@ -13,6 +13,7 @@ CGIMAP_MAP_NODES"<%= node[:web][:max_number_of_nodes] %>"
 CGIMAP_MAX_WAY_NODES="<%= node[:web][:max_number_of_way_nodes] %>"
 CGIMAP_MAX_RELATION_MEMBERS="<%= node[:web][:max_number_of_relation_members] %>"
 CGIMAP_RATELIMIT_UPLOAD="true"
+CGIMAP_BBOX_SIZE_LIMIT_UPLOAD="true"
 <% Hash(@options).each do |name, value| -%>
 CGIMAP_<%= name.to_s.upcase %>="<%= value %>"
 <% end -%>
