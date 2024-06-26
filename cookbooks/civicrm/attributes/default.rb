@@ -47,8 +47,10 @@ default[:civicrm][:extensions][:membershipchurn][:revision] = "v1.1"
 
 # pivot reports for civiprospect
 default[:civicrm][:extensions][:pivotreport][:name] = "uk.co.compucorp.civicrm.pivotreport"
-default[:civicrm][:extensions][:pivotreport][:repository] = "https://github.com/compucorp/uk.co.compucorp.civicrm.pivotreport.git"
-default[:civicrm][:extensions][:pivotreport][:revision] = "2.0.7"
+# apply patch, pivot reports is currently broken. See https://github.com/compucorp/uk.co.compucorp.civicrm.pivotreport/pull/142
+# original repo default[:civicrm][:extensions][:pivotreport][:repository] = "https://github.com/compucorp/uk.co.compucorp.civicrm.pivotreport.git"
+default[:civicrm][:extensions][:pivotreport][:repository] = "https://github.com/MegaphoneJon/uk.co.compucorp.civicrm.pivotreport.git"
+default[:civicrm][:extensions][:pivotreport][:revision] = "9a96eee9e0541568440af54e9408d5f462ae00df"
 
 # extra rules for membership renewal
 default[:civicrm][:extensions][:membershipextra][:name] = "com.skvare.membershipextra"
