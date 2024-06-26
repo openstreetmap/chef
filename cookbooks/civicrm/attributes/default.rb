@@ -1,5 +1,5 @@
 # See https://docs.civicrm.org/installation/en/latest/general/requirements/ for required php versions
-default[:civicrm][:version] = "5.73.2"
+default[:civicrm][:version] = "5.74.4"
 
 # was used for SotM
 # default[:civicrm][:extensions][:cividiscount][:name] = "org.civicrm.module.cividiscount"
