@@ -55,7 +55,7 @@ default[:civicrm][:extensions][:pivotreport][:revision] = "9a96eee9e0541568440af
 # extra rules for membership renewal
 default[:civicrm][:extensions][:membershipextra][:name] = "com.skvare.membershipextra"
 default[:civicrm][:extensions][:membershipextra][:repository] = "https://github.com/Skvare/com.skvare.membershipextra.git"
-default[:civicrm][:extensions][:membershipextra][:revision] = "41edc3c04d49987006500b7426b38c12470446b3"
+default[:civicrm][:extensions][:membershipextra][:revision] = "847fa370639d4ace4e33d6c055d9866e3d2e5afd"
 
 # Verify active contributor status
 default[:civicrm][:extensions][:osmfverifycontributor][:name] = "osmf-verify-contributor"
