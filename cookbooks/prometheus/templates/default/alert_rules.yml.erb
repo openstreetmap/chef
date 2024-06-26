@@ -798,7 +798,7 @@ groups:
   - name: web
     rules:
       - alert: web error rate
-        expr: sum(rate(api_call_count_total{status=~"50[0-8]|5[1-9][0-9]"}[5m])) by (instance) / sum(rate(api_call_count_total[5m])) by (instance) > 0.002
+        expr: sum(rate(api_call_count_total{status=~"50[0-8]|5[1-9][0-9]"}[5m])) by (instance) / sum(rate(api_call_count_total[5m])) by (instance) > 0.002 and sum(rate(api_call_count_total{status=~"50[0-8]|5[1-9][0-9]"}[5m])) by (instance) > 0.01
         for: 5m
         labels:
           alertgroup: web
