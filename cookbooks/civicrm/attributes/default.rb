@@ -93,3 +93,8 @@ default[:civicrm][:extensions][:firewall][:revision] = "1.5.10"
 default[:civicrm][:extensions][:qfsessionwarning][:name] = "org.civicrm.qfsessionwarning"
 default[:civicrm][:extensions][:qfsessionwarning][:repository] = "https://lab.civicrm.org/extensions/qfsessionwarning.git"
 default[:civicrm][:extensions][:qfsessionwarning][:revision] = "1.3"
+
+# The contribution forms like to use a geocoder. Use the CiviCRM geocoder which uses nominatim
+default[:civicrm][:extensions][:geocoder][:name] = "org.wikimedia.geocoder"
+default[:civicrm][:extensions][:geocoder][:repository] = "https://github.com/eileenmcnaughton/org.wikimedia.geocoder.git"
+default[:civicrm][:extensions][:geocoder][:revision] = "1.12"
