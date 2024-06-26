@@ -15,6 +15,12 @@ IPv6AcceptRA=no
 <% Array(@interface[:vlans]).sort.uniq.each do |vlan| -%>
 VLAN=<%= @interface[:interface] %>.<%= vlan %>
 <% end -%>
+<% if @interface[:interface] =~ /^bond\d+$/ && node[:packages][:systemd][:version].to_i < 254 -%>
+
+[Link]
+RequiredFamilyForOnline=ipv4
+RequiredForOnline=degraded-carrier
+<% end -%>
 <% if @interface.dig(:inet6, :dhcp) -%>
 
 [DHCPv6]
