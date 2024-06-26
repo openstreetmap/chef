@@ -86,3 +86,10 @@ default[:civicrm][:extensions][:sweetalert][:revision] = "1.6"
 default[:civicrm][:extensions][:firewall][:name] = "org.civicrm.firewall"
 default[:civicrm][:extensions][:firewall][:repository] = "https://lab.civicrm.org/extensions/firewall.git"
 default[:civicrm][:extensions][:firewall][:revision] = "1.5.10"
+
+# qfsessionwarning Alerts the user about expired session cookies,
+# for example if a user walks away from a contribution page and comes back later
+# Also reduces messages in the log.
+default[:civicrm][:extensions][:qfsessionwarning][:name] = "org.civicrm.qfsessionwarning"
+default[:civicrm][:extensions][:qfsessionwarning][:repository] = "https://lab.civicrm.org/extensions/qfsessionwarning.git"
+default[:civicrm][:extensions][:qfsessionwarning][:revision] = "1.3"
