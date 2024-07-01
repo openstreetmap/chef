@@ -24,7 +24,7 @@ default_action :create
 property :service, String, :name_property => true
 property :description, String, :required => true
 property :image, String, :required => true
-property :ports, Hash
+property :ports, Hash, :default => {}
 property :environment, Hash, :default => {}
 property :volume, Hash, :default => {}
 
