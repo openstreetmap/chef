@@ -37,8 +37,8 @@ container_image = if arm?
 podman_service "titiler" do
   description "Container service for titiler"
   image container_image
-  volume "/store/imagery" => "/store/imagery",
-         "/srv/imagery/sockets" => "/sockets"
+  volume :"/store/imagery" => "/store/imagery",
+         :"/srv/imagery/sockets" => "/sockets"
   environment :BIND                                => "unix:/sockets/titiler.sock",
               :WORKERS_PER_CORE                    => 1,
               :GDAL_CACHEMAX                       => 200,
