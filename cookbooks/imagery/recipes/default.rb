@@ -64,6 +64,13 @@ directory "/srv/imagery/common" do
   recursive true
 end
 
+directory "/srv/imagery/sockets" do
+  owner "root"
+  group "root"
+  mode "777"
+  recursive true
+end
+
 # Pre-download uk_os_OSTN15_NTv2_OSGBtoETRS.tif used for EPSG:27700 conversions
 execute "uk_os_OSTN15_NTv2_OSGBtoETRS.tif" do
   command "projsync --file uk_os_OSTN15_NTv2_OSGBtoETRS.tif --system-directory"

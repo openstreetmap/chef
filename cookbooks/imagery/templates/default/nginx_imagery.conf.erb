@@ -9,9 +9,9 @@ server {
 
 <% if @uses_tiler -%>
 upstream <%= @name %>_tiler_backend {
-    server 127.0.0.1:8080 max_fails=0;
+    server unix:/srv/imagery/sockets/titiler.sock max_fails=0;
 
-    keepalive 32;
+    keepalive 8;
 }
 <% else -%>
 upstream <%= @name %>_fastcgi {
