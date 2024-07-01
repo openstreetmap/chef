@@ -46,7 +46,7 @@ server {
 
     location /api/v1/titiler {
       rewrite ^/api/v1/titiler(.*)$ $1 break;
-      proxy_pass http://localhost:8080;
+      proxy_pass unix:/srv/imagery/sockets/titiler.sock;
       proxy_set_header Host $host;
       proxy_set_header Referer $http_referer;
       proxy_set_header X-Forwarded-For $remote_addr;
