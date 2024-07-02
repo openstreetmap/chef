@@ -42,6 +42,7 @@ podman_service "titiler" do
   environment :BIND                                => "unix:/sockets/titiler.sock",
               :WORKERS_PER_CORE                    => 1,
               :GDAL_CACHEMAX                       => 200,
+              :GDAL_BAND_BLOCK_CACHE               => "HASHSET",
               :GDAL_DISABLE_READDIR_ON_OPEN        => "EMPTY_DIR",
               :GDAL_INGESTED_BYTES_AT_OPEN         => 32768,
               :GDAL_HTTP_MERGE_CONSECUTIVE_RANGES  => "YES",

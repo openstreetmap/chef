@@ -15,6 +15,10 @@ server {
     }
 }
 
+upstream titiler_api_backend {
+    server unix:/srv/imagery/sockets/titiler.sock max_fails=0;
+}
+
 server {
     listen 443 ssl http2;
     listen [::]:443 ssl http2;
@@ -46,7 +50,7 @@ server {
 
     location /api/v1/titiler {
       rewrite ^/api/v1/titiler(.*)$ $1 break;
-      proxy_pass unix:/srv/imagery/sockets/titiler.sock;
+      proxy_pass http://titiler_api_backend
       proxy_set_header Host $host;
       proxy_set_header Referer $http_referer;
       proxy_set_header X-Forwarded-For $remote_addr;
