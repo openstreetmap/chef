@@ -1,0 +1,24 @@
+#!/bin/sh
+
+# Usage
+# sudo -u tileupdate import-planet osmfile.osm.pbf
+# sudo -u tileupdate import-planet --cache 50000 osmfile.osm.pbf
+# This script sets the appropriate Lua and style paths for the osm2pgsql import
+
+set -e
+
+export LUA_PATH='/srv/vector.openstreetmap.org/osm2pgsql-themepark/lua/?.lua;/srv/vector.openstreetmap.org/spirit/?.lua;;'
+
+# Import the osm2pgsql file specified as an argument, using the locations for spirit
+osm2pgsql \
+  --output flex \
+  --style '/srv/vector.openstreetmap.org/spirit/shortbread.lua' \
+  --slim \
+  <%= @node_store_options %> \
+  -d spirit \
+  $@
+
+# Set up replication. This doesn't specify the replication server, so it will use planet.osm.org on extracts
+osm2pgsql-replication init \
+  -d spirit \
+  --server '<%= node[:vectortile][:replication][:url] %>'

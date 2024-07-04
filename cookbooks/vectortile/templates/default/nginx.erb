@@ -1,0 +1,46 @@
+upstream tilekiln {
+    server 127.0.0.1:8000;
+}
+
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+
+    location /nginx_status {
+        stub_status on;
+        access_log   off;
+        allow 127.0.0.1;
+        allow ::1;
+        deny all;
+    }
+
+     rewrite ^/\.well-known/acme-challenge/(.*)$ http://acme.openstreetmap.org/.well-known/acme-challenge/$1 permanent;
+
+     location / {
+         return 301 https://$host$request_uri;
+     }
+}
+
+server {
+    # IPv4
+    listen       443 ssl default_server;
+    # IPv6
+    listen       [::]:443 ssl default_server;
+    http2 on;
+    server_name  localhost;
+
+    ssl_certificate /etc/ssl/certs/<%= node[:fqdn] %>.pem;
+    ssl_certificate_key /etc/ssl/private/<%= node[:fqdn] %>.key;
+
+    location /nginx_status {
+        stub_status on;
+        access_log   off;
+        allow 127.0.0.1;
+        allow ::1;
+        deny all;
+    }
+    location /shortbread_v1/ {
+        proxy_pass http://tilekiln;
+    }
+    root /srv/vector.openstreetmap.org/html;
+}

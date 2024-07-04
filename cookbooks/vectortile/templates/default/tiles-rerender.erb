@@ -1,0 +1,7 @@
+#!/bin/sh
+set -eu
+<%= @tilekiln_bin %> generate tiles \
+--source-dbname "<%= @source_database %>" \
+--storage-dbname "<%= @storage_database %>" \
+--num-threads "<%= node[:vectortile][:replication][:threads] %>" \
+--config <%= @config_path %> < <%= @tiles_file %>
