@@ -331,6 +331,8 @@ if node[:virtualization][:role] != "guest" ||
   end
 end
 
+include_recipe "apt::hwraid" unless status_packages.empty?
+
 %w[ssacli lsiutil sas2ircu megactl megacli arcconf].each do |tools_package|
   if tools_packages.include?(tools_package)
     package tools_package
@@ -358,8 +360,6 @@ else
     recursive true
   end
 end
-
-include_recipe "apt::hwraid" unless status_packages.empty?
 
 %w[cciss-vol-status mpt-status sas2ircu-status megaclisas-status aacraid-status].each do |status_package|
   if status_packages.include?(status_package)
