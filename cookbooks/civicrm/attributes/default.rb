@@ -60,7 +60,7 @@ default[:civicrm][:extensions][:membershipextra][:revision] = "847fa370639d4ace4
 # Verify active contributor status
 default[:civicrm][:extensions][:osmfverifycontributor][:name] = "osmf-verify-contributor"
 default[:civicrm][:extensions][:osmfverifycontributor][:repository] = "https://github.com/openstreetmap/osmf-verify-contributor.git"
-default[:civicrm][:extensions][:osmfverifycontributor][:revision] = "5fb3ebf6c6636e7e4eeadd074b8074593330ddca"
+default[:civicrm][:extensions][:osmfverifycontributor][:revision] = "73e4d5cf77623cb9a6217f0b0166386f96330b6f"
 
 # Pay with Mollie
 default[:civicrm][:extensions][:omnipay][:name] = "nz.co.fuzion.omnipaymultiprocessor"
