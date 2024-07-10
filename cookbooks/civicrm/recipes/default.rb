@@ -235,6 +235,10 @@ file "/srv/supporting.openstreetmap.org/wp-content/uploads/civicrm/civicrm.setti
   content settings
 end
 
+file "#{civicrm_directory}/civicrm.settings.php" do
+  action :delete
+end
+
 systemd_service "osmf-crm-jobs" do
   description "Run CRM jobs"
   exec_start "/usr/bin/php #{civicrm_directory}/civicrm/bin/cli.php -s supporting.openstreetmap.org -u batch -p \"#{passwords['batch']}\" -e Job -a execute"
