@@ -36,9 +36,9 @@ default[:civicrm][:extensions][:civiprospect][:repository] = "https://github.com
 default[:civicrm][:extensions][:civiprospect][:revision] = "3.1.2"
 
 # advanced fundraising reports
-default[:civicrm][:extensions][:advancedfundraisingreports][:name] = "net.ourpowerbase.report.advancedfundraising"
-default[:civicrm][:extensions][:advancedfundraisingreports][:repository] = "https://github.com/jmcclelland/net.ourpowerbase.report.advancedfundraising.git"
-default[:civicrm][:extensions][:advancedfundraisingreports][:revision] = "3d5bd6cab70ba338bc85d42b4853dd4a6f8c9f9b"
+# default[:civicrm][:extensions][:advancedfundraisingreports][:name] = "net.ourpowerbase.report.advancedfundraising"
+# default[:civicrm][:extensions][:advancedfundraisingreports][:repository] = "https://github.com/jmcclelland/net.ourpowerbase.report.advancedfundraising.git"
+# default[:civicrm][:extensions][:advancedfundraisingreports][:revision] = "3d5bd6cab70ba338bc85d42b4853dd4a6f8c9f9b"
 
 # membership churn report
 default[:civicrm][:extensions][:membershipchurn][:name] = "uk.co.vedaconsulting.membershipchurnchart"
