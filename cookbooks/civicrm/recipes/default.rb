@@ -224,7 +224,13 @@ settings = edit_file "#{civicrm_directory}/civicrm/templates/CRM/common/civicrm.
   line
 end
 
-file "#{civicrm_directory}/civicrm.settings.php" do
+directory "/srv/supporting.openstreetmap.org/wp-content/uploads/civicrm" do
+  owner "www-data"
+  group "www-data"
+  mode "755"
+end
+
+file "/srv/supporting.openstreetmap.org/wp-content/uploads/civicrm/civicrm.settings.php" do
   owner "wordpress"
   group "wordpress"
   mode "644"
