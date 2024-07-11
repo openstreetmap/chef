@@ -26,6 +26,12 @@ ErrorLog /var/log/apache2/error.log
   SSLCertificateFile /etc/ssl/certs/www.openstreetmap.org.pem
   SSLCertificateKeyFile /etc/ssl/private/www.openstreetmap.org.key
 
+  # Get the real remote IP for requests via a trusted proxy
+  RemoteIPHeader CF-Connecting-IP
+<% @cloudflare.sort.each do |address| -%>
+  RemoteIPTrustedProxy <%= address %>
+<% end -%>
+
   #
   # Turn on various features
   #

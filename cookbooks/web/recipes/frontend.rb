@@ -34,6 +34,7 @@ apache_module "proxy"
 apache_module "proxy_fcgi"
 apache_module "lbmethod_byrequests"
 apache_module "lbmethod_bybusyness"
+apache_module "remoteip"
 apache_module "reqtimeout"
 apache_module "rewrite"
 apache_module "unique_id"
@@ -52,9 +53,26 @@ remote_directory "#{node[:web][:base_directory]}/static" do
   files_mode "644"
 end
 
+remote_file "#{Chef::Config[:file_cache_path]}/cloudflare-ipv4-list" do
+  source "https://www.cloudflare.com/ips-v4"
+  compile_time true
+  ignore_failure true
+end
+
+cloudflare_ipv4 = IO.read("#{Chef::Config[:file_cache_path]}/cloudflare-ipv4-list").lines.map(&:chomp)
+
+remote_file "#{Chef::Config[:file_cache_path]}/cloudflare-ipv6-list" do
+  source "https://www.cloudflare.com/ips-v6"
+  compile_time true
+  ignore_failure true
+end
+
+cloudflare_ipv6 = IO.read("#{Chef::Config[:file_cache_path]}/cloudflare-ipv6-list").lines.map(&:chomp)
+
 apache_site "www.openstreetmap.org" do
   template "apache.frontend.erb"
-  variables :status => node[:web][:status],
+  variables :cloudflare => cloudflare_ipv4 + cloudflare_ipv6,
+            :status => node[:web][:status],
             :secret_key_base => web_passwords["secret_key_base"]
 end
 
