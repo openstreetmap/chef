@@ -7,7 +7,8 @@ default_attributes(
     :evasive => {
       :page_count => 100,
       :site_count => 100,
-      :blocking_period => 30
+      :blocking_period => 30,
+      :enable => false
     },
     :event => {
       :server_limit => 20,
