@@ -8,7 +8,7 @@ default_attributes(
         :interface => "bond0",
         :role => :internal,
         :inet => {
-          :address => "10.0.48.12"
+          :address => "10.0.48.7"
         },
         :bond => {
           :mode => "802.3ad",
@@ -21,10 +21,10 @@ default_attributes(
         :interface => "bond0.3",
         :role => :external,
         :inet => {
-          :address => "184.104.179.140"
+          :address => "184.104.179.135"
         },
         :inet6 => {
-          :address => "2001:470:1:fa1::c"
+          :address => "2001:470:1:fa1::7"
         }
       }
     }
