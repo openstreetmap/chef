@@ -35,7 +35,7 @@ include_recipe "chef::knife"
 # end
 #
 # remote_file "#{cache_dir}/#{chef_package}" do
-#   source "https://packages.chef.io/files/stable/chef-server/#{chef_version}/ubuntu/20.04/chef-server-core_#{chef_version}-1_amd64.deb"
+#   source "https://packages.chef.io/files/stable/chef-server/#{chef_version}/ubuntu/22.04/chef-server-core_#{chef_version}-1_amd64.deb"
 #   owner "root"
 #   group "root"
 #   mode 0644
