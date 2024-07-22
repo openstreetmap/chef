@@ -12,5 +12,14 @@ options {
 
 	# Listen on any IPv6 interfaces
 	listen-on-v6 { any; };
+
+	# Ensure dnssec validation is enabled using embedded trust anchors
+	dnssec-validation auto;
+
+	# Set reasonably memory limit for cache
+	max-cache-size 10%;
+
+	# Ensure dnssec synth is disabled
+	synth-from-dnssec no;
 };
 
