@@ -1,5 +1,5 @@
-name "jakelong"
-description "Master role applied to jakelong"
+name "gorwen"
+description "Master role applied to gorwen"
 
 default_attributes(
   :dhcpd => {
