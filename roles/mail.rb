@@ -62,7 +62,7 @@ default_attributes(
       :community => {
         :comment => "community.openstreetmap.org",
         :domains => ["community.openstreetmap.org"],
-        :host => "jakelong.dub.openstreetmap.org::2500"
+        :host => "gorwen.dub.openstreetmap.org::2500"
       }
     },
     :dkim_selectors => {
