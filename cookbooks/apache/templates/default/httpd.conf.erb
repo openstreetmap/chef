@@ -6,9 +6,6 @@ Protocols h2 http/1.1
 # Set the number of seconds before receives and sends time out
 Timeout <%= node[:apache][:timeout] %>
 
-# Set only Major and Minor in the Server response header
-ServerTokens Minor
-
 # Decide whether or not to allow persistent connections
 Keepalive <%= node[:apache][:keepalive] ? "On" : "Off" %>
 <% if node[:apache][:mpm] == "prefork" -%>
