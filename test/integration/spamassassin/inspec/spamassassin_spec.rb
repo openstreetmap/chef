@@ -1,4 +1,4 @@
-service_name = if os.name == "debian"
+service_name = if os.name == "debian" || (os.name == "ubuntu" && os.release.to_f >= 24.04)
                  "spamd"
                else
                  "spamassassin"
