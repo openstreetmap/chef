@@ -1,9 +1,35 @@
 <% require 'uri' %>
+function getUrlParams() {
+  const params = {};
+  const queryString = window.location.search.substring(1);
+  const regex = /([^&=]+)=([^&]*)/g;
+  let match;
+
+  while (match = regex.exec(queryString)) {
+    params[decodeURIComponent(match[1])] = decodeURIComponent(match[2]);
+  }
+
+  return params;
+}
+
 function createMap(divName) {
+  // Get URL parameters
+  const params = getUrlParams();
+  const lon = params.lon ? parseFloat(params.lon) : null;
+  const lat = params.lat ? parseFloat(params.lat) : null;
+  const zoom = params.zoom ? parseInt(params.zoom) : null;
+
   // Create a map
   var map = L.map(divName, {
     worldCopyJump: true
-  }).fitBounds(<%= @bbox.to_json %>);
+  });
+
+  // Set initial view if URL parameters are available, otherwise fitBounds
+  if (lat !== null && lon !== null && zoom !== null) {
+    map.setView([lat, lon], zoom);
+  } else {
+    map.fitBounds(<%= @bbox.to_json %>);
+  }
 
   // Create a layer switcher
   var layers = L.control.layers(null, null, {collapsed:false}).addTo(map);
