@@ -6,4 +6,5 @@ description       "Installs and configures Blog services"
 
 version           "1.0.0"
 supports          "ubuntu"
+depends           "ssl"
 depends           "wordpress"

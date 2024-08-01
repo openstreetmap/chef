@@ -20,7 +20,7 @@
 include_recipe "wordpress"
 
 passwords = data_bag_item("birthday20", "passwords")
-wp2fa_encrypt_keys = data_bag_item("birthday20", "wp2fa_encrypt_keys")
+# wp2fa_encrypt_keys = data_bag_item("birthday20", "wp2fa_encrypt_keys")
 
 directory "/srv/birthday20.openstreetmap.org" do
   owner "wordpress"
@@ -28,27 +28,27 @@ directory "/srv/birthday20.openstreetmap.org" do
   mode "755"
 end
 
-wordpress_site "birthday20.openstreetmap.org" do
-  aliases ["birthday20.osm.org", "birthday20.openstreetmap.com",
-           "birthday20.openstreetmap.net", "birthday20.openstreetmaps.org"]
-  directory "/srv/birthday20.openstreetmap.org/wp"
-  database_name "osm-birthday20"
-  database_user "osm-birthday20-user"
-  database_password passwords["osm-birthday20-user"]
-  wp2fa_encrypt_key wp2fa_encrypt_keys["key"]
-  fpm_prometheus_port 11403
-end
+# wordpress_site "birthday20.openstreetmap.org" do
+#   aliases ["birthday20.osm.org", "birthday20.openstreetmap.com",
+#            "birthday20.openstreetmap.net", "birthday20.openstreetmaps.org"]
+#   directory "/srv/birthday20.openstreetmap.org/wp"
+#   database_name "osm-birthday20"
+#   database_user "osm-birthday20-user"
+#   database_password passwords["osm-birthday20-user"]
+#   wp2fa_encrypt_key wp2fa_encrypt_keys["key"]
+#   fpm_prometheus_port 11403
+# end
 
-wordpress_plugin "birthday20.openstreetmap.org-shareadraft" do
-  action :delete
-  plugin "shareadraft"
-  site "birthday20.openstreetmap.org"
-end
+# wordpress_plugin "birthday20.openstreetmap.org-shareadraft" do
+#   action :delete
+#   plugin "shareadraft"
+#   site "birthday20.openstreetmap.org"
+# end
 
-wordpress_plugin "birthday20.openstreetmap.org-public-post-preview" do
-  plugin "public-post-preview"
-  site "birthday20.openstreetmap.org"
-end
+# wordpress_plugin "birthday20.openstreetmap.org-public-post-preview" do
+#   plugin "public-post-preview"
+#   site "birthday20.openstreetmap.org"
+# end
 
 template "/etc/cron.daily/birthday20-backup" do
   source "backup-birthday20.cron.erb"
@@ -56,4 +56,9 @@ template "/etc/cron.daily/birthday20-backup" do
   group "root"
   mode "750"
   variables :passwords => passwords
+end
+
+ssl_certificate "birthday20.openstreetmap.org" do
+  domains ["birthday20.openstreetmap.org", "birthday20.osm.org", "birthday20.openstreetmap.com",
+           "birthday20.openstreetmap.net", "birthday20.openstreetmaps.org"]
 end
