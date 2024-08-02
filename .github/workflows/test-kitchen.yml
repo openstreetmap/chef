@@ -122,15 +122,39 @@ jobs:
           - os: ubuntu-2004
             suite: osqa
           - os: debian-12
+            suite: dns
+          - os: debian-12
+            suite: git-server
+          - os: debian-12
+            suite: git-web
+          - os: debian-12
             suite: imagery-tiler
           - os: debian-12
+            suite: letsencrypt
+          - os: debian-12
             suite: otrs
+          - os: debian-12
+            suite: serverinfo
+          - os: debian-12
+            suite: supybot
         exclude:
+          - suite: dns
+            os: ubuntu-2204
+          - suite: git-server
+            os: ubuntu-2204
+          - suite: git-web
+            os: ubuntu-2204
           - suite: mailman
+            os: ubuntu-2204
+          - suite: letsencrypt
             os: ubuntu-2204
           - suite: osqa
             os: ubuntu-2204
           - suite: otrs
+            os: ubuntu-2204
+          - suite: serverinfo
+            os: ubuntu-2204
+          - suite: supybot
             os: ubuntu-2204
       fail-fast: false
     steps:
