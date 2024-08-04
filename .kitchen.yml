@@ -71,6 +71,9 @@ suites:
   - name: apt
     run_list:
       - recipe[apt::default]
+  - name: apt-repository
+    run_list:
+      - recipe[apt::repository]
   - name: awscli
     run_list:
       - recipe[awscli::default]

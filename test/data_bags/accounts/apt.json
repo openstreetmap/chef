@@ -1,0 +1,6 @@
+{
+  "id": "apt",
+  "uid": "530",
+  "comment": "apt.openstreetmap.org",
+  "home": "/srv/apt.openstreetmap.org"
+}

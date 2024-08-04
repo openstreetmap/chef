@@ -21,6 +21,7 @@ jobs:
           - accounts
           - apache
           - apt
+          - apt-repository
           - backup
           - bind
           - blog
@@ -122,6 +123,8 @@ jobs:
           - os: ubuntu-2004
             suite: osqa
           - os: debian-12
+            suite: apt-repository
+          - os: debian-12
             suite: dns
           - os: debian-12
             suite: git-server
@@ -138,6 +141,8 @@ jobs:
           - os: debian-12
             suite: supybot
         exclude:
+          - suite: apt-repository
+            os: ubuntu-2204
           - suite: dns
             os: ubuntu-2204
           - suite: git-server
