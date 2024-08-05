@@ -331,6 +331,15 @@ groups:
           alertgroup: "{{ $labels.site }}"
         annotations:
           power: "{{ $value }} dBm"
+  - name: load
+    rules:
+      - alert: load average
+        expr: sum(node_load5) by (instance) / count(node_cpu_frequency_max_hertz) by (instance) > 2
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+        annotations:
+          load: "{{ $value | humanizePercentage }}"
   - name: mail
     rules:
       - alert: exim down
