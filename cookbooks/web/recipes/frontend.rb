@@ -26,6 +26,7 @@ include_recipe "web::rails"
 include_recipe "web::cgimap"
 
 web_passwords = data_bag_item("web", "passwords")
+admins = data_bag_item("apache", "admins")
 
 apache_module "alias"
 apache_module "expires"
@@ -69,10 +70,29 @@ end
 
 cloudflare_ipv6 = IO.read("#{Chef::Config[:file_cache_path]}/cloudflare-ipv6-list").lines.map(&:chomp)
 
+remote_file "#{Chef::Config[:file_cache_path]}/fastly-ip-list.json" do
+  source "https://api.fastly.com/public-ip-list"
+  compile_time true
+  ignore_failure true
+end
+
+fastlyips = JSON.parse(IO.read("#{Chef::Config[:file_cache_path]}/fastly-ip-list.json"))
+
+remote_file "#{Chef::Config[:file_cache_path]}/statuscake-locations.json" do
+  source "https://app.statuscake.com/Workfloor/Locations.php?format=json"
+  compile_time true
+  ignore_failure true
+end
+
+statuscakelocations = JSON.parse(IO.read("#{Chef::Config[:file_cache_path]}/statuscake-locations.json"))
+
 apache_site "www.openstreetmap.org" do
   template "apache.frontend.erb"
   variables :cloudflare => cloudflare_ipv4 + cloudflare_ipv6,
+            :fastly => fastlyips["addresses"] + fastlyips["ipv6_addresses"],
+            :statuscake => statuscakelocations.flat_map { |_, v| [v["ip"], v["ipv6"]] },
             :status => node[:web][:status],
+            :admins => admins["hosts"],
             :secret_key_base => web_passwords["secret_key_base"]
 end
 
