@@ -41,5 +41,6 @@ run_list(
   "role[letsencrypt]",
   "role[oxidized]",
   "role[supybot]",
+  "role[apt]",
   "recipe[serverinfo]"
 )
