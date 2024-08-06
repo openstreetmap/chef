@@ -38,7 +38,7 @@ end
 directory "/srv/apt.openstreetmap.org" do
   owner "apt"
   group "apt"
-  mode "2775"
+  mode "755"
 end
 
 execute "apt-generate-key" do

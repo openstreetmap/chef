@@ -5,10 +5,7 @@ default_attributes(
   :accounts => {
     :users => {
       :apt => {
-        :status => :role,
-        :members => [
-          :tomh, :grant
-        ]
+        :status => :role
       }
     }
   }
