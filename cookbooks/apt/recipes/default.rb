@@ -86,8 +86,9 @@ template "/etc/apt/sources.list" do
 end
 
 apt_repository "openstreetmap" do
-  uri "ppa:osmadmins/ppa"
-  only_if { platform?("ubuntu") }
+  uri "https://apt.openstreetmap.org"
+  components ["main"]
+  key "https://apt.openstreetmap.org/gpg.key"
 end
 
 package "unattended-upgrades"
