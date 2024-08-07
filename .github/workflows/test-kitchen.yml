@@ -168,6 +168,8 @@ jobs:
             os: ubuntu-2404
           - suite: otrs
             os: ubuntu-2404
+          - suite: taginfo
+            os: ubuntu-2404
       fail-fast: false
     steps:
     - name: Login to GitHub Container Registry
