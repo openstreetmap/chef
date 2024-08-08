@@ -219,6 +219,7 @@ elsif node[:nominatim][:api_flavour] == "python"
   python_package "jinja2" do
     python_virtualenv python_directory
     version "3.1.4"
+  end
 
   python_package "datrie" do
     python_virtualenv python_directory
@@ -228,6 +229,7 @@ elsif node[:nominatim][:api_flavour] == "python"
   python_package "psutil" do
     python_virtualenv python_directory
     version "6.0.0"
+  end
 end
 
 source_directory = "#{basedir}/src/nominatim"
