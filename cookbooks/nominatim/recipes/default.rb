@@ -168,17 +168,17 @@ elsif node[:nominatim][:api_flavour] == "python"
 
   python_package "SQLAlchemy" do
     python_virtualenv python_directory
-    version "2.0.29"
+    version "2.0.32"
   end
 
   python_package "PyICU" do
     python_virtualenv python_directory
-    version "2.12"
+    version "2.13.1"
   end
 
   python_package "psycopg[binary]" do
     python_virtualenv python_directory
-    version "3.1.18"
+    version "3.2.1"
   end
 
   python_package "psycopg2-binary" do
@@ -188,17 +188,17 @@ elsif node[:nominatim][:api_flavour] == "python"
 
   python_package "python-dotenv" do
     python_virtualenv python_directory
-    version "0.21.0"
+    version "1.0.1"
   end
 
   python_package "pygments" do
     python_virtualenv python_directory
-    version "2.17.2"
+    version "2.18.0"
   end
 
   python_package "PyYAML" do
     python_virtualenv python_directory
-    version "6.0.1"
+    version "6.0.2"
   end
 
   python_package "falcon" do
@@ -208,13 +208,26 @@ elsif node[:nominatim][:api_flavour] == "python"
 
   python_package "uvicorn" do
     python_virtualenv python_directory
-    version "0.29.0"
+    version "0.30.5"
   end
 
   python_package "gunicorn" do
     python_virtualenv python_directory
     version "22.0.0"
   end
+
+  python_package "jinja2" do
+    python_virtualenv python_directory
+    version "3.1.4"
+
+  python_package "datrie" do
+    python_virtualenv python_directory
+    version "0.8.2"
+  end
+
+  python_package "psutil" do
+    python_virtualenv python_directory
+    version "6.0.0"
 end
 
 source_directory = "#{basedir}/src/nominatim"
