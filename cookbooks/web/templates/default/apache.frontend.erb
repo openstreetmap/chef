@@ -30,7 +30,32 @@ ErrorLog /var/log/apache2/error.log
   RemoteIPHeader CF-Connecting-IP
 <% @cloudflare.sort.each do |address| -%>
   RemoteIPTrustedProxy <%= address %>
+  Require ip <%= address %>
 <% end -%>
+    # Fastly POPs
+<% @fastly.sort.each do |address| -%>
+    Require ip <%= address %>
+    RemoteIPTrustedProxy <%= address %>
+<% end -%>
+    # StatusCake monitoring
+<% @statuscake.sort.reject { |address| address.empty? }.each do |address| -%>
+    Require ip <%= address %>
+<% end -%>
+    # Administrators
+<% @admins.sort.each do |address| -%>
+    Require ip <%= address %>
+<% end -%>
+    # OSM Amsterdam IPv4
+    Require ip 184.104.179.128/27
+    # OSM Amsterdam IPv6
+    Require ip 2001:470:1:fa1::/64
+    # OSM Dublin IPv4
+    Require ip 184.104.226.96/27
+    # OSM Dublin IPv6
+    Require ip 2001:470:1:b3b::/64
+    # OSM UCL IPv4
+    Require ip 193.60.236.0/24
+
 
   #
   # Turn on various features
