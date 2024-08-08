@@ -230,6 +230,11 @@ elsif node[:nominatim][:api_flavour] == "python"
     python_virtualenv python_directory
     version "6.0.0"
   end
+
+  python_package "osmium" do
+    python_virtualenv python_directory
+    version "3.7.0"
+  end
 end
 
 source_directory = "#{basedir}/src/nominatim"
