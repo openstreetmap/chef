@@ -4,6 +4,10 @@ module OpenStreetMap
   class PostgreSQL
     include Chef::Mixin::ShellOut
 
+    SCHEMA_PRIVILEGES = [
+      :create, :usage
+    ].freeze
+
     TABLE_PRIVILEGES = [
       :select, :insert, :update, :delete, :truncate, :references, :trigger
     ].freeze
@@ -111,6 +115,18 @@ module OpenStreetMap
       @tablespaces ||= query("SELECT spcname, usename FROM pg_tablespace AS t INNER JOIN pg_user AS u ON t.spcowner = u.usesysid").each_with_object({}) do |tablespace, tablespaces|
         tablespaces[tablespace[:spcname]] = {
           :owner => tablespace[:usename]
+        }
+      end
+    end
+
+    def schemas(database)
+      @schemas ||= {}
+      @schemas[database] ||= query("SELECT n.nspname, pg_catalog.pg_get_userbyid(n.nspowner) AS usename, n.nspacl FROM pg_namespace AS n WHERE n.nspname !~ '^pg_' AND n.nspname <> 'information_schema'", :database => database).each_with_object({}) do |schema, schemas|
+        name = "#{schema[:nspname]}"
+
+        schemas[name] = {
+          :owner => schema[:usename],
+          :permissions => parse_acl(schema[:nspacl] || "{}")
         }
       end
     end
