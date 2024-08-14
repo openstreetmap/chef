@@ -81,13 +81,17 @@ template "/srv/community.openstreetmap.org/docker/containers/data.yml" do
   notifies :run, "notify_group[discourse_container_new_data]"
 end
 
+resolvers = node[:networking][:nameservers].map do |resolver|
+  resolver =~ /:/ ? "[#{resolver}]" : resolver
+end
+
 template "/srv/community.openstreetmap.org/docker/containers/web_only.yml" do
   source "web_only.yml.erb"
   owner "root"
   group "root"
   mode "640"
   variables :license_keys => license_keys, :passwords => passwords,
-            :prometheus_servers => prometheus_servers
+            :prometheus_servers => prometheus_servers, :resolvers => resolvers
   notifies :run, "notify_group[discourse_container_new_web_only]"
 end
 

@@ -129,6 +129,6 @@ hooks:
         to: |
           add_header Strict-Transport-Security 'max-age=63072000' always;
           ssl_stapling on;
-          resolver <%= node[:networking][:nameservers].join(" ") %>;
+          resolver <%= @resolvers.join(" ") %>;
           resolver_timeout 5s;
           ssl_dhparam /shared/ssl/dhparam.pem;
