@@ -123,7 +123,7 @@ ErrorLog /var/log/apache2/error.log
     FileETag Size
 
     ExpiresDefault "access plus 1 year"
-    Header set Cache-Control "immutable, max-age=31536000"
+    Header set Cache-Control "immutable, max-age=31536000" "expr=%{REQUEST_STATUS} == 200"
   </Location>
 
   #
