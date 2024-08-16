@@ -65,7 +65,7 @@
         Alias /git /var/cache/git
         ScriptAlias / /usr/lib/cgi-bin/gitweb.cgi/
 
-        <Location />
+        <Location /public>
                   Require all granted
         </Location>
 <% unless @private_allowed.empty? -%>
