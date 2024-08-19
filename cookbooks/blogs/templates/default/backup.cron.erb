@@ -12,6 +12,6 @@ sqlite3 /srv/blogs.openstreetmap.org/planet.db ".backup $T/blogs-$D/planet.db"
 export RSYNC_RSH="ssh -ax"
 
 nice tar --create --dereference --directory=$T blogs-$D | nice gzip --rsyncable -9 > $T/$B
-nice rsync --preallocate --fuzzy $T/$B backup::backup
+nice rsync --preallocate --fuzzy $T/$B backup.openstreetmap.org::backup
 
 rm -rf $T

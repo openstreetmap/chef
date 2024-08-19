@@ -15,6 +15,6 @@ ln -s <%= @directory %>/upfiles $T/<%= @name %>-$D/upfiles
 export RSYNC_RSH="ssh -ax"
 
 nice tar --create --dereference --directory=$T <%= @name %>-$D | nice gzip --rsyncable -9 > $T/$B
-nice rsync --preallocate --fuzzy $T/$B backup::backup
+nice rsync --preallocate --fuzzy $T/$B backup.openstreetmap.org::backup
 
 rm -rf $T

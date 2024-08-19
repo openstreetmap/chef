@@ -11,6 +11,6 @@ ln -s /var/lib/git $T/git-$D
 export RSYNC_RSH="ssh -ax"
 
 nice tar --create --dereference --directory=$T git-$D | nice gzip --rsyncable -9 > $T/$B
-nice rsync --preallocate --fuzzy $T/$B backup::backup
+nice rsync --preallocate --fuzzy $T/$B backup.openstreetmap.org::backup
 
 rm -rf $T

@@ -12,6 +12,6 @@ ln -s /var/lib/mailman $T/lists-$D/mailman
 export RSYNC_RSH="ssh -ax"
 
 nice tar --create --dereference --warning=no-file-changed --warning=no-file-removed --directory=$T lists-$D | nice gzip --rsyncable -9 > $T/$B
-nice rsync --preallocate --fuzzy $T/$B backup::backup
+nice rsync --preallocate --fuzzy $T/$B backup.openstreetmap.org::backup
 
 rm -rf $T

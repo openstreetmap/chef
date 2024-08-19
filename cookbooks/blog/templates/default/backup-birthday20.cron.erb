@@ -16,6 +16,6 @@ ln -s /srv/birthday20.openstreetmap.org $T/osm-birthday20-$D/www
 export RSYNC_RSH="ssh -ax"
 
 nice tar --create --dereference --directory=$T --warning=no-file-changed osm-birthday20-$D | nice gzip --rsyncable -9 > $T/$B
-nice rsync --preallocate --fuzzy $T/$B backup::backup
+nice rsync --preallocate --fuzzy $T/$B backup.openstreetmap.org::backup
 
 rm -rf $T
