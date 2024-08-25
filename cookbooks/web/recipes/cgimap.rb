@@ -24,6 +24,10 @@ include_recipe "web::base"
 db_passwords = data_bag_item("db", "passwords")
 
 package "openstreetmap-cgimap-bin" do
+  action :purge
+end
+
+package "openstreetmap-cgimap" do
   action :install
 end
 
