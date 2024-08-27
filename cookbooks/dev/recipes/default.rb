@@ -93,6 +93,7 @@ package %w[
   nano
   netcat
   osm2pgsql
+  osmium-tool
   osmosis
   pandoc
   pandoc
@@ -117,6 +118,7 @@ package %w[
   pngcrush
   pngquant
   proj-bin
+  pyosmium
   python-is-python3
   python3
   python3-brotli
