@@ -30,6 +30,15 @@ if platform?("debian")
     components ["non-free"]
     key "C208ADDE26C2B797"
   end
+
+  if node[:dmi][:system][:product_name].end_with?("Gen9")
+    apt_repository "mcp-gen9" do
+      uri "https://downloads.linux.hpe.com/SDR/repo/mcp"
+      distribution "stretch/current-gen9"
+      components ["non-free"]
+      key "C208ADDE26C2B797"
+    end
+  end
 elsif platform?("ubuntu")
   if node[:dmi][:system][:product_name].end_with?("Gen10")
     apt_repository "mcp-jammy" do
