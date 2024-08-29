@@ -465,6 +465,12 @@ end
 disks = disks.compact.uniq
 
 if disks.count.positive?
+  apt_preference "smartmontools" do
+    pin "release o=Debian Backports"
+    pin_priority "600"
+    only_if { platform?("debian") }
+  end
+
   package "smartmontools"
 
   template "/etc/cron.daily/update-smart-drivedb" do
