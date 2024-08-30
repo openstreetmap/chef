@@ -5,3 +5,7 @@ run_list(
   "role[pl]",
   "role[cloudferro]"
 )
+
+default_attributes(
+  :location => "Warsaw"
+)
