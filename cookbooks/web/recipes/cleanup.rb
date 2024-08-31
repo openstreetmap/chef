@@ -19,13 +19,32 @@
 
 include_recipe "web::base"
 
-ruby = "ruby#{node[:ruby][:version]}"
+web_passwords = data_bag_item("web", "passwords")
+
 rails_directory = "#{node[:web][:base_directory]}/rails"
 
-template "/etc/cron.daily/web-cleanup" do
-  source "cleanup.cron.erb"
-  owner "root"
-  group "root"
-  mode "755"
-  variables :ruby => ruby, :directory => rails_directory
+file "/etc/cron.daily/web-cleanup" do
+  action :delete
+end
+
+systemd_service "rails-cleanup" do
+  description "Rails cleanup"
+  type "simple"
+  environment "RAILS_ENV" => "production",
+              "SECRET_KEY_BASE" => web_passwords["secret_key_base"]
+  user "rails"
+  working_directory rails_directory
+  exec_start "#{node[:ruby][:bundle]} exec rails db:expire_tokens"
+  sandbox :enable_network => true
+  memory_deny_write_execute false
+  read_write_paths "/var/log/web"
+end
+
+systemd_timer "rails-cleanup" do
+  description "Rails cleanup"
+  on_calendar "02:00"
+end
+
+service "rails-cleanup.timer" do
+  action [:enable, :start]
 end
