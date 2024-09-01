@@ -83,7 +83,6 @@ CGIMAP_PERMISSIONS = {
   "changeset_comments" => [:select],
   "changeset_tags" => [:select],
   "changesets" => [:select, :update],
-  "client_applications" => [:select],
   "current_node_tags" => [:select, :insert, :delete],
   "current_nodes" => [:select, :insert, :update],
   "current_nodes_id_seq" => [:update],
@@ -101,9 +100,6 @@ CGIMAP_PERMISSIONS = {
   "oauth_access_grants" => [:select],
   "oauth_access_tokens" => [:select],
   "oauth_applications" => [:select],
-  "oauth_nonces" => [:select, :insert],
-  "oauth_nonces_id_seq" => [:update],
-  "oauth_tokens" => [:select],
   "relation_members" => [:select, :insert],
   "relation_tags" => [:select, :insert],
   "relations" => [:select, :insert],
@@ -151,7 +147,6 @@ PROMETHEUS_PERMISSIONS = {
   changeset_tags
   changesets
   changesets_subscribers
-  client_applications
   current_node_tags
   current_nodes
   current_relation_members
@@ -179,9 +174,7 @@ PROMETHEUS_PERMISSIONS = {
   oauth_access_grants
   oauth_access_tokens
   oauth_applications
-  oauth_nonces
   oauth_openid_requests
-  oauth_tokens
   redactions
   relation_members
   relation_tags
@@ -218,7 +211,6 @@ end
   active_storage_variant_records_id_seq
   changeset_comments_id_seq
   changesets_id_seq
-  client_applications_id_seq
   current_nodes_id_seq
   current_relations_id_seq
   current_ways_id_seq
@@ -236,9 +228,7 @@ end
   oauth_access_grants_id_seq
   oauth_access_tokens_id_seq
   oauth_applications_id_seq
-  oauth_nonces_id_seq
   oauth_openid_requests_id_seq
-  oauth_tokens_id_seq
   redactions_id_seq
   reports_id_seq
   user_blocks_id_seq
