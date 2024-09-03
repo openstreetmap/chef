@@ -91,7 +91,7 @@ package %w[
   mailutils
   make
   nano
-  netcat
+  netcat-openbsd
   osm2pgsql
   osmium-tool
   osmosis
