@@ -128,6 +128,7 @@ package %w[
   python3-dev
   python3-dotenv
   python3-gdal
+  python3-geojson
   python3-lxml
   python3-lz4
   python3-magic
@@ -152,10 +153,6 @@ execute "uk_os_OSTN15_NTv2_OSGBtoETRS.tif" do
 end
 
 nodejs_package "svgo"
-
-python_package "geojson" do
-  python_version "3"
-end
 
 apache_module "env"
 apache_module "expires"
