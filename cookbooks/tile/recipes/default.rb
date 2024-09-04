@@ -505,6 +505,13 @@ directory "/var/log/tile" do
   mode "755"
 end
 
+if platform?("debian")
+  apt_preference "osm2pgsql" do
+    pin "release o=Debian Backports"
+    pin_priority "600"
+  end
+end
+
 package %w[
   osm2pgsql
   osmium-tool
