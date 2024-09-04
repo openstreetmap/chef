@@ -2,6 +2,20 @@ name "wawel"
 description "Master role applied to wawel"
 
 default_attributes(
+  :networking => {
+    :intefaces => {
+      :external => {
+        :interface => "ens3",
+        :role => :external,
+        :inet => {
+          :address => "10.0.0.51",
+          :prefix => "24",
+          :gateway => "10.0.0.1",
+          :public_address => "64.225.136.96"
+        }
+      }
+    }
+  },
   :postgresql => {
     :settings => {
       :defaults => {
