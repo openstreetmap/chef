@@ -116,6 +116,13 @@ suites:
   - name: db-slave
     run_list:
       - recipe[db::slave]
+  - name: dev
+    run_list:
+      - recipe[dev::default]
+    attributes:
+      postgresql:
+        versions:
+          - 15
   - name: devices
     run_list:
       - recipe[devices::default]

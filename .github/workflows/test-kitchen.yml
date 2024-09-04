@@ -34,6 +34,7 @@ jobs:
           - db-base
           - db-master
           - db-slave
+          - dev
           - devices
           - dhcpd
           - dmca
@@ -125,6 +126,8 @@ jobs:
           - os: debian-12
             suite: apt-repository
           - os: debian-12
+            suite: dev
+          - os: debian-12
             suite: dns
           - os: debian-12
             suite: git-server
@@ -148,6 +151,8 @@ jobs:
             suite: web-rails
         exclude:
           - suite: apt-repository
+            os: ubuntu-2204
+          - suite: dev
             os: ubuntu-2204
           - suite: dns
             os: ubuntu-2204
