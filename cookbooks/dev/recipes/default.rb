@@ -20,6 +20,7 @@
 require "yaml"
 require "securerandom"
 
+include_recipe "accounts"
 include_recipe "apache"
 include_recipe "passenger"
 include_recipe "geoipupdate"
