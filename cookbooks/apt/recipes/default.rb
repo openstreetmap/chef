@@ -45,6 +45,10 @@ if platform?("debian")
   archive_security_distro = "debian-security"
   archive_suites = %w[main updates backports security]
   archive_components = %w[main contrib non-free non-free-firmware]
+  backport_packages = case node[:lsb][:codename]
+                      when "bookworm" then %w[osm2pgsql otrs2 smartmontools]
+                      else %w[]
+                      end
 elsif intel?
   archive_host = if node[:country]
                    "#{node[:country]}.archive.ubuntu.com"
@@ -56,6 +60,7 @@ elsif intel?
   archive_security_distro = archive_distro
   archive_suites = %w[main updates backports security]
   archive_components = %w[main restricted universe multiverse]
+  backport_packages = %w[]
 else
   archive_host = "ports.ubuntu.com"
   archive_security_host = archive_host
@@ -63,6 +68,7 @@ else
   archive_security_distro = archive_distro
   archive_suites = %w[main updates backports security]
   archive_components = %w[main restricted universe multiverse]
+  backport_packages = %w[]
 end
 
 template "/etc/apt/sources.list" do
@@ -78,6 +84,24 @@ template "/etc/apt/sources.list" do
             :archive_components => archive_components,
             :codename => node[:lsb][:codename]
   notifies :update, "apt_update[/etc/apt/sources.list]", :immediately
+end
+
+if backport_packages.empty?
+  apt_preference "backports" do
+    action :remove
+  end
+else
+  apt_preference "backports" do
+    glob backport_packages.sort.map { |p| "src:#{p}" }.join(" ")
+    pin "release n=#{node[:lsb][:codename]}-backports"
+    pin_priority "500"
+  end
+end
+
+execute "apt-cache-gencaches" do
+  action :nothing
+  command "apt-cache gencaches"
+  subscribes :run, "apt_preference[backports]", :immediately
 end
 
 apt_repository "openstreetmap" do

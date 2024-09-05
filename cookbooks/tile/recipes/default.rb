@@ -505,11 +505,8 @@ directory "/var/log/tile" do
   mode "755"
 end
 
-if platform?("debian")
-  apt_preference "osm2pgsql" do
-    pin "release o=Debian Backports"
-    pin_priority "600"
-  end
+apt_preference "osm2pgsql" do
+  action :remove
 end
 
 package %w[

@@ -63,10 +63,8 @@ template "/etc/dbconfig-common/otrs2.conf" do
             :database_cluster => database_cluster
 end
 
-# Ensure the OTRS package in backports has a priority preference.
 apt_preference "otrs2" do
-  pin "release o=Debian Backports"
-  pin_priority "600"
+  action :remove
 end
 
 apt_package "otrs2"
