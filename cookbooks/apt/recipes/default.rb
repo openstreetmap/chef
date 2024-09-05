@@ -46,7 +46,7 @@ if platform?("debian")
   archive_suites = %w[main updates backports security]
   archive_components = %w[main contrib non-free non-free-firmware]
   backport_packages = case node[:lsb][:codename]
-                      when "bookworm" then %w[osm2pgsql otrs2 smartmontools]
+                      when "bookworm" then %w[exim4 libosmium osm2pgsql otrs2 pyosmium smartmontools]
                       else %w[]
                       end
 elsif intel?
