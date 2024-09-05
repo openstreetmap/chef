@@ -54,6 +54,7 @@ package %w[
   g++
   gcc
   gdal-bin
+  gfortran
   gnuplot-nox
   golang
   graphviz
