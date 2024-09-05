@@ -29,11 +29,6 @@ file "/etc/motd.tail" do
   action :delete
 end
 
-# FIXME: cleanup old package pin method for cciss-vol-status
-file "/etc/apt/preferences.d/99-chef" do
-  action :delete
-end
-
 apt_preference "cciss-vol-status" do
   pin          "origin *.ubuntu.com"
   pin_priority "1100"
