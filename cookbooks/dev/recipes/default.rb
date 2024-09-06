@@ -43,6 +43,7 @@ package %w[
   awscli
   cmake
   composer
+  curl
   default-jdk-headless
   default-jre-headless
   fonts-dejavu
