@@ -465,10 +465,6 @@ end
 disks = disks.compact.uniq
 
 if disks.count.positive?
-  apt_preference "smartmontools" do
-    action :remove
-  end
-
   package "smartmontools"
 
   template "/etc/cron.daily/update-smart-drivedb" do

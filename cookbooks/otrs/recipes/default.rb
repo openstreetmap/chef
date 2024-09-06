@@ -63,10 +63,6 @@ template "/etc/dbconfig-common/otrs2.conf" do
             :database_cluster => database_cluster
 end
 
-apt_preference "otrs2" do
-  action :remove
-end
-
 apt_package "otrs2"
 
 # Ensure debconf is repopulated on a dbconfig change

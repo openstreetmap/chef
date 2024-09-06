@@ -505,10 +505,6 @@ directory "/var/log/tile" do
   mode "755"
 end
 
-apt_preference "osm2pgsql" do
-  action :remove
-end
-
 package %w[
   osm2pgsql
   osmium-tool
