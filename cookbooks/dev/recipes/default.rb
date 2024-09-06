@@ -29,6 +29,7 @@ include_recipe "memcached"
 include_recipe "mysql"
 include_recipe "nodejs"
 include_recipe "php::fpm"
+include_recipe "podman"
 include_recipe "postgresql"
 include_recipe "python"
 include_recipe "ruby"
@@ -46,6 +47,7 @@ package %w[
   curl
   default-jdk-headless
   default-jre-headless
+  eatmydata
   fonts-dejavu
   fonts-dejavu-core
   fonts-dejavu-extra
