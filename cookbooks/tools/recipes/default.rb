@@ -23,10 +23,12 @@ package %w[
   dmidecode
   ethtool
   iotop
+  iptraf-ng
   locales-all
   lsof
   lsscsi
   lvm2
+  mtr-tiny
   numactl
   pciutils
   rsyslog
