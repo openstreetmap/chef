@@ -19,26 +19,26 @@
 
 package %w[
   bash-completion
+  cron
   dmidecode
   ethtool
+  iotop
+  locales-all
   lsof
   lsscsi
+  lvm2
+  numactl
   pciutils
+  rsyslog
   screen
   smartmontools
   strace
   sysstat
+  systemd-coredump
   tcpdump
   usbutils
-  numactl
-  xfsprogs
-  iotop
-  lvm2
-  rsyslog
-  cron
-  locales-all
-  systemd-coredump
   vim
+  xfsprogs
 ]
 
 service "rsyslog" do
