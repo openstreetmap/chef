@@ -1,6 +1,6 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
-<% if node.platform?("ubuntu") && node[:lsb][:release].to_f >= 22.04 -%>
+<% if node.platform?("debian") || (node.platform?("ubuntu") && node[:lsb][:release].to_f >= 22.04) -%>
 # options for update-exim4.conf
 UPEX4OPTS=''
 # options for exim4
