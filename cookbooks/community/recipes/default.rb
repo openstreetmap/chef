@@ -95,6 +95,14 @@ template "/srv/community.openstreetmap.org/docker/containers/web_only.yml" do
   notifies :run, "notify_group[discourse_container_new_web_only]"
 end
 
+template "/srv/community.openstreetmap.org/files/policyd-spf.conf" do
+  source "policyd-spf.conf.erb"
+  owner "community"
+  group "community"
+  mode "644"
+  notifies :run, "notify_group[discourse_container_new_mail_receiver]"
+end
+
 template "/srv/community.openstreetmap.org/docker/containers/mail-receiver.yml" do
   source "mail-receiver.yml.erb"
   owner "root"

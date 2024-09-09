@@ -1,0 +1,16 @@
+# Source: https://github.com/discourse/mail-receiver/blob/main/policyd-spf.conf
+#  For a fully commented sample config file see policyd-spf.conf.commented
+
+debugLevel = 1
+TestOnly = 1
+
+# Change these options to False if you want to pass SPF failures through to DMARC milter
+HELO_reject = Fail
+Mail_From_reject = Fail
+
+
+PermError_reject = False
+TempError_Defer = False
+
+skip_addresses = 127.0.0.0/8,::ffff:127.0.0.0/104,::1,10.0.0.0/8
+
