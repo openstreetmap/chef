@@ -1,6 +1,7 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
 nominatim refresh --postcodes --word-tokens --threads 4 -v
+nominatim admin --clean-deleted '1 month'
 
 <% if node[:nominatim][:enable_qa_tiles] -%>
 pushd <%= @qabindir %>
