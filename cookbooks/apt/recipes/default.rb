@@ -38,6 +38,8 @@ apt_update "/etc/apt/sources.list" do
   action :nothing
 end
 
+dpkg_arch = node[:packages][:systemd][:arch]
+
 if platform?("debian")
   archive_host = "deb.debian.org"
   archive_security_host = archive_host
@@ -46,8 +48,8 @@ if platform?("debian")
   archive_suites = %w[main updates backports security]
   archive_components = %w[main contrib non-free non-free-firmware]
   backport_packages = case node[:lsb][:codename]
-                      when "bookworm" then %w[exim4 libosmium osm2pgsql otrs2 pyosmium smartmontools systemd]
-                      else %w[]
+                      when "bookworm" then %W[amd64-microcode exim4 firmware-free firmware-nonfree intel-microcode libosmium linux-signed-#{dpkg_arch} osm2pgsql otrs2 pyosmium smartmontools systemd]
+                      else %W[]
                       end
 elsif intel?
   archive_host = if node[:country]
