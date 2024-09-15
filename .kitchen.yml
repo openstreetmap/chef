@@ -163,6 +163,9 @@ suites:
   - name: fail2ban
     run_list:
       - recipe[fail2ban::default]
+  - name: foundation-birthday
+    run_list:
+      - recipe[foundation::birthday]
   - name: foundation-board
     run_list:
       - recipe[foundation::board]

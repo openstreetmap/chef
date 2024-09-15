@@ -43,6 +43,7 @@ jobs:
           - elasticsearch
           - exim
           - fail2ban
+          - foundation-birthday
           - foundation-board
           - foundation-dwg
           - foundation-mastodon

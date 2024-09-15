@@ -39,6 +39,7 @@ run_list(
   "role[irc]",
   "role[blogs]",
   "role[switch2osm]",
+  "recipe[foundation::birthday]",
   "recipe[foundation::mastodon]",
   "recipe[foundation::owg]",
   "recipe[foundation::welcome]",

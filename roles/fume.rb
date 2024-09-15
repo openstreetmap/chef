@@ -33,6 +33,5 @@ default_attributes(
 
 run_list(
   "role[equinix-dub]",
-  "role[blog-staging]",
-  "role[birthday20]"
+  "role[blog-staging]"
 )
