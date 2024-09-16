@@ -22,7 +22,7 @@
 <% end -%>
 <% if node[:recipes].include?("web::cgimap") -%>
     /bin/systemctl reload cgimap
-    /usr/bin/rsync --preallocate <%= node[:web][:log_directory] %>/cgimap.log.2.gz ironbelly::logs/www.openstreetmap.org/cgimap-<%= node[:hostname] %>-`date -d "-2 days" +%Y-%m-%d`.gz
+    /usr/bin/rsync --preallocate <%= node[:web][:log_directory] %>/cgimap.log.2.gz backup.openstreetmap.org::logs/www.openstreetmap.org/cgimap-<%= node[:hostname] %>-`date -d "-2 days" +%Y-%m-%d`.gz
 <% end -%>
   endscript
 }

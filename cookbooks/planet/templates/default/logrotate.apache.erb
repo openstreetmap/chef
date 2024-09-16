@@ -11,7 +11,7 @@
 	sharedscripts
 	postrotate
 		/etc/init.d/apache2 reload > /dev/null
-		rsync --preallocate /var/log/apache2/planet.openstreetmap.org-access.log.2.gz ironbelly::logs/planet.openstreetmap.org/`date -d "-7 days" +%Y-%m-%d`.gz
+		rsync --preallocate /var/log/apache2/planet.openstreetmap.org-access.log.2.gz backup.openstreetmap.org::logs/planet.openstreetmap.org/`date -d "-7 days" +%Y-%m-%d`.gz
 	endscript
 	prerotate
 		if [ -d /etc/logrotate.d/httpd-prerotate ]; then \

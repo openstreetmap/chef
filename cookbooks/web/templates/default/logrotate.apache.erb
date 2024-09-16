@@ -11,6 +11,6 @@
   sharedscripts
   postrotate
     /etc/init.d/apache2 reload > /dev/null
-    /usr/bin/rsync --preallocate /var/log/apache2/access.log.2.gz ironbelly::logs/www.openstreetmap.org/<%= node[:hostname] %>-`date -d "-2 days" +%Y-%m-%d`.gz
+    /usr/bin/rsync --preallocate /var/log/apache2/access.log.2.gz backup.openstreetmap.org::logs/www.openstreetmap.org/<%= node[:hostname] %>-`date -d "-2 days" +%Y-%m-%d`.gz
   endscript
 }

@@ -32,6 +32,15 @@ directory "/store/backup" do
   recursive true
 end
 
+%w[planet tile www].each do |service|
+  directory "/store/logs/#{service}.openstreetmap.org" do
+    owner "osmbackup"
+    group "osmbackup"
+    mode "2755"
+    recursive true
+  end
+end
+
 cookbook_file "/usr/local/bin/expire-backups" do
   owner "root"
   group "root"
