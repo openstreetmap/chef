@@ -23,46 +23,6 @@ include_recipe "wordpress"
 passwords = data_bag_item("stateofthemap", "passwords")
 wp2fa_encrypt_keys = data_bag_item("stateofthemap", "wp2fa_encrypt_keys")
 
-directory "/srv/2009.stateofthemap.org" do
-  owner "wordpress"
-  group "wordpress"
-  mode "755"
-end
-
-git "/srv/2009.stateofthemap.org" do
-  action :sync
-  repository "https://git.openstreetmap.org/public/stateofthemap.git"
-  revision "resources-2009"
-  depth 1
-  user "wordpress"
-  group "wordpress"
-end
-
-wordpress_site "2009.stateofthemap.org" do
-  aliases ["2009.stateofthemap.com", "2009.sotm.org"]
-  directory "/srv/2009.stateofthemap.org/wp"
-  database_name "sotm2009"
-  database_user "sotm2009"
-  database_password passwords["sotm2009"]
-  wp2fa_encrypt_key wp2fa_encrypt_keys["sotm2009"]
-  urls "/register" => "/srv/2009.stateofthemap.org/register",
-       "/register-pro-user" => "/srv/2009.stateofthemap.org/register-pro-user",
-       "/podcasts" => "/srv/2009.stateofthemap.org/podcasts"
-  fpm_prometheus_port 12009
-end
-
-wordpress_theme "2009.stateofthemap.org-aerodrome" do
-  theme "aerodrome"
-  site "2009.stateofthemap.org"
-  repository "https://git.openstreetmap.org/public/stateofthemap.git"
-  revision "theme-2009"
-end
-
-# wordpress_plugin "2009.stateofthemap.org-wp-sticky" do
-#   plugin "wp-sticky"
-#   site "2009.stateofthemap.org"
-# end
-
 directory "/srv/2010.stateofthemap.org" do
   owner "wordpress"
   group "wordpress"
