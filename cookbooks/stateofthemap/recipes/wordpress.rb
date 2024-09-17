@@ -23,68 +23,6 @@ include_recipe "wordpress"
 passwords = data_bag_item("stateofthemap", "passwords")
 wp2fa_encrypt_keys = data_bag_item("stateofthemap", "wp2fa_encrypt_keys")
 
-directory "/srv/2007.stateofthemap.org" do
-  owner "wordpress"
-  group "wordpress"
-  mode "755"
-end
-
-wordpress_site "2007.stateofthemap.org" do
-  aliases ["2007.stateofthemap.com", "2007.sotm.org"]
-  directory "/srv/2007.stateofthemap.org/wp"
-  database_name "sotm2007"
-  database_user "sotm2007"
-  database_password passwords["sotm2007"]
-  database_prefix "wp_sotm_"
-  wp2fa_encrypt_key wp2fa_encrypt_keys["sotm2007"]
-  fpm_prometheus_port 12007
-end
-
-wordpress_theme "2007.stateofthemap.org-refreshwp-11" do
-  theme "refreshwp-11"
-  site "2007.stateofthemap.org"
-  repository "https://git.openstreetmap.org/public/stateofthemap.git"
-  revision "theme-2007"
-end
-
-# Remove broken geopress plugin
-wordpress_plugin "2007.stateofthemap.org-geopress" do
-  action :delete
-  plugin "geopress"
-  site "2007.stateofthemap.org"
-end
-
-directory "/srv/2008.stateofthemap.org" do
-  owner "wordpress"
-  group "wordpress"
-  mode "755"
-end
-
-wordpress_site "2008.stateofthemap.org" do
-  aliases ["2008.stateofthemap.com", "2008.sotm.org"]
-  directory "/srv/2008.stateofthemap.org/wp"
-  database_name "sotm2008"
-  database_user "sotm2008"
-  database_password passwords["sotm2008"]
-  database_prefix "wp_sotm08_"
-  wp2fa_encrypt_key wp2fa_encrypt_keys["sotm2008"]
-  fpm_prometheus_port 12008
-end
-
-wordpress_theme "2008.stateofthemap.org-refreshwp-11" do
-  theme "refreshwp-11"
-  site "2008.stateofthemap.org"
-  repository "https://git.openstreetmap.org/public/stateofthemap.git"
-  revision "theme-2008"
-end
-
-# Remove broken geopress plugin
-wordpress_plugin "2008.stateofthemap.org-geopress" do
-  action :delete
-  plugin "geopress"
-  site "2008.stateofthemap.org"
-end
-
 directory "/srv/2009.stateofthemap.org" do
   owner "wordpress"
   group "wordpress"
