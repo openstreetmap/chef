@@ -96,6 +96,7 @@ package %w[
   mailutils
   make
   nano
+  ncftp
   netcat-openbsd
   osm2pgsql
   osmium-tool
