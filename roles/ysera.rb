@@ -5,14 +5,14 @@ default_attributes(
   :networking => {
     :interfaces => {
       :internal => {
-        :interface => "eno1.2801",
+        :interface => "eno1np0.2801",
         :role => :internal,
         :inet => {
           :address => "10.0.0.15"
         }
       },
       :external => {
-        :interface => "eno1.2800",
+        :interface => "eno1np0.2800",
         :role => :external,
         :inet => {
           :address => "193.60.236.22"
