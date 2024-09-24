@@ -49,7 +49,7 @@ package %w[
 ]
 
 remote_file "#{srcdir}.tar.gz" do
-  action :create
+  action :create_if_missing
   source "https://dev.overpass-api.de/releases/osm-3s_v#{node[:overpass][:version]}.tar.gz"
   owner username
   group username
