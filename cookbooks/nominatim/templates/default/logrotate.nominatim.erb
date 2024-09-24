@@ -1,15 +1,5 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
-<%= node[:nominatim][:logdir] %>/update.log {
-  weekly
-  missingok
-  rotate 30
-  compress
-  delaycompress
-  notifempty
-  create 640 nominatim adm
-}
-
 <%= node[:nominatim][:logdir] %>/query.log {
   weekly
   missingok
@@ -17,10 +7,8 @@
   compress
   delaycompress
   notifempty
-<% if node[:nominatim][:api_flavour] == "python" %>
   postrotate
         systemctl reload nominatim.service
   endscript
-<% end -%>
   create 640 www-data adm
 }

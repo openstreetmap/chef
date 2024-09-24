@@ -1,9 +1,5 @@
 upstream nominatim_service {
-<% if node[:nominatim][:api_flavour] == "php" %>
-  server unix:/run/php/php-nominatim.openstreetmap.org-fpm.sock fail_timeout=0;
-<% elsif node[:nominatim][:api_flavour] == "python"  %>
   server unix:/run/gunicorn-nominatim.openstreetmap.org.sock fail_timeout=0;
-<% end -%>
 }
 
 map $uri $nominatim_script_name {
@@ -213,13 +209,6 @@ server {
         limit_req zone=tarpit burst=5;
         limit_req zone=reverse burst=5;
         limit_req_status 429;
-<% if node[:nominatim][:api_flavour] == "php" %>
-        fastcgi_pass nominatim_service;
-        include fastcgi_params;
-        fastcgi_param QUERY_STRING    $args;
-        fastcgi_param PATH_INFO       "$nominatim_path_info";
-        fastcgi_param SCRIPT_FILENAME  "<%= @directory %>/website/$nominatim_script_name";
-<% elsif node[:nominatim][:api_flavour] == "python" %>
 
         if ($request_method = 'OPTIONS') {
           add_header 'Content-Type' 'text/plain; charset=UTF-8';
@@ -235,30 +224,5 @@ server {
         proxy_set_header X-Forwarded-Proto $scheme;
         proxy_redirect off;
         proxy_pass http://nominatim_service;
-<% end -%>
     }
-
-<% if node[:nominatim][:api_flavour] == "php" %>
-    location ~* \.php$ {
-        if ($blocked_user_agent ~ ^2$)
-        { return 403; }
-        if ($blocked_referrer)
-        { return 403; }
-        if ($blocked_email)
-        { return 403; }
-        include <%= @confdir %>/nginx_blocked_generic.conf;
-
-        limit_req zone=www burst=10;
-        limit_req zone=tarpit burst=2;
-        limit_req zone=reverse burst=5;
-        limit_req_status 429;
-        fastcgi_pass    nominatim_service;
-        include         fastcgi_params;
-        fastcgi_param   SCRIPT_FILENAME    <%= @directory %>/website/$fastcgi_script_name;
-
-        if ($forward_to_ui) {
-            rewrite (.*).php https://$host/ui$1.html redirect;
-        }
-    }
-<% end -%>
 }

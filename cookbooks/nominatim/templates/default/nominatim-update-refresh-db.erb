@@ -6,7 +6,12 @@ date "+%c === Refresh database after software updates"
 
 cd <%= @projectdir %>
 
+<% if node.platform?("debian") -%>
+<%= @venvprefix %>nominatim admin --migrate
+<%= @venvprefix %>nominatim refresh --functions --address-levels
+<% else -%>
 # Run the migrations from the nominatim version in the build directory,
 # so they can execute while the frontend doesn't have the new code yet.
 <%= @builddir %>/nominatim admin --migrate
 <%= @builddir %>/nominatim refresh --functions --address-levels --website
+<% end -%>
