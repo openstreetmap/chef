@@ -24,4 +24,5 @@ apt_repository "nodesource" do
   distribution "nodistro"
   components ["main"]
   key "https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key"
+  ignore_failure true
 end
