@@ -18,7 +18,7 @@ default_attributes(
         }
       },
       :external => {
-        :interface => "bond0.2",
+        :interface => "bond0.3",
         :role => :external,
         :inet => {
           :address => "184.104.179.142"
