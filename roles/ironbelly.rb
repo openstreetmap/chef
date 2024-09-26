@@ -2,6 +2,10 @@ name "ironbelly"
 description "Master role applied to ironbelly"
 
 default_attributes(
+  :dhcpd => {
+    :first_address => "10.0.63.1",
+    :last_address => "10.0.63.254"
+  },
   :elasticsearch => {
     :cluster => {
       :routing => {
@@ -76,7 +80,9 @@ default_attributes(
 
 run_list(
   "role[equinix-ams]",
+  "role[gateway]",
   "recipe[rsyncd]",
+  "recipe[dhcpd]",
   "recipe[imagery::za_ngi_aerial]",
   "recipe[imagery::us_imagery]"
 )
