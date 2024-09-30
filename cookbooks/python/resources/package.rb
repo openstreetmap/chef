@@ -25,16 +25,17 @@ property :package_name, :kind_of => String, :name_property => true
 property :version, :kind_of => String
 property :python_version, :kind_of => String
 property :python_virtualenv, :kind_of => String
+property :extra_index_url, :kind_of => String
 
 action :install do
   if new_resource.version.nil?
     execute "pip-install-#{new_resource.package_name}" do
-      command "#{pip_command} install #{new_resource.package_name}"
+      command "#{pip_command} install #{pip_extra_index} #{new_resource.package_name}"
       not_if "#{pip_command} show #{new_resource.package_name}"
     end
   else
     execute "pip-install-#{new_resource.package_name}" do
-      command "#{pip_command} install #{new_resource.package_name}==#{new_resource.version}"
+      command "#{pip_command} install #{pip_extra_index} #{new_resource.package_name}==#{new_resource.version}"
       not_if "#{pip_command} show #{new_resource.package_name} | fgrep -q #{new_resource.version}"
     end
   end
@@ -43,12 +44,12 @@ end
 action :upgrade do
   if new_resource.version.nil?
     execute "pip-upgrade-#{new_resource.package_name}" do
-      command "#{pip_command} install --upgrade #{new_resource.package_name}"
+      command "#{pip_command} install #{pip_extra_index} --upgrade #{new_resource.package_name}"
       only_if "#{pip_command} list --outdated | fgrep -q #{new_resource.package_name}"
     end
   else
     execute "pip-upgrade-#{new_resource.package_name}" do
-      command "#{pip_command} install --upgrade #{new_resource.package_name}==#{new_resource.version}"
+      command "#{pip_command} install #{pip_extra_index} --upgrade #{new_resource.package_name}==#{new_resource.version}"
       not_if "#{pip_command} show #{new_resource.package_name} | fgrep -q #{new_resource.version}"
     end
   end
@@ -62,6 +63,12 @@ action :remove do
 end
 
 action_class do
+  def pip_extra_index
+    if new_resource.extra_index_url
+      "--extra-index-url '#{new_resource.extra_index_url}'"
+    end
+  end
+
   def pip_command
     if new_resource.python_virtualenv
       "#{new_resource.python_virtualenv}/bin/pip"
