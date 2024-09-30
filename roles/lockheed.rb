@@ -28,6 +28,16 @@ default_attributes(
         }
       }
     }
+  },
+  :nginx => {
+    :cache => {
+      :proxy => {
+          :enable => true,
+          :keys_zone => "proxy_cache_zone:256M",
+          :inactive => "180d",
+          :max_size => "51200M"
+      }
+    }
   }
 )
 
