@@ -23,26 +23,7 @@ include_recipe "postgresql"
 include_recipe "python"
 include_recipe "ruby"
 
-passwords = data_bag_item("db", "passwords")
 wal_secrets = data_bag_item("db", "wal-secrets")
-
-directory "/srv/www.openstreetmap.org" do
-  group "rails"
-  mode "2775"
-end
-
-rails_port "www.openstreetmap.org" do
-  directory "/srv/www.openstreetmap.org/rails"
-  user "rails"
-  group "rails"
-  repository "https://git.openstreetmap.org/public/rails.git"
-  revision "live"
-  build_assets false
-  database_host "localhost"
-  database_name "openstreetmap"
-  database_username "openstreetmap"
-  database_password passwords["openstreetmap"]
-end
 
 package %w[
   cmake
