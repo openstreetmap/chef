@@ -35,5 +35,6 @@ default_attributes(
 )
 
 run_list(
-  "role[cloudferro-waw3-2]"
+  "role[cloudferro-waw3-2]",
+  "role[vectortile]"
 )
