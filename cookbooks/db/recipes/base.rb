@@ -27,15 +27,17 @@ wal_secrets = data_bag_item("db", "wal-secrets")
 
 package %w[
   cmake
-  libosmium2-dev
-  libprotozero-dev
+  g++
   libboost-filesystem-dev
   libboost-program-options-dev
   libbz2-dev
-  zlib1g-dev
   libexpat1-dev
-  libyaml-cpp-dev
+  libosmium2-dev
   libpqxx-dev
+  libprotozero-dev
+  libyaml-cpp-dev
+  make
+  zlib1g-dev
 ]
 
 git "/opt/osmdbt" do
