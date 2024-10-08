@@ -3,21 +3,20 @@
 #
 
 templates:
-  - "templates/postgres.13.template.yml"
+  - "templates/postgres.13.template.yml" # NOTE UPDATE THE HOOK REPLACE FOR MAX CONNECTIONS BELOW
   - "templates/redis.template.yml"
 
 # any extra arguments for Docker?
 # docker_args:
 
 params:
-  db_default_text_search_config: "pg_catalog.english"
-
   ## Set db_shared_buffers to a max of 25% of the total memory.
   ## will be set automatically by bootstrap based on detected RAM, or you can override
-  db_shared_buffers: "4096MB"
+  db_shared_buffers: "8192MB"
 
   ## can improve sorting performance, but adds memory usage per-connection
-  #db_work_mem: "40MB"
+  db_work_mem: "40MB"
+  db_max_connections: "200"
 
 env:
   # ensure locale exists in container, you may need to install it
@@ -48,3 +47,10 @@ hooks:
           # m h  dom mon dow   command
           # MAILTO=?
           0 4 * * * /var/lib/postgresql/take-database-backup
+
+run:
+  # Make sure this matches the postgresql version template above
+  - replace:
+      filename: "/etc/postgresql/13/main/postgresql.conf"
+      from: /#?max_connections *=.*/
+      to: "max_connections = $db_max_connections"
