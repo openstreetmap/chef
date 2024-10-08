@@ -4,6 +4,10 @@ module OpenStreetMap
   class PostgreSQL
     include Chef::Mixin::ShellOut
 
+    SCHEMA_PRIVILEGES = [
+      :create, :usage
+    ].freeze
+
     TABLE_PRIVILEGES = [
       :select, :insert, :update, :delete, :truncate, :references, :trigger
     ].freeze
@@ -115,9 +119,21 @@ module OpenStreetMap
       end
     end
 
+    def schemas(database)
+      @schemas ||= {}
+      @schemas[database] ||= query("SELECT n.nspname, pg_catalog.pg_get_userbyid(n.nspowner) AS usename, n.nspacl FROM pg_namespace AS n WHERE n.nspname !~ '^pg_' AND n.nspname <> 'information_schema'", :database => database).each_with_object({}) do |schema, schemas|
+        name = "#{schema[:nspname]}"
+
+        schemas[name] = {
+          :owner => schema[:usename],
+          :permissions => parse_acl(schema[:nspacl] || "{}")
+        }
+      end
+    end
+
     def tables(database)
       @tables ||= {}
-      @tables[database] ||= query("SELECT n.nspname, c.relname, u.usename, c.relacl FROM pg_class AS c INNER JOIN pg_user AS u ON c.relowner = u.usesysid INNER JOIN pg_namespace AS n ON c.relnamespace = n.oid WHERE n.nspname NOT IN ('pg_catalog', 'information_schema') AND c.relkind = 'r'", :database => database).each_with_object({}) do |table, tables|
+      @tables[database] ||= query("SELECT n.nspname, c.relname, u.usename, c.relacl FROM pg_class AS c INNER JOIN pg_user AS u ON c.relowner = u.usesysid INNER JOIN pg_namespace AS n ON c.relnamespace = n.oid WHERE n.nspname NOT IN ('pg_catalog', 'information_schema') AND c.relkind IN ('r', 'p')", :database => database).each_with_object({}) do |table, tables|
         name = "#{table[:nspname]}.#{table[:relname]}"
 
         tables[name] = {

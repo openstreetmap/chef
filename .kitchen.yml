@@ -416,6 +416,9 @@ suites:
   - name: trac
     run_list:
       - recipe[trac::default]
+  - name: vectortile
+    run_list:
+      - recipe[vectortile::default]
   - name: web-cgimap
     run_list:
       - recipe[web::cgimap]
