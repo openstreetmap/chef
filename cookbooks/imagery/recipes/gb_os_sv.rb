@@ -193,7 +193,7 @@ imagery_layer "gb_os_sv_2016_04" do
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2016"
   background_colour "230 246 255" # OSSV Water Blue
   extension "os_sv_png"
-  url_aliases ["/sv-2016-04", "/sv"] # Add "/sv" to current edition for backward compatibility
+  url_aliases ["/sv-2016-04"]
 end
 
 # ======= Diff layers =======
@@ -1205,6 +1205,16 @@ imagery_layer "gb_os_om_local_2024_04" do
   copyright "Contains OS data &copy; Crown copyright and database right 2024"
   background_colour "213 244 248" # OS OpenMap Local Water Blue
   extension "os_om_local_png"
-  url_aliases ["/om-local-2024-04", "/om-local"]
+end
+
+imagery_layer "gb_os_om_local_2024_10" do
+  site "os.openstreetmap.org"
+  title "OS OpenMap Local - October 2024"
+  projection "EPSG:27700"
+  source "/data/imagery/gb/openmap-local/2024-10/os-openmap-local-2024-10.vrt"
+  copyright "Contains OS data &copy; Crown copyright and database right 2024"
+  background_colour "213 244 248" # OS OpenMap Local Water Blue
+  extension "os_om_local_png"
+  url_aliases ["/om-local-2024-10", "/om-local", "/sv"]
   default_layer true
 end
