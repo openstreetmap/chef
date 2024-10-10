@@ -25,7 +25,12 @@ when "7.x" then include_recipe "apt::elasticsearch7"
 when "8.x" then include_recipe "apt::elasticsearch8"
 end
 
-package "default-jre-headless"
+if node[:elasticsearch][:version] == "6.x"
+  package "openjdk-11-jre-headless"
+else
+  package "default-jre-headless"
+end
+
 package "elasticsearch"
 
 template "/etc/elasticsearch/elasticsearch.yml" do

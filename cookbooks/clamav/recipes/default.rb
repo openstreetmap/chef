@@ -22,14 +22,17 @@ include_recipe "accounts"
 package %w[
   clamav-daemon
   clamav-freshclam
-  clamav-unofficial-sigs
 ]
 
-template "/etc/clamav-unofficial-sigs.conf.d/50-chef.conf" do
-  source "clamav-unofficial-sigs.conf.erb"
-  owner "root"
-  group "root"
-  mode "644"
+if platform?("ubuntu") && node[:lsb][:release].to_f < 24.04
+  package "clamav-unofficial-sigs"
+
+  template "/etc/clamav-unofficial-sigs.conf.d/50-chef.conf" do
+    source "clamav-unofficial-sigs.conf.erb"
+    owner "root"
+    group "root"
+    mode "644"
+  end
 end
 
 execute "freshclam" do
