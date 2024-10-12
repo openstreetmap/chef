@@ -40,7 +40,7 @@ nginx_site "vector.openstreetmap.org" do
 end
 
 ssl_certificate node[:fqdn] do
-  domains [node[:fqdn], "vector.openstreetmap.org"]
+  domains [node[:fqdn]]
   notifies :reload, "service[nginx]"
 end
 
