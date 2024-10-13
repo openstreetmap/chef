@@ -21,6 +21,10 @@ describe http("https://localhost/shortbread_v1/tilejson.json", :ssl_verify => fa
   its("status") { should cmp 200 }
 end
 
+describe json(:content => http("https://localhost/shortbread_v1/tilejson.json", :ssl_verify => false)) do
+  its(["tiles"]) { should eq(["https://vector.openstreetmap.org/shortbread_v1/{z}/{x}/{y}.mvt"]) }
+end
+
 # There are no tiles so everything should return a 404
 describe http("https://localhost/shortbread_v1/0/0/0.mvt", :ssl_verify => false) do
   its("status") { should cmp 404 }
