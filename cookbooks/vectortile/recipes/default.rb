@@ -222,7 +222,7 @@ systemd_service "tilekiln" do
   wants "postgresql.service"
   sandbox :enable_network => true
   restrict_address_families "AF_UNIX"
-  exec_start "#{tilekiln_directory}/bin/tilekiln serve #{tilekiln_mode} --storage-dbname tiles --num-threads #{node[:vectortile][:serve][:threads]}"
+  exec_start "#{tilekiln_directory}/bin/tilekiln serve #{tilekiln_mode} --storage-dbname tiles --num-threads #{node[:vectortile][:serve][:threads]} --base-url 'https://vector.openstreetmap.org'"
 end
 
 service "tilekiln" do
