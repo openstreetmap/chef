@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PYOSMIUM="pyosmium-get-changes --server <%= node[:overpass][:replication_url] %> -f <%= @basedir %>/db/replicate-id"
+PYOSMIUM="pyosmium-get-changes --server <%= node[:overpass][:replication_url] %> --diff-type osc.gz -f <%= @basedir %>/db/replicate-id"
 <% if node[:overpass][:meta_mode] == "attic" -%>
 PYOSMIUM="$PYOSMIUM --no-deduplicate"
 <% end -%>
