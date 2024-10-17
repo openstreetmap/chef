@@ -3,7 +3,7 @@ description "Master role applied to wawel"
 
 default_attributes(
   :networking => {
-    :intefaces => {
+    :interfaces => {
       :external => {
         :interface => "ens3",
         :role => :external,
