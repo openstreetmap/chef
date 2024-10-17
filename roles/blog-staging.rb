@@ -13,7 +13,6 @@ default_attributes(
   }
 )
 
-# FIXME: Disable while site under development
-# run_list(
-#   "recipe[blog::staging]"
-# )
+run_list(
+  "recipe[blog::staging]"
+)

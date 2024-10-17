@@ -33,5 +33,6 @@ default_attributes(
 
 run_list(
   "role[equinix-ams]",
-  "role[hp-g9]"
+  "role[hp-g9]",
+  "role[blog-staging]"
 )
