@@ -755,7 +755,7 @@ GEM
     wisper (2.0.1)
     yajl-ruby (1.4.3)
     yaml-safe_load_stream3 (0.1.2)
-    zeitwerk (2.7.1)
+    zeitwerk (2.6.18)
 
 PLATFORMS
   ruby
@@ -765,6 +765,7 @@ DEPENDENCIES
   kitchen-dokken
   kitchen-inspec
   test-kitchen
+  zeitwerk (< 2.7)
 
 BUNDLED WITH
    2.2.16
