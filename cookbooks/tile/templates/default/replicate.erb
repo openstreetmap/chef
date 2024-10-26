@@ -11,7 +11,6 @@ do
     --number-processes=1 \
     --log-progress=false \
     --expire-tiles=10-16 \
-    --expire-segment-length=90000 \
     --expire-output=/var/lib/replicate/dirty-tiles.txt \
 <% if node[:tile][:database][:multi_geometry] -%>
     --multi-geometry \
