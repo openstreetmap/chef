@@ -300,6 +300,72 @@ systemd_service "update-lowzoom@" do
   restart "on-failure"
 end
 
+postgresql_version = node[:tile][:database][:cluster].split("/").first
+postgis_version = node[:tile][:database][:postgis]
+
+package "postgresql-#{postgresql_version}-postgis-#{postgis_version}"
+
+postgresql_user "jburgess" do
+  cluster node[:tile][:database][:cluster]
+  superuser true
+end
+
+postgresql_user "tomh" do
+  cluster node[:tile][:database][:cluster]
+  superuser true
+end
+
+postgresql_user "pnorman" do
+  cluster node[:tile][:database][:cluster]
+  superuser true
+end
+
+postgresql_user "tile" do
+  cluster node[:tile][:database][:cluster]
+end
+
+postgresql_user "www-data" do
+  cluster node[:tile][:database][:cluster]
+end
+
+postgresql_user "_renderd" do
+  cluster node[:tile][:database][:cluster]
+end
+
+postgresql_database "gis" do
+  cluster node[:tile][:database][:cluster]
+  owner "tile"
+end
+
+postgresql_extension "postgis" do
+  cluster node[:tile][:database][:cluster]
+  database "gis"
+end
+
+postgresql_extension "hstore" do
+  cluster node[:tile][:database][:cluster]
+  database "gis"
+  only_if { node[:tile][:database][:hstore] }
+end
+
+%w[geography_columns planet_osm_nodes planet_osm_rels planet_osm_ways raster_columns raster_overviews].each do |table|
+  postgresql_table table do
+    cluster node[:tile][:database][:cluster]
+    database "gis"
+    owner "tile"
+    permissions "tile" => :all
+  end
+end
+
+%w[geometry_columns planet_osm_line planet_osm_point planet_osm_polygon planet_osm_roads spatial_ref_sys].each do |table|
+  postgresql_table table do
+    cluster node[:tile][:database][:cluster]
+    database "gis"
+    owner "tile"
+    permissions "tile" => :all, "www-data" => :select, "_renderd" => :select
+  end
+end
+
 directory "/srv/tile.openstreetmap.org/styles" do
   owner "tile"
   group "tile"
@@ -383,6 +449,18 @@ node[:tile][:styles].each do |name, details|
     end
   end
 
+  if details[:functions_script]
+    postgresql_execute details[:functions_script] do
+      action :nothing
+      command details[:functions_script]
+      cluster node[:tile][:database][:cluster]
+      database "gis"
+      user "tile"
+      group "tile"
+      subscribes :run, "git[#{style_directory}]"
+    end
+  end
+
   execute "#{style_directory}/project.mml" do
     action :nothing
     command "carto -a 3.0.22 project.mml > project.xml"
@@ -392,72 +470,6 @@ node[:tile][:styles].each do |name, details|
     subscribes :run, "git[#{style_directory}]"
     notifies :restart, "service[renderd]", :immediately
     notifies :restart, "service[update-lowzoom@#{name}]"
-  end
-end
-
-postgresql_version = node[:tile][:database][:cluster].split("/").first
-postgis_version = node[:tile][:database][:postgis]
-
-package "postgresql-#{postgresql_version}-postgis-#{postgis_version}"
-
-postgresql_user "jburgess" do
-  cluster node[:tile][:database][:cluster]
-  superuser true
-end
-
-postgresql_user "tomh" do
-  cluster node[:tile][:database][:cluster]
-  superuser true
-end
-
-postgresql_user "pnorman" do
-  cluster node[:tile][:database][:cluster]
-  superuser true
-end
-
-postgresql_user "tile" do
-  cluster node[:tile][:database][:cluster]
-end
-
-postgresql_user "www-data" do
-  cluster node[:tile][:database][:cluster]
-end
-
-postgresql_user "_renderd" do
-  cluster node[:tile][:database][:cluster]
-end
-
-postgresql_database "gis" do
-  cluster node[:tile][:database][:cluster]
-  owner "tile"
-end
-
-postgresql_extension "postgis" do
-  cluster node[:tile][:database][:cluster]
-  database "gis"
-end
-
-postgresql_extension "hstore" do
-  cluster node[:tile][:database][:cluster]
-  database "gis"
-  only_if { node[:tile][:database][:hstore] }
-end
-
-%w[geography_columns planet_osm_nodes planet_osm_rels planet_osm_ways raster_columns raster_overviews].each do |table|
-  postgresql_table table do
-    cluster node[:tile][:database][:cluster]
-    database "gis"
-    owner "tile"
-    permissions "tile" => :all
-  end
-end
-
-%w[geometry_columns planet_osm_line planet_osm_point planet_osm_polygon planet_osm_roads spatial_ref_sys].each do |table|
-  postgresql_table table do
-    cluster node[:tile][:database][:cluster]
-    database "gis"
-    owner "tile"
-    permissions "tile" => :all, "www-data" => :select, "_renderd" => :select
   end
 end
 
