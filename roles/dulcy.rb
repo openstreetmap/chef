@@ -29,31 +29,40 @@ default_attributes(
       }
     }
   },
-  :postgresql => {
-    :versions => ["15"],
-    :settings => {
-      :defaults => {
-        :work_mem => "240MB",
-        :effective_io_concurrency => "500"
+  :accounts => {
+    :users => {
+      :lonvia => { :status => :administrator },
+      :nominatim => {
+        :status => :role,
+        :members => [:lonvia, :tomh]
       }
     }
-  },
-  :nominatim => {
-    :state => "standalone",
-    :dbcluster => "15/main",
-    :postgis => "3",
-    :flatnode_file => "/ssd/nominatim/nodes.store",
-    :logdir => "/ssd/nominatim/log",
-    :api_flavour => "python",
-    :api_workers => 14,
-    :api_pool_size => 10,
-    :config => {
-      :forward_dependencies => "yes"
-    }
   }
+  # :postgresql => {
+  #   :versions => ["15"],
+  #   :settings => {
+  #     :defaults => {
+  #       :work_mem => "240MB",
+  #       :effective_io_concurrency => "500"
+  #     }
+  #   }
+  # },
+  # :nominatim => {
+  #   :state => "standalone",
+  #   :dbcluster => "15/main",
+  #   :postgis => "3",
+  #   :flatnode_file => "/ssd/nominatim/nodes.store",
+  #   :logdir => "/ssd/nominatim/log",
+  #   :api_flavour => "python",
+  #   :api_workers => 14,
+  #   :api_pool_size => 10,
+  #   :config => {
+  #     :forward_dependencies => "yes"
+  #   }
+  # }
 )
 
 run_list(
-  "role[equinix-ams]",
-  "role[nominatim]"
+  "role[equinix-ams]"
+  # "role[nominatim]"
 )
