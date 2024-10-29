@@ -106,6 +106,7 @@ if platform?("debian")
   python_directory = "#{basedir}/venv"
 
   package %w[
+    build-essential
     libicu-dev
     python3-dev
     pkg-config
