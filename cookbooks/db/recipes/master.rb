@@ -170,6 +170,7 @@ PROMETHEUS_PERMISSIONS = {
   node_tags
   nodes
   note_comments
+  note_subscriptions
   notes
   oauth_access_grants
   oauth_access_tokens
