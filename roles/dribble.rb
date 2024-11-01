@@ -28,15 +28,9 @@ default_attributes(
         }
       }
     }
-  },
-  :accounts => {
-    :users => {
-      :stereo => { :status => :administrator }
-    }
   }
 )
 
 run_list(
-  "role[equinix-ams]",
-  "role[taginfo]"
+  "role[equinix-ams]"
 )
