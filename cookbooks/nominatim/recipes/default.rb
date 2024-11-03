@@ -111,6 +111,10 @@ if platform?("debian")
     python3-dev
     pkg-config
     osm2pgsql
+    ruby
+    ruby-file-tail
+    ruby-pg
+    ruby-webrick
   ]
 
   python_virtualenv python_directory do
