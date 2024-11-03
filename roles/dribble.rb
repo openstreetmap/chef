@@ -28,9 +28,23 @@ default_attributes(
         }
       }
     }
+  },
+  :postgresql => {
+    :settings => {
+      :defaults => {
+        :effective_cache_size => "350GB"
+      }
+    }
+  },
+  :vectortile => {
+    :replication => {
+      :status => :disabled,
+      :tileupdate => :disabled
+    }
   }
 )
 
 run_list(
-  "role[equinix-ams]"
+  "role[equinix-ams]",
+  "role[vectortile]"
 )
