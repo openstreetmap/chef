@@ -20,6 +20,7 @@
 package %w[
   bash-completion
   cron
+  curl
   dmidecode
   ethtool
   iotop
