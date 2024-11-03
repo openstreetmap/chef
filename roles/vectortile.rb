@@ -13,7 +13,6 @@ default_attributes(
   :postgresql => {
     :settings => {
       :defaults => {
-        :max_connections => "250",
         :shared_buffers => "16GB",
         :work_mem => "128MB",
         :maintenance_work_mem => "8GB",
