@@ -410,15 +410,15 @@ intel_nvmes = nvmes.select { |pci| pci[:vendor_name] == "Intel Corporation" }
 if !intel_ssds.empty? || !intel_nvmes.empty?
   package "unzip"
 
-  sst_tool_version = "1.3"
-  sst_package_version = "#{sst_tool_version}.208-0"
+  sst_tool_version = "2-0"
+  sst_package_version = "2.0.300-0"
 
-  # remote_file "#{Chef::Config[:file_cache_path]}/SST_CLI_Linux_#{sst_tool_version}.zip" do
-  #   source "https://downloadmirror.intel.com/743764/SST_CLI_Linux_#{sst_tool_version}.zip"
-  # end
+  remote_file "#{Chef::Config[:file_cache_path]}/sst-cli-linux-deb--#{sst_tool_version}.zip" do
+    source "https://sdmsdfwdriver.blob.core.windows.net/files/kba-gcc/drivers-downloads/ka-00085/sst--#{sst_tool_version}/sst-cli-linux-deb--#{sst_tool_version}.zip"
+  end
 
-  execute "#{Chef::Config[:file_cache_path]}/SST_CLI_Linux_#{sst_tool_version}.zip" do
-    command "unzip SST_CLI_Linux_#{sst_tool_version}.zip sst_#{sst_package_version}_amd64.deb"
+  execute "#{Chef::Config[:file_cache_path]}/sst-cli-linux-deb--#{sst_tool_version}.zip" do
+    command "unzip sst-cli-linux-deb--#{sst_tool_version}.zip sst_#{sst_package_version}_amd64.deb"
     cwd Chef::Config[:file_cache_path]
     user "root"
     group "root"
