@@ -148,7 +148,7 @@ if platform?("debian")
     owner "nominatim"
     group "nominatim"
     mode "664"
-    variables :base_url => node[:nominatim][:state] == "off" ? node[:fqdn] : "nominatim.openstreetmap.org",
+    variables :base_url => "nominatim.openstreetmap.org",
               :dbname => node[:nominatim][:dbname],
               :flatnode_file => node[:nominatim][:flatnode_file],
               :log_file => "#{node[:nominatim][:logdir]}/query.log",
@@ -284,13 +284,13 @@ if platform?("debian")
   end
 
   systemd_timer "nominatim-update-maintenance-trigger" do
-    action node[:nominatim][:state] != "off" ? :create : :delete
+    action :create
     description "Schedule daily maintenance tasks for Nominatim DB"
     on_calendar "*-*-* 02:03:00 UTC"
   end
 
   service "nominatim-update-maintenance-trigger" do
-    action node[:nominatim][:state] != "off" ? :enable : :disable
+    action :enable
   end
 
   ## Nominatim UI
