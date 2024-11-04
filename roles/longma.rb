@@ -30,7 +30,7 @@ default_attributes(
     }
   },
   :postgresql => {
-    :versions => ["16"],
+    :versions => ["17"],
     :settings => {
       :defaults => {
         :max_connections => "550",
@@ -40,23 +40,11 @@ default_attributes(
     }
   },
   :nominatim => {
-    :state => "standalone",
-    :dbcluster => "16/main",
-    :postgis => "3",
+    :dbcluster => "17/main",
     :enable_qa_tiles => true,
-    :flatnode_file => "/ssd/nominatim/nodes.store",
-    :logdir => "/ssd/nominatim/log",
-    :api_flavour => "python",
+    :flatnode_file => "/srv/nominatim.openstreetmap.org/planet-project/nodes.store",
     :api_workers => 24,
-    :api_pool_size => 10,
-    :fpm_pools => {
-      "nominatim.openstreetmap.org" => {
-        :max_children => 200
-      }
-    },
-    :config => {
-      :forward_dependencies => "yes"
-    }
+    :api_pool_size => 10
   }
 )
 
