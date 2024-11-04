@@ -38,7 +38,6 @@ default_attributes(
   },
   :vectortile => {
     :replication => {
-      :status => :disabled,
       :tileupdate => :disabled
     }
   }
