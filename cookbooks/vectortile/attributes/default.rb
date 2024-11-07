@@ -10,6 +10,7 @@ default[:vectortile][:replication][:threads] = node.cpu_cores
 
 default[:postgresql][:versions] |= [node[:vectortile][:database][:cluster].split("/").first]
 default[:postgresql][:monitor_database] = "tiles"
-default[:postgresql][:settings][:defaults][:max_connections] = (node.cpu_cores * 4 + 20).to_s
+# As an absolute worst case, the server might have the serving, update, and a manual generation process going on.
+default[:postgresql][:settings][:defaults][:max_connections] = (node.cpu_cores * 6 + 20).to_s
 default[:accounts][:users][:tileupdate][:status] = :role
 default[:accounts][:users][:tilekiln][:status] = :role
