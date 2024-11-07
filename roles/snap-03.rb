@@ -14,7 +14,7 @@ default_attributes(
           :mode => "802.3ad",
           :lacprate => "fast",
           :xmithashpolicy => "layer3+4",
-          :slaves => %w[enp25s0f0 enp25s0f1]
+          :slaves => %w[enp25s0f0np0 enp25s0f1np1]
         }
       }
     }
