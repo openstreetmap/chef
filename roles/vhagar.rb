@@ -30,8 +30,7 @@ default_attributes(
     }
   },
   :nominatim => {
-    :state => "standalone",
-    :dbcluster => "15/main",
+    :dbcluster => "17/main",
     :flatnode_file => "/srv/nominatim.openstreetmap.org/planet-project/nodes.store",
     :api_flavour => "python",
     :api_workers => 24,
