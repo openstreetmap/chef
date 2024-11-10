@@ -23,7 +23,7 @@ default_attributes(
     }
   },
   :postgresql => {
-    :versions => ["15"],
+    :versions => ["17"],
     :settings => {
       :defaults => {
         :work_mem => "300MB",
@@ -33,11 +33,8 @@ default_attributes(
     }
   },
   :nominatim => {
-    :state => "standalone",
-    :dbcluster => "15/main",
-    :postgis => "3",
+    :dbcluster => "17/main",
     :flatnode_file => "/srv/nominatim.openstreetmap.org/planet-project/nodes.store",
-    :api_flavour => "python",
     :api_workers => 19,
     :api_pool_size => 7
   }
@@ -46,6 +43,6 @@ default_attributes(
 run_list(
   "role[osuosl]",
   "role[hp-g9]",
-  "role[geodns]"
-  # "role[nominatim]"
+  "role[geodns]",
+  "role[nominatim]"
 )
