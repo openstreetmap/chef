@@ -46,6 +46,6 @@ default_attributes(
 run_list(
   "role[osuosl]",
   "role[hp-g9]",
-  "role[geodns]",
-  "role[nominatim]"
+  "role[geodns]"
+  # "role[nominatim]"
 )
