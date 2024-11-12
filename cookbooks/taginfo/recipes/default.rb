@@ -84,6 +84,7 @@ systemd_service "taginfo-update@" do
     "/srv/%i/sources",
     "/var/log/taginfo/%i"
   ]
+  nice 10
 end
 
 systemd_timer "taginfo-update@" do
