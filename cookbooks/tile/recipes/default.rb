@@ -60,7 +60,10 @@ end
 fastlyips = JSON.parse(IO.read("#{Chef::Config[:file_cache_path]}/fastly-ip-list.json"))
 
 remote_file "#{Chef::Config[:file_cache_path]}/statuscake-locations.json" do
-  source "https://app.statuscake.com/Workfloor/Locations.php?format=json"
+  # source "https://app.statuscake.com/Workfloor/Locations.php?format=json"
+  # FIXME: StatusCake IP lookup. Use manual backup source for now. 13 Nov 2024
+  # https://www.statuscake.com/kb/knowledge-base/what-are-your-ips/
+  source "https://grant.dev.openstreetmap.org/statuscake-locations-patch.json"
   compile_time true
   ignore_failure true
 end
