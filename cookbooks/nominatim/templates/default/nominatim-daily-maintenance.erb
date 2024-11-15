@@ -9,11 +9,7 @@ psql -q -d <%= node[:nominatim][:dbname] %> -c 'VACUUM ANALYSE search_name'
 
 <% if node[:nominatim][:enable_qa_tiles] -%>
 pushd <%= @qabindir %>
-<% if node.platform?("debian") -%>
 if <%= @venvprefix %>nominatim-data-analyser --execute-all --config=<%= @projectdir %>/qa-config.yaml; then
-<% else -%>
-if python3 cli.py --execute-all; then
-<% end -%>
   rm -rf "<%= @qadatadir %>/old"
   if [ -d "<%= @qadatadir %>/current" ]; then
     mv "<%= @qadatadir %>/current" "<%= @qadatadir %>/old"

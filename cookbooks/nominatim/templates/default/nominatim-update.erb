@@ -6,38 +6,21 @@ date "+%c === Starting Nominatim update cycle"
 
 starttime=`date +%s`
 
-<% if node.platform?("debian") -%>
-  EXTRA_PIP='--extra-index-url <%= node[:nominatim][:pip_index] %>'
+EXTRA_PIP='--extra-index-url <%= node[:nominatim][:pip_index] %>'
 
-  # First update the importer and run the migrations.
-  if <%= @venvprefix %>pip list $EXTRA_PIP --outdated | fgrep -q nominatim-db; then
-    <%= @venvprefix %>pip install $EXTRA_PIP -U nominatim-db
-    if ! /sbin/runuser -u nominatim -- <%= @bindir %>/nominatim-update-refresh-db; then
-      date "+%c === Database refresh failed. Stopping updates."
-      exit 1
-    fi
+# First update the importer and run the migrations.
+if <%= @venvprefix %>pip list $EXTRA_PIP --outdated | fgrep -q nominatim-db; then
+  <%= @venvprefix %>pip install $EXTRA_PIP -U nominatim-db
+  if ! /sbin/runuser -u nominatim -- <%= @bindir %>/nominatim-update-refresh-db; then
+    date "+%c === Database refresh failed. Stopping updates."
+    exit 1
   fi
-  # Then only attempt to update the frontend.
-  if <%= @venvprefix %>pip list $EXTRA_PIP --outdated | fgrep -q nominatim-api; then
-    <%= @venvprefix %>pip install $EXTRA_PIP -U nominatim-api
-    systemctl reload nominatim
-  fi
-<% else -%>
-  <% if node[:nominatim][:enable_git_updates] -%>
-  if /sbin/runuser -u nominatim -- <%= @bindir %>/nominatim-update-source; then
-
-    if ! /sbin/runuser -u nominatim -- <%= @bindir %>/nominatim-update-refresh-db; then
-      date "+%c === Database refresh failed. Stopping updates."
-      exit 1
-    fi
-
-    pushd <%= @builddir %>
-    make install
-
-    systemctl reload nominatim
-  fi
-  <% end -%>
-<% end -%>
+fi
+# Then only attempt to update the frontend.
+if <%= @venvprefix %>pip list $EXTRA_PIP --outdated | fgrep -q nominatim-api; then
+  <%= @venvprefix %>pip install $EXTRA_PIP -U nominatim-api
+  systemctl reload nominatim
+fi
 
 if ! /sbin/runuser -u nominatim -- <%= @bindir %>/nominatim-update-data; then
   date "+%c === Data update failed. Stopping updates."
