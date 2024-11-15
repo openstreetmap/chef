@@ -30,7 +30,6 @@ project_directory = "#{basedir}/planet-project"
 bin_directory = "#{basedir}/bin"
 cfg_directory = "#{basedir}/etc"
 ui_directory = "#{basedir}/ui"
-qa_bin_directory = "#{basedir}/Nominatim-Data-Analyser"
 qa_data_directory = "#{basedir}/qa-data"
 
 directory basedir do
