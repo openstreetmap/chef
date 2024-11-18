@@ -3,8 +3,8 @@
 <% unless @interfaces.empty? -%>
 define external-interfaces = { <%= @interfaces.sort.uniq.join(", ") %> }
 <% end -%>
-
-define ip-private-addresses = { 0.0.0.0, 10.0.0.0/8, 127.0.0.0/8, 169.254.0.0/16, 172.16.0.0/12, 192.0.2.0/24, 192.168.0.0/16 }
+# Exclude 169.254.169.0/24 from ip-private-addresses as is widely by cloud providers.
+define ip-private-addresses = { 0.0.0.0, 10.0.0.0/8, 127.0.0.0/8, 169.254.0.0-169.254.168.255, 169.254.170.0-169.254.255.255, 172.16.0.0/12, 192.0.2.0/24, 192.168.0.0/16 }
 define ip-multicast-addresses = { 224.0.0.0/4 }
 define ip6-private-addresses = { 2001:db8::/32, fc00::/7 }
 define ip6-multicast-addresses = { ff00::/8 }
@@ -66,12 +66,12 @@ table inet chef-filter {
 
 <% end -%>
   chain log-and-drop {
-    limit rate 1/second log
+    limit rate 1/second log level notice
     drop
   }
 
   chain log-and-reject {
-    limit rate 1/second log
+    limit rate 1/second log level notice
     reject
   }
 
