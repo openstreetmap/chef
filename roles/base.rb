@@ -77,6 +77,12 @@ default_attributes(
       :parameters => {
         "kernel.sched_autogroup_enabled" => 0
       }
+    },
+    :default_console_log_level => {
+      :comment => "Set console log level defaults",
+      :parameters => {
+        "kernel.printk" => "4 4 1 7"
+      }
     }
   }
 )
