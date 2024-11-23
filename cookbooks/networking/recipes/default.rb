@@ -23,6 +23,8 @@
 require "ipaddr"
 require "yaml"
 
+include_recipe "ruby"
+
 keys = data_bag_item("networking", "keys")
 
 file "/etc/netplan/00-installer-config.yaml" do
@@ -329,6 +331,16 @@ end
 
 link "/etc/resolv.conf" do
   to "../run/systemd/resolve/stub-resolv.conf"
+end
+
+gem_package "dbus-systemd" do
+  gem_binary node[:ruby][:gem]
+end
+
+prometheus_exporter "resolved" do
+  port 10028
+  user "systemd-resolve"
+  restrict_address_families "AF_UNIX"
 end
 
 hosts = { :inet => [], :inet6 => [] }

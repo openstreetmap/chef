@@ -6,3 +6,4 @@ description       "Configures networking"
 
 version           "1.0.0"
 depends           "chef"
+depends           "ruby"
