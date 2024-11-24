@@ -2,11 +2,6 @@ name "ridley"
 description "Master role applied to ridley"
 
 default_attributes(
-  :accounts => {
-    :users => {
-      :otrs => { :status => :role }
-    }
-  },
   :apache => {
     :mpm => "event",
     :event => {
