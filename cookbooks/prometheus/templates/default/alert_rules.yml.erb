@@ -669,6 +669,13 @@ groups:
           alertgroup: "{{ $labels.instance }}"
         annotations:
           new_errors: "{{ $value }}"
+  - name: resolved
+    rules:
+      - alert: dnssec validation failures
+        expr: rate(resolved_dnssec_verdicts_total{result="bogus"}[1m]) > 1
+        for: 5m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
   - name: smart
     rules:
       - alert: smart failure
