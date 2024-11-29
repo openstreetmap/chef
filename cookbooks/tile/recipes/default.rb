@@ -668,7 +668,19 @@ tile_directories.each do |directory|
   end
 end
 
-package "ruby-webrick"
+package %w[
+  ruby-pg
+  ruby-webrick
+]
+
+prometheus_exporter "osm2pgsql" do
+  port 10027
+  user "tileupdate"
+  restrict_address_families "AF_UNIX"
+  options [
+    "--database-name=gis"
+  ]
+end
 
 prometheus_exporter "modtile" do
   port 9494
