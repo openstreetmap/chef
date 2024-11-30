@@ -675,7 +675,7 @@ package %w[
 
 prometheus_exporter "osm2pgsql" do
   port 10027
-  user "tileupdate"
+  user "tile"
   restrict_address_families "AF_UNIX"
   options [
     "--database-name=gis"
