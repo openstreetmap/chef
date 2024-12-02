@@ -21,6 +21,8 @@ provisioner:
   name: dokken
   chef_license: accept
   data_bags_path: test/data_bags
+  chef_image: ghcr.io/firefishy/chef-docker-image:latest
+  chef_version: latest
   slow_resource_report: true
   clean_dokken_sandbox: true
   attributes:
