@@ -33,7 +33,7 @@ imagery_layer "au_ga_agri" do
   copyright "Commonwealth of Australia (Geoscience Australia) - Creative Commons Attribution 4.0 International Licence"
   background_colour "0 0 0" # Black
   projection "EPSG:3857"
-  source "/data/imagery/au/agri/combine.vrt"
+  source "/store/imagery/au/agri/combine.vrt"
   max_zoom 17
   revision 1
 end

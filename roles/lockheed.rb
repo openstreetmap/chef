@@ -77,6 +77,5 @@ default_attributes(
 run_list(
   "role[equinix-ams]",
   "role[hp-g9]",
-  "recipe[imagery::za_ngi_aerial]",
-  "recipe[imagery::us_imagery]"
+  "role[imagery]"
 )

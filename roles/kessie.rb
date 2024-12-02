@@ -28,6 +28,5 @@ default_attributes(
 
 run_list(
   "role[exonetric]",
-  "role[hp-dl180-g6]",
-  "role[imagery]"
+  "role[hp-dl180-g6]"
 )

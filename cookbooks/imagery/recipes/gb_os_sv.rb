@@ -57,7 +57,7 @@ imagery_layer "gb_os_sv_2010_04" do
   site "os.openstreetmap.org"
   title "April 2010"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-2010-04-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-2010-04-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2010" # FIXME: Correct Copyright?
   background_colour "230 246 255" # OSSV Water Blue
   extension "os_sv_png"
@@ -68,7 +68,7 @@ imagery_layer "gb_os_sv_2010_11" do
   site "os.openstreetmap.org"
   title "November 2010"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-2010-11-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-2010-11-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2010" # FIXME: Correct Copyright?
   background_colour "230 246 255" # OSSV Water Blue
   extension "os_sv_png"
@@ -79,7 +79,7 @@ imagery_layer "gb_os_sv_2011_05" do
   site "os.openstreetmap.org"
   title "May 2011"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-2011-05-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-2011-05-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2011" # FIXME: Correct Copyright?
   background_colour "230 246 255" # OSSV Water Blue
   extension "os_sv_png"
@@ -90,7 +90,7 @@ imagery_layer "gb_os_sv_2011_11" do
   site "os.openstreetmap.org"
   title "November 2011"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-2011-11-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-2011-11-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2011" # FIXME: Correct Copyright?
   background_colour "230 246 255" # OSSV Water Blue
   extension "os_sv_png"
@@ -101,7 +101,7 @@ imagery_layer "gb_os_sv_2012_05" do
   site "os.openstreetmap.org"
   title "May 2012"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-2012-05-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-2012-05-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2012"
   background_colour "230 246 255" # OSSV Water Blue
   extension "os_sv_png"
@@ -112,7 +112,7 @@ imagery_layer "gb_os_sv_2012_11" do
   site "os.openstreetmap.org"
   title "November 2012"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-2012-11-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-2012-11-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2012"
   background_colour "230 246 255" # OSSV Water Blue
   extension "os_sv_png"
@@ -123,7 +123,7 @@ imagery_layer "gb_os_sv_2013_05" do
   site "os.openstreetmap.org"
   title "May 2013"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-2013-05-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-2013-05-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2013"
   background_colour "230 246 255" # OSSV Water Blue
   extension "os_sv_png"
@@ -134,7 +134,7 @@ imagery_layer "gb_os_sv_2013_11" do
   site "os.openstreetmap.org"
   title "November 2013"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-2013-11-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-2013-11-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2013"
   background_colour "230 246 255" # OSSV Water Blue
   extension "os_sv_png"
@@ -145,7 +145,7 @@ imagery_layer "gb_os_sv_2014_04" do
   site "os.openstreetmap.org"
   title "April 2014"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-2014-04-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-2014-04-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2014"
   background_colour "230 246 255" # OSSV Water Blue
   extension "os_sv_png"
@@ -156,7 +156,7 @@ imagery_layer "gb_os_sv_2014_10" do
   site "os.openstreetmap.org"
   title "October 2014"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-2014-10-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-2014-10-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2014"
   background_colour "230 246 255" # OSSV Water Blue
   extension "os_sv_png"
@@ -167,7 +167,7 @@ imagery_layer "gb_os_sv_2015_05" do
   site "os.openstreetmap.org"
   title "May 2015"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-2015-05-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-2015-05-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
   background_colour "230 246 255" # OSSV Water Blue
   extension "os_sv_png"
@@ -178,7 +178,7 @@ imagery_layer "gb_os_sv_2015_11" do
   site "os.openstreetmap.org"
   title "November 2015"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-2015-11-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-2015-11-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
   background_colour "230 246 255" # OSSV Water Blue
   extension "os_sv_png"
@@ -189,7 +189,7 @@ imagery_layer "gb_os_sv_2016_04" do
   site "os.openstreetmap.org"
   title "April 2016"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-2016-04-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-2016-04-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2016"
   background_colour "230 246 255" # OSSV Water Blue
   extension "os_sv_png"
@@ -202,7 +202,7 @@ imagery_layer "gb_os_sv_diff_2010_04_2010_11" do
   site "os.openstreetmap.org"
   title "Changes April 2010 to November 2010"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2010-04-2010-11-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2010-04-2010-11-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2010"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2010-04-2010-11"]
@@ -213,7 +213,7 @@ imagery_layer "gb_os_sv_diff_2010_04_2011_05" do
   site "os.openstreetmap.org"
   title "Changes April 2010 to May 2011"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2010-04-2011-05-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2010-04-2011-05-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2011"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2010-04-2011-05"]
@@ -224,7 +224,7 @@ imagery_layer "gb_os_sv_diff_2010_04_2011_11" do
   site "os.openstreetmap.org"
   title "Changes April 2010 to November 2011"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2010-04-2011-11-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2010-04-2011-11-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2011"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2010-04-2011-11"]
@@ -235,7 +235,7 @@ imagery_layer "gb_os_sv_diff_2010_04_2012_05" do
   site "os.openstreetmap.org"
   title "Changes April 2010 to May 2012"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2010-04-2012-05-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2010-04-2012-05-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2012"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2010-04-2012-05"]
@@ -246,7 +246,7 @@ imagery_layer "gb_os_sv_diff_2010_04_2012_11" do
   site "os.openstreetmap.org"
   title "Changes April 2010 to November 2012"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2010-04-2012-11-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2010-04-2012-11-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2012"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2010-04-2012-11"]
@@ -257,7 +257,7 @@ imagery_layer "gb_os_sv_diff_2010_04_2013_05" do
   site "os.openstreetmap.org"
   title "Changes April 2010 to May 2013"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2010-04-2013-05-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2010-04-2013-05-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2013"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2010-04-2013-05"]
@@ -268,7 +268,7 @@ imagery_layer "gb_os_sv_diff_2010_04_2013_11" do
   site "os.openstreetmap.org"
   title "Changes April 2010 to November 2013"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2010-04-2013-11-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2010-04-2013-11-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2013"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2010-04-2013-11"]
@@ -279,7 +279,7 @@ imagery_layer "gb_os_sv_diff_2010_04_2014_04" do
   site "os.openstreetmap.org"
   title "Changes April 2010 to April 2014"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2010-04-2014-04-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2010-04-2014-04-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2014"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2010-04-2014-04"]
@@ -290,7 +290,7 @@ imagery_layer "gb_os_sv_diff_2010_04_2014_10" do
   site "os.openstreetmap.org"
   title "Changes April 2010 to October 2014"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2010-04-2014-10-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2010-04-2014-10-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2014"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2010-04-2014-10"]
@@ -301,7 +301,7 @@ imagery_layer "gb_os_sv_diff_2010_04_2015_05" do
   site "os.openstreetmap.org"
   title "Changes April 2010 to May 2015"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2010-04-2015-05-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2010-04-2015-05-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2010-04-2015-05"]
@@ -312,7 +312,7 @@ imagery_layer "gb_os_sv_diff_2010_04_2015_11" do
   site "os.openstreetmap.org"
   title "Changes April 2010 to November 2015"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2010-04-2015-11-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2010-04-2015-11-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2010-04-2015-11"]
@@ -323,7 +323,7 @@ imagery_layer "gb_os_sv_diff_2010_04_2016_04" do
   site "os.openstreetmap.org"
   title "Changes April 2010 to April 2016"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2010-04-2016-04-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2010-04-2016-04-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2016"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2010-04-2016-04"]
@@ -334,7 +334,7 @@ imagery_layer "gb_os_sv_diff_2010_11_2011_05" do
   site "os.openstreetmap.org"
   title "Changes November 2010 to May 2011"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2010-11-2011-05-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2010-11-2011-05-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2011"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2010-11-2011-05"]
@@ -345,7 +345,7 @@ imagery_layer "gb_os_sv_diff_2010_11_2011_11" do
   site "os.openstreetmap.org"
   title "Changes November 2010 to November 2011"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2010-11-2011-11-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2010-11-2011-11-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2011"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2010-11-2011-11"]
@@ -356,7 +356,7 @@ imagery_layer "gb_os_sv_diff_2010_11_2012_05" do
   site "os.openstreetmap.org"
   title "Changes November 2010 to May 2012"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2010-11-2012-05-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2010-11-2012-05-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2012"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2010-11-2012-05"]
@@ -367,7 +367,7 @@ imagery_layer "gb_os_sv_diff_2010_11_2012_11" do
   site "os.openstreetmap.org"
   title "Changes November 2010 to November 2012"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2010-11-2012-11-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2010-11-2012-11-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2012"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2010-11-2012-11"]
@@ -378,7 +378,7 @@ imagery_layer "gb_os_sv_diff_2010_11_2013_05" do
   site "os.openstreetmap.org"
   title "Changes November 2010 to May 2013"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2010-11-2013-05-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2010-11-2013-05-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2013"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2010-11-2013-05"]
@@ -389,7 +389,7 @@ imagery_layer "gb_os_sv_diff_2010_11_2013_11" do
   site "os.openstreetmap.org"
   title "Changes November 2010 to November 2013"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2010-11-2013-11-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2010-11-2013-11-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2013"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2010-11-2013-11"]
@@ -400,7 +400,7 @@ imagery_layer "gb_os_sv_diff_2010_11_2014_04" do
   site "os.openstreetmap.org"
   title "Changes November 2010 to April 2014"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2010-11-2014-04-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2010-11-2014-04-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2014"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2010-11-2014-04"]
@@ -411,7 +411,7 @@ imagery_layer "gb_os_sv_diff_2010_11_2014_10" do
   site "os.openstreetmap.org"
   title "Changes November 2010 to October 2014"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2010-11-2014-10-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2010-11-2014-10-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2014"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2010-11-2014-10"]
@@ -422,7 +422,7 @@ imagery_layer "gb_os_sv_diff_2010_11_2015_05" do
   site "os.openstreetmap.org"
   title "Changes November 2010 to May 2015"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2010-11-2015-05-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2010-11-2015-05-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2010-11-2015-05"]
@@ -433,7 +433,7 @@ imagery_layer "gb_os_sv_diff_2010_11_2015_11" do
   site "os.openstreetmap.org"
   title "Changes November 2010 to November 2015"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2010-11-2015-11-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2010-11-2015-11-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2010-11-2015-11"]
@@ -444,7 +444,7 @@ imagery_layer "gb_os_sv_diff_2010_11_2016_04" do
   site "os.openstreetmap.org"
   title "Changes November 2010 to April 2016"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2010-11-2016-04-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2010-11-2016-04-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2016"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2010-11-2016-04"]
@@ -455,7 +455,7 @@ imagery_layer "gb_os_sv_diff_2011_05_2011_11" do
   site "os.openstreetmap.org"
   title "Changes May 2011 to November 2011"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2011-05-2011-11-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2011-05-2011-11-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2011"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2011-05-2011-11"]
@@ -466,7 +466,7 @@ imagery_layer "gb_os_sv_diff_2011_05_2012_05" do
   site "os.openstreetmap.org"
   title "Changes May 2011 to May 2012"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2011-05-2012-05-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2011-05-2012-05-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2012"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2011-05-2012-05"]
@@ -477,7 +477,7 @@ imagery_layer "gb_os_sv_diff_2011_05_2012_11" do
   site "os.openstreetmap.org"
   title "Changes May 2011 to November 2012"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2011-05-2012-11-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2011-05-2012-11-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2012"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2011-05-2012-11"]
@@ -488,7 +488,7 @@ imagery_layer "gb_os_sv_diff_2011_05_2013_05" do
   site "os.openstreetmap.org"
   title "Changes May 2011 to May 2013"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2011-05-2013-05-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2011-05-2013-05-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2013"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2011-05-2013-05"]
@@ -499,7 +499,7 @@ imagery_layer "gb_os_sv_diff_2011_05_2013_11" do
   site "os.openstreetmap.org"
   title "Changes May 2011 to November 2013"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2011-05-2013-11-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2011-05-2013-11-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2013"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2011-05-2013-11"]
@@ -510,7 +510,7 @@ imagery_layer "gb_os_sv_diff_2011_05_2014_04" do
   site "os.openstreetmap.org"
   title "Changes May 2011 to April 2014"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2011-05-2014-04-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2011-05-2014-04-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2014"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2011-05-2014-04"]
@@ -521,7 +521,7 @@ imagery_layer "gb_os_sv_diff_2011_05_2014_10" do
   site "os.openstreetmap.org"
   title "Changes May 2011 to October 2014"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2011-05-2014-10-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2011-05-2014-10-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2014"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2011-05-2014-10"]
@@ -532,7 +532,7 @@ imagery_layer "gb_os_sv_diff_2011_05_2015_05" do
   site "os.openstreetmap.org"
   title "Changes May 2011 to May 2015"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2011-05-2015-05-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2011-05-2015-05-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2011-05-2015-05"]
@@ -543,7 +543,7 @@ imagery_layer "gb_os_sv_diff_2011_05_2015_11" do
   site "os.openstreetmap.org"
   title "Changes May 2011 to November 2015"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2011-05-2015-11-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2011-05-2015-11-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2011-05-2015-11"]
@@ -554,7 +554,7 @@ imagery_layer "gb_os_sv_diff_2011_05_2016_04" do
   site "os.openstreetmap.org"
   title "Changes May 2011 to April 2016"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2011-05-2016-04-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2011-05-2016-04-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2016"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2011-05-2016-04"]
@@ -565,7 +565,7 @@ imagery_layer "gb_os_sv_diff_2011_11_2012_05" do
   site "os.openstreetmap.org"
   title "Changes November 2011 to May 2012"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2011-11-2012-05-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2011-11-2012-05-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2012"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2011-11-2012-05"]
@@ -576,7 +576,7 @@ imagery_layer "gb_os_sv_diff_2011_11_2012_11" do
   site "os.openstreetmap.org"
   title "Changes November 2011 to November 2012"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2011-11-2012-11-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2011-11-2012-11-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2012"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2011-11-2012-11"]
@@ -587,7 +587,7 @@ imagery_layer "gb_os_sv_diff_2011_11_2013_05" do
   site "os.openstreetmap.org"
   title "Changes November 2011 to May 2013"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2011-11-2013-05-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2011-11-2013-05-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2013"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2011-11-2013-05"]
@@ -598,7 +598,7 @@ imagery_layer "gb_os_sv_diff_2011_11_2013_11" do
   site "os.openstreetmap.org"
   title "Changes November 2011 to November 2013"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2011-11-2013-11-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2011-11-2013-11-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2013"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2011-11-2013-11"]
@@ -609,7 +609,7 @@ imagery_layer "gb_os_sv_diff_2011_11_2014_04" do
   site "os.openstreetmap.org"
   title "Changes November 2011 to April 2014"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2011-11-2014-04-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2011-11-2014-04-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2014"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2011-11-2014-04"]
@@ -620,7 +620,7 @@ imagery_layer "gb_os_sv_diff_2011_11_2014_10" do
   site "os.openstreetmap.org"
   title "Changes November 2011 to October 2014"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2011-11-2014-10-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2011-11-2014-10-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2011"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2011-11-2014-10"]
@@ -631,7 +631,7 @@ imagery_layer "gb_os_sv_diff_2011_11_2015_05" do
   site "os.openstreetmap.org"
   title "Changes November 2011 to May 2015"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2011-11-2015-05-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2011-11-2015-05-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2011-11-2015-05"]
@@ -642,7 +642,7 @@ imagery_layer "gb_os_sv_diff_2011_11_2015_11" do
   site "os.openstreetmap.org"
   title "Changes November 2011 to November 2015"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2011-11-2015-11-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2011-11-2015-11-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2011-11-2015-11"]
@@ -653,7 +653,7 @@ imagery_layer "gb_os_sv_diff_2011_11_2016_04" do
   site "os.openstreetmap.org"
   title "Changes November 2011 to April 2016"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2011-11-2016-04-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2011-11-2016-04-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2016"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2011-11-2016-04"]
@@ -664,7 +664,7 @@ imagery_layer "gb_os_sv_diff_2012_05_2012_11" do
   site "os.openstreetmap.org"
   title "Changes May 2012 to November 2012"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2012-05-2012-11-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2012-05-2012-11-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2012"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2012-05-2012-11"]
@@ -675,7 +675,7 @@ imagery_layer "gb_os_sv_diff_2012_05_2013_05" do
   site "os.openstreetmap.org"
   title "Changes May 2012 to May 2013"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2012-05-2013-05-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2012-05-2013-05-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2013"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2012-05-2013-05"]
@@ -686,7 +686,7 @@ imagery_layer "gb_os_sv_diff_2012_05_2013_11" do
   site "os.openstreetmap.org"
   title "Changes May 2012 to November 2013"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2012-05-2013-11-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2012-05-2013-11-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2013"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2012-05-2013-11"]
@@ -697,7 +697,7 @@ imagery_layer "gb_os_sv_diff_2012_05_2014_04" do
   site "os.openstreetmap.org"
   title "Changes May 2012 to April 2014"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2012-05-2014-04-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2012-05-2014-04-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2014"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2012-05-2014-04"]
@@ -708,7 +708,7 @@ imagery_layer "gb_os_sv_diff_2012_05_2014_10" do
   site "os.openstreetmap.org"
   title "Changes May 2012 to October 2014"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2012-05-2014-10-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2012-05-2014-10-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2014"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2012-05-2014-10"]
@@ -719,7 +719,7 @@ imagery_layer "gb_os_sv_diff_2012_05_2015_05" do
   site "os.openstreetmap.org"
   title "Changes May 2012 to May 2015"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2012-05-2015-05-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2012-05-2015-05-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2012-05-2015-05"]
@@ -730,7 +730,7 @@ imagery_layer "gb_os_sv_diff_2012_05_2015_11" do
   site "os.openstreetmap.org"
   title "Changes May 2012 to November 2015"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2012-05-2015-11-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2012-05-2015-11-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2012-05-2015-11"]
@@ -741,7 +741,7 @@ imagery_layer "gb_os_sv_diff_2012_05_2016_04" do
   site "os.openstreetmap.org"
   title "Changes May 2012 to April 2016"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2012-05-2016-04-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2012-05-2016-04-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2016"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2012-05-2016-04"]
@@ -752,7 +752,7 @@ imagery_layer "gb_os_sv_diff_2012_11_2013_05" do
   site "os.openstreetmap.org"
   title "Changes November 2012 to May 2013"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2012-11-2013-05-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2012-11-2013-05-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2013"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2012-11-2013-05"]
@@ -763,7 +763,7 @@ imagery_layer "gb_os_sv_diff_2012_11_2013_11" do
   site "os.openstreetmap.org"
   title "Changes November 2012 to November 2013"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2012-11-2013-11-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2012-11-2013-11-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2013"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2012-11-2013-11"]
@@ -774,7 +774,7 @@ imagery_layer "gb_os_sv_diff_2012_11_2014_04" do
   site "os.openstreetmap.org"
   title "Changes November 2012 to April 2014"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2012-11-2014-04-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2012-11-2014-04-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2014"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2012-11-2014-04"]
@@ -785,7 +785,7 @@ imagery_layer "gb_os_sv_diff_2012_11_2014_10" do
   site "os.openstreetmap.org"
   title "Changes November 2012 to October 2014"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2012-11-2014-10-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2012-11-2014-10-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2014"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2012-11-2014-10"]
@@ -796,7 +796,7 @@ imagery_layer "gb_os_sv_diff_2012_11_2015_05" do
   site "os.openstreetmap.org"
   title "Changes November 2012 to May 2015"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2012-11-2015-05-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2012-11-2015-05-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2012-11-2015-05"]
@@ -807,7 +807,7 @@ imagery_layer "gb_os_sv_diff_2012_11_2015_11" do
   site "os.openstreetmap.org"
   title "Changes November 2012 to November 2015"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2012-11-2015-11-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2012-11-2015-11-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2012-11-2015-11"]
@@ -818,7 +818,7 @@ imagery_layer "gb_os_sv_diff_2012_11_2016_04" do
   site "os.openstreetmap.org"
   title "Changes November 2012 to April 2016"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2012-11-2016-04-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2012-11-2016-04-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2016"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2012-11-2016-04"]
@@ -829,7 +829,7 @@ imagery_layer "gb_os_sv_diff_2013_05_2013_11" do
   site "os.openstreetmap.org"
   title "Changes May 2013 to November 2013"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2013-05-2013-11-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2013-05-2013-11-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2013"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2013-05-2013-11"]
@@ -840,7 +840,7 @@ imagery_layer "gb_os_sv_diff_2013_05_2014_04" do
   site "os.openstreetmap.org"
   title "Changes May 2013 to April 2014"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2013-05-2014-04-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2013-05-2014-04-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2014"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2013-05-2014-04"]
@@ -851,7 +851,7 @@ imagery_layer "gb_os_sv_diff_2013_05_2014_10" do
   site "os.openstreetmap.org"
   title "Changes May 2013 to October 2014"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2013-05-2014-10-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2013-05-2014-10-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2014"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2013-05-2014-10"]
@@ -862,7 +862,7 @@ imagery_layer "gb_os_sv_diff_2013_05_2015_05" do
   site "os.openstreetmap.org"
   title "Changes May 2013 to May 2015"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2013-05-2015-05-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2013-05-2015-05-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2013-05-2015-05"]
@@ -873,7 +873,7 @@ imagery_layer "gb_os_sv_diff_2013_05_2015_11" do
   site "os.openstreetmap.org"
   title "Changes May 2013 to November 2015"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2013-05-2015-11-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2013-05-2015-11-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2013-05-2015-11"]
@@ -884,7 +884,7 @@ imagery_layer "gb_os_sv_diff_2013_05_2016_04" do
   site "os.openstreetmap.org"
   title "Changes May 2013 to April 2016"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2013-05-2016-04-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2013-05-2016-04-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2016"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2013-05-2016-04"]
@@ -895,7 +895,7 @@ imagery_layer "gb_os_sv_diff_2013_11_2014_04" do
   site "os.openstreetmap.org"
   title "Changes November 2013 to April 2014"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2013-11-2014-04-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2013-11-2014-04-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2014"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2013-11-2014-04"]
@@ -906,7 +906,7 @@ imagery_layer "gb_os_sv_diff_2013_11_2014_10" do
   site "os.openstreetmap.org"
   title "Changes November 2013 to October 2014"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2013-11-2014-10-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2013-11-2014-10-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2014"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2013-11-2014-10"]
@@ -917,7 +917,7 @@ imagery_layer "gb_os_sv_diff_2013_11_2015_05" do
   site "os.openstreetmap.org"
   title "Changes November 2013 to May 2015"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2013-11-2015-05-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2013-11-2015-05-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2013-11-2015-05"]
@@ -928,7 +928,7 @@ imagery_layer "gb_os_sv_diff_2013_11_2015_11" do
   site "os.openstreetmap.org"
   title "Changes November 2013 to November 2015"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2013-11-2015-11-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2013-11-2015-11-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2013-11-2015-11"]
@@ -939,7 +939,7 @@ imagery_layer "gb_os_sv_diff_2013_11_2016_04" do
   site "os.openstreetmap.org"
   title "Changes November 2013 to April 2016"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2013-11-2016-04-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2013-11-2016-04-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2016"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2013-11-2016-04"]
@@ -950,7 +950,7 @@ imagery_layer "gb_os_sv_diff_2014_04_2014_10" do
   site "os.openstreetmap.org"
   title "Changes April 2014 to October 2014"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2014-04-2014-10-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2014-04-2014-10-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2014"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2014-04-2014-10"]
@@ -961,7 +961,7 @@ imagery_layer "gb_os_sv_diff_2014_04_2015_05" do
   site "os.openstreetmap.org"
   title "Changes April 2014 to May 2015"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2014-04-2015-05-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2014-04-2015-05-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2014-04-2015-05"]
@@ -972,7 +972,7 @@ imagery_layer "gb_os_sv_diff_2014_04_2015_11" do
   site "os.openstreetmap.org"
   title "Changes April 2014 to November 2015"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2014-04-2015-11-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2014-04-2015-11-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2014-04-2015-11"]
@@ -983,7 +983,7 @@ imagery_layer "gb_os_sv_diff_2014_04_2016_04" do
   site "os.openstreetmap.org"
   title "Changes April 2014 to April 2016"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2014-04-2016-04-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2014-04-2016-04-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2016"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2014-04-2016-04"]
@@ -994,7 +994,7 @@ imagery_layer "gb_os_sv_diff_2014_10_2015_05" do
   site "os.openstreetmap.org"
   title "Changes October 2014 to May 2015"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2014-10-2015-05-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2014-10-2015-05-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2014-10-2015-05"]
@@ -1005,7 +1005,7 @@ imagery_layer "gb_os_sv_diff_2014_10_2015_11" do
   site "os.openstreetmap.org"
   title "Changes October 2014 to November 2015"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2014-10-2015-11-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2014-10-2015-11-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2014-10-2015-11"]
@@ -1016,7 +1016,7 @@ imagery_layer "gb_os_sv_diff_2014_10_2016_04" do
   site "os.openstreetmap.org"
   title "Changes October 2014 to April 2016"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2014-10-2016-04-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2014-10-2016-04-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2016"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2014-10-2016-04"]
@@ -1027,7 +1027,7 @@ imagery_layer "gb_os_sv_diff_2015_05_2015_11" do
   site "os.openstreetmap.org"
   title "Changes May 2015 to November 2015"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2015-05-2015-11-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2015-05-2015-11-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2015"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2015-05-2015-11"]
@@ -1038,7 +1038,7 @@ imagery_layer "gb_os_sv_diff_2015_05_2016_04" do
   site "os.openstreetmap.org"
   title "Changes May 2015 to April 2016"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2015-05-2016-04-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2015-05-2016-04-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2016"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2015-05-2016-04"]
@@ -1049,7 +1049,7 @@ imagery_layer "gb_os_sv_diff_2015_11_2016_04" do
   site "os.openstreetmap.org"
   title "Changes November 2015 to April 2016"
   projection "EPSG:27700"
-  source "/data/imagery/gb/os-sv/ossv-diff-2015-11-2016-04-combined.vrt"
+  source "/store/imagery/gb/os-sv/ossv-diff-2015-11-2016-04-combined.vrt"
   copyright "Contains Ordnance Survey data &copy; Crown copyright and database right 2016"
   extension "os_sv_diff_png"
   url_aliases ["/sv-diff-2015-11-2016-04"]
@@ -1060,7 +1060,7 @@ imagery_layer "gb_os_om_local_2016_10" do
   site "os.openstreetmap.org"
   title "OS OpenMap Local - October 2016"
   projection "EPSG:27700"
-  source "/data/imagery/gb/openmap-local/2016-10/os-openmap-local-2016-10.vrt"
+  source "/store/imagery/gb/openmap-local/2016-10/os-openmap-local-2016-10.vrt"
   copyright "Contains OS data &copy; Crown copyright and database right 2016"
   background_colour "213 244 248" # OS OpenMap Local Water Blue
   extension "os_om_local_png"
@@ -1070,7 +1070,7 @@ imagery_layer "gb_os_om_local_2017_04" do
   site "os.openstreetmap.org"
   title "OS OpenMap Local - April 2017"
   projection "EPSG:27700"
-  source "/data/imagery/gb/openmap-local/2017-04/os-openmap-local-2017-04.vrt"
+  source "/store/imagery/gb/openmap-local/2017-04/os-openmap-local-2017-04.vrt"
   copyright "Contains OS data &copy; Crown copyright and database right 2017"
   background_colour "213 244 248" # OS OpenMap Local Water Blue
   extension "os_om_local_png"
@@ -1080,7 +1080,7 @@ imagery_layer "gb_os_om_local_2017_10" do
   site "os.openstreetmap.org"
   title "OS OpenMap Local - October 2017"
   projection "EPSG:27700"
-  source "/data/imagery/gb/openmap-local/2017-10/os-openmap-local-2017-10.vrt"
+  source "/store/imagery/gb/openmap-local/2017-10/os-openmap-local-2017-10.vrt"
   copyright "Contains OS data &copy; Crown copyright and database right 2017"
   background_colour "213 244 248" # OS OpenMap Local Water Blue
   extension "os_om_local_png"
@@ -1090,7 +1090,7 @@ imagery_layer "gb_os_om_local_2018_04" do
   site "os.openstreetmap.org"
   title "OS OpenMap Local - April 2018"
   projection "EPSG:27700"
-  source "/data/imagery/gb/openmap-local/2018-04/os-openmap-local-2018-04.vrt"
+  source "/store/imagery/gb/openmap-local/2018-04/os-openmap-local-2018-04.vrt"
   copyright "Contains OS data &copy; Crown copyright and database right 2018"
   background_colour "213 244 248" # OS OpenMap Local Water Blue
   extension "os_om_local_png"
@@ -1100,7 +1100,7 @@ imagery_layer "gb_os_om_local_2018_05" do
   site "os.openstreetmap.org"
   title "OS OpenMap Local - May 2018"
   projection "EPSG:27700"
-  source "/data/imagery/gb/openmap-local/2018-05/os-openmap-local-2018-05.vrt"
+  source "/store/imagery/gb/openmap-local/2018-05/os-openmap-local-2018-05.vrt"
   copyright "Contains OS data &copy; Crown copyright and database right 2018"
   background_colour "213 244 248" # OS OpenMap Local Water Blue
   extension "os_om_local_png"
@@ -1110,7 +1110,7 @@ imagery_layer "gb_os_om_local_2019_04" do
   site "os.openstreetmap.org"
   title "OS OpenMap Local - April 2019"
   projection "EPSG:27700"
-  source "/data/imagery/gb/openmap-local/2019-04/os-openmap-local-2019-04.vrt"
+  source "/store/imagery/gb/openmap-local/2019-04/os-openmap-local-2019-04.vrt"
   copyright "Contains OS data &copy; Crown copyright and database right 2019"
   background_colour "213 244 248" # OS OpenMap Local Water Blue
   extension "os_om_local_png"
@@ -1120,7 +1120,7 @@ imagery_layer "gb_os_om_local_2020_04" do
   site "os.openstreetmap.org"
   title "OS OpenMap Local - April 2020"
   projection "EPSG:27700"
-  source "/data/imagery/gb/openmap-local/2020-04/os-openmap-local-2020-04-combined-sea-average-zstd22.vrt"
+  source "/store/imagery/gb/openmap-local/2020-04/os-openmap-local-2020-04-combined-sea-average-zstd22.vrt"
   copyright "Contains OS data &copy; Crown copyright and database right 2020"
   revision 2
   background_colour "213 244 248" # OS OpenMap Local Water Blue
@@ -1131,7 +1131,7 @@ imagery_layer "gb_os_om_local_2020_10" do
   site "os.openstreetmap.org"
   title "OS OpenMap Local - October 2020"
   projection "EPSG:27700"
-  source "/data/imagery/gb/openmap-local/2020-10/os-openmap-local-2020-10.vrt"
+  source "/store/imagery/gb/openmap-local/2020-10/os-openmap-local-2020-10.vrt"
   copyright "Contains OS data &copy; Crown copyright and database right 2020"
   background_colour "213 244 248" # OS OpenMap Local Water Blue
   extension "os_om_local_png"
@@ -1141,7 +1141,7 @@ imagery_layer "gb_os_om_local_2021_04" do
   site "os.openstreetmap.org"
   title "OS OpenMap Local - April 2021"
   projection "EPSG:27700"
-  source "/data/imagery/gb/openmap-local/2021-04/os-openmap-local-2021-04.vrt"
+  source "/store/imagery/gb/openmap-local/2021-04/os-openmap-local-2021-04.vrt"
   copyright "Contains OS data &copy; Crown copyright and database right 2021"
   background_colour "213 244 248" # OS OpenMap Local Water Blue
   extension "os_om_local_png"
@@ -1151,7 +1151,7 @@ imagery_layer "gb_os_om_local_2021_10" do
   site "os.openstreetmap.org"
   title "OS OpenMap Local - October 2021"
   projection "EPSG:27700"
-  source "/data/imagery/gb/openmap-local/2021-10/os-openmap-local-2021-10.vrt"
+  source "/store/imagery/gb/openmap-local/2021-10/os-openmap-local-2021-10.vrt"
   copyright "Contains OS data &copy; Crown copyright and database right 2021"
   background_colour "213 244 248" # OS OpenMap Local Water Blue
   extension "os_om_local_png"
@@ -1161,7 +1161,7 @@ imagery_layer "gb_os_om_local_2022_04" do
   site "os.openstreetmap.org"
   title "OS OpenMap Local - April 2022"
   projection "EPSG:27700"
-  source "/data/imagery/gb/openmap-local/2022-04/os-openmap-local-2022-04.vrt"
+  source "/store/imagery/gb/openmap-local/2022-04/os-openmap-local-2022-04.vrt"
   copyright "Contains OS data &copy; Crown copyright and database right 2022"
   background_colour "213 244 248" # OS OpenMap Local Water Blue
   extension "os_om_local_png"
@@ -1171,7 +1171,7 @@ imagery_layer "gb_os_om_local_2022_10" do
   site "os.openstreetmap.org"
   title "OS OpenMap Local - October 2022"
   projection "EPSG:27700"
-  source "/data/imagery/gb/openmap-local/2022-10/os-openmap-local-2022-10.vrt"
+  source "/store/imagery/gb/openmap-local/2022-10/os-openmap-local-2022-10.vrt"
   copyright "Contains OS data &copy; Crown copyright and database right 2022"
   background_colour "213 244 248" # OS OpenMap Local Water Blue
   extension "os_om_local_png"
@@ -1181,7 +1181,7 @@ imagery_layer "gb_os_om_local_2023_04" do
   site "os.openstreetmap.org"
   title "OS OpenMap Local - April 2023"
   projection "EPSG:27700"
-  source "/data/imagery/gb/openmap-local/2023-04/os-openmap-local-2023-04.vrt"
+  source "/store/imagery/gb/openmap-local/2023-04/os-openmap-local-2023-04.vrt"
   copyright "Contains OS data &copy; Crown copyright and database right 2023"
   background_colour "213 244 248" # OS OpenMap Local Water Blue
   extension "os_om_local_png"
@@ -1191,7 +1191,7 @@ imagery_layer "gb_os_om_local_2023_10" do
   site "os.openstreetmap.org"
   title "OS OpenMap Local - October 2023"
   projection "EPSG:27700"
-  source "/data/imagery/gb/openmap-local/2023-10/os-openmap-local-2023-10.vrt"
+  source "/store/imagery/gb/openmap-local/2023-10/os-openmap-local-2023-10.vrt"
   copyright "Contains OS data &copy; Crown copyright and database right 2023"
   background_colour "213 244 248" # OS OpenMap Local Water Blue
   extension "os_om_local_png"
@@ -1201,7 +1201,7 @@ imagery_layer "gb_os_om_local_2024_04" do
   site "os.openstreetmap.org"
   title "OS OpenMap Local - April 2024"
   projection "EPSG:27700"
-  source "/data/imagery/gb/openmap-local/2024-04/os-openmap-local-2024-04.vrt"
+  source "/store/imagery/gb/openmap-local/2024-04/os-openmap-local-2024-04.vrt"
   copyright "Contains OS data &copy; Crown copyright and database right 2024"
   background_colour "213 244 248" # OS OpenMap Local Water Blue
   extension "os_om_local_png"
@@ -1211,7 +1211,7 @@ imagery_layer "gb_os_om_local_2024_10" do
   site "os.openstreetmap.org"
   title "OS OpenMap Local - October 2024"
   projection "EPSG:27700"
-  source "/data/imagery/gb/openmap-local/2024-10/os-openmap-local-2024-10.vrt"
+  source "/store/imagery/gb/openmap-local/2024-10/os-openmap-local-2024-10.vrt"
   copyright "Contains OS data &copy; Crown copyright and database right 2024"
   background_colour "213 244 248" # OS OpenMap Local Water Blue
   extension "os_om_local_png"
