@@ -103,21 +103,16 @@ action :create do
 
   systemd_service "mapserv-fcgi-#{new_resource.site}" do
     description "Map server for #{new_resource.site} layer"
-    environment "MS_MAP_PATTERN" => "^/srv/imagery/mapserver/",
-                "MS_DEBUGLEVEL" => "0",
+    environment "MS_DEBUGLEVEL" => "0",
                 "MS_ERRORFILE" => "stderr",
                 "GDAL_CACHEMAX" => "512"
     limit_nofile 16384
-    memory_high "1G"
-    memory_max "4G"
     user "imagery"
     group "imagery"
     exec_start "/usr/bin/multiwatch -f 8 --signal=TERM -- /usr/lib/cgi-bin/mapserv"
     standard_input "socket"
     sandbox true
     restrict_address_families "AF_UNIX"
-    # Terminate service after 30mins. Service is socket activated
-    runtime_max_sec 1800
     not_if { new_resource.uses_tiler }
   end
 
