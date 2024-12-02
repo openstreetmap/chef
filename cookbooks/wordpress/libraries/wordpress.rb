@@ -30,7 +30,9 @@ class Chef
       end
 
       def api_get(url)
-        @api_responses[url] ||= ::JSON.parse(::HTTPClient.new.get_content(url))
+        http_client = ::HTTPClient.new
+        http_client.ssl_config.set_trust_ca("/etc/ssl/certs/ca-certificates.crt")
+        @api_responses[url] ||= ::JSON.parse(http_client.get_content(url))
       end
     end
   end
