@@ -50,6 +50,13 @@ package %w[
   unzip
 ]
 
+template "/etc/mapserver.conf" do
+  source "mapserver.conf.erb"
+  owner "root"
+  group "root"
+  mode "644"
+end
+
 directory "/srv/imagery/mapserver" do
   owner "root"
   group "root"
