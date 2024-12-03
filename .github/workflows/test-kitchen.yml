@@ -112,6 +112,7 @@ jobs:
           - tilelog
           - tools
           - trac
+          - vectortile
           - web-cgimap
           - web-frontend
           - web-rails
@@ -145,6 +146,8 @@ jobs:
           - os: debian-12
             suite: supybot
           - os: debian-12
+            suite: vectortile
+          - os: debian-12
             suite: web-cgimap
           - os: debian-12
             suite: web-frontend
@@ -172,6 +175,8 @@ jobs:
           - suite: serverinfo
             os: ubuntu-2204
           - suite: supybot
+            os: ubuntu-2204
+          - suite: vectortile
             os: ubuntu-2204
           - suite: web-cgimap
             os: ubuntu-2204
