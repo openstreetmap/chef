@@ -146,16 +146,19 @@ action :create do
     exec_start "/bin/systemctl --quiet stop mapserv-fcgi-#{new_resource.site}.service"
     sandbox true
     restrict_address_families "AF_UNIX"
+    not_if { new_resource.uses_tiler }
   end
 
   systemd_timer "mapserv-fcgi-#{new_resource.site}-stop" do
     on_boot_sec "10m"
     on_unit_inactive_sec "1h"
     randomized_delay_sec "10m"
+    not_if { new_resource.uses_tiler }
   end
 
   service "mapserv-fcgi-#{new_resource.site}-stop.timer" do
     action [:enable, :start]
+    not_if { new_resource.uses_tiler }
   end
 
   ssl_certificate new_resource.site do
