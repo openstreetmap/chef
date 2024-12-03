@@ -106,6 +106,7 @@ property :memory_deny_write_execute, [true, false]
 property :restrict_realtime, [true, false]
 property :restrict_suid_sgid, [true, false]
 property :remove_ipc, [true, false]
+property :stop_when_unneeded, [true, false]
 property :system_call_filter, [String, Array]
 property :system_call_architectures, [String, Array]
 property :tasks_max, Integer

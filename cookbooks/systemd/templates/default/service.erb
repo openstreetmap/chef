@@ -25,6 +25,9 @@ Requires=<%= Array(@requires).join(" ") %>
 <% if @joins_namespace_of -%>
 JoinsNamespaceOf=<%= Array(@joins_namespace_of).join(" ") %>
 <% end -%>
+<% if @stop_when_unneeded -%>
+StopWhenUnneeded=<%= @stop_when_unneeded %>
+<% end -%>
 
 [Service]
 <% if @type -%>
