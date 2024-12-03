@@ -99,7 +99,7 @@ end
 python_package "tilekiln" do
   python_virtualenv tilekiln_directory
   python_version "3"
-  version "0.6.3"
+  version "0.6.5"
 end
 
 template "/srv/vector.openstreetmap.org/html/index.html" do
@@ -187,6 +187,13 @@ end
     owner "tileupdate"
     permissions "tileupdate" => :all, "tilekiln" => :select
   end
+end
+
+postgresql_table "tile_stats" do
+  cluster node[:vectortile][:database][:cluster]
+  database "tiles"
+  schema "tilekiln"
+  owner "tilekiln"
 end
 
 (0..14).each do |zoom|
@@ -294,3 +301,22 @@ prometheus_exporter "osm2pgsql" do
     "--database-name=spirit"
   ]
 end
+
+systemd_service "tilekiln-prometheus" do
+  description "Tilekiln vector tile server"
+  user "tilekiln"
+  after "postgresql.service"
+  wants "postgresql.service"
+  sandbox :enable_network => true
+  restrict_address_families "AF_UNIX"
+  exec_start "#{tilekiln_directory}/bin/tilekiln prometheus --bind-host #{node[:prometheus][:address]} --storage-dbname tiles"
+end
+
+service "tilekiln-prometheus" do
+  action [:enable, :start]
+end
+
+node.default[:prometheus][:exporters][10013] = {
+  :name => "tilekiln",
+  :address => "#{node[:prometheus][:address]}:10013",
+}
