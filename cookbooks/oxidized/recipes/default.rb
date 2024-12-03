@@ -30,6 +30,7 @@ package %w[
   zlib1g-dev
   pkg-config
   libyaml-dev
+  logrotate
 ]
 
 keys = data_bag_item("oxidized", "keys")

@@ -23,6 +23,7 @@ package %w[
   fail2ban
   python3-systemd
   ruby-webrick
+  logrotate
 ]
 
 if platform?("debian")

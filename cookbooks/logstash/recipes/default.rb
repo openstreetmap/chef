@@ -25,6 +25,7 @@ keys = data_bag_item("logstash", "keys")
 package %w[
   openjdk-11-jre-headless
   logstash
+  logrotate
 ]
 
 cookbook_file "/var/lib/logstash/beats.crt" do

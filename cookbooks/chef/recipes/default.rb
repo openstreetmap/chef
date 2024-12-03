@@ -101,6 +101,8 @@ template "/etc/chef/report.rb" do
   mode "644"
 end
 
+package "logrotate"
+
 template "/etc/logrotate.d/chef" do
   source "logrotate.erb"
   owner "root"

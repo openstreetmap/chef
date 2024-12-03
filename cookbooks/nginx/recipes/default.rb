@@ -21,7 +21,10 @@ include_recipe "apt::nginx"
 include_recipe "prometheus"
 include_recipe "ssl"
 
-package "nginx"
+package %w[
+  nginx
+  logrotate
+]
 
 template "/etc/nginx/nginx.conf" do
   source "nginx.conf.erb"

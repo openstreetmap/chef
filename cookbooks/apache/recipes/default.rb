@@ -24,6 +24,7 @@ include_recipe "ssl"
 package %w[
   apache2
   libwww-perl
+  logrotate
 ]
 
 %w[event itk prefork worker].each do |mpm|
