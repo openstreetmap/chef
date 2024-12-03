@@ -152,7 +152,7 @@ action :create do
   systemd_timer "mapserv-fcgi-#{new_resource.site}-stop" do
     on_boot_sec "10m"
     on_unit_inactive_sec "1h"
-    randomized_delay_sec "10m"
+    randomized_delay_sec "30m"
     not_if { new_resource.uses_tiler }
   end
 
