@@ -1,13 +1,8 @@
-require "chef/mixin/shell_out"
-
-require "addressable"
-require "httpclient"
 require "json"
+require "net/http"
 
 class Chef
   module Wordpress
-    extend Chef::Mixin::ShellOut
-
     @api_responses = {}
 
     class << self
@@ -22,7 +17,7 @@ class Chef
       private
 
       def core_version_check
-        api_get("https://api.wordpress.org/core/version-check/1.7")
+        api_get("https://api.wordpress.org/core/version-check/1.7/")
       end
 
       def plugin_information(name)
@@ -30,9 +25,7 @@ class Chef
       end
 
       def api_get(url)
-        http_client = ::HTTPClient.new
-        http_client.ssl_config.set_default_paths # https://github.com/nahi/httpclient/issues/445
-        @api_responses[url] ||= ::JSON.parse(http_client.get_content(url))
+        @api_responses[url] ||= ::JSON.parse(Net::HTTP.get(URI(url)))
       end
     end
   end
