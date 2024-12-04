@@ -2,10 +2,6 @@ name "ironbelly"
 description "Master role applied to ironbelly"
 
 default_attributes(
-  :dhcpd => {
-    :first_address => "10.0.63.1",
-    :last_address => "10.0.63.254"
-  },
   :elasticsearch => {
     :cluster => {
       :routing => {
@@ -51,21 +47,6 @@ default_attributes(
       }
     }
   },
-  :prometheus => {
-    :junos => {
-      "switch1" => { :address => "184.104.179.129", :labels => { "site" => "amsterdam" } }
-    },
-    :snmp => {
-      "pdu1" => { :address => "10.0.48.100", :modules => %w[apcups], :labels => { "site" => "amsterdam" } },
-      "pdu2" => { :address => "10.0.48.101", :modules => %w[apcups], :labels => { "site" => "amsterdam" } }
-    },
-    :metrics => {
-      :uplink_interface => {
-        :help => "Site uplink interface name",
-        :labels => { :site => "amsterdam", :name => "ge-[01]/2/[02]" }
-      }
-    }
-  },
   :nginx => {
     :cache => {
       :proxy => {
@@ -80,7 +61,5 @@ default_attributes(
 
 run_list(
   "role[equinix-ams]",
-  "role[gateway]",
-  "recipe[rsyncd]",
-  "recipe[dhcpd]"
+  "recipe[rsyncd]"
 )

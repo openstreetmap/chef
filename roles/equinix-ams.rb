@@ -7,9 +7,9 @@ default_attributes(
       :internal => {
         :inet => {
           :prefix => "20",
-          :gateway => "10.0.48.10",
+          :gateway => "10.0.48.14",
           :routes => {
-            "10.0.0.0/8" => { :via => "10.0.48.10" }
+            "10.0.0.0/8" => { :via => "10.0.48.14" }
           }
         }
       },
@@ -46,7 +46,7 @@ default_attributes(
 
 override_attributes(
   :networking => {
-    :nameservers => ["10.0.48.10", "74.82.42.42", "2001:470:20::2"],
+    :nameservers => ["10.0.48.14", "74.82.42.42", "2001:470:20::2"],
     :search => ["ams.openstreetmap.org", "openstreetmap.org"]
   },
   :ntp => {
