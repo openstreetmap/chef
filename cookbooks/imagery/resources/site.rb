@@ -113,6 +113,7 @@ action :create do
     standard_input "socket"
     sandbox true
     restrict_address_families "AF_UNIX"
+    timeout_stop_sec 60
     not_if { new_resource.uses_tiler }
   end
 
