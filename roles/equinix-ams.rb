@@ -38,7 +38,6 @@ default_attributes(
     }
   },
   :web => {
-    :fileserver => "ironbelly",
     :readonly_database_host => "snap-01.ams.openstreetmap.org",
     :primary_cluster => true
   }
