@@ -19,14 +19,6 @@ default_attributes(
       :async_request_worker_factor => 4
     }
   },
-  :logstash => {
-    :forwarder => {
-      "filebeat.inputs" => [
-        { "type" => "filestream", "id" => "apache", "paths" => ["/var/log/apache2/access.log"], "fields" => { "type" => "apache" }, "fields_under_root" => true },
-        { "type" => "filestream", "id" => "rails", "paths" => ["/var/log/web/rails-logstash.log"], "fields" => { "type" => "rails" }, "fields_under_root" => true }
-      ]
-    }
-  },
   :memcached => {
     :memory_limit => 8192
   },
@@ -58,6 +50,5 @@ default_attributes(
 
 run_list(
   "role[web]",
-  "role[logstash-forwarder]",
   "recipe[web::frontend]"
 )
