@@ -107,8 +107,7 @@ action :create do
                 "MS_ERRORFILE" => "stderr",
                 "GDAL_CACHEMAX" => "128"
     limit_nofile 16384
-    memory_high "4G"
-    memory_max "8G"
+    memory_max "4G"
     user "imagery"
     group "imagery"
     exec_start "/usr/bin/multiwatch -f 8 --signal=TERM -- /usr/lib/cgi-bin/mapserv"
