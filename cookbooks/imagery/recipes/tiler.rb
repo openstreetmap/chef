@@ -63,8 +63,9 @@ systemd_service "titiler-restart" do
 end
 
 systemd_timer "titiler-restart" do
-  on_boot_sec "6h"
-  on_unit_inactive_sec "12h"
+  on_boot_sec "10m"
+  on_unit_inactive_sec "30m"
+  randomized_delay_sec "20m"
 end
 
 service "titiler-restart.timer" do
