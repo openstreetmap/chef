@@ -105,9 +105,9 @@ action :create do
     description "Map server for #{new_resource.site} layer"
     environment "MS_DEBUGLEVEL" => "0",
                 "MS_ERRORFILE" => "stderr",
-                "GDAL_CACHEMAX" => "512"
+                "GDAL_CACHEMAX" => "128"
     limit_nofile 16384
-    memory_high "2G"
+    memory_high "4G"
     memory_max "8G"
     user "imagery"
     group "imagery"
