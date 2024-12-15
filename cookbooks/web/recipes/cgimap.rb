@@ -41,7 +41,6 @@ cgimap_options = {
   "CGIMAP_DBNAME" => "openstreetmap",
   "CGIMAP_USERNAME" => "cgimap",
   "CGIMAP_PASSWORD" => db_passwords["cgimap"],
-  "CGIMAP_UPDATE_HOST" => node[:web][:database_host],
   "CGIMAP_PIDFILE" => "#{node[:web][:pid_directory]}/cgimap.pid",
   "CGIMAP_LOGFILE" => "#{node[:web][:log_directory]}/cgimap.log",
   "CGIMAP_MEMCACHE" => memcached_servers.join(","),
@@ -59,6 +58,8 @@ cgimap_options = {
 
 if %w[database_readonly api_readonly].include?(node[:web][:status])
   cgimap_options["CGIMAP_DISABLE_API_WRITE"] = "true"
+else
+  cgimap_options["CGIMAP_UPDATE_HOST"] = node[:web][:database_host]
 end
 
 systemd_service "cgimap" do
