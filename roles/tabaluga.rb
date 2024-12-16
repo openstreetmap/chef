@@ -25,17 +25,17 @@ default_attributes(
         :interface => "bond0.3",
         :role => :external,
         :inet => {
-          :address => "184.104.179.142"
+          :address => "82.199.86.110"
         },
         :inet6 => {
-          :address => "2001:470:1:fa1::e"
+          :address => "2001:4d78:500:5e3::e"
         }
       }
     }
   },
   :prometheus => {
     :junos => {
-      "switch1" => { :address => "184.104.179.129", :labels => { "site" => "amsterdam" } }
+      "switch1" => { :address => "82.199.86.97", :labels => { "site" => "amsterdam" } }
     },
     :snmp => {
       "pdu1" => { :address => "10.0.48.100", :modules => %w[apcups], :labels => { "site" => "amsterdam" } },

@@ -75,10 +75,14 @@
 <% @admins.sort.each do |address| -%>
     Require ip <%= address %>
 <% end -%>
-    # OSM Amsterdam IPv4
+    # OSM Amsterdam old HE IPv4
     Require ip 184.104.179.128/27
-    # OSM Amsterdam IPv6
+    # OSM Amsterdam Equinix IPv4
+    Require ip 82.199.86.96/27
+    # OSM Amsterdam old HE IPv6
     Require ip 2001:470:1:fa1::/64
+    # OSM Amsterdam Equinix IPv6
+    Require ip 2001:4d78:500:5e3::/64
     # OSM Dublin IPv4
     Require ip 184.104.226.96/27
     # OSM Dublin IPv6

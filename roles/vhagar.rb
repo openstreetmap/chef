@@ -21,10 +21,10 @@ default_attributes(
         :interface => "bond0.3",
         :role => :external,
         :inet => {
-          :address => "184.104.179.133"
+          :address => "82.199.86.101"
         },
         :inet6 => {
-          :address => "2001:470:1:fa1::5"
+          :address => "2001:4d78:500:5e3::5"
         }
       }
     }

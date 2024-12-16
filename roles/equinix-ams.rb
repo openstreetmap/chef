@@ -17,11 +17,11 @@ default_attributes(
         :zone => "ams",
         :inet => {
           :prefix => "27",
-          :gateway => "184.104.179.129"
+          :gateway => "82.199.86.97"
         },
         :inet6 => {
           :prefix => "64",
-          :gateway => "2001:470:1:fa1::1",
+          :gateway => "2001:4d78:500:5e3::1",
           :routes => {
             "2600:9000::/28" => { :type => "unreachable" }
           }

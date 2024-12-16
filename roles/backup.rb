@@ -16,8 +16,10 @@ default_attributes(
         :hosts_allow => [
           "193.60.236.0/24",                     # ucl external
           "10.0.48.0/20",                        # amsterdam internal
-          "184.104.179.128/27",                  # amsterdam external
-          "2001:470:1:fa1::/64",                 # amsterdam external
+          "184.104.179.128/27",                  # amsterdam old HE external
+          "82.199.86.96/27",                     # amsterdam equinix external
+          "2001:470:1:fa1::/64",                 # amsterdam old HE external
+          "2001:4d78:500:5e3::/64",              # amsterdam equinix external
           "10.0.64.0/20",                        # dublin internal
           "184.104.226.96/27",                   # dublin external
           "2001:470:1:b3b::/64",                 # dublin external
@@ -46,8 +48,10 @@ default_attributes(
         :hosts_allow => [
           "193.60.236.0/24",          # ucl external
           "10.0.48.0/20",             # amsterdam internal
-          "184.104.179.128/27",       # amsterdam external
-          "2001:470:1:fa1::/64",      # amsterdam external
+          "184.104.179.128/27",       # amsterdam old HE external
+          "82.199.86.96/27",          # amsterdam equinix external
+          "2001:470:1:fa1::/64",      # amsterdam old HE external
+          "2001:4d78:500:5e3::/64",   # amsterdam equinix external
           "10.0.64.0/20",             # dublin internal
           "184.104.226.96/27",        # dublin external
           "2001:470:1:b3b::/64",      # dublin external
