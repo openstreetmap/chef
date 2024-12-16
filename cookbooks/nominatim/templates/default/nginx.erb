@@ -112,7 +112,7 @@ map $whitelisted$generic_mozilla$uri $limit_reverse {
     ~02/reverse.*  $binary_remote_addr;
 }
 
-limit_req_zone $limit_www zone=www:50m rate=2r/s;
+limit_req_zone $limit_www zone=www:50m rate=1r/s;
 limit_req_zone $limit_tarpit zone=tarpit:10m rate=1r/s;
 limit_req_zone $binary_remote_addr zone=blocked:10m rate=20r/m;
 limit_req_zone $limit_reverse zone=reverse:10m rate=10r/m;
