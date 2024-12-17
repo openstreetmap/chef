@@ -19,7 +19,7 @@ default_attributes(
           "184.104.179.128/27",                  # amsterdam external (he.net)
           "2001:470:1:fa1::/64",                 # amsterdam external (he.net)
           "82.199.86.96/27",                     # amsterdam external (equinix)
-          # "/64",                                 # amsterdam external (equinix)
+          "2001:4d78:500:5e3::/64",              # amsterdam external (equinix)
           "10.0.64.0/20",                        # dublin internal
           "184.104.226.96/27",                   # dublin external (he.net)
           "2001:470:1:b3b::/64",                 # dublin external (he.net)
@@ -53,7 +53,7 @@ default_attributes(
           "184.104.179.128/27",       # amsterdam external (he.net)
           "2001:470:1:fa1::/64",      # amsterdam external (he.net)
           "82.199.86.96/27",          # amsterdam external (equinix)
-          # "/64",                     # amsterdam external (equinix)
+          "2001:4d78:500:5e3::/64",   # amsterdam external (equinix)
           "10.0.64.0/20",             # dublin internal
           "184.104.226.96/27",        # dublin external (he.net)
           "2001:470:1:b3b::/64",      # dublin external (he.net)
