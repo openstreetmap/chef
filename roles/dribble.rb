@@ -17,14 +17,25 @@ default_attributes(
           :slaves => %w[eno1 eno2 eno3 eno4 eno5 eno6]
         }
       },
-      :external => {
+      :external_he => {
         :interface => "bond0.3",
         :role => :external,
+        :metric => 150,
+        :source_route_table => 100,
         :inet => {
-          :address => "184.104.179.132"
-        },
-        :inet6 => {
-          :address => "2001:470:1:fa1::4"
+          :address => "184.104.179.132",
+          :prefix => "27",
+          :gateway => "184.104.179.129"
+        }
+      },
+      :external => {
+        :interface => "bond0.103",
+        :role => :external,
+        :source_route_table => 150,
+        :inet => {
+          :address => "82.199.86.100",
+          :prefix => "27",
+          :gateway => "82.199.86.97"
         }
       }
     }
