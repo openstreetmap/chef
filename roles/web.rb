@@ -16,8 +16,8 @@ default_attributes(
     :pool_idle_time => 3600
   },
   :web => {
-    :status => "database_readonly",
-    :memcached_servers => %w[spike-01.dub spike-02.dub spike-03.dub]
+    :status => "online",
+    :memcached_servers => %w[spike-06.ams spike-07.ams spike-08.ams]
   }
 )
 
