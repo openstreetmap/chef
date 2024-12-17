@@ -26,6 +26,11 @@ default_attributes(
           :address => "184.104.179.144",
           :prefix => "27",
           :gateway => "184.104.179.129"
+        },
+        :inet6 => {
+          :address => "2001:470:1:fa1::10",
+          :prefix => 64,
+          :gateway => "2001:470:1:fa1::1"
         }
       },
       :external => {
@@ -36,6 +41,11 @@ default_attributes(
           :address => "82.199.86.112",
           :prefix => "27",
           :gateway => "82.199.86.97"
+        },
+        :inet6 => {
+          :address => "2001:4d78:500:5e3::10",
+          :prefix => 64,
+          :gateway => "2001:4d78:500:5e3::1"
         }
       }
     }
