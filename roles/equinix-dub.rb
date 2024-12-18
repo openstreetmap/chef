@@ -24,13 +24,7 @@ default_attributes(
       },
       :external => {
         :zone => "dub",
-        :inet => {
-          :prefix => "27",
-          :gateway => "184.104.226.97"
-        },
         :inet6 => {
-          :prefix => "64",
-          :gateway => "2001:470:1:b3b::1",
           :routes => {
             "2600:9000::/28" => { :type => "unreachable" }
           }
