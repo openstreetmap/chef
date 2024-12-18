@@ -3,8 +3,15 @@
 groups:
   - name: amsterdam
     rules:
-      - alert: uplink
+      - alert: he uplink
         expr: junos_interface_up{site="amsterdam",name=~"ge-[01]/2/2"} != 1
+        for: 6m
+        labels:
+          alertgroup: "amsterdam"
+        annotations:
+          status: "{{ $value }}"
+      - alert: equinix uplink
+        expr: junos_interface_up{site="amsterdam",name=~"xe-[01]/2/0"} != 1
         for: 6m
         labels:
           alertgroup: "amsterdam"
@@ -130,8 +137,15 @@ groups:
           failure_rate: "{{ $value }} jobs/s"
   - name: dublin
     rules:
-      - alert: uplink
+      - alert: he uplink
         expr: junos_interface_up{site="dublin",name=~"ge-[01]/2/2"} != 1
+        for: 6m
+        labels:
+          alertgroup: "dublin"
+        annotations:
+          status: "{{ $value }}"
+      - alert: equinix uplink
+        expr: junos_interface_up{site="dublin",name=~"xe-[01]/2/0"} != 1
         for: 6m
         labels:
           alertgroup: "dublin"
