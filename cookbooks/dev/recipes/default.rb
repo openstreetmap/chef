@@ -87,6 +87,7 @@ package %w[
   libtool
   libxml-twig-perl
   libxml2-dev
+  libxml2-utils
   libyajl-dev
   lua-any
   luajit
