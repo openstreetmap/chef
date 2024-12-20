@@ -78,12 +78,14 @@ node[:networking][:interfaces].each do |name, interface|
     node.default_unless[:networking][:interfaces][name][:inet][:prefix] = role[:inet][:prefix]
     node.default_unless[:networking][:interfaces][name][:inet][:gateway] = role[:inet][:gateway]
     node.default_unless[:networking][:interfaces][name][:inet][:routes] = role[:inet][:routes]
+    node.default_unless[:networking][:interfaces][name][:inet][:rules] = role[:inet][:rules]
   end
 
   if interface[:inet6] && role[:inet6]
     node.default_unless[:networking][:interfaces][name][:inet6][:prefix] = role[:inet6][:prefix]
     node.default_unless[:networking][:interfaces][name][:inet6][:gateway] = role[:inet6][:gateway]
     node.default_unless[:networking][:interfaces][name][:inet6][:routes] = role[:inet6][:routes]
+    node.default_unless[:networking][:interfaces][name][:inet6][:rules] = role[:inet6][:rules]
   end
 
   node.default_unless[:networking][:interfaces][name][:metric] = role[:metric]

@@ -53,6 +53,7 @@ Table=<%= @interface[:source_route_table] %>
 [RoutingPolicyRule]
 From=<%= @interface[:inet][:address] %>
 Table=<%= @interface[:source_route_table] %>
+Priority=1000
 <% end -%>
 <% end -%>
 <% if @interface.dig(:inet6, :gateway) && @interface[:inet6][:gateway] != @interface[:inet6][:address] -%>
@@ -76,6 +77,7 @@ Table=<%= @interface[:source_route_table] %>
 [RoutingPolicyRule]
 From=<%= @interface[:inet6][:address] %>
 Table=<%= @interface[:source_route_table] %>
+Priority=1000
 <% end -%>
 <% end -%>
 <% Hash(@interface.dig(:inet, :routes)).sort.each do |destination, details| -%>
@@ -108,5 +110,37 @@ Metric=<%= details[:metric] %>
 <% if details[:type] -%>
 Type=<%= details[:type] %>
 <% end -%>
+<% end -%>
+<% end -%>
+<% Array(@interface.dig(:inet, :rules)).each do |rule| -%>
+
+[RoutingPolicyRule]
+<% if rule[:from] -%>
+From=<%= rule[:from] %>
+<% end -%>
+<% if rule[:to] -%>
+To=<%= rule[:to] %>
+<% end -%>
+<% if rule[:table] -%>
+Table=<%= rule[:table] %>
+<% end -%>
+<% if rule[:priority] -%>
+Priority=<%= rule[:priority] %>
+<% end -%>
+<% end -%>
+<% Array(@interface.dig(:inet6, :rules)).each do |rule| -%>
+
+[RoutingPolicyRule]
+<% if rule[:from] -%>
+From=<%= rule[:from] %>
+<% end -%>
+<% if rule[:to] -%>
+To=<%= rule[:to] %>
+<% end -%>
+<% if rule[:table] -%>
+Table=<%= rule[:table] %>
+<% end -%>
+<% if rule[:priority] -%>
+Priority=<%= rule[:priority] %>
 <% end -%>
 <% end -%>

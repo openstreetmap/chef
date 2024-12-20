@@ -25,9 +25,9 @@ default_attributes(
       :external => {
         :zone => "dub",
         :inet6 => {
-          :routes => {
-            "2600:9000::/28" => { :type => "unreachable" }
-          }
+          :rules => [
+            { :to => "2600:9000::/28", :table => 150, :priority => 100 }
+          ]
         }
       }
     }
