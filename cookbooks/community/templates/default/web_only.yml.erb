@@ -133,6 +133,3 @@ hooks:
           resolver <%= @resolvers.join(" ") %>;
           resolver_timeout 5s;
           ssl_dhparam /shared/ssl/dhparam.pem;
-          # FIXME: Workaround CSRF issue. Monkey patch, need proper investigation and fix.
-          proxy_set_header Host $http_host;
-          proxy_set_header X-Forwarded-Proto $thescheme;
