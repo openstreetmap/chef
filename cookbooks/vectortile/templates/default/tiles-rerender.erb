@@ -1,7 +1,11 @@
 #!/bin/sh
 set -eu
-<%= @tilekiln_bin %> generate tiles \
+
+cd "<%= @expiry_dir %>"
+
+wc -l z*.txt
+cat z*.txt | <%= @tilekiln_bin %> generate tiles \
 --source-dbname "<%= @source_database %>" \
 --storage-dbname "<%= @storage_database %>" \
 --num-threads "<%= node[:vectortile][:replication][:threads] %>" \
---config <%= @config_path %> < <%= @tiles_file %>
+--config <%= @config_path %>

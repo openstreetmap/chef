@@ -5,11 +5,10 @@
 
 set -eu
 
-export LUA_PATH='/srv/vector.openstreetmap.org/osm2pgsql-themepark/lua/?.lua;/srv/vector.openstreetmap.org/spirit/?.lua;;'
+export LUA_PATH='/srv/vector.openstreetmap.org/osm2pgsql-themepark/lua/?.lua;;'
 
+cd "<%= @expiry_dir %>"
 osm2pgsql-replication update \
   -d "<%= @source_database %>" \
   --max-diff-size "<%= @diff_size %>" \
-  --post-processing "<%= @post_processing %>" \
-  -- --expire-tiles=10-14 \
-  --expire-output="<%= @tiles_file %>"
+  --post-processing "<%= @post_processing %>"
