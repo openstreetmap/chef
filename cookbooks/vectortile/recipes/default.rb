@@ -258,7 +258,7 @@ template "/usr/local/bin/tiles-rerender" do
   owner "root"
   group "root"
   mode "755"
-  variables :tilekiln_bin => "#{tilekiln_directory}/bin/tilekiln", :source_database => "spirit", :storage_database => "tiles", :config_path => "#{shortbread_config}", :tiles_file => "/srv/vector.openstreetmap.org/data/tiles.txt", :update_threads => 4
+  variables :tilekiln_bin => "#{tilekiln_directory}/bin/tilekiln", :source_database => "spirit", :storage_database => "tiles", :config_path => "#{shortbread_config}", :tiles_file => "/srv/vector.openstreetmap.org/data/tiles.txt"
 end
 
 systemd_service "replicate" do
