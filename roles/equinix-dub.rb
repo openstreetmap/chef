@@ -24,6 +24,13 @@ default_attributes(
       },
       :external => {
         :zone => "dub",
+        :inet => {
+          :rules => [
+            { :to => "10.0.0.0/8", :table => "main", :priority => 50 },
+            { :to => "172.16.0.0/12", :table => "main", :priority => 50 },
+            { :to => "192.168.0.0/16", :table => "main", :priority => 50 }
+          ]
+        },
         :inet6 => {
           :rules => [
             { :to => "2600:9000::/28", :table => 150, :priority => 100 }
