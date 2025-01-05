@@ -163,7 +163,7 @@ node[:taginfo][:sites].each do |site|
     settings["opensearch"]["contact"] = "webmaster@openstreetmap.org"
     settings["paths"]["bin_dir"] = "#{directory}/build/src"
     settings["sources"]["download"] = ""
-    settings["sources"]["create"] = "db languages projects wiki wikidata chronology"
+    settings["sources"]["create"] = "db languages projects wiki wikidata chronology sw"
     settings["sources"]["db"]["planetfile"] = "/var/lib/planet/planet.osh.pbf"
     settings["sources"]["chronology"]["osm_history_file"] = "/var/lib/planet/planet.osh.pbf"
     settings["tagstats"]["geodistribution"] = "DenseMmapArray"
