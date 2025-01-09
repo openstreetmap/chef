@@ -139,7 +139,7 @@ end
 class Replicator
   def initialize(config)
     @config = YAML.safe_load(File.read(config))
-    @state = YAML.safe_load(File.read(@config["state_file"]), :permitted_classes => [Time])
+    @state = YAML.safe_load(File.read(@config["state_file"]), :permitted_classes => [Time], :fallback => {})
     @conn = PG::Connection.connect(@config["db"])
     # get current time from the database rather than the current system
     @now = @conn.exec("select now() as now").map { |row| Time.parse(row["now"]) }[0]
