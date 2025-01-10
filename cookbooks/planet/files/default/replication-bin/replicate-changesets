@@ -96,7 +96,7 @@ class ChangesetBuilder
 
   def add_comments(xml, cs)
     # grab the visible changeset comments as well
-    res = @conn.exec("select cc.author_id, u.display_name as author, cc.body, cc.created_at from changeset_comments cc join users u on cc.author_id=u.id where cc.changeset_id=#{cs.id} and cc.visible order by cc.created_at asc")
+    res = @conn.exec("select cc.author_id, u.display_name as author, cc.body, (cc.created_at at time zone 'utc') as created_at from changeset_comments cc join users u on cc.author_id=u.id where cc.changeset_id=#{cs.id} and cc.visible order by cc.created_at asc")
     xml["comments_count"] = res.num_tuples.to_s
 
     # early return if there aren't any comments
@@ -153,7 +153,7 @@ class Replicator
     # for us to look at anything that was closed recently, and filter from
     # there.
     changesets = @conn
-                 .exec("select id, created_at, closed_at, num_changes from changesets where closed_at > ((now() at time zone 'utc') - '1 hour'::interval)")
+                 .exec("select id, (created_at at time zone 'utc') as created_at, (closed_at at time zone 'utc') as closed_at, num_changes from changesets where (closed_at at time zone 'utc') > ((now() at time zone 'utc') - '1 hour'::interval)")
                  .map { |row| Changeset.new(row) }
                  .select { |cs| cs.activity_between?(last_run, @now) }
 
@@ -162,13 +162,13 @@ class Replicator
 
     # but also add any changesets which have new comments
     new_ids = @conn
-              .exec("select distinct changeset_id from changeset_comments where created_at >= '#{last_run}' and created_at < '#{@now}' and visible")
+              .exec("select distinct changeset_id from changeset_comments where (created_at at time zone 'utc') >= '#{last_run}' and (created_at at time zone 'utc') < '#{@now}' and visible")
               .map { |row| row["changeset_id"].to_i }
               .reject { |c_id| cs_ids.include?(c_id) }
 
     new_ids.each do |id|
       @conn
-        .exec("select id, created_at, closed_at, num_changes from changesets where id=#{id}")
+        .exec("select id, (created_at at time zone 'utc') as created_at, (closed_at at time zone 'utc') as closed_at, num_changes from changesets where id=#{id}")
         .map { |row| Changeset.new(row) }
         .each { |cs| changesets << cs }
     end
