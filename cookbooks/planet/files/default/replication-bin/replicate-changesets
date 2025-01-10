@@ -127,7 +127,7 @@ end
 # sync a directory to guarantee it's on disk. have to recurse to the root
 # to guarantee sync for newly created directories.
 def fdirsync(d)
-  while d != "/"
+  while d != "/" && d != "."
     fsync(d)
     d = File.dirname(d)
   end
