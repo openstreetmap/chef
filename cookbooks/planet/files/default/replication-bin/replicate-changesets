@@ -96,7 +96,7 @@ class ChangesetBuilder
 
   def add_comments(xml, cs)
     # grab the visible changeset comments as well
-    res = @conn.exec("select cc.author_id, u.display_name as author, cc.body, (cc.created_at at time zone 'utc') as created_at from changeset_comments cc join users u on cc.author_id=u.id where cc.changeset_id=#{cs.id} and cc.visible order by cc.created_at asc")
+    res = @conn.exec("select cc.id, cc.author_id, u.display_name as author, cc.body, (cc.created_at at time zone 'utc') as created_at from changeset_comments cc join users u on cc.author_id=u.id where cc.changeset_id=#{cs.id} and cc.visible order by cc.created_at asc")
     xml["comments_count"] = res.num_tuples.to_s
 
     # early return if there aren't any comments
@@ -105,6 +105,7 @@ class ChangesetBuilder
     discussion = XML::Node.new("discussion")
     res.each do |row|
       comment = XML::Node.new("comment")
+      comment["id"] = row["id"]
       comment["uid"] = row["author_id"]
       comment["user"] = xml_sanitize(row["author"])
       comment["date"] = Time.parse(row["created_at"]).getutc.xmlschema
