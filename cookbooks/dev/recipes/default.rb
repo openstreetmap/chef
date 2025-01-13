@@ -148,6 +148,7 @@ package %w[
   unrar
   unzip
   whois
+  xxd
   zip
   zlib1g-dev
 ]
