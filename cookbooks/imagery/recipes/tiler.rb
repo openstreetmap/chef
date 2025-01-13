@@ -39,9 +39,7 @@ podman_service "titiler" do
   image container_image
   volume :"/store/imagery"       => "/store/imagery",
          :"/srv/imagery/sockets" => "/sockets"
-  environment :BIND                                => "unix:/sockets/titiler.sock",
-              :WORKERS_PER_CORE                    => 1,
-              :GDAL_CACHEMAX                       => 200,
+  environment :GDAL_CACHEMAX                       => 200,
               :GDAL_BAND_BLOCK_CACHE               => "HASHSET",
               :GDAL_DISABLE_READDIR_ON_OPEN        => "EMPTY_DIR",
               :GDAL_INGESTED_BYTES_AT_OPEN         => 32768,
@@ -52,6 +50,7 @@ podman_service "titiler" do
               :VSI_CACHE_SIZE                      => 5000000,
               :TITILER_API_ROOT_PATH               => "/api/v1/titiler",
               :FORWARDED_ALLOW_IPS                 => "*" # https://docs.gunicorn.org/en/latest/settings.html#forwarded-allow-ips
+  command "gunicorn -k uvicorn.workers.UvicornWorker titiler.application.main:app --bind unix:/sockets/titiler.sock --workers #{node.cpu_cores}"
 end
 
 systemd_service "titiler-restart" do
