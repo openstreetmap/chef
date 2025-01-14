@@ -103,8 +103,8 @@ package %w[
   osmium-tool
   osmosis
   pandoc
+  pandoc
   pbzip2
-  pdal
   php-apcu
   php-cgi
   php-cli
@@ -149,8 +149,6 @@ package %w[
   unrar
   unzip
   whois
-  wine32
-  xxd
   zip
   zlib1g-dev
 ]
