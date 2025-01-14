@@ -96,6 +96,7 @@ package %w[
   lzip
   lzop
   mailutils
+  moreutils
   make
   nano
   ncftp
