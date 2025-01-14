@@ -103,7 +103,6 @@ package %w[
   osmium-tool
   osmosis
   pandoc
-  pandoc
   pbzip2
   php-apcu
   php-cgi
