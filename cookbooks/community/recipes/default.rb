@@ -62,8 +62,8 @@ end
 git "/srv/community.openstreetmap.org/docker" do
   action :sync
   repository "https://github.com/discourse/discourse_docker.git"
-  # Revision pin not possible as launch wrapper automatically updates git repo.
-  revision "main"
+  # DANGER launch wrapper automatically updates git repo if rebuild method used: https://github.com/discourse/discourse_docker/blob/107ffb40fe8b1ea40e00814468db974a4f3f8e8f/launcher#L799
+  revision "b345430a822d6275573f3d82f1ad2e2b5fa1e0b1"
   depth 1
   user "root"
   group "root"
@@ -122,18 +122,24 @@ notify_group "discourse_container_new_web_only" do
   notifies :run, "execute[discourse_container_data_start]", :immediately # noop if site up
   notifies :run, "execute[discourse_container_web_only_bootstrap]", :immediately # site up but runs in parallel. Slow
   notifies :run, "execute[discourse_container_web_only_destroy]", :immediately # site down
-  notifies :run, "execute[discourse_container_data_rebuild]", :immediately # site down
+  notifies :run, "execute[discourse_container_data_destroy]", :immediately # site down
+  notifies :run, "execute[discourse_container_data_bootstrap]", :immediately # site down
+  notifies :run, "execute[discourse_container_data_start]", :immediately # site down
   notifies :run, "execute[discourse_container_web_only_start]", :immediately # site restore
 end
 
 notify_group "discourse_container_new_data" do
   notifies :run, "execute[discourse_container_web_only_destroy]", :immediately # site down
-  notifies :run, "execute[discourse_container_data_rebuild]", :immediately # site down
+  notifies :run, "execute[discourse_container_data_destroy]", :immediately # site down
+  notifies :run, "execute[discourse_container_data_bootstrap]", :immediately # site down
+  notifies :run, "execute[discourse_container_data_start]", :immediately # site down
   notifies :run, "execute[discourse_container_web_only_start]", :immediately # site restore
 end
 
 notify_group "discourse_container_new_mail_receiver" do
-  notifies :run, "execute[discourse_container_mail_receiver_rebuild]", :immediately
+  notifies :run, "execute[discourse_container_mail_receiver_destroy]", :immediately
+  notifies :run, "execute[discourse_container_mail_receiver_bootstrap]", :immediately
+  notifies :run, "execute[discourse_container_mail_receiver_start]", :immediately
 end
 
 # Attempt at a failsafe to ensure all containers are running
@@ -144,17 +150,25 @@ notify_group "discourse_container_ensure_all_running" do
   notifies :run, "execute[discourse_container_mail_receiver_start]", :delayed
 end
 
-execute "discourse_container_data_start" do
+execute "discourse_container_data_bootstrap" do
   action :nothing
-  command "./launcher start data"
+  command "./launcher bootstrap data"
   cwd "/srv/community.openstreetmap.org/docker/"
   user "root"
   group "root"
 end
 
-execute "discourse_container_data_rebuild" do
+execute "discourse_container_data_destroy" do
   action :nothing
-  command "./launcher rebuild data"
+  command "./launcher destroy data"
+  cwd "/srv/community.openstreetmap.org/docker/"
+  user "root"
+  group "root"
+end
+
+execute "discourse_container_data_start" do
+  action :nothing
+  command "./launcher start data"
   cwd "/srv/community.openstreetmap.org/docker/"
   user "root"
   group "root"
@@ -184,10 +198,17 @@ execute "discourse_container_web_only_start" do
   group "root"
 end
 
-# Rebuild: Stop Destroy Bootstap Start
-execute "discourse_container_mail_receiver_rebuild" do
+execute "discourse_container_mail_receiver_bootstrap" do
   action :nothing
-  command "./launcher rebuild mail-receiver"
+  command "./launcher bootstrap mail-receiver"
+  cwd "/srv/community.openstreetmap.org/docker/"
+  user "root"
+  group "root"
+end
+
+execute "discourse_container_mail_receiver_destroy" do
+  action :nothing
+  command "./launcher destroy mail-receiver"
   cwd "/srv/community.openstreetmap.org/docker/"
   user "root"
   group "root"
