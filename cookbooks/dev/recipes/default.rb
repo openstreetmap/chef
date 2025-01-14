@@ -61,6 +61,7 @@ package %w[
   gnuplot-nox
   golang
   graphviz
+  htop
   irssi
   jq
   libargon2-dev
@@ -148,12 +149,6 @@ package %w[
   unrar
   unzip
   whois
-<<<<<<< HEAD
-=======
-  # Unavailable on debian 12
-  #wine32
-  wine
->>>>>>> d9d12032 (Install wine on dev server to run windows-only utils)
   xxd
   zip
   zlib1g-dev
