@@ -42,7 +42,7 @@ package %w[
 
 cache_dir = Chef::Config[:file_cache_path]
 
-dnscontrol_version = "4.15.3"
+dnscontrol_version = "4.15.4"
 
 dnscontrol_arch = if arm?
                     "arm64"
