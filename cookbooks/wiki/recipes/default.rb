@@ -153,6 +153,7 @@ systemd_service "wiki-dump" do
   exec_start "/usr/bin/php w/maintenance/dumpBackup.php --full --quiet --output=gzip:dump/dump.xml.gz"
   working_directory "/srv/wiki.openstreetmap.org"
   user "wiki"
+  nice 19
   sandbox :enable_network => true
   memory_deny_write_execute false
   restrict_address_families "AF_UNIX"
@@ -161,7 +162,7 @@ end
 
 systemd_timer "wiki-dump" do
   description "Wiki dump"
-  on_calendar "02:00"
+  on_calendar "Sun 02:30"
 end
 
 service "wiki-dump.timer" do
