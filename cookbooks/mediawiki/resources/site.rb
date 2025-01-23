@@ -425,6 +425,7 @@ action :create do
   if new_resource.commons
     mediawiki_extension "QuickInstantCommons" do
       site new_resource.site
+      template "mw-ext-QuickInstantCommons.inc.php.erb"
       update_site false
     end
   else

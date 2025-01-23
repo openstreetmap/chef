@@ -1,0 +1,18 @@
+<?php
+# DO NOT EDIT - This file is being maintained by Chef
+wfLoadExtension( 'QuickInstantCommons' );
+$wgUseQuickInstantCommons = false; // Disable as we manually set via wgForeignFileRepos
+$wgForeignFileRepos[] = [
+	'class' => '\MediaWiki\Extension\QuickInstantCommons\Repo',
+	'name' => 'wikimediacommons',
+	'directory' => $wgUploadDirectory,
+	'apibase' => 'https://commons.wikimedia.org/w/api.php',
+	'hashLevels' => 2,
+	'thumbUrl' => 'https://upload.wikimedia.org/wikipedia/commons/thumb',
+	'fetchDescription' => true,
+	'descriptionCacheExpiry' => 43200,
+	'transformVia404' => true,
+	'abbrvThreshold' => 160,
+	'apiMetadataExpiry' => 60*60*24*30,
+	'disabledMediaHandlers' => [TiffHandler::class]
+];
