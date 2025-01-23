@@ -41,6 +41,7 @@ package %w[
   composer
   unzip
   ffmpeg
+  firejail
 ]
 
 # Mediawiki enhanced difference engine
