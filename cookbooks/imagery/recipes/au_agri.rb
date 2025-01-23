@@ -35,5 +35,5 @@ imagery_layer "au_ga_agri" do
   projection "EPSG:3857"
   source "/store/imagery/au/agri/combine-cutline-cog.tif"
   max_zoom 17
-  revision 1
+  revision 3
 end
