@@ -7,7 +7,7 @@ default_attributes(
     :last_address => "10.0.79.254"
   },
   :exim => {
-    :external_interface => "<;${if <{${randint:100}}{90} {184.104.226.98;2001:470:1:b3b::2}{87.252.214.98;2001:4d78:fe03:1c::2}}",
+    :external_interface => "<;${if <{${randint:100}}{75} {184.104.226.98;2001:470:1:b3b::2}{87.252.214.98;2001:4d78:fe03:1c::2}}",
     :routes => {
       :openstreetmap => {
         :comment => "openstreetmap.org",
