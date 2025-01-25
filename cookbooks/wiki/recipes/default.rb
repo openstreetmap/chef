@@ -28,9 +28,7 @@ apache_site "default" do
 end
 
 mediawiki_site "wiki.openstreetmap.org" do
-  aliases ["wiki.osm.org", "wiki.openstreetmap.com", "wiki.openstreetmap.net",
-           "wiki.openstreetmap.ca", "wiki.openstreetmap.eu",
-           "wiki.openstreetmap.pro", "wiki.openstreetmaps.org",
+  aliases ["wiki.osm.org", "wiki.openstreetmap.com", "wiki.openstreetmaps.org",
            "osm.wiki", "www.osm.wiki", "wiki.osm.wiki"]
 
   fpm_max_children 200
