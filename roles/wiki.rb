@@ -17,7 +17,7 @@ default_attributes(
       :max_connections_per_child => 10000
     },
     :evasive => {
-      :page_count => 250,
+      :page_count => 400,
       :site_count => 500
     }
   },
