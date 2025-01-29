@@ -39,6 +39,7 @@ end
 
 prometheus_exporter "smokeping" do
   port 9374
+  environment "GOMAXPROCS" => "1"
   options "--config.file=/etc/prometheus/exporters/smokeping.yml"
   capability_bounding_set "CAP_NET_RAW"
   ambient_capabilities "CAP_NET_RAW"
