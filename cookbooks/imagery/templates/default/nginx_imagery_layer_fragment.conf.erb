@@ -3,10 +3,7 @@
 location ~* "^/layer/<%= @layer %>/(\d+)/(\d+)/(\d+)\.(jpg|jpeg|png|webp)$" {
 <% if @uses_tiler -%>
   set $args "";
-  rewrite ^/layer/<%= @layer %>/(\d+)/(\d+)/(\d+)\.jpg /mosaicjson/tiles/WebMercatorQuad/$1/$2/$3@1x?url=<%= URI.encode_www_form_component(@source) %>&pixel_selection=first&tile_format=jpeg break;
-  rewrite ^/layer/<%= @layer %>/(\d+)/(\d+)/(\d+)\.jpeg /mosaicjson/tiles/WebMercatorQuad/$1/$2/$3@1x?url=<%= URI.encode_www_form_component(@source) %>&pixel_selection=first&tile_format=jpeg break;
-  rewrite ^/layer/<%= @layer %>/(\d+)/(\d+)/(\d+)\.png /mosaicjson/tiles/WebMercatorQuad/$1/$2/$3@1x?url=<%= URI.encode_www_form_component(@source) %>&pixel_selection=first&tile_format=png break;
-  rewrite ^/layer/<%= @layer %>/(\d+)/(\d+)/(\d+)\.webp /mosaicjson/tiles/WebMercatorQuad/$1/$2/$3@1x?url=<%= URI.encode_www_form_component(@source) %>&pixel_selection=first&tile_format=webp break;
+  rewrite ^/layer/<%= @layer %>/(\d+)/(\d+)/(\d+)\.(jpg|jpeg|png|webp) /mosaicjson/tiles/WebMercatorQuad/$1/$2/$3@1x?url=<%= URI.encode_www_form_component(@source) %>&pixel_selection=first&tile_format=$4 break;
   proxy_pass http://<%= @site %>_tiler_backend;
   proxy_set_header Host $host;
   proxy_set_header Referer $http_referer;
@@ -18,7 +15,7 @@ location ~* "^/layer/<%= @layer %>/(\d+)/(\d+)/(\d+)\.(jpg|jpeg|png|webp)$" {
   proxy_set_header Cache-Control "";
   proxy_set_header Pragma "";
   proxy_redirect off;
-  proxy_cache_key "<%= @layer %><%= @revision %> $request_method $1 $2 $3";
+  proxy_cache_key "<%= @layer %><%= @revision %> $request_method $1 $2 $3 $4";
   proxy_cache proxy_cache_zone;
   proxy_cache_valid 200 204 180d;
   proxy_cache_use_stale error timeout updating http_502 http_503 http_504;
