@@ -1,11 +1,12 @@
 <% require 'uri' %>
 # DO NOT EDIT - This file is being maintained by Chef
-location ~* "^/layer/<%= @layer %>/(\d+)/(\d+)/(\d+)\.(png|jpg|jpeg)$" {
+location ~* "^/layer/<%= @layer %>/(\d+)/(\d+)/(\d+)\.(jpg|jpeg|png|webp)$" {
 <% if @uses_tiler -%>
   set $args "";
   rewrite ^/layer/<%= @layer %>/(\d+)/(\d+)/(\d+)\.jpg /mosaicjson/tiles/WebMercatorQuad/$1/$2/$3@1x?url=<%= URI.encode_www_form_component(@source) %>&pixel_selection=first&tile_format=jpeg break;
   rewrite ^/layer/<%= @layer %>/(\d+)/(\d+)/(\d+)\.jpeg /mosaicjson/tiles/WebMercatorQuad/$1/$2/$3@1x?url=<%= URI.encode_www_form_component(@source) %>&pixel_selection=first&tile_format=jpeg break;
   rewrite ^/layer/<%= @layer %>/(\d+)/(\d+)/(\d+)\.png /mosaicjson/tiles/WebMercatorQuad/$1/$2/$3@1x?url=<%= URI.encode_www_form_component(@source) %>&pixel_selection=first&tile_format=png break;
+  rewrite ^/layer/<%= @layer %>/(\d+)/(\d+)/(\d+)\.webp /mosaicjson/tiles/WebMercatorQuad/$1/$2/$3@1x?url=<%= URI.encode_www_form_component(@source) %>&pixel_selection=first&tile_format=webp break;
   proxy_pass http://<%= @site %>_tiler_backend;
   proxy_set_header Host $host;
   proxy_set_header Referer $http_referer;
@@ -77,8 +78,8 @@ location ~* "^/layer/<%= @layer %>/(\d+)/(\d+)/(\d+)\.(png|jpg|jpeg)$" {
 }
 
 <% if @root_layer -%>
-rewrite "^/(\d+)/(\d+)/(\d+)\.(png|jpg|jpeg)$" "/layer/<%= @layer %>/$1/$2/$3.$4" last;
+rewrite "^/(\d+)/(\d+)/(\d+)\.(jpg|jpeg|png|webp)$" "/layer/<%= @layer %>/$1/$2/$3.$4" last;
 <% end -%>
 <% @url_aliases.each do |url| -%>
-rewrite "^<%= url %>/(\d+)/(\d+)/(\d+)\.(png|jpg|jpeg)$" "/layer/<%= @layer %>/$1/$2/$3.$4" last;
+rewrite "^<%= url %>/(\d+)/(\d+)/(\d+)\.(jpg|jpeg|png|webp)$" "/layer/<%= @layer %>/$1/$2/$3.$4" last;
 <% end -%>
