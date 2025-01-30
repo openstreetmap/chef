@@ -3,7 +3,7 @@
 location ~* "^/layer/<%= @layer %>/(\d+)/(\d+)/(\d+)\.(jpg|jpeg|png|webp)$" {
 <% if @uses_tiler -%>
   set $args "";
-  rewrite ^/layer/<%= @layer %>/(\d+)/(\d+)/(\d+)\.(jpg|jpeg|png|webp) /mosaicjson/tiles/WebMercatorQuad/$1/$2/$3@1x?url=<%= URI.encode_www_form_component(@source) %>&pixel_selection=first&tile_format=$4 break;
+  rewrite ^/layer/<%= @layer %>/(\d+)/(\d+)/(\d+)\.(jpg|jpeg|png|webp) /mosaicjson/tiles/WebMercatorQuad/$1/$2/$3@1x.$4?url=<%= URI.encode_www_form_component(@source) %>&pixel_selection=first break;
   proxy_pass http://<%= @site %>_tiler_backend;
   proxy_set_header Host $host;
   proxy_set_header Referer $http_referer;
