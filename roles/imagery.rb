@@ -35,6 +35,7 @@ default_attributes(
 
 run_list(
   "recipe[imagery::au_agri]",
+  "recipe[imagery::au_act_aerial]",
   "recipe[imagery::gb_ea]",
   "recipe[imagery::gb_hampshire_aerial]",
   "recipe[imagery::gb_os_sv]",
