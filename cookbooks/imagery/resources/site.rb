@@ -113,8 +113,7 @@ action :create do
     group "imagery"
     exec_start "/usr/bin/multiwatch -f 8 --signal=TERM -- /usr/lib/cgi-bin/mapserv"
     standard_input "socket"
-    sandbox true
-    enable_network true
+    sandbox :enable_network => true
     restrict_address_families "AF_UNIX"
     timeout_stop_sec 60
     not_if { new_resource.uses_tiler }
