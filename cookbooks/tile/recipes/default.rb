@@ -162,6 +162,7 @@ package %w[
   python3-pyotp
   python3-pyproj
   python3-setuptools
+  python3-pil
 ]
 
 directory "/srv/tile.openstreetmap.org/cgi-bin" do
