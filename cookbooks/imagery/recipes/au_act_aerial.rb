@@ -33,7 +33,7 @@ imagery_layer "act_aerial_imagery_202409" do
   projection "EPSG:7855"
   source "https://tiles.arcgis.com/tiles/E5n4f1VY84i0xSjy/arcgis/rest/services/ACT_Aerial_Imagery_202409/MapServer/WMTS/1.0.0/WMTSCapabilities.xml"
   # attribution per https://www.actmapi.act.gov.au/terms-and-conditions and https://tiles.arcgis.com/tiles/E5n4f1VY84i0xSjy/arcgis/rest/services/ACT_Aerial_Imagery_202409/MapServer/
-  copyright "ACT Imagery from <a href='https://www.actmapi.act.gov.au/home'>ACTmapi</a> (c) Australian Capital Territory and MetroMap."
+  copyright "ACT Imagery from <a href='https://www.actmapi.act.gov.au/home'>ACTmapi</a> (c) Australian Capital Territory and MetroMap. "
   default_layer true
   background_colour "0 0 0"
   extension "jpeg"
@@ -46,7 +46,7 @@ imagery_layer "act_aerial_imagery_202311" do
   projection "EPSG:7855"
   source "https://tiles.arcgis.com/tiles/E5n4f1VY84i0xSjy/arcgis/rest/services/ACT_Aerial_Imagery_202311/MapServer/WMTS/1.0.0/WMTSCapabilities.xml"
   # attribution per https://www.actmapi.act.gov.au/terms-and-conditions and https://tiles.arcgis.com/tiles/E5n4f1VY84i0xSjy/arcgis/rest/services/ACT_Aerial_Imagery_202311/MapServer/
-  copyright "ACT Imagery from <a href='https://www.actmapi.act.gov.au/home'>ACTmapi</a> (c) Australian Capital Territory and MetroMap."
+  copyright "ACT Imagery from <a href='https://www.actmapi.act.gov.au/home'>ACTmapi</a> (c) Australian Capital Territory and MetroMap. "
   default_layer true
   background_colour "0 0 0"
   extension "jpeg"
@@ -59,7 +59,7 @@ imagery_layer "act_aerial_imagery_202305" do
   projection "EPSG:7855"
   source "https://tiles.arcgis.com/tiles/E5n4f1VY84i0xSjy/arcgis/rest/services/ACT_Aerial_Imagery_202305/MapServer/WMTS/1.0.0/WMTSCapabilities.xml"
   # attribution per https://www.actmapi.act.gov.au/terms-and-conditions and https://tiles.arcgis.com/tiles/E5n4f1VY84i0xSjy/arcgis/rest/services/ACT_Aerial_Imagery_202305/MapServer/
-  copyright "ACT Imagery from <a href='https://www.actmapi.act.gov.au/home'>ACTmapi</a> (c) Australian Capital Territory and MetroMap."
+  copyright "ACT Imagery from <a href='https://www.actmapi.act.gov.au/home'>ACTmapi</a> (c) Australian Capital Territory and MetroMap. "
   default_layer true
   background_colour "0 0 0"
   extension "jpeg"
