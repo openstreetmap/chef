@@ -30,7 +30,7 @@ end
 imagery_layer "melbourne-2020" do
   site "au-vic-melbourne-imagery.openstreetmap.org"
   title "City of Melbourne 2020"
-  source "file:///store/imagery/au/city-of-melbourne/CoM_May2020_2cm.cog.tiff"
+  source "/store/imagery/au/city-of-melbourne/CoM_May2020_2cm.cog.tiff"
   copyright "(c) 2020 City of Melbourne"
   max_zoom 23
   extension "jpg"
@@ -40,7 +40,7 @@ end
 imagery_layer "melbourne-2019" do
   site "au-vic-melbourne-imagery.openstreetmap.org"
   title "City of Melbourne 2019"
-  source "file:///store/imagery/au/city-of-melbourne/CoM_03Feb2019.cog.tiff"
+  source "/store/imagery/au/city-of-melbourne/CoM_03Feb2019.cog.tiff"
   copyright "(c) 2019 City of Melbourne"
   max_zoom 21
   extension "jpg"
@@ -49,7 +49,7 @@ end
 imagery_layer "melbourne-2018" do
   site "au-vic-melbourne-imagery.openstreetmap.org"
   title "City of Melbourne 2018"
-  source "file:///store/imagery/au/city-of-melbourne/CoM_May2018_10cm.COG.tiff"
+  source "/store/imagery/au/city-of-melbourne/CoM_May2018_10cm.COG.tiff"
   copyright "(c) 2018 City of Melbourne"
   max_zoom 21
   extension "jpg"
