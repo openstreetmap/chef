@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-include_recipe "imagery::tiler"
+include_recipe "imagery"
 
 imagery_site "au-vic-melbourne-imagery.openstreetmap.org" do
   title "OpenStreetMap - City of Melbourne - Aerial Imagery"
@@ -25,12 +25,10 @@ imagery_site "au-vic-melbourne-imagery.openstreetmap.org" do
   # https://leafletjs.com/reference.html#latlngbounds format
   # [[south, west], [north, east]]
   bbox [[-37.850667, 144.896981], [-37.775451, 144.991351]]
-  uses_tiler true
 end
 
 imagery_layer "melbourne-2020" do
   site "au-vic-melbourne-imagery.openstreetmap.org"
-  uses_tiler true
   title "City of Melbourne 2020"
   source "file:///store/imagery/au/city-of-melbourne/CoM_May2020_2cm.cog.tiff"
   copyright "(c) 2020 City of Melbourne"
@@ -41,7 +39,6 @@ end
 
 imagery_layer "melbourne-2019" do
   site "au-vic-melbourne-imagery.openstreetmap.org"
-  uses_tiler true
   title "City of Melbourne 2019"
   source "file:///store/imagery/au/city-of-melbourne/CoM_03Feb2019.cog.tiff"
   copyright "(c) 2019 City of Melbourne"
@@ -51,7 +48,6 @@ end
 
 imagery_layer "melbourne-2018" do
   site "au-vic-melbourne-imagery.openstreetmap.org"
-  uses_tiler true
   title "City of Melbourne 2018"
   source "file:///store/imagery/au/city-of-melbourne/CoM_May2018_10cm.COG.tiff"
   copyright "(c) 2018 City of Melbourne"
