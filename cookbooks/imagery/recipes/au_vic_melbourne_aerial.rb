@@ -33,7 +33,8 @@ imagery_layer "melbourne-2020" do
   source "/store/imagery/au/city-of-melbourne/CoM_May2020_2cm.cog.tiff"
   copyright "(c) 2020 City of Melbourne"
   max_zoom 23
-  extension "jpg"
+  extension "jpeg"
+  revision 2
   default_layer true
 end
 
@@ -43,7 +44,8 @@ imagery_layer "melbourne-2019" do
   source "/store/imagery/au/city-of-melbourne/CoM_03Feb2019.cog.tiff"
   copyright "(c) 2019 City of Melbourne"
   max_zoom 21
-  extension "jpg"
+  extension "jpeg"
+  revision 2
 end
 
 imagery_layer "melbourne-2018" do
@@ -52,5 +54,6 @@ imagery_layer "melbourne-2018" do
   source "/store/imagery/au/city-of-melbourne/CoM_May2018_10cm.COG.tiff"
   copyright "(c) 2018 City of Melbourne"
   max_zoom 21
-  extension "jpg"
+  extension "jpeg"
+  revision 2
 end
