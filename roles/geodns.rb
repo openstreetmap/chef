@@ -12,8 +12,10 @@ default_attributes(
         :list => false,
         :transfer_logging => false,
         :hosts_allow => [
-          "184.104.226.102",  # idris
-          "2001:470:1:b3b::6" # idris
+          "184.104.226.102",  # idris HE
+          "2001:470:1:b3b::6", # idris HE
+          "87.252.214.102", # idris Equinix
+          "2001:4d78:fe03:1c::6" # idris  Equinix
         ]
       }
     }
