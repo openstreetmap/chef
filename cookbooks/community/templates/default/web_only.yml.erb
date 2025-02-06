@@ -19,7 +19,7 @@ links:
 # any extra arguments for Docker?
 # docker_args:
 
-# Latest Version v3.3.3
+# Latest Version v3.3.4
 # Discourse only support tests-passed and stable branches
 params:
   version: stable
@@ -121,7 +121,6 @@ hooks:
         from: /listen 80;/
         to: |
           listen 80;
-          listen [::]:80;
           rewrite ^/\.well-known/acme-challenge/(.*)$ http://acme.openstreetmap.org/.well-known/acme-challenge/$1 permanent;
 
     - replace:
