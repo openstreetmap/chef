@@ -118,14 +118,6 @@ hooks:
   after_ssl:
     - replace:
         filename: "/etc/nginx/conf.d/discourse.conf"
-        from: /listen 80;/
-        to: |
-          listen 80;
-          listen [::]:80;
-          rewrite ^/\.well-known/acme-challenge/(.*)$ http://acme.openstreetmap.org/.well-known/acme-challenge/$1 permanent;
-
-    - replace:
-        filename: "/etc/nginx/conf.d/discourse.conf"
         from: /add_header.+/
         to: |
           add_header Strict-Transport-Security 'max-age=63072000' always;
@@ -133,3 +125,11 @@ hooks:
           resolver <%= @resolvers.join(" ") %>;
           resolver_timeout 5s;
           ssl_dhparam /shared/ssl/dhparam.pem;
+
+run:
+  - replace:
+      filename: "/etc/nginx/conf.d/discourse.conf"
+      from: /return 301.+/
+      to: |
+        rewrite ^/\.well-known/acme-challenge/(.*)$ http://acme.openstreetmap.org/.well-known/acme-challenge/$1 permanent;
+        return 301 https://$$ENV_DISCOURSE_HOSTNAME$request_uri;
