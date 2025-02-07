@@ -105,7 +105,9 @@ action :create do
     description "Map server for #{new_resource.site} layer"
     environment "MS_DEBUGLEVEL" => "0",
                 "MS_ERRORFILE" => "stderr",
-                "GDAL_CACHEMAX" => "128"
+                "GDAL_CACHEMAX" => "128",
+                "GDAL_HTTP_TCP_KEEPALIVE" => "YES",
+                "GDAL_HTTP_VERSION" => "2TLS"
     limit_nofile 16384
     memory_high "12G"
     memory_max "12G"
@@ -154,7 +156,7 @@ action :create do
 
   systemd_timer "mapserv-fcgi-#{new_resource.site}-stop" do
     on_boot_sec "10m"
-    on_unit_inactive_sec "30m"
+    on_unit_inactive_sec "6h"
     randomized_delay_sec "20m"
     not_if { new_resource.uses_tiler }
   end
