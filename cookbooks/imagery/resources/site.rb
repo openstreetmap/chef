@@ -107,7 +107,8 @@ action :create do
                 "MS_ERRORFILE" => "stderr",
                 "GDAL_CACHEMAX" => "128",
                 "GDAL_HTTP_TCP_KEEPALIVE" => "YES",
-                "GDAL_HTTP_VERSION" => "2TLS"
+                "GDAL_HTTP_VERSION" => "2TLS",
+                "GDAL_ENABLE_WMS_CACHE" => "NO"
     limit_nofile 16384
     memory_high "12G"
     memory_max "12G"
