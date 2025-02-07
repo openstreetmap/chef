@@ -129,7 +129,8 @@ hooks:
 run:
   - replace:
       filename: "/etc/nginx/conf.d/discourse.conf"
-      from: /return 301.+/
+      from: /listen 80;/
       to: |
+        listen 80;
+        listen [::]:80;
         rewrite ^/\.well-known/acme-challenge/(.*)$ http://acme.openstreetmap.org/.well-known/acme-challenge/$1 permanent;
-        return 301 https://$$ENV_DISCOURSE_HOSTNAME$request_uri;
