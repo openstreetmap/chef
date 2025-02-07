@@ -155,6 +155,7 @@ execute "discourse_container_data_bootstrap" do
   cwd "/srv/community.openstreetmap.org/docker/"
   user "root"
   group "root"
+  retries 2 # Postgres upgrades required a second run
 end
 
 execute "discourse_container_data_destroy" do
