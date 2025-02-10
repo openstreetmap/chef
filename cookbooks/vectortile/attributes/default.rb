@@ -8,6 +8,8 @@ default[:vectortile][:replication][:status] = :enabled
 default[:vectortile][:replication][:tileupdate] = :enabled
 default[:vectortile][:replication][:threads] = node.cpu_cores
 
+default[:vectortile][:tilekiln][:version] = "0.6.5"
+
 default[:postgresql][:versions] |= [node[:vectortile][:database][:cluster].split("/").first]
 default[:postgresql][:monitor_database] = "tiles"
 # As an absolute worst case, the server might have the serving, update, and a manual generation process going on.
