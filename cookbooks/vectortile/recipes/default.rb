@@ -100,7 +100,7 @@ end
 python_package "tilekiln" do
   python_virtualenv tilekiln_directory
   python_version "3"
-  version "0.6.5"
+  version node[:vectortile][:tilekiln][:version]
 end
 
 template "/srv/vector.openstreetmap.org/html/index.html" do
