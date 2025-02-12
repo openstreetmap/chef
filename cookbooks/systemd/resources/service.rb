@@ -36,6 +36,7 @@ property :notify_access, String, :is => %w[none main exec all]
 property :limit_nofile, Integer
 property :limit_as, [Integer, String]
 property :limit_cpu, [Integer, String]
+property :limit_core, [Integer, String]
 property :memory_low, [Integer, String]
 property :memory_high, [Integer, String]
 property :memory_max, [Integer, String]

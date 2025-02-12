@@ -45,6 +45,9 @@ LimitAS=<%= @limit_as %>
 <% if @limit_cpu -%>
 LimitCPU=<%= @limit_cpu %>
 <% end -%>
+<% if @limit_core -%>
+LimitCORE=<%= @limit_core %>
+<% end -%>
 <% if @memory_low -%>
 MemoryLow=<%= @memory_low %>
 <% end -%>
