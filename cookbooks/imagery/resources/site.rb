@@ -112,6 +112,7 @@ action :create do
     limit_nofile 16384
     memory_high "12G"
     memory_max "12G"
+    limit_core 0
     user "imagery"
     group "imagery"
     exec_start "/usr/bin/multiwatch -f 8 --signal=TERM -- /usr/lib/cgi-bin/mapserv"
