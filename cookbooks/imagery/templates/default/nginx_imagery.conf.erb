@@ -23,8 +23,11 @@ upstream <%= @name %>_fastcgi {
 <% end -%>
 
 server {
-    listen 443 ssl http2;
-    listen [::]:443 ssl http2;
+    listen 443 ssl;
+    listen [::]:443 ssl;
+
+    http2 on;
+
     server_name <%= @name %> a.<%= @name %> b.<%= @name %> c.<%= @name %><% @aliases.each do |alias_name| %> <%= alias_name %> a.<%= alias_name %> b.<%= alias_name %> c.<%= alias_name %><%- end -%>;
 
     http2_max_concurrent_streams 512;
