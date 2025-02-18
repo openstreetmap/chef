@@ -85,11 +85,17 @@ default_attributes(
   },
   :nginx => {
     :cache => {
+      :fastcgi => {
+        :enable => true,
+        :keys_zone => "fastcgi_cache_zone:2048M",
+        :inactive => "180d",
+        :max_size => "196608M"
+      },
       :proxy => {
           :enable => true,
-          :keys_zone => "proxy_cache_zone:256M",
+          :keys_zone => "proxy_cache_zone:2048M",
           :inactive => "180d",
-          :max_size => "51200M"
+          :max_size => "196608M"
       }
     }
   }
