@@ -21,8 +21,11 @@ upstream titiler_api_backend {
 }
 
 server {
-    listen 443 ssl http2;
-    listen [::]:443 ssl http2;
+    listen 443 ssl;
+    listen [::]:443 ssl;
+
+    http2 on;
+
     server_name <%= @name %> <% @aliases.each do |alias_name| %> <%= alias_name %><%- end -%>;
 
     http2_max_concurrent_streams 512;
