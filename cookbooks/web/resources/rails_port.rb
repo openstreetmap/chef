@@ -408,11 +408,25 @@ action :create do
     action :delete
   end
 
+  directory "#{rails_directory}/vendor/bundle/ruby/#{node[:ruby][:version]}.0" do
+    owner new_resource.user
+    group new_resource.group
+    mode "775"
+    recursive true
+  end
+
+  bundle_config "#{rails_directory}" do
+    user new_resource.user
+    group new_resource.group
+    settings "deployment" => "true",
+             "build.nokogiri" => "--use-system-libraries"
+  end
+
   bundle_install "#{rails_directory}" do
     action :nothing
-    user "root"
-    group "root"
-    environment "NOKOGIRI_USE_SYSTEM_LIBRARIES" => "yes"
+    user new_resource.user
+    group new_resource.group
+    subscribes :run, "directory[#{rails_directory}/vendor/bundle/ruby/#{node[:ruby][:version]}.0]"
     subscribes :run, "git[#{rails_directory}]"
   end
 
