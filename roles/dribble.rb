@@ -56,6 +56,15 @@ default_attributes(
         :effective_cache_size => "350GB"
       }
     }
+  },
+  :vectortile => {
+    :replication => {
+      :status => :disabled,
+      :tileupdate => :disabled
+    },
+    :tilekiln => {
+      :version => "0.7.0"
+    }
   }
 )
 
