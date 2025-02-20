@@ -2,8 +2,6 @@
 
 cd /srv/blogs.openstreetmap.org
 
-export BUNDLE_PATH="vendor/bundle"
-
 <%= node[:ruby][:bundle] %> exec pluto \
        --quieter \
        --config=/srv/blogs.openstreetmap.org build \

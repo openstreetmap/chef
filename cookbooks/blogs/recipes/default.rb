@@ -44,10 +44,15 @@ git "/srv/blogs.openstreetmap.org" do
   group "blogs"
 end
 
+bundle_config "/srv/blogs.openstreetmap.org" do
+  user "blogs"
+  group "blogs"
+  settings "deployment" => "true",
+           "without" => "development:test"
+end
+
 bundle_install "/srv/blogs.openstreetmap.org" do
   action :nothing
-  options "--deployment --without development test"
-  environment "BUNDLE_PATH" => "vendor/bundle"
   user "blogs"
   group "blogs"
   subscribes :run, "git[/srv/blogs.openstreetmap.org]", :immediately
@@ -56,7 +61,6 @@ end
 bundle_exec "/srv/blogs.openstreetmap.org" do
   action :nothing
   command "pluto build -t osm -o build"
-  environment "BUNDLE_PATH" => "vendor/bundle"
   user "blogs"
   group "blogs"
   subscribes :run, "git[/srv/blogs.openstreetmap.org]", :immediately

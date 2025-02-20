@@ -130,9 +130,14 @@ git "/var/lib/oxidized/configs.git" do
   group "oxidized"
 end
 
+bundle_config "/opt/oxidized/daemon" do
+  user "oxidized"
+  group "oxidized"
+  settings "deployment" => "true"
+end
+
 bundle_install "/opt/oxidized/daemon" do
   action :nothing
-  options "--deployment"
   user "oxidized"
   group "oxidized"
   notifies :restart, "service[oxidized]"
