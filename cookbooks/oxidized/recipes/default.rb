@@ -133,7 +133,8 @@ end
 bundle_config "/opt/oxidized/daemon" do
   user "oxidized"
   group "oxidized"
-  settings "deployment" => "true"
+  settings "deployment" => "true",
+           "build.rugged" => "--with-ssh"
 end
 
 bundle_install "/opt/oxidized/daemon" do
