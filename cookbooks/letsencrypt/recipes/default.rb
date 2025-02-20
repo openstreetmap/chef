@@ -20,13 +20,11 @@
 include_recipe "accounts"
 include_recipe "apache"
 include_recipe "chef::knife"
+include_recipe "ruby"
 
 keys = data_bag_item("chef", "keys")
 
-package %w[
-  certbot
-  ruby
-]
+package "certbot"
 
 directory "/etc/letsencrypt" do
   owner "letsencrypt"
@@ -116,6 +114,13 @@ remote_directory "/srv/acme.openstreetmap.org/bin" do
   files_mode "755"
 end
 
+template "/srv/acme.openstreetmap.org/bin/upload" do
+  source "upload.erb"
+  owner "root"
+  group "root"
+  mode "755"
+end
+
 directory "/srv/acme.openstreetmap.org/requests" do
   owner "root"
   group "root"
@@ -166,6 +171,13 @@ Dir.glob("*", :base => "/srv/acme.openstreetmap.org/requests") do |name|
     user "letsencrypt"
     group "letsencrypt"
   end
+end
+
+template "/srv/acme.openstreetmap.org/bin/check-certificate" do
+  source "check-certificate.erb"
+  owner "root"
+  group "root"
+  mode "755"
 end
 
 template "/srv/acme.openstreetmap.org/bin/check-certificates" do

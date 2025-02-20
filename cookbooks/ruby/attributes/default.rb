@@ -5,5 +5,6 @@ default[:ruby][:version] = if platform?("debian")
                            else
                              "3.0"
                            end
+default[:ruby][:interpreter] = "/usr/bin/ruby#{node[:ruby][:version]}"
 default[:ruby][:gem] = "/usr/bin/gem#{node[:ruby][:version]}"
 default[:ruby][:bundle] = "/usr/bin/bundle#{node[:ruby][:version]}"

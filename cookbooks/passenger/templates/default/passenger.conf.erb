@@ -2,7 +2,7 @@
 
 <IfModule mod_passenger.c>
   PassengerRoot /usr/lib/ruby/vendor_ruby/phusion_passenger/locations.ini
-  PassengerDefaultRuby /usr/bin/ruby
+  PassengerDefaultRuby <%= node[:ruby][:interpreter] %>
   PassengerRuby /usr/local/bin/passenger-ruby
   PassengerPreloadBundler on
   PassengerMaxPoolSize <%= node[:passenger][:max_pool_size] %>

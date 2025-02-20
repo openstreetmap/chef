@@ -19,7 +19,8 @@
 
 include_recipe "git"
 include_recipe "networking"
-include_recipe "ruby"
+
+package "ruby"
 
 if node.internal_ipaddress
   node.default[:prometheus][:mode] = "internal"

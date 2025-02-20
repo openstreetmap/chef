@@ -32,13 +32,17 @@ db_passwords = data_bag_item("db", "passwords")
 
 package %w[
   postgresql-client
-  ruby-libxml
   make
   gcc
   libc6-dev
   libpq-dev
+  libxml2-dev
   osmdbt
 ]
+
+gem_package "libxml-ruby" do
+  gem_binary node[:ruby][:gem]
+end
 
 gem_package "pg" do
   gem_binary node[:ruby][:gem]
@@ -86,6 +90,13 @@ end
 
 template "/usr/local/bin/users-deleted" do
   source "users-deleted.erb"
+  owner "root"
+  group "root"
+  mode "755"
+end
+
+template "/usr/local/bin/replicate-changesets" do
+  source "replicate-changesets.erb"
   owner "root"
   group "root"
   mode "755"
