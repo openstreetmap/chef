@@ -45,10 +45,12 @@ git "/srv/blogs.openstreetmap.org" do
 end
 
 bundle_config "/srv/blogs.openstreetmap.org" do
+  action :nothing
   user "blogs"
   group "blogs"
   settings "deployment" => "true",
            "without" => "development:test"
+  subscribes :create, "git[/srv/blogs.openstreetmap.org]", :immediately
 end
 
 bundle_install "/srv/blogs.openstreetmap.org" do

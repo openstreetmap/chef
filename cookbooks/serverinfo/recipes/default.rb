@@ -17,6 +17,7 @@
 # limitations under the License.
 #
 
+include_recipe "accounts"
 include_recipe "apache"
 include_recipe "git"
 include_recipe "ruby"
@@ -30,12 +31,18 @@ package %w[
   pkg-config
 ]
 
+directory "/srv/hardware.openstreetmap.org" do
+  owner "serverinfo"
+  group "serverinfo"
+  mode "755"
+end
+
 git "/srv/hardware.openstreetmap.org" do
   action :sync
   repository "https://github.com/osmfoundation/osmf-server-info.git"
   depth 1
-  user "root"
-  group "root"
+  user "serverinfo"
+  group "serverinfo"
   notifies :run, "bundle_install[/srv/hardware.openstreetmap.org]"
 end
 
@@ -45,52 +52,41 @@ roles = { :rows => search(:role, "*:*") }
 file "/srv/hardware.openstreetmap.org/_data/nodes.json" do
   content nodes.to_json
   mode "644"
-  owner "root"
-  group "root"
+  owner "serverinfo"
+  group "serverinfo"
   notifies :run, "bundle_exec[/srv/hardware.openstreetmap.org]"
 end
 
 file "/srv/hardware.openstreetmap.org/_data/roles.json" do
   content roles.to_json
   mode "644"
-  owner "root"
-  group "root"
+  owner "serverinfo"
+  group "serverinfo"
   notifies :run, "bundle_exec[/srv/hardware.openstreetmap.org]"
 end
 
-directory "/srv/hardware.openstreetmap.org/_site" do
-  mode "755"
-  owner "nobody"
-  group "nogroup"
-end
-
-directory "/srv/hardware.openstreetmap.org/vendor" do
-  action :create
-  owner "nobody"
-  group "nogroup"
-  notifies :run, "bundle_install[/srv/hardware.openstreetmap.org]", :immediately
-end
-
 bundle_config "/srv/hardware.openstreetmap.org" do
-  user "nobody"
-  group "nogroup"
+  action :create
+  user "serverinfo"
+  group "serverinfo"
   settings "deployment" => "true",
            "without" => "development:test",
            "jobs" => node.cpu_cores.to_s
+  notifies :run, "bundle_exec[/srv/hardware.openstreetmap.org]"
 end
 
 bundle_install "/srv/hardware.openstreetmap.org" do
   action :nothing
-  user "nobody"
-  group "nogroup"
+  user "serverinfo"
+  group "serverinfo"
   notifies :run, "bundle_exec[/srv/hardware.openstreetmap.org]"
 end
 
 bundle_exec "/srv/hardware.openstreetmap.org" do
   action :nothing
   command "jekyll build --trace --disable-disk-cache --baseurl=https://hardware.openstreetmap.org"
-  user "nobody"
-  group "nogroup"
+  user "serverinfo"
+  group "serverinfo"
   environment "LANG" => "C.UTF-8"
 end
 
