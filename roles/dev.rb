@@ -159,6 +159,9 @@ default_attributes(
       }
     }
   },
+  :ruby => {
+    :fullstaq => true
+  },
   :sysctl => {
     :postgres => {
       :comment => "Increase shared memory for postgres",
