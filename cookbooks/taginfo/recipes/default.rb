@@ -179,10 +179,17 @@ node[:taginfo][:sites].each do |site|
     notifies :restart, "service[apache2]"
   end
 
+  bundle_config "#{directory}/taginfo" do
+    user "taginfo"
+    group "taginfo"
+    settings "deployment" => "true",
+             "without" => "development:test"
+  end
+
   bundle_install "#{directory}/taginfo" do
     action :nothing
-    user "root"
-    group "root"
+    user "taginfo"
+    group "taginfo"
     subscribes :run, "git[#{directory}/taginfo]"
     notifies :restart, "passenger_application[#{directory}/taginfo/web/public]"
   end
