@@ -156,6 +156,7 @@ systemd_service "oxidized" do
               "OXIDIZED_LOGS" => "/var/log/oxidized"
   nice 10
   sandbox :enable_network => true
+  restrict_address_families "AF_NETLINK"
   read_write_paths ["/run/oxidized", "/var/lib/oxidized", "/var/log/oxidized"]
   restart "on-failure"
   notifies :restart, "service[oxidized]"
