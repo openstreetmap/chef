@@ -47,5 +47,9 @@ action_class do
 end
 
 def after_created
-  subscribes :run, "package[fullstaq-ruby-#{node[:ruby][:version]}-jemalloc]"
+  if node[:ruby][:fullstaq]
+    subscribes :run, "package[fullstaq-ruby-#{node[:ruby][:version]}-jemalloc]"
+  else
+    subscribes :run, "package[ruby-bundler]"
+  end
 end

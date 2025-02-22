@@ -46,6 +46,9 @@ default_attributes(
       }
     }
   },
+  :ruby => {
+    :fullstaq => false
+  },
   :ssl => {
     :ct_report_uri => false
   },

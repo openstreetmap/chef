@@ -17,19 +17,31 @@
 # limitations under the License.
 #
 
-include_recipe "apt::fullstaq-ruby"
-
 ruby_version = node[:ruby][:version]
 
-package %W[
-  fullstaq-ruby-common
-  fullstaq-ruby-#{ruby_version}-jemalloc
-]
+if node[:ruby][:fullstaq]
 
-%w[bundle bundler erb gem irb racc rake rbs rdbg rdoc ri ruby syntax_suggest typeproc].each do |command|
-  link "/usr/local/bin/#{command}" do
-    to "/usr/lib/fullstaq-ruby/versions/#{ruby_version}-jemalloc/bin/#{command}"
-    owner "root"
-    group "root"
+  include_recipe "apt::fullstaq-ruby"
+
+  package %W[
+    fullstaq-ruby-common
+    fullstaq-ruby-#{ruby_version}-jemalloc
+  ]
+
+  %w[bundle bundler erb gem irb racc rake rbs rdbg rdoc ri ruby syntax_suggest typeproc].each do |command|
+    link "/usr/local/bin/#{command}" do
+      to "/usr/lib/fullstaq-ruby/versions/#{ruby_version}-jemalloc/bin/#{command}"
+      owner "root"
+      group "root"
+    end
   end
+
+else
+
+  package %W[
+    ruby
+    ruby-dev
+    ruby-bundler
+  ]
+
 end
