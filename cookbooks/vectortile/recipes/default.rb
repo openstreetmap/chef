@@ -86,7 +86,7 @@ shortbread_config = "#{style_directory}/shortbread.yaml"
 themepark_directory = "/srv/vector.openstreetmap.org/osm2pgsql-themepark"
 git themepark_directory do
   repository "https://github.com/osm2pgsql-dev/osm2pgsql-themepark.git"
-  revision "7efc00db433fa7d2c49db00c32ffd27d8ced35f4"
+  revision "444bfbda82dea2899e77ac7f0e88ddf7f62c3b45"
   user "tileupdate"
   group "tileupdate"
 end
