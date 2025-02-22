@@ -93,6 +93,9 @@ suites:
   - name: blogs
     run_list:
       - recipe[blogs::default]
+    attributes:
+      ruby:
+        version: 3.3
   - name: chef
     run_list:
       - recipe[chef::default]
