@@ -335,9 +335,7 @@ link "/etc/resolv.conf" do
   to "../run/systemd/resolve/stub-resolv.conf"
 end
 
-gem_package "dbus-systemd" do
-  gem_binary node[:ruby][:gem]
-end
+gem_package "dbus-systemd"
 
 prometheus_exporter "resolved" do
   port 10028
