@@ -60,7 +60,7 @@ default_attributes(
   :vectortile => {
     :replication => {
       :status => :enabled,
-      :tileupdate => :disabled
+      :tileupdate => :enabled
     },
     :tilekiln => {
       :version => "0.7.0"
