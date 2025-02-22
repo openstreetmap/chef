@@ -49,7 +49,8 @@ bundle_config "/srv/blogs.openstreetmap.org" do
   user "blogs"
   group "blogs"
   settings "deployment" => "true",
-           "without" => "development:test"
+           "without" => "development:test",
+           "build.sqlite3" => "--enable-system-libraries"
   subscribes :create, "git[/srv/blogs.openstreetmap.org]", :immediately
 end
 
