@@ -55,8 +55,3 @@ action_class do
     node[:ruby][:bundle]
   end
 end
-
-def after_created
-  subscribes :create, "gem_package[bundler#{node[:ruby][:version]}-1]"
-  subscribes :create, "gem_package[bundler#{node[:ruby][:version]}-2]"
-end
