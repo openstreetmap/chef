@@ -402,6 +402,8 @@ suites:
     run_list:
       - recipe[taginfo::default]
     attributes:
+      ruby:
+        version: 3.3
       taginfo:
         sites:
           - name: taginfo.example.com

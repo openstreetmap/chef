@@ -26,6 +26,9 @@ default_attributes(
   :passenger => {
     :max_pool_size => 50
   },
+  :ruby => {
+    :version => "3.3"
+  },
   :taginfo => {
     :sites => [
       {
