@@ -30,9 +30,6 @@ default_attributes(
   :passenger => {
     :max_pool_size => 50
   },
-  :ruby => {
-    :fullstaq => true
-  },
   :exim => {
     :local_domains => ["messages.openstreetmap.org"],
     :routes => {

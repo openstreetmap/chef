@@ -17,46 +17,19 @@
 # limitations under the License.
 #
 
+include_recipe "apt::fullstaq-ruby"
+
 ruby_version = node[:ruby][:version]
 
-if node[:ruby][:fullstaq]
+package %W[
+  fullstaq-ruby-common
+  fullstaq-ruby-#{ruby_version}-jemalloc
+]
 
-  include_recipe "apt::fullstaq-ruby"
-
-  package %W[
-    fullstaq-ruby-common
-    fullstaq-ruby-#{ruby_version}-jemalloc
-  ]
-
-  %w[bundle bundler erb gem irb racc rake rbs rdbg rdoc ri ruby syntax_suggest typeproc].each do |command|
-    link "/usr/local/bin/#{command}" do
-      to "/usr/lib/fullstaq-ruby/versions/#{ruby_version}-jemalloc/bin/#{command}"
-      owner "root"
-      group "root"
-    end
+%w[bundle bundler erb gem irb racc rake rbs rdbg rdoc ri ruby syntax_suggest typeproc].each do |command|
+  link "/usr/local/bin/#{command}" do
+    to "/usr/lib/fullstaq-ruby/versions/#{ruby_version}-jemalloc/bin/#{command}"
+    owner "root"
+    group "root"
   end
-
-else
-
-  package %W[
-    ruby
-    ruby#{ruby_version}
-    ruby-dev
-    ruby#{ruby_version}-dev
-  ]
-
-  gem_package "bundler#{ruby_version}-1" do
-    package_name "bundler"
-    version "~> 1.17.3"
-    gem_binary node[:ruby][:gem]
-    options "--format-executable"
-  end
-
-  gem_package "bundler#{ruby_version}-2" do
-    package_name "bundler"
-    version "~> 2.3.16"
-    gem_binary node[:ruby][:gem]
-    options "--format-executable"
-  end
-
 end

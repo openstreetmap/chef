@@ -47,6 +47,5 @@ action_class do
 end
 
 def after_created
-  subscribes :run, "gem_package[bundler#{node[:ruby][:version]}-1]"
-  subscribes :run, "gem_package[bundler#{node[:ruby][:version]}-2]"
+  subscribes :run, "package[fullstaq-ruby-#{node[:ruby][:version]}-jemalloc]"
 end
