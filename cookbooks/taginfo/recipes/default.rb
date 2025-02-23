@@ -232,7 +232,8 @@ node[:taginfo][:sites].each do |site|
   prometheus_collector "taginfo-#{site_name}" do
     interval "15m"
     user "taginfo"
-    path "#{directory}/taginfo/sources/metrics.rb"
-    options "#{directory}/data"
+    path node[:ruby][:bundle]
+    options "exec sources/metrics.rb #{directory}/data"
+    working_directory "#{directory}/taginfo"
   end
 end
