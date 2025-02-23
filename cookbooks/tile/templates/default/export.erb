@@ -5,6 +5,7 @@ import cairo
 import cgi
 import http.cookies
 import mapnik
+import io
 import os
 import pyotp
 import pyproj
@@ -13,6 +14,7 @@ import shutil
 import signal
 import sys
 import tempfile
+from PIL import Image
 
 # Limit maximum CPU time
 # The Postscript output format can sometimes take hours
@@ -40,6 +42,10 @@ def output_file(file):
 def file_size(file):
   return os.fstat(file.fileno()).st_size
 
+# Routine to retrieve BytesIO payload length
+def bytesio_size(bio):
+  return bio.getbuffer().nbytes
+
 # Routine to report an error
 def output_error(message, status = "400 Bad Request"):
   print("Status: %s" % status)
@@ -53,6 +59,105 @@ def output_error(message, status = "400 Bad Request"):
   print("<p>%s</p>" % message)
   print("</body>")
   print("</html>")
+
+# Add a copyright notice for raster formats (PNG, JPEG, WEBP)
+def add_copyright_notice_raster(image, map_width, map_height, format):
+  # Convert the Mapnik image to PNG and store it in a BytesIO object
+  png = image.tostring("png")
+  png_io = io.BytesIO(png)
+
+  # Load the PNG data from the BytesIO object into a Cairo ImageSurface
+  surface = cairo.ImageSurface.create_from_png(png_io)
+
+  add_copyright_notice_vector(surface, map_width, map_height)
+
+  # Convert the Cairo surface to PNG in a BytesIO object
+  output_io = io.BytesIO()
+  surface.write_to_png(output_io)
+
+  if format == "png":
+    return output_io
+  else:
+    # Open the output PNG image for conversion to other formats
+    img = Image.open(output_io)
+    img_io = io.BytesIO()
+    img.save(img_io, format=format)
+    return img_io
+
+# Add a copyright notice for vector formats (SVG, PDF, PS)
+def add_copyright_notice_vector(surface, map_width, map_height):
+  context = cairo.Context(surface)
+
+  # Set the font for the copyright notice
+  context.set_font_face(cairo.ToyFontFace("DejaVu"))
+  context.set_font_size(14)
+
+  # Define the copyright text
+  text = "© OpenStreetMap contributors"
+
+  text_extents = context.text_extents(text)
+  text_width = text_extents.width
+  text_height = text_extents.height
+
+  x_margin = 10
+  y_margin = 10
+
+  # Position the text at the bottom-right corner
+  x_position = map_width - text_width - x_margin
+  y_position = map_height - text_height - y_margin
+
+  # Draw a white box just large enough to fit the text
+  context.set_source_rgba(1, 1, 1, 0.5)
+  context.rectangle(x_position - x_margin, y_position - y_margin,
+                    text_width + 2 * x_margin, text_height + 2 * y_margin)
+  context.fill_preserve()
+
+  context.set_source_rgb(0, 0, 0)  # Black color for the text
+  context.move_to(x_position - x_margin / 2, y_position + y_margin)
+  context.show_text(text)
+
+# Render and output map for raster formats (PNG, JPEG, WEBP)
+def render_and_output_image(map, format):
+  image = mapnik.Image(map.width, map.height)
+  mapnik.render(map, image)
+
+  bytes_io = add_copyright_notice_raster(image, map.width, map.height, format)
+
+  if format == "png":
+    output_headers("image/png", "map.png", bytesio_size(bytes_io))
+  elif format == "jpeg":
+    output_headers("image/jpeg", "map.jpg", bytesio_size(bytes_io))
+  elif format == "webp":
+    output_headers("image/webp", "map.webp", bytesio_size(bytes_io))
+
+  output_file(bytes_io)
+
+# Render and output map for vector formats (SVG, PDF, PS)
+def render_and_output_vector(map, format):
+  with tempfile.NamedTemporaryFile(prefix="export") as file:
+    if format == "svg":
+      surface = cairo.SVGSurface(file.name, map.width, map.height)
+      surface.restrict_to_version(cairo.SVG_VERSION_1_2)
+    elif format == "pdf":
+      surface = cairo.PDFSurface(file.name, map.width, map.height)
+    elif format == "ps":
+      surface = cairo.PSSurface(file.name, map.width, map.height)
+
+    mapnik.render(map, surface)
+
+    add_copyright_notice_vector(surface, map.width, map.height)
+
+    surface.finish()
+
+    if format == "svg":
+      output_headers("image/svg+xml", "map.svg", file_size(file))
+    elif format == "pdf":
+      output_headers("application/pdf", "map.pdf", file_size(file))
+    elif format == "ps":
+      output_headers("application/postscript", "map.ps", file_size(file))
+
+    output_file(file)
+
 
 # Create TOTP token validator
 totp = pyotp.TOTP('<%= @totp_key %>', interval = 3600)
@@ -149,42 +254,13 @@ else:
 
       # Render the map
       if pid == 0:
-        if form.getvalue("format") == "png":
-          image = mapnik.Image(map.width, map.height)
-          mapnik.render(map, image)
-          png = image.tostring("png")
-          output_headers("image/png", "map.png", len(png))
-          sys.stdout.buffer.write(png)
-        elif form.getvalue("format") == "jpeg":
-          image = mapnik.Image(map.width, map.height)
-          mapnik.render(map, image)
-          jpeg = image.tostring("jpeg")
-          output_headers("image/jpeg", "map.jpg", len(jpeg))
-          sys.stdout.buffer.write(jpeg)
-        elif form.getvalue("format") == "svg":
-          file = tempfile.NamedTemporaryFile(prefix = "export")
-          surface = cairo.SVGSurface(file.name, map.width, map.height)
-          surface.restrict_to_version(cairo.SVG_VERSION_1_2)
-          mapnik.render(map, surface)
-          surface.finish()
-          output_headers("image/svg+xml", "map.svg", file_size(file))
-          output_file(file)
-        elif form.getvalue("format") == "pdf":
-          file = tempfile.NamedTemporaryFile(prefix = "export")
-          surface = cairo.PDFSurface(file.name, map.width, map.height)
-          mapnik.render(map, surface)
-          surface.finish()
-          output_headers("application/pdf", "map.pdf", file_size(file))
-          output_file(file)
-        elif form.getvalue("format") == "ps":
-          file = tempfile.NamedTemporaryFile(prefix = "export")
-          surface = cairo.PSSurface(file.name, map.width, map.height)
-          mapnik.render(map, surface)
-          surface.finish()
-          output_headers("application/postscript", "map.ps", file_size(file))
-          output_file(file)
+        format = form.getvalue("format")
+        if format in ["png", "jpeg", "webp"]:
+          render_and_output_image(map, format)
+        elif format in ["svg", "pdf", "ps"]:
+          render_and_output_vector(map, format)
         else:
-          output_error("Unknown format '%s'" % form.getvalue("format"))
+          output_error("Unknown format")
       else:
         pid, status = os.waitpid(pid, 0)
         if status & 0xff == signal.SIGXCPU:
