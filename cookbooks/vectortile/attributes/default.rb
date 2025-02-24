@@ -4,8 +4,8 @@ default[:vectortile][:database][:nodes_store] = :flat
 default[:vectortile][:serve][:threads] = node.cpu_cores
 default[:vectortile][:serve][:mode] = :live
 default[:vectortile][:replication][:url] = "https://osm-planet-eu-central-1.s3.dualstack.eu-central-1.amazonaws.com/planet/replication/minute"
-default[:vectortile][:replication][:status] = :enabled
-default[:vectortile][:replication][:tileupdate] = :enabled
+default[:vectortile][:replication][:enabled] = true
+default[:vectortile][:replication][:tileupdate] = true
 default[:vectortile][:replication][:threads] = node.cpu_cores
 
 default[:vectortile][:tilekiln][:version] = "0.6.5"

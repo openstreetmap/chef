@@ -246,7 +246,7 @@ execute "/srv/vector.openstreetmap.org/spirit/scripts/get-external-data.py" do
 end
 
 template "/usr/local/bin/vector-update" do
-  source node[:vectortile][:replication][:tileupdate] == :enabled ? "vector-update-tile.erb" : "vector-update-notile.erb"
+  source node[:vectortile][:replication][:tileupdate] ? "vector-update-tile.erb" : "vector-update-notile.erb"
   owner "root"
   group "root"
   mode "755"
@@ -279,7 +279,7 @@ systemd_timer "replicate" do
   accuracy_sec 5
 end
 
-if node[:vectortile][:replication][:status] == :enabled
+if node[:vectortile][:replication][:enabled]
   service "replicate.timer" do
     action [:enable, :start]
   end
