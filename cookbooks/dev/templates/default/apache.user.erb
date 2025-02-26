@@ -4,8 +4,9 @@ WSGIDaemonProcess <%= @user %>.dev.openstreetmap.org user=<%= @user %> processes
 
 <VirtualHost *:443>
 	ServerName <%= @user %>.dev.openstreetmap.org
-	ServerAdmin webmaster@openstreetmap.org
 	ServerAlias <%= @user %>.dev.osm.org
+
+	ServerAdmin webmaster@openstreetmap.org
 
 	SSLEngine on
 	SSLCertificateFile /etc/ssl/certs/<%= @user %>.dev.openstreetmap.org.pem
@@ -36,8 +37,9 @@ WSGIDaemonProcess <%= @user %>.dev.openstreetmap.org user=<%= @user %> processes
 
 <VirtualHost *:80>
 	ServerName <%= @user %>.dev.openstreetmap.org
-	ServerAdmin webmaster@openstreetmap.org
 	ServerAlias <%= @user %>.dev.osm.org
+
+	ServerAdmin webmaster@openstreetmap.org
 
 	CustomLog /var/log/apache2/<%= @user %>.dev.openstreetmap.org-access.log combined_extended
 	ErrorLog /var/log/apache2/<%= @user %>.dev.openstreetmap.org-error.log

@@ -203,7 +203,7 @@ template "/srv/dev.openstreetmap.org/index.html" do
 end
 
 ssl_certificate "dev.openstreetmap.org" do
-  domains "dev.openstreetmap.org"
+  domains ["dev.openstreetmap.org", "dev.osm.org"]
   notifies :reload, "service[apache2]"
 end
 
@@ -225,7 +225,7 @@ file "/etc/apache2/conf.d/phppgadmin" do
 end
 
 ssl_certificate "phppgadmin.dev.openstreetmap.org" do
-  domains "phppgadmin.dev.openstreetmap.org"
+  domains ["phppgadmin.dev.openstreetmap.org", "phppgadmin.dev.osm.org"]
   notifies :reload, "service[apache2]"
 end
 
@@ -351,7 +351,7 @@ if node[:postgresql][:clusters][:"15/main"]
     gpx_directory = "#{site_directory}/gpx"
 
     if details[:repository]
-      site_aliases = details[:aliases] || []
+      site_aliases = details[:aliases] || ["#{name}.apis.dev.osm.org"]
       secret_key_base = persistent_token("dev", "rails", name, "secret_key_base")
 
       postgresql_database database_name do
@@ -572,7 +572,7 @@ if node[:postgresql][:clusters][:"15/main"]
   end
 
   ssl_certificate "apis.dev.openstreetmap.org" do
-    domains "apis.dev.openstreetmap.org"
+    domains ["apis.dev.openstreetmap.org", "apis.dev.osm.org"]
     notifies :reload, "service[apache2]"
   end
 
@@ -601,7 +601,8 @@ ssl_certificate "ooc.openstreetmap.org" do
   domains ["ooc.openstreetmap.org",
            "a.ooc.openstreetmap.org",
            "b.ooc.openstreetmap.org",
-           "c.ooc.openstreetmap.org"]
+           "c.ooc.openstreetmap.org",
+           "ooc.osm.org"]
   notifies :reload, "service[apache2]"
 end
 
