@@ -22,4 +22,5 @@ fi
 <% end -%>
     --webroot \
     --webroot-path /srv/acme.openstreetmap.org/html \
-    --deploy-hook /srv/acme.openstreetmap.org/bin/deploy-hook
+    --deploy-hook /srv/acme.openstreetmap.org/bin/deploy-hook \
+    "$@"
