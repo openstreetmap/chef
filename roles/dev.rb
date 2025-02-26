@@ -116,7 +116,7 @@ default_attributes(
         :revision => "master",
         :cgimap_repository => "https://github.com/zerebubuth/openstreetmap-cgimap.git",
         :cgimap_revision => "master",
-        :aliases => ["master.dev.osm.org","api06.dev.openstreetmap.org", "api06.dev.osm.org"]
+        :aliases => ["master.apis.dev.osm.org","api06.dev.openstreetmap.org", "api06.dev.osm.org"]
       },
       :tomh => {
         :repository => "https://github.com/tomhughes/openstreetmap-website.git",
