@@ -2,6 +2,11 @@
 
 # DO NOT EDIT - This file is being maintained by Chef
 
+if [ "$(id -un)" != "letsencrypt" ]; then
+    echo "Error: This script must be run as user letsencrypt" >&2
+    exit 1
+fi
+
 /usr/bin/certbot certonly \
     --non-interactive \
     --config-dir /srv/acme.openstreetmap.org/config \
