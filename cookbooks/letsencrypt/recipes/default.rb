@@ -84,6 +84,12 @@ directory "/srv/acme.openstreetmap.org/logs" do
   mode "700"
 end
 
+directory "/srv/acme.openstreetmap.org/failures" do
+  owner "letsencrypt"
+  group "letsencrypt"
+  mode "755"
+end
+
 directory "/srv/acme.openstreetmap.org/.chef" do
   owner "letsencrypt"
   group "letsencrypt"
@@ -156,12 +162,23 @@ certificates.each do |name, details|
     subscribes :run, "template[/srv/acme.openstreetmap.org/requests/#{name}]"
     not_if { kitchen? }
   end
+
+  notify_group "retry_failed_request_#{name}" do
+    action :run
+    notifies :run, "execute[/srv/acme.openstreetmap.org/requests/#{name}]"
+    not_if { kitchen? }
+    only_if { ::File.exist?("/srv/acme.openstreetmap.org/failures/#{name}.request") }
+  end
 end
 
 Dir.glob("*", :base => "/srv/acme.openstreetmap.org/requests") do |name|
   next if certificates.include?(name)
 
   file "/srv/acme.openstreetmap.org/requests/#{name}" do
+    action :delete
+  end
+
+  file "/srv/acme.openstreetmap.org/failures/#{name}.request" do
     action :delete
   end
 
