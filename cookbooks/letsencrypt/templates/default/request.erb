@@ -2,10 +2,16 @@
 
 # DO NOT EDIT - This file is being maintained by Chef
 
+# Ensure that the script fails if any individual command fails
+set -e
+
 if [ "$(id -un)" != "letsencrypt" ]; then
     echo "Error: This script must be run as user letsencrypt" >&2
     exit 1
 fi
+
+# Add failure marker to have chef retry the request if it fails
+touch "/srv/acme.openstreetmap.org/failures/<%= @domains.first %>.request"
 
 /usr/bin/certbot certonly \
     --non-interactive \
@@ -24,3 +30,6 @@ fi
     --webroot-path /srv/acme.openstreetmap.org/html \
     --deploy-hook /srv/acme.openstreetmap.org/bin/deploy-hook \
     "$@"
+
+# Success - remove failure marker
+rm -f "/srv/acme.openstreetmap.org/failures/<%= @domains.first %>.request"
