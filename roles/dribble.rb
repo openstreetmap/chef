@@ -59,7 +59,7 @@ default_attributes(
   },
   :vectortile => {
     :tilekiln => {
-      :version => "0.7.0"
+      :tileupdate => false
     }
   }
 )

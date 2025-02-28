@@ -1,10 +1,9 @@
 #!/bin/sh
 
-cd /srv/acme.openstreetmap.org
-
 /usr/bin/certbot renew \
+    --key-type ecdsa \
     --quiet \
     --config-dir /srv/acme.openstreetmap.org/config \
     --work-dir /srv/acme.openstreetmap.org/work \
     --logs-dir /srv/acme.openstreetmap.org/logs \
-    --renew-hook /srv/acme.openstreetmap.org/bin/renew-hook
+    --deploy-hook /srv/acme.openstreetmap.org/bin/deploy-hook

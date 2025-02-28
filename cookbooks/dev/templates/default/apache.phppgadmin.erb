@@ -2,6 +2,8 @@
 
 <VirtualHost *:443>
 	ServerName phppgadmin.dev.openstreetmap.org
+	ServerAlias phppgadmin.dev.osm.org
+
 	ServerAdmin webmaster@openstreetmap.org
 
 	SSLEngine on
@@ -23,6 +25,8 @@
 
 <VirtualHost *:80>
 	ServerName phppgadmin.dev.openstreetmap.org
+	ServerAlias phppgadmin.dev.osm.org
+
 	ServerAdmin webmaster@openstreetmap.org
 
 	CustomLog /var/log/apache2/phppgadmin.dev.openstreetmap.org-access.log combined_extended

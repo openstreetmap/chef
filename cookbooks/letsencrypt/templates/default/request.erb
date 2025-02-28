@@ -2,6 +2,11 @@
 
 # DO NOT EDIT - This file is being maintained by Chef
 
+if [ "$(id -un)" != "letsencrypt" ]; then
+    echo "Error: This script must be run as user letsencrypt" >&2
+    exit 1
+fi
+
 /usr/bin/certbot certonly \
     --non-interactive \
     --config-dir /srv/acme.openstreetmap.org/config \
@@ -10,12 +15,12 @@
     --email operations@osmfoundation.org \
     --agree-tos \
     --expand \
+    --renew-with-new-domains \
+    --cert-name <%= @domains.first %> \
 <% @domains.each do |domain| -%>
     --domain <%= domain %> \
 <% end -%>
     --webroot \
-    --webroot-path /srv/acme.openstreetmap.org/html
-
-/srv/acme.openstreetmap.org/bin/upload \
-    <%= @domains.first %> \
-    /srv/acme.openstreetmap.org/config/live/<%= @domains.first %>
+    --webroot-path /srv/acme.openstreetmap.org/html \
+    --deploy-hook /srv/acme.openstreetmap.org/bin/deploy-hook \
+    "$@"

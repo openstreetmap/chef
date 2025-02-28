@@ -2,6 +2,8 @@
 
 <VirtualHost *:443>
 	ServerName apis.dev.openstreetmap.org
+	ServerAlias apis.dev.osm.org
+
 	ServerAdmin webmaster@openstreetmap.org
 
 	SSLEngine on
@@ -16,6 +18,8 @@
 
 <VirtualHost *:80>
 	ServerName apis.dev.openstreetmap.org
+	ServerAlias apis.dev.osm.org
+
 	ServerAdmin webmaster@openstreetmap.org
 
 	CustomLog /var/log/apache2/apis.dev.openstreetmap.org-access.log combined_extended

@@ -66,8 +66,8 @@ location ~* "^/layer/<%= @layer %>/(\d+)/(\d+)/(\d+)\.(jpg|jpeg|png|webp)$" {
   gzip off;
 
   # Add HTTP Cache-Control + Expires Headers
-  expires 7d;
-  add_header Cache-Control "stale-while-revalidate=604800, stale-if-error=604800";
+  expires 31d;
+  add_header Cache-Control "stale-while-revalidate=2678400, stale-if-error=2678400";
   add_header x-cache-status $upstream_cache_status;
 
   # Allow CORS requests
