@@ -62,7 +62,7 @@ default_attributes(
   :nominatim => {
     :dbcluster => "17/main",
     :flatnode_file => "/srv/nominatim.openstreetmap.org/planet-project/nodes.store",
-    :enable_qa_tiles => true,
+    :enable_qa_tiles => false,
     :api_workers => 14,
     :api_pool_size => 10
   }
