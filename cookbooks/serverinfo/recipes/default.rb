@@ -55,6 +55,7 @@ file "/srv/hardware.openstreetmap.org/_data/nodes.json" do
   owner "serverinfo"
   group "serverinfo"
   notifies :run, "bundle_exec[/srv/hardware.openstreetmap.org]"
+  sensitive true
 end
 
 file "/srv/hardware.openstreetmap.org/_data/roles.json" do

@@ -33,6 +33,10 @@ if ssl
     puts "Certificate #{domains.first} on #{host} expires at #{certificate.not_after}"
   end
 
+  unless certificate.public_key.is_a?(OpenSSL::PKey::EC)
+    puts "Certificate #{domains.first} on #{host} does not use ECDSA key type"
+  end
+
   digest = OpenSSL::Digest::SHA1.new
   certificate_id = OpenSSL::OCSP::CertificateId.new(certificate, issuer, digest)
   ocsp_request = OpenSSL::OCSP::Request.new.add_certid(certificate_id)
