@@ -5,47 +5,27 @@ default_attributes(
   :networking => {
     :interfaces => {
       :internal => {
-        :interface => "bond0",
-        :role => :internal,
         :inet => {
           :address => "10.0.48.9"
         },
         :bond => {
-          :mode => "802.3ad",
-          :lacprate => "fast",
-          :xmithashpolicy => "layer3+4",
           :slaves => %w[enp1s0f0 enp1s0f1]
         }
       },
-      :external_he => {
-        :interface => "bond0.3",
-        :role => :external,
-        :metric => 150,
-        :source_route_table => 100,
+      :henet => {
         :inet => {
-          :address => "184.104.179.137",
-          :prefix => "27",
-          :gateway => "184.104.179.129"
+          :address => "184.104.179.137"
         },
         :inet6 => {
-          :address => "2001:470:1:fa1::9",
-          :prefix => 64,
-          :gateway => "2001:470:1:fa1::1"
+          :address => "2001:470:1:fa1::9"
         }
       },
-      :external => {
-        :interface => "bond0.103",
-        :role => :external,
-        :source_route_table => 150,
+      :equinix => {
         :inet => {
-          :address => "82.199.86.105",
-          :prefix => "27",
-          :gateway => "82.199.86.97"
+          :address => "82.199.86.105"
         },
         :inet6 => {
-          :address => "2001:4d78:500:5e3::9",
-          :prefix => 64,
-          :gateway => "2001:4d78:500:5e3::1"
+          :address => "2001:4d78:500:5e3::9"
         }
       }
     }
