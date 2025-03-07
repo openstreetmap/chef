@@ -103,6 +103,8 @@ node[:networking][:interfaces].each do |_, interface|
       notifies :run, "notify_group[networkctl-reload]"
     end
   elsif interface[:interface] =~ /^bond\d+$/
+    next unless interface[:bond]
+
     template "/etc/systemd/network/10-#{interface[:interface]}.netdev" do
       source "bond.netdev.erb"
       owner "root"
