@@ -19,14 +19,6 @@ default_attributes(
       "it87"
     ]
   },
-  :prometheus => {
-    :metrics => {
-      :exim_queue_limit => { :metric => 250 }
-    }
-  }
-)
-
-override_attributes(
   :networking => {
     :dnssec => "false",
     :interfaces => {
@@ -44,6 +36,11 @@ override_attributes(
           :gateway => "fe80::1"
         }
       }
+    }
+  },
+  :prometheus => {
+    :metrics => {
+      :exim_queue_limit => { :metric => 250 }
     }
   }
 )
