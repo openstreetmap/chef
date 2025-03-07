@@ -12,19 +12,11 @@ default_attributes(
         :source_route_table => 101,
         :inet => {
           :prefix => "27",
-          :gateway => "184.104.226.97",
-          :rules => [
-            { :to => "10.0.0.0/8", :table => "main", :priority => 50 },
-            { :to => "172.16.0.0/12", :table => "main", :priority => 50 },
-            { :to => "192.168.0.0/16", :table => "main", :priority => 50 }
-          ]
+          :gateway => "184.104.226.97"
         },
         :inet6 => {
           :prefix => 64,
-          :gateway => "2001:470:1:b3b::1",
-          :rules => [
-            { :to => "2600:9000::/28", :table => 150, :priority => 100 }
-          ]
+          :gateway => "2001:470:1:b3b::1"
         }
       },
       :equinix => {
@@ -39,7 +31,10 @@ default_attributes(
         },
         :inet6 => {
           :prefix => 64,
-          :gateway => "2001:4d78:fe03:1c::1"
+          :gateway => "2001:4d78:fe03:1c::1",
+          :rules => [
+            { :to => "2600:9000::/28", :table => 203, :priority => 100 }
+          ]
         }
       }
     }

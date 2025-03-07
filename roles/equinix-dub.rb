@@ -22,7 +22,12 @@ default_attributes(
           :gateway => "10.0.64.2",
           :routes => {
             "10.0.0.0/8" => { :via => "10.0.64.2" }
-          }
+          },
+          :rules => [
+            { :to => "10.0.0.0/8", :table => "main", :priority => 50 },
+            { :to => "172.16.0.0/12", :table => "main", :priority => 50 },
+            { :to => "192.168.0.0/16", :table => "main", :priority => 50 }
+          ]
         },
         :bond => {
           :mode => "802.3ad",
