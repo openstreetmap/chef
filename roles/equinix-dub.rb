@@ -12,29 +12,22 @@ default_attributes(
     }
   },
   :networking => {
-    :roles => {
+    :interfaces => {
       :internal => {
+        :interface => "bond0",
+        :role => :internal,
+        :metric => 200,
         :inet => {
           :prefix => "20",
           :gateway => "10.0.64.2",
           :routes => {
             "10.0.0.0/8" => { :via => "10.0.64.2" }
           }
-        }
-      },
-      :external => {
-        :zone => "dub",
-        :inet => {
-          :rules => [
-            { :to => "10.0.0.0/8", :table => "main", :priority => 50 },
-            { :to => "172.16.0.0/12", :table => "main", :priority => 50 },
-            { :to => "192.168.0.0/16", :table => "main", :priority => 50 }
-          ]
         },
-        :inet6 => {
-          :rules => [
-            { :to => "2600:9000::/28", :table => 150, :priority => 100 }
-          ]
+        :bond => {
+          :mode => "802.3ad",
+          :lacprate => "fast",
+          :xmithashpolicy => "layer3+4"
         }
       }
     }

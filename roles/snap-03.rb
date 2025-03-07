@@ -5,15 +5,10 @@ default_attributes(
   :networking => {
     :interfaces => {
       :internal => {
-        :interface => "bond0",
-        :role => :internal,
         :inet => {
           :address => "10.0.64.50"
         },
         :bond => {
-          :mode => "802.3ad",
-          :lacprate => "fast",
-          :xmithashpolicy => "layer3+4",
           :slaves => %w[enp25s0f0np0 enp25s0f1np1]
         }
       }
