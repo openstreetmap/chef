@@ -7,6 +7,7 @@ default_attributes(
       :internal => {
         :interface => "bond0",
         :role => :internal,
+        :metric => 200,
         :inet => {
           :prefix => "20",
           :gateway => "10.0.48.14",

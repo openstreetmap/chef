@@ -8,6 +8,7 @@ default_attributes(
       :internal => {
         :inet => {
           :role => :internal,
+          :metric => 200,
           :prefix => "20",
           :gateway => "10.0.0.3",
           :routes => {

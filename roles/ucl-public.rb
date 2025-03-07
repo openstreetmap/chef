@@ -6,6 +6,7 @@ default_attributes(
     :interfaces => {
       :external => {
         :role => :external,
+        :metric => 100,
         :zone => "ucl",
         :inet => {
           :prefix => "24",
