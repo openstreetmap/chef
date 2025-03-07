@@ -36,7 +36,7 @@ default_attributes(
 )
 
 run_list(
-  "role[equinix-ams]",
+  "role[equinix-ams-public]",
   "role[geodns]",
   "role[backup]",
   "role[planet]",

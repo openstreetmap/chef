@@ -33,7 +33,7 @@ default_attributes(
 )
 
 run_list(
-  "role[equinix-ams]",
+  "role[equinix-ams-public]",
   "role[hp-g9]",
   "role[web-frontend]",
   "role[web-statistics]",
