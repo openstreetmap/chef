@@ -11,8 +11,10 @@ default_attributes(
   :location => "Corvallis, Oregon",
   :timezone => "US/Pacific",
   :networking => {
-    :roles => {
+    :interfaces => {
       :external => {
+        :interface => "bond0",
+        :role => :external,
         :inet => {
           :prefix => "28",
           :gateway => "140.211.167.97"

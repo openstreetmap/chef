@@ -8,8 +8,6 @@ default_attributes(
   :networking => {
     :interfaces => {
       :external => {
-        :interface => "bond0",
-        :role => :external,
         :inet => {
           :address => "140.211.167.100"
         },
