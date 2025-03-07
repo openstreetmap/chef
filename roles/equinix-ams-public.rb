@@ -7,7 +7,6 @@ default_attributes(
       :henet => {
         :interface => "bond0.3",
         :role => :external,
-        :zone => "ams",
         :metric => 150,
         :source_route_table => 3,
         :inet => {
@@ -25,7 +24,6 @@ default_attributes(
       :equinix => {
         :interface => "bond0.103",
         :role => :external,
-        :zone => "ams",
         :metric => 100,
         :source_route_table => 103,
         :inet => {

@@ -43,7 +43,7 @@ hosts = search(:node, "networking:interfaces").sort_by { |n| n[:hostname] }.coll
   names = [name]
 
   unless node.interfaces(:role => :internal).empty?
-    names.unshift("#{name}.#{node[:networking][:roles][:external][:zone]}.openstreetmap.org")
+    names.unshift("#{name}.#{node[:networking][:search].first}")
   end
 
   unless node.interfaces(:role => :external).empty?

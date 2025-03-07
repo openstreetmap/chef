@@ -6,7 +6,6 @@ default[:networking][:firewall][:outgoing] = []
 default[:networking][:firewall][:http_rate_limit] = nil
 default[:networking][:firewall][:http_connection_limit] = nil
 default[:networking][:firewall][:allowlist] = []
-default[:networking][:roles] = {}
 default[:networking][:interfaces] = {}
 default[:networking][:nameservers] = %w[8.8.8.8 8.8.4.4 2001:4860:4860::8888 2001:4860:4860::8844]
 default[:networking][:search] = []

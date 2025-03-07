@@ -7,7 +7,6 @@ default_attributes(
       :external => {
         :role => :external,
         :metric => 100,
-        :zone => "ucl",
         :inet => {
           :prefix => "24",
           :gateway => "193.60.236.254"
