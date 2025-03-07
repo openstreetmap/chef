@@ -6,7 +6,6 @@ default_attributes(
     :interfaces => {
       :internal => {
         :interface => "enp1s0f0.2801",
-        :role => :internal,
         :inet => {
           :address => "10.0.0.10"
         }

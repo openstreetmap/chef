@@ -6,14 +6,12 @@ default_attributes(
     :interfaces => {
       :internal => {
         :interface => "eno1np0.2801",
-        :role => :internal,
         :inet => {
           :address => "10.0.0.15"
         }
       },
       :external => {
         :interface => "eno1np0.2800",
-        :role => :external,
         :inet => {
           :address => "193.60.236.22"
         }
@@ -115,6 +113,6 @@ default_attributes(
 )
 
 run_list(
-  "role[ucl]",
+  "role[ucl-public]",
   "role[tile]"
 )
