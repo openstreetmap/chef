@@ -3,7 +3,7 @@ description "Role applied to all servers at Firefishy"
 
 default_attributes(
   :networking => {
-    :roles => {
+    :interfaces => {
       :internal => {
         :inet => {
           :prefix => "24",

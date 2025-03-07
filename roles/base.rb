@@ -11,10 +11,6 @@ default_attributes(
     }
   },
   :networking => {
-    :roles => {
-      :internal => { :metric => 200 },
-      :external => { :metric => 100 }
-    },
     :search => ["openstreetmap.org"]
   },
   :prometheus => {
