@@ -16,7 +16,10 @@ default_attributes(
         },
         :inet6 => {
           :prefix => 64,
-          :gateway => "2001:470:1:b3b::1"
+          :gateway => "2001:470:1:b3b::1",
+          :routes => {
+            "2600:9000::/28" => { :table => 101, :type => "unreachable" }
+          }
         }
       },
       :equinix => {
@@ -31,10 +34,7 @@ default_attributes(
         },
         :inet6 => {
           :prefix => 64,
-          :gateway => "2001:4d78:fe03:1c::1",
-          :rules => [
-            { :to => "2600:9000::/28", :table => 203, :priority => 100 }
-          ]
+          :gateway => "2001:4d78:fe03:1c::1"
         }
       }
     }
