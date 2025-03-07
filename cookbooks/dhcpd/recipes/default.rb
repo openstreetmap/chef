@@ -53,7 +53,8 @@ remote_file "/srv/tftp/netboot.xyz.kpxe" do
   mode "644"
 end
 
-domain = "#{node[:networking][:roles][:external][:zone]}.openstreetmap.org"
+zone = node.interfaces(:role => :external).first[:zone]
+domain = "#{zone}.openstreetmap.org"
 
 template "/etc/dhcp/dhcpd.conf" do
   source "dhcpd.conf.erb"
