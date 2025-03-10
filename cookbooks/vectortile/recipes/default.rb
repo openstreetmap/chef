@@ -253,12 +253,14 @@ template "/usr/local/bin/vector-update" do
   variables :tilekiln_bin => "#{tilekiln_directory}/bin/tilekiln", :source_database => "spirit", :config_path => "#{shortbread_config}", :diff_size => "1000", :expiry_dir => "/srv/vector.openstreetmap.org/data/", :post_processing => "/usr/local/bin/tiles-rerender"
 end
 
+rerender_layers = %w[addresses boundaries bridges buildings land pois public_transport sites street_polygons streets water_lines_labels water_lines water_polygons].join(" ")
+
 template "/usr/local/bin/tiles-rerender" do
   source "tiles-rerender.erb"
   owner "root"
   group "root"
   mode "755"
-  variables :tilekiln_bin => "#{tilekiln_directory}/bin/tilekiln", :source_database => "spirit", :storage_database => "tiles", :config_path => "#{shortbread_config}", :expiry_dir => "/srv/vector.openstreetmap.org/data/", :update_threads => 4
+  variables :tilekiln_bin => "#{tilekiln_directory}/bin/tilekiln", :source_database => "spirit", :storage_database => "tiles", :config_path => "#{shortbread_config}", :expiry_dir => "/srv/vector.openstreetmap.org/data/", :update_threads => 4, :layers => "#{rerender_layers}"
 end
 
 systemd_service "replicate" do
