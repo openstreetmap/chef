@@ -2,9 +2,12 @@
 set -eu
 
 cd "<%= @expiry_dir %>"
-
+# Only expire z10+ tiles
+rm -f z?-*.txt
 wc -l z*.txt
-cat z*.txt | <%= @tilekiln_bin %> generate tiles \
+(for layer in <%= @layers %>; do
+  find . -type f -name "z*-${layer}.txt" -execdir sed -e "s/\$/,${layer}/" {} \;
+done) | <%= @tilekiln_bin %> generate layers \
 --source-dbname "<%= @source_database %>" \
 --storage-dbname "<%= @storage_database %>" \
 --num-threads "<%= node[:vectortile][:replication][:threads] %>" \
