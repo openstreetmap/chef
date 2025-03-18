@@ -453,7 +453,7 @@ action :create do
     only_if { new_resource.build_assets }
   end
 
-  bundle_exec "#{rails_directory}/app/assets/javascripts/i18n" do
+  bundle_exec "#{rails_directory}/config/i18n-js.yml" do
     action :nothing
     directory rails_directory
     command "rails i18n:js:export"
@@ -463,7 +463,18 @@ action :create do
     user new_resource.user
     group new_resource.group
     subscribes :run, "git[#{rails_directory}]"
-    only_if { new_resource.build_assets }
+    only_if { new_resource.build_assets && ::File.exist?("#{rails_directory}/config/i18n-js.yml") }
+  end
+
+  bundle_exec "#{rails_directory}/config/i18n.yml" do
+    action :nothing
+    directory rails_directory
+    command "i18n export"
+    environment "HOME" => rails_directory
+    user new_resource.user
+    group new_resource.group
+    subscribes :run, "git[#{rails_directory}]"
+    only_if { new_resource.build_assets && ::File.exist?("#{rails_directory}/config/i18n.yml") }
   end
 
   bundle_exec "#{rails_directory}/public/assets" do
