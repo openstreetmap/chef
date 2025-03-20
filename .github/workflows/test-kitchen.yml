@@ -155,6 +155,8 @@ jobs:
             suite: web-frontend
           - os: debian-12
             suite: web-rails
+          - os: debian-12
+            suite: wiki
         exclude:
           - suite: apt-repository
             os: ubuntu-2204
