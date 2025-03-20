@@ -19,6 +19,8 @@
 
 include_recipe "mediawiki"
 
+site_name = node[:wiki][:site_name]
+
 passwords = data_bag_item("wiki", "passwords")
 
 package "lua5.1" # newer versions do not work with Scribuntu!
@@ -27,9 +29,8 @@ apache_site "default" do
   action [:disable]
 end
 
-mediawiki_site "wiki.openstreetmap.org" do
-  aliases ["wiki.osm.org", "wiki.openstreetmap.com", "wiki.openstreetmaps.org",
-           "osm.wiki", "www.osm.wiki", "wiki.osm.wiki"]
+mediawiki_site site_name do
+  aliases node[:wiki][:site_aliases]
 
   fpm_max_children 200
   fpm_start_servers 25
@@ -54,54 +55,54 @@ mediawiki_site "wiki.openstreetmap.org" do
   hcaptcha_public_key "b67a410b-955e-4049-b432-f9c00e0202c0"
   hcaptcha_private_key passwords["hcaptcha"]
 
-  # site_notice "MAINTENANCE: WIKI READ-ONLY UNTIL Monday 16 May 2016 - 11:00am UTC/GMT."
-  # site_readonly "MAINTENANCE: WIKI READ-ONLY UNTIL Monday 16 May 2016 - 11:00am UTC/GMT."
+  site_notice node[:wiki][:site_notice]
+  site_readonly node[:wiki][:site_readonly]
 end
 
 mediawiki_extension "CodeEditor" do
-  site "wiki.openstreetmap.org"
+  site site_name
 end
 
 mediawiki_extension "CodeMirror" do
-  site "wiki.openstreetmap.org"
+  site site_name
 end
 
 mediawiki_extension "Scribunto" do
-  site "wiki.openstreetmap.org"
+  site site_name
   template "mw-ext-Scribunto.inc.php.erb"
   template_cookbook "wiki"
 end
 
 mediawiki_extension "Wikibase" do
-  site "wiki.openstreetmap.org"
+  site site_name
   template "mw-ext-Wikibase.inc.php.erb"
   template_cookbook "wiki"
 end
 
 mediawiki_extension "OsmWikibase" do
-  site "wiki.openstreetmap.org"
+  site site_name
   repository "https://github.com/nyurik/OsmWikibase.git"
   reference "master"
 end
 
 mediawiki_extension "Echo" do
-  site "wiki.openstreetmap.org"
+  site site_name
   template "mw-ext-Echo.inc.php.erb"
   template_cookbook "wiki"
 end
 
 mediawiki_extension "Thanks" do
-  site "wiki.openstreetmap.org"
+  site site_name
   template "mw-ext-Thanks.inc.php.erb"
   template_cookbook "wiki"
 end
 
 mediawiki_extension "TimedMediaHandler" do
-  site "wiki.openstreetmap.org"
+  site site_name
 end
 
 mediawiki_extension "MultiMaps" do
-  site "wiki.openstreetmap.org"
+  site site_name
   template "mw-ext-MultiMaps.inc.php.erb"
   template_cookbook "wiki"
   variables :thunderforest_key => passwords["thunderforest"]
@@ -109,37 +110,37 @@ mediawiki_extension "MultiMaps" do
 end
 
 mediawiki_extension "JsonConfig" do
-  site "wiki.openstreetmap.org"
+  site site_name
   template "mw-ext-JsonConfig.inc.php.erb"
   template_cookbook "wiki"
 end
 
 mediawiki_extension "Kartographer" do
-  site "wiki.openstreetmap.org"
+  site site_name
   template "mw-ext-Kartographer.inc.php.erb"
   template_cookbook "wiki"
 end
 
-cookbook_file "/srv/wiki.openstreetmap.org/osm_logo_wiki.png" do
+cookbook_file "/srv/#{site_name}/osm_logo_wiki.png" do
   owner node[:mediawiki][:user]
   group node[:mediawiki][:group]
   mode "644"
 end
 
-template "/srv/wiki.openstreetmap.org/robots.txt" do
+template "/srv/#{site_name}/robots.txt" do
   owner node[:mediawiki][:user]
   group node[:mediawiki][:group]
   mode "644"
   source "robots.txt.erb"
 end
 
-cookbook_file "/srv/wiki.openstreetmap.org/favicon.ico" do
+cookbook_file "/srv/#{site_name}/favicon.ico" do
   owner node[:mediawiki][:user]
   group node[:mediawiki][:group]
   mode "644"
 end
 
-directory "/srv/wiki.openstreetmap.org/dump" do
+directory "/srv/#{site_name}/dump" do
   owner node[:mediawiki][:user]
   group node[:mediawiki][:group]
   mode "0775"
@@ -149,13 +150,13 @@ systemd_service "wiki-dump" do
   description "Wiki dump"
   type "oneshot"
   exec_start "/usr/bin/php w/maintenance/dumpBackup.php --full --quiet --output=gzip:dump/dump.xml.gz"
-  working_directory "/srv/wiki.openstreetmap.org"
+  working_directory "/srv/#{site_name}"
   user "wiki"
   nice 19
   sandbox :enable_network => true
   memory_deny_write_execute false
   restrict_address_families "AF_UNIX"
-  read_write_paths "/srv/wiki.openstreetmap.org/dump"
+  read_write_paths "/srv/#{site_name}/dump"
 end
 
 systemd_timer "wiki-dump" do
@@ -173,14 +174,14 @@ systemd_service "wiki-rdf-dump" do
   exec_start [
     "/usr/bin/php w/extensions/Wikibase/repo/maintenance/dumpRdf.php --wiki wiki --format ttl --flavor full-dump --entity-type item --entity-type property --no-cache --output /tmp/wikibase-rdf.ttl",
     "/bin/gzip -9 /tmp/wikibase-rdf.ttl",
-    "/bin/mv /tmp/wikibase-rdf.ttl.gz /srv/wiki.openstreetmap.org/dump/wikibase-rdf.ttl.gz"
+    "/bin/mv /tmp/wikibase-rdf.ttl.gz /srv/#{site_name}/dump/wikibase-rdf.ttl.gz"
   ]
-  working_directory "/srv/wiki.openstreetmap.org"
+  working_directory "/srv/#{site_name}"
   user "wiki"
   sandbox :enable_network => true
   memory_deny_write_execute false
   restrict_address_families "AF_UNIX"
-  read_write_paths "/srv/wiki.openstreetmap.org/dump"
+  read_write_paths "/srv/#{site_name}/dump"
 end
 
 systemd_timer "wiki-rdf-dump" do

@@ -1,2 +1,7 @@
-# Force apache to listen only on localhost
-# default[:apache][:listen_address] = "127.0.0.1"
+default[:wiki][:site_name] = "wiki.openstreetmap.org"
+default[:wiki][:site_aliases] = [
+  "wiki.osm.org", "wiki.openstreetmap.com", "wiki.openstreetmaps.org",
+  "osm.wiki", "www.osm.wiki", "wiki.osm.wiki"
+]
+default[:wiki][:site_notice] = nil
+default[:wiki][:site_readonly] = nil
