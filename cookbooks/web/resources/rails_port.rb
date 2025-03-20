@@ -491,7 +491,8 @@ action :create do
     subscribes :run, "file[#{rails_directory}/config/settings.local.yml]"
     subscribes :run, "file[#{rails_directory}/config/storage.yml]"
     subscribes :run, "bundle_exec[#{rails_directory}/package.json]"
-    subscribes :run, "bundle_exec[#{rails_directory}/app/assets/javascripts/i18n]"
+    subscribes :run, "bundle_exec[#{rails_directory}/config/i18n-js.yml]"
+    subscribes :run, "bundle_exec[#{rails_directory}/config/i18n.yml]"
     only_if { new_resource.build_assets }
   end
 
