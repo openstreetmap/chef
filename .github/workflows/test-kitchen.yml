@@ -136,6 +136,8 @@ jobs:
           - os: debian-12
             suite: git-web
           - os: debian-12
+            suite: gps-tile
+          - os: debian-12
             suite: imagery-tiler
           - os: debian-12
             suite: letsencrypt
@@ -163,6 +165,8 @@ jobs:
           - suite: git-server
             os: ubuntu-2204
           - suite: git-web
+            os: ubuntu-2204
+          - suite: gps-tile
             os: ubuntu-2204
           - suite: mailman
             os: ubuntu-2204
