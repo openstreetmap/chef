@@ -1,5 +1,16 @@
 default[:ruby][:fullstaq] = true
 
+default[:ruby][:system_version] = if platform?("debian")
+                                    "3.1"
+                                  elsif node[:lsb][:release].to_f < 22.04
+                                    "2.7"
+                                  else
+                                    "3.0"
+                                  end
+default[:ruby][:system_interpreter] = "/usr/bin/ruby#{node[:ruby][:system_version]}"
+default[:ruby][:system_gem] = "/usr/bin/gem#{node[:ruby][:system_version]}"
+default[:ruby][:system_bundle] = "/usr/bin/bundle#{node[:ruby][:system_version]}"
+
 if node[:ruby][:fullstaq]
 
   default[:ruby][:version] = "3.4"
@@ -9,15 +20,9 @@ if node[:ruby][:fullstaq]
 
 else
 
-  default[:ruby][:version] = if platform?("debian")
-                               "3.1"
-                             elsif node[:lsb][:release].to_f < 22.04
-                               "2.7"
-                             else
-                               "3.0"
-                             end
-  default[:ruby][:interpreter] = "/usr/bin/ruby#{node[:ruby][:version]}"
-  default[:ruby][:gem] = "/usr/bin/gem#{node[:ruby][:version]}"
-  default[:ruby][:bundle] = "/usr/bin/bundle#{node[:ruby][:version]}"
+  default[:ruby][:version] = node[:ruby][:system_version]
+  default[:ruby][:interpreter] = node[:ruby][:system_interpreter]
+  default[:ruby][:gem] = node[:ruby][:system_gem]
+  default[:ruby][:bundle] = node[:ruby][:system_bundle]
 
 end
