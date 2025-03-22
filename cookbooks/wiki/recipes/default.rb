@@ -32,6 +32,8 @@ end
 mediawiki_site site_name do
   aliases node[:wiki][:site_aliases]
 
+  version node[:wiki][:mediawiki_version]
+
   fpm_max_children 200
   fpm_start_servers 25
   fpm_min_spare_servers 25
