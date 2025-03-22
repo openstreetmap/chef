@@ -96,6 +96,7 @@ action :create do
     owner node[:mediawiki][:user]
     group node[:mediawiki][:group]
     mode "664"
+    variables :version => new_resource.version
   end
 
   execute "#{mediawiki_directory}/composer.json" do
