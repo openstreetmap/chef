@@ -560,7 +560,8 @@ action_class do
   end
 
   def mediawiki_reference
-    shell_out!("git", "ls-remote", "--refs", "--sort=-version:refname",
+    shell_out!("git", "-c", "versionsort.suffix=-rc",
+               "ls-remote", "--refs", "--sort=-version:refname",
                "https://gerrit.wikimedia.org/r/mediawiki/core.git",
                "refs/tags/#{new_resource.version}.*")
       .stdout
