@@ -23,7 +23,7 @@
 require "ipaddr"
 require "yaml"
 
-include_recipe "ruby"
+include_recipe "prometheus"
 
 keys = data_bag_item("networking", "keys")
 
