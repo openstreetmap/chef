@@ -2,7 +2,7 @@
 
 #
 # Setup logging
-# 
+#
 SetEnvIfNoCase Authorization "^Basic " AUTH_METHOD=basic
 SetEnvIfNoCase Authorization "^OAuth " AUTH_METHOD=oauth1
 SetEnvIfNoCase Authorization "^Bearer " AUTH_METHOD=oauth2
@@ -107,6 +107,13 @@ ErrorLog /var/log/apache2/error.log
   #
   RewriteCond "%{QUERY_STRING}" "^q=abcde&t=20"
   RewriteRule "^/api/0\.6/notes/search$" - [R=429,L]
+
+  #
+  # Ignore GoogleAssociationService request storm
+  # https://en.osm.town/@osm_tech/114205363076771822
+  #
+  RewriteCond %{HTTP_USER_AGENT} "GoogleAssociationService"
+  RewriteRule "^/\.well-known/assetlinks\.json$" - [R=429,L]
 
   #
   # Force special MIME type for crossdomain.xml files
