@@ -2,9 +2,6 @@ name "muirdris"
 description "Master role applied to muirdris"
 
 default_attributes(
-  :memcached => {
-    :memory_limit => 128 * 1024
-  },
   :networking => {
     :interfaces => {
       :internal => {
@@ -32,10 +29,22 @@ default_attributes(
         }
       }
     }
+  },
+  :wiki => {
+    :site_name => "test.wiki.openstreetmap.org",
+    :site_aliases => [],
+    :site_notice => "TEST INSTANCE: Use wiki.openstreetmap.org for real work"
+  }
+)
+
+override_attributes(
+  :memcached => {
+    :memory_limit => 128 * 1024
   }
 )
 
 run_list(
   "role[equinix-dub-public]",
-  "role[gps-tile]"
+  "role[gps-tile]",
+  "role[wiki]"
 )
