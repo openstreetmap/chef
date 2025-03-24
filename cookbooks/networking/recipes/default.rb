@@ -23,8 +23,6 @@
 require "ipaddr"
 require "yaml"
 
-include_recipe "prometheus"
-
 keys = data_bag_item("networking", "keys")
 
 file "/etc/netplan/00-installer-config.yaml" do
@@ -317,6 +315,8 @@ end
 link "/etc/resolv.conf" do
   to "../run/systemd/resolve/stub-resolv.conf"
 end
+
+package "ruby"
 
 gem_package "dbus-systemd" do
   gem_binary node[:ruby][:system_gem]
