@@ -57,6 +57,19 @@ mediawiki_site site_name do
   hcaptcha_public_key "b67a410b-955e-4049-b432-f9c00e0202c0"
   hcaptcha_private_key passwords["hcaptcha"]
 
+  namespaces "DE" => { :id => 200, :talk_id => 201 },
+             "FR" => { :id => 202, :talk_id => 203 },
+             "ES" => { :id => 204, :talk_id => 205 },
+             "IT" => { :id => 206, :talk_id => 207 },
+             "NL" => { :id => 208, :talk_id => 209 },
+             "RU" => { :id => 210, :talk_id => 211 },
+             "JA" => { :id => 212, :talk_id => 213 },
+             "Proposal" => { :id => 3000, :talk_id => 3001 }
+
+  force_ui_messages %w[mainpage-url mapfeatures-url contributors-url helppage blogs-url shop-url sitesupport-url]
+
+  watch_category_membership true
+
   site_notice node[:wiki][:site_notice]
   site_readonly node[:wiki][:site_readonly]
 end

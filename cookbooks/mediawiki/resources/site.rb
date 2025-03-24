@@ -44,6 +44,9 @@ property :private_site, :kind_of => [TrueClass, FalseClass], :default => false
 property :hcaptcha_public_key, :kind_of => String, :default => ""
 property :hcaptcha_private_key, :kind_of => String, :default => ""
 property :extra_file_extensions, :kind_of => [String, Array], :default => []
+property :namespaces, :kind_of => Hash, :default => {}
+property :force_ui_messages, :kind_of => Array, :default => []
+property :watch_category_membership, :kind_of => [TrueClass, FalseClass], :default => false
 property :fpm_max_children, :kind_of => Integer, :default => 5
 property :fpm_start_servers, :kind_of => Integer, :default => 2
 property :fpm_min_spare_servers, :kind_of => Integer, :default => 1
@@ -598,7 +601,10 @@ action_class do
       :site_readonly => new_resource.site_readonly,
       :extra_file_extensions => new_resource.extra_file_extensions,
       :private_accounts => new_resource.private_accounts,
-      :private_site => new_resource.private_site
+      :private_site => new_resource.private_site,
+      :namespaces => new_resource.namespaces,
+      :force_ui_messages => new_resource.force_ui_messages,
+      :watch_category_membership => new_resource.watch_category_membership
     }
   end
 
