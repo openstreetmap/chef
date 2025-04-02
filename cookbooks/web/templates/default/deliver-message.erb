@@ -3,4 +3,4 @@
 export RAILS_ENV="production"
 export SECRET_KEY_BASE="<%= @secret_key_base %>"
 
-exec /usr/local/bin/passenger-ruby /srv/www.openstreetmap.org/rails/script/deliver-message "$@"
+exec <%= node[:ruby][:bundle] %> exec /srv/www.openstreetmap.org/rails/script/deliver-message "$@"
