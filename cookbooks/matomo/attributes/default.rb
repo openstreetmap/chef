@@ -21,6 +21,7 @@ default[:matomo][:plugins] = {
   "Diagnostics" => nil,
   "Ecommerce" => nil,
   "Events" => nil,
+  "FeatureFlags" => nil,
   "Feedback" => nil,
   "GeoIp2" => nil,
   "Goals" => nil,
