@@ -142,6 +142,8 @@ jobs:
           - os: debian-12
             suite: letsencrypt
           - os: debian-12
+            suite: matomo
+          - os: debian-12
             suite: otrs
           - os: debian-12
             suite: serverinfo
@@ -170,9 +172,11 @@ jobs:
             os: ubuntu-2204
           - suite: gps-tile
             os: ubuntu-2204
+          - suite: letsencrypt
+            os: ubuntu-2204
           - suite: mailman
             os: ubuntu-2204
-          - suite: letsencrypt
+          - suite: matomo
             os: ubuntu-2204
           - suite: osqa
             os: ubuntu-2204
