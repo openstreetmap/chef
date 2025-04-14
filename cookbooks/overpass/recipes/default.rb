@@ -152,7 +152,7 @@ systemd_service "overpass-dispatcher" do
   description "Overpass Main Dispatcher"
   wants ["overpass-area-dispatcher.service"]
   working_directory basedir
-  exec_start "#{basedir}/bin/dispatcher --osm-base #{meta_map_short[node[:overpass][:meta_mode]]} --db-dir=#{basedir}/db --rate-limit=#{node[:overpass][:rate_limit]} --space=#{node[:overpass][:dispatcher_space]}"
+  exec_start "#{basedir}/bin/dispatcher --allow-duplicate-queries=yes --osm-base #{meta_map_short[node[:overpass][:meta_mode]]} --db-dir=#{basedir}/db --rate-limit=#{node[:overpass][:rate_limit]} --space=#{node[:overpass][:dispatcher_space]}"
   exec_stop "#{basedir}/bin/dispatcher --osm-base --terminate"
   standard_output "append:#{logdir}/osm_base.log"
   user username
@@ -166,7 +166,7 @@ systemd_service "overpass-area-dispatcher" do
   description "Overpass Area Dispatcher"
   after ["overpass-dispatcher.service"]
   working_directory basedir
-  exec_start "#{basedir}/bin/dispatcher --areas #{meta_map_short[node[:overpass][:meta_mode]]} --db-dir=#{basedir}/db"
+  exec_start "#{basedir}/bin/dispatcher --allow-duplicate-queries=yes --areas #{meta_map_short[node[:overpass][:meta_mode]]} --db-dir=#{basedir}/db"
   exec_stop "#{basedir}/bin/dispatcher --areas --terminate"
   standard_output "append:#{logdir}/areas.log"
   user username
