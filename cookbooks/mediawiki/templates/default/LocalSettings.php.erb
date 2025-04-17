@@ -362,3 +362,9 @@ unset( $wgGroupsRemoveFromSelf['autoconfirmed'] );
 # Mediawiki 1.38 has fix to allow this to be set by $wgVirtualRestConfig
 # https://phabricator.wikimedia.org/T285478
 $wgHTTPTimeout = 240;
+
+# Enable night mode for Minerva and Vector skins
+# https://github.com/openstreetmap/operations/issues/1230
+$wgMinervaNightMode['base'] = true;
+$wgVectorNightMode['logged_in'] = true;
+$wgVectorNightMode['logged_out'] = true;
