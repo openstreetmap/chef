@@ -77,12 +77,23 @@ ruby_block "install-awscli" do
     require "fileutils"
     awscli_version_string = shell_out("#{cache_dir}/awscli/dist/aws", "--version")
     awscli_version = awscli_version_string.stdout.split(" ").first.split("/").last
-    FileUtils.mkdir_p("/opt/awscli/v2/#{awscli_version}/bin/", :mode => 0755)
-    FileUtils.mv("#{cache_dir}/awscli/dist", "/opt/awscli/v2/#{awscli_version}/dist", :force => true)
-    FileUtils.ln_sf("/opt/awscli/v2/#{awscli_version}/dist/aws", "/opt/awscli/v2/#{awscli_version}/bin/aws")
-    FileUtils.ln_sf("/opt/awscli/v2/#{awscli_version}/dist/aws_completer", "/opt/awscli/v2/#{awscli_version}/bin/aws_completer")
-    FileUtils.rm("/opt/awscli/v2/current") if File.exist?("/opt/awscli/v2/current")
-    FileUtils.ln_sf("/opt/awscli/v2/#{awscli_version}", "/opt/awscli/v2/current")
+
+    install_dir = "/opt/awscli/v2/#{awscli_version}"
+
+    FileUtils.mkdir_p("#{install_dir}/bin/", :mode => 0755)
+    FileUtils.mv("#{cache_dir}/awscli/dist", "#{install_dir}/dist", :force => true)
+    FileUtils.ln_sf("#{install_dir}/dist/aws", "#{install_dir}/bin/aws")
+    FileUtils.ln_sf("#{install_dir}/dist/aws_completer", "#{install_dir}/bin/aws_completer")
+
+    FileUtils.rm_f("/opt/awscli/v2/current")
+    FileUtils.ln_sf(install_dir, "/opt/awscli/v2/current")
+
+    # Remove old versions, keeping only the current one
+    Dir.glob("/opt/awscli/v2/*").each do |dir|
+      next if [install_dir, "/opt/awscli/v2/current"].include?(dir)
+
+      FileUtils.rm_rf(dir)
+    end
   end
   action :nothing
   subscribes :run, "archive_file[#{cache_dir}/#{awscli_zip}]", :immediately
