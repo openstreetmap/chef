@@ -88,10 +88,12 @@ ruby_block "install-awscli" do
     FileUtils.rm_f("/opt/awscli/v2/current")
     FileUtils.ln_sf(install_dir, "/opt/awscli/v2/current")
 
-    # Remove old versions, keeping only the current one
-    Dir.glob("/opt/awscli/v2/*").each do |dir|
-      next if [install_dir, "/opt/awscli/v2/current"].include?(dir)
+    # Retain the last 5 versions, including the current one
+    versions = Dir.glob("/opt/awscli/v2/*").select { |dir| File.directory?(dir) && dir != "/opt/awscli/v2/current" }
+    versions.sort_by! { |dir| File.mtime(dir) }.reverse!
+    versions_to_delete = versions[5..] || []
 
+    versions_to_delete.each do |dir|
       FileUtils.rm_rf(dir)
     end
   end
