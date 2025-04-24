@@ -9,6 +9,8 @@ default[:vectortile][:replication][:tileupdate] = true
 default[:vectortile][:replication][:threads] = node.cpu_cores
 
 default[:vectortile][:tilekiln][:version] = "0.7.1"
+default[:vectortile][:spirit][:version] = "7fc3c62771d371f00a62249174d4d695d8324443"
+default[:vectortile][:themepark][:version] = "beb454cc56e88533fb398ab293489c4e91f4d42b"
 
 default[:postgresql][:versions] |= [node[:vectortile][:database][:cluster].split("/").first]
 default[:postgresql][:monitor_database] = "tiles"
