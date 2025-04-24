@@ -67,7 +67,7 @@ action_class do
 
   def ports
     @ports ||= if ::File.exist?(ports_file)
-                 YAML.safe_load(::File.read(ports_file))
+                 YAML.safe_load_file(ports_file)
                else
                  {}
                end

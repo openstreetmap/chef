@@ -72,10 +72,10 @@ default_attributes(
         :max_size => "196608M"
       },
       :proxy => {
-          :enable => true,
-          :keys_zone => "proxy_cache_zone:2048M",
-          :inactive => "180d",
-          :max_size => "196608M"
+        :enable => true,
+        :keys_zone => "proxy_cache_zone:2048M",
+        :inactive => "180d",
+        :max_size => "196608M"
       }
     }
   }

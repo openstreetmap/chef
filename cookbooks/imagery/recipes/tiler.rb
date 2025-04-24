@@ -37,19 +37,19 @@ container_image = if arm?
 podman_service "titiler" do
   description "Container service for titiler"
   image container_image
-  volume :"/store/imagery"       => "/store/imagery",
+  volume :"/store/imagery" => "/store/imagery",
          :"/srv/imagery/sockets" => "/sockets"
-  environment :GDAL_CACHEMAX                       => 200,
-              :GDAL_BAND_BLOCK_CACHE               => "HASHSET",
-              :GDAL_DISABLE_READDIR_ON_OPEN        => "EMPTY_DIR",
-              :GDAL_INGESTED_BYTES_AT_OPEN         => 32768,
-              :GDAL_HTTP_MERGE_CONSECUTIVE_RANGES  => "YES",
-              :GDAL_HTTP_MULTIPLEX                 => "YES",
-              :GDAL_HTTP_VERSION                   => 2,
-              :VSI_CACHE                           => "TRUE",
-              :VSI_CACHE_SIZE                      => 5000000,
-              :TITILER_API_ROOT_PATH               => "/api/v1/titiler",
-              :FORWARDED_ALLOW_IPS                 => "*" # https://docs.gunicorn.org/en/latest/settings.html#forwarded-allow-ips
+  environment :GDAL_CACHEMAX => 200,
+              :GDAL_BAND_BLOCK_CACHE => "HASHSET",
+              :GDAL_DISABLE_READDIR_ON_OPEN => "EMPTY_DIR",
+              :GDAL_INGESTED_BYTES_AT_OPEN => 32768,
+              :GDAL_HTTP_MERGE_CONSECUTIVE_RANGES => "YES",
+              :GDAL_HTTP_MULTIPLEX => "YES",
+              :GDAL_HTTP_VERSION => 2,
+              :VSI_CACHE => "TRUE",
+              :VSI_CACHE_SIZE => 5000000,
+              :TITILER_API_ROOT_PATH => "/api/v1/titiler",
+              :FORWARDED_ALLOW_IPS => "*" # https://docs.gunicorn.org/en/latest/settings.html#forwarded-allow-ips
   command "gunicorn -k uvicorn.workers.UvicornWorker titiler.application.main:app --bind unix:/sockets/titiler.sock --workers #{node.cpu_cores}"
 end
 

@@ -123,7 +123,7 @@ template "/usr/local/bin/import-planet" do
   owner "root"
   group "root"
   mode "755"
-  variables :node_store_options => "#{node_store_options}"
+  variables :node_store_options => node_store_options
 end
 
 template "/usr/local/bin/tilekiln-storage-init" do
@@ -131,7 +131,7 @@ template "/usr/local/bin/tilekiln-storage-init" do
   owner "root"
   group "root"
   mode "755"
-  variables :tilekiln_bin => "#{tilekiln_directory}/bin/tilekiln", :storage_database => "tiles", :config_path => "#{shortbread_config}"
+  variables :tilekiln_bin => "#{tilekiln_directory}/bin/tilekiln", :storage_database => "tiles", :config_path => shortbread_config
 end
 
 postgresql_user "tomh" do
@@ -209,10 +209,10 @@ end
 end
 
 %w[addresses aerialways aeroways boundaries boundary_labels bridges buildings
-dam_lines dam_polygons ferries land pier_lines pier_polygons place_labels
-planet_osm_nodes planet_osm_rels planet_osm_ways pois public_transport railways
-road_routes roads sites street_polygons streets_labels_points
-streets_polygons_labels water_area_labels water_areas water_lines water_lines_labels].each do |table|
+   dam_lines dam_polygons ferries land pier_lines pier_polygons place_labels
+   planet_osm_nodes planet_osm_rels planet_osm_ways pois public_transport railways
+   road_routes roads sites street_polygons streets_labels_points
+   streets_polygons_labels water_area_labels water_areas water_lines water_lines_labels].each do |table|
   postgresql_table table do
     cluster node[:vectortile][:database][:cluster]
     database "spirit"
@@ -251,7 +251,7 @@ template "/usr/local/bin/vector-update" do
   owner "root"
   group "root"
   mode "755"
-  variables :tilekiln_bin => "#{tilekiln_directory}/bin/tilekiln", :source_database => "spirit", :config_path => "#{shortbread_config}", :diff_size => "1000", :expiry_dir => "/srv/vector.openstreetmap.org/data/", :post_processing => "/usr/local/bin/tiles-rerender"
+  variables :tilekiln_bin => "#{tilekiln_directory}/bin/tilekiln", :source_database => "spirit", :config_path => shortbread_config, :diff_size => "1000", :expiry_dir => "/srv/vector.openstreetmap.org/data/", :post_processing => "/usr/local/bin/tiles-rerender"
 end
 
 rerender_layers = %w[addresses boundaries bridges buildings land pois public_transport sites street_polygons streets water_lines_labels water_lines water_polygons].join(" ")
@@ -261,7 +261,7 @@ template "/usr/local/bin/tiles-rerender" do
   owner "root"
   group "root"
   mode "755"
-  variables :tilekiln_bin => "#{tilekiln_directory}/bin/tilekiln", :source_database => "spirit", :storage_database => "tiles", :config_path => "#{shortbread_config}", :expiry_dir => "/srv/vector.openstreetmap.org/data/", :update_threads => 4, :layers => "#{rerender_layers}"
+  variables :tilekiln_bin => "#{tilekiln_directory}/bin/tilekiln", :source_database => "spirit", :storage_database => "tiles", :config_path => shortbread_config, :expiry_dir => "/srv/vector.openstreetmap.org/data/", :update_threads => 4, :layers => rerender_layers.to_s
 end
 
 systemd_service "replicate" do

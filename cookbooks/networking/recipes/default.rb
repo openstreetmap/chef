@@ -57,7 +57,7 @@ interfaces = node[:networking][:interfaces].collect do |name, interface|
   [interface[:interface], name]
 end.to_h
 
-node[:networking][:interfaces].each do |_, interface|
+node[:networking][:interfaces].each_value do |interface|
   next unless interface[:interface] =~ /^(.*)\.(\d+)$/
 
   vlan_interface = Regexp.last_match(1)
@@ -71,7 +71,7 @@ node[:networking][:interfaces].each do |_, interface|
   node.default[:networking][:interfaces][parent][:vlans] << vlan_id
 end
 
-node[:networking][:interfaces].each do |_, interface|
+node[:networking][:interfaces].each_value do |interface|
   if interface[:interface] =~ /^.*\.(\d+)$/
     template "/etc/systemd/network/10-#{interface[:interface]}.netdev" do
       source "vlan.netdev.erb"
@@ -343,10 +343,8 @@ end
 
 package "nftables"
 
-interfaces = []
-
-node.interfaces(:role => :external).each do |interface|
-  interfaces << interface[:interface]
+interfaces = node.interfaces(:role => :external).map do |interface|
+  interface[:interface]
 end
 
 template "/etc/nftables.conf" do

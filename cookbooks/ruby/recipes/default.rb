@@ -38,7 +38,7 @@ if node[:ruby][:fullstaq]
 
 else
 
-  package %W[
+  package %w[
     ruby
     ruby-dev
     ruby-bundler

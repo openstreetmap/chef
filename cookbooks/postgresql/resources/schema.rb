@@ -109,6 +109,6 @@ action_class do
   end
 
   def qualified_name
-    "#{new_resource.name}"
+    new_resource.name
   end
 end

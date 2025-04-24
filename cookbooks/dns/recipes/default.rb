@@ -60,7 +60,7 @@ end
 
 dpkg_package "dnscontrol" do
   source "#{cache_dir}/dnscontrol-#{dnscontrol_version}.deb"
-  version "#{dnscontrol_version}"
+  version dnscontrol_version
 end
 
 directory "/srv/dns.openstreetmap.org" do

@@ -8,7 +8,7 @@ describe package("#{mysql_variant}-server") do
   it { should be_installed }
 end
 
-describe service("#{mysql_variant}") do
+describe service(mysql_variant) do
   it { should be_enabled }
   it { should be_running }
 end

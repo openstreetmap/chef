@@ -566,8 +566,8 @@ systemd_service "expire-tiles" do
   sandbox true
   restrict_address_families "AF_UNIX"
   read_write_paths tile_directories + [
-                     "/var/lib/replicate/expire-queue"
-                   ]
+    "/var/lib/replicate/expire-queue"
+  ]
 end
 
 systemd_path "expire-tiles" do

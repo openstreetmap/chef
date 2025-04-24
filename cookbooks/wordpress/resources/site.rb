@@ -82,10 +82,10 @@ action :create do
   end
 
   wp_config = edit_file "#{site_directory}/wp-config-sample.php" do |line|
-    line.gsub!(/database_name_here/, new_resource.database_name)
-    line.gsub!(/username_here/, new_resource.database_user)
-    line.gsub!(/password_here/, new_resource.database_password)
-    line.gsub!(/wp_/, new_resource.database_prefix)
+    line.gsub!("database_name_here", new_resource.database_name)
+    line.gsub!("username_here", new_resource.database_user)
+    line.gsub!("password_here", new_resource.database_password)
+    line.gsub!("wp_", new_resource.database_prefix)
 
     line.gsub!(/('AUTH_KEY', *)'put your unique phrase here'/, "\\1'#{auth_key}'")
     line.gsub!(/('SECURE_AUTH_KEY', *)'put your unique phrase here'/, "\\1'#{secure_auth_key}'")

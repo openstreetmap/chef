@@ -107,7 +107,7 @@ apache_site "default" do
   action :disable
 end
 
-apache_site "#{node[:overpass][:fqdn]}" do
+apache_site node[:overpass][:fqdn] do
   template "apache.erb"
   directory "#{basedir}/site"
   variables :script_directory => "#{basedir}/cgi-bin"

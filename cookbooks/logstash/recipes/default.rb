@@ -75,10 +75,8 @@ template "/etc/cron.daily/expire-logstash" do
   mode "755"
 end
 
-forwarders = []
-
-search(:node, "recipes:logstash\\:\\:forwarder").each do |forwarder|
-  forwarders.append(forwarder.ipaddresses(:role => :external))
+forwarders = search(:node, "recipes:logstash\\:\\:forwarder").map do |forwarder|
+  forwarder.ipaddresses(:role => :external)
 end
 
 search(:node, "roles:gateway").each do |forwarder|

@@ -426,7 +426,7 @@ if !intel_ssds.empty? || !intel_nvmes.empty?
   end
 
   dpkg_package "sst" do
-    version "#{sst_package_version}"
+    version sst_package_version
     source "#{Chef::Config[:file_cache_path]}/sst_#{sst_package_version}_amd64.deb"
   end
 

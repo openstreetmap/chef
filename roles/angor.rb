@@ -26,8 +26,8 @@ default_attributes(
       :gmoncrieff => { :status => :user },
       :zander => { :status => :user },
       :"za-imagery" => {
-          :status => :role,
-          :members => [:grant, :htonl, :gmoncrieff, :zander]
+        :status => :role,
+        :members => [:grant, :htonl, :gmoncrieff, :zander]
       }
     }
   }

@@ -122,7 +122,7 @@ module OpenStreetMap
     def schemas(database)
       @schemas ||= {}
       @schemas[database] ||= query("SELECT n.nspname, pg_catalog.pg_get_userbyid(n.nspowner) AS usename, n.nspacl FROM pg_namespace AS n WHERE n.nspname !~ '^pg_' AND n.nspname <> 'information_schema'", :database => database).each_with_object({}) do |schema, schemas|
-        name = "#{schema[:nspname]}"
+        name = schema[:nspname]
 
         schemas[name] = {
           :owner => schema[:usename],
@@ -163,7 +163,7 @@ module OpenStreetMap
 
     def parse_acl(acl)
       parse_array(acl).each_with_object({}) do |entry, permissions|
-        entry = entry.sub(/^"(.*)"$/) { Regexp.last_match[1].gsub(/\\"/, '"') }.sub(%r{/.*$}, "")
+        entry = entry.sub(/^"(.*)"$/) { Regexp.last_match[1].gsub('\"', '"') }.sub(%r{/.*$}, "")
         user, privileges = entry.split("=")
 
         user = user.sub(/^"(.*)"$/, "\\1")

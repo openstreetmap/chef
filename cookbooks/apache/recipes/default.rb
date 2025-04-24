@@ -114,7 +114,7 @@ fail2ban_jail "apache-forbidden" do
 end
 
 fail2ban_filter "apache-evasive" do
-  failregex ": Blacklisting address <ADDR>: possible DoS attack\.$"
+  failregex ": Blacklisting address <ADDR>: possible DoS attack\\.$"
 end
 
 fail2ban_jail "apache-evasive" do

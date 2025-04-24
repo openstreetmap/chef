@@ -95,7 +95,7 @@ property :doorkeeper_signing_key, String
 property :user_account_deletion_delay, Integer
 
 action :create do
-  package %W[
+  package %w[
     imagemagick
     libvips42
     nodejs
@@ -415,14 +415,14 @@ action :create do
     recursive true
   end
 
-  bundle_config "#{rails_directory}" do
+  bundle_config rails_directory do
     user new_resource.user
     group new_resource.group
     settings "deployment" => "true",
              "build.nokogiri" => "--use-system-libraries"
   end
 
-  bundle_install "#{rails_directory}" do
+  bundle_install rails_directory do
     action :nothing
     user new_resource.user
     group new_resource.group

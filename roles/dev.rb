@@ -94,8 +94,8 @@ default_attributes(
         :members => [:apmon, :maba]
       },
       :"za-imagery" => {
-          :status => :role,
-          :members => [:grant, :htonl, :gmoncrieff, :zander]
+        :status => :role,
+        :members => [:grant, :htonl, :gmoncrieff, :zander]
       }
     }
   },

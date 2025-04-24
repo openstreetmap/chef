@@ -22,7 +22,7 @@ include_recipe "apache"
 include_recipe "git"
 include_recipe "ruby"
 
-package %W[
+package %w[
   make
   gcc
   g++

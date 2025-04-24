@@ -28,7 +28,7 @@ mysql_variant = if platform?("ubuntu")
 package "#{mysql_variant}-server"
 package "#{mysql_variant}-client"
 
-service "#{mysql_variant}" do
+service mysql_variant do
   action [:enable, :start]
   supports :status => true, :restart => true
 end
