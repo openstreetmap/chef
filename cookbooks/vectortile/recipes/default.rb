@@ -77,6 +77,7 @@ package %w[
 style_directory = "/srv/vector.openstreetmap.org/spirit"
 git style_directory do
   repository "https://github.com/pnorman/spirit.git"
+  revision node[:vectortile][:spirit][:version]
   user "tileupdate"
   group "tileupdate"
 end
@@ -86,7 +87,7 @@ shortbread_config = "#{style_directory}/shortbread.yaml"
 themepark_directory = "/srv/vector.openstreetmap.org/osm2pgsql-themepark"
 git themepark_directory do
   repository "https://github.com/osm2pgsql-dev/osm2pgsql-themepark.git"
-  revision "444bfbda82dea2899e77ac7f0e88ddf7f62c3b45"
+  revision node[:vectortile][:themepark][:version]
   user "tileupdate"
   group "tileupdate"
 end
