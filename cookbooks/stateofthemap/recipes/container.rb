@@ -30,3 +30,8 @@ end
     aliases ["#{year}.stateofthemap.com", "#{year}.sotm.org"]
   end
 end
+
+podman_site "stateofthemap.eu" do
+  image "ghcr.io/openstreetmap/stateofthemap-eu-website:latest"
+  aliases ["www.stateofthemap.eu"]
+end
