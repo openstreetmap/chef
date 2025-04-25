@@ -31,6 +31,13 @@ default_attributes(
         "kernel.shmall" => 9 * 1024 * 1024 * 1024 / 4096
       }
     }
+  },
+  :vectortile => {
+    :replication => false,
+    :tileupdate => false,
+    :spirit => {
+      :version => "7c68ecdd82606fd64dfe6e2ba7a1f1741afcc34c"
+    }
   }
 )
 
