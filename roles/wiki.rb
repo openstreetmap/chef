@@ -64,6 +64,9 @@ default_attributes(
         :tmp_table_size => "128M"
       }
     }
+  },
+  :wiki => {
+    :mediawiki_version => "1.43"
   }
 )
 
