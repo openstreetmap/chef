@@ -293,7 +293,7 @@ $wgExpensiveParserFunctionLimit = 500;
 $wgSiteNotice = "<%= @mediawiki[:site_notice] %>";
 <% end -%>
 <% if @mediawiki[:site_readonly] -%>
-$wgReadOnly = "<%= @mediawiki[:site_readonly] %>";
+$wgReadOnly = ( PHP_SAPI === 'cli' ) ? false : "<%= @mediawiki[:site_readonly] %>";
 <% end -%>
 
 <% @mediawiki[:namespaces].each do |name, details| -%>
