@@ -29,6 +29,9 @@ default_attributes(
         }
       }
     }
+  },
+  :wiki => {
+    :site_readonly => "READ ONLY: The wiki is currently read only for maintenance"
   }
 )
 
