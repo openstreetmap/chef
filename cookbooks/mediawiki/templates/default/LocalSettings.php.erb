@@ -368,3 +368,7 @@ $wgHTTPTimeout = 240;
 $wgMinervaNightMode['base'] = true;
 $wgVectorNightMode['logged_in'] = true;
 $wgVectorNightMode['logged_out'] = true;
+
+# Set extremely low timeout to avoid PHP-FPM timeouts on slow connections to Wikimedia Commons (rate limiting) or similar
+$wgHTTPMaxTimeout = 5;
+$wgHTTPMaxConnectTimeout = 3;
