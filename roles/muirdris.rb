@@ -33,7 +33,8 @@ default_attributes(
   :wiki => {
     :site_name => "test.wiki.openstreetmap.org",
     :site_aliases => [],
-    :site_notice => "TEST INSTANCE: Use wiki.openstreetmap.org for real work"
+    :site_notice => "TEST INSTANCE: Use wiki.openstreetmap.org for real work",
+    :test_mode => true
   }
 )
 
