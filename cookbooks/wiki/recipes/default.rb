@@ -34,10 +34,10 @@ mediawiki_site site_name do
 
   version node[:wiki][:mediawiki_version]
 
-  fpm_max_children 200
-  fpm_start_servers 25
-  fpm_min_spare_servers 25
-  fpm_max_spare_servers 50
+  fpm_max_children 300
+  fpm_start_servers 50
+  fpm_min_spare_servers 50
+  fpm_max_spare_servers 150
   fpm_prometheus_port 9253
 
   database_name "wiki"

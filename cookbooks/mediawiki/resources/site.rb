@@ -51,7 +51,7 @@ property :fpm_max_children, :kind_of => Integer, :default => 5
 property :fpm_start_servers, :kind_of => Integer, :default => 2
 property :fpm_min_spare_servers, :kind_of => Integer, :default => 1
 property :fpm_max_spare_servers, :kind_of => Integer, :default => 3
-property :fpm_request_terminate_timeout, :kind_of => Integer, :default => 300
+property :fpm_request_terminate_timeout, :kind_of => Integer, :default => 120
 property :fpm_prometheus_port, :kind_of => Integer
 property :reload_apache, :kind_of => [TrueClass, FalseClass], :default => true
 
@@ -476,7 +476,7 @@ action :create do
     request_terminate_timeout new_resource.fpm_request_terminate_timeout
     php_admin_values "open_basedir" => "#{site_directory}/:/usr/share/php/:/dev/null:/tmp/"
     php_values "memory_limit" => "500M",
-               "max_execution_time" => "240",
+               "max_execution_time" => "60",
                "upload_max_filesize" => "70M",
                "post_max_size" => "100M"
     prometheus_port new_resource.fpm_prometheus_port
