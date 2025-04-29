@@ -63,7 +63,7 @@ git "/srv/community.openstreetmap.org/docker" do
   action :sync
   repository "https://github.com/discourse/discourse_docker.git"
   # DANGER launch wrapper automatically updates git repo if rebuild method used: https://github.com/discourse/discourse_docker/blob/107ffb40fe8b1ea40e00814468db974a4f3f8e8f/launcher#L799
-  revision "e42fa9711e9a8b27e9618342b5b456d3ba5b8025"
+  revision "721facba644f645211571026d6677b015c15e5d6"
   user "root"
   group "root"
   notifies :run, "notify_group[discourse_container_new_data]"
