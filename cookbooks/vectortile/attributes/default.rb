@@ -7,6 +7,8 @@ default[:vectortile][:replication][:url] = "https://osm-planet-eu-central-1.s3.d
 default[:vectortile][:replication][:enabled] = true
 default[:vectortile][:replication][:tileupdate] = true
 default[:vectortile][:replication][:threads] = node.cpu_cores
+default[:vectortile][:rerender][:lowzoom][:enabled] = true
+default[:vectortile][:rerender][:lowzoom][:maxzoom] = 9
 
 default[:vectortile][:tilekiln][:version] = "0.7.1"
 default[:vectortile][:spirit][:version] = "7c68ecdd82606fd64dfe6e2ba7a1f1741afcc34c"
