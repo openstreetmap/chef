@@ -1,3 +1,7 @@
+<% if node[:wiki][:test_mode] -%>
+User-agent: *
+Disallow: /
+<% else -%>
 User-agent: ia_archiver
 Allow: /
 
@@ -31,3 +35,4 @@ Crawl-delay: 60
 Sitemap: https://wiki.openstreetmap.org/sitemap-index-wiki.xml
 
 Host: wiki.openstreetmap.org
+<% end -%>
