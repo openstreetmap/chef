@@ -116,6 +116,6 @@ ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{ID_MODEL}=="QEMU_HA
 
 # Tune md stripe cache and thread count for RAID-5 / RAID-6 arrays
 <%
-  group_threads = [(node[:cpu_cores].to_i / 2.0).round, 4].max
+  group_threads = [(node.cpu_cores.to_i / 2.0).round, 4].max
 %>
 ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{MD_LEVEL}=="raid[56]", ATTR{md/stripe_cache_size}="8192", ATTR{md/group_thread_cnt}="<%= group_threads %>"
