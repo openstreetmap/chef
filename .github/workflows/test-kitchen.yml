@@ -194,6 +194,8 @@ jobs:
             os: ubuntu-2204
           - suite: web-rails
             os: ubuntu-2204
+          - suite: wiki
+            os: ubuntu-2204
       fail-fast: false
     steps:
     - name: Login to GitHub Container Registry
