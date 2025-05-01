@@ -128,6 +128,8 @@ jobs:
           - os: debian-12
             suite: apt-repository
           - os: debian-12
+            suite: blogs
+          - os: debian-12
             suite: dev
           - os: debian-12
             suite: dns
@@ -140,6 +142,8 @@ jobs:
           - os: debian-12
             suite: imagery-tiler
           - os: debian-12
+            suite: irc
+          - os: debian-12
             suite: letsencrypt
           - os: debian-12
             suite: matomo
@@ -150,7 +154,13 @@ jobs:
           - os: debian-12
             suite: serverinfo
           - os: debian-12
+            suite: subversion
+          - os: debian-12
             suite: supybot
+          - os: debian-12
+            suite: taginfo
+          - os: debian-12
+            suite: trac
           - os: debian-12
             suite: vectortile
           - os: debian-12
@@ -164,6 +174,8 @@ jobs:
         exclude:
           - suite: apt-repository
             os: ubuntu-2204
+          - suite: blogs
+            os: ubuntu-2204
           - suite: dev
             os: ubuntu-2204
           - suite: dns
@@ -173,6 +185,8 @@ jobs:
           - suite: git-web
             os: ubuntu-2204
           - suite: gps-tile
+            os: ubuntu-2204
+          - suite: irc
             os: ubuntu-2204
           - suite: letsencrypt
             os: ubuntu-2204
@@ -186,7 +200,13 @@ jobs:
             os: ubuntu-2204
           - suite: serverinfo
             os: ubuntu-2204
+          - suite: subversion
+            os: ubuntu-2204
           - suite: supybot
+            os: ubuntu-2204
+          - suite: taginfo
+            os: ubuntu-2204
+          - suite: trac
             os: ubuntu-2204
           - suite: vectortile
             os: ubuntu-2204
