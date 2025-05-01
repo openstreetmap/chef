@@ -72,6 +72,10 @@ mediawiki_site site_name do
 
   site_notice node[:wiki][:site_notice]
   site_readonly node[:wiki][:site_readonly]
+
+  if node[:wiki][:test_mode]
+    backup_enabled false
+  end
 end
 
 mediawiki_extension "CodeEditor" do

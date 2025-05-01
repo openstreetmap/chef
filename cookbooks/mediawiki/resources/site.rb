@@ -54,6 +54,7 @@ property :fpm_max_spare_servers, :kind_of => Integer, :default => 3
 property :fpm_request_terminate_timeout, :kind_of => Integer, :default => 120
 property :fpm_prometheus_port, :kind_of => Integer
 property :reload_apache, :kind_of => [TrueClass, FalseClass], :default => true
+property :backup_enabled, :kind_of => [TrueClass, FalseClass], :default => true
 
 action :create do
   node.default[:mediawiki][:sites][new_resource.site] = {
@@ -176,6 +177,12 @@ action :create do
               :directory => site_directory,
               :database_params => database_params
     only_if { ::File.exist?("#{mediawiki_directory}/LocalSettings.php") }
+    only_if { new_resource.backup_enabled }
+  end
+
+  file "/etc/cron.daily/mediawiki-#{cron_name}-backup" do
+    action :delete
+    only_if { !new_resource.backup_enabled }
   end
 
   # MobileFrontend extension is required by MinervaNeue skin
