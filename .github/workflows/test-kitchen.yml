@@ -146,6 +146,8 @@ jobs:
           - os: debian-12
             suite: otrs
           - os: debian-12
+            suite: prometheus-server
+          - os: debian-12
             suite: serverinfo
           - os: debian-12
             suite: supybot
