@@ -155,6 +155,8 @@ ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{ID_MODEL}=="QEMU_HA
 ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{ID_MODEL}=="QEMU_HARDDISK", ATTR{queue/scheduler}="noop"
 # Vendor is sometimes missing
 
-# Increase default MD raid5/raid6 strip cache + group_thread_cnt
-ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{MD_LEVEL}=="raid5", ATTR{md/stripe_cache_size}="8192", ATTR{md/group_thread_cnt}="4"
-ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{MD_LEVEL}=="raid6", ATTR{md/stripe_cache_size}="8192", ATTR{md/group_thread_cnt}="4"
+# Tune md stripe cache and thread count for RAID-5 / RAID-6 arrays
+<%
+  group_threads = [(node[:cpu_cores].to_i / 2.0).round, 4].max
+%>
+ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{MD_LEVEL}=="raid[56]", ATTR{md/stripe_cache_size}="8192", ATTR{md/group_thread_cnt}="<%= group_threads %>"
