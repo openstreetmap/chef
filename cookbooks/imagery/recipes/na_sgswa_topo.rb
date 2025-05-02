@@ -34,8 +34,8 @@ imagery_layer "na_sgswa_topo_50k" do
   default_layer true
   # background_colour "0 0 0"
   extension "jpeg_png"
-
   max_zoom 16
+  revision 2
 end
 
 imagery_layer "na_aerial" do
