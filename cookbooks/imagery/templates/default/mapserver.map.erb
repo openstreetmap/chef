@@ -34,16 +34,7 @@ MAP
     FORMATOPTION "PALETTE=/srv/imagery/common/os-openmap-local-palette.txt"
   END
 <% end -%>
-<% if @extension == "jpeg_png" -%>
-  OUTPUTFORMAT
-    NAME "jpeg_png"
-    MIMETYPE "image/vnd.jpeg-png"
-    DRIVER AGG/MIXED
-    IMAGEMODE RGBA
-    FORMATOPTION "TRANSPARENT_FORMAT=png"
-    FORMATOPTION "OPAQUE_FORMAT=jpeg"
-  END
-<% end -%>
+
   NAME "map-<%= @layer %>"
   STATUS ON
   SIZE 256 256
