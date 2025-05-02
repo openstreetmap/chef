@@ -50,7 +50,7 @@ action :create do
     mode "644"
     content YAML.dump(:name => new_resource.layer,
                       :title => new_resource.title || new_resource.layer,
-                      :url => "//#{new_resource.site}/layer/#{new_resource.layer}/{z}/{x}/{y}.#{new_resource.extension}".gsub(/\.(os_sv_png|os_sv_diff_png|os_om_local_png|jpeg_png)$/, ".png"),
+                      :url => "//#{new_resource.site}/layer/#{new_resource.layer}/{z}/{x}/{y}.#{new_resource.extension}".gsub(/\.(os_sv_png|os_sv_diff_png|os_om_local_png)$/, ".png"),
                       :attribution => new_resource.copyright,
                       :default => new_resource.default_layer,
                       :maxZoom => new_resource.max_zoom,
