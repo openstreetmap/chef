@@ -130,6 +130,8 @@ jobs:
           - os: debian-12
             suite: blogs
           - os: debian-12
+            suite: community
+          - os: debian-12
             suite: dev
           - os: debian-12
             suite: dns
@@ -148,7 +150,11 @@ jobs:
           - os: debian-12
             suite: matomo
           - os: debian-12
+            suite: nominatim
+          - os: debian-12
             suite: otrs
+          - os: debian-12
+            suite: overpass
           - os: debian-12
             suite: prometheus-server
           - os: debian-12
@@ -176,6 +182,8 @@ jobs:
             os: ubuntu-2204
           - suite: blogs
             os: ubuntu-2204
+          - suite: community
+            os: ubuntu-2204
           - suite: dev
             os: ubuntu-2204
           - suite: dns
@@ -194,9 +202,13 @@ jobs:
             os: ubuntu-2204
           - suite: matomo
             os: ubuntu-2204
+          - suite: nominatim
+            os: ubuntu-2204
           - suite: osqa
             os: ubuntu-2204
           - suite: otrs
+            os: ubuntu-2204
+          - suite: overpass
             os: ubuntu-2204
           - suite: serverinfo
             os: ubuntu-2204
