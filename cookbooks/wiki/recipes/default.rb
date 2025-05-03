@@ -154,6 +154,11 @@ mediawiki_extension "WikibaseCirrusSearch" do
   only_if { node[:wiki][:test_mode] }
 end
 
+mediawiki_extension "Translate" do
+  site site_name
+  only_if { node[:wiki][:test_mode] }
+end
+
 cookbook_file "/srv/#{site_name}/osm_logo_wiki.png" do
   owner node[:mediawiki][:user]
   group node[:mediawiki][:group]
