@@ -151,6 +151,8 @@ end
 
 mediawiki_extension "WikibaseCirrusSearch" do
   site site_name
+  template "mw-ext-WikibaseCirrusSearch.inc.php.erb"
+  template_cookbook "wiki"
   only_if { node[:wiki][:test_mode] }
 end
 
