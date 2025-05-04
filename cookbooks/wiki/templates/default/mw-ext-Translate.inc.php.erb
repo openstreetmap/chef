@@ -1,0 +1,40 @@
+<?php
+# DO NOT EDIT - This file is being maintained by Chef
+wfLoadExtension( 'Translate' );
+
+/**
+ * Allow all confirmed users to edit translations.
+ */
+$wgGroupPermissions['autoconfirmed']['translate'] = true;
+$wgGroupPermissions['autoconfirmed']['skipcaptcha'] = true; // Bug 34182: needed with ConfirmEdit
+
+/**
+ * Allow all confirmed users to review translations.
+ */
+$wgGroupPermissions['autoconfirmed']['translate-messagereview'] = true;
+
+/**
+ * Allow all translations administrators to manage translations.
+ */
+$wgGroupPermissions['translationadmin']['pagetranslation'] = true;
+$wgGroupPermissions['translationadmin']['translate-manage'] = true;
+
+/**
+ * Language code for message documentation. Suggested values are qqq or info.
+ * If set to false (default), message documentation feature is disabled.
+ */
+$wgTranslateDocumentationLanguageCode = 'qqq';
+
+/**
+ * Let Translate extension use ElasticSearch to store commonly-used translation messages to suggest to translators
+ */
+$wgTranslateTranslationServices['TTMServer'] = [
+        'type' => 'ttmserver',
+        'class' => 'ElasticSearchTTMServer',
+        'cutoff' => 0.75,
+        /*
+         * See http://elastica.io/getting-started/installation.html
+         * See https://github.com/ruflin/Elastica/blob/8.x/src/Client.php
+         */
+        'config' => [ 'servers' => [ 'host' => '127.0.0.1', 'port' => 9114 ] ]
+];

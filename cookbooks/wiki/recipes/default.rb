@@ -158,6 +158,8 @@ end
 
 mediawiki_extension "Translate" do
   site site_name
+  template "mw-ext-Translate.inc.php.erb"
+  template_cookbook "wiki"
   only_if { node[:wiki][:test_mode] }
 end
 
