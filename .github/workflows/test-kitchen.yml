@@ -210,6 +210,8 @@ jobs:
             os: ubuntu-2204
           - suite: overpass
             os: ubuntu-2204
+          - suite: prometheus-server
+            os: ubuntu-2204
           - suite: serverinfo
             os: ubuntu-2204
           - suite: subversion
