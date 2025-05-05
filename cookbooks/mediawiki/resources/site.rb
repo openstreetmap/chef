@@ -182,7 +182,7 @@ action :create do
 
   file "/etc/cron.daily/mediawiki-#{cron_name}-backup" do
     action :delete
-    only_if { !new_resource.backup_enabled }
+    not_if { new_resource.backup_enabled }
   end
 
   # MobileFrontend extension is required by MinervaNeue skin
