@@ -36,6 +36,11 @@ default_attributes(
         :effective_cache_size => "350GB"
       }
     }
+  },
+  :vectortile => {
+    :spirit => {
+      :version => "7fc3c62771d371f00a62249174d4d695d8324443"
+    }
   }
 )
 
