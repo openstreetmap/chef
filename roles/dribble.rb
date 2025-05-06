@@ -38,8 +38,9 @@ default_attributes(
     }
   },
   :vectortile => {
-    :spirit => {
-      :version => "7fc3c62771d371f00a62249174d4d695d8324443"
+    :replication => {
+      :enabled => false,
+      :tileupdate => false
     }
   }
 )
