@@ -2,6 +2,11 @@ name "idris"
 description "Master role applied to idris"
 
 default_attributes(
+  :apache => {
+    :event => {
+      :async_request_worker_factor => 10
+    }
+  },
   :networking => {
     :interfaces => {
       :internal => {
