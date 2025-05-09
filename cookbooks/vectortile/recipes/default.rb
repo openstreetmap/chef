@@ -211,7 +211,7 @@ end
 %w[addresses aerialways aeroways boundaries boundary_labels bridges buildings
    dam_lines dam_polygons ferries land pier_lines pier_polygons place_labels
    planet_osm_nodes planet_osm_rels planet_osm_ways pois public_transport railways
-   road_routes roads sites street_polygons streets_labels_points
+   road_routes roads sites street_polygons street_labels_points
    streets_polygons_labels water_area_labels water_areas water_lines water_lines_labels].each do |table|
   postgresql_table table do
     cluster node[:vectortile][:database][:cluster]
