@@ -2,6 +2,10 @@ upstream tilekiln {
     server 127.0.0.1:8000;
 }
 
+upstream demo {
+    server 127.0.0.1:8080;
+}
+
 server {
     listen 80 default_server;
     listen [::]:80 default_server;
@@ -41,6 +45,9 @@ server {
     }
     location /shortbread_v1/ {
         proxy_pass http://tilekiln;
+    }
+    location /demo/ {
+        proxy_pass http://demo;
     }
     root /srv/vector.openstreetmap.org/html;
 }
