@@ -302,7 +302,6 @@ end
 
 systemd_service "render-lowzoom" do
   description "Render low zoom tiles"
-  condition_path_exists_glob "!/run/render-lowzoom-*"
   user "tileupdate"
   after "postgresql.service"
   wants "postgresql.service"
