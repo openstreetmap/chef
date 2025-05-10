@@ -9,7 +9,7 @@ default_attributes(
           :address => "10.0.64.10"
         },
         :bond => {
-          :slaves => %w[enp25s0f0 enp25s0f1]
+          :slaves => %w[enp25s0f0np0 enp25s0f1np1]
         }
       },
       :henet => {
