@@ -293,6 +293,39 @@ else
   end
 end
 
+template "/usr/local/bin/render-lowzoom" do
+  source "render-lowzoom.erb"
+  owner "root"
+  group "root"
+  mode "755"
+  variables :tilekiln_bin => "#{tilekiln_directory}/bin/tilekiln", :source_database => "spirit", :storage_database => "tiles", :config_path => shortbread_config, :min_zoom => 0, :max_zoom => node[:vectortile][:rerender][:lowzoom][:maxzoom]
+end
+
+systemd_service "render-lowzoom" do
+  description "Render low zoom tiles"
+  user "tileupdate"
+  after "postgresql.service"
+  wants "postgresql.service"
+  restrict_address_families "AF_UNIX"
+  sandbox true
+  exec_start "/usr/local/bin/render-lowzoom"
+end
+
+systemd_timer "render-lowzoom" do
+  description "Render low zoom tiles"
+  on_calendar "23:00 #{node[:timezone]}"
+end
+
+if node[:vectortile][:rerender][:lowzoom][:enabled]
+  service "render-lowzoom.timer" do
+    action [:enable, :start]
+  end
+else
+  service "render-lowzoom.timer" do
+    action [:stop, :disable]
+  end
+end
+
 package %w[
   ruby-pg
   ruby-webrick
