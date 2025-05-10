@@ -20,6 +20,7 @@
 include_recipe "accounts"
 include_recipe "git"
 include_recipe "nginx"
+include_recipe "podman"
 include_recipe "postgresql"
 include_recipe "prometheus"
 include_recipe "python"
@@ -324,3 +325,9 @@ node.default[:prometheus][:exporters][10013] = {
   :name => "tilekiln",
   :address => "#{node[:prometheus][:address]}:10013",
 }
+
+podman_service "vectortile_demo" do
+  description "Container service for /demo pages"
+  image "ghcr.io/openstreetmap/vectortile-website:latest"
+  ports 8080 => 8080
+end
