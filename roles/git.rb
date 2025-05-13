@@ -12,7 +12,7 @@ default_attributes(
         :status => :user,
         :shell => "/usr/bin/git-shell"
       },
-      :yellowbkpk => {
+      :pnorman => {
         :status => :user,
         :shell => "/usr/bin/git-shell"
       },
@@ -20,9 +20,13 @@ default_attributes(
         :status => :user,
         :shell => "/usr/bin/git-shell"
       },
+      :yellowbkpk => {
+        :status => :user,
+        :shell => "/usr/bin/git-shell"
+      },
       :git => {
         :status => :role,
-        :members => [:tomh, :grant, :matt, :lonvia, :yellowbkpk, :stereo]
+        :members => [:tomh, :grant, :matt, :lonvia, :yellowbkpk, :stereo, :pnorman]
       }
     }
   },
