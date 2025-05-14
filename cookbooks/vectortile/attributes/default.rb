@@ -11,7 +11,7 @@ default[:vectortile][:rerender][:lowzoom][:enabled] = true
 default[:vectortile][:rerender][:lowzoom][:maxzoom] = 9
 
 default[:vectortile][:tilekiln][:version] = "0.7.1"
-default[:vectortile][:spirit][:version] = "7c68ecdd82606fd64dfe6e2ba7a1f1741afcc34c"
+default[:vectortile][:spirit][:version] = "033a4117ec3604e28824b3f3608f5d163ef1b450"
 default[:vectortile][:themepark][:version] = "beb454cc56e88533fb398ab293489c4e91f4d42b"
 
 default[:postgresql][:versions] |= [node[:vectortile][:database][:cluster].split("/").first]
