@@ -44,7 +44,7 @@
         CustomLog /var/log/apache2/<%= @name %>-access.log combined_extended
         ErrorLog /var/log/apache2/<%= @name %>-error.log
 
-        Alias /robots.txt /srv//srv/<%= node[:git][:host] %>/robots.txt
+        Alias /robots.txt /srv/<%= node[:git][:host] %>/robots.txt
 
         <FilesMatch "^robots\.txt$">
             # Make absolutely sure it comes out as a plain file
