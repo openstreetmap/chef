@@ -158,6 +158,11 @@ postgresql_database "tiles" do
   owner "tileupdate"
 end
 
+postgresql_extension "pgstattuple" do
+  cluster node[:vectortile][:database][:cluster]
+  database "tiles"
+end
+
 postgresql_database "spirit" do
   cluster node[:vectortile][:database][:cluster]
   owner "tileupdate"
