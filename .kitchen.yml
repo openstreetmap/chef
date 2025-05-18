@@ -62,6 +62,18 @@ platforms:
         - RUN /usr/bin/apt-get install -y eatmydata
         - RUN echo /usr/lib/$(uname -m)-linux-gnu/libeatmydata.so >>/etc/ld.so.preload
 
+# When using podman we have to manually start chef to workaround a volume issue
+lifecycle:
+  pre_create: |
+    if command -v podman >/dev/null 2>&1; then
+      podman create --name chef-latest --replace docker.io/chef/chef:latest sh
+      podman start chef-latest
+    fi
+  post_destroy: |
+    if command -v podman >/dev/null 2>&1; then
+      podman container rm -iv chef-latest
+    fi
+
 suites:
   - name: accounts
     run_list:
