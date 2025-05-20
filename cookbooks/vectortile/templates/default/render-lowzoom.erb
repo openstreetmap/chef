@@ -1,6 +1,11 @@
 #!/bin/sh
 set -eu
 
+# The source daily vaccum is best placed before the tilegen, as it has marginal speed benefits
+vacuumdb --analyze \
+-j "<%= node[:vectortile][:replication][:threads] %>" \
+-d "<%= @source_database %>"
+
 <%= @tilekiln_bin %> generate zooms \
 --source-dbname "<%= @source_database %>" \
 --storage-dbname "<%= @storage_database %>" \
@@ -8,3 +13,8 @@ set -eu
 --config <%= @config_path %> \
 --min-zoom <%= @min_zoom %> \
 --max-zoom <%= @max_zoom %>
+
+# the daily render can add bloat, so the vacuum is done after it on the tile DB
+vacuumdb --analyze \
+-j "<%= node[:vectortile][:replication][:threads] %>" \
+-d "<%= @storage_database %>"
