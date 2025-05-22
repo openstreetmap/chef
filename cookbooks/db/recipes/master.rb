@@ -182,6 +182,7 @@ PROMETHEUS_PERMISSIONS = {
   relations
   reports
   schema_migrations
+  social_links
   user_blocks
   user_mutes
   user_preferences
@@ -232,6 +233,7 @@ end
   oauth_openid_requests_id_seq
   redactions_id_seq
   reports_id_seq
+  social_links_id_seq
   user_blocks_id_seq
   user_mutes_id_seq
   user_roles_id_seq
