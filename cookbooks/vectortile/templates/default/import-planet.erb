@@ -8,6 +8,7 @@
 set -e
 
 export LUA_PATH='/srv/vector.openstreetmap.org/osm2pgsql-themepark/lua/?.lua;;'
+export PGAPPNAME='import-planet'
 
 # Import the osm2pgsql file specified as an argument, using the locations for spirit
 osm2pgsql \

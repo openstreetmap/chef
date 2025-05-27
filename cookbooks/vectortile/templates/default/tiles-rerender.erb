@@ -1,5 +1,6 @@
 #!/bin/sh
 set -eu
+export PGAPPNAME='tiles-rerender'
 
 cd "<%= @expiry_dir %>"
 # Only expire z10+ tiles

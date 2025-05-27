@@ -3,6 +3,8 @@
 # Usage
 # sudo -u tileupdate tilekiln-storage-init
 
+export PGAPPNAME='tilekiln-storage-init'
+
 <%= @tilekiln_bin %> storage init \
   --storage-dbname <%= @storage_database %> \
   --config <%= @config_path %>

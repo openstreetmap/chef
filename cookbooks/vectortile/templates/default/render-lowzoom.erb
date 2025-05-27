@@ -1,5 +1,6 @@
 #!/bin/sh
 set -eu
+export PGAPPNAME='render-lowzoom'
 
 # The source daily vaccum is best placed before the tilegen, as it has marginal speed benefits
 vacuumdb --analyze \
