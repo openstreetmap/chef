@@ -352,6 +352,7 @@ systemd_service "tilekiln-prometheus" do
   after "postgresql.service"
   wants "postgresql.service"
   sandbox :enable_network => true
+  environment "PGAPPNAME" => "tilekiln-prometheus"
   restrict_address_families "AF_UNIX"
   exec_start "#{tilekiln_directory}/bin/tilekiln prometheus --bind-host #{node[:prometheus][:address]} --storage-dbname tiles"
 end
