@@ -11,7 +11,7 @@ function update_tiles
   render_old \
     --timestamp=$(stat -c %Y "/srv/tile.openstreetmap.org/styles/<%= @style %>/project.xml") \
     --tile-dir=/srv/tile.openstreetmap.org/tiles \
-    --socket=/var/run/renderd/renderd.sock \
+    --socket=/run/renderd/renderd.sock \
     --num-threads=<%= @threads %> \
     --map="<%= @style %>" \
     --max-load=<%= node.cpu_cores - 1 %> \

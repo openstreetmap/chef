@@ -1,10 +1,10 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
 [renderd]
-socketname=/var/run/renderd/renderd.sock
+socketname=/run/renderd/renderd.sock
 num_threads=<%= node.cpu_cores - 1 %>
 tile_dir=/srv/tile.openstreetmap.org/tiles
-stats_file=/var/run/renderd/renderd.stats
+stats_file=/run/renderd/renderd.stats
 
 [mapnik]
 plugins_dir=/usr/lib/mapnik/<%= node[:tile][:mapnik] %>/input
