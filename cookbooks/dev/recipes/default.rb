@@ -146,6 +146,7 @@ package %w[
   python3-venv
   r-base
   redis
+  siege
   tmux
   unrar
   unzip
