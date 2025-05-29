@@ -117,8 +117,8 @@ hooks:
           - sudo -H -E -u discourse cp /shared/feeds/update-feeds.atom public/update-feeds.atom
   after_ssl:
     - replace:
-        filename: "/etc/nginx/conf.d/discourse.conf"
-        from: /add_header.+/
+        filename: "/etc/nginx/conf.d/outlets/server/20-https.conf"
+        from: /add_header Strict-Transport-Security.+/
         to: |
           add_header Strict-Transport-Security 'max-age=63072000' always;
           ssl_stapling on;
