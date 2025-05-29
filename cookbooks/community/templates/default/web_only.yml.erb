@@ -116,11 +116,9 @@ hooks:
         cmd:
           - sudo -H -E -u discourse cp /shared/feeds/update-feeds.atom public/update-feeds.atom
   after_ssl:
-    - replace:
-        filename: "/etc/nginx/conf.d/outlets/server/20-https.conf"
-        from: /add_header Strict-Transport-Security.+/
-        to: |
-          add_header Strict-Transport-Security 'max-age=63072000' always;
+    - file:
+        path: "/etc/nginx/conf.d/outlets/server/25-https-osm-settings.conf"
+        contents: |
           ssl_stapling on;
           resolver <%= @resolvers.join(" ") %>;
           resolver_timeout 5s;
