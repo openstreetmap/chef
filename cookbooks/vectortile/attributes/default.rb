@@ -17,6 +17,8 @@ default[:vectortile][:themepark][:version] = "beb454cc56e88533fb398ab293489c4e91
 default[:postgresql][:versions] |= [node[:vectortile][:database][:cluster].split("/").first]
 default[:postgresql][:monitor_database] = "tiles"
 # As an absolute worst case, the server might have the serving, update, and a manual generation process going on.
-default[:postgresql][:settings][:defaults][:max_connections] = (node.cpu_cores * 6 + 20).to_s
+# Each of these connects to two databases, then we add more connections so 20% are unused and we're
+# not tripping alarms.
+default[:postgresql][:settings][:defaults][:max_connections] = (node.cpu_cores * 8 + 20).to_s
 default[:accounts][:users][:tileupdate][:status] = :role
 default[:accounts][:users][:tilekiln][:status] = :role
