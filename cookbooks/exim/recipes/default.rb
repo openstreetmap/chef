@@ -47,6 +47,10 @@ end
 if node[:exim][:certificate_names]
   include_recipe "apache"
 
+  apache_site "default" do
+    action [:disable]
+  end
+
   apache_site node[:exim][:certificate_names].first do
     template "apache.erb"
     variables :aliases => node[:exim][:certificate_names].drop(1)
