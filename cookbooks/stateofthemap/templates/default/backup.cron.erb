@@ -2,26 +2,27 @@
 
 # DO NOT EDIT - This file is being maintained by Chef
 
+export ZSTD_CLEVEL=11
+export ZSTD_NBTHREADS=0
+
 T=$(mktemp -d -t -p /var/tmp sotm.XXXXXXXXXX)
 D=$(date +%Y-%m-%d)
-B=sotm-$D.tar.gz
+B="sotm-$D.tar.zst"
 
-mkdir $T/sotm-$D
+mkdir "$T/sotm-$D"
 
 <% %w(2010 2011 2012).each do |year| -%>
-echo '[mysqldump]' > $T/mysqldump.opts
-echo 'user=sotm<%= year %>' >> $T/mysqldump.opts
-echo 'password=<%= @passwords["sotm#{year}"] %>' >> $T/mysqldump.opts
-mysqldump --defaults-file=$T/mysqldump.opts --opt --no-tablespaces sotm<%= year %> > $T/sotm-$D/sotm<%= year %>.sql
+echo '[mysqldump]' > "$T/mysqldump.opts"
+echo 'user=sotm<%= year %>' >> "$T/mysqldump.opts"
+echo 'password=<%= @passwords["sotm#{year}"] %>' >> "$T/mysqldump.opts"
+mysqldump --defaults-file="$T/mysqldump.opts" --opt --no-tablespaces "sotm<%= year %>" > "$T/sotm-$D/sotm<%= year %>.sql"
 <% end -%>
 
-ln -s /srv/2010.stateofthemap.org $T/sotm-$D/www2010
-ln -s /srv/2011.stateofthemap.org $T/sotm-$D/www2011
-ln -s /srv/2012.stateofthemap.org $T/sotm-$D/www2012
+ln -s /srv/2010.stateofthemap.org "$T/sotm-$D/www2010"
+ln -s /srv/2011.stateofthemap.org "$T/sotm-$D/www2011"
+ln -s /srv/2012.stateofthemap.org "$T/sotm-$D/www2012"
 
-export RSYNC_RSH="ssh -ax"
+nice tar --create --dereference --directory="$T" "sotm-$D" | nice zstd --rsyncable -o "$T/$B"
+nice rsync --preallocate --fuzzy "$T/$B" backup.openstreetmap.org::backup
 
-nice tar --create --dereference --directory=$T sotm-$D | nice gzip --rsyncable -9 > $T/$B
-nice rsync --preallocate --fuzzy $T/$B backup.openstreetmap.org::backup
-
-rm -rf $T
+rm -rf "$T"

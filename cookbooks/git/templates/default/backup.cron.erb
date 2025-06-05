@@ -2,15 +2,16 @@
 
 # DO NOT EDIT - This file is being maintained by Chef
 
+export ZSTD_CLEVEL=11
+export ZSTD_NBTHREADS=0
+
 T=$(mktemp -d -t -p /var/tmp git.XXXXXXXXXX)
 D=$(date +%Y-%m-%d)
-B=git-$D.tar.gz
+B="git-$D.tar.zst"
 
-ln -s /var/lib/git $T/git-$D
+ln -s /var/lib/git "$T/git-$D"
 
-export RSYNC_RSH="ssh -ax"
+nice tar --create --dereference --directory="$T" "git-$D" | nice zstd --rsyncable -o "$T/$B"
+nice rsync --preallocate --fuzzy "$T/$B" backup.openstreetmap.org::backup
 
-nice tar --create --dereference --directory=$T git-$D | nice gzip --rsyncable -9 > $T/$B
-nice rsync --preallocate --fuzzy $T/$B backup.openstreetmap.org::backup
-
-rm -rf $T
+rm -rf "$T"

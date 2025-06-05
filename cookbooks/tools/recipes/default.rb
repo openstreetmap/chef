@@ -32,6 +32,7 @@ package %w[
   mtr-tiny
   numactl
   pciutils
+  rsync
   rsyslog
   screen
   smartmontools
@@ -42,6 +43,7 @@ package %w[
   usbutils
   vim
   xfsprogs
+  zstd
 ]
 
 service "rsyslog" do
