@@ -1,15 +1,27 @@
-#!/bin/bash
-T=`mktemp -d -t -p /var/tmp mediawiki-<%= @name %>.XXXXXXXXXX`
-D=`date +%Y-%m-%d`
-B=wiki-<%= @name %>-$D.tar.gz
+#!/bin/sh
 
-mkdir $T/wiki-<%= @name %>-$D
-echo '[mysqldump]' > $T/mysqldump.opts
-echo 'user=<%= @database_params[:username] %>' >> $T/mysqldump.opts
-echo 'password=<%= @database_params[:password] %>' >> $T/mysqldump.opts
-mysqldump --defaults-file=$T/mysqldump.opts --opt --skip-lock-tables --single-transaction --no-tablespaces "<%= @database_params[:name] %>" | lz4 -9 > $T/wiki-<%= @name %>-$D/wiki.sql.lz4
-ln -s <%= @directory %>  $T/wiki-<%= @name %>-$D/www
-nice tar --create --dereference --directory=$T --warning=no-file-changed --warning=no-file-removed --exclude=wiki-<%= @name %>-$D/www/w/images/thumb --exclude=wiki-<%= @name %>-$D/www/w/.git --exclude=wiki-<%= @name %>-$D/www/w/extensions/*/.git --exclude=wiki-<%= @name %>-$D/www/dump wiki-<%= @name %>-$D | nice gzip --rsyncable -9 > $T/$B
-nice rsync --preallocate --fuzzy $T/$B backup.openstreetmap.org::backup
+# DO NOT EDIT - This file is being maintained by Chef
 
-rm -rf $T
+export ZSTD_CLEVEL=11
+export ZSTD_NBTHREADS=0
+
+T=$(mktemp -d -t -p /var/tmp "mediawiki-<%= @name %>.XXXXXXXXXX")
+D=$(date +%Y-%m-%d)
+B="wiki-<%= @name %>-$D.tar.zst"
+
+mkdir "$T/wiki-<%= @name %>-$D"
+echo '[mysqldump]' > "$T/mysqldump.opts"
+echo 'user=<%= @database_params[:username] %>' >> "$T/mysqldump.opts"
+echo 'password=<%= @database_params[:password] %>' >> "$T/mysqldump.opts"
+mysqldump --defaults-file="$T/mysqldump.opts" --opt --skip-lock-tables --single-transaction --no-tablespaces "<%= @database_params[:name] %>" | zstd --rsyncable -o "$T/wiki-<%= @name %>-$D/wiki.sql.zst"
+ln -s "<%= @directory %>" "$T/wiki-<%= @name %>-$D/www"
+
+nice tar --create --dereference --directory="$T" --warning=no-file-changed --warning=no-file-removed \
+  --exclude="wiki-<%= @name %>-$D/www/w/images/thumb" \
+  --exclude="wiki-<%= @name %>-$D/www/w/.git" \
+  --exclude="wiki-<%= @name %>-$D/www/w/extensions/*/.git" \
+  --exclude="wiki-<%= @name %>-$D/www/dump" \
+  "wiki-<%= @name %>-$D" | nice zstd --rsyncable -o "$T/$B"
+nice rsync --preallocate --fuzzy "$T/$B" backup.openstreetmap.org::backup
+
+rm -rf "$T"

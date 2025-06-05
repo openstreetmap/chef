@@ -2,19 +2,20 @@
 
 # DO NOT EDIT - This file is being maintained by Chef
 
+export ZSTD_CLEVEL=11
+export ZSTD_NBTHREADS=0
+
 T=$(mktemp -d -t -p /var/tmp osqa.XXXXXXXXXX)
 D=$(date +%Y-%m-%d)
-B=<%= @name %>-$D.tar.gz
+B="<%= @name %>-$D.tar.zst"
 
-mkdir $T/<%= @name %>-$D
-chown <%= @user %> $T
-chown <%= @user %> $T/osqa-$D
-sudo -u <%= @user %> pg_dump --format=custom --file=$T/<%= @name %>-$D/osqa.dmp <%= @database %>
-ln -s <%= @directory %>/upfiles $T/<%= @name %>-$D/upfiles
+mkdir "$T/<%= @name %>-$D"
+chown "<%= @user %>" "$T"
+chown "<%= @user %>" "$T/osqa-$D"
+sudo -u "<%= @user %>" pg_dump --format=custom --file="$T/<%= @name %>-$D/osqa.dmp" "<%= @database %>"
+ln -s "<%= @directory %>/upfiles" "$T/<%= @name %>-$D/upfiles"
 
-export RSYNC_RSH="ssh -ax"
+nice tar --create --dereference --directory="$T" "<%= @name %>-$D" | nice zstd --rsyncable -o "$T/$B"
+nice rsync --preallocate --fuzzy "$T/$B" backup.openstreetmap.org::backup
 
-nice tar --create --dereference --directory=$T <%= @name %>-$D | nice gzip --rsyncable -9 > $T/$B
-nice rsync --preallocate --fuzzy $T/$B backup.openstreetmap.org::backup
-
-rm -rf $T
+rm -rf "$T"

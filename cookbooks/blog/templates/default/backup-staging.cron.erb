@@ -2,20 +2,21 @@
 
 # DO NOT EDIT - This file is being maintained by Chef
 
+export ZSTD_CLEVEL=11
+export ZSTD_NBTHREADS=0
+
 T=$(mktemp -d -t -p /var/tmp osm-blog-staging.XXXXXXXXXX)
 D=$(date +%Y-%m-%d)
-B=osm-blog-staging-$D.tar.gz
+B="osm-blog-staging-$D.tar.zst"
 
-mkdir $T/osm-blog-staging-$D
-echo '[mysqldump]' > $T/mysqldump.opts
-echo 'user=osm-blog-staging-user' >> $T/mysqldump.opts
-echo 'password=<%= @passwords["osm-blog-staging-user"] %>' >> $T/mysqldump.opts
-mysqldump --defaults-file=$T/mysqldump.opts --opt --no-tablespaces osm-blog-staging > $T/osm-blog-staging-$D/osm-blog-staging.sql
-ln -s /srv/staging.blog.openstreetmap.org $T/osm-blog-staging-$D/www
+mkdir "$T/osm-blog-staging-$D"
+echo '[mysqldump]' > "$T/mysqldump.opts"
+echo 'user=osm-blog-staging-user' >> "$T/mysqldump.opts"
+echo 'password=<%= @passwords["osm-blog-staging-user"] %>' >> "$T/mysqldump.opts"
+mysqldump --defaults-file="$T/mysqldump.opts" --opt --no-tablespaces osm-blog-staging > "$T/osm-blog-staging-$D/osm-blog-staging.sql"
+ln -s /srv/staging.blog.openstreetmap.org "$T/osm-blog-staging-$D/www"
 
-export RSYNC_RSH="ssh -ax"
+nice tar --create --dereference --directory="$T" --warning=no-file-changed "osm-blog-staging-$D" | nice zstd --rsyncable -o "$T/$B"
+nice rsync --preallocate --fuzzy "$T/$B" backup.openstreetmap.org::backup
 
-nice tar --create --dereference --directory=$T --warning=no-file-changed osm-blog-staging-$D | nice gzip --rsyncable -9 > $T/$B
-nice rsync --preallocate --fuzzy $T/$B backup.openstreetmap.org::backup
-
-rm -rf $T
+rm -rf "$T"

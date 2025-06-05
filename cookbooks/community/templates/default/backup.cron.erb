@@ -2,19 +2,20 @@
 
 # DO NOT EDIT - This file is being maintained by Chef
 
+export ZSTD_CLEVEL=11
+export ZSTD_NBTHREADS=0
+
 T=$(mktemp -d -t -p /var/tmp community.XXXXXXXXXX)
 D=$(date +%Y-%m-%d)
-B=community-$D.tar.gz
+B="community-$D.tar.zst"
 
-mkdir $T/community-$D
-ln -s /srv/community.openstreetmap.org/docker/containers $T/community-$D/containers
-ln -s /srv/community.openstreetmap.org/shared/web-only $T/community-$D/shared-web-only
-ln -s /srv/community.openstreetmap.org/shared/data/redis_data $T/community-$D/shared-data-redis_data
-ln -s /srv/community.openstreetmap.org/shared/data/postgres_backup $T/community-$D/shared-data-postgres_backup
+mkdir "$T/community-$D"
+ln -s /srv/community.openstreetmap.org/docker/containers "$T/community-$D/containers"
+ln -s /srv/community.openstreetmap.org/shared/web-only "$T/community-$D/shared-web-only"
+ln -s /srv/community.openstreetmap.org/shared/data/redis_data "$T/community-$D/shared-data-redis_data"
+ln -s /srv/community.openstreetmap.org/shared/data/postgres_backup "$T/community-$D/shared-data-postgres_backup"
 
-export RSYNC_RSH="ssh -ax"
+nice tar --create --numeric-owner --dereference --directory="$T" --warning=no-file-changed "community-$D" | nice zstd --rsyncable -o "$T/$B"
+nice rsync --preallocate --fuzzy "$T/$B" backup.openstreetmap.org::backup
 
-nice tar --create --numeric-owner --dereference --directory=$T --warning=no-file-changed community-$D | nice gzip --rsyncable -9 > $T/$B
-nice rsync --preallocate --fuzzy $T/$B backup.openstreetmap.org::backup
-
-rm -rf $T
+rm -rf "$T"

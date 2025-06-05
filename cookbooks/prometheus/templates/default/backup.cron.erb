@@ -2,18 +2,19 @@
 
 # DO NOT EDIT - This file is being maintained by Chef
 
+export ZSTD_CLEVEL=11
+export ZSTD_NBTHREADS=0
+
 T=$(mktemp -d -t -p /var/tmp prometheus.XXXXXXXXXX)
 D=$(date +%Y-%m-%d)
-B=prometheus-$D.tar.gz
+B="prometheus-$D.tar.zst"
 
-mkdir $T/prometheus-$D
+mkdir "$T/prometheus-$D"
 
-ln -s /var/lib/prometheus/alertmanager $T/prometheus-$D/alertmanager
-ln -s /var/lib/grafana $T/prometheus-$D/grafana
+ln -s /var/lib/prometheus/alertmanager "$T/prometheus-$D/alertmanager"
+ln -s /var/lib/grafana "$T/prometheus-$D/grafana"
 
-export RSYNC_RSH="ssh -ax"
+nice tar --create --dereference --directory="$T" "prometheus-$D" | nice zstd --rsyncable -o "$T/$B"
+nice rsync --preallocate --fuzzy "$T/$B" backup.openstreetmap.org::backup
 
-nice tar --create --dereference --directory=$T prometheus-$D | nice gzip --rsyncable -9 > $T/$B
-nice rsync --preallocate --fuzzy $T/$B backup.openstreetmap.org::backup
-
-rm -rf $T
+rm -rf "$T"

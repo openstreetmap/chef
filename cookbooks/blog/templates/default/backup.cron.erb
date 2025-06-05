@@ -2,20 +2,21 @@
 
 # DO NOT EDIT - This file is being maintained by Chef
 
+export ZSTD_CLEVEL=11
+export ZSTD_NBTHREADS=0
+
 T=$(mktemp -d -t -p /var/tmp osm-blog.XXXXXXXXXX)
 D=$(date +%Y-%m-%d)
-B=osm-blog-$D.tar.gz
+B="osm-blog-$D.tar.zst"
 
-mkdir $T/osm-blog-$D
-echo '[mysqldump]' > $T/mysqldump.opts
-echo 'user=osm-blog-user' >> $T/mysqldump.opts
-echo 'password=<%= @passwords["osm-blog-user"] %>' >> $T/mysqldump.opts
-mysqldump --defaults-file=$T/mysqldump.opts --opt --no-tablespaces osm-blog > $T/osm-blog-$D/osm-blog.sql
-ln -s /srv/blog.openstreetmap.org $T/osm-blog-$D/www
+mkdir "$T/osm-blog-$D"
+echo '[mysqldump]' > "$T/mysqldump.opts"
+echo 'user=osm-blog-user' >> "$T/mysqldump.opts"
+echo 'password=<%= @passwords["osm-blog-user"] %>' >> "$T/mysqldump.opts"
+mysqldump --defaults-file="$T/mysqldump.opts" --opt --no-tablespaces osm-blog > "$T/osm-blog-$D/osm-blog.sql"
+ln -s /srv/blog.openstreetmap.org "$T/osm-blog-$D/www"
 
-export RSYNC_RSH="ssh -ax"
+nice tar --create --dereference --directory="$T" --warning=no-file-changed "osm-blog-$D" | nice zstd --rsyncable -o "$T/$B"
+nice rsync --preallocate --fuzzy "$T/$B" backup.openstreetmap.org::backup
 
-nice tar --create --dereference --directory=$T --warning=no-file-changed osm-blog-$D | nice gzip --rsyncable -9 > $T/$B
-nice rsync --preallocate --fuzzy $T/$B backup.openstreetmap.org::backup
-
-rm -rf $T
+rm -rf "$T"
