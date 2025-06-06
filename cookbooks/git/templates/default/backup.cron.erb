@@ -11,7 +11,7 @@ B="git-$D.tar.zst"
 
 ln -s /var/lib/git "$T/git-$D"
 
-nice tar --create --dereference --directory="$T" "git-$D" | nice zstd --rsyncable -o "$T/$B"
+nice tar --create --dereference --directory="$T" "git-$D" | nice zstd --quiet --rsyncable -o "$T/$B"
 nice rsync --preallocate --fuzzy "$T/$B" backup.openstreetmap.org::backup
 
 rm -rf "$T"

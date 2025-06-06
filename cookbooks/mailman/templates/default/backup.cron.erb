@@ -12,7 +12,7 @@ B="lists-$D.tar.zst"
 mkdir "$T/lists-$D"
 ln -s /var/lib/mailman "$T/lists-$D/mailman"
 
-nice tar --create --dereference --warning=no-file-changed --warning=no-file-removed --directory="$T" "lists-$D" | nice zstd --rsyncable -o "$T/$B"
+nice tar --create --dereference --warning=no-file-changed --warning=no-file-removed --directory="$T" "lists-$D" | nice zstd --quiet --rsyncable -o "$T/$B"
 nice rsync --preallocate --fuzzy "$T/$B" backup.openstreetmap.org::backup
 
 rm -rf "$T"

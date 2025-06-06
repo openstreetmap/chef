@@ -16,7 +16,7 @@ echo 'password=<%= @passwords["database"] %>' >> "$T/mysqldump.opts"
 mysqldump --defaults-file="$T/mysqldump.opts" --opt --skip-lock-tables --no-tablespaces civicrm > "$T/osmf-crm-$D/civicrm.sql"
 ln -s /srv/supporting.openstreetmap.org "$T/osmf-crm-$D/www"
 
-nice tar --create --dereference --directory="$T" "osmf-crm-$D" | nice zstd --rsyncable -o "$T/$B"
+nice tar --create --dereference --directory="$T" "osmf-crm-$D" | nice zstd --quiet --rsyncable -o "$T/$B"
 nice rsync --preallocate --fuzzy "$T/$B" backup.openstreetmap.org::backup
 
 rm -rf "$T"

@@ -15,7 +15,7 @@ chown "<%= @user %>" "$T/osqa-$D"
 sudo -u "<%= @user %>" pg_dump --format=custom --file="$T/<%= @name %>-$D/osqa.dmp" "<%= @database %>"
 ln -s "<%= @directory %>/upfiles" "$T/<%= @name %>-$D/upfiles"
 
-nice tar --create --dereference --directory="$T" "<%= @name %>-$D" | nice zstd --rsyncable -o "$T/$B"
+nice tar --create --dereference --directory="$T" "<%= @name %>-$D" | nice zstd --quiet --rsyncable -o "$T/$B"
 nice rsync --preallocate --fuzzy "$T/$B" backup.openstreetmap.org::backup
 
 rm -rf "$T"

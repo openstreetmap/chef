@@ -22,7 +22,7 @@ ln -s /srv/2010.stateofthemap.org "$T/sotm-$D/www2010"
 ln -s /srv/2011.stateofthemap.org "$T/sotm-$D/www2011"
 ln -s /srv/2012.stateofthemap.org "$T/sotm-$D/www2012"
 
-nice tar --create --dereference --directory="$T" "sotm-$D" | nice zstd --rsyncable -o "$T/$B"
+nice tar --create --dereference --directory="$T" "sotm-$D" | nice zstd --quiet --rsyncable -o "$T/$B"
 nice rsync --preallocate --fuzzy "$T/$B" backup.openstreetmap.org::backup
 
 rm -rf "$T"
