@@ -29,9 +29,6 @@ default_attributes(
   },
   :exim => {
     :trusted_users => %w[www-data wiki],
-    :aliases => {
-      :root => "grant"
-    },
     :rewrites => [
       {
         :pattern => "www-data@openstreetmap.org",
