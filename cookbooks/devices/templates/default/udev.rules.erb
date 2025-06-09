@@ -32,7 +32,7 @@ ACTION=="add", SUBSYSTEM=="block", ENV{ID_BUS}=="<%= device[:bus] %>", ENV{ID_SE
 <% end -%>
 <% end -%>
 
-# Tune read-ahead for ancient laptop disks in shenron
+# Tune read ahead for ancient laptop disks in shenron
 ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", KERNEL=="sd?", ENV{ID_MODEL}=="HGST_HTE721010A9E630", ATTR{queue/read_ahead_kb}="512"
 ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", KERNEL=="sd?", ENV{ID_MODEL}=="HGST_HTS725050A7E630", ATTR{queue/read_ahead_kb}="512"
 
