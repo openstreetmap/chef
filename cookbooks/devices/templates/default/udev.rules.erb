@@ -32,6 +32,10 @@ ACTION=="add", SUBSYSTEM=="block", ENV{ID_BUS}=="<%= device[:bus] %>", ENV{ID_SE
 <% end -%>
 <% end -%>
 
+# Tune read-ahead for ancient laptop disks in shenron
+ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", KERNEL=="sd?", ENV{ID_MODEL}=="HGST_HTE721010A9E630", ATTR{queue/read_ahead_kb}="512"
+ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", KERNEL=="sd?", ENV{ID_MODEL}=="HGST_HTS725050A7E630", ATTR{queue/read_ahead_kb}="512"
+
 # Ethernet controller: Realtek Semiconductor Co., Ltd. RTL8111/8168/8411 PCI Express Gigabit Ethernet Controller
 SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x10ec", ATTRS{device}=="0x8168", RUN+="/sbin/ethtool -K $name tso off gso off"
 
