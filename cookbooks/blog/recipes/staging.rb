@@ -27,8 +27,10 @@ ssl_certificate "staging.blog.openstreetmap.org" do
           ]
 end
 
-# passwords = data_bag_item("blog-staging", "passwords")
-# wp2fa_encrypt_keys = data_bag_item("blog-staging", "wp2fa_encrypt_keys")
+passwords = data_bag_item("blog-staging", "passwords")
+wp2fa_encrypt_keys = data_bag_item("blog-staging", "wp2fa_encrypt_keys")
+
+# The staging blog is under manual development by Mikel. Do not manage with Chef.
 
 # directory "/srv/staging.blog.openstreetmap.org" do
 #   owner "wordpress"
@@ -132,10 +134,10 @@ end
 #   group "wordpress"
 # end
 
-# template "/etc/cron.daily/blog-staging-backup" do
-#   source "backup-staging.cron.erb"
-#   owner "root"
-#   group "root"
-#   mode "750"
-#   variables :passwords => passwords
-# end
+template "/etc/cron.daily/blog-staging-backup" do
+  source "backup-staging.cron.erb"
+  owner "root"
+  group "root"
+  mode "750"
+  variables :passwords => passwords
+end
