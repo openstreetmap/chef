@@ -4,6 +4,11 @@ description "Master role applied to idris"
 default_attributes(
   :apache => {
     :event => {
+      :server_limit => 30,
+      :max_request_workers => 1000,
+      :threads_per_child => 50,
+      :min_spare_threads => 75,
+      :max_spare_threads => 525,
       :async_request_worker_factor => 10
     }
   },
