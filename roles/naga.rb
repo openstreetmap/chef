@@ -48,5 +48,6 @@ run_list(
   "recipe[hot]",
   "recipe[ideditor]",
   "recipe[dmca]",
-  "role[otrs]"
+  "role[otrs]",
+  "role[osqa]"
 )

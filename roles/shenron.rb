@@ -47,6 +47,5 @@ default_attributes(
 
 run_list(
   "role[bytemark]",
-  "role[lists]",
-  "role[osqa]"
+  "role[lists]"
 )
