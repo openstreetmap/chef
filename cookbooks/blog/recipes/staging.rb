@@ -28,7 +28,7 @@ ssl_certificate "staging.blog.openstreetmap.org" do
 end
 
 passwords = data_bag_item("blog-staging", "passwords")
-wp2fa_encrypt_keys = data_bag_item("blog-staging", "wp2fa_encrypt_keys")
+# wp2fa_encrypt_keys = data_bag_item("blog-staging", "wp2fa_encrypt_keys")
 
 # The staging blog is under manual development by Mikel. Do not manage with Chef.
 
