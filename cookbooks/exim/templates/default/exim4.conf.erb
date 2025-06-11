@@ -638,7 +638,7 @@ mailman:
   local_part_suffix = -bounces : -bounces+* : \
                       -confirm+* : -join : -leave : \
                       -subscribe : -unsubscribe : \
-                      -owner : -request : -admin 
+                      -owner : -request : -admin
   local_part_suffix_optional
   transport = mailman
 
@@ -737,6 +737,7 @@ begin transports
 remote_smtp:
   driver = smtp
   multi_domain = false
+  message_linelength_limit = 1G
   tls_require_ciphers = <%= node[:ssl][:gnutls_ciphers] %>:%LATEST_RECORD_VERSION
 
 
@@ -750,6 +751,7 @@ signed_smtp:
   dkim_private_key = /etc/exim4/dkim-keys/${dkim_domain}
   dkim_identity = ${lc:${address:$h_from:}}
   dkim_timestamps = 1209600
+  message_linelength_limit = 1G
   multi_domain = false
   max_rcpt = 20
   hosts_try_dane =
