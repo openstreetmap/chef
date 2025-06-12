@@ -737,7 +737,9 @@ begin transports
 remote_smtp:
   driver = smtp
   multi_domain = false
+<% if node.platform?("debian") || (node.platform?("ubuntu") && node[:lsb][:release].to_f >= 22.04) -%>
   message_linelength_limit = 1G
+<% end -%>
   tls_require_ciphers = <%= node[:ssl][:gnutls_ciphers] %>:%LATEST_RECORD_VERSION
 
 
@@ -751,7 +753,9 @@ signed_smtp:
   dkim_private_key = /etc/exim4/dkim-keys/${dkim_domain}
   dkim_identity = ${lc:${address:$h_from:}}
   dkim_timestamps = 1209600
+<% if node.platform?("debian") || (node.platform?("ubuntu") && node[:lsb][:release].to_f >= 22.04) -%>
   message_linelength_limit = 1G
+<% end -%>
   multi_domain = false
   max_rcpt = 20
   hosts_try_dane =
