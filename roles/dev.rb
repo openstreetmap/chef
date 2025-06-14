@@ -128,17 +128,9 @@ default_attributes(
         :repository => "https://github.com/ukasiu/openstreetmap-website.git",
         :revision => "comments_list"
       },
-      :locale => {
-        :repository => "https://github.com/tomhughes/openstreetmap-website.git",
-        :revision => "locale"
-      },
       :microcosms => {
         :repository => "https://github.com/openbrian/osm-microcosms.git",
         :revision => "microcosms"
-      },
-      :signup => {
-        :repository => "https://github.com/milan-cvetkovic/openstreetmap-website.git",
-        :revision => "issue_4128_login_signup"
       }
     }
   },
