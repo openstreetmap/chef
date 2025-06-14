@@ -10,7 +10,7 @@ default[:vectortile][:replication][:threads] = node.cpu_cores
 default[:vectortile][:rerender][:lowzoom][:enabled] = true
 default[:vectortile][:rerender][:lowzoom][:maxzoom] = 9
 
-default[:vectortile][:tilekiln][:version] = "0.7.1"
+default[:vectortile][:tilekiln][:version] = "0.8.0"
 default[:vectortile][:spirit][:version] = "033a4117ec3604e28824b3f3608f5d163ef1b450"
 default[:vectortile][:themepark][:version] = "beb454cc56e88533fb398ab293489c4e91f4d42b"
 
