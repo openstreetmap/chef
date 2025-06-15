@@ -332,6 +332,39 @@ else
   end
 end
 
+template "/usr/local/bin/render-ocean" do
+  source "render-ocean.erb"
+  owner "root"
+  group "root"
+  mode "755"
+  variables :tilekiln_bin => "#{tilekiln_directory}/bin/tilekiln", :source_database => "spirit", :storage_database => "tiles", :config_path => shortbread_config, :min_zoom => node[:vectortile][:rerender][:ocean][:minzoom], :max_zoom => 14
+end
+
+systemd_service "render-ocean" do
+  description "Render ocean tiles"
+  user "tileupdate"
+  after "postgresql.service"
+  wants "postgresql.service"
+  restrict_address_families "AF_UNIX"
+  sandbox true
+  exec_start "/usr/local/bin/render-ocean"
+end
+
+systemd_timer "render-ocean" do
+  description "Render ocean tiles"
+  on_calendar "Sat 01:00 #{node[:timezone]}"
+end
+
+if node[:vectortile][:rerender][:ocean][:enabled]
+  service "render-ocean.timer" do
+    action [:enable, :start]
+  end
+else
+  service "render-ocean.timer" do
+    action [:stop, :disable]
+  end
+end
+
 package %w[
   ruby-pg
   ruby-webrick
