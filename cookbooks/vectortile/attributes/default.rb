@@ -6,12 +6,12 @@ default[:vectortile][:serve][:mode] = :live
 default[:vectortile][:replication][:url] = "https://osm-planet-eu-central-1.s3.dualstack.eu-central-1.amazonaws.com/planet/replication/minute"
 default[:vectortile][:replication][:enabled] = true
 default[:vectortile][:replication][:tileupdate] = true
-default[:vectortile][:replication][:threads] = [0.5 * node.cpu_cores, 2].min.ceil
+default[:vectortile][:replication][:threads] = [0.5 * node.cpu_cores, 2].max.ceil
 default[:vectortile][:rerender][:lowzoom][:enabled] = true
-default[:vectortile][:rerender][:lowzoom][:threads] = [0.5 * node.cpu_cores, 2].min.ceil
+default[:vectortile][:rerender][:lowzoom][:threads] = [0.5 * node.cpu_cores, 2].max.ceil
 default[:vectortile][:rerender][:lowzoom][:maxzoom] = 9
 default[:vectortile][:rerender][:ocean][:enabled] = true
-default[:vectortile][:rerender][:ocean][:threads] = [0.5 * node.cpu_cores, 2].min.ceil
+default[:vectortile][:rerender][:ocean][:threads] = [0.5 * node.cpu_cores, 2].max.ceil
 default[:vectortile][:rerender][:ocean][:minzoom] = node[:vectortile][:rerender][:lowzoom][:maxzoom] + 1
 
 default[:vectortile][:tilekiln][:version] = "0.8.1"
