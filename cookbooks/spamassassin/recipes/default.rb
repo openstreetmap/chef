@@ -54,6 +54,14 @@ end
 
 trusted_networks -= ["127.0.0.1", "::1"]
 
+template "/etc/spamassassin/local.pre" do
+  source "local.pre.erb"
+  owner "root"
+  group "root"
+  mode "644"
+  notifies :restart, "service[#{service_name}]"
+end
+
 template "/etc/spamassassin/local.cf" do
   source "local.cf.erb"
   owner "root"
