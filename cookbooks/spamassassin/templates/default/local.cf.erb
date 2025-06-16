@@ -6,6 +6,9 @@ required_score 5.0
 # Set which networks or hosts are considered 'trusted'
 trusted_networks <%= @trusted_networks.join(" ") %>
 
+# Turn on the automatic white list
+use_auto_whitelist 1
+
 # Set the location for our state files
 bayes_path /var/spool/spamassassin/bayes
 auto_whitelist_path /var/spool/spamassassin/auto_whitelist
