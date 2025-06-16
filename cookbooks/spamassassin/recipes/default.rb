@@ -70,3 +70,9 @@ template "/etc/spamassassin/local.cf" do
   variables :trusted_networks => trusted_networks.sort
   notifies :restart, "service[#{service_name}]"
 end
+
+file "/var/spool/spamassassin/auto_whitelist" do
+  owner "debian-spamd"
+  group "debian-spamd"
+  mode "600"
+end
