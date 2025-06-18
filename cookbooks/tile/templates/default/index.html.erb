@@ -1,19 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>tile.openstreetmap.org</title>
-<!-- MANAGED VIA CHEF -->
-<meta name="robots" content="noindex">
-<meta http-equiv="cache-control" content="no-cache">
-<meta http-equiv="pragma" content="no-cache">
+  <meta charset="UTF-8">
+  <title>tile.openstreetmap.org</title>
+  <meta name="robots" content="noindex">
+  <meta http-equiv="cache-control" content="no-cache">
+  <meta http-equiv="pragma" content="no-cache">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- MANAGED VIA CHEF -->
 </head>
 <body>
-You've reached the OpenStreetMap.org tile server (<%= node['fqdn'] %>)<br />
-<dl>
-<dt>If you are a user...</dt>
-<dd>You probably want <a href="https://www.openstreetmap.org/">OpenStreetMap</a> itself.</dd>
-<dt>If you are a developer...</dt>
-<dd>Please be aware of the <a href="https://operations.osmfoundation.org/policies/tiles/">tile usage policy</a>.</dd>
-</dl>
+  <main class="container">
+    <h1>tile.openstreetmap.org</h1>
+    <p>You've reached the OpenStreetMap.org tile server (<%= node['fqdn'] %>)</p>
+    <section>
+      <h2>If you are a user...</h2>
+      <p>You probably want <a href="https://www.openstreetmap.org/">OpenStreetMap</a> itself.</p>
+    </section>
+    <section>
+      <h2>If you are a developer...</h2>
+      <p>Please be aware of the <a href="https://operations.osmfoundation.org/policies/tiles/">tile usage policy</a>.</p>
+    </section>
+    <footer>
+      <p>This service is sponsored by <a href="https://www.fastly.com/">Fastly</a>.</p>
+    </footer>
+  </main>
 </body>
 </html>
