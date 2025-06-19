@@ -26,6 +26,10 @@ postgresql_user "tomh" do
   superuser true
 end
 
+postgresql_user "grant" do
+  cluster node[:db][:cluster]
+end
+
 postgresql_user "openstreetmap" do
   cluster node[:db][:cluster]
   password passwords["openstreetmap"]
@@ -197,7 +201,8 @@ PROMETHEUS_PERMISSIONS = {
                 "planetdump" => PLANETDUMP_PERMISSIONS[table],
                 "planetdiff" => PLANETDIFF_PERMISSIONS[table],
                 "prometheus" => PROMETHEUS_PERMISSIONS[table],
-                "backup" => [:select]
+                "backup" => [:select],
+                "grant" => [:select]
   end
 end
 
@@ -241,7 +246,8 @@ end
     permissions "openstreetmap" => [:all],
                 "rails" => [:usage],
                 "cgimap" => CGIMAP_PERMISSIONS[sequence],
-                "backup" => [:select]
+                "backup" => [:select],
+                "grant" => [:select]
   end
 end
 
