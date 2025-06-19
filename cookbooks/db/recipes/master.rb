@@ -26,11 +26,6 @@ postgresql_user "tomh" do
   superuser true
 end
 
-postgresql_user "matt" do
-  cluster node[:db][:cluster]
-  superuser true
-end
-
 postgresql_user "openstreetmap" do
   cluster node[:db][:cluster]
   password passwords["openstreetmap"]
