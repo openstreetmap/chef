@@ -52,6 +52,7 @@ storage = {
     "secret_access_key" => web_passwords["aws_key"],
     "region" => "eu-west-1",
     "bucket" => "openstreetmap-user-avatars",
+    "public" => true,
     "use_dualstack_endpoint" => true,
     "upload" => {
       "acl" => "public-read",
@@ -65,6 +66,7 @@ storage = {
     "region" => "eu-west-1",
     "bucket" => "openstreetmap-gps-traces",
     "use_dualstack_endpoint" => true,
+    "public" => true,
     "upload" => {
       "acl" => "public-read",
       "cache_control" => "public, max-age=31536000, immutable"
@@ -77,6 +79,7 @@ storage = {
     "region" => "eu-west-1",
     "bucket" => "openstreetmap-gps-images",
     "use_dualstack_endpoint" => true,
+    "public" => true,
     "upload" => {
       "acl" => "public-read",
       "cache_control" => "public, max-age=31536000, immutable"
