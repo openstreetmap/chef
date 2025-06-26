@@ -1,0 +1,24 @@
+#!/bin/sh
+
+# Usage
+# sudo -u tileupdate ocean-update
+
+set -eu
+
+cd "<%= @style_directory %>"
+mkdir -p "data"
+rm -rf "data/ocean-tiles.txt"
+scripts/get-external-data.py -R tilekiln -e "data/ocean-tiles.txt"
+
+if [ -f "data/ocean-tiles.txt" ]
+then
+    wc -l "data/ocean-tiles.txt"
+    <%= @tilekiln_bin %> generate layers \
+    --source-dbname "<%= @source_database %>" \
+    --storage-dbname "<%= @storage_database %>" \
+    --num-threads "<%= node[:vectortile][:replication][:threads] %>" \
+    --config <%= @config_path %> \
+    < "data/ocean-tiles.txt"
+else
+    echo "No tile updates required"
+fi

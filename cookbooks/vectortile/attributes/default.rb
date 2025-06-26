@@ -10,12 +10,12 @@ default[:vectortile][:replication][:threads] = [0.5 * node.cpu_cores, 2].max.cei
 default[:vectortile][:rerender][:lowzoom][:enabled] = true
 default[:vectortile][:rerender][:lowzoom][:threads] = [0.5 * node.cpu_cores, 2].max.ceil
 default[:vectortile][:rerender][:lowzoom][:maxzoom] = 9
-default[:vectortile][:rerender][:ocean][:enabled] = true
-default[:vectortile][:rerender][:ocean][:threads] = [0.5 * node.cpu_cores, 2].max.ceil
-default[:vectortile][:rerender][:ocean][:minzoom] = node[:vectortile][:rerender][:lowzoom][:maxzoom] + 1
+default[:vectortile][:ocean][:enabled] = true
+default[:vectortile][:ocean][:threads] = [0.5 * node.cpu_cores, 2].max.ceil
+default[:vectortile][:ocean][:tileupdate] = true
 
 default[:vectortile][:tilekiln][:version] = "0.8.1"
-default[:vectortile][:spirit][:version] = "6cdedcda65fbb8fec83342571c74a33208943b32"
+default[:vectortile][:spirit][:version] = "d357384be76460e49f4a5f2eb33f94a1973c2628"
 default[:vectortile][:themepark][:version] = "beb454cc56e88533fb398ab293489c4e91f4d42b"
 
 default[:postgresql][:versions] |= [node[:vectortile][:database][:cluster].split("/").first]

@@ -245,12 +245,40 @@ service "tilekiln" do
   action [:enable, :start]
 end
 
-execute "/srv/vector.openstreetmap.org/spirit/scripts/get-external-data.py" do
-  command "/srv/vector.openstreetmap.org/spirit/scripts/get-external-data.py -R tilekiln"
-  cwd "/srv/vector.openstreetmap.org/spirit"
+template "/usr/local/bin/ocean-update" do
+  source node[:vectortile][:ocean][:tileupdate] ? "ocean-update-tile.erb" : "ocean-update-notile.erb"
+  owner "root"
+  group "root"
+  mode "755"
+  variables :tilekiln_bin => "#{tilekiln_directory}/bin/tilekiln", :source_database => "spirit", :storage_database => "tiles", :style_directory => style_directory, :config_path => shortbread_config
+end
+
+systemd_service "ocean-update" do
+  description "Update ocean data"
   user "tileupdate"
-  group "tileupdate"
-  ignore_failure true
+  after "postgresql.service"
+  wants "postgresql.service"
+  sandbox :enable_network => true
+  restrict_address_families "AF_UNIX"
+  read_write_paths ["/srv/vector.openstreetmap.org/spirit/data/"]
+  exec_start "/usr/local/bin/ocean-update"
+end
+
+systemd_timer "ocean-update" do
+  description "Update ocean data"
+  on_boot_sec 300
+  on_unit_active_sec 3600
+  accuracy_sec 60
+end
+
+if node[:vectortile][:ocean][:enabled]
+  service "ocean-update.timer" do
+    action [:enable, :start]
+  end
+else
+  service "ocean-update.timer" do
+    action [:stop, :disable]
+  end
 end
 
 template "/usr/local/bin/vector-update" do
@@ -328,39 +356,6 @@ if node[:vectortile][:rerender][:lowzoom][:enabled]
   end
 else
   service "render-lowzoom.timer" do
-    action [:stop, :disable]
-  end
-end
-
-template "/usr/local/bin/render-ocean" do
-  source "render-ocean.erb"
-  owner "root"
-  group "root"
-  mode "755"
-  variables :tilekiln_bin => "#{tilekiln_directory}/bin/tilekiln", :source_database => "spirit", :storage_database => "tiles", :config_path => shortbread_config, :min_zoom => node[:vectortile][:rerender][:ocean][:minzoom], :max_zoom => 14
-end
-
-systemd_service "render-ocean" do
-  description "Render ocean tiles"
-  user "tileupdate"
-  after "postgresql.service"
-  wants "postgresql.service"
-  restrict_address_families "AF_UNIX"
-  sandbox true
-  exec_start "/usr/local/bin/render-ocean"
-end
-
-systemd_timer "render-ocean" do
-  description "Render ocean tiles"
-  on_calendar "Sat 01:00 #{node[:timezone]}"
-end
-
-if node[:vectortile][:rerender][:ocean][:enabled]
-  service "render-ocean.timer" do
-    action [:enable, :start]
-  end
-else
-  service "render-ocean.timer" do
     action [:stop, :disable]
   end
 end
