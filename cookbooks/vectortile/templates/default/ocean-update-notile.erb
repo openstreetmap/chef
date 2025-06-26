@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# Usage
+# sudo -u tileupdate ocean-update
+
+set -eu
+
+
+cd "<%= @style_directory %>"
+
+scripts/get-external-data.py -R tilekiln
