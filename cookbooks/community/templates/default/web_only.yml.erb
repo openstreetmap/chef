@@ -19,7 +19,7 @@ links:
 # any extra arguments for Docker?
 # docker_args:
 
-# Latest Version v3.4.5
+# Latest Version v3.4.6
 # Discourse only support tests-passed and stable branches
 params:
   version: stable
@@ -126,9 +126,8 @@ hooks:
 
 run:
   - replace:
-      filename: "/etc/nginx/conf.d/discourse.conf"
+      filename: "/etc/nginx/conf.d/outlets/before-server/20-redirect-http-to-https.conf"
       from: /listen 80;/
       to: |
         listen 80;
-        listen [::]:80;
         rewrite ^/\.well-known/acme-challenge/(.*)$ http://acme.openstreetmap.org/.well-known/acme-challenge/$1 permanent;
