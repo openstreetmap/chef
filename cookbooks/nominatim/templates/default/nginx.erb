@@ -19,12 +19,12 @@ map $args $format {
 }
 
 map $uri/$format $forward_to_ui {
-    default               1;
-    ~^/ui                 0;
-    ~/other$              0;
-    ~/reverse.*/default   0;
-    ~/lookup.*/default    0;
-    ~/status.*/default    0;
+    default               0;
+    ~/search.*/default    1;
+    ~/reverse.*/html      1;
+    ~/status.*/html       1;
+    ~/search.*/html       1;
+    ~/details.*/html      1;
 }
 
 map $query_string $email_id {
@@ -186,14 +186,9 @@ server {
         add_header Access-Control-Allow-Origin "*" always;
     }
 
-    location ~* ^/(search|reverse)(\.php)?/ {
-        error_page 404 /404-old-search-syntax.html;
-        return 404;
-    }
-
     location @php {
         if ($forward_to_ui) {
-            rewrite ^(/[^/]*) https://$host/ui$1.html redirect;
+            rewrite ^(/[^/.]*) https://$host/ui$1.html redirect;
         }
         if ($blocked_user_agent ~ ^2$)
         { return 403; }
