@@ -1,4 +1,9 @@
-#!/bin/sh -e
+#!/bin/sh -eu
+
+usage() {
+  echo "Usage: $0 {start|stop|reload|restart|block|drop|deny|unblock|allow|flush} [address ...]"
+  exit 1
+}
 
 start() {
   /usr/sbin/nft -f /etc/nftables.conf
@@ -45,16 +50,25 @@ flush() {
   /usr/sbin/nft --check flush set inet chef-filter ip6-blocklist && /usr/sbin/nft flush set inet chef-filter ip6-blocklist
 }
 
-command=$1
-shift
+command="${1:-}"
+if [ -n "$command" ]; then
+  shift
+fi
+
+if [ -z "$command" ]; then
+  usage
+fi
 
 case "$command" in
   start) start;;
   stop) stop;;
-  reload) reload;;
-  block) block "$@";;
-  unblock) unblock "$@";;
+  reload|restart) reload;;
+  block|drop|deny) block "$@";;
+  unblock|allow) unblock "$@";;
   flush) flush;;
+  *)
+    usage
+    ;;
 esac
 
 exit 0
