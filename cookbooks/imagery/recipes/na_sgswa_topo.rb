@@ -29,13 +29,11 @@ imagery_layer "na_sgswa_topo_50k" do
   site "namibia-topo.openstreetmap.org.za"
   title "Namibia Topo 50k"
   projection "EPSG:4326"
-  source "/store/imagery/na/topo-50k/namibia-50k-topo-v4.vrt"
+  source "/store/imagery/na/topo-50k/namibia-50k-topo-v4-alpha-hidenodata.vrt"
   copyright "State Copyright &copy 1958 - 1991; Surveyor-General, Windhoek, SWA; CDSM: Chief Directorate Surveys & Mapping, Mowbray, RSA"
   default_layer true
-  background_colour "0 0 0"
-  extension "jpeg"
   max_zoom 16
-  revision 2
+  revision 3
 end
 
 imagery_layer "na_aerial" do
