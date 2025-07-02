@@ -15,7 +15,7 @@ default[:vectortile][:ocean][:threads] = [0.5 * node.cpu_cores, 2].max.ceil
 default[:vectortile][:ocean][:tileupdate] = true
 
 default[:vectortile][:tilekiln][:version] = "0.8.1"
-default[:vectortile][:spirit][:version] = "d357384be76460e49f4a5f2eb33f94a1973c2628"
+default[:vectortile][:spirit][:version] = "808f5567f07a483ade328bfef3ed822dfe7c2bd3"
 default[:vectortile][:themepark][:version] = "beb454cc56e88533fb398ab293489c4e91f4d42b"
 
 default[:postgresql][:versions] |= [node[:vectortile][:database][:cluster].split("/").first]
