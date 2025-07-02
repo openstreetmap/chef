@@ -30,7 +30,7 @@ imagery_layer "na_sgswa_topo_50k" do
   title "Namibia Topo 50k"
   projection "EPSG:4326"
   source "/store/imagery/na/topo-50k/namibia-50k-topo-v4-alpha-hidenodata.vrt"
-  copyright 'State Copyright &copy 1958 - 1991; Surveyor-General, Windhoek, Namibia; <a href="https://ngi.dalrrd.gov.za/">Chief Directorate: National Geo-spatial Information</a>, Mowbray, RSA'
+  copyright 'State Copyright &copy 1958 - 1991; Surveyor-General, Windhoek, Namibia'
   default_layer true
   max_zoom 16
   revision 3
