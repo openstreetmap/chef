@@ -66,7 +66,7 @@ platforms:
 lifecycle:
   pre_create: |
     if command -v podman >/dev/null 2>&1; then
-      podman create --name chef-latest --replace ghcr.io/firefishy/chef-docker-image:latest sleep infinity
+      podman create --name chef-latest --replace ghcr.io/firefishy/chef-docker-image:latest sh
       podman start chef-latest
     fi
   post_destroy: |
