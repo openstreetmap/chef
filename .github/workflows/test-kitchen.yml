@@ -123,7 +123,7 @@ jobs:
         include:
           - os: ubuntu-2004
             suite: mailman
-          - os: ubuntu-2004
+          - os: debian-12
             suite: osqa
           - os: debian-12
             suite: apt-repository
