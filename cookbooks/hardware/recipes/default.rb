@@ -464,7 +464,7 @@ end
 
 disks = disks.compact.uniq
 
-if disks.count.positive?
+if disks.any?
   package "smartmontools"
 
   template "/etc/cron.daily/update-smart-drivedb" do
