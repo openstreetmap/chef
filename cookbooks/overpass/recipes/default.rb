@@ -68,7 +68,7 @@ execute "install_overpass" do
   action :nothing
   user username
   cwd srcdir
-  command "./configure --enable-lz4 --prefix=#{basedir} && make install"
+  command "./configure --enable-lz4 --prefix=#{basedir} && make -j#{node.cpu_cores} install"
   notifies :restart, "service[overpass-dispatcher]"
   notifies :restart, "service[overpass-area-dispatcher]"
 end
