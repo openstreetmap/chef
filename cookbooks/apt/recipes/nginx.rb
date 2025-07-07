@@ -26,8 +26,7 @@ platform_name = if platform?("debian")
                 end
 
 apt_repository "nginx" do
-  arch "amd64"
   uri "https://nginx.org/packages/#{platform_name}"
   components ["nginx"]
-  key "ABF5BD827BD9BF62"
+  key "https://nginx.org/keys/nginx_signing.key"
 end
