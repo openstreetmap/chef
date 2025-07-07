@@ -23,5 +23,5 @@ apt_repository "elasticsearch8.x" do
   uri "https://artifacts.elastic.co/packages/8.x/apt"
   distribution "stable"
   components ["main"]
-  key "D27D666CD88E42B4"
+  key "https://artifacts.elastic.co/GPG-KEY-elasticsearch"
 end
