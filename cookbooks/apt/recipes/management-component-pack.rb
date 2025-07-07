@@ -28,7 +28,7 @@ if platform?("debian")
     uri "https://downloads.linux.hpe.com/SDR/repo/mcp"
     distribution "#{node[:lsb][:codename]}/current"
     components ["non-free"]
-    key "C208ADDE26C2B797"
+    key ["https://downloads.linux.hpe.com/SDR/hpePublicKey2048_key1.pub", "https://downloads.linux.hpe.com/SDR/hpePublicKey2048_key2.pub"]
   end
 
   if node[:dmi][:system][:product_name].end_with?("Gen9")
@@ -36,7 +36,7 @@ if platform?("debian")
       uri "https://downloads.linux.hpe.com/SDR/repo/mcp"
       distribution "stretch/current-gen9"
       components ["non-free"]
-      key "C208ADDE26C2B797"
+      key ["https://downloads.linux.hpe.com/SDR/hpePublicKey2048_key1.pub", "https://downloads.linux.hpe.com/SDR/hpePublicKey2048_key2.pub"]
     end
   end
 elsif platform?("ubuntu")
@@ -45,21 +45,21 @@ elsif platform?("ubuntu")
       uri "https://downloads.linux.hpe.com/SDR/repo/mcp"
       distribution "jammy/current"
       components ["non-free"]
-      key "C208ADDE26C2B797"
+      key ["https://downloads.linux.hpe.com/SDR/hpePublicKey2048_key1.pub", "https://downloads.linux.hpe.com/SDR/hpePublicKey2048_key2.pub"]
     end
 
     apt_repository "mcp-focal-gen10" do
       uri "https://downloads.linux.hpe.com/SDR/repo/mcp"
       distribution "focal/current-gen10"
       components ["non-free"]
-      key "C208ADDE26C2B797"
+      key ["https://downloads.linux.hpe.com/SDR/hpePublicKey2048_key1.pub", "https://downloads.linux.hpe.com/SDR/hpePublicKey2048_key2.pub"]
     end
   else
     apt_repository "mcp-bionic-gen9" do
       uri "https://downloads.linux.hpe.com/SDR/repo/mcp"
       distribution "bionic/current-gen9"
       components ["non-free"]
-      key "C208ADDE26C2B797"
+      key ["https://downloads.linux.hpe.com/SDR/hpePublicKey2048_key1.pub", "https://downloads.linux.hpe.com/SDR/hpePublicKey2048_key2.pub"]
     end
   end
 end

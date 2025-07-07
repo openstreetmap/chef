@@ -35,5 +35,5 @@ apt_repository "hwraid" do
   uri "https://hwraid.le-vert.net/#{platform_name}"
   distribution distribution_name
   components ["main"]
-  key "6005210E23B3D3B4"
+  key "https://hwraid.le-vert.net/debian/hwraid.le-vert.net.gpg.key"
 end
