@@ -399,7 +399,7 @@ GEM
     json (2.12.2)
     jwt (2.10.1)
       base64
-    kitchen-dokken (2.20.7)
+    kitchen-dokken (2.20.8)
       docker-api (>= 1.33, < 3)
       lockfile (~> 2.1)
       test-kitchen (>= 1.15, < 4)
