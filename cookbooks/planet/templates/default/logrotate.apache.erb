@@ -6,12 +6,16 @@
 	rotate 52
 	compress
 	delaycompress
+	compresscmd /usr/bin/zstd
+	compressext .zst
+	compressoptions -T0
+	uncompresscmd /usr/bin/unzstd
 	notifempty
 	create 640 root adm
 	sharedscripts
 	postrotate
-		/etc/init.d/apache2 reload > /dev/null
-		rsync --preallocate /var/log/apache2/planet.openstreetmap.org-access.log.2.gz backup.openstreetmap.org::logs/planet.openstreetmap.org/`date -d "-7 days" +%Y-%m-%d`.gz
+		/bin/systemctl reload apache2
+		/usr/bin/rsync --preallocate /var/log/apache2/planet.openstreetmap.org-access.log.2.zst backup.openstreetmap.org::logs/planet.openstreetmap.org/`date -d "-7 days" +%Y-%m-%d`.zst
 	endscript
 	prerotate
 		if [ -d /etc/logrotate.d/httpd-prerotate ]; then \
