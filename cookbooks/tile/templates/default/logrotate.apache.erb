@@ -7,6 +7,10 @@
   rotate 14
   compress
   delaycompress
+  compresscmd /usr/bin/zstd
+  compressext .zst
+  compressoptions -T0
+  uncompresscmd /usr/bin/unzstd
   notifempty
   create 640 root adm
   sharedscripts
