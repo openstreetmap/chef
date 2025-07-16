@@ -187,7 +187,13 @@ cputimes = [float(n) for n in open("/proc/stat").readline().rstrip().split()[1:-
 idletime = cputimes[3] / sum(cputimes)
 
 # Process the request
-if not totp.verify(token, valid_window = 1):
+if os.environ['REQUEST_METHOD'] == 'OPTIONS':
+  # Handle CORS preflight checks
+  print('Status: 204 No Content')
+  print('Access-Control-Allow-Origin: %s' % os.environ['HTTP_ORIGIN'])
+  print('Access-Control-Allow-Credentials: true')
+  print('')
+elif not totp.verify(token, valid_window = 1):
   # Abort if the request didn't have a valid TOTP token
   output_error("Missing or invalid token")
 elif idletime < 0.2:
