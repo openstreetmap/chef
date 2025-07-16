@@ -191,6 +191,7 @@ if os.environ['REQUEST_METHOD'] == 'OPTIONS':
   # Handle CORS preflight checks
   print('Status: 204 No Content')
   print('Access-Control-Allow-Origin: %s' % os.environ['HTTP_ORIGIN'])
+  print('Access-Control-Allow-Headers: X-CSRF-Token, X-Turbo-Request-Id')
   print('Access-Control-Allow-Credentials: true')
   print('')
 elif not totp.verify(token, valid_window = 1):
