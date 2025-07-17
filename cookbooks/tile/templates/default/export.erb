@@ -180,7 +180,7 @@ if 'HTTP_REFERER' not in os.environ:
 if '_osm_totp_token' in cookies:
   token = cookies['_osm_totp_token'].value
 else:
-  token = None
+  token = form.getfirst("token")
 
 # Get the load average
 cputimes = [float(n) for n in open("/proc/stat").readline().rstrip().split()[1:-1]]
