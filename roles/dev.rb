@@ -116,6 +116,9 @@ default_attributes(
         :revision => "master",
         :cgimap_repository => "https://github.com/zerebubuth/openstreetmap-cgimap.git",
         :cgimap_revision => "master",
+        :cgimap_options => {
+          :changeset_enhanced_stats => true
+        },
         :aliases => ["master.apis.dev.osm.org", "api06.dev.openstreetmap.org", "api06.dev.osm.org"]
       },
       :tomh => {
