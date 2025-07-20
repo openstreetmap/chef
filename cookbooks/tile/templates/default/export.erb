@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import cairo
-import cgi
 import http.cookies
 import mapnik
 import io
@@ -14,6 +13,7 @@ import shutil
 import signal
 import sys
 import tempfile
+import urllib.parse
 from PIL import Image
 
 # Limit maximum CPU time
@@ -163,7 +163,8 @@ def render_and_output_vector(map, format):
 totp = pyotp.TOTP('<%= @totp_key %>', interval = 3600)
 
 # Parse CGI parameters
-form = cgi.FieldStorage()
+query_string = os.environ.get('QUERY_STRING', '')
+form = urllib.parse.parse_qs(query_string)
 
 # Import cookies
 cookies = http.cookies.SimpleCookie(os.environ.get('HTTP_COOKIE'))
@@ -179,10 +180,8 @@ if 'HTTP_REFERER' not in os.environ:
 # Look for TOTP token
 if '_osm_totp_token' in cookies:
   token = cookies['_osm_totp_token'].value
-elif os.environ['REQUEST_METHOD'] != 'OPTIONS':
-  token = form.getfirst("token")
 else:
-  token = None
+  token = form.get("token", [None])[0]
 
 # Get the load average
 cputimes = [float(n) for n in open("/proc/stat").readline().rstrip().split()[1:-1]]
@@ -222,59 +221,63 @@ elif "format" not in form:
   # No format specified
   output_error("No format specified")
 else:
-  # Create projection object
-  transformer = pyproj.Transformer.from_crs("EPSG:4326", "EPSG:3857", always_xy=True)
+  try:
+    # Create projection object
+    transformer = pyproj.Transformer.from_crs("EPSG:4326", "EPSG:3857", always_xy=True)
 
-  # Get the bounds of the area to render
-  bbox = [float(x) for x in form.getvalue("bbox").split(",")]
+    # Get the bounds of the area to render
+    bbox = [float(x) for x in form.get("bbox", [""])[0].split(",")]
 
-  if bbox[0] >= bbox[2] or bbox[1] >= bbox[3]:
-    # Bogus bounding box
-    output_error("Invalid bounding box")
-  else:
-    # Project the bounds to the map projection
-    bbox = mapnik.Box2d(*transformer.transform(bbox[0], bbox[1]),
-                        *transformer.transform(bbox[2], bbox[3]))
-
-    # Get the style to use
-    style = form.getvalue("style", "default")
-
-    # Calculate the size of the final rendered image
-    scale = float(form.getvalue("scale"))
-    width = int(bbox.width() / scale / 0.00028)
-    height = int(bbox.height() / scale / 0.00028)
-
-    # Limit the size of map we are prepared to produce
-    if width * height > 4000000:
-      # Map is too large (limit is approximately A2 size)
-      output_error("Map too large")
+    if bbox[0] >= bbox[2] or bbox[1] >= bbox[3]:
+      # Bogus bounding box
+      output_error("Invalid bounding box")
     else:
-      # Create map
-      map = mapnik.Map(width, height)
+      # Project the bounds to the map projection
+      bbox = mapnik.Box2d(*transformer.transform(bbox[0], bbox[1]),
+                          *transformer.transform(bbox[2], bbox[3]))
 
-      # Load map configuration
-      mapnik.load_map(map, "/srv/tile.openstreetmap.org/styles/%s/project.xml" % style)
+      # Get the style to use
+      style = form.get("style", ["default"])[0]
 
-      # Zoom the map to the bounding box
-      map.zoom_to_box(bbox)
+      # Calculate the size of the final rendered image
+      scale = float(form.get("scale")[0])
+      width = int(bbox.width() / scale / 0.00028)
+      height = int(bbox.height() / scale / 0.00028)
 
-      # Fork so that we can handle crashes rendering the map
-      pid = os.fork()
-
-      # Render the map
-      if pid == 0:
-        format = form.getvalue("format")
-        if format in ["png", "jpeg", "webp"]:
-          render_and_output_image(map, format)
-        elif format in ["svg", "pdf", "ps"]:
-          render_and_output_vector(map, format)
-        else:
-          output_error("Unknown format")
+      # Limit the size of map we are prepared to produce
+      if width * height > 4000000:
+        # Map is too large (limit is approximately A2 size)
+        output_error("Map too large")
       else:
-        pid, status = os.waitpid(pid, 0)
-        if status & 0xff == signal.SIGXCPU:
-          output_error("CPU time limit exceeded", "509 Resource Limit Exceeded")
-        elif status & 0xff == signal.SIGSEGV:
-          output_error("Memory limit exceeded", "509 Resource Limit Exceeded")
-        elif status != 0:
-          output_error("Internal server error", "500 Internal Server Error")
+        # Create map
+        map = mapnik.Map(width, height)
+
+        # Load map configuration
+        mapnik.load_map(map, "/srv/tile.openstreetmap.org/styles/%s/project.xml" % style)
+
+        # Zoom the map to the bounding box
+        map.zoom_to_box(bbox)
+
+        # Fork so that we can handle crashes rendering the map
+        pid = os.fork()
+
+        # Render the map
+        if pid == 0:
+          format = form.get("format", [None])[0]
+          if format in ["png", "jpeg", "webp"]:
+            render_and_output_image(map, format)
+          elif format in ["svg", "pdf", "ps"]:
+            render_and_output_vector(map, format)
+          else:
+            output_error("Unknown format")
+        else:
+          pid, status = os.waitpid(pid, 0)
+          if status & 0xff == signal.SIGXCPU:
+            output_error("CPU time limit exceeded", "509 Resource Limit Exceeded")
+          elif status & 0xff == signal.SIGSEGV:
+            output_error("Memory limit exceeded", "509 Resource Limit Exceeded")
+          elif status != 0:
+            output_error("Internal server error", "500 Internal Server Error")
+
+  except Exception as e:
+    output_error(f"An error occurred: {str(e)}")
