@@ -49,16 +49,8 @@ def bytesio_size(bio):
 # Routine to report an error
 def output_error(message, status = "400 Bad Request"):
   print("Status: %s" % status)
-  output_headers("text/html")
-  print("<html>")
-  print("<head>")
-  print("<title>Error</title>")
-  print("</head>")
-  print("<body>")
-  print("<h1>Error</h1>")
-  print("<p>%s</p>" % message)
-  print("</body>")
-  print("</html>")
+  output_headers("text/plain")
+  print(message)
 
 # Add a copyright notice for raster formats (PNG, JPEG, WEBP)
 def add_copyright_notice_raster(image, map_width, map_height, format):
