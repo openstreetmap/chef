@@ -6,11 +6,15 @@
   rotate 28
   compress
   delaycompress
+  compresscmd /usr/bin/zstd
+  compressext .zst
+  compressoptions -T0
+  uncompresscmd /usr/bin/unzstd
   notifempty
   create 640 root adm
   sharedscripts
   postrotate
-    /etc/init.d/apache2 reload > /dev/null
-    /usr/bin/rsync --preallocate /var/log/apache2/access.log.2.gz backup.openstreetmap.org::logs/www.openstreetmap.org/<%= node[:hostname] %>-`date -d "-2 days" +%Y-%m-%d`.gz
+    /bin/systemctl reload apache2
+    /usr/bin/rsync --preallocate /var/log/apache2/access.log.2.zst backup.openstreetmap.org::logs/www.openstreetmap.org/<%= node[:hostname] %>-`date -d "-2 days" +%Y-%m-%d`.zst
   endscript
 }
