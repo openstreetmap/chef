@@ -39,8 +39,8 @@ end
 systemd_service "elasticsearch-override" do
   service "elasticsearch"
   dropin "override"
-  timeout_start_sec "180s"
-  timeout_stop_sec "180s"
+  timeout_start_sec 180
+  timeout_stop_sec 180
   notifies :restart, "service[elasticsearch]"
 end
 
