@@ -36,6 +36,14 @@ template "/etc/elasticsearch/elasticsearch.yml" do
   notifies :restart, "service[elasticsearch]"
 end
 
+systemd_service "elasticsearch-override" do
+  service "elasticsearch"
+  dropin "override"
+  timeout_start_sec "180s"
+  timeout_stop_sec "180s"
+  notifies :restart, "service[elasticsearch]"
+end
+
 service "elasticsearch" do
   action [:enable, :start]
   supports :status => true, :restart => true
