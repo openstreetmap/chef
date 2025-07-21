@@ -120,63 +120,11 @@ jobs:
           - wiki
         os:
           - ubuntu-2204
+          - debian-12
+          - debian-13
         include:
           - os: ubuntu-2004
             suite: mailman
-          - os: debian-12
-            suite: osqa
-          - os: debian-12
-            suite: apt-repository
-          - os: debian-12
-            suite: blogs
-          - os: debian-12
-            suite: community
-          - os: debian-12
-            suite: dev
-          - os: debian-12
-            suite: dns
-          - os: debian-12
-            suite: git-server
-          - os: debian-12
-            suite: git-web
-          - os: debian-12
-            suite: gps-tile
-          - os: debian-12
-            suite: imagery-tiler
-          - os: debian-12
-            suite: irc
-          - os: debian-12
-            suite: letsencrypt
-          - os: debian-12
-            suite: matomo
-          - os: debian-12
-            suite: nominatim
-          - os: debian-12
-            suite: otrs
-          - os: debian-12
-            suite: overpass
-          - os: debian-12
-            suite: prometheus-server
-          - os: debian-12
-            suite: serverinfo
-          - os: debian-12
-            suite: subversion
-          - os: debian-12
-            suite: supybot
-          - os: debian-12
-            suite: taginfo
-          - os: debian-12
-            suite: trac
-          - os: debian-12
-            suite: vectortile
-          - os: debian-12
-            suite: web-cgimap
-          - os: debian-12
-            suite: web-frontend
-          - os: debian-12
-            suite: web-rails
-          - os: debian-12
-            suite: wiki
         exclude:
           - suite: apt-repository
             os: ubuntu-2204
@@ -188,11 +136,21 @@ jobs:
             os: ubuntu-2204
           - suite: dns
             os: ubuntu-2204
+          - suite: foundation-birthday
+            os: ubuntu-2204
+          - suite: foundation-mastodon
+            os: ubuntu-2204
           - suite: git-server
             os: ubuntu-2204
           - suite: git-web
             os: ubuntu-2204
           - suite: gps-tile
+            os: ubuntu-2204
+          - suite: hot
+            os: ubuntu-2204
+          - suite: ideditor
+            os: ubuntu-2204
+          - suite: imagery-tiler
             os: ubuntu-2204
           - suite: irc
             os: ubuntu-2204
@@ -214,9 +172,13 @@ jobs:
             os: ubuntu-2204
           - suite: serverinfo
             os: ubuntu-2204
+          - suite: stateofthemap-container
+            os: ubuntu-2204
           - suite: subversion
             os: ubuntu-2204
           - suite: supybot
+            os: ubuntu-2204
+          - suite: switch2osm
             os: ubuntu-2204
           - suite: taginfo
             os: ubuntu-2204
