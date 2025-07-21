@@ -168,6 +168,30 @@ jobs:
             os: ubuntu-2204
           - suite: overpass
             os: ubuntu-2204
+          - suite: planet
+            os: debian-12
+          - suite: planet
+            os: debian-13
+          - suite: planet-aws
+            os: debian-12
+          - suite: planet-aws
+            os: debian-13
+          - suite: planet-current
+            os: debian-12
+          - suite: planet-current
+            os: debian-13
+          - suite: planet-dump
+            os: debian-12
+          - suite: planet-dump
+            os: debian-13
+          - suite: planet-notes
+            os: debian-12
+          - suite: planet-notes
+            os: debian-13
+          - suite: planet-replication
+            os: debian-12
+          - suite: planet-replication
+            os: debian-13
           - suite: prometheus-server
             os: ubuntu-2204
           - suite: serverinfo
