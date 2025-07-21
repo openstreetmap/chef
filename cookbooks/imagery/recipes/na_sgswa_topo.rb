@@ -36,6 +36,15 @@ imagery_layer "na_sgswa_topo_50k" do
   revision 3
 end
 
+imagery_layer "na_sgswa_topo_250k" do
+  site "namibia-topo.openstreetmap.org.za"
+  title "Namibia Topo 250k"
+  projection "EPSG:4326"
+  source "/store/imagery/na/topo-250k/250k_ECW/combine.vrt"
+  copyright "State Copyright &copy 1972 - 1989; Surveyor-General, Windhoek, Namibia"
+  max_zoom 16
+end
+
 imagery_layer "na_aerial" do
   site "namibia-topo.openstreetmap.org.za"
   title "Namibia Aerial Demo"
