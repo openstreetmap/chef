@@ -69,6 +69,7 @@ property :wikipedia_auth_id, String
 property :wikipedia_auth_secret, String
 property :thunderforest_key, String
 property :tracestrack_key, String
+property :maptiler_key, String
 property :totp_key, String
 property :csp_enforce, [true, false], :default => false
 property :csp_report_url, String
@@ -330,6 +331,7 @@ action :create do
     "wikipedia_auth_secret",
     "thunderforest_key",
     "tracestrack_key",
+    "maptiler_key",
     "totp_key",
     "csp_enforce",
     "csp_report_url",
