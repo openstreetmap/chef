@@ -1,7 +1,7 @@
 # OpenStreetMap chef cookbooks
 
-[![Cookstyle](https://github.com/openstreetmap/chef/workflows/Cookstyle/badge.svg?branch=master&event=push)](https://github.com/openstreetmap/chef/actions?query=workflow%3ACookstyle%20branch%3Amaster%20event%3Apush)
-[![Test Kitchen](https://github.com/openstreetmap/chef/workflows/Test%20Kitchen/badge.svg?branch=master&event=push)](https://github.com/openstreetmap/chef/actions?query=workflow%3A%22Test+Kitchen%22%20branch%3Amaster%20event%3Apush)
+[![Cookstyle](https://github.com/openstreetmap/chef/actions/workflows/cookstyle.yml/badge.svg)](https://github.com/openstreetmap/chef/actions/workflows/cookstyle.yml)
+[![Test Kitchen](https://github.com/openstreetmap/chef/actions/workflows/test-kitchen.yml/badge.svg)](https://github.com/openstreetmap/chef/actions/workflows/test-kitchen.yml)
 
 This repository manages the configuration of all the servers run by the
 OpenStreetMap Foundation's Operations Working Group. We use
@@ -41,6 +41,7 @@ Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for mor
 
 # Contact Us
 
-* Twitter: [@OSM_Tech](https://twitter.com/OSM_Tech)
-* Mastodon / Fediverse: [@OSM_Tech](https://en.osm.town/@osm_tech)
-* IRC: [#OSM-Dev on irc.oftc.net](https://irc.openstreetmap.org/)
+* Mastodon: [@osm_tech](https://en.osm.town/@osm_tech)
+* IRC: [#osm-dev on irc.oftc.net](https://irc.openstreetmap.org/) or [#osmf-operations on irc.oftc.net](https://irc.openstreetmap.org/)
+* Matrix: [#\_oftc_#osmf-operations](https://matrix.to/#/#_oftc_#osmf-operations:matrix.org)
+* Email: [operations@osmfoundation.org](mailto:operations@osmfoundation.org)
