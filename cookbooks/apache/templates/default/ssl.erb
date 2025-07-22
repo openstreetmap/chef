@@ -5,7 +5,7 @@ SSLProtocol All -SSLv2 -SSLv3
 SSLHonorCipherOrder On
 SSLCipherSuite <%= node[:ssl][:openssl_ciphers] %>
 
-SSLUseStapling On
+SSLUseStapling off
 SSLStaplingResponderTimeout 5
 SSLStaplingErrorCacheTimeout 60
 SSLStaplingReturnResponderErrors off
