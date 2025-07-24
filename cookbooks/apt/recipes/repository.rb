@@ -62,7 +62,7 @@ execute "apt-generate-key" do
   not_if { ::Dir.exist?("/srv/apt.openstreetmap.org/.gnupg") }
 end
 
-%w[focal jammy noble bookworm].each do |distribution|
+%w[focal jammy noble bookworm trixie].each do |distribution|
   repository = "openstreetmap-#{distribution}"
 
   execute "aptly-repo-create-#{distribution}" do
