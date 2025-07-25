@@ -53,7 +53,8 @@ cgimap_options = {
   "CGIMAP_MAX_WAY_NODES" => node[:web][:max_number_of_way_nodes],
   "CGIMAP_MAX_RELATION_MEMBERS" => node[:web][:max_number_of_relation_members],
   "CGIMAP_RATELIMIT_UPLOAD" => "true",
-  "CGIMAP_BBOX_SIZE_LIMIT_UPLOAD" => "true"
+  "CGIMAP_BBOX_SIZE_LIMIT_UPLOAD" => "true",
+  "CGIMAP_CHANGESET_ENHANCED_STATS" => "true"
 }
 
 if %w[database_readonly api_readonly].include?(node[:web][:status])
