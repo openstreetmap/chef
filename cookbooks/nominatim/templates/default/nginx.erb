@@ -220,5 +220,7 @@ server {
         proxy_set_header Proxy-Connection "";
         proxy_redirect off;
         proxy_pass http://nominatim_service;
+
+        add_header Vary "accept-language";
     }
 }
