@@ -4,7 +4,9 @@ description "Master role applied to orm"
 default_attributes(
   :networking => {
     :interfaces => {
-      :internal => {
+      :external => {
+        :interface => "bond0",
+        :role => :external,
         :inet => {
           :address => "10.5.7.34",
           :prefix => "29",
