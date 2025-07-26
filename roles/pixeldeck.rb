@@ -7,6 +7,11 @@ default_attributes(
 )
 
 override_attributes(
+  :accounts => {
+    :users => {
+      :nmoore => { :status => :administrator }
+    }
+  },
   :networking => {
     :nameservers => ["10.5.7.33", "2602:f629:0:bc::1"]
   },
