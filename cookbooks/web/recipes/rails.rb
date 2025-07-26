@@ -158,7 +158,7 @@ rails_port "www.openstreetmap.org" do
     # Current Google imagery URLs have google or googleapis in the domain
     ".*\\.google(apis)?\\..*/.*",
     # Blacklist VWorld
-    "http://xdworld\\.vworld\\.kr:8080/.*",
+    "https?://xdworld\\.vworld\\.kr[/:].*",
     # Blacklist here
     ".*\\.here\\.com[/:].*",
     # Blacklist Mapy.cz
