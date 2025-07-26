@@ -19,6 +19,9 @@ default_attributes(
           :gateway => "2602:f629:0:bc::1"
         },
         :bond => {
+          :mode => "802.3ad",
+          :lacprate => "fast",
+          :xmithashpolicy => "layer2+3",
           :slaves => %w[eno1 eno2]
         }
       }
