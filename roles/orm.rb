@@ -21,7 +21,7 @@ default_attributes(
         :bond => {
           :mode => "802.3ad",
           :lacprate => "fast",
-          :xmithashpolicy => "layer3+4",
+          :xmithashpolicy => "layer2+3",
           :slaves => %w[eno1 eno2]
         }
       }
