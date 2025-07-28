@@ -45,10 +45,14 @@ server {
     }
     location /shortbread_v1/ {
         proxy_pass http://tilekiln;
+        proxy_http_version 1.1;
+        proxy_set_header Connection "";
         add_header Cache-Control "public,max-age=300,stale-while-revalidate=3600,stale-if-error=86400";
     }
     location /demo/ {
         proxy_pass http://demo;
+        proxy_http_version 1.1;
+        proxy_set_header Connection "";
     }
     root /srv/vector.openstreetmap.org/html;
 }
