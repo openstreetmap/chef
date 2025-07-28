@@ -16,7 +16,7 @@ override_attributes(
     :nameservers => ["10.5.7.33", "2602:f629:0:bc::1"]
   },
   :ntp => {
-    :servers => ["time.pixeldeck.net", "0.us.pool.ntp.org", "1.us.pool.ntp.org"]
+    :servers => ["time.pixeldeck.net"]
   }
 )
 
