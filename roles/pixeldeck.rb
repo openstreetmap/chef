@@ -3,7 +3,8 @@ description "Role applied to all servers at PixelDeck"
 
 default_attributes(
   :hosted_by => "PixelDeck",
-  :location => "Kansas City, Missouri"
+  :location => "Kansas City, Missouri",
+  :timezone => "US/Central"
 )
 
 override_attributes(
