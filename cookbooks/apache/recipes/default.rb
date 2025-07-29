@@ -72,6 +72,10 @@ apache_module "status" do
   variables :hosts => admins["hosts"]
 end
 
+apache_conf "tokens" do
+  template "tokens.conf.erb"
+end
+
 if node[:apache][:evasive][:enable]
   apache_module "evasive" do
     conf "evasive.conf.erb"
