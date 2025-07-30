@@ -310,6 +310,13 @@ end
 ## Nominatim QA
 
 if node[:nominatim][:enable_qa_tiles]
+
+  package %w[
+    rapidjson-dev
+    libmapbox-variant-dev
+    libprotozero-dev
+  ]
+
   python_package "nominatim-data-analyser" do
     python_virtualenv python_directory
     extra_index_url node[:nominatim][:pip_index]
