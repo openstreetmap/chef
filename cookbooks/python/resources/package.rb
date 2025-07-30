@@ -45,7 +45,7 @@ action :upgrade do
   if new_resource.version.nil?
     execute "pip-upgrade-#{new_resource.package_name}" do
       command "#{pip_command} install #{pip_extra_index} --upgrade #{new_resource.package_name}"
-      only_if "#{pip_command} list --outdated | fgrep -q #{new_resource.package_name}"
+      only_if "#{pip_command} list --outdated #{pip_extra_index} | fgrep -q #{new_resource.package_name}"
     end
   else
     execute "pip-upgrade-#{new_resource.package_name}" do
