@@ -318,6 +318,7 @@ if node[:nominatim][:enable_qa_tiles]
   ]
 
   python_package "nominatim-data-analyser" do
+    action :upgrade
     python_virtualenv python_directory
     extra_index_url node[:nominatim][:pip_index]
   end
