@@ -1,6 +1,5 @@
 ---
 # DO NOT EDIT - This file is being maintained by Chef
-rest: false
 timeout: 60
 vars:
   remove_secret: true
@@ -36,11 +35,10 @@ source:
 model_map:
   juniper: junos
   apc: apc_aos
-  ciscocmb: ciscosmb
 logger:
   appenders:
     - type: stdout
-      level: :warn
+      level: :trace
     - type: file
       level: :warn
       file: /var/log/oxidized/oxidized.log
