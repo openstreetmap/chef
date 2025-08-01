@@ -11,9 +11,9 @@ default_attributes(
         :interface => "ens5",
         :role => :external,
         :inet => {
-          :address => "172.31.37.101",
+          :address => "172.31.14.117",
           :prefix => "20",
-          :gateway => "172.31.32.1",
+          :gateway => "172.31.0.1",
           :public_address => "3.144.0.72"
         }
       }
@@ -37,7 +37,7 @@ default_attributes(
   },
   :tile => {
     :database => {
-      :cluster => "16/main",
+      :cluster => "17/main",
       :postgis => "3"
     },
     :mapnik => "3.1",
