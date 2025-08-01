@@ -1,4 +1,4 @@
-default[:hardware][:modules] = %w[lp]
+default[:hardware][:modules] = %w[]
 default[:hardware][:blacklisted_modules] = %w[]
 default[:hardware][:grub][:cmdline] = %w[nomodeset]
 default[:hardware][:sensors] = {}
