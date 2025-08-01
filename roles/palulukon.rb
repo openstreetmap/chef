@@ -58,5 +58,6 @@ override_attributes(
 )
 
 run_list(
-  "role[aws-us-east-2]"
+  "role[aws-us-east-2]",
+  "role[tile]"
 )
