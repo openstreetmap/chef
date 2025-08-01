@@ -37,3 +37,10 @@ model_map:
   juniper: junos
   apc: apc_aos
   ciscocmb: ciscosmb
+logger:
+  appenders:
+    - type: stdout
+      level: :warn
+    - type: file
+      level: :warn
+      file: /var/log/oxidized/oxidized.log
