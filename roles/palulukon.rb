@@ -15,6 +15,11 @@ default_attributes(
           :prefix => "20",
           :gateway => "172.31.0.1",
           :public_address => "3.144.0.72"
+        },
+        :inet6 => {
+          :address => "2600:1f16:126d:9400:48bc:5b5e:6d26:beb8",
+          :prefix => "64",
+          :gateway => "2600:1f16:126d:9400::1"
         }
       }
     }
