@@ -30,7 +30,7 @@ default_attributes(
 
 override_attributes(
   :ntp => {
-    :servers => ["ntp.osuosl.org"]
+    :servers => ["time.osuosl.org"]
   }
 )
 
