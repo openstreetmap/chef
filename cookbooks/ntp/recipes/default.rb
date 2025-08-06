@@ -63,6 +63,7 @@ end
 
 prometheus_exporter "chrony" do
   port 9123
+  options "--no-collector.dns-lookups"
 end
 
 # chrony occasionally marks all servers offline during a network outage.
