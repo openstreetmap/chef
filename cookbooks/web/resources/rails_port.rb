@@ -59,6 +59,10 @@ property :overpass_credentials, [true, false], :default => false
 property :google_auth_id, String
 property :google_auth_secret, String
 property :google_openid_realm, String
+property :apple_auth_id, String
+property :apple_team_id, String
+property :apple_key_id, String
+property :apple_private_key, String
 property :facebook_auth_id, String
 property :facebook_auth_secret, String
 property :microsoft_auth_id, String
@@ -321,6 +325,10 @@ action :create do
     "google_auth_id",
     "google_auth_secret",
     "google_openid_realm",
+    "apple_auth_id",
+    "apple_team_id",
+    "apple_key_id",
+    "apple_private_key",
     "facebook_auth_id",
     "facebook_auth_secret",
     "microsoft_auth_id",
