@@ -49,14 +49,14 @@ server {
         proxy_set_header Connection "";
         add_header Cache-Control "public,max-age=300,stale-while-revalidate=3600,stale-if-error=86400";
         # Add diagnostics header to identify render server
-        add_header X-TileRender "<%= node.name %>" always;
+        add_header x-rendered-by "<%= node.name %>" always;
     }
     location /demo/ {
         proxy_pass http://demo;
         proxy_http_version 1.1;
         proxy_set_header Connection "";
         # Add diagnostics header to identify render server
-        add_header X-TileRender "<%= node.name %>" always;
+        add_header x-rendered-by "<%= node.name %>" always;
     }
     root /srv/vector.openstreetmap.org/html;
 }
