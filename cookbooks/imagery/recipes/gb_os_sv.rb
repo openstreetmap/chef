@@ -1227,4 +1227,5 @@ imagery_layer "gb_os_om_local_2025_04" do
   extension "os_om_local_png"
   url_aliases ["/om-local-2025-04", "/om-local", "/sv"]
   default_layer true
+  revision 2
 end
