@@ -147,6 +147,7 @@ package %w[
   r-base
   redis
   siege
+  time
   tmux
   unrar
   unzip
