@@ -45,12 +45,14 @@ action :create do
     cookbook "podman"
     template "apache.erb"
     variables :port => external_port, :aliases => new_resource.aliases
+    notifies :reload, "service[apache2]"
   end
 end
 
 action :delete do
   apache_site new_resource.site do
     action [:disable, :delete]
+    notifies :reload, "service[apache2]"
   end
 
   podman_service new_resource.site do
@@ -86,8 +88,4 @@ action_class do
 
     ports[new_resource.site]
   end
-end
-
-def after_created
-  notifies :reload, "service[apache2]"
 end
