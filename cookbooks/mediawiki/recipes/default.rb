@@ -61,8 +61,7 @@ package %w[
 
 # Mediawiki backup
 package %w[
-  xz-utils
-  liblz4-tool
+  zstd
 ]
 
 # Mediawiki packages for VisualEditor support
