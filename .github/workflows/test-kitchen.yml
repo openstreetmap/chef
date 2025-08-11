@@ -67,7 +67,6 @@ jobs:
           - logstash
           - logstash-forwarder
           - mail
-          - mailman
           - matomo
           - memcached
           - mysql
@@ -155,8 +154,6 @@ jobs:
           - suite: irc
             os: ubuntu-2204
           - suite: letsencrypt
-            os: ubuntu-2204
-          - suite: mailman
             os: ubuntu-2204
           - suite: matomo
             os: ubuntu-2204
