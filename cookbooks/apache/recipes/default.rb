@@ -53,6 +53,7 @@ template "/etc/apache2/ports.conf" do
   owner "root"
   group "root"
   mode "644"
+  notifies :restart, "service[apache2]"
 end
 
 systemd_service "apache2" do
@@ -99,6 +100,8 @@ apache_module "ssl"
 
 apache_conf "ssl" do
   template "ssl.erb"
+  reload_apache false
+  restart_apache true # restart required for shared memory config changes
 end
 
 # Apache should only be started after modules enabled
