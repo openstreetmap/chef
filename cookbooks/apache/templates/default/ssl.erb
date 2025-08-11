@@ -5,4 +5,11 @@ SSLProtocol All -SSLv2 -SSLv3
 SSLHonorCipherOrder On
 SSLCipherSuite <%= node[:ssl][:openssl_ciphers] %>
 
+SSLUseStapling off
+SSLStaplingResponderTimeout 5
+SSLStaplingErrorCacheTimeout 60
+SSLStaplingReturnResponderErrors off
+SSLStaplingFakeTryLater off
+SSLStaplingCache shmcb:${APACHE_RUN_DIR}/ssl_ocspcache(512000)
+
 Header always set Strict-Transport-Security "<%= node[:ssl][:strict_transport_security] %>" "expr=%{HTTPS} == 'on'"
