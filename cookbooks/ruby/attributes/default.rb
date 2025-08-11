@@ -1,7 +1,11 @@
 default[:ruby][:fullstaq] = true
 
 default[:ruby][:system_version] = if platform?("debian")
-                                    "3.1"
+                                    if node[:platform_version].to_i >= 13
+                                      "3.3"
+                                    else
+                                      "3.1"
+                                    end
                                   elsif node[:lsb][:release].to_f < 22.04
                                     "2.7"
                                   else
