@@ -24,7 +24,6 @@ package %w[
   php-xml
   php-curl
   rsync
-  wkhtmltopdf
   php-bcmath
   php-intl
 ]
