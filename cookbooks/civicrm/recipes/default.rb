@@ -21,11 +21,13 @@ include_recipe "wordpress"
 include_recipe "mysql"
 
 package %w[
-  php-xml
-  php-curl
   rsync
+  php-curl
   php-bcmath
+  php-fileinfo
   php-intl
+  php-mbstring
+  php-xml
 ]
 
 apache_module "rewrite"
