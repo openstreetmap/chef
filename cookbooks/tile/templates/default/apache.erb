@@ -66,10 +66,10 @@
 
   # Always set Access-Control-Allow-Origin so that simple CORS requests
   # will always work and can be cached
-  Header set Access-Control-Allow-Origin "*" "expr=-z resp('Access-Control-Allow-Origin')"
+  Header always set Access-Control-Allow-Origin "*" "expr=-z resp('Access-Control-Allow-Origin')"
 
   # Add diagnostics header to identify render server
-  Header set X-TileRender "<%= node.name %>"
+  Header always set X-TileRender "<%= node.name %>"
 
   # Tell clients to use stale tiles if necessary
   Header append Cache-Control "stale-while-revalidate=604800, stale-if-error=604800" "expr=%{CONTENT_TYPE} == 'image/png'"
