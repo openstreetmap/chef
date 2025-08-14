@@ -44,10 +44,11 @@ package %w[
 # Imagery processing Requirements
 package "imagemagick"
 
-# Imagery misc compression
+# Imagery misc utilities
 package %w[
   xz-utils
   unzip
+  aria2
 ]
 
 template "/etc/mapserver.conf" do
