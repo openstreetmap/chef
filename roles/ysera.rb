@@ -113,5 +113,6 @@ default_attributes(
 )
 
 run_list(
-  "role[ucl-public]"
+  "role[ucl-public]",
+  "role[tile]"
 )
