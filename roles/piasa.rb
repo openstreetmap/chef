@@ -136,5 +136,6 @@ default_attributes(
 )
 
 run_list(
-  "role[osuosl]"
+  "role[osuosl]",
+  "role[tile]"
 )
