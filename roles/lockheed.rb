@@ -54,13 +54,6 @@ default_attributes(
       :parameters => {
         "net.ipv4.tcp_slow_start_after_idle" => "0"
       }
-    },
-    :tcp_use_bbr => {
-      :comment => "Use TCP BBR Congestion Control",
-      :parameters => {
-        "net.core.default_qdisc" => "fq",
-        "net.ipv4.tcp_congestion_control" => "bbr"
-      }
     }
   },
   :nginx => {
