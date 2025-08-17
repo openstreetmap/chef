@@ -4,10 +4,10 @@ description "Role applied to all servers at Equinix Dublin"
 default_attributes(
   :sysctl => {
     :enable_bbr_10g => {
-      :comment => "Enable BBR. Equinix Dub has 10G uplink unlikely to buffer overrun",
+      :comment => "Enable BBR. Equinix DUB has 3Gbps uplinks",
       :parameters => {
-        "net.ipv4.tcp_congestion_control" => "bbr",
-        "net.ipv4.tcp_notsent_lowat" => "16384"
+        "net.core.default_qdisc" => "fq",
+        "net.ipv4.tcp_congestion_control" => "bbr"
       }
     }
   },

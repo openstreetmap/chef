@@ -2,6 +2,15 @@ name "equinix-ams"
 description "Role applied to all servers at Equinix Amsterdam"
 
 default_attributes(
+  :sysctl => {
+    :enable_bbr_10g => {
+      :comment => "Enable BBR. Equinix AMS has 3Gbps uplinks",
+      :parameters => {
+        "net.core.default_qdisc" => "fq",
+        "net.ipv4.tcp_congestion_control" => "bbr"
+      }
+    }
+  },
   :networking => {
     :interfaces => {
       :internal => {
