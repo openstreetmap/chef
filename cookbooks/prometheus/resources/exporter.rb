@@ -193,5 +193,5 @@ action_class do
 end
 
 def after_created
-  subscribes :restart, "git[/opt/prometheus-exporters]"
+  subscribes :restart, "archive_file[/opt/prometheus-exporters]"
 end

@@ -17,10 +17,12 @@
 # limitations under the License.
 #
 
-include_recipe "git"
 include_recipe "networking"
 
-package "ruby"
+package %w[
+  ruby
+  zstd
+]
 
 if node.internal_ipaddress
   node.default[:prometheus][:mode] = "internal"
@@ -46,13 +48,23 @@ directory "/opt/prometheus" do
   recursive true
 end
 
-git "/opt/prometheus-exporters" do
-  action :sync
-  repository "https://github.com/openstreetmap/prometheus-exporters.git"
-  revision "main"
-  depth 1
-  user "root"
+cache_dir = Chef::Config[:file_cache_path]
+
+remote_file "#{cache_dir}/prometheus-exporters.tar.zst" do
+  source "https://github.com/openstreetmap/prometheus-exporters/releases/latest/download/prometheus-exporters-#{node[:kernel][:machine]}-only.tar.zst"
+  owner "root"
   group "root"
+  mode "644"
+  backup false
+  ignore_failure true
+end
+
+archive_file "/opt/prometheus-exporters" do
+  path "#{cache_dir}/prometheus-exporters.tar.zst"
+  destination "/opt/prometheus-exporters"
+  overwrite true
+  action :nothing
+  subscribes :extract, "remote_file[#{cache_dir}/prometheus-exporters.tar.zst]", :immediately
 end
 
 directory "/etc/prometheus/collectors" do
