@@ -54,7 +54,7 @@ end
 
 imagery_layer "act_aerial_imagery_202503" do
   site "act-imagery.openstreetmap.org"
-  title "ACT Aerial Imagery 202505"
+  title "ACT Aerial Imagery 202503"
   projection "EPSG:7855"
   source "https://tiles.arcgis.com/tiles/E5n4f1VY84i0xSjy/arcgis/rest/services/2025_03_urban_75mm/MapServer/WMTS/1.0.0/WMTSCapabilities.xml"
   # attribution per https://www.actmapi.act.gov.au/terms-and-conditions and https://tiles.arcgis.com/tiles/E5n4f1VY84i0xSjy/arcgis/rest/services/ACT_Aerial_Imagery_202411/MapServer/
