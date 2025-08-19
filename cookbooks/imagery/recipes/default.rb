@@ -33,6 +33,7 @@ package %w[
   cgi-mapserver
   mapcache-cgi
   mapcache-tools
+  libtcmalloc-minimal4
 ]
 
 # Mapserver via nginx requires as fastcgi spawner

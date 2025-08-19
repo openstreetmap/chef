@@ -108,7 +108,8 @@ action :create do
                 "GDAL_CACHEMAX" => "128",
                 "GDAL_HTTP_TCP_KEEPALIVE" => "YES",
                 "GDAL_HTTP_VERSION" => "2TLS",
-                "GDAL_ENABLE_WMS_CACHE" => "NO"
+                "GDAL_ENABLE_WMS_CACHE" => "NO",
+                "LD_PRELOAD" => "libtcmalloc_minimal.so.4"
     limit_nofile 16384
     memory_high "12G"
     memory_max "12G"
