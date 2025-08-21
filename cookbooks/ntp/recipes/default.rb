@@ -73,4 +73,5 @@ execute "chronyc-online" do
   user "root"
   group "root"
   ignore_failure true
+  only_if "chronyc activity | grep -Eq '^0 sources online'"
 end
