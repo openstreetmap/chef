@@ -6,6 +6,7 @@ groups:
       - alert: he uplink
         expr: junos_interface_up{site="amsterdam",name=~"ge-[01]/2/2"} != 1
         for: 6m
+        keep_firing_for: 3m
         labels:
           alertgroup: "amsterdam"
         annotations:
@@ -13,6 +14,7 @@ groups:
       - alert: equinix uplink
         expr: junos_interface_up{site="amsterdam",name=~"xe-[01]/2/0"} != 1
         for: 6m
+        keep_firing_for: 3m
         labels:
           alertgroup: "amsterdam"
         annotations:
@@ -20,6 +22,7 @@ groups:
       - alert: pdu current draw
         expr: rPDU2PhaseStatusCurrent{site="amsterdam",rPDU2PhaseStatusIndex="1"} / 10 > 28
         for: 6m
+        keep_firing_for: 3m
         labels:
           alertgroup: "amsterdam"
         annotations:
@@ -27,6 +30,7 @@ groups:
       - alert: site power
         expr: sum(avg_over_time(rPDU2PhaseStatusApparentPower{site="amsterdam",rPDU2PhaseStatusIndex="1"}[1h]) / 100) > 3.5
         for: 6m
+        keep_firing_for: 3m
         labels:
           alertgroup: "amsterdam"
         annotations:
@@ -34,6 +38,7 @@ groups:
       - alert: site temperature
         expr: min(rPDU2SensorTempHumidityStatusTempC{site="amsterdam"}) / 10 < 15 or min(rPDU2SensorTempHumidityStatusTempC{site="amsterdam"}) / 10 > 32
         for: 6m
+        keep_firing_for: 3m
         labels:
           alertgroup: "amsterdam"
         annotations:
@@ -41,6 +46,7 @@ groups:
       - alert: site humidity
         expr: max(rPDU2SensorTempHumidityStatusRelativeHumidity{site="amsterdam"}) / 100 < 0.08 or max(rPDU2SensorTempHumidityStatusRelativeHumidity{site="amsterdam"}) / 100 > 0.8
         for: 6m
+        keep_firing_for: 3m
         labels:
           alertgroup: "amsterdam"
         annotations:
@@ -50,11 +56,13 @@ groups:
       - alert: apache down
         expr: apache_up == 0
         for: 5m
+        keep_firing_for: 3m
         labels:
           alertgroup: "{{ $labels.instance }}"
       - alert: apache workers busy
         expr: sum(apache_workers{state="busy"}) by (instance) / sum(apache_scoreboard) by (instance) > 0.8
         for: 5m
+        keep_firing_for: 3m
         labels:
           alertgroup: "{{ $labels.instance }}"
         annotations:
@@ -62,6 +70,7 @@ groups:
       - alert: apache connection limit
         expr: (apache_connections{state="total"} - on (instance) apache_connections{state="closing"}) / on (instance) (apache_server_limit * on (instance) (apache_threads_per_child + on (instance) (apache_async_request_worker_factor * on (instance) apache_workers{state="idle"} / on(instance) apache_processes{state="all"}))) > 0.8
         for: 5m
+        keep_firing_for: 3m
         labels:
           alertgroup: "{{ $labels.instance }}"
         annotations:
@@ -71,6 +80,7 @@ groups:
       - alert: chef client not running
         expr: time() - node_systemd_timer_last_trigger_seconds{name="chef-client.timer"} > 3600
         for: 12h
+        keep_firing_for: 10m
         labels:
           alertgroup: "{{ $labels.instance }}"
         annotations:
@@ -106,6 +116,7 @@ groups:
       - alert: cpu pressure
         expr: rate(node_pressure_cpu_waiting_seconds_total[5m]) > 0.75
         for: 60m
+        keep_firing_for: 10m
         labels:
           alertgroup: "{{ $labels.instance }}"
         annotations:
@@ -115,6 +126,7 @@ groups:
       - alert: active rails queries
         expr: sum(pg_stat_activity_count{datname="openstreetmap",usename="rails",state="active"}) by (instance) > 50 and on (instance) chef_role{name="db-master"}
         for: 5m
+        keep_firing_for: 3m
         labels:
           alertgroup: database
         annotations:
@@ -122,6 +134,7 @@ groups:
       - alert: active cgimap queries
         expr: sum(pg_stat_activity_count{datname="openstreetmap",usename="cgimap",state="active"}) by (instance) > 30 and on (instance) chef_role{name="db-master"}
         for: 5m
+        keep_firing_for: 3m
         labels:
           alertgroup: database
         annotations:
@@ -131,6 +144,7 @@ groups:
       - alert: discourse job failure rate
         expr: rate(discourse_job_failures[5m]) > 0
         for: 5m
+        keep_firing_for: 3m
         labels:
           alertgroup: discourse
         annotations:
@@ -140,6 +154,7 @@ groups:
       - alert: he uplink
         expr: junos_interface_up{site="dublin",name=~"ge-[01]/2/2"} != 1
         for: 6m
+        keep_firing_for: 3m
         labels:
           alertgroup: "dublin"
         annotations:
@@ -147,6 +162,7 @@ groups:
       - alert: equinix uplink
         expr: junos_interface_up{site="dublin",name=~"xe-[01]/2/0"} != 1
         for: 6m
+        keep_firing_for: 3m
         labels:
           alertgroup: "dublin"
         annotations:
@@ -154,6 +170,7 @@ groups:
       - alert: pdu current draw
         expr: rPDU2PhaseStatusCurrent{site="dublin",rPDU2PhaseStatusIndex="1"} / 10 > 28
         for: 6m
+        keep_firing_for: 3m
         labels:
           alertgroup: "dublin"
         annotations:
@@ -161,6 +178,7 @@ groups:
       - alert: site power
         expr: sum(avg_over_time(rPDU2PhaseStatusApparentPower{site="dublin",rPDU2PhaseStatusIndex="1"}[1h]) / 100) > 4
         for: 6m
+        keep_firing_for: 3m
         labels:
           alertgroup: "dublin"
         annotations:
@@ -168,6 +186,7 @@ groups:
       - alert: site temperature
         expr: min(rPDU2SensorTempHumidityStatusTempC{site="dublin"}) / 10 < 18 or min(rPDU2SensorTempHumidityStatusTempC{site="dublin"}) / 10 > 26
         for: 6m
+        keep_firing_for: 3m
         labels:
           alertgroup: "dublin"
         annotations:
@@ -175,6 +194,7 @@ groups:
       - alert: site humidity
         expr: max(rPDU2SensorTempHumidityStatusRelativeHumidity{site="dublin"}) / 100 < 0.25 or max(rPDU2SensorTempHumidityStatusRelativeHumidity{site="dublin"}) / 100 > 0.65
         for: 6m
+        keep_firing_for: 3m
         labels:
           alertgroup: "dublin"
         annotations:
@@ -184,6 +204,7 @@ groups:
       - alert: fastly error rate
         expr: sum(rate(fastly_rt_status_group_total{status_group="5xx"}[5m])) by (service_name, datacenter) / sum(rate(fastly_rt_status_group_total[5m])) by (service_name, datacenter) > 0.005
         for: 15m
+        keep_firing_for: 450s
         labels:
           alertgroup: fastly
         annotations:
@@ -191,21 +212,25 @@ groups:
       - alert: fastly frontend healthcheck warning
         expr: count(fastly_healthcheck_status == 0) by (service, datacenter) > 2
         for: 15m
+        keep_firing_for: 450s
         labels:
           alertgroup: fastly
       - alert: fastly frontend healthcheck critical
         expr: count(fastly_healthcheck_status == 0) by (service, datacenter) == count(fastly_healthcheck_status) by (service, datacenter)
         for: 5m
+        keep_firing_for: 150s
         labels:
           alertgroup: fastly
       - alert: fastly backend healthcheck warning
         expr: count(fastly_healthcheck_status == 0) by (service, backend) > 10
         for: 15m
+        keep_firing_for: 450s
         labels:
           alertgroup: fastly
       - alert: fastly backend healthcheck critical
         expr: count(fastly_healthcheck_status == 0) by (service, backend) == count(fastly_healthcheck_status) by (service, backend)
         for: 5m
+        keep_firing_for: 150s
         labels:
           alertgroup: fastly
   - name: filesystem
@@ -218,6 +243,7 @@ groups:
       - alert: filesystem low on space
         expr: node_filesystem_avail_bytes / node_filesystem_size_bytes < 0.05
         for: 5m
+        keep_firing_for: 150s
         labels:
           alertgroup: "{{ $labels.instance }}"
         annotations:
@@ -238,6 +264,7 @@ groups:
       - alert: hwmon fan alarm
         expr: node_hwmon_fan_alarm == 1
         for: 5m
+        keep_firing_for: 150s
         labels:
           alertgroup: "{{ $labels.instance }}"
         annotations:
@@ -246,6 +273,7 @@ groups:
       - alert: hwmon temperature alarm
         expr: node_hwmon_temp_alarm == 1
         for: 5m
+        keep_firing_for: 150s
         labels:
           alertgroup: "{{ $labels.instance }}"
         annotations:
@@ -255,6 +283,7 @@ groups:
       - alert: hwmon voltage alarm
         expr: node_hwmon_in_alarm == 1
         for: 5m
+        keep_firing_for: 150s
         labels:
           alertgroup: "{{ $labels.instance }}"
         annotations:
@@ -275,6 +304,7 @@ groups:
       - alert: ipmi fan alarm
         expr: ipmi_fan_speed_state > 0
         for: 5m
+        keep_firing_for: 150s
         labels:
           alertgroup: "{{ $labels.instance }}"
         annotations:
@@ -282,6 +312,7 @@ groups:
       - alert: ipmi temperature alarm
         expr: ipmi_temperature_state > 0
         for: 5m
+        keep_firing_for: 150s
         labels:
           alertgroup: "{{ $labels.instance }}"
         annotations:
@@ -289,6 +320,7 @@ groups:
       - alert: ipmi voltage alarm
         expr: ipmi_voltage_state > 0
         for: 5m
+        keep_firing_for: 150s
         labels:
           alertgroup: "{{ $labels.instance }}"
         annotations:
@@ -296,6 +328,7 @@ groups:
       - alert: ipmi power alarm
         expr: ipmi_power_state > 0 or ipmi_sensor_state{type=~"Power .*"} > 0
         for: 5m
+        keep_firing_for: 150s
         labels:
           alertgroup: "{{ $labels.instance }}"
   - name: juniper
@@ -303,6 +336,7 @@ groups:
       - alert: juniper red alarms
         expr: juniper_alarms_red_count > 0
         for: 5m
+        keep_firing_for: 150s
         labels:
           alertgroup: "{{ $labels.site }}"
         annotations:
@@ -310,6 +344,7 @@ groups:
       - alert: juniper yellow alarms
         expr: juniper_alarms_yellow_count > 0
         for: 5m
+        keep_firing_for: 150s
         labels:
           alertgroup: "{{ $labels.site }}"
         annotations:
@@ -317,6 +352,7 @@ groups:
       - alert: juniper cpu alarm
         expr: junos_route_engine_load_average_five / 2 > 0.5
         for: 5m
+        keep_firing_for: 150s
         labels:
           alertgroup: "{{ $labels.site }}"
         annotations:
@@ -324,16 +360,19 @@ groups:
       - alert: juniper fan alarm
         expr: junos_environment_fan_up != 1
         for: 5m
+        keep_firing_for: 150s
         labels:
           alertgroup: "{{ $labels.site }}"
       - alert: juniper power alarm
         expr: junos_environment_power_up != 1
         for: 5m
+        keep_firing_for: 150s
         labels:
           alertgroup: "{{ $labels.site }}"
       - alert: juniper laser receive power
         expr: junos_interface_diagnostics_laser_rx_dbm < -12 and on (site, instance, name) junos_interface_admin_up == 1
         for: 5m
+        keep_firing_for: 150s
         labels:
           alertgroup: "{{ $labels.site }}"
         annotations:
@@ -341,6 +380,7 @@ groups:
       - alert: juniper laser transmit power
         expr: junos_interface_diagnostics_laser_output_dbm < -8 and on (site, instance, name) junos_interface_admin_up == 1
         for: 5m
+        keep_firing_for: 150s
         labels:
           alertgroup: "{{ $labels.site }}"
         annotations:
@@ -350,6 +390,7 @@ groups:
       - alert: load average
         expr: sum(node_load5) by (instance) / count(node_cpu_frequency_max_hertz) by (instance) > 2
         for: 5m
+        keep_firing_for: 150s
         labels:
           alertgroup: "{{ $labels.instance }}"
         annotations:
@@ -359,11 +400,13 @@ groups:
       - alert: exim down
         expr: exim_up == 0
         for: 5m
+        keep_firing_for: 150s
         labels:
           alertgroup: "{{ $labels.instance }}"
       - alert: exim queue length
         expr: exim_queue > ignoring(job) exim_queue_limit
         for: 60m
+        keep_firing_for: 10m
         labels:
           alertgroup: mail
         annotations:
@@ -371,6 +414,7 @@ groups:
       - alert: mailman queue length
         expr: mailman_queue_length > 200
         for: 60m
+        keep_firing_for: 10m
         labels:
           alertgroup: mail
         annotations:
@@ -412,6 +456,7 @@ groups:
       - alert: low memory
         expr: node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes < 0.1
         for: 15m
+        keep_firing_for: 450s
         labels:
           alertgroup: "{{ $labels.instance }}"
         annotations:
@@ -419,6 +464,7 @@ groups:
       - alert: memory pressure
         expr: rate(node_pressure_memory_waiting_seconds_total[5m]) > 0.6
         for: 60m
+        keep_firing_for: 10m
         labels:
           alertgroup: "{{ $labels.instance }}"
         annotations:
@@ -456,6 +502,7 @@ groups:
       - alert: interface redundancy lost
         expr: node_bonding_active < 2 and on (instance, master) label_replace(chef_network_interface{bond_mode="802.3ad"}, "master", "$1", "name", "(.*)")
         for: 5m
+        keep_firing_for: 150s
         labels:
           alertgroup: "{{ $labels.instance }}"
         annotations:
@@ -463,6 +510,7 @@ groups:
       - alert: interface transmit rate
         expr: rate(node_network_transmit_bytes_total[1m]) / node_network_speed_bytes > 0.99
         for: 5m
+        keep_firing_for: 150s
         labels:
           alertgroup: "{{ $labels.instance }}"
         annotations:
@@ -470,6 +518,7 @@ groups:
       - alert: interface receive rate
         expr: rate(node_network_receive_bytes_total[1m]) / node_network_speed_bytes > 0.99
         for: 5m
+        keep_firing_for: 150s
         labels:
           alertgroup: "{{ $labels.instance }}"
         annotations:
@@ -477,6 +526,7 @@ groups:
       - alert: interface transmit errors
         expr: rate(node_network_transmit_errs_total{device!~"wg.*"}[1m]) / rate(node_network_transmit_packets_total{device!~"wg.*"}[1m]) > 0.01
         for: 5m
+        keep_firing_for: 150s
         labels:
           alertgroup: "{{ $labels.instance }}"
         annotations:
@@ -484,6 +534,7 @@ groups:
       - alert: wireguard interface transmit errors
         expr: rate(node_network_transmit_errs_total{device=~"wg.*"}[1m]) / rate(node_network_transmit_packets_total{device=~"wg.*"}[1m]) > 0.05
         for: 1h
+        keep_firing_for: 20m
         labels:
           alertgroup: "{{ $labels.instance }}"
         annotations:
@@ -491,6 +542,7 @@ groups:
       - alert: interface receive errors
         expr: rate(node_network_receive_errs_total[1m]) / rate(node_network_receive_packets_total[1m]) > 0.01
         for: 5m
+        keep_firing_for: 150s
         labels:
           alertgroup: "{{ $labels.instance }}"
         annotations:
@@ -498,6 +550,7 @@ groups:
       - alert: conntrack entries
         expr: node_nf_conntrack_entries / node_nf_conntrack_entries_limit > 0.8
         for: 5m
+        keep_firing_for: 150s
         labels:
           alertgroup: "{{ $labels.instance }}"
         annotations:
@@ -507,6 +560,7 @@ groups:
       - alert: nominatim replication delay
         expr: nominatim_replication_delay > 10800
         for: 1h
+        keep_firing_for: 30m
         labels:
           alertgroup: nominatim
         annotations:
@@ -514,6 +568,7 @@ groups:
       - alert: nominatim connections
         expr: sum(nginx_connections_writing and on (instance) chef_role{name="nominatim"}) > 2500
         for: 15m
+        keep_firing_for: 450s
         labels:
           alertgroup: nominatim
   - name: overpass
@@ -521,6 +576,7 @@ groups:
       - alert: overpass osm database age
         expr: overpass_database_age_seconds{database="osm"} > 3600
         for: 1h
+        keep_firing_for: 10m
         labels:
           alertgroup: overpass
         annotations:
@@ -528,6 +584,7 @@ groups:
       - alert: overpass area database age
         expr: overpass_database_age_seconds{database="area"} > 86400
         for: 1h
+        keep_firing_for: 10m
         labels:
           alertgroup: overpass
         annotations:
@@ -537,16 +594,19 @@ groups:
       - alert: passenger down
         expr: passenger_up == 0
         for: 5m
+        keep_firing_for: 150s
         labels:
           alertgroup: "{{ $labels.instance }}"
       - alert: passenger queuing
         expr: passenger_top_level_request_queue > 0
         for: 5m
+        keep_firing_for: 150s
         labels:
           alertgroup: "{{ $labels.instance }}"
       - alert: passenger application queuing
         expr: passenger_app_request_queue > 0
         for: 5m
+        keep_firing_for: 150s
         labels:
           alertgroup: "{{ $labels.instance }}"
   - name: planet
@@ -568,6 +628,7 @@ groups:
       - alert: daily replication feed delayed
         expr: time() - file_stat_modif_time_seconds{path=~"/store/planet/replication/day/.*"} > 86400 and ignoring (job, name, path) chef_role{name="planetdump"} == 1
         for: 3h
+        keep_firing_for: 10m
         labels:
           alertgroup: planet
         annotations:
@@ -582,6 +643,7 @@ groups:
       - alert: minutely replication feed delayed
         expr: time() - file_stat_modif_time_seconds{path=~"/store/planet/replication/minute/.*"} > 60 and ignoring (job, name, path) chef_role{name="planetdump"} == 1
         for: 5m
+        keep_firing_for: 150s
         labels:
           alertgroup: planet
         annotations:
@@ -589,6 +651,7 @@ groups:
       - alert: changeset replication feed delayed
         expr: time() - file_stat_modif_time_seconds{path=~"/store/planet/replication/changesets/.*"} > 60 and ignoring (job, name, path) chef_role{name="planetdump"} == 1
         for: 5m
+        keep_firing_for: 150s
         labels:
           alertgroup: planet
         annotations:
@@ -603,6 +666,7 @@ groups:
       - alert: postgresql replication delay
         expr: pg_replication_lag_seconds > 30
         for: 15m
+        keep_firing_for: 5m
         labels:
           alertgroup: "{{ $labels.instance }}"
         annotations:
@@ -610,6 +674,7 @@ groups:
       - alert: postgresql connection limit
         expr: sum (pg_stat_activity_count) by (instance, server) / sum (pg_settings_max_connections) by (instance, server) > 0.8
         for: 1m
+        keep_firing_for: 30s
         labels:
           alertgroup: "{{ $labels.instance }}"
         annotations:
@@ -624,6 +689,7 @@ groups:
       - alert: postgresql idle transactions
         expr: sum(pg_process_idle_seconds_count{state="idle in transaction"}) by (instance, server) > sum(pg_process_idle_seconds_bucket{state="idle in transaction",le="300"}) by (instance, server)
         for: 5m
+        keep_firing_for: 150s
         labels:
           alertgroup: "{{ $labels.instance }}"
         annotations:
@@ -633,16 +699,19 @@ groups:
       - alert: prometheus configuration error
         expr: prometheus_config_last_reload_successful == 0
         for: 10m
+        keep_firing_for: 5m
         labels:
           alertgroup: "prometheus"
       - alert: prometheus target missing
         expr: up == 0
         for: 10m
+        keep_firing_for: 5m
         labels:
           alertgroup: "prometheus"
       - alert: node exporter text file scrape error
         expr: node_textfile_scrape_error > 0
         for: 10m
+        keep_firing_for: 5m
         labels:
           alertgroup: "prometheus"
   - name: raid
@@ -650,21 +719,25 @@ groups:
       - alert: raid controller battery failed
         expr: ohai_controller_info{battery_status="failed"} > 0
         for: 5m
+        keep_firing_for: 150s
         labels:
           alertgroup: "{{ $labels.instance }}"
       - alert: raid controller battery recharging
         expr: ohai_controller_info{battery_status="recharging"} > 0
         for: 4h
+        keep_firing_for: 30m
         labels:
           alertgroup: "{{ $labels.instance }}"
       - alert: raid array degraded
         expr: ohai_array_info{status="degraded"} > 0
         for: 5m
+        keep_firing_for: 150s
         labels:
           alertgroup: "{{ $labels.instance }}"
       - alert: raid disk failed
         expr: ohai_disk_info{status="failed"} > 0
         for: 5m
+        keep_firing_for: 150s
         labels:
           alertgroup: "{{ $labels.instance }}"
   - name: rasdaemon
@@ -688,6 +761,7 @@ groups:
       - alert: dnssec validation failures
         expr: rate(resolved_dnssec_verdicts_total{result="bogus"}[1m]) > 1
         for: 5m
+        keep_firing_for: 150s
         labels:
           alertgroup: "{{ $labels.instance }}"
   - name: smart
@@ -695,11 +769,13 @@ groups:
       - alert: smart failure
         expr: smart_health_status == 0
         for: 60m
+        keep_firing_for: 10m
         labels:
           alertgroup: "{{ $labels.instance }}"
       - alert: smart ssd wearout approaching
         expr: smart_percentage_used / 100 >= 0.8
         for: 60m
+        keep_firing_for: 10m
         labels:
           alertgroup: "{{ $labels.instance }}"
         annotations:
@@ -709,6 +785,7 @@ groups:
       - alert: packet loss
         expr: 1 - (rate(smokeping_response_duration_seconds_count[5m]) / rate(smokeping_requests_total[5m])) > 0.02
         for: 10m
+        keep_firing_for: 5m
         labels:
           alertgroup: smokeping
         annotations:
@@ -758,6 +835,7 @@ groups:
       - alert: systemd failed service
         expr: node_systemd_unit_state{state="failed",name!="chef-client.service"} == 1
         for: 5m
+        keep_firing_for: 150s
         labels:
           alertgroup: "{{ $labels.instance }}"
       - alert: systemd failed chef client service
@@ -784,6 +862,7 @@ groups:
       - alert: taginfo database size
         expr: abs(delta(taginfo_database_size_bytes[30m])) / taginfo_database_size_bytes > 0.1
         for: 30m
+        keep_firing_for: 10m
         labels:
           alertgroup: taginfo
         annotations:
@@ -793,6 +872,7 @@ groups:
       - alert: renderd replication delay
         expr: renderd_replication_delay > 120
         for: 15m
+        keep_firing_for: 10m
         labels:
           alertgroup: tile
         annotations:
@@ -800,6 +880,7 @@ groups:
       - alert: missed tile rate
         expr: sum(rate(modtile_http_response_total{code="404"}[5m])) by (instance) / sum(rate(modtile_http_response_total[5m])) by (instance) > 0.05
         for: 5m
+        keep_firing_for: 3m
         labels:
           alertgroup: tile
         annotations:
@@ -807,6 +888,7 @@ groups:
       - alert: tile render rate
         expr: sum(rate(renderd_zoom_metatiles_total[5m])) by (instance) == 0
         for: 15m
+        keep_firing_for: 10m
         labels:
           alertgroup: tile
         annotations:
@@ -816,11 +898,13 @@ groups:
       - alert: clock not synchronising
         expr: min_over_time(node_timex_sync_status[1m]) == 0 and node_timex_maxerror_seconds >= 16
         for: 5m
+        keep_firing_for: 2m
         labels:
           alertgroup: "{{ $labels.instance }}"
       - alert: clock skew detected
         expr: (node_timex_offset_seconds > 0.05 and deriv(node_timex_offset_seconds[5m]) >= 0) or (node_timex_offset_seconds < -0.05 and deriv(node_timex_offset_seconds[5m]) <= 0)
         for: 5m
+        keep_firing_for: 2m
         labels:
           alertgroup: "{{ $labels.instance }}"
         annotations:
@@ -830,6 +914,7 @@ groups:
       - alert: web error rate
         expr: sum(rate(api_call_count_total{status=~"50[0-8]|5[1-9][0-9]"}[5m])) by (instance) / sum(rate(api_call_count_total[5m])) by (instance) > 0.002 and sum(rate(api_call_count_total{status=~"50[0-8]|5[1-9][0-9]"}[5m])) by (instance) > 0.05
         for: 5m
+        keep_firing_for: 3m
         labels:
           alertgroup: web
         annotations:
@@ -837,6 +922,7 @@ groups:
       - alert: job processing rate
         expr: rate(pg_stat_user_tables_n_tup_del{datname="openstreetmap",relname="delayed_jobs"}[1h]) / rate(pg_stat_user_tables_n_tup_ins{datname="openstreetmap",relname="delayed_jobs"}[1h]) < 0.9 and ignoring(job, name, datname, relname, schemaname, server) chef_role{name="db-master"} == 1
         for: 1h
+        keep_firing_for: 10m
         labels:
           alertgroup: web
         annotations:
