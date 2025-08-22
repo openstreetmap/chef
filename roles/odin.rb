@@ -110,7 +110,7 @@ default_attributes(
   },
   :tile => {
     :database => {
-      :cluster => "16/main",
+      :cluster => "17/main",
       :postgis => "3"
     },
     :mapnik => "3.1",
@@ -125,6 +125,5 @@ default_attributes(
 )
 
 run_list(
-  "role[equinix-ams-public]",
-  "role[tile]"
+  "role[equinix-ams-public]"
 )
