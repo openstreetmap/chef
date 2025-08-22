@@ -43,7 +43,7 @@ package %w[
 git "/opt/osmdbt" do
   action :sync
   repository "https://github.com/openstreetmap/osmdbt.git"
-  revision "v0.5"
+  revision "v0.9"
   depth 1
   user "root"
   group "root"
