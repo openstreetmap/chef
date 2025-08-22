@@ -125,5 +125,6 @@ default_attributes(
 )
 
 run_list(
-  "role[equinix-ams-public]"
+  "role[equinix-ams-public]",
+  "role[tile]"
 )
