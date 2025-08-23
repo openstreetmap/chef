@@ -79,6 +79,18 @@ remote_directory "/srv/dns.openstreetmap.org/html" do
   files_mode "644"
 end
 
+link "/srv/dns.openstreetmap.org/html/ipv4.json" do
+  to "/var/lib/dns/src/ipv4.json"
+  owner "root"
+  group "root"
+end
+
+link "/srv/dns.openstreetmap.org/html/ipv6.json" do
+  to "/var/lib/dns/src/ipv6.json"
+  owner "root"
+  group "root"
+end
+
 zones = []
 
 Dir.glob("/var/lib/dns/json/*.json").each do |kmlfile|
