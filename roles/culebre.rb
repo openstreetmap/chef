@@ -63,5 +63,6 @@ default_attributes(
 )
 
 run_list(
-  "role[equinix-dub-public]"
+  "role[equinix-dub-public]",
+  "role[tile]"
 )
