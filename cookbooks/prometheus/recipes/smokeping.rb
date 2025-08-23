@@ -32,7 +32,7 @@ hosts = {}
 
   hosts[protocol] = if File.exist?(json_file)
                       JSON.parse(IO.read(json_file)).filter_map do |name, address|
-                        name unless address.start_with?("10.")
+                        name unless name.split(".").first == node[:hostname] || address.start_with?("10.")
                       end
                     else
                       []
