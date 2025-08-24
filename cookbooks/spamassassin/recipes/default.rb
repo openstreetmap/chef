@@ -19,7 +19,7 @@
 
 package "spamassassin"
 
-service_name = if platform?("debian")
+service_name = if platform?("debian") || (platform?("ubuntu") && node[:lsb][:release].to_f >= 24.04)
                  "spamd"
                else
                  "spamassassin"

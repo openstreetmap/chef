@@ -12,7 +12,7 @@ concurrency:
 jobs:
   kitchen:
     name: Test Kitchen
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     permissions:
       packages: read
     strategy:
@@ -120,6 +120,7 @@ jobs:
           - wiki
         os:
           - ubuntu-2204
+          - ubuntu-2404
         include:
           - os: ubuntu-2004
             suite: mailman
@@ -232,6 +233,14 @@ jobs:
             os: ubuntu-2204
           - suite: wiki
             os: ubuntu-2204
+          - suite: mailman
+            os: ubuntu-2404
+          - suite: osqa
+            os: ubuntu-2404
+          - suite: otrs
+            os: ubuntu-2404
+          - suite: taginfo
+            os: ubuntu-2404
       fail-fast: false
     steps:
     - name: Login to GitHub Container Registry
