@@ -12,6 +12,9 @@ describe docker_image("local_discourse/data:latest") do
 end
 
 describe docker_image("local_discourse/mail-receiver:latest") do
+  before do
+    skip if os.arch.include?("aarch64") # mail-receiver is not yet supported on ARM
+  end
   it { should exist }
 end
 

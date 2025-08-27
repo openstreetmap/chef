@@ -63,7 +63,7 @@ git "/srv/community.openstreetmap.org/docker" do
   action :sync
   repository "https://github.com/discourse/discourse_docker.git"
   # DANGER launch wrapper automatically updates git repo if rebuild method used: https://github.com/discourse/discourse_docker/blob/107ffb40fe8b1ea40e00814468db974a4f3f8e8f/launcher#L799
-  revision "072c5260e72198b54afc33185b4a9d1a25dfe216"
+  revision "bea85a5690baca2acc8ebb8b2f58bf5a49d2e766"
   user "root"
   group "root"
   notifies :run, "notify_group[discourse_container_new_data]"
@@ -204,6 +204,7 @@ execute "discourse_container_mail_receiver_bootstrap" do
   cwd "/srv/community.openstreetmap.org/docker/"
   user "root"
   group "root"
+  not_if { arm? } # Not yet supported on ARM https://github.com/discourse/mail-receiver/pull/28
 end
 
 execute "discourse_container_mail_receiver_destroy" do
@@ -212,6 +213,7 @@ execute "discourse_container_mail_receiver_destroy" do
   cwd "/srv/community.openstreetmap.org/docker/"
   user "root"
   group "root"
+  not_if { arm? } # Not yet supported on ARM https://github.com/discourse/mail-receiver/pull/28
 end
 
 execute "discourse_container_mail_receiver_start" do
@@ -220,6 +222,7 @@ execute "discourse_container_mail_receiver_start" do
   cwd "/srv/community.openstreetmap.org/docker/"
   user "root"
   group "root"
+  not_if { arm? } # Not yet supported on ARM https://github.com/discourse/mail-receiver/pull/28
 end
 
 template "/etc/cron.daily/community-backup" do

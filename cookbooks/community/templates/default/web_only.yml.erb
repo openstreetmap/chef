@@ -20,7 +20,7 @@ links:
 # any extra arguments for Docker?
 # docker_args:
 
-# Latest Version v3.4.6
+# Latest Version v3.5.0
 # Discourse only support tests-passed and stable branches
 params:
   version: stable
@@ -104,13 +104,13 @@ hooks:
     - exec:
         cd: $home/plugins
         cmd:
-          - sudo -H -E -u discourse git clone --depth 1 --branch main https://github.com/discourse/discourse-oauth2-basic.git
-          - sudo -H -E -u discourse git clone --depth 1 --branch main https://github.com/discourse/discourse-solved.git
-          - sudo -H -E -u discourse git clone --depth 1 --branch main https://github.com/discourse/discourse-reactions.git
-          - sudo -H -E -u discourse git clone --depth 1 --branch main https://github.com/discourse/discourse-prometheus.git
-          - sudo -H -E -u discourse git clone --depth 1 --branch main https://github.com/discourse/discourse-translator.git
-          - sudo -H -E -u discourse git clone --depth 1 --branch main https://github.com/discourse/discourse-saved-searches.git
-          - sudo -H -E -u discourse git clone --depth 1 --branch main https://github.com/discourse/discourse-post-voting.git
+          - if [ ! -d discourse-oauth2-basic ]; then sudo -H -E -u discourse git clone --depth 1 --branch main https://github.com/discourse/discourse-oauth2-basic.git; fi
+          - if [ ! -d discourse-solved ]; then sudo -H -E -u discourse git clone --depth 1 --branch main https://github.com/discourse/discourse-solved.git; fi
+          - if [ ! -d discourse-reactions ]; then sudo -H -E -u discourse git clone --depth 1 --branch main https://github.com/discourse/discourse-reactions.git; fi
+          - if [ ! -d discourse-prometheus ]; then sudo -H -E -u discourse git clone --depth 1 --branch main https://github.com/discourse/discourse-prometheus.git; fi
+          - if [ ! -d discourse-translator ]; then sudo -H -E -u discourse git clone --depth 1 --branch main https://github.com/discourse/discourse-translator.git; fi
+          - if [ ! -d discourse-saved-searches ]; then sudo -H -E -u discourse git clone --depth 1 --branch main https://github.com/discourse/discourse-saved-searches.git; fi
+          - if [ ! -d discourse-post-voting ]; then sudo -H -E -u discourse git clone --depth 1 --branch main https://github.com/discourse/discourse-post-voting.git; fi
     - exec:
         # Needs to be copied in else builtin git cleanup fails
         cd: $home
@@ -120,7 +120,6 @@ hooks:
     - file:
         path: "/etc/nginx/conf.d/outlets/server/25-https-osm-settings.conf"
         contents: |
-          ssl_stapling on;
           resolver <%= @resolvers.join(" ") %>;
           resolver_timeout 5s;
           ssl_dhparam /shared/ssl/dhparam.pem;
