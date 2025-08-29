@@ -59,5 +59,6 @@ default_attributes(
 )
 
 run_list(
-  "role[umu]"
+  "role[umu]",
+  "role[tile]"
 )
