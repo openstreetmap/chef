@@ -12,8 +12,8 @@ start() {
 }
 
 stop() {
-  /usr/sbin/nft list set inet chef-filter ip-blocklist > /var/lib/nftables/ip-blocklist.nft
-  /usr/sbin/nft list set inet chef-filter ip6-blocklist > /var/lib/nftables/ip6-blocklist.nft
+  /usr/sbin/nft list set inet chef-filter ip-blocklist > /var/lib/nftables/ip-blocklist.nft || true
+  /usr/sbin/nft list set inet chef-filter ip6-blocklist > /var/lib/nftables/ip6-blocklist.nft || true
   /usr/sbin/nft delete table inet chef-filter
 <% if node[:roles].include?("gateway") -%>
   /usr/sbin/nft delete table ip chef-nat
