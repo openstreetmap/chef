@@ -22,14 +22,56 @@ include_recipe "accounts"
 package %w[
   clamav-daemon
   clamav-freshclam
-  clamav-unofficial-sigs
 ]
 
-template "/etc/clamav-unofficial-sigs.conf.d/50-chef.conf" do
-  source "clamav-unofficial-sigs.conf.erb"
-  owner "root"
-  group "root"
-  mode "644"
+if platform?("debian") && node[:platform_version].to_i >= 13
+  package "clamav-unofficial-sigs" do
+    action :remove
+  end
+
+  package %w[
+    fangfrisch
+    clamdscan
+  ]
+
+  directory "/var/lib/fangfrisch" do
+    owner "clamav"
+    group "clamav"
+    mode "775"
+  end
+
+  template "/etc/fangfrisch.conf" do
+    source "fangfrisch.conf.erb"
+    owner "root"
+    group "root"
+    mode "644"
+  end
+
+  execute "fangfrisch-initdb" do
+    command "/usr/bin/fangfrisch --conf /etc/fangfrisch.conf initdb"
+    user "clamav"
+    group "clamav"
+    not_if do
+      ::File.exist?("/var/lib/fangfrisch/db.sqlite")
+    end
+  end
+
+  service "fangfrisch.timer" do
+    action [:enable, :start]
+  end
+
+  file "/etc/clamav-unofficial-sigs.conf.d/50-chef.conf" do
+    action :delete
+  end
+else
+  package "clamav-unofficial-sigs"
+
+  template "/etc/clamav-unofficial-sigs.conf.d/50-chef.conf" do
+    source "clamav-unofficial-sigs.conf.erb"
+    owner "root"
+    group "root"
+    mode "644"
+  end
 end
 
 execute "freshclam" do
