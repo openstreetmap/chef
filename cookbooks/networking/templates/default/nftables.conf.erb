@@ -27,11 +27,13 @@ table inet chef-filter {
   set ip-blocklist {
     type ipv4_addr
     flags interval
+    auto-merge
   }
 
   set ip6-blocklist {
     type ipv6_addr
     flags interval
+    auto-merge
   }
 
   set ratelimit-icmp-echo-ip {
