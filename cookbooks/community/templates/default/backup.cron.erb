@@ -15,7 +15,7 @@ ln -s /srv/community.openstreetmap.org/shared/web-only "$T/community-$D/shared-w
 ln -s /srv/community.openstreetmap.org/shared/data/redis_data "$T/community-$D/shared-data-redis_data"
 ln -s /srv/community.openstreetmap.org/shared/data/postgres_backup "$T/community-$D/shared-data-postgres_backup"
 
-nice tar --create --numeric-owner --dereference --directory="$T" --warning=no-file-changed "community-$D" | nice zstd --quiet --adapt --rsyncable -o "$T/$B"
+nice tar --create --numeric-owner --sort=name --dereference --directory="$T" --warning=no-file-changed "community-$D" --exclude "community-$D/shared-web-only/log/**/*.gz" | nice zstd --quiet --adapt --rsyncable -o "$T/$B"
 nice rsync --preallocate --fuzzy "$T/$B" backup.openstreetmap.org::backup
 
 rm -rf "$T"
