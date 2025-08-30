@@ -16,7 +16,7 @@ echo 'password=<%= @passwords["osm-blog-staging-user"] %>' >> "$T/mysqldump.opts
 mysqldump --defaults-file="$T/mysqldump.opts" --opt --no-tablespaces osm-blog-staging > "$T/osm-blog-staging-$D/osm-blog-staging.sql"
 ln -s /srv/staging.blog.openstreetmap.org "$T/osm-blog-staging-$D/www"
 
-nice tar --create --dereference --directory="$T" --warning=no-file-changed "osm-blog-staging-$D" | nice zstd --quiet --rsyncable -o "$T/$B"
+nice tar --create --dereference --directory="$T" --warning=no-file-changed "osm-blog-staging-$D" | nice zstd --quiet --adapt --rsyncable -o "$T/$B"
 nice rsync --preallocate --fuzzy "$T/$B" backup.openstreetmap.org::backup
 
 rm -rf "$T"
