@@ -9,7 +9,7 @@
   delaycompress
   compresscmd /usr/bin/zstd
   compressext .zst
-  compressoptions -T0
+  compressoptions -T0 --adapt
   uncompresscmd /usr/bin/unzstd
   notifempty
   create 640 root adm
