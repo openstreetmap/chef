@@ -22,6 +22,7 @@ jobs:
           - apache
           - apt
           - apt-repository
+          - awscli
           - backup
           - bind
           - blog
@@ -61,6 +62,7 @@ jobs:
           - hardware
           - hot
           - ideditor
+          - imagery-tiler
           - irc
           - kibana
           - letsencrypt
@@ -106,6 +108,7 @@ jobs:
           - sysctl
           - sysfs
           - taginfo
+          - tile
           - tilelog
           - tools
           - trac
@@ -113,123 +116,97 @@ jobs:
           - web-cgimap
           - web-frontend
           - web-rails
-          - wordpress
           - wiki
+          - wordpress
         os:
-          - ubuntu-2204
-        include:
-          - os: ubuntu-2004
-            suite: mailman
-          - os: debian-12
-            suite: osqa
-          - os: debian-12
-            suite: apt-repository
-          - os: debian-12
-            suite: blogs
-          - os: debian-12
-            suite: community
-          - os: debian-12
-            suite: dev
-          - os: debian-12
-            suite: dns
-          - os: debian-12
-            suite: git-server
-          - os: debian-12
-            suite: git-web
-          - os: debian-12
-            suite: gps-tile
-          - os: debian-12
-            suite: imagery-tiler
-          - os: debian-12
-            suite: irc
-          - os: debian-12
-            suite: letsencrypt
-          - os: debian-12
-            suite: matomo
-          - os: debian-12
-            suite: nominatim
-          - os: debian-12
-            suite: otrs
-          - os: debian-12
-            suite: overpass
-          - os: debian-12
-            suite: prometheus-server
-          - os: debian-12
-            suite: serverinfo
-          - os: debian-12
-            suite: subversion
-          - os: debian-12
-            suite: supybot
-          - os: debian-12
-            suite: taginfo
-          - os: debian-12
-            suite: tile
-          - os: debian-12
-            suite: trac
-          - os: debian-12
-            suite: vectortile
-          - os: debian-12
-            suite: web-cgimap
-          - os: debian-12
-            suite: web-frontend
-          - os: debian-12
-            suite: web-rails
-          - os: debian-12
-            suite: wiki
+          - debian-12
         exclude:
-          - suite: apt-repository
-            os: ubuntu-2204
-          - suite: blogs
-            os: ubuntu-2204
-          - suite: community
-            os: ubuntu-2204
-          - suite: dev
-            os: ubuntu-2204
-          - suite: dns
-            os: ubuntu-2204
-          - suite: git-server
-            os: ubuntu-2204
-          - suite: git-web
-            os: ubuntu-2204
-          - suite: gps-tile
-            os: ubuntu-2204
-          - suite: irc
-            os: ubuntu-2204
-          - suite: letsencrypt
-            os: ubuntu-2204
           - suite: mailman
+            os: debian-12
+        include:
+          - suite: blog
+            os: ubuntu-2004
+          - suite: mailman
+            os: ubuntu-2004
+          - suite: stateofthemap-wordpress
+            os: ubuntu-2004
+          - suite: wordpress
+            os: ubuntu-2004
+          - suite: accounts
             os: ubuntu-2204
-          - suite: matomo
+          - suite: apache
             os: ubuntu-2204
-          - suite: nominatim
+          - suite: apt
             os: ubuntu-2204
-          - suite: osqa
+          - suite: backup
             os: ubuntu-2204
-          - suite: otrs
+          - suite: bind
             os: ubuntu-2204
-          - suite: overpass
+          - suite: chef
             os: ubuntu-2204
-          - suite: prometheus-server
+          - suite: clamav
             os: ubuntu-2204
-          - suite: serverinfo
+          - suite: db-backup
             os: ubuntu-2204
-          - suite: subversion
+          - suite: db-base
             os: ubuntu-2204
-          - suite: supybot
+          - suite: db-master
             os: ubuntu-2204
-          - suite: taginfo
+          - suite: db-slave
             os: ubuntu-2204
-          - suite: trac
+          - suite: devices
             os: ubuntu-2204
-          - suite: vectortile
+          - suite: dhcpd
             os: ubuntu-2204
-          - suite: web-cgimap
+          - suite: exim
             os: ubuntu-2204
-          - suite: web-frontend
+          - suite: fail2ban
             os: ubuntu-2204
-          - suite: web-rails
+          - suite: geodns
             os: ubuntu-2204
-          - suite: wiki
+          - suite: geoipupdate
+            os: ubuntu-2204
+          - suite: git
+            os: ubuntu-2204
+          - suite: hardware
+            os: ubuntu-2204
+          - suite: networking
+            os: ubuntu-2204
+          - suite: ntp
+            os: ubuntu-2204
+          - suite: openssh
+            os: ubuntu-2204
+          - suite: osmosis
+            os: ubuntu-2204
+          - suite: planet
+            os: ubuntu-2204
+          - suite: planet-aws
+            os: ubuntu-2204
+          - suite: planet-dump
+            os: ubuntu-2204
+          - suite: planet-notes
+            os: ubuntu-2204
+          - suite: planet-replication
+            os: ubuntu-2204
+          - suite: postgresql
+            os: ubuntu-2204
+          - suite: prometheus
+            os: ubuntu-2204
+          - suite: python
+            os: ubuntu-2204
+          - suite: rsyncd
+            os: ubuntu-2204
+          - suite: spamassassin
+            os: ubuntu-2204
+          - suite: ssl
+            os: ubuntu-2204
+          - suite: sysctl
+            os: ubuntu-2204
+          - suite: sysfs
+            os: ubuntu-2204
+          - suite: tilelog
+            os: ubuntu-2204
+          - suite: tools
             os: ubuntu-2204
       fail-fast: false
     steps:
