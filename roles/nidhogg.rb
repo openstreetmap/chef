@@ -43,11 +43,6 @@ default_attributes(
     }
   },
   :tile => {
-    :database => {
-      :cluster => "17/main",
-      :postgis => "3"
-    },
-    :mapnik => "3.1",
     :styles => {
       :default => {
         :tile_directories => [

@@ -108,7 +108,6 @@ jobs:
           - sysctl
           - sysfs
           - taginfo
-          - tile
           - tilelog
           - tools
           - trac
@@ -165,6 +164,8 @@ jobs:
             suite: supybot
           - os: debian-12
             suite: taginfo
+          - os: debian-12
+            suite: tile
           - os: debian-12
             suite: trac
           - os: debian-12
