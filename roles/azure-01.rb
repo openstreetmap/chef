@@ -20,6 +20,15 @@ default_attributes(
         }
       }
     }
+  },
+  :tile => {
+    :styles => {
+      :default => {
+        :tile_directories => [
+          { :name => "/store/tiles/default", :min_zoom => 0, :max_zoom => 19 }
+        ]
+      }
+    }
   }
 )
 
