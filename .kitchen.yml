@@ -253,23 +253,6 @@ suites:
   - name: letsencrypt
     run_list:
       - recipe[letsencrypt::default]
-  - name: logstash
-    run_list:
-      - recipe[logstash::default]
-  - name: logstash-forwarder
-    run_list:
-      - recipe[logstash::forwarder]
-    attributes:
-      logstash:
-        forwarder:
-          filebeat.inputs:
-            - type: filestream
-              id: apache
-              paths:
-                - /var/log/apache2/access.log
-              fields:
-                type: apache
-              fields_under_root: true
   - name: mail
     run_list:
       - role[mail]

@@ -107,7 +107,6 @@ rails_port "www.openstreetmap.org" do
   status node[:web][:status]
   messages_domain "messages.openstreetmap.org"
   log_path "#{node[:web][:log_directory]}/rails.log"
-  logstash_path "#{node[:web][:log_directory]}/rails-logstash.log"
   memcache_servers node[:web][:memcached_servers]
   potlatch2_key web_passwords["potlatch2_key"]
   id_key web_passwords["id_key"]

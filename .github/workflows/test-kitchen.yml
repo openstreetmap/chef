@@ -64,8 +64,6 @@ jobs:
           - irc
           - kibana
           - letsencrypt
-          - logstash
-          - logstash-forwarder
           - mail
           - mailman
           - matomo

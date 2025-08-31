@@ -46,7 +46,6 @@ property :messages_domain, String
 property :gpx_dir, String
 property :attachments_dir, String
 property :log_path, String
-property :logstash_path, String
 property :memcache_servers, Array
 property :potlatch2_key, String
 property :id_key, String
@@ -207,10 +206,6 @@ action :create do
       line.gsub!(/^( *)#log_path:.*$/, "\\1log_path: \"#{new_resource.log_path}\"")
     end
 
-    if new_resource.logstash_path
-      line.gsub!(/^( *)#logstash_path:.*$/, "\\1logstash_path: \"#{new_resource.logstash_path}\"")
-    end
-
     if new_resource.memcache_servers
       line.gsub!(/^( *)#memcache_servers:.*$/, "\\1memcache_servers: [ \"#{new_resource.memcache_servers.join('", "')}\" ]")
     end
@@ -313,7 +308,6 @@ action :create do
     "messages_domain",
     "attachments_dir",
     "log_path",
-    "logstash_path",
     "potlatch2_key",
     "id_key",
     "id_application",
