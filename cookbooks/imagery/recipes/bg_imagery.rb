@@ -31,6 +31,5 @@ imagery_layer "maf-orthophoto-latest" do
   source "/store/imagery/bg/maf-orthophoto-map/maf-orthophoto.vrt"
   copyright "(c) Ministry of Agriculture and Food of Bulgaria"
   max_zoom 20
-  extension "jpg"
   default_layer true
 end
