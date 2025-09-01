@@ -98,3 +98,7 @@ systemd_tmpfile "/run/mapserver-fastcgi" do
   mode "0755"
   not_if { kitchen? }
 end
+
+service "systemd-coredump.socket" do
+  action [ :stop, :disable ]
+end

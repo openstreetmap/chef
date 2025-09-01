@@ -111,8 +111,6 @@ action :create do
                 "GDAL_ENABLE_WMS_CACHE" => "NO",
                 "LD_PRELOAD" => "libtcmalloc_minimal.so.4"
     limit_nofile 16384
-    memory_high "12G"
-    memory_max "12G"
     limit_core 0
     user "imagery"
     group "imagery"
