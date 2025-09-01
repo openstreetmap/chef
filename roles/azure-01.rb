@@ -119,7 +119,14 @@ default_attributes(
         "devices/system/cpu/cpu85/power/energy_perf_bias" => "0",
         "devices/system/cpu/cpu86/power/energy_perf_bias" => "0",
         "devices/system/cpu/cpu87/power/energy_perf_bias" => "0",
-        "devices/system/cpu/cpu88/power/energy_perf_bias" => "0"
+        "devices/system/cpu/cpu88/power/energy_perf_bias" => "0",
+        "devices/system/cpu/cpu89/power/energy_perf_bias" => "0",
+        "devices/system/cpu/cpu90/power/energy_perf_bias" => "0",
+        "devices/system/cpu/cpu91/power/energy_perf_bias" => "0",
+        "devices/system/cpu/cpu92/power/energy_perf_bias" => "0",
+        "devices/system/cpu/cpu93/power/energy_perf_bias" => "0",
+        "devices/system/cpu/cpu94/power/energy_perf_bias" => "0",
+        "devices/system/cpu/cpu95/power/energy_perf_bias" => "0"
       }
     }
   },
