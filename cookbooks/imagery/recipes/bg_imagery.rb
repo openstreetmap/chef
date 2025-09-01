@@ -30,6 +30,8 @@ imagery_layer "maf-orthophoto-latest" do
   title "Bulgaria MAF Orthophoto Latest"
   source "/store/imagery/bg/maf-orthophoto-map/maf-orthophoto.vrt"
   copyright "(c) Ministry of Agriculture and Food of Bulgaria"
+  projection "EPSG:32635"
   max_zoom 20
   default_layer true
+  revision 2
 end
