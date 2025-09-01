@@ -30,6 +30,44 @@ default_attributes(
       }
     }
   },
+  :sysfs => {
+    :cpu_power_energy_perf_bias => {
+      :parameters => {
+        "devices/system/cpu/cpu0/power/energy_perf_bias" => "0",
+        "devices/system/cpu/cpu1/power/energy_perf_bias" => "0",
+        "devices/system/cpu/cpu2/power/energy_perf_bias" => "0",
+        "devices/system/cpu/cpu3/power/energy_perf_bias" => "0",
+        "devices/system/cpu/cpu4/power/energy_perf_bias" => "0",
+        "devices/system/cpu/cpu5/power/energy_perf_bias" => "0",
+        "devices/system/cpu/cpu6/power/energy_perf_bias" => "0",
+        "devices/system/cpu/cpu7/power/energy_perf_bias" => "0",
+        "devices/system/cpu/cpu8/power/energy_perf_bias" => "0",
+        "devices/system/cpu/cpu9/power/energy_perf_bias" => "0",
+        "devices/system/cpu/cpu10/power/energy_perf_bias" => "0",
+        "devices/system/cpu/cpu11/power/energy_perf_bias" => "0",
+        "devices/system/cpu/cpu12/power/energy_perf_bias" => "0",
+        "devices/system/cpu/cpu13/power/energy_perf_bias" => "0",
+        "devices/system/cpu/cpu14/power/energy_perf_bias" => "0",
+        "devices/system/cpu/cpu15/power/energy_perf_bias" => "0",
+        "devices/system/cpu/cpu16/power/energy_perf_bias" => "0",
+        "devices/system/cpu/cpu17/power/energy_perf_bias" => "0",
+        "devices/system/cpu/cpu18/power/energy_perf_bias" => "0",
+        "devices/system/cpu/cpu19/power/energy_perf_bias" => "0",
+        "devices/system/cpu/cpu20/power/energy_perf_bias" => "0",
+        "devices/system/cpu/cpu21/power/energy_perf_bias" => "0",
+        "devices/system/cpu/cpu22/power/energy_perf_bias" => "0",
+        "devices/system/cpu/cpu23/power/energy_perf_bias" => "0",
+        "devices/system/cpu/cpu24/power/energy_perf_bias" => "0",
+        "devices/system/cpu/cpu25/power/energy_perf_bias" => "0",
+        "devices/system/cpu/cpu26/power/energy_perf_bias" => "0",
+        "devices/system/cpu/cpu27/power/energy_perf_bias" => "0",
+        "devices/system/cpu/cpu28/power/energy_perf_bias" => "0",
+        "devices/system/cpu/cpu29/power/energy_perf_bias" => "0",
+        "devices/system/cpu/cpu30/power/energy_perf_bias" => "0",
+        "devices/system/cpu/cpu31/power/energy_perf_bias" => "0"
+      }
+    }
+  },
   :postgresql => {
     :versions => ["17"],
     :settings => {
