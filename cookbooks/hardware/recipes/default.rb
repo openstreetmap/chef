@@ -410,8 +410,8 @@ intel_nvmes = nvmes.select { |pci| pci[:vendor_name] == "Intel Corporation" }
 if !intel_ssds.empty? || !intel_nvmes.empty?
   package "unzip"
 
-  sst_tool_version = "2-3"
-  sst_package_version = "2.3.320-0"
+  sst_tool_version = "2-4"
+  sst_package_version = "2.4.323-0"
 
   remote_file "#{Chef::Config[:file_cache_path]}/sst-cli-linux-deb--#{sst_tool_version}.zip" do
     source "https://sdmsdfwdriver.blob.core.windows.net/files/kba-gcc/drivers-downloads/ka-00085/sst--#{sst_tool_version}/sst-cli-linux-deb--#{sst_tool_version}.zip"
