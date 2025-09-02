@@ -59,8 +59,8 @@
 <% end -%>
 
   # Setup logging
-  LogFormat "%a %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\"" combined_with_remoteip
-  CustomLog /var/log/apache2/access.log combined_with_remoteip
+  LogFormat "%h %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\" %Dus \"%{client-geo-continent}i\" \"%{client-geo-country}i\" \"%{client-geo-proxy-description}i\" \"%{client-geo-proxy-type}i\" \"%{geo.proxy_type}i\" \"%{client-geo-conn-type}i\"" combined_fastly_tile_custom
+  CustomLog /var/log/apache2/access.log combined_fastly_tile_custom
   ErrorLog /var/log/apache2/error.log
   BufferedLogs on
 
