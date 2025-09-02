@@ -29,7 +29,7 @@ imagery_layer "ibge-aerial-2021" do
   site "br-imagery.openstreetmap.org"
   title "Brazil IBGE Aerial Imagery 2021"
   source "/store/imagery/br/ibge-aerial-2021/ibge-aerial-2021.webp.google.r_bilinear.bs_256.aligned.cog.tif"
-  copyright "(c) Instituto Brasileiro de Geografia e Estatística"
+  copyright '(c) <a href="https://www.ibge.gov.br/">IBGE</a>'
   projection "EPSG:3857"
   max_zoom 21
   default_layer true
