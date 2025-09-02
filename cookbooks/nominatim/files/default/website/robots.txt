@@ -8,7 +8,7 @@ Disallow: /details.php
 Disallow: /details
 Disallow: /reverse.php
 Disallow: /reverse
-Disallow: /hierarchy
-Disallow: /hierarchy.php
 Disallow: /lookup
 Disallow: /lookup.php
+Disallow: /status
+Disallow: /status.php
