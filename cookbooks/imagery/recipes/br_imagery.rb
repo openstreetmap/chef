@@ -22,7 +22,7 @@ include_recipe "imagery"
 imagery_site "br-imagery.openstreetmap.org" do
   title "OpenStreetMap - Brazil - Aerial Imagery"
   aliases ["br-imagery.osm.org"]
-  bbox [[41.235, 22.357], [44.215, 28.608]]
+  bbox [[-23.9813, -46.6594], [-23.6398, -46.4042]]
 end
 
 imagery_layer "ibge-aerial-2021" do
