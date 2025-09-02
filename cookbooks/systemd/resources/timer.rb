@@ -34,6 +34,7 @@ property :on_unit_inactive_sec, [Integer, String]
 property :on_calendar, String
 property :accuracy_sec, [Integer, String]
 property :randomized_delay_sec, [Integer, String]
+property :fixed_random_delay, [true, false]
 property :unit, String
 property :persistent, [true, false]
 property :wake_system, [true, false]
