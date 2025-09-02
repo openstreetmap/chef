@@ -629,6 +629,8 @@ end
 systemd_timer "render-lowzoom" do
   description "Render low zoom tiles"
   on_calendar "23:00 #{node[:timezone]}"
+  randomized_delay_sec "30m"
+  fixed_random_delay true
 end
 
 service "render-lowzoom.timer" do
