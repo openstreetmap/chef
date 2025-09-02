@@ -152,6 +152,8 @@ server {
     root <%= @directory %>/static-website;
     index /search;
 
+    keepalive_requests 2;
+
     access_log <%= node[:nominatim][:logdir] %>/nominatim.openstreetmap.org-access.log combined;
     error_log <%= node[:nominatim][:logdir] %>/nominatim.openstreetmap.org-error.log;
 
