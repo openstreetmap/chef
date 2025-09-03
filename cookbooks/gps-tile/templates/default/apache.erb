@@ -25,7 +25,6 @@
   # Setup logging
   CustomLog /var/log/apache2/access.log combined_extended
   ErrorLog /var/log/apache2/error.log
-  BufferedLogs on
 
   # Always set Access-Control-Allow-Origin so that simple CORS requests
   # will always work and can be cached
@@ -53,7 +52,6 @@
   # Setup logging
   CustomLog /var/log/apache2/access.log combined_extended
   ErrorLog /var/log/apache2/error.log
-  BufferedLogs on
 </VirtualHost>
 
 <Directory /srv/gps-tile.openstreetmap.org/html>
