@@ -12,6 +12,7 @@ default_attributes(
   },
   :apache => {
     :mpm => "event",
+    :listen_address => "[::]",
     :timeout => 60,
     :evasive => {
       :enable => false
