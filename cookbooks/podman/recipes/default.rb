@@ -60,6 +60,7 @@ systemd_service "podman-system-prune" do
   sandbox :enable_network => true
   memory_deny_write_execute false
   restrict_address_families "AF_UNIX"
+  read_write_paths "/var/lib/containers"
 end
 
 systemd_timer "podman-system-prune" do
