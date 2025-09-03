@@ -53,3 +53,21 @@ end
 service "podman-auto-update.timer" do
   action [:enable, :start]
 end
+
+systemd_service "podman-system-prune" do
+  description "Cleanup up unused podman images and containers"
+  exec_start "/usr/bin/podman system prune --all --force"
+  sandbox :enable_network => true
+  memory_deny_write_execute false
+  restrict_address_families "AF_UNIX"
+end
+
+systemd_timer "podman-system-prune" do
+  description "Cleanup up unused podman images and containers"
+  on_boot_sec "2h"
+  on_unit_active_sec "7d"
+end
+
+service "podman-system-prune.timer" do
+  action [:enable, :start]
+end
