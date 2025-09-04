@@ -26,7 +26,7 @@ default[:apache][:event][:threads_per_child] = 25
 default[:apache][:event][:max_request_workers] = 150
 default[:apache][:event][:max_connections_per_child] = 0
 
-default[:apache][:listen_address] = "*"
+default[:apache][:listen_address] = "[::]"
 
 default[:apache][:buffered_logs] = true
 
