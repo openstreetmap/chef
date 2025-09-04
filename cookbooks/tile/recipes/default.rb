@@ -295,8 +295,7 @@ systemd_service "update-lowzoom@" do
   sandbox true
   restrict_address_families "AF_UNIX"
   read_write_paths [
-    "/srv/tile.openstreetmap.org/tiles/%i",
-    "/var/log/tile"
+    "/srv/tile.openstreetmap.org/tiles/%i"
   ]
   restart "on-failure"
 end
@@ -623,7 +622,6 @@ systemd_service "render-lowzoom" do
   exec_start "/usr/local/bin/render-lowzoom"
   sandbox true
   restrict_address_families "AF_UNIX"
-  read_write_paths "/var/log/tile"
 end
 
 systemd_timer "render-lowzoom" do

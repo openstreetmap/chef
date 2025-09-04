@@ -2,9 +2,6 @@
 
 # DO NOT EDIT - This file is being maintained by Chef
 
-# Send output to the log
-exec > /var/log/tile/render-lowzoom.log 2>&1
-
 # Get current time
 timestamp=$(date +%s)
 <% node[:tile][:styles].each_key do |style| -%>
@@ -22,9 +19,17 @@ function update_<%= style %>
     --min-zoom=0 --max-zoom=12
 }
 
-# Loop running the update command until it suceeds
+max_tries=120
+count=0
+
+# Loop running the update command until it succeeds
 until update_<%= style %>
 do
+  count=$((count + 1))
+  if [ "$count" -ge "$max_tries" ]; then
+    echo "Aborting <%= style %> after $max_tries failed attempts"
+    break
+  fi
   sleep 30
 done
 <% end -%>
