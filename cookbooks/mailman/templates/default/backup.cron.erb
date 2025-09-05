@@ -17,7 +17,7 @@ nice tar --create --dereference \
     --warning=no-file-removed \
     --exclude='*/archives/*.txt.gz' \
     --directory="$T" \
-    "lists-$D" | nice zstd --quiet --adapt--rsyncable -o "$T/$B"
+    "lists-$D" | nice zstd --quiet --adapt --rsyncable -o "$T/$B"
 
 nice rsync --preallocate --fuzzy "$T/$B" backup.openstreetmap.org::backup
 
