@@ -12,6 +12,11 @@ default_attributes(
           :prefix => "24",
           :gateway => "103.147.22.254"
         },
+        :inet6 => {
+          :address => "2405:a640::156",
+          :prefix => "32",
+          :gateway => "2405:a640::1"
+        },
         :bond => {
           :mode => "802.3ad",
           :lacprate => "slow",
