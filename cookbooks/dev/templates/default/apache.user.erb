@@ -55,7 +55,7 @@ WSGIDaemonProcess <%= @user %>.dev.openstreetmap.org user=<%= @user %> processes
 </VirtualHost>
 
 <Directory <%= @directory %>>
-	AllowOverride AuthConfig FileInfo Indexes Options=RailsBaseURI
+	AllowOverride AuthConfig FileInfo Indexes
 	Options SymLinksIfOwnerMatch Indexes Includes
 	Require all granted
 </Directory>
