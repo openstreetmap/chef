@@ -138,7 +138,10 @@ suites:
     attributes:
       postgresql:
         versions:
-          - 15
+          - 17
+      dev:
+        rails:
+          postgresql_cluster: 17/main
   - name: devices
     run_list:
       - recipe[devices::default]
