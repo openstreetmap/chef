@@ -12,7 +12,7 @@ for testing clients against or as a data sandbox.</p>
 <th align="left">Repository</th>
 <th align="left">Revision</th>
 </tr>
-<% node[:dev][:rails].each do |name,details| -%>
+<% node[:dev][:rails][:sites].each do |name,details| -%>
 <tr>
 <td><a href="https://<%= name %>.apis.dev.openstreetmap.org/"><%= name %></a></td>
 <td><%= details[:repository] %></td>
