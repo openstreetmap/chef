@@ -292,9 +292,11 @@ node[:postgresql][:versions].each do |version|
   package "postgresql-#{version}-postgis-3"
 end
 
-if node[:postgresql][:clusters][:"17/main"]
+rails_cluster = node[:dev][:rails][:postgresql_cluster]
+
+if node[:postgresql][:clusters][rails_cluster.to_sym]
   postgresql_user "apis" do
-    cluster "17/main"
+    cluster rails_cluster
   end
 
   template "/usr/local/bin/cleanup-rails-assets" do
@@ -340,10 +342,10 @@ if node[:postgresql][:clusters][:"17/main"]
   end
 
   Dir.glob("/srv/*.apis.dev.openstreetmap.org").each do |dir|
-    node.default_unless[:dev][:rails][File.basename(dir).split(".").first] = {}
+    node.default_unless[:dev][:rails][:sites][File.basename(dir).split(".").first] = {}
   end
 
-  node[:dev][:rails].each do |name, details|
+  node[:dev][:rails][:sites].each do |name, details|
     database_name = details[:database] || "apis_#{name}"
     site_name = "#{name}.apis.dev.openstreetmap.org"
     site_directory = "/srv/#{name}.apis.dev.openstreetmap.org"
@@ -357,12 +359,12 @@ if node[:postgresql][:clusters][:"17/main"]
       secret_key_base = persistent_token("dev", "rails", name, "secret_key_base")
 
       postgresql_database database_name do
-        cluster "17/main"
+        cluster rails_cluster
         owner "apis"
       end
 
       postgresql_extension "#{database_name}_btree_gist" do
-        cluster "17/main"
+        cluster rails_cluster
         database database_name
         extension "btree_gist"
       end
@@ -409,7 +411,7 @@ if node[:postgresql][:clusters][:"17/main"]
         group "apis"
         repository details[:repository]
         revision details[:revision]
-        database_port node[:postgresql][:clusters][:"17/main"][:port]
+        database_port node[:postgresql][:clusters][rails_cluster.to_sym][:port]
         database_name database_name
         database_username "apis"
         email_from "OpenStreetMap <web@noreply.openstreetmap.org>"
@@ -486,7 +488,7 @@ if node[:postgresql][:clusters][:"17/main"]
           group "root"
           mode "640"
           variables :cgimap_socket => "/run/cgimap-#{name}/socket",
-                    :database_port => node[:postgresql][:clusters][:"17/main"][:port],
+                    :database_port => node[:postgresql][:clusters][rails_cluster.to_sym][:port],
                     :database_name => database_name,
                     :log_directory => log_directory,
                     :options => details[:cgimap_options]
@@ -555,7 +557,7 @@ if node[:postgresql][:clusters][:"17/main"]
 
       postgresql_database database_name do
         action :drop
-        cluster "17/main"
+        cluster rails_cluster
       end
     end
   end

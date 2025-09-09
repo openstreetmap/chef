@@ -111,29 +111,32 @@ default_attributes(
   },
   :dev => {
     :rails => {
-      :master => {
-        :repository => "https://git.openstreetmap.org/public/rails.git",
-        :revision => "master",
-        :cgimap_repository => "https://github.com/zerebubuth/openstreetmap-cgimap.git",
-        :cgimap_revision => "master",
-        :cgimap_options => {
-          :changeset_enhanced_stats => true
+      :postgresql_cluster => "17/main",
+      :sites => {
+        :master => {
+          :repository => "https://git.openstreetmap.org/public/rails.git",
+          :revision => "master",
+          :cgimap_repository => "https://github.com/zerebubuth/openstreetmap-cgimap.git",
+          :cgimap_revision => "master",
+          :cgimap_options => {
+            :changeset_enhanced_stats => true
+          },
+          :aliases => ["master.apis.dev.osm.org", "api06.dev.openstreetmap.org", "api06.dev.osm.org"]
         },
-        :aliases => ["master.apis.dev.osm.org", "api06.dev.openstreetmap.org", "api06.dev.osm.org"]
-      },
-      :tomh => {
-        :repository => "https://github.com/tomhughes/openstreetmap-website.git",
-        :revision => "next",
-        :cgimap_repository => "https://github.com/zerebubuth/openstreetmap-cgimap.git",
-        :cgimap_revision => "master"
-      },
-      :comments => {
-        :repository => "https://github.com/ukasiu/openstreetmap-website.git",
-        :revision => "comments_list"
-      },
-      :microcosms => {
-        :repository => "https://github.com/openbrian/osm-microcosms.git",
-        :revision => "microcosms"
+        :tomh => {
+          :repository => "https://github.com/tomhughes/openstreetmap-website.git",
+          :revision => "next",
+          :cgimap_repository => "https://github.com/zerebubuth/openstreetmap-cgimap.git",
+          :cgimap_revision => "master"
+        },
+        :comments => {
+          :repository => "https://github.com/ukasiu/openstreetmap-website.git",
+          :revision => "comments_list"
+        },
+        :microcosms => {
+          :repository => "https://github.com/openbrian/osm-microcosms.git",
+          :revision => "microcosms"
+        }
       }
     }
   },
