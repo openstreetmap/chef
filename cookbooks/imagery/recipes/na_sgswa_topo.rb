@@ -33,7 +33,7 @@ imagery_layer "na_sgswa_topo_50k" do
   copyright "State Copyright &copy 1958 - 1991; Surveyor-General, Windhoek, Namibia"
   default_layer true
   max_zoom 16
-  revision 3
+  revision 4
 end
 
 imagery_layer "na_sgswa_topo_250k" do
