@@ -39,6 +39,7 @@ property :private_devices, [true, false]
 property :private_users, [true, false]
 property :protect_clock, [true, false]
 property :restrict_address_families, [String, Array]
+property :memory_deny_write_execute, [true, false]
 property :remove_ipc, [true, false]
 property :system_call_filter, [String, Array]
 property :service, :kind_of => String
@@ -88,6 +89,7 @@ action :create do
     private_users new_resource.private_users if new_resource.property_is_set?(:private_users)
     protect_clock new_resource.protect_clock if new_resource.property_is_set?(:protect_clock)
     restrict_address_families new_resource.restrict_address_families if new_resource.property_is_set?(:restrict_address_families)
+    memory_deny_write_execute new_resource.memory_deny_write_execute if new_resource.property_is_set?(:memory_deny_write_execute)
     remove_ipc new_resource.remove_ipc if new_resource.property_is_set?(:remove_ipc)
     system_call_filter new_resource.system_call_filter if new_resource.property_is_set?(:system_call_filter)
   end

@@ -160,6 +160,7 @@ clusters.each do |name, details|
       options "--config.file=/etc/prometheus/exporters/sql_exporter.yml"
       environment "SQLEXPORTER_TARGET_DSN" => "postgres://prometheus:#{passwords['prometheus']}@/run/postgresql:#{details[:port]}/#{prometheus_database}"
       restrict_address_families "AF_UNIX"
+      memory_deny_write_execute false
       subscribes :restart, "template[/etc/prometheus/exporters/sql_exporter.yml]"
     end
   else
