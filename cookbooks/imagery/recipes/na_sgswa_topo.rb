@@ -43,7 +43,7 @@ imagery_layer "na_sgswa_topo_250k" do
   source "/store/imagery/na/topo-250k/new/combined.vrt"
   copyright "State Copyright &copy 1972 - 1989; Surveyor-General, Windhoek, Namibia"
   max_zoom 16
-  revision 2
+  revision 3
 end
 
 imagery_layer "na_aerial" do
