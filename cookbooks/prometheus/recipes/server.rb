@@ -35,6 +35,7 @@ end
 prometheus_exporter "fastly_healthcheck" do
   port 9696
   scrape_interval "1m"
+  scrape_timeout "1m"
   environment "FASTLY_API_TOKEN" => tokens["fastly"]
 end
 
