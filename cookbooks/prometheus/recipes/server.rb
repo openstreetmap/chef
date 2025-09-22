@@ -69,7 +69,7 @@ end
 
 cache_dir = Chef::Config[:file_cache_path]
 
-prometheus_version = "3.5.0"
+prometheus_version = "3.6.0"
 alertmanager_version = "0.28.1"
 karma_version = "0.121"
 
