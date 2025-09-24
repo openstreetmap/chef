@@ -119,6 +119,7 @@ discovery:
         - eu-north-1
       roles:
         - roleArn: "arn:aws:iam::674083635870:role/osm-cloudwatch-export-role" # osm-backup
+        - roleArn: "arn:aws:iam::949022809175:role/osm-cloudwatch-export-role" # osm-vector
       period: 86400
       length: 86400
       metrics:
@@ -131,6 +132,7 @@ discovery:
         - eu-north-1
       roles:
         - roleArn: "arn:aws:iam::674083635870:role/osm-cloudwatch-export-role" # osm-backup
+        - roleArn: "arn:aws:iam::949022809175:role/osm-cloudwatch-export-role" # osm-vector
       period: 300
       length: 300
       metrics:
@@ -201,6 +203,7 @@ discovery:
         - roleArn: "arn:aws:iam::173189593406:role/osm-cloudwatch-export-role" # osm-main
         - roleArn: "arn:aws:iam::674083635870:role/osm-cloudwatch-export-role" # osm-backup
         - roleArn: "arn:aws:iam::683740446523:role/osm-cloudwatch-export-role" # osm-render
+        - roleArn: "arn:aws:iam::949022809175:role/osm-cloudwatch-export-role" # osm-vector
         # Note osm-planet is billed direct to AWS Open Data Program
       period: 21600
       length: 21600
