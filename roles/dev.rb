@@ -56,6 +56,7 @@ default_attributes(
       :nroets => { :status => :user },
       :ojw => { :status => :user },
       :ollie => { :status => :user },
+      :pablobm => { :status => :user },
       :pafciu17 => { :status => :user },
       :pierzen => { :status => :user },
       :pnorman => { :status => :user },
