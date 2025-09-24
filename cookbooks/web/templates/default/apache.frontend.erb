@@ -31,6 +31,10 @@ ErrorLog /var/log/apache2/error.log
 <% @cloudflare.sort.each do |address| -%>
   RemoteIPTrustedProxy <%= address %>
 <% end -%>
+  # Fastly POPs
+<% @fastly.sort.each do |address| -%>
+  RemoteIPTrustedProxy <%= address %>
+<% end -%>
 
   #
   # Turn on various features
