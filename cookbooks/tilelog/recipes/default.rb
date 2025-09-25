@@ -43,13 +43,17 @@ directory tilelog_output_directory do
   recursive true
 end
 
+aws_access_key_id = "AKIASQUXHPE7JFCFMOUP"
+aws_secret_access_key = passwords["aws_keys"][aws_access_key_id]
+
 template "/usr/local/bin/tilelog" do
   source "tilelog.erb"
   owner "root"
   group "root"
   mode "755"
   variables :output_dir => tilelog_output_directory,
-            :aws_key => passwords["aws_key"]
+            :aws_access_key_id => aws_access_key_id,
+            :aws_secret_access_key => aws_secret_access_key
 end
 
 systemd_service "tilelog" do

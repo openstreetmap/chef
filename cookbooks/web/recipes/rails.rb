@@ -45,11 +45,14 @@ rails_directory = "#{node[:web][:base_directory]}/rails"
 
 matomo = data_bag_item("web", "matomo")
 
+aws_access_key_id = "AKIASQUXHPE7AMJQRFOS"
+aws_secret_access_key = web_passwords["aws_keys"][aws_access_key_id]
+
 storage = {
   "avatars" => {
     "service" => "S3",
-    "access_key_id" => "AKIASQUXHPE7AMJQRFOS",
-    "secret_access_key" => web_passwords["aws_key"],
+    "access_key_id" => aws_access_key_id,
+    "secret_access_key" => aws_secret_access_key,
     "region" => "eu-west-1",
     "bucket" => "openstreetmap-user-avatars",
     "public" => true,
@@ -61,8 +64,8 @@ storage = {
   },
   "gps_traces" => {
     "service" => "S3",
-    "access_key_id" => "AKIASQUXHPE7AMJQRFOS",
-    "secret_access_key" => web_passwords["aws_key"],
+    "access_key_id" => aws_access_key_id,
+    "secret_access_key" => aws_secret_access_key,
     "region" => "eu-west-1",
     "bucket" => "openstreetmap-gps-traces",
     "use_dualstack_endpoint" => true,
@@ -74,8 +77,8 @@ storage = {
   },
   "gps_images" => {
     "service" => "S3",
-    "access_key_id" => "AKIASQUXHPE7AMJQRFOS",
-    "secret_access_key" => web_passwords["aws_key"],
+    "access_key_id" => aws_access_key_id,
+    "secret_access_key" => aws_secret_access_key,
     "region" => "eu-west-1",
     "bucket" => "openstreetmap-gps-images",
     "use_dualstack_endpoint" => true,
