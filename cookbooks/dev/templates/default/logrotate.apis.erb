@@ -6,11 +6,15 @@
   rotate 7
   compress
   delaycompress
+  compresscmd /usr/bin/zstd
+  compressext .zst
+  compressoptions -T0 --adapt
+  uncompresscmd /usr/bin/unzstd
   notifempty
   create 0660 apis apis
   sharedscripts
   postrotate
     PASSENGER_INSTANCE_REGISTRY_DIR=<%= node[:passenger][:instance_registry_dir] %> /usr/bin/passenger-config restart-app --ignore-app-not-running <%= @rails_directory %> > /dev/null
     /bin/systemctl try-reload-or-restart cgimap@<%= @name %>
-  endscript                                                                     
+  endscript
 }

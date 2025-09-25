@@ -3,4 +3,8 @@
 <%= @logdir %>/*.log {
     missingok
     compress
+    compresscmd /usr/bin/zstd
+    compressext .zst
+    compressoptions -T0 --adapt
+    uncompresscmd /usr/bin/unzstd
 }
