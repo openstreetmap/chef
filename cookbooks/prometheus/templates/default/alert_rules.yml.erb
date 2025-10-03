@@ -927,3 +927,29 @@ groups:
           alertgroup: web
         annotations:
           job_processing_rate: "{{ $value | humanizePercentage }}"
+  - name: aws
+    rules:
+      - alert: aws s3 replication lag
+        expr: aws_s3_replication_latency_maximum > 7200
+        for: 1h
+        keep_firing_for: 30m
+        labels:
+          alertgroup: aws
+        annotations:
+          s3_object_replication_lag: "{{ $value | humanizeDuration }}"
+      - alert: aws s3 replication failures
+        expr: aws_s3_operations_failed_replication_sum > 0
+        for: 1h
+        keep_firing_for: 30m
+        labels:
+          alertgroup: aws
+        annotations:
+          s3_object_replication_failures: "{{ $value }} objects"
+      - alert: aws s3 replication pending
+        expr: aws_s3_operations_pending_replication_maximum > 1000
+        for: 1h
+        keep_firing_for: 30m
+        labels:
+          alertgroup: aws
+        annotations:
+          s3_object_replication_pending: "{{ $value }} objects"
