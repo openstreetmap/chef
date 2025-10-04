@@ -90,10 +90,12 @@ node[:postgresql][:versions].each do |version|
       owner "postgres"
       group "postgres"
       mode "640"
+      only_if { ::Dir.exist?("/var/lib/postgresql/#{version}/main") }
     end
   else
     file "/var/lib/postgresql/#{version}/main/standby.signal" do
       action :delete
+      only_if { ::Dir.exist?("/var/lib/postgresql/#{version}/main") }
     end
   end
 end
