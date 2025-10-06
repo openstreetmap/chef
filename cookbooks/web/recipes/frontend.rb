@@ -53,6 +53,13 @@ remote_directory "#{node[:web][:base_directory]}/static" do
   files_mode "644"
 end
 
+template "#{node[:web][:base_directory]}/static/.well-known/security.txt" do
+  source "security.txt.erb"
+  owner "root"
+  group "root"
+  mode "644"
+end
+
 remote_file "#{Chef::Config[:file_cache_path]}/cloudflare-ipv4-list" do
   source "https://www.cloudflare.com/ips-v4"
   compile_time true
