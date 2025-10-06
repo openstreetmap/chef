@@ -180,6 +180,8 @@ ErrorLog /var/log/apache2/error.log
   Alias /openlayers <%= node[:web][:base_directory] %>/static/openlayers
   Alias /funding.json <%= node[:web][:base_directory] %>/static/funding.json
   Alias /.well-known/funding-manifest-urls <%= node[:web][:base_directory] %>/static/.well-known/funding-manifest-urls
+  Alias /.well-known/security.txt <%= node[:web][:base_directory] %>/static/.well-known/security.txt
+  Alias /security.txt <%= node[:web][:base_directory] %>/static/.well-known/security.txt
   RedirectPermanent /stats https://planet.openstreetmap.org/statistics
 
   #
