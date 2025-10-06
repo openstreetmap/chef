@@ -178,6 +178,8 @@ ErrorLog /var/log/apache2/error.log
   SetEnv SECRET_KEY_BASE <%= @secret_key_base %>
   Alias /favicon.ico <%= node[:web][:base_directory] %>/rails/app/assets/favicons/favicon.ico
   Alias /openlayers <%= node[:web][:base_directory] %>/static/openlayers
+  Alias /funding.json <%= node[:web][:base_directory] %>/static/funding.json
+  Alias /.well-known/funding-manifest-urls <%= node[:web][:base_directory] %>/static/.well-known/funding-manifest-urls
   RedirectPermanent /stats https://planet.openstreetmap.org/statistics
 
   #
@@ -339,6 +341,10 @@ ErrorLog /var/log/apache2/error.log
 
 <Directory /srv/www.openstreetmap.org/static>
   Require all granted
+
+  <Files "funding-manifest-urls">
+    ForceType text/plain
+  </Files>
 </Directory>
 
 <Directory /srv/www.openstreetmap.org/rails/app/assets>
