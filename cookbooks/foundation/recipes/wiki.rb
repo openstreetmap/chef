@@ -63,3 +63,10 @@ template "/srv/osmfoundation.org/robots.txt" do
   mode "644"
   source "robots.txt.erb"
 end
+
+cookbook_file "/srv/osmfoundation.org/.well-known/funding-manifest-urls" do
+  owner node[:mediawiki][:user]
+  group node[:mediawiki][:group]
+  mode "644"
+  source ".well-known/funding-manifest-urls"
+end
