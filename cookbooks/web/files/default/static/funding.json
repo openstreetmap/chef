@@ -75,20 +75,43 @@
     ],
     "plans": [
       {
-        "guid": "one-time-donation",
+        "guid": "one-time-donation-usd",
         "status": "active",
-        "name": "One-time donation",
+        "name": "One-time USD donation",
         "amount": 0,
         "currency": "USD",
         "frequency": "one-time",
         "channels": [
           "funding-website",
-          "bitcoin",
-          "eur-account",
           "usd-account",
-          "gbp-account",
           "paypal",
           "gh-sponsors"
+        ]
+      },
+      {
+        "guid": "one-time-donation-gbp",
+        "status": "active",
+        "name": "One-time GBP donation",
+        "amount": 0,
+        "currency": "USD",
+        "frequency": "one-time",
+        "channels": [
+          "funding-website",
+          "gbp-account",
+          "paypal"
+        ]
+      },
+      {
+        "guid": "one-time-donation-eur",
+        "status": "active",
+        "name": "One-time EUR donation",
+        "amount": 0,
+        "currency": "USD",
+        "frequency": "one-time",
+        "channels": [
+          "funding-website",
+          "eur-account",
+          "paypal"
         ]
       },
       {
