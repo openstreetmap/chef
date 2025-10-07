@@ -64,6 +64,12 @@ template "/srv/osmfoundation.org/robots.txt" do
   source "robots.txt.erb"
 end
 
+directory "/srv/osmfoundation.org/.well-known" do
+  owner node[:mediawiki][:user]
+  group node[:mediawiki][:group]
+  mode "755"
+end
+
 cookbook_file "/srv/osmfoundation.org/.well-known/funding-manifest-urls" do
   owner node[:mediawiki][:user]
   group node[:mediawiki][:group]
