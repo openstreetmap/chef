@@ -17,8 +17,7 @@
       "name": "OpenStreetMap",
       "description": "OpenStreetMap is an initiative to create and provide free geographic data, such as street maps, to anyone.\nOpenStreetMap is built by a community of mappers that contribute and maintain data about roads, trails, cafés, railway stations, and much more, all over the world.",
       "webpageUrl": {
-        "url": "https://www.openstreetmap.org",
-        "wellKnown": "https://www.openstreetmap.org/.well-known/funding-manifest-urls"
+        "url": "https://www.openstreetmap.org"
       },
       "repositoryUrl": {
         "url": "https://github.com/openstreetmap",
