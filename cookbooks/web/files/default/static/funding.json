@@ -93,7 +93,7 @@
         "status": "active",
         "name": "One-time GBP donation",
         "amount": 0,
-        "currency": "USD",
+        "currency": "GBP",
         "frequency": "one-time",
         "channels": [
           "funding-website",
@@ -106,7 +106,7 @@
         "status": "active",
         "name": "One-time EUR donation",
         "amount": 0,
-        "currency": "USD",
+        "currency": "EUR",
         "frequency": "one-time",
         "channels": [
           "funding-website",
