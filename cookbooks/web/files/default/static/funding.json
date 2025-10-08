@@ -139,18 +139,6 @@
         ]
       },
       {
-        "guid": "active-contributor-membership",
-        "status": "active",
-        "name": "Active Contributor Membership",
-        "description": "If you are an active contributor with at least 42 mapping days in the last 365 days, or if you are equally active in OpenStreetMap with non-mapping activities, we would like you to become a member of the OSMF regardless of if and how you could pay the membership fee.\nYou can apply for an active contributor membership or become an associate or normal member, and help decide the direction and future of the OSMF.",
-        "amount": 0,
-        "currency": "USD",
-        "frequency": "yearly",
-        "channels": [
-          "funding-website"
-        ]
-      },
-      {
         "guid": "corporate-supporter",
         "status": "active",
         "name": "Corporate Membership - Supporter Tier",
