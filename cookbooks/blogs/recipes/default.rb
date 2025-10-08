@@ -67,6 +67,7 @@ bundle_exec "/srv/blogs.openstreetmap.org" do
   user "blogs"
   group "blogs"
   subscribes :run, "git[/srv/blogs.openstreetmap.org]", :immediately
+  retries 2 # May fail on first run due to faulty blogs
 end
 
 ssl_certificate "blogs.openstreetmap.org" do
