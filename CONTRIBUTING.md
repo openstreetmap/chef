@@ -52,9 +52,9 @@ This will install the recommended version of ruby for running the tests. The rec
 #### **6. Install Dependencies with Bundler**
 ```bash
 rbenv exec gem install bundler
-rbenv exec bundler install
+rbenv exec bundle install
 ```
-This will install the [bundler](https://bundler.io/), the ruby gem packages manager, and then uses `bundler`` to install the required gem packages for the tests.
+This will install the [bundler](https://bundler.io/), the ruby gem packages manager, and then uses `bundle` to install the required gem packages for the tests.
 
 #### **7. Run Cookstyle for Linting and Style Checks**
 ```bash
@@ -66,12 +66,12 @@ This will run [cookstyle](https://docs.chef.io/workstation/cookstyle/) a linting
 
 #### **8. List Available Tests**
 ```bash
-rbenv exec bundler exec kitchen list
+rbenv exec bundle exec kitchen list
 ```
 This lists the [Test Kitchen](https://kitchen.ci/) tests which are available. The list of tests is generated from the definitions in the [.kitchen.yml](.kitchen.yml) file. The individual tests are written in [InSpec](https://docs.chef.io/inspec/) and are stored in the `test/integration/` directory.
 
 #### **9. Run an Example Test**
 ```bash
-rbenv exec bundler exec kitchen test dns-ubuntu-2204
+rbenv exec bundle exec kitchen test dns-ubuntu-2204
 ```
 This runs the [Test Kitchen](https://kitchen.ci/) [InSpec](https://docs.chef.io/inspec/) `dns` tests using the `Ubuntu 22.04` platform. The tests are run inside a Docker container using the Test Kitchen [Dokken driver](https://github.com/test-kitchen/kitchen-dokken).
