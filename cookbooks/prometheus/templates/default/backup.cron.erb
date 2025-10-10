@@ -14,7 +14,7 @@ mkdir "$T/prometheus-$D"
 ln -s /var/lib/prometheus/alertmanager "$T/prometheus-$D/alertmanager"
 ln -s /var/lib/grafana "$T/prometheus-$D/grafana"
 
-nice tar --create --dereference --directory="$T" "prometheus-$D" | nice zstd --quiet --adapt --rsyncable -o "$T/$B"
+nice tar --create --dereference --directory="$T" --sort=name "prometheus-$D" | nice zstd --quiet --long --rsyncable -o "$T/$B"
 nice rsync --preallocate --fuzzy "$T/$B" backup.openstreetmap.org::backup
 
 rm -rf "$T"

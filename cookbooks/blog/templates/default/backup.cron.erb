@@ -13,10 +13,10 @@ mkdir "$T/osm-blog-$D"
 echo '[mysqldump]' > "$T/mysqldump.opts"
 echo 'user=osm-blog-user' >> "$T/mysqldump.opts"
 echo 'password=<%= @passwords["osm-blog-user"] %>' >> "$T/mysqldump.opts"
-mysqldump --defaults-file="$T/mysqldump.opts" --opt --no-tablespaces osm-blog > "$T/osm-blog-$D/osm-blog.sql"
+mysqldump --defaults-file="$T/mysqldump.opts" --opt --no-tablespaces --max-allowed-packet=1G osm-blog > "$T/osm-blog-$D/osm-blog.sql"
 ln -s /srv/blog.openstreetmap.org "$T/osm-blog-$D/www"
 
-nice tar --create --dereference --directory="$T" --warning=no-file-changed "osm-blog-$D" | nice zstd --quiet --adapt --rsyncable -o "$T/$B"
+nice tar --create --dereference --directory="$T" --sort=name --warning=no-file-changed "osm-blog-$D" | nice zstd --quiet --long --rsyncable -o "$T/$B"
 nice rsync --preallocate --fuzzy "$T/$B" backup.openstreetmap.org::backup
 
 rm -rf "$T"

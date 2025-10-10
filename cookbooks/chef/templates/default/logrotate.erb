@@ -6,7 +6,7 @@
   compress
   compresscmd /usr/bin/zstd
   compressext .zst
-  compressoptions -T0 --adapt
+  compressoptions -T0 -11 --quiet --long --rsyncable
   uncompresscmd /usr/bin/unzstd
   postrotate
 	systemctl try-restart chef-client.service

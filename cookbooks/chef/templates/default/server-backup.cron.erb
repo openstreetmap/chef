@@ -15,7 +15,7 @@ chmod g+rwx "$T" "$T/chef-server-$D"
 sudo -u opscode-pgsql /opt/opscode/embedded/bin/pg_dumpall --file="$T/chef-server-$D/chef.dmp" --clean
 ln -s /var/opt/opscode/bookshelf/data "$T/chef-server-$D/bookshelf"
 
-nice tar --create --dereference --directory="$T" "chef-server-$D" | nice zstd --quiet --adapt --rsyncable -o "$T/$B"
+nice tar --create --dereference --directory="$T" --sort=name "chef-server-$D" | nice zstd --quiet --long --rsyncable -o "$T/$B"
 nice rsync --preallocate --fuzzy "$T/$B" backup.openstreetmap.org::backup
 
 rm -rf "$T"
