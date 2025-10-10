@@ -13,7 +13,7 @@ mkdir "$T/wiki-<%= @name %>-$D"
 echo '[mysqldump]' > "$T/mysqldump.opts"
 echo 'user=<%= @database_params[:username] %>' >> "$T/mysqldump.opts"
 echo 'password=<%= @database_params[:password] %>' >> "$T/mysqldump.opts"
-mysqldump --defaults-file="$T/mysqldump.opts" --opt --skip-lock-tables --single-transaction --no-tablespaces "<%= @database_params[:name] %>" | zstd --quiet --adapt --rsyncable -o "$T/wiki-<%= @name %>-$D/wiki.sql.zst"
+mysqldump --defaults-file="$T/mysqldump.opts" --opt --skip-lock-tables --single-transaction --no-tablespaces --max-allowed-packet=1G "<%= @database_params[:name] %>" | zstd --quiet --adapt --rsyncable -o "$T/wiki-<%= @name %>-$D/wiki.sql.zst"
 ln -s "<%= @directory %>" "$T/wiki-<%= @name %>-$D/www"
 
 nice tar --create --dereference --directory="$T" --warning=no-file-changed --warning=no-file-removed \
