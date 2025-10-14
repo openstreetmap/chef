@@ -10,7 +10,9 @@ location ~* "^/layer/<%= @layer %>/(\d+)/(\d+)/(\d+)\.(jpg|jpeg|png|webp)$" {
   # Serve local file if present; otherwise jump to proxy
   try_files /layer/<%= @layer %>/$z/$x/$y.jpg /layer/<%= @layer %>/$z/$x/$y.jpeg /layer/<%= @layer %>/$z/$x/$y.png /layer/<%= @layer %>/$z/$x/$y.webp @tile_backend;
 
-  # Response headers (apply to both static and proxied responses unless overridden)
+  # Return transparent PNG for HTTP 204 (no content) responses from backend
+  error_page 204 =200 /transparent.png;
+
   gzip off;
   expires 31d;
   add_header Cache-Control "stale-while-revalidate=2678400, stale-if-error=2678400";
@@ -52,6 +54,8 @@ location @tile_backend {
   proxy_hide_header "Cache-Control";
   proxy_hide_header "Expires";
   proxy_hide_header "Access-Control-Allow-Origin";
+  proxy_hide_header "Content-BBOX";
+  proxy_hide_header "Content-CRS";
 <% else -%>
   # Override QUERY_STRING to force mapserver query parameters
   fastcgi_param QUERY_STRING "map=/srv/imagery/mapserver/layer-<%= @layer %>.map&mode=tile&layers=<%= @layer %>&tilemode=gmap&tile=$x+$y+$z";
@@ -84,6 +88,11 @@ location @tile_backend {
   fastcgi_next_upstream error timeout invalid_header http_500 http_503;
   fastcgi_next_upstream_tries 8;
 <% end -%>
+  gzip off;
+  expires 31d;
+  add_header Cache-Control "stale-while-revalidate=2678400, stale-if-error=2678400";
+  add_header x-cache-status $upstream_cache_status;
+  add_header 'Access-Control-Allow-Origin' '*' always;
 }
 
 <% if @root_layer -%>

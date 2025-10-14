@@ -86,6 +86,13 @@ action :create do
     mode "644"
   end
 
+  cookbook_file "/srv/#{new_resource.site}/transparent.png" do
+    source "transparent.png"
+    user "root"
+    group "root"
+    mode "644"
+  end
+
   layers = Dir.glob("/srv/imagery/layers/#{new_resource.site}/*.yml").collect do |path|
     YAML.safe_load_file(path, :permitted_classes => [Symbol])
   end
