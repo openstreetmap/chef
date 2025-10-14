@@ -1,10 +1,30 @@
 <% require 'uri' %>
 # DO NOT EDIT - This file is being maintained by Chef
 location ~* "^/layer/<%= @layer %>/(\d+)/(\d+)/(\d+)\.(jpg|jpeg|png|webp)$" {
+  # keep captures in variables for use in the named location
+  set $z   $1;
+  set $x   $2;
+  set $y   $3;
+  set $ext $4;
+
+  # Serve local file if present; otherwise jump to proxy
+  try_files /layer/<%= @layer %>/$z/$x/$y.jpg /layer/<%= @layer %>/$z/$x/$y.jpeg /layer/<%= @layer %>/$z/$x/$y.png /layer/<%= @layer %>/$z/$x/$y.webp @tile_backend;
+
+  # Response headers (apply to both static and proxied responses unless overridden)
+  gzip off;
+  expires 31d;
+  add_header Cache-Control "stale-while-revalidate=2678400, stale-if-error=2678400";
+  add_header x-cache-status $upstream_cache_status;
+  add_header 'Access-Control-Allow-Origin' '*' always;
+}
+
+location @tile_backend {
+  internal;
+
 <% if @uses_tiler -%>
-  set $args "";
-  rewrite ^/layer/<%= @layer %>/(\d+)/(\d+)/(\d+)\.(jpg|jpeg|png|webp) /mosaicjson/tiles/WebMercatorQuad/$1/$2/$3@1x.$4?url=<%= URI.encode_www_form_component(@source) %>&pixel_selection=first break;
-  proxy_pass http://<%= @site %>_tiler_backend;
+  set $upstream_uri /mosaicjson/tiles/WebMercatorQuad/$z/$x/$y@1x.$ext?url=<%= URI.encode_www_form_component(@source) %>&pixel_selection=first;
+
+  proxy_pass http://<%= @site %>_tiler_backend$upstream_uri;
   proxy_set_header Host $host;
   proxy_set_header Referer $http_referer;
   proxy_set_header X-Forwarded-For $remote_addr;
@@ -15,14 +35,17 @@ location ~* "^/layer/<%= @layer %>/(\d+)/(\d+)/(\d+)\.(jpg|jpeg|png|webp)$" {
   proxy_set_header Cache-Control "";
   proxy_set_header Pragma "";
   proxy_redirect off;
-  proxy_cache_key "<%= @layer %><%= @revision %> $request_method $1 $2 $3 $4";
+
+  proxy_cache_key "<%= @layer %><%= @revision %> $request_method $z $x $y $ext";
   proxy_cache proxy_cache_zone;
   proxy_cache_valid 200 204 180d;
   proxy_cache_use_stale error timeout updating http_502 http_503 http_504;
   proxy_cache_background_update on;
+
   proxy_next_upstream error timeout invalid_header http_500 http_503;
   proxy_next_upstream_timeout 30s;
   proxy_next_upstream_tries 3;
+
   proxy_intercept_errors on;
   proxy_ignore_headers "Cache-Control";
   proxy_ignore_headers "Expires";
@@ -31,7 +54,7 @@ location ~* "^/layer/<%= @layer %>/(\d+)/(\d+)/(\d+)\.(jpg|jpeg|png|webp)$" {
   proxy_hide_header "Access-Control-Allow-Origin";
 <% else -%>
   # Override QUERY_STRING to force mapserver query parameters
-  fastcgi_param QUERY_STRING "map=/srv/imagery/mapserver/layer-<%= @layer %>.map&mode=tile&layers=<%= @layer %>&tilemode=gmap&tile=$2+$3+$1";
+  fastcgi_param QUERY_STRING "map=/srv/imagery/mapserver/layer-<%= @layer %>.map&mode=tile&layers=<%= @layer %>&tilemode=gmap&tile=$x+$y+$z";
   fastcgi_pass "<%= @site %>_fastcgi";
   include fastcgi_params;
   fastcgi_param REQUEST_METHOD "GET";
@@ -40,7 +63,7 @@ location ~* "^/layer/<%= @layer %>/(\d+)/(\d+)/(\d+)\.(jpg|jpeg|png|webp)$" {
 
   # Caching
   fastcgi_cache "fastcgi_cache_zone";
-  fastcgi_cache_key "<%= @layer %><%= @revision %> $request_method $1 $2 $3";
+  fastcgi_cache_key "<%= @layer %><%= @revision %> $request_method $z $x $y";
 
   # Free connection to socket for other requests
   fastcgi_keep_conn off;
@@ -61,17 +84,6 @@ location ~* "^/layer/<%= @layer %>/(\d+)/(\d+)/(\d+)\.(jpg|jpeg|png|webp)$" {
   fastcgi_next_upstream error timeout invalid_header http_500 http_503;
   fastcgi_next_upstream_tries 8;
 <% end -%>
-
-  # Do not GZIP tiles
-  gzip off;
-
-  # Add HTTP Cache-Control + Expires Headers
-  expires 31d;
-  add_header Cache-Control "stale-while-revalidate=2678400, stale-if-error=2678400";
-  add_header x-cache-status $upstream_cache_status;
-
-  # Allow CORS requests
-  add_header 'Access-Control-Allow-Origin' '*' always;
 }
 
 <% if @root_layer -%>
