@@ -8,10 +8,7 @@ location ~* "^/layer/<%= @layer %>/(\d+)/(\d+)/(\d+)\.(jpg|jpeg|png|webp)$" {
   set $ext $4;
 
   # Serve local file if present; otherwise jump to proxy
-  try_files /layer/<%= @layer %>/$z/$x/$y.jpg /layer/<%= @layer %>/$z/$x/$y.jpeg /layer/<%= @layer %>/$z/$x/$y.png /layer/<%= @layer %>/$z/$x/$y.webp @tile_backend;
-
-  # Return transparent PNG for HTTP 204 (no content) responses from backend
-  # error_page 204 =200 /transparent.png;
+  try_files /layer/<%= @layer %>/$z/$x/$y.jpg /layer/<%= @layer %>/$z/$x/$y.jpeg /layer/<%= @layer %>/$z/$x/$y.png /layer/<%= @layer %>/$z/$x/$y.webp @<%= @site %>_<%= @layer %>_backend;
 
   gzip off;
   expires 31d;
@@ -20,7 +17,7 @@ location ~* "^/layer/<%= @layer %>/(\d+)/(\d+)/(\d+)\.(jpg|jpeg|png|webp)$" {
   add_header 'Access-Control-Allow-Origin' '*' always;
 }
 
-location @tile_backend {
+location @<%= @site %>_<%= @layer %>_backend {
   internal;
 
 <% if @uses_tiler -%>
