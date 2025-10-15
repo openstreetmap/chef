@@ -26,10 +26,3 @@ apt_repository "nodesource" do
   key "https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key"
   ignore_failure true
 end
-
-# Workaround v18.8.11 bug: https://github.com/chef/chef/issues/15214
-if Chef::VERSION == "18.8.11"
-  edit_resource(:file, "/etc/apt/keyrings/nodesource.gpg") do
-    action :create_if_missing
-  end
-end

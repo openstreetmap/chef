@@ -30,10 +30,3 @@ apt_repository "nginx" do
   components ["nginx"]
   key "https://nginx.org/keys/nginx_signing.key"
 end
-
-# Workaround v18.8.11 bug: https://github.com/chef/chef/issues/15214
-if Chef::VERSION == "18.8.11"
-  edit_resource(:file, "/etc/apt/keyrings/nginx.gpg") do
-    action :create_if_missing
-  end
-end

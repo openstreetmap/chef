@@ -25,10 +25,3 @@ apt_repository "postgresql" do
   components ["main"]
   key "https://www.postgresql.org/media/keys/ACCC4CF8.asc"
 end
-
-# Workaround v18.8.11 bug: https://github.com/chef/chef/issues/15214
-if Chef::VERSION == "18.8.11"
-  edit_resource(:file, "/etc/apt/keyrings/postgresql.gpg") do
-    action :create_if_missing
-  end
-end

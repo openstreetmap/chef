@@ -26,13 +26,6 @@ apt_repository "elasticsearch7.x" do
   key "https://artifacts.elastic.co/GPG-KEY-elasticsearch"
 end
 
-# Workaround v18.8.11 bug: https://github.com/chef/chef/issues/15214
-if Chef::VERSION == "18.8.11"
-  edit_resource(:file, "/etc/apt/keyrings/elasticsearch7.x.gpg") do
-    action :create_if_missing
-  end
-end
-
 # Workaround for mediawiki 1.39.x which ONLY supports elasticsearch 7.10.2
 # elasticsearch 7.10.2 is the final Apache 2.0 licensed version of elasticsearch
 apt_preference "elasticsearch" do

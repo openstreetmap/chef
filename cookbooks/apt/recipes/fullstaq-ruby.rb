@@ -25,10 +25,3 @@ apt_repository "fullstaq-ruby" do
   components ["main"]
   key "https://raw.githubusercontent.com/fullstaq-ruby/server-edition/main/fullstaq-ruby.asc"
 end
-
-# Workaround v18.8.11 bug: https://github.com/chef/chef/issues/15214
-if Chef::VERSION == "18.8.11"
-  edit_resource(:file, "/etc/apt/keyrings/fullstaq-ruby.gpg") do
-    action :create_if_missing
-  end
-end

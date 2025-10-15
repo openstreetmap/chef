@@ -23,10 +23,3 @@ apt_repository "maxmind" do
   uri "ppa:maxmind/ppa"
   only_if { platform?("ubuntu") }
 end
-
-# Workaround v18.8.11 bug: https://github.com/chef/chef/issues/15214
-if Chef::VERSION == "18.8.11"
-  edit_resource(:file, "/etc/apt/keyrings/maxmind.gpg") do
-    action :create_if_missing
-  end
-end

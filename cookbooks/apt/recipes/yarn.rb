@@ -25,10 +25,3 @@ apt_repository "yarn" do
   components ["main"]
   key "https://dl.yarnpkg.com/debian/pubkey.gpg"
 end
-
-# Workaround v18.8.11 bug: https://github.com/chef/chef/issues/15214
-if Chef::VERSION == "18.8.11"
-  edit_resource(:file, "/etc/apt/keyrings/yarn.gpg") do
-    action :create_if_missing
-  end
-end
