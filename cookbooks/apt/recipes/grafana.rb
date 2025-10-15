@@ -25,3 +25,10 @@ apt_repository "grafana" do
   components ["main"]
   key "https://packages.grafana.com/gpg.key"
 end
+
+# Workaround v18.8.11 bug: https://github.com/chef/chef/issues/15214
+if Chef::VERSION == "18.8.11"
+  edit_resource(:file, "/etc/apt/keyrings/grafana.gpg") do
+    action :create_if_missing
+  end
+end
