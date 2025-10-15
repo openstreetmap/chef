@@ -274,6 +274,8 @@ GEM
       ms_rest_azure (~> 0.12.0)
     base64 (0.3.0)
     bcrypt_pbkdf (1.1.1)
+    bcrypt_pbkdf (1.1.1-arm64-darwin)
+    bcrypt_pbkdf (1.1.1-x86_64-darwin)
     benchmark (0.4.1)
     bigdecimal (3.2.3)
     builder (3.3.0)
@@ -325,8 +327,10 @@ GEM
     ffi (1.17.2-aarch64-linux-musl)
     ffi (1.17.2-arm-linux-gnu)
     ffi (1.17.2-arm-linux-musl)
+    ffi (1.17.2-arm64-darwin)
     ffi (1.17.2-x86-linux-gnu)
     ffi (1.17.2-x86-linux-musl)
+    ffi (1.17.2-x86_64-darwin)
     ffi (1.17.2-x86_64-linux-gnu)
     ffi (1.17.2-x86_64-linux-musl)
     fuzzyurl (0.9.0)
@@ -732,9 +736,11 @@ PLATFORMS
   aarch64-linux-musl
   arm-linux-gnu
   arm-linux-musl
+  arm64-darwin
   ruby
   x86-linux-gnu
   x86-linux-musl
+  x86_64-darwin
   x86_64-linux-gnu
   x86_64-linux-musl
 
@@ -746,4 +752,4 @@ DEPENDENCIES
   zeitwerk (< 2.7)
 
 BUNDLED WITH
-   2.6.2
+   2.6.9
