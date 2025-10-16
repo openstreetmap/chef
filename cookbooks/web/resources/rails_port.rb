@@ -77,6 +77,7 @@ property :totp_key, String
 property :csp_enforce, [true, false], :default => false
 property :csp_report_url, String
 property :matomo_configuration, Hash
+property :spam_phrases, Array
 property :storage_service, String, :default => "local"
 property :storage_url, String
 property :trace_use_job_queue, [true, false], :default => false
@@ -300,6 +301,14 @@ action :create do
     path "#{rails_directory}/config/application.yml"
     action :delete
     not_if { ::File.exist?("#{rails_directory}/config/example.application.yml") }
+  end
+
+  file "create:#{rails_directory}/config/spam_phrases.yml" do
+    path "#{rails_directory}/config/spam_phrases.yml"
+    owner new_resource.user
+    group new_resource.group
+    mode "664"
+    content YAML.dump(new_resource.spam_phrases["phrases"])
   end
 
   settings = new_resource.to_hash.transform_keys(&:to_s).slice(
