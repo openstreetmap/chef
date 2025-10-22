@@ -17,7 +17,10 @@ echo 'password=<%= @database_params[:password] %>' >> "$T/mysqldump.opts"
 mysqldump --defaults-file="$T/mysqldump.opts" --opt --skip-lock-tables --single-transaction --no-tablespaces --max-allowed-packet=1G "<%= @database_params[:name] %>" | zstd --quiet --long --rsyncable -o "$T/wiki-<%= @name %>-$D/wiki.sql.zst"
 ln -s "<%= @directory %>" "$T/wiki-<%= @name %>-$D/www"
 
-nice tar --create --dereference --directory="$T" --warning=no-file-changed --warning=no-file-removed \
+nice tar --create --dereference --directory="$T" \
+  --warning=no-file-changed \
+  --warning=no-file-removed \
+  --ignore-failed-read \
   --exclude="wiki-<%= @name %>-$D/www/w/images/thumb" \
   --exclude="wiki-<%= @name %>-$D/www/w/.git" \
   --exclude="wiki-<%= @name %>-$D/www/w/extensions/*/.git" \
