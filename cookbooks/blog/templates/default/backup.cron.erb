@@ -17,6 +17,7 @@ echo 'password=<%= @passwords["osm-blog-user"] %>' >> "$T/mysqldump.opts"
 mysqldump --defaults-file="$T/mysqldump.opts" --opt --no-tablespaces --max-allowed-packet=1G osm-blog > "$T/osm-blog-$D/osm-blog.sql"
 ln -s /srv/blog.openstreetmap.org "$T/osm-blog-$D/www"
 
+set +e
 nice tar --create --dereference --directory="$T" \
   --sort=name \
   --warning=no-file-changed \
