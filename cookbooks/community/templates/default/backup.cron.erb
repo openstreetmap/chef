@@ -16,7 +16,13 @@ ln -s /srv/community.openstreetmap.org/shared/web-only "$T/community-$D/shared-w
 ln -s /srv/community.openstreetmap.org/shared/data/redis_data "$T/community-$D/shared-data-redis_data"
 ln -s /srv/community.openstreetmap.org/shared/data/postgres_backup "$T/community-$D/shared-data-postgres_backup"
 
-nice tar --create --numeric-owner --dereference --directory="$T" --sort=name --warning=no-file-changed --exclude="community-$D/shared-web-only/log/**/*.gz" "community-$D" | nice zstd --quiet --long --rsyncable -o "$T/$B"
+nice tar --create --numeric-owner --dereference --directory="$T" \
+  --sort=name \
+  --warning=no-file-changed \
+  --warning=no-file-removed \
+  --ignore-failed-read \
+  --exclude="community-$D/shared-web-only/log/**/*.gz" \
+  "community-$D" | nice zstd --quiet --long --rsyncable -o "$T/$B"
 nice rsync --preallocate --fuzzy "$T/$B" backup.openstreetmap.org::backup
 
 rm -rf "$T"
