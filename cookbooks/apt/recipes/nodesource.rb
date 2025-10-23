@@ -20,7 +20,7 @@
 include_recipe "apt"
 
 apt_repository "nodesource" do
-  uri "https://deb.nodesource.com/node_20.x"
+  uri "https://deb.nodesource.com/node_22.x"
   distribution "nodistro"
   components ["main"]
   key "https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key"
