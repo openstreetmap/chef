@@ -1,6 +1,5 @@
 templates:
   - "templates/web.template.yml"
-  - "templates/web.ipv6.template.yml"
   - "templates/web.ssl.template.yml"
   - "templates/enable-ruby-yjit.yml"
 
@@ -97,8 +96,6 @@ volumes:
       host: /srv/community.openstreetmap.org/files/update-feeds.atom
       guest: /shared/feeds/update-feeds.atom
 
-## Plugins go here
-## see https://meta.discourse.org/t/19157 for details
 hooks:
   after_code:
     - exec:
@@ -123,9 +120,12 @@ hooks:
           resolver <%= @resolvers.join(" ") %>;
           resolver_timeout 5s;
           ssl_dhparam /shared/ssl/dhparam.pem;
-    - replace:
-        filename: "/etc/nginx/conf.d/outlets/before-server/20-redirect-http-to-https.conf"
-        from: /listen 80;/
-        to: |
-          listen 80;
-          rewrite ^/\.well-known/acme-challenge/(.*)$ http://acme.openstreetmap.org/.well-known/acme-challenge/$1 permanent;
+
+# hooks: and run: use own levels
+run:
+  - replace:
+      filename: "/usr/local/bin/configure-ssl"
+      from: /listen 80;/
+      to: |
+        listen 80;
+        rewrite ^/\.well-known/acme-challenge/(.*)$ http://acme.openstreetmap.org/.well-known/acme-challenge/$1 permanent;
