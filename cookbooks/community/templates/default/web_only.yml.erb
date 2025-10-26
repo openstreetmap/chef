@@ -128,4 +128,4 @@ run:
       from: /listen 80;/
       to: |
         listen 80;
-        rewrite ^/\.well-known/acme-challenge/(.*)$ http://acme.openstreetmap.org/.well-known/acme-challenge/$1 permanent;
+        rewrite ^/\.well-known/acme-challenge/(.*)$ http://acme.openstreetmap.org/.well-known/acme-challenge/\$1 permanent;
