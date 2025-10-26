@@ -123,11 +123,9 @@ hooks:
           resolver <%= @resolvers.join(" ") %>;
           resolver_timeout 5s;
           ssl_dhparam /shared/ssl/dhparam.pem;
-
-run:
-  - replace:
-      filename: "/etc/nginx/conf.d/outlets/before-server/20-redirect-http-to-https.conf"
-      from: /listen 80;/
-      to: |
-        listen 80;
-        rewrite ^/\.well-known/acme-challenge/(.*)$ http://acme.openstreetmap.org/.well-known/acme-challenge/$1 permanent;
+    - replace:
+        filename: "/etc/nginx/conf.d/outlets/before-server/20-redirect-http-to-https.conf"
+        from: /listen 80;/
+        to: |
+          listen 80;
+          rewrite ^/\.well-known/acme-challenge/(.*)$ http://acme.openstreetmap.org/.well-known/acme-challenge/$1 permanent;
