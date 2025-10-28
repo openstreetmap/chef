@@ -13,7 +13,10 @@ B="blogs-$D.tar.zst"
 mkdir "$T/blogs-$D"
 sqlite3 /srv/blogs.openstreetmap.org/planet.db ".backup $T/blogs-$D/planet.db"
 
-nice tar --create --dereference --directory="$T" --sort=name "blogs-$D" | nice zstd --quiet --long --rsyncable -o "$T/$B"
+nice tar --create --dereference --directory="$T" \
+  --sort=name \
+  "blogs-$D" | nice zstd --quiet --long --rsyncable -o "$T/$B"
+
 nice rsync --preallocate --fuzzy "$T/$B" backup.openstreetmap.org::backup
 
 rm -rf "$T"

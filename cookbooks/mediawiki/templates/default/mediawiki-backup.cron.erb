@@ -21,13 +21,15 @@ set +e
 nice tar --create --dereference --directory="$T" \
   --warning=no-file-changed \
   --warning=no-file-removed \
-  --ignore-failed-read \
   --exclude="wiki-<%= @name %>-$D/www/w/images/thumb" \
   --exclude="wiki-<%= @name %>-$D/www/w/.git" \
+  --exclude="wiki-<%= @name %>-$D/www/w/cache" \
   --exclude="wiki-<%= @name %>-$D/www/w/extensions/*/.git" \
   --exclude="wiki-<%= @name %>-$D/www/dump" \
+  --exclude="wiki-<%= @name %>-$D/www/sitemap-*" \
   --sort=name \
   "wiki-<%= @name %>-$D" | nice zstd --quiet --long --rsyncable -o "$T/$B"
+
 nice rsync --preallocate --fuzzy "$T/$B" backup.openstreetmap.org::backup
 
 rm -rf "$T"

@@ -17,7 +17,6 @@ set +e
 nice tar --create --dereference \
     --warning=no-file-changed \
     --warning=no-file-removed \
-    --ignore-failed-read \
     --exclude='*/archives/*.txt.gz' \
     --directory="$T" \
     --sort=name \

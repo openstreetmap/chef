@@ -21,9 +21,9 @@ nice tar --create --numeric-owner --dereference --directory="$T" \
   --sort=name \
   --warning=no-file-changed \
   --warning=no-file-removed \
-  --ignore-failed-read \
-  --exclude="community-$D/shared-web-only/log/**/*.gz" \
+  --exclude="community-$D/shared-web-only/log" \
   "community-$D" | nice zstd --quiet --long --rsyncable -o "$T/$B"
+
 nice rsync --preallocate --fuzzy "$T/$B" backup.openstreetmap.org::backup
 
 rm -rf "$T"

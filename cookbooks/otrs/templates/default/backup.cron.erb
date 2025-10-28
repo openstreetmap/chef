@@ -17,7 +17,11 @@ sudo -u otrs pg_dump --file="$T/otrs-$D/otrs.dmp" otrs
 ln -s /var/lib/otrs "$T/otrs-$D/otrs-var"
 ln -s /etc/apache2/sites-available/otrs.openstreetmap.org.conf "$T/otrs-$D/apache2-otrs.openstreetmap.org.conf"
 
-nice tar --create --dereference --directory="$T" --sort=name "otrs-$D" | nice zstd --quiet --long --rsyncable -o "$T/$B"
+nice tar --create --dereference --directory="$T" \
+  --sort=name \
+  --exclude="otrs-$D//otrs-var/tmp/CacheFileStorable" \
+  "otrs-$D" | nice zstd --quiet --long --rsyncable -o "$T/$B"
+
 nice rsync --preallocate --fuzzy "$T/$B" backup.openstreetmap.org::backup
 
 rm -rf "$T"
