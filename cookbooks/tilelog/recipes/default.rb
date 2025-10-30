@@ -43,8 +43,8 @@ directory tilelog_output_directory do
   recursive true
 end
 
-aws_access_key_id = "AKIASQUXHPE7JFCFMOUP"
-aws_secret_access_key = passwords["aws_keys"][aws_access_key_id]
+aws_access_key_id = passwords["aws_access_key_id"]
+aws_secret_access_key = passwords["aws_secret_access_key"]
 
 template "/usr/local/bin/tilelog" do
   source "tilelog.erb"
