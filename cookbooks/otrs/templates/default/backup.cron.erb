@@ -19,7 +19,7 @@ ln -s /etc/apache2/sites-available/otrs.openstreetmap.org.conf "$T/otrs-$D/apach
 
 nice tar --create --dereference --directory="$T" \
   --sort=name \
-  --exclude="otrs-$D//otrs-var/tmp/CacheFileStorable" \
+  --exclude="otrs-$D/otrs-var/tmp/CacheFileStorable" \
   "otrs-$D" | nice zstd --quiet --long --rsyncable -o "$T/$B"
 
 nice rsync --preallocate --fuzzy "$T/$B" backup.openstreetmap.org::backup
