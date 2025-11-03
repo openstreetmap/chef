@@ -139,10 +139,12 @@ unless node[:prometheus][:junos].empty?
       --bgp.enabled=false
       --lacp.enabled=true
       --ldp.enabled=false
-      --ospf.enabled=false
-      --power.enabled=false
-      --poe.enabled=false
       --macsec.enabled=false
+      --ospf.enabled=false
+      --poe.enabled=false
+      --power.enabled=false
+      --storage.enabled=false
+      --systemstatistics.enabled=false
     ]
     ssh true
     register_target false
