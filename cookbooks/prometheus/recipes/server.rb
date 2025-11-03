@@ -70,7 +70,7 @@ end
 cache_dir = Chef::Config[:file_cache_path]
 
 prometheus_version = "3.7.3"
-alertmanager_version = "0.28.1"
+alertmanager_version = "0.29.0"
 karma_version = "0.122"
 
 directory "/opt/prometheus-server" do
