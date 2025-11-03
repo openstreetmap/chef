@@ -141,6 +141,8 @@ unless node[:prometheus][:junos].empty?
       --ldp.enabled=false
       --ospf.enabled=false
       --power.enabled=false
+      --poe.enabled=false
+      --macsec.enabled=false
     ]
     ssh true
     register_target false
