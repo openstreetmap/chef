@@ -1,0 +1,7 @@
+{
+  "id": "aws",
+  "cloudwatch_access_key_id": "AKICLOUDWATCHDUMMYEXAMPLE",
+  "cloudwatch_secret_access_key": "dummyCloudWatchSecretKeyExample12345678",
+  "prometheus_access_key_id": "AKIPROMETHEUSDUMMYEXAMPLE",
+  "prometheus_secret_access_key": "dummyPrometheusSecretKeyExample12345678"
+}
