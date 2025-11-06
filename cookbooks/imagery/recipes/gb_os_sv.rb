@@ -1232,10 +1232,11 @@ imagery_layer "gb_os_om_local_2025_10" do
   site "os.openstreetmap.org"
   title "OS OpenMap Local - October 2025"
   projection "EPSG:27700"
-  source "/store/imagery/gb/openmap-local/2025-10/os-openmap-local-2025-10-fast.vrt"
+  source "/store/imagery/gb/openmap-local/2025-10/os-openmap-local-2025-10.vrt"
   copyright "Contains OS data &copy; Crown copyright and database right 2025"
   background_colour "213 244 248" # OS OpenMap Local Water Blue
   extension "os_om_local_png"
   url_aliases ["/om-local-2025-10", "/om-local", "/sv"]
   default_layer true
+  revision 2
 end
