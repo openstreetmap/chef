@@ -23,7 +23,7 @@ include_recipe "postgresql"
 include_recipe "python"
 include_recipe "ruby"
 
-wal_secrets = data_bag_item("db", "wal-secrets")
+aws_credentials = data_bag_item("db", "aws")
 
 package %w[
   cmake
@@ -97,5 +97,6 @@ template "/usr/local/bin/openstreetmap-wal-g" do
   owner "root"
   group "postgres"
   mode "750"
-  variables :s3_key => wal_secrets["s3_key"]
+  variables :aws_credentials => aws_credentials
+  sensitive true
 end
