@@ -12,8 +12,8 @@ TMPDIR=$(mktemp -d -t tilelog.XXXXXXXXX)
 
 cd "$TMPDIR"
 
-export AWS_ACCESS_KEY_ID="<%= @aws_access_key_id %>"
-export AWS_SECRET_ACCESS_KEY="<%= @aws_secret_access_key %>"
+export AWS_ACCESS_KEY_ID="<%= @aws_credentials["tilelog_access_key_id"] %>"
+export AWS_SECRET_ACCESS_KEY="<%= @aws_credentials["tilelog_secret_access_key"] %>"
 export AWS_REGION="eu-west-1"
 
 TILEFILE="tiles-${DATE}.txt.xz"

@@ -21,7 +21,7 @@ include_recipe "accounts"
 include_recipe "planet::aws"
 include_recipe "python"
 
-passwords = data_bag_item("tilelog", "passwords")
+aws_credentials = data_bag_item("tilelog", "aws")
 
 tilelog_directory = "/opt/tilelog"
 tilelog_output_directory = node[:tilelog][:output_directory]
@@ -43,17 +43,13 @@ directory tilelog_output_directory do
   recursive true
 end
 
-aws_access_key_id = passwords["aws_access_key_id"]
-aws_secret_access_key = passwords["aws_secret_access_key"]
-
 template "/usr/local/bin/tilelog" do
   source "tilelog.erb"
   owner "root"
   group "root"
   mode "755"
   variables :output_dir => tilelog_output_directory,
-            :aws_access_key_id => aws_access_key_id,
-            :aws_secret_access_key => aws_secret_access_key
+            :aws_credentials => aws_credentials
 end
 
 systemd_service "tilelog" do
