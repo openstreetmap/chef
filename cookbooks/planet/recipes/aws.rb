@@ -40,5 +40,6 @@ template "/home/planet/.aws/credentials" do
   owner "planet"
   group "planet"
   mode "0600"
-  variables :credentials => aws_credentials
+  variables :aws_credentials => aws_credentials
+  sensitive true
 end
