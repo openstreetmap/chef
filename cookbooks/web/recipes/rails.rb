@@ -29,6 +29,7 @@ include_recipe "web::base"
 
 web_passwords = data_bag_item("web", "passwords")
 db_passwords = data_bag_item("db", "passwords")
+aws_credentials = data_bag_item("web", "aws")
 
 ssl_certificate "www.openstreetmap.org" do
   domains ["www.openstreetmap.org", "www.osm.org", "www.openstreetmap.com",
@@ -45,8 +46,8 @@ rails_directory = "#{node[:web][:base_directory]}/rails"
 
 matomo = data_bag_item("web", "matomo")
 
-aws_access_key_id = web_passwords["aws_access_key_id"]
-aws_secret_access_key = web_passwords["aws_secret_access_key"]
+aws_access_key_id = aws_credentials["web_access_key_id"]
+aws_secret_access_key = aws_credentials["web_secret_access_key"]
 
 storage = {
   "avatars" => {
