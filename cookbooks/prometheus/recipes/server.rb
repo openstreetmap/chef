@@ -24,6 +24,7 @@ include_recipe "networking"
 
 passwords = data_bag_item("prometheus", "passwords")
 tokens = data_bag_item("prometheus", "tokens")
+aws = data_bag_item("prometheus", "aws")
 admins = data_bag_item("apache", "admins")
 
 prometheus_exporter "fastly" do
@@ -62,8 +63,8 @@ prometheus_exporter "cloudwatch" do
     --enable-feature=aws-sdk-v2
     --enable-feature=always-return-info-metrics
   ]
-  environment "AWS_ACCESS_KEY_ID" => "AKIASQUXHPE7JHG37EA6",
-              "AWS_SECRET_ACCESS_KEY" => tokens["cloudwatch"]
+  environment "AWS_ACCESS_KEY_ID" => aws["cloudwatch_access_key_id"],
+              "AWS_SECRET_ACCESS_KEY" => aws["cloudwatch_secret_access_key"]
   subscribes :restart, "template[/etc/prometheus/cloudwatch.yml]"
 end
 
@@ -396,7 +397,7 @@ template "/var/lib/prometheus/.aws/credentials" do
   user "prometheus"
   group "prometheus"
   mode "600"
-  variables :passwords => passwords
+  variables :aws => aws
 end
 
 template "/usr/local/bin/prometheus-backup-data" do
