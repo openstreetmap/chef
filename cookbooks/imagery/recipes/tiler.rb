@@ -40,6 +40,7 @@ podman_service "titiler" do
   volume :"/store/imagery" => "/store/imagery",
          :"/srv/imagery/sockets" => "/sockets"
   environment :GDAL_CACHEMAX => 200,
+              :CPL_VSIL_CURL_CACHE_SIZE => 200000000,
               :GDAL_BAND_BLOCK_CACHE => "HASHSET",
               :GDAL_DISABLE_READDIR_ON_OPEN => "EMPTY_DIR",
               :GDAL_INGESTED_BYTES_AT_OPEN => 32768,
