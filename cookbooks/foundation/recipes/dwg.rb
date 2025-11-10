@@ -35,7 +35,7 @@ mediawiki_site "dwg.osmfoundation.org" do
   email_sender_name "OSMF Board Wiki"
   private_site true
   extra_file_extensions %w[pptx]
-  version "1.39"
+  version "1.43"
 end
 
 cookbook_file "/srv/dwg.osmfoundation.org/Wiki.png" do
