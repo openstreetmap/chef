@@ -2,12 +2,6 @@ name "foundation"
 description "Role applied to all OSMF servers"
 
 default_attributes(
-  :elasticsearch => {
-    :version => "7.x",
-    :cluster => {
-      :name => "foundation"
-    }
-  },
   :memcached => {
     :memory_limit => 400,
     :chunk_growth_factor => 1.05,
@@ -27,9 +21,5 @@ default_attributes(
 )
 
 run_list(
-  "role[crm]",
-  "role[elasticsearch]",
-  "recipe[foundation::wiki]",
-  "recipe[foundation::board]",
-  "recipe[foundation::dwg]"
+  "role[crm]"
 )
