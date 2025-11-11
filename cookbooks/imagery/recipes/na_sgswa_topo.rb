@@ -61,8 +61,8 @@ imagery_layer "african_topo_50k" do
   site "namibia-topo.openstreetmap.org.za"
   title "African Topo 50k"
   projection "EPSG:4326"
-  source "/store/imagery/african-topo/african-topo-v8.vrt"
+  source "/store/imagery/african-topo/african-topo-v9.vrt"
   copyright "Copyright &copy"
   max_zoom 16
-  revision 8
+  revision 9
 end
