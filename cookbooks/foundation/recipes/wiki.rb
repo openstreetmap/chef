@@ -21,6 +21,8 @@ include_recipe "mediawiki"
 
 passwords = data_bag_item("foundation", "passwords")
 
+package "lua5.1" # newer versions do not work with Scribuntu!
+
 mediawiki_site "osmfoundation.org" do
   aliases ["wiki.osmfoundation.org", "www.osmfoundation.org",
            "foundation.openstreetmap.org", "foundation.osm.org"]
@@ -49,6 +51,12 @@ mediawiki_skin "OSMFoundation" do
   repository "https://github.com/osmfoundation/osmf-mediawiki-skin.git"
   revision "master"
   legacy false
+end
+
+mediawiki_extension "Scribunto" do
+  site "osmfoundation.org"
+  template "mw-ext-Scribunto.inc.php.erb"
+  template_cookbook "wiki"
 end
 
 cookbook_file "/srv/osmfoundation.org/Wiki.png" do
