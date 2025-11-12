@@ -56,7 +56,7 @@ end
 mediawiki_extension "Scribunto" do
   site "osmfoundation.org"
   template "mw-ext-Scribunto.inc.php.erb"
-  template_cookbook "wiki"
+  template_cookbook "foundation"
 end
 
 cookbook_file "/srv/osmfoundation.org/Wiki.png" do
