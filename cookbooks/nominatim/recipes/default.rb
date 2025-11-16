@@ -231,11 +231,20 @@ end
 
 frontends = search(:node, "recipes:web\\:\\:frontend").sort_by(&:name)
 
+remote_file "#{Chef::Config[:file_cache_path]}/fastly-ip-list.json" do
+  source "https://api.fastly.com/public-ip-list"
+  compile_time true
+  ignore_failure true
+end
+
+fastlyips = JSON.parse(IO.read("#{Chef::Config[:file_cache_path]}/fastly-ip-list.json"))
+
 nginx_site "nominatim" do
   template "nginx.erb"
   directory project_directory
   variables :pools => node[:nominatim][:fpm_pools],
             :frontends => frontends,
+            :fastly => fastlyips["addresses"] + fastlyips["ipv6_addresses"],
             :confdir => "#{basedir}/etc",
             :ui_directory => ui_directory
 end
