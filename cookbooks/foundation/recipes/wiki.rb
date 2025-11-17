@@ -37,7 +37,7 @@ mediawiki_site "osmfoundation.org" do
   database_password passwords["wiki"]["database"]
   admin_password passwords["wiki"]["admin"]
   skin "vector-2022"
-  logo "/w/skins/OSMFoundation/img/logo.png"
+  logo "/osm_logo.svg"
   email_contact "webmaster@openstreetmap.org"
   email_sender "wiki@noreply.openstreetmap.org"
   email_sender_name "OSMF Wiki"
@@ -59,7 +59,7 @@ mediawiki_extension "Scribunto" do
   template_cookbook "foundation"
 end
 
-cookbook_file "/srv/osmfoundation.org/Wiki.png" do
+cookbook_file "/srv/osmfoundation.org/osm_logo.svg" do
   owner node[:mediawiki][:user]
   group node[:mediawiki][:group]
   mode "644"
