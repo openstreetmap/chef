@@ -1,5 +1,5 @@
 {
   "id": "aws",
   "web_access_key_id": "WEB_ACCESS_KEY_ID",
-  "web_secret_access_key": "WEB_SECRET_ACCESS_KEY",
+  "web_secret_access_key": "WEB_SECRET_ACCESS_KEY"
 }
