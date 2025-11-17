@@ -46,12 +46,12 @@ mediawiki_site "osmfoundation.org" do
   version "1.43"
 end
 
-mediawiki_skin "OSMFoundation" do
-  site "osmfoundation.org"
-  repository "https://github.com/osmfoundation/osmf-mediawiki-skin.git"
-  revision "master"
-  legacy false
-end
+# mediawiki_skin "OSMFoundation" do
+#   site "osmfoundation.org"
+#   repository "https://github.com/osmfoundation/osmf-mediawiki-skin.git"
+#   revision "master"
+#   legacy false
+# end
 
 mediawiki_extension "Scribunto" do
   site "osmfoundation.org"
