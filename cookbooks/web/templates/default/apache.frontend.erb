@@ -197,6 +197,12 @@ ErrorLog /var/log/apache2/error.log
   RequestHeader edit* Accept-Encoding "\\s*,\\s*" ", "
 
   #
+  # StreetComplete is requesting "Accept-Encoding: gzip, deflate, identity", but cannot handle deflate responses
+  #
+  SetEnvIfNoCase User-Agent "StreetComplete" streetcomplete_client
+  RequestHeader edit Accept-Encoding "gzip, deflate, identity" "gzip" env=streetcomplete_client
+
+  #
   # Pass supported calls to cgimap
   #
   RewriteRule ^/api/0\.6/map(\.json|\.xml)?$ unix:/run/cgimap/socket|fcgi://127.0.0.1$0 [P]
