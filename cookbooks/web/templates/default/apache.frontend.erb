@@ -197,10 +197,11 @@ ErrorLog /var/log/apache2/error.log
   RequestHeader edit* Accept-Encoding "\\s*,\\s*" ", "
 
   #
-  # StreetComplete is requesting "Accept-Encoding: gzip, deflate, identity", but cannot handle deflate responses
+  # Disable deflate for applications that claim to handle it but can't
   #
-  SetEnvIfNoCase User-Agent "StreetComplete" streetcomplete_client
-  RequestHeader edit Accept-Encoding "gzip, deflate, identity" "gzip" env=streetcomplete_client
+  SetEnvIfNoCase User-Agent "StreetComplete" broken_deflate_client
+  SetEnvIfNoCase Referer "app:/resources/potlatch2.swf" broken_deflate_client
+  RequestHeader edit Accept-Encoding "deflate" "unsupported" env=broken_deflate_client
 
   #
   # Pass supported calls to cgimap
