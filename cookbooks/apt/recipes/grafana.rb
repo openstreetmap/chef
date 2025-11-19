@@ -20,8 +20,8 @@
 include_recipe "apt"
 
 apt_repository "grafana" do
-  uri "https://packages.grafana.com/enterprise/deb"
+  uri "https://apt.grafana.com"
   distribution "stable"
   components ["main"]
-  key "https://packages.grafana.com/gpg.key"
+  key "https://apt.grafana.com/gpg.key"
 end
