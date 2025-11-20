@@ -2,6 +2,19 @@ name "naga"
 description "Master role applied to naga"
 
 default_attributes(
+  :apache => {
+    :mpm => "event",
+    :event => {
+      :server_limit => 32,
+      :max_request_workers => 800,
+      :threads_per_child => 50,
+      :max_connections_per_child => 100000
+    },
+    :evasive => {
+      :page_count => 400,
+      :site_count => 500
+    }
+  },
   :elasticsearch => {
     :version => "7.x",
     :cluster => {
