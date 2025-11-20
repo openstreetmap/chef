@@ -41,7 +41,7 @@ property :fpm_min_spare_servers, :kind_of => Integer, :default => 2
 property :fpm_max_spare_servers, :kind_of => Integer, :default => 6
 property :fpm_request_terminate_timeout, :kind_of => Integer, :default => 300
 property :fpm_prometheus_port, :kind_of => Integer
-property :reload_apache, :kind_of => [TrueClass, FalseClass], :default => true
+property :reload_apache, :kind_of => [TrueClass, FalseClass], :default => false
 
 action :create do
   version = new_resource.version || Chef::Wordpress.current_version
@@ -187,7 +187,7 @@ action :create do
     directory site_directory
     variables :aliases => Array(new_resource.aliases),
               :urls => new_resource.urls
-    reload_apache false
+    reload_apache true
   end
 
   wordpress_plugin "wp-fail2ban" do
@@ -227,7 +227,7 @@ action :delete do
 
   apache_site new_resource.site do
     action :delete
-    reload_apache false
+    reload_apache true
   end
 
   declare_resource :directory, site_directory do

@@ -53,7 +53,7 @@ property :fpm_min_spare_servers, :kind_of => Integer, :default => 1
 property :fpm_max_spare_servers, :kind_of => Integer, :default => 3
 property :fpm_request_terminate_timeout, :kind_of => Integer, :default => 120
 property :fpm_prometheus_port, :kind_of => Integer
-property :reload_apache, :kind_of => [TrueClass, FalseClass], :default => true
+property :reload_apache, :kind_of => [TrueClass, FalseClass], :default => false
 property :backup_enabled, :kind_of => [TrueClass, FalseClass], :default => true
 
 action :create do
@@ -495,7 +495,7 @@ action :create do
     directory site_directory
     variables :aliases => Array(new_resource.aliases),
               :private_site => new_resource.private_site
-    reload_apache false
+    reload_apache true
   end
 
   # FIXME: needs to run one
@@ -545,7 +545,7 @@ end
 action :delete do
   apache_site new_resource.site do
     action :delete
-    reload_apache false
+    reload_apache true
   end
 
   declare_resource :directory, site_directory do
