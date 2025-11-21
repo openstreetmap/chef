@@ -6,6 +6,6 @@ D=`date +%Y-%m-%d`
 F=/store/backup/osm-${D}.dmp
 
 pg_dump --user=backup --format=custom --file=$F openstreetmap && \
-  rsync $F backup.openstreetmap.org::backup
+  rsync --preallocate $F backup.openstreetmap.org::backup
 
 rm -f $F

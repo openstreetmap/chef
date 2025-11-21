@@ -149,7 +149,7 @@ end
 
 execute "/opt/civicrm-#{civicrm_version}/civicrm" do
   action :nothing
-  command "rsync --archive --delete --delete-delay --delay-updates /opt/civicrm-#{civicrm_version}/civicrm/ #{civicrm_directory}"
+  command "rsync --archive --delete --delete-delay --delay-updates --preallocate /opt/civicrm-#{civicrm_version}/civicrm/ #{civicrm_directory}"
   user "wordpress"
   group "wordpress"
   subscribes :run, "archive_file[#{cache_dir}/civicrm-#{civicrm_version}-wordpress.zip]", :immediately
