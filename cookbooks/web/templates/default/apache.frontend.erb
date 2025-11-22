@@ -119,6 +119,10 @@ ErrorLog /var/log/apache2/error.log
   RewriteCond %{HTTP_USER_AGENT} "GoogleAssociationService"
   RewriteRule "^/\.well-known/assetlinks\.json$" - [R=429,L]
 
+  # Drop faulty Cloudflare POST /cdn-cgi/rum submissions reaching us
+  RewriteCond %{REQUEST_METHOD} =POST
+  RewriteRule ^/cdn-cgi/rum$ - [F,L]
+
   #
   # Force special MIME type for crossdomain.xml files
   #
