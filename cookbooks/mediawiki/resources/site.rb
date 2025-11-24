@@ -473,6 +473,7 @@ action :create do
 
   ssl_certificate new_resource.site do
     domains [new_resource.site] + Array(new_resource.aliases)
+    notifies :reload, "service[apache2]"
   end
 
   php_fpm new_resource.site do

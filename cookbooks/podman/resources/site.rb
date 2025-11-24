@@ -39,6 +39,7 @@ action :create do
 
   ssl_certificate new_resource.site do
     domains Array(new_resource.site) + new_resource.aliases
+    notifies :reload, "service[apache2]"
   end
 
   apache_site new_resource.site do
