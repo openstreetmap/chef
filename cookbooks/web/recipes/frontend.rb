@@ -60,22 +60,6 @@ template "#{node[:web][:base_directory]}/static/.well-known/security.txt" do
   mode "644"
 end
 
-remote_file "#{Chef::Config[:file_cache_path]}/cloudflare-ipv4-list" do
-  source "https://www.cloudflare.com/ips-v4"
-  compile_time true
-  ignore_failure true
-end
-
-cloudflare_ipv4 = IO.read("#{Chef::Config[:file_cache_path]}/cloudflare-ipv4-list").lines.map(&:chomp)
-
-remote_file "#{Chef::Config[:file_cache_path]}/cloudflare-ipv6-list" do
-  source "https://www.cloudflare.com/ips-v6"
-  compile_time true
-  ignore_failure true
-end
-
-cloudflare_ipv6 = IO.read("#{Chef::Config[:file_cache_path]}/cloudflare-ipv6-list").lines.map(&:chomp)
-
 remote_file "#{Chef::Config[:file_cache_path]}/fastly-ip-list.json" do
   source "https://api.fastly.com/public-ip-list"
   compile_time true
@@ -86,8 +70,7 @@ fastlyips = JSON.parse(IO.read("#{Chef::Config[:file_cache_path]}/fastly-ip-list
 
 apache_site "www.openstreetmap.org" do
   template "apache.frontend.erb"
-  variables :cloudflare => cloudflare_ipv4 + cloudflare_ipv6,
-            :fastly => fastlyips["addresses"] + fastlyips["ipv6_addresses"],
+  variables :fastly => fastlyips["addresses"] + fastlyips["ipv6_addresses"],
             :status => node[:web][:status],
             :secret_key_base => web_passwords["secret_key_base"]
 end

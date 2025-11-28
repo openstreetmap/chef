@@ -27,10 +27,7 @@ ErrorLog /var/log/apache2/error.log
   SSLCertificateKeyFile /etc/ssl/private/www.openstreetmap.org.key
 
   # Get the real remote IP for requests via a trusted proxy
-  RemoteIPHeader CF-Connecting-IP
-<% @cloudflare.sort.each do |address| -%>
-  RemoteIPTrustedProxy <%= address %>
-<% end -%>
+  RemoteIPHeader Fastly-Client-IP
   # Fastly POPs
 <% @fastly.sort.each do |address| -%>
   RemoteIPTrustedProxy <%= address %>
