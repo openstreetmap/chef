@@ -14,6 +14,8 @@ production:
   password: <%= @password %>
 <% end -%>
   encoding: utf8
+  variables:
+    statement_timeout: 300s
 
 development:
   adapter: postgresql
@@ -29,3 +31,5 @@ development:
   password: <%= @password %>
 <% end -%>
   encoding: utf8
+  variables:
+    statement_timeout: 300s
