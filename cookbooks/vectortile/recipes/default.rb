@@ -289,7 +289,7 @@ template "/usr/local/bin/vector-update" do
   variables :tilekiln_bin => "#{tilekiln_directory}/bin/tilekiln", :source_database => "spirit", :config_path => shortbread_config, :diff_size => "1000", :expiry_dir => "/srv/vector.openstreetmap.org/data/", :post_processing => "/usr/local/bin/tiles-rerender"
 end
 
-rerender_layers = %w[addresses boundaries bridges buildings land pois public_transport sites street_polygons streets water_lines_labels water_lines water_polygons].join(" ")
+rerender_layers = %w[water_polygons water_polygons_labels water_lines_labels water_lines dam_lines dam_polygons pier_lines pier_polygons boundaries boundary_labels place_labels land sites buildings addresses streets street_polygons street_labels streets_polygons_labels street_labels_points bridges aerialways ferries public_transport pois].join(" ")
 
 template "/usr/local/bin/tiles-rerender" do
   source "tiles-rerender.erb"
