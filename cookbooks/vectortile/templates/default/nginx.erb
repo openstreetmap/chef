@@ -58,5 +58,12 @@ server {
         # Add diagnostics header to identify render server
         add_header x-rendered-by "<%= node.name %>" always;
     }
+    location /styles/ {
+        proxy_pass http://demo;
+        proxy_http_version 1.1;
+        proxy_set_header Connection "";
+        # Add diagnostics header to identify render server
+        add_header x-rendered-by "<%= node.name %>" always;
+    }
     root /srv/vector.openstreetmap.org/html;
 }
