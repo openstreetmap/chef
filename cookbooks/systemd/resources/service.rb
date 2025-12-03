@@ -193,7 +193,6 @@ action :create do
     group "root"
     mode "644"
     variables service_variables
-    notifies :run, "execute[systemctl-reload]"
   end
 
   execute "systemctl-reload" do
@@ -201,6 +200,7 @@ action :create do
     command "systemctl daemon-reload"
     user "root"
     group "root"
+    subscribes :run, "template[#{config_name}]"
   end
 end
 
@@ -212,7 +212,6 @@ action :delete do
 
   file config_name do
     action :delete
-    notifies :run, "execute[systemctl-reload]"
   end
 
   execute "systemctl-reload" do
@@ -220,6 +219,7 @@ action :delete do
     command "systemctl daemon-reload"
     user "root"
     group "root"
+    subscribes :run, "file[#{config_name}]"
   end
 end
 

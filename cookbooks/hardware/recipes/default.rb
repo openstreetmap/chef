@@ -566,13 +566,6 @@ if watchdog_module
     action :install
   end
 
-  execute "systemctl-reload" do
-    action :nothing
-    command "systemctl daemon-reload"
-    user "root"
-    group "root"
-  end
-
   directory "/etc/systemd/system.conf.d" do
     owner "root"
     group "root"
@@ -584,7 +577,14 @@ if watchdog_module
     owner "root"
     group "root"
     mode "644"
-    notifies :run, "execute[systemctl-reload]"
+  end
+
+  execute "systemctl-reload" do
+    action :nothing
+    command "systemctl daemon-reload"
+    user "root"
+    group "root"
+    subscribes :run, "template[/etc/systemd/system.conf.d/watchdog.conf]"
   end
 end
 

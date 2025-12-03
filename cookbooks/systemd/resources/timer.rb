@@ -58,7 +58,6 @@ action :create do
     group "root"
     mode "644"
     variables timer_variables
-    notifies :run, "execute[systemctl-reload]"
   end
 
   execute "systemctl-reload" do
@@ -66,6 +65,7 @@ action :create do
     command "systemctl daemon-reload"
     user "root"
     group "root"
+    subscribes :run, "template[#{config_name}]"
   end
 end
 
@@ -79,7 +79,7 @@ action :delete do
     command "systemctl daemon-reload"
     user "root"
     group "root"
-    subscribes :run, "file[/etc/systemd/system/#{new_resource.timer}.timer]"
+    subscribes :run, "file[#{config_name}]"
   end
 end
 
