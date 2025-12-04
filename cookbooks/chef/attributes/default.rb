@@ -2,4 +2,4 @@
 default[:chef][:server][:version] = "15.9.38"
 
 # Set the default client version
-default[:chef][:client][:version] = "18.8.46"
+default[:chef][:client][:version] = "18.8.54"
