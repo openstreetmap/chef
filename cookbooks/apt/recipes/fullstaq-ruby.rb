@@ -23,5 +23,5 @@ apt_repository "fullstaq-ruby" do
   uri "https://apt.fullstaqruby.org"
   distribution "#{node[:platform]}-#{node[:platform_version]}"
   components ["main"]
-  # key "https://raw.githubusercontent.com/fullstaq-ruby/server-edition/main/fullstaq-ruby.asc"
+  key "394F883E0C43569450FDFB92A9AF1C7C2ED65CC0" # https://raw.githubusercontent.com/fullstaq-ruby/server-edition/main/fullstaq-ruby.asc
 end
