@@ -566,7 +566,7 @@ groups:
         annotations:
           delay: "{{ $value | humanizeDuration }}"
       - alert: nominatim connections
-        expr: sum(nginx_connections_writing and on (instance) chef_role{name="nominatim"}) > 4500
+        expr: sum(nginx_connections_writing and on (instance) chef_role{name="nominatim"}) > 7000
         for: 15m
         keep_firing_for: 450s
         labels:
