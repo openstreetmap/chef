@@ -102,6 +102,7 @@ suites:
   - name: apt
     run_list:
       - recipe[apt::default]
+      - recipe[apt::management-component-pack]
   - name: apt-repository
     run_list:
       - recipe[apt::repository]
