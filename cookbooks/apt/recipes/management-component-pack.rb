@@ -24,11 +24,6 @@ apt_repository "management-component-pack" do
 end
 
 if platform?("debian")
-  # Force re-download of keyring
-  file "/etc/apt/keyrings/mcp.gpg" do
-    action :delete
-    only_if { ::File.exist?("/etc/apt/keyrings/mcp.gpg") && ::File.mtime("/etc/apt/keyrings/mcp.gpg").to_date < Date.new(2025, 12, 9) }
-  end
   apt_repository "mcp" do
     uri "https://downloads.linux.hpe.com/SDR/repo/mcp"
     distribution "#{node[:lsb][:codename]}/current"
@@ -37,11 +32,6 @@ if platform?("debian")
   end
 
   if node.dig(:dmi, :system, :product_name).to_s.end_with?("Gen9")
-    # Force re-download of keyring
-    file "/etc/apt/keyrings/mcp-gen9.gpg" do
-      action :delete
-      only_if { ::File.exist?("/etc/apt/keyrings/mcp-gen9.gpg") && ::File.mtime("/etc/apt/keyrings/mcp-gen9.gpg").to_date < Date.new(2025, 12, 9) }
-    end
     apt_repository "mcp-gen9" do
       uri "https://downloads.linux.hpe.com/SDR/repo/mcp"
       distribution "stretch/current-gen9"
@@ -51,11 +41,6 @@ if platform?("debian")
   end
 elsif platform?("ubuntu")
   if node.dig(:dmi, :system, :product_name).to_s.end_with?("Gen10")
-    # Force re-download of keyring
-    file "/etc/apt/keyrings/mcp-jammy.gpg" do
-      action :delete
-      only_if { ::File.exist?("/etc/apt/keyrings/mcp-jammy.gpg") && ::File.mtime("/etc/apt/keyrings/mcp-jammy.gpg").to_date < Date.new(2025, 12, 9) }
-    end
     apt_repository "mcp-jammy" do
       uri "https://downloads.linux.hpe.com/SDR/repo/mcp"
       distribution "jammy/current"
@@ -63,11 +48,6 @@ elsif platform?("ubuntu")
       key ["https://downloads.linux.hpe.com/SDR/hpePublicKey2048_key1.pub", "https://downloads.linux.hpe.com/SDR/hpePublicKey2048_key2.pub"]
     end
 
-    # Force re-download of keyring
-    file "/etc/apt/keyrings/mcp-focal-gen10.gpg" do
-      action :delete
-      only_if { ::File.exist?("/etc/apt/keyrings/mcp-focal-gen10.gpg") && ::File.mtime("/etc/apt/keyrings/mcp-focal-gen10.gpg").to_date < Date.new(2025, 12, 9) }
-    end
     apt_repository "mcp-focal-gen10" do
       uri "https://downloads.linux.hpe.com/SDR/repo/mcp"
       distribution "focal/current-gen10"
@@ -75,11 +55,6 @@ elsif platform?("ubuntu")
       key ["https://downloads.linux.hpe.com/SDR/hpePublicKey2048_key1.pub", "https://downloads.linux.hpe.com/SDR/hpePublicKey2048_key2.pub"]
     end
   else
-    # Force re-download of keyring
-    file "/etc/apt/keyrings/mcp-bionic-gen9.gpg" do
-      action :delete
-      only_if { ::File.exist?("/etc/apt/keyrings/mcp-bionic-gen9.gpg") && ::File.mtime("/etc/apt/keyrings/mcp-bionic-gen9.gpg").to_date < Date.new(2025, 12, 9) }
-    end
     apt_repository "mcp-bionic-gen9" do
       uri "https://downloads.linux.hpe.com/SDR/repo/mcp"
       distribution "bionic/current-gen9"
