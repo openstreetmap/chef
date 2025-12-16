@@ -82,7 +82,7 @@ default_attributes(
     :flatnode_file => "/srv/nominatim.openstreetmap.org/planet-project/nodes.store",
     :enable_qa_tiles => false,
     :api_workers => 12,
-    :api_pool_size => 10
+    :api_pool_size => 8
   }
 )
 
