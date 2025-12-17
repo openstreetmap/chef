@@ -53,10 +53,6 @@ package %w[
   pbzip2
 ]
 
-if (platform?("debian") && node[:lsb][:release].to_f < 13) || (platform?("ubuntu") && node[:lsb][:release].to_f < 24.04)
-  package "sqlite3-pcre" # https://github.com/taginfo/taginfo/issues/436
-end
-
 apache_module "cache"
 apache_module "cache_disk"
 apache_module "headers"
