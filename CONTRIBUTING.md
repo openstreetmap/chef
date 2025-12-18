@@ -1,77 +1,194 @@
-# Contribution Guidelines
+# Contributing
+
+This repository contains the Chef code used to configure OpenStreetMap's infrastructure.
+This guide walks you through running the same checks as CI locally before opening a pull request.
+
+## What you should run before a pull request
+
+At a minimum, please run:
+
+- **Cookstyle** (lint/style): `bundle exec cookstyle`
+- **Test Kitchen** for the cookbooks/roles you changed or added (integration): `bundle exec kitchen test <suite>-<platform>`
+
+CI runs a large matrix; contributors are not expected to run every Kitchen instance locally.
+
+## Quick start (if you already have Ruby + Docker)
+
+From the repository root:
+
+```bash
+bundle install
+bundle exec cookstyle
+bundle exec kitchen list
+bundle exec kitchen test dns-ubuntu-2204
+```
+
+Replace `dns-ubuntu-2204` with a Kitchen instance relevant to the cookbooks/roles you changed.
 
 ## Workflow
 
-We operate the "Fork & Pull" model explained at
+We use the "fork and pull request" workflow:
 
-https://help.github.com/articles/using-pull-requests
+- Fork the repository
+- Create a topic branch
+- Open a pull request back to `openstreetmap/chef`
 
-You should fork the project into your own repo, create a topic branch
-there and then make one or more pull requests back to the openstreetmap/chef repository.
-Your pull requests will then be reviewed and discussed.
+GitHub has an overview at https://help.github.com/articles/using-pull-requests
 
-## Running the Infrastructure Tests locally
+## Local test setup
 
-- **[Cookstyle](https://docs.chef.io/workstation/cookstyle/)** is used for linting, ensuring that our Chef recipes follow style guidelines and best practices.
-- **[Test Kitchen](https://kitchen.ci/)** combined with **InSpec** and [Dokken](https://github.com/test-kitchen/kitchen-dokken) is used to verify the functionality of our Chef code, ensuring it behaves as expected.
+### Prerequisites
 
-The following guidelines are to help set up and run these checks locally:
+- **Docker**
+	- macOS: Docker Desktop
+	- Linux: Docker Engine
+	- Windows: WSL2 + Docker may work, but is not used by the operations team and may not work in your environment (see below).
+- **Ruby** (see [.ruby-version](.ruby-version)) and **Bundler**
+- `git`
 
-#### **1. Install Docker**
-- Visit [Docker's official site](https://www.docker.com/products/docker-desktop) to download and install Docker.
+We recommend using `rbenv` to manage Ruby versions. On macOS, Homebrew is often the easiest way to install it.
 
-#### **2. Install Homebrew (Apple MacOS only)**
-- Install Homebrew by following the instructions [here](https://brew.sh/).
+### Recommended setup (rbenv + Bundler)
 
-#### **3. Install rbenv (recommended)**
-- Install rbenv by following the instructions [here](https://github.com/rbenv/rbenv#installation).
+The steps below work on macOS and Linux. The macOS-only steps are called out explicitly.
 
-rbenv is a ruby version manager. rbenv allows projects to use a different version of ruby than the version of install with your operating system.
+1) Install Docker
 
-> *Note on rbenv: While we recommend using rbenv for managing Ruby versions, it's not strictly necessary. If you have Ruby already installed feel free to use that. If you're not using rbenv, simply omit the `rbenv exec` prefix from the commands below.*
+- macOS: Docker Desktop - https://www.docker.com/products/docker-desktop
+- Linux: Docker Engine - https://docs.docker.com/engine/install/
 
-#### **4. Increase File Limit (Important for MacOS)**
+2) macOS only: install Homebrew (if you do not already have it)
 
-To avoid errors when running tests on MacOS, you might need to increase the number of files your system can open at once. Here's how:
+- https://brew.sh/
 
-1. Run the command:
+3) Install `rbenv`
+
+- https://github.com/rbenv/rbenv#installation
+
+`rbenv` is a Ruby version manager. It lets you use the Ruby version this repository expects without changing your system Ruby.
+
+If you do not use `rbenv`, omit the `rbenv exec` prefix in the commands below.
+
+4) macOS only: increase the open file limit (often needed)
+
+If you see errors like `Too many open files (Errno::EMFILE)` while running tests:
+
 ```bash
 ulimit -n 1024
 ```
-2. To make the change permanent, add the above line to either `~/.zshrc` or `~/.bash_profile`, depending on your shell.
 
-**Note:** MacOS has a low default limit of just 256 open files. If you exceed this while testing, you'll see an error like: `Too many open files - getcwd (Errno::EMFILE)`. This step helps prevent that.
+To make it permanent, add the line above to your shell profile (for example `~/.zshrc`).
 
-#### **5. Install Required Ruby Version (recommended)**
-Navigate to the git checkout of the OpenStreetMap chef repo and run:
+5) Install the Ruby version for this repo
+
+From the repository root:
+
 ```bash
-rbenv install
+rbenv install --skip-existing
 ```
-This will install the recommended version of ruby for running the tests. The recommended version of ruby is defined in the [.ruby-version](.ruby-version) file.
 
-#### **6. Install Dependencies with Bundler**
+6) Install Ruby gems
+
 ```bash
 rbenv exec gem install bundler
 rbenv exec bundle install
 ```
-This will install the [bundler](https://bundler.io/), the ruby gem packages manager, and then uses `bundle` to install the required gem packages for the tests.
 
-#### **7. Run Cookstyle for Linting and Style Checks**
+## Running the checks
+
+### 1) Cookstyle (lint and style)
+
+Cookstyle checks Chef/Ruby style and common issues.
+
 ```bash
 rbenv exec bundle exec cookstyle
 ```
-This will run [cookstyle](https://docs.chef.io/workstation/cookstyle/) a linting tool which reports on any linting issues.
 
-> *Automatically run cookstyle lint: We have a sample [git pre-commit hook](https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks) in the `hooks/pre-commit` file which can be copied to the local checkout of this repo to the file `.git/hooks/pre-commit`  to ensure the lint passes when running a git commit.*
+If you prefer not to install Ruby locally, you can run Cookstyle via Docker:
 
-#### **8. List Available Tests**
+```bash
+docker compose run --rm cookstyle
+```
+
+If you only want to lint the files you are committing, there is a sample pre-commit hook at [hooks/pre-commit](hooks/pre-commit).
+Copy it to `.git/hooks/pre-commit` and make it executable.
+
+### 2) Test Kitchen (integration tests)
+
+We use Test Kitchen with InSpec and the Dokken driver to converge recipes and verify behaviour inside containers.
+
+1) List available instances:
+
 ```bash
 rbenv exec bundle exec kitchen list
 ```
-This lists the [Test Kitchen](https://kitchen.ci/) tests which are available. The list of tests is generated from the definitions in the [.kitchen.yml](.kitchen.yml) file. The individual tests are written in [InSpec](https://docs.chef.io/inspec/) and are stored in the `test/integration/` directory.
 
-#### **9. Run an Example Test**
+Kitchen instances are named `<suite>-<platform>`.
+The suite is usually the cookbook/role under test (see [.kitchen.yml](.kitchen.yml)), and the platform is the OS image.
+
+The available Kitchen suites and platforms are defined in [.kitchen.yml](.kitchen.yml).
+The InSpec integration tests themselves live under [test/integration/](test/integration/).
+If your change adds a new cookbook, please add a corresponding suite to [.kitchen.yml](.kitchen.yml) and include appropriate integration tests.
+
+2) Run a specific instance:
+
 ```bash
 rbenv exec bundle exec kitchen test dns-ubuntu-2204
 ```
-This runs the [Test Kitchen](https://kitchen.ci/) [InSpec](https://docs.chef.io/inspec/) `dns` tests using the `Ubuntu 22.04` platform. The tests are run inside a Docker container using the Test Kitchen [Dokken driver](https://github.com/test-kitchen/kitchen-dokken).
+
+`kitchen test` will create the container, converge, verify, then destroy it.
+
+For faster iteration, you can split the steps:
+
+```bash
+rbenv exec bundle exec kitchen converge dns-ubuntu-2204
+rbenv exec bundle exec kitchen verify dns-ubuntu-2204
+rbenv exec bundle exec kitchen destroy dns-ubuntu-2204
+```
+
+#### Debugging a failed converge
+
+If `kitchen converge` fails, it can be useful to inspect the running test container.
+
+1) Find the container name by running `docker ps` (example output):
+
+```text
+CONTAINER ID   IMAGE                               COMMAND          CREATED          STATUS          PORTS     NAMES
+3b83c7f96575   9a7e6edc5b-dns-ubuntu-2204:latest   "/bin/systemd"   14 minutes ago   Up 14 minutes             9a7e6edc5b-dns-ubuntu-2204
+```
+
+2) Enter the container:
+
+```bash
+docker exec -it 9a7e6edc5b-dns-ubuntu-2204 bash -l
+```
+
+Once you are finished debugging, remember to clean up the instance:
+
+```bash
+rbenv exec bundle exec kitchen destroy dns-ubuntu-2204
+```
+
+## Windows (WSL2)
+
+It may be possible to run the toolchain under WSL2 (for example Ubuntu on WSL2) with Docker.
+However, the operations team do not use WSL2, and we cannot guarantee it will work or be able to troubleshoot WSL2-specific issues.
+
+If you try this route, aim to match the Linux instructions as closely as possible and ensure Docker is reachable from within WSL2.
+
+## Troubleshooting
+
+- **Docker is not running**: start Docker Desktop (macOS) or the Docker service (Linux).
+- **Open file limit errors on macOS**: increase `ulimit -n` as described above.
+- **Kitchen networking issues**: if Docker has IPv6 disabled, Dokken may fail to create its network; enabling IPv6 in Docker's settings can help.
+
+## Pull request checklist
+
+- Run `bundle exec cookstyle` locally
+- Run relevant `kitchen test <suite>-<platform>` instances for the cookbooks/roles you changed or added
+- Keep changes focused and include context in the pull request description
+
+## Need help?
+
+If you get stuck, the operations team are available in `#osmf-operations` on `irc.oftc.net`.
+You can access `#osmf-operations` via https://irc.openstreetmap.org/ or via the Matrix IRC bridge in [#\_oftc_#osmf-operations](https://matrix.to/#/#_oftc_#osmf-operations:matrix.org).

@@ -1,0 +1,10 @@
+services:
+  cookstyle:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: osm-chef-tools
+    working_dir: /workspace
+    volumes:
+      - .:/workspace:ro
+    command: bundle exec cookstyle -f fuubar

@@ -37,11 +37,12 @@ We use the 'Organization Repository' approach, where we have all our cookbooks i
 
 # Contributing
 
-Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for more details. The guide also includes details on how to run the tests locally.
+Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for more details, including how to run the tests locally.
+If you need help, the operations team are available in [#osmf-operations on irc.oftc.net](https://irc.openstreetmap.org/) or via the Matrix IRC bridge in [#\_oftc_#osmf-operations](https://matrix.to/#/#_oftc_#osmf-operations:matrix.org).
 
 # Contact Us
 
 * Mastodon: [@osm_tech](https://en.osm.town/@osm_tech)
 * IRC: [#osm-dev on irc.oftc.net](https://irc.openstreetmap.org/) or [#osmf-operations on irc.oftc.net](https://irc.openstreetmap.org/)
-* Matrix: [#\_oftc_#osmf-operations](https://matrix.to/#/#_oftc_#osmf-operations:matrix.org)
+* Matrix (IRC bridge): [#\_oftc_#osmf-operations](https://matrix.to/#/#_oftc_#osmf-operations:matrix.org)
 * Email: [operations@osmfoundation.org](mailto:operations@osmfoundation.org)
