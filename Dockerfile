@@ -1,24 +1,24 @@
-# Basic Dockerfile to run cookstyle linting
-# run: docker build -t chef-test .
-FROM ruby:3.1-alpine as build
+# Docker image used for running repo tooling (e.g. Cookstyle) in local containers.
+FROM ruby:3.3-trixie AS build
 
 # Add Gem build requirements
-RUN apk add --no-cache build-base
+RUN apt-get update \
+        && apt-get install -y --no-install-recommends \
+            build-essential \
+            pkg-config \
+            libxml2-dev \
+            libxslt1-dev \
+            zlib1g-dev \
+        && rm -rf /var/lib/apt/lists/*
 
 # Create app directory
-WORKDIR /app
+WORKDIR /usr/src/app
 
 # Add Gemfile and Gemfile.lock
 ADD Gemfile* ./
 
 # Install Gems
-RUN gem install bundler \
-    && bundle config build.nokogiri --use-system-libraries \
-    && bundle config --global jobs $(nproc) \
+RUN gem install bundler -v 2.6.9 \
+    && bundle config set build.nokogiri --use-system-libraries \
+    && bundle config set --global jobs $(nproc) \
     && bundle install
-
-# Add repo
-ADD . .
-
-# Run linting
-RUN bundle exec cookstyle -f fuubar
