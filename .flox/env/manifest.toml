@@ -1,0 +1,116 @@
+version = 1
+
+[install]
+gum.pkg-path = "gum"
+rbenv.pkg-path = "rbenv"
+
+# Extensions
+binutils.pkg-path = "binutils"
+gcc-unwrapped.pkg-path = "gcc-unwrapped"
+glibc.pkg-path = "glibc"  # glibc only needed on linux builds
+glibc.systems = [ "x86_64-linux" , "aarch64-linux"]
+gnumake.pkg-path = "gnumake"
+libxml2.pkg-path = "libxml2"
+libxslt.pkg-path = "libxslt"
+libyaml.pkg-path = "libyaml"
+openssl.pkg-path = "openssl"
+libxcrypt.pkg-path = "libxcrypt"
+pkg-config.pkg-path = "pkg-config"
+zlib.pkg-path = "zlib"
+lzlib.pkg-path = "lzlib"
+
+## Environment Variables ---------------------------------------------
+##  ... available for use in the activated environment
+##      as well as [hook], [profile] scripts and [services] below.
+## -------------------------------------------------------------------
+[vars]
+DOCKER_HOST="unix://$FLOX_ENV_CACHE/podman.sock"
+RBENV_ROOT="$FLOX_ENV_CACHE/rbenv"
+RUBY_CONFIGURE_OPTS="--with-opt-dir=$FLOX_ENV --with-crypt-dir=$FLOX_ENV"
+CFLAGS="-I$FLOX_ENV/include ${CFLAGS:-}"
+CPPFLAGS="-I$FLOX_ENV/include ${CPPFLAGS:-}"
+
+## Activation Hook ---------------------------------------------------
+##  ... run by _bash_ shell when you run 'flox activate'.
+## -------------------------------------------------------------------
+[hook]
+on-activate = '''
+unset CPATH
+
+export RUBY_DIR="$FLOX_ENV_CACHE/ruby"
+export RUBY_VENDOR_DIR="$RUBY_DIR/vendor"
+
+set_vendor_path() {
+  bundle config set --local path "$RUBY_VENDOR_DIR"
+}
+
+bundle_install() {
+  bundle install
+}
+
+export -f set_vendor_path
+export -f bundle_install
+
+# Ensure the ruby version from the repository is installed
+rbenv install -s
+eval "$(rbenv init - --no-rehash bash)"
+gem install bundler
+
+if [ -f "Gemfile" ]; then
+
+  if [[ "$FLOX_ENVS_TESTING" == "1" ]]; then
+    set_vendor_path
+  else
+    gum spin \
+      --show-error \
+      --spinner dot \
+      --title "Configuring vendor path" \
+        -- bash -c set_vendor_path
+  fi
+  echo "✅ Vendor path set to:"
+  echo "   -> $RUBY_VENDOR_DIR"
+
+  if [[ "$FLOX_ENVS_TESTING" == "1" ]]; then
+    bundle_install
+  else
+    gum spin \
+      --show-error \
+      --spinner monkey \
+      --title "Installing Ruby gems" \
+        -- bash -c bundle_install
+  fi
+  echo "✅ Ruby gems installed"
+fi
+
+'''
+
+[include]
+environments = [{ remote = "flox/podman"}]
+## Profile script ----------------------------------------------------
+## ... sourced by _your shell_ when you run 'flox activate'.
+## -------------------------------------------------------------------
+[profile]
+common = '''
+rbenv init - | source
+echo ''
+echo '     ╔═════════════════════════════════════════════════════╗'
+echo '     ║                                                     ║'
+echo '     ║  Run `bundle` to finish the setup of your project   ║'
+echo '     ║  bundler is configured to install into              ║'
+echo '     ║       .flox/cache/ruby/vendor                       ║'
+echo '     ║                                                     ║'
+echo '     ╚═════════════════════════════════════════════════════╝'
+echo ''
+'''
+
+[services.podman]
+command = "podman system service --time=0 unix:///$FLOX_ENV_CACHE/podman.sock"
+
+## Other Environment Options -----------------------------------------
+[options]
+systems = [
+  "aarch64-darwin",
+  "aarch64-linux",
+  "x86_64-darwin",
+  "x86_64-linux",
+]
