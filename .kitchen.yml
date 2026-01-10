@@ -106,6 +106,9 @@ suites:
   - name: apt-repository
     run_list:
       - recipe[apt::repository]
+  - name: atlas
+    run_list:
+      - recipe[atlas::default]
   - name: awscli
     run_list:
       - recipe[awscli::default]
