@@ -434,16 +434,6 @@ action :create do
     subscribes :run, "git[#{rails_directory}]"
   end
 
-  bundle_exec "#{rails_directory}/db/migrate" do
-    action :nothing
-    directory rails_directory
-    command "rails db:migrate"
-    user new_resource.user
-    group new_resource.group
-    subscribes :run, "git[#{rails_directory}]"
-    only_if { new_resource.run_migrations }
-  end
-
   bundle_exec "#{rails_directory}/package.json" do
     action :nothing
     directory rails_directory
@@ -455,6 +445,16 @@ action :create do
     group new_resource.group
     subscribes :run, "git[#{rails_directory}]"
     only_if { new_resource.build_assets }
+  end
+
+  bundle_exec "#{rails_directory}/db/migrate" do
+    action :nothing
+    directory rails_directory
+    command "rails db:migrate"
+    user new_resource.user
+    group new_resource.group
+    subscribes :run, "git[#{rails_directory}]"
+    only_if { new_resource.run_migrations }
   end
 
   bundle_exec "#{rails_directory}/config/i18n-js.yml" do
