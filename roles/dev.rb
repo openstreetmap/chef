@@ -137,6 +137,12 @@ default_attributes(
         :microcosms => {
           :repository => "https://github.com/openbrian/osm-microcosms.git",
           :revision => "microcosms"
+        },
+        :pablobm => {
+          :repository => "https://github.com/pablobm/openstreetmap-website.git",
+          :revision => "pablobm-devserver",
+          :cgimap_repository => "https://github.com/zerebubuth/openstreetmap-cgimap.git",
+          :cgimap_revision => "master"
         }
       }
     }
