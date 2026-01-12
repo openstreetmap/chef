@@ -458,16 +458,10 @@ if node[:postgresql][:clusters][rails_cluster.to_sym]
           group "apis"
         end
 
-        directory "#{cgimap_directory}/build" do
-          user "apis"
-          group "apis"
-          mode "0755"
-        end
-
         execute "#{cgimap_directory}/CMakeLists.txt" do
           action :nothing
-          command "cmake .."
-          cwd "#{cgimap_directory}/build"
+          command "cmake -B build"
+          cwd cgimap_directory
           user "apis"
           group "apis"
           subscribes :run, "git[#{cgimap_directory}]", :immediately
