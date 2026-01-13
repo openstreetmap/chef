@@ -367,6 +367,7 @@ if node[:postgresql][:clusters][rails_cluster.to_sym]
         cluster rails_cluster
         database database_name
         extension "btree_gist"
+        owner "apis"
       end
 
       directory site_directory do
