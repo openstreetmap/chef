@@ -558,7 +558,7 @@ groups:
   - name: nominatim
     rules:
       - alert: nominatim replication delay
-        expr: nominatim_replication_delay > 10800
+        expr: nominatim_replication_delay > 14400
         for: 1h
         keep_firing_for: 30m
         labels:
