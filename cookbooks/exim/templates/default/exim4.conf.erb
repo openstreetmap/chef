@@ -361,7 +361,7 @@ trusted_users = <%= node[:exim][:trusted_users].join(" : ") %>
 
 # Do all deliveries via a limited set of queues.
 
-queue_only = true
+queue_smtp_domains = *
 queue_run_max = <%= node[:exim][:queue_run_max] %>
 
 
