@@ -2,6 +2,11 @@ name "muirdris"
 description "Master role applied to muirdris"
 
 default_attributes(
+  :accounts => {
+    :users => {
+      :yuri => { :status => :user }
+    }
+  },
   :networking => {
     :interfaces => {
       :internal => {
