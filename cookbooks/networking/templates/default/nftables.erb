@@ -25,14 +25,57 @@ reload() {
   start
 }
 
+nft_add_list() {
+  set_name="$1"
+  list="$2"
+  /usr/sbin/nft --check add element inet chef-filter "$set_name" "{ $list }" && /usr/sbin/nft add element inet chef-filter "$set_name" "{ $list }"
+}
+
 block() {
+  max_batch=200
+  ip_list=""
+  ip6_list=""
+  ip_count=0
+  ip6_count=0
   for address in "$@"
   do
     case "$address" in
-      *.*) /usr/sbin/nft --check add element inet chef-filter ip-blocklist "{ $address }" && /usr/sbin/nft add element inet chef-filter ip-blocklist "{ $address }" ;;
-      *:*) /usr/sbin/nft --check add element inet chef-filter ip6-blocklist "{ $address }" && /usr/sbin/nft add element inet chef-filter ip6-blocklist "{ $address }" ;;
+      *.*)
+        if [ -n "$ip_list" ]; then
+          ip_list="$ip_list, $address"
+        else
+          ip_list="$address"
+        fi
+        ip_count=$((ip_count + 1))
+        if [ "$ip_count" -ge "$max_batch" ]; then
+          nft_add_list ip-blocklist "$ip_list"
+          ip_list=""
+          ip_count=0
+        fi
+        ;;
+      *:*)
+        if [ -n "$ip6_list" ]; then
+          ip6_list="$ip6_list, $address"
+        else
+          ip6_list="$address"
+        fi
+        ip6_count=$((ip6_count + 1))
+        if [ "$ip6_count" -ge "$max_batch" ]; then
+          nft_add_list ip6-blocklist "$ip6_list"
+          ip6_list=""
+          ip6_count=0
+        fi
+        ;;
     esac
   done
+
+  if [ -n "$ip_list" ]; then
+    nft_add_list ip-blocklist "$ip_list"
+  fi
+
+  if [ -n "$ip6_list" ]; then
+    nft_add_list ip6-blocklist "$ip6_list"
+  fi
 }
 
 unblock() {
