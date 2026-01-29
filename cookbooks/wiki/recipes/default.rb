@@ -101,7 +101,7 @@ end
 mediawiki_extension "OsmWikibase" do
   site site_name
   repository "https://github.com/nyurik/OsmWikibase.git"
-  reference "master"
+  reference "main"
 end
 
 mediawiki_extension "Echo" do
