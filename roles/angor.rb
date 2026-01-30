@@ -34,5 +34,6 @@ default_attributes(
 )
 
 run_list(
-  "role[inxza]"
+  "role[inxza]",
+  "recipe[atlas]"
 )
