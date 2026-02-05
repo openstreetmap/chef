@@ -54,8 +54,8 @@ mediawiki_site site_name do
 
   metanamespace "Wiki"
 
-  hcaptcha_public_key "b67a410b-955e-4049-b432-f9c00e0202c0"
-  hcaptcha_private_key passwords["hcaptcha"]
+  turnstile_site_key passwords["turnstile_site_key"]
+  turnstile_secret_key passwords["turnstile_secret_key"]
 
   namespaces "DE" => { :id => 200, :talk_id => 201 },
              "FR" => { :id => 202, :talk_id => 203 },

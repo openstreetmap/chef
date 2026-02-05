@@ -41,8 +41,8 @@ property :admin_user, :kind_of => String, :default => "Admin"
 property :admin_password, :kind_of => String, :required => [:create]
 property :private_accounts, :kind_of => [TrueClass, FalseClass], :default => false
 property :private_site, :kind_of => [TrueClass, FalseClass], :default => false
-property :hcaptcha_public_key, :kind_of => String, :default => ""
-property :hcaptcha_private_key, :kind_of => String, :default => ""
+property :turnstile_site_key, :kind_of => String, :default => ""
+property :turnstile_secret_key, :kind_of => String, :default => ""
 property :extra_file_extensions, :kind_of => [String, Array], :default => []
 property :namespaces, :kind_of => Hash, :default => {}
 property :force_ui_messages, :kind_of => Array, :default => []
@@ -243,8 +243,8 @@ action :create do
     mediawiki_extension "ConfirmEdit" do
       site new_resource.site
       template "mw-ext-ConfirmEdit.inc.php.erb"
-      variables :public_key => new_resource.hcaptcha_public_key,
-                :private_key => new_resource.hcaptcha_private_key
+      variables :turnstile_site_key => new_resource.turnstile_site_key,
+                :turnstile_secret_key => new_resource.turnstile_secret_key
       update_site false
     end
   end
