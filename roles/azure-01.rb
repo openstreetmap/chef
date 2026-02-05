@@ -157,5 +157,6 @@ default_attributes(
 
 run_list(
   "role[twds]",
-  "role[tile]"
+  "role[tile]",
+  "recipe[atlas]"
 )
