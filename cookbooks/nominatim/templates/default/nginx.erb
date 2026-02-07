@@ -1,6 +1,8 @@
-upstream nominatim_service {
-  server unix:/run/gunicorn-nominatim.openstreetmap.org.sock fail_timeout=0;
+<% %w(nominatim nominatim_fastlane).each do |sname| -%>
+upstream <%= sname %>_service {
+  server unix:/run/gunicorn-<%= sname %>.openstreetmap.org.sock fail_timeout=0;
 }
+<% end -%>
 
 map $uri $nominatim_script_name {
     ~^/*(.+?)\.php        $1;
@@ -66,6 +68,15 @@ geo $whitelisted {
     34.234.151.67 1; # gnome - https://github.com/openstreetmap/operations/issues/1160
     54.165.53.199 1; # gnome - https://github.com/openstreetmap/operations/issues/1160
     35.153.15.118 1; # gnome - https://github.com/openstreetmap/operations/issues/1160
+}
+
+geo $proxyname {
+    default nominatim_service;
+<% @frontends.each do |frontend| -%>
+<% frontend.ipaddresses(:role => :external).sort.each do |address| -%>
+    <%= address %> nominatim_fastlane_service;
+<% end -%>
+<% end -%>
 }
 
 map $server_protocol$http_user_agent $cleaned_user_agent {
@@ -223,7 +234,7 @@ server {
           return 204;
         }
 
-        uwsgi_pass nominatim_service;
+        uwsgi_pass $proxyname;
         include uwsgi_params;
 
         add_header Vary "accept-language";

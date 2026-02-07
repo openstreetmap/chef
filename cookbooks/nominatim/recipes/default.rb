@@ -191,26 +191,26 @@ end
   end
 end
 
-systemd_service "nominatim" do
-  description "Nominatim running as a gunicorn application"
-  user "www-data"
-  group "www-data"
-  working_directory project_directory
-  standard_output "append:#{node[:nominatim][:logdir]}/gunicorn.log"
-  standard_error "inherit"
-  exec_start "#{python_directory}/bin/gunicorn --max-requests 500000 -b unix:/run/gunicorn-nominatim.openstreetmap.org.sock -w #{node[:nominatim][:api_workers]} --worker-class asgi --worker-connections 1000 --protocol uwsgi 'nominatim_api.server.falcon.server:run_wsgi()'"
-  exec_reload "/bin/kill -s HUP $MAINPID"
-  kill_mode "mixed"
-  timeout_stop_sec 5
-  private_tmp true
-  requires "nominatim.socket"
-  after "network.target"
-end
+%w[nominatim nominatim_fastlane].each do |name|
+  systemd_service name do
+    description "Nominatim running as a gunicorn application (#{name})"
+    user "www-data"
+    group "www-data"
+    working_directory project_directory
+    exec_start "#{python_directory}/bin/gunicorn --max-requests 500000 -b unix:/run/gunicorn-#{name}.openstreetmap.org.sock -w #{node[:nominatim][:api_workers][name]} --worker-class asgi --worker-connections 1000 --protocol uwsgi 'nominatim_api.server.falcon.server:run_wsgi()'"
+    exec_reload "/bin/kill -s HUP $MAINPID"
+    kill_mode "mixed"
+    timeout_stop_sec 5
+    private_tmp true
+    requires "#{name}.socket"
+    after "network.target"
+  end
 
-systemd_socket "nominatim" do
-  description "Gunicorn socket for Nominatim"
-  listen_stream "/run/gunicorn-nominatim.openstreetmap.org.sock"
-  socket_user "www-data"
+  systemd_socket name do
+    description "Gunicorn socket for Nominatim (#{name})"
+    listen_stream "/run/gunicorn-#{name}.openstreetmap.org.sock"
+    socket_user "www-data"
+  end
 end
 
 ssl_certificate node[:fqdn] do

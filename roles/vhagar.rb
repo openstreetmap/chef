@@ -34,7 +34,9 @@ default_attributes(
     :dbcluster => "17/main",
     :flatnode_file => "/srv/nominatim.openstreetmap.org/planet-project/nodes.store",
     :api_flavour => "python",
-    :api_workers => 24,
+    :api_workers => {
+      "nominatim" => 22
+    },
     :api_pool_size => 8
   }
 )

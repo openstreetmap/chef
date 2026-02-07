@@ -1,5 +1,5 @@
 default[:nominatim][:dbadmins] = []
-default[:nominatim][:dbcluster] = "14/main"
+default[:nominatim][:dbcluster] = "17/main"
 default[:nominatim][:dbname] = "nominatim"
 default[:nominatim][:postgis] = "3"
 default[:nominatim][:logdir] = "/var/log/nominatim"
@@ -9,7 +9,8 @@ default[:nominatim][:ui_repository] = "https://git.openstreetmap.org/public/nomi
 default[:nominatim][:ui_revision] = "master"
 default[:nominatim][:qa_repository] = "https://github.com/osm-search/Nominatim-Data-Analyser"
 default[:nominatim][:qa_revision] = "deploy"
-default[:nominatim][:api_workers] = 10
+default[:nominatim][:api_workers]["nominatim"] = 8
+default[:nominatim][:api_workers]["nominatim_fastlane"] = 2
 default[:nominatim][:api_pool_size] = 10
 default[:nominatim][:api_query_timeout] = 5
 default[:nominatim][:api_request_timeout] = 20
