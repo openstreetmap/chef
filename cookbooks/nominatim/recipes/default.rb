@@ -385,5 +385,5 @@ fail2ban_jail "nominatim_limit_req" do
   logpath "#{node[:nominatim][:logdir]}/nominatim.openstreetmap.org-error.log"
   ports [80, 443]
   maxretry 20
-  ignoreips frontend_addresses.flatten.sort + fastlyips["addresses"] + fastlyips["ipv6_addresses"]
+  ignoreips frontend_addresses.flatten.map(&:address).sort + fastlyips["addresses"] + fastlyips["ipv6_addresses"]
 end
