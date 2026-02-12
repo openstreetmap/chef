@@ -6,9 +6,11 @@ default_attributes(
     :mpm => "event",
     :event => {
       :server_limit => 32,
-      :max_request_workers => 800,
+      :max_request_workers => 1000,
       :threads_per_child => 50,
-      :max_connections_per_child => 100000
+      :min_spare_threads => 75,
+      :max_spare_threads => 175,
+      :listen_cores_buckets_ratio => 4
     },
     :evasive => {
       :page_count => 400,
