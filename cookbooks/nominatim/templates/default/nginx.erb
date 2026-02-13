@@ -184,13 +184,17 @@ server {
     }
 
     error_page 403 /403.html;
+    error_page 418 /403.html;
     location /403.html {
         limit_req zone=blocked burst=5;
+        add_header Vary "*" always;
     }
 
     error_page 429 /509.html;
+    error_page 503 /509.html;
     location /509.html {
         limit_req zone=blocked burst=5;
+        add_header Vary "*" always;
     }
 
     location / {
