@@ -21,7 +21,7 @@ location @<%= @site %>_<%= @layer %>_backend {
   internal;
 
 <% if @uses_tiler -%>
-  set $upstream_uri /mosaicjson/tiles/WebMercatorQuad/$z/$x/$y@1x.$ext?url=<%= URI.encode_www_form_component(@source) %>&pixel_selection=first;
+  set $upstream_uri /mosaicjson/tiles/WebMercatorQuad/$z/$x/$y.$ext?url=<%= URI.encode_www_form_component(@source) %>&pixel_selection=first;
 
   proxy_pass http://<%= @site %>_tiler_backend$upstream_uri;
   proxy_set_header Host $host;
