@@ -242,6 +242,41 @@ ErrorLog /var/log/apache2/error.log
   RewriteCond %{HTTP_HOST} =api.openstreetmap.org
   RewriteCond %{REQUEST_URI} !^/api/
   RewriteRule ^(.*)$ https://www.openstreetmap.org$1 [L,NE,R=permanent]
+
+  # Restrict access to CDN nodes and admins
+  <Location />
+    Require expr "%{CONN_REMOTE_ADDR} != %{REMOTE_ADDR}"
+    # Fastly POPs
+<% @fastly.sort.each do |address| -%>
+    Require ip <%= address %>
+<% end -%>
+    # StatusCake monitoring
+<% @statuscake.sort.reject { |address| address.empty? }.each do |address| -%>
+    Require ip <%= address %>
+<% end -%>
+    # Administrators
+<% @admins.sort.each do |address| -%>
+    Require ip <%= address %>
+<% end -%>
+    # OSM Amsterdam IPv4 (he.net)
+    Require ip 184.104.179.128/27
+    # OSM Amsterdam IPv4 (equinix)
+    Require ip 82.199.86.96/27
+    # OSM Amsterdam IPv6 (he.net)
+    Require ip 2001:470:1:fa1::/64
+    # OSM Amsterdam IPv6 (equinix)
+    Require ip 2001:4d78:500:5e3::/64
+    # OSM Dublin IPv4 (he.net)
+    Require ip 184.104.226.96/27
+    # OSM Dublin IPv4 (equinix)
+    Require ip 87.252.214.96/27
+    # OSM Dublin IPv6 (he.net)
+    Require ip 2001:470:1:b3b::/64
+    # OSM Dublin IPv6 (equinix)
+    Require ip 2001:4d78:fe03:1c::/64
+    # OSM UCL IPv4
+    Require ip 193.60.236.0/24
+  </Location>
 </VirtualHost>
 
 <VirtualHost *:80>
