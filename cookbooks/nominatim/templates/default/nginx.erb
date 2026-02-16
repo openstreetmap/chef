@@ -130,11 +130,16 @@ set_real_ip_from <%= address %>;
 real_ip_header Fastly-Client-IP;
 real_ip_recursive off;
 
+# Custom log format to include JA4 TLS fingerprint and other details for better blocking and analysis
+log_format nominatim_log  '$remote_addr - $remote_user [$time_local] "$request" '
+                          '$status $body_bytes_sent "$http_referer" '
+                          '"$http_user_agent" "$http_x_forwarded_for" "$http_x_tls_ja4" "$http_x_ja4h"';
+
 server {
     listen 80 default_server;
     listen [::]:80 default_server;
 
-    access_log <%= node[:nominatim][:logdir] %>/nominatim.openstreetmap.org-access.log combined;
+    access_log <%= node[:nominatim][:logdir] %>/nominatim.openstreetmap.org-access.log nominatim_log;
     error_log <%= node[:nominatim][:logdir] %>/nominatim.openstreetmap.org-error.log;
 
     location /nginx_status {
@@ -167,7 +172,7 @@ server {
 
     keepalive_requests 2;
 
-    access_log <%= node[:nominatim][:logdir] %>/nominatim.openstreetmap.org-access.log combined;
+    access_log <%= node[:nominatim][:logdir] %>/nominatim.openstreetmap.org-access.log nominatim_log;
     error_log <%= node[:nominatim][:logdir] %>/nominatim.openstreetmap.org-error.log;
 
     location /nginx_status {
