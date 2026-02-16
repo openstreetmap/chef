@@ -22,5 +22,5 @@ include_recipe "apt"
 apt_repository "passenger" do
   uri "https://oss-binaries.phusionpassenger.com/apt/passenger"
   components ["main"]
-  key "https://oss-binaries.phusionpassenger.com/auto-software-signing-gpg-key.txt"
+  key "https://oss-binaries.phusionpassenger.com/auto-software-signing-gpg-key-2025.txt"
 end
