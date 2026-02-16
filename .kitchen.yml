@@ -1,8 +1,8 @@
 ---
 driver:
   name: dokken
-  chef_image: ghcr.io/firefishy/chef-docker-image
-  chef_version: latest
+  chef_image: docker.io/cincproject/cinc
+  chef_version: 18
   volumes:
     - /var/lib/docker
   env:
@@ -24,6 +24,8 @@ provisioner:
   data_bags_path: test/data_bags
   slow_resource_report: true
   clean_dokken_sandbox: true
+  product_name: cinc
+  chef_binary: /opt/cinc/bin/cinc-client
   attributes:
     networking:
       dnssec: "false" # Disable DNSSEC as occasionally unreliable in GitHub Actions
@@ -84,12 +86,12 @@ platforms:
 lifecycle:
   pre_create: |
     if command -v podman >/dev/null 2>&1; then
-      podman create --name chef-latest --replace ghcr.io/firefishy/chef-docker-image:latest sh
-      podman start chef-latest
+      podman create --name chef-18 --replace docker.io/cincproject/cinc:18 sh
+      podman start chef-18
     fi
   post_destroy: |
     if command -v podman >/dev/null 2>&1; then
-      podman container rm -iv chef-latest
+      podman container rm -iv chef-18
     fi
 
 suites:
