@@ -2,6 +2,7 @@ name "equinix-ams"
 description "Role applied to all servers at Equinix Amsterdam"
 
 default_attributes(
+  :location => "Amsterdam, Netherlands",
   :sysctl => {
     :enable_bbr_10g => {
       :comment => "Enable BBR. Equinix AMS has 3Gbps uplinks",

@@ -2,6 +2,7 @@ name "equinix-dub"
 description "Role applied to all servers at Equinix Dublin"
 
 default_attributes(
+  :location => "Dublin, Ireland",
   :sysctl => {
     :enable_bbr_10g => {
       :comment => "Enable BBR. Equinix DUB has 3Gbps uplinks",

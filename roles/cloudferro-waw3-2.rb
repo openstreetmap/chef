@@ -7,5 +7,5 @@ run_list(
 )
 
 default_attributes(
-  :location => "Warsaw"
+  :location => "Warsaw, Poland"
 )
