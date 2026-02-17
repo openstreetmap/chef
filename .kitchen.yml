@@ -133,6 +133,13 @@ suites:
   - name: chef
     run_list:
       - recipe[chef::default]
+  - name: chef-cinc
+    run_list:
+      - recipe[chef::default]
+    attributes:
+      chef:
+        client:
+          cinc: true
   - name: civicrm
     run_list:
       - recipe[civicrm::default]

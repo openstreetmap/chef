@@ -19,7 +19,7 @@ log_level :info
 
 # Set the location of the log file
 
-log_location "/var/log/chef/client.log"
+log_location "/var/log/<%= @chef_name %>/client.log"
 
 # Set the node name
 
@@ -39,7 +39,7 @@ ohai.optional_plugins = %w[Passwd]
 
 # Load supporting code for report handlers
 
-require "/etc/chef/report"
+require "/etc/<%= @chef_name %>/report"
 
 # Create report handler
 
