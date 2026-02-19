@@ -129,6 +129,13 @@ ErrorLog /var/log/apache2/error.log
   RewriteRule . - [F,L]
 
   #
+  # Block bogus user agents
+  #
+  RewriteCond %{SERVER_PROTOCOL} =HTTP/1.1
+  RewriteCond %{HTTP_USER_AGENT} Chrome/((103|105|107|108|109|110|111|112|116|117|120|124|131|133)\.0\.0\.0|104\.0\.5112\.81|106\.0\.5249\.119) [NC]
+  RewriteRule . - [F,L]
+
+  #
   # Force special MIME type for crossdomain.xml files
   #
   <Files crossdomain.xml>
