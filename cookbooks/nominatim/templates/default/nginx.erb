@@ -188,6 +188,7 @@ server {
     location /403.html {
         limit_req zone=blocked burst=5;
         add_header Vary "*" always;
+        add_header x-nominatim-server "<%= node[:fqdn] %>" always;
     }
 
     error_page 429 /509.html;
@@ -195,19 +196,23 @@ server {
     location /509.html {
         limit_req zone=blocked burst=5;
         add_header Vary "*" always;
+        add_header x-nominatim-server "<%= node[:fqdn] %>" always;
     }
 
     location / {
         try_files $uri $uri/ @php;
+        add_header x-nominatim-server "<%= node[:fqdn] %>" always;
     }
 
     location /ui/ {
         alias <%= @ui_directory %>/dist/;
         index search.html;
+        add_header x-nominatim-server "<%= node[:fqdn] %>" always;
     }
 
     location /qa-data/ {
         add_header Access-Control-Allow-Origin "*" always;
+        add_header x-nominatim-server "<%= node[:fqdn] %>" always;
     }
 
     location @php {
@@ -242,5 +247,6 @@ server {
         include uwsgi_params;
 
         add_header Vary "accept-language";
+        add_header x-nominatim-server "<%= node[:fqdn] %>" always;
     }
 }
