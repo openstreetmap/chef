@@ -7,7 +7,8 @@ default_attributes(
       :grant => { :status => :administrator },
       :tomh => { :status => :administrator },
       :matt => { :status => :administrator },
-      :jburgess => { :status => :administrator }
+      :jburgess => { :status => :administrator },
+      :pnorman => { :status => :administrator }
     }
   },
   :networking => {
