@@ -150,11 +150,12 @@ server {
         deny all;
     }
 
-     rewrite ^/\.well-known/acme-challenge/(.*)$ http://acme.openstreetmap.org/.well-known/acme-challenge/$1 permanent;
+    # Redirect ACME certificate challenges
+    rewrite ^/\.well-known/acme-challenge/(.*)$ http://acme.openstreetmap.org/.well-known/acme-challenge/$1 permanent;
 
-     location / {
-         return 301 https://$host$request_uri;
-     }
+    location / {
+        return 301 https://$host$request_uri;
+    }
 }
 
 server {
@@ -182,6 +183,9 @@ server {
         allow ::1;
         deny all;
     }
+
+    # Redirect ACME certificate challenges (Fastly redirects from HTTP to HTTPS, so we need to handle them here)
+    rewrite ^/\.well-known/acme-challenge/(.*)$ http://acme.openstreetmap.org/.well-known/acme-challenge/$1 permanent;
 
     error_page 403 /403.html;
     error_page 418 /403.html;
