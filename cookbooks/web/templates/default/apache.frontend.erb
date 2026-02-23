@@ -136,6 +136,11 @@ ErrorLog /var/log/apache2/error.log
   RewriteRule . - [F,L]
 
   #
+  # Redirect ACME certificate challenges (Fastly redirects from HTTP to HTTPS, so we need to handle them here)
+  #
+  RewriteRule ^/\.well-known/acme-challenge/(.*)$ http://acme.openstreetmap.org/.well-known/acme-challenge/$1 [R=permanent,L]
+
+  #
   # Force special MIME type for crossdomain.xml files
   #
   <Files crossdomain.xml>
