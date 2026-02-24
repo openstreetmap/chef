@@ -93,6 +93,32 @@ if node[:chef][:client][:cinc]
   file "/etc/logrotate.d/chef" do
     action :delete
   end
+
+  if node[:packages][:cinc]
+    package "chef" do
+      action :purge
+    end
+
+    directory "/etc/chef" do
+      action :delete
+      recursive true
+    end
+
+    directory "/var/chef" do
+      action :delete
+      recursive true
+    end
+
+    directory "/var/log/chef" do
+      action :delete
+      recursive true
+    end
+
+    directory "/opt/chef" do
+      action :delete
+      recursive true
+    end
+  end
 end
 
 remote_file "#{cache_dir}/#{chef_package}" do
@@ -178,30 +204,4 @@ end
 
 service "#{chef_name}-client.timer" do
   action [:enable, :start]
-end
-
-if node[:chef][:client][:cinc]
-  package "chef" do
-    action :purge
-  end
-
-  directory "/etc/chef" do
-    action :delete
-    recursive true
-  end
-
-  directory "/var/chef" do
-    action :delete
-    recursive true
-  end
-
-  directory "/var/log/chef" do
-    action :delete
-    recursive true
-  end
-
-  directory "/opt/chef" do
-    action :delete
-    recursive true
-  end
 end
