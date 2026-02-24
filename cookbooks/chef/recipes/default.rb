@@ -19,57 +19,26 @@
 
 cache_dir = Chef::Config[:file_cache_path]
 
-chef_name = if node[:chef][:client][:cinc]
-              "cinc"
-            else
-              "chef"
-            end
+cinc_version = node[:chef][:client][:version]
 
-chef_version = node[:chef][:client][:version]
-
-chef_platform = if platform?("debian")
+cinc_platform = if platform?("debian")
                   "debian"
                 else
                   "ubuntu"
                 end
 
-chef_arch = if arm?
+cinc_arch = if arm?
               "arm64"
             else
               "amd64"
             end
 
-if node[:chef][:client][:cinc]
-  os_release = node[:lsb][:release]
-else
-  os_release = if platform?("debian") && node[:lsb][:release].to_f > 11
-                 11
-               else
-                 node[:lsb][:release]
-               end
+os_release = node[:lsb][:release]
 
-  # Chef is currently not available for Debian 11 on arm64.
-  if chef_platform == "debian" && os_release == 11 && chef_arch == "arm64"
-    chef_platform = "ubuntu"
-    os_release = "22.04"
-  end
-end
+cinc_package = "cinc_#{cinc_version}-1_#{cinc_arch}.deb"
 
-chef_package = "#{chef_name}_#{chef_version}-1_#{chef_arch}.deb"
-
-chef_url = if node[:chef][:client][:cinc]
-             "https://downloads.cinc.sh/files/stable/cinc"
-           else
-             "https://packages.chef.io/files/stable/chef"
-           end
-
-directory "/var/cache/chef" do
-  action :delete
-  recursive true
-end
-
-Dir.glob("#{cache_dir}/chef_*.deb").each do |deb|
-  next if deb == "#{cache_dir}/#{chef_package}"
+Dir.glob("#{cache_dir}/cinc_*.deb").each do |deb|
+  next if deb == "#{cache_dir}/#{cinc_package}"
 
   file deb do
     action :delete
@@ -77,52 +46,8 @@ Dir.glob("#{cache_dir}/chef_*.deb").each do |deb|
   end
 end
 
-if node[:chef][:client][:cinc]
-  service "chef-client.timer" do
-    action [:disable, :stop]
-  end
-
-  systemd_timer "chef-client" do
-    action :delete
-  end
-
-  systemd_service "chef-client" do
-    action :delete
-  end
-
-  file "/etc/logrotate.d/chef" do
-    action :delete
-  end
-
-  if node[:packages][:cinc]
-    package "chef" do
-      action :purge
-    end
-
-    directory "/etc/chef" do
-      action :delete
-      recursive true
-    end
-
-    directory "/var/chef" do
-      action :delete
-      recursive true
-    end
-
-    directory "/var/log/chef" do
-      action :delete
-      recursive true
-    end
-
-    directory "/opt/chef" do
-      action :delete
-      recursive true
-    end
-  end
-end
-
-remote_file "#{cache_dir}/#{chef_package}" do
-  source "#{chef_url}/#{chef_version}/#{chef_platform}/#{os_release}/#{chef_package}"
+remote_file "#{cache_dir}/#{cinc_package}" do
+  source "https://downloads.cinc.sh/files/stable/cinc/#{cinc_version}/#{cinc_platform}/#{os_release}/#{cinc_package}"
   owner "root"
   group "root"
   mode "644"
@@ -130,43 +55,31 @@ remote_file "#{cache_dir}/#{chef_package}" do
   ignore_failure true
 end
 
-dpkg_package chef_name do
-  source "#{cache_dir}/#{chef_package}"
-  version "#{chef_version}-1"
+dpkg_package "cinc" do
+  source "#{cache_dir}/#{cinc_package}"
+  version "#{cinc_version}-1"
 end
 
-directory "/etc/#{chef_name}" do
+directory "/etc/cinc" do
   owner "root"
   group "root"
   mode "755"
 end
 
-template "/etc/#{chef_name}/client.rb" do
+template "/etc/cinc/client.rb" do
   source "client.rb.erb"
   owner "root"
   group "root"
   mode "640"
-  variables :chef_name => chef_name
 end
 
-if node[:chef][:client][:cinc]
-  link "/etc/#{chef_name}/client.pem" do
-    to "/etc/chef/client.pem"
-    link_type :hard
-    owner "root"
-    group "root"
-    mode "0400"
-    only_if { ::File.exist?("/etc/chef/client.pem") }
-  end
-end
-
-file "/etc/#{chef_name}/client.pem" do
+file "/etc/cinc/client.pem" do
   owner "root"
   group "root"
   mode "400"
 end
 
-template "/etc/#{chef_name}/report.rb" do
+template "/etc/cinc/report.rb" do
   source "report.rb.erb"
   owner "root"
   group "root"
@@ -175,34 +88,33 @@ end
 
 package "logrotate"
 
-template "/etc/logrotate.d/#{chef_name}" do
+template "/etc/logrotate.d/cinc" do
   source "logrotate.erb"
   owner "root"
   group "root"
   mode "644"
-  variables :chef_name => chef_name
 end
 
-directory "/var/log/#{chef_name}" do
+directory "/var/log/cinc" do
   owner "root"
   group "root"
   mode "755"
 end
 
-systemd_service "#{chef_name}-client" do
-  description "Chef client"
-  exec_start "/usr/bin/#{chef_name}-client"
+systemd_service "cinc-client" do
+  description "Cinc client"
+  exec_start "/usr/bin/cinc-client"
   nice 10
 end
 
-systemd_timer "#{chef_name}-client" do
-  description "Chef client"
+systemd_timer "cinc-client" do
+  description "Cinc client"
   after "network.target"
   on_active_sec 60
   on_unit_inactive_sec 25 * 60
   randomized_delay_sec 10 * 60
 end
 
-service "#{chef_name}-client.timer" do
+service "cinc-client.timer" do
   action [:enable, :start]
 end

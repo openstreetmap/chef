@@ -19,7 +19,7 @@ log_level :info
 
 # Set the location of the log file
 
-log_location "/var/log/<%= @chef_name %>/client.log"
+log_location "/var/log/cinc/client.log"
 
 # Set the node name
 
@@ -35,7 +35,7 @@ chef_server_url "https://chef.openstreetmap.org/organizations/openstreetmap"
 
 # Help ohai find out plugins
 
-ohai.plugin_path << "/etc/<%= @chef_name %>/ohai/plugins"
+ohai.plugin_path << "/etc/cinc/ohai/plugins"
 
 # Enable some optional ohai plugins
 
@@ -43,7 +43,7 @@ ohai.optional_plugins = %w[Passwd]
 
 # Load supporting code for report handlers
 
-require "/etc/<%= @chef_name %>/report"
+require "/etc/cinc/report"
 
 # Create report handler
 

@@ -1,6 +1,6 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
-/var/log/<%= @chef_name %>/client.log {
+/var/log/cinc/client.log {
   rotate 12
   weekly
   compress
@@ -9,6 +9,6 @@
   compressoptions -T0 -11 --quiet --long
   uncompresscmd /usr/bin/unzstd
   postrotate
-	systemctl try-restart <%= @chef_name %>-client.service
+	systemctl try-restart cinc-client.service
   endscript
 }

@@ -29,12 +29,11 @@ action :create do
     action :nothing
   end
 
-  directory plugin_dir do
+  directory "/etc/cinc/ohai/plugins" do
     owner "root"
     group "root"
     mode "755"
     recursive true
-    only_if { ::Dir.exist?(chef_dir) }
   end
 
   declare_resource :template, plugin_path do
@@ -43,7 +42,6 @@ action :create do
     group "root"
     mode "644"
     notifies :reload, "ohai[#{new_resource.plugin}]"
-    only_if { ::Dir.exist?(chef_dir) }
   end
 end
 
@@ -54,19 +52,7 @@ action :delete do
 end
 
 action_class do
-  def chef_dir
-    if ::Dir.exist?("/etc/cinc")
-      "/etc/cinc"
-    elsif ::Dir.exist?("/etc/chef")
-      "/etc/chef"
-    end
-  end
-
-  def plugin_dir
-    "#{chef_dir}/ohai/plugins"
-  end
-
   def plugin_path
-    "#{plugin_dir}/#{new_resource.plugin}.rb"
+    "/etc/cinc/ohai/plugins/#{new_resource.plugin}.rb"
   end
 end
