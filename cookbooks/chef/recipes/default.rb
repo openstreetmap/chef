@@ -199,4 +199,9 @@ if node[:chef][:client][:cinc]
     action :delete
     recursive true
   end
+
+  directory "/opt/chef" do
+    action :delete
+    recursive true
+  end
 end
