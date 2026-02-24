@@ -126,6 +126,7 @@ end
 if node[:chef][:client][:cinc] && ::File.exist?("/etc/chef/client.pem")
   link "/etc/#{chef_name}/client.pem" do
     to "/etc/chef/client.pem"
+    link_type :hard
     owner "root"
     group "root"
     mode "0400"
