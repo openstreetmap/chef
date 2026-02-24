@@ -7,6 +7,11 @@ default_attributes(
       :yuri => { :status => :user }
     }
   },
+  :chef => {
+    :client => {
+      :cinc => true
+    }
+  },
   :networking => {
     :interfaces => {
       :internal => {
