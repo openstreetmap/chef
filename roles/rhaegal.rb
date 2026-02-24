@@ -7,11 +7,6 @@ default_attributes(
       :mmiler => { :status => :administrator }
     }
   },
-  :chef => {
-    :client => {
-      :cinc => true
-    }
-  },
   :location => "Zagreb, Croatia",
   :networking => {
     :interfaces => {

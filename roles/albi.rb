@@ -2,11 +2,6 @@ name "albi"
 description "Master role applied to albi"
 
 default_attributes(
-  :chef => {
-    :client => {
-      :cinc => true
-    }
-  },
   :networking => {
     :interfaces => {
       :external => {

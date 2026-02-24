@@ -2,11 +2,6 @@ name "meraxes"
 description "Master role applied to meraxes"
 
 default_attributes(
-  :chef => {
-    :client => {
-      :cinc => true
-    }
-  },
   :networking => {
     :interfaces => {
       :external => {
