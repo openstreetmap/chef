@@ -19,6 +19,11 @@ default_attributes(
       :async_request_worker_factor => 4
     }
   },
+  :chef => {
+    :client => {
+      :cinc => true
+    }
+  },
   :memcached => {
     :memory_limit => 8192
   },
