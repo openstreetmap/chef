@@ -149,20 +149,21 @@ template "/etc/#{chef_name}/client.rb" do
   variables :chef_name => chef_name
 end
 
-if node[:chef][:client][:cinc] && ::File.exist?("/etc/chef/client.pem")
+if node[:chef][:client][:cinc]
   link "/etc/#{chef_name}/client.pem" do
     to "/etc/chef/client.pem"
     link_type :hard
     owner "root"
     group "root"
     mode "0400"
+    only_if { ::File.exist?("/etc/chef/client.pem") }
   end
-else
-  file "/etc/#{chef_name}/client.pem" do
-    owner "root"
-    group "root"
-    mode "400"
-  end
+end
+
+file "/etc/#{chef_name}/client.pem" do
+  owner "root"
+  group "root"
+  mode "400"
 end
 
 template "/etc/#{chef_name}/report.rb" do
