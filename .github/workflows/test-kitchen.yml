@@ -210,14 +210,36 @@ jobs:
             os: ubuntu-2204
       fail-fast: false
     steps:
+    - name: Check out code
+      uses: actions/checkout@v6
+    - name: Extract cinc image details from .kitchen.yml
+      id: cinc-image
+      run: |
+        CINC_IMAGE=$(grep 'chef_image:' .kitchen.yml | head -1 | awk '{print $2}')
+        CINC_VERSION=$(grep 'chef_version:' .kitchen.yml | head -1 | awk '{print $2}')
+        echo "cinc_container_image=${CINC_IMAGE}" >> "$GITHUB_OUTPUT"
+        echo "cinc_container_version=${CINC_VERSION}" >> "$GITHUB_OUTPUT"
+        echo "cinc_container_ref=${CINC_IMAGE}:${CINC_VERSION}" >> "$GITHUB_OUTPUT"
     - name: Login to GitHub Container Registry
       uses: docker/login-action@v3
       with:
         registry: ghcr.io
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
-    - name: Check out code
-      uses: actions/checkout@v6
+    - name: Cache cinc container image
+      id: cache-cinc
+      uses: actions/cache@v5
+      with:
+        path: /tmp/cinc-image.tar
+        key: docker-cinc-${{ steps.cinc-image.outputs.cinc_container_version }}-${{ runner.arch }}
+    - name: Pull and save cinc container image
+      if: steps.cache-cinc.outputs.cache-hit != 'true'
+      run: |
+        docker pull "${{ steps.cinc-image.outputs.cinc_container_ref }}"
+        docker save "${{ steps.cinc-image.outputs.cinc_container_ref }}" -o /tmp/cinc-image.tar
+    - name: Load cinc container image from cache
+      if: steps.cache-cinc.outputs.cache-hit == 'true'
+      run: docker load -i /tmp/cinc-image.tar
     - name: Setup ruby
       uses: ruby/setup-ruby@v1
       with:
