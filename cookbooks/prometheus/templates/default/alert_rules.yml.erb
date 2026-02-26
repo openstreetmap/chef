@@ -78,7 +78,7 @@ groups:
   - name: chef
     rules:
       - alert: chef client not running
-        expr: time() - node_systemd_timer_last_trigger_seconds{name="chef-client.timer"} > 3600
+        expr: time() - node_systemd_timer_last_trigger_seconds{name="cinc-client.timer"} > 3600
         for: 12h
         keep_firing_for: 10m
         labels:
@@ -833,13 +833,13 @@ groups:
   - name: systemd
     rules:
       - alert: systemd failed service
-        expr: node_systemd_unit_state{state="failed",name!="chef-client.service"} == 1
+        expr: node_systemd_unit_state{state="failed",name!="cinc-client.service"} == 1
         for: 5m
         keep_firing_for: 150s
         labels:
           alertgroup: "{{ $labels.instance }}"
       - alert: systemd failed chef client service
-        expr: sum_over_time(node_systemd_unit_state{state="inactive",name="chef-client.service"}[6h]) == 0
+        expr: sum_over_time(node_systemd_unit_state{state="inactive",name="cinc-client.service"}[6h]) == 0
         for: 0m
         labels:
           alertgroup: "{{ $labels.instance }}"
