@@ -64,7 +64,6 @@ jobs:
           - ideditor
           - imagery-tiler
           - irc
-          - kibana
           - letsencrypt
           - mail
           - mailman

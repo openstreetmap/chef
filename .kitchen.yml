@@ -274,9 +274,6 @@ suites:
   - name: irc
     run_list:
       - recipe[irc::default]
-  - name: kibana
-    run_list:
-      - recipe[kibana::default]
   - name: letsencrypt
     run_list:
       - recipe[letsencrypt::default]
