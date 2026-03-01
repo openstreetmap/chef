@@ -87,17 +87,9 @@ default_attributes(
         :status => :role,
         :members => [:tomh]
       },
-      :os => {
-        :status => :role,
-        :members => [:tomh, :grant, :ollie]
-      },
       :gpsmid => {
         :status => :role,
         :members => [:apmon, :maba]
-      },
-      :"za-imagery" => {
-        :status => :role,
-        :members => [:grant, :htonl, :gmoncrieff, :zander]
       }
     }
   },
