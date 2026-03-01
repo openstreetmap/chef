@@ -17,8 +17,6 @@
 # limitations under the License.
 #
 
-node.default[:accounts][:users][:apt][:status] = :role
-
 include_recipe "accounts"
 include_recipe "apache"
 
@@ -27,6 +25,19 @@ package "aptly"
 repository_keys = data_bag_item("apt", "repository")
 
 gpg_passphrase = repository_keys["gpg_passphrase"]
+
+group "apt" do
+  gid 531
+end
+
+user "apt" do
+  uid 531
+  gid 531
+  comment "apt.openstreetmap.org"
+  home "/srv/apt.openstreetmap.org"
+  shell "/usr/sbin/nologin"
+  manage_home false
+end
 
 template "/etc/aptly.conf" do
   source "aptly.conf.erb"
