@@ -86,10 +86,6 @@ default_attributes(
       :apis => {
         :status => :role,
         :members => [:tomh]
-      },
-      :gpsmid => {
-        :status => :role,
-        :members => [:apmon, :maba]
       }
     }
   },
