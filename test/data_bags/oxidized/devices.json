@@ -1,0 +1,11 @@
+{
+  "id": "devices",
+  "hardware": {
+    "test": {
+      "device": "localhost",
+      "input": "ftp",
+      "username": "oxidized",
+      "password": "password"
+    }
+  }
+}

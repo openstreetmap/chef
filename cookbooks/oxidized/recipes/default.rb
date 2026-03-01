@@ -141,6 +141,7 @@ git "/var/lib/oxidized/configs.git" do
   checkout_branch "master" # branch is hardcoded in oxidized
   user "oxidized"
   group "oxidized"
+  not_if { kitchen? }
 end
 
 bundle_config "/opt/oxidized/daemon" do

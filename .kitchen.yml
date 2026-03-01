@@ -322,6 +322,9 @@ suites:
   - name: overpass
     run_list:
       - recipe[overpass::default]
+  - name: oxidized
+    run_list:
+      - recipe[oxidized::default]
   - name: passenger
     run_list:
       - recipe[passenger::default]
