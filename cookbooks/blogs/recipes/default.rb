@@ -30,6 +30,19 @@ package %w[
   sqlite3
 ]
 
+group "blogs" do
+  gid 525
+end
+
+user "blogs" do
+  uid 525
+  gid 525
+  comment "blogs.openstreetmap.org"
+  home "/srv/blogs.openstreetmap.org"
+  shell "/usr/sbin/nologin"
+  manage_home false
+end
+
 directory "/srv/blogs.openstreetmap.org" do
   owner "blogs"
   group "blogs"
