@@ -26,6 +26,19 @@ keys = data_bag_item("chef", "keys")
 
 package "certbot"
 
+group "letsencrypt" do
+  gid 526
+end
+
+user "letsencrypt" do
+  uid 526
+  gid 526
+  comment "Let's Encrypt"
+  home "/srv/acme.openstreetmap.org"
+  shell "/usr/sbin/nologin"
+  manage_home false
+end
+
 directory "/etc/letsencrypt" do
   owner "letsencrypt"
   group "letsencrypt"
