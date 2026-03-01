@@ -25,6 +25,25 @@ include_recipe "tools"
 
 passwords = data_bag_item("otrs", "passwords")
 
+group "otrs" do
+  gid 513
+end
+
+user "otrs" do
+  uid 513
+  gid 513
+  comment "otrs.openstreetmap.org"
+  home "/usr/share/otrs"
+  shell "/usr/sbin/nologin"
+  manage_home false
+end
+
+group "www-data" do
+  action :modify
+  members %w[otrs]
+  append true
+end
+
 apache_module "perl" do
   package "libapache2-mod-perl2"
 end
