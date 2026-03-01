@@ -43,8 +43,8 @@ end
 user "oxidized" do
   uid 529
   gid 529
-  comment "oxidised network backup tool"
-  home "/opt/oxidised"
+  comment "oxidized network backup tool"
+  home "/opt/oxidized"
   shell "/usr/sbin/nologin"
   manage_home false
 end
