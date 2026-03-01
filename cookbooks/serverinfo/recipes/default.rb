@@ -31,6 +31,19 @@ package %w[
   pkg-config
 ]
 
+group "serverinfo" do
+  gid 534
+end
+
+user "serverinfo" do
+  uid 534
+  gid 534
+  comment "hardware.openstreetmap.org"
+  home "/srv/hardware.openstreetmap.org"
+  shell "/usr/sbin/nologin"
+  manage_home false
+end
+
 directory "/srv/hardware.openstreetmap.org" do
   owner "serverinfo"
   group "serverinfo"
