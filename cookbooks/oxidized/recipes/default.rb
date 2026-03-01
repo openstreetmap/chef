@@ -36,6 +36,19 @@ package %w[
 keys = data_bag_item("oxidized", "keys")
 devices = data_bag_item("oxidized", "devices")
 
+group "oxidized" do
+  gid 529
+end
+
+user "oxidized" do
+  uid 529
+  gid 529
+  comment "oxidised network backup tool"
+  home "/opt/oxidised"
+  shell "/usr/sbin/nologin"
+  manage_home false
+end
+
 directory "/etc/oxidized" do
   owner "root"
   group "root"
