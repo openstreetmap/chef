@@ -25,6 +25,19 @@ passwords = data_bag_item("supybot", "passwords")
 package "limnoria"
 package "python3-git"
 
+group "supybot" do
+  gid 517
+end
+
+user "supybot" do
+  uid 517
+  gid 517
+  comment "Supybot"
+  home "/var/lib/supybot"
+  shell "/usr/sbin/nologin"
+  manage_home false
+end
+
 directory "/etc/supybot" do
   owner "supybot"
   group "supybot"
