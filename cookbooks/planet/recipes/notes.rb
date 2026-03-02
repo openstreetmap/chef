@@ -17,9 +17,9 @@
 # limitations under the License.
 #
 
-include_recipe "accounts"
 include_recipe "git"
 include_recipe "planet::aws"
+include_recipe "planet::user"
 
 db_passwords = data_bag_item("db", "passwords")
 

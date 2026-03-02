@@ -6,7 +6,6 @@ description       "Installs and configures a planet server"
 
 version           "1.0.0"
 supports          "ubuntu"
-depends           "accounts"
 depends           "apache"
 depends           "apt"
 depends           "awscli"

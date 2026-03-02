@@ -17,8 +17,8 @@
 # limitations under the License.
 #
 
-include_recipe "accounts"
 include_recipe "git"
+include_recipe "planet::user"
 
 package %w[
   gcc

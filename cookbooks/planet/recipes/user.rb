@@ -1,8 +1,8 @@
 #
 # Cookbook:: planet
-# Recipe:: aws
+# Recipe:: user
 #
-# Copyright:: 2023, OpenStreetMap Foundation
+# Copyright:: 2026, OpenStreetMap Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,29 +17,16 @@
 # limitations under the License.
 #
 
-include_recipe "awscli"
-include_recipe "planet::user"
-
-aws_credentials = data_bag_item("planet", "aws")
-
-directory "/home/planet/.aws" do
-  owner "planet"
-  group "planet"
-  mode "0755"
+group "planet" do
+  gid 502
+  append true
 end
 
-template "/home/planet/.aws/config" do
-  source "aws-config.erb"
-  owner "planet"
-  group "planet"
-  mode "0644"
-end
-
-template "/home/planet/.aws/credentials" do
-  source "aws-credentials.erb"
-  owner "planet"
-  group "planet"
-  mode "0600"
-  variables :aws_credentials => aws_credentials
-  sensitive true
+user "planet" do
+  uid 502
+  gid 502
+  comment "planet.openstreetmap.org"
+  home "/home/planet"
+  shell "/usr/sbin/nologin"
+  manage_home true
 end

@@ -1,5 +1,3 @@
-default[:accounts][:users][:planet][:status] = :role
-
 default[:planet][:dump][:xml_directory] = "/store/planet/planet"
 default[:planet][:dump][:xml_history_directory] = "/store/planet/planet/full-history"
 default[:planet][:dump][:pbf_directory] = "/store/planet/pbf"

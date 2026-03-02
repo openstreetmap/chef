@@ -19,10 +19,10 @@
 
 require "yaml"
 
-include_recipe "accounts"
 include_recipe "apt"
 include_recipe "osmosis"
 include_recipe "planet::aws"
+include_recipe "planet::user"
 include_recipe "ruby"
 include_recipe "tools"
 
