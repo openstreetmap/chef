@@ -6,7 +6,9 @@ default_attributes(
     :users => {
       :jochen => {
         :status => :administrator
-      },
+      }
+    },
+    :groups => {
       :taginfo => {
         :members => [:jochen, :tomh]
       }

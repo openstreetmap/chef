@@ -19,13 +19,25 @@
 
 require "json"
 
-include_recipe "accounts"
 include_recipe "apache"
 include_recipe "git"
 include_recipe "passenger"
 include_recipe "planet::current"
 include_recipe "prometheus"
 include_recipe "ruby"
+
+group "taginfo" do
+  gid 520
+end
+
+user "taginfo" do
+  uid 520
+  gid 520
+  comment "taginfo.openstreetmap.org"
+  home "/srv/taginfo.openstreetmap.org"
+  shell "/usr/sbin/nologin"
+  manage_home false
+end
 
 package %w[
   libsqlite3-dev
