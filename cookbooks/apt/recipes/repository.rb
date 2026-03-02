@@ -27,6 +27,7 @@ gpg_passphrase = repository_keys["gpg_passphrase"]
 
 group "apt" do
   gid 531
+  append true
 end
 
 user "apt" do

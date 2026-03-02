@@ -38,6 +38,7 @@ devices = data_bag_item("oxidized", "devices")
 
 group "oxidized" do
   gid 529
+  append true
 end
 
 user "oxidized" do

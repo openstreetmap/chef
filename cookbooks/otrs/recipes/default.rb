@@ -26,6 +26,7 @@ passwords = data_bag_item("otrs", "passwords")
 
 group "otrs" do
   gid 513
+  append true
 end
 
 user "otrs" do

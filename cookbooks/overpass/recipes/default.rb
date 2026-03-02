@@ -27,6 +27,7 @@ web_passwords = data_bag_item("web", "passwords")
 
 group username do
   gid 528
+  append true
 end
 
 user username do

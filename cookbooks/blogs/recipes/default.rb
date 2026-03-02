@@ -31,6 +31,7 @@ package %w[
 
 group "blogs" do
   gid 525
+  append true
 end
 
 user "blogs" do

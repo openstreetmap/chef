@@ -32,6 +32,7 @@ package %w[
 
 group "serverinfo" do
   gid 534
+  append true
 end
 
 user "serverinfo" do

@@ -28,6 +28,7 @@ include_recipe "ruby"
 
 group "taginfo" do
   gid 520
+  append true
 end
 
 user "taginfo" do

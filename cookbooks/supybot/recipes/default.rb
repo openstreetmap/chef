@@ -25,6 +25,7 @@ package "python3-git"
 
 group "supybot" do
   gid 517
+  append true
 end
 
 user "supybot" do

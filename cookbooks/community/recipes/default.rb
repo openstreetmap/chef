@@ -30,6 +30,7 @@ end.flatten
 
 group "community" do
   gid 527
+  append true
 end
 
 user "community" do

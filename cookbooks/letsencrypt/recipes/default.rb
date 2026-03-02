@@ -27,6 +27,7 @@ package "certbot"
 
 group "letsencrypt" do
   gid 526
+  append true
 end
 
 user "letsencrypt" do
