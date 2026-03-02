@@ -6,6 +6,5 @@ description       "Installs and configures git"
 
 version           "1.0.0"
 supports          "ubuntu"
-depends           "accounts"
 depends           "apache"
 depends           "networking"

@@ -17,13 +17,24 @@
 # limitations under the License.
 #
 
-node.default[:accounts][:users][:git][:status] = :role
-
-include_recipe "accounts"
 include_recipe "apt"
 include_recipe "networking"
 
 git_directory = node[:git][:directory]
+
+group "git" do
+  gid 508
+  append true
+end
+
+user "git" do
+  uid 508
+  gid 508
+  comment "git.openstreetmap.org"
+  home git_directory
+  shell "/usr/sbin/nologin"
+  manage_home false
+end
 
 directory git_directory do
   owner "root"
