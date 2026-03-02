@@ -17,14 +17,26 @@
 # limitations under the License.
 #
 
-include_recipe "accounts"
 include_recipe "apache"
 include_recipe "prometheus"
 include_recipe "ruby"
 
 username = "overpass"
-basedir = data_bag_item("accounts", username)["home"]
+basedir = "/srv/query.openstreetmap.org"
 web_passwords = data_bag_item("web", "passwords")
+
+group username do
+  gid 528
+end
+
+user username do
+  uid 528
+  gid 528
+  comment "query.openstreetmap.org"
+  home basedir
+  shell "/usr/sbin/nologin"
+  manage_home true
+end
 
 %w[bin site diffs db src].each do |dirname|
   directory "#{basedir}/#{dirname}" do

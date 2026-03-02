@@ -6,7 +6,6 @@ description       "Installs and configures an Overpass server"
 
 version           "1.0.0"
 supports          "ubuntu"
-depends           "accounts"
 depends           "apache"
 depends           "prometheus"
 depends           "ruby"
