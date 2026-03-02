@@ -79,10 +79,6 @@ default_attributes(
       :yellowbkpk => { :status => :user },
       :zander => { :status => :user },
       :zverik => { :status => :user },
-      :ooc => {
-        :status => :role,
-        :members => [:tomh, :blackadder, :timsc, :ollie]
-      },
       :apis => {
         :status => :role,
         :members => [:tomh]
