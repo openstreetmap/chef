@@ -6,7 +6,6 @@ description       "Installs and configures imagery"
 
 version           "1.0.0"
 supports          "ubuntu"
-depends           "accounts"
 depends           "git"
 depends           "nginx"
 depends           "podman"

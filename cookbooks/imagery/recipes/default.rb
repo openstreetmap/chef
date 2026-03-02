@@ -17,9 +17,22 @@
 # limitations under the License.
 #
 
-include_recipe "accounts"
-include_recipe "nginx"
 include_recipe "git"
+include_recipe "nginx"
+
+group "imagery" do
+  gid 523
+  append true
+end
+
+user "imagery" do
+  uid 523
+  gid 523
+  comment "Imagery"
+  home "/srv/imagery"
+  shell "/usr/sbin/nologin"
+  manage_home false
+end
 
 # Imagery gdal and proj requirements
 package %w[
