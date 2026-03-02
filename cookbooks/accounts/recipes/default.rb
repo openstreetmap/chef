@@ -91,9 +91,8 @@ end
 
 node[:accounts][:groups].each do |name, details|
   group name do
-    action :modify
+    action :manage
     members details[:members]
-    append true
   end
 end
 
