@@ -6,7 +6,6 @@ description       "Installs and configures vector tile servers"
 
 version           "1.0.0"
 supports          "ubuntu"
-depends           "accounts"
 depends           "git"
 depends           "nginx"
 depends           "podman"

@@ -24,5 +24,3 @@ default[:postgresql][:monitor_database] = "tiles"
 # Each of these connects to two databases, then we add more connections so 20% are unused and we're
 # not tripping alarms.
 default[:postgresql][:settings][:defaults][:max_connections] = (node.cpu_cores * 8 + 20).to_s
-default[:accounts][:users][:tileupdate][:status] = :role
-default[:accounts][:users][:tilekiln][:status] = :role

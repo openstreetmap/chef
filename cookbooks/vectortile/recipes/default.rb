@@ -17,7 +17,6 @@
 # limitations under the License.
 #
 
-include_recipe "accounts"
 include_recipe "git"
 include_recipe "nginx"
 include_recipe "podman"
@@ -25,6 +24,34 @@ include_recipe "postgresql"
 include_recipe "prometheus"
 include_recipe "python"
 include_recipe "tools"
+
+group "tileupdate" do
+  gid 532
+  append true
+end
+
+user "tileupdate" do
+  uid 532
+  gid 532
+  comment "Vector tile generation"
+  home "/srv/vector.openstreetmap.org"
+  shell "/usr/sbin/nologin"
+  manage_home false
+end
+
+group "tilekiln" do
+  gid 533
+  append true
+end
+
+user "tilekiln" do
+  uid 533
+  gid 533
+  comment "Vector tile serving"
+  home "/srv/vector.openstreetmap.org"
+  shell "/usr/sbin/nologin"
+  manage_home false
+end
 
 directory "/srv/vector.openstreetmap.org" do
   user "tileupdate"

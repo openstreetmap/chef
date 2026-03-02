@@ -4,10 +4,7 @@ description "Role applied to all vector tile servers"
 default_attributes(
   :accounts => {
     :users => {
-      :pnorman => { :status => :administrator },
-      :tile => {
-        :members => [:tomh, :pnorman]
-      }
+      :pnorman => { :status => :administrator }
     }
   },
   :postgresql => {
