@@ -17,7 +17,6 @@
 # limitations under the License.
 #
 
-include_recipe "accounts"
 include_recipe "prometheus"
 include_recipe "postgresql"
 include_recipe "python"
@@ -25,12 +24,26 @@ include_recipe "nginx"
 include_recipe "git"
 include_recipe "fail2ban"
 
-basedir = data_bag_item("accounts", "nominatim")["home"]
+basedir = "/srv/nominatim.openstreetmap.org"
 project_directory = "#{basedir}/planet-project"
 bin_directory = "#{basedir}/bin"
 cfg_directory = "#{basedir}/etc"
 ui_directory = "#{basedir}/ui"
 qa_data_directory = "#{basedir}/qa-data"
+
+group "nominatim" do
+  gid 518
+  append true
+end
+
+user "nominatim" do
+  uid 518
+  gid 518
+  comment "nominatim.openstreetmap.org"
+  home basedir
+  shell "/usr/sbin/nologin"
+  manage_home false
+end
 
 directory basedir do
   owner "nominatim"

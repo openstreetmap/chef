@@ -6,7 +6,6 @@ description       "Installs and configures nominatim servers"
 
 version           "1.0.0"
 supports          "ubuntu"
-depends           "accounts"
 depends           "fail2ban"
 depends           "git"
 depends           "nginx"

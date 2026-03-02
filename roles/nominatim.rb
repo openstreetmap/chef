@@ -4,9 +4,10 @@ description "Role applied to all nominatim servers."
 default_attributes(
   :accounts => {
     :users => {
-      :lonvia => { :status => :administrator },
+      :lonvia => { :status => :administrator }
+    },
+    :groups => {
       :nominatim => {
-        :status => :role,
         :members => [:lonvia, :tomh]
       }
     }
