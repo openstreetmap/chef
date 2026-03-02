@@ -17,8 +17,6 @@
 # limitations under the License.
 #
 
-include_recipe "accounts"
-
 users = data_bag_item("supybot", "users")
 passwords = data_bag_item("supybot", "passwords")
 
