@@ -17,7 +17,6 @@
 # limitations under the License.
 #
 
-include_recipe "accounts"
 include_recipe "apache"
 include_recipe "git"
 include_recipe "memcached"
@@ -34,6 +33,19 @@ package %w[
   pngquant
   libcache-memcached-perl
 ]
+
+group "gpstile" do
+  gid 519
+end
+
+user "gpstile" do
+  uid 519
+  gid 519
+  comment "gps-tile.openstreetmap.org"
+  home "/srv/gps-tile.openstreetmap.org"
+  shell "/usr/sbin/nologin"
+  manage_home false
+end
 
 directory "/srv/gps-tile.openstreetmap.org" do
   owner "gpstile"
