@@ -22,6 +22,20 @@ include_recipe "git"
 
 keys = data_bag_item("chef", "keys")
 
+group "chefrepo" do
+  gid 507
+  append true
+end
+
+user "chefrepo" do
+  uid 507
+  gid 507
+  comment "chef.openstreetmap.org"
+  home "/var/lib/cinc"
+  shell "/usr/sbin/nologin"
+  manage_home false
+end
+
 chef_gem "bundler" do
   version ">= 2.1.4"
 end

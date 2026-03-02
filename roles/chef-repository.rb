@@ -23,9 +23,10 @@ default_attributes(
       :yellowbkpk => {
         :status => :user,
         :shell => "/usr/bin/git-shell"
-      },
+      }
+    },
+    :groups => {
       :chefrepo => {
-        :status => :role,
         :members => [
           :tomh, :grant, :matt, :jburgess, :lonvia, :yellowbkpk, :bretth, :jochen, :stereo, :pnorman
         ]
