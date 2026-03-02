@@ -17,7 +17,6 @@
 # limitations under the License.
 #
 
-include_recipe "accounts"
 include_recipe "apache"
 include_recipe "git"
 include_recipe "nodejs"
@@ -30,6 +29,20 @@ include_recipe "tools"
 blocks = data_bag_item("tile", "blocks")
 admins = data_bag_item("apache", "admins")
 web_passwords = data_bag_item("web", "passwords")
+
+group "tile" do
+  gid 515
+  append true
+end
+
+user "tile" do
+  uid 515
+  gid 515
+  comment "tile.openstreetmap.org"
+  home "/srv/tile.openstreetmap.org"
+  shell "/usr/sbin/nologin"
+  manage_home false
+end
 
 apache_module "alias"
 apache_module "cgi"
