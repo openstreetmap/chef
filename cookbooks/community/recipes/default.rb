@@ -17,7 +17,6 @@
 # limitations under the License.
 #
 
-include_recipe "accounts"
 include_recipe "docker"
 include_recipe "git"
 include_recipe "ssl"
@@ -28,6 +27,19 @@ license_keys = data_bag_item("geoipupdate", "license-keys") unless kitchen?
 prometheus_servers = search(:node, "recipes:prometheus\\:\\:server").map do |server|
   server.ipaddresses(:role => :external)
 end.flatten
+
+group "community" do
+  gid 527
+end
+
+user "community" do
+  uid 527
+  gid 527
+  comment "community.openstreetmap.org"
+  home "/srv/community.openstreetmap.org"
+  shell "/usr/sbin/nologin"
+  manage_home false
+end
 
 # Disable any default installed apache2 service. Web server is embedded within the discourse docker container
 service "apache2" do
