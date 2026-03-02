@@ -78,9 +78,10 @@ default_attributes(
       :twain => { :status => :user },
       :yellowbkpk => { :status => :user },
       :zander => { :status => :user },
-      :zverik => { :status => :user },
+      :zverik => { :status => :user }
+    },
+    :groups => {
       :apis => {
-        :status => :role,
         :members => [:tomh]
       }
     }

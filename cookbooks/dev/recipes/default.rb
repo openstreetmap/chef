@@ -20,7 +20,6 @@
 require "yaml"
 require "securerandom"
 
-include_recipe "accounts"
 include_recipe "apache"
 include_recipe "passenger"
 include_recipe "geoipupdate"
@@ -286,6 +285,20 @@ search(:accounts, "*:*").each do |account|
     mode "440"
     variables :user => name
   end
+end
+
+group "apis" do
+  gid 505
+  append true
+end
+
+user "apis" do
+  uid 505
+  gid 505
+  comment "apis.dev.openstreetmap.org"
+  home "/srv/apis.dev.openstreetmap.org"
+  shell "/usr/sbin/nologin"
+  manage_home false
 end
 
 node[:postgresql][:versions].each do |version|
