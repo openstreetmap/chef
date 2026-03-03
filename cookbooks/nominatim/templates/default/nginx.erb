@@ -112,16 +112,9 @@ map $missing_email$missing_referer$http_user_agent $generic_mozilla {
     ~^11Mozilla/5.0 2;
 }
 
-map $whitelisted$generic_mozilla$uri $limit_reverse {
-    default "";
-    ~01/reverse.*  $binary_remote_addr;
-    ~02/reverse.*  $binary_remote_addr;
-}
-
 limit_req_zone $limit_www zone=www:50m rate=1r/s;
 limit_req_zone $limit_tarpit zone=tarpit:10m rate=1r/s;
 limit_req_zone $binary_remote_addr zone=blocked:10m rate=2r/m;
-limit_req_zone $limit_reverse zone=reverse:10m rate=10r/m;
 
 # Fastly CDN IPs
 <% @fastly.sort.each do |address| -%>
@@ -235,7 +228,6 @@ server {
 
         limit_req zone=www burst=10;
         limit_req zone=tarpit burst=5;
-        limit_req zone=reverse burst=5;
         limit_req_status 429;
 
         if ($request_method = 'OPTIONS') {
