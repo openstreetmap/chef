@@ -4,9 +4,10 @@ description "Role applied to staging blog servers"
 default_attributes(
   :accounts => {
     :users => {
-      :mikel => { :status => :administrator },
+      :mikel => { :status => :administrator }
+    },
+    :groups => {
       :wordpress => {
-        :status => :role,
         :members => [:mikel]
       }
     },
