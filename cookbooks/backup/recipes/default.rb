@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-include_recipe "accounts"
+include_recipe "backup::user"
 
 package %w[
   perl

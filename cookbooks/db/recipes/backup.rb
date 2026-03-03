@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+include_recipe "backup::user"
+
 template "/usr/local/bin/backup-db" do
   source "backup-db.erb"
   owner "root"
