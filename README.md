@@ -5,7 +5,7 @@
 
 This repository manages the configuration of all the servers run by the
 OpenStreetMap Foundation's Operations Working Group. We use
-[Chef](https://www.chef.io/) to automate the configuration of all of our
+[CINC](https://cinc.sh/) to automate the configuration of all of our
 servers.
 
 [OSMF Operations Working Group](https://operations.osmfoundation.org/)
