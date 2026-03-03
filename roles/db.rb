@@ -2,14 +2,6 @@ name "db"
 description "Role applied to all database servers"
 
 default_attributes(
-  :accounts => {
-    :users => {
-      :rails => {
-        :status => :role,
-        :members => [:tomh, :grant]
-      }
-    }
-  },
   :apt => {
     :unattended_upgrades => {
       :enable => false

@@ -3,7 +3,7 @@ description "Role applied to all web/api servers"
 
 default_attributes(
   :accounts => {
-    :users => {
+    :groups => {
       :rails => {
         :members => [:tomh, :grant]
       }

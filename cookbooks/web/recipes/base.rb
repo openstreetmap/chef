@@ -17,7 +17,19 @@
 # limitations under the License.
 #
 
-include_recipe "accounts"
+group "rails" do
+  gid 500
+  append true
+end
+
+user "rails" do
+  uid 500
+  gid 500
+  comment "www.openstreetmap.org"
+  home "/srv/www.openstreetmap.org"
+  shell "/usr/sbin/nologin"
+  manage_home true
+end
 
 directory node[:web][:base_directory] do
   group "rails"
