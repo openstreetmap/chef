@@ -6,7 +6,6 @@ description       "Installs and configures mediawiki"
 
 version           "1.0.0"
 supports          "ubuntu"
-depends           "accounts"
 depends           "apache"
 depends           "apt"
 depends           "chef"

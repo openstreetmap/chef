@@ -2,11 +2,6 @@ name "wiki"
 description "Role applied to all wiki servers"
 
 default_attributes(
-  :accounts => {
-    :users => {
-      :wiki => { :status => :role }
-    }
-  },
   :apache => {
     :mpm => "event",
     :timeout => 30,

@@ -17,7 +17,6 @@
 # limitations under the License.
 #
 
-include_recipe "accounts"
 include_recipe "apache"
 include_recipe "apt"
 include_recipe "git"
@@ -71,6 +70,20 @@ package %w[
 
 # Mediawiki packages for SyntaxHighight support
 package "python3-pygments"
+
+group "wiki" do
+  gid 503
+  append true
+end
+
+user "wiki" do
+  uid 503
+  gid 503
+  comment "MediaWiki"
+  home "/"
+  shell "/usr/sbin/nologin"
+  manage_home false
+end
 
 link "/etc/php/#{node[:php][:version]}/fpm/conf.d/20-wikidiff2.ini" do
   to "../../mods-available/wikidiff2.ini"
