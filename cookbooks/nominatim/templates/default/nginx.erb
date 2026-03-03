@@ -114,7 +114,6 @@ map $missing_email$missing_referer$http_user_agent $generic_mozilla {
 
 limit_req_zone $limit_www zone=www:50m rate=1r/s;
 limit_req_zone $limit_tarpit zone=tarpit:10m rate=1r/s;
-limit_req_zone $binary_remote_addr zone=blocked:10m rate=2r/m;
 
 # Fastly CDN IPs
 <% @fastly.sort.each do |address| -%>
@@ -183,7 +182,6 @@ server {
     error_page 403 /403.html;
     error_page 418 /403.html;
     location /403.html {
-        limit_req zone=blocked burst=5;
         add_header Vary "*" always;
         add_header x-nominatim-server "<%= node[:fqdn] %>" always;
     }
@@ -191,7 +189,6 @@ server {
     error_page 429 /509.html;
     error_page 503 /509.html;
     location /509.html {
-        limit_req zone=blocked burst=5;
         add_header Vary "*" always;
         add_header x-nominatim-server "<%= node[:fqdn] %>" always;
     }
