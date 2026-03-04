@@ -1,0 +1,6 @@
+#!/bin/sh
+
+while [ -z "$(ss -Htl sport = :$1)" ]
+do
+  sleep 1
+done

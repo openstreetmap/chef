@@ -51,6 +51,17 @@ service "rsyslog" do
   supports :status => true, :restart => true, :reload => true
 end
 
+# Install some common tools
+remote_directory "/usr/local/bin" do
+  source "local-bin"
+  owner "root"
+  group "root"
+  mode "755"
+  files_owner "root"
+  files_group "root"
+  files_mode "755"
+end
+
 # Remove some unused and unwanted packages
 package %w[mlocate whoopsie] do
   action :purge
