@@ -383,6 +383,13 @@ if node[:postgresql][:clusters][rails_cluster.to_sym]
         owner "apis"
       end
 
+      postgresql_extension "#{database_name}_postgis" do
+        cluster rails_cluster
+        database database_name
+        extension "postgis"
+        owner "postgres"
+      end
+
       directory site_directory do
         owner "apis"
         group "apis"
