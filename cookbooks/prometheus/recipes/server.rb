@@ -21,7 +21,6 @@ include_recipe "apache"
 include_recipe "apt::grafana"
 include_recipe "awscli"
 include_recipe "networking"
-include_recipe "tools"
 
 passwords = data_bag_item("prometheus", "passwords")
 tokens = data_bag_item("prometheus", "tokens")
@@ -359,7 +358,7 @@ end
 systemd_service "grafana-server-wait-for-port" do
   service "grafana-server"
   dropin "wait-for-port"
-  exec_start_post "/usr/local/bin/wait-for-port 3000"
+  type "notify"
 end
 
 service "grafana-server" do
