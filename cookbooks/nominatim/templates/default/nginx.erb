@@ -95,26 +95,6 @@ map $missing_referer$missing_ua$email_id $blocked_email {
    include <%= @confdir %>/nginx_blocked_email.conf;
 }
 
-map $whitelisted $limit_www {
-    1 "";
-    0 $binary_remote_addr;
-}
-
-map $blocked_user_agent $limit_tarpit {
-    0 "";
-    1 $binary_remote_addr;
-    2 $binary_remote_addr;
-}
-
-map $missing_email$missing_referer$http_user_agent $generic_mozilla {
-    default 0;
-    ~^11Mozilla/4.0 1;
-    ~^11Mozilla/5.0 2;
-}
-
-limit_req_zone $limit_www zone=www:50m rate=1r/s;
-limit_req_zone $limit_tarpit zone=tarpit:10m rate=1r/s;
-
 # Fastly CDN IPs
 <% @fastly.sort.each do |address| -%>
 set_real_ip_from <%= address %>;
@@ -222,10 +202,6 @@ server {
         if ($args ~* "q=[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+[ &]")
         { return 418; }
         include <%= @confdir %>/nginx_blocked_generic.conf;
-
-        limit_req zone=www burst=10;
-        limit_req zone=tarpit burst=5;
-        limit_req_status 429;
 
         if ($request_method = 'OPTIONS') {
           add_header 'Content-Type' 'text/plain; charset=UTF-8';
