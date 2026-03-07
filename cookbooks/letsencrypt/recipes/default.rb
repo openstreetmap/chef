@@ -97,20 +97,20 @@ directory "/srv/acme.openstreetmap.org/logs" do
   mode "700"
 end
 
-directory "/srv/acme.openstreetmap.org/.chef" do
+directory "/srv/acme.openstreetmap.org/.cinc" do
   owner "letsencrypt"
   group "letsencrypt"
   mode "2775"
 end
 
-file "/srv/acme.openstreetmap.org/.chef/client.pem" do
+file "/srv/acme.openstreetmap.org/.cinc/client.pem" do
   content keys["letsencrypt"].join("\n")
   owner "letsencrypt"
   group "letsencrypt"
   mode "660"
 end
 
-cookbook_file "/srv/acme.openstreetmap.org/.chef/knife.rb" do
+cookbook_file "/srv/acme.openstreetmap.org/.cinc/knife.rb" do
   source "knife.rb"
   owner "letsencrypt"
   group "letsencrypt"
