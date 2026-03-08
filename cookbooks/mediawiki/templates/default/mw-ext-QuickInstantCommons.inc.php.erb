@@ -11,8 +11,9 @@ $wgForeignFileRepos[] = [
 	'thumbUrl' => 'https://upload.wikimedia.org/wikipedia/commons/thumb',
 	'fetchDescription' => true,
 	'descriptionCacheExpiry' => 60*60*24*30,
-	'transformVia404' => true,
+	'transformVia404' => false,
 	'abbrvThreshold' => 160,
 	'apiMetadataExpiry' => 60*60*24*30,
 	'disabledMediaHandlers' => [TiffHandler::class]
 ];
+$wgQuickInstantCommonsUserAgentInfo = "osm.wiki/1.0 (QuickInstantCommons)";
