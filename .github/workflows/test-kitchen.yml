@@ -44,6 +44,7 @@ jobs:
           - elasticsearch
           - exim
           - fail2ban
+          - fastly
           - foundation-birthday
           - foundation-board
           - foundation-dwg

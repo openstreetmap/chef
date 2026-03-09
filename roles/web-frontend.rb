@@ -53,5 +53,6 @@ default_attributes(
 
 run_list(
   "role[web]",
-  "recipe[web::frontend]"
+  "recipe[web::frontend]",
+  "recipe[fastly]"
 )

@@ -113,5 +113,6 @@ default_attributes(
 )
 
 run_list(
-  "recipe[tile]"
+  "recipe[tile]",
+  "recipe[fastly]"
 )

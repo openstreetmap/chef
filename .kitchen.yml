@@ -206,6 +206,9 @@ suites:
   - name: fail2ban
     run_list:
       - recipe[fail2ban::default]
+  - name: fastly
+    run_list:
+      - recipe[fastly::default]
   - name: foundation-birthday
     run_list:
       - recipe[foundation::birthday]

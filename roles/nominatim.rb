@@ -70,5 +70,6 @@ default_attributes(
 )
 
 run_list(
-  "recipe[nominatim::default]"
+  "recipe[nominatim::default]",
+  "recipe[fastly]"
 )
