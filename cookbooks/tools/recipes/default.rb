@@ -19,6 +19,7 @@
 
 package %w[
   bash-completion
+  conntrack
   cron
   curl
   dmidecode
