@@ -4,7 +4,7 @@ description "Master role applied to muirdris"
 default_attributes(
   :accounts => {
     :users => {
-      :yuri => { :status => :user }
+      :yuri => { :status => :administrator }
     }
   },
   :networking => {
