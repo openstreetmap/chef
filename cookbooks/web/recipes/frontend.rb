@@ -98,9 +98,7 @@ fail2ban_filter "apache-request-timeout" do
 end
 
 fail2ban_jail "apache-request-timeout" do
-  filter "apache-request-timeout"
-  logpath "/var/log/apache2/access.log"
-  ports [80, 443]
+  action :delete
 end
 
 fail2ban_filter "apache-trackpoints-timeout" do
@@ -108,11 +106,7 @@ fail2ban_filter "apache-trackpoints-timeout" do
 end
 
 fail2ban_jail "apache-trackpoints-timeout" do
-  filter "apache-trackpoints-timeout"
-  logpath "/var/log/apache2/access.log"
-  ports [80, 443]
-  bantime "12h"
-  findtime "30m"
+  action :delete
 end
 
 fail2ban_filter "apache-notes-search" do
@@ -120,9 +114,7 @@ fail2ban_filter "apache-notes-search" do
 end
 
 fail2ban_jail "apache-notes-search" do
-  filter "apache-notes-search"
-  logpath "/var/log/apache2/access.log"
-  ports [80, 443]
+  action :delete
 end
 
 if %w[database_offline database_readonly].include?(node[:web][:status])
