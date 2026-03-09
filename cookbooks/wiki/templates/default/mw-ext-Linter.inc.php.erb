@@ -1,0 +1,33 @@
+<?php
+// Load Parsoid
+wfLoadExtension(
+    'Parsoid',
+    "$IP/vendor/wikimedia/parsoid/extension.json"
+);
+
+$wgParsoidSettings = [
+    'useSelser' => true,
+    'linting' => true
+];
+
+$wgVisualEditorParsoidAutoConfig = false; // to make linting work
+
+$wgVirtualRestConfig = [
+	'paths' => [],
+	'modules' => [
+		'parsoid' => [
+			'url' => 'https://<%= @site %>/w/rest.php',
+			'domain' => '<%= @site %>',
+			'forwardCookies' => true,
+			'restbaseCompat' => false,
+			'timeout' => 30
+		],
+	],
+	'global' => [
+		'timeout' => 360,
+		'forwardCookies' => false,
+		'HTTPProxy' => null
+	]
+];
+
+wfLoadExtension( 'Linter' );

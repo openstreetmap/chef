@@ -163,6 +163,13 @@ mediawiki_extension "Translate" do
   only_if { node[:wiki][:test_mode] }
 end
 
+mediawiki_extension "Linter" do
+  site site_name
+  template "mw-ext-Linter.inc.php.erb"
+  template_cookbook "wiki"
+  only_if { node[:wiki][:test_mode] }
+end
+
 mediawiki_extension "DiscussionTools" do
   site site_name
   only_if { node[:wiki][:test_mode] }
