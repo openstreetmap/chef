@@ -22,7 +22,7 @@ default_attributes(
       :threads_per_child => 20,
       :min_spare_threads => 300,
       :max_connections_per_child => 0,
-      :async_request_worker_factor => 4,
+      :async_request_worker_factor => 40,
       :listen_cores_buckets_ratio => 8
     }
   },
