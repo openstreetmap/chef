@@ -20,6 +20,7 @@ fi
 if <%= @venvprefix %>pip list $EXTRA_PIP --outdated | fgrep -q nominatim-api; then
   <%= @venvprefix %>pip install $EXTRA_PIP -U nominatim-api
   systemctl reload nominatim
+  systemctl reload nominatim_fastlane
 fi
 
 if ! /sbin/runuser -u nominatim -- <%= @bindir %>/nominatim-update-data; then
