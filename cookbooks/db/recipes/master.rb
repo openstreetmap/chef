@@ -67,6 +67,10 @@ postgresql_user "replication" do
   replication true
 end
 
+node[:postgresql][:versions].each do |version|
+  package "postgresql-#{version}-postgis-3"
+end
+
 postgresql_database "openstreetmap" do
   cluster node[:db][:cluster]
   owner "openstreetmap"
@@ -76,6 +80,12 @@ postgresql_extension "btree_gist" do
   cluster node[:db][:cluster]
   database "openstreetmap"
   only_if { node[:postgresql][:clusters][node[:db][:cluster]] && node[:postgresql][:clusters][node[:db][:cluster]][:version] >= 9.0 }
+end
+
+postgresql_extension "postgis" do
+  cluster node[:db][:cluster]
+  database "openstreetmap"
+  owner "postgres"
 end
 
 CGIMAP_PERMISSIONS = {
