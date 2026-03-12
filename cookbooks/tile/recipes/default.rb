@@ -474,6 +474,28 @@ node[:tile][:styles].each do |name, details|
     end
   end
 
+  if details[:common_values_script]
+    postgresql_execute details[:common_values_script] do
+      action :nothing
+      command details[:common_values_script]
+      cluster node[:tile][:database][:cluster]
+      database "gis"
+      user "tile"
+      group "tile"
+      transaction true
+      subscribes :run, "git[#{style_directory}]"
+    end
+
+    Array(details[:common_values_tables]).each do |table|
+      postgresql_table table do
+        cluster node[:tile][:database][:cluster]
+        database "gis"
+        owner "tile"
+        permissions "tile" => :all, "www-data" => :select, "_renderd" => :select
+      end
+    end
+  end
+
   execute "#{style_directory}/project.mml" do
     action :nothing
     command "carto -a 3.0.22 project.mml > project.xml"
