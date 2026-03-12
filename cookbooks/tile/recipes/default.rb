@@ -358,7 +358,6 @@ end
 postgresql_extension "hstore" do
   cluster node[:tile][:database][:cluster]
   database "gis"
-  only_if { node[:tile][:database][:hstore] }
 end
 
 %w[geography_columns planet_osm_nodes planet_osm_rels planet_osm_ways raster_columns raster_overviews].each do |table|
