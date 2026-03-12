@@ -89,7 +89,6 @@ default_attributes(
   },
   :tile => {
     :database => {
-      :style_file => "/srv/tile.openstreetmap.org/styles/default/openstreetmap-carto.style",
       :tag_transform_script => "/srv/tile.openstreetmap.org/styles/default/openstreetmap-carto.lua",
       :external_data_script => "/srv/tile.openstreetmap.org/styles/default/scripts/get-external-data.py -c /srv/tile.openstreetmap.org/styles/default/external-data.yml",
       :external_data_tables => %w[
