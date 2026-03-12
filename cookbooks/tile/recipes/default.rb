@@ -469,6 +469,7 @@ node[:tile][:styles].each do |name, details|
       database "gis"
       user "tile"
       group "tile"
+      transaction true
       subscribes :run, "git[#{style_directory}]"
     end
   end
