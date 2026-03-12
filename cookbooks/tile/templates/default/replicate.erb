@@ -16,6 +16,9 @@ do
     --multi-geometry \
 <% end -%>
     --hstore \
+<% if node[:tile][:database][:output_mode] -%>
+    --output=<%= node[:tile][:database][:output_mode] %> \
+<% end -%>
 <% if node[:tile][:database][:tag_transform_script] -%>
     --tag-transform-script=<%= node[:tile][:database][:tag_transform_script] %>
 <% end -%>
