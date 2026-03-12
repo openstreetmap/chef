@@ -35,6 +35,9 @@ module OpenStreetMap
       # Set output format
       args.push("--no-align") unless options.fetch(:align, true)
 
+      # Run command in a transaction if requested
+      args.push("--single-transaction") if options.fetch(:transaction, false)
+
       # Add any SQL command to execute
       if options[:command]
         args.push("--command")
