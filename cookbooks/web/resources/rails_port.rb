@@ -97,6 +97,8 @@ property :signup_email_per_day, Integer
 property :signup_email_max_burst, Integer
 property :doorkeeper_signing_key, String
 property :user_account_deletion_delay, Integer
+property :turnstile_site_key, String
+property :turnstile_secret_key, String
 
 action :create do
   package %w[
@@ -355,7 +357,9 @@ action :create do
     "signup_email_per_day",
     "signup_email_max_burst",
     "doorkeeper_signing_key",
-    "user_account_deletion_delay"
+    "user_account_deletion_delay",
+    "turnstile_site_key",
+    "turnstile_secret_key"
   ).compact.merge(
     "server_protocol" => "https",
     "server_url" => new_resource.site,
