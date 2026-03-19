@@ -171,6 +171,8 @@ PROMETHEUS_PERMISSIONS = {
   note_comments
   note_subscriptions
   notes
+  noticed_events
+  noticed_notifications
   oauth_access_grants
   oauth_access_tokens
   oauth_applications
@@ -228,6 +230,8 @@ end
   messages_id_seq
   note_comments_id_seq
   notes_id_seq
+  noticed_events_id_seq
+  noticed_notifications_id_seq
   oauth_access_grants_id_seq
   oauth_access_tokens_id_seq
   oauth_applications_id_seq
