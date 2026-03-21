@@ -4,6 +4,7 @@ description "Role applied to all tile servers running carto 6.0.0"
 default_attributes(
   :tile => {
     :database => {
+      :cluster => "18/main",
       :output_mode => "flex",
       :tag_transform_script => nil
     },
