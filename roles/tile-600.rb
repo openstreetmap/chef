@@ -5,7 +5,7 @@ default_attributes(
   :tile => {
     :database => {
       :output_mode => "flex",
-      :tag_transform_script => "/srv/tile.openstreetmap.org/styles/default/openstreetmap-carto-flex.lua"
+      :tag_transform_script => nil
     },
     :styles => {
       :default => {
