@@ -19,21 +19,21 @@
 
 include_recipe "apt"
 
-platform_name = if platform?("debian")
-                  "debian"
-                else
-                  "ubuntu"
-                end
+# platform_name = if platform?("debian")
+#                   "debian"
+#                 else
+#                   "ubuntu"
+#                 end
 
-distribution_name = if platform?("debian")
-                      "buster"
-                    else
-                      "precise"
-                    end
+# distribution_name = if platform?("debian")
+#                       "buster"
+#                     else
+#                       "precise"
+#                     end
 
-apt_repository "hwraid" do
-  uri "https://hwraid.le-vert.net/#{platform_name}"
-  distribution distribution_name
-  components ["main"]
-  key "https://hwraid.le-vert.net/debian/hwraid.le-vert.net.gpg.key"
-end
+# apt_repository "hwraid" do
+#   uri "https://hwraid.le-vert.net/#{platform_name}"
+#   distribution distribution_name
+#   components ["main"]
+#   key "https://hwraid.le-vert.net/debian/hwraid.le-vert.net.gpg.key"
+# end
