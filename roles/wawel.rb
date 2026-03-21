@@ -45,5 +45,5 @@ default_attributes(
 
 run_list(
   "role[cloudferro-waw3-2]",
-  "role[tile]"
+  "role[tile-600]"
 )
