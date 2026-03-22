@@ -6,6 +6,7 @@ default_attributes(
     :database => {
       :cluster => "18/main",
       :output_mode => "flex",
+      :multi_geometry => false,
       :tag_transform_script => nil
     },
     :styles => {
