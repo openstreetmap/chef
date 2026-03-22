@@ -133,6 +133,6 @@ default_attributes(
 
 run_list(
   "role[ucl-public]",
-  "role[tile]",
+  "role[tile-600]",
   "recipe[atlas]"
 )
