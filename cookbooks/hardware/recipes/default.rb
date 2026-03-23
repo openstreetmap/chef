@@ -295,26 +295,15 @@ if node[:virtualization][:role] != "guest" ||
 
   node[:kernel][:modules].each_key do |modname|
     case modname
-    when "cciss"
-      tools_packages << "ssacli"
-      status_packages["cciss-vol-status"] ||= []
     when "hpsa"
       tools_packages << "ssacli"
       status_packages["cciss-vol-status"] ||= []
-    when "mptsas"
-      tools_packages << "lsiutil"
-      status_packages["mpt-status"] ||= []
-    when "mpt2sas", "mpt3sas"
+    when "mpt3sas"
       tools_packages << "sas2ircu"
       status_packages["sas2ircu-status"] ||= []
     when "megaraid_sas"
       tools_packages << "megacli"
       status_packages["megaclisas-status"] ||= []
-    when "aacraid"
-      tools_packages << "arcconf"
-      status_packages["aacraid-status"] ||= []
-    when "arcmsr"
-      tools_packages << "areca"
     end
   end
 
@@ -340,24 +329,6 @@ include_recipe "apt::hwraid" unless status_packages.empty?
     package tools_package do
       action :purge
     end
-  end
-end
-
-if tools_packages.include?("areca")
-  include_recipe "git"
-
-  git "/opt/areca" do
-    action :sync
-    repository "https://git.openstreetmap.org/private/areca.git"
-    depth 1
-    user "root"
-    group "root"
-    not_if { kitchen? }
-  end
-else
-  directory "/opt/areca" do
-    action :delete
-    recursive true
   end
 end
 
