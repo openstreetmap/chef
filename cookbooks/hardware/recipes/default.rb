@@ -362,20 +362,8 @@ else
 end
 
 %w[cciss-vol-status mpt-status sas2ircu-status megaclisas-status aacraid-status].each do |status_package|
-  if status_packages.include?(status_package)
-    package status_package
-
-    service "#{status_package}d" do
-      action [:stop, :disable]
-    end
-
-    file "/etc/default/#{status_package}d" do
-      action :delete
-    end
-  else
-    package status_package do
-      action :purge
-    end
+  package status_package do
+    action :purge
   end
 end
 
