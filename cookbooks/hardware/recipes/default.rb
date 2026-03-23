@@ -286,7 +286,6 @@ prometheus_exporter "rasdaemon" do
 end
 
 tools_packages = []
-status_packages = {}
 
 if node[:virtualization][:role] != "guest" ||
    (node[:virtualization][:system] != "lxc" &&
@@ -297,30 +296,15 @@ if node[:virtualization][:role] != "guest" ||
     case modname
     when "hpsa"
       tools_packages << "ssacli"
-      status_packages["cciss-vol-status"] ||= []
     when "mpt3sas"
       tools_packages << "sas2ircu"
-      status_packages["sas2ircu-status"] ||= []
     when "megaraid_sas"
       tools_packages << "megacli"
-      status_packages["megaclisas-status"] ||= []
-    end
-  end
-
-  node[:block_device].each do |name, attributes|
-    next unless attributes[:vendor] == "HP" && attributes[:model] == "LOGICAL VOLUME"
-
-    if name =~ /^cciss!(c[0-9]+)d[0-9]+$/
-      status_packages["cciss-vol-status"] |= ["cciss/#{Regexp.last_match[1]}d0"]
-    else
-      Dir.glob("/sys/block/#{name}/device/scsi_generic/*").each do |sg|
-        status_packages["cciss-vol-status"] |= [File.basename(sg)]
-      end
     end
   end
 end
 
-include_recipe "apt::hwraid" unless status_packages.empty?
+include_recipe "apt::hwraid" unless tools_packages.empty?
 
 %w[ssacli lsiutil sas2ircu megactl megacli arcconf].each do |tools_package|
   if tools_packages.include?(tools_package)
@@ -330,20 +314,6 @@ include_recipe "apt::hwraid" unless status_packages.empty?
       action :purge
     end
   end
-end
-
-%w[cciss-vol-status mpt-status sas2ircu-status megaclisas-status aacraid-status].each do |status_package|
-  package status_package do
-    action :purge
-  end
-end
-
-systemd_service "cciss-vol-statusd" do
-  action :delete
-end
-
-template "/usr/local/bin/cciss-vol-statusd" do
-  action :delete
 end
 
 disks = if node[:hardware][:disk]
