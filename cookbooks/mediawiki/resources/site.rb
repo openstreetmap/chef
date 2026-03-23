@@ -285,6 +285,7 @@ action :create do
     site new_resource.site
     template "mw-ext-PdfHandler.inc.php.erb"
     update_site false
+    action :delete # Broken in 1.43.6 see: https://github.com/openstreetmap/operations/issues/1344#issuecomment-4112533258
   end
 
   mediawiki_extension "Poem" do
