@@ -74,6 +74,7 @@ property :thunderforest_key, String
 property :tracestrack_key, String
 property :maptiler_key, String
 property :totp_key, String
+property :totp_domain, String
 property :csp_enforce, [true, false], :default => false
 property :csp_report_url, String
 property :matomo_configuration, Hash
@@ -337,6 +338,7 @@ action :create do
     "tracestrack_key",
     "maptiler_key",
     "totp_key",
+    "totp_domain",
     "csp_enforce",
     "csp_report_url",
     "trace_use_job_queue",

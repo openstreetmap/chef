@@ -142,6 +142,7 @@ rails_port "www.openstreetmap.org" do
   tracestrack_key web_passwords["tracestrack_key"]
   maptiler_key web_passwords["maptiler_key"]
   totp_key web_passwords["totp_key"]
+  totp_domain "openstreetmap.org"
   csp_enforce true
   trace_use_job_queue true
   diary_feed_delay 12
