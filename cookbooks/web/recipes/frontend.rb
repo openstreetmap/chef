@@ -122,6 +122,10 @@ if %w[database_offline database_readonly].include?(node[:web][:status])
     action :stop
   end
 
+  service "rails-jobs@notifiers" do
+    action :stop
+  end
+
   service "rails-jobs@storage" do
     action :stop
   end
@@ -131,6 +135,13 @@ if %w[database_offline database_readonly].include?(node[:web][:status])
   end
 else
   service "rails-jobs@mailers" do
+    action [:enable, :start]
+    supports :restart => true
+    subscribes :restart, "rails_port[www.openstreetmap.org]"
+    subscribes :restart, "systemd_service[rails-jobs@]"
+  end
+
+  service "rails-jobs@notifiers" do
     action [:enable, :start]
     supports :restart => true
     subscribes :restart, "rails_port[www.openstreetmap.org]"
