@@ -157,5 +157,5 @@ default_attributes(
 
 run_list(
   "role[twds]",
-  "role[tile]"
+  "role[tile-600]"
 )
