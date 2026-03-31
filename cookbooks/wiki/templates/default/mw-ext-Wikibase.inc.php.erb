@@ -75,6 +75,14 @@ call_user_func( function() {
     // https://gerrit.wikimedia.org/r/#/c/mediawiki/extensions/Wikibase/+/469872/
     $wgWBRepoSettings['enableEntitySearchUI'] = false;
 
+    // Enable default values for labels and aliases
+<% if node[:wiki][:test_mode] -%>
+<% if node[:wiki][:mediawiki_version].to_f > 1.43 -%>
+    $wgWBRepoSettings['enableMulLanguageCode'] = true;
+<% else -%>
+    $wgWBRepoSettings['tmpEnableMulLanguageCode'] = true;
+<% end -%>
+<% end -%>
 } );
 
 // Adapted from "$IP/extensions/Wikibase/client/config/WikibaseClient.example.php";
