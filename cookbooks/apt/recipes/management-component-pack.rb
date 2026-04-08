@@ -24,9 +24,15 @@ apt_repository "management-component-pack" do
 end
 
 if platform?("debian")
+  distribution = if node[:lsb][:codename] == "trixie"
+                   "bookworm"
+                 else
+                   node[:lsb][:codename]
+                 end
+
   apt_repository "mcp" do
     uri "https://downloads.linux.hpe.com/SDR/repo/mcp"
-    distribution "#{node[:lsb][:codename]}/current"
+    distribution "#{distribution}/current"
     components ["non-free"]
     key ["https://downloads.linux.hpe.com/SDR/hpePublicKey2048_key1.pub", "https://downloads.linux.hpe.com/SDR/hpePublicKey2048_key2.pub"]
   end
