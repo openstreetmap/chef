@@ -64,20 +64,22 @@ case manufacturer
 when "HP", "HPE"
   include_recipe "apt::management-component-pack"
 
-  package "hponcfg"
+  unless node[:lsb][:release] == "trixie"
+    package "hponcfg"
 
-  execute "update-ilo" do
-    action :nothing
-    command "/usr/sbin/hponcfg -f /etc/ilo-defaults.xml"
-    not_if { kitchen? }
-  end
+    execute "update-ilo" do
+      action :nothing
+      command "/usr/sbin/hponcfg -f /etc/ilo-defaults.xml"
+      not_if { kitchen? }
+    end
 
-  template "/etc/ilo-defaults.xml" do
-    source "ilo-defaults.xml.erb"
-    owner "root"
-    group "root"
-    mode "644"
-    notifies :run, "execute[update-ilo]"
+    template "/etc/ilo-defaults.xml" do
+      source "ilo-defaults.xml.erb"
+      owner "root"
+      group "root"
+      mode "644"
+      notifies :run, "execute[update-ilo]"
+    end
   end
 
   package "hp-health" do
