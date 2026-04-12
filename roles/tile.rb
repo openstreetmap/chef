@@ -89,7 +89,6 @@ default_attributes(
   },
   :tile => {
     :database => {
-      :tag_transform_script => "/srv/tile.openstreetmap.org/styles/default/openstreetmap-carto.lua",
       :external_data_script => "/srv/tile.openstreetmap.org/styles/default/scripts/get-external-data.py -c /srv/tile.openstreetmap.org/styles/default/external-data.yml",
       :external_data_tables => %w[
         icesheet_outlines
@@ -102,9 +101,11 @@ default_attributes(
     :styles => {
       :default => {
         :repository => "https://github.com/gravitystorm/openstreetmap-carto.git",
-        :revision => "v5.9.0",
-        :fonts_script => "/srv/tile.openstreetmap.org/styles/default/scripts/get-fonts.sh",
+        :revision => "v6.0.0",
+        :fonts_script => "/srv/tile.openstreetmap.org/styles/default/scripts/get-fonts.py",
         :functions_script => "/srv/tile.openstreetmap.org/styles/default/functions.sql",
+        :common_values_script => "/srv/tile.openstreetmap.org/styles/default/common-values.sql",
+        :common_values_tables => %w[carto_pois],
         :max_zoom => 19
       }
     }

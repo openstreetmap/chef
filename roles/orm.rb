@@ -126,6 +126,6 @@ default_attributes(
 
 run_list(
   "role[pixeldeck]",
-  "role[tile-600]",
+  "role[tile]",
   "recipe[atlas]"
 )

@@ -55,6 +55,6 @@ default_attributes(
 
 run_list(
   "role[umu]",
-  "role[tile-600]",
+  "role[tile]",
   "recipe[atlas]"
 )

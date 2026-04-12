@@ -12,16 +12,7 @@ do
     --log-progress=false \
     --expire-tiles=10-16 \
     --expire-output=/var/lib/replicate/dirty-tiles.txt \
-<% if node[:tile][:database][:multi_geometry] -%>
-    --multi-geometry \
-<% end -%>
-    --hstore \
-<% if node[:tile][:database][:output_mode] -%>
-    --output=<%= node[:tile][:database][:output_mode] %> \
-<% end -%>
-<% if node[:tile][:database][:tag_transform_script] -%>
-    --tag-transform-script=<%= node[:tile][:database][:tag_transform_script] %>
-<% end -%>
+    --output=flex
 
     sleep 30
 done

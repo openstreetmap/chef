@@ -132,6 +132,6 @@ default_attributes(
 
 run_list(
   "role[osuosl]",
-  "role[tile-600]",
+  "role[tile]",
   "recipe[atlas]"
 )
