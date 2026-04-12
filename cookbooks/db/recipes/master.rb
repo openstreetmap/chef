@@ -67,10 +67,6 @@ postgresql_user "replication" do
   replication true
 end
 
-node[:postgresql][:versions].each do |version|
-  package "postgresql-#{version}-postgis-3"
-end
-
 postgresql_database "openstreetmap" do
   cluster node[:db][:cluster]
   owner "openstreetmap"

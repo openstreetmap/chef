@@ -49,6 +49,8 @@ git "/opt/osmdbt" do
 end
 
 node[:postgresql][:versions].each do |db_version|
+  package "postgresql-#{db_version}-postgis-3"
+
   directory "/opt/osmdbt/build-#{db_version}" do
     owner "root"
     group "root"
