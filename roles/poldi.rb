@@ -16,9 +16,19 @@ default_attributes(
         }
       }
     }
+  },
+  :nominatim => {
+    :dbcluster => "17/main",
+    :flatnode_file => "/srv/nominatim.openstreetmap.org/planet-project/nodes.store",
+    :api_flavour => "python",
+    :api_workers => {
+      "nominatim" => 22
+    },
+    :api_pool_size => 8
   }
 )
 
 run_list(
-  "role[osuosl]"
+  "role[osuosl]",
+  "role[nominatim]"
 )
