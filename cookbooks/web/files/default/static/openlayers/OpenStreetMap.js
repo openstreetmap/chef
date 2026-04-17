@@ -14,9 +14,7 @@ OpenLayers.Layer.OSM.Mapnik = OpenLayers.Class(OpenLayers.Layer.OSM, {
      */
     initialize: function(name, options) {
         var url = [
-            "https://a.tile.openstreetmap.org/${z}/${x}/${y}.png",
-            "https://b.tile.openstreetmap.org/${z}/${x}/${y}.png",
-            "https://c.tile.openstreetmap.org/${z}/${x}/${y}.png"
+            "https://tile.openstreetmap.org/${z}/${x}/${y}.png"
         ];
         options = OpenLayers.Util.extend({
             numZoomLevels: 20,
