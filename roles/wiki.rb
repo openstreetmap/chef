@@ -33,7 +33,7 @@ default_attributes(
     ]
   },
   :memcached => {
-    :memory_limit => 4096,
+    :memory_limit => 16384,
     :connection_limit => 8192,
     :chunk_growth_factor => 1.25,
     :min_item_size => 48
