@@ -13,9 +13,7 @@ OpenLayers.Layer.OSM.Mapnik = OpenLayers.Class(OpenLayers.Layer.OSM, {
      * options - {Object} Hashtable of extra options to tag onto the layer
      */
     initialize: function(name, options) {
-        var url = [
-            "https://tile.openstreetmap.org/${z}/${x}/${y}.png"
-        ];
+        var url = 'https://tile.openstreetmap.org/${z}/${x}/${y}.png',
         options = OpenLayers.Util.extend({
             numZoomLevels: 20,
             attribution: "&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors",
