@@ -213,7 +213,7 @@ end
 
 systemd_timer "wiki-dump" do
   description "Wiki dump"
-  on_calendar "Sun 02:30"
+  on_calendar "*-*-01 02:30"
 end
 
 service "wiki-dump.timer" do
