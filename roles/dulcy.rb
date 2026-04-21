@@ -69,7 +69,7 @@ default_attributes(
     }
   },
   :postgresql => {
-    :versions => ["17"],
+    :versions => ["18"],
     :settings => {
       :defaults => {
         :work_mem => "240MB",
@@ -78,7 +78,7 @@ default_attributes(
     }
   },
   :nominatim => {
-    :dbcluster => "17/main",
+    :dbcluster => "18/main",
     :flatnode_file => "/srv/nominatim.openstreetmap.org/planet-project/nodes.store",
     :enable_qa_tiles => false,
     :api_workers => {
