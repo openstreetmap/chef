@@ -1236,7 +1236,17 @@ imagery_layer "gb_os_om_local_2025_10" do
   copyright "Contains OS data &copy; Crown copyright and database right 2025"
   background_colour "213 244 248" # OS OpenMap Local Water Blue
   extension "os_om_local_png"
-  url_aliases ["/om-local-2025-10", "/om-local", "/sv"]
-  default_layer true
   revision 2
+end
+
+imagery_layer "gb_os_om_local_2026_04" do
+  site "os.openstreetmap.org"
+  title "OS OpenMap Local - April 2026"
+  projection "EPSG:27700"
+  source "/store/imagery/gb/openmap-local/2026-04/os-openmap-local-2026-04.vrt"
+  copyright "Contains OS data &copy; Crown copyright and database right 2026"
+  background_colour "213 244 248" # OS OpenMap Local Water Blue
+  extension "os_om_local_png"
+  url_aliases ["/om-local-2026-04", "/om-local", "/sv"]
+  default_layer true
 end
