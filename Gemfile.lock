@@ -31,23 +31,23 @@ GEM
     bcrypt_pbkdf (1.1.2-arm64-darwin)
     bcrypt_pbkdf (1.1.2-x86_64-darwin)
     benchmark (0.5.0)
-    bigdecimal (4.1.1)
+    bigdecimal (4.1.2)
     builder (3.3.0)
-    chef-config (19.2.12)
+    chef-config (19.2.110)
       addressable
-      chef-utils (= 19.2.12)
+      chef-utils (= 19.2.110)
       fuzzyurl
       mixlib-config (>= 2.2.12, < 4.0)
       mixlib-shellout (>= 2.0, < 4.0)
       racc
-      tomlrb (~> 1.2)
+      tomlrb (>= 1.2, < 3.0)
     chef-gyoku (1.5.0)
       builder (>= 2.1.2)
       rexml (~> 3.4)
     chef-telemetry (1.1.1)
       chef-config
       concurrent-ruby (~> 1.0)
-    chef-utils (19.2.12)
+    chef-utils (19.2.110)
       concurrent-ruby
     chef-winrm (2.5.0)
       builder (>= 2.1.2)
@@ -85,7 +85,7 @@ GEM
     domain_name (0.6.20240107)
     drb (2.2.3)
     ed25519 (1.4.0)
-    erb (6.0.3)
+    erb (6.0.4)
     erubi (1.13.1)
     excon (1.4.2)
       logger
@@ -161,7 +161,7 @@ GEM
       ffi (>= 1.0.1)
     hashie (5.1.0)
       logger
-    http-cookie (1.1.4)
+    http-cookie (1.1.6)
       domain_name (~> 0.5)
     httpclient (2.9.0)
       mutex_m
@@ -193,12 +193,12 @@ GEM
       tty-prompt (~> 0.17)
       tty-table (~> 0.10)
     io-console (0.8.2)
-    irb (1.17.0)
+    irb (1.18.0)
       pp (>= 0.6.0)
       prism (>= 1.3.0)
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
-    json (2.19.3)
+    json (2.19.4)
     jwt (2.10.2)
       base64
     kitchen-dokken (2.22.2)
@@ -368,9 +368,9 @@ GEM
       thor (>= 0.19, < 2.0)
     thor (1.4.0)
     timeliness (0.3.10)
-    tomlrb (1.3.0)
+    tomlrb (2.0.4)
     trailblazer-option (0.1.2)
-    train (3.16.1)
+    train (3.16.2)
       activesupport (~> 7.2, >= 7.2.2.1)
       azure_graph_rbac (~> 0.16)
       azure_mgmt_key_vault (~> 0.17)
@@ -388,12 +388,12 @@ GEM
       googleauth (>= 0.16.2, < 1.9.0)
       inifile (~> 3.0)
       ostruct (~> 0.6.0)
-      train-core (= 3.16.1)
+      train-core (= 3.16.2)
       train-winrm (~> 0.4.0)
-    train-core (3.16.1)
+    train-core (3.16.2)
       addressable (~> 2.5)
       ffi (>= 1.16.0, < 1.18)
-      json (>= 1.8, < 3.0)
+      json (>= 2.19.2, < 3.0)
       mixlib-shellout (>= 2.0, < 4.0)
       net-scp (>= 1.2, < 5.0)
       net-ssh (>= 2.9, < 8.0)
@@ -449,4 +449,4 @@ DEPENDENCIES
   test-kitchen
 
 BUNDLED WITH
-   4.0.10
+  4.0.3
