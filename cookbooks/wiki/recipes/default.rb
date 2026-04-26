@@ -142,6 +142,7 @@ end
 
 mediawiki_extension "TemplateStyles" do
   site site_name
+  reference "559d3888c23e3c82d038b11c7dd2413c14d477bf"
 end
 
 mediawiki_extension "DynamicPageListEngine" do
