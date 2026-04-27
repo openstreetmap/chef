@@ -30,8 +30,11 @@ default_attributes(
       }
     }
   },
+  :postgresql => {
+    :versions => ["18"]
+  },
   :nominatim => {
-    :dbcluster => "17/main",
+    :dbcluster => "18/main",
     :flatnode_file => "/srv/nominatim.openstreetmap.org/planet-project/nodes.store",
     :api_flavour => "python",
     :api_workers => {
