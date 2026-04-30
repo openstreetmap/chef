@@ -44,10 +44,18 @@ template "/etc/modprobe.d/nvme.conf" do
   only_if { ::File.exist?("/sys/module/nvme/parameters/poll_queues") }
 end
 
+template "/etc/modprobe.d/disable-algif.conf" do
+  source "disable-algif.conf.erb"
+  owner "root"
+  group "root"
+  mode "644"
+end
+
 package "initramfs-tools"
 
 execute "update-initramfs" do
   action :nothing
   command "/usr/sbin/update-initramfs -u"
   subscribes :run, "template[/etc/modprobe.d/nvme.conf]"
+  subscribes :run, "template[/etc/modprobe.d/disable-algif.conf]"
 end
