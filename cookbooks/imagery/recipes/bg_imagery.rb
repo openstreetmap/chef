@@ -38,7 +38,7 @@ end
 
 imagery_layer "maf-orthophoto-2025" do
   site "bg-imagery.openstreetmap.org"
-  title "Bulgaria MAF Orthophoto Latest"
+  title "Bulgaria MAF Orthophoto 2025"
   source "/store/imagery/bg/maf-orthophoto-map/maf-orthophoto-2025.vrt"
   copyright "(c) Ministry of Agriculture and Food of Bulgaria"
   projection "EPSG:32635"
