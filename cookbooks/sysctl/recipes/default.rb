@@ -17,6 +17,12 @@
 # limitations under the License.
 #
 
+file "/etc/sysctl.conf" do
+  owner "root"
+  group "root"
+  mode "0644"
+end
+
 if node[:virtualization][:role] != "guest" ||
    (node[:virtualization][:system] != "lxc" &&
     node[:virtualization][:system] != "lxd" &&
