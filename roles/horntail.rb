@@ -2,6 +2,10 @@ name "horntail"
 description "Master role applied to horntail"
 
 default_attributes(
+  :dhcpd => {
+    :first_address => "10.0.79.1",
+    :last_address => "10.0.79.254"
+  },
   :networking => {
     :interfaces => {
       :internal => {
@@ -35,5 +39,7 @@ default_attributes(
 run_list(
   "role[equinix-dub-public]",
   "role[geodns]",
-  "role[planet]"
+  "role[planet]",
+  "role[gateway]",
+  "recipe[dhcpd]"
 )
