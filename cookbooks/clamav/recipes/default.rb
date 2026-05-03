@@ -87,6 +87,7 @@ end
 service "clamav-daemon" do
   action [:enable, :start]
   supports :status => true, :restart => true
+  subscribes :restart, "group[Debian-exim]"
 end
 
 service "clamav-freshclam" do
