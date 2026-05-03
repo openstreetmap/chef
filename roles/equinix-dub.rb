@@ -20,9 +20,9 @@ default_attributes(
         :metric => 200,
         :inet => {
           :prefix => "20",
-          :gateway => "10.0.64.2",
+          :gateway => "10.0.64.10",
           :routes => {
-            "10.0.0.0/8" => { :via => "10.0.64.2" }
+            "10.0.0.0/8" => { :via => "10.0.64.10" }
           },
           :rules => [
             { :to => "10.0.0.0/8", :table => "main", :priority => 50 },
