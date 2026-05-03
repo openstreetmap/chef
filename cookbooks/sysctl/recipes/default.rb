@@ -17,10 +17,6 @@
 # limitations under the License.
 #
 
-file "/etc/sysctl.d/60-chef.conf" do
-  action :delete
-end
-
 if node[:virtualization][:role] != "guest" ||
    (node[:virtualization][:system] != "lxc" &&
     node[:virtualization][:system] != "lxd" &&
