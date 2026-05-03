@@ -26,7 +26,7 @@ platform_name = if platform?("debian")
                 end
 
 distribution_name = if platform?("debian")
-                      "buster"
+                      node[:lsb][:codename]
                     else
                       "precise"
                     end
