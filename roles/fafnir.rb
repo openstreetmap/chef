@@ -2,6 +2,10 @@ name "fafnir"
 description "Master role applied to fafnir"
 
 default_attributes(
+  :dhcpd => {
+    :first_address => "10.0.79.1",
+    :last_address => "10.0.79.254"
+  },
   :exim => {
     :routes => {
       :openstreetmap => {
@@ -59,5 +63,7 @@ default_attributes(
 run_list(
   "role[equinix-dub-public]",
   "role[hp-g9]",
-  "role[mail]"
+  "role[gateway]",
+  "role[mail]",
+  "recipe[dhcpd]"
 )
