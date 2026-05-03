@@ -35,6 +35,7 @@ group "Debian-exim" do
   action :modify
   members "clamav"
   append true
+  notifies :restart, "service[clamd]"
   only_if { ::File.exist?("/var/run/clamav/clamd.ctl") }
 end
 
