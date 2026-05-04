@@ -129,6 +129,10 @@ default_attributes(
           :revision => "pablobm-devserver",
           :cgimap_repository => "https://github.com/zerebubuth/openstreetmap-cgimap.git",
           :cgimap_revision => "master"
+        },
+        :rub21 => {
+          :repository => "https://github.com/rub21/openstreetmap-website.git",
+          :revision => "gps_db"
         }
       }
     }
