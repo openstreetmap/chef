@@ -41,6 +41,9 @@ property :database_port, String
 property :database_name, String
 property :database_username, String
 property :database_password, String
+property :gps_database_name, String
+property :gps_database_username, String
+property :gps_database_password, String
 property :email_from, String
 property :messages_domain, String
 property :gpx_dir, String
@@ -171,7 +174,10 @@ action :create do
               :port => new_resource.database_port,
               :name => new_resource.database_name,
               :username => new_resource.database_username,
-              :password => new_resource.database_password
+              :password => new_resource.database_password,
+              :gps_name => new_resource.gps_database_name,
+              :gps_username => new_resource.gps_database_username,
+              :gps_password => new_resource.gps_database_password
   end
 
   application_yml = edit_file "#{rails_directory}/config/example.application.yml" do |line|

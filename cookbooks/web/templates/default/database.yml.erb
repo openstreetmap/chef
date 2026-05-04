@@ -1,35 +1,77 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
 production:
-  adapter: postgresql
+  primary:
+    adapter: postgresql
 <% if @host -%>
-  host: <%= @host %>
+    host: <%= @host %>
 <% end -%>
 <% if @port -%>
-  port: <%= @port %>
+    port: <%= @port %>
 <% end -%>
-  database: <%= @name %>
-  username: <%= @username %>
+    database: <%= @name %>
+    username: <%= @username %>
 <% if @password -%>
-  password: <%= @password %>
+    password: <%= @password %>
 <% end -%>
-  encoding: utf8
-  variables:
-    statement_timeout: 300s
+    encoding: utf8
+    variables:
+      statement_timeout: 300s
+<% if @gps_name -%>
+  gps:
+    adapter: postgresql
+<% if @host -%>
+    host: <%= @host %>
+<% end -%>
+<% if @port -%>
+    port: <%= @port %>
+<% end -%>
+    database: <%= @gps_name %>
+    username: <%= @gps_username %>
+<% if @gps_password -%>
+    password: <%= @gps_password %>
+<% end -%>
+    encoding: utf8
+    connect_timeout: 3
+    variables:
+      statement_timeout: 300s
+    migrations_paths: db/gps_migrate
+<% end -%>
 
 development:
-  adapter: postgresql
+  primary:
+    adapter: postgresql
 <% if @host -%>
-  host: <%= @host %>
+    host: <%= @host %>
 <% end -%>
 <% if @port -%>
-  port: <%= @port %>
+    port: <%= @port %>
 <% end -%>
-  database: <%= @name %>
-  username: <%= @username %>
+    database: <%= @name %>
+    username: <%= @username %>
 <% if @password -%>
-  password: <%= @password %>
+    password: <%= @password %>
 <% end -%>
-  encoding: utf8
-  variables:
-    statement_timeout: 300s
+    encoding: utf8
+    variables:
+      statement_timeout: 300s
+<% if @gps_name -%>
+  gps:
+    adapter: postgresql
+<% if @host -%>
+    host: <%= @host %>
+<% end -%>
+<% if @port -%>
+    port: <%= @port %>
+<% end -%>
+    database: <%= @gps_name %>
+    username: <%= @gps_username %>
+<% if @gps_password -%>
+    password: <%= @gps_password %>
+<% end -%>
+    encoding: utf8
+    connect_timeout: 3
+    variables:
+      statement_timeout: 300s
+    migrations_paths: db/gps_migrate
+<% end -%>

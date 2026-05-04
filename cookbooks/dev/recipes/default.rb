@@ -360,6 +360,7 @@ if node[:postgresql][:clusters][rails_cluster.to_sym]
 
   node[:dev][:rails][:sites].each do |name, details|
     database_name = details[:database] || "apis_#{name}"
+    gps_database_name = "#{database_name}_gps"
     site_name = "#{name}.apis.dev.openstreetmap.org"
     site_directory = "/srv/#{name}.apis.dev.openstreetmap.org"
     log_directory = "#{site_directory}/logs"
@@ -386,6 +387,18 @@ if node[:postgresql][:clusters][rails_cluster.to_sym]
       postgresql_extension "#{database_name}_postgis" do
         cluster rails_cluster
         database database_name
+        extension "postgis"
+        owner "postgres"
+      end
+
+      postgresql_database gps_database_name do
+        cluster rails_cluster
+        owner "apis"
+      end
+
+      postgresql_extension "#{gps_database_name}_postgis" do
+        cluster rails_cluster
+        database gps_database_name
         extension "postgis"
         owner "postgres"
       end
@@ -435,6 +448,8 @@ if node[:postgresql][:clusters][rails_cluster.to_sym]
         database_port node[:postgresql][:clusters][rails_cluster.to_sym][:port]
         database_name database_name
         database_username "apis"
+        gps_database_name gps_database_name
+        gps_database_username "apis"
         email_from "OpenStreetMap <web@noreply.openstreetmap.org>"
         gpx_dir gpx_directory
         log_path "#{log_directory}/rails.log"
@@ -571,6 +586,11 @@ if node[:postgresql][:clusters][rails_cluster.to_sym]
       end
 
       postgresql_database database_name do
+        action :drop
+        cluster rails_cluster
+      end
+
+      postgresql_database gps_database_name do
         action :drop
         cluster rails_cluster
       end
