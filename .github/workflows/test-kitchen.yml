@@ -139,13 +139,9 @@ jobs:
             os: ubuntu-2204
           - suite: apt
             os: ubuntu-2204
-          - suite: backup
-            os: ubuntu-2204
           - suite: bind
             os: ubuntu-2204
           - suite: chef
-            os: ubuntu-2204
-          - suite: clamav
             os: ubuntu-2204
           - suite: db-backup
             os: ubuntu-2204
@@ -163,10 +159,6 @@ jobs:
             os: ubuntu-2204
           - suite: fail2ban
             os: ubuntu-2204
-          - suite: geodns
-            os: ubuntu-2204
-          - suite: geoipupdate
-            os: ubuntu-2204
           - suite: git
             os: ubuntu-2204
           - suite: hardware
@@ -177,18 +169,6 @@ jobs:
             os: ubuntu-2204
           - suite: openssh
             os: ubuntu-2204
-          - suite: osmosis
-            os: ubuntu-2204
-          - suite: planet
-            os: ubuntu-2204
-          - suite: planet-aws
-            os: ubuntu-2204
-          - suite: planet-dump
-            os: ubuntu-2204
-          - suite: planet-notes
-            os: ubuntu-2204
-          - suite: planet-replication
-            os: ubuntu-2204
           - suite: postgresql
             os: ubuntu-2204
           - suite: prometheus
@@ -197,15 +177,11 @@ jobs:
             os: ubuntu-2204
           - suite: rsyncd
             os: ubuntu-2204
-          - suite: spamassassin
-            os: ubuntu-2204
           - suite: ssl
             os: ubuntu-2204
           - suite: sysctl
             os: ubuntu-2204
           - suite: sysfs
-            os: ubuntu-2204
-          - suite: tilelog
             os: ubuntu-2204
           - suite: tools
             os: ubuntu-2204
