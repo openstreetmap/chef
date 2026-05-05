@@ -24,6 +24,10 @@ package %w[
   fuse-overlayfs
 ]
 
+if platform?("debian") && node[:platform_version].to_i >= 13
+  package "passt"
+end
+
 ruby_block "subuid-containers" do
   block do
     File.open("/etc/subuid", "a") do |file|
