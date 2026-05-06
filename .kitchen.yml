@@ -431,7 +431,7 @@ suites:
       - recipe[taginfo::default]
     attributes:
       ruby:
-        version: 3.3
+        version: 3.4
       taginfo:
         sites:
           - name: taginfo.example.com

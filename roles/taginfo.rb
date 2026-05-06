@@ -29,7 +29,7 @@ default_attributes(
     :max_pool_size => 50
   },
   :ruby => {
-    :version => "3.3"
+    :version => "3.4"
   },
   :taginfo => {
     :sites => [
