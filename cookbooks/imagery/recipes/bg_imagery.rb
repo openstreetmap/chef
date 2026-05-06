@@ -52,4 +52,5 @@ imagery_layer "maf-orthophoto-update" do
   copyright "(c) Ministry of Agriculture and Food of Bulgaria"
   projection "EPSG:32635"
   max_zoom 20
+  revision 2
 end
