@@ -134,7 +134,7 @@ default_attributes(
     }
   },
   :postgresql => {
-    :versions => ["17"],
+    :versions => %w[17 18],
     :settings => {
       :defaults => {
         :max_connections => "500",
