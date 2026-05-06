@@ -6,4 +6,4 @@ default[:otrs][:database_user] = "otrs"
 default[:otrs][:database_password] = "otrs"
 default[:otrs][:site] = "otrs"
 
-default[:postgresql][:versions] |= ["16"]
+default[:postgresql][:versions] |= %w[16 18]
