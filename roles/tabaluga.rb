@@ -2,10 +2,6 @@ name "tabaluga"
 description "Master role applied to tabaluga"
 
 default_attributes(
-  :dhcpd => {
-    :first_address => "10.0.63.1",
-    :last_address => "10.0.63.254"
-  },
   :networking => {
     :interfaces => {
       :internal => {
@@ -55,7 +51,5 @@ run_list(
   "role[equinix-ams-public]",
   "role[hp-g9]",
   "role[blog-staging]",
-  "role[taginfo]",
-  "role[gateway]",
-  "recipe[dhcpd]"
+  "role[taginfo]"
 )
