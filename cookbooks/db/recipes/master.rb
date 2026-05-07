@@ -172,6 +172,7 @@ PROMETHEUS_PERMISSIONS = {
   issues
   languages
   messages
+  moderation_zones
   node_tags
   nodes
   note_comments
@@ -234,6 +235,7 @@ end
   issue_comments_id_seq
   issues_id_seq
   messages_id_seq
+  moderation_zones_id_seq
   note_comments_id_seq
   notes_id_seq
   noticed_events_id_seq
