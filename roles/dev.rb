@@ -98,7 +98,7 @@ default_attributes(
   },
   :dev => {
     :rails => {
-      :postgresql_cluster => "17/main",
+      :postgresql_cluster => "18/main",
       :sites => {
         :master => {
           :repository => "https://git.openstreetmap.org/public/rails.git",
@@ -134,7 +134,7 @@ default_attributes(
     }
   },
   :postgresql => {
-    :versions => %w[17 18],
+    :versions => %w[18],
     :settings => {
       :defaults => {
         :max_connections => "500",
@@ -144,7 +144,7 @@ default_attributes(
         :max_stack_depth => "4MB",
         :effective_cache_size => "4GB"
       },
-      "17" => {
+      "18" => {
         :port => "5432",
         :wal_level => "logical"
       }
