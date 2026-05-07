@@ -51,6 +51,13 @@ template "/etc/modprobe.d/disable-algif.conf" do
   mode "644"
 end
 
+template "/etc/modprobe.d/disable-dirtyfrag.conf" do
+  source "disable-dirtyfrag.conf.erb"
+  owner "root"
+  group "root"
+  mode "644"
+end
+
 package "initramfs-tools"
 
 execute "update-initramfs" do
@@ -58,4 +65,5 @@ execute "update-initramfs" do
   command "/usr/sbin/update-initramfs -u"
   subscribes :run, "template[/etc/modprobe.d/nvme.conf]"
   subscribes :run, "template[/etc/modprobe.d/disable-algif.conf]"
+  subscribes :run, "template[/etc/modprobe.d/disable-dirtyfrag.conf]"
 end
