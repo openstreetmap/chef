@@ -246,7 +246,7 @@ node[:taginfo][:sites].each do |site|
     interval "15m"
     user "taginfo"
     path node[:ruby][:bundle]
-    options "exec sources/metrics.rb #{directory}/data"
+    options "exec sources/metrics.rb #{directory}/data #{directory}/sources"
     working_directory "#{directory}/taginfo"
   end
 end
