@@ -31,7 +31,7 @@ default_attributes(
     }
   },
   :postgresql => {
-    :versions => ["17"],
+    :versions => ["18"],
     :settings => {
       :defaults => {
         :max_connections => "550",
@@ -41,7 +41,7 @@ default_attributes(
     }
   },
   :nominatim => {
-    :dbcluster => "17/main",
+    :dbcluster => "18/main",
     :enable_qa_tiles => true,
     :flatnode_file => "/srv/nominatim.openstreetmap.org/planet-project/nodes.store",
     :api_workers => {
