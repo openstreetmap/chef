@@ -33,24 +33,5 @@ imagery_layer "maf-orthophoto-latest" do
   projection "EPSG:32635"
   max_zoom 20
   default_layer true
-  revision 2
-end
-
-imagery_layer "maf-orthophoto-2025" do
-  site "bg-imagery.openstreetmap.org"
-  title "Bulgaria MAF Orthophoto 2025"
-  source "/store/imagery/bg/maf-orthophoto-map/maf-orthophoto-2025.vrt"
-  copyright "(c) Ministry of Agriculture and Food of Bulgaria"
-  projection "EPSG:32635"
-  max_zoom 20
-end
-
-imagery_layer "maf-orthophoto-update" do
-  site "bg-imagery.openstreetmap.org"
-  title "Bulgaria MAF Orthophoto Update"
-  source "/store/imagery/bg/maf-orthophoto-map/maf-orthophoto-update.vrt"
-  copyright "(c) Ministry of Agriculture and Food of Bulgaria"
-  projection "EPSG:32635"
-  max_zoom 20
-  revision 2
+  revision 3
 end
