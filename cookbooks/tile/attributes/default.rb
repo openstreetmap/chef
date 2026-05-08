@@ -2,7 +2,13 @@ default[:tile][:database][:cluster] = "18/main"
 default[:tile][:database][:postgis] = "3"
 default[:tile][:database][:node_file] = "/store/database/nodes"
 
-default[:tile][:mapnik] = "3.1"
+if node.platform?("debian") && node[:lsb][:release].to_f > 12
+  default[:tile][:mapnik] = "4.0"
+  default[:tile][:mapnik_plugins_dir] = "#{node[:systemd_paths][:"system-library-arch"]}/mapnik/4.0/input"
+else
+  default[:tile][:mapnik] = "3.1"
+  default[:tile][:mapnik_plugins_dir] = "/usr/lib/mapnik/3.1/input"
+end
 
 default[:tile][:replication][:directory] = "/var/lib/replicate"
 default[:tile][:replication][:url] = "https://osm-planet-eu-central-1.s3.dualstack.eu-central-1.amazonaws.com/planet/replication/minute"
