@@ -4,7 +4,6 @@
 set -euo pipefail
 
 export ZSTD_CLEVEL=16
-export ZSTD_NBTHREADS=0
 
 T=$(mktemp -d -t -p /var/tmp osmf-crm.XXXXXXXXXX)
 D=$(date +%Y-%m-%d)
@@ -19,7 +18,7 @@ ln -s /srv/supporting.openstreetmap.org "$T/osmf-crm-$D/www"
 
 nice tar --create --dereference --directory="$T" \
   --sort=name \
-  "osmf-crm-$D" | nice zstd --quiet --long --rsyncable -o "$T/$B"
+  "osmf-crm-$D" | nice zstd -T0 --quiet --long --rsyncable -o "$T/$B"
 
 nice rsync --preallocate --fuzzy "$T/$B" backup.openstreetmap.org::backup
 

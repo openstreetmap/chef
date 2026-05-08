@@ -22,7 +22,7 @@ nice tar --create --dereference --directory="$T" \
   --sort=name \
   --warning=no-file-changed \
   --warning=no-file-removed \
-  "osm-blog-staging-$D" | nice zstd --quiet --long --rsyncable -o "$T/$B"
+  "osm-blog-staging-$D" | nice zstd -T0 --quiet --long --rsyncable -o "$T/$B"
 
 nice rsync --preallocate --fuzzy "$T/$B" backup.openstreetmap.org::backup
 
