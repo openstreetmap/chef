@@ -33,5 +33,5 @@ imagery_layer "maf-orthophoto-latest" do
   projection "EPSG:32635"
   max_zoom 20
   default_layer true
-  revision 3
+  revision 4
 end
