@@ -3,7 +3,7 @@ description "Role applied to all servers at AWS us-east-2"
 
 default_attributes(
   :location => "Ohio, United States",
-  :timezone => "US/Eastern"
+  :timezone => "America/New_York"
 )
 
 run_list(

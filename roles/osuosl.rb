@@ -9,7 +9,7 @@ default_attributes(
   },
   :hosted_by => "OSUOSL",
   :location => "Corvallis, Oregon",
-  :timezone => "US/Pacific",
+  :timezone => "America/Los_Angeles",
   :networking => {
     :interfaces => {
       :external => {
