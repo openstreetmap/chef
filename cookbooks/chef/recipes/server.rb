@@ -22,11 +22,14 @@ include_recipe "chef::knife"
 
 # cache_dir = Chef::Config[:file_cache_path]
 #
-# chef_version = node[:chef][:server][:version]
-# chef_package = "chef-server-core_#{chef_version}-1_amd64.deb"
+# cinc_version = node[:chef][:server][:version]
 #
-# Dir.glob("#{cache_dir}/chef-server-core_*.deb").each do |deb|
-#   next if deb == "#{cache_dir}/#{chef_package}"
+# cinc_package = "cinc-server-core_#{cinc_version}-1_amd64.deb"
+#
+# os_release = node[:lsb][:release]
+#
+# Dir.glob("#{cache_dir}/cinc-server-core_*.deb").each do |deb|
+#   next if deb == "#{cache_dir}/#{cinc_package}"
 #
 #   file deb do
 #     action :delete
@@ -34,51 +37,51 @@ include_recipe "chef::knife"
 #   end
 # end
 #
-# remote_file "#{cache_dir}/#{chef_package}" do
-#   source "https://packages.chef.io/files/stable/chef-server/#{chef_version}/ubuntu/22.04/chef-server-core_#{chef_version}-1_amd64.deb"
+# remote_file "#{cache_dir}/#{cinc_package}" do
+#   source "https://downloads.cinc.sh/files/stable/cinc-server/#{cinc_version}/debian/#{os_release}/cinc-server-core_#{cinc_version}-1_amd64.deb"
 #   owner "root"
 #   group "root"
 #   mode 0644
 #   backup false
 # end
 #
-# dpkg_package "chef-server-core" do
-#   source "#{cache_dir}/#{chef_package}"
-#   version "#{chef_version}-1"
-#   notifies :run, "execute[chef-server-reconfigure]"
+# dpkg_package "cinc-server-core" do
+#   source "#{cache_dir}/#{cinc_package}"
+#   version "#{cinc_version}-1"
+#   notifies :run, "execute[cinc-server-reconfigure]"
 # end
 
-template "/etc/opscode/chef-server.rb" do
+template "/etc/cinc-project/cinc-server.rb" do
   source "server.rb.erb"
   owner "root"
   group "root"
   mode "640"
-  notifies :run, "execute[chef-server-reconfigure]"
+  notifies :run, "execute[cinc-server-reconfigure]"
 end
 
-execute "chef-server-reconfigure" do
+execute "cinc-server-reconfigure" do
   action :nothing
-  command "chef-server-ctl reconfigure"
+  command "cinc-server-ctl reconfigure"
   user "root"
   group "root"
 end
 
-execute "chef-server-restart" do
+execute "cinc-server-restart" do
   action :nothing
-  command "chef-server-ctl restart"
+  command "cinc-server-ctl restart"
   user "root"
   group "root"
 end
 
-systemd_service "chef-server" do
-  description "Chef server"
+systemd_service "cinc-server" do
+  description "CINC server"
   after "network.target"
   exec_start "/opt/opscode/embedded/bin/runsvdir-start"
 end
 
-service "chef-server" do
+service "cinc-server" do
   action [:enable, :start]
-  subscribes :restart, "systemd_service[chef-server]"
+  subscribes :restart, "systemd_service[cinc-server]"
 end
 
 apache_module "alias"
@@ -87,14 +90,14 @@ apache_module "proxy_http"
 ssl_certificate "chef.openstreetmap.org" do
   domains ["chef.openstreetmap.org", "chef.osm.org"]
   notifies :reload, "service[apache2]"
-  notifies :run, "execute[chef-server-restart]"
+  notifies :run, "execute[cinc-server-restart]"
 end
 
 apache_site "chef.openstreetmap.org" do
   template "apache.erb"
 end
 
-template "/etc/cron.daily/chef-server-backup" do
+template "/etc/cron.daily/cinc-server-backup" do
   source "server-backup.cron.erb"
   owner "root"
   group "root"
