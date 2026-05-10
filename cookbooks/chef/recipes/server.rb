@@ -76,7 +76,7 @@ end
 systemd_service "cinc-server" do
   description "CINC server"
   after "network.target"
-  exec_start "/opt/opscode/embedded/bin/runsvdir-start"
+  exec_start "/opt/cinc-project/embedded/bin/runsvdir-start"
 end
 
 service "cinc-server" do
