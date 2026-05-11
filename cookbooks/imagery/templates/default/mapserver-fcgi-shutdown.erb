@@ -1,0 +1,29 @@
+#!/bin/sh
+
+socket="$1"
+count="${2:-10}"
+
+# Ask spawn-fcgi / multiwatch to stop.
+if [ -n "$MAINPID" ]; then
+    kill -TERM "$MAINPID" 2>/dev/null || true
+fi
+
+# Wake idle FastCGI workers by making a few dummy requests.
+i=1
+while [ "$i" -le "$count" ]; do
+    [ -S "$socket" ] || exit 0
+
+    env -i \
+        REQUEST_METHOD=GET \
+        QUERY_STRING="dummy=1" \
+        SCRIPT_NAME=/cgi-bin/mapserv \
+        SERVER_PROTOCOL=HTTP/1.1 \
+        GATEWAY_INTERFACE=CGI/1.1 \
+        CONTENT_LENGTH=0 \
+        /usr/bin/timeout 1s /usr/bin/cgi-fcgi -bind -connect "$socket" \
+        >/dev/null 2>&1 || true
+
+    i=$((i + 1))
+done
+
+exit 0

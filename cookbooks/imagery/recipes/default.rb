@@ -47,6 +47,7 @@ package %w[
   mapcache-cgi
   mapcache-tools
   libtcmalloc-minimal4
+  libfcgi-bin
 ]
 
 # Mapserver via nginx requires as fastcgi spawner
@@ -114,4 +115,11 @@ end
 
 service "systemd-coredump.socket" do
   action [ :stop, :disable ]
+end
+
+template "/usr/local/bin/mapserver-fcgi-shutdown" do
+  source "mapserver-fcgi-shutdown.erb"
+  owner "root"
+  group "root"
+  mode "755"
 end

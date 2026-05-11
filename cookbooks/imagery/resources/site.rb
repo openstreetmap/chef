@@ -130,10 +130,10 @@ action :create do
     user "imagery"
     group "imagery"
     exec_start "/usr/bin/multiwatch -f 8 --signal=TERM -- /usr/lib/cgi-bin/mapserv"
+    exec_stop "/usr/local/bin/mapserver-fcgi-shutdown /run/mapserver-fastcgi/layer-#{new_resource.site}.socket 8"
     standard_input "socket"
     sandbox :enable_network => true
     restrict_address_families "AF_UNIX"
-    kill_signal "SIGTERM"
     timeout_stop_sec 60
     not_if { new_resource.uses_tiler }
   end
