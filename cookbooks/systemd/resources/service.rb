@@ -119,6 +119,7 @@ property :pid_file, String
 property :nice, Integer
 property :io_scheduling_class, [Integer, String]
 property :io_scheduling_priority, Integer
+property :kill_signal, String
 property :kill_mode, String,
          :is => %w[control-group process mixed none]
 property :sandbox, [true, false, Hash]

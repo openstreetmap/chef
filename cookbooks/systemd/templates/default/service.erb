@@ -301,6 +301,9 @@ IOSchedulingClass=<%= @io_scheduling_class %>
 <% if @io_scheduling_priority -%>
 IOSchedulingPriority=<%= @io_scheduling_priority %>
 <% end -%>
+<% if @kill_signal -%>
+KillSignal=<%= @kill_signal %>
+<% end -%>
 <% if @kill_mode -%>
 KillMode=<%= @kill_mode %>
 <% end -%>
