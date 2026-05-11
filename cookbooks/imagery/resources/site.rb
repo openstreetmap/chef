@@ -133,6 +133,7 @@ action :create do
     standard_input "socket"
     sandbox :enable_network => true
     restrict_address_families "AF_UNIX"
+    kill_signal "SIGTERM"
     timeout_stop_sec 60
     not_if { new_resource.uses_tiler }
   end
