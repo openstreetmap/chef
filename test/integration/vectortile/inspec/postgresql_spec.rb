@@ -1,8 +1,8 @@
-describe package("postgresql-16") do
+describe package("postgresql-18") do
   it { should be_installed }
 end
 
-describe service("postgresql@16-main") do
+describe service("postgresql@18-main") do
   it { should be_enabled }
   it { should be_running }
 end
