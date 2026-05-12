@@ -135,11 +135,7 @@ jobs:
             os: ubuntu-2004
           - suite: accounts
             os: ubuntu-2204
-          - suite: apache
-            os: ubuntu-2204
           - suite: apt
-            os: ubuntu-2204
-          - suite: bind
             os: ubuntu-2204
           - suite: chef
             os: ubuntu-2204
@@ -152,8 +148,6 @@ jobs:
           - suite: db-slave
             os: ubuntu-2204
           - suite: devices
-            os: ubuntu-2204
-          - suite: dhcpd
             os: ubuntu-2204
           - suite: exim
             os: ubuntu-2204
@@ -173,11 +167,7 @@ jobs:
             os: ubuntu-2204
           - suite: prometheus
             os: ubuntu-2204
-          - suite: python
-            os: ubuntu-2204
           - suite: rsyncd
-            os: ubuntu-2204
-          - suite: ssl
             os: ubuntu-2204
           - suite: sysctl
             os: ubuntu-2204
