@@ -1,4 +1,4 @@
-default[:vectortile][:database][:cluster] = "16/main"
+default[:vectortile][:database][:cluster] = "18/main"
 default[:vectortile][:database][:postgis] = "3"
 default[:vectortile][:database][:nodes_store] = :flat
 default[:vectortile][:serve][:threads] = node.cpu_cores
