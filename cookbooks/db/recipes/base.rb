@@ -19,7 +19,6 @@
 
 include_recipe "git"
 include_recipe "postgresql"
-include_recipe "python"
 include_recipe "ruby"
 
 aws_credentials = data_bag_item("db", "aws")
