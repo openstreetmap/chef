@@ -30,7 +30,7 @@ nice tar --create --dereference --directory="$T" \
   --exclude="sotm-<%= @name %>-$D/www2011/wp/.svn/tmp" \
   --exclude="sotm-<%= @name %>-$D/www2012/wp/.svn/tmp" \
   --sort=name \
-  "sotm-$D" | nice zstd -T0 -quiet --long --rsyncable -o "$T/$B"
+  "sotm-$D" | nice zstd -T0 --quiet --long --rsyncable -o "$T/$B"
 
 nice rsync --preallocate --fuzzy "$T/$B" backup.openstreetmap.org::backup
 
