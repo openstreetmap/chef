@@ -52,6 +52,10 @@ server {
         add_header x-rendered-by "<%= node.name %>" always;
     }
     location /demo/ {
+        # Redirect to the canonical hostname else CORs will prevent the demo from working
+        if ($host != "vector.openstreetmap.org") {
+            return 301 https://vector.openstreetmap.org$request_uri;
+        }
         proxy_pass http://demo;
         proxy_http_version 1.1;
         proxy_set_header Connection "";
