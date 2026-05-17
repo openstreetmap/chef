@@ -79,6 +79,7 @@ package %w[
   libfcgi-dev
   libfmt-dev
   libglib2.0-dev
+  libglpk-dev
   libiniparser-dev
   libjson-xs-perl
   libmapnik-dev
