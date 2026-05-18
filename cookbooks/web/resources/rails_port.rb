@@ -463,6 +463,18 @@ action :create do
     only_if { new_resource.build_assets }
   end
 
+  file "#{rails_directory}/db/structure.sql" do
+    action :nothing
+    subscribes :delete, "git[#{rails_directory}]"
+    only_if { new_resource.run_migrations }
+  end
+
+  file "#{rails_directory}/db/gps_structure.sql" do
+    action :nothing
+    subscribes :delete, "git[#{rails_directory}]"
+    only_if { new_resource.run_migrations }
+  end
+
   bundle_exec "#{rails_directory}/db/migrate" do
     action :nothing
     directory rails_directory
