@@ -21,6 +21,7 @@ users = data_bag_item("supybot", "users")
 passwords = data_bag_item("supybot", "passwords")
 
 package "limnoria"
+package "python3-setuptools"
 package "python3-git"
 
 group "supybot" do
