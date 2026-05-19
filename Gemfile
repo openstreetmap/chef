@@ -1,9 +1,7 @@
 source "https://rubygems.org"
 
+gem "cinc-auditor-bin", :source => "https://rubygems.cinc.sh"
 gem "cookstyle"
 gem "kitchen-dokken", ">= 2.21.4"
 gem "kitchen-inspec"
 gem "test-kitchen"
-
-# Workaround https://www.chef.io/blog/changes-to-runtime-licensing-for-chef-gem-users
-gem "inspec-core", "< 6"
