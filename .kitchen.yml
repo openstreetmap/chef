@@ -30,7 +30,6 @@ provisioner:
 
 verifier:
   name: inspec
-  root_path: /opt/verifier
   sudo: false
 
 platforms:
