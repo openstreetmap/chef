@@ -83,12 +83,12 @@ platforms:
 lifecycle:
   pre_create: |
     if command -v podman >/dev/null 2>&1; then
-      podman create --name chef-18 --replace docker.io/cincproject/cinc:18 sh
-      podman start chef-18
+      podman create --name cinc-18 --replace docker.io/cincproject/cinc:18 sh
+      podman start cinc-18
     fi
   post_destroy: |
     if command -v podman >/dev/null 2>&1; then
-      podman container rm -iv chef-18
+      podman container rm -iv cinc-18
     fi
 
 suites:
