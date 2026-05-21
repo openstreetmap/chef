@@ -1,6 +1,7 @@
 version: 2
 updates:
   - package-ecosystem: "bundler"
+    versioning-strategy: "lockfile-only"
     directory: "/"
     schedule:
       interval: "daily"
