@@ -19,9 +19,19 @@
 
 include_recipe "apt"
 
+if platform?("debian") && node[:platform_version].to_i >= 13
+  # First remove the repo if the keyring is in the unsupported keybox database format
+  # Use apt_repository to remove the repository to ensure apt update is triggered later
+  apt_repository "fullstaq-ruby-remove" do
+    action :remove
+    name "fullstaq-ruby"
+    only_if { ::File.exist?("/etc/apt/keyrings/fullstaq-ruby.gpg") && ::File.binread("/etc/apt/keyrings/fullstaq-ruby.gpg", 12)[8..11] == "KBXf" }
+  end
+end
+
 apt_repository "fullstaq-ruby" do
   uri "https://apt.fullstaqruby.org"
   distribution "#{node[:platform]}-#{node[:platform_version]}"
   components ["main"]
-  key "394F883E0C43569450FDFB92A9AF1C7C2ED65CC0" # https://raw.githubusercontent.com/fullstaq-ruby/server-edition/main/fullstaq-ruby.asc
+  key "https://raw.githubusercontent.com/fullstaq-ruby/server-edition/main/fullstaq-ruby.asc"
 end
