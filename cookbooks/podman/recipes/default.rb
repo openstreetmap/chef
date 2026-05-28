@@ -26,6 +26,7 @@ package %w[
 
 if platform?("debian") && node[:platform_version].to_i >= 13
   package "passt"
+  package "aardvark-dns"
 end
 
 ruby_block "subuid-containers" do
