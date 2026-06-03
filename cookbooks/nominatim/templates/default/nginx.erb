@@ -162,6 +162,7 @@ server {
     error_page 403 /403.html;
     error_page 418 /403.html;
     location /403.html {
+        add_header Access-Control-Allow-Origin "*" always;
         add_header Vary "*" always;
         add_header x-nominatim-server "<%= node[:fqdn] %>" always;
     }
@@ -169,6 +170,7 @@ server {
     error_page 429 /509.html;
     error_page 503 /509.html;
     location /509.html {
+        add_header Access-Control-Allow-Origin "*" always;
         add_header Vary "*" always;
         add_header x-nominatim-server "<%= node[:fqdn] %>" always;
     }
