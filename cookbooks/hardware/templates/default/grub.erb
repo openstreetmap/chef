@@ -22,7 +22,7 @@ GRUB_CMDLINE_LINUX="console=tty0 <%= @units.sort.uniq.collect { |unit| "console=
 <% end -%>
 
 # Arguments to add to the kernel command line (except recovery entries)
-GRUB_CMDLINE_LINUX_DEFAULT="panic=30"
+GRUB_CMDLINE_LINUX_DEFAULT="panic=30 memtest=1"
 
 # Do not wait for infinite time on a failed boot
 GRUB_RECORDFAIL_TIMEOUT=2
