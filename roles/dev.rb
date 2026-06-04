@@ -130,7 +130,7 @@ default_attributes(
           :cgimap_repository => "https://github.com/zerebubuth/openstreetmap-cgimap.git",
           :cgimap_revision => "master"
         },
-        :rub21 => {
+        :gpsdatabase => {
           :repository => "https://github.com/rub21/openstreetmap-website.git",
           :revision => "gps_db"
         }
