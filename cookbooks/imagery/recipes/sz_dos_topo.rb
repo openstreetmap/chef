@@ -32,5 +32,5 @@ imagery_layer "sz_dos_topo_50k" do
   source "/store/imagery/sz/50k-topo/mosaic_webp.tif"
   copyright 'Directorate of Overseas Surveys (DOS)'
   default_layer true
-  revision 1
+  revision 2
 end
