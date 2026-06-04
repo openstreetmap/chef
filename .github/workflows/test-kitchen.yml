@@ -84,7 +84,6 @@ jobs:
           - oxidized
           - passenger
           - php
-          - php-fpm
           - planet
           - planet-aws
           - planet-current

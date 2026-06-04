@@ -22,7 +22,7 @@ include_recipe "apt"
 include_recipe "git"
 include_recipe "memcached"
 include_recipe "mysql"
-include_recipe "php::fpm"
+include_recipe "php"
 
 # Mediawiki Base Requirements
 package %w[

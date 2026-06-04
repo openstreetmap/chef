@@ -17,7 +17,22 @@
 # limitations under the License.
 #
 
+include_recipe "prometheus"
+
 package %W[
   php
+  php-fpm
   php#{node[:php][:version]}-fpm
 ]
+
+template "/etc/php/#{node[:php][:version]}/fpm/conf.d/99-chef.ini" do
+  source "php-fpm.ini.erb"
+  owner "root"
+  group "root"
+  mode "644"
+  notifies :restart, "service[php#{node[:php][:version]}-fpm]"
+end
+
+service "php#{node[:php][:version]}-fpm" do
+  action [:enable, :start]
+end

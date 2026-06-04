@@ -20,7 +20,7 @@
 include_recipe "apache"
 include_recipe "geoipupdate"
 include_recipe "mysql"
-include_recipe "php::fpm"
+include_recipe "php"
 
 passwords = data_bag_item("matomo", "passwords")
 

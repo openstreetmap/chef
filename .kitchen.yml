@@ -331,9 +331,6 @@ suites:
   - name: php
     run_list:
       - recipe[php::default]
-  - name: php-fpm
-    run_list:
-      - recipe[php::fpm]
   - name: planet
     run_list:
       - recipe[planet::default]
