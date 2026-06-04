@@ -36,14 +36,33 @@ if platform?("debian")
                          []
                        end
 
+  if node[:platform_version].to_i >= 13
+    # First remove the repo if the keyring is in the unsupported keybox database format
+    # Use apt_repository to remove the repository to ensure apt update is triggered later
+    apt_repository "mcp-remove" do
+      action :remove
+      name "mcp"
+      only_if { ::File.exist?("/etc/apt/keyrings/mcp.gpg") && ::File.binread("/etc/apt/keyrings/mcp.gpg", 12)[8..11] == "KBXf" }
+    end
+  end
+
   apt_repository "mcp" do
     uri "https://downloads.linux.hpe.com/SDR/repo/mcp"
     distribution "#{distribution}/current"
     components ["non-free"]
     key "https://downloads.linux.hpe.com/SDR/hpePublicKey2048_key2.pub"
   end
-
   if node.dig(:dmi, :system, :product_name).to_s.end_with?("Gen9")
+    if node[:platform_version].to_i >= 13
+      # First remove the repo if the keyring is in the unsupported keybox database format
+      # Use apt_repository to remove the repository to ensure apt update is triggered later
+      apt_repository "mcp-gen9-remove" do
+        action :remove
+        name "mcp-gen9"
+        only_if { ::File.exist?("/etc/apt/keyrings/mcp-gen9.gpg") && ::File.binread("/etc/apt/keyrings/mcp-gen9.gpg", 12)[8..11] == "KBXf" }
+      end
+    end
+
     apt_repository "mcp-gen9" do
       uri "https://downloads.linux.hpe.com/SDR/repo/mcp"
       distribution "stretch/current-gen9"
