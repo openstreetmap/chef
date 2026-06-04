@@ -133,6 +133,14 @@ default_attributes(
         :rub21 => {
           :repository => "https://github.com/rub21/openstreetmap-website.git",
           :revision => "gps_db"
+        },
+        :rub22 => {
+          :repository => "https://github.com/rub21/openstreetmap-website.git",
+          :revision => "simplify-gps-visibility"
+        },
+        :rub23 => {
+          :repository => "https://github.com/rub21/openstreetmap-website.git",
+          :revision => "compress-gpx-uploads"
         }
       }
     }
