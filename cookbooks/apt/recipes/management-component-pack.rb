@@ -41,7 +41,7 @@ if platform?("debian")
     # Use apt_repository to remove the repository to ensure apt update is triggered later
     apt_repository "mcp-remove" do
       action :remove
-      name "mcp"
+      repo_name "mcp"
       only_if { ::File.exist?("/etc/apt/keyrings/mcp.gpg") && ::File.binread("/etc/apt/keyrings/mcp.gpg", 12)[8..11] == "KBXf" }
     end
   end
@@ -58,7 +58,7 @@ if platform?("debian")
       # Use apt_repository to remove the repository to ensure apt update is triggered later
       apt_repository "mcp-gen9-remove" do
         action :remove
-        name "mcp-gen9"
+        repo_name "mcp-gen9"
         only_if { ::File.exist?("/etc/apt/keyrings/mcp-gen9.gpg") && ::File.binread("/etc/apt/keyrings/mcp-gen9.gpg", 12)[8..11] == "KBXf" }
       end
     end

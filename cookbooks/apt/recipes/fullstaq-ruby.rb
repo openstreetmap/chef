@@ -24,7 +24,7 @@ if platform?("debian") && node[:platform_version].to_i >= 13
   # Use apt_repository to remove the repository to ensure apt update is triggered later
   apt_repository "fullstaq-ruby-remove" do
     action :remove
-    name "fullstaq-ruby"
+    repo_name "fullstaq-ruby"
     only_if { ::File.exist?("/etc/apt/keyrings/fullstaq-ruby.gpg") && ::File.binread("/etc/apt/keyrings/fullstaq-ruby.gpg", 12)[8..11] == "KBXf" }
   end
 end

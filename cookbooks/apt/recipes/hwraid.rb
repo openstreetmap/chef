@@ -36,7 +36,7 @@ if platform?("debian") && node[:platform_version].to_i >= 13
   # Use apt_repository to remove the repository to ensure apt update is triggered later
   apt_repository "hwraid-remove" do
     action :remove
-    name "hwraid"
+    repo_name "hwraid"
     only_if { ::File.exist?("/etc/apt/keyrings/hwraid.gpg") && ::File.binread("/etc/apt/keyrings/hwraid.gpg", 12)[8..11] == "KBXf" }
   end
 end

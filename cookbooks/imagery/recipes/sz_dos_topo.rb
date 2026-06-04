@@ -30,7 +30,7 @@ imagery_layer "sz_dos_topo_50k" do
   title "SZ Topo 50k"
   projection "EPSG:3857"
   source "/store/imagery/sz/50k-topo/mosaic_webp.tif"
-  copyright 'Directorate of Overseas Surveys (DOS)'
+  copyright "Directorate of Overseas Surveys (DOS)"
   default_layer true
   revision 2
 end
