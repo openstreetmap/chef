@@ -6,5 +6,4 @@ description       "Installs and configures PHP"
 
 version           "1.0.0"
 supports          "ubuntu"
-depends           "apache"
 depends           "prometheus"
