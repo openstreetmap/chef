@@ -25,7 +25,7 @@ imagery_site "eswatini-topo.openstreetmap.org.za" do
   bbox [[-27.3338596, 30.7497124], [-25.7172326, 32.2498455]]
 end
 
-imagery_layer "za_ngi_topo_50k" do
+imagery_layer "sz_dos_topo_50k" do
   site "eswatini-topo.openstreetmap.org.za"
   title "SZ Topo 50k"
   projection "EPSG:3857"
