@@ -70,6 +70,7 @@ postgresql_database database_name do
 end
 
 package "dbconfig-common"
+package "libhtml-treebuilder-xpath-perl" # Undeclared dependency for otrs2
 
 template "/etc/dbconfig-common/otrs2.conf" do
   source "dbconfig.config.erb"
