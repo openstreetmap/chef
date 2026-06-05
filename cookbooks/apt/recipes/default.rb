@@ -48,7 +48,8 @@ if platform?("debian")
   archive_suites = %w[main updates backports security]
   archive_components = %w[main contrib non-free non-free-firmware]
   backport_packages = case node[:lsb][:codename]
-                      when "bookworm" then %W[amd64-microcode exim4 firmware-free firmware-nonfree intel-microcode libosmium linux linux-base linux-signed-#{dpkg_arch} osm2pgsql otrs2 pyosmium smartmontools systemd cgi-mapserver otrs2]
+                      when "bookworm" then %W[amd64-microcode exim4 firmware-free firmware-nonfree intel-microcode libosmium linux linux-base linux-signed-#{dpkg_arch} osm2pgsql otrs2 pyosmium smartmontools systemd cgi-mapserver]
+                      when "trixie" then %w[otrs2]
                       else %w[]
                       end
 elsif intel?
