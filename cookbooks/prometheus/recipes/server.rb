@@ -70,7 +70,7 @@ end
 
 cache_dir = Chef::Config[:file_cache_path]
 
-prometheus_version = "3.11.3"
+prometheus_version = "3.12.0"
 alertmanager_version = "0.32.1"
 karma_version = "0.129"
 
@@ -244,7 +244,7 @@ package "prometheus"
 systemd_service "prometheus-executable" do
   service "prometheus"
   dropin "executable"
-  exec_start "/opt/prometheus-server/prometheus/prometheus --config.file=/etc/prometheus/prometheus.yml --web.enable-admin-api --web.external-url=https://prometheus.openstreetmap.org/prometheus --storage.tsdb.path=/var/lib/prometheus/metrics2 --storage.tsdb.retention.time=540d"
+  exec_start "/opt/prometheus-server/prometheus/prometheus --config.file=/etc/prometheus/prometheus.yml --web.enable-admin-api --web.external-url=https://prometheus.openstreetmap.org/prometheus --storage.tsdb.path=/var/lib/prometheus/metrics2 --storage.tsdb.retention.time=540d --config.auto-reload"
   timeout_stop_sec 300
   notifies :restart, "service[prometheus]"
 end
@@ -266,8 +266,6 @@ end
 
 service "prometheus" do
   action [:enable, :start]
-  subscribes :reload, "template[/etc/prometheus/prometheus.yml]"
-  subscribes :reload, "template[/etc/prometheus/alert_rules.yml]"
   subscribes :restart, "archive_file[#{cache_dir}/prometheus.linux.tar.gz]"
 end
 
