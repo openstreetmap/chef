@@ -42,5 +42,6 @@ run_list(
   "recipe[imagery::lu_lidar_hillshade]",
   "recipe[imagery::za_ngi_aerial]",
   "recipe[imagery::us_imagery]",
-  "recipe[imagery::sz_dos_topo]"
+  "recipe[imagery::sz_dos_topo]",
+  "recipe[imagery::mw_dos_topo]"
 )
