@@ -43,5 +43,6 @@ run_list(
   "recipe[imagery::za_ngi_aerial]",
   "recipe[imagery::us_imagery]",
   "recipe[imagery::sz_dos_topo]",
-  "recipe[imagery::mw_dos_topo]"
+  "recipe[imagery::mw_dos_topo]",
+  "recipe[imagery::zw_topo]"
 )
