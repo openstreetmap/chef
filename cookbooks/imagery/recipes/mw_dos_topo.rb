@@ -22,7 +22,7 @@ include_recipe "imagery"
 imagery_site "malawi-topo.openstreetmap.org.za" do
   title "OpenStreetMap - MW - Topographic Series"
   aliases ["malawi-topo.osm.org.za"]
-  bbox [[-17.123456, 33.123456], [-14.123456, 35.123456]]
+  bbox [[-17.2512412, 32.7502225], [-11.0018799, 36.0003653]]
 end
 
 imagery_layer "mw_dos_topo_50k" do
