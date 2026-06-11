@@ -27,7 +27,7 @@ end
 
 imagery_layer "mw_dos_topo_50k" do
   site "malawi-topo.openstreetmap.org.za"
-  title "MW Topo 50k"
+  title "Malawi Topo 50k"
   projection "EPSG:3857"
   source "/store/imagery/mw/50k-topo/combined.webp.google.r_lanczos.bs_256.aligned.cog.tif"
   copyright "Directorate of Overseas Surveys (DOS)"

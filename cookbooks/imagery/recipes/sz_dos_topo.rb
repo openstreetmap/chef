@@ -27,7 +27,7 @@ end
 
 imagery_layer "sz_dos_topo_50k" do
   site "eswatini-topo.openstreetmap.org.za"
-  title "SZ Topo 50k"
+  title "Eswatini Topo 50k"
   projection "EPSG:3857"
   source "/store/imagery/sz/50k-topo/mosaic_webp.tif"
   copyright "Directorate of Overseas Surveys (DOS)"
