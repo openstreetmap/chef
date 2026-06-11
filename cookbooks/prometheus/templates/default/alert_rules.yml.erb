@@ -202,7 +202,7 @@ groups:
   - name: fastly
     rules:
       - alert: fastly error rate
-        expr: sum(rate(fastly_rt_status_group_total{status_group="5xx"}[5m])) by (service_name, datacenter) / sum(rate(fastly_rt_status_group_total[5m])) by (service_name, datacenter) > 0.005
+        expr: sum(rate(fastly_rt_status_group_total{status_group="5xx"}[5m])) by (service_name, datacenter) / sum(rate(fastly_rt_status_group_total[5m])) by (service_name, datacenter) > 0.005 and sum(rate(fastly_rt_status_group_total{status_group="5xx"}[5m])) by (service_name, datacenter) > 0.5
         for: 15m
         keep_firing_for: 450s
         labels:
