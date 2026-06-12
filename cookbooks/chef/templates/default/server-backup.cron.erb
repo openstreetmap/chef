@@ -17,6 +17,7 @@ ln -s /var/opt/opscode/bookshelf/data "$T/cinc-server-$D/bookshelf"
 
 nice tar --create --dereference --directory="$T" \
   --sort=name \
+  --warning=no-file-removed \
   "cinc-server-$D" | nice zstd -T0 --quiet --long --rsyncable -o "$T/$B"
 
 nice rsync --preallocate --fuzzy "$T/$B" backup.openstreetmap.org::backup
