@@ -16,18 +16,6 @@ default_attributes(
       }
     }
   },
-  :apache => {
-    :event => {
-      :start_servers => 8,
-      :threads_per_child => 64,
-      :min_spare_threads => 512,
-      :max_spare_threads => 2048,
-      :max_request_workers => 4096,
-      :max_connections_per_child => 0,
-      :async_request_worker_factor => 12,
-      :listen_cores_buckets_ratio => 8
-    }
-  },
   :postgresql => {
     :settings => {
       :defaults => {
