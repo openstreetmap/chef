@@ -329,6 +329,8 @@ if node[:postgresql][:clusters][rails_cluster.to_sym]
     working_directory "/srv/%i.apis.dev.openstreetmap.org/rails"
     exec_start "#{node[:ruby][:bundle]} exec rails jobs:work"
     restart "on-failure"
+    memory_high "2G"
+    memory_max "3G"
     nice 10
     sandbox :enable_network => true
     restrict_address_families "AF_UNIX"

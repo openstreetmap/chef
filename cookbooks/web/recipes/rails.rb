@@ -192,6 +192,8 @@ systemd_service "rails-jobs@" do
   working_directory rails_directory
   exec_start "#{node[:ruby][:bundle]} exec rails jobs:work"
   restart "on-failure"
+  memory_high "2G"
+  memory_max "3G"
   nice 10
   sandbox :enable_network => true
   memory_deny_write_execute false
