@@ -1,8 +1,8 @@
 {
   "id": "devices",
   "hardware": {
-    "test": {
-      "device": "localhost",
+    "localhost": {
+      "device": "apc_aos",
       "input": "ftp",
       "username": "oxidized",
       "password": "password"
