@@ -355,6 +355,9 @@ suites:
     attributes:
       web:
         readonly_database_host: readonly
+  - name: podman
+    run_list:
+      - recipe[podman::default]
   - name: postgresql
     run_list:
       - recipe[postgresql::default]
