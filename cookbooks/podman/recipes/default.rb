@@ -73,3 +73,12 @@ end
 service "podman-system-prune.timer" do
   action [:enable, :start]
 end
+
+# Reset graph driver if vfs which is very slow. overlay is the default on Debian 13 and later.
+if platform?("debian") && node[:platform_version].to_i >= 13
+  execute "podman-fix-graph-driver" do
+    command "podman system reset --force"
+    only_if "test $(podman info --format '{{json .Store}}' | jq -r .graphDriverName) = 'vfs'"
+    ignore_failure true
+  end
+end
