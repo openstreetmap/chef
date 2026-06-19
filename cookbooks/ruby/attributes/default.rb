@@ -1,4 +1,4 @@
-default[:ruby][:fullstaq] = true
+default[:ruby][:fullstaq] = !arm?
 
 default[:ruby][:system_version] = if platform?("debian")
                                     case node[:platform_version].to_i
