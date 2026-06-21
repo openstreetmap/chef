@@ -61,13 +61,13 @@ default_attributes(
       :fastcgi => {
         :enable => true,
         :keys_zone => "fastcgi_cache_zone:2048M",
-        :inactive => "120d",
+        :inactive => "365d",
         :max_size => "196608M"
       },
       :proxy => {
         :enable => true,
         :keys_zone => "proxy_cache_zone:2048M",
-        :inactive => "120d",
+        :inactive => "365d",
         :max_size => "196608M"
       }
     }

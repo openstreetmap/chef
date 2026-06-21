@@ -10,7 +10,8 @@ server {
 <% if @uses_tiler -%>
 upstream <%= @name %>_tiler_backend {
     server unix:/srv/imagery/sockets/titiler.sock max_fails=0;
-    server unix:/srv/./imagery/sockets/titiler.sock max_fails=0;
+    keepalive 64;
+
 }
 <% else -%>
 upstream <%= @name %>_fastcgi {
@@ -51,7 +52,7 @@ server {
     gzip_min_length 512;
     gzip_http_version 1.0;
     gzip_proxied any;
-    gzip_comp_level 9;
+    gzip_comp_level 5;
     gzip_vary on;
 
     # Include site imagery layers

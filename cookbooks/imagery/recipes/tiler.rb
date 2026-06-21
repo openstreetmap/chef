@@ -51,7 +51,7 @@ podman_service "titiler" do
               :VSI_CACHE_SIZE => 5000000,
               :TITILER_API_ROOT_PATH => "/api/v1/titiler",
               :FORWARDED_ALLOW_IPS => "*" # https://docs.gunicorn.org/en/latest/settings.html#forwarded-allow-ips
-  command "gunicorn -k uvicorn.workers.UvicornWorker titiler.application.main:app --bind unix:/sockets/titiler.sock --workers #{node.cpu_cores}"
+  command "gunicorn -k uvicorn.workers.UvicornWorker titiler.application.main:app --bind unix:/sockets/titiler.sock --workers #{[node.cpu_cores / 2, 1].max}"
 end
 
 systemd_service "titiler-restart" do
