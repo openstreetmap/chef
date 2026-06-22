@@ -39,7 +39,8 @@ podman_service "titiler" do
   image container_image
   volume :"/store/imagery" => "/store/imagery",
          :"/srv/imagery/sockets" => "/sockets"
-  environment :GDAL_CACHEMAX => 200,
+  environment :GDAL_NUM_THREADS => "2",
+              :GDAL_CACHEMAX => 2048,
               :CPL_VSIL_CURL_CACHE_SIZE => 200000000,
               :GDAL_BAND_BLOCK_CACHE => "HASHSET",
               :GDAL_DISABLE_READDIR_ON_OPEN => "EMPTY_DIR",
@@ -48,10 +49,12 @@ podman_service "titiler" do
               :GDAL_HTTP_MULTIPLEX => "YES",
               :GDAL_HTTP_VERSION => 2,
               :VSI_CACHE => "TRUE",
-              :VSI_CACHE_SIZE => 5000000,
+              :VSI_CACHE_SIZE => 50000000,
+              :PROJ_NETWORK => "OFF",
               :TITILER_API_ROOT_PATH => "/api/v1/titiler",
+              :MOSAIC_CONCURRENCY => "8",
               :FORWARDED_ALLOW_IPS => "*" # https://docs.gunicorn.org/en/latest/settings.html#forwarded-allow-ips
-  command "gunicorn -k uvicorn.workers.UvicornWorker titiler.application.main:app --bind unix:/sockets/titiler.sock --workers #{[node.cpu_cores / 2, 1].max}"
+  command "gunicorn -k uvicorn.workers.UvicornWorker titiler.application.main:app --bind unix:/sockets/titiler.sock --workers #{[node.cpu_cores / 2, 1].max} --preload"
 end
 
 systemd_service "titiler-restart" do
@@ -64,7 +67,7 @@ end
 
 systemd_timer "titiler-restart" do
   on_boot_sec "10m"
-  on_unit_inactive_sec "2h"
+  on_unit_inactive_sec "24h"
   randomized_delay_sec "20m"
 end
 
