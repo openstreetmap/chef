@@ -35,14 +35,19 @@ location @<%= @site %>_<%= @layer %>_backend {
   proxy_set_header Pragma "";
   proxy_redirect off;
 
+  # Allow long renders at low zoom levels that fan out across many COGs
+  proxy_connect_timeout 10s;
+  proxy_send_timeout 180s;
+  proxy_read_timeout 180s;
+
   proxy_cache_key "<%= @layer %><%= @revision %> $request_method $z $x $y $ext";
   proxy_cache proxy_cache_zone;
 
   proxy_cache_valid 200 204 180d;
 
   proxy_cache_lock on;
-  proxy_cache_lock_timeout 60s;
-  proxy_cache_lock_age 120s;
+  proxy_cache_lock_timeout 180s;
+  proxy_cache_lock_age 180s;
 
   proxy_cache_use_stale error timeout updating http_500 http_502 http_503 http_504;
   proxy_cache_background_update on;
