@@ -176,7 +176,7 @@ jobs:
       fail-fast: false
     steps:
     - name: Check out code
-      uses: actions/checkout@v6
+      uses: actions/checkout@v7
     - name: Extract cinc image details from .kitchen.yml
       id: cinc-image
       run: |
