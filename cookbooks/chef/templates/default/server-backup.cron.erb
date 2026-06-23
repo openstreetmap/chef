@@ -13,7 +13,7 @@ mkdir "$T/cinc-server-$D"
 chgrp opscode-pgsql "$T" "$T/cinc-server-$D"
 chmod g+rwx "$T" "$T/cinc-server-$D"
 sudo -u opscode-pgsql /opt/cinc-project/embedded/bin/pg_dumpall --file="$T/cinc-server-$D/cinc.dmp" --clean
-ln -s /var/opt/opscode/bookshelf/data "$T/cinc-server-$D/bookshelf"
+ln -s /var/opt/cinc-project/bookshelf/data "$T/cinc-server-$D/bookshelf"
 
 nice tar --create --dereference --directory="$T" \
   --sort=name \
