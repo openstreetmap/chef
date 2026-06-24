@@ -8,7 +8,7 @@ location ~* "^/layer/<%= @layer %>/(\d+)/(\d+)/(\d+)\.(jpg|jpeg|png|webp)$" {
   set $ext $4;
 
   # Serve local file if present; otherwise jump to proxy
-  try_files /layer/<%= @layer %>/layer/<%= @layer %>/$z/$x/$y.$ext /layer/<%= @layer %>/$z/$x/$y.png @<%= @site %>_<%= @layer %>_backend;
+  try_files /layer/<%= @layer %>/$z/$x/$y.$ext /layer/<%= @layer %>/$z/$x/$y.png @<%= @site %>_<%= @layer %>_backend;
 
   gzip off;
   expires off;
