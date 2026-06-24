@@ -86,7 +86,7 @@ location @<%= @site %>_<%= @layer %>_backend {
   fastcgi_cache_lock_age 180s;
 
   # Serve stale cache on errors or if updating
-  fastcgi_cache_use_stale error timeout updating http_500 http_503 http_504;
+  fastcgi_cache_use_stale error timeout updating http_500 http_503;
   # If in cache as stale, serve stale and update in background
   fastcgi_cache_background_update on;
   # Enable revalidation using If-Modified-Since and If-None-Match for stale items
@@ -96,7 +96,7 @@ location @<%= @site %>_<%= @layer %>_backend {
 
   fastcgi_catch_stderr "Image handling error";
 
-  fastcgi_next_upstream error timeout invalid_header http_500 http_503 http_504;
+  fastcgi_next_upstream error timeout invalid_header http_500 http_503;
   fastcgi_next_upstream_tries 8;
 <% end -%>
   gzip off;
