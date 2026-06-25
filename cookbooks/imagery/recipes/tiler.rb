@@ -27,12 +27,7 @@ directory "/store/imagery" do
   recursive true
 end
 
-# FIXME: until upstream supports arm64 images: https://github.com/developmentseed/titiler/pull/740
-container_image = if arm?
-                    "ghcr.io/firefishy/titiler:latest"
-                  else
-                    "ghcr.io/developmentseed/titiler:latest"
-                  end
+container_image = "ghcr.io/developmentseed/titiler:latest"
 
 podman_service "titiler" do
   description "Container service for titiler"
@@ -54,25 +49,7 @@ podman_service "titiler" do
               :TITILER_API_ROOT_PATH => "/api/v1/titiler",
               :MOSAIC_CONCURRENCY => "8",
               :FORWARDED_ALLOW_IPS => "*" # https://docs.gunicorn.org/en/latest/settings.html#forwarded-allow-ips
-  command "gunicorn -k uvicorn.workers.UvicornWorker titiler.application.main:app --bind unix:/sockets/titiler.sock --workers #{[node.cpu_cores / 2, 1].max} --preload --timeout 180"
-end
-
-systemd_service "titiler-restart" do
-  type "simple"
-  user "root"
-  exec_start "/bin/systemctl try-restart titiler.service"
-  sandbox true
-  restrict_address_families "AF_UNIX"
-end
-
-systemd_timer "titiler-restart" do
-  on_boot_sec "10m"
-  on_unit_inactive_sec "24h"
-  randomized_delay_sec "20m"
-end
-
-service "titiler-restart.timer" do
-  action [:enable, :start]
+  command "gunicorn -k uvicorn.workers.UvicornWorker titiler.application.main:app --bind unix:/sockets/titiler.sock --workers #{[node.cpu_cores / 2, 2].max} --preload --timeout 180"
 end
 
 directory "/var/cache/nginx-cache" do
