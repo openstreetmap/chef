@@ -40,6 +40,30 @@ imagery_layer "act_aerial_imagery_latest" do
   default_layer true
 end
 
+imagery_layer "act_aerial_imagery_202603" do
+  site "act-imagery.openstreetmap.org"
+  title "ACT Aerial Imagery 202603"
+  projection "EPSG:7855"
+  source "https://tiles.arcgis.com/tiles/E5n4f1VY84i0xSjy/arcgis/rest/services/ACT_Aerial_Imagery_202603/MapServer/WMTS/1.0.0/WMTSCapabilities.xml"
+  # attribution per https://www.actmapi.act.gov.au/terms-and-conditions and https://tiles.arcgis.com/tiles/E5n4f1VY84i0xSjy/arcgis/rest/services/ACT_Aerial_Imagery_202411/MapServer/
+  copyright "ACT Imagery from <a href='https://www.actmapi.act.gov.au/home'>ACTmapi</a> (c) Australian Capital Territory and MetroMap. "
+  background_colour "0 0 0"
+  extension "jpeg"
+  max_zoom 22
+end
+
+imagery_layer "act_aerial_imagery_202512" do
+  site "act-imagery.openstreetmap.org"
+  title "ACT Aerial Imagery 202512"
+  projection "EPSG:7855"
+  source "https://tiles.arcgis.com/tiles/E5n4f1VY84i0xSjy/arcgis/rest/services/ACT_Aerial_Imagery_202512/MapServer/WMTS/1.0.0/WMTSCapabilities.xml"
+  # attribution per https://www.actmapi.act.gov.au/terms-and-conditions and https://tiles.arcgis.com/tiles/E5n4f1VY84i0xSjy/arcgis/rest/services/ACT_Aerial_Imagery_202411/MapServer/
+  copyright "ACT Imagery from <a href='https://www.actmapi.act.gov.au/home'>ACTmapi</a> (c) Australian Capital Territory and MetroMap. "
+  background_colour "0 0 0"
+  extension "jpeg"
+  max_zoom 22
+end
+
 imagery_layer "act_aerial_imagery_202505" do
   site "act-imagery.openstreetmap.org"
   title "ACT Aerial Imagery 202505"
