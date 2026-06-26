@@ -110,9 +110,10 @@ action :create do
 
   systemd_service "mapserv-fcgi-#{new_resource.site}" do
     description "Map server for #{new_resource.site} layer"
-    environment "MS_DEBUGLEVEL" => "0",
+    environment "GDAL_NUM_THREADS" => "2",
+                "GDAL_CACHEMAX" => "2048",
+                "MS_DEBUGLEVEL" => "0",
                 "MS_ERRORFILE" => "stderr",
-                "GDAL_CACHEMAX" => "200",
                 "CPL_VSIL_CURL_CACHE_SIZE" => "200000000",
                 "GDAL_BAND_BLOCK_CACHE" => "HASHSET",
                 "GDAL_DISABLE_READDIR_ON_OPEN" => "EMPTY_DIR",
