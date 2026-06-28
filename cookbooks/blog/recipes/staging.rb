@@ -20,12 +20,12 @@
 include_recipe "wordpress"
 
 # Workaround to ensure the certificate continues to renew while main code disabled
-ssl_certificate "staging.blog.openstreetmap.org" do
-  domains ["staging.blog.openstreetmap.org", "staging.blog.osm.org", "staging.blog.openstreetmap.com",
-           "staging.blog.openstreetmap.net", "staging.blog.openstreetmaps.org",
-           "staging.blog.osmfoundation.org"
-          ]
-end
+# ssl_certificate "staging.blog.openstreetmap.org" do
+#   domains ["staging.blog.openstreetmap.org", "staging.blog.osm.org", "staging.blog.openstreetmap.com",
+#            "staging.blog.openstreetmap.net", "staging.blog.openstreetmaps.org",
+#            "staging.blog.osmfoundation.org"
+#           ]
+# end
 
 passwords = data_bag_item("blog-staging", "passwords")
 # wp2fa_encrypt_keys = data_bag_item("blog-staging", "wp2fa_encrypt_keys")
