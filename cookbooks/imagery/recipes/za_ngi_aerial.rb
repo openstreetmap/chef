@@ -29,12 +29,12 @@ end
 imagery_layer "ngi-aerial" do
   site "aerial.openstreetmap.org.za"
   uses_tiler true
-  title "NGI Aerial 25cm/50cm"
+  title "NGI Aerial 25cm"
   source "sqlite:///store/imagery/za/za-25cm/mosaic-tiler-file.db.sqlite:mosaic"
-  copyright 'State Copyright &copy; 2024 <a href="https://ngi.dalrrd.gov.za/">Chief Directorate: National Geo-spatial Information</a>'
+  copyright 'State Copyright &copy; 2026 <a href="https://ngi.dlrrd.gov.za/">Chief Directorate: National Geo-spatial Information</a>'
   max_zoom 20
   extension "png"
   default_layer true
   url_aliases ["/ngi-aerial"]
-  revision 5
+  revision 6
 end
