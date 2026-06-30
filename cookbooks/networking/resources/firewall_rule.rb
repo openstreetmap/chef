@@ -128,14 +128,14 @@ action_class do
   end
 
   def format_ports(ports)
-    "{ #{Array(ports).map(&:to_s).join(', ')} }"
+    "{ #{Array(ports).join(', ')} }"
   end
 
   def format_addresses(addresses, ip)
     if addresses.is_a?(Symbol)
       "@#{ip}-#{addresses}-addresses"
     else
-      "{ #{Array(addresses).map(&:to_s).join(', ')} }"
+      "{ #{Array(addresses).join(', ')} }"
     end
   end
 

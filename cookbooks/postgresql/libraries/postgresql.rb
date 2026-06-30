@@ -83,42 +83,42 @@ module OpenStreetMap
     end
 
     def users
-      @users ||= query("SELECT *, ARRAY(SELECT groname FROM pg_group WHERE usesysid = ANY(grolist)) AS roles FROM pg_user").each_with_object({}) do |user, users|
-        users[user[:usename]] = {
+      @users ||= query("SELECT *, ARRAY(SELECT groname FROM pg_group WHERE usesysid = ANY(grolist)) AS roles FROM pg_user").to_h do |user|
+        [user[:usename], {
           :superuser => user[:usesuper] == "t",
           :createdb => user[:usercreatedb] == "t",
           :createrole => user[:usecatupd] == "t",
           :replication => user[:userepl] == "t",
           :roles => parse_array(user[:roles] || "{}")
-        }
+        }]
       end
     end
 
     def databases
-      @databases ||= query("SELECT d.datname, u.usename, d.encoding, d.datcollate, d.datctype FROM pg_database AS d INNER JOIN pg_user AS u ON d.datdba = u.usesysid").each_with_object({}) do |database, databases|
-        databases[database[:datname]] = {
+      @databases ||= query("SELECT d.datname, u.usename, d.encoding, d.datcollate, d.datctype FROM pg_database AS d INNER JOIN pg_user AS u ON d.datdba = u.usesysid").to_h do |database|
+        [database[:datname], {
           :owner => database[:usename],
           :encoding => database[:encoding],
           :collate => database[:datcollate],
           :ctype => database[:datctype]
-        }
+        }]
       end
     end
 
     def extensions(database)
       @extensions ||= {}
-      @extensions[database] ||= query("SELECT extname, extversion FROM pg_extension", :database => database).each_with_object({}) do |extension, extensions|
-        extensions[extension[:extname]] = {
+      @extensions[database] ||= query("SELECT extname, extversion FROM pg_extension", :database => database).to_h do |extension|
+        [extension[:extname], {
           :version => extension[:extversion]
-        }
+        }]
       end
     end
 
     def tablespaces
-      @tablespaces ||= query("SELECT spcname, usename FROM pg_tablespace AS t INNER JOIN pg_user AS u ON t.spcowner = u.usesysid").each_with_object({}) do |tablespace, tablespaces|
-        tablespaces[tablespace[:spcname]] = {
+      @tablespaces ||= query("SELECT spcname, usename FROM pg_tablespace AS t INNER JOIN pg_user AS u ON t.spcowner = u.usesysid").to_h do |tablespace|
+        [tablespace[:spcname], {
           :owner => tablespace[:usename]
-        }
+        }]
       end
     end
 
