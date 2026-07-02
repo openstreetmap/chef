@@ -23,7 +23,7 @@ default_action :create
 
 property :site, :kind_of => String, :name_property => true
 property :aliases, :kind_of => [String, Array]
-property :version, :kind_of => String, :default => "1.39"
+property :version, :kind_of => String, :default => "1.43"
 property :database_name, :kind_of => String, :required => true
 property :database_user, :kind_of => String, :required => [:create, :update]
 property :database_password, :kind_of => String, :required => [:create, :update]
@@ -223,6 +223,17 @@ action :create do
     legacy false
   end
 
+  if new_resource.version.to_f >= 1.46
+    # Skins that are included in MediaWiki in 1.46 release package, but not enabled by default.
+    # Review skin documentation before enabling these skins.
+
+    # mediawiki_skin "Timeless" do
+    #   site new_resource.site
+    #   update_site false
+    #   legacy false
+    # end
+  end
+
   mediawiki_extension "Cite" do
     site new_resource.site
     update_site false
@@ -264,10 +275,13 @@ action :create do
     update_site false
   end
 
-  mediawiki_extension "Interwiki" do
-    site new_resource.site
-    template "mw-ext-Interwiki.inc.php.erb"
-    update_site false
+  if new_resource.version.to_f < 1.46
+    # Interwiki extension moved to MediaWiki Core in 1.46
+    mediawiki_extension "Interwiki" do
+      site new_resource.site
+      template "mw-ext-Interwiki.inc.php.erb"
+      update_site false
+    end
   end
 
   mediawiki_extension "Nuke" do
@@ -296,12 +310,6 @@ action :create do
   mediawiki_extension "Renameuser" do
     site new_resource.site
     update_site false
-  end
-
-  mediawiki_extension "SimpleAntiSpam" do
-    site new_resource.site
-    update_site false
-    action :delete
   end
 
   mediawiki_extension "SpamBlacklist" do
@@ -348,12 +356,6 @@ action :create do
     site new_resource.site
     template "mw-ext-CleanChanges.inc.php.erb"
     update_site false
-  end
-
-  # Extension has been archived: https://www.mediawiki.org/wiki/Extension:LocalisationUpdate
-  mediawiki_extension "LocalisationUpdate" do
-    site new_resource.site
-    action :delete
   end
 
   # mediawiki_extension "Translate" do
@@ -432,6 +434,86 @@ action :create do
   mediawiki_extension "TemplateData" do
     site new_resource.site
     update_site false
+  end
+
+  if new_resource.version.to_f >= 1.46
+    # Extensions that are included in MediaWiki in 1.46 release package, but not enabled by default.
+    # Review extension documentation before enabling these extensions.
+
+    # mediawiki_extension "CodeEditor" do
+    #   site new_resource.site
+    #   update_site false
+    # end
+
+    # mediawiki_extension "DiscussionTools" do
+    #   site new_resource.site
+    #   update_site false
+    # end
+
+    # mediawiki_extension "Echo" do
+    #   site new_resource.site
+    #   update_site false
+    # end
+
+    # mediawiki_extension "Linter" do
+    #   site new_resource.site
+    #   update_site false
+    # end
+
+    # mediawiki_extension "LoginNotify" do
+    #   site new_resource.site
+    #   update_site false
+    # end
+
+    # mediawiki_extension "Math" do
+    #   site new_resource.site
+    #   update_site false
+    # end
+
+    # mediawiki_extension "MultimediaViewer" do
+    #   site new_resource.site
+    #   update_site false
+    # end
+
+    # mediawiki_extension "OATHAuth" do
+    #   site new_resource.site
+    #   update_site false
+    # end
+
+    # mediawiki_extension "PageImages" do
+    #   site new_resource.site
+    #   update_site false
+    # end
+
+    # mediawiki_extension "ReplaceText" do
+    #   site new_resource.site
+    #   update_site false
+    # end
+
+    # mediawiki_extension "Scribunto" do
+    #   site new_resource.site
+    #   update_site false
+    # end
+
+    # mediawiki_extension "SecureLinkFixer" do
+    #   site new_resource.site
+    #   update_site false
+    # end
+
+    # mediawiki_extension "TemplateStyles" do
+    #   site new_resource.site
+    #   update_site false
+    # end
+
+    # mediawiki_extension "TextExtracts" do
+    #   site new_resource.site
+    #   update_site false
+    # end
+
+    # mediawiki_extension "Thanks" do
+    #   site new_resource.site
+    #   update_site false
+    # end
   end
 
   if new_resource.commons
