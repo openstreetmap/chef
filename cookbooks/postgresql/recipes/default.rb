@@ -20,14 +20,32 @@
 include_recipe "apt::postgresql"
 include_recipe "prometheus"
 
-package "locales-all"
-package "postgresql-common"
+package %w[
+  locales-all
+  pgbackrest
+  postgresql-common
+]
+
+if node[:postgresql][:pgbackrest][:credentials_bag]
+  pgbackrest_credentials = data_bag_item(node[:postgresql][:pgbackrest][:credentials_bag],
+                                         node[:postgresql][:pgbackrest][:credentials_item])
+end
+
+template "/etc/pgbackrest.conf" do
+  source "pgbackrest.conf.erb"
+  owner "postgres"
+  group "postgres"
+  mode "640"
+  variables :credentials => pgbackrest_credentials
+end
 
 node[:postgresql][:versions].each do |version|
-  package "postgresql-#{version}"
-  package "postgresql-client-#{version}"
-  package "postgresql-contrib-#{version}"
-  package "postgresql-server-dev-#{version}"
+  package %W[
+    postgresql-#{version}
+    postgresql-client-#{version}
+    postgresql-contrib-#{version}
+    postgresql-server-dev-#{version}
+  ]
 
   defaults = node[:postgresql][:settings][:defaults] || {}
   settings = node[:postgresql][:settings][version] || {}

@@ -147,6 +147,11 @@ default_attributes(
   },
   :postgresql => {
     :versions => %w[18],
+    :clusters => {
+      "18/main" => {
+        :pgbackrest_stanza => "main"
+      }
+    },
     :settings => {
       :defaults => {
         :max_connections => "500",
@@ -158,8 +163,21 @@ default_attributes(
       },
       "18" => {
         :port => "5432",
-        :wal_level => "logical"
+        :wal_level => "logical",
+        :archive_mode => "on",
+        :archive_command => "/bin/pgbackrest --stanza=main archive-push %p"
       }
+    },
+    :pgbackrest => {
+      :credentials_bag => "dev",
+      :credentials_item => "aws",
+      :repo_type => "s3",
+      :repo_path => "/",
+      :repo_s3_bucket => "openstreetmap-wal-dev-1a05a5",
+      :repo_s3_endpoint => "s3.eu-north-1.amazonaws.com",
+      :repo_s3_key => "wal_access_key_id",
+      :repo_s3_key_secret => "wal_secret_access_key",
+      :repo_s3_region => "eu-north-1"
     }
   },
   :ruby => {

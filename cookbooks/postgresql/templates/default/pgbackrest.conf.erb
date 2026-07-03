@@ -1,0 +1,36 @@
+[global]
+archive-async=y
+compress-type=zst
+repo1-type=<%= node[:postgresql][:pgbackrest][:repo_type] %>
+repo1-path=<%= node[:postgresql][:pgbackrest][:repo_path] %>
+repo1-block=y
+repo1-bundle=y
+repo1-retention-full=<%= node[:postgresql][:pgbackrest][:repo_retention_full] %>
+<% if node[:postgresql][:pgbackrest][:repo_s3_bucket] -%>
+repo1-s3-bucket=<%= node[:postgresql][:pgbackrest][:repo_s3_bucket] %>
+<% end -%>
+<% if node[:postgresql][:pgbackrest][:repo_s3_endpoint] -%>
+repo1-s3-endpoint=<%= node[:postgresql][:pgbackrest][:repo_s3_endpoint] %>
+<% end -%>
+<% if node[:postgresql][:pgbackrest][:repo_s3_key] -%>
+repo1-s3-key=<%= @credentials[node[:postgresql][:pgbackrest][:repo_s3_key]] %>
+<% end -%>
+<% if node[:postgresql][:pgbackrest][:repo_s3_key_secret] -%>
+repo1-s3-key-secret=<%= @credentials[node[:postgresql][:pgbackrest][:repo_s3_key_secret]] %>
+<% end -%>
+<% if node[:postgresql][:pgbackrest][:repo_s3_region] -%>
+repo1-s3-region=<%= node[:postgresql][:pgbackrest][:repo_s3_region] %>
+<% end -%>
+
+[global:archive-get]
+process-max=2
+
+[global:archive-push]
+process-max=2
+<% node[:postgresql][:clusters].each do |name, details| -%>
+<% if details[:pgbackrest_stanza] -%>
+
+[<%= details[:pgbackrest_stanza] %>]
+pg1-path=/var/lib/postgresql/<%= name %>
+<% end -%>
+<% end -%>
