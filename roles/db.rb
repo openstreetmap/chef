@@ -29,6 +29,17 @@ default_attributes(
           { :database => "replication", :user => "replication", :address => "10.0.64.50/32" }  # snap-03
         ]
       }
+    },
+    :pgbackrest => {
+      :credentials_bag => "db",
+      :credentials_item => "aws",
+      :repo_type => "s3",
+      :repo_path => "/",
+      :repo_s3_bucket => "openstreetmap-wal-prod-85d400",
+      :repo_s3_endpoint => "s3.eu-north-1.amazonaws.com",
+      :repo_s3_key => "wal_prod_access_key_id",
+      :repo_s3_key_secret => "wal_prod_secret_access_key",
+      :repo_s3_region => "eu-north-1"
     }
   },
   :sysctl => {
