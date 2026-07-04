@@ -150,6 +150,9 @@ $wgLanguageCode = "en";
 $wgPageLanguageUseDB = true;
 $wgGroupPermissions['user']['pagelang'] = true;
 
+## Enable the {{USERLANGUAGE}} magic word
+$wgParserEnableUserLanguage = true;
+
 $wgSecretKey = '<%= @secret_key %>';
 
 # Site upgrade key. Must be set to a string (default provided) to turn on the
