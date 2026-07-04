@@ -6,6 +6,12 @@ repo1-path=<%= node[:postgresql][:pgbackrest][:repo_path] %>
 repo1-block=y
 repo1-bundle=y
 repo1-retention-full=<%= node[:postgresql][:pgbackrest][:repo_retention_full] %>
+<% if node[:postgresql][:pgbackrest][:repo_cipher_type] -%>
+repo1-cipher-type=<%= node[:postgresql][:pgbackrest][:repo_cipher_type] %>
+<% end -%>
+<% if node[:postgresql][:pgbackrest][:repo_cipher_pass] -%>
+repo1-cipher-pass=<%= @credentials[node[:postgresql][:pgbackrest][:repo_cipher_pass]] %>
+<% end -%>
 <% if node[:postgresql][:pgbackrest][:repo_s3_bucket] -%>
 repo1-s3-bucket=<%= node[:postgresql][:pgbackrest][:repo_s3_bucket] %>
 <% end -%>

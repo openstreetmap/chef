@@ -35,6 +35,8 @@ default_attributes(
       :credentials_item => "aws",
       :repo_type => "s3",
       :repo_path => "/",
+      :repo_cipher_type => "aes-256-cbc",
+      :repo_cipher_pass => "wal_encryption_key",
       :repo_s3_bucket => "openstreetmap-wal-prod-85d400",
       :repo_s3_endpoint => "s3.eu-north-1.amazonaws.com",
       :repo_s3_key => "wal_prod_access_key_id",
