@@ -39,6 +39,12 @@ template "/etc/pgbackrest.conf" do
   variables :credentials => pgbackrest_credentials
 end
 
+prometheus_exporter "pgbackrest" do
+  port 9854
+  user "postgres"
+  remove_ipc false
+end
+
 node[:postgresql][:versions].each do |version|
   package %W[
     postgresql-#{version}
