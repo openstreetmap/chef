@@ -14,7 +14,7 @@ default_attributes(
           :user => "replication",
           :passwords => { :bag => "db", :item => "passwords" }
         },
-        :restore_command => "/usr/local/bin/openstreetmap-wal-g wal-fetch %f %p"
+        :restore_command => "/bin/pgbackrest --stanza=main archive-get %f %p"
       }
     }
   }
