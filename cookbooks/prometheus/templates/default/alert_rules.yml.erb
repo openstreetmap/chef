@@ -609,6 +609,33 @@ groups:
         keep_firing_for: 150s
         labels:
           alertgroup: "{{ $labels.instance }}"
+  - name: pgbackrest
+    rules:
+      - alert: pgbackrest exporter status
+        expr: pgbackrest_exporter_status == 0
+        for: 1m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+      - alert: pgbackrest repo status
+        expr: pgbackrest_repo_status > 0
+        for: 1m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+      - alert: pgbackrest stanza status
+        expr: pgbackrest_stanza_status > 0
+        for: 1m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+      - alert: pgbackrest backup error status
+        expr: pgbackrest_backup_error_status > 0
+        for: 1m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
+      - alert: pgbackrest wal archive status
+        expr: pgbackrest_wal_archive_status == 0
+        for: 1m
+        labels:
+          alertgroup: "{{ $labels.instance }}"
   - name: planet
     rules:
       - alert: planet dump overdue
