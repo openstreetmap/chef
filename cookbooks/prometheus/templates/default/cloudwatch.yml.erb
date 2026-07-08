@@ -208,11 +208,67 @@ discovery:
           statistics: [Sum]
         - name: StatusCheckFailed_System
           statistics: [Sum]
+    - type: AWS/EC2
+      regions:
+        - eu-north-1
+      roles:
+        - roleArn: "arn:aws:iam::654129064878:role/osm-cloudwatch-export-role" # osm-dev
+      period: 300
+      length: 300
+      metrics:
+        - name: CPUUtilization
+          statistics: [Average]
+        - name: DiskReadOps
+          statistics: [Sum]
+        - name: DiskWriteOps
+          statistics: [Sum]
+        - name: DiskReadBytes
+          statistics: [Sum]
+        - name: DiskWriteBytes
+          statistics: [Sum]
+        - name: NetworkIn
+          statistics: [Sum]
+        - name: NetworkOut
+          statistics: [Sum]
+        - name: NetworkPacketsIn
+          statistics: [Sum]
+        - name: NetworkPacketsOut
+          statistics: [Sum]
+        - name: StatusCheckFailed
+          statistics: [Sum]
+        - name: StatusCheckFailed_Instance
+          statistics: [Sum]
+        - name: StatusCheckFailed_System
+          statistics: [Sum]
     - type: AWS/EBS
       regions:
         - us-east-2
       roles:
         - roleArn: "arn:aws:iam::683740446523:role/osm-cloudwatch-export-role" # osm-render
+      period: 300
+      length: 300
+      metrics:
+        - name: VolumeReadOps
+          statistics: [Sum]
+        - name: VolumeWriteOps
+          statistics: [Sum]
+        - name: VolumeReadBytes
+          statistics: [Sum]
+        - name: VolumeWriteBytes
+          statistics: [Sum]
+        - name: VolumeTotalReadTime
+          statistics: [Sum]
+        - name: VolumeTotalWriteTime
+          statistics: [Sum]
+        - name: VolumeIdleTime
+          statistics: [Sum]
+        - name: VolumeQueueLength
+          statistics: [Average]
+    - type: AWS/EBS
+      regions:
+        - eu-north-1
+      roles:
+        - roleArn: "arn:aws:iam::654129064878:role/osm-cloudwatch-export-role" # osm-dev
       period: 300
       length: 300
       metrics:
