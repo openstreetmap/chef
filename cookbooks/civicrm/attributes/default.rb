@@ -2,6 +2,7 @@
 default[:civicrm][:version] = "5.74.4"
 
 # was used for SotM
+# status: disabled
 # default[:civicrm][:extensions][:cividiscount][:name] = "org.civicrm.module.cividiscount"
 # default[:civicrm][:extensions][:cividiscount][:repository] = "https://lab.civicrm.org/extensions/cividiscount.git"
 # default[:civicrm][:extensions][:cividiscount][:revision] = "3.8.8"
@@ -30,26 +31,30 @@ default[:civicrm][:extensions][:theisland][:name] = "theisland"
 default[:civicrm][:extensions][:theisland][:repository] = "https://lab.civicrm.org/extensions/theisland.git"
 default[:civicrm][:extensions][:theisland][:revision] = "2.3.3"
 
-# civiprospect
-default[:civicrm][:extensions][:civiprospect][:name] = "uk.co.compucorp.civicrm.prospect"
-default[:civicrm][:extensions][:civiprospect][:repository] = "https://github.com/compucorp/uk.co.compucorp.civicrm.prospect.git"
-default[:civicrm][:extensions][:civiprospect][:revision] = "3.1.2"
+# civiprospect - not currently enabled
+# status: uninstalled
+# default[:civicrm][:extensions][:civiprospect][:name] = "uk.co.compucorp.civicrm.prospect"
+# default[:civicrm][:extensions][:civiprospect][:repository] = "https://github.com/compucorp/uk.co.compucorp.civicrm.prospect.git"
+# default[:civicrm][:extensions][:civiprospect][:revision] = "3.1.2"
 
 # advanced fundraising reports
+# status: disabled
 # default[:civicrm][:extensions][:advancedfundraisingreports][:name] = "net.ourpowerbase.report.advancedfundraising"
 # default[:civicrm][:extensions][:advancedfundraisingreports][:repository] = "https://github.com/jmcclelland/net.ourpowerbase.report.advancedfundraising.git"
 # default[:civicrm][:extensions][:advancedfundraisingreports][:revision] = "3d5bd6cab70ba338bc85d42b4853dd4a6f8c9f9b"
 
 # membership churn report
-default[:civicrm][:extensions][:membershipchurn][:name] = "uk.co.vedaconsulting.membershipchurnchart"
-default[:civicrm][:extensions][:membershipchurn][:repository] = "https://github.com/veda-consulting/uk.co.vedaconsulting.membershipchurnchart.git"
-default[:civicrm][:extensions][:membershipchurn][:revision] = "v1.1"
+# status: uninstalled
+# default[:civicrm][:extensions][:membershipchurn][:name] = "uk.co.vedaconsulting.membershipchurnchart"
+# default[:civicrm][:extensions][:membershipchurn][:repository] = "https://github.com/veda-consulting/uk.co.vedaconsulting.membershipchurnchart.git"
+# default[:civicrm][:extensions][:membershipchurn][:revision] = "v1.1"
 
-# pivot reports for civiprospect
-default[:civicrm][:extensions][:pivotreport][:name] = "uk.co.compucorp.civicrm.pivotreport"
-# apply patch, pivot reports is currently broken. See https://github.com/compucorp/uk.co.compucorp.civicrm.pivotreport/pull/142
-default[:civicrm][:extensions][:pivotreport][:repository] = "https://github.com/compucorp/uk.co.compucorp.civicrm.pivotreport.git"
-default[:civicrm][:extensions][:pivotreport][:revision] = "9a96eee9e0541568440af54e9408d5f462ae00df"
+# pivot reports for civiprospect - not currently enabled
+# status: disabled
+# default[:civicrm][:extensions][:pivotreport][:name] = "uk.co.compucorp.civicrm.pivotreport"
+# # apply patch, pivot reports is currently broken. See https://github.com/compucorp/uk.co.compucorp.civicrm.pivotreport/pull/142
+# default[:civicrm][:extensions][:pivotreport][:repository] = "https://github.com/compucorp/uk.co.compucorp.civicrm.pivotreport.git"
+# default[:civicrm][:extensions][:pivotreport][:revision] = "9a96eee9e0541568440af54e9408d5f462ae00df"
 
 # extra rules for membership renewal
 default[:civicrm][:extensions][:membershipextra][:name] = "com.skvare.membershipextra"
@@ -66,10 +71,11 @@ default[:civicrm][:extensions][:omnipay][:name] = "nz.co.fuzion.omnipaymultiproc
 default[:civicrm][:extensions][:omnipay][:repository] = "https://github.com/eileenmcnaughton/nz.co.fuzion.omnipaymultiprocessor.git"
 default[:civicrm][:extensions][:omnipay][:revision] = "3.23"
 
-# Pay with Stripe
-default[:civicrm][:extensions][:stripe][:name] = "com.drastikbydesign.stripe"
-default[:civicrm][:extensions][:stripe][:repository] = "https://lab.civicrm.org/extensions/stripe.git"
-default[:civicrm][:extensions][:stripe][:revision] = "6.10.2"
+# Pay with Stripe - not currently enabled
+# status: uninstalled
+# default[:civicrm][:extensions][:stripe][:name] = "com.drastikbydesign.stripe"
+# default[:civicrm][:extensions][:stripe][:repository] = "https://lab.civicrm.org/extensions/stripe.git"
+# default[:civicrm][:extensions][:stripe][:revision] = "6.10.2"
 
 # Stripe requires mjwshared ("payment shared")
 default[:civicrm][:extensions][:mjwshared][:name] = "com.mjwconsult.mjwshared"
@@ -89,11 +95,16 @@ default[:civicrm][:extensions][:firewall][:revision] = "1.5.10"
 # qfsessionwarning Alerts the user about expired session cookies,
 # for example if a user walks away from a contribution page and comes back later
 # Also reduces messages in the log.
-default[:civicrm][:extensions][:qfsessionwarning][:name] = "org.civicrm.qfsessionwarning"
-default[:civicrm][:extensions][:qfsessionwarning][:repository] = "https://lab.civicrm.org/extensions/qfsessionwarning.git"
-default[:civicrm][:extensions][:qfsessionwarning][:revision] = "1.3"
+# status: uninstalled
+# default[:civicrm][:extensions][:qfsessionwarning][:name] = "org.civicrm.qfsessionwarning"
+# default[:civicrm][:extensions][:qfsessionwarning][:repository] = "https://lab.civicrm.org/extensions/qfsessionwarning.git"
+# default[:civicrm][:extensions][:qfsessionwarning][:revision] = "1.3"
 
 # The contribution forms like to use a geocoder. Use the CiviCRM geocoder which uses nominatim
-default[:civicrm][:extensions][:geocoder][:name] = "org.wikimedia.geocoder"
-default[:civicrm][:extensions][:geocoder][:repository] = "https://github.com/eileenmcnaughton/org.wikimedia.geocoder.git"
-default[:civicrm][:extensions][:geocoder][:revision] = "1.12"
+# status: uninstalled
+# default[:civicrm][:extensions][:geocoder][:name] = "org.wikimedia.geocoder"
+# default[:civicrm][:extensions][:geocoder][:repository] = "https://github.com/eileenmcnaughton/org.wikimedia.geocoder.git"
+# default[:civicrm][:extensions][:geocoder][:revision] = "1.12"
+
+# Undeclared: iats (com.iatspayments.civicrm) - 1.9.2 - status: uninstalled
+# Undeclared: mailchimp (uk.co.vedaconsulting.mailchimp) -  2.0.1 - status: disabled
