@@ -102,6 +102,19 @@ wordpress_theme "varia" do
   repository "https://public-api.wordpress.com/rest/v1/themes/download/varia.zip"
 end
 
+directory "/opt/civicrm-cli" do
+  owner "root"
+  group "root"
+  mode "755"
+end
+
+remote_file "/opt/civicrm-cli/cv" do
+  source "https://download.civicrm.org/cv/cv.phar"
+  owner "root"
+  group "root"
+  mode "755"
+end
+
 civicrm_version = node[:civicrm][:version]
 civicrm_directory = "/srv/supporting.openstreetmap.org/wp-content/plugins/civicrm"
 
