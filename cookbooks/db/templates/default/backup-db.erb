@@ -5,6 +5,21 @@
 D=`date +%Y-%m-%d`
 F=/store/backup/osm-${D}.dmp
 
-pg_dump --user=backup --format=custom --file=$F openstreetmap && \
+pg_dump --user=backup \
+        --format=custom \
+        --data-only \
+        --table=users \
+        --table=changesets \
+        --table=changeset_tags \
+        --table=changeset_comments \
+        --table=nodes \
+        --table=node_tags \
+        --table=relations \
+        --table=relation_tags \
+        --table=relation_members \
+        --table=ways \
+        --table=way_tags \
+        --table=way_nodes \
+        --file=$F openstreetmap && \
   rsync --preallocate $F backup.openstreetmap.org::backup && \
   rm -f $F
