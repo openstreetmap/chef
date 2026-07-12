@@ -21,8 +21,6 @@ include_recipe "git"
 include_recipe "postgresql"
 include_recipe "ruby"
 
-aws_credentials = data_bag_item("db", "aws")
-
 package %w[
   cmake
   g++
@@ -84,19 +82,10 @@ end
 
 package "lzop"
 
-remote_file "/usr/local/bin/wal-g" do
-  action :create
-  source "https://github.com/wal-g/wal-g/releases/download/v2.0.1/wal-g-pg-ubuntu-20.04-amd64"
-  owner "root"
-  group "root"
-  mode "755"
+file "/usr/local/bin/wal-g" do
+  action :delete
 end
 
-template "/usr/local/bin/openstreetmap-wal-g" do
-  source "wal-g.erb"
-  owner "root"
-  group "postgres"
-  mode "750"
-  variables :aws_credentials => aws_credentials
-  sensitive true
+file "/usr/local/bin/openstreetmap-wal-g" do
+  action :delete
 end
