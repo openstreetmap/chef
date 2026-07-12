@@ -79,13 +79,3 @@ node[:postgresql][:versions].each do |db_version|
     group "root"
   end
 end
-
-package "lzop"
-
-file "/usr/local/bin/wal-g" do
-  action :delete
-end
-
-file "/usr/local/bin/openstreetmap-wal-g" do
-  action :delete
-end
