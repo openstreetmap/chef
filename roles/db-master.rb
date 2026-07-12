@@ -7,7 +7,7 @@ default_attributes(
     :settings => {
       :defaults => {
         :archive_mode => "on",
-        :archive_command => "/bin/pgbackrest --stanza=main archive-push %p && /usr/local/bin/openstreetmap-wal-g wal-push %p --walg-prevent-wal-overwrite=true",
+        :archive_command => "/bin/pgbackrest --stanza=main archive-push %p",
         :wal_keep_size => "16384"
       }
     }
