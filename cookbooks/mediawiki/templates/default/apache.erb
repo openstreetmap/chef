@@ -44,8 +44,13 @@
   RewriteCond %{REQUEST_URI} ^/w/index\.php$ [OR]
   RewriteCond %{REQUEST_URI} ^/wiki/Special: [OR]
   RewriteCond %{REQUEST_URI} ^/w/api\.php$
-  RewriteCond %{HTTP_REFERER} ^-?$
-  RewriteCond %{HTTP_USER_AGENT} ((CriOS|Chrome)/[1-9][0-9]?\.0\.|Chrome/100\.0\.|Chrome/122\.0\.0\.0|(Firefox|FxiOS)/[1-6]?[0-9]\.|MSIE\ [5-9]\.0|Opera/[8-9]\.|Windows\ NT\ [3-5]\.|Version/[3-5]\.[0-1]) [NC]
+  RewriteCond %{HTTP_USER_AGENT} "((CriOS|Chrome)/[1-9][0-9]?\.0\.|Chrome/100\.0\.|Chrome/122\.0\.0\.0|(Firefox|FxiOS)/[1-6]?[0-9]\.|MSIE\ [5-9]\.0|Opera/[8-9]\.|Windows\ NT\ [3-5]\.|Version/[3-5]\.[0-1])" [NC,OR]
+  RewriteCond %{HTTP_USER_AGENT} "^Mozilla/5\.0 \(Windows NT 10\.0; Win64; x64\) AppleWebKit/537\.36 \(KHTML, like Gecko\) Chrome/(76\.0\.2474\.42|103\.0\.0\.0|104\.0\.5112\.81|106\.0\.5249\.119|107\.0\.0\.0|108\.0\.0\.0|109\.0\.0\.0|110\.0\.0\.0|111\.0\.0\.0|112\.0\.0\.0|113\.0\.0\.0|116\.0\.0\.0|117\.0\.0\.0|118\.0\.0\.0|120\.0\.0\.0|123\.0\.0\.0|124\.0\.0\.0|131\.0\.0\.0|133\.0\.0\.0) Safari/537\.36$" [NC,OR]
+  RewriteCond %{HTTP_USER_AGENT} "^Mozilla/5\.0 \(Windows NT 10\.0; Win64; x64\) AppleWebKit/537\.36 \(KHTML, like Gecko\) Chrome/105\.0\.0\.0 Safari/537\.3$" [NC]
+  RewriteRule ^ - [R=429,L]
+
+  RewriteCond %{REQUEST_METHOD} ^(GET|HEAD)$
+  RewriteCond %{HTTP_REFERER} =https://<%= @name %>
   RewriteRule ^ - [R=429,L]
 
   # Historical Compatibility Links
