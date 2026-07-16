@@ -34,3 +34,11 @@ imagery_layer "zw_topo_50k" do
   default_layer true
   revision 5
 end
+
+imagery_layer "zw_topo_250k" do
+  site "zimbabwe-topo.openstreetmap.org.za"
+  title "Zimbabwe Topo 250k"
+  projection "EPSG:3857"
+  source "/store/imagery/zw/250k-topo/combined.webp.google.r_lanczos.bs_256.aligned.cog.tif"
+  copyright "Surveyor-General, Zimbabwe"
+end
