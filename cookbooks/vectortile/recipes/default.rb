@@ -118,6 +118,8 @@ git themepark_directory do
   revision node[:vectortile][:themepark][:version]
   user "tileupdate"
   group "tileupdate"
+  notifies :restart, "service[tilekiln]"
+  notifies :restart, "service[tilekiln-prometheus]"
 end
 
 tilekiln_directory = "/opt/tilekiln"
