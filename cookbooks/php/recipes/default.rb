@@ -25,6 +25,14 @@ package %W[
   php#{node[:php][:version]}-fpm
 ]
 
+# The apache php module is incompatible with the event MPM
+# Remove it when apache is configured to use event.
+if node[:apache] && node[:apache][:mpm] == "event"
+  package "libapache2-mod-php#{node[:php][:version]}" do
+    action :remove
+  end
+end
+
 template "/etc/php/#{node[:php][:version]}/fpm/conf.d/99-chef.ini" do
   source "php-fpm.ini.erb"
   owner "root"
