@@ -668,6 +668,9 @@ noreply:
   local_part_suffix = +*
   local_part_suffix_optional
 <% end -%>
+<% if details[:condition] -%>
+  condition = <%= details[:condition] %>
+<% end -%>
 <% if details[:host] -%>
 <% if details[:host].kind_of?(Array) -%>
   route_data = <%= details[:host].join(":") %> byname

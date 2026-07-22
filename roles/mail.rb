@@ -47,6 +47,7 @@ default_attributes(
       :otrs => {
         :comment => "otrs.openstreetmap.org",
         :domains => ["otrs.openstreetmap.org"],
+        :condition => "${if or {{def:h_auto-submitted:}{def:h_x-autorespond:}} {no}{yes}}",
         :host => "naga.dub.openstreetmap.org"
       },
       :join => {
