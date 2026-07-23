@@ -920,6 +920,11 @@ groups:
           alertgroup: tile
         annotations:
           render_rate: "{{ $value }} tiles/s"
+      - alert: low zoom render time
+        expr: node_systemd_unit_state{state="active",name="render-lowzoom.service"} == 1
+        for: 24h
+        labels:
+          alertgroup: tile
   - name: time
     rules:
       - alert: clock not synchronising
