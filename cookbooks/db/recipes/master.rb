@@ -118,9 +118,20 @@ CGIMAP_PERMISSIONS = {
 }.freeze
 
 PLANETDUMP_PERMISSIONS = {
+  "changeset_comments" => :select,
+  "changeset_tags" => :select,
+  "changesets" => :select,
+  "node_tags" => :select,
+  "nodes" => :select,
   "note_comments" => :select,
   "notes" => :select,
-  "users" => :select
+  "relation_members" => :select,
+  "relation_tags" => :select,
+  "relations" => :select,
+  "users" => :select,
+  "way_nodes" => :select,
+  "way_tags" => :select,
+  "ways" => :select
 }.freeze
 
 PLANETDIFF_PERMISSIONS = {

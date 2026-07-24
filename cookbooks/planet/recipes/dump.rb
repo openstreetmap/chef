@@ -20,6 +20,8 @@
 include_recipe "git"
 include_recipe "planet::user"
 
+db_passwords = data_bag_item("db", "passwords")
+
 package %w[
   gcc
   g++
@@ -93,19 +95,22 @@ directory "/store/planetdump" do
   recursive true
 end
 
-%w[planetdump planetdump-trigger].each do |program|
-  template "/usr/local/bin/#{program}" do
-    source "#{program}.erb"
-    owner "root"
-    group "root"
-    mode "755"
-  end
+template "/usr/local/bin/planetdump" do
+  source "planetdump.erb"
+  owner "root"
+  group "root"
+  mode "755"
+  variables :password => db_passwords["planetdump"]
 end
 
 systemd_service "planetdump@" do
-  description "Planet dump for %i"
+  action :delete
+end
+
+systemd_service "planetdump" do
+  description "Planet dump"
   user "planet"
-  exec_start "/usr/local/bin/planetdump %i"
+  exec_start "/usr/local/bin/planetdump"
   memory_max "64G"
   sandbox :enable_network => true
   protect_home "tmpfs"
@@ -119,15 +124,23 @@ systemd_service "planetdump@" do
   ]
 end
 
-systemd_service "planetdump-trigger" do
-  description "Planet dump trigger"
-  user "root"
-  exec_start "/usr/local/bin/planetdump-trigger"
-  sandbox true
-  restrict_address_families "AF_UNIX"
+systemd_timer "planetdump" do
+  description "Planet dump"
+  on_calendar "Mon 02:00 #{node[:timezone]}"
+end
+
+service "planetdump.timer" do
+  action [:enable, :start]
 end
 
 service "planetdump-trigger" do
-  action [:enable, :start]
-  subscribes :restart, "template[/usr/local/bin/planetdump-trigger]"
+  action [:disable, :stop]
+end
+
+systemd_service "planetdump-trigger" do
+  action :delete
+end
+
+file "/usr/local/bin/planetdump-trigger" do
+  action :delete
 end
