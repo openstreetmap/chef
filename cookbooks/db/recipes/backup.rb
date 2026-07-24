@@ -41,5 +41,5 @@ systemd_timer "backup-db" do
 end
 
 service "backup-db.timer" do
-  action [:enable, :start]
+  action [:disable, :stop]
 end
