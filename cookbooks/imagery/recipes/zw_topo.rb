@@ -32,7 +32,7 @@ imagery_layer "zw_topo_50k" do
   source "/store/imagery/zw/50k-topo/combined.webp.google.r_lanczos.bs_256.aligned.cog.tif"
   copyright "Surveyor-General, Zimbabwe"
   default_layer true
-  revision 5
+  revision 6
 end
 
 imagery_layer "zw_topo_250k" do
@@ -41,4 +41,5 @@ imagery_layer "zw_topo_250k" do
   projection "EPSG:3857"
   source "/store/imagery/zw/250k-topo/combined.webp.google.r_lanczos.bs_256.aligned.cog.tif"
   copyright "Surveyor-General, Zimbabwe"
+  revision 2
 end
