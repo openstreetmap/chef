@@ -119,16 +119,21 @@ CGIMAP_PERMISSIONS = {
 
 PLANETDUMP_PERMISSIONS = {
   "changeset_comments" => :select,
+  "changeset_comments_id_seq" => :select,
   "changeset_tags" => :select,
   "changesets" => :select,
+  "changesets_id_seq" => :select,
   "node_tags" => :select,
   "nodes" => :select,
   "note_comments" => :select,
+  "note_comments_id_seq" => :select,
   "notes" => :select,
+  "notes_id_seq" => :select,
   "relation_members" => :select,
   "relation_tags" => :select,
   "relations" => :select,
   "users" => :select,
+  "users_id_seq" => :select,
   "way_nodes" => :select,
   "way_tags" => :select,
   "ways" => :select
@@ -271,6 +276,7 @@ end
     permissions "openstreetmap" => [:all],
                 "rails" => [:usage],
                 "cgimap" => CGIMAP_PERMISSIONS[sequence],
+                "planetdump" => PLANETDUMP_PERMISSIONS[sequence],
                 "backup" => [:select],
                 "grant" => [:select]
   end
