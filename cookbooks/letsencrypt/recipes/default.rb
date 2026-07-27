@@ -152,7 +152,9 @@ certificates = search(:node, "letsencrypt:certificates").each_with_object({}) do
 end
 
 certificates.each do |name, details|
-  template "/srv/acme.openstreetmap.org/requests/#{name}" do
+  certificate_path = "/srv/acme.openstreetmap.org/config/live/#{name}/fullchain.pem"
+
+  request = template "/srv/acme.openstreetmap.org/requests/#{name}" do
     source "request.erb"
     owner "root"
     group "letsencrypt"
@@ -161,13 +163,15 @@ certificates.each do |name, details|
   end
 
   execute "/srv/acme.openstreetmap.org/requests/#{name}" do
-    action :nothing
     command "/srv/acme.openstreetmap.org/requests/#{name}"
     cwd "/srv/acme.openstreetmap.org"
     user "letsencrypt"
     group "letsencrypt"
-    subscribes :run, "template[/srv/acme.openstreetmap.org/requests/#{name}]"
-    not_if { kitchen? }
+    only_if do
+      !kitchen? &&
+        (request.updated_by_last_action? ||
+         !::File.exist?(certificate_path))
+    end
   end
 end
 
