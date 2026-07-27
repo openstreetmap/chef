@@ -154,7 +154,7 @@ end
 certificates.each do |name, details|
   certificate_path = "/srv/acme.openstreetmap.org/config/live/#{name}/fullchain.pem"
 
-  request = template "/srv/acme.openstreetmap.org/requests/#{name}" do
+  template "/srv/acme.openstreetmap.org/requests/#{name}" do
     source "request.erb"
     owner "root"
     group "letsencrypt"
@@ -162,16 +162,21 @@ certificates.each do |name, details|
     variables details
   end
 
+  # This is used to trigger the execute request resource if certificate does not exist yet
+  notify_group "letsencrypt-request-#{name}" do
+    action :run
+    not_if { ::File.exist?(certificate_path) }
+  end
+
   execute "/srv/acme.openstreetmap.org/requests/#{name}" do
+    action :nothing
     command "/srv/acme.openstreetmap.org/requests/#{name}"
     cwd "/srv/acme.openstreetmap.org"
     user "letsencrypt"
     group "letsencrypt"
-    only_if do
-      !kitchen? &&
-        (request.updated_by_last_action? ||
-         !::File.exist?(certificate_path))
-    end
+    subscribes :run, "template[/srv/acme.openstreetmap.org/requests/#{name}]"
+    subscribes :run, "notify_group[letsencrypt-request-#{name}]"
+    not_if { kitchen? }
   end
 end
 
