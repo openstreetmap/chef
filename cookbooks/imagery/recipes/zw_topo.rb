@@ -32,7 +32,7 @@ imagery_layer "zw_topo_50k" do
   source "/store/imagery/zw/50k-topo/combined.webp.google.r_lanczos.bs_256.aligned.cog.tif"
   copyright "Surveyor-General, Zimbabwe"
   default_layer true
-  revision 6
+  revision 7
 end
 
 imagery_layer "zw_topo_250k" do
