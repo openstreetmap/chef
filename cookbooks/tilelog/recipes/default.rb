@@ -97,5 +97,5 @@ systemd_service "ofastlylog-hourly" do
   exec_start "/usr/local/bin/ofastlylog-hourly"
   nice 10
   sandbox :enable_network => true
-  protect_home True
+  protect_home true
 end
