@@ -77,7 +77,7 @@ python_virtualenv ofastlylog_directory do
   interpreter "/usr/bin/python3"
 end
 
-python_package "tilelog" do
+python_package "ofastlylog" do
   python_virtualenv ofastlylog_directory
   python_version "3"
   version "0.3.0"
