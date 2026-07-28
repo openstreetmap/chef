@@ -24,6 +24,7 @@ include_recipe "python"
 aws_credentials = data_bag_item("tilelog", "aws")
 
 tilelog_directory = "/opt/tilelog"
+ofastlylog_directory = "/opt/ofastlylog"
 tilelog_output_directory = node[:tilelog][:output_directory]
 
 python_virtualenv tilelog_directory do
@@ -70,4 +71,31 @@ end
 
 service "tilelog.timer" do
   action [:enable, :start]
+end
+
+python_virtualenv ofastlylog_directory do
+  interpreter "/usr/bin/python3"
+end
+
+python_package "tilelog" do
+  python_virtualenv ofastlylog_directory
+  python_version "3"
+  version "0.3.0"
+end
+
+template "/usr/local/bin/ofastlylog-hourly" do
+  source "ofastlylog-hourly.erb"
+  owner "root"
+  group "root"
+  mode "755"
+  variables :aws_credentials => aws_credentials
+end
+
+systemd_service "ofastlylog-hourly" do
+  description "ofastlylog analysis"
+  user "planet"
+  exec_start "/usr/local/bin/ofastlylog-hourly"
+  nice 10
+  sandbox :enable_network => true
+  protect_home True
 end
