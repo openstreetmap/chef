@@ -24,11 +24,12 @@ default_action :create
 property :extension, :kind_of => String, :name_property => true
 property :cluster, :kind_of => String, :required => true
 property :database, :kind_of => String, :required => true
+property :owner, :kind_of => String
 
 action :create do
   unless cluster.extensions(new_resource.database).include?(new_resource.extension)
     converge_by "create extension #{new_resource.extension}" do
-      cluster.execute(:command => "CREATE EXTENSION #{new_resource.extension}", :database => new_resource.database)
+      cluster.execute(:command => "CREATE EXTENSION #{new_resource.extension}", :database => new_resource.database, :user => new_resource.owner)
     end
   end
 end

@@ -7,14 +7,11 @@ default_attributes(
       :grant => { :status => :administrator },
       :tomh => { :status => :administrator },
       :matt => { :status => :administrator },
-      :jburgess => { :status => :administrator }
+      :jburgess => { :status => :administrator },
+      :pnorman => { :status => :administrator }
     }
   },
   :networking => {
-    :roles => {
-      :internal => { :metric => 200 },
-      :external => { :metric => 100 }
-    },
     :search => ["openstreetmap.org"]
   },
   :prometheus => {
@@ -76,6 +73,12 @@ default_attributes(
       :comment => "Tune CPU scheduler for server scheduling",
       :parameters => {
         "kernel.sched_autogroup_enabled" => 0
+      }
+    },
+    :default_console_log_level => {
+      :comment => "Set console log level defaults",
+      :parameters => {
+        "kernel.printk" => "4 4 1 7"
       }
     }
   }

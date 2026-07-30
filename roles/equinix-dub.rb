@@ -2,35 +2,38 @@ name "equinix-dub"
 description "Role applied to all servers at Equinix Dublin"
 
 default_attributes(
+  :location => "Dublin, Ireland",
   :sysctl => {
     :enable_bbr_10g => {
-      :comment => "Enable BBR. Equinix Dub has 10G uplink unlikely to buffer overrun",
+      :comment => "Enable BBR. Equinix DUB has 3Gbps uplinks",
       :parameters => {
-        "net.ipv4.tcp_congestion_control" => "bbr",
-        "net.ipv4.tcp_notsent_lowat" => "16384"
+        "net.core.default_qdisc" => "fq",
+        "net.ipv4.tcp_congestion_control" => "bbr"
       }
     }
   },
   :networking => {
-    :roles => {
+    :interfaces => {
       :internal => {
+        :interface => "bond0",
+        :role => :internal,
+        :metric => 200,
         :inet => {
           :prefix => "20",
           :gateway => "10.0.64.2",
           :routes => {
             "10.0.0.0/8" => { :via => "10.0.64.2" }
-          }
-        }
-      },
-      :external => {
-        :zone => "dub",
-        :inet => {
-          :prefix => "27",
-          :gateway => "184.104.226.97"
+          },
+          :rules => [
+            { :to => "10.0.0.0/8", :table => "main", :priority => 50 },
+            { :to => "172.16.0.0/12", :table => "main", :priority => 50 },
+            { :to => "192.168.0.0/16", :table => "main", :priority => 50 }
+          ]
         },
-        :inet6 => {
-          :prefix => "64",
-          :gateway => "2001:470:1:b3b::1"
+        :bond => {
+          :mode => "802.3ad",
+          :lacprate => "fast",
+          :xmithashpolicy => "layer3+4"
         }
       }
     }
@@ -44,14 +47,13 @@ default_attributes(
     }
   },
   :web => {
-    :fileserver => "fafnir",
     :readonly_database_host => "snap-03.dub.openstreetmap.org"
   }
 )
 
 override_attributes(
   :networking => {
-    :nameservers => ["10.0.64.2", "8.8.8.8", "8.8.4.4"],
+    :nameservers => ["10.0.64.2", "74.82.42.42", "2001:470:20::2"],
     :search => ["dub.openstreetmap.org", "openstreetmap.org"]
   },
   :ntp => {

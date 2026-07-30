@@ -21,6 +21,8 @@ include_recipe "mediawiki"
 
 passwords = data_bag_item("foundation", "passwords")
 
+package "lua5.1" # newer versions do not work with Scribuntu!
+
 mediawiki_site "osmfoundation.org" do
   aliases ["wiki.osmfoundation.org", "www.osmfoundation.org",
            "foundation.openstreetmap.org", "foundation.osm.org"]
@@ -34,24 +36,30 @@ mediawiki_site "osmfoundation.org" do
   database_user "osmf-wikiuser"
   database_password passwords["wiki"]["database"]
   admin_password passwords["wiki"]["admin"]
-  skin "OSMFoundation"
-  logo "/w/skins/OSMFoundation/img/logo.png"
+  skin "vector-2022"
+  logo "/osm_logo.svg"
   email_contact "webmaster@openstreetmap.org"
   email_sender "wiki@noreply.openstreetmap.org"
   email_sender_name "OSMF Wiki"
   private_accounts true
-  extra_file_extensions %w[mp3 pptx]
-  version "1.39"
+  extra_file_extensions %w[mp3 pptx txt]
+  version "1.43"
 end
 
-mediawiki_skin "OSMFoundation" do
+# mediawiki_skin "OSMFoundation" do
+#   site "osmfoundation.org"
+#   repository "https://github.com/osmfoundation/osmf-mediawiki-skin.git"
+#   revision "master"
+#   legacy false
+# end
+
+mediawiki_extension "Scribunto" do
   site "osmfoundation.org"
-  repository "https://github.com/osmfoundation/osmf-mediawiki-skin.git"
-  revision "master"
-  legacy false
+  template "mw-ext-Scribunto.inc.php.erb"
+  template_cookbook "foundation"
 end
 
-cookbook_file "/srv/osmfoundation.org/Wiki.png" do
+cookbook_file "/srv/osmfoundation.org/osm_logo.svg" do
   owner node[:mediawiki][:user]
   group node[:mediawiki][:group]
   mode "644"
@@ -62,4 +70,17 @@ template "/srv/osmfoundation.org/robots.txt" do
   group node[:mediawiki][:group]
   mode "644"
   source "robots.txt.erb"
+end
+
+directory "/srv/osmfoundation.org/.well-known" do
+  owner node[:mediawiki][:user]
+  group node[:mediawiki][:group]
+  mode "755"
+end
+
+cookbook_file "/srv/osmfoundation.org/.well-known/funding-manifest-urls" do
+  owner node[:mediawiki][:user]
+  group node[:mediawiki][:group]
+  mode "644"
+  source ".well-known/funding-manifest-urls"
 end

@@ -6,7 +6,9 @@ default_attributes(
     :users => {
       :jochen => {
         :status => :administrator
-      },
+      }
+    },
+    :groups => {
       :taginfo => {
         :members => [:jochen, :tomh]
       }
@@ -25,6 +27,9 @@ default_attributes(
   },
   :passenger => {
     :max_pool_size => 50
+  },
+  :ruby => {
+    :version => "3.4"
   },
   :taginfo => {
     :sites => [

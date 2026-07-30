@@ -5,16 +5,9 @@
 # Exit on error
 set -e
 
-# Get the name of the file and the expected pattern
-file="$1"
-pattern="^osm-([0-9]{4})-([0-9]{2})-([0-9]{2})\.dmp$"
-
-# Give up now if the file isn't a database dump
-[[ $file =~ $pattern ]] || exit 0
-
-# Save the year and date from the file name
-year="${BASH_REMATCH[1]}"
-date="${year:2:2}${BASH_REMATCH[2]}${BASH_REMATCH[3]}"
+# Save the year and date
+year=$(date +%Y)
+date=$(date +%y%m%d)
 
 # Check the lock
 if [ -f /tmp/planetdump.lock ]; then
@@ -42,16 +35,37 @@ trap cleanup EXIT
 cd /store/planetdump
 
 # Cleanup
+rm -rf osm.dmp
 rm -rf users
 rm -rf changesets changeset_tags changeset_comments
 rm -rf nodes node_tags
 rm -rf ways way_tags way_nodes
 rm -rf relations relation_tags relation_members
 
+# Dun the database dump
+PGPASSWORD="<%= @password %>" \
+  pg_dump --host=<%= node[:web][:database_host] %> \
+          --user=planetdump \
+          --format=custom \
+          --data-only \
+          --table=users \
+          --table=changesets \
+          --table=changeset_tags \
+          --table=changeset_comments \
+          --table=nodes \
+          --table=node_tags \
+          --table=relations \
+          --table=relation_tags \
+          --table=relation_members \
+          --table=ways \
+          --table=way_tags \
+          --table=way_nodes \
+          --file=/store/planetdump/osm.dmp openstreetmap
+
 # Run the dump
 time nice -n 19 /opt/planet-dump-ng/planet-dump-ng \
      --max-concurrency=4 \
-     -c "pbzip2 -c" -f "/store/backup/${file}" --dense-nodes=1 \
+     -c "pbzip2 -c" -f "/store/planetdump/osm.dmp" --dense-nodes=1 \
      -C "changesets-${date}.osm.bz2" \
      -D "discussions-${date}.osm.bz2" \
      -x "planet-${date}.osm.bz2" -X "history-${date}.osm.bz2" \

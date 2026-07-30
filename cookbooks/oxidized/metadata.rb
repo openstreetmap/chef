@@ -6,6 +6,5 @@ description       "Configures oxidized to backup equipment configuration"
 
 version           "1.0.0"
 supports          "ubuntu"
-depends           "accounts"
 depends           "git"
 depends           "ruby"

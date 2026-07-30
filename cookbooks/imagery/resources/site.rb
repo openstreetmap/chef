@@ -86,8 +86,15 @@ action :create do
     mode "644"
   end
 
+  cookbook_file "/srv/#{new_resource.site}/transparent.png" do
+    source "transparent.png"
+    user "root"
+    group "root"
+    mode "644"
+  end
+
   layers = Dir.glob("/srv/imagery/layers/#{new_resource.site}/*.yml").collect do |path|
-    YAML.safe_load(::File.read(path), :permitted_classes => [Symbol])
+    YAML.safe_load_file(path, :permitted_classes => [Symbol])
   end
 
   declare_resource :template, "/srv/#{new_resource.site}/imagery.js" do
@@ -103,21 +110,32 @@ action :create do
 
   systemd_service "mapserv-fcgi-#{new_resource.site}" do
     description "Map server for #{new_resource.site} layer"
-    environment "MS_MAP_PATTERN" => "^/srv/imagery/mapserver/",
+    environment "GDAL_NUM_THREADS" => "2",
+                "GDAL_CACHEMAX" => "2048",
                 "MS_DEBUGLEVEL" => "0",
                 "MS_ERRORFILE" => "stderr",
-                "GDAL_CACHEMAX" => "512"
+                "CPL_VSIL_CURL_CACHE_SIZE" => "200000000",
+                "GDAL_BAND_BLOCK_CACHE" => "HASHSET",
+                "GDAL_DISABLE_READDIR_ON_OPEN" => "EMPTY_DIR",
+                "GDAL_INGESTED_BYTES_AT_OPEN" => "32768",
+                "GDAL_HTTP_MERGE_CONSECUTIVE_RANGES" => "YES",
+                "GDAL_HTTP_MULTIPLEX" => "YES",
+                "VSI_CACHE" => "TRUE",
+                "VSI_CACHE_SIZE" => "5000000",
+                "GDAL_HTTP_TCP_KEEPALIVE" => "YES",
+                "GDAL_HTTP_VERSION" => "2TLS",
+                "GDAL_ENABLE_WMS_CACHE" => "NO",
+                "LD_PRELOAD" => "libtcmalloc_minimal.so.4"
     limit_nofile 16384
-    memory_high "1G"
-    memory_max "4G"
+    limit_core 0
     user "imagery"
     group "imagery"
     exec_start "/usr/bin/multiwatch -f 8 --signal=TERM -- /usr/lib/cgi-bin/mapserv"
+    exec_stop "/usr/local/bin/mapserver-fcgi-shutdown /run/mapserver-fastcgi/layer-#{new_resource.site}.socket 8"
     standard_input "socket"
-    sandbox true
+    sandbox :enable_network => true
     restrict_address_families "AF_UNIX"
-    # Terminate service after 30mins. Service is socket activated
-    runtime_max_sec 1800
+    timeout_stop_sec 60
     not_if { new_resource.uses_tiler }
   end
 
@@ -141,6 +159,28 @@ action :create do
   systemd_unit "mapserv-fcgi-#{new_resource.site}.socket" do
     action [:enable, :start]
     subscribes :restart, "systemd_socket[mapserv-fcgi-#{new_resource.site}]"
+    not_if { new_resource.uses_tiler }
+  end
+
+  # mapserver leaks memory, so restart it regularly. It is activated automatically by socket
+  systemd_service "mapserv-fcgi-#{new_resource.site}-stop" do
+    type "simple"
+    user "root"
+    exec_start "/bin/systemctl --quiet stop mapserv-fcgi-#{new_resource.site}.service"
+    sandbox true
+    restrict_address_families "AF_UNIX"
+    not_if { new_resource.uses_tiler }
+  end
+
+  systemd_timer "mapserv-fcgi-#{new_resource.site}-stop" do
+    on_boot_sec "10m"
+    on_unit_inactive_sec "6h"
+    randomized_delay_sec "20m"
+    not_if { new_resource.uses_tiler }
+  end
+
+  service "mapserv-fcgi-#{new_resource.site}-stop.timer" do
+    action [:enable, :start]
     not_if { new_resource.uses_tiler }
   end
 

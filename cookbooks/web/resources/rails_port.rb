@@ -41,12 +41,16 @@ property :database_port, String
 property :database_name, String
 property :database_username, String
 property :database_password, String
+property :gps_database_host, String
+property :gps_database_port, String
+property :gps_database_name, String
+property :gps_database_username, String
+property :gps_database_password, String
 property :email_from, String
 property :messages_domain, String
 property :gpx_dir, String
 property :attachments_dir, String
 property :log_path, String
-property :logstash_path, String
 property :memcache_servers, Array
 property :potlatch2_key, String
 property :id_key, String
@@ -59,6 +63,10 @@ property :overpass_credentials, [true, false], :default => false
 property :google_auth_id, String
 property :google_auth_secret, String
 property :google_openid_realm, String
+property :apple_auth_id, String
+property :apple_team_id, String
+property :apple_key_id, String
+property :apple_private_key, String
 property :facebook_auth_id, String
 property :facebook_auth_secret, String
 property :microsoft_auth_id, String
@@ -69,7 +77,9 @@ property :wikipedia_auth_id, String
 property :wikipedia_auth_secret, String
 property :thunderforest_key, String
 property :tracestrack_key, String
+property :maptiler_key, String
 property :totp_key, String
+property :totp_domain, String
 property :csp_enforce, [true, false], :default => false
 property :csp_report_url, String
 property :matomo_configuration, Hash
@@ -93,9 +103,11 @@ property :signup_email_per_day, Integer
 property :signup_email_max_burst, Integer
 property :doorkeeper_signing_key, String
 property :user_account_deletion_delay, Integer
+property :turnstile_site_key, String
+property :turnstile_secret_key, String
 
 action :create do
-  package %W[
+  package %w[
     imagemagick
     libvips42
     nodejs
@@ -164,7 +176,12 @@ action :create do
               :port => new_resource.database_port,
               :name => new_resource.database_name,
               :username => new_resource.database_username,
-              :password => new_resource.database_password
+              :password => new_resource.database_password,
+              :gps_host => new_resource.gps_database_host,
+              :gps_port => new_resource.gps_database_port,
+              :gps_name => new_resource.gps_database_name,
+              :gps_username => new_resource.gps_database_username,
+              :gps_password => new_resource.gps_database_password
   end
 
   application_yml = edit_file "#{rails_directory}/config/example.application.yml" do |line|
@@ -200,10 +217,6 @@ action :create do
 
     if new_resource.log_path
       line.gsub!(/^( *)#log_path:.*$/, "\\1log_path: \"#{new_resource.log_path}\"")
-    end
-
-    if new_resource.logstash_path
-      line.gsub!(/^( *)#logstash_path:.*$/, "\\1logstash_path: \"#{new_resource.logstash_path}\"")
     end
 
     if new_resource.memcache_servers
@@ -308,7 +321,6 @@ action :create do
     "messages_domain",
     "attachments_dir",
     "log_path",
-    "logstash_path",
     "potlatch2_key",
     "id_key",
     "id_application",
@@ -320,6 +332,10 @@ action :create do
     "google_auth_id",
     "google_auth_secret",
     "google_openid_realm",
+    "apple_auth_id",
+    "apple_team_id",
+    "apple_key_id",
+    "apple_private_key",
     "facebook_auth_id",
     "facebook_auth_secret",
     "microsoft_auth_id",
@@ -330,7 +346,9 @@ action :create do
     "wikipedia_auth_secret",
     "thunderforest_key",
     "tracestrack_key",
+    "maptiler_key",
     "totp_key",
+    "totp_domain",
     "csp_enforce",
     "csp_report_url",
     "trace_use_job_queue",
@@ -351,7 +369,9 @@ action :create do
     "signup_email_per_day",
     "signup_email_max_burst",
     "doorkeeper_signing_key",
-    "user_account_deletion_delay"
+    "user_account_deletion_delay",
+    "turnstile_site_key",
+    "turnstile_secret_key"
   ).compact.merge(
     "server_protocol" => "https",
     "server_url" => new_resource.site,
@@ -408,22 +428,26 @@ action :create do
     action :delete
   end
 
-  bundle_install "#{rails_directory}" do
-    action :nothing
-    user "root"
-    group "root"
-    environment "NOKOGIRI_USE_SYSTEM_LIBRARIES" => "yes"
-    subscribes :run, "git[#{rails_directory}]"
+  directory "#{rails_directory}/vendor/bundle/ruby/#{node[:ruby][:version]}.0" do
+    owner new_resource.user
+    group new_resource.group
+    mode "775"
+    recursive true
   end
 
-  bundle_exec "#{rails_directory}/db/migrate" do
-    action :nothing
-    directory rails_directory
-    command "rails db:migrate"
+  bundle_config rails_directory do
     user new_resource.user
     group new_resource.group
+    settings "deployment" => "true",
+             "build.nokogiri" => "--use-system-libraries"
+  end
+
+  bundle_install rails_directory do
+    action :nothing
+    user new_resource.user
+    group new_resource.group
+    subscribes :run, "directory[#{rails_directory}/vendor/bundle/ruby/#{node[:ruby][:version]}.0]"
     subscribes :run, "git[#{rails_directory}]"
-    only_if { new_resource.run_migrations }
   end
 
   bundle_exec "#{rails_directory}/package.json" do
@@ -439,7 +463,29 @@ action :create do
     only_if { new_resource.build_assets }
   end
 
-  bundle_exec "#{rails_directory}/app/assets/javascripts/i18n" do
+  file "#{rails_directory}/db/structure.sql" do
+    action :nothing
+    subscribes :delete, "git[#{rails_directory}]"
+    only_if { new_resource.run_migrations }
+  end
+
+  file "#{rails_directory}/db/gps_structure.sql" do
+    action :nothing
+    subscribes :delete, "git[#{rails_directory}]"
+    only_if { new_resource.run_migrations }
+  end
+
+  bundle_exec "#{rails_directory}/db/migrate" do
+    action :nothing
+    directory rails_directory
+    command "rails db:migrate"
+    user new_resource.user
+    group new_resource.group
+    subscribes :run, "git[#{rails_directory}]"
+    only_if { new_resource.run_migrations }
+  end
+
+  bundle_exec "#{rails_directory}/config/i18n-js.yml" do
     action :nothing
     directory rails_directory
     command "rails i18n:js:export"
@@ -449,7 +495,18 @@ action :create do
     user new_resource.user
     group new_resource.group
     subscribes :run, "git[#{rails_directory}]"
-    only_if { new_resource.build_assets }
+    only_if { new_resource.build_assets && ::File.exist?("#{rails_directory}/config/i18n-js.yml") }
+  end
+
+  bundle_exec "#{rails_directory}/config/i18n.yml" do
+    action :nothing
+    directory rails_directory
+    command "i18n export"
+    environment "HOME" => rails_directory
+    user new_resource.user
+    group new_resource.group
+    subscribes :run, "git[#{rails_directory}]"
+    only_if { new_resource.build_assets && ::File.exist?("#{rails_directory}/config/i18n.yml") }
   end
 
   bundle_exec "#{rails_directory}/public/assets" do
@@ -466,7 +523,8 @@ action :create do
     subscribes :run, "file[#{rails_directory}/config/settings.local.yml]"
     subscribes :run, "file[#{rails_directory}/config/storage.yml]"
     subscribes :run, "bundle_exec[#{rails_directory}/package.json]"
-    subscribes :run, "bundle_exec[#{rails_directory}/app/assets/javascripts/i18n]"
+    subscribes :run, "bundle_exec[#{rails_directory}/config/i18n-js.yml]"
+    subscribes :run, "bundle_exec[#{rails_directory}/config/i18n.yml]"
     only_if { new_resource.build_assets }
   end
 

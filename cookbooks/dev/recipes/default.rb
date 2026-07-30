@@ -27,7 +27,8 @@ include_recipe "git"
 include_recipe "memcached"
 include_recipe "mysql"
 include_recipe "nodejs"
-include_recipe "php::fpm"
+include_recipe "php"
+include_recipe "podman"
 include_recipe "postgresql"
 include_recipe "python"
 include_recipe "ruby"
@@ -42,8 +43,10 @@ package %w[
   awscli
   cmake
   composer
+  curl
   default-jdk-headless
   default-jre-headless
+  eatmydata
   fonts-dejavu
   fonts-dejavu-core
   fonts-dejavu-extra
@@ -53,9 +56,11 @@ package %w[
   g++
   gcc
   gdal-bin
+  gfortran
   gnuplot-nox
   golang
   graphviz
+  htop
   irssi
   jq
   libargon2-dev
@@ -74,6 +79,7 @@ package %w[
   libfcgi-dev
   libfmt-dev
   libglib2.0-dev
+  libglpk-dev
   libiniparser-dev
   libjson-xs-perl
   libmapnik-dev
@@ -82,6 +88,7 @@ package %w[
   libtool
   libxml-twig-perl
   libxml2-dev
+  libxml2-utils
   libyajl-dev
   lua-any
   luajit
@@ -89,12 +96,14 @@ package %w[
   lzip
   lzop
   mailutils
+  moreutils
   make
   nano
-  netcat
+  ncftp
+  netcat-openbsd
   osm2pgsql
+  osmium-tool
   osmosis
-  pandoc
   pandoc
   pbzip2
   php-apcu
@@ -117,6 +126,7 @@ package %w[
   pngcrush
   pngquant
   proj-bin
+  pyosmium
   python-is-python3
   python3
   python3-brotli
@@ -126,6 +136,7 @@ package %w[
   python3-dev
   python3-dotenv
   python3-gdal
+  python3-geojson
   python3-lxml
   python3-lz4
   python3-magic
@@ -135,10 +146,13 @@ package %w[
   python3-venv
   r-base
   redis
+  siege
+  time
   tmux
   unrar
   unzip
   whois
+  xxd
   zip
   zlib1g-dev
 ]
@@ -150,10 +164,6 @@ execute "uk_os_OSTN15_NTv2_OSGBtoETRS.tif" do
 end
 
 nodejs_package "svgo"
-
-python_package "geojson" do
-  python_version "3"
-end
 
 apache_module "env"
 apache_module "expires"
@@ -195,7 +205,7 @@ template "/srv/dev.openstreetmap.org/index.html" do
 end
 
 ssl_certificate "dev.openstreetmap.org" do
-  domains "dev.openstreetmap.org"
+  domains ["dev.openstreetmap.org", "dev.osm.org"]
   notifies :reload, "service[apache2]"
 end
 
@@ -217,7 +227,7 @@ file "/etc/apache2/conf.d/phppgadmin" do
 end
 
 ssl_certificate "phppgadmin.dev.openstreetmap.org" do
-  domains "phppgadmin.dev.openstreetmap.org"
+  domains ["phppgadmin.dev.openstreetmap.org", "phppgadmin.dev.osm.org"]
   notifies :reload, "service[apache2]"
 end
 
@@ -278,13 +288,29 @@ search(:accounts, "*:*").each do |account|
   end
 end
 
+group "apis" do
+  gid 505
+  append true
+end
+
+user "apis" do
+  uid 505
+  gid 505
+  comment "apis.dev.openstreetmap.org"
+  home "/srv/apis.dev.openstreetmap.org"
+  shell "/usr/sbin/nologin"
+  manage_home false
+end
+
 node[:postgresql][:versions].each do |version|
   package "postgresql-#{version}-postgis-3"
 end
 
-if node[:postgresql][:clusters][:"15/main"]
+rails_cluster = node[:dev][:rails][:postgresql_cluster]
+
+if node[:postgresql][:clusters][rails_cluster.to_sym]
   postgresql_user "apis" do
-    cluster "15/main"
+    cluster rails_cluster
   end
 
   template "/usr/local/bin/cleanup-rails-assets" do
@@ -303,6 +329,8 @@ if node[:postgresql][:clusters][:"15/main"]
     working_directory "/srv/%i.apis.dev.openstreetmap.org/rails"
     exec_start "#{node[:ruby][:bundle]} exec rails jobs:work"
     restart "on-failure"
+    memory_high "2G"
+    memory_max "3G"
     nice 10
     sandbox :enable_network => true
     restrict_address_families "AF_UNIX"
@@ -330,11 +358,12 @@ if node[:postgresql][:clusters][:"15/main"]
   end
 
   Dir.glob("/srv/*.apis.dev.openstreetmap.org").each do |dir|
-    node.default_unless[:dev][:rails][File.basename(dir).split(".").first] = {}
+    node.default_unless[:dev][:rails][:sites][File.basename(dir).split(".").first] = {}
   end
 
-  node[:dev][:rails].each do |name, details|
+  node[:dev][:rails][:sites].each do |name, details|
     database_name = details[:database] || "apis_#{name}"
+    gps_database_name = "#{database_name}_gps"
     site_name = "#{name}.apis.dev.openstreetmap.org"
     site_directory = "/srv/#{name}.apis.dev.openstreetmap.org"
     log_directory = "#{site_directory}/logs"
@@ -343,18 +372,38 @@ if node[:postgresql][:clusters][:"15/main"]
     gpx_directory = "#{site_directory}/gpx"
 
     if details[:repository]
-      site_aliases = details[:aliases] || []
+      site_aliases = details[:aliases] || ["#{name}.apis.dev.osm.org"]
       secret_key_base = persistent_token("dev", "rails", name, "secret_key_base")
 
       postgresql_database database_name do
-        cluster "15/main"
+        cluster rails_cluster
         owner "apis"
       end
 
       postgresql_extension "#{database_name}_btree_gist" do
-        cluster "15/main"
+        cluster rails_cluster
         database database_name
         extension "btree_gist"
+        owner "apis"
+      end
+
+      postgresql_extension "#{database_name}_postgis" do
+        cluster rails_cluster
+        database database_name
+        extension "postgis"
+        owner "postgres"
+      end
+
+      postgresql_database gps_database_name do
+        cluster rails_cluster
+        owner "apis"
+      end
+
+      postgresql_extension "#{gps_database_name}_postgis" do
+        cluster rails_cluster
+        database gps_database_name
+        extension "postgis"
+        owner "postgres"
       end
 
       directory site_directory do
@@ -399,9 +448,12 @@ if node[:postgresql][:clusters][:"15/main"]
         group "apis"
         repository details[:repository]
         revision details[:revision]
-        database_port node[:postgresql][:clusters][:"15/main"][:port]
+        database_port node[:postgresql][:clusters][rails_cluster.to_sym][:port]
         database_name database_name
         database_username "apis"
+        gps_database_port node[:postgresql][:clusters][rails_cluster.to_sym][:port]
+        gps_database_name gps_database_name
+        gps_database_username "apis"
         email_from "OpenStreetMap <web@noreply.openstreetmap.org>"
         gpx_dir gpx_directory
         log_path "#{log_directory}/rails.log"
@@ -446,16 +498,10 @@ if node[:postgresql][:clusters][:"15/main"]
           group "apis"
         end
 
-        directory "#{cgimap_directory}/build" do
-          user "apis"
-          group "apis"
-          mode "0755"
-        end
-
         execute "#{cgimap_directory}/CMakeLists.txt" do
           action :nothing
-          command "cmake .."
-          cwd "#{cgimap_directory}/build"
+          command "cmake -B build"
+          cwd cgimap_directory
           user "apis"
           group "apis"
           subscribes :run, "git[#{cgimap_directory}]", :immediately
@@ -476,7 +522,7 @@ if node[:postgresql][:clusters][:"15/main"]
           group "root"
           mode "640"
           variables :cgimap_socket => "/run/cgimap-#{name}/socket",
-                    :database_port => node[:postgresql][:clusters][:"15/main"][:port],
+                    :database_port => node[:postgresql][:clusters][rails_cluster.to_sym][:port],
                     :database_name => database_name,
                     :log_directory => log_directory,
                     :options => details[:cgimap_options]
@@ -545,7 +591,12 @@ if node[:postgresql][:clusters][:"15/main"]
 
       postgresql_database database_name do
         action :drop
-        cluster "15/main"
+        cluster rails_cluster
+      end
+
+      postgresql_database gps_database_name do
+        action :drop
+        cluster rails_cluster
       end
     end
   end
@@ -564,7 +615,7 @@ if node[:postgresql][:clusters][:"15/main"]
   end
 
   ssl_certificate "apis.dev.openstreetmap.org" do
-    domains "apis.dev.openstreetmap.org"
+    domains ["apis.dev.openstreetmap.org", "apis.dev.osm.org"]
     notifies :reload, "service[apache2]"
   end
 
@@ -593,7 +644,8 @@ ssl_certificate "ooc.openstreetmap.org" do
   domains ["ooc.openstreetmap.org",
            "a.ooc.openstreetmap.org",
            "b.ooc.openstreetmap.org",
-           "c.ooc.openstreetmap.org"]
+           "c.ooc.openstreetmap.org",
+           "ooc.osm.org"]
   notifies :reload, "service[apache2]"
 end
 

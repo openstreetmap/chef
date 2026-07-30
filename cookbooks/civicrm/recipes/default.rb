@@ -21,12 +21,13 @@ include_recipe "wordpress"
 include_recipe "mysql"
 
 package %w[
-  php-xml
-  php-curl
   rsync
-  wkhtmltopdf
+  php-curl
   php-bcmath
+  php-fileinfo
   php-intl
+  php-mbstring
+  php-xml
 ]
 
 apache_module "rewrite"
@@ -101,6 +102,19 @@ wordpress_theme "varia" do
   repository "https://public-api.wordpress.com/rest/v1/themes/download/varia.zip"
 end
 
+directory "/opt/civicrm-cli" do
+  owner "root"
+  group "root"
+  mode "755"
+end
+
+remote_file "/opt/civicrm-cli/cv" do
+  source "https://download.civicrm.org/cv/cv.phar"
+  owner "root"
+  group "root"
+  mode "755"
+end
+
 civicrm_version = node[:civicrm][:version]
 civicrm_directory = "/srv/supporting.openstreetmap.org/wp-content/plugins/civicrm"
 
@@ -148,7 +162,7 @@ end
 
 execute "/opt/civicrm-#{civicrm_version}/civicrm" do
   action :nothing
-  command "rsync --archive --delete --delete-delay --delay-updates /opt/civicrm-#{civicrm_version}/civicrm/ #{civicrm_directory}"
+  command "rsync --archive --delete --delete-delay --delay-updates --preallocate /opt/civicrm-#{civicrm_version}/civicrm/ #{civicrm_directory}"
   user "wordpress"
   group "wordpress"
   subscribes :run, "archive_file[#{cache_dir}/civicrm-#{civicrm_version}-wordpress.zip]", :immediately
@@ -200,21 +214,21 @@ node[:civicrm][:extensions].each_value do |details|
 end
 
 settings = edit_file "#{civicrm_directory}/civicrm/templates/CRM/common/civicrm.settings.php.template" do |line|
-  line.gsub!(/%%cms%%/, "WordPress")
-  line.gsub!(/%%CMSdbUser%%/, "civicrm")
-  line.gsub!(/%%CMSdbPass%%/, database_password)
-  line.gsub!(/%%CMSdbHost%%/, "localhost")
-  line.gsub!(/%%CMSdbName%%/, "civicrm")
-  line.gsub!(/%%dbUser%%/, "civicrm")
-  line.gsub!(/%%dbPass%%/, database_password)
-  line.gsub!(/%%dbHost%%/, "localhost")
-  line.gsub!(/%%dbName%%/, "civicrm")
-  line.gsub!(/%%crmRoot%%/, "#{civicrm_directory}/civicrm/")
-  line.gsub!(/%%templateCompileDir%%/, "/srv/supporting.openstreetmap.org/wp-content/uploads/civicrm/templates_c/")
-  line.gsub!(/%%baseURL%%/, "http://supporting.openstreetmap.org/")
-  line.gsub!(/%%siteKey%%/, site_key)
-  line.gsub!(/%%credKeys%%/, cred_keys)
-  line.gsub!(/%%signKeys%%/, sign_keys)
+  line.gsub!("%%cms%%", "WordPress")
+  line.gsub!("%%CMSdbUser%%", "civicrm")
+  line.gsub!("%%CMSdbPass%%", database_password)
+  line.gsub!("%%CMSdbHost%%", "localhost")
+  line.gsub!("%%CMSdbName%%", "civicrm")
+  line.gsub!("%%dbUser%%", "civicrm")
+  line.gsub!("%%dbPass%%", database_password)
+  line.gsub!("%%dbHost%%", "localhost")
+  line.gsub!("%%dbName%%", "civicrm")
+  line.gsub!("%%crmRoot%%", "#{civicrm_directory}/civicrm/")
+  line.gsub!("%%templateCompileDir%%", "/srv/supporting.openstreetmap.org/wp-content/uploads/civicrm/templates_c/")
+  line.gsub!("%%baseURL%%", "http://supporting.openstreetmap.org/")
+  line.gsub!("%%siteKey%%", site_key)
+  line.gsub!("%%credKeys%%", cred_keys)
+  line.gsub!("%%signKeys%%", sign_keys)
   line.gsub!(%r{// *define\('CIVICRM_CMSDIR', '/path/to/install/root/'\);}, "define('CIVICRM_CMSDIR', '/srv/supporting.openstreetmap.org');")
   # Don't recompile smarty templates on every call https://docs.civicrm.org/sysadmin/en/latest/setup/optimizations/#disable-compile-check
   line.gsub!(%r{//  define\('CIVICRM_TEMPLATE_COMPILE_CHECK', FALSE\);}, "define('CIVICRM_TEMPLATE_COMPILE_CHECK', FALSE);")

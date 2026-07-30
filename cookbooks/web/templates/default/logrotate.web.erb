@@ -6,7 +6,12 @@
   rotate 7
   compress
   delaycompress
+  compresscmd /usr/bin/zstd
+  compressext .zst
+  compressoptions -T4 -11 --quiet --long
+  uncompresscmd /usr/bin/unzstd
   notifempty
+  su rails rails
   create 0660 rails rails
   sharedscripts
   postrotate
@@ -21,7 +26,7 @@
 <% end -%>
 <% if node[:recipes].include?("web::cgimap") -%>
     /bin/systemctl reload cgimap
-    /usr/bin/rsync --preallocate <%= node[:web][:log_directory] %>/cgimap.log.2.gz ironbelly::logs/www.openstreetmap.org/cgimap-<%= node[:hostname] %>-`date -d "-2 days" +%Y-%m-%d`.gz
+    /usr/bin/rsync --preallocate <%= node[:web][:log_directory] %>/cgimap.log.2.zst backup.openstreetmap.org::logs/www.openstreetmap.org/cgimap-<%= node[:hostname] %>-`date -d "-2 days" +%Y-%m-%d`.zst
 <% end -%>
   endscript
 }

@@ -59,6 +59,14 @@
   </Directory>
 <% end -%>
 
+  <LocationMatch "^/wp-json/wp/v2/users.*$">
+    # Allowed IPs
+    Require ip 127.0.0.1 ::1
+
+    # Deny everything else
+    Require all denied
+  </LocationMatch>
+
   <Directory <%= @directory %>>
     RewriteEngine on
 

@@ -2,26 +2,33 @@ name "equinix-ams"
 description "Role applied to all servers at Equinix Amsterdam"
 
 default_attributes(
+  :location => "Amsterdam, Netherlands",
+  :sysctl => {
+    :enable_bbr_10g => {
+      :comment => "Enable BBR. Equinix AMS has 3Gbps uplinks",
+      :parameters => {
+        "net.core.default_qdisc" => "fq",
+        "net.ipv4.tcp_congestion_control" => "bbr"
+      }
+    }
+  },
   :networking => {
-    :roles => {
+    :interfaces => {
       :internal => {
+        :interface => "bond0",
+        :role => :internal,
+        :metric => 200,
         :inet => {
           :prefix => "20",
-          :gateway => "10.0.48.10",
+          :gateway => "10.0.48.14",
           :routes => {
-            "10.0.0.0/8" => { :via => "10.0.48.10" }
+            "10.0.0.0/8" => { :via => "10.0.48.14" }
           }
-        }
-      },
-      :external => {
-        :zone => "ams",
-        :inet => {
-          :prefix => "27",
-          :gateway => "184.104.179.129"
         },
-        :inet6 => {
-          :prefix => "64",
-          :gateway => "2001:470:1:fa1::1"
+        :bond => {
+          :mode => "802.3ad",
+          :lacprate => "fast",
+          :xmithashpolicy => "layer3+4"
         }
       }
     }
@@ -35,7 +42,6 @@ default_attributes(
     }
   },
   :web => {
-    :fileserver => "ironbelly",
     :readonly_database_host => "snap-01.ams.openstreetmap.org",
     :primary_cluster => true
   }
@@ -43,7 +49,7 @@ default_attributes(
 
 override_attributes(
   :networking => {
-    :nameservers => ["10.0.48.10", "8.8.8.8", "8.8.4.4"],
+    :nameservers => ["10.0.48.14", "8.8.8.8", "8.8.4.4"],
     :search => ["ams.openstreetmap.org", "openstreetmap.org"]
   },
   :ntp => {

@@ -5,41 +5,46 @@ default_attributes(
   :networking => {
     :interfaces => {
       :internal => {
-        :interface => "bond0",
-        :role => :internal,
         :inet => {
           :address => "10.0.48.5"
         },
         :bond => {
-          :mode => "802.3ad",
-          :lacprate => "fast",
-          :xmithashpolicy => "layer3+4",
           :slaves => %w[eno1 eno2 eno3 eno4 eno5 eno6]
         }
       },
-      :external => {
-        :interface => "bond0.3",
-        :role => :external,
+      :henet => {
         :inet => {
           :address => "184.104.179.133"
         },
         :inet6 => {
           :address => "2001:470:1:fa1::5"
         }
+      },
+      :equinix => {
+        :inet => {
+          :address => "82.199.86.101"
+        },
+        :inet6 => {
+          :address => "2001:4d78:500:5e3::5"
+        }
       }
     }
   },
+  :postgresql => {
+    :versions => ["18"]
+  },
   :nominatim => {
-    :state => "standalone",
-    :dbcluster => "15/main",
+    :dbcluster => "18/main",
     :flatnode_file => "/srv/nominatim.openstreetmap.org/planet-project/nodes.store",
     :api_flavour => "python",
-    :api_workers => 24,
+    :api_workers => {
+      "nominatim" => 22
+    },
     :api_pool_size => 8
   }
 )
 
 run_list(
-  "role[equinix-ams]",
+  "role[equinix-ams-public]",
   "role[nominatim]"
 )

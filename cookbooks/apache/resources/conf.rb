@@ -26,6 +26,7 @@ property :cookbook, :kind_of => String
 property :template, :kind_of => String, :required => [:create]
 property :variables, :kind_of => Hash, :default => {}
 property :reload_apache, :kind_of => [TrueClass, FalseClass], :default => true
+property :restart_apache, :kind_of => [TrueClass, FalseClass], :default => false
 
 action :create do
   create_conf
@@ -86,4 +87,5 @@ end
 
 def after_created
   notifies :reload, "service[apache2]" if reload_apache
+  notifies :restart, "service[apache2]" if restart_apache
 end

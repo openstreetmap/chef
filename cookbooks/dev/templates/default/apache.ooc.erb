@@ -5,6 +5,8 @@
 	ServerAlias a.ooc.openstreetmap.org
 	ServerAlias b.ooc.openstreetmap.org
 	ServerAlias c.ooc.openstreetmap.org
+	ServerAlias ooc.osm.org
+
 	ServerAdmin webmaster@openstreetmap.org
 
 	SSLEngine on
@@ -26,6 +28,8 @@
 	ServerAlias a.ooc.openstreetmap.org
 	ServerAlias b.ooc.openstreetmap.org
 	ServerAlias c.ooc.openstreetmap.org
+	ServerAlias ooc.osm.org
+
 	ServerAdmin webmaster@openstreetmap.org
 
 	CustomLog /var/log/apache2/ooc.openstreetmap.org-access.log combined_extended
@@ -37,6 +41,8 @@
 
 <VirtualHost *:80>
 	ServerName npe.openstreetmap.org
+	ServerAlias npe.osm.org
+
 	ServerAdmin webmaster@openstreetmap.org
 
 	CustomLog /var/log/apache2/npe.openstreetmap.org-access.log combined_extended

@@ -61,7 +61,7 @@ AddDefaultCharset utf-8
 # Add extra mime types
 AddType application/x-xz .xz
 
-# Configure logging
+# Configure log buffering
 BufferedLogs <%= node[:apache][:buffered_logs] ? "On" : "Off" %>
 
 # Define an extended log format that includes request time and SSL details

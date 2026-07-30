@@ -1,17 +1,26 @@
-#!/bin/sh
+#!/bin/bash
 
 # DO NOT EDIT - This file is being maintained by Chef
+set -euo pipefail
+
+export ZSTD_CLEVEL=12
 
 T=$(mktemp -d -t -p /var/tmp lists.XXXXXXXXXX)
 D=$(date +%Y-%m-%d)
-B=lists-$D.tar.gz
+B="lists-$D.tar.zst"
 
-mkdir $T/lists-$D
-ln -s /var/lib/mailman $T/lists-$D/mailman
+mkdir "$T/lists-$D"
+ln -s /var/lib/mailman "$T/lists-$D/mailman"
 
-export RSYNC_RSH="ssh -ax"
+set +e
+nice tar --create --dereference \
+    --warning=no-file-changed \
+    --warning=no-file-removed \
+    --exclude='*/archives/*.txt.gz' \
+    --directory="$T" \
+    --sort=name \
+    "lists-$D" | nice zstd -T0 --quiet --long --rsyncable -o "$T/$B"
 
-nice tar --create --dereference --warning=no-file-changed --warning=no-file-removed --directory=$T lists-$D | nice gzip --rsyncable -9 > $T/$B
-nice rsync --preallocate --fuzzy $T/$B backup::backup
+nice rsync --preallocate --fuzzy "$T/$B" backup.openstreetmap.org::backup
 
-rm -rf $T
+rm -rf "$T"

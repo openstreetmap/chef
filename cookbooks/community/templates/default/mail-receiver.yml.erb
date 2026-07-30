@@ -49,3 +49,6 @@ volumes:
   - volume:
       host: /etc/ssl/private/community.openstreetmap.org.key
       guest: /shared/ssl/ssl.key
+  - volume:
+      host: /srv/community.openstreetmap.org/files/policyd-spf.conf
+      guest: /etc/postfix-policyd-spf-python/policyd-spf.conf

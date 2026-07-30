@@ -23,7 +23,7 @@ default_action :create
 
 property :site, :kind_of => String, :name_property => true
 property :aliases, :kind_of => [String, Array]
-property :version, :kind_of => String, :default => "1.39"
+property :version, :kind_of => String, :default => "1.43"
 property :database_name, :kind_of => String, :required => true
 property :database_user, :kind_of => String, :required => [:create, :update]
 property :database_password, :kind_of => String, :required => [:create, :update]
@@ -41,16 +41,20 @@ property :admin_user, :kind_of => String, :default => "Admin"
 property :admin_password, :kind_of => String, :required => [:create]
 property :private_accounts, :kind_of => [TrueClass, FalseClass], :default => false
 property :private_site, :kind_of => [TrueClass, FalseClass], :default => false
-property :hcaptcha_public_key, :kind_of => String, :default => ""
-property :hcaptcha_private_key, :kind_of => String, :default => ""
+property :turnstile_site_key, :kind_of => String, :default => ""
+property :turnstile_secret_key, :kind_of => String, :default => ""
 property :extra_file_extensions, :kind_of => [String, Array], :default => []
+property :namespaces, :kind_of => Hash, :default => {}
+property :force_ui_messages, :kind_of => Array, :default => []
+property :watch_category_membership, :kind_of => [TrueClass, FalseClass], :default => false
 property :fpm_max_children, :kind_of => Integer, :default => 5
 property :fpm_start_servers, :kind_of => Integer, :default => 2
 property :fpm_min_spare_servers, :kind_of => Integer, :default => 1
 property :fpm_max_spare_servers, :kind_of => Integer, :default => 3
-property :fpm_request_terminate_timeout, :kind_of => Integer, :default => 300
+property :fpm_request_terminate_timeout, :kind_of => Integer, :default => 120
 property :fpm_prometheus_port, :kind_of => Integer
-property :reload_apache, :kind_of => [TrueClass, FalseClass], :default => true
+property :reload_apache, :kind_of => [TrueClass, FalseClass], :default => false
+property :backup_enabled, :kind_of => [TrueClass, FalseClass], :default => true
 
 action :create do
   node.default[:mediawiki][:sites][new_resource.site] = {
@@ -96,6 +100,7 @@ action :create do
     owner node[:mediawiki][:user]
     group node[:mediawiki][:group]
     mode "664"
+    variables :version => new_resource.version
   end
 
   execute "#{mediawiki_directory}/composer.json" do
@@ -172,6 +177,12 @@ action :create do
               :directory => site_directory,
               :database_params => database_params
     only_if { ::File.exist?("#{mediawiki_directory}/LocalSettings.php") }
+    only_if { new_resource.backup_enabled }
+  end
+
+  file "/etc/cron.daily/mediawiki-#{cron_name}-backup" do
+    action :delete
+    not_if { new_resource.backup_enabled }
   end
 
   # MobileFrontend extension is required by MinervaNeue skin
@@ -212,6 +223,17 @@ action :create do
     legacy false
   end
 
+  if new_resource.version.to_f >= 1.46
+    # Skins that are included in MediaWiki in 1.46 release package, but not enabled by default.
+    # Review skin documentation before enabling these skins.
+
+    # mediawiki_skin "Timeless" do
+    #   site new_resource.site
+    #   update_site false
+    #   legacy false
+    # end
+  end
+
   mediawiki_extension "Cite" do
     site new_resource.site
     update_site false
@@ -232,8 +254,8 @@ action :create do
     mediawiki_extension "ConfirmEdit" do
       site new_resource.site
       template "mw-ext-ConfirmEdit.inc.php.erb"
-      variables :public_key => new_resource.hcaptcha_public_key,
-                :private_key => new_resource.hcaptcha_private_key
+      variables :turnstile_site_key => new_resource.turnstile_site_key,
+                :turnstile_secret_key => new_resource.turnstile_secret_key
       update_site false
     end
   end
@@ -253,10 +275,13 @@ action :create do
     update_site false
   end
 
-  mediawiki_extension "Interwiki" do
-    site new_resource.site
-    template "mw-ext-Interwiki.inc.php.erb"
-    update_site false
+  if new_resource.version.to_f < 1.46
+    # Interwiki extension moved to MediaWiki Core in 1.46
+    mediawiki_extension "Interwiki" do
+      site new_resource.site
+      template "mw-ext-Interwiki.inc.php.erb"
+      update_site false
+    end
   end
 
   mediawiki_extension "Nuke" do
@@ -274,6 +299,7 @@ action :create do
     site new_resource.site
     template "mw-ext-PdfHandler.inc.php.erb"
     update_site false
+    action :delete # Broken in 1.43.6 see: https://github.com/openstreetmap/operations/issues/1344#issuecomment-4112533258
   end
 
   mediawiki_extension "Poem" do
@@ -284,12 +310,6 @@ action :create do
   mediawiki_extension "Renameuser" do
     site new_resource.site
     update_site false
-  end
-
-  mediawiki_extension "SimpleAntiSpam" do
-    site new_resource.site
-    update_site false
-    action :delete
   end
 
   mediawiki_extension "SpamBlacklist" do
@@ -336,12 +356,6 @@ action :create do
     site new_resource.site
     template "mw-ext-CleanChanges.inc.php.erb"
     update_site false
-  end
-
-  # Extension has been archived: https://www.mediawiki.org/wiki/Extension:LocalisationUpdate
-  mediawiki_extension "LocalisationUpdate" do
-    site new_resource.site
-    action :delete
   end
 
   # mediawiki_extension "Translate" do
@@ -422,9 +436,90 @@ action :create do
     update_site false
   end
 
+  if new_resource.version.to_f >= 1.46
+    # Extensions that are included in MediaWiki in 1.46 release package, but not enabled by default.
+    # Review extension documentation before enabling these extensions.
+
+    # mediawiki_extension "CodeEditor" do
+    #   site new_resource.site
+    #   update_site false
+    # end
+
+    # mediawiki_extension "DiscussionTools" do
+    #   site new_resource.site
+    #   update_site false
+    # end
+
+    # mediawiki_extension "Echo" do
+    #   site new_resource.site
+    #   update_site false
+    # end
+
+    # mediawiki_extension "Linter" do
+    #   site new_resource.site
+    #   update_site false
+    # end
+
+    # mediawiki_extension "LoginNotify" do
+    #   site new_resource.site
+    #   update_site false
+    # end
+
+    # mediawiki_extension "Math" do
+    #   site new_resource.site
+    #   update_site false
+    # end
+
+    # mediawiki_extension "MultimediaViewer" do
+    #   site new_resource.site
+    #   update_site false
+    # end
+
+    # mediawiki_extension "OATHAuth" do
+    #   site new_resource.site
+    #   update_site false
+    # end
+
+    # mediawiki_extension "PageImages" do
+    #   site new_resource.site
+    #   update_site false
+    # end
+
+    # mediawiki_extension "ReplaceText" do
+    #   site new_resource.site
+    #   update_site false
+    # end
+
+    # mediawiki_extension "Scribunto" do
+    #   site new_resource.site
+    #   update_site false
+    # end
+
+    # mediawiki_extension "SecureLinkFixer" do
+    #   site new_resource.site
+    #   update_site false
+    # end
+
+    # mediawiki_extension "TemplateStyles" do
+    #   site new_resource.site
+    #   update_site false
+    # end
+
+    # mediawiki_extension "TextExtracts" do
+    #   site new_resource.site
+    #   update_site false
+    # end
+
+    # mediawiki_extension "Thanks" do
+    #   site new_resource.site
+    #   update_site false
+    # end
+  end
+
   if new_resource.commons
     mediawiki_extension "QuickInstantCommons" do
       site new_resource.site
+      template "mw-ext-QuickInstantCommons.inc.php.erb"
       update_site false
     end
   else
@@ -461,6 +556,7 @@ action :create do
 
   ssl_certificate new_resource.site do
     domains [new_resource.site] + Array(new_resource.aliases)
+    notifies :reload, "service[apache2]"
   end
 
   php_fpm new_resource.site do
@@ -471,7 +567,7 @@ action :create do
     request_terminate_timeout new_resource.fpm_request_terminate_timeout
     php_admin_values "open_basedir" => "#{site_directory}/:/usr/share/php/:/dev/null:/tmp/"
     php_values "memory_limit" => "500M",
-               "max_execution_time" => "240",
+               "max_execution_time" => "60",
                "upload_max_filesize" => "70M",
                "post_max_size" => "100M"
     prometheus_port new_resource.fpm_prometheus_port
@@ -483,7 +579,7 @@ action :create do
     directory site_directory
     variables :aliases => Array(new_resource.aliases),
               :private_site => new_resource.private_site
-    reload_apache false
+    reload_apache true
   end
 
   # FIXME: needs to run one
@@ -533,7 +629,7 @@ end
 action :delete do
   apache_site new_resource.site do
     action :delete
-    reload_apache false
+    reload_apache true
   end
 
   declare_resource :directory, site_directory do
@@ -558,7 +654,8 @@ action_class do
   end
 
   def mediawiki_reference
-    shell_out!("git", "ls-remote", "--refs", "--sort=-version:refname",
+    shell_out!("git", "-c", "versionsort.suffix=-rc",
+               "ls-remote", "--refs", "--sort=-version:refname",
                "https://gerrit.wikimedia.org/r/mediawiki/core.git",
                "refs/tags/#{new_resource.version}.*")
       .stdout
@@ -595,7 +692,10 @@ action_class do
       :site_readonly => new_resource.site_readonly,
       :extra_file_extensions => new_resource.extra_file_extensions,
       :private_accounts => new_resource.private_accounts,
-      :private_site => new_resource.private_site
+      :private_site => new_resource.private_site,
+      :namespaces => new_resource.namespaces,
+      :force_ui_messages => new_resource.force_ui_messages,
+      :watch_category_membership => new_resource.watch_category_membership
     }
   end
 

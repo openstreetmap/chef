@@ -20,7 +20,7 @@ my @dates;
 
 if ($prefix)
 {
-    $prefix = "${prefix}-";
+    $prefix = "\Q${prefix}-\E";
 }
 else
 {
@@ -43,8 +43,8 @@ for my $month (0 .. $months - 1)
 }
 
 my $dates = join("|", @dates);
-my $match = qr/^\Q${prefix}\E\d{4}-\d{2}-\d{2}\./;
-my $keep = qr/^\Q${prefix}\E(?:${dates})\./;
+my $match = qr/^${prefix}\d{4}-\d{2}-\d{2}\./;
+my $keep = qr/^${prefix}(?:${dates})\./;
 
 opendir(DIR, "$dir") || die "Can't open ${dir}: $!";
 

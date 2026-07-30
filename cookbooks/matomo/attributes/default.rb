@@ -1,4 +1,4 @@
-default[:matomo][:version] = "5.0.1"
+default[:matomo][:version] = "5.10.0"
 default[:matomo][:plugins] = {
   "Actions" => nil,
   "Annotations" => nil,
@@ -21,6 +21,7 @@ default[:matomo][:plugins] = {
   "Diagnostics" => nil,
   "Ecommerce" => nil,
   "Events" => nil,
+  "FeatureFlags" => nil,
   "Feedback" => nil,
   "GeoIp2" => nil,
   "Goals" => nil,

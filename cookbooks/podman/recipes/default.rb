@@ -24,6 +24,11 @@ package %w[
   fuse-overlayfs
 ]
 
+if platform?("debian") && node[:platform_version].to_i >= 13
+  package "passt"
+  package "aardvark-dns"
+end
+
 ruby_block "subuid-containers" do
   block do
     File.open("/etc/subuid", "a") do |file|
@@ -52,4 +57,28 @@ end
 
 service "podman-auto-update.timer" do
   action [:enable, :start]
+end
+
+systemd_service "podman-system-prune" do
+  description "Cleanup up unused podman images and containers"
+  exec_start "/usr/bin/podman system prune --all --force"
+end
+
+systemd_timer "podman-system-prune" do
+  description "Cleanup up unused podman images and containers"
+  on_boot_sec "2h"
+  on_unit_active_sec "7d"
+end
+
+service "podman-system-prune.timer" do
+  action [:enable, :start]
+end
+
+# Reset graph driver if vfs which is very slow. overlay is the default on Debian 13 and later.
+if platform?("debian") && node[:platform_version].to_i >= 13
+  execute "podman-fix-graph-driver" do
+    command "podman system reset --force"
+    only_if "test $(podman info --format '{{json .Store}}' | jq -r .graphDriverName) = 'vfs'"
+    ignore_failure true
+  end
 end

@@ -24,6 +24,7 @@ include_recipe "networking"
 
 passwords = data_bag_item("prometheus", "passwords")
 tokens = data_bag_item("prometheus", "tokens")
+aws_credentials = data_bag_item("prometheus", "aws")
 admins = data_bag_item("apache", "admins")
 
 prometheus_exporter "fastly" do
@@ -35,6 +36,7 @@ end
 prometheus_exporter "fastly_healthcheck" do
   port 9696
   scrape_interval "1m"
+  scrape_timeout "1m"
   environment "FASTLY_API_TOKEN" => tokens["fastly"]
 end
 
@@ -61,16 +63,16 @@ prometheus_exporter "cloudwatch" do
     --enable-feature=aws-sdk-v2
     --enable-feature=always-return-info-metrics
   ]
-  environment "AWS_ACCESS_KEY_ID" => "AKIASQUXHPE7JHG37EA6",
-              "AWS_SECRET_ACCESS_KEY" => tokens["cloudwatch"]
+  environment "AWS_ACCESS_KEY_ID" => aws_credentials["cloudwatch_access_key_id"],
+              "AWS_SECRET_ACCESS_KEY" => aws_credentials["cloudwatch_secret_access_key"]
   subscribes :restart, "template[/etc/prometheus/cloudwatch.yml]"
 end
 
 cache_dir = Chef::Config[:file_cache_path]
 
-prometheus_version = "2.45.0"
-alertmanager_version = "0.25.0"
-karma_version = "0.114"
+prometheus_version = "3.13.2"
+alertmanager_version = "0.33.1"
+karma_version = "0.131"
 
 directory "/opt/prometheus-server" do
   owner "root"
@@ -242,7 +244,7 @@ package "prometheus"
 systemd_service "prometheus-executable" do
   service "prometheus"
   dropin "executable"
-  exec_start "/opt/prometheus-server/prometheus/prometheus --config.file=/etc/prometheus/prometheus.yml --web.enable-admin-api --web.external-url=https://prometheus.openstreetmap.org/prometheus --storage.tsdb.path=/var/lib/prometheus/metrics2 --storage.tsdb.retention.time=540d"
+  exec_start "/opt/prometheus-server/prometheus/prometheus --config.file=/etc/prometheus/prometheus.yml --web.enable-admin-api --web.external-url=https://prometheus.openstreetmap.org/prometheus --storage.tsdb.path=/var/lib/prometheus/metrics2 --storage.tsdb.retention.time=540d --config.auto-reload"
   timeout_stop_sec 300
   notifies :restart, "service[prometheus]"
 end
@@ -264,8 +266,6 @@ end
 
 service "prometheus" do
   action [:enable, :start]
-  subscribes :reload, "template[/etc/prometheus/prometheus.yml]"
-  subscribes :reload, "template[/etc/prometheus/alert_rules.yml]"
   subscribes :restart, "archive_file[#{cache_dir}/prometheus.linux.tar.gz]"
 end
 
@@ -353,6 +353,12 @@ template "/etc/grafana/grafana.ini" do
   variables :passwords => passwords
 end
 
+systemd_service "grafana-server-wait-for-port" do
+  service "grafana-server"
+  dropin "wait-for-port"
+  type "notify"
+end
+
 service "grafana-server" do
   action [:enable, :start]
   subscribes :restart, "template[/etc/grafana/grafana.ini]"
@@ -395,7 +401,8 @@ template "/var/lib/prometheus/.aws/credentials" do
   user "prometheus"
   group "prometheus"
   mode "600"
-  variables :passwords => passwords
+  variables :aws_credentials => aws_credentials
+  sensitive true
 end
 
 template "/usr/local/bin/prometheus-backup-data" do

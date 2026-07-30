@@ -6,3 +6,4 @@ description       "Installs and configures ruby"
 
 version           "1.0.0"
 supports          "ubuntu"
+depends           "apt"

@@ -15,6 +15,12 @@ route:
   group_interval: 5m
   repeat_interval: 3h
   receiver: admins-email
+  routes:
+  - group_wait: 30m
+    group_interval: 6h
+    repeat_interval: 24h
+    matchers:
+    - alertgroup=smokeping
 
 inhibit_rules:
 

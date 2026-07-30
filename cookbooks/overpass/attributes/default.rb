@@ -12,5 +12,3 @@ default[:overpass][:replication_url] = "https://planet.openstreetmap.org/replica
 default[:overpass][:restricted_api] = true
 
 default[:overpass][:logdir] = "/var/log/overpass"
-
-default[:accounts][:users][:overpass][:status] = :role

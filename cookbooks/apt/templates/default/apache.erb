@@ -1,0 +1,53 @@
+# DO NOT EDIT - This file is being maintained by Chef
+
+<VirtualHost *:80>
+  ServerName <%= @name %>
+<% @aliases.each do |alias_name| -%>
+  ServerAlias <%= alias_name %>
+<% end -%>
+  ServerAdmin webmaster@openstreetmap.org
+
+  CustomLog /var/log/apache2/<%= @name %>-access.log combined_extended
+  ErrorLog /var/log/apache2/<%= @name %>-error.log
+
+  RedirectPermanent /.well-known/acme-challenge/ http://acme.openstreetmap.org/.well-known/acme-challenge/
+  RedirectPermanent / https://<%= @name %>/
+</VirtualHost>
+<% unless @aliases.empty? -%>
+
+<VirtualHost *:443>
+  ServerName <%= @aliases.first %>
+<% @aliases.drop(1).each do |alias_name| -%>
+  ServerAlias <%= alias_name %>
+<% end -%>
+  ServerAdmin webmaster@openstreetmap.org
+
+  SSLEngine on
+  SSLCertificateFile /etc/ssl/certs/<%= @name %>.pem
+  SSLCertificateKeyFile /etc/ssl/private/<%= @name %>.key
+
+  CustomLog /var/log/apache2/<%= @name %>-access.log combined_extended
+  ErrorLog /var/log/apache2/<%= @name %>-error.log
+
+  RedirectPermanent / https://<%= @name %>/
+</VirtualHost>
+<% end -%>
+
+<VirtualHost *:443>
+  ServerName <%= @name %>
+  ServerAdmin webmaster@openstreetmap.org
+
+  SSLEngine on
+  SSLCertificateFile /etc/ssl/certs/<%= @name %>.pem
+  SSLCertificateKeyFile /etc/ssl/private/<%= @name %>.key
+
+  CustomLog /var/log/apache2/<%= @name %>-access.log combined_extended
+  ErrorLog /var/log/apache2/<%= @name %>-error.log
+
+  DocumentRoot <%= @directory %>/public
+</VirtualHost>
+
+<Directory <%= @directory %>/public>
+  Options Indexes
+  Require all granted
+</Directory>

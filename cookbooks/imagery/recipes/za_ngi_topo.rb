@@ -29,15 +29,17 @@ imagery_layer "za_ngi_topo_250k" do
   site "topo.openstreetmap.org.za"
   title "NGI Topo 250k"
   projection "EPSG:3857"
-  source "/data/imagery/za/ngi-topo-250k/ngi-topo-250k-combined.vrt"
+  source "/store/imagery/za/ngi-topo-250k/ngi-topo-250k-combined.vrt"
   copyright 'State Copyright &copy; 1996&ndash;2010 <a href="https://ngi.dalrrd.gov.za/">Chief Directorate: National Geo-spatial Information</a>'
   default_layer true
+  revision 2
 end
 
 imagery_layer "za_ngi_topo_50k" do
   site "topo.openstreetmap.org.za"
   title "NGI Topo 50k"
   projection "EPSG:3857"
-  source "/data/imagery/za/ngi-topo-50k/ngi-topo-50k-combined.vrt"
+  source "/store/imagery/za/ngi-topo-50k/ngi-topo-50k-combined.vrt"
   copyright 'State Copyright &copy; 1996&ndash;2013 <a href="https://ngi.dalrrd.gov.za/">Chief Directorate: National Geo-spatial Information</a>'
+  revision 2
 end

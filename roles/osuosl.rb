@@ -9,10 +9,12 @@ default_attributes(
   },
   :hosted_by => "OSUOSL",
   :location => "Corvallis, Oregon",
-  :timezone => "US/Pacific",
+  :timezone => "America/Los_Angeles",
   :networking => {
-    :roles => {
+    :interfaces => {
       :external => {
+        :interface => "bond0",
+        :role => :external,
         :inet => {
           :prefix => "28",
           :gateway => "140.211.167.97"
@@ -28,7 +30,7 @@ default_attributes(
 
 override_attributes(
   :ntp => {
-    :servers => ["ntp.osuosl.org"]
+    :servers => ["time.osuosl.org"]
   }
 )
 

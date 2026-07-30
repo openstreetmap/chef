@@ -1,4 +1,7 @@
 {
   "id": "aws",
-  "osm-pds": "osm-pds"
+  "pds_access_key_id": "AKIPDSACCESSKEYIDEXAMPLE",
+  "pds_secret_access_key": "pds-secret-access-key-example",
+  "osmdbt_access_key_id": "AKIOSMDBTACCESSKEYIDEXAMPLE",
+  "osmdbt_secret_access_key": "osmdbt-secret-access-key-example"
 }

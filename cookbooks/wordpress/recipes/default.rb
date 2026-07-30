@@ -17,12 +17,11 @@
 # limitations under the License.
 #
 
-include_recipe "accounts"
 include_recipe "apache"
 include_recipe "fail2ban"
 include_recipe "git"
 include_recipe "mysql"
-include_recipe "php::fpm"
+include_recipe "php"
 
 package %w[
   subversion
@@ -33,6 +32,20 @@ package %w[
   php-intl
   php-xml
 ]
+
+group "wordpress" do
+  gid 516
+  append true
+end
+
+user "wordpress" do
+  uid 516
+  gid 516
+  comment "Wordpress"
+  home "/"
+  shell "/usr/sbin/nologin"
+  manage_home false
+end
 
 apache_module "proxy"
 apache_module "proxy_fcgi"

@@ -1,6 +1,7 @@
 ---
 driver:
   name: dokken
+  chef_image: docker.io/cincproject/cinc
   chef_version: 18
   volumes:
     - /var/lib/docker
@@ -19,17 +20,16 @@ transport:
 
 provisioner:
   name: dokken
-  chef_license: accept
   data_bags_path: test/data_bags
   slow_resource_report: true
   clean_dokken_sandbox: true
+  product_name: cinc
   attributes:
     networking:
       dnssec: "false" # Disable DNSSEC as occasionally unreliable in GitHub Actions
 
 verifier:
   name: inspec
-  root_path: /opt/verifier
   sudo: false
 
 platforms:
@@ -51,6 +51,15 @@ platforms:
         - RUN /usr/bin/apt-get update -y
         - RUN /usr/bin/apt-get install -y eatmydata
         - RUN echo /usr/lib/$(uname -m)-linux-gnu/libeatmydata.so >>/etc/ld.so.preload
+  - name: ubuntu-24.04
+    driver:
+      image: ghcr.io/test-kitchen/dokken/ubuntu-24.04
+      privileged: true
+      pid_one_command: /bin/systemd
+      intermediate_instructions:
+        - RUN /usr/bin/apt-get update -y
+        - RUN /usr/bin/apt-get install -y eatmydata
+        - RUN echo /usr/lib/$(uname -m)-linux-gnu/libeatmydata.so >>/etc/ld.so.preload
   - name: debian-12
     driver:
       image: ghcr.io/test-kitchen/dokken/debian-12
@@ -60,6 +69,27 @@ platforms:
         - RUN /usr/bin/apt-get update -y
         - RUN /usr/bin/apt-get install -y eatmydata
         - RUN echo /usr/lib/$(uname -m)-linux-gnu/libeatmydata.so >>/etc/ld.so.preload
+  - name: debian-13
+    driver:
+      image: ghcr.io/test-kitchen/dokken/debian-13
+      privileged: true
+      pid_one_command: /usr/lib/systemd/systemd
+      intermediate_instructions:
+        - RUN /usr/bin/apt-get update -y
+        - RUN /usr/bin/apt-get install -y eatmydata
+        - RUN echo /usr/lib/$(uname -m)-linux-gnu/libeatmydata.so >>/etc/ld.so.preload
+
+# When using podman we have to manually start chef to workaround a volume issue
+lifecycle:
+  pre_create: |
+    if command -v podman >/dev/null 2>&1; then
+      podman create --name cinc-18 --replace docker.io/cincproject/cinc:18 sh
+      podman start cinc-18
+    fi
+  post_destroy: |
+    if command -v podman >/dev/null 2>&1; then
+      podman container rm -iv cinc-18
+    fi
 
 suites:
   - name: accounts
@@ -71,6 +101,13 @@ suites:
   - name: apt
     run_list:
       - recipe[apt::default]
+      - recipe[apt::management-component-pack]
+  - name: apt-repository
+    run_list:
+      - recipe[apt::repository]
+  - name: atlas
+    run_list:
+      - recipe[atlas::default]
   - name: awscli
     run_list:
       - recipe[awscli::default]
@@ -89,6 +126,9 @@ suites:
   - name: blogs
     run_list:
       - recipe[blogs::default]
+    attributes:
+      ruby:
+        version: 3.3
   - name: chef
     run_list:
       - recipe[chef::default]
@@ -113,6 +153,16 @@ suites:
   - name: db-slave
     run_list:
       - recipe[db::slave]
+  - name: dev
+    run_list:
+      - recipe[dev::default]
+    attributes:
+      postgresql:
+        versions:
+          - 17
+      dev:
+        rails:
+          postgresql_cluster: 17/main
   - name: devices
     run_list:
       - recipe[devices::default]
@@ -153,6 +203,12 @@ suites:
   - name: fail2ban
     run_list:
       - recipe[fail2ban::default]
+  - name: fastly
+    run_list:
+      - recipe[fastly::default]
+  - name: foundation-birthday
+    run_list:
+      - recipe[foundation::birthday]
   - name: foundation-board
     run_list:
       - recipe[foundation::board]
@@ -218,29 +274,9 @@ suites:
   - name: irc
     run_list:
       - recipe[irc::default]
-  - name: kibana
-    run_list:
-      - recipe[kibana::default]
   - name: letsencrypt
     run_list:
       - recipe[letsencrypt::default]
-  - name: logstash
-    run_list:
-      - recipe[logstash::default]
-  - name: logstash-forwarder
-    run_list:
-      - recipe[logstash::forwarder]
-    attributes:
-      logstash:
-        forwarder:
-          filebeat.inputs:
-            - type: filestream
-              id: apache
-              paths:
-                - /var/log/apache2/access.log
-              fields:
-                type: apache
-              fields_under_root: true
   - name: mail
     run_list:
       - role[mail]
@@ -286,18 +322,15 @@ suites:
   - name: overpass
     run_list:
       - recipe[overpass::default]
+  - name: oxidized
+    run_list:
+      - recipe[oxidized::default]
   - name: passenger
     run_list:
       - recipe[passenger::default]
   - name: php
     run_list:
       - recipe[php::default]
-  - name: php-apache
-    run_list:
-      - recipe[php::apache]
-  - name: php-fpm
-    run_list:
-      - recipe[php::fpm]
   - name: planet
     run_list:
       - recipe[planet::default]
@@ -322,6 +355,9 @@ suites:
     attributes:
       web:
         readonly_database_host: readonly
+  - name: podman
+    run_list:
+      - recipe[podman::default]
   - name: postgresql
     run_list:
       - recipe[postgresql::default]
@@ -388,6 +424,8 @@ suites:
     run_list:
       - recipe[taginfo::default]
     attributes:
+      ruby:
+        version: 3.4
       taginfo:
         sites:
           - name: taginfo.example.com
@@ -403,6 +441,9 @@ suites:
   - name: trac
     run_list:
       - recipe[trac::default]
+  - name: vectortile
+    run_list:
+      - recipe[vectortile::default]
   - name: web-cgimap
     run_list:
       - recipe[web::cgimap]

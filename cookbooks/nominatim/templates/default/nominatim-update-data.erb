@@ -27,4 +27,4 @@ else
     INST=2
 fi
 
-nominatim replication --catch-up --threads $INST
+<%= @venvprefix %>nominatim replication --catch-up --threads $INST

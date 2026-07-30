@@ -17,18 +17,31 @@
 # limitations under the License.
 #
 
-include_recipe "accounts"
 include_recipe "apache"
 include_recipe "git"
 include_recipe "ruby"
 
-package %W[
+package %w[
   make
   gcc
   g++
   libsqlite3-dev
   sqlite3
 ]
+
+group "blogs" do
+  gid 525
+  append true
+end
+
+user "blogs" do
+  uid 525
+  gid 525
+  comment "blogs.openstreetmap.org"
+  home "/srv/blogs.openstreetmap.org"
+  shell "/usr/sbin/nologin"
+  manage_home false
+end
 
 directory "/srv/blogs.openstreetmap.org" do
   owner "blogs"
@@ -44,10 +57,18 @@ git "/srv/blogs.openstreetmap.org" do
   group "blogs"
 end
 
+bundle_config "/srv/blogs.openstreetmap.org" do
+  action :nothing
+  user "blogs"
+  group "blogs"
+  settings "deployment" => "true",
+           "without" => "development:test",
+           "build.sqlite3" => "--enable-system-libraries"
+  subscribes :create, "git[/srv/blogs.openstreetmap.org]", :immediately
+end
+
 bundle_install "/srv/blogs.openstreetmap.org" do
   action :nothing
-  options "--deployment --without development test"
-  environment "BUNDLE_PATH" => "vendor/bundle"
   user "blogs"
   group "blogs"
   subscribes :run, "git[/srv/blogs.openstreetmap.org]", :immediately
@@ -56,10 +77,10 @@ end
 bundle_exec "/srv/blogs.openstreetmap.org" do
   action :nothing
   command "pluto build -t osm -o build"
-  environment "BUNDLE_PATH" => "vendor/bundle"
   user "blogs"
   group "blogs"
   subscribes :run, "git[/srv/blogs.openstreetmap.org]", :immediately
+  retries 2 # May fail on first run due to faulty blogs
 end
 
 ssl_certificate "blogs.openstreetmap.org" do

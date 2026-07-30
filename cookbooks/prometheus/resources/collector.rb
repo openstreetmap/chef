@@ -27,6 +27,7 @@ property :user, :kind_of => String
 property :path, :kind_of => String
 property :options, :kind_of => [String, Array]
 property :environment, :kind_of => Hash, :default => {}
+property :working_directory, String
 property :proc_subset, String
 property :capability_bounding_set, [String, Array]
 property :private_devices, [true, false]
@@ -42,6 +43,7 @@ action :create do
     dynamic_user new_resource.user.nil?
     group "adm"
     environment new_resource.environment
+    working_directory new_resource.working_directory
     standard_output "file:/var/lib/prometheus/node-exporter/#{new_resource.collector}.new"
     standard_error "journal"
     exec_start "#{executable_path} #{executable_options}"

@@ -17,8 +17,10 @@
 # limitations under the License.
 #
 
-file "/etc/sysctl.d/60-chef.conf" do
-  action :delete
+file "/etc/sysctl.conf" do
+  owner "root"
+  group "root"
+  mode "0644"
 end
 
 if node[:virtualization][:role] != "guest" ||

@@ -1,7 +1,7 @@
 templates:
   - "templates/web.template.yml"
-  - "templates/web.ipv6.template.yml"
   - "templates/web.ssl.template.yml"
+  - "templates/enable-ruby-yjit.yml"
 
 ## which TCP/IP ports should this container expose?
 ## If you want Discourse to share a port with another webserver like Apache or nginx,
@@ -19,9 +19,11 @@ links:
 # any extra arguments for Docker?
 # docker_args:
 
-# Latest Version v3.2.3
+# Latest Version 2026.7.1 (ESR)
+# Discourse does not support downgrades
+# release/2026.1, release/2026.7, esr are supported tags
 params:
-  version: stable
+  version: esr
 
 env:
   LC_ALL: en_US.UTF-8
@@ -65,8 +67,8 @@ env:
   ## The maxmind geolocation IP address key for IP address lookup
   ## see https://meta.discourse.org/t/-/137387/23 for details
 <% if @license_keys -%>
-  DISCOURSE_MAXMIND_ACCOUNT_ID: '<%= node[:geoipupdate][:account] %>'
-  DISCOURSE_MAXMIND_LICENSE_KEY: '<%= @license_keys[node[:geoipupdate][:account]] %>'
+  # DISCOURSE_MAXMIND_ACCOUNT_ID: '<%= node[:geoipupdate][:account] %>'
+  # DISCOURSE_MAXMIND_LICENSE_KEY: '<%= @license_keys[node[:geoipupdate][:account]] %>'
 <% end -%>
 
   # Allow list for prometheus metric collection
@@ -95,40 +97,36 @@ volumes:
       host: /srv/community.openstreetmap.org/files/update-feeds.atom
       guest: /shared/feeds/update-feeds.atom
 
-## Plugins go here
-## see https://meta.discourse.org/t/19157 for details
 hooks:
   after_code:
     - exec:
         cd: $home/plugins
         cmd:
-          - sudo -H -E -u discourse git clone --depth 1 --branch main https://github.com/discourse/discourse-oauth2-basic.git
-          - sudo -H -E -u discourse git clone --depth 1 --branch main https://github.com/discourse/discourse-solved.git
-          - sudo -H -E -u discourse git clone --depth 1 --branch main https://github.com/discourse/discourse-reactions.git
-          - sudo -H -E -u discourse git clone --depth 1 --branch main https://github.com/discourse/discourse-prometheus.git
-          - sudo -H -E -u discourse git clone --depth 1 --branch main https://github.com/discourse/discourse-translator.git
-          - sudo -H -E -u discourse git clone --depth 1 --branch main https://github.com/discourse/discourse-saved-searches.git
-          - sudo -H -E -u discourse git clone --depth 1 --branch main https://github.com/discourse/discourse-post-voting.git
+          - if [ ! -d discourse-oauth2-basic ]; then sudo -H -E -u discourse git clone --depth 1 --branch main https://github.com/discourse/discourse-oauth2-basic.git; fi
+          - if [ ! -d discourse-solved ]; then sudo -H -E -u discourse git clone --depth 1 --branch main https://github.com/discourse/discourse-solved.git; fi
+          - if [ ! -d discourse-reactions ]; then sudo -H -E -u discourse git clone --depth 1 --branch main https://github.com/discourse/discourse-reactions.git; fi
+          - if [ ! -d discourse-prometheus ]; then sudo -H -E -u discourse git clone --depth 1 --branch main https://github.com/discourse/discourse-prometheus.git; fi
+          - if [ ! -d discourse-translator ]; then sudo -H -E -u discourse git clone --depth 1 --branch main https://github.com/discourse/discourse-translator.git; fi
+          - if [ ! -d discourse-saved-searches ]; then sudo -H -E -u discourse git clone --depth 1 --branch main https://github.com/discourse/discourse-saved-searches.git; fi
+          - if [ ! -d discourse-post-voting ]; then sudo -H -E -u discourse git clone --depth 1 --branch main https://github.com/discourse/discourse-post-voting.git; fi
     - exec:
         # Needs to be copied in else builtin git cleanup fails
         cd: $home
         cmd:
           - sudo -H -E -u discourse cp /shared/feeds/update-feeds.atom public/update-feeds.atom
   after_ssl:
-    - replace:
-        filename: "/etc/nginx/conf.d/discourse.conf"
-        from: /listen 80;/
-        to: |
-          listen 80;
-          listen [::]:80;
-          rewrite ^/\.well-known/acme-challenge/(.*)$ http://acme.openstreetmap.org/.well-known/acme-challenge/$1 permanent;
-
-    - replace:
-        filename: "/etc/nginx/conf.d/discourse.conf"
-        from: /add_header.+/
-        to: |
-          add_header Strict-Transport-Security 'max-age=63072000' always;
-          ssl_stapling on;
-          resolver <%= node[:networking][:nameservers].join(" ") %>;
+    - file:
+        path: "/etc/nginx/conf.d/outlets/server/25-https-osm-settings.conf"
+        contents: |
+          resolver <%= @resolvers.join(" ") %>;
           resolver_timeout 5s;
           ssl_dhparam /shared/ssl/dhparam.pem;
+
+# hooks: and run: use own levels
+run:
+  - replace:
+      filename: "/usr/local/bin/configure-ssl"
+      from: /listen 80;/
+      to: |
+        listen 80;
+        rewrite ^/\.well-known/acme-challenge/(.*)$ http://acme.openstreetmap.org/.well-known/acme-challenge/\$1 permanent;

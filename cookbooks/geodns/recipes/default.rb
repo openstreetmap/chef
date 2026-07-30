@@ -27,6 +27,10 @@ package %w[
   gdnsd
 ]
 
+link "/etc/gdnsd/geoip/GeoLite2-Country.mmdb" do
+  to "#{node[:geoipupdate][:directory]}/GeoLite2-Country.mmdb"
+end
+
 directory "/etc/gdnsd/config.d" do
   owner "nobody"
   group "nogroup"

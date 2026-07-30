@@ -16,11 +16,15 @@ default_attributes(
         :hosts_allow => [
           "193.60.236.0/24",                     # ucl external
           "10.0.48.0/20",                        # amsterdam internal
-          "184.104.179.128/27",                  # amsterdam external
-          "2001:470:1:fa1::/64",                 # amsterdam external
+          "184.104.179.128/27",                  # amsterdam external (he.net)
+          "2001:470:1:fa1::/64",                 # amsterdam external (he.net)
+          "82.199.86.96/27",                     # amsterdam external (equinix)
+          "2001:4d78:500:5e3::/64",              # amsterdam external (equinix)
           "10.0.64.0/20",                        # dublin internal
-          "184.104.226.96/27",                   # dublin external
-          "2001:470:1:b3b::/64",                 # dublin external
+          "184.104.226.96/27",                   # dublin external (he.net)
+          "2001:470:1:b3b::/64",                 # dublin external (he.net)
+          "87.252.214.96/27",                    # dublin external (equinix)
+          "2001:4d78:fe03:1c::/64",              # dublin external (equinix)
           "10.0.32.0/20",                        # bytemark internal
           "89.16.162.16/28",                     # bytemark external
           "2001:41c9:2:d6::/64",                 # bytemark external
@@ -32,6 +36,34 @@ default_attributes(
           "2605:bc80:3010:700::8cd3:a764",       # osuosl
           "127.0.0.0/8",                         # localhost
           "::1"                                  # localhost
+        ]
+      },
+      :logs => {
+        :comment => "Log files",
+        :path => "/store/logs",
+        :read_only => false,
+        :write_only => true,
+        :list => false,
+        :uid => "osmbackup",
+        :gid => "osmbackup",
+        :transfer_logging => false,
+        :hosts_allow => [
+          "193.60.236.0/24",          # ucl external
+          "10.0.48.0/20",             # amsterdam internal
+          "184.104.179.128/27",       # amsterdam external (he.net)
+          "2001:470:1:fa1::/64",      # amsterdam external (he.net)
+          "82.199.86.96/27",          # amsterdam external (equinix)
+          "2001:4d78:500:5e3::/64",   # amsterdam external (equinix)
+          "10.0.64.0/20",             # dublin internal
+          "184.104.226.96/27",        # dublin external (he.net)
+          "2001:470:1:b3b::/64",      # dublin external (he.net)
+          "87.252.214.96/27",         # dublin external (equinix)
+          "2001:4d78:fe03:1c::/64",   # dublin external (equinix)
+          "10.0.32.0/20",             # bytemark internal
+          "89.16.162.16/28",          # bytemark external
+          "2001:41c9:2:d6::/64",      # bytemark external
+          "127.0.0.0/8",              # localhost
+          "::1"                       # localhost
         ]
       }
     }

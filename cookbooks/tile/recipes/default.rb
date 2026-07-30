@@ -17,7 +17,6 @@
 # limitations under the License.
 #
 
-include_recipe "accounts"
 include_recipe "apache"
 include_recipe "git"
 include_recipe "nodejs"
@@ -30,6 +29,20 @@ include_recipe "tools"
 blocks = data_bag_item("tile", "blocks")
 admins = data_bag_item("apache", "admins")
 web_passwords = data_bag_item("web", "passwords")
+
+group "tile" do
+  gid 515
+  append true
+end
+
+user "tile" do
+  uid 515
+  gid 515
+  comment "tile.openstreetmap.org"
+  home "/srv/tile.openstreetmap.org"
+  shell "/usr/sbin/nologin"
+  manage_home false
+end
 
 apache_module "alias"
 apache_module "cgi"
@@ -159,13 +172,11 @@ end
 package %w[
   python3-cairo
   python3-mapnik
+  python3-pil
+  python3-pyotp
   python3-pyproj
   python3-setuptools
 ]
-
-python_package "pyotp" do
-  python_version "3"
-end
 
 directory "/srv/tile.openstreetmap.org/cgi-bin" do
   owner "tile"
@@ -286,7 +297,7 @@ end
 
 nodejs_package "carto"
 
-lowzoom_threads = node.cpu_cores - 1
+lowzoom_threads = [(node.cpu_cores * 0.8).floor, 1].max
 
 systemd_service "update-lowzoom@" do
   description "Low zoom tile update service for %i layer"
@@ -297,10 +308,74 @@ systemd_service "update-lowzoom@" do
   sandbox true
   restrict_address_families "AF_UNIX"
   read_write_paths [
-    "/srv/tile.openstreetmap.org/tiles/%i",
-    "/var/log/tile"
+    "/srv/tile.openstreetmap.org/tiles/%i"
   ]
   restart "on-failure"
+end
+
+postgresql_version = node[:tile][:database][:cluster].split("/").first
+postgis_version = node[:tile][:database][:postgis]
+
+package "postgresql-#{postgresql_version}-postgis-#{postgis_version}"
+
+postgresql_user "jburgess" do
+  cluster node[:tile][:database][:cluster]
+  superuser true
+end
+
+postgresql_user "tomh" do
+  cluster node[:tile][:database][:cluster]
+  superuser true
+end
+
+postgresql_user "pnorman" do
+  cluster node[:tile][:database][:cluster]
+  superuser true
+end
+
+postgresql_user "tile" do
+  cluster node[:tile][:database][:cluster]
+end
+
+postgresql_user "www-data" do
+  cluster node[:tile][:database][:cluster]
+end
+
+postgresql_user "_renderd" do
+  cluster node[:tile][:database][:cluster]
+end
+
+postgresql_database "gis" do
+  cluster node[:tile][:database][:cluster]
+  owner "tile"
+end
+
+postgresql_extension "postgis" do
+  cluster node[:tile][:database][:cluster]
+  database "gis"
+end
+
+postgresql_extension "hstore" do
+  cluster node[:tile][:database][:cluster]
+  database "gis"
+end
+
+%w[geography_columns planet_osm_nodes planet_osm_rels planet_osm_ways raster_columns raster_overviews].each do |table|
+  postgresql_table table do
+    cluster node[:tile][:database][:cluster]
+    database "gis"
+    owner "tile"
+    permissions "tile" => :all
+  end
+end
+
+%w[geometry_columns planet_osm_line planet_osm_point planet_osm_polygon planet_osm_roads spatial_ref_sys].each do |table|
+  postgresql_table table do
+    cluster node[:tile][:database][:cluster]
+    database "gis"
+    owner "tile"
+    permissions "tile" => :all, "www-data" => :select, "_renderd" => :select
+  end
 end
 
 directory "/srv/tile.openstreetmap.org/styles" do
@@ -386,6 +461,41 @@ node[:tile][:styles].each do |name, details|
     end
   end
 
+  if details[:functions_script]
+    postgresql_execute details[:functions_script] do
+      action :nothing
+      command details[:functions_script]
+      cluster node[:tile][:database][:cluster]
+      database "gis"
+      user "tile"
+      group "tile"
+      transaction true
+      subscribes :run, "git[#{style_directory}]"
+    end
+  end
+
+  if details[:common_values_script]
+    postgresql_execute details[:common_values_script] do
+      action :nothing
+      command details[:common_values_script]
+      cluster node[:tile][:database][:cluster]
+      database "gis"
+      user "tile"
+      group "tile"
+      transaction true
+      subscribes :run, "git[#{style_directory}]"
+    end
+
+    Array(details[:common_values_tables]).each do |table|
+      postgresql_table table do
+        cluster node[:tile][:database][:cluster]
+        database "gis"
+        owner "tile"
+        permissions "tile" => :all, "www-data" => :select, "_renderd" => :select
+      end
+    end
+  end
+
   execute "#{style_directory}/project.mml" do
     action :nothing
     command "carto -a 3.0.22 project.mml > project.xml"
@@ -395,72 +505,6 @@ node[:tile][:styles].each do |name, details|
     subscribes :run, "git[#{style_directory}]"
     notifies :restart, "service[renderd]", :immediately
     notifies :restart, "service[update-lowzoom@#{name}]"
-  end
-end
-
-postgresql_version = node[:tile][:database][:cluster].split("/").first
-postgis_version = node[:tile][:database][:postgis]
-
-package "postgresql-#{postgresql_version}-postgis-#{postgis_version}"
-
-postgresql_user "jburgess" do
-  cluster node[:tile][:database][:cluster]
-  superuser true
-end
-
-postgresql_user "tomh" do
-  cluster node[:tile][:database][:cluster]
-  superuser true
-end
-
-postgresql_user "pnorman" do
-  cluster node[:tile][:database][:cluster]
-  superuser true
-end
-
-postgresql_user "tile" do
-  cluster node[:tile][:database][:cluster]
-end
-
-postgresql_user "www-data" do
-  cluster node[:tile][:database][:cluster]
-end
-
-postgresql_user "_renderd" do
-  cluster node[:tile][:database][:cluster]
-end
-
-postgresql_database "gis" do
-  cluster node[:tile][:database][:cluster]
-  owner "tile"
-end
-
-postgresql_extension "postgis" do
-  cluster node[:tile][:database][:cluster]
-  database "gis"
-end
-
-postgresql_extension "hstore" do
-  cluster node[:tile][:database][:cluster]
-  database "gis"
-  only_if { node[:tile][:database][:hstore] }
-end
-
-%w[geography_columns planet_osm_nodes planet_osm_rels planet_osm_ways raster_columns raster_overviews].each do |table|
-  postgresql_table table do
-    cluster node[:tile][:database][:cluster]
-    database "gis"
-    owner "tile"
-    permissions "tile" => :all
-  end
-end
-
-%w[geometry_columns planet_osm_line planet_osm_point planet_osm_polygon planet_osm_roads spatial_ref_sys].each do |table|
-  postgresql_table table do
-    cluster node[:tile][:database][:cluster]
-    database "gis"
-    owner "tile"
-    permissions "tile" => :all, "www-data" => :select, "_renderd" => :select
   end
 end
 
@@ -556,8 +600,8 @@ systemd_service "expire-tiles" do
   sandbox true
   restrict_address_families "AF_UNIX"
   read_write_paths tile_directories + [
-                     "/var/lib/replicate/expire-queue"
-                   ]
+    "/var/lib/replicate/expire-queue"
+  ]
 end
 
 systemd_path "expire-tiles" do
@@ -613,12 +657,13 @@ systemd_service "render-lowzoom" do
   exec_start "/usr/local/bin/render-lowzoom"
   sandbox true
   restrict_address_families "AF_UNIX"
-  read_write_paths "/var/log/tile"
 end
 
 systemd_timer "render-lowzoom" do
   description "Render low zoom tiles"
   on_calendar "23:00 #{node[:timezone]}"
+  randomized_delay_sec "30m"
+  fixed_random_delay true
 end
 
 service "render-lowzoom.timer" do
@@ -659,7 +704,19 @@ tile_directories.each do |directory|
   end
 end
 
-package "ruby-webrick"
+package %w[
+  ruby-pg
+  ruby-webrick
+]
+
+prometheus_exporter "osm2pgsql" do
+  port 10027
+  user "tile"
+  restrict_address_families "AF_UNIX"
+  options [
+    "--database-name=gis"
+  ]
+end
 
 prometheus_exporter "modtile" do
   port 9494

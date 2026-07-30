@@ -1,21 +1,25 @@
-#!/bin/sh
+#!/bin/bash
 
 # DO NOT EDIT - This file is being maintained by Chef
+set -euo pipefail
+
+export ZSTD_CLEVEL=16
 
 T=$(mktemp -d -t -p /var/tmp osmf-crm.XXXXXXXXXX)
 D=$(date +%Y-%m-%d)
-B=osmf-crm-$D.tar.gz
+B="osmf-crm-$D.tar.zst"
 
-mkdir $T/osmf-crm-$D
-echo '[mysqldump]' > $T/mysqldump.opts
-echo 'user=civicrm' >> $T/mysqldump.opts
-echo 'password=<%= @passwords["database"] %>' >> $T/mysqldump.opts
-mysqldump --defaults-file=$T/mysqldump.opts --opt --skip-lock-tables --no-tablespaces civicrm > $T/osmf-crm-$D/civicrm.sql
-ln -s /srv/supporting.openstreetmap.org $T/osmf-crm-$D/www
+mkdir "$T/osmf-crm-$D"
+echo '[mysqldump]' > "$T/mysqldump.opts"
+echo 'user=civicrm' >> "$T/mysqldump.opts"
+echo 'password=<%= @passwords["database"] %>' >> "$T/mysqldump.opts"
+mysqldump --defaults-file="$T/mysqldump.opts" --opt --skip-lock-tables --no-tablespaces --max-allowed-packet=1G civicrm > "$T/osmf-crm-$D/civicrm.sql"
+ln -s /srv/supporting.openstreetmap.org "$T/osmf-crm-$D/www"
 
-export RSYNC_RSH="ssh -ax"
+nice tar --create --dereference --directory="$T" \
+  --sort=name \
+  "osmf-crm-$D" | nice zstd -T0 --quiet --long --rsyncable -o "$T/$B"
 
-nice tar --create --dereference --directory=$T osmf-crm-$D | nice gzip --rsyncable -9 > $T/$B
-nice rsync --preallocate --fuzzy $T/$B backup::backup
+nice rsync --preallocate --fuzzy "$T/$B" backup.openstreetmap.org::backup
 
-rm -rf $T
+rm -rf "$T"

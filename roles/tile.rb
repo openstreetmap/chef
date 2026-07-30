@@ -4,9 +4,11 @@ description "Role applied to all tile servers"
 default_attributes(
   :accounts => {
     :users => {
-      :pnorman => { :status => :administrator },
+      :pnorman => { :status => :administrator }
+    },
+    :groups => {
       :tile => {
-        :members => [:jburgess, :tomh, :pnorman]
+        :members => [:tomh, :grant, :pnorman]
       }
     }
   },
@@ -17,10 +19,10 @@ default_attributes(
       :enable => false
     },
     :event => {
-      :threads_per_child => 20,
-      :min_spare_threads => 300,
+      :threads_per_child => 64,
+      :min_spare_threads => 512,
       :max_connections_per_child => 0,
-      :async_request_worker_factor => 4,
+      :async_request_worker_factor => 40,
       :listen_cores_buckets_ratio => 8
     }
   },
@@ -45,6 +47,9 @@ default_attributes(
         :autovacuum_analyze_scale_factor => "0.02"
       }
     }
+  },
+  :ruby => {
+    :fullstaq => false
   },
   :ssl => {
     :ct_report_uri => false
@@ -84,8 +89,6 @@ default_attributes(
   },
   :tile => {
     :database => {
-      :style_file => "/srv/tile.openstreetmap.org/styles/default/openstreetmap-carto.style",
-      :tag_transform_script => "/srv/tile.openstreetmap.org/styles/default/openstreetmap-carto.lua",
       :external_data_script => "/srv/tile.openstreetmap.org/styles/default/scripts/get-external-data.py -c /srv/tile.openstreetmap.org/styles/default/external-data.yml",
       :external_data_tables => %w[
         icesheet_outlines
@@ -98,8 +101,11 @@ default_attributes(
     :styles => {
       :default => {
         :repository => "https://github.com/gravitystorm/openstreetmap-carto.git",
-        :revision => "v5.8.0",
-        :fonts_script => "/srv/tile.openstreetmap.org/styles/default/scripts/get-fonts.sh",
+        :revision => "v6.0.0",
+        :fonts_script => "/srv/tile.openstreetmap.org/styles/default/scripts/get-fonts.py",
+        :functions_script => "/srv/tile.openstreetmap.org/styles/default/functions.sql",
+        :common_values_script => "/srv/tile.openstreetmap.org/styles/default/common-values.sql",
+        :common_values_tables => %w[carto_pois],
         :max_zoom => 19
       }
     }
@@ -107,5 +113,6 @@ default_attributes(
 )
 
 run_list(
-  "recipe[tile]"
+  "recipe[tile]",
+  "recipe[fastly]"
 )

@@ -4,8 +4,9 @@ WSGIDaemonProcess <%= @user %>.dev.openstreetmap.org user=<%= @user %> processes
 
 <VirtualHost *:443>
 	ServerName <%= @user %>.dev.openstreetmap.org
-	ServerAdmin webmaster@openstreetmap.org
 	ServerAlias <%= @user %>.dev.osm.org
+
+	ServerAdmin webmaster@openstreetmap.org
 
 	SSLEngine on
 	SSLCertificateFile /etc/ssl/certs/<%= @user %>.dev.openstreetmap.org.pem
@@ -26,6 +27,12 @@ WSGIDaemonProcess <%= @user %>.dev.openstreetmap.org user=<%= @user %> processes
 	CustomLog /var/log/apache2/<%= @user %>.dev.openstreetmap.org-access.log combined_extended
 	ErrorLog /var/log/apache2/<%= @user %>.dev.openstreetmap.org-error.log
 
+	# Prevent abuse by an anonymous AI bot
+	RewriteCond %{REQUEST_METHOD} ^(GET|HEAD)$
+	RewriteCond %{HTTP_REFERER} ^-?$
+	RewriteCond %{HTTP_USER_AGENT} ((CriOS|Chrome)/[1-9][0-9]?\.0\.|Chrome/100\.0\.|Chrome/122\.0\.0\.0|(Firefox|FxiOS)/[1-6]?[0-9]\.|MSIE\ [5-9]\.0|Opera/[8-9]\.|Windows\ NT\ [3-5]\.|Version/[3-5]\.[0-1]) [NC]
+	RewriteRule ^ - [R=429,L]
+
 	RewriteCond <%= @directory %>%{REQUEST_FILENAME} -f
 	RewriteRule ^/cgi-bin/(.*)$ /~<%= @user %>/cgi-bin/$1 [PT,L]
 
@@ -36,8 +43,9 @@ WSGIDaemonProcess <%= @user %>.dev.openstreetmap.org user=<%= @user %> processes
 
 <VirtualHost *:80>
 	ServerName <%= @user %>.dev.openstreetmap.org
-	ServerAdmin webmaster@openstreetmap.org
 	ServerAlias <%= @user %>.dev.osm.org
+
+	ServerAdmin webmaster@openstreetmap.org
 
 	CustomLog /var/log/apache2/<%= @user %>.dev.openstreetmap.org-access.log combined_extended
 	ErrorLog /var/log/apache2/<%= @user %>.dev.openstreetmap.org-error.log
@@ -47,7 +55,7 @@ WSGIDaemonProcess <%= @user %>.dev.openstreetmap.org user=<%= @user %> processes
 </VirtualHost>
 
 <Directory <%= @directory %>>
-	AllowOverride AuthConfig FileInfo Indexes Options=RailsBaseURI
+	AllowOverride AuthConfig FileInfo Indexes
 	Options SymLinksIfOwnerMatch Indexes Includes
 	Require all granted
 </Directory>

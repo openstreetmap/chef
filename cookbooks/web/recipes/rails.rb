@@ -29,6 +29,7 @@ include_recipe "web::base"
 
 web_passwords = data_bag_item("web", "passwords")
 db_passwords = data_bag_item("db", "passwords")
+aws_credentials = data_bag_item("web", "aws")
 
 ssl_certificate "www.openstreetmap.org" do
   domains ["www.openstreetmap.org", "www.osm.org", "www.openstreetmap.com",
@@ -45,13 +46,17 @@ rails_directory = "#{node[:web][:base_directory]}/rails"
 
 matomo = data_bag_item("web", "matomo")
 
+aws_access_key_id = aws_credentials["web_access_key_id"]
+aws_secret_access_key = aws_credentials["web_secret_access_key"]
+
 storage = {
   "avatars" => {
     "service" => "S3",
-    "access_key_id" => "AKIASQUXHPE7AMJQRFOS",
-    "secret_access_key" => web_passwords["aws_key"],
+    "access_key_id" => aws_access_key_id,
+    "secret_access_key" => aws_secret_access_key,
     "region" => "eu-west-1",
     "bucket" => "openstreetmap-user-avatars",
+    "public" => true,
     "use_dualstack_endpoint" => true,
     "upload" => {
       "acl" => "public-read",
@@ -60,11 +65,12 @@ storage = {
   },
   "gps_traces" => {
     "service" => "S3",
-    "access_key_id" => "AKIASQUXHPE7AMJQRFOS",
-    "secret_access_key" => web_passwords["aws_key"],
+    "access_key_id" => aws_access_key_id,
+    "secret_access_key" => aws_secret_access_key,
     "region" => "eu-west-1",
     "bucket" => "openstreetmap-gps-traces",
     "use_dualstack_endpoint" => true,
+    "public" => true,
     "upload" => {
       "acl" => "public-read",
       "cache_control" => "public, max-age=31536000, immutable"
@@ -72,11 +78,12 @@ storage = {
   },
   "gps_images" => {
     "service" => "S3",
-    "access_key_id" => "AKIASQUXHPE7AMJQRFOS",
-    "secret_access_key" => web_passwords["aws_key"],
+    "access_key_id" => aws_access_key_id,
+    "secret_access_key" => aws_secret_access_key,
     "region" => "eu-west-1",
     "bucket" => "openstreetmap-gps-images",
     "use_dualstack_endpoint" => true,
+    "public" => true,
     "upload" => {
       "acl" => "public-read",
       "cache_control" => "public, max-age=31536000, immutable"
@@ -104,7 +111,6 @@ rails_port "www.openstreetmap.org" do
   status node[:web][:status]
   messages_domain "messages.openstreetmap.org"
   log_path "#{node[:web][:log_directory]}/rails.log"
-  logstash_path "#{node[:web][:log_directory]}/rails-logstash.log"
   memcache_servers node[:web][:memcached_servers]
   potlatch2_key web_passwords["potlatch2_key"]
   id_key web_passwords["id_key"]
@@ -120,6 +126,10 @@ rails_port "www.openstreetmap.org" do
   google_auth_id "651529786092-6c5ahcu0tpp95emiec8uibg11asmk34t.apps.googleusercontent.com"
   google_auth_secret web_passwords["google_auth_secret"]
   google_openid_realm "https://www.openstreetmap.org"
+  apple_auth_id "org.openstreetmap.www"
+  apple_team_id "MF99FFFD4L"
+  apple_key_id "73A2H3M7J3"
+  apple_private_key web_passwords["apple_private_key"].join("\n")
   facebook_auth_id "427915424036881"
   facebook_auth_secret web_passwords["facebook_auth_secret"]
   microsoft_auth_id "e34f14f1-f790-40f3-9fa4-3c5f1a027c38"
@@ -130,7 +140,9 @@ rails_port "www.openstreetmap.org" do
   wikipedia_auth_secret web_passwords["wikipedia_auth_secret"]
   thunderforest_key web_passwords["thunderforest_key"]
   tracestrack_key web_passwords["tracestrack_key"]
+  maptiler_key web_passwords["maptiler_key"]
   totp_key web_passwords["totp_key"]
+  totp_domain "openstreetmap.org"
   csp_enforce true
   trace_use_job_queue true
   diary_feed_delay 12
@@ -149,19 +161,23 @@ rails_port "www.openstreetmap.org" do
   signup_email_max_burst 2
   doorkeeper_signing_key web_passwords["openid_connect_key"].join("\n")
   user_account_deletion_delay 7 * 24
+  turnstile_site_key "0x4AAAAAACsSjCdlK-9Cu3FO"
+  turnstile_secret_key web_passwords["cloudflare_turnstile_secret"]
   # Requests to modify the imagery blacklist should come from the DWG only
   imagery_blacklist [
     # Current Google imagery URLs have google or googleapis in the domain
     ".*\\.google(apis)?\\..*/.*",
     # Blacklist VWorld
-    "http://xdworld\\.vworld\\.kr:8080/.*",
+    "https?://xdworld\\.vworld\\.kr[/:].*",
     # Blacklist here
     ".*\\.here\\.com[/:].*",
     # Blacklist Mapy.cz
     ".*\\.mapy\\.cz.*",
     # Blacklist Yandex
     ".*\\.api-maps\\.yandex\\.ru/.*",
-    ".*\\.maps\\.yandex\\.net/.*"
+    ".*\\.maps\\.yandex\\.net/.*",
+    # Blacklist 2gis
+    ".*\\.maps\\.2gis\\.com/.*"
   ]
 end
 
@@ -176,6 +192,8 @@ systemd_service "rails-jobs@" do
   working_directory rails_directory
   exec_start "#{node[:ruby][:bundle]} exec rails jobs:work"
   restart "on-failure"
+  memory_high "2G"
+  memory_max "3G"
   nice 10
   sandbox :enable_network => true
   memory_deny_write_execute false

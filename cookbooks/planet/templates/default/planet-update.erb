@@ -11,11 +11,14 @@ PLANETPREV="${PLANETDIR}/planet-previous.${SUFFIX}"
 PLANETCURR="${PLANETDIR}/planet.${SUFFIX}"
 PLANETNEW="${PLANETDIR}/planet-new.${SUFFIX}"
 
+rm -f "$PLANETPREV"
+
 pyosmium-up-to-date -vvv -o "$PLANETNEW" "$PLANETCURR"
 retval=$?
 
 while [ $retval -eq 1 ]; do
     mv "$PLANETCURR" "$PLANETPREV"
+    rm -f "$PLANETPREV"
     mv "$PLANETNEW" "$PLANETCURR"
     pyosmium-up-to-date -vvv -o "$PLANETNEW" "$PLANETCURR"
     retval=$?
@@ -28,4 +31,5 @@ fi
 # cleanup
 
 mv "$PLANETCURR" "$PLANETPREV"
+rm -f "$PLANETPREV"
 mv "$PLANETNEW" "$PLANETCURR"

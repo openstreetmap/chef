@@ -19,5 +19,8 @@
 
 package "python3"
 package "python3-pip"
+if platform?("debian") && node[:platform_version].to_i >= 13
+  package "python3-venv"
+end
 
 package "virtualenv"

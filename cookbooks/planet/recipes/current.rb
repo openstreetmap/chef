@@ -17,9 +17,7 @@
 # limitations under the License.
 #
 
-node.default[:accounts][:users][:planet][:status] = :role
-
-include_recipe "accounts"
+include_recipe "planet::user"
 
 package %w[
   pyosmium

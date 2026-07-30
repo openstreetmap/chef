@@ -23,5 +23,5 @@ apt_repository "postgresql" do
   uri "https://apt.postgresql.org/pub/repos/apt"
   distribution "#{node[:lsb][:codename]}-pgdg"
   components ["main"]
-  key "7FCC7D46ACCC4CF8"
+  key "https://www.postgresql.org/media/keys/ACCC4CF8.asc"
 end

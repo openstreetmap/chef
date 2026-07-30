@@ -12,7 +12,7 @@ concurrency:
 jobs:
   kitchen:
     name: Test Kitchen
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     permissions:
       packages: read
     strategy:
@@ -21,6 +21,8 @@ jobs:
           - accounts
           - apache
           - apt
+          - apt-repository
+          - awscli
           - backup
           - bind
           - blog
@@ -33,6 +35,7 @@ jobs:
           - db-base
           - db-master
           - db-slave
+          - dev
           - devices
           - dhcpd
           - dmca
@@ -41,6 +44,8 @@ jobs:
           - elasticsearch
           - exim
           - fail2ban
+          - fastly
+          - foundation-birthday
           - foundation-board
           - foundation-dwg
           - foundation-mastodon
@@ -58,11 +63,9 @@ jobs:
           - hardware
           - hot
           - ideditor
+          - imagery-tiler
           - irc
-          - kibana
           - letsencrypt
-          - logstash
-          - logstash-forwarder
           - mail
           - mailman
           - matomo
@@ -78,10 +81,9 @@ jobs:
           - osqa
           - otrs
           - overpass
+          - oxidized
           - passenger
           - php
-          - php-apache
-          - php-fpm
           - planet
           - planet-aws
           - planet-current
@@ -109,67 +111,103 @@ jobs:
           - tilelog
           - tools
           - trac
+          - vectortile
           - web-cgimap
           - web-frontend
           - web-rails
-          - wordpress
           - wiki
+          - wordpress
         os:
-          - ubuntu-2204
-        include:
-          - os: ubuntu-2004
-            suite: mailman
-          - os: ubuntu-2004
-            suite: osqa
-          - os: debian-12
-            suite: dns
-          - os: debian-12
-            suite: git-server
-          - os: debian-12
-            suite: git-web
-          - os: debian-12
-            suite: imagery-tiler
-          - os: debian-12
-            suite: letsencrypt
-          - os: debian-12
-            suite: otrs
-          - os: debian-12
-            suite: serverinfo
-          - os: debian-12
-            suite: supybot
+          - debian-12
         exclude:
-          - suite: dns
-            os: ubuntu-2204
-          - suite: git-server
-            os: ubuntu-2204
-          - suite: git-web
-            os: ubuntu-2204
           - suite: mailman
+            os: debian-12
+        include:
+          - suite: blog
+            os: ubuntu-2004
+          - suite: mailman
+            os: ubuntu-2004
+          - suite: stateofthemap-wordpress
+            os: ubuntu-2004
+          - suite: wordpress
+            os: ubuntu-2004
+          - suite: accounts
             os: ubuntu-2204
-          - suite: letsencrypt
+          - suite: apt
             os: ubuntu-2204
-          - suite: osqa
+          - suite: chef
             os: ubuntu-2204
-          - suite: otrs
+          - suite: db-backup
             os: ubuntu-2204
-          - suite: serverinfo
+          - suite: db-base
             os: ubuntu-2204
-          - suite: supybot
+          - suite: db-master
+            os: ubuntu-2204
+          - suite: db-slave
+            os: ubuntu-2204
+          - suite: devices
+            os: ubuntu-2204
+          - suite: exim
+            os: ubuntu-2204
+          - suite: fail2ban
+            os: ubuntu-2204
+          - suite: git
+            os: ubuntu-2204
+          - suite: hardware
+            os: ubuntu-2204
+          - suite: networking
+            os: ubuntu-2204
+          - suite: ntp
+            os: ubuntu-2204
+          - suite: openssh
+            os: ubuntu-2204
+          - suite: postgresql
+            os: ubuntu-2204
+          - suite: prometheus
+            os: ubuntu-2204
+          - suite: rsyncd
+            os: ubuntu-2204
+          - suite: sysctl
+            os: ubuntu-2204
+          - suite: sysfs
+            os: ubuntu-2204
+          - suite: tools
             os: ubuntu-2204
       fail-fast: false
     steps:
+    - name: Check out code
+      uses: actions/checkout@v7
+    - name: Extract cinc image details from .kitchen.yml
+      id: cinc-image
+      run: |
+        CINC_IMAGE=$(grep 'chef_image:' .kitchen.yml | head -1 | awk '{print $2}')
+        CINC_VERSION=$(grep 'chef_version:' .kitchen.yml | head -1 | awk '{print $2}')
+        echo "cinc_container_image=${CINC_IMAGE}" >> "$GITHUB_OUTPUT"
+        echo "cinc_container_version=${CINC_VERSION}" >> "$GITHUB_OUTPUT"
+        echo "cinc_container_ref=${CINC_IMAGE}:${CINC_VERSION}" >> "$GITHUB_OUTPUT"
     - name: Login to GitHub Container Registry
-      uses: docker/login-action@v3
+      uses: docker/login-action@v4
       with:
         registry: ghcr.io
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
-    - name: Check out code
-      uses: actions/checkout@v4
+    - name: Cache cinc container image
+      id: cache-cinc
+      uses: actions/cache@v6
+      with:
+        path: /tmp/cinc-image.tar
+        key: docker-cinc-${{ steps.cinc-image.outputs.cinc_container_version }}-${{ runner.arch }}
+    - name: Pull and save cinc container image
+      if: steps.cache-cinc.outputs.cache-hit != 'true'
+      run: |
+        docker pull "${{ steps.cinc-image.outputs.cinc_container_ref }}"
+        docker save "${{ steps.cinc-image.outputs.cinc_container_ref }}" -o /tmp/cinc-image.tar
+    - name: Load cinc container image from cache
+      if: steps.cache-cinc.outputs.cache-hit == 'true'
+      run: docker load -i /tmp/cinc-image.tar
     - name: Setup ruby
       uses: ruby/setup-ruby@v1
       with:
-        ruby-version: 3.1
         bundler-cache: true
     - name: Run kitchen test ${{ matrix.suite }}-${{ matrix.os }}
       run: bundle exec kitchen test ${{ matrix.suite }}-${{ matrix.os }}

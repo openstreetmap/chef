@@ -2,11 +2,6 @@ name "wiki"
 description "Role applied to all wiki servers"
 
 default_attributes(
-  :accounts => {
-    :users => {
-      :wiki => { :status => :role }
-    }
-  },
   :apache => {
     :mpm => "event",
     :timeout => 30,
@@ -14,10 +9,10 @@ default_attributes(
       :server_limit => 32,
       :max_request_workers => 800,
       :threads_per_child => 50,
-      :max_connections_per_child => 10000
+      :max_connections_per_child => 100000
     },
     :evasive => {
-      :page_count => 250,
+      :page_count => 400,
       :site_count => 500
     }
   },
@@ -29,9 +24,6 @@ default_attributes(
   },
   :exim => {
     :trusted_users => %w[www-data wiki],
-    :aliases => {
-      :root => "grant"
-    },
     :rewrites => [
       {
         :pattern => "www-data@openstreetmap.org",
@@ -41,7 +33,7 @@ default_attributes(
     ]
   },
   :memcached => {
-    :memory_limit => 4096,
+    :memory_limit => 16384,
     :connection_limit => 8192,
     :chunk_growth_factor => 1.25,
     :min_item_size => 48
@@ -59,7 +51,7 @@ default_attributes(
       :mysqld => {
         :innodb_buffer_pool_size => "4G",
         :key_buffer_size => "64M",
-        :max_connections => "500",
+        :max_connections => "800",
         :sort_buffer_size => "8M",
         :tmp_table_size => "128M"
       }

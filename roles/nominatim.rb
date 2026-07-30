@@ -4,9 +4,10 @@ description "Role applied to all nominatim servers."
 default_attributes(
   :accounts => {
     :users => {
-      :lonvia => { :status => :administrator },
+      :lonvia => { :status => :administrator }
+    },
+    :groups => {
       :nominatim => {
-        :status => :role,
         :members => [:lonvia, :tomh]
       }
     }
@@ -64,22 +65,11 @@ default_attributes(
     }
   },
   :nominatim => {
-    :dbadmins => %w[lonvia tomh],
-    :tablespaces => {
-      "dosm" => "/ssd/tablespaces/dosm",
-      "iosm" => "/ssd/tablespaces/iosm",
-      "dplace" => "/ssd/tablespaces/dplace",
-      "iplace" => "/ssd/tablespaces/iplace",
-      "daddress" => "/ssd/tablespaces/daddress",
-      "iaddress" => "/ssd/tablespaces/iaddress",
-      "dsearch" => "/ssd/tablespaces/dsearch",
-      "isearch" => "/ssd/tablespaces/isearch",
-      "daux" => "/ssd/tablespaces/daux",
-      "iaux" => "/ssd/tablespaces/iaux"
-    }
+    :dbadmins => %w[lonvia tomh]
   }
 )
 
 run_list(
-  "recipe[nominatim::default]"
+  "recipe[nominatim::default]",
+  "recipe[fastly]"
 )

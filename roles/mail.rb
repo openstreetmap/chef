@@ -47,6 +47,7 @@ default_attributes(
       :otrs => {
         :comment => "otrs.openstreetmap.org",
         :domains => ["otrs.openstreetmap.org"],
+        :condition => "${if or {{def:h_auto-submitted:}{def:h_x-autorespond:}} {no}{yes}}",
         :host => "naga.dub.openstreetmap.org"
       },
       :join => {
@@ -62,7 +63,7 @@ default_attributes(
       :community => {
         :comment => "community.openstreetmap.org",
         :domains => ["community.openstreetmap.org"],
-        :host => "gorwen.dub.openstreetmap.org::2500"
+        :host => "fume.dub.openstreetmap.org::2500"
       }
     },
     :dkim_selectors => {

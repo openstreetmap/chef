@@ -6,5 +6,3 @@ default[:web][:max_request_area] = 0.25
 default[:web][:max_number_of_nodes] = 50000
 default[:web][:max_number_of_way_nodes] = 2000
 default[:web][:max_number_of_relation_members] = 32000
-
-default[:accounts][:users][:rails][:status] = :role

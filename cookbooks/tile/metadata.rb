@@ -6,7 +6,6 @@ description       "Installs and configures tile servers"
 
 version           "1.0.0"
 supports          "ubuntu"
-depends           "accounts"
 depends           "apache"
 depends           "git"
 depends           "nodejs"

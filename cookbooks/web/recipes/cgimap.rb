@@ -24,6 +24,10 @@ include_recipe "web::base"
 db_passwords = data_bag_item("db", "passwords")
 
 package "openstreetmap-cgimap-bin" do
+  action :purge
+end
+
+package "openstreetmap-cgimap" do
   action :install
 end
 
@@ -37,8 +41,6 @@ cgimap_options = {
   "CGIMAP_DBNAME" => "openstreetmap",
   "CGIMAP_USERNAME" => "cgimap",
   "CGIMAP_PASSWORD" => db_passwords["cgimap"],
-  "CGIMAP_OAUTH_HOST" => node[:web][:database_host],
-  "CGIMAP_UPDATE_HOST" => node[:web][:database_host],
   "CGIMAP_PIDFILE" => "#{node[:web][:pid_directory]}/cgimap.pid",
   "CGIMAP_LOGFILE" => "#{node[:web][:log_directory]}/cgimap.log",
   "CGIMAP_MEMCACHE" => memcached_servers.join(","),
@@ -51,11 +53,14 @@ cgimap_options = {
   "CGIMAP_MAX_WAY_NODES" => node[:web][:max_number_of_way_nodes],
   "CGIMAP_MAX_RELATION_MEMBERS" => node[:web][:max_number_of_relation_members],
   "CGIMAP_RATELIMIT_UPLOAD" => "true",
-  "CGIMAP_BBOX_SIZE_LIMIT_UPLOAD" => "true"
+  "CGIMAP_BBOX_SIZE_LIMIT_UPLOAD" => "true",
+  "CGIMAP_CHANGESET_ENHANCED_STATS" => "true"
 }
 
 if %w[database_readonly api_readonly].include?(node[:web][:status])
   cgimap_options["CGIMAP_DISABLE_API_WRITE"] = "true"
+else
+  cgimap_options["CGIMAP_UPDATE_HOST"] = node[:web][:database_host]
 end
 
 systemd_service "cgimap" do
@@ -65,7 +70,7 @@ systemd_service "cgimap" do
   user "rails"
   group "www-data"
   umask "0002"
-  exec_start "/usr/bin/openstreetmap-cgimap --daemon --instances 30 --basic_auth_support false --oauth_10_support false"
+  exec_start "/usr/bin/openstreetmap-cgimap --daemon --instances 30"
   exec_reload "/bin/kill -HUP $MAINPID"
   runtime_directory "cgimap"
   private_tmp true

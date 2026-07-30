@@ -17,9 +17,22 @@
 # limitations under the License.
 #
 
-include_recipe "accounts"
-include_recipe "nginx"
 include_recipe "git"
+include_recipe "nginx"
+
+group "imagery" do
+  gid 523
+  append true
+end
+
+user "imagery" do
+  uid 523
+  gid 523
+  comment "Imagery"
+  home "/srv/imagery"
+  shell "/usr/sbin/nologin"
+  manage_home false
+end
 
 # Imagery gdal and proj requirements
 package %w[
@@ -33,6 +46,8 @@ package %w[
   cgi-mapserver
   mapcache-cgi
   mapcache-tools
+  libtcmalloc-minimal4
+  libfcgi-bin
 ]
 
 # Mapserver via nginx requires as fastcgi spawner
@@ -44,11 +59,19 @@ package %w[
 # Imagery processing Requirements
 package "imagemagick"
 
-# Imagery misc compression
+# Imagery misc utilities
 package %w[
   xz-utils
   unzip
+  aria2
 ]
+
+template "/etc/mapserver.conf" do
+  source "mapserver.conf.erb"
+  owner "root"
+  group "root"
+  mode "644"
+end
 
 directory "/srv/imagery/mapserver" do
   owner "root"
@@ -88,4 +111,15 @@ systemd_tmpfile "/run/mapserver-fastcgi" do
   group "imagery"
   mode "0755"
   not_if { kitchen? }
+end
+
+service "systemd-coredump.socket" do
+  action [ :stop, :disable ]
+end
+
+template "/usr/local/bin/mapserver-fcgi-shutdown" do
+  source "mapserver-fcgi-shutdown.erb"
+  owner "root"
+  group "root"
+  mode "755"
 end

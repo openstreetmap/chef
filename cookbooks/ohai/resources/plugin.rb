@@ -29,11 +29,27 @@ action :create do
     action :nothing
   end
 
-  directory "/etc/chef/ohai/plugins" do
+  directory "/etc/cinc/ohai/plugins" do
     owner "root"
     group "root"
     mode "755"
     recursive true
+  end
+
+  # cinc ohai v18.2.8 still uses plugin_path => "/etc/chef/ohai/plugins"
+  # so we need to ensure it exists and is linked to the correct cinc directory
+  directory "/etc/chef/ohai" do
+    owner "root"
+    group "root"
+    mode "755"
+    recursive true
+  end
+
+  link "/etc/chef/ohai/plugins" do
+    to "/etc/cinc/ohai/plugins"
+    owner "root"
+    group "root"
+    not_if { ::File.exist?("/etc/chef/ohai/plugins") }
   end
 
   declare_resource :template, plugin_path do
@@ -53,6 +69,6 @@ end
 
 action_class do
   def plugin_path
-    "/etc/chef/ohai/plugins/#{new_resource.plugin}.rb"
+    "/etc/cinc/ohai/plugins/#{new_resource.plugin}.rb"
   end
 end

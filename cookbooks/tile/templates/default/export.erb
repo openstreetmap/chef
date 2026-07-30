@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 
 import cairo
-import cgi
 import http.cookies
 import mapnik
+import io
 import os
 import pyotp
 import pyproj
@@ -13,6 +13,8 @@ import shutil
 import signal
 import sys
 import tempfile
+import urllib.parse
+from PIL import Image
 
 # Limit maximum CPU time
 # The Postscript output format can sometimes take hours
@@ -40,25 +42,121 @@ def output_file(file):
 def file_size(file):
   return os.fstat(file.fileno()).st_size
 
+# Routine to retrieve BytesIO payload length
+def bytesio_size(bio):
+  return bio.getbuffer().nbytes
+
 # Routine to report an error
 def output_error(message, status = "400 Bad Request"):
   print("Status: %s" % status)
-  output_headers("text/html")
-  print("<html>")
-  print("<head>")
-  print("<title>Error</title>")
-  print("</head>")
-  print("<body>")
-  print("<h1>Error</h1>")
-  print("<p>%s</p>" % message)
-  print("</body>")
-  print("</html>")
+  output_headers("text/plain")
+  print(message)
+
+# Add a copyright notice for raster formats (PNG, JPEG, WEBP)
+def add_copyright_notice_raster(image, map_width, map_height, format):
+  # Convert the Mapnik image to PNG and store it in a BytesIO object
+  png = image.tostring("png")
+  png_io = io.BytesIO(png)
+
+  # Load the PNG data from the BytesIO object into a Cairo ImageSurface
+  surface = cairo.ImageSurface.create_from_png(png_io)
+
+  add_copyright_notice_vector(surface, map_width, map_height)
+
+  # Convert the Cairo surface to PNG in a BytesIO object
+  output_io = io.BytesIO()
+  surface.write_to_png(output_io)
+
+  if format == "png":
+    return output_io
+  else:
+    # Open the output PNG image for conversion to other formats
+    img = Image.open(output_io)
+    img_io = io.BytesIO()
+    img.save(img_io, format=format)
+    return img_io
+
+# Add a copyright notice for vector formats (SVG, PDF, PS)
+def add_copyright_notice_vector(surface, map_width, map_height):
+  context = cairo.Context(surface)
+
+  # Set the font for the copyright notice
+  context.set_font_face(cairo.ToyFontFace("DejaVu"))
+  context.set_font_size(14)
+
+  # Define the copyright text
+  text = "© OpenStreetMap contributors"
+
+  text_extents = context.text_extents(text)
+  text_width = text_extents.width
+  text_height = text_extents.height
+
+  x_margin = 10
+  y_margin = 10
+
+  # Position the text at the bottom-right corner
+  x_position = map_width - text_width - x_margin
+  y_position = map_height - text_height - y_margin
+
+  # Draw a white box just large enough to fit the text
+  context.set_source_rgba(1, 1, 1, 0.5)
+  context.rectangle(x_position - x_margin, y_position - y_margin,
+                    text_width + 2 * x_margin, text_height + 2 * y_margin)
+  context.fill_preserve()
+
+  context.set_source_rgb(0, 0, 0)  # Black color for the text
+  context.move_to(x_position - x_margin / 2, y_position + y_margin)
+  context.show_text(text)
+
+# Render and output map for raster formats (PNG, JPEG, WEBP)
+def render_and_output_image(map, format):
+  image = mapnik.Image(map.width, map.height)
+  mapnik.render(map, image)
+
+  bytes_io = add_copyright_notice_raster(image, map.width, map.height, format)
+
+  if format == "png":
+    output_headers("image/png", "map.png", bytesio_size(bytes_io))
+  elif format == "jpeg":
+    output_headers("image/jpeg", "map.jpg", bytesio_size(bytes_io))
+  elif format == "webp":
+    output_headers("image/webp", "map.webp", bytesio_size(bytes_io))
+
+  output_file(bytes_io)
+
+# Render and output map for vector formats (SVG, PDF, PS)
+def render_and_output_vector(map, format):
+  with tempfile.NamedTemporaryFile(prefix="export") as file:
+    if format == "svg":
+      surface = cairo.SVGSurface(file.name, map.width, map.height)
+      surface.restrict_to_version(cairo.SVG_VERSION_1_2)
+    elif format == "pdf":
+      surface = cairo.PDFSurface(file.name, map.width, map.height)
+    elif format == "ps":
+      surface = cairo.PSSurface(file.name, map.width, map.height)
+
+    mapnik.render(map, surface)
+
+    add_copyright_notice_vector(surface, map.width, map.height)
+
+    surface.finish()
+
+    if format == "svg":
+      output_headers("image/svg+xml", "map.svg", file_size(file))
+    elif format == "pdf":
+      output_headers("application/pdf", "map.pdf", file_size(file))
+    elif format == "ps":
+      output_headers("application/postscript", "map.ps", file_size(file))
+
+    output_file(file)
+
 
 # Create TOTP token validator
 totp = pyotp.TOTP('<%= @totp_key %>', interval = 3600)
 
 # Parse CGI parameters
-form = cgi.FieldStorage()
+query_string = os.environ.get('QUERY_STRING', '')
+form = urllib.parse.parse_qs(query_string)
 
 # Import cookies
 cookies = http.cookies.SimpleCookie(os.environ.get('HTTP_COOKIE'))
@@ -75,14 +173,21 @@ if 'HTTP_REFERER' not in os.environ:
 if '_osm_totp_token' in cookies:
   token = cookies['_osm_totp_token'].value
 else:
-  token = None
+  token = form.get("token", [None])[0]
 
 # Get the load average
 cputimes = [float(n) for n in open("/proc/stat").readline().rstrip().split()[1:-1]]
 idletime = cputimes[3] / sum(cputimes)
 
 # Process the request
-if not totp.verify(token, valid_window = 1):
+if os.environ['REQUEST_METHOD'] == 'OPTIONS':
+  # Handle CORS preflight checks
+  print('Status: 204 No Content')
+  print('Access-Control-Allow-Origin: %s' % os.environ['HTTP_ORIGIN'])
+  print('Access-Control-Allow-Headers: X-CSRF-Token, X-Turbo-Request-Id')
+  print('Access-Control-Allow-Credentials: true')
+  print('')
+elif not totp.verify(token, valid_window = 1):
   # Abort if the request didn't have a valid TOTP token
   output_error("Missing or invalid token")
 elif idletime < 0.2:
@@ -108,88 +213,63 @@ elif "format" not in form:
   # No format specified
   output_error("No format specified")
 else:
-  # Create projection object
-  transformer = pyproj.Transformer.from_crs("EPSG:4326", "EPSG:3857", always_xy=True)
+  try:
+    # Create projection object
+    transformer = pyproj.Transformer.from_crs("EPSG:4326", "EPSG:3857", always_xy=True)
 
-  # Get the bounds of the area to render
-  bbox = [float(x) for x in form.getvalue("bbox").split(",")]
+    # Get the bounds of the area to render
+    bbox = [float(x) for x in form.get("bbox", [""])[0].split(",")]
 
-  if bbox[0] >= bbox[2] or bbox[1] >= bbox[3]:
-    # Bogus bounding box
-    output_error("Invalid bounding box")
-  else:
-    # Project the bounds to the map projection
-    bbox = mapnik.Box2d(*transformer.transform(bbox[0], bbox[1]),
-                        *transformer.transform(bbox[2], bbox[3]))
-
-    # Get the style to use
-    style = form.getvalue("style", "default")
-
-    # Calculate the size of the final rendered image
-    scale = float(form.getvalue("scale"))
-    width = int(bbox.width() / scale / 0.00028)
-    height = int(bbox.height() / scale / 0.00028)
-
-    # Limit the size of map we are prepared to produce
-    if width * height > 4000000:
-      # Map is too large (limit is approximately A2 size)
-      output_error("Map too large")
+    if bbox[0] >= bbox[2] or bbox[1] >= bbox[3]:
+      # Bogus bounding box
+      output_error("Invalid bounding box")
     else:
-      # Create map
-      map = mapnik.Map(width, height)
+      # Project the bounds to the map projection
+      bbox = mapnik.Box2d(*transformer.transform(bbox[0], bbox[1]),
+                          *transformer.transform(bbox[2], bbox[3]))
 
-      # Load map configuration
-      mapnik.load_map(map, "/srv/tile.openstreetmap.org/styles/%s/project.xml" % style)
+      # Get the style to use
+      style = form.get("style", ["default"])[0]
 
-      # Zoom the map to the bounding box
-      map.zoom_to_box(bbox)
+      # Calculate the size of the final rendered image
+      scale = float(form.get("scale")[0])
+      width = int(bbox.width() / scale / 0.00028)
+      height = int(bbox.height() / scale / 0.00028)
 
-      # Fork so that we can handle crashes rendering the map
-      pid = os.fork()
-
-      # Render the map
-      if pid == 0:
-        if form.getvalue("format") == "png":
-          image = mapnik.Image(map.width, map.height)
-          mapnik.render(map, image)
-          png = image.tostring("png")
-          output_headers("image/png", "map.png", len(png))
-          sys.stdout.buffer.write(png)
-        elif form.getvalue("format") == "jpeg":
-          image = mapnik.Image(map.width, map.height)
-          mapnik.render(map, image)
-          jpeg = image.tostring("jpeg")
-          output_headers("image/jpeg", "map.jpg", len(jpeg))
-          sys.stdout.buffer.write(jpeg)
-        elif form.getvalue("format") == "svg":
-          file = tempfile.NamedTemporaryFile(prefix = "export")
-          surface = cairo.SVGSurface(file.name, map.width, map.height)
-          surface.restrict_to_version(cairo.SVG_VERSION_1_2)
-          mapnik.render(map, surface)
-          surface.finish()
-          output_headers("image/svg+xml", "map.svg", file_size(file))
-          output_file(file)
-        elif form.getvalue("format") == "pdf":
-          file = tempfile.NamedTemporaryFile(prefix = "export")
-          surface = cairo.PDFSurface(file.name, map.width, map.height)
-          mapnik.render(map, surface)
-          surface.finish()
-          output_headers("application/pdf", "map.pdf", file_size(file))
-          output_file(file)
-        elif form.getvalue("format") == "ps":
-          file = tempfile.NamedTemporaryFile(prefix = "export")
-          surface = cairo.PSSurface(file.name, map.width, map.height)
-          mapnik.render(map, surface)
-          surface.finish()
-          output_headers("application/postscript", "map.ps", file_size(file))
-          output_file(file)
-        else:
-          output_error("Unknown format '%s'" % form.getvalue("format"))
+      # Limit the size of map we are prepared to produce
+      if width * height > 4000000:
+        # Map is too large (limit is approximately A2 size)
+        output_error("Map too large")
       else:
-        pid, status = os.waitpid(pid, 0)
-        if status & 0xff == signal.SIGXCPU:
-          output_error("CPU time limit exceeded", "509 Resource Limit Exceeded")
-        elif status & 0xff == signal.SIGSEGV:
-          output_error("Memory limit exceeded", "509 Resource Limit Exceeded")
-        elif status != 0:
-          output_error("Internal server error", "500 Internal Server Error")
+        # Create map
+        map = mapnik.Map(width, height)
+
+        # Load map configuration
+        mapnik.load_map(map, "/srv/tile.openstreetmap.org/styles/%s/project.xml" % style)
+
+        # Zoom the map to the bounding box
+        map.zoom_to_box(bbox)
+
+        # Fork so that we can handle crashes rendering the map
+        pid = os.fork()
+
+        # Render the map
+        if pid == 0:
+          format = form.get("format", [None])[0]
+          if format in ["png", "jpeg", "webp"]:
+            render_and_output_image(map, format)
+          elif format in ["svg", "pdf", "ps"]:
+            render_and_output_vector(map, format)
+          else:
+            output_error("Unknown format")
+        else:
+          pid, status = os.waitpid(pid, 0)
+          if status & 0xff == signal.SIGXCPU:
+            output_error("CPU time limit exceeded", "509 Resource Limit Exceeded")
+          elif status & 0xff == signal.SIGSEGV:
+            output_error("Memory limit exceeded", "509 Resource Limit Exceeded")
+          elif status != 0:
+            output_error("Internal server error", "500 Internal Server Error")
+
+  except Exception as e:
+    output_error(f"An error occurred: {str(e)}")

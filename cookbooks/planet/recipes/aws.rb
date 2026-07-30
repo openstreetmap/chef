@@ -17,8 +17,8 @@
 # limitations under the License.
 #
 
-include_recipe "accounts"
 include_recipe "awscli"
+include_recipe "planet::user"
 
 aws_credentials = data_bag_item("planet", "aws")
 
@@ -40,5 +40,6 @@ template "/home/planet/.aws/credentials" do
   owner "planet"
   group "planet"
   mode "0600"
-  variables :credentials => aws_credentials
+  variables :aws_credentials => aws_credentials
+  sensitive true
 end

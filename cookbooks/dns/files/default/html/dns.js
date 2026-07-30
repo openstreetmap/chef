@@ -3,7 +3,7 @@ function createMap(divName, jsonFile) {
   var map = L.map(divName);
 
   // Add OpenStreetMap layer
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution: "© <a target=\"_parent\" href=\"https://www.openstreetmap.org\">OpenStreetMap</a> and contributors, under an <a target=\"_parent\" href=\"https://www.openstreetmap.org/copyright\">open license</a>",
     maxZoom: 18
   }).addTo(map);

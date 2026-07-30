@@ -25,6 +25,9 @@ Requires=<%= Array(@requires).join(" ") %>
 <% if @joins_namespace_of -%>
 JoinsNamespaceOf=<%= Array(@joins_namespace_of).join(" ") %>
 <% end -%>
+<% if @stop_when_unneeded -%>
+StopWhenUnneeded=<%= @stop_when_unneeded %>
+<% end -%>
 
 [Service]
 <% if @type -%>
@@ -41,6 +44,9 @@ LimitAS=<%= @limit_as %>
 <% end -%>
 <% if @limit_cpu -%>
 LimitCPU=<%= @limit_cpu %>
+<% end -%>
+<% if @limit_core -%>
+LimitCORE=<%= @limit_core %>
 <% end -%>
 <% if @memory_low -%>
 MemoryLow=<%= @memory_low %>
@@ -294,6 +300,9 @@ IOSchedulingClass=<%= @io_scheduling_class %>
 <% end -%>
 <% if @io_scheduling_priority -%>
 IOSchedulingPriority=<%= @io_scheduling_priority %>
+<% end -%>
+<% if @kill_signal -%>
+KillSignal=<%= @kill_signal %>
 <% end -%>
 <% if @kill_mode -%>
 KillMode=<%= @kill_mode %>

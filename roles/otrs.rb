@@ -95,15 +95,6 @@ default_attributes(
         :group => "www-data",
         :home_directory => "/usr/share/otrs"
       },
-      :otrs_communications_freebies => {
-        :comment => "freebies@otrs.openstreetmap.org",
-        :domains => ["otrs.openstreetmap.org"],
-        :local_parts => ["freebies"],
-        :command => "/usr/share/otrs/bin/otrs.Console.pl Maint::PostMaster::Read --target-queue 'Communications Working Group::Freebies'",
-        :user => "otrs",
-        :group => "www-data",
-        :home_directory => "/usr/share/otrs"
-      },
       :otrs_support => {
         :comment => "support@otrs.openstreetmap.org",
         :domains => ["otrs.openstreetmap.org"],

@@ -2,12 +2,12 @@
 
 #
 # Setup logging
-# 
+#
 SetEnvIfNoCase Authorization "^Basic " AUTH_METHOD=basic
 SetEnvIfNoCase Authorization "^OAuth " AUTH_METHOD=oauth1
 SetEnvIfNoCase Authorization "^Bearer " AUTH_METHOD=oauth2
 SetEnvIfExpr "%{QUERY_STRING} =~ /(^|&)oauth_signature=/" AUTH_METHOD=oauth1
-LogFormat "%h %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\" %Dus %{UNIQUE_ID}e %{SSL_PROTOCOL}x %{SSL_CIPHER}x %{AUTH_METHOD}e" combined_with_time
+LogFormat "%h %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\" %Dus %{UNIQUE_ID}e %{SSL_PROTOCOL}x %{SSL_CIPHER}x %{AUTH_METHOD}e \"%{X-TLS-JA4}i\" \"%{X-JA4H}i\"" combined_with_time
 CustomLog /var/log/apache2/access.log combined_with_time
 ErrorLog /var/log/apache2/error.log
 
@@ -27,8 +27,9 @@ ErrorLog /var/log/apache2/error.log
   SSLCertificateKeyFile /etc/ssl/private/www.openstreetmap.org.key
 
   # Get the real remote IP for requests via a trusted proxy
-  RemoteIPHeader CF-Connecting-IP
-<% @cloudflare.sort.each do |address| -%>
+  RemoteIPHeader Fastly-Client-IP
+  # Fastly POPs
+<% @fastly.sort.each do |address| -%>
   RemoteIPTrustedProxy <%= address %>
   Require ip <%= address %>
 <% end -%>
@@ -134,6 +135,38 @@ ErrorLog /var/log/apache2/error.log
   RewriteRule "^/api/0\.6/notes/search$" - [R=429,L]
 
   #
+  # Ignore GoogleAssociationService request storm
+  # https://en.osm.town/@osm_tech/114205363076771822
+  #
+  RewriteCond %{HTTP_USER_AGENT} "GoogleAssociationService"
+  RewriteRule "^/\.well-known/assetlinks\.json$" - [R=429,L]
+
+  #
+  # Drop faulty Cloudflare POST /cdn-cgi/rum submissions reaching us
+  #
+  RewriteCond %{REQUEST_METHOD} =POST
+  RewriteRule ^/cdn-cgi/rum$ - [F,L]
+
+  #
+  # Block bogus referers
+  #
+  RewriteCond %{HTTP_REFERER} "^https://<%= Regexp.escape(node[:fqdn]) %>/"
+  RewriteRule . - [F,L]
+
+  #
+  # Block bogus user agents
+  #
+  # removed 2026-03-08, doesn't work with Fastly turning everything to http 1.1
+  # RewriteCond %{SERVER_PROTOCOL} =HTTP/1.1
+  # RewriteCond %{HTTP_USER_AGENT} Chrome/((103|105|107|108|109|110|111|112|116|117|120|124|131|133)\.0\.0\.0|104\.0\.5112\.81|106\.0\.5249\.119) [NC]
+  # RewriteRule . - [F,L]
+
+  #
+  # Redirect ACME certificate challenges (Fastly redirects from HTTP to HTTPS, so we need to handle them here)
+  #
+  RewriteRule ^/\.well-known/acme-challenge/(.*)$ http://acme.openstreetmap.org/.well-known/acme-challenge/$1 [R=permanent,L]
+
+  #
   # Force special MIME type for crossdomain.xml files
   #
   <Files crossdomain.xml>
@@ -148,7 +181,7 @@ ErrorLog /var/log/apache2/error.log
     FileETag Size
 
     ExpiresDefault "access plus 1 year"
-    Header set Cache-Control "immutable, max-age=31536000"
+    Header set Cache-Control "immutable, max-age=31536000" "expr=%{REQUEST_STATUS} == 200"
   </Location>
 
   #
@@ -166,6 +199,7 @@ ErrorLog /var/log/apache2/error.log
   #
   <Location /export/embed.html>
     ExpiresDefault "access plus 7 days"
+    Header always set Referrer-Policy "no-referrer-when-downgrade"
   </Location>
   <Location /images/>
     ExpiresDefault "access plus 10 years"
@@ -192,6 +226,10 @@ ErrorLog /var/log/apache2/error.log
   SetEnv SECRET_KEY_BASE <%= @secret_key_base %>
   Alias /favicon.ico <%= node[:web][:base_directory] %>/rails/app/assets/favicons/favicon.ico
   Alias /openlayers <%= node[:web][:base_directory] %>/static/openlayers
+  Alias /funding.json <%= node[:web][:base_directory] %>/static/funding.json
+  Alias /.well-known/funding-manifest-urls <%= node[:web][:base_directory] %>/static/.well-known/funding-manifest-urls
+  Alias /.well-known/security.txt <%= node[:web][:base_directory] %>/static/.well-known/security.txt
+  Alias /security.txt <%= node[:web][:base_directory] %>/static/.well-known/security.txt
   RedirectPermanent /stats https://planet.openstreetmap.org/statistics
 
   #
@@ -202,15 +240,28 @@ ErrorLog /var/log/apache2/error.log
   </Location>
 
   #
+  # Normalise Accept-Encoding headers to workaround cgimap bug
+  #
+  RequestHeader edit* Accept-Encoding "\\s*,\\s*" ", "
+
+  #
+  # Disable deflate for applications that claim to handle it but can't
+  #
+  SetEnvIfNoCase User-Agent "StreetComplete" broken_deflate_client
+  SetEnvIfNoCase Referer "app:/resources/potlatch2.swf" broken_deflate_client
+  RequestHeader edit Accept-Encoding "deflate" "unsupported" env=broken_deflate_client
+
+  #
   # Pass supported calls to cgimap
   #
   RewriteRule ^/api/0\.6/map(\.json|\.xml)?$ unix:/run/cgimap/socket|fcgi://127.0.0.1$0 [P]
   RewriteCond %{REQUEST_METHOD} ^(HEAD|GET)$
-  RewriteRule ^/api/0\.6/(node|way|relation|changeset)/[0-9]+(\.json|\.xml)?$ unix:/run/cgimap/socket|fcgi://127.0.0.1$0 [P]
+  RewriteRule ^/api/0\.6/(node|way|relation)/[0-9]+(\.json|\.xml)?$ unix:/run/cgimap/socket|fcgi://127.0.0.1$0 [P]
   RewriteRule ^/api/0\.6/(node|way|relation)/[0-9]+/history(\.json|\.xml)?$ unix:/run/cgimap/socket|fcgi://127.0.0.1$0 [P]
   RewriteRule ^/api/0\.6/(node|way|relation)/[0-9]+/relations(\.json|\.xml)?$ unix:/run/cgimap/socket|fcgi://127.0.0.1$0 [P]
   RewriteRule ^/api/0\.6/node/[0-9]+/ways(\.json|\.xml)?$ unix:/run/cgimap/socket|fcgi://127.0.0.1$0 [P]
   RewriteRule ^/api/0\.6/(way|relation)/[0-9]+/full(\.json|\.xml)?$ unix:/run/cgimap/socket|fcgi://127.0.0.1$0 [P]
+  RewriteCond %{REQUEST_METHOD} ^(HEAD|GET)$
   RewriteRule ^/api/0\.6/(nodes|ways|relations)(\.json|\.xml)?$ unix:/run/cgimap/socket|fcgi://127.0.0.1$0 [P]
   RewriteRule ^/api/0\.6/changeset/[0-9]+/(upload|download)(\.json|\.xml)?$ unix:/run/cgimap/socket|fcgi://127.0.0.1$0 [P]
 
@@ -238,6 +289,41 @@ ErrorLog /var/log/apache2/error.log
   RewriteCond %{HTTP_HOST} =api.openstreetmap.org
   RewriteCond %{REQUEST_URI} !^/api/
   RewriteRule ^(.*)$ https://www.openstreetmap.org$1 [L,NE,R=permanent]
+
+  # Restrict access to CDN nodes and admins
+  <Location />
+    Require expr "%{CONN_REMOTE_ADDR} != %{REMOTE_ADDR}"
+    # Fastly POPs
+<% @fastly.sort.each do |address| -%>
+    Require ip <%= address %>
+<% end -%>
+    # StatusCake monitoring
+<% @statuscake.sort.reject { |address| address.empty? }.each do |address| -%>
+    Require ip <%= address %>
+<% end -%>
+    # Administrators
+<% @admins.sort.each do |address| -%>
+    Require ip <%= address %>
+<% end -%>
+    # OSM Amsterdam IPv4 (he.net)
+    Require ip 184.104.179.128/27
+    # OSM Amsterdam IPv4 (equinix)
+    Require ip 82.199.86.96/27
+    # OSM Amsterdam IPv6 (he.net)
+    Require ip 2001:470:1:fa1::/64
+    # OSM Amsterdam IPv6 (equinix)
+    Require ip 2001:4d78:500:5e3::/64
+    # OSM Dublin IPv4 (he.net)
+    Require ip 184.104.226.96/27
+    # OSM Dublin IPv4 (equinix)
+    Require ip 87.252.214.96/27
+    # OSM Dublin IPv6 (he.net)
+    Require ip 2001:470:1:b3b::/64
+    # OSM Dublin IPv6 (equinix)
+    Require ip 2001:4d78:fe03:1c::/64
+    # OSM UCL IPv4
+    Require ip 193.60.236.0/24
+  </Location>
 </VirtualHost>
 
 <VirtualHost *:80>
@@ -352,6 +438,10 @@ ErrorLog /var/log/apache2/error.log
 
 <Directory /srv/www.openstreetmap.org/static>
   Require all granted
+
+  <Files "funding-manifest-urls">
+    ForceType text/plain
+  </Files>
 </Directory>
 
 <Directory /srv/www.openstreetmap.org/rails/app/assets>

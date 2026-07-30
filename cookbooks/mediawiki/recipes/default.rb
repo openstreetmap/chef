@@ -17,13 +17,12 @@
 # limitations under the License.
 #
 
-include_recipe "accounts"
 include_recipe "apache"
 include_recipe "apt"
 include_recipe "git"
 include_recipe "memcached"
 include_recipe "mysql"
-include_recipe "php::fpm"
+include_recipe "php"
 
 # Mediawiki Base Requirements
 package %w[
@@ -41,6 +40,7 @@ package %w[
   composer
   unzip
   ffmpeg
+  firejail
 ]
 
 # Mediawiki enhanced difference engine
@@ -60,8 +60,7 @@ package %w[
 
 # Mediawiki backup
 package %w[
-  xz-utils
-  liblz4-tool
+  zstd
 ]
 
 # Mediawiki packages for VisualEditor support
@@ -71,6 +70,20 @@ package %w[
 
 # Mediawiki packages for SyntaxHighight support
 package "python3-pygments"
+
+group "wiki" do
+  gid 503
+  append true
+end
+
+user "wiki" do
+  uid 503
+  gid 503
+  comment "MediaWiki"
+  home "/"
+  shell "/usr/sbin/nologin"
+  manage_home false
+end
 
 link "/etc/php/#{node[:php][:version]}/fpm/conf.d/20-wikidiff2.ini" do
   to "../../mods-available/wikidiff2.ini"

@@ -17,56 +17,37 @@
 # limitations under the License.
 #
 
-include_recipe "accounts"
 include_recipe "git"
 include_recipe "postgresql"
-include_recipe "python"
 include_recipe "ruby"
-
-passwords = data_bag_item("db", "passwords")
-wal_secrets = data_bag_item("db", "wal-secrets")
-
-directory "/srv/www.openstreetmap.org" do
-  group "rails"
-  mode "2775"
-end
-
-rails_port "www.openstreetmap.org" do
-  directory "/srv/www.openstreetmap.org/rails"
-  user "rails"
-  group "rails"
-  repository "https://git.openstreetmap.org/public/rails.git"
-  revision "live"
-  build_assets false
-  database_host "localhost"
-  database_name "openstreetmap"
-  database_username "openstreetmap"
-  database_password passwords["openstreetmap"]
-end
 
 package %w[
   cmake
-  libosmium2-dev
-  libprotozero-dev
+  g++
   libboost-filesystem-dev
   libboost-program-options-dev
   libbz2-dev
-  zlib1g-dev
   libexpat1-dev
-  libyaml-cpp-dev
+  libosmium2-dev
   libpqxx-dev
+  libprotozero-dev
+  libyaml-cpp-dev
+  make
+  zlib1g-dev
 ]
 
 git "/opt/osmdbt" do
   action :sync
   repository "https://github.com/openstreetmap/osmdbt.git"
-  revision "v0.5"
+  revision "v0.9"
   depth 1
   user "root"
   group "root"
 end
 
 node[:postgresql][:versions].each do |db_version|
+  package "postgresql-#{db_version}-postgis-3"
+
   directory "/opt/osmdbt/build-#{db_version}" do
     owner "root"
     group "root"
@@ -97,22 +78,4 @@ node[:postgresql][:versions].each do |db_version|
     owner "root"
     group "root"
   end
-end
-
-package "lzop"
-
-remote_file "/usr/local/bin/wal-g" do
-  action :create
-  source "https://github.com/wal-g/wal-g/releases/download/v2.0.1/wal-g-pg-ubuntu-20.04-amd64"
-  owner "root"
-  group "root"
-  mode "755"
-end
-
-template "/usr/local/bin/openstreetmap-wal-g" do
-  source "wal-g.erb"
-  owner "root"
-  group "postgres"
-  mode "750"
-  variables :s3_key => wal_secrets["s3_key"]
 end

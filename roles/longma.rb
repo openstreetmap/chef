@@ -5,32 +5,33 @@ default_attributes(
   :networking => {
     :interfaces => {
       :internal => {
-        :interface => "bond0",
-        :role => :internal,
         :inet => {
           :address => "10.0.64.13"
         },
         :bond => {
-          :mode => "802.3ad",
-          :lacprate => "fast",
-          :xmithashpolicy => "layer3+4",
-          :slaves => %w[enp68s0f0 enp68s0f1 enp68s0f2 enp68s0f3]
+          :slaves => %w[enp68s0f0np0 enp68s0f1np1 enp68s0f2np2 enp68s0f3np3]
         }
       },
-      :external => {
-        :interface => "bond0.101",
-        :role => :external,
+      :henet => {
         :inet => {
           :address => "184.104.226.109"
         },
         :inet6 => {
           :address => "2001:470:1:b3b::d"
         }
+      },
+      :equinix => {
+        :inet => {
+          :address => "87.252.214.109"
+        },
+        :inet6 => {
+          :address => "2001:4d78:fe03:1c::d"
+        }
       }
     }
   },
   :postgresql => {
-    :versions => ["16"],
+    :versions => ["18"],
     :settings => {
       :defaults => {
         :max_connections => "550",
@@ -40,27 +41,17 @@ default_attributes(
     }
   },
   :nominatim => {
-    :state => "standalone",
-    :dbcluster => "16/main",
-    :postgis => "3",
+    :dbcluster => "18/main",
     :enable_qa_tiles => true,
-    :flatnode_file => "/ssd/nominatim/nodes.store",
-    :logdir => "/ssd/nominatim/log",
-    :api_flavour => "python",
-    :api_workers => 24,
-    :api_pool_size => 10,
-    :fpm_pools => {
-      "nominatim.openstreetmap.org" => {
-        :max_children => 200
-      }
+    :flatnode_file => "/srv/nominatim.openstreetmap.org/planet-project/nodes.store",
+    :api_workers => {
+      "nominatim" => 22
     },
-    :config => {
-      :forward_dependencies => "yes"
-    }
+    :api_pool_size => 8
   }
 )
 
 run_list(
-  "role[equinix-dub]",
+  "role[equinix-dub-public]",
   "role[nominatim]"
 )

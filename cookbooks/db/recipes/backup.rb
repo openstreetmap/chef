@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+include_recipe "backup::user"
+
 template "/usr/local/bin/backup-db" do
   source "backup-db.erb"
   owner "root"
@@ -39,5 +41,5 @@ systemd_timer "backup-db" do
 end
 
 service "backup-db.timer" do
-  action [:enable, :start]
+  action [:disable, :stop]
 end

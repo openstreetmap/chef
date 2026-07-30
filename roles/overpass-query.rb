@@ -4,9 +4,10 @@ description "Role applied to overpass servers for the query feature."
 default_attributes(
   :accounts => {
     :users => {
-      :lonvia => { :status => :administrator },
+      :lonvia => { :status => :administrator }
+    },
+    :groups => {
       :overpass => {
-        :status => :role,
         :members => [:lonvia, :tomh]
       }
     }

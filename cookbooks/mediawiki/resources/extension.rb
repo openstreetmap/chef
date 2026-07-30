@@ -74,7 +74,7 @@ action :create do
       user node[:mediawiki][:user]
       group node[:mediawiki][:group]
       mode "664"
-      variables new_resource.variables
+      variables new_resource.variables.merge(:site => new_resource.site)
     end
   else
     file "#{mediawiki_directory}/LocalSettings.d/Ext-#{new_resource.extension}.inc.php" do

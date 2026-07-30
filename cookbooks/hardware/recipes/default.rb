@@ -56,7 +56,7 @@ end
 
 units = []
 
-if node[:roles].include?("bytemark") || node[:roles].include?("exonetric") || node[:roles].include?("prgmr")
+if node[:roles].include?("bytemark")
   units << "0"
 end
 
@@ -64,20 +64,22 @@ case manufacturer
 when "HP", "HPE"
   include_recipe "apt::management-component-pack"
 
-  package "hponcfg"
+  unless node[:lsb][:release] == "trixie"
+    package "hponcfg"
 
-  execute "update-ilo" do
-    action :nothing
-    command "/usr/sbin/hponcfg -f /etc/ilo-defaults.xml"
-    not_if { kitchen? }
-  end
+    execute "update-ilo" do
+      action :nothing
+      command "/usr/sbin/hponcfg -f /etc/ilo-defaults.xml"
+      not_if { kitchen? }
+    end
 
-  template "/etc/ilo-defaults.xml" do
-    source "ilo-defaults.xml.erb"
-    owner "root"
-    group "root"
-    mode "644"
-    notifies :run, "execute[update-ilo]"
+    template "/etc/ilo-defaults.xml" do
+      source "ilo-defaults.xml.erb"
+      owner "root"
+      group "root"
+      mode "644"
+      notifies :run, "execute[update-ilo]"
+    end
   end
 
   package "hp-health" do
@@ -286,7 +288,6 @@ prometheus_exporter "rasdaemon" do
 end
 
 tools_packages = []
-status_packages = {}
 
 if node[:virtualization][:role] != "guest" ||
    (node[:virtualization][:system] != "lxc" &&
@@ -295,43 +296,17 @@ if node[:virtualization][:role] != "guest" ||
 
   node[:kernel][:modules].each_key do |modname|
     case modname
-    when "cciss"
-      tools_packages << "ssacli"
-      status_packages["cciss-vol-status"] ||= []
     when "hpsa"
       tools_packages << "ssacli"
-      status_packages["cciss-vol-status"] ||= []
-    when "mptsas"
-      tools_packages << "lsiutil"
-      status_packages["mpt-status"] ||= []
-    when "mpt2sas", "mpt3sas"
+    when "mpt3sas"
       tools_packages << "sas2ircu"
-      status_packages["sas2ircu-status"] ||= []
     when "megaraid_sas"
       tools_packages << "megacli"
-      status_packages["megaclisas-status"] ||= []
-    when "aacraid"
-      tools_packages << "arcconf"
-      status_packages["aacraid-status"] ||= []
-    when "arcmsr"
-      tools_packages << "areca"
-    end
-  end
-
-  node[:block_device].each do |name, attributes|
-    next unless attributes[:vendor] == "HP" && attributes[:model] == "LOGICAL VOLUME"
-
-    if name =~ /^cciss!(c[0-9]+)d[0-9]+$/
-      status_packages["cciss-vol-status"] |= ["cciss/#{Regexp.last_match[1]}d0"]
-    else
-      Dir.glob("/sys/block/#{name}/device/scsi_generic/*").each do |sg|
-        status_packages["cciss-vol-status"] |= [File.basename(sg)]
-      end
     end
   end
 end
 
-include_recipe "apt::hwraid" unless status_packages.empty?
+include_recipe "apt::hwraid" unless tools_packages.empty?
 
 %w[ssacli lsiutil sas2ircu megactl megacli arcconf].each do |tools_package|
   if tools_packages.include?(tools_package)
@@ -341,50 +316,6 @@ include_recipe "apt::hwraid" unless status_packages.empty?
       action :purge
     end
   end
-end
-
-if tools_packages.include?("areca")
-  include_recipe "git"
-
-  git "/opt/areca" do
-    action :sync
-    repository "https://git.openstreetmap.org/private/areca.git"
-    depth 1
-    user "root"
-    group "root"
-    not_if { kitchen? }
-  end
-else
-  directory "/opt/areca" do
-    action :delete
-    recursive true
-  end
-end
-
-%w[cciss-vol-status mpt-status sas2ircu-status megaclisas-status aacraid-status].each do |status_package|
-  if status_packages.include?(status_package)
-    package status_package
-
-    service "#{status_package}d" do
-      action [:stop, :disable]
-    end
-
-    file "/etc/default/#{status_package}d" do
-      action :delete
-    end
-  else
-    package status_package do
-      action :purge
-    end
-  end
-end
-
-systemd_service "cciss-vol-statusd" do
-  action :delete
-end
-
-template "/usr/local/bin/cciss-vol-statusd" do
-  action :delete
 end
 
 disks = if node[:hardware][:disk]
@@ -410,15 +341,15 @@ intel_nvmes = nvmes.select { |pci| pci[:vendor_name] == "Intel Corporation" }
 if !intel_ssds.empty? || !intel_nvmes.empty?
   package "unzip"
 
-  sst_tool_version = "1.3"
-  sst_package_version = "#{sst_tool_version}.208-0"
+  sst_tool_version = "2-7"
+  sst_package_version = "2.7.337-0"
 
-  # remote_file "#{Chef::Config[:file_cache_path]}/SST_CLI_Linux_#{sst_tool_version}.zip" do
-  #   source "https://downloadmirror.intel.com/743764/SST_CLI_Linux_#{sst_tool_version}.zip"
-  # end
+  remote_file "#{Chef::Config[:file_cache_path]}/sst-cli-linux-deb--#{sst_tool_version}.zip" do
+    source "https://sdmsdfwdriver.blob.core.windows.net/files/kba-gcc/drivers-downloads/ka-00085/sst--#{sst_tool_version}/sst-cli-linux-deb--#{sst_tool_version}.zip"
+  end
 
-  execute "#{Chef::Config[:file_cache_path]}/SST_CLI_Linux_#{sst_tool_version}.zip" do
-    command "unzip SST_CLI_Linux_#{sst_tool_version}.zip sst_#{sst_package_version}_amd64.deb"
+  execute "#{Chef::Config[:file_cache_path]}/sst-cli-linux-deb--#{sst_tool_version}.zip" do
+    command "unzip sst-cli-linux-deb--#{sst_tool_version}.zip sst_#{sst_package_version}_amd64.deb"
     cwd Chef::Config[:file_cache_path]
     user "root"
     group "root"
@@ -426,7 +357,7 @@ if !intel_ssds.empty? || !intel_nvmes.empty?
   end
 
   dpkg_package "sst" do
-    version "#{sst_package_version}"
+    version sst_package_version
     source "#{Chef::Config[:file_cache_path]}/sst_#{sst_package_version}_amd64.deb"
   end
 
@@ -464,7 +395,7 @@ end
 
 disks = disks.compact.uniq
 
-if disks.count.positive?
+if disks.any?
   package "smartmontools"
 
   template "/etc/cron.daily/update-smart-drivedb" do
@@ -566,13 +497,6 @@ if watchdog_module
     action :install
   end
 
-  execute "systemctl-reload" do
-    action :nothing
-    command "systemctl daemon-reload"
-    user "root"
-    group "root"
-  end
-
   directory "/etc/systemd/system.conf.d" do
     owner "root"
     group "root"
@@ -584,7 +508,14 @@ if watchdog_module
     owner "root"
     group "root"
     mode "644"
-    notifies :run, "execute[systemctl-reload]"
+  end
+
+  execute "systemctl-reload" do
+    action :nothing
+    command "systemctl daemon-reload"
+    user "root"
+    group "root"
+    subscribes :run, "template[/etc/systemd/system.conf.d/watchdog.conf]"
   end
 end
 

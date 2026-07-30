@@ -20,14 +20,38 @@
 include_recipe "apt::postgresql"
 include_recipe "prometheus"
 
-package "locales-all"
-package "postgresql-common"
+package %w[
+  locales-all
+  pgbackrest
+  postgresql-common
+]
+
+if node[:postgresql][:pgbackrest][:credentials_bag]
+  pgbackrest_credentials = data_bag_item(node[:postgresql][:pgbackrest][:credentials_bag],
+                                         node[:postgresql][:pgbackrest][:credentials_item])
+end
+
+template "/etc/pgbackrest.conf" do
+  source "pgbackrest.conf.erb"
+  owner "postgres"
+  group "postgres"
+  mode "640"
+  variables :credentials => pgbackrest_credentials
+end
+
+prometheus_exporter "pgbackrest" do
+  port 9854
+  user "postgres"
+  remove_ipc false
+end
 
 node[:postgresql][:versions].each do |version|
-  package "postgresql-#{version}"
-  package "postgresql-client-#{version}"
-  package "postgresql-contrib-#{version}"
-  package "postgresql-server-dev-#{version}"
+  package %W[
+    postgresql-#{version}
+    postgresql-client-#{version}
+    postgresql-contrib-#{version}
+    postgresql-server-dev-#{version}
+  ]
 
   defaults = node[:postgresql][:settings][:defaults] || {}
   settings = node[:postgresql][:settings][version] || {}
@@ -90,10 +114,12 @@ node[:postgresql][:versions].each do |version|
       owner "postgres"
       group "postgres"
       mode "640"
+      only_if { ::Dir.exist?("/var/lib/postgresql/#{version}/main") }
     end
   else
     file "/var/lib/postgresql/#{version}/main/standby.signal" do
       action :delete
+      only_if { ::Dir.exist?("/var/lib/postgresql/#{version}/main") }
     end
   end
 end
@@ -160,6 +186,7 @@ clusters.each do |name, details|
       options "--config.file=/etc/prometheus/exporters/sql_exporter.yml"
       environment "SQLEXPORTER_TARGET_DSN" => "postgres://prometheus:#{passwords['prometheus']}@/run/postgresql:#{details[:port]}/#{prometheus_database}"
       restrict_address_families "AF_UNIX"
+      memory_deny_write_execute false
       subscribes :restart, "template[/etc/prometheus/exporters/sql_exporter.yml]"
     end
   else

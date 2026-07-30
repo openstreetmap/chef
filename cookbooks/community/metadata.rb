@@ -6,7 +6,6 @@ description       "Installs and configures community site"
 
 version           "1.0.0"
 supports          "ubuntu"
-depends           "accounts"
 depends           "docker"
 depends           "exim"
 depends           "geoipupdate"

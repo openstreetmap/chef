@@ -1,0 +1,10 @@
+<%
+  require "time"
+  target_date = (Time.now.utc + 28*24*60*60).to_date
+  expires_time = Time.utc(target_date.year, target_date.month, target_date.day, 22, 0, 0)
+%>
+Contact: https://github.com/openstreetmap/operations/blob/master/SECURITY.md
+Expires: <%= expires_time.iso8601 %>
+Preferred-Languages: en
+Policy: https://github.com/openstreetmap/operations/blob/master/SECURITY.md
+Canonical: https://www.openstreetmap.org/.well-known/security.txt

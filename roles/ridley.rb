@@ -2,11 +2,6 @@ name "ridley"
 description "Master role applied to ridley"
 
 default_attributes(
-  :accounts => {
-    :users => {
-      :otrs => { :status => :role }
-    }
-  },
   :apache => {
     :mpm => "event",
     :event => {
@@ -25,14 +20,12 @@ default_attributes(
     :interfaces => {
       :external => {
         :interface => "eth0.2800",
-        :role => :external,
         :inet => {
           :address => "193.60.236.19"
         }
       },
       :internal => {
         :interface => "eth0.2801",
-        :role => :internal,
         :inet => {
           :address => "10.0.0.3"
         }
@@ -42,7 +35,7 @@ default_attributes(
 )
 
 run_list(
-  "role[ucl]",
+  "role[ucl-public]",
   "role[hp-dl360-g6]",
   "role[gateway]",
   "role[foundation]",

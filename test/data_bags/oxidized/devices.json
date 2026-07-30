@@ -1,0 +1,11 @@
+{
+  "id": "devices",
+  "hardware": {
+    "localhost": {
+      "device": "apc_aos",
+      "input": "ftp",
+      "username": "oxidized",
+      "password": "password"
+    }
+  }
+}

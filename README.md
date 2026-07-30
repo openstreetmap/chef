@@ -1,11 +1,11 @@
 # OpenStreetMap chef cookbooks
 
-[![Cookstyle](https://github.com/openstreetmap/chef/workflows/Cookstyle/badge.svg?branch=master&event=push)](https://github.com/openstreetmap/chef/actions?query=workflow%3ACookstyle%20branch%3Amaster%20event%3Apush)
-[![Test Kitchen](https://github.com/openstreetmap/chef/workflows/Test%20Kitchen/badge.svg?branch=master&event=push)](https://github.com/openstreetmap/chef/actions?query=workflow%3A%22Test+Kitchen%22%20branch%3Amaster%20event%3Apush)
+[![Cookstyle](https://github.com/openstreetmap/chef/actions/workflows/cookstyle.yml/badge.svg)](https://github.com/openstreetmap/chef/actions/workflows/cookstyle.yml)
+[![Test Kitchen](https://github.com/openstreetmap/chef/actions/workflows/test-kitchen.yml/badge.svg)](https://github.com/openstreetmap/chef/actions/workflows/test-kitchen.yml)
 
 This repository manages the configuration of all the servers run by the
 OpenStreetMap Foundation's Operations Working Group. We use
-[Chef](https://www.chef.io/) to automated the configuration of all of our
+[CINC](https://cinc.sh/) to automate the configuration of all of our
 servers.
 
 [OSMF Operations Working Group](https://operations.osmfoundation.org/)
@@ -14,20 +14,20 @@ servers.
 
 We make extensive use of roles to configure the servers. In general we have:
 
-## Server-specific roles (e.g. [faffy.rb](roles/faffy.rb))
+## Server-specific roles (e.g., [faffy.rb](roles/faffy.rb))
 
 These deal with particular setup or quirks of a server, such as its IP address. They also include roles representing the service they are performing, and the location they are in and any particular hardware they have that needs configuration.
 All our servers are [named after dragons](https://wiki.openstreetmap.org/wiki/Servers/Name_Ideas).
 
-## Hardware-specific roles (e.g. [hp-g9.rb](roles/hp-g9.rb))
+## Hardware-specific roles (e.g., [hp-g9.rb](roles/hp-g9.rb))
 
 Covers anything specific to a certain piece of hardware, like a motherboard, that could apply to multiple machines.
 
-## Location-specific roles (e.g. [equinix-dub.rb](roles/equinix-dub.rb))
+## Location-specific roles (e.g., [equinix-dub.rb](roles/equinix-dub.rb))
 
 These form a hierarchy of datacentres, organisations, and countries where our servers are located.
 
-## Service-specific roles (e.g. [web-frontend](roles/web-frontend.rb))
+## Service-specific roles (e.g., [web-frontend](roles/web-frontend.rb))
 
 These cover the services that the server is running, and will include the recipes required for that service along with any specific configurations and other cascading roles.
 
@@ -37,10 +37,12 @@ We use the 'Organization Repository' approach, where we have all our cookbooks i
 
 # Contributing
 
-Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for more details. The guide also includes details on how to run the tests locally.
+Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for more details, including how to run the tests locally.
+If you need help, the operations team are available in [#osmf-operations on irc.oftc.net](https://irc.openstreetmap.org/) or via the Matrix IRC bridge in [#\_oftc_#osmf-operations](https://matrix.to/#/#_oftc_#osmf-operations:matrix.org).
 
 # Contact Us
 
-* Twitter: [@OSM_Tech](https://twitter.com/OSM_Tech)
-* Mastodon / Fediverse: [@OSM_Tech](https://en.osm.town/@osm_tech)
-* IRC: [#OSM-Dev on irc.oftc.net](https://irc.openstreetmap.org/)
+* Mastodon: [@osm_tech](https://en.osm.town/@osm_tech)
+* IRC: [#osm-dev on irc.oftc.net](https://irc.openstreetmap.org/) or [#osmf-operations on irc.oftc.net](https://irc.openstreetmap.org/)
+* Matrix (IRC bridge): [#\_oftc_#osmf-operations](https://matrix.to/#/#_oftc_#osmf-operations:matrix.org)
+* Email: [operations@osmfoundation.org](mailto:operations@osmfoundation.org)

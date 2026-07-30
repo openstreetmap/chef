@@ -1,4 +1,9 @@
-#!/bin/sh -e
+#!/bin/sh -eu
+
+usage() {
+  echo "Usage: $0 {start|stop|reload|restart|block|drop|deny|unblock|allow|flush} [address ...]"
+  exit 1
+}
 
 start() {
   /usr/sbin/nft -f /etc/nftables.conf
@@ -7,8 +12,8 @@ start() {
 }
 
 stop() {
-  /usr/sbin/nft list set inet chef-filter ip-blocklist > /var/lib/nftables/ip-blocklist.nft
-  /usr/sbin/nft list set inet chef-filter ip6-blocklist > /var/lib/nftables/ip6-blocklist.nft
+  /usr/sbin/nft list set inet chef-filter ip-blocklist > /var/lib/nftables/ip-blocklist.nft || true
+  /usr/sbin/nft list set inet chef-filter ip6-blocklist > /var/lib/nftables/ip6-blocklist.nft || true
   /usr/sbin/nft delete table inet chef-filter
 <% if node[:roles].include?("gateway") -%>
   /usr/sbin/nft delete table ip chef-nat
@@ -20,14 +25,57 @@ reload() {
   start
 }
 
+nft_add_list() {
+  set_name="$1"
+  list="$2"
+  /usr/sbin/nft --check add element inet chef-filter "$set_name" "{ $list }" && /usr/sbin/nft add element inet chef-filter "$set_name" "{ $list }"
+}
+
 block() {
+  max_batch=200
+  ip_list=""
+  ip6_list=""
+  ip_count=0
+  ip6_count=0
   for address in "$@"
   do
     case "$address" in
-      *.*) /usr/sbin/nft --check add element inet chef-filter ip-blocklist "{ $address }" && /usr/sbin/nft add element inet chef-filter ip-blocklist "{ $address }" ;;
-      *:*) /usr/sbin/nft --check add element inet chef-filter ip6-blocklist "{ $address }" && /usr/sbin/nft add element inet chef-filter ip6-blocklist "{ $address }" ;;
+      *.*)
+        if [ -n "$ip_list" ]; then
+          ip_list="$ip_list, $address"
+        else
+          ip_list="$address"
+        fi
+        ip_count=$((ip_count + 1))
+        if [ "$ip_count" -ge "$max_batch" ]; then
+          nft_add_list ip-blocklist "$ip_list"
+          ip_list=""
+          ip_count=0
+        fi
+        ;;
+      *:*)
+        if [ -n "$ip6_list" ]; then
+          ip6_list="$ip6_list, $address"
+        else
+          ip6_list="$address"
+        fi
+        ip6_count=$((ip6_count + 1))
+        if [ "$ip6_count" -ge "$max_batch" ]; then
+          nft_add_list ip6-blocklist "$ip6_list"
+          ip6_list=""
+          ip6_count=0
+        fi
+        ;;
     esac
   done
+
+  if [ -n "$ip_list" ]; then
+    nft_add_list ip-blocklist "$ip_list"
+  fi
+
+  if [ -n "$ip6_list" ]; then
+    nft_add_list ip6-blocklist "$ip6_list"
+  fi
 }
 
 unblock() {
@@ -45,16 +93,25 @@ flush() {
   /usr/sbin/nft --check flush set inet chef-filter ip6-blocklist && /usr/sbin/nft flush set inet chef-filter ip6-blocklist
 }
 
-command=$1
-shift
+command="${1:-}"
+if [ -n "$command" ]; then
+  shift
+fi
+
+if [ -z "$command" ]; then
+  usage
+fi
 
 case "$command" in
   start) start;;
   stop) stop;;
-  reload) reload;;
-  block) block "$@";;
-  unblock) unblock "$@";;
+  reload|restart) reload;;
+  block|drop|deny) block "$@";;
+  unblock|allow) unblock "$@";;
   flush) flush;;
+  *)
+    usage
+    ;;
 esac
 
 exit 0

@@ -26,9 +26,15 @@ property :cluster, :kind_of => String, :required => true
 property :database, :kind_of => String, :required => true
 property :user, :kind_of => String, :default => "postgres"
 property :group, :kind_of => String, :default => "postgres"
+property :transaction, :kind_of => [TrueClass, FalseClass], :default => false
 
 action :run do
-  options = { :database => new_resource.database, :user => new_resource.user, :group => new_resource.group }
+  options = {
+    :database => new_resource.database,
+    :user => new_resource.user,
+    :group => new_resource.group,
+    :transaction => new_resource.transaction
+  }
 
   converge_by "execute #{new_resource.command}" do
     if ::File.exist?(new_resource.command)

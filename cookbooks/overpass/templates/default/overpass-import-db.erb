@@ -40,7 +40,7 @@ echo "Import finished. Catching up with new changes."
 sudo systemctl start overpass-dispatcher
 sudo systemctl start overpass-area-dispatcher
 
-PYOSMIUM="sudo -u <%= @username %> pyosmium-get-changes --server <%= node[:overpass][:replication_url] %> -f <%= @basedir %>/db/replicate-id"
+PYOSMIUM="sudo -u <%= @username %> pyosmium-get-changes --server <%= node[:overpass][:replication_url] %> --diff-type osc.gz -f <%= @basedir %>/db/replicate-id"
 <% if node[:overpass][:meta_mode] == "attic" -%>
 PYOSMIUM="$PYOSMIUM --no-deduplicate"
 <% end -%>

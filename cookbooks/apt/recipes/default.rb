@@ -29,11 +29,6 @@ file "/etc/motd.tail" do
   action :delete
 end
 
-# FIXME: cleanup old package pin method for cciss-vol-status
-file "/etc/apt/preferences.d/99-chef" do
-  action :delete
-end
-
 apt_preference "cciss-vol-status" do
   pin          "origin *.ubuntu.com"
   pin_priority "1100"
@@ -43,6 +38,8 @@ apt_update "/etc/apt/sources.list" do
   action :nothing
 end
 
+dpkg_arch = node[:packages][:systemd][:arch]
+
 if platform?("debian")
   archive_host = "deb.debian.org"
   archive_security_host = archive_host
@@ -50,6 +47,11 @@ if platform?("debian")
   archive_security_distro = "debian-security"
   archive_suites = %w[main updates backports security]
   archive_components = %w[main contrib non-free non-free-firmware]
+  backport_packages = case node[:lsb][:codename]
+                      when "bookworm" then %W[amd64-microcode exim4 firmware-free firmware-nonfree intel-microcode libosmium linux linux-base linux-signed-#{dpkg_arch} osm2pgsql otrs2 pyosmium smartmontools systemd cgi-mapserver]
+                      when "trixie" then %w[otrs2]
+                      else %w[]
+                      end
 elsif intel?
   archive_host = if node[:country]
                    "#{node[:country]}.archive.ubuntu.com"
@@ -61,6 +63,7 @@ elsif intel?
   archive_security_distro = archive_distro
   archive_suites = %w[main updates backports security]
   archive_components = %w[main restricted universe multiverse]
+  backport_packages = %w[]
 else
   archive_host = "ports.ubuntu.com"
   archive_security_host = archive_host
@@ -68,6 +71,7 @@ else
   archive_security_distro = archive_distro
   archive_suites = %w[main updates backports security]
   archive_components = %w[main restricted universe multiverse]
+  backport_packages = %w[]
 end
 
 template "/etc/apt/sources.list" do
@@ -85,9 +89,28 @@ template "/etc/apt/sources.list" do
   notifies :update, "apt_update[/etc/apt/sources.list]", :immediately
 end
 
+if backport_packages.empty?
+  apt_preference "backports" do
+    action :remove
+  end
+else
+  apt_preference "backports" do
+    glob backport_packages.sort.map { |p| "src:#{p}" }.join(" ")
+    pin "release n=#{node[:lsb][:codename]}-backports"
+    pin_priority "500"
+  end
+end
+
+execute "apt-cache-gencaches" do
+  action :nothing
+  command "apt-cache gencaches"
+  subscribes :run, "apt_preference[backports]", :immediately
+end
+
 apt_repository "openstreetmap" do
-  uri "ppa:osmadmins/ppa"
-  only_if { platform?("ubuntu") }
+  uri "https://apt.openstreetmap.org"
+  components ["main"]
+  key "https://apt.openstreetmap.org/gpg.key"
 end
 
 package "unattended-upgrades"

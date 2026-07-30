@@ -24,23 +24,11 @@ imagery_site "lidar-hillshade-2019.openstreetmap.lu" do
   bbox [[49.38, 5.64], [50.2, 6.64]]
 end
 
-# Delete borken layers like this
-
-imagery_layer "classy_mappers_delight_lidar_hillshade_2019" do
-  site "lidar-hillshade-2019.openstreetmap.lu"
-  action :delete
-end
-
-imagery_layer "mappers_delight_lidar_dem_2019" do
-  site "lidar-hillshade-2019.openstreetmap.lu"
-  action :delete
-end
-
 imagery_layer "mappers_delight_lidar_hillshade_2019_reprojected" do
   site "lidar-hillshade-2019.openstreetmap.lu"
   default_layer true
   projection "EPSG:3857"
-  source "/data/imagery/lu/lidar-hillshade/lu_hillshade_2019-3857.tif"
+  source "/store/imagery/lu/lidar-hillshade/lu_hillshade_2019-3857.tif"
   max_zoom 20
   title "OpenStreetMap.lu Mapper's Delight 2019 Lidar Hillshading"
   copyright 'Lidar data 2019 <a href="https://data.public.lu/fr/datasets/lidar-2019-releve-3d-du-territoire-luxembourgeois">Administration du Cadastre et de la Topographie Luxembourg</a>, DEM and hillshading <a href="https://twitter.com/grischard">Guillaume Rischard</a>, CC0'
@@ -49,7 +37,7 @@ end
 imagery_layer "mappers_delight_lidar_hillshade_2019_withunclassified" do
   site "lidar-hillshade-2019.openstreetmap.lu"
   projection "EPSG:3857"
-  source "/data/imagery/lu/lidar-hillshade/classy-hillshade.tif"
+  source "/store/imagery/lu/lidar-hillshade/classy-hillshade.tif"
   max_zoom 20
   title "OpenStreetMap.lu Mapper's Delight 2019 Lidar Hillshading with unclassified points"
   copyright 'Lidar data 2019 <a href="https://data.public.lu/fr/datasets/lidar-2019-releve-3d-du-territoire-luxembourgeois">Administration du Cadastre et de la Topographie Luxembourg</a>, DEM and hillshading <a href="https://twitter.com/grischard">Guillaume Rischard</a>, CC0'

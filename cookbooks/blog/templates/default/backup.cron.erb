@@ -1,21 +1,28 @@
-#!/bin/sh
+#!/bin/bash
 
 # DO NOT EDIT - This file is being maintained by Chef
+set -euo pipefail
+
+export ZSTD_CLEVEL=16
 
 T=$(mktemp -d -t -p /var/tmp osm-blog.XXXXXXXXXX)
 D=$(date +%Y-%m-%d)
-B=osm-blog-$D.tar.gz
+B="osm-blog-$D.tar.zst"
 
-mkdir $T/osm-blog-$D
-echo '[mysqldump]' > $T/mysqldump.opts
-echo 'user=osm-blog-user' >> $T/mysqldump.opts
-echo 'password=<%= @passwords["osm-blog-user"] %>' >> $T/mysqldump.opts
-mysqldump --defaults-file=$T/mysqldump.opts --opt --no-tablespaces osm-blog > $T/osm-blog-$D/osm-blog.sql
-ln -s /srv/blog.openstreetmap.org $T/osm-blog-$D/www
+mkdir "$T/osm-blog-$D"
+echo '[mysqldump]' > "$T/mysqldump.opts"
+echo 'user=osm-blog-user' >> "$T/mysqldump.opts"
+echo 'password=<%= @passwords["osm-blog-user"] %>' >> "$T/mysqldump.opts"
+mysqldump --defaults-file="$T/mysqldump.opts" --opt --no-tablespaces --max-allowed-packet=1G osm-blog > "$T/osm-blog-$D/osm-blog.sql"
+ln -s /srv/blog.openstreetmap.org "$T/osm-blog-$D/www"
 
-export RSYNC_RSH="ssh -ax"
+set +e
+nice tar --create --dereference --directory="$T" \
+  --sort=name \
+  --warning=no-file-changed \
+  --warning=no-file-removed \
+  "osm-blog-$D" | nice zstd -T0 --quiet --long --rsyncable -o "$T/$B"
 
-nice tar --create --dereference --directory=$T --warning=no-file-changed osm-blog-$D | nice gzip --rsyncable -9 > $T/$B
-nice rsync --preallocate --fuzzy $T/$B backup::backup
+nice rsync --preallocate --fuzzy "$T/$B" backup.openstreetmap.org::backup
 
-rm -rf $T
+rm -rf "$T"

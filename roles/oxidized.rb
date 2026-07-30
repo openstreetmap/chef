@@ -3,9 +3,8 @@ description "Role applied to all oxidized servers"
 
 default_attributes(
   :accounts => {
-    :users => {
+    :groups => {
       :oxidized => {
-        :status => :role,
         :members => [:grant, :tomh]
       }
     }

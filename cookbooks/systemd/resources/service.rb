@@ -36,6 +36,7 @@ property :notify_access, String, :is => %w[none main exec all]
 property :limit_nofile, Integer
 property :limit_as, [Integer, String]
 property :limit_cpu, [Integer, String]
+property :limit_core, [Integer, String]
 property :memory_low, [Integer, String]
 property :memory_high, [Integer, String]
 property :memory_max, [Integer, String]
@@ -106,6 +107,7 @@ property :memory_deny_write_execute, [true, false]
 property :restrict_realtime, [true, false]
 property :restrict_suid_sgid, [true, false]
 property :remove_ipc, [true, false]
+property :stop_when_unneeded, [true, false]
 property :system_call_filter, [String, Array]
 property :system_call_architectures, [String, Array]
 property :tasks_max, Integer
@@ -117,6 +119,7 @@ property :pid_file, String
 property :nice, Integer
 property :io_scheduling_class, [Integer, String]
 property :io_scheduling_priority, Integer
+property :kill_signal, String
 property :kill_mode, String,
          :is => %w[control-group process mixed none]
 property :sandbox, [true, false, Hash]
@@ -191,7 +194,6 @@ action :create do
     group "root"
     mode "644"
     variables service_variables
-    notifies :run, "execute[systemctl-reload]"
   end
 
   execute "systemctl-reload" do
@@ -199,6 +201,7 @@ action :create do
     command "systemctl daemon-reload"
     user "root"
     group "root"
+    subscribes :run, "template[#{config_name}]"
   end
 end
 
@@ -210,7 +213,6 @@ action :delete do
 
   file config_name do
     action :delete
-    notifies :run, "execute[systemctl-reload]"
   end
 
   execute "systemctl-reload" do
@@ -218,6 +220,7 @@ action :delete do
     command "systemctl daemon-reload"
     user "root"
     group "root"
+    subscribes :run, "file[#{config_name}]"
   end
 end
 

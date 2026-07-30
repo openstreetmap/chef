@@ -19,14 +19,6 @@ default_attributes(
       "it87"
     ]
   },
-  :prometheus => {
-    :metrics => {
-      :exim_queue_limit => { :metric => 250 }
-    }
-  }
-)
-
-override_attributes(
   :networking => {
     :dnssec => "false",
     :interfaces => {
@@ -45,11 +37,15 @@ override_attributes(
         }
       }
     }
+  },
+  :prometheus => {
+    :metrics => {
+      :exim_queue_limit => { :metric => 250 }
+    }
   }
 )
 
 run_list(
   "role[bytemark]",
-  "role[lists]",
-  "role[osqa]"
+  "role[lists]"
 )

@@ -7,14 +7,17 @@ describe service("docker") do
   it { should be_running }
 end
 
-describe docker_image("local_discourse/data:latest") do
-  it { should exist }
+describe command("docker image inspect local_discourse/data:latest") do
+  its("exit_status") { should eq 0 }
 end
 
-describe docker_image("local_discourse/mail-receiver:latest") do
-  it { should exist }
+describe command("docker image inspect local_discourse/mail-receiver:latest") do
+  before do
+    skip if os.arch.include?("aarch64") # mail-receiver is not yet supported on ARM
+  end
+  its("exit_status") { should eq 0 }
 end
 
-describe docker_image("local_discourse/web_only:latest") do
-  it { should exist }
+describe command("docker image inspect local_discourse/web_only:latest") do
+  its("exit_status") { should eq 0 }
 end

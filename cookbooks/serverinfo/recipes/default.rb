@@ -30,12 +30,32 @@ package %w[
   pkg-config
 ]
 
+group "serverinfo" do
+  gid 534
+  append true
+end
+
+user "serverinfo" do
+  uid 534
+  gid 534
+  comment "hardware.openstreetmap.org"
+  home "/srv/hardware.openstreetmap.org"
+  shell "/usr/sbin/nologin"
+  manage_home false
+end
+
+directory "/srv/hardware.openstreetmap.org" do
+  owner "serverinfo"
+  group "serverinfo"
+  mode "755"
+end
+
 git "/srv/hardware.openstreetmap.org" do
   action :sync
   repository "https://github.com/osmfoundation/osmf-server-info.git"
   depth 1
-  user "root"
-  group "root"
+  user "serverinfo"
+  group "serverinfo"
   notifies :run, "bundle_install[/srv/hardware.openstreetmap.org]"
 end
 
@@ -45,52 +65,43 @@ roles = { :rows => search(:role, "*:*") }
 file "/srv/hardware.openstreetmap.org/_data/nodes.json" do
   content nodes.to_json
   mode "644"
-  owner "root"
-  group "root"
+  owner "serverinfo"
+  group "serverinfo"
   notifies :run, "bundle_exec[/srv/hardware.openstreetmap.org]"
+  sensitive true
 end
 
 file "/srv/hardware.openstreetmap.org/_data/roles.json" do
   content roles.to_json
   mode "644"
-  owner "root"
-  group "root"
+  owner "serverinfo"
+  group "serverinfo"
   notifies :run, "bundle_exec[/srv/hardware.openstreetmap.org]"
 end
 
-directory "/srv/hardware.openstreetmap.org/_site" do
-  mode "755"
-  owner "nobody"
-  group "nogroup"
-end
-
-directory "/srv/hardware.openstreetmap.org/vendor" do
+bundle_config "/srv/hardware.openstreetmap.org" do
   action :create
-  owner "nobody"
-  group "nogroup"
-  notifies :run, "bundle_install[/srv/hardware.openstreetmap.org]", :immediately
+  user "serverinfo"
+  group "serverinfo"
+  settings "deployment" => "true",
+           "without" => "development:test",
+           "jobs" => node.cpu_cores.to_s
+  notifies :run, "bundle_exec[/srv/hardware.openstreetmap.org]"
 end
 
 bundle_install "/srv/hardware.openstreetmap.org" do
   action :nothing
-  user "nobody"
-  group "nogroup"
-  environment "BUNDLE_FROZEN" => "true",
-              "BUNDLE_WITHOUT" => "development:test",
-              "BUNDLE_PATH" => "vendor/bundle",
-              "BUNDLE_DEPLOYMENT" => "1",
-              "BUNDLE_JOBS" => node.cpu_cores.to_s
+  user "serverinfo"
+  group "serverinfo"
   notifies :run, "bundle_exec[/srv/hardware.openstreetmap.org]"
 end
 
 bundle_exec "/srv/hardware.openstreetmap.org" do
   action :nothing
   command "jekyll build --trace --disable-disk-cache --baseurl=https://hardware.openstreetmap.org"
-  user "nobody"
-  group "nogroup"
-  environment "LANG" => "C.UTF-8",
-              "BUNDLE_PATH" => "vendor/bundle",
-              "BUNDLE_DEPLOYMENT" => "1"
+  user "serverinfo"
+  group "serverinfo"
+  environment "LANG" => "C.UTF-8"
 end
 
 ssl_certificate "hardware.openstreetmap.org" do

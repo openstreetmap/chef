@@ -24,6 +24,7 @@ include_recipe "ssl"
 package %w[
   apache2
   libwww-perl
+  logrotate
 ]
 
 %w[event itk prefork worker].each do |mpm|
@@ -52,6 +53,7 @@ template "/etc/apache2/ports.conf" do
   owner "root"
   group "root"
   mode "644"
+  notifies :restart, "service[apache2]"
 end
 
 systemd_service "apache2" do
@@ -69,6 +71,10 @@ end
 apache_module "status" do
   conf "status.conf.erb"
   variables :hosts => admins["hosts"]
+end
+
+apache_conf "tokens" do
+  template "tokens.conf.erb"
 end
 
 if node[:apache][:evasive][:enable]
@@ -94,6 +100,8 @@ apache_module "ssl"
 
 apache_conf "ssl" do
   template "ssl.erb"
+  reload_apache false
+  restart_apache true # restart required for shared memory config changes
 end
 
 # Apache should only be started after modules enabled
@@ -113,7 +121,7 @@ fail2ban_jail "apache-forbidden" do
 end
 
 fail2ban_filter "apache-evasive" do
-  failregex ": Blacklisting address <ADDR>: possible DoS attack\.$"
+  failregex ": Blacklisting address <ADDR>: possible DoS attack\\.$"
 end
 
 fail2ban_jail "apache-evasive" do

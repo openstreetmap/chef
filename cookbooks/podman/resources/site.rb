@@ -39,18 +39,21 @@ action :create do
 
   ssl_certificate new_resource.site do
     domains Array(new_resource.site) + new_resource.aliases
+    notifies :reload, "service[apache2]"
   end
 
   apache_site new_resource.site do
     cookbook "podman"
     template "apache.erb"
     variables :port => external_port, :aliases => new_resource.aliases
+    notifies :reload, "service[apache2]"
   end
 end
 
 action :delete do
   apache_site new_resource.site do
     action [:disable, :delete]
+    notifies :reload, "service[apache2]"
   end
 
   podman_service new_resource.site do
@@ -67,7 +70,7 @@ action_class do
 
   def ports
     @ports ||= if ::File.exist?(ports_file)
-                 YAML.safe_load(::File.read(ports_file))
+                 YAML.safe_load_file(ports_file)
                else
                  {}
                end
@@ -86,8 +89,4 @@ action_class do
 
     ports[new_resource.site]
   end
-end
-
-def after_created
-  notifies :reload, "service[apache2]"
 end

@@ -4,4 +4,4 @@ export RUBY_GC_HEAP_INIT_SLOTS=500000
 export RUBY_GC_HEAP_FREE_SLOTS=100000
 export RUBY_GC_MALLOC_LIMIT=50000000
 
-exec /usr/bin/ruby<%= node[:ruby][:version] %> "$@"
+exec <%= node[:ruby][:interpreter] %> "$@"

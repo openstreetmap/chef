@@ -1,0 +1,25 @@
+<?php
+# DO NOT EDIT - This file is being maintained by Chef
+wfLoadExtension( 'QuickInstantCommons' );
+$wgUseQuickInstantCommons = false; // Disable as we manually set via wgForeignFileRepos
+$wgForeignFileRepos[] = [
+	'class' => '\MediaWiki\Extension\QuickInstantCommons\Repo',
+	'name' => 'wikimediacommons',
+	'directory' => $wgUploadDirectory,
+	'apibase' => 'https://commons.wikimedia.org/w/api.php',
+	'hashLevels' => 2,
+	'thumbUrl' => 'https://upload.wikimedia.org/wikipedia/commons/thumb',
+	'fetchDescription' => true,
+	'descriptionCacheExpiry' => 60*60*24*30,
+	'apiMetadataExpiry' => 60*60*24*30,
+	'apiThumbCacheExpiry' => 60*60*24*30,
+	'transformVia404' => false,
+	'abbrvThreshold' => 160,
+	'disabledMediaHandlers' => [TiffHandler::class]
+];
+$wgQuickInstantCommonsUserAgentInfo = "https://osm.wiki/";
+
+# Ensure standard wikicommons standard image size steps.
+# https://www.mediawiki.org/wiki/Extension_talk:QuickInstantCommons#User-Agent
+$wgThumbnailSteps = [ 20, 40, 60, 120, 250, 330, 500, 960, 1280, 1920, 3840 ];
+$wgThumbnailStepsRatio = 1;

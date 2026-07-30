@@ -17,14 +17,27 @@
 # limitations under the License.
 #
 
-include_recipe "accounts"
 include_recipe "apache"
 include_recipe "prometheus"
 include_recipe "ruby"
 
 username = "overpass"
-basedir = data_bag_item("accounts", username)["home"]
+basedir = "/srv/query.openstreetmap.org"
 web_passwords = data_bag_item("web", "passwords")
+
+group username do
+  gid 528
+  append true
+end
+
+user username do
+  uid 528
+  gid 528
+  comment "query.openstreetmap.org"
+  home basedir
+  shell "/usr/sbin/nologin"
+  manage_home true
+end
 
 %w[bin site diffs db src].each do |dirname|
   directory "#{basedir}/#{dirname}" do
@@ -49,7 +62,7 @@ package %w[
 ]
 
 remote_file "#{srcdir}.tar.gz" do
-  action :create
+  action :create_if_missing
   source "https://dev.overpass-api.de/releases/osm-3s_v#{node[:overpass][:version]}.tar.gz"
   owner username
   group username
@@ -68,7 +81,7 @@ execute "install_overpass" do
   action :nothing
   user username
   cwd srcdir
-  command "./configure --enable-lz4 --prefix=#{basedir} && make install"
+  command "./configure --enable-lz4 --prefix=#{basedir} && make -j#{node.cpu_cores} install"
   notifies :restart, "service[overpass-dispatcher]"
   notifies :restart, "service[overpass-area-dispatcher]"
 end
@@ -107,7 +120,7 @@ apache_site "default" do
   action :disable
 end
 
-apache_site "#{node[:overpass][:fqdn]}" do
+apache_site node[:overpass][:fqdn] do
   template "apache.erb"
   directory "#{basedir}/site"
   variables :script_directory => "#{basedir}/cgi-bin"
@@ -152,7 +165,7 @@ systemd_service "overpass-dispatcher" do
   description "Overpass Main Dispatcher"
   wants ["overpass-area-dispatcher.service"]
   working_directory basedir
-  exec_start "#{basedir}/bin/dispatcher --osm-base #{meta_map_short[node[:overpass][:meta_mode]]} --db-dir=#{basedir}/db --rate-limit=#{node[:overpass][:rate_limit]} --space=#{node[:overpass][:dispatcher_space]}"
+  exec_start "#{basedir}/bin/dispatcher --allow-duplicate-queries=yes --osm-base #{meta_map_short[node[:overpass][:meta_mode]]} --db-dir=#{basedir}/db --rate-limit=#{node[:overpass][:rate_limit]} --space=#{node[:overpass][:dispatcher_space]}"
   exec_stop "#{basedir}/bin/dispatcher --osm-base --terminate"
   standard_output "append:#{logdir}/osm_base.log"
   user username
@@ -166,7 +179,7 @@ systemd_service "overpass-area-dispatcher" do
   description "Overpass Area Dispatcher"
   after ["overpass-dispatcher.service"]
   working_directory basedir
-  exec_start "#{basedir}/bin/dispatcher --areas #{meta_map_short[node[:overpass][:meta_mode]]} --db-dir=#{basedir}/db"
+  exec_start "#{basedir}/bin/dispatcher --allow-duplicate-queries=yes --areas #{meta_map_short[node[:overpass][:meta_mode]]} --db-dir=#{basedir}/db"
   exec_stop "#{basedir}/bin/dispatcher --areas --terminate"
   standard_output "append:#{logdir}/areas.log"
   user username

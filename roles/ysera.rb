@@ -5,15 +5,13 @@ default_attributes(
   :networking => {
     :interfaces => {
       :internal => {
-        :interface => "eno1.2801",
-        :role => :internal,
+        :interface => "eno1np0.2801",
         :inet => {
           :address => "10.0.0.15"
         }
       },
       :external => {
-        :interface => "eno1.2800",
-        :role => :external,
+        :interface => "eno1np0.2800",
         :inet => {
           :address => "193.60.236.22"
         }
@@ -85,7 +83,31 @@ default_attributes(
         "devices/system/cpu/cpu52/power/energy_perf_bias" => "0",
         "devices/system/cpu/cpu53/power/energy_perf_bias" => "0",
         "devices/system/cpu/cpu54/power/energy_perf_bias" => "0",
-        "devices/system/cpu/cpu55/power/energy_perf_bias" => "0"
+        "devices/system/cpu/cpu55/power/energy_perf_bias" => "0",
+        "devices/system/cpu/cpu56/power/energy_perf_bias" => "0",
+        "devices/system/cpu/cpu57/power/energy_perf_bias" => "0",
+        "devices/system/cpu/cpu58/power/energy_perf_bias" => "0",
+        "devices/system/cpu/cpu59/power/energy_perf_bias" => "0",
+        "devices/system/cpu/cpu60/power/energy_perf_bias" => "0",
+        "devices/system/cpu/cpu61/power/energy_perf_bias" => "0",
+        "devices/system/cpu/cpu62/power/energy_perf_bias" => "0",
+        "devices/system/cpu/cpu63/power/energy_perf_bias" => "0",
+        "devices/system/cpu/cpu64/power/energy_perf_bias" => "0",
+        "devices/system/cpu/cpu65/power/energy_perf_bias" => "0",
+        "devices/system/cpu/cpu66/power/energy_perf_bias" => "0",
+        "devices/system/cpu/cpu67/power/energy_perf_bias" => "0",
+        "devices/system/cpu/cpu68/power/energy_perf_bias" => "0",
+        "devices/system/cpu/cpu69/power/energy_perf_bias" => "0",
+        "devices/system/cpu/cpu70/power/energy_perf_bias" => "0",
+        "devices/system/cpu/cpu71/power/energy_perf_bias" => "0",
+        "devices/system/cpu/cpu72/power/energy_perf_bias" => "0",
+        "devices/system/cpu/cpu73/power/energy_perf_bias" => "0",
+        "devices/system/cpu/cpu74/power/energy_perf_bias" => "0",
+        "devices/system/cpu/cpu75/power/energy_perf_bias" => "0",
+        "devices/system/cpu/cpu76/power/energy_perf_bias" => "0",
+        "devices/system/cpu/cpu77/power/energy_perf_bias" => "0",
+        "devices/system/cpu/cpu78/power/energy_perf_bias" => "0",
+        "devices/system/cpu/cpu79/power/energy_perf_bias" => "0"
       }
     }
   },
@@ -99,11 +121,6 @@ default_attributes(
     }
   },
   :tile => {
-    :database => {
-      :cluster => "16/main",
-      :postgis => "3"
-    },
-    :mapnik => "3.1",
     :styles => {
       :default => {
         :tile_directories => [
@@ -115,6 +132,7 @@ default_attributes(
 )
 
 run_list(
-  "role[ucl]",
-  "role[tile]"
+  "role[ucl-public]",
+  "role[tile]",
+  "recipe[atlas]"
 )

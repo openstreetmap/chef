@@ -17,13 +17,32 @@
 # limitations under the License.
 #
 
-include_recipe "accounts"
 include_recipe "apache"
 include_recipe "exim"
 include_recipe "postgresql"
 include_recipe "tools"
 
 passwords = data_bag_item("otrs", "passwords")
+
+group "otrs" do
+  gid 513
+  append true
+end
+
+user "otrs" do
+  uid 513
+  gid 513
+  comment "otrs.openstreetmap.org"
+  home "/usr/share/otrs"
+  shell "/usr/sbin/nologin"
+  manage_home false
+end
+
+group "www-data" do
+  action :modify
+  members %w[otrs]
+  append true
+end
 
 apache_module "perl" do
   package "libapache2-mod-perl2"
@@ -51,6 +70,7 @@ postgresql_database database_name do
 end
 
 package "dbconfig-common"
+package "libhtml-treebuilder-xpath-perl" # Undeclared dependency for otrs2
 
 template "/etc/dbconfig-common/otrs2.conf" do
   source "dbconfig.config.erb"
@@ -61,12 +81,6 @@ template "/etc/dbconfig-common/otrs2.conf" do
             :database_user => database_user,
             :database_password => database_password,
             :database_cluster => database_cluster
-end
-
-# Ensure the OTRS package in backports has a priority preference.
-apt_preference "otrs2" do
-  pin "release o=Debian Backports"
-  pin_priority "600"
 end
 
 apt_package "otrs2"

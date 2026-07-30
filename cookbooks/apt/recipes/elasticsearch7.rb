@@ -23,7 +23,7 @@ apt_repository "elasticsearch7.x" do
   uri "https://artifacts.elastic.co/packages/7.x/apt"
   distribution "stable"
   components ["main"]
-  key "D27D666CD88E42B4"
+  key "https://artifacts.elastic.co/GPG-KEY-elasticsearch"
 end
 
 # Workaround for mediawiki 1.39.x which ONLY supports elasticsearch 7.10.2

@@ -75,6 +75,13 @@ call_user_func( function() {
     // https://gerrit.wikimedia.org/r/#/c/mediawiki/extensions/Wikibase/+/469872/
     $wgWBRepoSettings['enableEntitySearchUI'] = false;
 
+    // Enable default values for labels and aliases
+<% if node[:wiki][:mediawiki_version].to_f > 1.43 -%>
+    $wgWBRepoSettings['enableMulLanguageCode'] = true;
+<% else -%>
+    $wgWBRepoSettings['tmpEnableMulLanguageCode'] = true;
+    $wgWBRepoSettings['tmpAlwaysShowMulLanguageCode'] = true;
+<% end -%>
 } );
 
 // Adapted from "$IP/extensions/Wikibase/client/config/WikibaseClient.example.php";
@@ -89,7 +96,7 @@ $wgWBClientSettings['showExternalRecentChanges'] = true;
 // Base URL for building links to the repository.
 // Assumes your wiki is setup as "http://repo.example.org/wiki/"
 // This can be protocol relative, such as "//www.wikidata.org"
-$wgWBClientSettings['repoUrl'] = "https://wiki.openstreetmap.org";
+$wgWBClientSettings['repoUrl'] = "https://<%= @site %>";
 
 // This setting is optional if you have the same type of setup for your
 // repo and client.  It will default to using the client's $wgArticlePath setting,

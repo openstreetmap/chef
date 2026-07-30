@@ -17,16 +17,27 @@
 # limitations under the License.
 #
 
-include_recipe "accounts"
 include_recipe "apache"
 include_recipe "chef::knife"
+include_recipe "ruby"
 
 keys = data_bag_item("chef", "keys")
 
-package %w[
-  certbot
-  ruby
-]
+package "certbot"
+
+group "letsencrypt" do
+  gid 526
+  append true
+end
+
+user "letsencrypt" do
+  uid 526
+  gid 526
+  comment "Let's Encrypt"
+  home "/srv/acme.openstreetmap.org"
+  shell "/usr/sbin/nologin"
+  manage_home false
+end
 
 directory "/etc/letsencrypt" do
   owner "letsencrypt"
@@ -86,20 +97,20 @@ directory "/srv/acme.openstreetmap.org/logs" do
   mode "700"
 end
 
-directory "/srv/acme.openstreetmap.org/.chef" do
+directory "/srv/acme.openstreetmap.org/.cinc" do
   owner "letsencrypt"
   group "letsencrypt"
   mode "2775"
 end
 
-file "/srv/acme.openstreetmap.org/.chef/client.pem" do
+file "/srv/acme.openstreetmap.org/.cinc/client.pem" do
   content keys["letsencrypt"].join("\n")
   owner "letsencrypt"
   group "letsencrypt"
   mode "660"
 end
 
-cookbook_file "/srv/acme.openstreetmap.org/.chef/knife.rb" do
+cookbook_file "/srv/acme.openstreetmap.org/.cinc/knife.rb" do
   source "knife.rb"
   owner "letsencrypt"
   group "letsencrypt"
@@ -114,6 +125,13 @@ remote_directory "/srv/acme.openstreetmap.org/bin" do
   files_owner "root"
   files_group "root"
   files_mode "755"
+end
+
+template "/srv/acme.openstreetmap.org/bin/upload" do
+  source "upload.erb"
+  owner "root"
+  group "root"
+  mode "755"
 end
 
 directory "/srv/acme.openstreetmap.org/requests" do
@@ -134,12 +152,20 @@ certificates = search(:node, "letsencrypt:certificates").each_with_object({}) do
 end
 
 certificates.each do |name, details|
+  certificate_path = "/srv/acme.openstreetmap.org/config/live/#{name}/fullchain.pem"
+
   template "/srv/acme.openstreetmap.org/requests/#{name}" do
     source "request.erb"
     owner "root"
     group "letsencrypt"
     mode "754"
     variables details
+  end
+
+  # This is used to trigger the execute request resource if certificate does not exist yet
+  notify_group "letsencrypt-request-#{name}" do
+    action :run
+    not_if { ::File.exist?(certificate_path) }
   end
 
   execute "/srv/acme.openstreetmap.org/requests/#{name}" do
@@ -149,6 +175,7 @@ certificates.each do |name, details|
     user "letsencrypt"
     group "letsencrypt"
     subscribes :run, "template[/srv/acme.openstreetmap.org/requests/#{name}]"
+    subscribes :run, "notify_group[letsencrypt-request-#{name}]"
     not_if { kitchen? }
   end
 end
@@ -166,6 +193,13 @@ Dir.glob("*", :base => "/srv/acme.openstreetmap.org/requests") do |name|
     user "letsencrypt"
     group "letsencrypt"
   end
+end
+
+template "/srv/acme.openstreetmap.org/bin/check-certificate" do
+  source "check-certificate.erb"
+  owner "root"
+  group "root"
+  mode "755"
 end
 
 template "/srv/acme.openstreetmap.org/bin/check-certificates" do

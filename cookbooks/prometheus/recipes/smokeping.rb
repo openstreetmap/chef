@@ -19,14 +19,26 @@
 
 include_recipe "prometheus"
 
-ip4_hosts = []
-ip6_hosts = []
+hosts = {}
 
-search(:node, "networking:interfaces") do |host|
-  next if host.name == node.name
+%w[ipv4 ipv6].each do |protocol|
+  json_file = "#{Chef::Config[:file_cache_path]}/#{protocol}.json"
 
-  ip4_hosts << host[:fqdn] unless host.ipaddresses(:role => :external, :family => :inet).empty?
-  ip6_hosts << host[:fqdn] unless host.ipaddresses(:role => :external, :family => :inet6).empty?
+  remote_file json_file do
+    source "https://dns.openstreetmap.org/#{protocol}.json"
+    compile_time true
+    ignore_failure true
+  end
+
+  hosts[protocol] = if File.exist?(json_file)
+                      JSON.parse(IO.read(json_file)).filter_map do |name, address|
+                        name unless name.split(".").first == node[:hostname] ||
+                                    name.end_with?(".oob") ||
+                                    address.start_with?("10.")
+                      end
+                    else
+                      []
+                    end
 end
 
 template "/etc/prometheus/exporters/smokeping.yml" do
@@ -34,11 +46,12 @@ template "/etc/prometheus/exporters/smokeping.yml" do
   owner "root"
   group "root"
   mode "644"
-  variables :ip4_hosts => ip4_hosts, :ip6_hosts => ip6_hosts
+  variables :ip4_hosts => hosts["ipv4"], :ip6_hosts => hosts["ipv6"]
 end
 
 prometheus_exporter "smokeping" do
   port 9374
+  environment "GOMAXPROCS" => "1"
   options "--config.file=/etc/prometheus/exporters/smokeping.yml"
   capability_bounding_set "CAP_NET_RAW"
   ambient_capabilities "CAP_NET_RAW"

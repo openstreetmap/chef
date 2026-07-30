@@ -5,26 +5,27 @@ default_attributes(
   :networking => {
     :interfaces => {
       :internal => {
-        :interface => "bond0",
-        :role => :internal,
         :inet => {
           :address => "10.0.64.10"
         },
         :bond => {
-          :mode => "802.3ad",
-          :lacprate => "fast",
-          :xmithashpolicy => "layer3+4",
-          :slaves => %w[enp25s0f0 enp25s0f1]
+          :slaves => %w[enp25s0f0np0 enp25s0f1np1]
         }
       },
-      :external => {
-        :interface => "bond0.101",
-        :role => :external,
+      :henet => {
         :inet => {
           :address => "184.104.226.106"
         },
         :inet6 => {
           :address => "2001:470:1:b3b::a"
+        }
+      },
+      :equinix => {
+        :inet => {
+          :address => "87.252.214.106"
+        },
+        :inet6 => {
+          :address => "2001:4d78:fe03:1c::a"
         }
       }
     }
@@ -32,7 +33,7 @@ default_attributes(
 )
 
 run_list(
-  "role[equinix-dub]",
+  "role[equinix-dub-public]",
   "role[geodns]",
   "role[planet]"
 )

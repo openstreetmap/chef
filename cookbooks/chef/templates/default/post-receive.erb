@@ -5,13 +5,13 @@
 umask 0002
 unset GIT_DIR
 
-knife="/opt/chef/embedded/bin/knife"
+knife="/opt/cinc/embedded/bin/knife"
 
 while read oldrev newrev refname
 do
   if [[ "$refname" = "refs/heads/master" ]]
   then
-    cd /var/lib/chef/<%= @repository %>
+    cd /var/lib/cinc/<%= @repository %>
 
     rm -f cookbooks/*/metadata.json(N)
 

@@ -90,17 +90,17 @@ module OpenStreetMap
       @mysql_users ||= query("SELECT user, host, #{privilege_columns} FROM user").each_with_object({}) do |user, users|
         name = "'#{user[:user]}'@'#{user[:host]}'"
 
-        users[name] = USER_PRIVILEGES.each_with_object({}) do |privilege, privileges|
-          privileges[privilege] = user["#{privilege}_priv".to_sym] == "Y"
+        users[name] = USER_PRIVILEGES.to_h do |privilege|
+          [privilege, user["#{privilege}_priv".to_sym] == "Y"]
         end
       end
     end
 
     def mysql_databases
-      @mysql_databases ||= query("SHOW databases").each_with_object({}) do |database, databases|
-        databases[database[:database]] = {
+      @mysql_databases ||= query("SHOW databases").to_h do |database|
+        [database[:database], {
           :permissions => {}
-        }
+        }]
       end
 
       query("SELECT * FROM db").each do |record|

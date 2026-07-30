@@ -19,7 +19,6 @@
 
 include_recipe "web::base"
 
-ruby = "ruby#{node[:ruby][:version]}"
 rails_directory = "#{node[:web][:base_directory]}/rails"
 
 template "/usr/local/bin/statistics" do
@@ -27,7 +26,7 @@ template "/usr/local/bin/statistics" do
   owner "root"
   group "root"
   mode "755"
-  variables :ruby => ruby, :directory => rails_directory
+  variables :ruby => node[:ruby][:interpreter], :directory => rails_directory
 end
 
 systemd_service "web-statistics" do

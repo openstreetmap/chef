@@ -3,9 +3,8 @@ description "Role applied to all community servers"
 
 default_attributes(
   :accounts => {
-    :users => {
-      :community => {
-        :status => :role,
+    :groups => {
+      :commnunity => {
         :members => [:grant, :tomh]
       }
     }

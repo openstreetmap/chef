@@ -25,6 +25,7 @@ include_recipe "fail2ban"
 include_recipe "web::rails"
 include_recipe "web::cgimap"
 
+admins = data_bag_item("apache", "admins")
 web_passwords = data_bag_item("web", "passwords")
 admins = data_bag_item("apache", "admins")
 
@@ -54,21 +55,28 @@ remote_directory "#{node[:web][:base_directory]}/static" do
   files_mode "644"
 end
 
-remote_file "#{Chef::Config[:file_cache_path]}/cloudflare-ipv4-list" do
-  source "https://www.cloudflare.com/ips-v4"
+template "#{node[:web][:base_directory]}/static/.well-known/security.txt" do
+  source "security.txt.erb"
+  owner "root"
+  group "root"
+  mode "644"
+end
+
+remote_file "#{Chef::Config[:file_cache_path]}/fastly-ip-list.json" do
+  source "https://api.fastly.com/public-ip-list"
   compile_time true
   ignore_failure true
 end
 
-cloudflare_ipv4 = IO.read("#{Chef::Config[:file_cache_path]}/cloudflare-ipv4-list").lines.map(&:chomp)
+fastlyips = JSON.parse(IO.read("#{Chef::Config[:file_cache_path]}/fastly-ip-list.json"))
 
-remote_file "#{Chef::Config[:file_cache_path]}/cloudflare-ipv6-list" do
-  source "https://www.cloudflare.com/ips-v6"
+remote_file "#{Chef::Config[:file_cache_path]}/statuscake-locations.json" do
+  source "https://app.statuscake.com/Workfloor/Locations.php?format=json"
   compile_time true
   ignore_failure true
 end
 
-cloudflare_ipv6 = IO.read("#{Chef::Config[:file_cache_path]}/cloudflare-ipv6-list").lines.map(&:chomp)
+statuscakelocations = JSON.parse(IO.read("#{Chef::Config[:file_cache_path]}/statuscake-locations.json"))
 
 remote_file "#{Chef::Config[:file_cache_path]}/fastly-ip-list.json" do
   source "https://api.fastly.com/public-ip-list"
@@ -88,12 +96,12 @@ statuscakelocations = JSON.parse(IO.read("#{Chef::Config[:file_cache_path]}/stat
 
 apache_site "www.openstreetmap.org" do
   template "apache.frontend.erb"
-  variables :cloudflare => cloudflare_ipv4 + cloudflare_ipv6,
+  variables :admins => admins["hosts"],
+            :cloudflare => cloudflare_ipv4 + cloudflare_ipv6,
             :fastly => fastlyips["addresses"] + fastlyips["ipv6_addresses"],
+            :secret_key_base => web_passwords["secret_key_base"]
             :statuscake => statuscakelocations.flat_map { |_, v| [v["ip"], v["ipv6"]] },
             :status => node[:web][:status],
-            :admins => admins["hosts"],
-            :secret_key_base => web_passwords["secret_key_base"]
 end
 
 template "/etc/logrotate.d/apache2" do
@@ -108,9 +116,7 @@ fail2ban_filter "apache-request-timeout" do
 end
 
 fail2ban_jail "apache-request-timeout" do
-  filter "apache-request-timeout"
-  logpath "/var/log/apache2/access.log"
-  ports [80, 443]
+  action :delete
 end
 
 fail2ban_filter "apache-trackpoints-timeout" do
@@ -118,11 +124,7 @@ fail2ban_filter "apache-trackpoints-timeout" do
 end
 
 fail2ban_jail "apache-trackpoints-timeout" do
-  filter "apache-trackpoints-timeout"
-  logpath "/var/log/apache2/access.log"
-  ports [80, 443]
-  bantime "12h"
-  findtime "30m"
+  action :delete
 end
 
 fail2ban_filter "apache-notes-search" do
@@ -130,13 +132,15 @@ fail2ban_filter "apache-notes-search" do
 end
 
 fail2ban_jail "apache-notes-search" do
-  filter "apache-notes-search"
-  logpath "/var/log/apache2/access.log"
-  ports [80, 443]
+  action :delete
 end
 
 if %w[database_offline database_readonly].include?(node[:web][:status])
   service "rails-jobs@mailers" do
+    action :stop
+  end
+
+  service "rails-jobs@notifiers" do
     action :stop
   end
 
@@ -149,6 +153,13 @@ if %w[database_offline database_readonly].include?(node[:web][:status])
   end
 else
   service "rails-jobs@mailers" do
+    action [:enable, :start]
+    supports :restart => true
+    subscribes :restart, "rails_port[www.openstreetmap.org]"
+    subscribes :restart, "systemd_service[rails-jobs@]"
+  end
+
+  service "rails-jobs@notifiers" do
     action [:enable, :start]
     supports :restart => true
     subscribes :restart, "rails_port[www.openstreetmap.org]"

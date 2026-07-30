@@ -19,31 +19,48 @@
 
 package %w[
   bash-completion
+  conntrack
+  cron
+  curl
   dmidecode
   ethtool
+  iotop
+  iptraf-ng
+  locales-all
   lsof
   lsscsi
+  lvm2
+  mtr-tiny
+  numactl
   pciutils
+  rsync
+  rsyslog
   screen
   smartmontools
   strace
   sysstat
+  systemd-coredump
   tcpdump
   usbutils
-  numactl
-  xfsprogs
-  iotop
-  lvm2
-  rsyslog
-  cron
-  locales-all
-  systemd-coredump
   vim
+  xfsprogs
+  zstd
 ]
 
 service "rsyslog" do
   action [:enable, :start]
   supports :status => true, :restart => true, :reload => true
+end
+
+# Install some common tools
+remote_directory "/usr/local/bin" do
+  source "local-bin"
+  owner "root"
+  group "root"
+  mode "755"
+  files_owner "root"
+  files_group "root"
+  files_mode "755"
 end
 
 # Remove some unused and unwanted packages

@@ -22,11 +22,25 @@ include_recipe "git"
 
 keys = data_bag_item("chef", "keys")
 
+group "chefrepo" do
+  gid 507
+  append true
+end
+
+user "chefrepo" do
+  uid 507
+  gid 507
+  comment "chef.openstreetmap.org"
+  home "/var/lib/cinc"
+  shell "/usr/sbin/nologin"
+  manage_home false
+end
+
 chef_gem "bundler" do
   version ">= 2.1.4"
 end
 
-directory "/var/lib/chef" do
+directory "/var/lib/cinc" do
   owner "chefrepo"
   group "chefrepo"
   mode "2775"
@@ -35,7 +49,7 @@ end
 %w[public private].each do |repository|
   repository_directory = node[:chef][:"#{repository}_repository"]
 
-  git "/var/lib/chef/#{repository}" do
+  git "/var/lib/cinc/#{repository}" do
     action :checkout
     repository repository_directory
     revision "master"
@@ -43,20 +57,20 @@ end
     group "chefrepo"
   end
 
-  directory "/var/lib/chef/#{repository}/.chef" do
+  directory "/var/lib/cinc/#{repository}/.cinc" do
     owner "chefrepo"
     group "chefrepo"
     mode "2775"
   end
 
-  file "/var/lib/chef/#{repository}/.chef/client.pem" do
+  file "/var/lib/cinc/#{repository}/.cinc/client.pem" do
     content keys["git"].join("\n")
     owner "chefrepo"
     group "chefrepo"
     mode "660"
   end
 
-  cookbook_file "/var/lib/chef/#{repository}/.chef/knife.rb" do
+  cookbook_file "/var/lib/cinc/#{repository}/.cinc/knife.rb" do
     source "knife.rb"
     owner "chefrepo"
     group "chefrepo"

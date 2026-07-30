@@ -19,6 +19,39 @@
   DocumentRoot /srv/tile.openstreetmap.org/html
   ScriptAlias /cgi-bin/ /srv/tile.openstreetmap.org/cgi-bin/
 
+  # Set location of renderd socket
+  ModTileRenderdSocketName /run/renderd/renderd.sock
+
+  # Set location of tile directory
+  ModTileTileDir /srv/tile.openstreetmap.org/tiles
+
+  # Time to wait for a re-render before serving a dirty tile
+  ModTileRequestTimeout 2
+
+  # Timeout before giving up for a tile to be rendered that is otherwise missing
+  ModTileMissingRequestTimeout 10
+
+  # Always try and re-render dirty or missing tiles
+  ModTileMaxLoadOld 1000
+  ModTileMaxLoadMissing 1000
+
+  # Maximum expiry to set on a tile
+  ModTileCacheDurationMax 604800
+
+  # Expiry time for dirty tiles that have been queued for re-rendering
+  ModTileCacheDurationDirty 900
+
+  # Minimum expiry time for fresh tiles
+  ModTileCacheDurationMinimum 10800
+  ModTileCacheDurationMediumZoom 13 86400
+  ModTileCacheDurationLowZoom 9 518400
+
+  # Factor controlling effect of last modification time on expiry
+  ModTileCacheLastModifiedFactor 0.20
+
+  # Load tile configuration
+  LoadTileConfigFile /etc/renderd.conf
+
   # Get the real remote IP for requests via a trusted proxy
   RemoteIPHeader Fastly-Client-IP
 <% @fastly.sort.each do |address| -%>
@@ -26,17 +59,16 @@
 <% end -%>
 
   # Setup logging
-  LogFormat "%a %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\"" combined_with_remoteip
-  CustomLog /var/log/apache2/access.log combined_with_remoteip
+  LogFormat "%h %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\" %Dus \"%{client-geo-continent}i\" \"%{client-geo-country}i\" \"%{client-geo-proxy-description}i\" \"%{client-geo-proxy-type}i\" \"%{client-geo-conn-type}i\" \"%{cdn-region}i\" \"%{cdn-pop}i\" \"%{X-TLS-JA4}i\" \"%{X-JA4H}i\""  combined_fastly_tile_custom
+  CustomLog /var/log/apache2/access.log combined_fastly_tile_custom
   ErrorLog /var/log/apache2/error.log
-  BufferedLogs on
 
   # Always set Access-Control-Allow-Origin so that simple CORS requests
   # will always work and can be cached
-  Header set Access-Control-Allow-Origin "*"
+  Header always set Access-Control-Allow-Origin "*" "expr=-z resp('Access-Control-Allow-Origin')"
 
   # Add diagnostics header to identify render server
-  Header set X-TileRender "<%= node.name %>"
+  Header always set X-TileRender "<%= node.name %>"
 
   # Tell clients to use stale tiles if necessary
   Header append Cache-Control "stale-while-revalidate=604800, stale-if-error=604800" "expr=%{CONTENT_TYPE} == 'image/png'"
@@ -75,14 +107,22 @@
 <% @admins.sort.each do |address| -%>
     Require ip <%= address %>
 <% end -%>
-    # OSM Amsterdam IPv4
+    # OSM Amsterdam IPv4 (he.net)
     Require ip 184.104.179.128/27
-    # OSM Amsterdam IPv6
+    # OSM Amsterdam IPv4 (equinix)
+    Require ip 82.199.86.96/27
+    # OSM Amsterdam IPv6 (he.net)
     Require ip 2001:470:1:fa1::/64
-    # OSM Dublin IPv4
+    # OSM Amsterdam IPv6 (equinix)
+    Require ip 2001:4d78:500:5e3::/64
+    # OSM Dublin IPv4 (he.net)
     Require ip 184.104.226.96/27
-    # OSM Dublin IPv6
+    # OSM Dublin IPv4 (equinix)
+    Require ip 87.252.214.96/27
+    # OSM Dublin IPv6 (he.net)
     Require ip 2001:470:1:b3b::/64
+    # OSM Dublin IPv6 (equinix)
+    Require ip 2001:4d78:fe03:1c::/64
     # OSM UCL IPv4
     Require ip 193.60.236.0/24
   </LocationMatch>
@@ -99,7 +139,6 @@
   LogFormat "%a %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\"" combined_with_remoteip
   CustomLog /var/log/apache2/access.log combined_with_remoteip
   ErrorLog /var/log/apache2/error.log
-  BufferedLogs on
 
   # Always set Access-Control-Allow-Origin so that simple CORS requests
   # will always work and can be cached

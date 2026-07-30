@@ -4,21 +4,16 @@ description "Role applied to all servers at UCL"
 default_attributes(
   :location => "Slough, England",
   :networking => {
-    :roles => {
+    :interfaces => {
       :internal => {
+        :role => :internal,
+        :metric => 200,
         :inet => {
           :prefix => "20",
           :gateway => "10.0.0.3",
           :routes => {
             "10.0.0.0/8" => { :via => "10.0.0.3" }
           }
-        }
-      },
-      :external => {
-        :zone => "ucl",
-        :inet => {
-          :prefix => "24",
-          :gateway => "193.60.236.254"
         }
       }
     },

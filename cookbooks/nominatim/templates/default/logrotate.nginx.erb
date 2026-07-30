@@ -6,6 +6,10 @@
   rotate 7
   compress
   delaycompress
+  compresscmd /usr/bin/zstd
+  compressext .zst
+  compressoptions -T0 -11 --quiet --long
+  uncompresscmd /usr/bin/unzstd
   notifempty
   create 640 www-data adm
   sharedscripts
@@ -17,9 +21,13 @@
 <%= node[:nominatim][:logdir] %>/nominatim.openstreetmap.org-*.log {
   daily
   missingok
-  rotate 28
+  rotate 14
   compress
   delaycompress
+  compresscmd /usr/bin/zstd
+  compressext .zst
+  compressoptions -T0 -11 --quiet --long
+  uncompresscmd /usr/bin/unzstd
   notifempty
   create 640 www-data adm
   sharedscripts

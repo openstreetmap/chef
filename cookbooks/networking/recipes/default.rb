@@ -57,38 +57,21 @@ interfaces = node[:networking][:interfaces].collect do |name, interface|
   [interface[:interface], name]
 end.to_h
 
-node[:networking][:interfaces].each do |name, interface|
-  if interface[:interface] =~ /^(.*)\.(\d+)$/
-    vlan_interface = Regexp.last_match(1)
-    vlan_id = Regexp.last_match(2)
+node[:networking][:interfaces].each_value do |interface|
+  next unless interface[:interface] =~ /^(.*)\.(\d+)$/
 
-    parent = interfaces[vlan_interface] || "vlans_#{vlan_interface}"
+  vlan_interface = Regexp.last_match(1)
+  vlan_id = Regexp.last_match(2)
 
-    node.default_unless[:networking][:interfaces][parent][:interface] = vlan_interface
-    node.default_unless[:networking][:interfaces][parent][:vlans] = []
+  parent = interfaces[vlan_interface] || "vlans_#{vlan_interface}"
 
-    node.default[:networking][:interfaces][parent][:vlans] << vlan_id
-  end
+  node.default_unless[:networking][:interfaces][parent][:interface] = vlan_interface
+  node.default_unless[:networking][:interfaces][parent][:vlans] = []
 
-  next unless interface[:role] && (role = node[:networking][:roles][interface[:role]])
-
-  if interface[:inet] && role[:inet]
-    node.default_unless[:networking][:interfaces][name][:inet][:prefix] = role[:inet][:prefix]
-    node.default_unless[:networking][:interfaces][name][:inet][:gateway] = role[:inet][:gateway]
-    node.default_unless[:networking][:interfaces][name][:inet][:routes] = role[:inet][:routes]
-  end
-
-  if interface[:inet6] && role[:inet6]
-    node.default_unless[:networking][:interfaces][name][:inet6][:prefix] = role[:inet6][:prefix]
-    node.default_unless[:networking][:interfaces][name][:inet6][:gateway] = role[:inet6][:gateway]
-    node.default_unless[:networking][:interfaces][name][:inet6][:routes] = role[:inet6][:routes]
-  end
-
-  node.default_unless[:networking][:interfaces][name][:metric] = role[:metric]
-  node.default_unless[:networking][:interfaces][name][:zone] = role[:zone]
+  node.default[:networking][:interfaces][parent][:vlans] << vlan_id
 end
 
-node[:networking][:interfaces].each do |_, interface|
+node[:networking][:interfaces].each_value do |interface|
   if interface[:interface] =~ /^.*\.(\d+)$/
     template "/etc/systemd/network/10-#{interface[:interface]}.netdev" do
       source "vlan.netdev.erb"
@@ -99,6 +82,8 @@ node[:networking][:interfaces].each do |_, interface|
       notifies :run, "notify_group[networkctl-reload]"
     end
   elsif interface[:interface] =~ /^bond\d+$/
+    next unless interface[:bond]
+
     template "/etc/systemd/network/10-#{interface[:interface]}.netdev" do
       source "bond.netdev.erb"
       owner "root"
@@ -331,6 +316,18 @@ link "/etc/resolv.conf" do
   to "../run/systemd/resolve/stub-resolv.conf"
 end
 
+package "ruby"
+
+gem_package "dbus-systemd" do
+  gem_binary node[:ruby][:system_gem]
+end
+
+prometheus_exporter "resolved" do
+  port 10028
+  user "systemd-resolve"
+  restrict_address_families "AF_UNIX"
+end
+
 hosts = { :inet => [], :inet6 => [] }
 
 search(:node, "networking:interfaces").collect do |n|
@@ -346,10 +343,8 @@ end
 
 package "nftables"
 
-interfaces = []
-
-node.interfaces(:role => :external).each do |interface|
-  interfaces << interface[:interface]
+interfaces = node.interfaces(:role => :external).map do |interface|
+  interface[:interface]
 end
 
 template "/etc/nftables.conf" do

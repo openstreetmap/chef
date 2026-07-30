@@ -17,15 +17,9 @@
 # limitations under the License.
 #
 
-package "spamassassin"
+package "spamd"
 
-service_name = if platform?("debian")
-                 "spamd"
-               else
-                 "spamassassin"
-               end
-
-service service_name do
+service "spamd" do
   action [:enable, :start]
   supports :status => true, :restart => true, :reload => true
 end
@@ -41,7 +35,7 @@ template "/etc/default/spamassassin" do
   owner "root"
   group "root"
   mode "644"
-  notifies :restart, "service[#{service_name}]"
+  notifies :restart, "service[spamd]"
 end
 
 trusted_networks = node[:exim][:relay_from_hosts]
@@ -54,11 +48,25 @@ end
 
 trusted_networks -= ["127.0.0.1", "::1"]
 
+template "/etc/spamassassin/local.pre" do
+  source "local.pre.erb"
+  owner "root"
+  group "root"
+  mode "644"
+  notifies :restart, "service[spamd]"
+end
+
 template "/etc/spamassassin/local.cf" do
   source "local.cf.erb"
   owner "root"
   group "root"
   mode "644"
   variables :trusted_networks => trusted_networks.sort
-  notifies :restart, "service[#{service_name}]"
+  notifies :restart, "service[spamd]"
+end
+
+file "/var/spool/spamassassin/auto_whitelist" do
+  owner "debian-spamd"
+  group "debian-spamd"
+  mode "600"
 end

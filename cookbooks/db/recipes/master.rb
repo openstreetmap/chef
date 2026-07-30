@@ -26,9 +26,8 @@ postgresql_user "tomh" do
   superuser true
 end
 
-postgresql_user "matt" do
+postgresql_user "grant" do
   cluster node[:db][:cluster]
-  superuser true
 end
 
 postgresql_user "openstreetmap" do
@@ -79,11 +78,16 @@ postgresql_extension "btree_gist" do
   only_if { node[:postgresql][:clusters][node[:db][:cluster]] && node[:postgresql][:clusters][node[:db][:cluster]][:version] >= 9.0 }
 end
 
+postgresql_extension "postgis" do
+  cluster node[:db][:cluster]
+  database "openstreetmap"
+  owner "postgres"
+end
+
 CGIMAP_PERMISSIONS = {
   "changeset_comments" => [:select],
   "changeset_tags" => [:select],
   "changesets" => [:select, :update],
-  "client_applications" => [:select],
   "current_node_tags" => [:select, :insert, :delete],
   "current_nodes" => [:select, :insert, :update],
   "current_nodes_id_seq" => [:update],
@@ -101,9 +105,6 @@ CGIMAP_PERMISSIONS = {
   "oauth_access_grants" => [:select],
   "oauth_access_tokens" => [:select],
   "oauth_applications" => [:select],
-  "oauth_nonces" => [:select, :insert],
-  "oauth_nonces_id_seq" => [:update],
-  "oauth_tokens" => [:select],
   "relation_members" => [:select, :insert],
   "relation_tags" => [:select, :insert],
   "relations" => [:select, :insert],
@@ -117,9 +118,25 @@ CGIMAP_PERMISSIONS = {
 }.freeze
 
 PLANETDUMP_PERMISSIONS = {
+  "changeset_comments" => :select,
+  "changeset_comments_id_seq" => :select,
+  "changeset_tags" => :select,
+  "changesets" => :select,
+  "changesets_id_seq" => :select,
+  "node_tags" => :select,
+  "nodes" => :select,
   "note_comments" => :select,
+  "note_comments_id_seq" => :select,
   "notes" => :select,
-  "users" => :select
+  "notes_id_seq" => :select,
+  "relation_members" => :select,
+  "relation_tags" => :select,
+  "relations" => :select,
+  "users" => :select,
+  "users_id_seq" => :select,
+  "way_nodes" => :select,
+  "way_tags" => :select,
+  "ways" => :select
 }.freeze
 
 PLANETDIFF_PERMISSIONS = {
@@ -151,7 +168,6 @@ PROMETHEUS_PERMISSIONS = {
   changeset_tags
   changesets
   changesets_subscribers
-  client_applications
   current_node_tags
   current_nodes
   current_relation_members
@@ -172,22 +188,26 @@ PROMETHEUS_PERMISSIONS = {
   issues
   languages
   messages
+  moderation_zones
   node_tags
   nodes
   note_comments
+  note_subscriptions
   notes
+  noticed_events
+  noticed_notifications
   oauth_access_grants
   oauth_access_tokens
   oauth_applications
-  oauth_nonces
   oauth_openid_requests
-  oauth_tokens
   redactions
   relation_members
   relation_tags
   relations
   reports
   schema_migrations
+  social_links
+  spammy_phrases
   user_blocks
   user_mutes
   user_preferences
@@ -207,7 +227,8 @@ PROMETHEUS_PERMISSIONS = {
                 "planetdump" => PLANETDUMP_PERMISSIONS[table],
                 "planetdiff" => PLANETDIFF_PERMISSIONS[table],
                 "prometheus" => PROMETHEUS_PERMISSIONS[table],
-                "backup" => [:select]
+                "backup" => [:select],
+                "grant" => [:select]
   end
 end
 
@@ -218,7 +239,6 @@ end
   active_storage_variant_records_id_seq
   changeset_comments_id_seq
   changesets_id_seq
-  client_applications_id_seq
   current_nodes_id_seq
   current_relations_id_seq
   current_ways_id_seq
@@ -231,16 +251,19 @@ end
   issue_comments_id_seq
   issues_id_seq
   messages_id_seq
+  moderation_zones_id_seq
   note_comments_id_seq
   notes_id_seq
+  noticed_events_id_seq
+  noticed_notifications_id_seq
   oauth_access_grants_id_seq
   oauth_access_tokens_id_seq
   oauth_applications_id_seq
-  oauth_nonces_id_seq
   oauth_openid_requests_id_seq
-  oauth_tokens_id_seq
   redactions_id_seq
   reports_id_seq
+  social_links_id_seq
+  spammy_phrases_id_seq
   user_blocks_id_seq
   user_mutes_id_seq
   user_roles_id_seq
@@ -253,7 +276,9 @@ end
     permissions "openstreetmap" => [:all],
                 "rails" => [:usage],
                 "cgimap" => CGIMAP_PERMISSIONS[sequence],
-                "backup" => [:select]
+                "planetdump" => PLANETDUMP_PERMISSIONS[sequence],
+                "backup" => [:select],
+                "grant" => [:select]
   end
 end
 

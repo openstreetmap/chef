@@ -51,3 +51,6 @@ default[:postgresql][:settings][:defaults][:user_name_maps] = {}
 default[:postgresql][:settings][:defaults][:early_authentication_rules] = []
 default[:postgresql][:settings][:defaults][:late_authentication_rules] = []
 default[:postgresql][:settings][:defaults][:standby_mode] = "off"
+default[:postgresql][:pgbackrest][:repo_type] = "posix"
+default[:postgresql][:pgbackrest][:repo_path] = "/var/lib/pgbackrest"
+default[:postgresql][:pgbackrest][:repo_retention_full] = "2"

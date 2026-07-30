@@ -1,10 +1,14 @@
 # DO NOT EDIT - This file is being maintained by Chef
 
-/var/log/chef/client.log {
+/var/log/cinc/client.log {
   rotate 12
   weekly
   compress
+  compresscmd /usr/bin/zstd
+  compressext .zst
+  compressoptions -T0 -11 --quiet --long
+  uncompresscmd /usr/bin/unzstd
   postrotate
-	systemctl try-restart chef-client.service
+	systemctl try-restart cinc-client.service
   endscript
 }

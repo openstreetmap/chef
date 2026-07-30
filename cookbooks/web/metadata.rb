@@ -6,7 +6,6 @@ description       "Installs and configures www.openstreetmap.org servers"
 
 version           "1.0.1"
 supports          "ubuntu"
-depends           "accounts"
 depends           "apache"
 depends           "apt"
 depends           "chef"

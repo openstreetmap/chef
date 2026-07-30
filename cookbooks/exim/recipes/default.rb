@@ -47,6 +47,10 @@ end
 if node[:exim][:certificate_names]
   include_recipe "apache"
 
+  apache_site "default" do
+    action [:disable]
+  end
+
   apache_site node[:exim][:certificate_names].first do
     template "apache.erb"
     variables :aliases => node[:exim][:certificate_names].drop(1)
@@ -161,7 +165,7 @@ if node[:exim][:dkim_selectors]
     mode "755"
   end
 
-  node[:exim][:dkim_selectors].each do |domain, _selector|
+  node[:exim][:dkim_selectors].each_key do |domain|
     file "/etc/exim4/dkim-keys/#{domain}" do
       content keys[domain].join("\n")
       owner "root"

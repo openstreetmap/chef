@@ -63,6 +63,7 @@ end
 
 prometheus_exporter "chrony" do
   port 9123
+  options "--no-collector.dns-lookups"
 end
 
 # chrony occasionally marks all servers offline during a network outage.
@@ -72,4 +73,5 @@ execute "chronyc-online" do
   user "root"
   group "root"
   ignore_failure true
+  only_if "chronyc activity | grep -Eq '^0 sources online'"
 end

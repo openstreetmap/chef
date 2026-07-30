@@ -56,14 +56,16 @@ default_attributes(
       :nroets => { :status => :user },
       :ojw => { :status => :user },
       :ollie => { :status => :user },
+      :pablobm => { :status => :user },
       :pafciu17 => { :status => :user },
       :pierzen => { :status => :user },
       :pnorman => { :status => :user },
       :ppawel => { :status => :user },
       :random => { :status => :user },
       :richard => { :status => :user },
-      :rtnf => { :status => :user },
       :ris => { :status => :user },
+      :rtnf => { :status => :user },
+      :rub21 => { :status => :user },
       :russ => { :status => :user },
       :rweait => { :status => :user },
       :shaunmcdonald => { :status => :user },
@@ -76,26 +78,11 @@ default_attributes(
       :twain => { :status => :user },
       :yellowbkpk => { :status => :user },
       :zander => { :status => :user },
-      :zverik => { :status => :user },
-      :ooc => {
-        :status => :role,
-        :members => [:tomh, :blackadder, :timsc, :ollie]
-      },
+      :zverik => { :status => :user }
+    },
+    :groups => {
       :apis => {
-        :status => :role,
         :members => [:tomh]
-      },
-      :os => {
-        :status => :role,
-        :members => [:tomh, :grant, :ollie]
-      },
-      :gpsmid => {
-        :status => :role,
-        :members => [:apmon, :maba]
-      },
-      :"za-imagery" => {
-          :status => :role,
-          :members => [:grant, :htonl, :gmoncrieff, :zander]
       }
     }
   },
@@ -111,39 +98,60 @@ default_attributes(
   },
   :dev => {
     :rails => {
-      :master => {
-        :repository => "https://git.openstreetmap.org/public/rails.git",
-        :revision => "master",
-        :cgimap_repository => "https://github.com/zerebubuth/openstreetmap-cgimap.git",
-        :cgimap_revision => "master",
-        :aliases => ["api06.dev.openstreetmap.org"]
-      },
-      :tomh => {
-        :repository => "https://github.com/tomhughes/openstreetmap-website.git",
-        :revision => "next",
-        :cgimap_repository => "https://github.com/zerebubuth/openstreetmap-cgimap.git",
-        :cgimap_revision => "master"
-      },
-      :comments => {
-        :repository => "https://github.com/ukasiu/openstreetmap-website.git",
-        :revision => "comments_list"
-      },
-      :locale => {
-        :repository => "https://github.com/tomhughes/openstreetmap-website.git",
-        :revision => "locale"
-      },
-      :microcosms => {
-        :repository => "https://github.com/openbrian/osm-microcosms.git",
-        :revision => "microcosms"
-      },
-      :signup => {
-        :repository => "https://github.com/milan-cvetkovic/openstreetmap-website.git",
-        :revision => "issue_4128_login_signup"
+      :postgresql_cluster => "18/main",
+      :sites => {
+        :master => {
+          :repository => "https://git.openstreetmap.org/public/rails.git",
+          :revision => "master",
+          :cgimap_repository => "https://github.com/zerebubuth/openstreetmap-cgimap.git",
+          :cgimap_revision => "master",
+          :cgimap_options => {
+            :changeset_enhanced_stats => true
+          },
+          :aliases => ["master.apis.dev.osm.org", "api06.dev.openstreetmap.org", "api06.dev.osm.org"]
+        },
+        :tomh => {
+          :repository => "https://github.com/tomhughes/openstreetmap-website.git",
+          :revision => "next",
+          :cgimap_repository => "https://github.com/zerebubuth/openstreetmap-cgimap.git",
+          :cgimap_revision => "master"
+        },
+        :comments => {
+          :repository => "https://github.com/ukasiu/openstreetmap-website.git",
+          :revision => "comments_list"
+        },
+        :microcosms => {
+          :repository => "https://github.com/openbrian/osm-microcosms.git",
+          :revision => "microcosms"
+        },
+        :pablobm => {
+          :repository => "https://github.com/pablobm/openstreetmap-website.git",
+          :revision => "pablobm-devserver",
+          :cgimap_repository => "https://github.com/zerebubuth/openstreetmap-cgimap.git",
+          :cgimap_revision => "master"
+        },
+        :gpsdatabase => {
+          :repository => "https://github.com/rub21/openstreetmap-website.git",
+          :revision => "gps_db"
+        },
+        :gpsvisibility => {
+          :repository => "https://github.com/rub21/openstreetmap-website.git",
+          :revision => "simplify-gps-visibility"
+        },
+        :gpxcompression => {
+          :repository => "https://github.com/rub21/openstreetmap-website.git",
+          :revision => "compress-gpx-uploads"
+        }
       }
     }
   },
   :postgresql => {
-    :versions => ["15"],
+    :versions => %w[18],
+    :clusters => {
+      "18/main" => {
+        :pgbackrest_stanza => "main"
+      }
+    },
     :settings => {
       :defaults => {
         :max_connections => "500",
@@ -153,11 +161,29 @@ default_attributes(
         :max_stack_depth => "4MB",
         :effective_cache_size => "4GB"
       },
-      "15" => {
+      "18" => {
         :port => "5432",
-        :wal_level => "logical"
+        :wal_level => "logical",
+        :archive_mode => "on",
+        :archive_command => "/bin/pgbackrest --stanza=main archive-push %p"
       }
+    },
+    :pgbackrest => {
+      :credentials_bag => "dev",
+      :credentials_item => "aws",
+      :repo_type => "s3",
+      :repo_path => "/",
+      :repo_cipher_type => "aes-256-cbc",
+      :repo_cipher_pass => "wal_encryption_key",
+      :repo_s3_bucket => "openstreetmap-wal-dev-1a05a5",
+      :repo_s3_endpoint => "s3.eu-north-1.amazonaws.com",
+      :repo_s3_key => "wal_access_key_id",
+      :repo_s3_key_secret => "wal_secret_access_key",
+      :repo_s3_region => "eu-north-1"
     }
+  },
+  :ruby => {
+    :fullstaq => true
   },
   :sysctl => {
     :postgres => {

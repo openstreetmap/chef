@@ -27,48 +27,29 @@ directory "/store/imagery" do
   recursive true
 end
 
-# FIXME: until upstream supports arm64 images: https://github.com/developmentseed/titiler/pull/740
-container_image = if arm?
-                    "ghcr.io/firefishy/titiler:latest"
-                  else
-                    "ghcr.io/developmentseed/titiler:latest"
-                  end
+container_image = "ghcr.io/developmentseed/titiler:latest"
 
 podman_service "titiler" do
   description "Container service for titiler"
   image container_image
-  volume :"/store/imagery"       => "/store/imagery",
+  volume :"/store/imagery" => "/store/imagery",
          :"/srv/imagery/sockets" => "/sockets"
-  environment :BIND                                => "unix:/sockets/titiler.sock",
-              :WORKERS_PER_CORE                    => 1,
-              :GDAL_CACHEMAX                       => 200,
-              :GDAL_BAND_BLOCK_CACHE               => "HASHSET",
-              :GDAL_DISABLE_READDIR_ON_OPEN        => "EMPTY_DIR",
-              :GDAL_INGESTED_BYTES_AT_OPEN         => 32768,
-              :GDAL_HTTP_MERGE_CONSECUTIVE_RANGES  => "YES",
-              :GDAL_HTTP_MULTIPLEX                 => "YES",
-              :GDAL_HTTP_VERSION                   => 2,
-              :VSI_CACHE                           => "TRUE",
-              :VSI_CACHE_SIZE                      => 5000000,
-              :TITILER_API_ROOT_PATH               => "/api/v1/titiler",
-              :FORWARDED_ALLOW_IPS                 => "*" # https://docs.gunicorn.org/en/latest/settings.html#forwarded-allow-ips
-end
-
-systemd_service "titiler-restart" do
-  type "simple"
-  user "root"
-  exec_start "/bin/systemctl try-restart titiler.service"
-  sandbox true
-  restrict_address_families "AF_UNIX"
-end
-
-systemd_timer "titiler-restart" do
-  on_boot_sec "6h"
-  on_unit_inactive_sec "12h"
-end
-
-service "titiler-restart.timer" do
-  action [:enable, :start]
+  environment :GDAL_NUM_THREADS => "2",
+              :GDAL_CACHEMAX => 2048,
+              :CPL_VSIL_CURL_CACHE_SIZE => 200000000,
+              :GDAL_BAND_BLOCK_CACHE => "HASHSET",
+              :GDAL_DISABLE_READDIR_ON_OPEN => "EMPTY_DIR",
+              :GDAL_INGESTED_BYTES_AT_OPEN => 32768,
+              :GDAL_HTTP_MERGE_CONSECUTIVE_RANGES => "YES",
+              :GDAL_HTTP_MULTIPLEX => "YES",
+              :GDAL_HTTP_VERSION => 2,
+              :VSI_CACHE => "TRUE",
+              :VSI_CACHE_SIZE => 50000000,
+              :PROJ_NETWORK => "OFF",
+              :TITILER_API_ROOT_PATH => "/api/v1/titiler",
+              :MOSAIC_CONCURRENCY => "8",
+              :FORWARDED_ALLOW_IPS => "*" # https://docs.gunicorn.org/en/latest/settings.html#forwarded-allow-ips
+  command "gunicorn -k uvicorn.workers.UvicornWorker titiler.application.main:app --bind unix:/sockets/titiler.sock --workers #{[node.cpu_cores / 2, 2].max} --preload --timeout 180"
 end
 
 directory "/var/cache/nginx-cache" do

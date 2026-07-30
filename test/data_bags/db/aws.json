@@ -1,0 +1,5 @@
+{
+  "id": "aws",
+  "wal_access_key_id": "AKIAWLACCESSKEYIDEXAMPLE",
+  "wal_secret_access_key": "WALSECRETACCESSKEYEXAMPLE"
+}

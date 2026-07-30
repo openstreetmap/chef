@@ -19,13 +19,26 @@
 
 require "json"
 
-include_recipe "accounts"
 include_recipe "apache"
 include_recipe "git"
 include_recipe "passenger"
 include_recipe "planet::current"
 include_recipe "prometheus"
 include_recipe "ruby"
+
+group "taginfo" do
+  gid 520
+  append true
+end
+
+user "taginfo" do
+  uid 520
+  gid 520
+  comment "taginfo.openstreetmap.org"
+  home "/srv/taginfo.openstreetmap.org"
+  shell "/usr/sbin/nologin"
+  manage_home false
+end
 
 package %w[
   libsqlite3-dev
@@ -46,7 +59,7 @@ package %w[
 
 package %w[
   sqlite3
-  sqlite3-pcre
+  libsqlite3-dev
   osmium-tool
   pyosmium
   curl
@@ -84,6 +97,7 @@ systemd_service "taginfo-update@" do
     "/srv/%i/sources",
     "/var/log/taginfo/%i"
   ]
+  nice 10
 end
 
 systemd_timer "taginfo-update@" do
@@ -162,7 +176,7 @@ node[:taginfo][:sites].each do |site|
     settings["opensearch"]["contact"] = "webmaster@openstreetmap.org"
     settings["paths"]["bin_dir"] = "#{directory}/build/src"
     settings["sources"]["download"] = ""
-    settings["sources"]["create"] = "db languages projects wiki wikidata chronology"
+    settings["sources"]["create"] = "db languages projects wiki chronology sw"
     settings["sources"]["db"]["planetfile"] = "/var/lib/planet/planet.osh.pbf"
     settings["sources"]["chronology"]["osm_history_file"] = "/var/lib/planet/planet.osh.pbf"
     settings["tagstats"]["geodistribution"] = "DenseMmapArray"
@@ -178,10 +192,17 @@ node[:taginfo][:sites].each do |site|
     notifies :restart, "service[apache2]"
   end
 
+  bundle_config "#{directory}/taginfo" do
+    user "taginfo"
+    group "taginfo"
+    settings "deployment" => "true",
+             "without" => "development:test"
+  end
+
   bundle_install "#{directory}/taginfo" do
     action :nothing
-    user "root"
-    group "root"
+    user "taginfo"
+    group "taginfo"
     subscribes :run, "git[#{directory}/taginfo]"
     notifies :restart, "passenger_application[#{directory}/taginfo/web/public]"
   end
@@ -224,7 +245,8 @@ node[:taginfo][:sites].each do |site|
   prometheus_collector "taginfo-#{site_name}" do
     interval "15m"
     user "taginfo"
-    path "#{directory}/taginfo/sources/metrics.rb"
-    options "#{directory}/data"
+    path node[:ruby][:bundle]
+    options "exec sources/metrics.rb #{directory}/data #{directory}/sources"
+    working_directory "#{directory}/taginfo"
   end
 end

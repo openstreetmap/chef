@@ -1,0 +1,73 @@
+upstream tilekiln {
+    server 127.0.0.1:8000;
+}
+
+upstream demo {
+    server 127.0.0.1:8080;
+}
+
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+
+    location /nginx_status {
+        stub_status on;
+        access_log   off;
+        allow 127.0.0.1;
+        allow ::1;
+        deny all;
+    }
+
+     rewrite ^/\.well-known/acme-challenge/(.*)$ http://acme.openstreetmap.org/.well-known/acme-challenge/$1 permanent;
+
+     location / {
+         return 301 https://$host$request_uri;
+     }
+}
+
+server {
+    # IPv4
+    listen       443 ssl default_server;
+    # IPv6
+    listen       [::]:443 ssl default_server;
+    http2 on;
+    server_name  localhost;
+
+    ssl_certificate /etc/ssl/certs/<%= node[:fqdn] %>.pem;
+    ssl_certificate_key /etc/ssl/private/<%= node[:fqdn] %>.key;
+
+    location /nginx_status {
+        stub_status on;
+        access_log   off;
+        allow 127.0.0.1;
+        allow ::1;
+        deny all;
+    }
+    location /shortbread_v1/ {
+        proxy_pass http://tilekiln;
+        proxy_http_version 1.1;
+        proxy_set_header Connection "";
+        add_header Cache-Control "public,max-age=300,stale-while-revalidate=3600,stale-if-error=86400";
+        # Add diagnostics header to identify render server
+        add_header x-rendered-by "<%= node.name %>" always;
+    }
+    location /demo/ {
+        # Redirect to the canonical hostname else CORs will prevent the demo from working
+        if ($host != "vector.openstreetmap.org") {
+            return 301 https://vector.openstreetmap.org$request_uri;
+        }
+        proxy_pass http://demo;
+        proxy_http_version 1.1;
+        proxy_set_header Connection "";
+        # Add diagnostics header to identify render server
+        add_header x-rendered-by "<%= node.name %>" always;
+    }
+    location /styles/ {
+        proxy_pass http://demo;
+        proxy_http_version 1.1;
+        proxy_set_header Connection "";
+        # Add diagnostics header to identify render server
+        add_header x-rendered-by "<%= node.name %>" always;
+    }
+    root /srv/vector.openstreetmap.org/html;
+}

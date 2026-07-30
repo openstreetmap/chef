@@ -19,15 +19,9 @@
 
 include_recipe "apt"
 
-remote_file "/etc/apt/trusted.gpg.d/grafana.asc" do
-  source "https://packages.grafana.com/gpg.key"
-  owner "root"
-  group "root"
-  mode "644"
-end
-
 apt_repository "grafana" do
-  uri "https://packages.grafana.com/enterprise/deb"
+  uri "https://apt.grafana.com"
   distribution "stable"
   components ["main"]
+  key "https://apt.grafana.com/gpg.key"
 end

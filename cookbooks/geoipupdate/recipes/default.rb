@@ -50,7 +50,7 @@ systemd_timer "geoipupdate" do
   description "Update GeoIP databases"
   on_boot_sec "15m"
   on_unit_active_sec "7d"
-  randomized_delay_sec "4h"
+  randomized_delay_sec "5d"
 end
 
 service "geoipupdate.timer" do

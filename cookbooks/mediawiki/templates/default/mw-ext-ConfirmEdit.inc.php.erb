@@ -1,9 +1,11 @@
 <?php
 # DO NOT EDIT - This file is being maintained by Chef
-wfLoadExtensions( array( 'ConfirmEdit', 'ConfirmEdit/hCaptcha' ) );
-$wgHCaptchaSendRemoteIP = true;
-$wgHCaptchaSiteKey = '<%= @public_key %>';
-$wgHCaptchaSecretKey = '<%= @private_key %>';
+wfLoadExtensions([ 'ConfirmEdit', 'ConfirmEdit/Turnstile' ]);
+$wgCaptchaClass = MediaWiki\Extension\ConfirmEdit\Turnstile\Turnstile::class;
+
+$wgTurnstileSiteKey= '<%= @turnstile_site_key %>';
+$wgTurnstileSecretKey= '<%= @turnstile_secret_key %>';
+$wgTurnstileSendRemoteIP = true;
 
 $wgGroupPermissions['autoconfirmed']['skipcaptcha'] = true;
 $wgGroupPermissions['bot'          ]['skipcaptcha'] = true;
