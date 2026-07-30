@@ -99,9 +99,9 @@ apache_site "www.openstreetmap.org" do
   variables :admins => admins["hosts"],
             :cloudflare => cloudflare_ipv4 + cloudflare_ipv6,
             :fastly => fastlyips["addresses"] + fastlyips["ipv6_addresses"],
-            :secret_key_base => web_passwords["secret_key_base"]
+            :secret_key_base => web_passwords["secret_key_base"],
             :statuscake => statuscakelocations.flat_map { |_, v| [v["ip"], v["ipv6"]] },
-            :status => node[:web][:status],
+            :status => node[:web][:status]
 end
 
 template "/etc/logrotate.d/apache2" do
