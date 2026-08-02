@@ -6,7 +6,6 @@ description       "Installs and configures database servers"
 
 version           "1.0.0"
 supports          "ubuntu"
-depends           "backup"
 depends           "git"
 depends           "postgresql"
 depends           "ruby"

@@ -17,8 +17,6 @@
 # limitations under the License.
 #
 
-include_recipe "backup::user"
-
 template "/usr/local/bin/backup-db" do
   source "backup-db.erb"
   owner "root"
@@ -29,17 +27,17 @@ end
 systemd_service "backup-db" do
   description "Database backup"
   exec_start "/usr/local/bin/backup-db"
-  user "osmbackup"
+  user "postgres"
   sandbox :enable_network => true
   restrict_address_families "AF_UNIX"
-  read_write_paths "/store/backup"
+  read_write_paths "/var/log/pgbackrest"
 end
 
 systemd_timer "backup-db" do
   description "Database backup"
-  on_calendar "Mon 02:00 #{node[:timezone]}"
+  on_calendar "Thu 02:00 #{node[:timezone]}"
 end
 
 service "backup-db.timer" do
-  action [:disable, :stop]
+  action [:enable, :start]
 end
