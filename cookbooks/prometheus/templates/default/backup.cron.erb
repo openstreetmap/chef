@@ -16,6 +16,7 @@ ln -s /var/lib/grafana "$T/prometheus-$D/grafana"
 
 nice tar --create --dereference --directory="$T" \
   --sort=name \
+  --warning=no-file-changed \
   "prometheus-$D" | nice zstd -T0 --quiet --long --rsyncable -o "$T/$B"
 
 nice rsync --preallocate --fuzzy "$T/$B" backup.openstreetmap.org::backup
