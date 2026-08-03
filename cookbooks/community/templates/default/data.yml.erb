@@ -3,7 +3,7 @@
 #
 
 templates:
-  - "templates/postgres.15.template.yml" # NOTE UPDATE THE HOOK REPLACE FOR MAX CONNECTIONS BELOW
+  - "templates/postgres.18.template.yml" # NOTE UPDATE THE HOOK REPLACE FOR MAX CONNECTIONS BELOW
   - "templates/redis.template.yml"
 
 # any extra arguments for Docker?
@@ -48,9 +48,9 @@ hooks:
           # MAILTO=?
           0 4 * * * /var/lib/postgresql/take-database-backup
 
-# run:
-#   # Make sure this matches the postgresql version template above
-#   - replace:
-#       filename: "/etc/postgresql/15/main/postgresql.conf"
-#       from: /#?max_connections *=.*/
-#       to: "max_connections = $db_max_connections"
+run:
+  # Make sure this matches the postgresql version template above
+  - replace:
+      filename: "/etc/postgresql/18/main/postgresql.conf"
+      from: /#?max_connections *=.*/
+      to: "max_connections = $db_max_connections"
