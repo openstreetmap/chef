@@ -119,6 +119,7 @@ prometheus_exporter "node" do
   options %w[
     --collector.textfile.directory=/var/lib/prometheus/node-exporter
     --collector.interrupts
+    --no-collector.interrupts.include-zeros
     --collector.processes
     --collector.rapl.enable-zone-label
     --collector.systemd
