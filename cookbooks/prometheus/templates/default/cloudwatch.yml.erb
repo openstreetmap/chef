@@ -464,3 +464,29 @@ static:
         statistics: [Maximum]
         period: 300
         length: 300
+  - namespace: AWS/S3
+    name: wal-prod-replication
+    regions:
+      - eu-west-1
+    roles:
+      - roleArn: "arn:aws:iam::905542449881:role/osm-cloudwatch-export-role" # osm-recovery
+    dimensions:
+      - name: RuleId
+        value: full-bucket-replication
+      - name: SourceBucket
+        value: openstreetmap-wal-prod-85d400
+      - name: DestinationBucket
+        value: openstreetmap-wal-prod-85d400-replicate
+    metrics:
+      - name: ReplicationLatency
+        statistics: [Maximum]
+        period: 300
+        length: 300
+      - name: BytesPendingReplication
+        statistics: [Maximum]
+        period: 300
+        length: 300
+      - name: OperationsPendingReplication
+        statistics: [Maximum]
+        period: 300
+        length: 300
