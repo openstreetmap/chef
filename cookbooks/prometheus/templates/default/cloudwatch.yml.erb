@@ -117,8 +117,20 @@ discovery:
     - type: AWS/S3
       regions:
         - eu-north-1
+        - eu-west-1
       roles:
         - roleArn: "arn:aws:iam::674083635870:role/osm-cloudwatch-export-role" # osm-backup
+      period: 86400
+      length: 86400
+      metrics:
+        - name: BucketSizeBytes
+          statistics: [Average]
+        - name: NumberOfObjects
+          statistics: [Average]
+    - type: AWS/S3
+      regions:
+        - eu-north-1
+      roles:
         - roleArn: "arn:aws:iam::949022809175:role/osm-cloudwatch-export-role" # osm-vector
         - roleArn: "arn:aws:iam::289997608296:role/osm-cloudwatch-export-role" # osm-service-logs
         - roleArn: "arn:aws:iam::654129064878:role/osm-cloudwatch-export-role" # osm-dev
@@ -133,8 +145,50 @@ discovery:
     - type: AWS/S3
       regions:
         - eu-north-1
+        - eu-west-1
       roles:
         - roleArn: "arn:aws:iam::674083635870:role/osm-cloudwatch-export-role" # osm-backup
+      period: 300
+      length: 300
+      metrics:
+        - name: AllRequests
+          statistics: [Sum]
+        - name: GetRequests
+          statistics: [Sum]
+        - name: PutRequests
+          statistics: [Sum]
+        - name: DeleteRequests
+          statistics: [Sum]
+        - name: HeadRequests
+          statistics: [Sum]
+        - name: PostRequests
+          statistics: [Sum]
+        - name: ListRequests
+          statistics: [Sum]
+        - name: BytesDownloaded
+          statistics: [Sum]
+        - name: BytesUploaded
+          statistics: [Sum]
+        - name: 4xxErrors
+          statistics: [Sum]
+        - name: 5xxErrors
+          statistics: [Sum]
+        - name: FirstByteLatency
+          statistics: [Minimum, Maximum, Average]
+        - name: TotalRequestLatency
+          statistics: [Minimum, Maximum, Average]
+        - name: ReplicationLatency
+          statistics: [Maximum]
+        - name: BytesPendingReplication
+          statistics: [Maximum]
+        - name: OperationsPendingReplication
+          statistics: [Maximum]
+        - name: OperationsFailedReplication
+          statistics: [Sum]
+    - type: AWS/S3
+      regions:
+        - eu-north-1
+      roles:
         - roleArn: "arn:aws:iam::949022809175:role/osm-cloudwatch-export-role" # osm-vector
         - roleArn: "arn:aws:iam::289997608296:role/osm-cloudwatch-export-role" # osm-service-logs
         - roleArn: "arn:aws:iam::654129064878:role/osm-cloudwatch-export-role" # osm-dev
