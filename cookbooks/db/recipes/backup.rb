@@ -30,7 +30,7 @@ systemd_service "backup-db" do
   user "postgres"
   sandbox :enable_network => true
   restrict_address_families "AF_UNIX"
-  read_write_paths "/var/log/pgbackrest"
+  read_write_paths ["/run/pgbackreset", "/var/log/pgbackrest"]
 end
 
 systemd_timer "backup-db" do

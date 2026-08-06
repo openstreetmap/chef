@@ -1,6 +1,7 @@
 [global]
 archive-async=y
 compress-type=zst
+lock-path=/run/pgbackrest
 repo1-type=<%= node[:postgresql][:pgbackrest][:repo_type] %>
 repo1-path=<%= node[:postgresql][:pgbackrest][:repo_path] %>
 repo1-block=y

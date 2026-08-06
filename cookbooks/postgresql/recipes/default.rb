@@ -31,6 +31,13 @@ if node[:postgresql][:pgbackrest][:credentials_bag]
                                          node[:postgresql][:pgbackrest][:credentials_item])
 end
 
+systemd_tmpfile "/run/pgbackrest" do
+  type "d"
+  owner "postgres"
+  group "postgres"
+  mode "750"
+end
+
 template "/etc/pgbackrest.conf" do
   source "pgbackrest.conf.erb"
   owner "postgres"
