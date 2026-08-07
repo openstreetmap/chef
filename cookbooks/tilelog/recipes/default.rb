@@ -103,7 +103,7 @@ end
 
 systemd_timer "ofastlylog-hourly" do
   description "Fastlylog log analysis"
-  on_calendar "*-*-* 01:07:00"
+  on_calendar "*-*-* *:07:00"
 end
 
 service "ofastlylog-hourly.timer" do
