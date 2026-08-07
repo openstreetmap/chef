@@ -66,7 +66,7 @@ end
 
 systemd_timer "tilelog" do
   description "Tile log analysis"
-  on_calendar "*-*-* 01:07:00"
+  on_calendar "*-*-* 01:35:00"
 end
 
 service "tilelog.timer" do
@@ -94,8 +94,18 @@ end
 systemd_service "ofastlylog-hourly" do
   description "ofastlylog analysis"
   user "planet"
+  type "oneshot"
   exec_start "/usr/local/bin/ofastlylog-hourly"
   nice 10
   sandbox :enable_network => true
   protect_home true
+end
+
+systemd_timer "ofastlylog-hourly" do
+  description "Fastlylog log analysis"
+  on_calendar "*-*-* 01:07:00"
+end
+
+service "ofastlylog-hourly.timer" do
+  action [:enable, :start]
 end
