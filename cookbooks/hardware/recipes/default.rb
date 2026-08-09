@@ -116,7 +116,7 @@ when "HP", "HPE"
     end
   end
 
-  units << if product.end_with?("Gen10")
+  units << if product.end_with?("Gen10") || product.end_with?("Gen10 Plus")
              "0"
            else
              "1"
