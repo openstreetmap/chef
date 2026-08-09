@@ -29,9 +29,35 @@ default_attributes(
         }
       }
     }
+  },
+  :postgresql => {
+    :settings => {
+      :defaults => {
+        :effective_cache_size => "16GB"
+      }
+    }
+  },
+  :sysctl => {
+    :postgres => {
+      :comment => "Increase shared memory for postgres",
+      :parameters => {
+        "kernel.shmmax" => 9 * 1024 * 1024 * 1024,
+        "kernel.shmall" => 9 * 1024 * 1024 * 1024 / 4096
+      }
+    }
+  },
+  :tile => {
+    :styles => {
+      :default => {
+        :tile_directories => [
+          { :name => "/store/tiles/default", :min_zoom => 0, :max_zoom => 19 }
+        ]
+      }
+    }
   }
 )
 
 run_list(
-  "role[equinix-dub-public]"
+  "role[equinix-dub-public]",
+  "role[tile]"
 )
