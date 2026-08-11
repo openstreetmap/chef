@@ -9,9 +9,6 @@ default_attributes(
 override_attributes(
   :networking => {
     :nameservers => ["62.210.16.6", "62.210.16.7"]
-  },
-  :ntp => {
-    :servers => ["0.fr.pool.ntp.org", "1.fr.pool.ntp.org", "europe.pool.ntp.org"]
   }
 )
 

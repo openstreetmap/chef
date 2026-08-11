@@ -6,12 +6,6 @@ default_attributes(
   :location => "Sjöbo, Sweden"
 )
 
-override_attributes(
-  :ntp => {
-    :servers => ["0.se.pool.ntp.org", "1.se.pool.ntp.org", "europe.pool.ntp.org"]
-  }
-)
-
 run_list(
   "role[se]"
 )
