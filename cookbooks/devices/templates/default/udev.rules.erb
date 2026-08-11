@@ -8,7 +8,6 @@ ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{ID_VENDOR}=="HP", E
 
 # Dell PERC H710 tune
 ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{ID_VENDOR}=="DELL", ENV{ID_MODEL}=="PERC_H710", ATTR{queue/read_ahead_kb}="4096"
-ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{ID_VENDOR}=="DELL", ENV{ID_MODEL}=="PERC_H710", ATTR{queue/scheduler}="deadline"
 ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{ID_VENDOR}=="DELL", ENV{ID_MODEL}=="PERC_H710", ATTR{queue/nr_requests}="512"
 
 <% node[:devices].each do |name,device| -%>
@@ -37,67 +36,70 @@ ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", KERNEL=="sd?", ENV{ID_M
 ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", KERNEL=="sd?", ENV{ID_MODEL}=="HGST_HTS725050A7E630", ATTR{queue/read_ahead_kb}="512"
 
 # Ethernet controller: Realtek Semiconductor Co., Ltd. RTL8111/8168/8411 PCI Express Gigabit Ethernet Controller
-SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x10ec", ATTRS{device}=="0x8168", RUN+="/sbin/ethtool -K $name tso off gso off"
+SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x10ec", ATTRS{device}=="0x8168", RUN+="/usr/sbin/ethtool -K %k tso off gso off"
 
 # Ethernet controller: Mellanox Technologies MT27710 Family [ConnectX-4 Lx]
-SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x15b3", ATTRS{device}=="0x1015", RUN+="/sbin/ethtool -G $name rx 8192 tx 8192"
+SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x15b3", ATTRS{device}=="0x1015", RUN+="/usr/sbin/ethtool -G %k rx 8192 tx 8192"
 
 # Ethernet controller: Broadcom Inc. and subsidiaries NetXtreme II BCM5709 Gigabit Ethernet
 # Hewlett-Packard Company NC382i Integrated Multi-port PCI Express Gigabit Server Adapter
-SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x14e4", ATTRS{device}=="0x1639", RUN+="/sbin/ethtool -G $name rx 2040"
+SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x14e4", ATTRS{device}=="0x1639", RUN+="/usr/sbin/ethtool -G %k rx 2040"
 # Ethernet controller: Broadcom Inc. and subsidiaries NetXtreme II BCM5708 Gigabit Ethernet
-SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x14e4", ATTRS{device}=="0x164c", RUN+="/sbin/ethtool -G $name rx 2040"
+SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x14e4", ATTRS{device}=="0x164c", RUN+="/usr/sbin/ethtool -G %k rx 2040"
 # Ethernet controller: Broadcom Inc. and subsidiaries NetXtreme BCM5719 Gigabit Ethernet PCIe
 # Hewlett-Packard Company Ethernet 1Gb 4-port 331i Adapter
-SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x14e4", ATTRS{device}=="0x1657", RUN+="/sbin/ethtool -G $name rx 2047"
+SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x14e4", ATTRS{device}=="0x1657", RUN+="/usr/sbin/ethtool -G %k rx 2047"
 # Ethernet controller: Broadcom Inc. and subsidiaries NetXtreme BCM5721 Gigabit Ethernet PCI Express
-SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x14e4", ATTRS{device}=="0x1659", RUN+="/sbin/ethtool -G $name rx 511"
+SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x14e4", ATTRS{device}=="0x1659", RUN+="/usr/sbin/ethtool -G %k rx 511"
 # Ethernet controller: Broadcom Inc. and subsidiaries NetXtreme BCM5720 2-port Gigabit Ethernet PCIe
-SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x14e4", ATTRS{device}=="0x165f", RUN+="/sbin/ethtool -G $name rx 2047"
+SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x14e4", ATTRS{device}=="0x165f", RUN+="/usr/sbin/ethtool -G %k rx 2047"
 
 # Ethernet controller: Intel Corporation 82571EB/82571GB Gigabit Ethernet Controller D0/D1 (copper applications)
-SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x105e", RUN+="/sbin/ethtool -G $name rx 4096 tx 4096"
+SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x105e", RUN+="/usr/sbin/ethtool -G %k rx 4096 tx 4096"
 # Ethernet controller: Intel Corporation 80003ES2LAN Gigabit Ethernet Controller (Copper)
-SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x1096", RUN+="/sbin/ethtool -G $name rx 4096 tx 4096"
+SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x1096", RUN+="/usr/sbin/ethtool -G %k rx 4096 tx 4096"
 # Ethernet controller: Intel Corporation 82575EB Gigabit Network Connection
-SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x10a7", RUN+="/sbin/ethtool -G $name rx 4096 tx 4096"
+SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x10a7", RUN+="/usr/sbin/ethtool -G %k rx 4096 tx 4096"
 # Disable scatter-gather offload for HP NC362i network controllers
-SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x10c9", ATTRS{subsystem_vendor}=="0x103c", ATTRS{subsystem_device}=="0x323f", RUN+="/sbin/ethtool -K $name gso off tso off sg off gro off"
-SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x10c9", ATTRS{subsystem_vendor}=="0x103c", ATTRS{subsystem_device}=="0x323f", RUN+="/sbin/ethtool -G $name rx 4096 tx 4096"
+SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x10c9", ATTRS{subsystem_vendor}=="0x103c", ATTRS{subsystem_device}=="0x323f", RUN+="/usr/sbin/ethtool -K %k gso off tso off sg off gro off"
+SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x10c9", ATTRS{subsystem_vendor}=="0x103c", ATTRS{subsystem_device}=="0x323f", RUN+="/usr/sbin/ethtool -G %k rx 4096 tx 4096"
 # Ethernet controller: Intel Corporation 82574L Gigabit Network Connection
-SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x10d3", RUN+="/sbin/ethtool -G $name rx 4096 tx 4096"
+SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x10d3", RUN+="/usr/sbin/ethtool -G %k rx 4096 tx 4096"
 # Fix Power Saving Bug on Intel 82574L and Intel 82583 network controllers
-SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x10d3", RUN+="/usr/local/bin/fixeep-82574_83.sh $name"
-SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x10f6", RUN+="/usr/local/bin/fixeep-82574_83.sh $name"
-SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x150c", RUN+="/usr/local/bin/fixeep-82574_83.sh $name"
+SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x10d3", RUN+="/usr/local/bin/fixeep-82574_83.sh %k"
+SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x10f6", RUN+="/usr/local/bin/fixeep-82574_83.sh %k"
+SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x150c", RUN+="/usr/local/bin/fixeep-82574_83.sh %k"
 
 # Ethernet controller: Intel Corporation 82599ES 10-Gigabit SFI/SFP+ Network Connection
-SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x10fb", RUN+="/sbin/ethtool -G $name rx 4096 tx 4096"
+SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x10fb", RUN+="/usr/sbin/ethtool -G %k rx 4096 tx 4096"
 # Ethernet controller: Intel Corporation 82580 Gigabit Network Connection
-SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x150e", RUN+="/sbin/ethtool -G $name rx 4096 tx 4096"
+SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x150e", RUN+="/usr/sbin/ethtool -G %k rx 4096 tx 4096"
 # Ethernet controller: Intel Corporation I350 Gigabit Network Connection
-SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x1521", RUN+="/sbin/ethtool -G $name rx 4096 tx 4096"
+SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x1521", RUN+="/usr/sbin/ethtool -G %k rx 4096 tx 4096"
 # Ethernet controller: Intel Corporation Ethernet Controller 10-Gigabit X540-AT2
-SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x1528", RUN+="/sbin/ethtool -G $name rx 4096 tx 4096"
+SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x1528", RUN+="/usr/sbin/ethtool -G %k rx 4096 tx 4096"
 # Ethernet controller: Intel Corporation I210 Gigabit Network Connection
-SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x1533", RUN+="/sbin/ethtool -G $name rx 4096 tx 4096"
+SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x1533", RUN+="/usr/sbin/ethtool -G %k rx 4096 tx 4096"
 # Ethernet controller: Intel Corporation I211 Gigabit Network Connection
-SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x1539", RUN+="/sbin/ethtool -G $name rx 4096 tx 4096"
+SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x1539", RUN+="/usr/sbin/ethtool -G %k rx 4096 tx 4096"
 # Ethernet controller: Intel Corporation I210 Gigabit Network Connection (rev 03)
-SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x157b", RUN+="/sbin/ethtool -G $name rx 4096 tx 4096"
+SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x157b", RUN+="/usr/sbin/ethtool -G %k rx 4096 tx 4096"
 # Ethernet controller: Intel Corporation Ethernet Controller 10G X550T
-SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x1563", RUN+="/sbin/ethtool -G $name rx 4096 tx 4096"
+SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x1563", RUN+="/usr/sbin/ethtool -G %k rx 4096 tx 4096"
 # Ethernet controller: Intel Corporation Ethernet Controller X710 for 10GBASE-T
-SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x1586", RUN+="/sbin/ethtool -G $name rx 4096 tx 4096"
+SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x1586", RUN+="/usr/sbin/ethtool -G %k rx 4096 tx 4096"
 # Ethernet controller: Intel Corporation Ethernet Controller X710 for 10GBASE-T
-SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x15ff", RUN+="/sbin/ethtool -G $name rx 4096 tx 4096"
+SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x15ff", RUN+="/usr/sbin/ethtool -G %k rx 4096 tx 4096"
 # Ethernet controller: Intel Corporation Ethernet Connection I354 (rev 03)
-SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x1f41", RUN+="/sbin/ethtool -G $name rx 4096 tx 4096"
+SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x1f41", RUN+="/usr/sbin/ethtool -G %k rx 4096 tx 4096"
 # Ethernet controller: Intel Corporation Ethernet Connection X722 for 10GBASE-T
-SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x37d2", RUN+="/sbin/ethtool -G $name rx 4096 tx 4096"
+SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x37d2", RUN+="/usr/sbin/ethtool -G %k rx 4096 tx 4096"
+
+# Broadcom BCM57416 NetXtreme-E
+SUBSYSTEM=="net", ACTION=="add", ATTRS{vendor}=="0x14e4", ATTRS{device}=="0x16d8", RUN+="/usr/sbin/ethtool -G %k rx 2047 tx 2047", RUN+="/usr/sbin/ethtool -C %k adaptive-rx on"
 
 # Disable Firmware Based LLDP handler
-SUBSYSTEM=="net", ACTION=="add", ENV{INTERFACE}=="*", DRIVERS=="i40e", RUN+="/sbin/ethtool --set-priv-flags $name disable-fw-lldp on"
+SUBSYSTEM=="net", ACTION=="add", ENV{INTERFACE}=="*", DRIVERS=="i40e", RUN+="/usr/sbin/ethtool --set-priv-flags %k disable-fw-lldp on"
 
 # Delete failed disk in cmok
 ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{ID_BUS}=="ata", ENV{ID_MODEL}=="ST_M13FQBL", ENV{ID_SERIAL}=="ST_M13FQBL_QNR_BFW", ATTR{device/delete}="1"
@@ -107,7 +109,6 @@ ACTION=="add", SUBSYSTEM=="block", DRIVERS=="nvme", ATTR{queue/nomerges}="1"
 
 # VMware Virtual disk configuration
 ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{ID_VENDOR}=="VMware", ENV{ID_MODEL}=="Virtual_disk", ATTR{queue/read_ahead_kb}="4096"
-ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{ID_VENDOR}=="VMware", ENV{ID_MODEL}=="Virtual_disk", ATTR{queue/scheduler}="noop"
 
 # Increase readahead on virtio block devices
 ACTION=="add", SUBSYSTEM=="block", DRIVERS=="virtio_blk", ATTR{queue/read_ahead_kb}="4096"
@@ -115,7 +116,6 @@ ACTION=="add", SUBSYSTEM=="block", DRIVERS=="virtio_blk", ATTR{queue/read_ahead_
 
 # QEMU Disk IO tune
 ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{ID_MODEL}=="QEMU_HARDDISK", ATTR{queue/read_ahead_kb}="4096"
-ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ENV{ID_MODEL}=="QEMU_HARDDISK", ATTR{queue/scheduler}="noop"
 # Vendor is sometimes missing
 
 # Tune md stripe cache and thread count for RAID-5 / RAID-6 arrays
