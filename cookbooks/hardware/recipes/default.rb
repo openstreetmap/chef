@@ -108,11 +108,13 @@ when "HP", "HPE"
     package "amsd" do
       action :install
       notifies :restart, "service[amsd]"
+      only_if { node[:hostname] != "quetzal" } # amsd is broken on quetzal, no SAS controller
     end
 
     service "amsd" do
       action [:enable, :start]
       supports :status => true, :restart => true
+      only_if { node[:hostname] != "quetzal" } # amsd is broken on quetzal, no SAS controller
     end
   end
 
