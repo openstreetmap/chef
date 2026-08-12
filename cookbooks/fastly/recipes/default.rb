@@ -23,7 +23,7 @@ package %w[
 
 cache_dir = Chef::Config[:file_cache_path]
 
-fastly_version = "14.0.4"
+fastly_version = "15.6.0"
 
 fastly_arch = if arm?
                 "arm64"
