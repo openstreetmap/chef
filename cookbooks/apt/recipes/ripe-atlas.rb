@@ -20,6 +20,11 @@
 include_recipe "apt"
 
 if platform?("debian")
+  # Remove the repository package if it exists, as it conflicts with our repository setup
+  package "ripe-atlas-repo" do
+    action :purge
+  end
+
   apt_repository "ripe-atlas" do
     uri "https://ftp.ripe.net/ripe/atlas/software-probe/debian/"
     components ["main"]
