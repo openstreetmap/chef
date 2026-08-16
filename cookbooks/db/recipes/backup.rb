@@ -31,6 +31,7 @@ systemd_service "backup-db" do
   sandbox :enable_network => true
   restrict_address_families "AF_UNIX"
   read_write_paths ["/run/pgbackrest", "/var/log/pgbackrest"]
+  remove_ipc false
 end
 
 systemd_timer "backup-db" do
