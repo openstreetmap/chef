@@ -9,13 +9,6 @@ confdir /etc/chrony/conf.d
 <% node[:ntp][:servers].each do |server| -%>
 pool <%= server %> iburst
 <% end -%>
-# Add additional non-pool NTP servers
-# pool.ntp.org can sometimes be aggressive with KoD
-pool time.cloudflare.com iburst
-server time1.google.com iburst
-server time2.google.com iburst
-server time3.google.com iburst
-server time4.google.com iburst
 
 # Allow local queries for monitoring
 allow 127.0.0.1/32

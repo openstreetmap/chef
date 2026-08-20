@@ -12,12 +12,6 @@ default_attributes(
   }
 )
 
-override_attributes(
-  :ntp => {
-    :servers => ["0.fr.pool.ntp.org", "1.fr.pool.ntp.org", "europe.pool.ntp.org"]
-  }
-)
-
 run_list(
   "role[fr]",
   "recipe[snmpd]"

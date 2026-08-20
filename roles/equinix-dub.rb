@@ -55,9 +55,6 @@ override_attributes(
   :networking => {
     :nameservers => ["10.0.64.2", "74.82.42.42", "2001:470:20::2"],
     :search => ["dub.openstreetmap.org", "openstreetmap.org"]
-  },
-  :ntp => {
-    :servers => ["0.ie.pool.ntp.org", "1.ie.pool.ntp.org", "europe.pool.ntp.org"]
   }
 )
 
