@@ -14,7 +14,7 @@ override_attributes(
     }
   },
   :ntp => {
-    :servers => ["time.pixeldeck.net"]
+    :servers => ["time.pixeldeck.net", "time.google.com", "time.cloudflare.com"]
   }
 )
 
