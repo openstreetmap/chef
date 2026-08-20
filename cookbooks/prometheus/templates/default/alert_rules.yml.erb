@@ -921,8 +921,8 @@ groups:
         annotations:
           render_rate: "{{ $value }} tiles/s"
       - alert: low zoom render time
-        expr: node_systemd_unit_state{state="active",name="render-lowzoom.service"} == 1
-        for: 24h
+        expr: min_over_time(node_systemd_unit_state{state="active",name="render-lowzoom.service"}[24h]) == 1
+        for: 0m
         labels:
           alertgroup: tile
   - name: time
