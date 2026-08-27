@@ -173,6 +173,12 @@ mediawiki_extension "DiscussionTools" do
   site site_name
 end
 
+mediawiki_extension "CrawlerProtection" do
+  site site_name
+  repository "https://github.com/mywikis/CrawlerProtection.git"
+  reference "c72eec320f87776a21deedf9147e8f9eae335fd0"
+end
+
 cookbook_file "/srv/#{site_name}/osm_logo_wiki.png" do
   owner node[:mediawiki][:user]
   group node[:mediawiki][:group]
