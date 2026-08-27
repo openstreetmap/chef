@@ -176,7 +176,7 @@ end
 mediawiki_extension "CrawlerProtection" do
   site site_name
   repository "https://github.com/mywikis/CrawlerProtection.git"
-  reference "c72eec320f87776a21deedf9147e8f9eae335fd0"
+  reference "main"
 end
 
 cookbook_file "/srv/#{site_name}/osm_logo_wiki.png" do
