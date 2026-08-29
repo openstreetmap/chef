@@ -26,7 +26,7 @@ default_attributes(
   :vectortile => {
     :replication => {
       :enabled => true,
-      :tileupdate => false
+      :tileupdate => true
     }
   },
   :sysctl => {
