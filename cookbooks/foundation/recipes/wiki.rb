@@ -27,10 +27,10 @@ mediawiki_site "osmfoundation.org" do
   aliases ["wiki.osmfoundation.org", "www.osmfoundation.org",
            "foundation.openstreetmap.org", "foundation.osm.org"]
   sitename "OpenStreetMap Foundation"
-  fpm_max_children 20
-  fpm_start_servers 5
-  fpm_min_spare_servers 5
-  fpm_max_spare_servers 10
+  fpm_max_children 40
+  fpm_start_servers 10
+  fpm_min_spare_servers 10
+  fpm_max_spare_servers 20
   fpm_prometheus_port 11001
   database_name "osmf-wiki"
   database_user "osmf-wikiuser"
