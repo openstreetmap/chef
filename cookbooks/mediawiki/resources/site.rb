@@ -529,6 +529,13 @@ action :create do
     end
   end
 
+  mediawiki_extension "CrawlerProtection" do
+    site new_resource.site
+    repository "https://github.com/mywikis/CrawlerProtection.git"
+    reference "main"
+    update_site false
+  end
+
   cookbook_file "#{site_directory}/cc-wiki.png" do
     cookbook "mediawiki"
     owner node[:mediawiki][:user]
