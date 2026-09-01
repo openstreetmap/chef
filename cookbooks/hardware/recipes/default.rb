@@ -349,7 +349,6 @@ if !intel_ssds.empty? || !intel_nvmes.empty?
 
   remote_file "#{Chef::Config[:file_cache_path]}/sst-cli-linux-deb--#{sst_tool_version}.zip" do
     source "https://sdmsdfwdriver.blob.core.windows.net/files/kba-gcc/drivers-downloads/ka-00085/sst--3-1/sst-cli-linux-deb--3-1.zip"
-            https://sdmsdfwdriver.blob.core.windows.net/files/kba-gcc/drivers-downloads/ka-00085/sst--3-1/sst-cli-linux-deb--3-1.zip
   end
 
   execute "#{Chef::Config[:file_cache_path]}/sst-cli-linux-deb--#{sst_tool_version}.zip" do
