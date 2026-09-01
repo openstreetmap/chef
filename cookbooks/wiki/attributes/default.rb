@@ -6,4 +6,4 @@ default[:wiki][:site_aliases] = [
 default[:wiki][:site_notice] = nil
 default[:wiki][:site_readonly] = nil
 default[:wiki][:test_mode] = false
-default[:wiki][:mediawiki_version] = "1.43"
+default[:wiki][:mediawiki_version] = "1.46"
