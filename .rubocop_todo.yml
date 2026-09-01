@@ -12,7 +12,6 @@ Chef/Modernize/ExecuteArchiveExtract:
     - '**/metadata.rb'
     - '**/attributes/*.rb'
     - '**/Berksfile'
-    - 'cookbooks/hardware/recipes/default.rb'
     - 'cookbooks/overpass/recipes/default.rb'
     - 'cookbooks/tile/recipes/default.rb'
 

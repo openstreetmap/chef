@@ -347,15 +347,15 @@ if !intel_ssds.empty? || !intel_nvmes.empty?
   sst_package_version = "3.1.346-0"
 
   remote_file "#{Chef::Config[:file_cache_path]}/sst-cli-linux-deb--#{sst_tool_version}.zip" do
-    source "https://sdmsdfwdriver.blob.core.windows.net/files/kba-gcc/drivers-downloads/ka-00085/sst--3-1/sst-cli-linux-deb--3-1.zip"
+    source "https://sdmsdfwdriver.blob.core.windows.net/files/kba-gcc/drivers-downloads/ka-00085/sst--#{sst_tool_version}/sst-cli-linux-deb--#{sst_tool_version}.zip"
   end
 
-  execute "#{Chef::Config[:file_cache_path]}/sst-cli-linux-deb--#{sst_tool_version}.zip" do
-    command "unzip sst-cli-linux-deb--#{sst_tool_version}.zip sst-cli-linux-deb--#{sst_tool_version}/sst_#{sst_package_version}_amd64.deb"
-    cwd Chef::Config[:file_cache_path]
-    user "root"
+  archive_file "#{Chef::Config[:file_cache_path]}/sst-cli-linux-deb--#{sst_tool_version}.zip" do
+    destination Chef::Config[:file_cache_path]
+    owner "root"
     group "root"
-    not_if { ::File.exist?("#{Chef::Config[:file_cache_path]}/sst-cli-linux-deb--#{sst_tool_version}/sst_#{sst_package_version}_amd64.deb") }
+    overwrite true
+    subscribes :create, "remote_file[#{Chef::Config[:file_cache_path]}/sst-cli-linux-deb--#{sst_tool_version}.zip]"
   end
 
   dpkg_package "sst" do
