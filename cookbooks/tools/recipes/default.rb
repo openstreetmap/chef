@@ -33,6 +33,7 @@ package %w[
   mtr-tiny
   numactl
   pciutils
+  ripgrep
   rsync
   rsyslog
   screen
