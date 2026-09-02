@@ -40,7 +40,7 @@ $wgLogo             = "<%= @mediawiki[:logo] %>";
 $wgLogos            = [
   "icon" => "<%= @mediawiki[:logo] %>"
 ];
-                    
+
 ## UPO means: this is also a user preference option
 
 $wgEnableEmail      = true;
@@ -381,3 +381,6 @@ $wgVectorNightMode['logged_out'] = true;
 # Set extremely low timeout to avoid PHP-FPM timeouts on slow connections to Wikimedia Commons (rate limiting) or similar
 $wgHTTPMaxTimeout = 5;
 $wgHTTPMaxConnectTimeout = 3;
+
+# https://github.com/openstreetmap/operations/issues/1357
+$wgUseRCPatrol = false;
