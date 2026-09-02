@@ -127,6 +127,12 @@ action :create do
     mode "775"
   end
 
+  declare_resource :directory, "#{mediawiki_directory}/images/temp" do
+    owner "www-data"
+    group node[:mediawiki][:group]
+    mode "775"
+  end
+
   declare_resource :directory, "#{mediawiki_directory}/cache" do
     owner "www-data"
     group node[:mediawiki][:group]
