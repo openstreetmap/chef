@@ -384,3 +384,6 @@ $wgHTTPMaxConnectTimeout = 3;
 
 # https://github.com/openstreetmap/operations/issues/1357
 $wgUseRCPatrol = false;
+
+# Add read-only mode option for maintenance.
+$wgReadOnly = ( PHP_SAPI === 'cli' ) ? false : false;
