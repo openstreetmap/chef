@@ -382,7 +382,7 @@ GEM
     docker-api (2.4.0)
       excon (>= 0.64.0)
       multi_json
-    domain_name (0.6.20240107)
+    domain_name (0.6.20260829)
     drb (2.2.3)
     dry-configurable (1.4.0)
       dry-core (~> 1.0)
@@ -872,4 +872,4 @@ DEPENDENCIES
   test-kitchen
 
 BUNDLED WITH
-  4.0.3
+  4.0.20
