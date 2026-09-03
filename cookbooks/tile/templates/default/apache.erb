@@ -66,6 +66,8 @@
   # Always set Access-Control-Allow-Origin so that simple CORS requests
   # will always work and can be cached
   Header always set Access-Control-Allow-Origin "*" "expr=-z resp('Access-Control-Allow-Origin')"
+  Header always set Access-Control-Allow-Methods "GET, HEAD, OPTIONS" "expr=-z resp('Access-Control-Allow-Methods')"
+  Header always set Access-Control-Allow-Headers "X-Requested-With" "expr=-z resp('Access-Control-Allow-Headers')"
 
   # Add diagnostics header to identify render server
   Header always set X-TileRender "<%= node.name %>"
@@ -142,7 +144,9 @@
 
   # Always set Access-Control-Allow-Origin so that simple CORS requests
   # will always work and can be cached
-  Header set Access-Control-Allow-Origin "*"
+  Header always set Access-Control-Allow-Origin "*"
+  Header always set Access-Control-Allow-Methods "GET, HEAD, OPTIONS"
+  Header always set Access-Control-Allow-Headers "X-Requested-With"
 
   # Add diagnostics header to identify render server
   Header set X-TileRender "<%= node.name %>"
