@@ -46,7 +46,7 @@ if node[:exim][:smarthost_name]
   end
 end
 
-trusted_networks -= ["127.0.0.1", "::1"]
+trusted_networks -= ["127.0.0.1", "::1", "10.88.0.0/16"]
 
 template "/etc/spamassassin/local.pre" do
   source "local.pre.erb"
