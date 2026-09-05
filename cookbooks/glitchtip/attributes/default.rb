@@ -13,3 +13,5 @@ default[:valkey][:bind] |= ["10.88.0.1"]
 default[:valkey][:acls] |= [
   { :user => "glitchtip", :rules => %w[+@all -DEBUG ~* &*] }
 ]
+
+default[:exim][:relay_from_hosts] |= ["10.88.0.0/16"]
