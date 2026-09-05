@@ -59,6 +59,7 @@ jobs:
           - git
           - git-server
           - git-web
+          - glitchtip
           - gps-tile
           - hardware
           - hot

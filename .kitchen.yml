@@ -238,6 +238,9 @@ suites:
   - name: git-web
     run_list:
       - recipe[git::web]
+  - name: glitchtip
+    run_list:
+      - recipe[glitchtip::default]
   - name: gps-tile
     run_list:
       - recipe[gps-tile::default]
