@@ -71,3 +71,9 @@ podman_site "glitchtip.openstreetmap.org" do
               "SERVER_ROLE" => "all_in_one"
   volumes "/srv/glitchtip.openstreetmap.org/uploads" => "/code/uploads"
 end
+
+node.default[:prometheus][:exporters][443] = {
+  :name => "glitchtip",
+  :address => "#{node[:prometheus][:address]}:443",
+  :sni => "glitchtip.openstreetmap.org"
+}
