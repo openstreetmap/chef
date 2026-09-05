@@ -32,8 +32,8 @@ container_image = "ghcr.io/developmentseed/titiler:latest"
 podman_service "titiler" do
   description "Container service for titiler"
   image container_image
-  volume :"/store/imagery" => "/store/imagery",
-         :"/srv/imagery/sockets" => "/sockets"
+  volumes "/store/imagery" => "/store/imagery",
+          "/srv/imagery/sockets" => "/sockets"
   environment :GDAL_NUM_THREADS => "2",
               :GDAL_CACHEMAX => 2048,
               :CPL_VSIL_CURL_CACHE_SIZE => 200000000,

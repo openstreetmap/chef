@@ -26,7 +26,7 @@ property :description, String, :required => true
 property :image, String, :required => true
 property :ports, Hash, :default => {}
 property :environment, Hash, :default => {}
-property :volume, Hash, :default => {}
+property :volumes, Hash, :default => {}
 property :command, String, :default => ""
 
 action :create do
@@ -88,7 +88,7 @@ action_class do
   end
 
   def volume_options
-    new_resource.volume.collect do |key, value|
+    new_resource.volumes.collect do |key, value|
       "-v '#{key}:#{value}'"
     end.join(" ")
   end
