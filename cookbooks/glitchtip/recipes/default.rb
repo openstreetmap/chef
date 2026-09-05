@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-include_recipe "podman"
+include_recipe "podman::apache"
 include_recipe "postgresql"
 include_recipe "valkey"
 
