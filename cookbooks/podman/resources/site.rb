@@ -28,6 +28,7 @@ property :image, String, :required => true
 property :port, Integer, :default => 8080
 property :aliases, :kind_of => Array, :default => []
 property :environment, Hash, :default => {}
+property :volumes, Hash, :default => {}
 
 action :create do
   podman_service new_resource.site do
@@ -35,6 +36,7 @@ action :create do
     image new_resource.image
     ports external_port => new_resource.port
     environment new_resource.environment
+    volumes new_resource.volumes
   end
 
   ssl_certificate new_resource.site do
