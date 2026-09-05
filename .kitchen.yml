@@ -441,6 +441,9 @@ suites:
   - name: trac
     run_list:
       - recipe[trac::default]
+  - name: valkey
+    run_list:
+      - recipe[valkey::default]
   - name: vectortile
     run_list:
       - recipe[vectortile::default]

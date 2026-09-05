@@ -111,6 +111,7 @@ jobs:
           - tilelog
           - tools
           - trac
+          - valkey
           - vectortile
           - web-cgimap
           - web-frontend
