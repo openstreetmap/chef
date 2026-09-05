@@ -19,6 +19,17 @@
 
 package "valkey"
 
+passwords = data_bag_item("valkey", "passwords")
+
+template "/etc/valkey/valkey.conf" do
+  source "valkey.conf.erb"
+  owner "valkey"
+  group "valkey"
+  mode "0640"
+  variables :password => passwords
+end
+
 service "valkey" do
   action [:enable, :start]
+  subscribes :restart, "template[/etc/valkey/valkey.conf]"
 end

@@ -8,3 +8,8 @@ default[:postgresql][:settings][:default][:listen_addresses] = "*"
 default[:postgresql][:settings][:default][:late_authentication_rules] = [
   { :database => "glitchtip", :user => "glitchtip", :address => "10.88.0.0/16" }
 ]
+
+default[:valkey][:bind] |= ["10.88.0.1"]
+default[:valkey][:acls] |= [
+  { :user => "glitchtip", :rules => %w[+@all -DEBUG ~* &*] }
+]
