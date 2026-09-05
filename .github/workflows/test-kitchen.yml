@@ -119,10 +119,10 @@ jobs:
           - wiki
           - wordpress
         os:
-          - debian-12
+          - debian-13
         exclude:
           - suite: mailman
-            os: debian-12
+            os: debian-13
         include:
           - suite: blog
             os: ubuntu-2004
