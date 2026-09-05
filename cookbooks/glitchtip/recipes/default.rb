@@ -59,7 +59,7 @@ podman_site "glitchtip.openstreetmap.org" do
               "VALKEY_URL" => valkey_url,
               "SECRET_KEY" => glitchtip_passwords["secret"],
               "EMAIL_URL" => "smtp://host.containers.internal:25",
-              "DEFAULT_FROM_MAIL" => "admins@openstreetmap.org",
+              "DEFAULT_FROM_EMAIL" => "admins@openstreetmap.org",
               "ALLOWED_HOSTS" => "glitchtip.openstreetmap.org,glitchtip.osm.org",
               "ENABLE_ADMIN" => "False",
               "ENABLE_OBSERVABILITY_API" => "True",
