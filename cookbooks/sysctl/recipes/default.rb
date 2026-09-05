@@ -17,6 +17,10 @@
 # limitations under the License.
 #
 
+if platform?("debian")
+  package "linux-sysctl-defaults"
+end
+
 file "/etc/sysctl.conf" do
   owner "root"
   group "root"
