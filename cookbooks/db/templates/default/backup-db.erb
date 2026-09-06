@@ -6,7 +6,7 @@ if [ $(date +%d) -lt 8 ]
 then
   type="full"
 else
-  type="incr"
+  type="diff"
 fi
 
 pgbackrest backup --stanza=main --type=${type}
