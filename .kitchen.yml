@@ -328,6 +328,9 @@ suites:
   - name: planet-dump
     run_list:
       - recipe[planet::dump]
+    attributes:
+      web:
+        database_host: primary
   - name: planet-notes
     run_list:
       - recipe[planet::notes]
