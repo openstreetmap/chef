@@ -244,7 +244,3 @@ service "api-statistics" do
   subscribes :restart, "template[/usr/local/bin/api-statistics]"
   subscribes :restart, "systemd_service[api-statistics]"
 end
-
-gem_package "hpricot" do
-  gem_binary node[:ruby][:gem]
-end
