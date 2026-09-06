@@ -46,6 +46,7 @@ default[:postgresql][:settings][:defaults][:autovacuum_analyze_scale_factor] = "
 default[:postgresql][:settings][:defaults][:autovacuum_freeze_max_age] = "200000000"
 default[:postgresql][:settings][:defaults][:autovacuum_multixact_freeze_max_age] = "400000000"
 default[:postgresql][:settings][:defaults][:shared_preload_libraries] = []
+default[:postgresql][:settings][:defaults][:output_plugin_libraries] = []
 default[:postgresql][:settings][:defaults][:max_locks_per_transaction] = "64"
 default[:postgresql][:settings][:defaults][:user_name_maps] = {}
 default[:postgresql][:settings][:defaults][:early_authentication_rules] = []

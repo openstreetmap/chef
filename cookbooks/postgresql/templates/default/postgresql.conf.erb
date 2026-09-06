@@ -167,6 +167,10 @@ default_text_search_config = 'pg_catalog.english'
 
 shared_preload_libraries = '<%= (@settings[:shared_preload_libraries] || @defaults[:shared_preload_libraries]).sort.join(",") %>'
 
+# - Other Defaults -
+
+output_plugin_libraries = '<%= (@settings[:output_plugin_libraries] || @defaults[:output_plugin_libraries]).sort.join(",") %>'
+
 #------------------------------------------------------------------------------
 # LOCK MANAGEMENT
 #------------------------------------------------------------------------------

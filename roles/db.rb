@@ -19,6 +19,9 @@ default_attributes(
         :cpu_tuple_cost => "0.1",
         :jit => "off",
         :log_min_duration_statement => "1000",
+        :output_plugin_libraries => [
+          "osm-logical"
+        ],
         :late_authentication_rules => [
           { :address => "10.0.48.0/20" }, # amsterdam
           { :address => "10.0.64.0/20" }, # dublin
