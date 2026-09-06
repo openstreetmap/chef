@@ -412,6 +412,7 @@ node[:tile][:styles].each do |name, details|
       owner "_renderd"
       group "_renderd"
       mode "755"
+      recursive true
     end
 
     directory[:min_zoom].upto(directory[:max_zoom]) do |zoom|
