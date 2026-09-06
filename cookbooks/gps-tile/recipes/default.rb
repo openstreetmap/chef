@@ -64,7 +64,7 @@ end
 
 execute "/srv/gps-tile.openstreetmap.org/import/src/Makefile" do
   action :nothing
-  command "make DB=none LDFLAGS=-lm"
+  command "make DB='none' CFLAGS='-O2 -Wno-error=incompatible-pointer-types -std=c99 -D_POSIX_SOURCE -D_BSD_SOURCE -D_XOPEN_SOURCE -include log.h' LDFLAGS='-lm'"
   cwd "/srv/gps-tile.openstreetmap.org/import/src"
   user "gpstile"
   group "gpstile"
