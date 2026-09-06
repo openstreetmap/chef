@@ -6,6 +6,7 @@ description       "Installs and configures GlitchTip"
 
 version           "1.0.0"
 supports          "ubuntu"
+depends           "exim"
 depends           "podman"
 depends           "postgresql"
 depends           "valkey"
