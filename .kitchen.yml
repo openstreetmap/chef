@@ -419,7 +419,11 @@ suites:
           - name: taginfo.example.com
   - name: tile
     run_list:
-      - recipe[tile::default]
+      - role[tile]
+    attributes:
+      apache:
+        event:
+          threads_per_child: 16
   - name: tilelog
     run_list:
       - recipe[tilelog::default]
