@@ -106,7 +106,10 @@ default_attributes(
         :functions_script => "/srv/tile.openstreetmap.org/styles/default/functions.sql",
         :common_values_script => "/srv/tile.openstreetmap.org/styles/default/common-values.sql",
         :common_values_tables => %w[carto_pois],
-        :max_zoom => 19
+        :max_zoom => 19,
+        :tile_directories => [
+          { :name => "/store/tiles/default", :min_zoom => 0, :max_zoom => 19 }
+        ]
       }
     }
   }

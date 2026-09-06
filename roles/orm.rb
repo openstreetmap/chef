@@ -112,15 +112,6 @@ default_attributes(
         "kernel.shmall" => 9 * 1024 * 1024 * 1024 / 4096
       }
     }
-  },
-  :tile => {
-    :styles => {
-      :default => {
-        :tile_directories => [
-          { :name => "/store/tiles/default", :min_zoom => 0, :max_zoom => 19 }
-        ]
-      }
-    }
   }
 )
 
