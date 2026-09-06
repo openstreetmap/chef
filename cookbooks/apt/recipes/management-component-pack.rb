@@ -24,21 +24,9 @@ apt_repository "management-component-pack" do
 end
 
 if platform?("debian")
-  distribution = if node[:lsb][:release].to_f > 12
-                   "bookworm"
-                 else
-                   node[:lsb][:codename]
-                 end
-
-  legacy_key_options = if node[:lsb][:release].to_f > 12
-                         ["allow-insecure=yes"]
-                       else
-                         []
-                       end
-
   apt_repository "mcp" do
     uri "https://downloads.linux.hpe.com/SDR/repo/mcp"
-    distribution "#{distribution}/current"
+    distribution "#{node[:lsb][:codename]}/current"
     components ["non-free"]
     key "https://downloads.linux.hpe.com/SDR/hpePublicKey2048_key2.pub"
   end
@@ -49,7 +37,7 @@ if platform?("debian")
       distribution "stretch/current-gen9"
       components ["non-free"]
       key "https://downloads.linux.hpe.com/SDR/hpePublicKey2048_key1.pub"
-      options legacy_key_options
+      options ["allow-insecure=yes"]
     end
   end
 elsif platform?("ubuntu")
