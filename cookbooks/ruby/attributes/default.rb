@@ -4,13 +4,9 @@ default[:ruby][:system_version] = if platform?("debian")
                                     case node[:platform_version].to_i
                                     when 13
                                       "3.3"
-                                    when 12
-                                      "3.1"
                                     end
                                   elsif platform?("ubuntu")
                                     case node[:lsb][:release].to_f
-                                    when 24.04
-                                      "3.2"  # ruby version for Ubuntu 24.04
                                     when 22.04
                                       "3.0"  # ruby version for Ubuntu 22.04
                                     when 20.04

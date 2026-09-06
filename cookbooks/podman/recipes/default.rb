@@ -18,16 +18,13 @@
 #
 
 package %w[
+  aardvark-dns
+  fuse-overlayfs
+  passt
   podman
   slirp4netns
   uidmap
-  fuse-overlayfs
 ]
-
-if platform?("debian") && node[:platform_version].to_i >= 13
-  package "passt"
-  package "aardvark-dns"
-end
 
 ruby_block "subuid-containers" do
   block do
@@ -75,10 +72,8 @@ service "podman-system-prune.timer" do
 end
 
 # Reset graph driver if vfs which is very slow. overlay is the default on Debian 13 and later.
-if platform?("debian") && node[:platform_version].to_i >= 13
-  execute "podman-fix-graph-driver" do
-    command "podman system reset --force"
-    only_if "test $(podman info --format '{{json .Store}}' | jq -r .graphDriverName) = 'vfs'"
-    ignore_failure true
-  end
+execute "podman-fix-graph-driver" do
+  command "podman system reset --force"
+  only_if "test $(podman info --format '{{json .Store}}' | jq -r .graphDriverName) = 'vfs'"
+  ignore_failure true
 end
