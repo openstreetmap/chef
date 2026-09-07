@@ -223,11 +223,7 @@ directory "/srv/tile.openstreetmap.org/data" do
   mode "755"
 end
 
-package %w[
-  mapnik-utils
-  tar
-  unzip
-]
+package "mapnik-utils"
 
 node[:tile][:data].each_value do |data|
   url = data[:url]
@@ -245,27 +241,11 @@ node[:tile][:data].each_value do |data|
     directory = "/srv/tile.openstreetmap.org/data"
   end
 
-  if file =~ /\.tgz$/
-    execute file do
-      action :nothing
-      command "tar -zxf #{file} -C #{directory}"
-      user "tile"
-      group "tile"
-    end
-  elsif file =~ /\.tar\.bz2$/
-    execute file do
-      action :nothing
-      command "tar -jxf #{file} -C #{directory}"
-      user "tile"
-      group "tile"
-    end
-  elsif file =~ /\.zip$/
-    execute file do
-      action :nothing
-      command "unzip -qq -o #{file} -d #{directory}"
-      user "tile"
-      group "tile"
-    end
+  archive_file file do
+    destination directory
+    owner "tile"
+    group "tile"
+    overwrite true
   end
 
   execute "#{file}_shapeindex" do

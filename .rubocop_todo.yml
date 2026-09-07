@@ -13,7 +13,6 @@ Chef/Modernize/ExecuteArchiveExtract:
     - '**/attributes/*.rb'
     - '**/Berksfile'
     - 'cookbooks/overpass/recipes/default.rb'
-    - 'cookbooks/tile/recipes/default.rb'
 
 # Offense count: 1284
 # This cop supports safe autocorrection (--autocorrect).
