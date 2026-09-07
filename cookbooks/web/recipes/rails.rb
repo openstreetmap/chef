@@ -163,6 +163,8 @@ rails_port "www.openstreetmap.org" do
   user_account_deletion_delay 7 * 24
   turnstile_site_key "0x4AAAAAACsSjCdlK-9Cu3FO"
   turnstile_secret_key web_passwords["cloudflare_turnstile_secret"]
+  sentry_dsn web_passwords["sentry_dsn"]
+  sentry_traces_sample_rate 0.01
   # Requests to modify the imagery blacklist should come from the DWG only
   imagery_blacklist [
     # Current Google imagery URLs have google or googleapis in the domain

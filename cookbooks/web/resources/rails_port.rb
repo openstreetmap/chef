@@ -105,6 +105,9 @@ property :doorkeeper_signing_key, String
 property :user_account_deletion_delay, Integer
 property :turnstile_site_key, String
 property :turnstile_secret_key, String
+property :turnstile_site_key, String
+property :sentry_dsn, String
+property :sentry_traces_sample_rate, Float
 
 action :create do
   package %w[
@@ -371,7 +374,9 @@ action :create do
     "doorkeeper_signing_key",
     "user_account_deletion_delay",
     "turnstile_site_key",
-    "turnstile_secret_key"
+    "turnstile_secret_key",
+    "sentry_dsn",
+    "sentry_traces_sample_rate"
   ).compact.merge(
     "server_protocol" => "https",
     "server_url" => new_resource.site,
