@@ -1,11 +1,13 @@
 # PostgreSQL Cookbook
 
 This cookbook installs and configures the PostgreSQL database software. It
-defines a number of providers that can be used in other cookbooks:
+defines a number of custom resources that can be used in other cookbooks:
 
 * database: For managing databases.
 * execute: For running commands against the database.
 * extension: For installing extensions.
+* schema: For managing schemas.
+* sequence: For managing sequences.
 * table: For managing database tables.
 * user: For managing database users.
 * tablespace: For managing tablespaces.
