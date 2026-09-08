@@ -7,6 +7,6 @@ cookbook contains two recipes:
 * default - installs and configures basic prometheus exporters on each machine
 * server - configures the central prometheus server
 
-Additionally two providers are defined - prometheus_exporter and
-prometheus_textfile_exporter, for configuring individual prometheus
-exporters.
+Additionally two custom resources are defined - prometheus_exporter and
+prometheus_collector, for configuring individual prometheus exporters and
+textfile collectors.
