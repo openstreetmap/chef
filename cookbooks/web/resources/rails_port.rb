@@ -112,7 +112,7 @@ property :sentry_traces_sample_rate, Float
 action :create do
   package %w[
     imagemagick
-    libvips42
+    libvips42t64
     nodejs
     tzdata
   ]
