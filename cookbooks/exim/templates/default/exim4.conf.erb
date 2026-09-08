@@ -668,6 +668,9 @@ noreply:
   local_part_suffix = +*
   local_part_suffix_optional
 <% end -%>
+<% if details[:senders] -%>
+  senders = <%= details[:senders].join(":") %>
+<% end -%>
 <% if details[:condition] -%>
   condition = <%= details[:condition] %>
 <% end -%>
