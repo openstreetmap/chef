@@ -38,15 +38,17 @@ template "/etc/default/spamd" do
   notifies :restart, "service[spamd]"
 end
 
-trusted_networks = node[:exim][:relay_from_hosts]
+trusted_networks = node[:exim][:relay_from_hosts] - ["127.0.0.1", "::1"]
 
 if node[:exim][:smarthost_name]
   search(:node, "exim_smarthost_via:#{node[:exim][:smarthost_name]}\\:*").each do |host|
-    trusted_networks |= host.ipaddresses(:role => :external)
+    host.ipaddresses(:role => :external).each do |address|
+      trusted_networks << address.to_s
+    end
   end
 end
 
-trusted_networks -= ["127.0.0.1", "::1", "10.88.0.0/16"]
+trusted_networks << "10.88.0.0/16"
 
 template "/etc/spamassassin/local.pre" do
   source "local.pre.erb"
