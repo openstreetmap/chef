@@ -30,8 +30,8 @@ directory "/var/spool/spamassassin" do
   mode "755"
 end
 
-template "/etc/default/spamassassin" do
-  source "spamassassin.erb"
+template "/etc/default/spamd" do
+  source "spamd.erb"
   owner "root"
   group "root"
   mode "644"
@@ -65,7 +65,7 @@ template "/etc/spamassassin/local.cf" do
   notifies :restart, "service[spamd]"
 end
 
-file "/var/spool/spamassassin/auto_whitelist" do
+file "/var/spool/spamassassin/auto_welcomelist" do
   owner "debian-spamd"
   group "debian-spamd"
   mode "600"
