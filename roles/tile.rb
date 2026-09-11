@@ -101,7 +101,7 @@ default_attributes(
     :styles => {
       :default => {
         :repository => "https://github.com/gravitystorm/openstreetmap-carto.git",
-        :revision => "v6.0.0",
+        :revision => "v6.1.0",
         :fonts_script => "/srv/tile.openstreetmap.org/styles/default/scripts/get-fonts.py",
         :functions_script => "/srv/tile.openstreetmap.org/styles/default/functions.sql",
         :common_values_script => "/srv/tile.openstreetmap.org/styles/default/common-values.sql",
