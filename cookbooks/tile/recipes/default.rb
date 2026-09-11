@@ -473,6 +473,7 @@ node[:tile][:styles].each do |name, details|
         database "gis"
         owner "tile"
         permissions "tile" => :all, "www-data" => :select, "_renderd" => :select
+        subscribes :create, "postgresql_execute[#{details[:common_values_script]}]"
       end
     end
   end
@@ -510,6 +511,7 @@ if node[:tile][:database][:external_data_script]
       database "gis"
       owner "tile"
       permissions "tile" => :all, "www-data" => :select, "_renderd" => :select
+      subscribes :create, "execute[#{node[:tile][:database][:external_data_script]}]"
     end
   end
 end
