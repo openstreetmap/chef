@@ -16,3 +16,8 @@ auto_welcomelist_path /var/spool/spamassassin/auto_welcomelist
 # Block some unwanted addresses                     
 blocklist_from *@bewertungskanzlei.de
 blocklist_from *@revieweraser-sales.com
+
+# Welcome mail from openstreetmap.org from trusted machines
+<% @trusted_networks.each do |network| -%>
+welcomelist_from_rcvd *@openstreetmap.org [<%= network %>]
+<% end -%>
