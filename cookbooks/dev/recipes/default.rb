@@ -253,13 +253,13 @@ search(:accounts, "*:*").each do |account|
     pm_min_spare_servers 2
     pm_max_spare_servers 6
     pm_max_requests 10000
-    request_terminate_timeout 1800
+    request_terminate_timeout 180
     environment "HOSTNAME" => "$HOSTNAME",
                 "PATH" => "/usr/local/bin:/usr/bin:/bin",
                 "TMP" => "/tmp",
                 "TMPDIR" => "/tmp",
                 "TEMP" => "/tmp"
-    php_values "max_execution_time" => "300",
+    php_values "max_execution_time" => "120",
                "memory_limit" => "128M",
                "post_max_size" => "32M",
                "upload_max_filesize" => "32M"
