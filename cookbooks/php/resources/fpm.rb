@@ -30,8 +30,8 @@ property :pm_max_children, :kind_of => Integer, :default => 10
 property :pm_start_servers, :kind_of => Integer, :default => 4
 property :pm_min_spare_servers, :kind_of => Integer, :default => 2
 property :pm_max_spare_servers, :kind_of => Integer, :default => 6
-property :pm_max_requests, :kind_of => Integer, :default => 1000
-property :request_terminate_timeout, :kind_of => Integer, :default => 1800
+property :pm_max_requests, :kind_of => Integer, :default => 10000
+property :request_terminate_timeout, :kind_of => Integer, :default => 180
 property :environment, :kind_of => Hash, :default => {}
 property :php_values, :kind_of => Hash, :default => {}
 property :php_admin_values, :kind_of => Hash, :default => {}
