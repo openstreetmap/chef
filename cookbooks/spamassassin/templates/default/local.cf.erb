@@ -23,3 +23,8 @@ welcomelist_auth *.openstreetmap.org
 
 # Welcome authenticated mail from osmfoundation.org
 welcomelist_auth osmfoundation.org
+
+# Welcome mail from openstreetmap.org from trusted machines
+<% @trusted_networks.each do |network| -%>
+welcomelist_from_rcvd *@openstreetmap.org [<%= network %>]
+<% end -%>
