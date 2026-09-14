@@ -43,7 +43,6 @@ mediawiki_site "osmfoundation.org" do
   email_sender_name "OSMF Wiki"
   private_accounts true
   extra_file_extensions %w[mp3 pptx txt]
-  version "1.43"
 end
 
 # mediawiki_skin "OSMFoundation" do
