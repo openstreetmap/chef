@@ -34,7 +34,6 @@ mediawiki_site "board.osmfoundation.org" do
   email_sender "wiki@noreply.openstreetmap.org"
   email_sender_name "OSMF Board Wiki"
   private_site true
-  version "1.43"
 end
 
 cookbook_file "/srv/board.osmfoundation.org/Wiki.png" do
