@@ -11,6 +11,12 @@
   CustomLog /var/log/apache2/<%= @name %>-access.log combined_extended
   ErrorLog /var/log/apache2/<%= @name %>-error.log
 
+  RewriteCond %{HTTP_REFERER} ^https://<%= @name.gsub('.', '\.') %> [NC]
+  RewriteCond %{HTTPS} !=on
+  RewriteCond %{REQUEST_METHOD} =GET
+  RewriteCond %{REQUEST_URI} ^/w/
+  RewriteRule ^ - [R=429,L]
+
   RedirectPermanent /.well-known/acme-challenge/ http://acme.openstreetmap.org/.well-known/acme-challenge/
   RedirectPermanent / https://<%= @name %>/
 </VirtualHost>
@@ -49,8 +55,17 @@
   RewriteCond %{HTTP_USER_AGENT} "^Mozilla/5\.0 \(Windows NT 10\.0; Win64; x64\) AppleWebKit/537\.36 \(KHTML, like Gecko\) Chrome/105\.0\.0\.0 Safari/537\.3$" [NC]
   RewriteRule ^ - [R=429,L]
 
+  # Prevent abuse by an anonymous AI bot
   RewriteCond %{REQUEST_METHOD} ^(GET|HEAD)$
   RewriteCond %{HTTP_REFERER} =https://<%= @name %>
+  RewriteRule ^ - [R=429,L]
+
+  # Temporary measure to prevent abuse by an anonymous AI bot
+  RewriteCond %{HTTP_USER_AGENT} "Chrome/1[0-4][0-9]\."
+  RewriteCond %{QUERY_STRING} "(^|&)title=Special(?::|%3A)RecentChanges(&|$)" [NC,OR]
+  RewriteCond %{QUERY_STRING} "(^|&)returnto=Special(?::|%3A|%253A)RecentChanges(&|$)" [NC,OR]
+  RewriteCond %{QUERY_STRING} "feedrecentchanges" [NC]
+  RewriteCond %{REQUEST_URI} ^/w/
   RewriteRule ^ - [R=429,L]
 
   # Historical Compatibility Links
