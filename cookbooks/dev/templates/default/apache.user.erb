@@ -12,6 +12,9 @@ WSGIDaemonProcess <%= @user %>.dev.openstreetmap.org user=<%= @user %> processes
 	SSLCertificateFile /etc/ssl/certs/<%= @user %>.dev.openstreetmap.org.pem
 	SSLCertificateKeyFile /etc/ssl/private/<%= @user %>.dev.openstreetmap.org.key
 
+	# Set the proxy timeout to 90 seconds to allow long-running requests
+	ProxyTimeout 90
+
 	# Remove Proxy request header to mitigate https://httpoxy.org/
 	RequestHeader unset Proxy early
 
