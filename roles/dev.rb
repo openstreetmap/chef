@@ -92,6 +92,7 @@ default_attributes(
     :event => {
       :server_limit => 32,
       :max_request_workers => 800,
+      :max_spare_threads => 800,
       :threads_per_child => 50,
       :max_connections_per_child => 100000
     }
