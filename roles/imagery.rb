@@ -44,5 +44,6 @@ run_list(
   "recipe[imagery::us_imagery]",
   "recipe[imagery::sz_dos_topo]",
   "recipe[imagery::mw_dos_topo]",
-  "recipe[imagery::zw_topo]"
+  "recipe[imagery::zw_topo]",
+  "recipe[imagery::ls_topo]"
 )
