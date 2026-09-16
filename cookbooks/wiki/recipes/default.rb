@@ -100,8 +100,8 @@ end
 
 mediawiki_extension "OsmWikibase" do
   site site_name
-  repository "https://github.com/nyurik/OsmWikibase.git"
-  reference "refs/pull/6/head" # Fix after Mediawiki 1.46 upgrade: https://github.com/nyurik/OsmWikibase/pull/6
+  repository "https://github.com/Firefishy/OsmWikibase.git"
+  reference "patch-1" # Fix after Mediawiki 1.46 upgrade: https://github.com/nyurik/OsmWikibase/pull/6
 end
 
 mediawiki_extension "Echo" do
