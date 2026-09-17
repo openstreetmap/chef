@@ -74,6 +74,7 @@ podman_site "glitchtip.openstreetmap.org" do
               "GLITCHTIP_COLD_STORAGE_DIR" => "/cold",
               "GLITCHTIP_DOMAIN" => "https://glitchtip.openstreetmap.org",
               "GLITCHTIP_ENABLE_DUCKDB" => "True",
+              "GLITCHTIP_ENABLE_LOGS" => "False",
               "GLITCHTIP_ENABLE_MCP" => "False",
               "GLITCHTIP_INSTANCE_NAME" => "OpenStreetMap\\'s GlitchTip",
               "SERVER_ROLE" => "all_in_one"
