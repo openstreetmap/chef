@@ -42,7 +42,14 @@ end
 directory "/srv/glitchtip.openstreetmap.org/uploads" do
   owner "root"
   group "root"
-  mode "0755"
+  mode "0777"
+  recursive true
+end
+
+directory "/srv/glitchtip.openstreetmap.org/cold" do
+  owner "root"
+  group "root"
+  mode "0777"
   recursive true
 end
 
@@ -64,12 +71,14 @@ podman_site "glitchtip.openstreetmap.org" do
               "ENABLE_ADMIN" => "False",
               "ENABLE_OBSERVABILITY_API" => "True",
               "ENABLE_OPENAPI" => "False",
+              "GLITCHTIP_COLD_STORAGE_DIR" => "/cold",
               "GLITCHTIP_DOMAIN" => "https://glitchtip.openstreetmap.org",
-              "GLITCHTIP_ENABLE_DUCKDB" => "False",
+              "GLITCHTIP_ENABLE_DUCKDB" => "True",
               "GLITCHTIP_ENABLE_MCP" => "False",
               "GLITCHTIP_INSTANCE_NAME" => "OpenStreetMap\\'s GlitchTip",
               "SERVER_ROLE" => "all_in_one"
-  volumes "/srv/glitchtip.openstreetmap.org/uploads" => "/code/uploads"
+  volumes "/srv/glitchtip.openstreetmap.org/uploads" => "/code/uploads",
+          "/srv/glitchtip.openstreetmap.org/cold" => "/cold"
 end
 
 node.default[:prometheus][:exporters][443] = {
