@@ -35,7 +35,7 @@ call_user_func( function() {
     $wgExtraNamespaces[WB_NS_PROPERTY_TALK] = 'Property_talk';
 
     $wgWBRepoSettings['entitySources'] = function ( SettingsArray $settings ) {
-        global $wgServer;
+        global $wgCanonicalServer;
 
         $entityNamespaces = [
             'item' => WB_NS_ITEM,
@@ -49,7 +49,7 @@ call_user_func( function() {
              $settings->getSetting( 'localEntitySourceName' ) => [
                                     'entityNamespaces' => $entityNamespaces,
                                     'repoDatabase' => false,
-                                    'baseUri' => $wgServer . '/entity/',
+                                    'baseUri' => $wgCanonicalServer . '/entity/',
                                     'rdfNodeNamespacePrefix' => 'wd',
                                     'rdfPredicateNamespacePrefix' => '',
                                     'interwikiPrefix' => '',
@@ -136,7 +136,7 @@ $wgWBClientSettings['repoSiteName'] = 'Data Items';
 
 // Avoid complaints that nobody seems to know the cause off...
 $wgWBClientSettings['entityUsagePerPageLimit'] = 500;
-                                  
+
 // no edit rights for anonymous users
 $wgGroupPermissions['*']['item-term'] = false;
 $wgGroupPermissions['*']['item-merge'] = false;
