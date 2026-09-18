@@ -75,6 +75,7 @@ mediawiki_site site_name do
 
   if node[:wiki][:test_mode]
     backup_enabled false
+    exception_details true
   end
 end
 

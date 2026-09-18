@@ -55,6 +55,7 @@ property :fpm_request_terminate_timeout, :kind_of => Integer, :default => 120
 property :fpm_prometheus_port, :kind_of => Integer
 property :reload_apache, :kind_of => [TrueClass, FalseClass], :default => false
 property :backup_enabled, :kind_of => [TrueClass, FalseClass], :default => true
+property :exception_details, :kind_of => [TrueClass, FalseClass], :default => false
 
 action :create do
   node.default[:mediawiki][:sites][new_resource.site] = {
@@ -716,7 +717,8 @@ action_class do
       :private_site => new_resource.private_site,
       :namespaces => new_resource.namespaces,
       :force_ui_messages => new_resource.force_ui_messages,
-      :watch_category_membership => new_resource.watch_category_membership
+      :watch_category_membership => new_resource.watch_category_membership,
+      :exception_details => new_resource.exception_details
     }
   end
 
