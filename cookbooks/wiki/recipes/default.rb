@@ -172,6 +172,8 @@ end
 
 mediawiki_extension "DiscussionTools" do
   site site_name
+  template "mw-ext-DiscussionTools.inc.php.erb"
+  template_cookbook "wiki"
 end
 
 cookbook_file "/srv/#{site_name}/osm_logo_wiki.png" do
