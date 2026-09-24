@@ -5,6 +5,8 @@ Protocols h2 http/1.1
 
 # Set the number of seconds before receives and sends time out
 Timeout <%= node[:apache][:timeout] %>
+# Set the HTTP/2 stream timeout
+H2StreamTimeout <%= node[:apache][:h2_stream_timeout] %>
 
 # Decide whether or not to allow persistent connections
 Keepalive <%= node[:apache][:keepalive] ? "On" : "Off" %>

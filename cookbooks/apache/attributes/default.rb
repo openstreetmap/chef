@@ -1,6 +1,7 @@
 default[:apache][:mpm] = "event"
 
 default[:apache][:timeout] = 300
+default[:apache][:h2_stream_timeout] = 30
 
 default[:apache][:keepalive] = true
 
