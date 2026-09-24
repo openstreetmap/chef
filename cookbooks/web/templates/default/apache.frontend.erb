@@ -107,14 +107,14 @@ ErrorLog /var/log/apache2/error.log
   # https://gist.github.com/Firefishy/86ed5b86991b225179b54bbafbcd769e
   #
   RewriteCond "%{QUERY_STRING}" "^q=abcde&t=20"
-  RewriteRule "^/api/0\.6/notes/search$" - [R=429,L]
+  RewriteRule "^/api/0\.6/notes/search$" - [R=429,E=nokeepalive:1,L]
 
   #
   # Ignore GoogleAssociationService request storm
   # https://en.osm.town/@osm_tech/114205363076771822
   #
   RewriteCond %{HTTP_USER_AGENT} "GoogleAssociationService"
-  RewriteRule "^/\.well-known/assetlinks\.json$" - [R=429,L]
+  RewriteRule "^/\.well-known/assetlinks\.json$" - [R=429,E=nokeepalive:1,L]
 
   #
   # Drop faulty Cloudflare POST /cdn-cgi/rum submissions reaching us
