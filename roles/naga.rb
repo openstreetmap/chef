@@ -83,6 +83,7 @@ run_list(
   "recipe[foundation::dwg]",
   "recipe[foundation::mastodon]",
   "recipe[foundation::mwg]",
+  "recipe[foundation::news]",
   "recipe[foundation::owg]",
   "recipe[foundation::welcome]",
   "recipe[foundation::wiki]",
