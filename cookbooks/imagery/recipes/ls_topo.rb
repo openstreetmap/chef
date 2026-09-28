@@ -33,4 +33,5 @@ imagery_layer "ls_topo_50k" do
   title "Lesotho Topographic Series 50k"
   copyright "Surveyor-General, Lesotho"
   default_layer true
+  revision 2
 end

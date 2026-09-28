@@ -382,7 +382,7 @@ GEM
     docker-api (2.4.0)
       excon (>= 0.64.0)
       multi_json
-    domain_name (0.6.20260907)
+    domain_name (0.6.20260921)
     drb (2.2.3)
     dry-configurable (1.4.0)
       dry-core (~> 1.0)
@@ -871,9 +871,9 @@ DEPENDENCIES
   cinc-auditor-bin!
   cookstyle
   inspec-docker-resources
-  kitchen-dokken (>= 2.23.0)
+  kitchen-dokken (>= 2.24.0)
   kitchen-inspec
   test-kitchen
 
 BUNDLED WITH
-  4.0.20
+  4.0.21
