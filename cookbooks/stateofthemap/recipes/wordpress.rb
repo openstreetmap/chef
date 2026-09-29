@@ -23,35 +23,6 @@ include_recipe "wordpress"
 passwords = data_bag_item("stateofthemap", "passwords")
 wp2fa_encrypt_keys = data_bag_item("stateofthemap", "wp2fa_encrypt_keys")
 
-wordpress_theme "2010.stateofthemap.org-aerodrome" do
-  action :delete
-  theme "aerodrome"
-  site "2010.stateofthemap.org"
-  repository "https://git.openstreetmap.org/public/stateofthemap.git"
-  revision "theme-2010"
-end
-
-wordpress_plugin "2010.stateofthemap.org-sitepress-multilingual-cms" do
-  action :delete
-  plugin "sitepress-multilingual-cms"
-  site "2010.stateofthemap.org"
-  repository "https://git.openstreetmap.org/private/sitepress-multilingual-cms.git"
-  revision "master"
-  not_if { kitchen? }
-end
-
-wordpress_site "2010.stateofthemap.org" do
-  action :delete
-  aliases ["2010.stateofthemap.com", "2010.sotm.org"]
-  directory "/srv/2010.stateofthemap.org/wp"
-  database_name "sotm2010"
-  database_user "sotm2010"
-  database_password passwords["sotm2010"]
-  wp2fa_encrypt_key wp2fa_encrypt_keys["sotm2010"]
-  urls "/register" => "/srv/2010.stateofthemap.org/register"
-  fpm_prometheus_port 12010
-end
-
 directory "/srv/2011.stateofthemap.org" do
   owner "wordpress"
   group "wordpress"
