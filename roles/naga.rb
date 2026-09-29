@@ -87,7 +87,7 @@ run_list(
   "recipe[foundation::owg]",
   "recipe[foundation::welcome]",
   "recipe[foundation::wiki]",
-  "recipe[stateofthemap::container]",
+  "role[stateofthemap]",
   "recipe[hot]",
   "recipe[ideditor]",
   "recipe[dmca]",

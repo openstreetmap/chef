@@ -100,8 +100,7 @@ jobs:
           - snmpd
           - spamassassin
           - ssl
-          - stateofthemap-container
-          - stateofthemap-wordpress
+          - stateofthemap
           - subversion
           - supybot
           - switch2osm
@@ -128,8 +127,6 @@ jobs:
           - suite: blog
             os: ubuntu-2004
           - suite: mailman
-            os: ubuntu-2004
-          - suite: stateofthemap-wordpress
             os: ubuntu-2004
           - suite: wordpress
             os: ubuntu-2004

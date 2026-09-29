@@ -387,12 +387,9 @@ suites:
   - name: ssl
     run_list:
       - recipe[ssl::default]
-  - name: stateofthemap-container
+  - name: stateofthemap
     run_list:
-      - recipe[stateofthemap::container]
-  - name: stateofthemap-wordpress
-    run_list:
-      - recipe[stateofthemap::wordpress]
+      - recipe[stateofthemap::default]
   - name: subversion
     run_list:
       - recipe[subversion::default]
