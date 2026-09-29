@@ -11,14 +11,13 @@ B="sotm-$D.tar.zst"
 
 mkdir "$T/sotm-$D"
 
-<% %w(2010 2011 2012).each do |year| -%>
+<% %w(2011 2012).each do |year| -%>
 echo '[mysqldump]' > "$T/mysqldump.opts"
 echo 'user=sotm<%= year %>' >> "$T/mysqldump.opts"
 echo 'password=<%= @passwords["sotm#{year}"] %>' >> "$T/mysqldump.opts"
 mysqldump --defaults-file="$T/mysqldump.opts" --opt --no-tablespaces --max-allowed-packet=1G "sotm<%= year %>" > "$T/sotm-$D/sotm<%= year %>.sql"
 <% end -%>
 
-ln -s /srv/2010.stateofthemap.org "$T/sotm-$D/www2010"
 ln -s /srv/2011.stateofthemap.org "$T/sotm-$D/www2011"
 ln -s /srv/2012.stateofthemap.org "$T/sotm-$D/www2012"
 
@@ -26,7 +25,6 @@ set +e
 nice tar --create --dereference --directory="$T" \
   --warning=no-file-changed \
   --warning=no-file-removed \
-  --exclude="sotm-<%= @name %>-$D/www2010/wp/.svn/tmp" \
   --exclude="sotm-<%= @name %>-$D/www2011/wp/.svn/tmp" \
   --exclude="sotm-<%= @name %>-$D/www2012/wp/.svn/tmp" \
   --sort=name \
