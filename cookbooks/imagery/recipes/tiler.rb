@@ -49,6 +49,7 @@ podman_service "titiler" do
               :TITILER_API_ROOT_PATH => "/api/v1/titiler",
               :MOSAIC_CONCURRENCY => "8",
               :FORWARDED_ALLOW_IPS => "*" # https://docs.gunicorn.org/en/latest/settings.html#forwarded-allow-ips
+  pids_limit(-1)
   command "gunicorn -k uvicorn.workers.UvicornWorker titiler.application.main:app --bind unix:/sockets/titiler.sock --workers #{[node.cpu_cores / 2, 2].max} --preload --timeout 180"
 end
 

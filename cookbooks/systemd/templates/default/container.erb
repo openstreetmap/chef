@@ -1,0 +1,36 @@
+[Unit]
+<% if @description -%>
+Description=<%= @description %>
+<% end -%>
+
+[Container]
+<% if @image -%>
+Image=<%= @image %>
+<% end -%>
+<% if @command -%>
+Exec=<%= @command %>
+<% end -%>
+<% @ports.each do |host, guest| -%>
+PublishPort=127.0.0.1:<%= host %>:<%= guest %>
+<% end -%>
+<% @environment.each do |name, value| -%>
+Environment=<%= name %>=<%= value %>
+<% end -%>
+<% @volumes.each do |source, path| -%>
+Volume=<%= source %>:<%= path %>
+<% end -%>
+<% if @pids_limit -%>
+PidsLimit=<%= @pids_limit %>
+<% end -%>
+AutoUpdate=registry
+
+[Service]
+<% if @restart -%>
+Restart=<%= @restart %>
+<% end -%>
+<% if @timeout_start_sec -%>
+TimeoutStartSec=<%= @timeout_start_sec %>
+<% end -%>
+
+[Install]
+WantedBy=default.target

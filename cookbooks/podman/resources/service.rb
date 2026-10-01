@@ -27,34 +27,30 @@ property :image, String, :required => true
 property :ports, Hash, :default => {}
 property :environment, Hash, :default => {}
 property :volumes, Hash, :default => {}
-property :command, String, :default => ""
+property :pids_limit, Integer
+property :command, String
 
 action :create do
   systemd_service new_resource.service do
+    action :delete
+  end
+
+  systemd_container new_resource.service do
     description new_resource.description
-    type "notify"
-    notify_access "all"
-    environment "PODMAN_SYSTEMD_UNIT" => "%n"
-    exec_start_pre "/bin/rm --force %t/%n.ctr-id"
-    exec_start "/usr/bin/podman run --cidfile=%t/%n.ctr-id --cgroups=no-conmon " \
-               "--userns=auto --label=io.containers.autoupdate=registry " \
-               "--pids-limit=-1 #{publish_options} #{environment_options} " \
-               "#{volume_options} --rm --sdnotify=conmon --detach --replace " \
-               "--name=%N #{new_resource.image} #{new_resource.command}"
-    exec_stop "/usr/bin/podman stop --ignore --time=10 --cidfile=%t/%n.ctr-id"
-    exec_stop_post "/usr/bin/podman rm --force --ignore --cidfile=%t/%n.ctr-id"
+    image new_resource.image
+    command new_resource.command
+    ports new_resource.ports
+    environment new_resource.environment
+    volumes new_resource.volumes
+    pids_limit new_resource.pids_limit
     timeout_start_sec 180
-    timeout_stop_sec 70
     restart "on-failure"
   end
 
   # No action :start here to avoid a start and then immediate :restart, due to subscribe, on first run
-  # FIXME: Ubuntu 22.04 podman/crun bug workaround "retries"
   service new_resource.service do
-    action :enable
-    subscribes :restart, "systemd_service[#{new_resource.service}]", :immediately
-    retries 4 # Workaround https://github.com/containers/podman/issues/9752
-    retry_delay 5
+    action :nothing
+    subscribes :restart, "systemd_container[#{new_resource.service}]", :immediately
   end
 
   # Ensure the service is started if not running, replies on status of service resource
