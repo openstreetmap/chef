@@ -26,6 +26,7 @@ $wgScriptExtension  = ".php";
 $wgServer           = "//<%= @name %>";
 $wgInternalServer   = 'https://<%= @name %>';
 $wgCanonicalServer  = 'https://<%= @name %>';
+$wgHTTPUserAgentContact = 'https://<%= @name %>'; // New in 1.46.1
 
 $wgSecureLogin = true;
 $wgDefaultUserOptions['prefershttps'] = 1;
@@ -48,7 +49,7 @@ $wgEnableUserEmail  = true; # UPO
 
 $wgEmergencyContact = "<%= @mediawiki[:email_contact] %>";
 $wgPasswordSender   = "<%= @mediawiki[:email_sender] %>";
-$wgPasswordSenderName = "<%= @mediawiki[:email_sender_name] %>"; //Replaced by MediaWiki:Emailsender in v1.23.0
+$wgPasswordSenderName = "<%= @mediawiki[:email_sender_name] %>"; // Replaced by MediaWiki:Emailsender in v1.23.0
 $wgNoReplyAddress = "<%= @mediawiki[:email_sender] %>";
 
 $wgEnotifUserTalk      = true; # UPO
