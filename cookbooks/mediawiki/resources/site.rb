@@ -302,19 +302,10 @@ action :create do
     update_site false
   end
 
-  if new_resource.version.to_f < 1.46
-    mediawiki_extension "PdfHandler" do
-      site new_resource.site
-      template "mw-ext-PdfHandler.inc.php.erb"
-      update_site false
-    end
-  else
-    # PdfHandler extension is broken for MediaWiki Core in 1.46.0
-    mediawiki_extension "PdfHandler" do
-      site new_resource.site
-      update_site false
-      action :delete
-    end
+  mediawiki_extension "PdfHandler" do
+    site new_resource.site
+    template "mw-ext-PdfHandler.inc.php.erb"
+    update_site false
   end
 
   mediawiki_extension "Poem" do
