@@ -71,7 +71,7 @@ end
 
 package "dbconfig-common"
 package "libhtml-treebuilder-xpath-perl" # Undeclared dependency for otrs2
-packake "librest-client-perl" # Undeclared dependency for otrs2
+package "librest-client-perl" # Undeclared dependency for otrs2
 
 template "/etc/dbconfig-common/otrs2.conf" do
   source "dbconfig.config.erb"
