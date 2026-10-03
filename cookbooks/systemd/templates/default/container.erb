@@ -22,6 +22,7 @@ Volume=<%= source %>:<%= path %>
 <% if @pids_limit -%>
 PidsLimit=<%= @pids_limit %>
 <% end -%>
+UserNS=auto
 AutoUpdate=registry
 
 [Service]
