@@ -31,10 +31,6 @@ property :pids_limit, Integer
 property :command, String
 
 action :create do
-  systemd_service new_resource.service do
-    action :delete
-  end
-
   systemd_container new_resource.service do
     description new_resource.description
     image new_resource.image
@@ -65,7 +61,7 @@ action :delete do
     action [:disable, :stop]
   end
 
-  systemd_service new_resource.service do
+  systemd_container new_resource.service do
     action :delete
   end
 end
