@@ -80,7 +80,7 @@ action_class do
 
   def external_port
     unless ports.include?(new_resource.site)
-      port = 40000
+      port = 30000
 
       port += 1 while ports.values.include?(port)
 
