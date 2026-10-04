@@ -148,6 +148,7 @@ end
 mediawiki_extension "DynamicPageListEngine" do
   site site_name
   only_if { node[:wiki][:test_mode] }
+  action :delete
 end
 
 mediawiki_extension "WikibaseCirrusSearch" do
