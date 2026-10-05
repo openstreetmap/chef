@@ -198,7 +198,7 @@ if node[:networking][:wireguard][:enabled]
     node.default[:networking][:wireguard][:peers] << {
       :public_key => "RofATnvlWxP3mt87+QKRXFE5MVxtoCcTsJ+yftZYEE4=",
       :allowed_ips => "10.89.122.1/32",
-      :endpoint => "gate.firefishy.com:51820"
+      :endpoint => "gate.firefishy.com:51824"
     }
 
     # Grant roaming
@@ -400,7 +400,7 @@ if node[:networking][:wireguard][:enabled]
     protocol :udp
     source :osm unless node[:roles].include?("gateway")
     dest_ports "51820"
-    source_ports "51820"
+    source_ports %w[51820 51824]
   end
 end
 
