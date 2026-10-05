@@ -1,0 +1,14 @@
+<RIBCL VERSION="2.0">
+  <LOGIN USER_LOGIN="Administrator" PASSWORD="password">
+    <RIB_INFO MODE="write">
+      <MOD_NETWORK_SETTINGS>
+        <DNS_NAME VALUE="<%= node[:hostname] %>"/>
+      </MOD_NETWORK_SETTINGS>
+      <MOD_GLOBAL_SETTINGS>
+        <IPMI_DCMI_OVER_LAN_ENABLED VALUE="Yes"/>
+        <SNMP_ACCESS_ENABLED VALUE="N"/>
+      </MOD_GLOBAL_SETTINGS>
+      <RESET_RIB/><!-- Reboot ilo to apply network settings -->
+    </RIB_INFO>
+  </LOGIN>
+</RIBCL>
