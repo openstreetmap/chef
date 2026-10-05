@@ -48,6 +48,10 @@ package %w[
   zstd
 ]
 
+if platform?("debian")
+  package "wtmpdb"
+end
+
 service "rsyslog" do
   action [:enable, :start]
   supports :status => true, :restart => true, :reload => true
