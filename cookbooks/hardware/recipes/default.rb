@@ -64,21 +64,35 @@ case manufacturer
 when "HP", "HPE"
   include_recipe "apt::management-component-pack"
 
-  unless node[:lsb][:release] == "trixie"
-    package "hponcfg"
+  package "hponcfg"
 
-    execute "update-ilo" do
+  execute "update-ilo" do
+    action :nothing
+    command "/usr/sbin/hponcfg -f /etc/ilo-defaults.xml"
+    not_if { kitchen? }
+  end
+
+  template "/etc/ilo-defaults.xml" do
+    source "ilo-defaults.xml.erb"
+    owner "root"
+    group "root"
+    mode "644"
+    notifies :run, "execute[update-ilo]"
+  end
+
+  unless product.end_with?("G6", "G7") # iLO4+ Only
+    execute "update-ilo-network" do
       action :nothing
-      command "/usr/sbin/hponcfg -f /etc/ilo-defaults.xml"
+      command "/usr/sbin/hponcfg -f /etc/ilo-network.xml"
       not_if { kitchen? }
     end
 
-    template "/etc/ilo-defaults.xml" do
-      source "ilo-defaults.xml.erb"
+    template "/etc/ilo-network.xml" do
+      source "ilo-network.xml.erb"
       owner "root"
       group "root"
       mode "644"
-      notifies :run, "execute[update-ilo]"
+      notifies :run, "execute[update-ilo-network]"
     end
   end
 
