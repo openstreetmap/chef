@@ -80,9 +80,10 @@ wordpress_plugin "registration-honeypot" do
   site "supporting.openstreetmap.org"
 end
 
-wordpress_plugin "contact-form-7" do
-  site "supporting.openstreetmap.org"
-end
+# Requires PHP 8.3+
+# wordpress_plugin "contact-form-7" do
+#   site "supporting.openstreetmap.org"
+# end
 
 wordpress_plugin "civicrm-admin-utilities" do
   site "supporting.openstreetmap.org"
