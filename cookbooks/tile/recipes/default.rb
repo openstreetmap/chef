@@ -115,13 +115,47 @@ end.flatten.sort.uniq
 package %w[
   renderd
   libgoogle-perftools4
+  cmake
+  g++
+  make
 ]
+
+# zlib-ng built as a drop-in zlib (same soname and ABI), preloaded into
+# renderd so that libpng compresses tiles with it
+zlib_ng_directory = "/opt/zlib-ng"
+
+git zlib_ng_directory do
+  action :sync
+  repository "https://github.com/zlib-ng/zlib-ng.git"
+  revision node[:tile][:zlib_ng][:revision]
+  depth 1
+  user "root"
+  group "root"
+end
+
+execute "#{zlib_ng_directory}/CMakeLists.txt" do
+  action :nothing
+  command "cmake -B build -DCMAKE_BUILD_TYPE=Release -DZLIB_COMPAT=ON -DZLIB_ENABLE_TESTS=OFF -DWITH_GTEST=OFF"
+  cwd zlib_ng_directory
+  user "root"
+  group "root"
+  subscribes :run, "git[#{zlib_ng_directory}]", :immediately
+end
+
+execute "#{zlib_ng_directory}/build/Makefile" do
+  action :nothing
+  command "make -j"
+  cwd "#{zlib_ng_directory}/build"
+  user "root"
+  group "root"
+  subscribes :run, "execute[#{zlib_ng_directory}/CMakeLists.txt]", :immediately
+end
 
 systemd_service "renderd" do
   dropin "chef"
   after "postgresql.service"
   wants "postgresql.service"
-  environment "LD_PRELOAD" => "libtcmalloc.so.4"
+  environment "LD_PRELOAD" => "libtcmalloc.so.4:#{zlib_ng_directory}/build/libz.so.1"
   limit_nofile 4096
   memory_high "80%"
   memory_max "90%"
@@ -135,6 +169,7 @@ end
 service "renderd" do
   action [:enable, :start]
   subscribes :restart, "systemd_service[renderd]"
+  subscribes :restart, "execute[#{zlib_ng_directory}/build/Makefile]"
 end
 
 directory "/srv/tile.openstreetmap.org/tiles" do
