@@ -44,6 +44,12 @@ property :default_layer, [true, false], :default => false
 property :uses_tiler, [true, false], :default => false
 
 action :create do
+  service "mapserv-fcgi-#{new_resource.site}" do
+    provider Chef::Provider::Service::Systemd
+    action :nothing
+    not_if { new_resource.uses_tiler }
+  end
+
   notify_group "imagery-mapserv-restart" do
     action :nothing
     notifies :stop, "systemd_service[mapserv-fcgi-#{new_resource.site}]" # Service will be started again by mapserv-fcgi-*.socket
