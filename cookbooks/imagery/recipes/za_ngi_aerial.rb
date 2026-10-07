@@ -36,5 +36,5 @@ imagery_layer "ngi-aerial" do
   extension "png"
   default_layer true
   url_aliases ["/ngi-aerial"]
-  revision 7
+  revision 8
 end
