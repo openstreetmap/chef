@@ -52,7 +52,7 @@ action :create do
 
   notify_group "imagery-mapserv-restart" do
     action :nothing
-    notifies :stop, "systemd_service[mapserv-fcgi-#{new_resource.site}]" # Service will be started again by mapserv-fcgi-*.socket
+    notifies :stop, "service[mapserv-fcgi-#{new_resource.site}]" # Service will be started again by mapserv-fcgi-*.socket
     not_if { new_resource.uses_tiler }
   end
 
