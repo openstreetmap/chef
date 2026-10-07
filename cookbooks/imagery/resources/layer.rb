@@ -46,7 +46,7 @@ property :uses_tiler, [true, false], :default => false
 action :create do
   notify_group "imagery-mapserv-restart" do
     action :nothing
-    notifies :restart, "service[mapserv-fcgi-#{new_resource.site}]"
+    notifies :stop, "systemd_service[mapserv-fcgi-#{new_resource.site}]" # Service will be started again by mapserv-fcgi-*.socket
     not_if { new_resource.uses_tiler }
   end
 
