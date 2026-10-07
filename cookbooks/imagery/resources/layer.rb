@@ -46,7 +46,7 @@ property :uses_tiler, [true, false], :default => false
 action :create do
   notify_group "imagery-mapserv-restart" do
     action :nothing
-    notify :restart, "service[mapserv-fcgi-#{new_resource.site}]"
+    notifies :restart, "service[mapserv-fcgi-#{new_resource.site}]"
     not_if { new_resource.uses_tiler }
   end
 
