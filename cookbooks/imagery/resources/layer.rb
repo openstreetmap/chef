@@ -44,6 +44,12 @@ property :default_layer, [true, false], :default => false
 property :uses_tiler, [true, false], :default => false
 
 action :create do
+  notify_group "imagery-mapserv-restart" do
+    action :nothing
+    notify :restart, "service[mapserv-fcgi-#{new_resource.site}]"
+    not_if { new_resource.uses_tiler }
+  end
+
   file "/srv/imagery/layers/#{new_resource.site}/#{new_resource.layer}.yml" do
     owner "root"
     group "root"
@@ -64,6 +70,7 @@ action :create do
     group "root"
     mode "644"
     variables new_resource.to_hash
+    notifies :run, "notify_group[imagery-mapserv-restart]"
     not_if { new_resource.uses_tiler }
   end
 
@@ -81,6 +88,7 @@ action :create do
     group "root"
     mode "644"
     variables new_resource.to_hash
+    notifies :run, "notify_group[imagery-mapserv-restart]"
   end
 end
 
