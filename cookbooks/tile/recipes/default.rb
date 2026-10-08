@@ -115,13 +115,15 @@ end.flatten.sort.uniq
 package %w[
   renderd
   libgoogle-perftools4
+  libz-ng-compat
 ]
 
 systemd_service "renderd" do
   dropin "chef"
   after "postgresql.service"
   wants "postgresql.service"
-  environment "LD_PRELOAD" => "libtcmalloc.so.4"
+  environment "LD_PRELOAD" => "libtcmalloc.so.4",
+              "LD_LIBRARY_PATH" => "#{node[:systemd_paths][:"system-library-arch"]}/zlib-ng"
   limit_nofile 4096
   memory_high "80%"
   memory_max "90%"
