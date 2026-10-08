@@ -10,8 +10,6 @@ else
   default[:tile][:mapnik_plugins_dir] = "/usr/lib/mapnik/3.1/input"
 end
 
-default[:tile][:zlib_ng][:revision] = "2.3.3"
-
 default[:tile][:replication][:directory] = "/var/lib/replicate"
 default[:tile][:replication][:url] = "https://osm-planet-eu-central-1.s3.dualstack.eu-central-1.amazonaws.com/planet/replication/minute"
 
