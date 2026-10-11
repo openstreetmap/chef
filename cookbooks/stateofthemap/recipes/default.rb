@@ -38,5 +38,4 @@ end
 
 podman_site "2014.stateofthemap.eu" do
   image "ghcr.io/openstreetmap/stateofthemap-eu-2014:latest"
-  aliases ["2014.stateofthemap.eu"]
 end
