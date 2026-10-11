@@ -35,3 +35,8 @@ podman_site "stateofthemap.eu" do
   image "ghcr.io/openstreetmap/stateofthemap-eu-website:latest"
   aliases ["www.stateofthemap.eu"]
 end
+
+podman_site "stateofthemap.eu-2014" do
+  image "ghcr.io/openstreetmap/stateofthemap-eu-2014:latest"
+  aliases ["www.stateofthemap.eu-2014"]
+end
