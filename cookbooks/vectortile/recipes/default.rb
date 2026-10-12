@@ -418,9 +418,15 @@ service "tilekiln-prometheus" do
   action [:enable, :start]
 end
 
+listen_address = if node[:prometheus][:mode] == "wireguard"
+                   "[#{node[:prometheus][:address]}]:10013"
+                 else
+                   "#{node[:prometheus][:address]}:10013"
+                 end
+
 node.default[:prometheus][:exporters][10013] = {
   :name => "tilekiln",
-  :address => "#{node[:prometheus][:address]}:10013",
+  :address => listen_address
 }
 
 podman_service "vectortile_demo" do
