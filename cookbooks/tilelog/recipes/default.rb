@@ -80,7 +80,7 @@ end
 python_package "ofastlylog" do
   python_virtualenv ofastlylog_directory
   python_version "3"
-  version "0.4.0"
+  version "0.4.1"
 end
 
 template "/usr/local/bin/ofastlylog-hourly" do
