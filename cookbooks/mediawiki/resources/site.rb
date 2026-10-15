@@ -88,7 +88,7 @@ action :create do
 
   git mediawiki_directory do
     action :sync
-    repository "https://gerrit.wikimedia.org/r/mediawiki/core.git"
+    repository "https://github.com/wikimedia/mediawiki.git"
     revision mediawiki_reference
     depth 1
     user node[:mediawiki][:user]
@@ -669,7 +669,7 @@ action_class do
   def mediawiki_reference
     shell_out!("git", "-c", "versionsort.suffix=-rc",
                "ls-remote", "--refs", "--sort=-version:refname",
-               "https://gerrit.wikimedia.org/r/mediawiki/core.git",
+               "https://github.com/wikimedia/mediawiki.git",
                "refs/tags/#{new_resource.version}.*")
       .stdout
       .split("\n")
