@@ -43,6 +43,8 @@ podman_site "vault.osmfoundation.org" do
               "SMTP_PORT" => "25",
               "SMTP_SECURITY" => "off",
               "SMTP_FROM" => "admins@openstreetmap.org",
+              "SMTP_FROM_NAME" => "OpenStreetMap Admins",
+              "EMAIL_2FA_ENFORCE_ON_VERIFIED_INVITE" => "true",
               "PUSH_ENABLED" => "true",
               "PUSH_INSTALLATION_ID" => passwords["push_installation_id"],
               "PUSH_INSTALLATION_KEY" => passwords["push_installation_key"],
