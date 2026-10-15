@@ -60,6 +60,8 @@ platforms:
         - RUN /usr/bin/apt-get update -y
         - RUN /usr/bin/apt-get install -y eatmydata
         - RUN echo /usr/lib/$(uname -m)-linux-gnu/libeatmydata.so >>/etc/ld.so.preload
+      volumes:
+        - /var/lib/containers/storage
 
 # When using podman we have to manually start chef to workaround a volume issue
 lifecycle:
