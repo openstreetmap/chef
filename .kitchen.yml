@@ -435,6 +435,9 @@ suites:
   - name: valkey
     run_list:
       - recipe[valkey::default]
+  - name: vaultwarden
+    run_list:
+      - recipe[vaultwarden::default]
   - name: vectortile
     run_list:
       - recipe[vectortile::default]

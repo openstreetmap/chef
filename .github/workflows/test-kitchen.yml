@@ -112,6 +112,7 @@ jobs:
           - tools
           - trac
           - valkey
+          - vaultwarden
           - vectortile
           - web-cgimap
           - web-frontend
