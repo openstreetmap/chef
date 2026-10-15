@@ -92,5 +92,6 @@ run_list(
   "recipe[ideditor]",
   "recipe[dmca]",
   "role[otrs]",
-  "role[osqa]"
+  "role[osqa]",
+  "role[vaultwarden]"
 )
