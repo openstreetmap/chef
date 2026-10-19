@@ -20,9 +20,31 @@ default_attributes(
         }
       }
     }
+  },
+  :postgresql => {
+    :settings => {
+      :defaults => {
+        :effective_cache_size => "60GB"
+      }
+    }
+  },
+  :vectortile => {
+    :ocean => {
+      :tileupdate => false
+    },
+    :rerender => {
+      :lowzoom => {
+        :enabled => false
+      }
+    },
+    :replication => {
+      :enabled => false,
+      :tileupdate => false
+    }
   }
 )
 
 run_list(
-  "role[pixeldeck]"
+  "role[pixeldeck]",
+  "role[vectortile]"
 )
