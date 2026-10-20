@@ -30,7 +30,7 @@ default_attributes(
   :postgresql => {
     :settings => {
       :defaults => {
-        :effective_cache_size => "16GB"
+        :effective_cache_size => "200GB"
       }
     }
   },
