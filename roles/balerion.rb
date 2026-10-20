@@ -24,7 +24,8 @@ default_attributes(
   :postgresql => {
     :settings => {
       :defaults => {
-        :effective_cache_size => "60GB"
+        :effective_cache_size => "60GB",
+        :file_extend_method => "write_zeros"
       }
     }
   },
