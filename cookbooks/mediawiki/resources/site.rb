@@ -582,7 +582,7 @@ action :create do
     php_values "memory_limit" => "500M",
                "max_execution_time" => "60",
                "upload_max_filesize" => "70M",
-               "post_max_size" => "100M"
+               "post_max_size" => "32M"
     prometheus_port new_resource.fpm_prometheus_port
   end
 

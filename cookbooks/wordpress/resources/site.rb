@@ -177,7 +177,7 @@ action :create do
     php_admin_values "open_basedir" => "#{site_directory}/:/usr/share/php/:/tmp/",
                      "disable_functions" => "exec,shell_exec,system,passthru,popen,proc_open"
     php_values "upload_max_filesize" => "70M",
-               "post_max_size" => "100M",
+               "post_max_size" => "32M",
                "memory_limit" => "368M"
     prometheus_port new_resource.fpm_prometheus_port
   end
