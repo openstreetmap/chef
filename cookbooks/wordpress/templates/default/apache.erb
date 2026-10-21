@@ -70,6 +70,11 @@
   <Directory <%= @directory %>>
     RewriteEngine on
 
+    # CVE-2026-109618 and CVE-2026-109619 mitigation
+    RewriteCond %{REQUEST_METHOD} ^POST$ [NC]
+    RewriteCond %{HTTP:Content-Type} ^[[:space:]]*multipart/form-data([;,[:space:]]|$) [NC]
+    RewriteRule ^ - [F,L]
+
     RewriteRule ^wp-admin/includes/ - [F,L]
     RewriteRule !^wp-includes/ - [S=3]
     RewriteRule ^wp-includes/[^/]+\.php$ - [F,L]
