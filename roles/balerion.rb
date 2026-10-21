@@ -30,16 +30,12 @@ default_attributes(
     }
   },
   :vectortile => {
-    :ocean => {
-      :tileupdate => false
-    },
     :rerender => {
       :lowzoom => {
         :enabled => false
       }
     },
     :replication => {
-      :enabled => false,
       :tileupdate => false
     }
   }
