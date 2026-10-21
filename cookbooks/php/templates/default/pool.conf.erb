@@ -26,7 +26,7 @@ request_terminate_timeout = <%= @request_terminate_timeout %>
 security.limit_extensions = .php .phpx .phpj
 
 ; CVE-2026-109618 and CVE-2026-109619 mitigation
-php_admin_flag session.upload_progress.enabled Off
+php_admin_flag[session.upload_progress.enabled] = Off
 
 <% @environment.each do |name, value| -%>
 env[<%= name %>] = <%= value %>
