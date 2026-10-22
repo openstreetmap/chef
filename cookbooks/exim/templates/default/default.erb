@@ -4,7 +4,7 @@
 # options for update-exim4.conf
 UPEX4OPTS=''
 # options for exim4
-EXIMSERVICE='-bdf -q30s'
+EXIMSERVICE='-bdf -q<%= node[:exim][:queue_run_interval] %>'
 <% else -%>
 # 'combined' -   one daemon running queue and listening on SMTP port
 # 'no'       -   no daemon running the queue

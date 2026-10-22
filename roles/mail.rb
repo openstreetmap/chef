@@ -27,6 +27,7 @@ default_attributes(
       "a.mx.osm.io"
     ],
     :queue_run_max => 25,
+    :queue_run_interval => "5s",
     :smtp_accept_max => 200,
     :smarthost_name => "mail.openstreetmap.org",
     :smarthost_via => nil,

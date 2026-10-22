@@ -34,6 +34,7 @@ default_attributes(
     :fullstaq => true
   },
   :exim => {
+    :queue_run_interval => "5s",
     :local_domains => ["messages.openstreetmap.org"],
     :routes => {
       :messages => {
