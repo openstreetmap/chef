@@ -188,7 +188,6 @@ systemd_service "rails-jobs@" do
   type "simple"
   environment "RAILS_ENV" => "production",
               "QUEUE" => "%I",
-              "SLEEP_DELAY" => "60",
               "SECRET_KEY_BASE" => web_passwords["secret_key_base"]
   user "rails"
   working_directory rails_directory
