@@ -26,11 +26,6 @@
 
   RewriteRule ^/(.*)$ https://supporting.openstreetmap.org/$1 [R=307,L]
 
-  # CVE-2026-109618 and CVE-2026-109619 mitigation
-  RewriteCond %{REQUEST_METHOD} ^POST$ [NC]
-  RewriteCond %{HTTP:Content-Type} ^[[:space:]]*multipart/form-data([;,[:space:]]|$) [NC]
-  RewriteRule ^ - [F,L]
-
   CustomLog /var/log/apache2/join.osmfoundation.org-access.log combined_extended
   ErrorLog /var/log/apache2/join.osmfoundation.org-error.log
 
