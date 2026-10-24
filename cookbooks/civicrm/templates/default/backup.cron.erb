@@ -17,6 +17,7 @@ mysqldump --defaults-file="$T/mysqldump.opts" --opt --skip-lock-tables --no-tabl
 ln -s /srv/supporting.openstreetmap.org "$T/osmf-crm-$D/www"
 
 nice tar --create --dereference --directory="$T" \
+  --warning=no-file-changed \
   --sort=name \
   "osmf-crm-$D" | nice zstd -T0 --quiet --long --rsyncable -o "$T/$B"
 
