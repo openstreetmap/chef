@@ -16,7 +16,6 @@ fi
 #Create Lock
 echo $$ > /tmp/planet-notes-dump.lock
 
-
 cur_date=$(date +%y%m%d)
 cur_year=$(date +%Y)
 cur_planet_notes="planet-notes-${cur_date}.osn"
@@ -55,7 +54,34 @@ rm -f planet-notes-latest.osn.bz2.md5
 
 sed -e "s/${cur_planet_notes}.bz2/planet-notes-latest.osn.bz2/" "${cur_year}/${cur_planet_notes}.bz2.md5" > planet-notes-latest.osn.bz2.md5
 
-/opt/awscli/v2/current/bin/aws --profile osm-pds-upload s3 cp --storage-class INTELLIGENT_TIERING  --no-progress "${cur_year}/${cur_planet_notes}.bz2.md5" "s3://osm-planet-eu-central-1/notes/osn/${cur_year}/${cur_planet_notes}.bz2.md5"
-/opt/awscli/v2/current/bin/aws --profile osm-pds-upload s3 cp --storage-class INTELLIGENT_TIERING  --no-progress "${cur_year}/${cur_planet_notes}.bz2" "s3://osm-planet-eu-central-1/notes/osn/${cur_year}/${cur_planet_notes}.bz2"
+function retry {
+  local attempt
+  local status
+
+  for attempt in {1..3}; do
+    if "$@"; then
+      return 0
+    else
+      status=$?
+    fi
+
+    if [ "${attempt}" -lt 3 ]; then
+      echo "Attempt ${attempt}/3 failed (${status}): $*. Retrying in 30 seconds." >&2
+      sleep 30
+    fi
+  done
+
+  echo "Command failed after 3 attempts (${status}): $*" >&2
+  return "${status}"
+}
+
+# Opt-in to new AWS retry behavior
+# https://aws.amazon.com/blogs/developer/announcing-updated-retry-behavior-for-aws-sdks-and-tools/
+export AWS_NEW_RETRIES_2026=true
+export AWS_RETRY_MODE=standard
+export AWS_MAX_ATTEMPTS=10
+
+retry /opt/awscli/v2/current/bin/aws --profile osm-pds-upload s3 cp --storage-class INTELLIGENT_TIERING  --no-progress "${cur_year}/${cur_planet_notes}.bz2.md5" "s3://osm-planet-eu-central-1/notes/osn/${cur_year}/${cur_planet_notes}.bz2.md5"
+retry /opt/awscli/v2/current/bin/aws --profile osm-pds-upload s3 cp --storage-class INTELLIGENT_TIERING  --no-progress "${cur_year}/${cur_planet_notes}.bz2" "s3://osm-planet-eu-central-1/notes/osn/${cur_year}/${cur_planet_notes}.bz2"
 
 rm /tmp/planet-notes-dump.lock
