@@ -1,6 +1,9 @@
 ---
 # DO NOT EDIT - This file is being maintained by Chef
+run_once: false
+retries: 3
 timeout: 60
+resolve_dns: false
 vars:
   remove_secret: true
 pid: "/run/oxidized/oxidized.pid"
@@ -36,9 +39,10 @@ model_map:
   juniper: junos
   apc: apcaos
 logger:
+  level: :trace
   appenders:
     - type: stdout
-      level: :trace
+      level: :info
     - type: file
-      level: :warn
+      level: :trace
       file: /var/log/oxidized/oxidized.log

@@ -32,6 +32,7 @@ package %w[
   libyaml-dev
   logrotate
   libzstd-dev
+  libgpg-error-dev
 ]
 
 keys = data_bag_item("oxidized", "keys")
@@ -55,6 +56,20 @@ directory "/etc/oxidized" do
   owner "root"
   group "root"
   mode "755"
+end
+
+directory "/etc/oxidized/model" do
+  owner "root"
+  group "root"
+  mode "755"
+end
+
+cookbook_file "/etc/oxidized/model/apcats.rb" do
+  source "apcats.rb"
+  owner "root"
+  group "root"
+  mode "644"
+  notifies :restart, "service[oxidized]"
 end
 
 template "/etc/oxidized/config" do
