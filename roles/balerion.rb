@@ -28,16 +28,6 @@ default_attributes(
         :file_extend_method => "write_zeros"
       }
     }
-  },
-  :vectortile => {
-    :rerender => {
-      :lowzoom => {
-        :enabled => false
-      }
-    },
-    :replication => {
-      :tileupdate => false
-    }
   }
 )
 
