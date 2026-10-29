@@ -1,0 +1,47 @@
+#!/bin/bash
+
+# DO NOT EDIT - This file is being maintained by Chef
+set -euo pipefail
+
+service_was_running=false
+
+restart_service() {
+    if [ "$service_was_running" = true ]; then
+        systemctl start vault.osmfoundation.org.service
+    fi
+}
+
+# Ensure the service is restarted on script exit
+trap restart_service EXIT
+# Trap signals to ensure the service is restarted if the script exits unexpectedly
+trap 'exit 129' HUP
+trap 'exit 130' INT
+trap 'exit 143' TERM
+
+export ZSTD_CLEVEL=12
+
+T=$(mktemp -d -t -p /var/tmp vaultwarden.XXXXXXXXXX)
+D=$(date +%Y-%m-%d)
+B="vaultwarden-$D.tar.zst"
+
+mkdir "$T/vaultwarden-$D"
+ln -s /srv/vault.osmfoundation.org/data "$T/vaultwarden-$D/data"
+
+if systemctl is-active --quiet vault.osmfoundation.org.service; then
+    service_was_running=true
+fi
+systemctl stop vault.osmfoundation.org.service
+
+set +e
+nice tar --create --dereference \
+    --warning=no-file-changed \
+    --warning=no-file-removed \
+    --directory="$T" \
+    --sort=name \
+    "vaultwarden-$D" | nice zstd -T0 --quiet --long --rsyncable -o "$T/$B"
+
+restart_service
+
+nice rsync --preallocate --fuzzy "$T/$B" backup.openstreetmap.org::backup
+
+rm -rf "$T"

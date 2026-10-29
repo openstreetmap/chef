@@ -68,3 +68,10 @@ fail2ban_jail "vaultwarden" do
   maxretry 5
   bantime "1h"
 end
+
+template "/etc/cron.daily/vaultwarden-backup" do
+  source "backup.cron.erb"
+  owner "root"
+  group "root"
+  mode "755"
+end
