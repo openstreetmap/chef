@@ -274,6 +274,13 @@ service "tilekiln" do
   action [:enable, :start]
 end
 
+ocean_data_path = "#{style_directory}/data"
+directory ocean_data_path do
+  user "tileupdate"
+  group "tileupdate"
+  mode "755"
+end
+
 template "/usr/local/bin/ocean-update" do
   source node[:vectortile][:ocean][:tileupdate] ? "ocean-update-tile.erb" : "ocean-update-notile.erb"
   owner "root"
@@ -289,7 +296,7 @@ systemd_service "ocean-update" do
   wants "postgresql.service"
   sandbox :enable_network => true
   restrict_address_families "AF_UNIX"
-  read_write_paths ["/srv/vector.openstreetmap.org/spirit/data/"]
+  read_write_paths [ocean_data_path]
   exec_start "/usr/local/bin/ocean-update"
 end
 
