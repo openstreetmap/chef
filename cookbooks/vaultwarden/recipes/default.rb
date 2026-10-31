@@ -37,7 +37,7 @@ podman_site "vault.osmfoundation.org" do
   environment "DOMAIN" => "https://vault.osmfoundation.org",
               "IP_HEADER" => "X-Forwarded-For",
               "SIGNUPS_ALLOWED" => "false",
-              "INVITATIONS_ALLOWED" => "false",
+              "INVITATIONS_ALLOWED" => "true",
               "ADMIN_TOKEN" => passwords["admin_token"],
               "SMTP_HOST" => "host.containers.internal",
               "SMTP_PORT" => "25",
