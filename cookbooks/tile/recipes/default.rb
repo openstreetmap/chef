@@ -496,6 +496,7 @@ package %w[
   gdal-bin
   python3-yaml
   python3-psycopg2
+  python3-requests
 ]
 
 if node[:tile][:database][:external_data_script]
