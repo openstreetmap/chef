@@ -433,6 +433,22 @@ node[:tile][:styles].each do |name, details|
     group "tile"
   end
 
+  # Temporary workaround until https://github.com/openstreetmap-carto/openstreetmap-carto/pull/5336 is available in a release
+  if details[:revision] == "v6.1.0" && details[:fonts_script]
+    ruby_block "fix-hanazono-font-url-#{name}" do
+      block do
+        script = Chef::Util::FileEdit.new(details[:fonts_script])
+        script.search_file_replace(
+          %r{https://mirrors\.dotsrc\.org/osdn/hanazono-font/68253/hanazono-20170904\.zip},
+          "https://grant.dev.openstreetmap.org/tile-service-workground-pr-5336/hanazono-20170904.zip"
+        )
+        script.write_file
+      end
+      only_if { ::File.read(details[:fonts_script]).include?("https://mirrors.dotsrc.org/osdn/hanazono-font/68253/hanazono-20170904.zip") }
+      notifies :run, "execute[#{details[:fonts_script]}]"
+    end
+  end
+
   if details[:fonts_script]
     execute details[:fonts_script] do
       action :nothing
