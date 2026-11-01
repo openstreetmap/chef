@@ -26,22 +26,29 @@ package %w[
   uidmap
 ]
 
-ruby_block "subuid-containers" do
-  block do
-    File.open("/etc/subuid", "a") do |file|
-      file.puts("containers:2147483647:2147483648")
-    end
-  end
-  not_if "grep -q '^containers:' /etc/subuid"
+directory "/var/lib/podman" do
+  owner "root"
+  group "root"
+  mode "0700"
 end
 
-ruby_block "subgid-containers" do
-  block do
-    File.open("/etc/subgid", "a") do |file|
-      file.puts("containers:2147483647:2147483648")
-    end
+%w[subuid subgid].each do |name|
+  file "/etc/#{name}" do
+    owner "root"
+    group "root"
+    mode "0644"
+    action :create_if_missing
   end
-  not_if "grep -q '^containers:' /etc/subgid"
+
+  ruby_block "#{name}-containers" do
+    block do
+      file = Chef::Util::FileEdit.new("/etc/#{name}")
+      file.search_file_delete_line(/^containers:/)
+      file.insert_line_if_no_match(/^containers:/, "containers:2147483647:1073741825")
+      file.write_file
+    end
+    not_if "test \"$(grep '^containers:' /etc/#{name})\" = 'containers:2147483647:1073741825'"
+  end
 end
 
 systemd_timer "podman-auto-update-frequency" do
