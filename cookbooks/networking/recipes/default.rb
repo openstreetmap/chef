@@ -201,12 +201,6 @@ if node[:networking][:wireguard][:enabled]
       :endpoint => "gate.firefishy.com:51824"
     }
 
-    # Grant roaming
-    node.default[:networking][:wireguard][:peers] << {
-      :public_key => "YbUkREE9TAmomqgL/4Fh2e5u2Hh7drN/2o5qg3ndRxg=",
-      :allowed_ips => "10.89.123.1/32",
-      :endpoint => "roaming.firefishy.com:51820"
-    }
   elsif node[:roles].include?("shenron")
     search(:node, "roles:gateway") do |gateway|
       allowed_ips = gateway.ipaddresses(:role => :internal).map(&:subnet)
