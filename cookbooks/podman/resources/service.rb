@@ -39,18 +39,11 @@ action :create do
   new_resource.volumes.each do |source, options|
     next unless options.is_a?(Hash)
 
-    directory ::File.dirname(source) do
-      owner "root"
-      group "root"
-      mode "0755"
-      recursive true
-      not_if { ::Dir.exist?(::File.dirname(source)) }
-    end
-
     directory source do
       owner mapping + options.fetch(:uid, 0)
       group mapping + options.fetch(:gid, 0)
       mode options.fetch(:mode, "0700")
+      recursive true
     end
   end
 
