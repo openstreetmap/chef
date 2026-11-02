@@ -35,7 +35,6 @@ package %w[
   pciutils
   ripgrep
   rsync
-  rsyslog
   screen
   smartmontools
   strace
@@ -52,9 +51,9 @@ if platform?("debian")
   package "wtmpdb"
 end
 
-service "rsyslog" do
-  action [:enable, :start]
-  supports :status => true, :restart => true, :reload => true
+# rsyslog functionality replaced by systemd-journald, avoid log duplication
+package "rsyslog" do
+  action :purge
 end
 
 # Install some common tools
