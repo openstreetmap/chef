@@ -14,10 +14,19 @@ mkdir "$T/prometheus-$D"
 ln -s /var/lib/prometheus/alertmanager "$T/prometheus-$D/alertmanager"
 ln -s /var/lib/grafana "$T/prometheus-$D/grafana"
 
+# Allow the tar command to fail without exiting the script
+set +e
 nice tar --create --dereference --directory="$T" \
   --sort=name \
   --warning=no-file-changed \
   "prometheus-$D" | nice zstd -T0 --quiet --long --rsyncable -o "$T/$B"
+
+tar_exit=$?
+if [ $tar_exit -gt 1 ]; then
+  # Exit if tar failed with a serious error (exit code > 1)
+  echo "Tar command failed with exit code $tar_exit"
+  exit $tar_exit
+fi
 
 nice rsync --preallocate --fuzzy "$T/$B" backup.openstreetmap.org::backup
 
