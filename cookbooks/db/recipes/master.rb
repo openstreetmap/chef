@@ -143,6 +143,7 @@ PLANETDIFF_PERMISSIONS = {
   "changeset_comments" => :select,
   "changeset_tags" => :select,
   "changesets" => :select,
+  "gpx_files" => :select,
   "node_tags" => :select,
   "nodes" => :select,
   "relation_members" => :select,
