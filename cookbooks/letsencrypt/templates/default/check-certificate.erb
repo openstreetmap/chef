@@ -44,6 +44,10 @@ if ssl
   else
     alt_names = subject_alt_name.value.split(/\s*,\s*/).map { |n| n.sub(/^DNS:/, "") }
 
+    if alt_names.length > 25
+      puts "Certificate #{domains.first} on #{host} has #{alt_names.length} subjectAltNames, exceeding the letsencrypt tlsserver profile limit of 25"
+    end
+
     domains.each do |domain|
       if alt_names.include?(domain)
         alt_names.delete(domain)
