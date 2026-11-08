@@ -23,7 +23,7 @@ COUNTRYFILE="countries-${DATE}.csv"
 
 nice -n 19 /opt/tilelog/bin/tilelog --date "${DATE}" \
   --raster-generate-success --raster-generate-minimise --raster-generate-location \
-  --raster-tile "${TILEFILE}" --raster-host "${HOSTFILE}" --raster-app "${APPFILE}" --raster-country "${COUNTRYFILE}"
+  --raster-tile "${TILEFILE}" --raster-tile-shards 2 --raster-host "${HOSTFILE}" --raster-app "${APPFILE}" --raster-country "${COUNTRYFILE}"
 
 mv "${TILEFILE}" "${HOSTFILE}" "${APPFILE}" "${COUNTRYFILE}" "${OUTDIR}"
 
