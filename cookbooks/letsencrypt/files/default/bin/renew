@@ -3,6 +3,7 @@
 /usr/bin/certbot renew \
     -v \
     --key-type ecdsa \
+    --preferred-profile tlsserver \
     --config-dir /srv/acme.openstreetmap.org/config \
     --work-dir /srv/acme.openstreetmap.org/work \
     --logs-dir /srv/acme.openstreetmap.org/logs \
