@@ -39,6 +39,5 @@ run_list(
   "role[hp-dl360-g6]",
   "role[gateway]",
   "role[foundation]",
-  "role[blog]",
   "recipe[dhcpd]"
 )

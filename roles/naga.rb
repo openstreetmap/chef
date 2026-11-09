@@ -75,6 +75,7 @@ run_list(
   "role[subversion]",
   "role[trac]",
   "role[irc]",
+  "role[blog]",
   "role[blogs]",
   "role[switch2osm]",
   "role[elasticsearch]",
