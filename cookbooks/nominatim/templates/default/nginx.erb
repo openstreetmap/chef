@@ -105,13 +105,14 @@ real_ip_recursive off;
 # Custom log format to include JA4 TLS fingerprint and other details for better blocking and analysis
 log_format nominatim_log  '$remote_addr - $remote_user [$time_local] "$request" '
                           '$status $body_bytes_sent "$http_referer" '
-                          '"$http_user_agent" "$http_x_forwarded_for" "$http_x_tls_ja4" "$http_x_ja4h"';
+                          '"$http_user_agent" "$http_x_forwarded_for" "$http_x_tls_ja4" "$http_x_ja4h" '
+                          'rt=$request_time uct=$upstream_connect_time uht=$upstream_header_time urt=$upstream_response_time';
 
 server {
     listen 80 default_server;
     listen [::]:80 default_server;
 
-    access_log <%= node[:nominatim][:logdir] %>/nominatim.openstreetmap.org-access.log nominatim_log;
+    access_log <%= node[:nominatim][:logdir] %>/nominatim.openstreetmap.org-access.log nominatim_log buffer=256k flush=5s;
     error_log <%= node[:nominatim][:logdir] %>/nominatim.openstreetmap.org-error.log;
 
     location /nginx_status {
