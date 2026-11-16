@@ -1,0 +1,23 @@
+#!/bin/sh
+
+# DO NOT EDIT - This file is being maintained by Chef
+
+# stop if psql fails, so we never publish a partial list
+set -e
+
+T=$(mktemp -d -t -p /var/tmp gpx.XXXXXXXXXX)
+
+# use the same as for the users-agreed template
+export PGPASSFILE=/etc/replication/users-agreed.conf
+
+echo "# GPS trace IDs with identifiable visibility." > $T/identifiable
+psql -h <%= node[:web][:readonly_database_host] %> -U planetdiff -t -A -c "select id from gpx_files where visible and inserted and visibility='identifiable' order by id asc" openstreetmap >> $T/identifiable
+
+if cmp -s "${T}/identifiable" "/store/planet/gpx_ids/identifiable.txt"; then
+  : # do nothing
+else
+  cp $T/identifiable /store/planet/gpx_ids/identifiable.txt.new
+  mv /store/planet/gpx_ids/identifiable.txt.new /store/planet/gpx_ids/identifiable.txt
+fi
+
+rm -rf $T

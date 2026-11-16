@@ -95,6 +95,13 @@ template "/usr/local/bin/users-deleted" do
   mode "755"
 end
 
+template "/usr/local/bin/gpx-ids" do
+  source "gpx-ids.erb"
+  owner "root"
+  group "root"
+  mode "755"
+end
+
 template "/usr/local/bin/replicate-changesets" do
   source "replicate-changesets.erb"
   owner "root"
@@ -106,6 +113,18 @@ end
 
 remote_directory "/store/planet/users_deleted" do
   source "users_deleted"
+  owner "planet"
+  group "planet"
+  mode "755"
+  files_owner "root"
+  files_group "root"
+  files_mode "644"
+end
+
+## Published GPS trace ids directory
+
+remote_directory "/store/planet/gpx_ids" do
+  source "gpx_ids"
   owner "planet"
   group "planet"
   mode "755"
@@ -195,6 +214,20 @@ end
 systemd_timer "users-deleted" do
   description "Update list of deleted users"
   on_calendar "17:00"
+end
+
+systemd_service "gpx-ids" do
+  description "Update list of GPS trace ids"
+  user "planet"
+  exec_start "/usr/local/bin/gpx-ids"
+  nice 10
+  sandbox :enable_network => true
+  read_write_paths "/store/planet/gpx_ids"
+end
+
+systemd_timer "gpx-ids" do
+  description "Update list of GPS trace ids"
+  on_calendar "6:00"
 end
 
 ## Changeset replication
@@ -416,6 +449,10 @@ if node[:planet][:replication] == "enabled"
     action [:enable, :start]
   end
 
+  service "gpx-ids.timer" do
+    action [:enable, :start]
+  end
+
   service "replication-changesets.timer" do
     action [:enable, :start]
   end
@@ -441,6 +478,10 @@ else
   end
 
   service "users-deleted.timer" do
+    action [:stop, :disable]
+  end
+
+  service "gpx-ids.timer" do
     action [:stop, :disable]
   end
 
