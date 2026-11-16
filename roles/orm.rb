@@ -112,6 +112,11 @@ default_attributes(
         "kernel.shmall" => 9 * 1024 * 1024 * 1024 / 4096
       }
     }
+  },
+  :tile => {
+    :replication => {
+      :url => "https://osm-planet-us-west-2.s3.dualstack.us-west-2.amazonaws.com/planet/replication/minute"
+    }
   }
 )
 
