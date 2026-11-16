@@ -738,5 +738,7 @@ end
 
 execute "replicate-set-url" do
   command "/usr/local/bin/replicate-set-url"
+  user "tile"
+  group "tile"
   action :nothing
 end
