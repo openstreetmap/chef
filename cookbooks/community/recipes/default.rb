@@ -217,7 +217,6 @@ execute "discourse_container_mail_receiver_bootstrap" do
   cwd "/srv/community.openstreetmap.org/docker/"
   user "root"
   group "root"
-  not_if { arm? } # Not yet supported on ARM https://github.com/discourse/mail-receiver/pull/28
 end
 
 execute "discourse_container_mail_receiver_destroy" do
@@ -226,7 +225,6 @@ execute "discourse_container_mail_receiver_destroy" do
   cwd "/srv/community.openstreetmap.org/docker/"
   user "root"
   group "root"
-  not_if { arm? } # Not yet supported on ARM https://github.com/discourse/mail-receiver/pull/28
 end
 
 execute "discourse_container_mail_receiver_start" do
@@ -235,7 +233,6 @@ execute "discourse_container_mail_receiver_start" do
   cwd "/srv/community.openstreetmap.org/docker/"
   user "root"
   group "root"
-  not_if { arm? } # Not yet supported on ARM https://github.com/discourse/mail-receiver/pull/28
 end
 
 template "/etc/cron.daily/community-backup" do
