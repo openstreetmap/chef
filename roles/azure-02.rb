@@ -146,7 +146,7 @@ default_attributes(
   },
   :tile => {
     :replication => {
-      :url => "https://osm-planet-us-west-2.s3.dualstack.us-west-2.amazonaws.com/planet/replication/minute"
+      :url => "https://osm-planet-us-west-2.s3.us-west-2.amazonaws.com/planet/replication/minute"
     }
   }
 )
