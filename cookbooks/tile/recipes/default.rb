@@ -727,3 +727,16 @@ end
 prometheus_exporter "renderd" do
   port 9393
 end
+
+template "/usr/local/bin/replicate-set-url" do
+  source "replicate-set-url.erb"
+  owner "root"
+  group "root"
+  mode "755"
+  notifies :run, "execute[replicate-set-url]"
+end
+
+execute "replicate-set-url" do
+  command "/usr/local/bin/replicate-set-url"
+  action :nothing
+end

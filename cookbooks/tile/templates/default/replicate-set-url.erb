@@ -1,0 +1,11 @@
+#!/bin/bash
+# DO NOT EDIT - This file is being maintained by Chef
+
+set -euo pipefail
+
+REPLICATION_URL="<%=node[:tile][:replication][:url] %>"
+
+# Note: Running "osm2pgsql-replication init" rollbacks back the replication state by 3 hours.
+# https://github.com/osm2pgsql-dev/osm2pgsql/blob/5ecb586c5e9271826027d32d86bc77b3aaf90ce6/scripts/osm2pgsql-replication#L424-L432
+
+/bin/osm2pgsql-replication init --database gis --server "$REPLICATION_URL"
