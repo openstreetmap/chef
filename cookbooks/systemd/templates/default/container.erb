@@ -22,7 +22,16 @@ Volume=<%= source %>:<%= path %>
 <% if @pids_limit -%>
 PidsLimit=<%= @pids_limit %>
 <% end -%>
+<% if @uid_map || @gid_map -%>
+<% if @uid_map -%>
+UIDMap=<%= @uid_map %>
+<% end -%>
+<% if @gid_map -%>
+GIDMap=<%= @gid_map %>
+<% end -%>
+<% else -%>
 UserNS=auto
+<% end -%>
 AutoUpdate=registry
 
 [Service]

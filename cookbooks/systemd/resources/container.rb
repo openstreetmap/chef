@@ -29,6 +29,8 @@ property :ports, Hash, :default => {}
 property :environment, Hash, :default => {}
 property :volumes, Hash, :default => {}
 property :pids_limit, Integer
+property :uid_map, String
+property :gid_map, String
 property :timeout_start_sec, Integer
 property :restart, String,
          :is => %w[on-success on-failure on-abnormal on-watchdog on-abort always]
