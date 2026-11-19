@@ -6,6 +6,7 @@ set -euo pipefail
 export ZSTD_CLEVEL=16
 
 T=$(mktemp -d -t -p /var/tmp "mediawiki-<%= @name %>.XXXXXXXXXX")
+trap 'rm -rf "$T"' EXIT
 D=$(date +%Y-%m-%d)
 B="wiki-<%= @name %>-$D.tar.zst"
 
@@ -30,5 +31,3 @@ nice tar --create --dereference --directory="$T" \
   "wiki-<%= @name %>-$D" | nice zstd -T0 --quiet --long --rsyncable -o "$T/$B"
 
 nice rsync --preallocate --fuzzy "$T/$B" backup.openstreetmap.org::backup
-
-rm -rf "$T"

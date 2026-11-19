@@ -6,6 +6,7 @@ set -euo pipefail
 export ZSTD_CLEVEL=16
 
 T=$(mktemp -d -t -p /var/tmp community.XXXXXXXXXX)
+trap 'rm -rf "$T"' EXIT
 D=$(date +%Y-%m-%d)
 B="community-$D.tar.zst"
 
@@ -24,5 +25,3 @@ nice tar --create --numeric-owner --dereference --directory="$T" \
   "community-$D" | nice zstd -T0 --quiet --long --rsyncable -o "$T/$B"
 
 nice rsync --preallocate --fuzzy "$T/$B" backup.openstreetmap.org::backup
-
-rm -rf "$T"

@@ -6,6 +6,7 @@ set -euo pipefail
 export ZSTD_CLEVEL=16
 
 T=$(mktemp -d -t -p /var/tmp prometheus.XXXXXXXXXX)
+trap 'rm -rf "$T"' EXIT
 D=$(date +%Y-%m-%d)
 B="prometheus-$D.tar.zst"
 
@@ -29,5 +30,3 @@ if [ $tar_exit -gt 1 ]; then
 fi
 
 nice rsync --preallocate --fuzzy "$T/$B" backup.openstreetmap.org::backup
-
-rm -rf "$T"

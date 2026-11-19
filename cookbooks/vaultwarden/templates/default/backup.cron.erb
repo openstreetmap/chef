@@ -4,6 +4,7 @@
 set -euo pipefail
 
 service_was_running=false
+T=""
 
 restart_service() {
     if [ "$service_was_running" = true ]; then
@@ -11,8 +12,15 @@ restart_service() {
     fi
 }
 
-# Ensure the service is restarted on script exit
-trap restart_service EXIT
+cleanup() {
+    restart_service
+    if [ -n "$T" ]; then
+        rm -rf "$T"
+    fi
+}
+
+# Ensure the service is restarted and the temporary directory removed on script exit
+trap cleanup EXIT
 # Trap signals to ensure the service is restarted if the script exits unexpectedly
 trap 'exit 129' HUP
 trap 'exit 130' INT
@@ -43,5 +51,3 @@ nice tar --create --dereference \
 restart_service
 
 nice rsync --preallocate --fuzzy "$T/$B" backup.openstreetmap.org::backup
-
-rm -rf "$T"

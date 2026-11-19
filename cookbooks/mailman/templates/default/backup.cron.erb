@@ -6,6 +6,7 @@ set -euo pipefail
 export ZSTD_CLEVEL=12
 
 T=$(mktemp -d -t -p /var/tmp lists.XXXXXXXXXX)
+trap 'rm -rf "$T"' EXIT
 D=$(date +%Y-%m-%d)
 B="lists-$D.tar.zst"
 
@@ -22,5 +23,3 @@ nice tar --create --dereference \
     "lists-$D" | nice zstd -T0 --quiet --long --rsyncable -o "$T/$B"
 
 nice rsync --preallocate --fuzzy "$T/$B" backup.openstreetmap.org::backup
-
-rm -rf "$T"

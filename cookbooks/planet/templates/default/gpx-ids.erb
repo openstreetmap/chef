@@ -6,6 +6,7 @@
 set -e
 
 T=$(mktemp -d -t -p /var/tmp gpx.XXXXXXXXXX)
+trap 'rm -rf "$T"' EXIT
 
 # use the same as for the users-agreed template
 export PGPASSFILE=/etc/replication/users-agreed.conf
@@ -19,5 +20,3 @@ else
   cp $T/identifiable /store/planet/gpx_ids/identifiable.txt.new
   mv /store/planet/gpx_ids/identifiable.txt.new /store/planet/gpx_ids/identifiable.txt
 fi
-
-rm -rf $T

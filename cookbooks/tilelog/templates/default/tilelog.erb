@@ -9,6 +9,7 @@ fi
 
 OUTDIR="<%= @output_dir %>"
 TMPDIR=$(mktemp -d -t tilelog.XXXXXXXXX)
+trap 'rm -rf "$TMPDIR"' EXIT
 
 cd "$TMPDIR"
 
@@ -31,5 +32,3 @@ mv "${TILEFILE}" "${HOSTFILE}" "${APPFILE}" "${COUNTRYFILE}" "${OUTDIR}"
 /opt/awscli/v2/current/bin/aws --profile=osm-pds-upload s3 cp --storage-class=INTELLIGENT_TIERING --no-progress "${OUTDIR}/${HOSTFILE}" "s3://osm-planet-eu-central-1/tile_logs/standard_layer/hosts/${YEAR}/${HOSTFILE}"
 /opt/awscli/v2/current/bin/aws --profile=osm-pds-upload s3 cp --storage-class=INTELLIGENT_TIERING --no-progress "${OUTDIR}/${APPFILE}" "s3://osm-planet-eu-central-1/tile_logs/standard_layer/apps/${YEAR}/${APPFILE}"
 /opt/awscli/v2/current/bin/aws --profile=osm-pds-upload s3 cp --storage-class=INTELLIGENT_TIERING --no-progress "${OUTDIR}/${COUNTRYFILE}" "s3://osm-planet-eu-central-1/tile_logs/standard_layer/countries/${YEAR}/${COUNTRYFILE}"
-
-rm -rf "$TMPDIR"
