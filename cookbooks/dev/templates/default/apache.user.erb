@@ -42,6 +42,9 @@ WSGIDaemonProcess <%= @user %>.dev.openstreetmap.org user=<%= @user %> processes
 	RewriteCond %{HTTP_REFERER} =https://<%= @user %>.dev.openstreetmap.org
 	RewriteRule ^ - [R=429,E=nokeepalive:1,L]
 
+	# Set the Retry-After header for 429 responses
+	Header always set Retry-After "3600" "expr=%{REQUEST_STATUS} == 429"
+
 	RewriteCond <%= @directory %>%{REQUEST_FILENAME} -f
 	RewriteRule ^/cgi-bin/(.*)$ /~<%= @user %>/cgi-bin/$1 [PT,L]
 

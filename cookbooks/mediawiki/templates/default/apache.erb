@@ -68,6 +68,9 @@
   RewriteCond %{REQUEST_URI} ^/w/
   RewriteRule ^ - [R=429,E=nokeepalive:1,L]
 
+  # Set the Retry-After header for 429 responses
+  Header always set Retry-After "3600" "expr=%{REQUEST_STATUS} == 429"
+
   # Historical Compatibility Links
   RedirectMatch 301 ^/index\.php$                 /w/index.php
   RedirectMatch 301 ^/index\.php/(.*)$            /wiki/$1
