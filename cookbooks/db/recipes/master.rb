@@ -185,6 +185,7 @@ PROMETHEUS_PERMISSIONS = {
   gps_points
   gpx_file_tags
   gpx_files
+  gpx_tracks
   issue_comments
   issues
   languages
