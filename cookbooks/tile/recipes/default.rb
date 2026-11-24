@@ -741,4 +741,5 @@ execute "replicate-set-url" do
   user "tile"
   group "tile"
   action :nothing
+  not_if { kitchen? }
 end
