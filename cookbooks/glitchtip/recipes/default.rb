@@ -39,20 +39,6 @@ postgresql_database database_name do
   owner database_user
 end
 
-directory "/srv/glitchtip.openstreetmap.org/uploads" do
-  owner "root"
-  group "root"
-  mode "0777"
-  recursive true
-end
-
-directory "/srv/glitchtip.openstreetmap.org/cold" do
-  owner "root"
-  group "root"
-  mode "0777"
-  recursive true
-end
-
 database_url = "postgres://#{database_user}:#{database_password}@host.containers.internal:5432/#{database_name}"
 
 valkey_password = valkey_passwords["glitchtip"]
@@ -78,8 +64,18 @@ podman_site "glitchtip.openstreetmap.org" do
               "GLITCHTIP_ENABLE_MCP" => "False",
               "GLITCHTIP_INSTANCE_NAME" => "OpenStreetMap\\'s GlitchTip",
               "SERVER_ROLE" => "all_in_one"
-  volumes "/srv/glitchtip.openstreetmap.org/uploads" => "/code/uploads",
-          "/srv/glitchtip.openstreetmap.org/cold" => "/cold"
+  volumes "/srv/glitchtip.openstreetmap.org/uploads" => {
+            :target => "/code/uploads",
+            :uid => 5000, # container user: https://gitlab.com/glitchtip/glitchtip-backend/-/blob/master/Dockerfile?ref_type=heads#L40
+            :gid => 5000, # container user: https://gitlab.com/glitchtip/glitchtip-backend/-/blob/master/Dockerfile?ref_type=heads#L40
+            :mode => "0700"
+          },
+          "/srv/glitchtip.openstreetmap.org/cold" => {
+            :target => "/cold",
+            :uid => 5000, # container user: https://gitlab.com/glitchtip/glitchtip-backend/-/blob/master/Dockerfile?ref_type=heads#L40
+            :gid => 5000, # container user: https://gitlab.com/glitchtip/glitchtip-backend/-/blob/master/Dockerfile?ref_type=heads#L40
+            :mode => "0700"
+          }
 end
 
 node.default[:prometheus][:exporters][443] = {

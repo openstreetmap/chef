@@ -22,13 +22,6 @@ include_recipe "podman::apache"
 
 passwords = data_bag_item("vaultwarden", "passwords")
 
-directory "/srv/vault.osmfoundation.org/data" do
-  owner "root"
-  group "root"
-  mode "0777"
-  recursive true
-end
-
 # TLS is terminated by apache, so the container only serves plain HTTP on
 # its default port 80. The real client address is passed via X-Forwarded-For.
 podman_site "vault.osmfoundation.org" do
@@ -50,7 +43,10 @@ podman_site "vault.osmfoundation.org" do
               "PUSH_INSTALLATION_KEY" => passwords["push_installation_key"],
               "PUSH_RELAY_URI" => "https://api.bitwarden.eu",
               "PUSH_IDENTITY_URI" => "https://identity.bitwarden.eu"
-  volumes "/srv/vault.osmfoundation.org/data" => "/data"
+  volumes "/srv/vault.osmfoundation.org/data" => {
+    :target => "/data",
+    :mode => "0700"
+  }
 end
 
 fail2ban_filter "vaultwarden" do
